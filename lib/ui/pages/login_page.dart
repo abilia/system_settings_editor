@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,6 +14,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final i18n = AppLocalizations.of(context);
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -32,7 +34,7 @@ class LoginPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Username / Email'),
+                        Text(i18n.translate('userName')),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextField(
@@ -59,7 +61,7 @@ class LoginPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Password'),
+                        Text(i18n.translate('password')),
                         Padding(
                           padding: const EdgeInsets.only(top: 10),
                           child: TextField(

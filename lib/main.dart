@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/pages/login_page.dart';
 
-void main() => runApp(MyApp());
+import 'i18n/app_localizations.dart';
+
+Future main() async {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -18,6 +23,22 @@ class MyApp extends StatelessWidget {
               buttonColor: RED,
               shape: RoundedRectangleBorder(),
               textTheme: ButtonTextTheme.primary)),
+      supportedLocales: [Locale('en'), Locale('sv')],
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode) {
+            return supportedLocale;
+          }
+        }
+
+        // English should be the first one and also the default.
+        return supportedLocales.first;
+      },
       home: MyHomePage(),
     );
   }
