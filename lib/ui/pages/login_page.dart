@@ -123,7 +123,7 @@ class LoginPage extends StatelessWidget {
                       borderRadius: new BorderRadius.circular(12.0),
                     ),
                     onPressed: onLogin,
-                    child: Text('Login',
+                    child: Text(i18n.translate("login"),
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w400)),
                   ),

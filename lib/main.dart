@@ -5,7 +5,7 @@ import 'package:seagull/ui/pages/login_page.dart';
 
 import 'i18n/app_localizations.dart';
 
-Future main() async {
+void main() {
   runApp(MyApp());
 }
 
@@ -44,12 +44,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LoginPage();
