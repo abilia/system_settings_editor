@@ -90,7 +90,7 @@ class LoginPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'Use your ',
+                          i18n.translate('infoText1'),
                           style: TextStyle(fontSize: 16),
                         ),
                         InkWell(
@@ -105,7 +105,7 @@ class LoginPage extends StatelessWidget {
                             onTap: () =>
                                 launch('https://myabilia.com/user-create')),
                         Text(
-                          ' account to login',
+                          i18n.translate('infoText2'),
                           style: TextStyle(fontSize: 16),
                         )
                       ],

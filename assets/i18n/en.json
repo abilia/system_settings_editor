@@ -1,4 +1,6 @@
 {
   "userName": "Username / Emailz",
-  "password": "Passwordz"
+  "password": "Passwordz",
+  "infoText1": "Use your ",
+  "infoText2": "account to login"
 }

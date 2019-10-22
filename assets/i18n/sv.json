@@ -1,4 +1,6 @@
 {
-    "userName": "Användarnamn",
-    "password": "Lösenord"
+  "userName": "Användarnamn",
+  "password": "Lösenord",
+  "infoText1": "Använd ditt ",
+  "infoText2": "-konto för att logga in"
 }
