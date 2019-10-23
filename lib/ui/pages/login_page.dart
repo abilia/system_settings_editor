@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/seagull_icon.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:seagull/ui/components/abilia_button.dart';
+import 'package:seagull/ui/components/login_form.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({
@@ -22,110 +21,15 @@ class LoginPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40, bottom: 20),
-                    child: SeagullIcon(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(i18n.translate('userName')),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: TextField(
-                            decoration: new InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 20.0, horizontal: 10),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(i18n.translate('password')),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: TextField(
-                            obscureText: true,
-                            decoration: new InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 20.0, horizontal: 10),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          i18n.translate('infoText1'),
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        InkWell(
-                            child: new Text(
-                              'myAbilia',
-                              style: TextStyle(
-                                  color: RED,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: RED,
-                                  fontSize: 16),
-                            ),
-                            onTap: () =>
-                                launch('https://myabilia.com/user-create')),
-                        Text(
-                          i18n.translate('infoText2'),
-                          style: TextStyle(fontSize: 16),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(top: 76.0, left: 16, right: 16),
+                child: LoginForm(),
               ),
               Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 70,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(12.0),
-                    ),
-                    onPressed: onLogin,
-                    child: Text(i18n.translate("login"),
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w400)),
-                  ),
+                padding: const EdgeInsets.all(32.0),
+                child: AbiliaButton(
+                  label: i18n.translate("login"),
+                  onPressed: onLogin,
                 ),
               )
             ],
