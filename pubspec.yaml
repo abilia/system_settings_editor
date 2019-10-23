@@ -12,11 +12,15 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^0.1.2
   url_launcher: ^5.2.3
+  flutter_bloc: ^1.0.0
+  meta: ^1.1.7
+  equatable: ^0.6.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.7.3
+  mockito: ^4.1.1
 
 flutter_icons:
   android: true
