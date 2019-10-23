@@ -17,6 +17,9 @@ flutter doctor
 
 echo "Installed flutter to `pwd`/flutter"
 
+# run tests
+flutter test
+
 # build APK
 flutter build apk --release
 
