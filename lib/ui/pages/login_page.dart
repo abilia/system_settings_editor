@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/components/seagull_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginPage extends StatelessWidget {
@@ -25,9 +26,7 @@ class LoginPage extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(top: 40, bottom: 20),
-                    child: Image(
-                        image: AssetImage(
-                            'assets/graphics/seagull_icon_gray.png')),
+                    child: SeagullIcon(),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
