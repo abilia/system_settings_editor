@@ -14,15 +14,13 @@ class AbiliaButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 70,
+      height: 64,
       child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(12.0),
-        ),
-        onPressed: onPressed,
-        child: Text(label,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400)),
-      ),
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(12.0),
+          ),
+          onPressed: onPressed,
+          child: Text(label)),
     );
   }
 }
