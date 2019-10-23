@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AppLocalizations {
+  static const List<Locale> SUPPORTED_LOCALES = [Locale('en'), Locale('sv')];
+
   final Locale locale;
 
   AppLocalizations(this.locale);
@@ -41,7 +43,9 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) {
-    return ['en', 'sv'].contains(locale.languageCode);
+    return AppLocalizations.SUPPORTED_LOCALES
+        .map((l) => l.languageCode)
+        .contains(locale.languageCode);
   }
 
   @override

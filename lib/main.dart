@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
               buttonColor: RED,
               shape: RoundedRectangleBorder(),
               textTheme: ButtonTextTheme.primary)),
-      supportedLocales: [Locale('en'), Locale('sv')],
+      supportedLocales: AppLocalizations.SUPPORTED_LOCALES,
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
