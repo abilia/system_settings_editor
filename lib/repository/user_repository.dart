@@ -8,7 +8,8 @@ import 'package:seagull/repository/end_point.dart';
 import 'package:uuid/uuid.dart';
 
 class UserRepository {
-  final Client client = Client();
+  final Client client;
+  UserRepository({@required this.client});
 
   Future<String> authenticate({
     @required String username,

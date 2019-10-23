@@ -3,14 +3,14 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/authentication/bloc.dart';
 import 'package:seagull/repository/user_repository.dart';
 
-import 'mock_user_repository.dart';
+import 'mocks.dart';
 
 void main() {
   group('AuthenticationBloc event order', () {
     AuthenticationBloc authenticationBloc;
 
     setUp(() {
-      authenticationBloc = AuthenticationBloc(userRepository: UserRepository());
+      authenticationBloc = AuthenticationBloc(userRepository: UserRepository(client: MockHttpClient()));
     });
 
     test('initial state is AuthenticationUninitialized', () {
@@ -76,25 +76,25 @@ void main() {
 
     group('AuthenticationBloc token side effect', () {
     AuthenticationBloc authenticationBloc;
-    UserRepository userRepository;
+    UserRepository mockedUserRepository;
 
     setUp(() {
-      userRepository = MockUserRepository();
-      authenticationBloc = AuthenticationBloc(userRepository: userRepository);
+      mockedUserRepository = MockUserRepository();
+      authenticationBloc = AuthenticationBloc(userRepository: mockedUserRepository);
+      when(mockedUserRepository.hasToken()).thenAnswer((_) => Future.value(false));
     });
 
     test('loggedIn event saves token', () async {
       authenticationBloc.add(AppStarted());
       final theToken = 'a token';
       authenticationBloc.add(LoggedIn(token: theToken));
-
-      await untilCalled(userRepository.persistToken(theToken));
+      await untilCalled(mockedUserRepository.persistToken(theToken));
     });
 
     test('loggedOut calls deletes token', () async {
       authenticationBloc.add(AppStarted());
       authenticationBloc.add(LoggedOut());
-      await untilCalled(userRepository.deleteToken());
+      await untilCalled(mockedUserRepository.deleteToken());
     });
 
     tearDown(() {

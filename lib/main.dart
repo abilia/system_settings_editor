@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:http/http.dart';
 import 'package:seagull/bloc/authentication/bloc.dart';
 import 'package:seagull/bloc/bloc_delegate.dart';
 import 'package:seagull/repository/user_repository.dart';
@@ -18,7 +19,7 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  final UserRepository userRepository = UserRepository();
+  final UserRepository userRepository = UserRepository(client: Client());
 
   @override
   Widget build(BuildContext context) {
