@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/ui/components/seagull_icon.dart';
+import 'package:seagull/ui/components/text_input.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../colors.dart';
+
+class LoginForm extends StatelessWidget {
+  const LoginForm({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final i18n = AppLocalizations.of(context);
+    return Column(
+      children: <Widget>[
+        SeagullIcon(),
+        Padding(
+          padding: const EdgeInsets.only(top: 32.0),
+          child: TextInput(label: i18n.translate('userName')),
+        ),
+        Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: TextInput(
+              label: i18n.translate("password"),
+              obscureText: true,
+            )),
+        Padding(
+          padding: const EdgeInsets.only(top: 32.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                i18n.translate('infoText1'),
+                style: TextStyle(fontSize: 16),
+              ),
+              InkWell(
+                  child: new Text(
+                    'myAbilia',
+                    style: TextStyle(
+                        color: RED,
+                        decoration: TextDecoration.underline,
+                        decorationColor: RED,
+                        fontSize: 16),
+                  ),
+                  onTap: () => launch('https://myabilia.com/user-create')),
+              Text(
+                i18n.translate('infoText2'),
+                style: TextStyle(fontSize: 16),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
