@@ -3,5 +3,6 @@
   "password": "Lösenord",
   "infoText1": "Använd ditt ",
   "infoText2": "-konto för att logga in",
-  "login": "Logga in"
+  "login": "Logga in",
+  "wrong_credentials": "Fel användarnamn eller lösenord"
 }

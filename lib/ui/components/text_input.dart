@@ -4,11 +4,13 @@ class TextInput extends StatelessWidget {
   const TextInput({
     Key key,
     @required this.label,
+    this.controller,
     this.obscureText = false,
   }) : super(key: key);
 
   final String label;
   final bool obscureText;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,8 @@ class TextInput extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8.0),
           child: TextField(
             obscureText: obscureText,
-            decoration: new InputDecoration(
+            controller: controller,
+            decoration: InputDecoration(
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
                 focusedBorder: OutlineInputBorder(
