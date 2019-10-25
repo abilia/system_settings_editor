@@ -33,3 +33,5 @@ class PasswordChanged extends LoginFormEvent {
 }
 
 class HidePasswordToggle extends LoginFormEvent { }
+
+class FormSubmitted extends LoginFormEvent {}

@@ -15,7 +15,7 @@ void main() {
 
     setUp(() {
       mockClient = MockHttpClient();
-      final userRepository = UserRepository(client: mockClient);
+      final userRepository = UserRepository(httpClient: mockClient, secureStorage: MockSecureStorage());
       authenticationBloc = AuthenticationBloc(userRepository: userRepository);
       loginBloc = LoginBloc(
           userRepository: userRepository,

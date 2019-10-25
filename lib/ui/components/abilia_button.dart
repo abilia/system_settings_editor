@@ -13,7 +13,7 @@ class AbiliaButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => 
      Padding(
-       padding: const EdgeInsets.all(32.0),
+       padding: const EdgeInsets.all(32),
        child: RaisedButton(
             onPressed: onPressed,
             child: Text(label),

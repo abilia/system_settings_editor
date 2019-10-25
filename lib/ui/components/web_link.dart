@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/ui/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WebLink extends StatelessWidget {
@@ -14,12 +13,10 @@ class WebLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GestureDetector(
       child: Text(
-        'myAbilia',
-        style: TextStyle(
-            color: AbiliaColors.red,
-            decoration: TextDecoration.underline,
-            decorationColor: AbiliaColors.red,
-            fontSize: 16),
+        text,
+        style: Theme.of(context).textTheme.body1.copyWith(
+            color: Theme.of(context).errorColor,
+            decoration: TextDecoration.underline,),
       ),
-      onTap: () => launch('https://myabilia.com/user-create'));
+      onTap: () => launch(urlString));
 }

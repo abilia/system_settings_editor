@@ -4,5 +4,5 @@
   "infoText1": "Use your ",
   "infoText2": " account to login",
   "login": "Log in",
-  "wrong_credentials": "Wrong credentials"
+  "wrong_credentials": "Your username/email or password is not correct. Please, try another one."
 }

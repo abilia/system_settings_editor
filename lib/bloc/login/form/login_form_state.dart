@@ -6,8 +6,8 @@ class LoginFormState extends Equatable {
   final bool isUsernameValid;
   final String password;
   final bool isPasswordValid;
-  final bool hasPassword;
   final bool hidePassword;
+  final bool formSubmitted;
 
   bool get isFormValid => isUsernameValid && isPasswordValid;
 
@@ -16,8 +16,8 @@ class LoginFormState extends Equatable {
     @required this.isUsernameValid,
     @required this.password,
     @required this.isPasswordValid,
-    @required this.hasPassword,
     @required this.hidePassword,
+    @required this.formSubmitted
   });
 
   factory LoginFormState.initial() {
@@ -26,8 +26,8 @@ class LoginFormState extends Equatable {
       isUsernameValid: false,
       password: '',
       isPasswordValid: false,
-      hasPassword: false,
       hidePassword: true,
+      formSubmitted: false
     );
   }
 
@@ -36,16 +36,16 @@ class LoginFormState extends Equatable {
     bool isUsernameValid,
     String password,
     bool isPasswordValid,
-    bool hasPassword,
     bool hidePassword,
+    bool formSubmitted,
   }) {
     return LoginFormState(
       username: username ?? this.username,
       isUsernameValid: isUsernameValid ?? this.isUsernameValid,
       password: password ?? this.password,
       isPasswordValid: isPasswordValid ?? this.isPasswordValid,
-      hasPassword: hasPassword ?? this.hasPassword,
       hidePassword: hidePassword ?? this.hidePassword,
+      formSubmitted: formSubmitted ?? this.formSubmitted
     );
   }
 
@@ -55,8 +55,8 @@ class LoginFormState extends Equatable {
         isUsernameValid,
         password,
         isPasswordValid,
-        hasPassword,
         hidePassword,
+        formSubmitted,
       ];
 
   @override
@@ -66,8 +66,8 @@ class LoginFormState extends Equatable {
       isUserNameValid: $isUsernameValid,
       password length: ${password.length},
       isPasswordValid: $isPasswordValid,
-      hasPassword: $hasPassword
       hidePassword: $hidePassword
+      formSubmitted: $formSubmitted
     }''';
   }
 }

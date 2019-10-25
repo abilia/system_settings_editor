@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:seagull/bloc/authentication/bloc.dart';
 import 'package:seagull/bloc/bloc_delegate.dart';
@@ -19,7 +20,12 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  final UserRepository userRepository = UserRepository(client: Client());
+  final UserRepository userRepository;
+
+  App({Client httpClient, FlutterSecureStorage secureStorage})
+      : userRepository = UserRepository(
+            httpClient: httpClient ?? Client(),
+            secureStorage: secureStorage ?? FlutterSecureStorage());
 
   @override
   Widget build(BuildContext context) {

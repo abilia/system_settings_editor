@@ -10,7 +10,7 @@ void main() {
     AuthenticationBloc authenticationBloc;
 
     setUp(() {
-      authenticationBloc = AuthenticationBloc(userRepository: UserRepository(client: MockHttpClient()));
+      authenticationBloc = AuthenticationBloc(userRepository: UserRepository(httpClient: MockHttpClient(), secureStorage: MockSecureStorage()));
     });
 
     test('initial state is AuthenticationUninitialized', () {
