@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
-import 'package:seagull/bloc/authentication/bloc.dart';
-import 'package:seagull/repository/user_repository.dart';
+import 'package:seagull/bloc.dart';
+import 'package:seagull/repositories.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
@@ -19,26 +19,33 @@ class AuthenticationBloc
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
+    yield AuthenticationLoading();
     if (event is AppStarted) {
-      final bool hasToken = await userRepository.hasToken();
-
-      if (hasToken) {
-        yield AuthenticationAuthenticated();
-      } else {
-        yield AuthenticationUnauthenticated();
+      final String token = await userRepository.getToken();
+      if (token != null) {
+        yield* _tryGetUser(token);
       }
-    }
+      else yield Unauthenticated();
+    } 
 
     if (event is LoggedIn) {
-      yield AuthenticationLoading();
       await userRepository.persistToken(event.token);
-      yield AuthenticationAuthenticated();
+      yield* _tryGetUser(event.token);
     }
 
     if (event is LoggedOut) {
-      yield AuthenticationLoading();
       await userRepository.deleteToken();
-      yield AuthenticationUnauthenticated();
+      yield Unauthenticated();
+    }
+  }
+
+  Stream<AuthenticationState> _tryGetUser(String token) async* {
+    try {
+      final user = await userRepository.me(token);
+      yield Authenticated(token: token, userId: user.id);
+    } catch (_) {
+      await userRepository.deleteToken();
+      yield Unauthenticated();
     }
   }
 }

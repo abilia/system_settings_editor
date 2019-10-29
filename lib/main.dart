@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
-import 'package:seagull/bloc/authentication/bloc.dart';
-import 'package:seagull/bloc/bloc_delegate.dart';
-import 'package:seagull/repository/user_repository.dart';
-import 'package:seagull/ui/pages/login_page.dart';
-import 'package:seagull/ui/pages/logout_page.dart';
-import 'package:seagull/ui/pages/splash_page.dart';
-import 'package:seagull/ui/theme.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'i18n/app_localizations.dart';
+import 'package:seagull/bloc.dart';
+import 'package:seagull/bloc/bloc_delegate.dart';
+import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/repositories.dart';
+import 'package:seagull/ui/pages.dart';
+import 'package:seagull/ui/theme.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -58,10 +56,30 @@ class App extends StatelessWidget {
             if (state is AuthenticationUninitialized) {
               return SplashPage();
             }
-            if (state is AuthenticationAuthenticated) {
-              return LogoutPage();
+            if (state is Authenticated) {
+              return MultiBlocProvider(
+                  providers: [
+                    BlocProvider<ActivitiesBloc>(
+                        builder: (context) => ActivitiesBloc(
+                            activitiesRepository: ActivityRepository(
+                                authToken: state.token, userId: state.userId))
+                          ..add(LoadActivities())),
+                    BlocProvider<DayPickerBloc>(
+                      builder: (context) => DayPickerBloc(),
+                    ),
+                    BlocProvider<FilteredActivitiesBloc>(
+                      builder: (context) => FilteredActivitiesBloc(
+                          activitiesBloc:
+                              BlocProvider.of<ActivitiesBloc>(context),
+                          dayPickerBloc:
+                              BlocProvider.of<DayPickerBloc>(context)),
+                    )
+                  ],
+                  child: ActivitiesPage(
+                    authenticatedState: state,
+                  ));
             }
-            if (state is AuthenticationUnauthenticated) {
+            if (state is Unauthenticated) {
               return LoginPage(userRepository: userRepository);
             }
             return Center(

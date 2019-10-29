@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/login/bloc.dart';
-import 'package:seagull/bloc/login/form/bloc.dart';
+import 'package:seagull/bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/components/abilia_button.dart';
-import 'package:seagull/ui/components/action_button.dart';
-import 'package:seagull/ui/components/error_message.dart';
-import 'package:seagull/ui/components/seagull_icon.dart';
-import 'package:seagull/ui/components/web_link.dart';
+import 'package:seagull/ui/components.dart';
+import 'package:seagull/ui/theme.dart';
+
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -106,6 +103,7 @@ class _LoginFormState extends State<LoginForm> {
                                         ? Icons.visibility
                                         : Icons.visibility_off),
                                     onPressed: _onHidePasswordChanged,
+                                    buttonThemeData: showHideButtonTheme,
                                   )),
                           ],
                         ),
@@ -172,6 +170,7 @@ class _LoginFormState extends State<LoginForm> {
         password: _passwordController.text,
       ),
     );
+    FocusScope.of(context).requestFocus(FocusNode());
     _loginFormBloc.add(FormSubmitted());
   }
 

@@ -3,6 +3,7 @@ import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/authentication/bloc.dart';
 import 'package:seagull/bloc/login/bloc.dart';
+import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
 import 'mocks.dart';
@@ -20,6 +21,21 @@ void main() {
       loginBloc = LoginBloc(
           userRepository: userRepository,
           authenticationBloc: authenticationBloc);
+
+      when(mockClient.post(any, headers: anyNamed('headers'), body: anyNamed('body')))
+          .thenAnswer((_) => Future.value(Response('{"token":"token","endDate":1,"renewToken":"renewToken"}', 200)));
+      when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer((_) => Future.value(Response('''
+        {
+          "me" : {
+            "id" : 0,
+            "type" : "testcase",
+            "name" : "Testcase user",
+            "username" : "testcase",
+            "language" : "sv",
+            "image" : null
+          }
+        }
+        ''', 200)));
     });
 
     test('initial state is LoginInitial', () {
@@ -34,9 +50,10 @@ void main() {
       ];
       final List<AuthenticationState> expectedAuthenticationStates = [
         AuthenticationUninitialized(),
-        AuthenticationUnauthenticated(),
         AuthenticationLoading(),
-        AuthenticationAuthenticated(),
+        Unauthenticated(),
+        AuthenticationLoading(),
+        Authenticated(token: 'token', userId: 0),
       ];
 
       expectLater(
@@ -48,8 +65,6 @@ void main() {
         loginBloc,
         emitsInOrder(expectedLoginStates),
       );
-      when(mockClient.post(any, headers: anyNamed('headers'), body: anyNamed('body')))
-          .thenAnswer((_) => Future.value(Response('{"token":"token","endDate":1,"renewToken":"renewToken"}', 200)));
 
       authenticationBloc.add(AppStarted());
       loginBloc
@@ -71,7 +86,8 @@ void main() {
       mockedUserRepository = MockUserRepository();
       authenticationBloc = AuthenticationBloc(userRepository: mockedUserRepository);
       loginBloc = LoginBloc(authenticationBloc: authenticationBloc, userRepository: mockedUserRepository);
-      when(mockedUserRepository.hasToken()).thenAnswer((_) => Future.value(false));
+      when(mockedUserRepository.getToken()).thenAnswer((_) => Future.value('token'));
+      when(mockedUserRepository.me(any)).thenAnswer((_) => Future.value(User(id: 0, name: '', type: '')));
     });
 
     test('LoginButtonPressed event calls logges in and saves token', () async {
@@ -79,6 +95,7 @@ void main() {
       String username = 'username', password = 'password';
       loginBloc.add(LoginButtonPressed(username: username, password: password));
       await untilCalled(mockedUserRepository.authenticate(username: username, password: password));
+      await untilCalled(mockedUserRepository.me(any));
       await untilCalled(mockedUserRepository.persistToken(any));
     });
 

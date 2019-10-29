@@ -1,16 +1,19 @@
 import 'package:bloc/bloc.dart';
+import 'package:seagull/bloc.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
-    print(event);
+    if (event is! LoginFormEvent)
+      print(event);
   }
-
+ 
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    print(transition);
+    if (transition.currentState.runtimeType != transition.nextState.runtimeType) 
+      print(transition);
   }
 
   @override

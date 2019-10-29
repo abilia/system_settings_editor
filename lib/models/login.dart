@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class Login {
+class Login extends Equatable{
   final String token;
   final int endDate;
   final String renewToken;
@@ -14,4 +15,7 @@ class Login {
       renewToken: json['renewToken'],
     );
   }
+
+  @override
+  List<Object> get props => [token, endDate, renewToken];
 }

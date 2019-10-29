@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import './bloc.dart';
+import 'package:seagull/bloc.dart';
 
 class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   @override
@@ -10,14 +10,14 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   Stream<LoginFormState> mapEventToState(
     LoginFormEvent event,
   ) async* {
-    if (event is UsernameChanged) {
+    if (event is UsernameChanged && event.username != state.username) {
       yield state.copyWith(
         username: event.username,
         isUsernameValid: _isUsernameValid(event.username),
         formSubmitted: false,
       );
     }
-    if (event is PasswordChanged) {
+    if (event is PasswordChanged && event.password != state.password) {
       yield state.copyWith(
         password: event.password,
         isPasswordValid: _isPasswordValid(event.password),

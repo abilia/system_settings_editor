@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/authentication/bloc.dart';
-import 'package:seagull/repository/user_repository.dart';
-import 'package:seagull/bloc/login/bloc.dart';
-import 'package:seagull/bloc/login/form/bloc.dart';
-import 'package:seagull/ui/components/login_form.dart';
+import 'package:seagull/bloc.dart';
+import 'package:seagull/repositories.dart';
+import 'package:seagull/ui/components.dart';
 
 class LoginPage extends StatelessWidget {
   final UserRepository userRepository;

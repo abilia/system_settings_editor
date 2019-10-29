@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/authentication/bloc.dart';
+import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
 import 'mocks.dart';
@@ -10,7 +12,22 @@ void main() {
     AuthenticationBloc authenticationBloc;
 
     setUp(() {
-      authenticationBloc = AuthenticationBloc(userRepository: UserRepository(httpClient: MockHttpClient(), secureStorage: MockSecureStorage()));
+      final mockHttpClient = MockHttpClient();
+      authenticationBloc = AuthenticationBloc(
+          userRepository: UserRepository(
+              httpClient: mockHttpClient, secureStorage: MockSecureStorage()));
+      when(mockHttpClient.get(any, headers: anyNamed('headers'))).thenAnswer((_) => Future.value(Response('''
+        {
+          "me" : {
+            "id" : 0,
+            "type" : "testcase",
+            "name" : "Testcase user",
+            "username" : "testcase",
+            "language" : "sv",
+            "image" : null
+          }
+        }
+        ''', 200)));
     });
 
     test('initial state is AuthenticationUninitialized', () {
@@ -20,7 +37,8 @@ void main() {
     test('state change to Unauthenticated when app starts', () {
       final List<AuthenticationState> expected = [
         AuthenticationUninitialized(),
-        AuthenticationUnauthenticated()
+        AuthenticationLoading(),
+        Unauthenticated()
       ];
 
       expectLater(
@@ -31,13 +49,13 @@ void main() {
       authenticationBloc.add(AppStarted());
     });
 
-    test('state change to AuthenticationAuthenticated when token provided',
-        () {
+    test('state change to AuthenticationAuthenticated when token provided', () {
       final List<AuthenticationState> expected = [
         AuthenticationUninitialized(),
-        AuthenticationUnauthenticated(),
         AuthenticationLoading(),
-        AuthenticationAuthenticated(),
+        Unauthenticated(),
+        AuthenticationLoading(),
+        Authenticated(token: 'token', userId: 0),
       ];
 
       expectLater(
@@ -46,17 +64,18 @@ void main() {
       );
 
       authenticationBloc.add(AppStarted());
-      authenticationBloc.add(LoggedIn(token: 'atoken'));
+      authenticationBloc.add(LoggedIn(token: 'token'));
     });
 
     test('state change back to Unauthenticated when loggin out', () {
       final List<AuthenticationState> expected = [
         AuthenticationUninitialized(),
-        AuthenticationUnauthenticated(),
         AuthenticationLoading(),
-        AuthenticationAuthenticated(),
+        Unauthenticated(),
         AuthenticationLoading(),
-        AuthenticationUnauthenticated(),
+        Authenticated(token: 'token', userId: 0),
+        AuthenticationLoading(),
+        Unauthenticated(),
       ];
 
       expectLater(
@@ -65,28 +84,31 @@ void main() {
       );
 
       authenticationBloc.add(AppStarted());
-      authenticationBloc.add(LoggedIn(token: 'a token'));
+      authenticationBloc.add(LoggedIn(token: 'token'));
       authenticationBloc.add(LoggedOut());
     });
 
     tearDown(() {
       authenticationBloc.close();
     });
-  }); 
+  });
 
-    group('AuthenticationBloc token side effect', () {
+  group('AuthenticationBloc token side effect', () {
     AuthenticationBloc authenticationBloc;
     UserRepository mockedUserRepository;
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc = AuthenticationBloc(userRepository: mockedUserRepository);
-      when(mockedUserRepository.hasToken()).thenAnswer((_) => Future.value(false));
+      authenticationBloc =
+          AuthenticationBloc(userRepository: mockedUserRepository);
+      when(mockedUserRepository.getToken())
+          .thenAnswer((_) => Future.value('token'));
+      when(mockedUserRepository.me(any)).thenAnswer((_) => Future.value(User(id: 0, type: '', name: '')));
     });
 
     test('loggedIn event saves token', () async {
       authenticationBloc.add(AppStarted());
-      final theToken = 'a token';
+      final theToken = 'token';
       authenticationBloc.add(LoggedIn(token: theToken));
       await untilCalled(mockedUserRepository.persistToken(theToken));
     });
@@ -100,6 +122,5 @@ void main() {
     tearDown(() {
       authenticationBloc.close();
     });
-  }); 
+  });
 }
-

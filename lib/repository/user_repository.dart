@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/login.dart';
+import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/end_point.dart';
 import 'package:uuid/uuid.dart';
 
@@ -41,11 +42,25 @@ class UserRepository {
     }
   }
 
+  Future<User> me(authToken) async {
+    final response =
+        await httpClient.get('$BASE_URL/api/v1/entity/me', headers: {
+      'X-Auth-Token': authToken,
+    });
+
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      var user = User.fromJson(responseJson['me']);
+      return user;
+    } else {
+      throw Exception('Could not get me!');
+    }
+  }
+
   Future<void> deleteToken() => secureStorage.delete(key: _tokenKey);
 
   Future<void> persistToken(String token) =>
       secureStorage.write(key: _tokenKey, value: token);
 
-  Future<bool> hasToken() async =>
-      await secureStorage.read(key: _tokenKey) != null;
+  Future<String> getToken() => secureStorage.read(key: _tokenKey);
 }
