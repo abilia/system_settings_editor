@@ -1,6 +1,6 @@
 export 'components/abilia_button.dart';
 export 'components/action_button.dart';
-export 'components/activity_tile.dart';
+export 'components/activity_card.dart';
 export 'components/error_message.dart';
 export 'components/login_form.dart';
 export 'components/seagull_icon.dart';

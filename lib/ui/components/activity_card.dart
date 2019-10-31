@@ -6,10 +6,10 @@ import 'package:seagull/ui/components.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:intl/intl.dart';
 
-class ActivityTile extends StatelessWidget {
+class ActivityCard extends StatelessWidget {
   final Activity activity;
 
-  const ActivityTile({Key key, this.activity})
+  const ActivityCard({Key key, this.activity})
       : assert(activity != null),
         super(key: key);
 

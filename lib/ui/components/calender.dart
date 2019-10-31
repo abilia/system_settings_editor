@@ -106,7 +106,7 @@ class _CalenderState extends State<Calender> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                 itemCount: activities.length,
-                itemBuilder: (context, index) => ActivityTile(
+                itemBuilder: (context, index) => ActivityCard(
                   activity: activities[index],
                 ),
               ),
