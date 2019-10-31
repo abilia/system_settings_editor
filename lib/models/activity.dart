@@ -2,14 +2,14 @@ import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:seagull/models/alarm_type.dart';
+import 'package:seagull/models.dart';
 import 'package:uuid/uuid.dart';
 
 class Activity extends Equatable {
   AlarmType get alarm => AlarmType.fromInt(alarmType);
   DateTime get startDate => DateTime.fromMillisecondsSinceEpoch(startTime);
   DateTime get endDate => DateTime.fromMillisecondsSinceEpoch(startTime + duration);
-  final String id, seriesId, title, fileId, icon;
+  final String id, seriesId, title, fileId, icon, infoItem;
   final int startTime, duration, category, revision, alarmType;
   final bool deleted;
   final UnmodifiableListView<int> reminderBefore;
@@ -25,6 +25,7 @@ class Activity extends Equatable {
     @required this.alarmType,
     this.reminderBefore,
     this.fileId,
+    this.infoItem,
     this.icon,
   })  : assert(title != null || fileId != null),
         assert(id != null),
@@ -95,6 +96,7 @@ class Activity extends Equatable {
         duration: json['duration'],
         fileId: nullIfEmpty(json['fileId']),
         icon: nullIfEmpty(json['icon']),
+        infoItem: nullIfEmpty(json['infoItem']),
         category: json['category'],
         deleted: json['deleted'],
         reminderBefore: _parseReminders(json['reminderBefore']),
@@ -114,6 +116,7 @@ class Activity extends Equatable {
         'deleted': deleted,
         'reminderBefore': reminderBefore.map((r) => r.toString()).join(';'),
         'icon': icon,
+        'infoItem': infoItem,
         'revision': revision,
         'alarmType': alarmType,
       };
@@ -143,6 +146,7 @@ class Activity extends Equatable {
         alarmType,
         reminderBefore,
         fileId,
+        infoItem,
         icon,
       ];
       @override String toString() => props.map((p) => p.toString()).join(',');

@@ -26,7 +26,8 @@ class _CalenderState extends State<Calender> {
     final langCode = Locale.cachedLocale.languageCode;
     return BlocBuilder<DayPickerBloc, DateTime>(
       builder: (context, state) => Theme(
-        data: weekDayTheme(context)[state.weekday].copyWith(buttonTheme: actionButtonTheme),
+        data: weekDayTheme(context)[state.weekday]
+            .copyWith(buttonTheme: actionButtonTheme),
         child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -98,10 +99,17 @@ class _CalenderState extends State<Calender> {
         final activities =
             (state as FilteredActivitiesLoaded).filteredActivities;
         return RefreshIndicator(
-          child: ListView.builder(
-            itemCount: activities.length,
-            itemBuilder: (context, index) => ActivityTile(
-              activity: activities[index],
+          child: Padding(
+            padding: const EdgeInsets.only(right: 4),
+            child: Scrollbar(
+              child: ListView.builder(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                itemCount: activities.length,
+                itemBuilder: (context, index) => ActivityTile(
+                  activity: activities[index],
+                ),
+              ),
             ),
           ),
           onRefresh: refresh,

@@ -6,18 +6,18 @@ class NowBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      right: -4,
-      top: -2,
+      right: 0,
+      top: 0,
       child: Container(
         decoration:
             BoxDecoration(color: AbiliaColors.red, borderRadius: borderRadius),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           child: Text(
             'now',
             style: Theme.of(context)
                 .textTheme
-                .overline
+                .caption
                 .copyWith(color: AbiliaColors.white),
           ),
         ),

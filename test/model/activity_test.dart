@@ -51,7 +51,7 @@ void main() {
     // expect(result.timezone, "Europe/Stockholm");
     expect(result.icon, "/images/play.png");
     // expect(result.signedOffDates, null);
-    // expect(result.infoItem, null);
+    expect(result.infoItem, null);
     expect(result.reminderBefore, UnmodifiableListView([]));
     // expect(result.extras, null);
     // expect(result.recurrentType, 0);

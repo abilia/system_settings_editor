@@ -17,6 +17,8 @@ ThemeData get abiliaTheme => ThemeData(
       textSelectionColor: AbiliaColors.white[120],
       bottomAppBarTheme: bottomAppBarTheme,
       cardTheme: CardTheme(
+        elevation: 0,
+        margin: EdgeInsets.symmetric(vertical: 4),
         shape: RoundedRectangleBorder(
           borderRadius: borderRadius,
         ),
@@ -86,19 +88,10 @@ BottomAppBarTheme get bottomAppBarTheme => BottomAppBarTheme(
 AppBarTheme get appBarTheme => AppBarTheme(color: AbiliaColors.black[75]);
 
 TextTheme get textTheme => TextTheme(
-      body1: h3,
-      title: h3,
-      button: button,
+      body1: TextStyle( fontSize: 16, letterSpacing: .5, height: 28/16, fontWeight: FontWeight.w500, color: AbiliaColors.black[75]),
+      button:  TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+      subtitle: TextStyle(fontSize: 16, letterSpacing: .15, height: 24/16, fontWeight: FontWeight.w500, color: AbiliaColors.black),
     );
-
-TextStyle get h2 => TextStyle(fontSize: 20, fontWeight: FontWeight.w500);
-TextStyle get h3 =>
-    TextStyle(fontSize: 16, height: 1.25, fontWeight: FontWeight.w500);
-TextStyle get body =>
-    TextStyle(fontSize: 16, height: 1.25, fontWeight: FontWeight.w400);
-TextStyle get label =>
-    TextStyle(fontSize: 14, height: 1.5, fontWeight: FontWeight.w400);
-TextStyle get button => TextStyle(fontSize: 20, fontWeight: FontWeight.w400);
 
 Map<int, ThemeData> weekDayTheme(BuildContext context) => {
       DateTime.monday: _dayTheme(context, AbiliaColors.green),
