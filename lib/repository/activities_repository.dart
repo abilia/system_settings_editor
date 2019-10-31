@@ -13,10 +13,7 @@ class ActivityRepository {
   ActivityRepository({@required this.userId, @required this.authToken});
   Future<List<Activity>> loadActivities() async {
     final response = await client
-        .get('$BASE_URL/api/v1/data/$userId/activities?revision=0', headers: {
-      'X-Auth-Token': authToken,
-    });
-
+        .get('$BASE_URL/api/v1/data/$userId/activities?revision=0', headers: authHeader(authToken));
     return (json.decode(response.body) as List)
         .map((e) => Activity.fromJson(e))
         .toList();

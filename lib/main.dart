@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
-import 'package:bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:seagull/bloc.dart';
 import 'package:seagull/bloc/bloc_delegate.dart';
@@ -57,27 +55,7 @@ class App extends StatelessWidget {
               return SplashPage();
             }
             if (state is Authenticated) {
-              return MultiBlocProvider(
-                  providers: [
-                    BlocProvider<ActivitiesBloc>(
-                        builder: (context) => ActivitiesBloc(
-                            activitiesRepository: ActivityRepository(
-                                authToken: state.token, userId: state.userId))
-                          ..add(LoadActivities())),
-                    BlocProvider<DayPickerBloc>(
-                      builder: (context) => DayPickerBloc(),
-                    ),
-                    BlocProvider<FilteredActivitiesBloc>(
-                      builder: (context) => FilteredActivitiesBloc(
-                          activitiesBloc:
-                              BlocProvider.of<ActivitiesBloc>(context),
-                          dayPickerBloc:
-                              BlocProvider.of<DayPickerBloc>(context)),
-                    )
-                  ],
-                  child: ActivitiesPage(
-                    authenticatedState: state,
-                  ));
+              return CalenderPage(authenticatedState: state);
             }
             if (state is Unauthenticated) {
               return LoginPage(userRepository: userRepository);

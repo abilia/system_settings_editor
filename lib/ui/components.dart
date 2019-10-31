@@ -5,3 +5,6 @@ export 'components/error_message.dart';
 export 'components/login_form.dart';
 export 'components/seagull_icon.dart';
 export 'components/web_link.dart';
+export 'components/calender.dart';
+export 'components/fadein_thumb.dart';
+export 'components/now_banner.dart';

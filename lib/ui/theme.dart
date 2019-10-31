@@ -10,13 +10,17 @@ ThemeData get abiliaTheme => ThemeData(
       inputDecorationTheme: inputDecorationTheme,
       textTheme: textTheme,
       buttonTheme: baseButtonTheme,
-      disabledColor: AbiliaColors.red[40],
       cursorColor: AbiliaColors.black,
       textSelectionHandleColor: AbiliaColors.black,
       appBarTheme: appBarTheme,
       errorColor: AbiliaColors.red,
       textSelectionColor: AbiliaColors.white[120],
       bottomAppBarTheme: bottomAppBarTheme,
+      cardTheme: CardTheme(
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius,
+        ),
+      ),
     );
 
 InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
@@ -29,14 +33,8 @@ InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
       borderSide: BorderSide(color: AbiliaColors.white),
       borderRadius: borderRadius,
     ),
-    errorBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: AbiliaColors.red),
-      borderRadius: borderRadius,
-    ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: AbiliaColors.red),
-      borderRadius: borderRadius,
-    ),
+    errorBorder: redOutlineInputBorder,
+    focusedErrorBorder: redOutlineInputBorder,
     filled: true,
     errorStyle: TextStyle(
         fontSize: double
@@ -44,6 +42,11 @@ InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
     fillColor: AbiliaColors.white);
 
 BorderRadius get borderRadius => BorderRadius.circular(12);
+
+OutlineInputBorder get redOutlineInputBorder => OutlineInputBorder(
+      borderSide: BorderSide(color: AbiliaColors.red),
+      borderRadius: borderRadius,
+    );
 
 ButtonThemeData get baseButtonTheme => ButtonThemeData(
       height: 64,
@@ -79,9 +82,8 @@ ButtonThemeData get showHideButtonTheme =>
 BottomAppBarTheme get bottomAppBarTheme => BottomAppBarTheme(
       color: AbiliaColors.black,
     );
-AppBarTheme get appBarTheme => AppBarTheme(
-  color: AbiliaColors.black[75]
-);
+
+AppBarTheme get appBarTheme => AppBarTheme(color: AbiliaColors.black[75]);
 
 TextTheme get textTheme => TextTheme(
       body1: h3,
@@ -101,7 +103,8 @@ TextStyle get button => TextStyle(fontSize: 20, fontWeight: FontWeight.w400);
 Map<int, ThemeData> weekDayTheme(BuildContext context) => {
       DateTime.monday: _dayTheme(context, AbiliaColors.green),
       DateTime.tuesday: _dayTheme(context, AbiliaColors.blue),
-      DateTime.wednesday: _dayTheme(context, Colors.grey /*AbiliaColors.white*/),
+      DateTime.wednesday:
+          _dayTheme(context, /*AbiliaColors.white*/Colors.grey),
       DateTime.thursday: _dayTheme(context, AbiliaColors.brown),
       DateTime.friday: _dayTheme(context, AbiliaColors.yellow),
       DateTime.saturday: _dayTheme(context, AbiliaColors.pink),
@@ -110,5 +113,6 @@ Map<int, ThemeData> weekDayTheme(BuildContext context) => {
 
 ThemeData _dayTheme(BuildContext context, MaterialColor color) =>
     Theme.of(context).copyWith(
-        appBarTheme: Theme.of(context).appBarTheme.copyWith(color: color),
-        scaffoldBackgroundColor: color[20]);
+      appBarTheme: Theme.of(context).appBarTheme.copyWith(color: color),
+      scaffoldBackgroundColor: color[20],
+    );

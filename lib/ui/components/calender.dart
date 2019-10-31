@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/ui/components.dart';
 import 'package:seagull/ui/pages.dart';
-import 'package:intl/intl.dart';
 import 'package:seagull/ui/theme.dart';
+import 'package:intl/intl.dart';
 
-class ActivitiesPage extends StatefulWidget {
-  final Authenticated authenticatedState;
-  ActivitiesPage({@required this.authenticatedState});
-
+class Calender extends StatefulWidget {
   @override
-  _ActivitiesPageState createState() => _ActivitiesPageState();
+  _CalenderState createState() => _CalenderState();
 }
 
-class _ActivitiesPageState extends State<ActivitiesPage> {
+class _CalenderState extends State<Calender> {
   DayPickerBloc _dayPickerBloc;
   ActivitiesBloc _activitiesBloc;
   @override

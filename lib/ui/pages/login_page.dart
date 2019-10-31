@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/repositories.dart';
 import 'package:seagull/ui/components.dart';

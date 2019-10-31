@@ -226,5 +226,6 @@ class AbiliaColors {
 
   static const active = Color(0x51000000);
   static const pressed = Color(0x00000066);
+  static const transparantWhite = Color(0x7FFFFFFF);
 
 }
