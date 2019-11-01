@@ -11,14 +11,13 @@ class AbiliaButton extends StatelessWidget {
   final Function onPressed;
 
   @override
-  Widget build(BuildContext context) => 
-     Padding(
-       padding: const EdgeInsets.all(32),
-       child: RaisedButton(
-            onPressed: onPressed,
-            child: Text(label),
-            color: Theme.of(context).accentColor,
-            disabledColor: Theme.of(context).disabledColor,
-    ),
-     );
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(32),
+        child: RaisedButton(
+          disabledColor: Theme.of(context).disabledColor,
+          disabledTextColor: Theme.of(context).textTheme.button.color,
+          onPressed: onPressed,
+          child: Text(label),
+        ),
+      );
 }

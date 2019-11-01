@@ -63,7 +63,7 @@ class _LoginFormState extends State<LoginForm> {
                           decoration: errorState
                               ? InputDecoration(
                                   suffixIcon: Icon(
-                                    Icons.warning,
+                                    AbiliaIcons.ir_error,
                                     color: Theme.of(context).errorColor,
                                   ),
                                 )
@@ -87,7 +87,7 @@ class _LoginFormState extends State<LoginForm> {
                                 decoration: errorState
                                     ? InputDecoration(
                                         suffixIcon: Icon(
-                                          Icons.warning,
+                                          AbiliaIcons.ir_error,
                                           color: Theme.of(context).errorColor,
                                         ),
                                       )

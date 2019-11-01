@@ -15,8 +15,9 @@ class WebLink extends StatelessWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.body1.copyWith(
-            color: Theme.of(context).errorColor,
-            decoration: TextDecoration.underline,),
+              color: Theme.of(context).accentColor,
+              decoration: TextDecoration.underline,
+            ),
       ),
       onTap: () => launch(urlString));
 }

@@ -47,11 +47,11 @@ class ActivityCard extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           if (activity.alarm.type != Alarm.NoAlarm)
-                            Icon(Icons.notifications_none),
+                            Icon(AbiliaIcons.handi_alarm),
                           if (activity.reminderBefore.isNotEmpty)
-                            Icon(Icons.gesture),
+                            Icon(AbiliaIcons.handi_reminder),
                           if (activity.infoItem != null)
-                            Icon(Icons.info_outline),
+                            Icon(AbiliaIcons.handi_info),
                         ],
                       )
                     ],
@@ -70,7 +70,7 @@ class ActivityCard extends StatelessWidget {
     final theme = Theme.of(context);
     return isPassed
         ? theme.copyWith(
-            cardColor: AbiliaColors.transparantWhite,
+            cardColor: AbiliaColors.transparantWhite50,
             textTheme: theme.textTheme.copyWith(
                 subtitle: theme.textTheme.subtitle.copyWith(
                     decoration: TextDecoration.lineThrough,

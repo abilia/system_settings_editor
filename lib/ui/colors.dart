@@ -224,8 +224,8 @@ class AbiliaColors {
   );
   static const int _whitePrimaryValue = 0xFFFFFFFF;
 
-  static const active = Color(0x51000000);
-  static const pressed = Color(0x00000066);
-  static const transparantWhite = Color(0x7FFFFFFF);
+  static const transparantBlack20 = Color(0x33000000);
+  static const transparantBlack40 = Color(0x66000000);
+  static const transparantWhite50 = Color(0x7FFFFFFF);
 
 }

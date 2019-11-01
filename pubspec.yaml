@@ -35,3 +35,7 @@ flutter:
   assets:
     - assets/graphics/
     - assets/i18n/
+  fonts:
+   - family:  AbiliaFont
+     fonts:
+      - asset: assets/fonts/AbiliaFont.ttf

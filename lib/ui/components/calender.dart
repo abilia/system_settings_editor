@@ -35,7 +35,7 @@ class _CalenderState extends State<Calender> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 ActionButton(
-                  child: Icon(Icons.arrow_back),
+                  child: Icon(AbiliaIcons.return_to_previous_page),
                   onPressed: () => _dayPickerBloc.add(PreviousDay()),
                 ),
                 Column(
@@ -45,7 +45,7 @@ class _CalenderState extends State<Calender> {
                   ],
                 ),
                 ActionButton(
-                  child: Icon(Icons.arrow_forward),
+                  child: Icon(AbiliaIcons.go_to_next_page),
                   onPressed: () => _dayPickerBloc.add(NextDay()),
                 ),
               ],
@@ -61,14 +61,14 @@ class _CalenderState extends State<Calender> {
                 children: <Widget>[
                   if (!isAtTheSameDayAsNow(state))
                     ActionButton(
-                      child: Icon(Icons.refresh),
+                      child: Icon(AbiliaIcons.reset),
                       onPressed: () => _dayPickerBloc.add(CurrentDay()),
                       buttonThemeData: nowButtonTheme,
                     )
                   else
                     const SizedBox(width: 48),
                   ActionButton(
-                    child: Icon(Icons.menu),
+                    child: Icon(AbiliaIcons.menu),
                     onPressed: () => Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => LogoutPage()),
                     ),

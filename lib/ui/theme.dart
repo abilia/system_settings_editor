@@ -10,9 +10,12 @@ ThemeData get abiliaTheme => ThemeData(
       inputDecorationTheme: inputDecorationTheme,
       textTheme: textTheme,
       buttonTheme: baseButtonTheme,
+      buttonColor: AbiliaColors.transparantBlack20,
+      highlightColor: AbiliaColors.transparantBlack40,
       cursorColor: AbiliaColors.black,
       textSelectionHandleColor: AbiliaColors.black,
       appBarTheme: appBarTheme,
+      disabledColor: AbiliaColors.red[40],
       errorColor: AbiliaColors.red,
       textSelectionColor: AbiliaColors.white[120],
       bottomAppBarTheme: bottomAppBarTheme,
@@ -67,9 +70,9 @@ ButtonThemeData get actionButtonTheme => ButtonThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: borderRadius,
     ),
-    buttonColor: AbiliaColors.active,
+    buttonColor: AbiliaColors.transparantBlack20,
     disabledColor: Colors.transparent,
-    highlightColor: AbiliaColors.pressed,
+    highlightColor: AbiliaColors.transparantBlack40,
     textTheme: ButtonTextTheme.primary);
 
 ButtonThemeData get nowButtonTheme => actionButtonTheme.copyWith(
@@ -88,16 +91,30 @@ BottomAppBarTheme get bottomAppBarTheme => BottomAppBarTheme(
 AppBarTheme get appBarTheme => AppBarTheme(color: AbiliaColors.black[75]);
 
 TextTheme get textTheme => TextTheme(
-      body1: TextStyle( fontSize: 16, letterSpacing: .5, height: 28/16, fontWeight: FontWeight.w500, color: AbiliaColors.black[75]),
-      button:  TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-      subtitle: TextStyle(fontSize: 16, letterSpacing: .15, height: 24/16, fontWeight: FontWeight.w500, color: AbiliaColors.black),
+      body1: TextStyle(
+          fontSize: 16,
+          letterSpacing: .5,
+          height: 28 / 16,
+          fontWeight: FontWeight.w500,
+          color: AbiliaColors.black[75]),
+      button: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0,
+          color: AbiliaColors.white),
+      subtitle: TextStyle(
+          fontSize: 16,
+          letterSpacing: .15,
+          height: 24 / 16,
+          fontWeight: FontWeight.w500,
+          color: AbiliaColors.black),
     );
 
 Map<int, ThemeData> weekDayTheme(BuildContext context) => {
       DateTime.monday: _dayTheme(context, AbiliaColors.green),
       DateTime.tuesday: _dayTheme(context, AbiliaColors.blue),
       DateTime.wednesday:
-          _dayTheme(context, /*AbiliaColors.white*/Colors.grey),
+          _dayTheme(context, /*AbiliaColors.white*/ Colors.grey),
       DateTime.thursday: _dayTheme(context, AbiliaColors.brown),
       DateTime.friday: _dayTheme(context, AbiliaColors.yellow),
       DateTime.saturday: _dayTheme(context, AbiliaColors.pink),
