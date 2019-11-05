@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AbiliaColors {
+  AbiliaColors._();
   static const MaterialColor red = MaterialColor(
     _redPrimaryValue,
     <int, Color>{
@@ -227,5 +228,6 @@ class AbiliaColors {
   static const transparantBlack20 = Color(0x33000000);
   static const transparantBlack40 = Color(0x66000000);
   static const transparantWhite50 = Color(0x7FFFFFFF);
+  static const transparantWhite20 = Color(0x33FFFFFF);
 
 }

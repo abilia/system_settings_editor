@@ -4,7 +4,10 @@ import 'package:seagull/bloc.dart';
 
 class DayPickerBloc extends Bloc<DayPickerEvent, DateTime> {
   @override
-  DateTime get initialState => DateTime.now();
+  DateTime get initialState {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day);
+  } 
 
   @override
   Stream<DateTime> mapEventToState(

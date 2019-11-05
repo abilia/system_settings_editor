@@ -7,25 +7,30 @@ class ActionButton extends StatelessWidget {
     @required this.onPressed,
     this.width = 48,
     this.height = 48,
-    this.buttonThemeData,
+    this.themeData,
   }) : super(key: key);
 
-  final ButtonThemeData buttonThemeData;
+  final ThemeData themeData;
   final Widget child;
   final Function onPressed;
   final double width, height;
 
   @override
   Widget build(BuildContext context) => Theme(
-    data: buttonThemeData  != null ? Theme.of(context).copyWith(buttonTheme: buttonThemeData) : Theme.of(context),
-      child: SizedBox(
-          width: width,
-          height: height,
-          child: RaisedButton(
-            padding: const EdgeInsets.all(8),
-            child: child,
-            onPressed: onPressed,
+        data: themeData ?? Theme.of(context),
+        child: Builder(
+          builder: (context) => SizedBox(
+            width: width,
+            height: height,
+            child: FlatButton(
+              color: Theme.of(context).buttonColor,
+              highlightColor: Theme.of(context).highlightColor,
+              padding: const EdgeInsets.all(8),
+              textColor: Theme.of(context).textTheme.button.color,
+              child: child,
+              onPressed: onPressed,
+            ),
           ),
         ),
-  );
+      );
 }

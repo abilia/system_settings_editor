@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:seagull/models.dart';
 
-abstract class FilteredActivitiesEvent extends Equatable {
-  const FilteredActivitiesEvent();
+abstract class DayActivitiesEvent extends Equatable {
+  const DayActivitiesEvent();
 }
 
-class UpdateFilter extends FilteredActivitiesEvent {
+class UpdateDay extends DayActivitiesEvent {
   final DateTime dayFilter;
 
-  const UpdateFilter(this.dayFilter);
+  const UpdateDay(this.dayFilter);
 
   @override
   List<Object> get props => [dayFilter];
@@ -17,7 +17,7 @@ class UpdateFilter extends FilteredActivitiesEvent {
   String toString() => 'UpdateFilter { filter: $dayFilter }';
 }
 
-class UpdateActivities extends FilteredActivitiesEvent {
+class UpdateActivities extends DayActivitiesEvent {
   final List<Activity> activities;
 
   const UpdateActivities(this.activities);

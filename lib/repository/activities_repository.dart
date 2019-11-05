@@ -6,11 +6,11 @@ import 'package:seagull/models/activity.dart';
 import 'package:seagull/repository/end_point.dart';
 
 class ActivityRepository {
-  final client = Client();
+  final BaseClient client;
   final String authToken;
   final int userId;
 
-  ActivityRepository({@required this.userId, @required this.authToken});
+  ActivityRepository({@required this.client, @required this.userId, @required this.authToken});
   Future<List<Activity>> loadActivities() async {
     final response = await client
         .get('$BASE_URL/api/v1/data/$userId/activities?revision=0', headers: authHeader(authToken));

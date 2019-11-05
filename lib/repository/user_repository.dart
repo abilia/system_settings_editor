@@ -9,9 +9,9 @@ import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/end_point.dart';
 import 'package:uuid/uuid.dart';
 
-class UserRepository {
+class   UserRepository {
   final String _tokenKey = 'tokenKey';
-  final Client httpClient;
+  final BaseClient httpClient;
   final FlutterSecureStorage secureStorage;
 
   UserRepository({@required this.httpClient, @required this.secureStorage})
@@ -44,14 +44,12 @@ class UserRepository {
 
   Future<User> me(authToken) async {
     final response =
-        await httpClient.get('$BASE_URL/api/v1/entity/me', headers: {
-      'X-Auth-Token': authToken,
-    });
+        await httpClient.get('$BASE_URL/api/v1/entity/me', headers: authHeader(authToken));
 
     if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
       var user = User.fromJson(responseJson['me']);
-      return user;
+      return user;  
     } else {
       throw Exception('Could not get me!');
     }

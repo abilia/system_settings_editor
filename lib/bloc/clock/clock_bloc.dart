@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-//TODO This stupid.. Though it has a funny name...
 class ClockBloc extends Bloc<DateTime, DateTime> {
   StreamSubscription<DateTime> _tickerSubscription;
 
@@ -14,7 +13,10 @@ class ClockBloc extends Bloc<DateTime, DateTime> {
   }
 
   @override
-  DateTime get initialState => DateTime.now();
+  DateTime get initialState {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day, now.hour, now.minute);
+  }
 
   @override
   void close() {

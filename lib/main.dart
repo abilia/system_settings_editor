@@ -10,18 +10,22 @@ import 'package:seagull/repositories.dart';
 import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
 
+import 'fakes/fake_client.dart';
+
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  runApp(App());
+  runApp(App(Client()));
 }
 
 class App extends StatelessWidget {
+  final BaseClient httpClient;
   final UserRepository userRepository;
 
-  App({Client httpClient, FlutterSecureStorage secureStorage})
+  App(this.httpClient, {Key key, FlutterSecureStorage secureStorage,} )
       : userRepository = UserRepository(
-            httpClient: httpClient ?? Client(),
-            secureStorage: secureStorage ?? FlutterSecureStorage());
+            httpClient: httpClient,
+            secureStorage: secureStorage ?? FlutterSecureStorage()),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,24 +35,16 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'Seagull',
         theme: abiliaTheme,
-        supportedLocales: AppLocalizations.SUPPORTED_LOCALES,
+        supportedLocales: AppLocalizations.supportedLocals,
         localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        localeResolutionCallback: (locale, supportedLocales) {
-          if (locale == null) {
-            return supportedLocales.first;
-          }
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale.languageCode) {
-              return supportedLocale;
-            }
-          }
-          // English should be the first one and also the default.
-          return supportedLocales.first;
-        },
+        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
+            .firstWhere((l) => l.languageCode == locale?.languageCode,
+                // English should be the first one and also the default.
+                orElse: () => supportedLocales.first),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             if (state is AuthenticationUninitialized) {

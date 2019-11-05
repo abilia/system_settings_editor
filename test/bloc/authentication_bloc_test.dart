@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/authentication/bloc.dart';
+import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
@@ -10,24 +10,10 @@ import 'mocks.dart';
 void main() {
   group('AuthenticationBloc event order', () {
     AuthenticationBloc authenticationBloc;
-
     setUp(() {
-      final mockHttpClient = MockHttpClient();
       authenticationBloc = AuthenticationBloc(
           userRepository: UserRepository(
-              httpClient: mockHttpClient, secureStorage: MockSecureStorage()));
-      when(mockHttpClient.get(any, headers: anyNamed('headers'))).thenAnswer((_) => Future.value(Response('''
-        {
-          "me" : {
-            "id" : 0,
-            "type" : "testcase",
-            "name" : "Testcase user",
-            "username" : "testcase",
-            "language" : "sv",
-            "image" : null
-          }
-        }
-        ''', 200)));
+              httpClient: Fakes.client, secureStorage: MockSecureStorage()));
     });
 
     test('initial state is AuthenticationUninitialized', () {
@@ -55,7 +41,7 @@ void main() {
         AuthenticationLoading(),
         Unauthenticated(),
         AuthenticationLoading(),
-        Authenticated(token: 'token', userId: 0),
+        Authenticated(token: Fakes.token, userId: Fakes.userId),
       ];
 
       expectLater(
@@ -64,7 +50,7 @@ void main() {
       );
 
       authenticationBloc.add(AppStarted());
-      authenticationBloc.add(LoggedIn(token: 'token'));
+      authenticationBloc.add(LoggedIn(token: Fakes.token));
     });
 
     test('state change back to Unauthenticated when loggin out', () {
@@ -73,7 +59,7 @@ void main() {
         AuthenticationLoading(),
         Unauthenticated(),
         AuthenticationLoading(),
-        Authenticated(token: 'token', userId: 0),
+        Authenticated(token: Fakes.token, userId: Fakes.userId),
         AuthenticationLoading(),
         Unauthenticated(),
       ];
@@ -84,7 +70,7 @@ void main() {
       );
 
       authenticationBloc.add(AppStarted());
-      authenticationBloc.add(LoggedIn(token: 'token'));
+      authenticationBloc.add(LoggedIn(token: Fakes.token));
       authenticationBloc.add(LoggedOut());
     });
 
@@ -102,13 +88,14 @@ void main() {
       authenticationBloc =
           AuthenticationBloc(userRepository: mockedUserRepository);
       when(mockedUserRepository.getToken())
-          .thenAnswer((_) => Future.value('token'));
-      when(mockedUserRepository.me(any)).thenAnswer((_) => Future.value(User(id: 0, type: '', name: '')));
+          .thenAnswer((_) => Future.value(Fakes.token));
+      when(mockedUserRepository.me(any))
+          .thenAnswer((_) => Future.value(User(id: 0, type: '', name: '')));
     });
 
     test('loggedIn event saves token', () async {
       authenticationBloc.add(AppStarted());
-      final theToken = 'token';
+      final theToken = Fakes.token;
       authenticationBloc.add(LoggedIn(token: theToken));
       await untilCalled(mockedUserRepository.persistToken(theToken));
     });

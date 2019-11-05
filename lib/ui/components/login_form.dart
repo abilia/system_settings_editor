@@ -4,7 +4,6 @@ import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components.dart';
 import 'package:seagull/ui/theme.dart';
 
-
 class LoginForm extends StatefulWidget {
   const LoginForm({
     Key key,
@@ -36,28 +35,50 @@ class _LoginFormState extends State<LoginForm> {
           bool errorState =
               loginState is LoginFailure && formState.formSubmitted;
           return Form(
-            child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 76.0, left: 16, right: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Center(
-                            child: loginState is LoginLoading
-                                ? CircularProgressIndicator()
-                                : SeagullIcon()),
-                        padding32,
-                        Text(
-                          i18n.translate('userName'),
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        padding8,
-                        TextFormField(
-                          controller: _usernameController,
+                  padding76,
+                  Center(
+                      child: loginState is LoginLoading
+                          ? CircularProgressIndicator()
+                          : SeagullIcon()),
+                  padding32,
+                  Text(
+                    i18n.translate.userName,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  padding8,
+                  TextFormField(
+                    key: TestKey.userNameInput,
+                    controller: _usernameController,
+                    autovalidate: true,
+                    validator: (_) => errorState ? '' : null,
+                    decoration: errorState
+                        ? InputDecoration(
+                            suffixIcon: Icon(
+                              AbiliaIcons.ir_error,
+                              color: Theme.of(context).errorColor,
+                            ),
+                          )
+                        : null,
+                  ),
+                  padding16,
+                  Text(
+                    i18n.translate.password,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  padding8,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: TextFormField(
+                          key: TestKey.passwordInput,
+                          obscureText: formState.hidePassword,
+                          controller: _passwordController,
                           autovalidate: true,
                           validator: (_) => errorState ? '' : null,
                           decoration: errorState
@@ -69,79 +90,58 @@ class _LoginFormState extends State<LoginForm> {
                                 )
                               : null,
                         ),
-                        padding16,
-                        Text(
-                          i18n.translate('password'),
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        padding8,
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Expanded(
-                              child: TextFormField(
-                                obscureText: formState.hidePassword,
-                                controller: _passwordController,
-                                autovalidate: true,
-                                validator: (_) => errorState ? '' : null,
-                                decoration: errorState
-                                    ? InputDecoration(
-                                        suffixIcon: Icon(
-                                          AbiliaIcons.ir_error,
-                                          color: Theme.of(context).errorColor,
-                                        ),
-                                      )
-                                    : null,
-                              ),
-                            ),
-                            if (formState.password.isNotEmpty)
-                              Padding(
-                                  padding: EdgeInsets.only(left: 8),
-                                  child: ActionButton(
-                                    child: Icon(formState.hidePassword
-                                        ? Icons.visibility
-                                        : Icons.visibility_off),
-                                    onPressed: _onHidePasswordChanged,
-                                    buttonThemeData: showHideButtonTheme,
-                                  )),
-                          ],
-                        ),
-                        padding32,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              i18n.translate('infoText1'),
-                              style: Theme.of(context).textTheme.body1,
-                            ),
-                            WebLink(
-                              text: 'myAbilia',
-                              urlString: 'https://myabilia.com/user-create',
-                            ),
-                            Text(
-                              i18n.translate('infoText2'),
-                              style: Theme.of(context).textTheme.body1,
-                            )
-                          ],
-                        ),
-                        padding16,
-                        if (errorState)
-                          ErrorMessage(
-                            child: Text(
-                              i18n.translate('wrong_credentials'),
-                              style: Theme.of(context).textTheme.body1,
-                            ),
-                          ),
-                      ],
-                    ),
+                      ),
+                      if (formState.password.isNotEmpty)
+                        Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: ActionButton(
+                              key: TestKey.hidePasswordToggle,
+                              child: Icon(formState.hidePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off),
+                              onPressed: _onHidePasswordChanged,
+                              themeData: showHideButtonTheme(context),
+                            )),
+                    ],
                   ),
+                  padding16,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        i18n.translate.infoText1,
+                        style: Theme.of(context).textTheme.body1,
+                      ),
+                      WebLink(
+                        text: 'myAbilia',
+                        urlString: 'https://myabilia.com/user-create',
+                      ),
+                      Text(
+                        i18n.translate.infoText2,
+                        style: Theme.of(context).textTheme.body1,
+                      )
+                    ],
+                  ),
+                  padding16,
+                  if (errorState)
+                    ErrorMessage(
+                      key: TestKey.loginError,
+                      child: Text(
+                        i18n.translate.wrongCredentials,
+                        style: Theme.of(context).textTheme.body1,
+                      ),
+                    ),
+                  padding76,
                   AbiliaButton(
-                    label: i18n.translate('login'),
+                    key: TestKey.loggInButton,
+                    label: i18n.translate.login,
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
                     onPressed:
                         loginState is! LoginLoading && formState.isFormValid
                             ? _onLoginButtonPressed
                             : null,
                   ),
+                  padding16,
                 ],
               ),
             ),
@@ -151,9 +151,10 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  get padding8 => const SizedBox(height: 8);
-  get padding16 => const SizedBox(height: 16);
-  get padding32 => const SizedBox(height: 32);
+  get padding8 => const SizedBox(height: 8,);
+  get padding16 => const Spacer(flex: 2);
+  get padding32 => const Spacer(flex: 4);
+  get padding76 => const Spacer(flex: 9);
 
   @override
   dispose() {

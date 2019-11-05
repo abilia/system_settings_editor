@@ -49,8 +49,8 @@ class Activity extends Equatable {
       title: title,
       startTime: startTime,
       duration: duration,
-      fileId: nullIfEmpty(fileId),
-      icon: nullIfEmpty(fileId),
+      fileId: _nullIfEmpty(fileId),
+      icon: _nullIfEmpty(fileId),
       category: category,
       deleted: false,
       revision: 0,
@@ -82,8 +82,8 @@ class Activity extends Equatable {
         reminderBefore: reminderBefore != null
             ? UnmodifiableListView(reminderBefore)
             : this.reminderBefore,
-        fileId: fileId == null ? this.fileId : nullIfEmpty(fileId),
-        icon: fileId == null ? this.fileId : nullIfEmpty(fileId),
+        fileId: fileId == null ? this.fileId : _nullIfEmpty(fileId),
+        icon: fileId == null ? this.fileId : _nullIfEmpty(fileId),
         revision: revision ?? this.revision,
         alarmType: alarmType ?? this.alarmType,
       );
@@ -94,9 +94,9 @@ class Activity extends Equatable {
         title: json['title'],
         startTime: json['startTime'],
         duration: json['duration'],
-        fileId: nullIfEmpty(json['fileId']),
-        icon: nullIfEmpty(json['icon']),
-        infoItem: nullIfEmpty(json['infoItem']),
+        fileId: _nullIfEmpty(json['fileId']),
+        icon: _nullIfEmpty(json['icon']),
+        infoItem: _nullIfEmpty(json['infoItem']),
         category: json['category'],
         deleted: json['deleted'],
         reminderBefore: _parseReminders(json['reminderBefore']),
@@ -124,8 +124,9 @@ class Activity extends Equatable {
   int get hashCode => id.hashCode;
   bool operator ==(o) => o is Activity && o.id == id;
 
-  static String nullIfEmpty(String value) =>
+  static String _nullIfEmpty  (String value) =>
       value?.isNotEmpty == true ? value : null;
+
   static UnmodifiableListView<int> _parseReminders(String reminders) =>
       UnmodifiableListView(reminders
               ?.split(';')

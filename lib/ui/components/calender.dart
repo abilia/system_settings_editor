@@ -26,8 +26,7 @@ class _CalenderState extends State<Calender> {
     final langCode = Locale.cachedLocale.languageCode;
     return BlocBuilder<DayPickerBloc, DateTime>(
       builder: (context, state) => Theme(
-        data: weekDayTheme(context)[state.weekday]
-            .copyWith(buttonTheme: actionButtonTheme),
+        data: weekDayTheme(context)[state.weekday],
         child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -63,7 +62,7 @@ class _CalenderState extends State<Calender> {
                     ActionButton(
                       child: Icon(AbiliaIcons.reset),
                       onPressed: () => _dayPickerBloc.add(CurrentDay()),
-                      buttonThemeData: nowButtonTheme,
+                      themeData: nowButtonTheme(context),
                     )
                   else
                     const SizedBox(width: 48),
@@ -72,7 +71,7 @@ class _CalenderState extends State<Calender> {
                     onPressed: () => Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => LogoutPage()),
                     ),
-                    buttonThemeData: actionButtonTheme,
+                    themeData: menuButtonTheme(context),
                   ),
                   const SizedBox(width: 48),
                 ],
@@ -91,13 +90,13 @@ class _CalenderState extends State<Calender> {
   }
 
   Widget page() {
-    return BlocBuilder<FilteredActivitiesBloc, FilteredActivitiesState>(
+    return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
       builder: (context, state) {
-        if (state is! FilteredActivitiesLoaded) {
-          return CircularProgressIndicator();
+        if (state is! ActivitiesOccasionLoaded) {
+          return Center(child: CircularProgressIndicator());
         }
         final activities =
-            (state as FilteredActivitiesLoaded).filteredActivities;
+            (state as ActivitiesOccasionLoaded).activityStates;
         return RefreshIndicator(
           child: Padding(
             padding: const EdgeInsets.only(right: 4),
@@ -107,7 +106,7 @@ class _CalenderState extends State<Calender> {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                 itemCount: activities.length,
                 itemBuilder: (context, index) => ActivityCard(
-                  activity: activities[index],
+                  activityOccasion: activities[index],
                 ),
               ),
             ),

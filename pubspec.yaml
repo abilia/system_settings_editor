@@ -34,7 +34,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/graphics/
-    - assets/i18n/
   fonts:
    - family:  AbiliaFont
      fonts:

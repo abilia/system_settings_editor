@@ -41,9 +41,8 @@ InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
     errorBorder: redOutlineInputBorder,
     focusedErrorBorder: redOutlineInputBorder,
     filled: true,
-    errorStyle: TextStyle(
-        fontSize: double
-            .minPositive), // Unfortunatly, can't use the validation without showing some error text, set the font size to super small and it is almost unnoticeable
+    // Unfortunatly, can't use the validation without showing some error text, set the font size 0
+    errorStyle: TextStyle(height: 0, fontSize: 0),
     fillColor: AbiliaColors.white);
 
 BorderRadius get borderRadius => BorderRadius.circular(12);
@@ -60,29 +59,43 @@ ButtonThemeData get baseButtonTheme => ButtonThemeData(
         borderRadius: borderRadius,
       ),
       buttonColor: AbiliaColors.red,
+      textTheme: ButtonTextTheme.primary,
       disabledColor: AbiliaColors.red[40],
       highlightColor: AbiliaColors.red[120],
     );
 
-ButtonThemeData get actionButtonTheme => ButtonThemeData(
-    height: 48,
-    minWidth: 48,
-    shape: RoundedRectangleBorder(
-      borderRadius: borderRadius,
-    ),
-    buttonColor: AbiliaColors.transparantBlack20,
-    disabledColor: Colors.transparent,
-    highlightColor: AbiliaColors.transparantBlack40,
-    textTheme: ButtonTextTheme.primary);
+ThemeData actionButtonTheme(BuildContext context) => Theme.of(context).copyWith(
+      buttonTheme: Theme.of(context).buttonTheme.copyWith(
+          height: 48,
+          minWidth: 48,
+          shape: RoundedRectangleBorder(
+            borderRadius: borderRadius,
+          ),
+          buttonColor: AbiliaColors.transparantBlack20,
+          disabledColor: Colors.transparent,
+          highlightColor: AbiliaColors.transparantBlack40,
+          textTheme: ButtonTextTheme.primary),
+    );
 
-ButtonThemeData get nowButtonTheme => actionButtonTheme.copyWith(
+ThemeData nowButtonTheme(BuildContext context) =>
+    actionButtonTheme(context).copyWith(
       buttonColor: AbiliaColors.red,
       disabledColor: AbiliaColors.red[40],
       highlightColor: AbiliaColors.red[120],
     );
 
-ButtonThemeData get showHideButtonTheme =>
-    actionButtonTheme.copyWith(textTheme: ButtonTextTheme.normal);
+ThemeData showHideButtonTheme(BuildContext context) =>
+    actionButtonTheme(context).copyWith(
+        textTheme: Theme.of(context).textTheme.copyWith(
+            button: Theme.of(context)
+                .textTheme
+                .button
+                .copyWith(color: AbiliaColors.black[75])));
+
+ThemeData menuButtonTheme(BuildContext context) =>
+    actionButtonTheme(context).copyWith(
+      buttonColor: AbiliaColors.transparantWhite20,
+    );
 
 BottomAppBarTheme get bottomAppBarTheme => BottomAppBarTheme(
       color: AbiliaColors.black,
@@ -113,8 +126,7 @@ TextTheme get textTheme => TextTheme(
 Map<int, ThemeData> weekDayTheme(BuildContext context) => {
       DateTime.monday: _dayTheme(context, AbiliaColors.green),
       DateTime.tuesday: _dayTheme(context, AbiliaColors.blue),
-      DateTime.wednesday:
-          _dayTheme(context, /*AbiliaColors.white*/ Colors.grey),
+      DateTime.wednesday: _dayTheme(context, AbiliaColors.white),
       DateTime.thursday: _dayTheme(context, AbiliaColors.brown),
       DateTime.friday: _dayTheme(context, AbiliaColors.yellow),
       DateTime.saturday: _dayTheme(context, AbiliaColors.pink),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc.dart';
+import 'package:seagull/main.dart';
 import 'package:seagull/repositories.dart';
 import 'package:seagull/ui/components.dart';
 
@@ -12,6 +13,7 @@ class CalenderPage extends StatelessWidget {
       BlocProvider<ActivitiesBloc>(
           builder: (context) => ActivitiesBloc(
               activitiesRepository: ActivityRepository(
+                client: (context.ancestorWidgetOfExactType(App) as App).httpClient,
                   authToken: authenticatedState.token,
                   userId: authenticatedState.userId))
             ..add(LoadActivities())),
@@ -21,11 +23,18 @@ class CalenderPage extends StatelessWidget {
       BlocProvider<ClockBloc>(
         builder: (context) => ClockBloc(Ticker.minute()),
       ),
-      BlocProvider<FilteredActivitiesBloc>(
-        builder: (context) => FilteredActivitiesBloc(
-            activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-            dayPickerBloc: BlocProvider.of<DayPickerBloc>(context)),
-      )
+      BlocProvider<DayActivitiesBloc>(
+        builder: (context) => DayActivitiesBloc(
+          activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+          dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
+        ),
+      ),
+      BlocProvider<ActivitiesOccasionBloc>(
+        builder: (context) => ActivitiesOccasionBloc(
+          clockBloc: BlocProvider.of<ClockBloc>(context),
+          dayActivitiesBloc: BlocProvider.of<DayActivitiesBloc>(context),
+        ),
+      ),
     ], child: Calender());
   }
 }
