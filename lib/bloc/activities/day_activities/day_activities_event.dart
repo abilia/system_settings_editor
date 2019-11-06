@@ -18,7 +18,7 @@ class UpdateDay extends DayActivitiesEvent {
 }
 
 class UpdateActivities extends DayActivitiesEvent {
-  final List<Activity> activities;
+  final Iterable<Activity> activities;
 
   const UpdateActivities(this.activities);
 

@@ -40,7 +40,7 @@ class _LoginFormState extends State<LoginForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  padding76,
+                  padding56,
                   Center(
                       child: loginState is LoginLoading
                           ? CircularProgressIndicator()
@@ -104,7 +104,7 @@ class _LoginFormState extends State<LoginForm> {
                             )),
                     ],
                   ),
-                  padding16,
+                  padding32,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -131,7 +131,7 @@ class _LoginFormState extends State<LoginForm> {
                         style: Theme.of(context).textTheme.body1,
                       ),
                     ),
-                  padding76,
+                  padding191,
                   AbiliaButton(
                     key: TestKey.loggInButton,
                     label: i18n.translate.login,
@@ -154,7 +154,8 @@ class _LoginFormState extends State<LoginForm> {
   get padding8 => const SizedBox(height: 8,);
   get padding16 => const Spacer(flex: 2);
   get padding32 => const Spacer(flex: 4);
-  get padding76 => const Spacer(flex: 9);
+  get padding56 => const Spacer(flex: 6);
+  get padding191 => const Spacer(flex: 23);
 
   @override
   dispose() {

@@ -49,22 +49,32 @@ class Fakes {
               }''', 200);
           }
           if (pathSegments.containsAll(['data', 'activities'])) {
-            response = Response(json.encode(activities), 200);
+            response = Response(json.encode(_oneEveryMinute), 200);
           }
           return Future.value(response ?? Response('not found', 404));
         },
       );
 
-  static List<Activity> get activities {
+  static DateTime get _now {
     final nowExact = DateTime.now();
-    final now = DateTime(nowExact.year, nowExact.month, nowExact.day,
-        nowExact.hour, nowExact.minute);
+    return DateTime(nowExact.year, nowExact.month, nowExact.day, nowExact.hour,
+        nowExact.minute);
+  }
+
+  static List<Activity> get _activities {
+    final now =_now;
     return [
       Activity.createNew(
+          title:
+              'long10 long9 long8 long7 long6 long5 long4 long3 long2 long1 long0 long long long long long long long long long long long long long past',
+          startTime: now.subtract(Duration(hours: 2)).millisecondsSinceEpoch,
+          duration: Duration(hours: 1).inMilliseconds,
+          category: 0,
+          reminderBefore: [60 * 60 * 1000],
+          alarmType: ALARM_SILENT),
+      Activity.createNew(
           title: 'long past',
-          startTime: now
-              .subtract(Duration(hours: 2))
-              .millisecondsSinceEpoch,
+          startTime: now.subtract(Duration(hours: 2)).millisecondsSinceEpoch,
           duration: Duration(hours: 1).inMilliseconds,
           category: 0,
           reminderBefore: [60 * 60 * 1000],
@@ -111,7 +121,7 @@ class Fakes {
           startTime: now.subtract(Duration(hours: 8)).millisecondsSinceEpoch,
           duration: Duration(hours: 16).inMilliseconds,
           category: 0,
-          reminderBefore: [0,1,2],
+          reminderBefore: [0, 1, 2],
           alarmType: ALARM_SILENT),
       Activity.createNew(
           title: 'yesterday',
@@ -124,6 +134,19 @@ class Fakes {
           title: 'tomorrow',
           startTime: now.add(Duration(days: 1)).millisecondsSinceEpoch,
           duration: Duration(hours: 1).inMilliseconds,
+          category: 0,
+          reminderBefore: [],
+          alarmType: ALARM_SILENT),
+    ];
+  }
+
+  static List<Activity> get _oneEveryMinute {
+    var now  = _now.subtract(Duration(hours: 1));
+    return [
+      for (int i = 0; i < 120; i++)       Activity.createNew(
+          title: 'Minute $i',
+          startTime: now.add(Duration(minutes: i)).millisecondsSinceEpoch,
+          duration: Duration(minutes: 5).inMilliseconds,
           category: 0,
           reminderBefore: [],
           alarmType: ALARM_SILENT),

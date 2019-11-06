@@ -11,7 +11,7 @@ abstract class ActivitiesState extends Equatable {
 class ActivitiesLoading extends ActivitiesState {}
 
 class ActivitiesLoaded extends ActivitiesState {
-  final List<Activity> activities;
+  final Iterable<Activity> activities;
 
   const ActivitiesLoaded([this.activities = const []]);
 

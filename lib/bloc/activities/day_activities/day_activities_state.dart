@@ -11,7 +11,7 @@ abstract class DayActivitiesState extends Equatable {
 class DayActivitiesLoading extends DayActivitiesState {}
 
 class DayActivitiesLoaded extends DayActivitiesState {
-  final List<Activity> filteredActivities;
+  final Iterable<Activity> filteredActivities;
   final DateTime dayFilter;
 
   const DayActivitiesLoaded(

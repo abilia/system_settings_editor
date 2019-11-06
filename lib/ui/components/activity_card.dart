@@ -8,8 +8,9 @@ import 'package:intl/intl.dart';
 
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
+  final double height;
 
-  const ActivityCard({Key key, this.activityOccasion})
+  const ActivityCard({Key key, this.activityOccasion, this.height = 80.0})
       : assert(activityOccasion != null),
         super(key: key);
 
@@ -22,37 +23,40 @@ class ActivityCard extends StatelessWidget {
     final end = activity.endDate;
     final hasImage = activity.fileId != null;
     return Theme(
-      data:
-          pickTheme(context: context, occasion: occasion),
+      data: pickTheme(context: context, occasion: occasion),
       child: Builder(
         builder: (context) => Stack(children: <Widget>[
           Card(
-            child: ListTile(
-              leading: hasImage
-                  ? Opacity(
-                      opacity: occasion == Occasion.past ? .5 : 1,
-                      child: FadeInThumb(imageFileId: activity.fileId),
+            child: SizedBox(
+              height: height,
+              child: ListTile(
+                isThreeLine: true,
+                leading: hasImage
+                    ? Opacity(
+                        opacity: occasion == Occasion.past ? .5 : 1,
+                        child: FadeInThumb(imageFileId: activity.fileId),
+                      )
+                    : null,
+                title: Text(activity.title, softWrap: false,
+                    style: Theme.of(context).textTheme.subtitle),
+                subtitle: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                        '${timeFormat.format(start)} - ${timeFormat.format(end)}',
+                        style: Theme.of(context).textTheme.body1),
+                    Row(
+                      children: <Widget>[
+                        if (activity.alarm.type != Alarm.NoAlarm)
+                          Icon(AbiliaIcons.handi_alarm),
+                        if (activity.reminderBefore.isNotEmpty)
+                          Icon(AbiliaIcons.handi_reminder),
+                        if (activity.infoItem != null)
+                          Icon(AbiliaIcons.handi_info),
+                      ],
                     )
-                  : null,
-              title: Text(activity.title,
-                  style: Theme.of(context).textTheme.subtitle),
-              subtitle: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                      '${timeFormat.format(start)} - ${timeFormat.format(end)}',
-                      style: Theme.of(context).textTheme.body1),
-                  Row(
-                    children: <Widget>[
-                      if (activity.alarm.type != Alarm.NoAlarm)
-                        Icon(AbiliaIcons.handi_alarm),
-                      if (activity.reminderBefore.isNotEmpty)
-                        Icon(AbiliaIcons.handi_reminder),
-                      if (activity.infoItem != null)
-                        Icon(AbiliaIcons.handi_info),
-                    ],
-                  )
-                ],
+                  ],
+                ),
               ),
             ),
           ),

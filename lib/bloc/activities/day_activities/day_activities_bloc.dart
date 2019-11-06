@@ -73,16 +73,15 @@ class DayActivitiesBloc
     );
   }
 
-  List<Activity> _mapActivitiesToCurrentDayActivities(
-      List<Activity> ativities, DateTime filter) {
+  Iterable<Activity> _mapActivitiesToCurrentDayActivities(
+      Iterable<Activity> ativities, DateTime filter) {
     final filterDay = DateTime(filter.year, filter.month, filter.day);
     return ativities.where((activity) {
       final activityTime = activity.startDate;
       final activityDay =
           DateTime(activityTime.year, activityTime.month, activityTime.day);
       return filterDay.isAtSameMomentAs(activityDay);
-    }).toList()
-      ..sort((a, b) => a.startDate.compareTo(b.startDate));
+    });
   }
 
   @override

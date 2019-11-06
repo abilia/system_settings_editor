@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/ui/components.dart';
 import 'package:seagull/ui/pages.dart';
@@ -11,13 +12,18 @@ class Calender extends StatefulWidget {
 }
 
 class _CalenderState extends State<Calender> {
+  final currentActivityKey = GlobalKey<State>();
+  final cardHeight = 80.0;
   DayPickerBloc _dayPickerBloc;
   ActivitiesBloc _activitiesBloc;
+  ScrollController _scrollController;
+  bool currentActivityVisible = false;
+  int indexOfFirstNoneCompleted;
   @override
   void initState() {
     _dayPickerBloc = BlocProvider.of<DayPickerBloc>(context);
     _activitiesBloc = BlocProvider.of<ActivitiesBloc>(context);
-
+    _scrollController = ScrollController();
     super.initState();
   }
 
@@ -51,17 +57,17 @@ class _CalenderState extends State<Calender> {
             ),
             centerTitle: true,
           ),
-          body: page(),
+          body: agendaView(),
           bottomNavigationBar: BottomAppBar(
             child: Padding(
               padding: const EdgeInsets.all(4.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  if (!isAtTheSameDayAsNow(state))
+                  if (!followsNow(state))
                     ActionButton(
                       child: Icon(AbiliaIcons.reset),
-                      onPressed: () => _dayPickerBloc.add(CurrentDay()),
+                      onPressed: () => jumpToNow(state),
                       themeData: nowButtonTheme(context),
                     )
                   else
@@ -83,42 +89,88 @@ class _CalenderState extends State<Calender> {
     );
   }
 
+  followsNow(DateTime otherTime) =>
+      isAtTheSameDayAsNow(otherTime) && currentActivityVisible;
+
   isAtTheSameDayAsNow(DateTime otherTime) {
     final now = DateTime.now();
     return DateTime(now.year, now.month, now.day).isAtSameMomentAs(
         DateTime(otherTime.year, otherTime.month, otherTime.day));
   }
 
-  Widget page() {
+  jumpToNow(DateTime otherTime) {
+    if (!isAtTheSameDayAsNow(otherTime)) {
+      _dayPickerBloc.add(CurrentDay());
+    } else {
+      _scrollController.animateTo(cardHeight * indexOfFirstNoneCompleted,
+          curve: Curves.fastLinearToSlowEaseIn,
+          duration: Duration(milliseconds: 300));
+    }
+  }
+
+  Widget agendaView() {
     return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
       builder: (context, state) {
         if (state is! ActivitiesOccasionLoaded) {
           return Center(child: CircularProgressIndicator());
         }
-        final activities =
-            (state as ActivitiesOccasionLoaded).activityStates;
+        final activities = (state as ActivitiesOccasionLoaded).activityStates;
+        indexOfFirstNoneCompleted =
+            activities.indexWhere((a) => a.occasion != Occasion.past);
         return RefreshIndicator(
           child: Padding(
             padding: const EdgeInsets.only(right: 4),
-            child: Scrollbar(
-              child: ListView.builder(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                itemCount: activities.length,
-                itemBuilder: (context, index) => ActivityCard(
-                  activityOccasion: activities[index],
+            child: NotificationListener<ScrollNotification>(
+              onNotification: _onScrollNotification,
+              child: Scrollbar(
+                child: ListView.builder(
+                  itemExtent: cardHeight,
+                  controller: _scrollController,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                  itemCount: activities.length,
+                  itemBuilder: (context, index) => ActivityCard(
+                    activityOccasion: activities[index],
+                    height: cardHeight,
+                    key: index == indexOfFirstNoneCompleted
+                        ? currentActivityKey
+                        : null,
+                  ),
                 ),
               ),
             ),
           ),
-          onRefresh: refresh,
+          onRefresh: _refresh,
         );
       },
     );
   }
 
-  Future<void> refresh() {
+  Future<void> _refresh() {
     _activitiesBloc.add(LoadActivities());
     return _activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
+  }
+
+  bool _onScrollNotification(ScrollNotification scrollNotification) {
+    final renderObject = currentActivityKey.currentContext?.findRenderObject();
+    bool isVisibleNow = _isRenderObjectVisible(renderObject,
+        scrollPosition: scrollNotification.metrics.pixels);
+    if (isVisibleNow != currentActivityVisible)
+      setState(() => currentActivityVisible = isVisibleNow);
+    return false;
+  }
+
+  bool _isRenderObjectVisible(RenderObject renderObject,
+      {double scrollPosition}) {
+    if (renderObject == null)
+      return false; // the object is not rendered yet, and is therefore not visible
+    RenderAbstractViewport viewport = RenderAbstractViewport.of(renderObject);
+    if (viewport == null) return false;
+    final offsetToRevealBottom =
+        viewport.getOffsetToReveal(renderObject, 1.0).offset;
+    final offsetToRevealTop =
+        viewport.getOffsetToReveal(renderObject, 0.0).offset;
+    return scrollPosition > offsetToRevealBottom &&
+        scrollPosition < offsetToRevealTop;
   }
 }

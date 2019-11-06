@@ -47,9 +47,17 @@ class ActivitiesOccasionBloc
 
   List<ActivityOccasion> _mapActivitiesToActivityOccasions(
       Iterable<Activity> activities, DateTime now) {
-    return activities.map((a) => ActivityOccasion(a, now: now)).toList()..sort((a,b) {
-      return a.occasion.index.compareTo(b.occasion.index);
-    });
+    return activities.map((a) => ActivityOccasion(a, now: now)).toList()
+      ..sort((a, b) {
+        final occasionComparing = a.occasion.index.compareTo(b.occasion.index);
+        if (occasionComparing != 0) return occasionComparing;
+
+        final starTimeComparing =
+            a.activity.startDate.compareTo(b.activity.startDate);
+        if (starTimeComparing != 0) return starTimeComparing;
+
+        return a.activity.endDate.compareTo(b.activity.endDate);
+      });
   }
 
   @override

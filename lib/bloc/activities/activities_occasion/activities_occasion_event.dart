@@ -16,7 +16,7 @@ class NowChanged extends ActivitiesOccasionEvent {
 
 class ActivitiesChanged extends ActivitiesOccasionEvent {
   ActivitiesChanged(this.activities);
-  final List<Activity> activities;
+  final Iterable<Activity> activities;
   @override
   List<Object> get props => [];
     @override
