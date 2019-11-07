@@ -18,7 +18,7 @@ class ActivitiesChanged extends ActivitiesOccasionEvent {
   ActivitiesChanged(this.activities);
   final Iterable<Activity> activities;
   @override
-  List<Object> get props => [];
+  List<Object> get props => [activities];
     @override
   String toString() => 'ActivitiesChanged { activities: $activities }';
 }

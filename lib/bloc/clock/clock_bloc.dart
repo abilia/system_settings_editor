@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:seagull/utils/datetime_utils.dart';
 class ClockBloc extends Bloc<DateTime, DateTime> {
   StreamSubscription<DateTime> _tickerSubscription;
 
@@ -13,14 +14,11 @@ class ClockBloc extends Bloc<DateTime, DateTime> {
   }
 
   @override
-  DateTime get initialState {
-    final now = DateTime.now();
-    return DateTime(now.year, now.month, now.day, now.hour, now.minute);
-  }
+  DateTime get initialState => removeToMinutes(DateTime.now());
 
   @override
-  void close() {
-    _tickerSubscription?.cancel();
-    super.close();
+  Future<void> close() async {
+    await _tickerSubscription?.cancel();
+    return super.close();
   }
 }

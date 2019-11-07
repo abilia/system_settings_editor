@@ -36,10 +36,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
 
   Stream<ActivitiesState> _mapAddActivityToState(AddActivity event) async* {
     if (state is ActivitiesLoaded) {
-      final updatedActivities =
-          (state as ActivitiesLoaded).activities.toList()
-            ..add(event.activity);
-      yield ActivitiesLoaded(updatedActivities);
+      yield ActivitiesLoaded(
+          (state as ActivitiesLoaded).activities.followedBy([event.activity]));
       _saveActivities([event.activity]);
     }
   }
@@ -58,6 +56,6 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     }
   }
 
-  Future _saveActivities(Iterable<Activity> activities) => 
-    activitiesRepository.saveActivities(activities);
+  Future _saveActivities(Iterable<Activity> activities) =>
+      activitiesRepository.saveActivities(activities);
 }

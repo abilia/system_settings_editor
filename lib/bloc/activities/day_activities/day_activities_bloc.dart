@@ -8,19 +8,18 @@ class DayActivitiesBloc
     extends Bloc<DayActivitiesEvent, DayActivitiesState> {
   final ActivitiesBloc activitiesBloc;
   final DayPickerBloc dayPickerBloc;
-  StreamSubscription activitiesSubscription;
-  StreamSubscription dayPickerSubscription;
-  final DateTime currentTime = DateTime.now();
+  StreamSubscription _activitiesSubscription;
+  StreamSubscription _dayPickerSubscription;
 
   DayActivitiesBloc(
       {@required this.activitiesBloc, @required this.dayPickerBloc}) {
-    activitiesSubscription = activitiesBloc.listen((state) {
+    _activitiesSubscription = activitiesBloc.listen((state) {
       if (state is ActivitiesLoaded) {
         add(UpdateActivities(
             (activitiesBloc.state as ActivitiesLoaded).activities));
       }
     });
-    dayPickerSubscription =
+    _dayPickerSubscription =
         dayPickerBloc.listen((state) => add(UpdateDay(state)));
   }
 
@@ -29,9 +28,9 @@ class DayActivitiesBloc
     return activitiesBloc.state is ActivitiesLoaded
         ? DayActivitiesLoaded(
             (activitiesBloc.state as ActivitiesLoaded).activities,
-            currentTime,
+            dayPickerBloc.state,
           )
-        : DayActivitiesLoading();
+        : DayActivitiesLoading(dayPickerBloc.state);
   }
 
   @override
@@ -61,15 +60,12 @@ class DayActivitiesBloc
   Stream<DayActivitiesState> _mapActivitiesUpdatedToState(
     UpdateActivities event,
   ) async* {
-    final visibilityFilter = state is DayActivitiesLoaded
-        ? (state as DayActivitiesLoaded).dayFilter
-        : currentTime;
     yield DayActivitiesLoaded(
       _mapActivitiesToCurrentDayActivities(
-        (activitiesBloc.state as ActivitiesLoaded).activities,
-        visibilityFilter,
+        event.activities,
+        state.dayFilter,
       ),
-      visibilityFilter,
+      dayPickerBloc.state,
     );
   }
 
@@ -85,9 +81,9 @@ class DayActivitiesBloc
   }
 
   @override
-  void close() {
-    activitiesSubscription.cancel();
-    dayPickerSubscription.cancel();
-    super.close();
+  Future<void> close() async {
+    await _activitiesSubscription.cancel();
+    await _dayPickerSubscription.cancel();
+    return super.close();
   }
 }

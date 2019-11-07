@@ -14,7 +14,7 @@ void main() {
     AuthenticationBloc authenticationBloc;
 
     setUp(() {
-      final userRepository = UserRepository(httpClient: Fakes.client, secureStorage: MockSecureStorage());
+      final userRepository = UserRepository(httpClient: Fakes.client(), secureStorage: MockSecureStorage());
       authenticationBloc = AuthenticationBloc(userRepository: userRepository);
       loginBloc = LoginBloc(
           userRepository: userRepository,

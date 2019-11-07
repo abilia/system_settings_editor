@@ -35,9 +35,9 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'Seagull',
         theme: abiliaTheme,
-        supportedLocales: AppLocalizations.supportedLocals,
+        supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [
-          AppLocalizations.delegate,
+          Translator.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],

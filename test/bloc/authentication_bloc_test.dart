@@ -13,7 +13,7 @@ void main() {
     setUp(() {
       authenticationBloc = AuthenticationBloc(
           userRepository: UserRepository(
-              httpClient: Fakes.client, secureStorage: MockSecureStorage()));
+              httpClient: Fakes.client(), secureStorage: MockSecureStorage()));
     });
 
     test('initial state is AuthenticationUninitialized', () {

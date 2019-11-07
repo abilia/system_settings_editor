@@ -28,7 +28,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final i18n = AppLocalizations.of(context);
+    final i18n = Translator.of(context);
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       builder: (context, formState) => BlocBuilder<LoginBloc, LoginState>(
         builder: (context, loginState) {

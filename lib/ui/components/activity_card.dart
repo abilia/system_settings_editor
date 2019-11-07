@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc.dart';
+import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components.dart';
@@ -30,7 +31,6 @@ class ActivityCard extends StatelessWidget {
             child: SizedBox(
               height: height,
               child: ListTile(
-                isThreeLine: true,
                 leading: hasImage
                     ? Opacity(
                         opacity: occasion == Occasion.past ? .5 : 1,
@@ -43,6 +43,7 @@ class ActivityCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
+                      activity.fullDay ? Translator.of(context).translate.fullDay :
                         '${timeFormat.format(start)} - ${timeFormat.format(end)}',
                         style: Theme.of(context).textTheme.body1),
                     Row(
@@ -72,7 +73,7 @@ ThemeData pickTheme({BuildContext context, Occasion occasion}) {
   switch (occasion) {
     case Occasion.past:
       return theme.copyWith(
-          cardColor: AbiliaColors.transparantWhite50,
+          cardColor: AbiliaColors.transparantWhite[50],
           textTheme: theme.textTheme.copyWith(
               subtitle: theme.textTheme.subtitle.copyWith(
                   decoration: TextDecoration.lineThrough,

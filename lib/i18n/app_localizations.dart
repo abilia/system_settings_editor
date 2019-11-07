@@ -3,23 +3,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:seagull/i18n/translations.dart';
 
-class AppLocalizations {
+class Translator {
   static List<Locale> get supportedLocals => dictionaries.keys.toList();
   final Locale locale;
 
-  AppLocalizations(this.locale);
+  Translator(this.locale);
 
-  static AppLocalizations of(BuildContext context) =>
-      Localizations.of<AppLocalizations>(context, AppLocalizations);
+  static Translator of(BuildContext context) =>
+      Localizations.of<Translator>(context, Translator);
 
   Translated get translate => dictionaries[locale]; 
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
+  static const LocalizationsDelegate<Translator> delegate =
       _AppLocalizationsDelegate();
 }
 
 class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+    extends LocalizationsDelegate<Translator> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -27,7 +27,7 @@ class _AppLocalizationsDelegate
       dictionaries.keys.map((l) => l.languageCode).contains(locale.languageCode);
 
   @override
-  Future<AppLocalizations> load(Locale locale) async => AppLocalizations(locale);
+  Future<Translator> load(Locale locale) async => Translator(locale);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;

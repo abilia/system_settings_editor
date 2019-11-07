@@ -36,7 +36,7 @@ void main() {
           "fileId" : "1a1b1678-781e-4b6f-9518-b6858560433f"
         } ]''';
     final resultList = (json.decode(response) as List)
-        .map((e) => new Activity.fromJson(e))
+        .map((e) => Activity.fromJson(e))
         .toList();
     expect(resultList.length, 1);
     final result = resultList.first;
@@ -61,7 +61,7 @@ void main() {
     expect(result.category, 0);
     expect(result.startTime, 1570105439424);
     // expect(result.endTime, 1570109039424);
-    // expect(result.fullDay, false);
+    expect(result.fullDay, false);
     // expect(result.checkable, false);
     // expect(result.removeAfter, false);
     // expect(result.secret, false);

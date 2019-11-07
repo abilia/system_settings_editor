@@ -13,6 +13,8 @@ abstract class Translated {
   String get login;
   String get wrongCredentials;
   String get now;
+  String get fullDay;
+  String get week;
 }
 
 class English extends Translated {
@@ -23,7 +25,10 @@ class English extends Translated {
       login = 'Log in',
       wrongCredentials =
           'Your username/email or password is not correct. Please, try another one.',
-      now = 'now';
+      now = 'now',
+      fullDay = 'All day',
+      week = 'week'
+      ;
 }
 
 class Swedish extends Translated {
@@ -33,5 +38,7 @@ class Swedish extends Translated {
       infoText2 = '-konto för att logga in',
       login = 'Logga in',
       wrongCredentials = 'Fel användarnamn eller lösenord',
-      now = 'nu';
+      now = 'nu',
+      fullDay = 'Heldag',
+      week = 'vecka';
 }

@@ -18,7 +18,7 @@ void main() {
 
     testWidgets('Application starts', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        Fakes.client,
+        Fakes.client(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();

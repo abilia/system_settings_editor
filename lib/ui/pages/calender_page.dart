@@ -13,15 +13,18 @@ class CalenderPage extends StatelessWidget {
       BlocProvider<ActivitiesBloc>(
           builder: (context) => ActivitiesBloc(
               activitiesRepository: ActivityRepository(
-                client: (context.ancestorWidgetOfExactType(App) as App).httpClient,
+                  client: (context.ancestorWidgetOfExactType(App) as App)
+                      .httpClient,
                   authToken: authenticatedState.token,
                   userId: authenticatedState.userId))
             ..add(LoadActivities())),
-      BlocProvider<DayPickerBloc>(
-        builder: (context) => DayPickerBloc(),
-      ),
       BlocProvider<ClockBloc>(
         builder: (context) => ClockBloc(Ticker.minute()),
+      ),
+      BlocProvider<DayPickerBloc>(
+        builder: (context) => DayPickerBloc(
+          clockBloc: BlocProvider.of<ClockBloc>(context),
+        ),
       ),
       BlocProvider<DayActivitiesBloc>(
         builder: (context) => DayActivitiesBloc(

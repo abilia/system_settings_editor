@@ -2,28 +2,30 @@ import 'package:equatable/equatable.dart';
 import 'package:seagull/models.dart';
 
 abstract class DayActivitiesState extends Equatable {
-  const DayActivitiesState();
+  const DayActivitiesState(this.dayFilter);
+  final DateTime dayFilter;
 
   @override
   List<Object> get props => [];
 }
 
-class DayActivitiesLoading extends DayActivitiesState {}
+class DayActivitiesLoading extends DayActivitiesState {
+  DayActivitiesLoading(DateTime dayFilter) : super(dayFilter);
+}
 
 class DayActivitiesLoaded extends DayActivitiesState {
-  final Iterable<Activity> filteredActivities;
-  final DateTime dayFilter;
+  final Iterable<Activity> activities;
 
   const DayActivitiesLoaded(
-    this.filteredActivities,
-    this.dayFilter,
-  );
+    this.activities,
+    DateTime dayFilter,
+  ) : super(dayFilter);
 
   @override
-  List<Object> get props => [filteredActivities, dayFilter];
+  List<Object> get props => [activities, dayFilter];
 
   @override
   String toString() {
-    return 'FilteredActivitiesLoaded { filteredTodos: $filteredActivities, day: $dayFilter }';
+    return 'FilteredActivitiesLoaded { filteredTodos: $activities, day: $dayFilter }';
   }
 }
