@@ -106,6 +106,30 @@ void main() {
       await untilCalled(mockedUserRepository.deleteToken());
     });
 
+    test('unauthed token gets deleted', () async {
+      authenticationBloc.add(AppStarted());
+
+      when(mockedUserRepository.me(any))
+          .thenAnswer((_) => Future.error(Exception()));
+
+      await untilCalled(mockedUserRepository.deleteToken());
+    });
+
+    test('unauthed token returns state Unauthenticated', () async {
+      final List<AuthenticationState> expected = [
+        AuthenticationUninitialized(),
+        AuthenticationLoading(),
+        Unauthenticated(),
+      ];
+      when(mockedUserRepository.me(any))
+          .thenAnswer((_) => Future.error(Exception()));
+      expectLater(
+        authenticationBloc,
+        emitsInOrder(expected),
+      );
+      authenticationBloc.add(AppStarted());
+    });
+
     tearDown(() {
       authenticationBloc.close();
     });

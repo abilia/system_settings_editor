@@ -86,6 +86,7 @@ void main() {
         fileId: fileId);
     final asJson = activity.toJson();
     final deserializedActivity = Activity.fromJson(asJson);
+    expect(deserializedActivity, activity);
     expect(deserializedActivity.id, activity.id);
     expect(deserializedActivity.seriesId, activity.seriesId);
     expect(deserializedActivity.title, activity.title);

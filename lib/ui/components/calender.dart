@@ -108,6 +108,7 @@ class _CalenderState extends State<Calender> {
             (state as ActivitiesOccasionLoaded).fullDayActivities;
         indexOfFirstNoneCompleted =
             activities.indexWhere((a) => a.occasion != Occasion.past);
+            indexOfFirstNoneCompleted = indexOfFirstNoneCompleted < 0 ? activities.length - 1 : indexOfFirstNoneCompleted;
         return BlocListener<ClockBloc, DateTime>(
           listener: (context, now) {
             if (_followsNow(now))

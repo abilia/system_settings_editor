@@ -70,8 +70,7 @@ class DayActivitiesBloc
   }
 
   Iterable<Activity> _mapActivitiesToCurrentDayActivities(
-      Iterable<Activity> ativities, DateTime filter) {
-    final filterDay = DateTime(filter.year, filter.month, filter.day);
+      Iterable<Activity> ativities, DateTime filterDay) {
     return ativities.where((activity) {
       final activityTime = activity.startDate;
       final activityDay =

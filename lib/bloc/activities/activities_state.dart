@@ -13,7 +13,7 @@ class ActivitiesLoading extends ActivitiesState {}
 class ActivitiesLoaded extends ActivitiesState {
   final Iterable<Activity> activities;
 
-  const ActivitiesLoaded([this.activities = const []]);
+  const ActivitiesLoaded(this.activities);
 
   @override
   List<Object> get props => [activities];

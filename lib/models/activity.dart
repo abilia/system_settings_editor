@@ -26,9 +26,9 @@ class Activity extends Equatable {
     @required this.alarmType,
     @required this.fullDay,
     this.reminderBefore,
-    this.fileId,
     this.infoItem,
     this.icon,
+    this.fileId,
   })  : assert(title != null || fileId != null),
         assert(id != null),
         assert(seriesId != null),
@@ -36,15 +36,17 @@ class Activity extends Equatable {
         assert(alarmType != null),
         assert(startTime > 0);
 
-  factory Activity.createNew(
-      {@required String title,
-      @required int startTime,
-      @required int duration,
-      @required int category,
-      @required Iterable<int> reminderBefore,
-      bool fullDay = false,
-      int alarmType = ALARM_SOUND_AND_VIBRATION_ONLY_ON_START,
-      String fileId}) {
+  factory Activity.createNew({
+    @required String title,
+    @required int startTime,
+    @required int duration,
+    @required int category,
+    @required Iterable<int> reminderBefore,
+    bool fullDay = false,
+    int alarmType = ALARM_SOUND_AND_VIBRATION_ONLY_ON_START,
+    String infoItem,
+    String fileId,
+  }) {
     final id = Uuid().v4();
     return Activity._(
       id: id,
@@ -60,6 +62,7 @@ class Activity extends Equatable {
       revision: 0,
       reminderBefore: UnmodifiableListView(reminderBefore),
       alarmType: alarmType,
+      infoItem: _nullIfEmpty(infoItem),
     );
   }
 
@@ -74,6 +77,7 @@ class Activity extends Equatable {
     bool deleted,
     int revision,
     int alarmType,
+    String infoItem,
   }) =>
       Activity._(
         id: id,
@@ -91,6 +95,7 @@ class Activity extends Equatable {
         icon: fileId == null ? this.fileId : _nullIfEmpty(fileId),
         revision: revision ?? this.revision,
         alarmType: alarmType ?? this.alarmType,
+        infoItem: infoItem == null ? this.infoItem : _nullIfEmpty(infoItem),
       );
 
   factory Activity.fromJson(Map<String, dynamic> json) => Activity._(
@@ -159,5 +164,5 @@ class Activity extends Equatable {
         icon,
       ];
   @override
-  String toString() => props.map((p) => p.toString()).join(',');
+  String toString() => [ 'Activity: { ',  props.map((p) => p.toString()).join(', '), ' }'].join();
 }

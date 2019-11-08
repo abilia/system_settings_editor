@@ -5,12 +5,14 @@ abstract class DayActivitiesState extends Equatable {
   const DayActivitiesState(this.dayFilter);
   final DateTime dayFilter;
 
-  @override
-  List<Object> get props => [];
 }
 
 class DayActivitiesLoading extends DayActivitiesState {
   DayActivitiesLoading(DateTime dayFilter) : super(dayFilter);
+  @override
+  String toString() => 'DayActivitiesLoading { day: $dayFilter }';
+  @override
+  List<Object> get props => [dayFilter];
 }
 
 class DayActivitiesLoaded extends DayActivitiesState {
@@ -22,10 +24,9 @@ class DayActivitiesLoaded extends DayActivitiesState {
   ) : super(dayFilter);
 
   @override
-  List<Object> get props => [activities, dayFilter];
+  List<Object> get props => [activities, dayFilter]; // During testing we need to execute iterable
 
   @override
-  String toString() {
-    return 'FilteredActivitiesLoaded { filteredTodos: $activities, day: $dayFilter }';
-  }
+  String toString() =>
+      'DayActivitiesLoaded { activities: $activities, day: $dayFilter }';
 }

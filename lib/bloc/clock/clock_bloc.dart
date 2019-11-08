@@ -4,7 +4,8 @@ import 'package:seagull/utils/datetime_utils.dart';
 class ClockBloc extends Bloc<DateTime, DateTime> {
   StreamSubscription<DateTime> _tickerSubscription;
 
-  ClockBloc(Stream<DateTime> ticker) {
+  final DateTime initialTime;
+  ClockBloc(Stream<DateTime> ticker, {this.initialTime})  {
     _tickerSubscription = ticker.listen((tick) => add(tick));
   }
 
@@ -14,7 +15,7 @@ class ClockBloc extends Bloc<DateTime, DateTime> {
   }
 
   @override
-  DateTime get initialState => removeToMinutes(DateTime.now());
+  DateTime get initialState => onlyMinutes(initialTime ?? DateTime.now());
 
   @override
   Future<void> close() async {

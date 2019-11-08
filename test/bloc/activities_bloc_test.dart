@@ -26,7 +26,7 @@ void main() {
     });
 
     test('LoadActivities event returns ActivitiesLoaded state', () {
-      final expected = [ActivitiesLoading(), ActivitiesLoaded()];
+      final expected = [ActivitiesLoading(), ActivitiesLoaded([])];
       when(mockActivityRepository.loadActivities()).thenAnswer((_) => Future.value(<Activity>[]));
       
       expectLater(

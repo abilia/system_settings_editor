@@ -7,11 +7,13 @@ abstract class ActivitiesOccasionState extends Equatable {
   const ActivitiesOccasionState(this.now);
   final DateTime now;
   @override
-  List<Object> get props => [];
+  List<Object> get props => [now];
 }
 
 class ActivitiesOccasionLoading extends ActivitiesOccasionState {
   ActivitiesOccasionLoading(DateTime now) : super(now);
+  @override
+  String toString() => 'ActivitiesOccasionLoading { now: $now }';
 }
 
 class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
@@ -24,7 +26,10 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
   final List<ActivityOccasion> fullDayActivities;
 
   @override
-  List<Object> get props => [activities];
+  List<Object> get props => [activities, fullDayActivities, now];
+  @override
+  String toString() =>
+      'ActivitiesOccasionLoaded { ActivityOccasion: $activities, fullDay ActivityOccasion: $fullDayActivities  now: $now }';
 }
 
 enum Occasion { past, current, future }
@@ -40,6 +45,10 @@ class ActivityOccasion extends Equatable {
                 ? Occasion.future
                 : Occasion.current;
 
+  @visibleForTesting
+  factory ActivityOccasion.forTest(activity, occasion) =>
+      ActivityOccasion._(activity, occasion);
+
   factory ActivityOccasion.fullDay(Activity activity,
           {@required DateTime now}) =>
       ActivityOccasion._(
@@ -53,4 +62,7 @@ class ActivityOccasion extends Equatable {
 
   @override
   List<Object> get props => [activity, occasion];
+  
+  @override
+  String toString() => '{ $occasion,  Activity: ( ${activity.title} ${activity.startDate}-${activity.endDate} ) }';
 }
