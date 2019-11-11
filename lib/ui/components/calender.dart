@@ -19,7 +19,7 @@ class _CalenderState extends State<Calender> {
   DayPickerBloc _dayPickerBloc;
   ActivitiesBloc _activitiesBloc;
   ScrollController _scrollController;
-  bool currentActivityVisible = false;
+  bool currentActivityVisible = true;
   int indexOfFirstNoneCompleted;
   double get offsetToFirstNoneCompleted =>
       cardHeight * indexOfFirstNoneCompleted;
@@ -35,7 +35,7 @@ class _CalenderState extends State<Calender> {
   Widget build(BuildContext context) {
     final langCode = Locale.cachedLocale.languageCode;
     return BlocBuilder<DayPickerBloc, DateTime>(
-      builder: (context, state) => Theme(
+      builder: (context, state) => AnimatedTheme(
         data: weekDayTheme(context)[state.weekday],
         child: Scaffold(
           appBar: AppBar(
@@ -53,7 +53,8 @@ class _CalenderState extends State<Calender> {
                     Text(DateFormat('EEEE, d MMM', langCode).format(state)),
                     Opacity(
                       opacity: 0.7,
-                      child: Text('${Translator.of(context).translate.week} ${getWeekNumber(state)}'),
+                      child: Text(
+                          '${Translator.of(context).translate.week} ${getWeekNumber(state)}'),
                     ),
                   ],
                 ),
@@ -72,8 +73,9 @@ class _CalenderState extends State<Calender> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  if (!_followsNow(state))
+                  if (_canGoToNow(state))
                     ActionButton(
+                      key: TestKey.goToNowButton,
                       child: Icon(AbiliaIcons.reset),
                       onPressed: () => _jumpToNow(state),
                       themeData: nowButtonTheme(context),
@@ -108,7 +110,6 @@ class _CalenderState extends State<Calender> {
             (state as ActivitiesOccasionLoaded).fullDayActivities;
         indexOfFirstNoneCompleted =
             activities.indexWhere((a) => a.occasion != Occasion.past);
-            indexOfFirstNoneCompleted = indexOfFirstNoneCompleted < 0 ? activities.length - 1 : indexOfFirstNoneCompleted;
         return BlocListener<ClockBloc, DateTime>(
           listener: (context, now) {
             if (_followsNow(now))
@@ -138,7 +139,7 @@ class _CalenderState extends State<Calender> {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 4),
                     child: NotificationListener<ScrollNotification>(
-                      onNotification: _isAtTheSameDayAsNow(state.now)
+                      onNotification: _shouldUpdateScroll(state.now)
                           ? _onScrollNotification
                           : null,
                       child: Scrollbar(
@@ -146,7 +147,7 @@ class _CalenderState extends State<Calender> {
                           physics:
                               const AlwaysScrollableScrollPhysics(), // https://github.com/flutter/flutter/issues/22180
                           itemExtent: cardHeight,
-                          controller: _isAtTheSameDayAsNow(state.now)
+                          controller: _shouldUpdateScroll(state.now)
                               ? _scrollController
                               : null,
                           padding: const EdgeInsets.symmetric(
@@ -172,10 +173,16 @@ class _CalenderState extends State<Calender> {
     );
   }
 
-  _followsNow(DateTime otherTime) {
-    final sameDay = _isAtTheSameDayAsNow(otherTime);
-    return sameDay && currentActivityVisible;
-  }
+  _canGoToNow(DateTime otherTime) =>
+      !_isAtTheSameDayAsNow(otherTime) || !currentActivityVisible;
+
+  _followsNow(DateTime otherTime) =>
+      _isAtTheSameDayAsNow(otherTime) &&
+      currentActivityVisible &&
+      indexOfFirstNoneCompleted >= 0;
+
+  _shouldUpdateScroll(DateTime otherTime) =>
+      indexOfFirstNoneCompleted > 0 && _isAtTheSameDayAsNow(otherTime);
 
   _isAtTheSameDayAsNow(DateTime otherTime) =>
       isAtSameDay(otherTime, DateTime.now());
@@ -188,13 +195,13 @@ class _CalenderState extends State<Calender> {
   }
 
   _scrollToNow(
-          {Curve curve = Curves.fastLinearToSlowEaseIn,
-          Duration duration = const Duration(milliseconds: 300)}) =>
+          {Curve curve = Curves.easeInOutCirc,
+          Duration duration = const Duration(milliseconds: 500)}) =>
       _scrollController.animateTo(offsetToFirstNoneCompleted,
           curve: curve, duration: duration);
 
   Future<void> _refresh() {
-    _activitiesBloc..add(LoadActivities());
+    _activitiesBloc.add(LoadActivities());
     return _activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
   }
 
@@ -225,7 +232,7 @@ class _CalenderState extends State<Calender> {
     final viewport = RenderAbstractViewport.of(renderObject);
     if (viewport == null) return false;
     final double offsetToRevealBottom =
-        viewport.getOffsetToReveal(renderObject, 1.0).offset;
+        viewport.getOffsetToReveal(renderObject, 0.5).offset;
     final double offsetToRevealTop =
         viewport.getOffsetToReveal(renderObject, 0.0).offset;
     return scrollPosition > offsetToRevealBottom &&

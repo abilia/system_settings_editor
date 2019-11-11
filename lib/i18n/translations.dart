@@ -1,11 +1,10 @@
 import 'dart:ui';
 
-Map<Locale, Translated> dictionaries = {
-  Locale('en'): English(),
-  Locale('sv'): Swedish()
-};
-
 abstract class Translated {
+  static Map<Locale, Translated> dictionaries = {
+    Locale('en'): English(),
+    Locale('sv'): Swedish()
+  };
   String get userName;
   String get password;
   String get infoText1;
@@ -15,6 +14,7 @@ abstract class Translated {
   String get now;
   String get fullDay;
   String get week;
+  String get untranslatedExample => 'Example of an yet to be translated string';
 }
 
 class English extends Translated {
@@ -27,8 +27,7 @@ class English extends Translated {
           'Your username/email or password is not correct. Please, try another one.',
       now = 'now',
       fullDay = 'All day',
-      week = 'week'
-      ;
+      week = 'week';
 }
 
 class Swedish extends Translated {

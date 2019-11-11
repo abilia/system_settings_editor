@@ -6,7 +6,7 @@ import 'package:seagull/bloc.dart';
 import 'package:seagull/fakes/fake_activities.dart';
 import 'package:seagull/utils/datetime_utils.dart';
 
-import 'mocks.dart';
+import '../../../mocks.dart';
 
 void main() {
   DayActivitiesBloc dayActivitiesBloc;

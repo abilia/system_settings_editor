@@ -6,7 +6,7 @@ import 'package:seagull/ui/components.dart';
 import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/pages/login_page.dart';
 
-import '../bloc/mocks.dart';
+import '../../mocks.dart';
 
 void main() {
   group('login page widget test', () {

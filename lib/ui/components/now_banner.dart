@@ -4,10 +4,13 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/theme.dart';
 
 class NowBanner extends StatelessWidget {
+  final bool visible;
+  const NowBanner({Key key, this.visible}) : super(key: key);
   @override
   Widget build(BuildContext context) => Positioned(
         right: 0,
-        child: Container(
+        child: AnimatedContainer(
+          height: visible ? 24.0 : 0,
           decoration: BoxDecoration(
               color: AbiliaColors.red, borderRadius: borderRadius),
           child: Padding(
@@ -21,6 +24,7 @@ class NowBanner extends StatelessWidget {
                   .copyWith(color: AbiliaColors.white),
             ),
           ),
+          duration: const Duration(seconds: 1),
         ),
       );
 }

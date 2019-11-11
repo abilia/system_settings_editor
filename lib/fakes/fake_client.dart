@@ -16,7 +16,7 @@ class Fakes {
       type = 'testcase',
       incorrectPassword = 'wrong';
 
-  static MockClient client() => MockClient(
+  static MockClient client([List<Activity> activitiesResponse]) => MockClient(
         (r) {
           final pathSegments = r.url.pathSegments.toSet();
           Response response;
@@ -51,13 +51,13 @@ class Fakes {
               }''', 200);
           }
           if (pathSegments.containsAll(['data', 'activities'])) {
-            response = Response(json.encode(activitiesResponse), 200);
+            response = Response(json.encode(activitiesResponse ?? []), 200);
           }
           return Future.value(response ?? Response('not found', 404));
         },
       );
 
-  static Iterable<Activity> activitiesResponse = []
+  static Iterable<Activity> allActivities = []
     ..addAll(FakeActivities.allPast)
     ..addAll(FakeActivities.oneFullDayEveryDay)
     ..addAll(FakeActivities.oneEveryMinute)

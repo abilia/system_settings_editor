@@ -21,8 +21,11 @@ class App extends StatelessWidget {
   final BaseClient httpClient;
   final UserRepository userRepository;
 
-  App(this.httpClient, {Key key, FlutterSecureStorage secureStorage,} )
-      : userRepository = UserRepository(
+  App(
+    this.httpClient, {
+    Key key,
+    FlutterSecureStorage secureStorage,
+  })  : userRepository = UserRepository(
             httpClient: httpClient,
             secureStorage: secureStorage ?? FlutterSecureStorage()),
         super(key: key);
@@ -56,9 +59,7 @@ class App extends StatelessWidget {
             if (state is Unauthenticated) {
               return LoginPage(userRepository: userRepository);
             }
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Center(child: CircularProgressIndicator());
           },
         ),
       ),

@@ -5,7 +5,7 @@ import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
-import 'mocks.dart';
+import '../../mocks.dart';
 
 void main() {
   group('AuthenticationBloc event order', () {

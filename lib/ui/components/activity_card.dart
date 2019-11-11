@@ -32,19 +32,22 @@ class ActivityCard extends StatelessWidget {
               height: height,
               child: ListTile(
                 leading: hasImage
-                    ? Opacity(
+                    ? AnimatedOpacity(
                         opacity: occasion == Occasion.past ? .5 : 1,
                         child: FadeInThumb(imageFileId: activity.fileId),
+                        duration: const Duration(seconds: 1),
                       )
                     : null,
-                title: Text(activity.title, softWrap: false,
+                title: Text(activity.title,
+                    softWrap: false,
                     style: Theme.of(context).textTheme.subtitle),
                 subtitle: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      activity.fullDay ? Translator.of(context).translate.fullDay :
-                        '${timeFormat.format(start)} - ${timeFormat.format(end)}',
+                        activity.fullDay
+                            ? Translator.of(context).translate.fullDay
+                            : '${timeFormat.format(start)} - ${timeFormat.format(end)}',
                         style: Theme.of(context).textTheme.body1),
                     Row(
                       children: <Widget>[
@@ -61,7 +64,7 @@ class ActivityCard extends StatelessWidget {
               ),
             ),
           ),
-          if (occasion == Occasion.current) NowBanner(),
+          NowBanner(visible: occasion == Occasion.current),
         ]),
       ),
     );

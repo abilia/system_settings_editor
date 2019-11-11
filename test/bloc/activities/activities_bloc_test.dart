@@ -3,7 +3,7 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/models.dart';
 
-import 'mocks.dart';
+import '../../mocks.dart';
 
 void main() {
   group('ActivitiesBloc', () {

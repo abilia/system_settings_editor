@@ -54,13 +54,13 @@ class FakeActivities {
   }
 
   static List<Activity> get allPast => allPastWhen(_now);
-  static List<Activity> allPastWhen(DateTime when, {int hours = 6}) {
+  static List<Activity> allPastWhen(DateTime when, {int minutes = 60}) {
     when = when.subtract(Duration(minutes: 20));
     return [
-      for (int i = 0; i < hours; i++)
+      for (int i = 0; i < minutes; i++)
         Activity.createNew(
             title: 'past $i',
-            startTime: when.subtract(Duration(hours: i)).millisecondsSinceEpoch,
+            startTime: when.subtract(Duration(minutes: i)).millisecondsSinceEpoch,
             duration: Duration(minutes: 15).inMilliseconds,
             category: 0,
             reminderBefore: [],
@@ -72,7 +72,6 @@ class FakeActivities {
 class FakeActivity {
   static Activity onTime([DateTime date]) => startsAt(date ?? _now , 'now');
   static Activity startsOneMinuteAfter([DateTime date]) => startsAt((date ?? _now).add(Duration(minutes: 1)), 'soon start');
-  // static Activity endsOn([DateTime date]) => endsAt((date ?? _now), 'ends soon');
   static Activity past([DateTime date]) => endsAt((date ?? _now).subtract(Duration(minutes: 1)), 'past');
   static Activity future([DateTime date]) => startsAt((date ?? _now).add(Duration(hours: 1)), 'future');
   static Activity dayAfter([DateTime date]) => startsAt((date ?? _now).add(Duration(days: 1)), 'tomorrow');

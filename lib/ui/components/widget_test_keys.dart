@@ -7,5 +7,6 @@ class TestKey {
     passwordInput = Key('password'),
     hidePasswordToggle = Key('hidePassword'),
     loggInButton = Key('loggIn'),
-    loginError = Key('loginError');
+    loginError = Key('loginError'),
+    goToNowButton = Key('goToNow');
 }
