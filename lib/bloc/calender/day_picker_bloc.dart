@@ -11,8 +11,8 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DateTime> {
   DayPickerBloc({@required ClockBloc clockBloc})
       : _initialState = onlyDays(clockBloc.initialState) {
     _clockSubscription = clockBloc
-        .where((dt) => dt.hour == 0 && dt.minute == 0)
-        .listen((now) => _initialState = now);
+        .where((dt) => dt.hour == 0 && dt.minute == 0 && dt.second == 0)
+        .listen((now) => _initialState = onlyDays(now));
   }
 
   @override

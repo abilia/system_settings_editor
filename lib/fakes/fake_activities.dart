@@ -30,7 +30,7 @@ class FakeActivities {
         Activity.createNew(
             title: 'Minute $i',
             startTime: when.add(Duration(minutes: i)).millisecondsSinceEpoch,
-            duration: Duration(minutes: 5).inMilliseconds,
+            duration: Duration(minutes: 1).inMilliseconds,
             category: 0,
             reminderBefore: [],
             alarmType: ALARM_SILENT),

@@ -51,7 +51,7 @@ class Fakes {
               }''', 200);
           }
           if (pathSegments.containsAll(['data', 'activities'])) {
-            response = Response(json.encode(activitiesResponse ?? []), 200);
+            response = Response(json.encode(activitiesResponse ?? allActivities), 200);
           }
           return Future.value(response ?? Response('not found', 404));
         },
