@@ -6,5 +6,5 @@ export 'bloc/activities/activities_occasion/bloc.dart';
 export 'bloc/authentication/bloc.dart';
 export 'bloc/login/bloc.dart';
 export 'bloc/login/form/bloc.dart';
-export 'bloc/calender/bloc.dart';
+export 'bloc/calendar/bloc.dart';
 export 'bloc/clock/clock_bloc.dart';

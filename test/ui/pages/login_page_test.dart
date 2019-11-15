@@ -62,14 +62,14 @@ void main() {
       await tester.pump();
       await tester.tap(find.byKey(TestKey.loggInButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CalenderPage), findsNothing);
+      expect(find.byType(CalendarPage), findsNothing);
 
       await tester.enterText(find.byKey(TestKey.passwordInput), '');
       await tester.enterText(find.byKey(TestKey.userNameInput), Fakes.username);
       await tester.pump();
       await tester.tap(find.byKey(TestKey.loggInButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CalenderPage), findsNothing);
+      expect(find.byType(CalendarPage), findsNothing);
     });
 
     testWidgets('Error message when incorrect username or password',
@@ -86,7 +86,7 @@ void main() {
       await tester.pump();
       await tester.tap(find.byKey(TestKey.loggInButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CalenderPage), findsNothing);
+      expect(find.byType(CalendarPage), findsNothing);
       expect(find.byKey(TestKey.loginError), findsOneWidget);
     });
 
@@ -103,7 +103,7 @@ void main() {
       await tester.pump();
       await tester.tap(find.byKey(TestKey.loggInButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CalenderPage), findsOneWidget);
+      expect(find.byType(CalendarPage), findsOneWidget);
     });
   });
 }

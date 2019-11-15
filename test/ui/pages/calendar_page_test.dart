@@ -9,7 +9,7 @@ import 'package:seagull/ui/pages.dart';
 import '../../mocks.dart';
 
 void main() {
-  group('calender page widget test', () {
+  group('calendar page widget test', () {
     MockSecureStorage mockSecureStorage;
 
     setUp(() {
@@ -24,7 +24,7 @@ void main() {
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
-      expect(find.byType(CalenderPage), findsOneWidget);
+      expect(find.byType(CalendarPage), findsOneWidget);
     });
 
     testWidgets('Should show up empty', (WidgetTester tester) async {

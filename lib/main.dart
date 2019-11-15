@@ -54,7 +54,7 @@ class App extends StatelessWidget {
               return SplashPage();
             }
             if (state is Authenticated) {
-              return CalenderPage(authenticatedState: state);
+              return CalendarPage(authenticatedState: state);
             }
             if (state is Unauthenticated) {
               return LoginPage(userRepository: userRepository);

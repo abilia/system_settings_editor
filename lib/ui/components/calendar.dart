@@ -8,12 +8,12 @@ import 'package:seagull/ui/theme.dart';
 import 'package:intl/intl.dart';
 import 'package:seagull/utils/datetime_utils.dart';
 
-class Calender extends StatefulWidget {
+class Calendar extends StatefulWidget {
   @override
-  _CalenderState createState() => _CalenderState();
+  _CalendarState createState() => _CalendarState();
 }
 
-class _CalenderState extends State<Calender> {
+class _CalendarState extends State<Calendar> {
   final currentActivityKey = GlobalKey<State>();
   final cardHeight = 80.0;
   DayPickerBloc _dayPickerBloc;

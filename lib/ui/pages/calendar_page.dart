@@ -4,9 +4,9 @@ import 'package:seagull/main.dart';
 import 'package:seagull/repositories.dart';
 import 'package:seagull/ui/components.dart';
 
-class CalenderPage extends StatelessWidget {
+class CalendarPage extends StatelessWidget {
   final Authenticated authenticatedState;
-  CalenderPage({@required this.authenticatedState});
+  CalendarPage({@required this.authenticatedState});
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
@@ -38,6 +38,6 @@ class CalenderPage extends StatelessWidget {
           dayActivitiesBloc: BlocProvider.of<DayActivitiesBloc>(context),
         ),
       ),
-    ], child: Calender());
+    ], child: Calendar());
   }
 }
