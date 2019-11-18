@@ -69,11 +69,11 @@ void main() {
         () {
       final nowActivity = FakeActivity.onTime(thisMinute);
       final pastActivity = FakeActivity.past(thisMinute);
-      final laterActivity = FakeActivity.later(thisMinute);
+      final futureActivity = FakeActivity.future(thisMinute);
       final activitiesToday = <ActivityOccasion>[
         ActivityOccasion.forTest(pastActivity, Occasion.past),
         ActivityOccasion.forTest(nowActivity, Occasion.current),
-        ActivityOccasion.forTest(laterActivity, Occasion.future),
+        ActivityOccasion.forTest(futureActivity, Occasion.future),
       ];
 
       final expectedResponse = [
@@ -85,7 +85,7 @@ void main() {
       ];
 
       when(mockActivityRepository.loadActivities()).thenAnswer(
-          (_) => Future.value([nowActivity, pastActivity, laterActivity]));
+          (_) => Future.value([nowActivity, pastActivity, futureActivity]));
       expectLater(
         activitiesOccasionBloc,
         emitsInOrder(expectedResponse),
@@ -130,13 +130,13 @@ void main() {
         () {
       final nowActivity = FakeActivity.onTime(thisMinute);
       final pastActivity = FakeActivity.past(thisMinute);
-      final laterActivity = FakeActivity.later(thisMinute);
+      final futureActivity = FakeActivity.future(thisMinute);
       final fullDayActivity = FakeActivity.fullday(thisMinute);
       final tomorrowActivity = FakeActivity.dayAfter(thisMinute);
       final activitiesToday = <ActivityOccasion>[
         ActivityOccasion.forTest(pastActivity, Occasion.past),
         ActivityOccasion.forTest(nowActivity, Occasion.current),
-        ActivityOccasion.forTest(laterActivity, Occasion.future),
+        ActivityOccasion.forTest(futureActivity, Occasion.future),
       ];
 
       final expectedResponse = [
@@ -153,7 +153,7 @@ void main() {
           Future.value([
             nowActivity,
             pastActivity,
-            laterActivity,
+            futureActivity,
             fullDayActivity,
             tomorrowActivity
           ]));
@@ -225,12 +225,12 @@ void main() {
       final tomorrow = thisMinute.add(Duration(days: 1));
       final nowActivity = FakeActivity.startsAt(tomorrow);
       final pastActivity = FakeActivity.past(tomorrow);
-      final laterActivity = FakeActivity.later(tomorrow);
+      final futureActivity = FakeActivity.future(tomorrow);
       final fulldayActivity = FakeActivity.fulldayWhen(tomorrow);
       final activitiesToday = <ActivityOccasion>[
         ActivityOccasion.forTest(pastActivity, Occasion.future),
         ActivityOccasion.forTest(nowActivity, Occasion.future),
-        ActivityOccasion.forTest(laterActivity, Occasion.future),
+        ActivityOccasion.forTest(futureActivity, Occasion.future),
       ];
 
       final expectedResponse = [
@@ -245,7 +245,7 @@ void main() {
 
       when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
           Future.value(
-              [nowActivity, pastActivity, laterActivity, fulldayActivity]));
+              [nowActivity, pastActivity, futureActivity, fulldayActivity]));
       expectLater(
         activitiesOccasionBloc,
         emitsInOrder(expectedResponse),
@@ -262,12 +262,12 @@ void main() {
       final yesterday = thisMinute.subtract(Duration(days: 1));
       final nowActivity = FakeActivity.startsAt(yesterday);
       final pastActivity = FakeActivity.past(yesterday);
-      final laterActivity = FakeActivity.later(yesterday);
+      final futureActivity = FakeActivity.future(yesterday);
       final fulldayActivity = FakeActivity.fulldayWhen(yesterday);
       final activitiesToday = <ActivityOccasion>[
         ActivityOccasion.forTest(pastActivity, Occasion.past),
         ActivityOccasion.forTest(nowActivity, Occasion.past),
-        ActivityOccasion.forTest(laterActivity, Occasion.past),
+        ActivityOccasion.forTest(futureActivity, Occasion.past),
       ];
 
       final expectedResponse = [
@@ -282,7 +282,7 @@ void main() {
 
       when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
           Future.value(
-              [nowActivity, pastActivity, laterActivity, fulldayActivity]));
+              [nowActivity, pastActivity, futureActivity, fulldayActivity]));
       expectLater(
         activitiesOccasionBloc,
         emitsInOrder(expectedResponse),

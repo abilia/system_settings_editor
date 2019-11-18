@@ -12,7 +12,7 @@ class FakeActivities {
         FakeActivity.endsAt(when),
         FakeActivity.onTime(when),
         FakeActivity.startsOneMinuteAfter(when),
-        FakeActivity.later(when),
+        FakeActivity.future(when),
         FakeActivity.dayBefore(when),
         FakeActivity.twoDaysFromNow(when),
         FakeActivity.longSpanning(when),
@@ -76,7 +76,6 @@ class FakeActivity {
   static Activity future([DateTime date]) => startsAt((date ?? _now).add(Duration(hours: 1)), 'future');
   static Activity dayAfter([DateTime date]) => startsAt((date ?? _now).add(Duration(days: 1)), 'tomorrow');
   static Activity longPast([DateTime date]) => startsAt((date ?? _now).subtract(Duration(hours: 2)), 'long past');
-  static Activity later([DateTime date]) => startsAt((date ?? _now).add(Duration(hours: 1)), 'later');
   static Activity dayBefore([DateTime date]) => startsAt((date ?? _now).subtract(Duration(days: 1)), 'yesterday');
   static Activity twoDaysFromNow([DateTime date]) => startsAt((date ?? _now).add(Duration(days: 2)),'two days from now');
 
