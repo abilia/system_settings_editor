@@ -7,22 +7,36 @@ import 'package:meta/meta.dart';
 import 'package:seagull/models/login.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/end_point.dart';
+import 'package:seagull/repository/repository.dart';
 import 'package:uuid/uuid.dart';
 
-class   UserRepository {
+class UserRepository extends Repository {
   final String _tokenKey = 'tokenKey';
-  final BaseClient httpClient;
   final FlutterSecureStorage secureStorage;
 
-  UserRepository({@required this.httpClient, @required this.secureStorage})
-      : assert(httpClient != null),
-        assert(secureStorage != null);
+  UserRepository({
+    String baseUrl,
+    @required BaseClient client,
+    @required this.secureStorage,
+  })  : assert(secureStorage != null),
+        super(client, baseUrl);
+
+  UserRepository copyWith({
+    String baseUrl,
+    BaseClient client,
+    FlutterSecureStorage secureStorage,
+  }) =>
+      UserRepository(
+        baseUrl: baseUrl ?? this.baseUrl,
+        client: client ?? this.client,
+        secureStorage: secureStorage ?? this.secureStorage,
+      );
 
   Future<String> authenticate({
     @required String username,
     @required String password,
   }) async {
-    final response = await httpClient.post('$BASE_URL/api/v1/auth/client/me',
+    final response = await client.post('$baseUrl/api/v1/auth/client/me',
         headers: {
           HttpHeaders.authorizationHeader:
               'Basic ${base64Encode(utf8.encode('$username:$password'))}',
@@ -43,13 +57,13 @@ class   UserRepository {
   }
 
   Future<User> me(authToken) async {
-    final response =
-        await httpClient.get('$BASE_URL/api/v1/entity/me', headers: authHeader(authToken));
+    final response = await client.get('$baseUrl/api/v1/entity/me',
+        headers: authHeader(authToken));
 
     if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
       var user = User.fromJson(responseJson['me']);
-      return user;  
+      return user;
     } else {
       throw Exception('Could not get me!');
     }
@@ -61,4 +75,8 @@ class   UserRepository {
       secureStorage.write(key: _tokenKey, value: token);
 
   Future<String> getToken() => secureStorage.read(key: _tokenKey);
+
+  @override
+  String toString() =>
+      'UserRepository: { secureStorage: $secureStorage ${super.toString()} }';
 }

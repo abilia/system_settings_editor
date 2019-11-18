@@ -20,7 +20,7 @@ void main() {
 
     testWidgets('Application starts', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        Fakes.client(),
+        client: Fakes.client(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -29,7 +29,7 @@ void main() {
 
     testWidgets('Should show up empty', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        Fakes.client([]),
+        client: Fakes.client([]),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -38,7 +38,7 @@ void main() {
 
     testWidgets('Should show one activity', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        Fakes.client([FakeActivity.onTime()]),
+        client: Fakes.client([FakeActivity.onTime()]),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -47,7 +47,7 @@ void main() {
 
     testWidgets('Should not show Go to now-button', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        Fakes.client([FakeActivity.onTime()]),
+        client: Fakes.client([FakeActivity.onTime()]),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();

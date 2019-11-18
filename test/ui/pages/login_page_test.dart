@@ -21,7 +21,7 @@ void main() {
 
     testWidgets('Application starts', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        Fakes.client(),
+        client: Fakes.client(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -30,7 +30,7 @@ void main() {
 
     testWidgets('Hide password button', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        Fakes.client(),
+        client: Fakes.client(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -53,7 +53,7 @@ void main() {
     testWidgets('Cant login when no password or username',
         (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        Fakes.client(),
+        client: Fakes.client(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -75,7 +75,7 @@ void main() {
     testWidgets('Error message when incorrect username or password',
         (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        Fakes.client(),
+        client: Fakes.client(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -92,7 +92,7 @@ void main() {
 
     testWidgets('Can login', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        Fakes.client(),
+        client: Fakes.client(),
         secureStorage: mockSecureStorage,
       ));
 

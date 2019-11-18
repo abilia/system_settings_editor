@@ -10,23 +10,22 @@ import 'package:seagull/repositories.dart';
 import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
 
-import 'fakes/fake_client.dart';
-
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  runApp(App(Client()));
+  runApp(App());
 }
 
 class App extends StatelessWidget {
-  final BaseClient httpClient;
   final UserRepository userRepository;
 
-  App(
-    this.httpClient, {
+  App({
+    BaseClient client,
+    String baseUrl,
     Key key,
     FlutterSecureStorage secureStorage,
   })  : userRepository = UserRepository(
-            httpClient: httpClient,
+            baseUrl: baseUrl ?? T1,
+            client: client ?? Client(),
             secureStorage: secureStorage ?? FlutterSecureStorage()),
         super(key: key);
 
@@ -34,7 +33,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<AuthenticationBloc>(
       builder: (context) =>
-          AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
+          AuthenticationBloc()..add(AppStarted(userRepository)),
       child: MaterialApp(
         title: 'Seagull',
         theme: abiliaTheme,

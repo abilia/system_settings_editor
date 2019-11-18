@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc.dart';
-import 'package:seagull/main.dart';
 import 'package:seagull/repositories.dart';
 import 'package:seagull/ui/components.dart';
 
@@ -13,8 +12,8 @@ class CalendarPage extends StatelessWidget {
       BlocProvider<ActivitiesBloc>(
           builder: (context) => ActivitiesBloc(
               activitiesRepository: ActivityRepository(
-                  client: (context.ancestorWidgetOfExactType(App) as App)
-                      .httpClient,
+                  client: authenticatedState.userRepository.client,
+                  baseUrl: authenticatedState.userRepository.baseUrl,
                   authToken: authenticatedState.token,
                   userId: authenticatedState.userId))
             ..add(LoadActivities())),

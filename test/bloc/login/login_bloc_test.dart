@@ -12,20 +12,20 @@ void main() {
   group('LoginBloc event order', () {
     LoginBloc loginBloc;
     AuthenticationBloc authenticationBloc;
-
+    UserRepository userRepository;
     setUp(() {
-      final userRepository = UserRepository(httpClient: Fakes.client(), secureStorage: MockSecureStorage());
-      authenticationBloc = AuthenticationBloc(userRepository: userRepository);
-      loginBloc = LoginBloc(
-          userRepository: userRepository,
-          authenticationBloc: authenticationBloc);
+      userRepository = UserRepository(
+          client: Fakes.client(),
+          secureStorage: MockSecureStorage());
+      authenticationBloc = AuthenticationBloc();
+      loginBloc = LoginBloc(authenticationBloc: authenticationBloc);
     });
 
     test('initial state is LoginInitial', () {
       expect(loginBloc.initialState, LoginInitial());
     });
 
-    test('LoginState and AuthenticationState in correct order', () {
+    test('LoginState and AuthenticationState in correct order', () async {
       final List<LoginState> expectedLoginStates = [
         LoginInitial(),
         LoginLoading(),
@@ -33,10 +33,13 @@ void main() {
       ];
       final List<AuthenticationState> expectedAuthenticationStates = [
         AuthenticationUninitialized(),
-        AuthenticationLoading(),
-        Unauthenticated(),
-        AuthenticationLoading(),
-        Authenticated(token: Fakes.token, userId: Fakes.userId),
+        AuthenticationLoading(userRepository),
+        Unauthenticated(userRepository),
+        AuthenticationLoading(userRepository),
+        Authenticated(
+            token: Fakes.token,
+            userId: Fakes.userId,
+            userRepository: userRepository),
       ];
 
       expectLater(
@@ -49,7 +52,8 @@ void main() {
         emitsInOrder(expectedLoginStates),
       );
 
-      authenticationBloc.add(AppStarted());
+      authenticationBloc.add(AppStarted(userRepository));
+      await authenticationBloc.firstWhere((s) => s is AuthenticationInitialized);
       loginBloc
           .add(LoginButtonPressed(username: 'username', password: 'password'));
     });
@@ -67,17 +71,21 @@ void main() {
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc = AuthenticationBloc(userRepository: mockedUserRepository);
-      loginBloc = LoginBloc(authenticationBloc: authenticationBloc, userRepository: mockedUserRepository);
-      when(mockedUserRepository.getToken()).thenAnswer((_) => Future.value(Fakes.token));
-      when(mockedUserRepository.me(any)).thenAnswer((_) => Future.value(User(id: 0, name: '', type: '')));
+      authenticationBloc = AuthenticationBloc()
+        ..add(AppStarted(mockedUserRepository));
+      loginBloc = LoginBloc(authenticationBloc: authenticationBloc);
+      when(mockedUserRepository.getToken())
+          .thenAnswer((_) => Future.value(Fakes.token));
+      when(mockedUserRepository.me(any))
+          .thenAnswer((_) => Future.value(User(id: 0, name: '', type: '')));
     });
 
     test('LoginButtonPressed event calls logges in and saves token', () async {
 
       String username = 'username', password = 'password';
       loginBloc.add(LoginButtonPressed(username: username, password: password));
-      await untilCalled(mockedUserRepository.authenticate(username: username, password: password));
+      await untilCalled(mockedUserRepository.authenticate(
+          username: username, password: password));
       await untilCalled(mockedUserRepository.me(any));
       await untilCalled(mockedUserRepository.persistToken(any));
     });

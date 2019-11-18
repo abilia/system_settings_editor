@@ -142,6 +142,7 @@ class _LoginFormState extends State<LoginForm> {
                             : null,
                   ),
                   padding16,
+                  BackendSwitches(),
                 ],
               ),
             ),
@@ -151,7 +152,7 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  get padding8 => const SizedBox(height: 8,);
+  get padding8 => const SizedBox(height: 8);
   get padding16 => const Spacer(flex: 2);
   get padding32 => const Spacer(flex: 4);
   get padding56 => const Spacer(flex: 6);

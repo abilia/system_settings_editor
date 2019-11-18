@@ -10,3 +10,4 @@ export 'components/now_banner.dart';
 export 'components/seagull_icon.dart';
 export 'components/web_link.dart';
 export 'components/widget_test_keys.dart';
+export 'components/backend_switches.dart';
