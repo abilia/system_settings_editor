@@ -23,3 +23,4 @@ class ActivitiesLoaded extends ActivitiesState {
 }
 
 class ActivitiesNotLoaded extends ActivitiesState {}
+class ActivitiesLoadedFailed extends ActivitiesState {}

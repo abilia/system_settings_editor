@@ -12,7 +12,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
   ActivitiesBloc({@required this.activitiesRepository});
 
   @override
-  ActivitiesState get initialState => ActivitiesLoading();
+  ActivitiesState get initialState => ActivitiesNotLoaded();
 
   @override
   Stream<ActivitiesState> mapEventToState(ActivitiesEvent event) async* {
@@ -27,10 +27,11 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
 
   Stream<ActivitiesState> _mapLoadActivitiesToState() async* {
     try {
+      yield ActivitiesLoading();
       final activities = await activitiesRepository.loadActivities();
       yield ActivitiesLoaded(activities);
     } catch (_) {
-      yield ActivitiesNotLoaded();
+      yield ActivitiesLoadedFailed();
     }
   }
 
