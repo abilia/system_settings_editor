@@ -37,11 +37,9 @@ enum Occasion { past, current, future }
 class ActivityOccasion extends Equatable {
   ActivityOccasion._(this.activity, this.occasion);
   ActivityOccasion(this.activity, {@required DateTime now})
-      : occasion = activity.endDate.isBefore(now) &&
-                !activity.endDate.isAtSameMomentAs(now)
+      : occasion = activity.endDate.isBefore(now)
             ? Occasion.past
-            : activity.startDate.isAfter(now) &&
-                    !activity.startDate.isAtSameMomentAs(now)
+            : activity.startDate.isAfter(now)
                 ? Occasion.future
                 : Occasion.current;
 
@@ -62,7 +60,8 @@ class ActivityOccasion extends Equatable {
 
   @override
   List<Object> get props => [activity, occasion];
-  
+
   @override
-  String toString() => '{ $occasion,  Activity: ( ${activity.title} ${activity.startDate}-${activity.endDate} ) }';
+  String toString() =>
+      '{ $occasion,  Activity: ( ${activity.title} ${activity.startDate}-${activity.endDate} ) }';
 }
