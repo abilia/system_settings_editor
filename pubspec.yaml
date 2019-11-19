@@ -11,12 +11,19 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^0.1.2
-  url_launcher: ^5.2.3
+  url_launcher: ^5.2.5
+  flutter_bloc: ^2.0.0
+  meta: ^1.1.7
+  equatable: ^0.6.1
+  http: ^0.12.0+2
+  uuid: ^2.0.2
+  flutter_secure_storage: ^3.3.1+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.7.3
+  mockito: ^4.1.1
 
 flutter_icons:
   android: true
@@ -27,4 +34,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/graphics/
-    - assets/i18n/
+  fonts:
+   - family:  AbiliaFont
+     fonts:
+      - asset: assets/fonts/AbiliaFont.ttf

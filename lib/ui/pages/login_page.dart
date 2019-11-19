@@ -1,39 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/components/abilia_button.dart';
-import 'package:seagull/ui/components/login_form.dart';
+import 'package:seagull/bloc.dart';
+import 'package:seagull/repositories.dart';
+import 'package:seagull/ui/components.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({
-    Key key,
-  }) : super(key: key);
+  final UserRepository userRepository;
 
-  onLogin() {
-    print("Login!");
-  }
+  const LoginPage({Key key, @required this.userRepository})
+      : assert(userRepository != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final i18n = AppLocalizations.of(context);
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 76.0, left: 16, right: 16),
-                child: LoginForm(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: AbiliaButton(
-                  label: i18n.translate("login"),
-                  onPressed: onLogin,
-                ),
-              )
-            ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LoginBloc>(
+          builder: (context) => LoginBloc(
+            authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+            userRepository: userRepository,
           ),
+        ),
+        BlocProvider<LoginFormBloc>(builder: (context) => LoginFormBloc()),
+      ],
+      child: Scaffold(
+        body: SafeArea(
+          child: LoginForm(),
         ),
       ),
     );

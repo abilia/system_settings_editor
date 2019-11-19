@@ -1,47 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:seagull/ui/pages/login_page.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart';
+
+import 'package:seagull/bloc.dart';
+import 'package:seagull/bloc/bloc_delegate.dart';
+import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/repositories.dart';
+import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
 
-import 'i18n/app_localizations.dart';
+import 'fakes/fake_client.dart';
 
 void main() {
-  runApp(MyApp());
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+  runApp(App(Client()));
 }
 
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
+  final BaseClient httpClient;
+  final UserRepository userRepository;
+
+  App(
+    this.httpClient, {
+    Key key,
+    FlutterSecureStorage secureStorage,
+  })  : userRepository = UserRepository(
+            httpClient: httpClient,
+            secureStorage: secureStorage ?? FlutterSecureStorage()),
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Seagull',
-      theme: abiliaTheme,
-      supportedLocales: AppLocalizations.SUPPORTED_LOCALES,
-      localizationsDelegates: [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      localeResolutionCallback: (locale, supportedLocales) {
-        if (locale == null) {
-          return supportedLocales.first;
-        }
-        for (var supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale.languageCode) {
-            return supportedLocale;
-          }
-        }
-
-        // English should be the first one and also the default.
-        return supportedLocales.first;
-      },
-      home: MyHomePage(),
+    return BlocProvider<AuthenticationBloc>(
+      builder: (context) =>
+          AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
+      child: MaterialApp(
+        title: 'Seagull',
+        theme: abiliaTheme,
+        supportedLocales: Translator.supportedLocals,
+        localizationsDelegates: [
+          Translator.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
+            .firstWhere((l) => l.languageCode == locale?.languageCode,
+                // English should be the first one and also the default.
+                orElse: () => supportedLocales.first),
+        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+            if (state is AuthenticationUninitialized) {
+              return SplashPage();
+            }
+            if (state is Authenticated) {
+              return CalendarPage(authenticatedState: state);
+            }
+            if (state is Unauthenticated) {
+              return LoginPage(userRepository: userRepository);
+            }
+            return Center(child: CircularProgressIndicator());
+          },
+        ),
+      ),
     );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return LoginPage();
   }
 }
