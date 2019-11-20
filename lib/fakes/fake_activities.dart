@@ -33,6 +33,7 @@ class FakeActivities {
             duration: Duration(minutes: 1).inMilliseconds,
             category: 0,
             reminderBefore: [],
+            fileId:  i % 3 == 0 ? 'fileId' : null,
             alarmType: ALARM_SILENT),
     ];
   }
@@ -49,6 +50,7 @@ class FakeActivities {
             duration: Duration(minutes: 5).inMilliseconds,
             category: 0,
             reminderBefore: [],
+            fileId:  i % 3 == 0 ? 'fileId' : null,
             alarmType: ALARM_SILENT),
     ];
   }
@@ -64,6 +66,7 @@ class FakeActivities {
             duration: Duration(minutes: 15).inMilliseconds,
             category: 0,
             reminderBefore: [],
+            fileId:  i % 3 == 0 ? 'fileId' : null,
             alarmType: ALARM_SILENT),
     ];
   }
@@ -79,45 +82,49 @@ class FakeActivity {
   static Activity dayBefore([DateTime date]) => startsAt((date ?? _now).subtract(Duration(days: 1)), 'yesterday');
   static Activity twoDaysFromNow([DateTime date]) => startsAt((date ?? _now).add(Duration(days: 2)),'two days from now');
 
-  static Activity startsAt(DateTime when, [String title]) => Activity.createNew(
+  static Activity startsAt(DateTime when, [String title, bool image = false]) => Activity.createNew(
       title: title ?? '$when',
       startTime: when.millisecondsSinceEpoch,
       duration: Duration(hours: 1).inMilliseconds,
       category: 0,
       reminderBefore: [],
+      fileId: image ? 'image' : null,
       alarmType: ALARM_SILENT);
 
-  static Activity endsAt(DateTime when, [String title]) => Activity.createNew(
+  static Activity endsAt(DateTime when, [String title, bool image = false]) => Activity.createNew(
       title: title ?? 'ends at $when',
       startTime: when.subtract(Duration(hours: 1)).millisecondsSinceEpoch,
       duration: Duration(hours: 1).inMilliseconds,
       category: 0,
       reminderBefore: [],
+      fileId: image ? 'image' : null,
       alarmType: ALARM_SILENT);
 
-  static Activity longSpanning(DateTime when) => Activity.createNew(
-      title: 'most of day',
+  static Activity longSpanning(DateTime when, [String title = 'most of day', bool image = false]) => Activity.createNew(
+      title: title,
       startTime: DateTime(when.year, when.month, when.day).millisecondsSinceEpoch,
       duration: Duration(hours: 16).inMilliseconds,
       category: 0,
       reminderBefore: [0, 1, 2],
+      fileId: image ? 'image' : null,
       alarmType: ALARM_SILENT);
 
 
   static Activity fullday([DateTime date]) => fulldayWhen(date ?? _now);
   static Activity yesterdayFullday([DateTime date]) => fulldayWhen((date ?? _now).subtract(Duration(days: 1)), 'yesterday');
   static Activity tomorrowFullday([DateTime date]) => fulldayWhen((date ?? _now).add(Duration(days: 1))).copyWith(title: 'tomorrow');
-  static Activity fulldayWhen(DateTime when, [String title]) => Activity.createNew(
+  static Activity fulldayWhen(DateTime when, [String title = 'most of day', bool image = false]) => Activity.createNew(
       title: '$title fullday',
       startTime: when.subtract(Duration(hours: 2)).millisecondsSinceEpoch,
       duration: Duration(hours: 1).inMilliseconds,
       category: 0,
       fullDay: true,
       reminderBefore: [60 * 60 * 1000],
+      fileId: image ? 'image' : null,
       alarmType: ALARM_SILENT);
 
   static Activity get longName => longNameWhen(_now);
-  static Activity longNameWhen(DateTime when) => Activity.createNew(
+  static Activity longNameWhen(DateTime when, [bool image = false]) => Activity.createNew(
       title:
           'long10 long9 long8 long7 long6 long5 long4 long3 long2 long1 long0 long-1 long-2 long-3 long-4 long-5 long-6 long-7 long-8 long-9 past',
       startTime: when.subtract(Duration(hours: 2)).millisecondsSinceEpoch,
@@ -125,5 +132,6 @@ class FakeActivity {
       category: 0,
       infoItem: '{some:info,in:json}',
       reminderBefore: [60 * 60 * 1000],
+      fileId: image ? 'image' : null,
       alarmType: ALARM_SILENT);
 }

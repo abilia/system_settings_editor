@@ -23,7 +23,7 @@ class BackendSwitches extends StatelessWidget {
           ).followedBy([BackEndButton(
             'Mock',
             userRepository: state.userRepository,
-            backEndUrl: '',
+            backEndUrl: 'https://via.placeholder.com/190/CA0733/FFFFFF&',
             client: Fakes.client(),
           )]).toList()
         );
