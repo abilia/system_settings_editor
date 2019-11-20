@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:seagull/fakes/fake_push.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/ui/components.dart';
@@ -22,6 +23,7 @@ void main() {
     testWidgets('Application starts', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client(),
+        FakePush(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -31,6 +33,7 @@ void main() {
     testWidgets('Hide password button', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client(),
+        FakePush(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -54,6 +57,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client(),
+        FakePush(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -76,6 +80,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client(),
+        FakePush(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -93,6 +98,7 @@ void main() {
     testWidgets('Can login', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client(),
+        FakePush(),
         secureStorage: mockSecureStorage,
       ));
 

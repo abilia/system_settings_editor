@@ -3,6 +3,7 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/authentication/bloc.dart';
 import 'package:seagull/bloc/login/bloc.dart';
 import 'package:seagull/fakes/fake_client.dart';
+import 'package:seagull/fakes/fake_push.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
@@ -14,11 +15,13 @@ void main() {
     AuthenticationBloc authenticationBloc;
 
     setUp(() {
-      final userRepository = UserRepository(httpClient: Fakes.client(), secureStorage: MockSecureStorage());
+      final userRepository = UserRepository(
+          httpClient: Fakes.client(), secureStorage: MockSecureStorage());
       authenticationBloc = AuthenticationBloc(userRepository: userRepository);
       loginBloc = LoginBloc(
           userRepository: userRepository,
-          authenticationBloc: authenticationBloc);
+          authenticationBloc: authenticationBloc,
+          push: FakePush());
     });
 
     test('initial state is LoginInitial', () {
@@ -67,17 +70,23 @@ void main() {
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc = AuthenticationBloc(userRepository: mockedUserRepository);
-      loginBloc = LoginBloc(authenticationBloc: authenticationBloc, userRepository: mockedUserRepository);
-      when(mockedUserRepository.getToken()).thenAnswer((_) => Future.value(Fakes.token));
-      when(mockedUserRepository.me(any)).thenAnswer((_) => Future.value(User(id: 0, name: '', type: '')));
+      authenticationBloc =
+          AuthenticationBloc(userRepository: mockedUserRepository);
+      loginBloc = LoginBloc(
+          authenticationBloc: authenticationBloc,
+          userRepository: mockedUserRepository,
+          push: FakePush());
+      when(mockedUserRepository.getToken())
+          .thenAnswer((_) => Future.value(Fakes.token));
+      when(mockedUserRepository.me(any))
+          .thenAnswer((_) => Future.value(User(id: 0, name: '', type: '')));
     });
 
     test('LoginButtonPressed event calls logges in and saves token', () async {
-
       String username = 'username', password = 'password';
       loginBloc.add(LoginButtonPressed(username: username, password: password));
-      await untilCalled(mockedUserRepository.authenticate(username: username, password: password));
+      await untilCalled(mockedUserRepository.authenticate(
+          username: username, password: password, pushToken: 'fakeToken'));
       await untilCalled(mockedUserRepository.me(any));
       await untilCalled(mockedUserRepository.persistToken(any));
     });

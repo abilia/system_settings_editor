@@ -5,8 +5,10 @@ import 'package:http/http.dart';
 
 import 'package:seagull/bloc.dart';
 import 'package:seagull/bloc/bloc_delegate.dart';
+import 'package:seagull/bloc/push/push_bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/repositories.dart';
+import 'package:seagull/repository/push.dart';
 import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
 
@@ -14,27 +16,37 @@ import 'fakes/fake_client.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  runApp(App(Client()));
+  runApp(App(Client(), FirebasePush()));
 }
 
 class App extends StatelessWidget {
   final BaseClient httpClient;
   final UserRepository userRepository;
+  final FirebasePush push;
 
   App(
-    this.httpClient, {
+    this.httpClient,
+    this.push, {
     Key key,
     FlutterSecureStorage secureStorage,
   })  : userRepository = UserRepository(
-            httpClient: httpClient,
-            secureStorage: secureStorage ?? FlutterSecureStorage()),
+          httpClient: httpClient,
+          secureStorage: secureStorage ?? FlutterSecureStorage(),
+        ),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthenticationBloc>(
-      builder: (context) =>
-          AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthenticationBloc>(
+            builder: (context) =>
+                AuthenticationBloc(userRepository: userRepository)
+                  ..add(AppStarted())),
+        BlocProvider<PushBloc>(
+          builder: (context) => PushBloc(),
+        )
+      ],
       child: MaterialApp(
         title: 'Seagull',
         theme: abiliaTheme,
@@ -57,12 +69,19 @@ class App extends StatelessWidget {
               return CalendarPage(authenticatedState: state);
             }
             if (state is Unauthenticated) {
-              return LoginPage(userRepository: userRepository);
+              return LoginPage(
+                userRepository: userRepository,
+                push: push,
+              );
             }
             return Center(child: CircularProgressIndicator());
           },
         ),
       ),
     );
+  }
+
+  void initPush(BuildContext context) {
+    push.initPushListeners(context);
   }
 }

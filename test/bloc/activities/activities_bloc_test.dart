@@ -12,8 +12,9 @@ void main() {
     MockActivityRepository mockActivityRepository;
     setUp(() {
       mockActivityRepository = MockActivityRepository();
-      activitiesBloc =
-          ActivitiesBloc(activitiesRepository: mockActivityRepository);
+      activitiesBloc = ActivitiesBloc(
+          activitiesRepository: mockActivityRepository,
+          pushBloc: MockPushBloc());
     });
 
     test('initial state is ActivitiesNotLoaded', () {

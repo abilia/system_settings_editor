@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/fakes/fake_activities.dart';
+import 'package:seagull/fakes/fake_push.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/ui/components.dart';
@@ -21,6 +22,7 @@ void main() {
     testWidgets('Application starts', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client(),
+        FakePush(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -30,6 +32,7 @@ void main() {
     testWidgets('Should show up empty', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client([]),
+        FakePush(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -39,15 +42,18 @@ void main() {
     testWidgets('Should show one activity', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client([FakeActivity.onTime()]),
+        FakePush(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsOneWidget);
     });
 
-    testWidgets('Should not show Go to now-button', (WidgetTester tester) async {
+    testWidgets('Should not show Go to now-button',
+        (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client([FakeActivity.onTime()]),
+        FakePush(),
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();

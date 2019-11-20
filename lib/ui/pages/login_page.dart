@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/repositories.dart';
+import 'package:seagull/repository/push.dart';
 import 'package:seagull/ui/components.dart';
 
 class LoginPage extends StatelessWidget {
   final UserRepository userRepository;
+  final FirebasePush push;
 
-  const LoginPage({Key key, @required this.userRepository})
+  const LoginPage({Key key, @required this.userRepository, @required this.push})
       : assert(userRepository != null),
         super(key: key);
 
@@ -18,6 +20,7 @@ class LoginPage extends StatelessWidget {
           builder: (context) => LoginBloc(
             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
             userRepository: userRepository,
+            push: push,
           ),
         ),
         BlocProvider<LoginFormBloc>(builder: (context) => LoginFormBloc()),
