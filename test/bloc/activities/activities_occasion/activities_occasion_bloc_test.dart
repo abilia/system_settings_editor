@@ -4,7 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/fakes/fake_activities.dart';
-import 'package:seagull/utils/datetime_utils.dart';
+import 'package:seagull/models.dart';
+import 'package:seagull/utils.dart';
 
 import '../../../mocks.dart';
 
@@ -14,15 +15,18 @@ void main() {
   ClockBloc clockBloc;
   ActivitiesBloc activitiesBloc;
   ActivitiesOccasionBloc activitiesOccasionBloc;
-  DateTime thisMinute = onlyMinutes(DateTime(2006, 06, 06, 06, 06));
+  DateTime initialTime = onlyMinutes(DateTime(2006, 06, 06, 06, 06, 06, 06));
+  DateTime initialMinutes = onlyMinutes(initialTime);
+  DateTime initialDay = onlyDays(initialTime);
+  DateTime nextDay = initialDay.add(Duration(days: 1));
+  DateTime previusDay = initialDay.subtract(Duration(days: 1));
   MockActivityRepository mockActivityRepository;
   StreamController<DateTime> mockedTicker;
 
   group('ActivitiesOccasionBloc', () {
     setUp(() {
       mockedTicker = StreamController<DateTime>();
-
-      clockBloc = ClockBloc(mockedTicker.stream, initialTime: thisMinute);
+      clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
       dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
       mockActivityRepository = MockActivityRepository();
       activitiesBloc =
@@ -35,81 +39,74 @@ void main() {
 
     test('initial state is ActivitiesOccasionLoading', () {
       expect(activitiesOccasionBloc.initialState,
-          ActivitiesOccasionLoading(thisMinute));
-      expect(
-          activitiesOccasionBloc.state, ActivitiesOccasionLoading(thisMinute));
+          ActivitiesOccasionLoading(initialMinutes, initialDay));
+      expect(activitiesOccasionBloc.state,
+          ActivitiesOccasionLoading(initialMinutes, initialDay));
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder([ActivitiesOccasionLoading(thisMinute)]),
+        emitsInOrder([ActivitiesOccasionLoading(initialMinutes, initialDay)]),
       );
     });
+
     test(
         'state is ActivitiesOccasionLoaded when ActivitiesBloc loadeds activities',
         () {
-      final activities = <ActivityOccasion>[];
-      final expectedResponse = [
-        ActivitiesOccasionLoading(thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: activities,
-            fullDayActivities: activities,
-            now: thisMinute),
-      ];
+      // Arrange
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value(Iterable.empty()));
-
+      // Act
       activitiesBloc.add(LoadActivities());
+      // Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder(expectedResponse),
+        emitsInOrder([
+          ActivitiesOccasionLoading(initialMinutes, initialDay),
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[],
+            fullDayActivities: <ActivityOccasion>[],
+            now: initialMinutes,
+            day: initialDay,
+          ),
+        ]),
       );
     });
 
-    test(
-        'ActivitiesOccasionLoaded only loads todays activities with correct occasion in correct order',
+    test('only loads todays activities with correct occasion in correct order',
         () {
-      final nowActivity = FakeActivity.onTime(thisMinute);
-      final pastActivity = FakeActivity.past(thisMinute);
-      final futureActivity = FakeActivity.future(thisMinute);
-      final activitiesToday = <ActivityOccasion>[
-        ActivityOccasion.forTest(pastActivity, Occasion.past),
-        ActivityOccasion.forTest(nowActivity, Occasion.current),
-        ActivityOccasion.forTest(futureActivity, Occasion.future),
-      ];
-
-      final expectedResponse = [
-        ActivitiesOccasionLoading(thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: activitiesToday,
-            fullDayActivities: <ActivityOccasion>[],
-            now: thisMinute),
-      ];
-
+      // Arrange
+      final nowActivity = FakeActivity.onTime(initialMinutes);
+      final pastActivity = FakeActivity.past(initialMinutes);
+      final futureActivity = FakeActivity.future(initialMinutes);
       when(mockActivityRepository.loadActivities()).thenAnswer(
           (_) => Future.value([nowActivity, pastActivity, futureActivity]));
+
+      // Act
+      activitiesBloc.add(LoadActivities());
+      activitiesBloc.add(LoadActivities());
+
+      // Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder(expectedResponse),
+        emitsInOrder([
+          ActivitiesOccasionLoading(initialMinutes, initialDay),
+          ActivitiesOccasionLoaded(
+              activities: [
+                ActivityOccasion.forTest(pastActivity, Occasion.past),
+                ActivityOccasion.forTest(nowActivity, Occasion.current),
+                ActivityOccasion.forTest(futureActivity, Occasion.future),
+              ],
+              fullDayActivities: <ActivityOccasion>[],
+              now: initialMinutes,
+              day: initialDay),
+        ]),
       );
-
-      activitiesBloc.add(LoadActivities());
-      activitiesBloc.add(LoadActivities());
     });
 
-    test('ActivitiesOccasionLoaded fullday activities', () {
-      final fullDayActivity = FakeActivity.fullday(thisMinute);
-      final tomorrowFullday = FakeActivity.tomorrowFullday(thisMinute);
-      final yesterdayFullday = FakeActivity.yesterdayFullday(thisMinute);
-
-      final expectedResponse = [
-        ActivitiesOccasionLoading(thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: <ActivityOccasion>[],
-            fullDayActivities: [
-              ActivityOccasion.forTest(fullDayActivity, Occasion.future)
-            ],
-            now: thisMinute),
-      ];
-
+    test('fullday activities', () {
+      // Arrange
+      final fullDayActivity = FakeActivity.fullday(initialMinutes);
+      final tomorrowFullday = FakeActivity.tomorrowFullday(initialMinutes);
+      final yesterdayFullday = FakeActivity.yesterdayFullday(initialMinutes);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([
                 yesterdayFullday,
@@ -117,38 +114,35 @@ void main() {
                 fullDayActivity,
               ]));
 
+      // Act
+      activitiesBloc.add(LoadActivities());
+
+      // Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder(expectedResponse),
-      );
-
-      activitiesBloc.add(LoadActivities());
-    });
-
-    test(
-        'ActivitiesOccasionLoaded only loads todays activities with correct occasion in correct order and fullday activities',
-        () {
-      final nowActivity = FakeActivity.onTime(thisMinute);
-      final pastActivity = FakeActivity.past(thisMinute);
-      final futureActivity = FakeActivity.future(thisMinute);
-      final fullDayActivity = FakeActivity.fullday(thisMinute);
-      final tomorrowActivity = FakeActivity.dayAfter(thisMinute);
-      final activitiesToday = <ActivityOccasion>[
-        ActivityOccasion.forTest(pastActivity, Occasion.past),
-        ActivityOccasion.forTest(nowActivity, Occasion.current),
-        ActivityOccasion.forTest(futureActivity, Occasion.future),
-      ];
-
-      final expectedResponse = [
-        ActivitiesOccasionLoading(thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: activitiesToday,
+        emitsInOrder([
+          ActivitiesOccasionLoading(initialMinutes, initialDay),
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[],
             fullDayActivities: [
               ActivityOccasion.forTest(fullDayActivity, Occasion.future)
             ],
-            now: thisMinute),
-      ];
+            now: initialMinutes,
+            day: initialDay,
+          ),
+        ]),
+      );
+    });
 
+    test(
+        'only loads todays activities with correct occasion in correct order and fullday activities',
+        () {
+      // Arrange
+      final nowActivity = FakeActivity.onTime(initialMinutes);
+      final pastActivity = FakeActivity.past(initialMinutes);
+      final futureActivity = FakeActivity.future(initialMinutes);
+      final fullDayActivity = FakeActivity.fullday(initialMinutes);
+      final tomorrowActivity = FakeActivity.dayAfter(initialMinutes);
       when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
           Future.value([
             nowActivity,
@@ -157,49 +151,36 @@ void main() {
             fullDayActivity,
             tomorrowActivity
           ]));
+
+      // Act
+      activitiesBloc.add(LoadActivities());
+
+      // Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder(expectedResponse),
+        emitsInOrder([
+          ActivitiesOccasionLoading(initialMinutes, initialDay),
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[
+              ActivityOccasion.forTest(pastActivity, Occasion.past),
+              ActivityOccasion.forTest(nowActivity, Occasion.current),
+              ActivityOccasion.forTest(futureActivity, Occasion.future),
+            ],
+            fullDayActivities: [
+              ActivityOccasion.forTest(fullDayActivity, Occasion.future)
+            ],
+            now: initialMinutes,
+            day: initialDay,
+          ),
+        ]),
       );
-
-      activitiesBloc.add(LoadActivities());
     });
 
-    test(
-        'ActivitiesOccasionLoaded fullday activities, today, tomorrow, yesterday',
-        () async {
-      final fullDayActivity = FakeActivity.fullday(thisMinute);
-      final tomorrowFullday = FakeActivity.tomorrowFullday(thisMinute);
-      final yesterdayFullday = FakeActivity.yesterdayFullday(thisMinute);
-
-      final expectedResponse = [
-        ActivitiesOccasionLoading(thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: <ActivityOccasion>[],
-            fullDayActivities: [
-              ActivityOccasion.forTest(fullDayActivity, Occasion.future)
-            ],
-            now: thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: <ActivityOccasion>[],
-            fullDayActivities: [
-              ActivityOccasion.forTest(tomorrowFullday, Occasion.future)
-            ],
-            now: thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: <ActivityOccasion>[],
-            fullDayActivities: [
-              ActivityOccasion.forTest(fullDayActivity, Occasion.future)
-            ],
-            now: thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: <ActivityOccasion>[],
-            fullDayActivities: [
-              ActivityOccasion.forTest(yesterdayFullday, Occasion.past)
-            ],
-            now: thisMinute),
-      ];
-
+    test('fullday activities, today, tomorrow, yesterday', () async {
+      // Arrange
+      final fullDayActivity = FakeActivity.fullday(initialMinutes);
+      final tomorrowFullday = FakeActivity.tomorrowFullday(initialMinutes);
+      final yesterdayFullday = FakeActivity.yesterdayFullday(initialMinutes);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([
                 yesterdayFullday,
@@ -207,178 +188,326 @@ void main() {
                 fullDayActivity,
               ]));
 
-      expectLater(
-        activitiesOccasionBloc,
-        emitsInOrder(expectedResponse),
-      );
-
+      // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesOccasionBloc.any((s) => s is ActivitiesOccasionLoaded);
+      await activitiesBloc.any((s) => s is ActivitiesLoaded);
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(PreviousDay());
       dayPickerBloc.add(PreviousDay());
+
+      // Assert
+      expectLater(
+        activitiesOccasionBloc,
+        emitsInOrder([
+          ActivitiesOccasionLoading(initialMinutes, initialDay),
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[],
+            fullDayActivities: [
+              ActivityOccasion.forTest(fullDayActivity, Occasion.future)
+            ],
+            now: initialMinutes,
+            day: initialDay,
+          ),
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[],
+            fullDayActivities: [
+              ActivityOccasion.forTest(tomorrowFullday, Occasion.future)
+            ],
+            now: initialMinutes,
+            day: nextDay,
+          ),
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[],
+            fullDayActivities: [
+              ActivityOccasion.forTest(fullDayActivity, Occasion.future)
+            ],
+            now: initialMinutes,
+            day: initialDay,
+          ),
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[],
+            fullDayActivities: [
+              ActivityOccasion.forTest(yesterdayFullday, Occasion.past)
+            ],
+            now: initialMinutes,
+            day: previusDay,
+          ),
+        ]),
+      );
     });
 
     test(
-        'ActivitiesOccasionLoaded only loads tomorrows activities with correct occasion in correct order and tomorrows full day',
+        'only loads tomorrows activities with correct occasion in correct order and tomorrows full day',
         () {
-      final tomorrow = thisMinute.add(Duration(days: 1));
+      //Arrange
+      final tomorrow = initialMinutes.add(Duration(days: 1));
       final nowActivity = FakeActivity.startsAt(tomorrow);
       final pastActivity = FakeActivity.past(tomorrow);
       final futureActivity = FakeActivity.future(tomorrow);
       final fulldayActivity = FakeActivity.fulldayWhen(tomorrow);
-      final activitiesToday = <ActivityOccasion>[
-        ActivityOccasion.forTest(pastActivity, Occasion.future),
-        ActivityOccasion.forTest(nowActivity, Occasion.future),
-        ActivityOccasion.forTest(futureActivity, Occasion.future),
-      ];
-
-      final expectedResponse = [
-        ActivitiesOccasionLoading(thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: activitiesToday,
-            fullDayActivities: [
-              ActivityOccasion.forTest(fulldayActivity, Occasion.future)
-            ],
-            now: thisMinute),
-      ];
-
       when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
           Future.value(
               [nowActivity, pastActivity, futureActivity, fulldayActivity]));
+      //Act
+      activitiesBloc.add(LoadActivities());
+      dayPickerBloc.add(NextDay());
+      //Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder(expectedResponse),
+        emitsInOrder([
+          ActivitiesOccasionLoading(initialMinutes, initialDay),
+          ActivitiesOccasionLoaded(
+            activities: [
+              ActivityOccasion.forTest(pastActivity, Occasion.future),
+              ActivityOccasion.forTest(nowActivity, Occasion.future),
+              ActivityOccasion.forTest(futureActivity, Occasion.future),
+            ],
+            fullDayActivities: [
+              ActivityOccasion.forTest(fulldayActivity, Occasion.future)
+            ],
+            now: initialMinutes,
+            day: nextDay,
+          ),
+        ]),
       );
-
-      activitiesBloc.add(LoadActivities());
-
-      dayPickerBloc.add(NextDay());
     });
 
     test(
-        'ActivitiesOccasionLoaded only loads yesterday activities with correct occasion in correct order and yesterday full day',
+        'only loads yesterday activities with correct occasion in correct order and yesterday full day',
         () {
-      final yesterday = thisMinute.subtract(Duration(days: 1));
+      //Arrange
+      final yesterday = initialMinutes.subtract(Duration(days: 1));
       final nowActivity = FakeActivity.startsAt(yesterday);
       final pastActivity = FakeActivity.past(yesterday);
       final futureActivity = FakeActivity.future(yesterday);
       final fulldayActivity = FakeActivity.fulldayWhen(yesterday);
-      final activitiesToday = <ActivityOccasion>[
-        ActivityOccasion.forTest(pastActivity, Occasion.past),
-        ActivityOccasion.forTest(nowActivity, Occasion.past),
-        ActivityOccasion.forTest(futureActivity, Occasion.past),
-      ];
-
-      final expectedResponse = [
-        ActivitiesOccasionLoading(thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: activitiesToday,
-            fullDayActivities: [
-              ActivityOccasion.forTest(fulldayActivity, Occasion.past)
-            ],
-            now: thisMinute),
-      ];
-
       when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
           Future.value(
               [nowActivity, pastActivity, futureActivity, fulldayActivity]));
+      //Act
+      activitiesBloc.add(LoadActivities());
+      dayPickerBloc.add(PreviousDay());
+      //Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder(expectedResponse),
+        emitsInOrder([
+          ActivitiesOccasionLoading(initialMinutes, initialDay),
+          ActivitiesOccasionLoaded(
+            activities: [
+              ActivityOccasion.forTest(pastActivity, Occasion.past),
+              ActivityOccasion.forTest(nowActivity, Occasion.past),
+              ActivityOccasion.forTest(futureActivity, Occasion.past),
+            ],
+            fullDayActivities: [
+              ActivityOccasion.forTest(fulldayActivity, Occasion.past)
+            ],
+            now: initialMinutes,
+            day: previusDay,
+          ),
+        ]),
       );
-
-      activitiesBloc.add(LoadActivities());
-
-      dayPickerBloc.add(PreviousDay());
     });
 
     test('Activity ends this minute is current', () {
-      final endsSoon = FakeActivity.endsAt(thisMinute);
-      final activitiesToday = <ActivityOccasion>[
-        ActivityOccasion.forTest(endsSoon, Occasion.current),
-      ];
-
-      final expectedResponse = [
-        ActivitiesOccasionLoading(thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: activitiesToday,
-            fullDayActivities: [],
-            now: thisMinute),
-      ];
-
+      // Arrange
+      final endsSoon = FakeActivity.endsAt(initialMinutes);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([endsSoon]));
+
+      // Act
+      activitiesBloc.add(LoadActivities());
+
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder(expectedResponse),
+        emitsInOrder([
+          ActivitiesOccasionLoading(initialMinutes, initialDay),
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[
+              ActivityOccasion.forTest(endsSoon, Occasion.current),
+            ],
+            fullDayActivities: [],
+            now: initialMinutes,
+            day: initialDay,
+          ),
+        ]),
       );
-      activitiesBloc.add(LoadActivities());
     });
 
     test('Activity start this minute is current', () {
-      final startsNow = FakeActivity.startsAt(thisMinute);
-      final activitiesToday = <ActivityOccasion>[
-        ActivityOccasion.forTest(startsNow, Occasion.current),
-      ];
-
-      final expectedResponse = [
-        ActivitiesOccasionLoading(thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: activitiesToday,
-            fullDayActivities: [],
-            now: thisMinute),
-      ];
-
+      // Arrange
+      final startsNow = FakeActivity.startsAt(initialMinutes);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([startsNow]));
+
+      // Act
+      activitiesBloc.add(LoadActivities());
+
+      // Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder(expectedResponse),
+        emitsInOrder([
+          ActivitiesOccasionLoading(initialMinutes, initialDay),
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[
+              ActivityOccasion.forTest(startsNow, Occasion.current),
+            ],
+            fullDayActivities: [],
+            now: initialMinutes,
+            day: initialDay,
+          ),
+        ]),
       );
-      activitiesBloc.add(LoadActivities());
     });
 
     test('Changing now changing order', () async {
-      final nextMinute = thisMinute.add(Duration(minutes: 1));
-      final nowActivity = FakeActivity.longSpanning(thisMinute);
-      final endsSoonActivity = FakeActivity.endsAt(thisMinute);
-      final startSoonActivity = FakeActivity.startsOneMinuteAfter(thisMinute);
-      final activitiesOrder1 = <ActivityOccasion>[
-        ActivityOccasion.forTest(nowActivity, Occasion.current),
-        ActivityOccasion.forTest(endsSoonActivity, Occasion.current),
-        ActivityOccasion.forTest(startSoonActivity, Occasion.future),
-      ];
-
-      final activitiesOrder2 = <ActivityOccasion>[
-        ActivityOccasion.forTest(endsSoonActivity, Occasion.past),
-        ActivityOccasion.forTest(nowActivity, Occasion.current),
-        ActivityOccasion.forTest(startSoonActivity, Occasion.current),
-      ];
-
-      final expectedResponse = [
-        ActivitiesOccasionLoaded(
-            activities: activitiesOrder1,
-            fullDayActivities: <ActivityOccasion>[],
-            now: thisMinute),
-        ActivitiesOccasionLoaded(
-            activities: activitiesOrder2,
-            fullDayActivities: <ActivityOccasion>[],
-            now: nextMinute),
-      ];
+      // Arrange
+      final nextMinute = initialMinutes.add(Duration(minutes: 1));
+      final nowActivity = FakeActivity.longSpanning(initialMinutes);
+      final endsSoonActivity = FakeActivity.endsAt(initialMinutes);
+      final startSoonActivity =
+          FakeActivity.startsOneMinuteAfter(initialMinutes);
       when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
           Future.value([nowActivity, startSoonActivity, endsSoonActivity]));
 
+      // Act
       activitiesBloc.add(LoadActivities());
-
       await activitiesOccasionBloc.any((s) => s is ActivitiesOccasionLoaded);
-
       mockedTicker.add(nextMinute);
 
+      // Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder(expectedResponse),
+        emitsInOrder([
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[
+              ActivityOccasion.forTest(nowActivity, Occasion.current),
+              ActivityOccasion.forTest(endsSoonActivity, Occasion.current),
+              ActivityOccasion.forTest(startSoonActivity, Occasion.future),
+            ],
+            fullDayActivities: <ActivityOccasion>[],
+            now: initialMinutes,
+            day: initialDay,
+          ),
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[
+              ActivityOccasion.forTest(endsSoonActivity, Occasion.past),
+              ActivityOccasion.forTest(nowActivity, Occasion.current),
+              ActivityOccasion.forTest(startSoonActivity, Occasion.current),
+            ],
+            fullDayActivities: <ActivityOccasion>[],
+            now: nextMinute,
+            day: initialDay,
+          ),
+        ]),
       );
+    });
+
+    tearDown(() {
+      dayPickerBloc.close();
+      activitiesBloc.close();
+      activitiesOccasionBloc.close();
+      dayActivitiesBloc.close();
+      clockBloc.close();
+      mockedTicker.close();
+    });
+  });
+
+  group('ActivitiesOccasionBloc recurring', () {
+    setUp(() {
+      mockedTicker = StreamController<DateTime>();
+      clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
+      dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+      mockActivityRepository = MockActivityRepository();
+      activitiesBloc =
+          ActivitiesBloc(activitiesRepository: mockActivityRepository);
+      dayActivitiesBloc = DayActivitiesBloc(
+          dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
+      activitiesOccasionBloc = ActivitiesOccasionBloc(
+          clockBloc: clockBloc, dayActivitiesBloc: dayActivitiesBloc);
+    });
+
+    test('Shows recurring past, present and future', () async {
+      // Arrange
+      final longAgo = initialMinutes.subtract(Duration(days: 1111));
+      final weekendActivity = FakeActivity.reocurrsWeekends(longAgo);
+      final tuesdayRecurring = FakeActivity.reocurrsTuedays(longAgo);
+      final mondayRecurring = FakeActivity.reocurrsMondays(longAgo);
+      final activities = Iterable<Activity>.empty()
+          .followedBy([weekendActivity, tuesdayRecurring, mondayRecurring]);
+      when(mockActivityRepository.loadActivities())
+          .thenAnswer((_) => Future.value(activities));
+
+      final friday = initialDay.add(Duration(days: 3));
+      final saturday = friday.add(Duration(days: 1));
+      final sunday = saturday.add(Duration(days: 1));
+      final monday = sunday.add(Duration(days: 1));
+
+      // Act
+      activitiesBloc.add(LoadActivities());
+      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      dayPickerBloc.add(PreviousDay());
+      dayPickerBloc.add(GoTo(day: friday));
+      dayPickerBloc.add(NextDay());
+      dayPickerBloc.add(NextDay());
+      dayPickerBloc.add(NextDay());
+
+      // Assert
+      expectLater(
+          activitiesOccasionBloc,
+          emitsInOrder([
+            ActivitiesOccasionLoading(initialMinutes, initialDay),
+            // Tuesday
+            ActivitiesOccasionLoaded(
+              activities: <ActivityOccasion>[
+                ActivityOccasion.forTest(tuesdayRecurring, Occasion.current),
+              ],
+              fullDayActivities: [],
+              now: initialMinutes,
+              day: initialDay,
+            ),
+            // monday
+            ActivitiesOccasionLoaded(
+              activities: <ActivityOccasion>[
+                ActivityOccasion.forTest(mondayRecurring, Occasion.past),
+              ],
+              fullDayActivities: [],
+              now: initialMinutes,
+              day: previusDay,
+            ),
+            // Friday
+            ActivitiesOccasionLoaded(
+                activities: <ActivityOccasion>[],
+                fullDayActivities: [],
+                now: initialMinutes,
+                day: friday),
+            // Saturday
+            ActivitiesOccasionLoaded(
+              activities: <ActivityOccasion>[
+                ActivityOccasion.forTest(weekendActivity, Occasion.future),
+              ],
+              fullDayActivities: [],
+              now: initialMinutes,
+              day: saturday,
+            ),
+            // Sunday
+            ActivitiesOccasionLoaded(
+              activities: <ActivityOccasion>[
+                ActivityOccasion.forTest(weekendActivity, Occasion.future),
+              ],
+              fullDayActivities: [],
+              now: initialMinutes,
+              day: sunday,
+            ),
+            // Monday
+            ActivitiesOccasionLoaded(
+              activities: <ActivityOccasion>[
+                ActivityOccasion.forTest(mondayRecurring, Occasion.future),
+              ],
+              fullDayActivities: [],
+              now: initialMinutes,
+              day: monday,
+            ),
+          ]));
     });
 
     tearDown(() {

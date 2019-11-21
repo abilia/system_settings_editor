@@ -7,11 +7,15 @@ import 'package:uuid/uuid.dart';
 
 class Activity extends Equatable {
   AlarmType get alarm => AlarmType.fromInt(alarmType);
-  DateTime get startDate => DateTime.fromMillisecondsSinceEpoch(startTime);
-  DateTime get endDate =>
-      DateTime.fromMillisecondsSinceEpoch(startTime + duration);
+  DateTime endClock(DateTime day) => startClock(day).add(Duration(milliseconds:  duration));
+  DateTime startClock(DateTime day) => recurrentType == 0 ? startDateTime : DateTime(day.year, day.month, day.day, startDateTime.hour, startDateTime.minute);
+  DateTime get start => DateTime.fromMillisecondsSinceEpoch(startTime);
+  DateTime get end => DateTime.fromMillisecondsSinceEpoch(startTime + duration);
+  DateTime get startDateTime => DateTime.fromMillisecondsSinceEpoch(startTime);
+  DateTime get endDateTime => DateTime.fromMillisecondsSinceEpoch(endTime);
+  RecurrentType get recurrance => RecurrentType.values[recurrentType];
   final String id, seriesId, title, fileId, icon, infoItem;
-  final int startTime, duration, category, revision, alarmType;
+  final int startTime, endTime, duration, category, revision, alarmType, recurrentType, recurrentData;
   final bool deleted, fullDay;
   final UnmodifiableListView<int> reminderBefore;
   const Activity._({
@@ -19,12 +23,15 @@ class Activity extends Equatable {
     @required this.seriesId,
     @required this.title,
     @required this.startTime,
+    @required this.endTime,
     @required this.duration,
     @required this.category,
     @required this.deleted,
     @required this.revision,
     @required this.alarmType,
     @required this.fullDay,
+    @required this.recurrentType,
+    @required this.recurrentData,
     this.reminderBefore,
     this.infoItem,
     this.icon,
@@ -34,7 +41,9 @@ class Activity extends Equatable {
         assert(seriesId != null),
         assert(revision != null),
         assert(alarmType != null),
-        assert(startTime > 0);
+        assert(recurrentType >= 0 && recurrentType < 4),
+        assert(startTime > 0),
+        assert(endTime >= startTime);
 
   factory Activity.createNew({
     @required String title,
@@ -42,6 +51,9 @@ class Activity extends Equatable {
     @required int duration,
     @required int category,
     @required Iterable<int> reminderBefore,
+    int endTime,
+    int recurrentType,
+    int recurrentData,
     bool fullDay = false,
     int alarmType = ALARM_SOUND_AND_VIBRATION_ONLY_ON_START,
     String infoItem,
@@ -53,12 +65,15 @@ class Activity extends Equatable {
       seriesId: id,
       title: title,
       startTime: startTime,
+      endTime: endTime ?? startTime + duration,
       duration: duration,
       fileId: _nullIfEmpty(fileId),
       icon: _nullIfEmpty(fileId),
       category: category,
       deleted: false,
       fullDay: fullDay,
+      recurrentType: recurrentType ?? 0,
+      recurrentData: recurrentData ?? 0,
       revision: 0,
       reminderBefore: UnmodifiableListView(reminderBefore),
       alarmType: alarmType,
@@ -69,6 +84,7 @@ class Activity extends Equatable {
   Activity copyWith({
     String title,
     int startTime,
+    int endTime,
     int duration,
     int category,
     Iterable<int> reminderBefore,
@@ -77,6 +93,8 @@ class Activity extends Equatable {
     bool deleted,
     int revision,
     int alarmType,
+    int recurrentType,
+    int recurrentData,
     String infoItem,
   }) =>
       Activity._(
@@ -84,10 +102,13 @@ class Activity extends Equatable {
         seriesId: seriesId,
         title: title ?? this.title,
         startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
         duration: duration ?? this.duration,
         category: category ?? this.category,
         deleted: deleted ?? this.deleted,
         fullDay: fullDay ?? this.fullDay,
+        recurrentType: recurrentType ?? this.recurrentType,
+        recurrentData: recurrentData ?? this.recurrentData,
         reminderBefore: reminderBefore != null
             ? UnmodifiableListView(reminderBefore)
             : this.reminderBefore,
@@ -103,6 +124,7 @@ class Activity extends Equatable {
         seriesId: json['seriesId'],
         title: json['title'],
         startTime: json['startTime'],
+        endTime: json['endTime'],
         duration: json['duration'],
         fileId: _nullIfEmpty(json['fileId']),
         icon: _nullIfEmpty(json['icon']),
@@ -110,6 +132,8 @@ class Activity extends Equatable {
         category: json['category'],
         deleted: json['deleted'],
         fullDay: json['fullDay'],
+        recurrentType: json['recurrentType'],
+        recurrentData: json['recurrentData'],
         reminderBefore: _parseReminders(json['reminderBefore']),
         revision: json['revision'],
         alarmType: json['alarmType'],
@@ -120,12 +144,14 @@ class Activity extends Equatable {
         'seriesId': seriesId,
         'title': title,
         'startTime': startTime,
-        'endTime': startTime + duration,
+        'endTime': endTime,
         'duration': duration,
         'fileId': fileId,
         'category': category,
         'deleted': deleted,
         'fullDay': fullDay,
+        'recurrentType': recurrentType,
+        'recurrentData': recurrentData,
         'reminderBefore': reminderBefore.map((r) => r.toString()).join(';'),
         'icon': icon,
         'infoItem': infoItem,
@@ -152,10 +178,13 @@ class Activity extends Equatable {
         seriesId,
         title,
         startTime,
+        endTime,
         duration,
         category,
         deleted,
         fullDay,
+        recurrentType,
+        recurrentData,
         revision,
         alarmType,
         reminderBefore,

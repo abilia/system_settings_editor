@@ -15,8 +15,9 @@ class NowChanged extends ActivitiesOccasionEvent {
 }
 
 class ActivitiesChanged extends ActivitiesOccasionEvent {
-  ActivitiesChanged(this.activities);
+  ActivitiesChanged(this.activities, this.day);
   final Iterable<Activity> activities;
+  final DateTime day;
   @override
   List<Object> get props => [activities];
     @override

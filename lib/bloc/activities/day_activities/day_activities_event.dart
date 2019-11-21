@@ -14,7 +14,7 @@ class UpdateDay extends DayActivitiesEvent {
   List<Object> get props => [dayFilter];
 
   @override
-  String toString() => 'UpdateFilter { filter: $dayFilter }';
+  String toString() => 'UpdateDay { ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][dayFilter.weekday-1]}, $dayFilter }';
 }
 
 class UpdateActivities extends DayActivitiesEvent {

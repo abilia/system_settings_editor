@@ -54,13 +54,13 @@ void main() {
     expect(result.infoItem, null);
     expect(result.reminderBefore, UnmodifiableListView([]));
     // expect(result.extras, null);
-    // expect(result.recurrentType, 0);
-    // expect(result.recurrentData, 0);
+    expect(result.recurrentType, 0);
+    expect(result.recurrentData, 0);
     expect(result.alarmType, 0);
     expect(result.duration, 3600000);
     expect(result.category, 0);
     expect(result.startTime, 1570105439424);
-    // expect(result.endTime, 1570109039424);
+    expect(result.endTime, 1570109039424);
     expect(result.fullDay, false);
     // expect(result.checkable, false);
     // expect(result.removeAfter, false);
@@ -83,6 +83,8 @@ void main() {
         duration: duration,
         reminderBefore: reminders,
         startTime: now,
+        recurrentData: 1,
+        recurrentType: 1,
         fileId: fileId);
     final asJson = activity.toJson();
     final deserializedActivity = Activity.fromJson(asJson);
@@ -94,8 +96,11 @@ void main() {
     expect(deserializedActivity.duration, activity.duration);
     expect(deserializedActivity.reminderBefore, activity.reminderBefore);
     expect(deserializedActivity.startTime, activity.startTime);
+    expect(deserializedActivity.endTime, activity.endTime);
     expect(deserializedActivity.fileId, activity.fileId);
     expect(deserializedActivity.icon, activity.icon);
+    expect(deserializedActivity.recurrentType, activity.recurrentType);
+    expect(deserializedActivity.recurrentData, activity.recurrentData);
     expect(deserializedActivity.deleted, activity.deleted);
     expect(deserializedActivity.revision, activity.revision);
     expect(deserializedActivity.alarmType, activity.alarmType);

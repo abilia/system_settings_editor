@@ -9,13 +9,15 @@ class ActivitiesOccasionBloc
   StreamSubscription activitiesSubscription;
   StreamSubscription clockSubscription;
 
-  ActivitiesOccasionBloc(
-      {@required ClockBloc clockBloc,
-      @required DayActivitiesBloc dayActivitiesBloc})
-      : _initialState = ActivitiesOccasionLoading(clockBloc.state) {
+  ActivitiesOccasionBloc({
+    @required ClockBloc clockBloc,
+    @required DayActivitiesBloc dayActivitiesBloc,
+  }) : _initialState = ActivitiesOccasionLoading(
+            clockBloc.state, dayActivitiesBloc.state.dayFilter) {
     activitiesSubscription = dayActivitiesBloc.listen((activitiesState) {
       if (activitiesState is DayActivitiesLoaded)
-        add(ActivitiesChanged(activitiesState.activities));
+        add(ActivitiesChanged(
+            activitiesState.activities, activitiesState.dayFilter));
     });
     clockSubscription = clockBloc.listen((now) => add(NowChanged(now)));
   }
@@ -28,8 +30,11 @@ class ActivitiesOccasionBloc
     ActivitiesOccasionEvent event,
   ) async* {
     if (event is ActivitiesChanged) {
-      yield _mapActivitiesToActivityOccasionsState(event.activities,
-          now: state.now);
+      yield _mapActivitiesToActivityOccasionsState(
+        event.activities,
+        now: state.now,
+        day: event.day,
+      );
     } else if (event is NowChanged) {
       if (state is ActivitiesOccasionLoaded) {
         final loadedState = state as ActivitiesOccasionLoaded;
@@ -37,35 +42,42 @@ class ActivitiesOccasionBloc
             loadedState.activities
                 .followedBy(loadedState.fullDayActivities)
                 .map((a) => a.activity),
-            now: event.now);
+            now: event.now,
+            day: loadedState.day);
       } else
-        yield ActivitiesOccasionLoading(event.now);
+        yield ActivitiesOccasionLoading(event.now, state.day);
     }
   }
 
   ActivitiesOccasionLoaded _mapActivitiesToActivityOccasionsState(
-      Iterable<Activity> activities,
-      {@required DateTime now}) {
+    Iterable<Activity> activities, {
+    @required DateTime now,
+    @required DateTime day,
+  }) {
     return ActivitiesOccasionLoaded(
-        activities: activities
-            .where((a) => !a.fullDay)
-            .map((a) => ActivityOccasion(a, now: now))
-            .toList()
-              ..sort((a, b) {
-                final occasionComparing =
-                    a.occasion.index.compareTo(b.occasion.index);
-                if (occasionComparing != 0) return occasionComparing;
-
-                final starTimeComparing =
-                    a.activity.startDate.compareTo(b.activity.startDate);
-                if (starTimeComparing != 0) return starTimeComparing;
-                return a.activity.endDate.compareTo(b.activity.endDate);
-              }),
-        fullDayActivities: activities
-            .where((a) => a.fullDay)
-            .map((a) => ActivityOccasion.fullDay(a, now: now))
-            .toList(),
-        now: now);
+      activities: activities
+          .where((a) => !a.fullDay)
+          .map((a) => ActivityOccasion(a, now: now, day: day))
+          .toList()
+            ..sort((a, b) {
+              final occasionComparing =
+                  a.occasion.index.compareTo(b.occasion.index);
+              if (occasionComparing != 0) return occasionComparing;
+              final starTimeComparing = a.activity
+                  .startClock(now)
+                  .compareTo(b.activity.startClock(now));
+              if (starTimeComparing != 0) return starTimeComparing;
+              return a.activity
+                  .endClock(now)
+                  .compareTo(b.activity.endClock(now));
+            }),
+      fullDayActivities: activities
+          .where((a) => a.fullDay)
+          .map((a) => ActivityOccasion.fullDay(a, now: now, day: day))
+          .toList(),
+      now: now,
+      day: day,
+    );
   }
 
   @override

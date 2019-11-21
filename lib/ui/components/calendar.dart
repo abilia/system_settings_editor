@@ -6,7 +6,7 @@ import 'package:seagull/ui/components.dart';
 import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:intl/intl.dart';
-import 'package:seagull/utils/datetime_utils.dart';
+import 'package:seagull/utils.dart';
 
 class Calendar extends StatefulWidget {
   @override

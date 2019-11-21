@@ -1,5 +1,5 @@
 import 'package:seagull/models.dart';
-import 'package:seagull/utils/datetime_utils.dart';
+import 'package:seagull/utils.dart';
 
 DateTime get _now => onlyMinutes(DateTime.now());
 
@@ -103,6 +103,26 @@ class FakeActivity {
       reminderBefore: [0, 1, 2],
       alarmType: ALARM_SILENT);
 
+  static Activity reocurrsWeekends([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, allWeekends, title: 'recurs weekend');
+  static Activity reocurrsMondays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_MONDAY | Recurs.ODD_MONDAY, title: 'recurs monday');
+  static Activity reocurrsTuedays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_TUESDAY | Recurs.ODD_TUESDAY, title: 'recurs tuesday');
+  static Activity reocurrsWednesdays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_WEDNESDAY | Recurs.ODD_WEDNESDAY, title: 'recurs wednesday');
+  static Activity reocurrsThursdays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_THURSDAY | Recurs.ODD_THURSDAY, title: 'recurs thursday');
+  static Activity reocurrsFridays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_FRIDAY | Recurs.ODD_FRIDAY, title: 'recurs friday');
+  static Activity reocurrsSaturdays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_SATURDAY | Recurs.ODD_SATURDAY, title: 'recurs saturday');
+  static Activity reocurrsSunday([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_SUNDAY | Recurs.ODD_SUNDAY, title: 'recurs sunday');
+  static Activity reocurrsOnDay(int day, [DateTime startDate, DateTime endDate]) => reoccurs(startDate, RecurrentType.monthly, Recurs.onDayOfMonth(day), endTime: endDate, title: 'recurs on month day $day');
+  static Activity reocurrsOnDate(DateTime day, [DateTime startTime, DateTime endTime]) => reoccurs(startTime ?? day, RecurrentType.yearly, Recurs.dayOfYearData(day), endTime: endTime, title: 'recurs on date $day');
+  static Activity reoccurs(DateTime startTime, RecurrentType recurrentType, int recurrrentData, {DateTime endTime, String title,} ) => Activity.createNew(
+      title: title ?? 'reocurrs $recurrentType $recurrrentData',
+      startTime: (startTime ?? _now.subtract(Duration(days: 366))).millisecondsSinceEpoch,
+      endTime: endTime?.millisecondsSinceEpoch ?? Recurs.NO_END,
+      duration: Duration(hours: 1).inMilliseconds,
+      category: 0,
+      recurrentType: recurrentType.index,
+      recurrentData: recurrrentData,
+      reminderBefore: [],
+      alarmType: ALARM_SILENT);
 
   static Activity fullday([DateTime date]) => fulldayWhen(date ?? _now);
   static Activity yesterdayFullday([DateTime date]) => fulldayWhen((date ?? _now).subtract(Duration(days: 1)), 'yesterday');
@@ -127,3 +147,19 @@ class FakeActivity {
       reminderBefore: [60 * 60 * 1000],
       alarmType: ALARM_SILENT);
 }
+
+const int oddWeekdays = Recurs.ODD_MONDAY |
+    Recurs.ODD_TUESDAY |
+    Recurs.ODD_WEDNESDAY |
+    Recurs.ODD_THURSDAY |
+    Recurs.ODD_FRIDAY;
+const int evenWeekdays = Recurs.EVEN_MONDAY |
+    Recurs.EVEN_TUESDAY |
+    Recurs.EVEN_WEDNESDAY |
+    Recurs.EVEN_THURSDAY |
+    Recurs.EVEN_FRIDAY;
+const int allWeekdays = oddWeekdays | evenWeekdays;
+const int oddWeekends = Recurs.ODD_SATURDAY | Recurs.ODD_SUNDAY;
+const int evenWeekends = Recurs.EVEN_SATURDAY | Recurs.EVEN_SUNDAY;
+const int allWeekends = evenWeekends | oddWeekends;
+const int allWeek = allWeekdays | allWeekends;
