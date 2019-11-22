@@ -16,20 +16,18 @@ import 'fakes/fake_client.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  runApp(App(Client(), FirebasePush()));
+  runApp(App(Client(), FirebasePushService(), pushBloc: PushBloc()));
 }
 
 class App extends StatelessWidget {
   final BaseClient httpClient;
   final UserRepository userRepository;
-  final FirebasePush push;
+  final FirebasePushService firebasePushService;
+  final PushBloc pushBloc;
 
-  App(
-    this.httpClient,
-    this.push, {
-    Key key,
-    FlutterSecureStorage secureStorage,
-  })  : userRepository = UserRepository(
+  App(this.httpClient, this.firebasePushService,
+      {Key key, FlutterSecureStorage secureStorage, this.pushBloc})
+      : userRepository = UserRepository(
           httpClient: httpClient,
           secureStorage: secureStorage ?? FlutterSecureStorage(),
         ),
@@ -44,7 +42,7 @@ class App extends StatelessWidget {
                 AuthenticationBloc(userRepository: userRepository)
                   ..add(AppStarted())),
         BlocProvider<PushBloc>(
-          builder: (context) => PushBloc(),
+          builder: (context) => pushBloc ?? PushBloc(),
         )
       ],
       child: MaterialApp(
@@ -71,7 +69,7 @@ class App extends StatelessWidget {
             if (state is Unauthenticated) {
               return LoginPage(
                 userRepository: userRepository,
-                push: push,
+                push: firebasePushService,
               );
             }
             return Center(child: CircularProgressIndicator());
@@ -79,9 +77,5 @@ class App extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void initPush(BuildContext context) {
-    push.initPushListeners(context);
   }
 }

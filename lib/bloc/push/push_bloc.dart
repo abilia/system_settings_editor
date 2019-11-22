@@ -18,16 +18,17 @@ class PushBloc extends Bloc<PushEvent, PushState> {
 
   void initFirebaseListener() {
     final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
-    print('Init firebase push listeners');
     firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         this.add(OnPush());
         print("onMessage push: $message");
       },
       onLaunch: (Map<String, dynamic> message) async {
+        this.add(OnPush());
         print("onLaunch push: $message");
       },
       onResume: (Map<String, dynamic> message) async {
+        this.add(OnPush());
         print("onResume push: $message");
       },
     );

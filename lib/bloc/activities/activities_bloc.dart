@@ -16,9 +16,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
       {@required this.activitiesRepository, @required PushBloc pushBloc}) {
     pushSubscription = pushBloc.listen((state) {
       if (state is PushReceived) {
-        print('PushReceived is issued to activities bloc');
+        add(LoadActivities());
       }
-      add(LoadActivities());
     });
   }
 

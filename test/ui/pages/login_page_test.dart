@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:seagull/fakes/fake_push.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/ui/components.dart';
@@ -12,18 +11,22 @@ import '../../mocks.dart';
 void main() {
   group('login page widget test', () {
     MockSecureStorage mockSecureStorage;
+    MockFirebasePushService mockFirebasePushService;
     final secretPassword = 'pwfafawfa';
 
     setUp(() {
       mockSecureStorage = MockSecureStorage();
       when(mockSecureStorage.read(key: anyNamed('key')))
           .thenAnswer((_) => Future.value(null));
+      mockFirebasePushService = MockFirebasePushService();
+      when(mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value('fakeToken'));
     });
 
     testWidgets('Application starts', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client(),
-        FakePush(),
+        mockFirebasePushService,
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -33,7 +36,7 @@ void main() {
     testWidgets('Hide password button', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client(),
-        FakePush(),
+        mockFirebasePushService,
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -57,7 +60,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client(),
-        FakePush(),
+        mockFirebasePushService,
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -80,7 +83,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client(),
-        FakePush(),
+        mockFirebasePushService,
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -98,7 +101,7 @@ void main() {
     testWidgets('Can login', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         Fakes.client(),
-        FakePush(),
+        mockFirebasePushService,
         secureStorage: mockSecureStorage,
       ));
 

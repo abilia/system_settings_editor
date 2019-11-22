@@ -10,11 +10,12 @@ void main() {
   group('ActivitiesBloc', () {
     ActivitiesBloc activitiesBloc;
     MockActivityRepository mockActivityRepository;
+    MockPushBloc mockPushBloc;
     setUp(() {
       mockActivityRepository = MockActivityRepository();
+      mockPushBloc = MockPushBloc();
       activitiesBloc = ActivitiesBloc(
-          activitiesRepository: mockActivityRepository,
-          pushBloc: MockPushBloc());
+          activitiesRepository: mockActivityRepository, pushBloc: mockPushBloc);
     });
 
     test('initial state is ActivitiesNotLoaded', () {
@@ -133,6 +134,7 @@ void main() {
 
     tearDown(() {
       activitiesBloc.close();
+      mockPushBloc.close();
     });
   });
 }

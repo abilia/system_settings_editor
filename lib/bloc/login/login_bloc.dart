@@ -10,15 +10,15 @@ import 'package:seagull/repository/user_repository.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final AuthenticationBloc authenticationBloc;
-  final FirebasePush push;
+  final FirebasePushService pushService;
 
   LoginBloc({
     @required this.userRepository,
     @required this.authenticationBloc,
-    @required this.push,
+    @required this.pushService,
   })  : assert(userRepository != null),
         assert(authenticationBloc != null),
-        assert(push != null);
+        assert(pushService != null);
 
   LoginState get initialState => LoginInitial();
 
@@ -28,7 +28,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       try {
-        final pushToken = await push.initPushToken();
+        final pushToken = await pushService.initPushToken();
         final token = await userRepository.authenticate(
           username: event.username,
           password: event.password,
