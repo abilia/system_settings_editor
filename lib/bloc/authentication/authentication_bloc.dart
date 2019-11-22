@@ -24,9 +24,9 @@ class AuthenticationBloc
       final String token = await userRepository.getToken();
       if (token != null) {
         yield* _tryGetUser(token);
-      }
-      else yield Unauthenticated();
-    } 
+      } else
+        yield Unauthenticated();
+    }
 
     if (event is LoggedIn) {
       await userRepository.persistToken(event.token);

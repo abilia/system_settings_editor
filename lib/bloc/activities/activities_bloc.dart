@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/bloc/push/push_bloc.dart';
+import 'package:seagull/bloc/push/push_state.dart';
 import 'package:seagull/models.dart';
 import 'package:seagull/repositories.dart';
 
@@ -8,8 +10,16 @@ import 'bloc.dart';
 
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
   final ActivityRepository activitiesRepository;
+  StreamSubscription pushSubscription;
 
-  ActivitiesBloc({@required this.activitiesRepository});
+  ActivitiesBloc(
+      {@required this.activitiesRepository, @required PushBloc pushBloc}) {
+    pushSubscription = pushBloc.listen((state) {
+      if (state is PushReceived) {
+        add(LoadActivities());
+      }
+    });
+  }
 
   @override
   ActivitiesState get initialState => ActivitiesNotLoaded();
@@ -59,4 +69,12 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
 
   Future _saveActivities(Iterable<Activity> activities) =>
       activitiesRepository.saveActivities(activities);
+
+  @override
+  Future<void> close() async {
+    if (pushSubscription != null) {
+      await pushSubscription.cancel();
+    }
+    return super.close();
+  }
 }

@@ -18,8 +18,9 @@ void main() {
       Stream<DateTime> stream = Stream.empty();
       dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc(stream));
       mockActivityRepository = MockActivityRepository();
-      activitiesBloc =
-          ActivitiesBloc(activitiesRepository: mockActivityRepository);
+      activitiesBloc = ActivitiesBloc(
+          activitiesRepository: mockActivityRepository,
+          pushBloc: MockPushBloc());
       dayActivitiesBloc = DayActivitiesBloc(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
     });
@@ -33,15 +34,18 @@ void main() {
       );
     });
 
-    test('initial state is DayActivitiesLoaded if started with loaded activity', () async {
+    test('initial state is DayActivitiesLoaded if started with loaded activity',
+        () async {
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([]));
       activitiesBloc.add(LoadActivities());
       final dayActivitiesBloc2 = DayActivitiesBloc(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
       await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
-      expect(dayActivitiesBloc.initialState, DayActivitiesLoaded(Iterable<Activity>.empty(), today));
-      expect(dayActivitiesBloc.state, DayActivitiesLoaded(Iterable<Activity>.empty(), today));
+      expect(dayActivitiesBloc.initialState,
+          DayActivitiesLoaded(Iterable<Activity>.empty(), today));
+      expect(dayActivitiesBloc.state,
+          DayActivitiesLoaded(Iterable<Activity>.empty(), today));
       dayActivitiesBloc2.close();
     });
 
@@ -161,7 +165,8 @@ void main() {
     });
 
     test('adding activities shows', () async {
-      final todayActivity = <Activity>[FakeActivity.startsAt(today)].followedBy({}); // followedBy to make list iterable
+      final todayActivity = <Activity>[FakeActivity.startsAt(today)]
+          .followedBy({}); // followedBy to make list iterable
       final activitiesAdded = todayActivity.followedBy([
         FakeActivity.dayAfter(today),
         FakeActivity.dayBefore(today),

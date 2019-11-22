@@ -9,7 +9,7 @@ import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/end_point.dart';
 import 'package:uuid/uuid.dart';
 
-class   UserRepository {
+class UserRepository {
   final String _tokenKey = 'tokenKey';
   final BaseClient httpClient;
   final FlutterSecureStorage secureStorage;
@@ -18,10 +18,10 @@ class   UserRepository {
       : assert(httpClient != null),
         assert(secureStorage != null);
 
-  Future<String> authenticate({
-    @required String username,
-    @required String password,
-  }) async {
+  Future<String> authenticate(
+      {@required String username,
+      @required String password,
+      @required String pushToken}) async {
     final response = await httpClient.post('$BASE_URL/api/v1/auth/client/me',
         headers: {
           HttpHeaders.authorizationHeader:
@@ -32,7 +32,8 @@ class   UserRepository {
           'clientId': Uuid().v4(),
           'type': 'flutter',
           'app': 'seagull',
-          'name': 'seagull'
+          'name': 'seagull',
+          'address': pushToken
         }));
     if (response.statusCode == 200) {
       var login = Login.fromJson(json.decode(response.body));
@@ -43,13 +44,13 @@ class   UserRepository {
   }
 
   Future<User> me(authToken) async {
-    final response =
-        await httpClient.get('$BASE_URL/api/v1/entity/me', headers: authHeader(authToken));
+    final response = await httpClient.get('$BASE_URL/api/v1/entity/me',
+        headers: authHeader(authToken));
 
     if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
       var user = User.fromJson(responseJson['me']);
-      return user;  
+      return user;
     } else {
       throw Exception('Could not get me!');
     }

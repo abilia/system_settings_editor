@@ -4,8 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/models.dart';
 
-class DayActivitiesBloc
-    extends Bloc<DayActivitiesEvent, DayActivitiesState> {
+class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
   final ActivitiesBloc activitiesBloc;
   final DayPickerBloc dayPickerBloc;
   StreamSubscription _activitiesSubscription;
@@ -34,8 +33,7 @@ class DayActivitiesBloc
   }
 
   @override
-  Stream<DayActivitiesState> mapEventToState(
-      DayActivitiesEvent event) async* {
+  Stream<DayActivitiesState> mapEventToState(DayActivitiesEvent event) async* {
     if (event is UpdateDay) {
       yield* _mapUpdateFilterToState(event);
     } else if (event is UpdateActivities) {
@@ -60,23 +58,23 @@ class DayActivitiesBloc
   Stream<DayActivitiesState> _mapActivitiesUpdatedToState(
     UpdateActivities event,
   ) async* {
+    final acs =
+        _mapActivitiesToCurrentDayActivities(event.activities, state.dayFilter);
     yield DayActivitiesLoaded(
-      _mapActivitiesToCurrentDayActivities(
-        event.activities,
-        state.dayFilter,
-      ),
+      acs,
       dayPickerBloc.state,
     );
   }
 
   Iterable<Activity> _mapActivitiesToCurrentDayActivities(
-      Iterable<Activity> ativities, DateTime filterDay) {
-    return ativities.where((activity) {
+      Iterable<Activity> activities, DateTime filterDay) {
+    final activs = activities.where((activity) {
       final activityTime = activity.startDate;
       final activityDay =
           DateTime(activityTime.year, activityTime.month, activityTime.day);
       return filterDay.isAtSameMomentAs(activityDay);
     });
+    return activs;
   }
 
   @override
