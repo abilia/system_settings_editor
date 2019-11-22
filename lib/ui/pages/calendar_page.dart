@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc.dart';
+import 'package:seagull/bloc/push/push_bloc.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/repositories.dart';
 import 'package:seagull/ui/components.dart';
@@ -16,7 +17,8 @@ class CalendarPage extends StatelessWidget {
                   client: (context.ancestorWidgetOfExactType(App) as App)
                       .httpClient,
                   authToken: authenticatedState.token,
-                  userId: authenticatedState.userId))
+                  userId: authenticatedState.userId),
+              pushBloc: BlocProvider.of<PushBloc>(context))
             ..add(LoadActivities())),
       BlocProvider<ClockBloc>(
         builder: (context) => ClockBloc(Ticker.minute()),

@@ -59,11 +59,10 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
   Stream<DayActivitiesState> _mapActivitiesUpdatedToState(
     UpdateActivities event,
   ) async* {
+    final dayActivities =
+        _mapActivitiesToCurrentDayActivities(event.activities, state.dayFilter);
     yield DayActivitiesLoaded(
-      _mapActivitiesToCurrentDayActivities(
-        event.activities,
-        state.dayFilter,
-      ),
+      dayActivities,
       dayPickerBloc.state,
     );
   }

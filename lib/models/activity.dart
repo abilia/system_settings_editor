@@ -159,9 +159,6 @@ class Activity extends Equatable {
         'alarmType': alarmType,
       };
 
-  int get hashCode => id.hashCode;
-  bool operator ==(o) => o is Activity && o.id == id;
-
   static String _nullIfEmpty(String value) =>
       value?.isNotEmpty == true ? value : null;
 
@@ -193,5 +190,6 @@ class Activity extends Equatable {
         icon,
       ];
   @override
-  String toString() => [ 'Activity: { ',  props.map((p) => p.toString()).join(', '), ' }'].join();
+  String toString() =>
+      ['Activity: { ', props.map((p) => p.toString()).join(', '), ' }'].join();
 }

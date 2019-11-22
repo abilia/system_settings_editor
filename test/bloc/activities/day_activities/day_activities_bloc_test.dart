@@ -21,8 +21,9 @@ void main() {
       Stream<DateTime> stream = Stream.empty();
       dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc(stream));
       mockActivityRepository = MockActivityRepository();
-      activitiesBloc =
-          ActivitiesBloc(activitiesRepository: mockActivityRepository);
+      activitiesBloc = ActivitiesBloc(
+          activitiesRepository: mockActivityRepository,
+          pushBloc: MockPushBloc());
       dayActivitiesBloc = DayActivitiesBloc(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
     });
@@ -210,13 +211,6 @@ void main() {
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value(Iterable.empty()));
 
-      // Act
-      activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
-      when(mockActivityRepository.loadActivities())
-          .thenAnswer((_) => Future.value(activitiesAdded));
-      activitiesBloc.add(LoadActivities());
-
       // Assert
       expectLater(
         dayActivitiesBloc,
@@ -226,6 +220,13 @@ void main() {
           DayActivitiesLoaded(todayActivity, today),
         ]),
       );
+
+      // Act
+      activitiesBloc.add(LoadActivities());
+      await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
+      when(mockActivityRepository.loadActivities())
+          .thenAnswer((_) => Future.value(activitiesAdded));
+      activitiesBloc.add(LoadActivities());
     });
 
     tearDown(() {
@@ -241,8 +242,9 @@ void main() {
       dayPickerBloc =
           DayPickerBloc(clockBloc: ClockBloc(stream, initialTime: firstDay));
       mockActivityRepository = MockActivityRepository();
-      activitiesBloc =
-          ActivitiesBloc(activitiesRepository: mockActivityRepository);
+      activitiesBloc = ActivitiesBloc(
+          activitiesRepository: mockActivityRepository,
+          pushBloc: MockPushBloc());
       dayActivitiesBloc = DayActivitiesBloc(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
 

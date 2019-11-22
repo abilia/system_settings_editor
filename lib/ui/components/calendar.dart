@@ -195,10 +195,13 @@ class _CalendarState extends State<Calendar> {
   }
 
   _scrollToNow(
-          {Curve curve = Curves.easeInOutCirc,
-          Duration duration = const Duration(milliseconds: 500)}) =>
+      {Curve curve = Curves.easeInOutCirc,
+      Duration duration = const Duration(milliseconds: 500)}) {
+    if (_scrollController.hasClients) {
       _scrollController.animateTo(offsetToFirstNoneCompleted,
           curve: curve, duration: duration);
+    }
+  }
 
   Future<void> _refresh() {
     _activitiesBloc.add(LoadActivities());

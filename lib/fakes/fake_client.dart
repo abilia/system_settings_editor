@@ -29,26 +29,11 @@ class Fakes {
                   '{"timestamp":"${DateTime.now()}","status":401,"error":"Unauthorized","message":"Unable to authorize","path":"//api/v1/auth/client/me"}',
                   401);
             } else {
-              response = Response('''
-              {
-                "token" : "$token",
-                "endDate" : 1231244,
-                "renewToken" : ""
-              }''', 200);
+              response = clientMeSuccessResponse;
             }
           }
           if (pathSegments.containsAll(['entity', 'me'])) {
-            response = Response('''
-              {
-                "me" : {
-                  "id" : $userId,
-                  "type" : "$type",
-                  "name" : "$name",
-                  "username" : "$username",
-                  "language" : "sv",
-                  "image" : null
-                }
-              }''', 200);
+            response = entityMeSuccessResponse;
           }
           if (pathSegments.containsAll(['data', 'activities'])) {
             response =
@@ -78,4 +63,23 @@ class Fakes {
     ..addAll(FakeActivities.oneEveryMinute)
     ..addAll(FakeActivities.activities)
     ..addAll([]);
+
+  static Response clientMeSuccessResponse = Response('''
+    {
+      "token" : "$token",
+      "endDate" : 1231244,
+      "renewToken" : ""
+    }''', 200);
+
+  static Response entityMeSuccessResponse = Response('''
+    {
+      "me" : {
+        "id" : $userId,
+        "type" : "$type",
+        "name" : "$name",
+        "username" : "$username",
+        "language" : "sv",
+        "image" : null
+      }
+    }''', 200);
 }

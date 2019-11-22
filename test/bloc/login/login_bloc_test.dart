@@ -12,13 +12,19 @@ void main() {
   group('LoginBloc event order', () {
     LoginBloc loginBloc;
     AuthenticationBloc authenticationBloc;
+    MockFirebasePushService mockFirebasePushService;
 
     setUp(() {
-      final userRepository = UserRepository(httpClient: Fakes.client(), secureStorage: MockSecureStorage());
+      final userRepository = UserRepository(
+          httpClient: Fakes.client(), secureStorage: MockSecureStorage());
       authenticationBloc = AuthenticationBloc(userRepository: userRepository);
+      mockFirebasePushService = MockFirebasePushService();
+      when(mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value('pushToken'));
       loginBloc = LoginBloc(
           userRepository: userRepository,
-          authenticationBloc: authenticationBloc);
+          authenticationBloc: authenticationBloc,
+          pushService: mockFirebasePushService);
     });
 
     test('initial state is LoginInitial', () {
@@ -64,20 +70,32 @@ void main() {
     LoginBloc loginBloc;
     AuthenticationBloc authenticationBloc;
     UserRepository mockedUserRepository;
+    MockFirebasePushService mockFirebasePushService;
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc = AuthenticationBloc(userRepository: mockedUserRepository);
-      loginBloc = LoginBloc(authenticationBloc: authenticationBloc, userRepository: mockedUserRepository);
-      when(mockedUserRepository.getToken()).thenAnswer((_) => Future.value(Fakes.token));
-      when(mockedUserRepository.me(any)).thenAnswer((_) => Future.value(User(id: 0, name: '', type: '')));
+      authenticationBloc =
+          AuthenticationBloc(userRepository: mockedUserRepository);
+      mockFirebasePushService = MockFirebasePushService();
+      loginBloc = LoginBloc(
+          authenticationBloc: authenticationBloc,
+          userRepository: mockedUserRepository,
+          pushService: mockFirebasePushService);
+      when(mockedUserRepository.getToken())
+          .thenAnswer((_) => Future.value(Fakes.token));
+      when(mockedUserRepository.me(any))
+          .thenAnswer((_) => Future.value(User(id: 0, name: '', type: '')));
     });
 
     test('LoginButtonPressed event calls logges in and saves token', () async {
-
-      String username = 'username', password = 'password';
+      String username = 'username',
+          password = 'password',
+          fakePushToken = 'fakePushToken';
+      when(mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value(fakePushToken));
       loginBloc.add(LoginButtonPressed(username: username, password: password));
-      await untilCalled(mockedUserRepository.authenticate(username: username, password: password));
+      await untilCalled(mockedUserRepository.authenticate(
+          username: username, password: password, pushToken: fakePushToken));
       await untilCalled(mockedUserRepository.me(any));
       await untilCalled(mockedUserRepository.persistToken(any));
     });

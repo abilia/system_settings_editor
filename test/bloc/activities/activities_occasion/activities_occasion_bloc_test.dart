@@ -29,8 +29,9 @@ void main() {
       clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
       dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
       mockActivityRepository = MockActivityRepository();
-      activitiesBloc =
-          ActivitiesBloc(activitiesRepository: mockActivityRepository);
+      activitiesBloc = ActivitiesBloc(
+          activitiesRepository: mockActivityRepository,
+          pushBloc: MockPushBloc());
       dayActivitiesBloc = DayActivitiesBloc(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
       activitiesOccasionBloc = ActivitiesOccasionBloc(
@@ -419,7 +420,7 @@ void main() {
       dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
       mockActivityRepository = MockActivityRepository();
       activitiesBloc =
-          ActivitiesBloc(activitiesRepository: mockActivityRepository);
+          ActivitiesBloc(activitiesRepository: mockActivityRepository, pushBloc: MockPushBloc());
       dayActivitiesBloc = DayActivitiesBloc(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
       activitiesOccasionBloc = ActivitiesOccasionBloc(
