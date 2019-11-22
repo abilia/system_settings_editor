@@ -58,7 +58,7 @@ class BackEndButton extends StatelessWidget {
         textColor:
             userRepository.baseUrl == backEndUrl ? AbiliaColors.green : AbiliaColors.blue,
         onPressed: () => authBloc(context).add(AppStarted(
-            userRepository.copyWith(client: client, baseUrl: backEndUrl))),
+            userRepository.copyWith(httpClient: client, baseUrl: backEndUrl))),
         child: Text(text),
       ),
     );

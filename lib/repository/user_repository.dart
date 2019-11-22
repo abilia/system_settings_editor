@@ -16,27 +16,27 @@ class UserRepository extends Repository {
 
   UserRepository({
     String baseUrl,
-    @required BaseClient client,
+    @required BaseClient httpClient,
     @required this.secureStorage,
   })  : assert(secureStorage != null),
-        super(client, baseUrl);
+        super(httpClient, baseUrl);
 
   UserRepository copyWith({
     String baseUrl,
-    BaseClient client,
+    BaseClient httpClient,
     FlutterSecureStorage secureStorage,
   }) =>
       UserRepository(
         baseUrl: baseUrl ?? this.baseUrl,
-        client: client ?? this.client,
+        httpClient: httpClient ?? this.httpClient,
         secureStorage: secureStorage ?? this.secureStorage,
       );
 
-  Future<String> authenticate({
-    @required String username,
-    @required String password,
-  }) async {
-    final response = await client.post('$baseUrl/api/v1/auth/client/me',
+  Future<String> authenticate(
+      {@required String username,
+      @required String password,
+      @required String pushToken}) async {
+    final response = await httpClient.post('$baseUrl/api/v1/auth/client/me',
         headers: {
           HttpHeaders.authorizationHeader:
               'Basic ${base64Encode(utf8.encode('$username:$password'))}',
@@ -46,7 +46,8 @@ class UserRepository extends Repository {
           'clientId': Uuid().v4(),
           'type': 'flutter',
           'app': 'seagull',
-          'name': 'seagull'
+          'name': 'seagull',
+          'address': pushToken
         }));
     if (response.statusCode == 200) {
       var login = Login.fromJson(json.decode(response.body));
@@ -57,7 +58,7 @@ class UserRepository extends Repository {
   }
 
   Future<User> me(authToken) async {
-    final response = await client.get('$baseUrl/api/v1/entity/me',
+    final response = await httpClient.get('$baseUrl/api/v1/entity/me',
         headers: authHeader(authToken));
 
     if (response.statusCode == 200) {

@@ -12,8 +12,12 @@ class FadeInThumb extends StatelessWidget {
           ? FadeInImage(
               width: 56,
               height: 56,
-              image:
-                  NetworkImage(thumbImageUrl(state.userRepository.baseUrl, state.userId, imageFileId), headers: authHeader(state.token)),
+              image: state.userRepository.baseUrl.isNotEmpty
+                  ? NetworkImage(
+                      thumbImageUrl(state.userRepository.baseUrl, state.userId,
+                          imageFileId),
+                      headers: authHeader(state.token))
+                  : ExactAssetImage('assets/graphics/seagull_icon_gray.png'),
               placeholder:
                   ExactAssetImage('assets/graphics/seagull_icon_gray.png'),
             )

@@ -21,10 +21,11 @@ class AuthenticationBloc
       final String token = await _userRepository.getToken();
       if (token != null) {
         yield* _tryGetUser(token);
+      } else {
+        yield Unauthenticated(event.repository);
       }
-      else yield Unauthenticated(event.repository);
     }
-    
+
     if (event is LoggedIn) {
       yield AuthenticationLoading.fromInitilized(state);
       await _userRepository.persistToken(event.token);
@@ -40,7 +41,8 @@ class AuthenticationBloc
   Stream<AuthenticationState> _tryGetUser(String token) async* {
     try {
       final user = await _userRepository.me(token);
-      yield Authenticated(token: token, userId: user.id, userRepository: _userRepository);
+      yield Authenticated(
+          token: token, userId: user.id, userRepository: _userRepository);
     } catch (_) {
       await _userRepository.deleteToken();
       yield Unauthenticated.fromInitilized(state);

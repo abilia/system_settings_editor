@@ -11,16 +11,22 @@ import '../../mocks.dart';
 void main() {
   group('calendar page widget test', () {
     MockSecureStorage mockSecureStorage;
+    MockFirebasePushService mockFirebasePushService;
 
     setUp(() {
       mockSecureStorage = MockSecureStorage();
       when(mockSecureStorage.read(key: anyNamed('key')))
           .thenAnswer((_) => Future.value(Fakes.token));
+      mockFirebasePushService = MockFirebasePushService();
+      when(mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value('fakeToken'));
     });
 
     testWidgets('Application starts', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        client: Fakes.client(),
+        httpClient: Fakes.client(),
+        baseUrl: '',
+        firebasePushService: mockFirebasePushService,
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -29,7 +35,8 @@ void main() {
 
     testWidgets('Should show up empty', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        client: Fakes.client([]),
+        httpClient: Fakes.client([]),
+        firebasePushService: mockFirebasePushService,
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
@@ -38,17 +45,19 @@ void main() {
 
     testWidgets('Should show one activity', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        client: Fakes.client([FakeActivity.onTime()]),
+        httpClient: Fakes.client([FakeActivity.onTime()]),
+        firebasePushService: mockFirebasePushService,
         secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsOneWidget);
     });
 
-    testWidgets('Should not show Go to now-button', (WidgetTester tester) async {
+    testWidgets('Should not show Go to now-button',
+        (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        client: Fakes.client([FakeActivity.onTime()]),
-        secureStorage: mockSecureStorage,
+        httpClient: Fakes.client([FakeActivity.onTime()]),
+        firebasePushService: mockFirebasePushService,        secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);

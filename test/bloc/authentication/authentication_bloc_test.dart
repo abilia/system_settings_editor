@@ -13,7 +13,7 @@ void main() {
     UserRepository userRepository;
     setUp(() {
       userRepository = UserRepository(
-          client: Fakes.client(), secureStorage: MockSecureStorage());
+          httpClient: Fakes.client(), secureStorage: MockSecureStorage());
       authenticationBloc = AuthenticationBloc();
     });
 

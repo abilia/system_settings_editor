@@ -18,7 +18,7 @@ class ActivityRepository extends Repository {
   }) : super(client, baseUrl);
 
   Future<Iterable<Activity>> loadActivities() async {
-    final response = await client.get(
+    final response = await httpClient.get(
         '$baseUrl/api/v1/data/$userId/activities?revision=0',
         headers: authHeader(authToken));
     return (json.decode(response.body) as List)

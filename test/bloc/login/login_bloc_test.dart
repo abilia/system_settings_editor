@@ -13,12 +13,20 @@ void main() {
     LoginBloc loginBloc;
     AuthenticationBloc authenticationBloc;
     UserRepository userRepository;
+    MockFirebasePushService mockFirebasePushService;
+    
     setUp(() {
       userRepository = UserRepository(
-          client: Fakes.client(),
+          httpClient: Fakes.client(),
           secureStorage: MockSecureStorage());
       authenticationBloc = AuthenticationBloc();
-      loginBloc = LoginBloc(authenticationBloc: authenticationBloc);
+      mockFirebasePushService = MockFirebasePushService();
+      when(mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value('pushToken'));
+
+      loginBloc = LoginBloc(
+          authenticationBloc: authenticationBloc,
+          pushService: mockFirebasePushService);
     });
 
     test('initial state is LoginInitial', () {
@@ -68,12 +76,16 @@ void main() {
     LoginBloc loginBloc;
     AuthenticationBloc authenticationBloc;
     UserRepository mockedUserRepository;
+    MockFirebasePushService mockFirebasePushService;
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
       authenticationBloc = AuthenticationBloc()
         ..add(AppStarted(mockedUserRepository));
-      loginBloc = LoginBloc(authenticationBloc: authenticationBloc);
+      mockFirebasePushService = MockFirebasePushService();
+      loginBloc = LoginBloc(
+          authenticationBloc: authenticationBloc,
+          pushService: mockFirebasePushService);
       when(mockedUserRepository.getToken())
           .thenAnswer((_) => Future.value(Fakes.token));
       when(mockedUserRepository.me(any))
@@ -81,11 +93,14 @@ void main() {
     });
 
     test('LoginButtonPressed event calls logges in and saves token', () async {
-
-      String username = 'username', password = 'password';
+      String username = 'username',
+          password = 'password',
+          fakePushToken = 'fakePushToken';
+      when(mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value(fakePushToken));
       loginBloc.add(LoginButtonPressed(username: username, password: password));
       await untilCalled(mockedUserRepository.authenticate(
-          username: username, password: password));
+          username: username, password: password, pushToken: fakePushToken));
       await untilCalled(mockedUserRepository.me(any));
       await untilCalled(mockedUserRepository.persistToken(any));
     });

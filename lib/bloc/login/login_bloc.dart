@@ -4,13 +4,17 @@ import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 import 'package:seagull/bloc/authentication/bloc.dart';
 import 'package:seagull/bloc/login/bloc.dart';
+import 'package:seagull/repository/push.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthenticationBloc authenticationBloc;
+  final FirebasePushService pushService;
 
   LoginBloc({
     @required this.authenticationBloc,
-  }) : assert(authenticationBloc != null);
+    @required this.pushService,
+  })  : assert(authenticationBloc != null),
+        assert(pushService != null);
 
   LoginState get initialState => LoginInitial();
 
@@ -21,11 +25,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final authState = authenticationBloc.state as AuthenticationInitialized;
         yield LoginLoading();
 
-        try {
-          final token = await authState.userRepository.authenticate(
-            username: event.username,
-            password: event.password,
-          );
+      try {
+        final pushToken = await pushService.initPushToken();
+        final token = await authState.userRepository.authenticate(
+          username: event.username,
+          password: event.password,
+          pushToken: pushToken,
+        );
 
           authenticationBloc.add(LoggedIn(token: token));
           yield LoginInitial();

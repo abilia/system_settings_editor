@@ -5,8 +5,10 @@ import 'package:http/http.dart';
 
 import 'package:seagull/bloc.dart';
 import 'package:seagull/bloc/bloc_delegate.dart';
+import 'package:seagull/bloc/push/push_bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/repositories.dart';
+import 'package:seagull/repository/push.dart';
 import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
 
@@ -17,23 +19,36 @@ void main() {
 
 class App extends StatelessWidget {
   final UserRepository userRepository;
+  final FirebasePushService firebasePushService;
+  final PushBloc pushBloc;
 
   App({
-    BaseClient client,
+    BaseClient httpClient,
     String baseUrl,
-    Key key,
     FlutterSecureStorage secureStorage,
+    FirebasePushService firebasePushService,
+    PushBloc pushBloc,
+    Key key,
   })  : userRepository = UserRepository(
             baseUrl: baseUrl ?? T1,
-            client: client ?? Client(),
+            httpClient: httpClient ?? Client(),
             secureStorage: secureStorage ?? FlutterSecureStorage()),
+            firebasePushService = firebasePushService ?? FirebasePushService(),
+            pushBloc = pushBloc ?? PushBloc(),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthenticationBloc>(
-      builder: (context) =>
-          AuthenticationBloc()..add(AppStarted(userRepository)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthenticationBloc>(
+            builder: (context) =>
+                AuthenticationBloc()
+                  ..add(AppStarted(userRepository))),
+        BlocProvider<PushBloc>(
+          builder: (context) => pushBloc ?? PushBloc(),
+        )
+      ],
       child: MaterialApp(
         title: 'Seagull',
         theme: abiliaTheme,
@@ -56,7 +71,10 @@ class App extends StatelessWidget {
               return CalendarPage(authenticatedState: state);
             }
             if (state is Unauthenticated) {
-              return LoginPage(userRepository: userRepository);
+              return LoginPage(
+                userRepository: userRepository,
+                push: firebasePushService,
+              );
             }
             return Center(child: CircularProgressIndicator());
           },
