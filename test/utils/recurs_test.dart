@@ -4,7 +4,7 @@ import 'package:seagull/models.dart';
 import 'package:seagull/utils.dart';
 
 void main() {
-  group('Recuring activity', () {
+  group('Recurring activity', () {
     test('Split up activity shows on day it was split up on ( bug test )', () {
       // Arrange
       int splitStartTime = 1574380800000, splitEndTime = 253402297199000;
@@ -31,8 +31,8 @@ void main() {
       expect(result, true);
     });
   });
-  
-  group('Recuring tests', () {
+
+  group('Recurring tests', () {
     test('-1 is not a correct day of the year', () {
       // arrange
       int recurrentData = -1;

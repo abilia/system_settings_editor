@@ -65,8 +65,8 @@ class Recurs {
 
   @visibleForTesting
   static bool onCorrectYearsDay(int recurrentData, DateTime date) {
-    int recuringDay = recurrentData % 100;
-    int recuringMonth = recurrentData ~/ 100 + 1;
-    return date.month == recuringMonth && date.day == recuringDay;
+    int recurringDay = recurrentData % 100;
+    int recurringMonth = recurrentData ~/ 100 + 1;
+    return date.month == recurringMonth && date.day == recurringDay;
   }
 }
