@@ -16,7 +16,7 @@ import 'fakes/fake_client.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  runApp(App(Client(), FirebasePushService(), pushBloc: PushBloc()));
+  runApp(App(Client(), FirebasePushService()));
 }
 
 class App extends StatelessWidget {
