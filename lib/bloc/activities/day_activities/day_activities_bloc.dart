@@ -25,12 +25,14 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
 
   @override
   DayActivitiesState get initialState {
-    return activitiesBloc.state is ActivitiesLoaded
-        ? DayActivitiesLoaded(
-            (activitiesBloc.state as ActivitiesLoaded).activities,
-            dayPickerBloc.state,
-          )
-        : DayActivitiesLoading(dayPickerBloc.state);
+    final activitiesState = activitiesBloc.state;
+    if (activitiesState is ActivitiesLoaded) {
+      final dayActivities = _mapActivitiesToCurrentDayActivities(
+          activitiesState.activities, dayPickerBloc.state);
+      return DayActivitiesLoaded(dayActivities, dayPickerBloc.state);
+    } else {
+      return DayActivitiesUninitialized(dayPickerBloc.state);
+    }
   }
 
   @override
