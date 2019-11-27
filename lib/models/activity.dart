@@ -7,15 +7,24 @@ import 'package:uuid/uuid.dart';
 
 class Activity extends Equatable {
   AlarmType get alarm => AlarmType.fromInt(alarmType);
-  DateTime endClock(DateTime day) => startClock(day).add(Duration(milliseconds:  duration));
-  DateTime startClock(DateTime day) => recurrentType == 0 ? startDateTime : DateTime(day.year, day.month, day.day, startDateTime.hour, startDateTime.minute);
+  DateTime endClock(DateTime day) =>
+      startClock(day).add(Duration(milliseconds: duration));
+  DateTime startClock(DateTime day) => DateTime(
+      day.year, day.month, day.day, startDateTime.hour, startDateTime.minute);
   DateTime get start => DateTime.fromMillisecondsSinceEpoch(startTime);
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(startTime + duration);
   DateTime get startDateTime => DateTime.fromMillisecondsSinceEpoch(startTime);
   DateTime get endDateTime => DateTime.fromMillisecondsSinceEpoch(endTime);
   RecurrentType get recurrance => RecurrentType.values[recurrentType];
   final String id, seriesId, title, fileId, icon, infoItem;
-  final int startTime, endTime, duration, category, revision, alarmType, recurrentType, recurrentData;
+  final int startTime,
+      endTime,
+      duration,
+      category,
+      revision,
+      alarmType,
+      recurrentType,
+      recurrentData;
   final bool deleted, fullDay;
   final UnmodifiableListView<int> reminderBefore;
   const Activity._({
