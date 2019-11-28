@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/models.dart';
+import 'package:seagull/utils.dart';
 
 class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
   final ActivitiesBloc activitiesBloc;
@@ -24,12 +25,14 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
 
   @override
   DayActivitiesState get initialState {
-    return activitiesBloc.state is ActivitiesLoaded
-        ? DayActivitiesLoaded(
-            (activitiesBloc.state as ActivitiesLoaded).activities,
-            dayPickerBloc.state,
-          )
-        : DayActivitiesLoading(dayPickerBloc.state);
+    final activitiesState = activitiesBloc.state;
+    if (activitiesState is ActivitiesLoaded) {
+      final dayActivities = _mapActivitiesToCurrentDayActivities(
+          activitiesState.activities, dayPickerBloc.state);
+      return DayActivitiesLoaded(dayActivities, dayPickerBloc.state);
+    } else {
+      return DayActivitiesUninitialized();
+    }
   }
 
   @override
@@ -37,7 +40,7 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
     if (event is UpdateDay) {
       yield* _mapUpdateFilterToState(event);
     } else if (event is UpdateActivities) {
-      yield* _mapActivitiesUpdatedToState(event);
+      yield* _mapActivitiesUpdatedToState(event, dayPickerBloc.state);
     }
   }
 
@@ -46,35 +49,26 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
   ) async* {
     if (activitiesBloc.state is ActivitiesLoaded) {
       yield DayActivitiesLoaded(
-        _mapActivitiesToCurrentDayActivities(
-          (activitiesBloc.state as ActivitiesLoaded).activities,
-          event.dayFilter,
-        ),
-        event.dayFilter,
-      );
+          _mapActivitiesToCurrentDayActivities(
+            (activitiesBloc.state as ActivitiesLoaded).activities,
+            event.dayFilter,
+          ),
+          event.dayFilter);
     }
   }
 
   Stream<DayActivitiesState> _mapActivitiesUpdatedToState(
-    UpdateActivities event,
-  ) async* {
-    final acs =
-        _mapActivitiesToCurrentDayActivities(event.activities, state.dayFilter);
-    yield DayActivitiesLoaded(
-      acs,
-      dayPickerBloc.state,
-    );
+      UpdateActivities event, DateTime dayFilter) async* {
+    final dayActivities =
+        _mapActivitiesToCurrentDayActivities(event.activities, dayFilter);
+    yield DayActivitiesLoaded(dayActivities, dayFilter);
   }
 
   Iterable<Activity> _mapActivitiesToCurrentDayActivities(
-      Iterable<Activity> activities, DateTime filterDay) {
-    final activs = activities.where((activity) {
-      final activityTime = activity.startDate;
-      final activityDay =
-          DateTime(activityTime.year, activityTime.month, activityTime.day);
-      return filterDay.isAtSameMomentAs(activityDay);
-    });
-    return activs;
+      Iterable<Activity> ativities, DateTime filterDay) {
+    return ativities
+        .where((activity) => !activity.deleted)
+        .where((activity) => Recurs.shouldShowForDay(activity, filterDay));
   }
 
   @override

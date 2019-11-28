@@ -6,7 +6,7 @@ import 'package:seagull/ui/components.dart';
 import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:intl/intl.dart';
-import 'package:seagull/utils/datetime_utils.dart';
+import 'package:seagull/utils.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -139,7 +139,7 @@ class _CalendarState extends State<Calendar> {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 4),
                     child: NotificationListener<ScrollNotification>(
-                      onNotification: _shouldUpdateScroll(state.now)
+                      onNotification: _shouldUpdateScroll(DateTime.now())
                           ? _onScrollNotification
                           : null,
                       child: Scrollbar(
@@ -147,7 +147,7 @@ class _CalendarState extends State<Calendar> {
                           physics:
                               const AlwaysScrollableScrollPhysics(), // https://github.com/flutter/flutter/issues/22180
                           itemExtent: cardHeight,
-                          controller: _shouldUpdateScroll(state.now)
+                          controller: _shouldUpdateScroll(DateTime.now())
                               ? _scrollController
                               : null,
                           padding: const EdgeInsets.symmetric(

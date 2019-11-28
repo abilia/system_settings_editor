@@ -37,6 +37,7 @@ class CalendarPage extends StatelessWidget {
         builder: (context) => ActivitiesOccasionBloc(
           clockBloc: BlocProvider.of<ClockBloc>(context),
           dayActivitiesBloc: BlocProvider.of<DayActivitiesBloc>(context),
+          dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
         ),
       ),
     ], child: Calendar());

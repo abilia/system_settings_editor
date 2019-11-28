@@ -43,7 +43,21 @@ class Fakes {
         },
       );
 
-  static Iterable<Activity> allActivities = []
+  static Iterable<Activity> allActivities = [
+    FakeActivity.reocurrsMondays(),
+    FakeActivity.reocurrsTuedays(),
+    FakeActivity.reocurrsWednesdays(),
+    FakeActivity.reocurrsThursdays(),
+    FakeActivity.reocurrsOnDay(1),
+    FakeActivity.reocurrsOnDay(15),
+    FakeActivity.reocurrsOnDay(22),
+    FakeActivity.reocurrsOnDay(30),
+    FakeActivity.reocurrsOnDay(31),
+    FakeActivity.reocurrsOnDate(DateTime(2000, 12, 24)),
+    FakeActivity.reocurrsOnDate(DateTime(2000, 01, 01)),
+    FakeActivity.reocurrsOnDate(DateTime(2000, 06, 21)),
+    FakeActivity.reocurrsOnDate(DateTime(2000, 10, 06)),
+  ]
     ..addAll(FakeActivities.allPast)
     ..addAll(FakeActivities.oneFullDayEveryDay)
     ..addAll(FakeActivities.oneEveryMinute)

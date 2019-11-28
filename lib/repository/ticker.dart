@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:seagull/utils/datetime_utils.dart';
+import 'package:seagull/utils.dart';
 
 class Ticker {
   Ticker._();

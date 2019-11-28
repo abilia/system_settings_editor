@@ -20,8 +20,8 @@ class ActivityCard extends StatelessWidget {
     final activity = activityOccasion.activity;
     final occasion = activityOccasion.occasion;
     final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
-    final start = activity.startDate;
-    final end = activity.endDate;
+    final start = activity.start;
+    final end = activity.end;
     final hasImage = activity.fileId != null;
     return Theme(
       data: pickTheme(context: context, occasion: occasion),
