@@ -4,34 +4,33 @@ import 'package:seagull/models/activity.dart';
 import 'package:seagull/utils.dart';
 
 abstract class ActivitiesOccasionState extends Equatable {
-  const ActivitiesOccasionState(this.now, this.day);
-  final DateTime now;
-  final DateTime day;
+  const ActivitiesOccasionState();
   @override
-  List<Object> get props => [now, day];
+  List<Object> get props => [];
 }
 
 class ActivitiesOccasionLoading extends ActivitiesOccasionState {
-  ActivitiesOccasionLoading(DateTime now, DateTime day) : super(now, day);
+  ActivitiesOccasionLoading() : super();
   @override
-  String toString() => 'ActivitiesOccasionLoading { now: $now day: $day }';
+  String toString() => 'ActivitiesOccasionLoading';
 }
 
 class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
+  final List<ActivityOccasion> activities;
+  final List<ActivityOccasion> fullDayActivities;
+  final DateTime day;
+
   ActivitiesOccasionLoaded({
     @required this.activities,
     @required this.fullDayActivities,
-    @required DateTime now,
-    @required DateTime day,
-  }) : super(now, day);
-  final List<ActivityOccasion> activities;
-  final List<ActivityOccasion> fullDayActivities;
+    @required this.day,
+  }) : super();
 
   @override
-  List<Object> get props => [activities, fullDayActivities, now, day];
+  List<Object> get props => [activities, fullDayActivities, day];
   @override
   String toString() =>
-      'ActivitiesOccasionLoaded { ActivityOccasion: $activities, fullDay ActivityOccasion: $fullDayActivities now: $now day: $day }';
+      'ActivitiesOccasionLoaded { ActivityOccasion: $activities, fullDay ActivityOccasion: $fullDayActivities }';
 }
 
 enum Occasion { past, current, future }

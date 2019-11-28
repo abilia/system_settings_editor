@@ -6,22 +6,24 @@ import 'package:seagull/models/activity.dart';
 
 class ActivitiesOccasionBloc
     extends Bloc<ActivitiesOccasionEvent, ActivitiesOccasionState> {
+  DayPickerBloc dayPickerBloc;
+  ClockBloc clockBloc;
   StreamSubscription activitiesSubscription;
   StreamSubscription clockSubscription;
 
   ActivitiesOccasionBloc({
-    @required ClockBloc clockBloc,
+    @required this.clockBloc,
     @required DayActivitiesBloc dayActivitiesBloc,
-  }) : _initialState = ActivitiesOccasionLoading(
-            clockBloc.state, dayActivitiesBloc.state.dayFilter) {
+    @required this.dayPickerBloc,
+  }) : _initialState = ActivitiesOccasionLoading() {
     activitiesSubscription = dayActivitiesBloc.listen((activitiesState) {
       if (activitiesState is DayActivitiesLoaded)
-        add(ActivitiesChanged(
-            activitiesState.activities, activitiesState.dayFilter));
+        add(ActivitiesChanged(activitiesState.activities, activitiesState.day));
     });
     clockSubscription = clockBloc.listen((now) => add(NowChanged(now)));
   }
   final ActivitiesOccasionLoading _initialState;
+
   @override
   ActivitiesOccasionState get initialState => _initialState;
 
@@ -32,7 +34,7 @@ class ActivitiesOccasionBloc
     if (event is ActivitiesChanged) {
       yield _mapActivitiesToActivityOccasionsState(
         event.activities,
-        now: state.now,
+        now: clockBloc.state,
         day: event.day,
       );
     } else if (event is NowChanged) {
@@ -43,9 +45,9 @@ class ActivitiesOccasionBloc
                 .followedBy(loadedState.fullDayActivities)
                 .map((a) => a.activity),
             now: event.now,
-            day: loadedState.day);
+            day: dayPickerBloc.state);
       } else
-        yield ActivitiesOccasionLoading(event.now, state.day);
+        yield ActivitiesOccasionLoading();
     }
   }
 
@@ -75,7 +77,6 @@ class ActivitiesOccasionBloc
           .where((a) => a.fullDay)
           .map((a) => ActivityOccasion.fullDay(a, now: now, day: day))
           .toList(),
-      now: now,
       day: day,
     );
   }

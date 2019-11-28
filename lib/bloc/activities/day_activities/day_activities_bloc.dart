@@ -31,7 +31,7 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
           activitiesState.activities, dayPickerBloc.state);
       return DayActivitiesLoaded(dayActivities, dayPickerBloc.state);
     } else {
-      return DayActivitiesUninitialized(dayPickerBloc.state);
+      return DayActivitiesUninitialized();
     }
   }
 
@@ -40,7 +40,7 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
     if (event is UpdateDay) {
       yield* _mapUpdateFilterToState(event);
     } else if (event is UpdateActivities) {
-      yield* _mapActivitiesUpdatedToState(event);
+      yield* _mapActivitiesUpdatedToState(event, dayPickerBloc.state);
     }
   }
 
@@ -49,24 +49,19 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
   ) async* {
     if (activitiesBloc.state is ActivitiesLoaded) {
       yield DayActivitiesLoaded(
-        _mapActivitiesToCurrentDayActivities(
-          (activitiesBloc.state as ActivitiesLoaded).activities,
-          event.dayFilter,
-        ),
-        event.dayFilter,
-      );
+          _mapActivitiesToCurrentDayActivities(
+            (activitiesBloc.state as ActivitiesLoaded).activities,
+            event.dayFilter,
+          ),
+          event.dayFilter);
     }
   }
 
   Stream<DayActivitiesState> _mapActivitiesUpdatedToState(
-    UpdateActivities event,
-  ) async* {
+      UpdateActivities event, DateTime dayFilter) async* {
     final dayActivities =
-        _mapActivitiesToCurrentDayActivities(event.activities, state.dayFilter);
-    yield DayActivitiesLoaded(
-      dayActivities,
-      dayPickerBloc.state,
-    );
+        _mapActivitiesToCurrentDayActivities(event.activities, dayFilter);
+    yield DayActivitiesLoaded(dayActivities, dayFilter);
   }
 
   Iterable<Activity> _mapActivitiesToCurrentDayActivities(

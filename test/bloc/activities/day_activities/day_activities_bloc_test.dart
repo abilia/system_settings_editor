@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc.dart';
-import 'package:seagull/bloc/bloc_delegate.dart';
 import 'package:seagull/fakes/fake_activities.dart';
 import 'package:seagull/models.dart';
 import 'package:seagull/utils.dart';
@@ -28,12 +27,12 @@ void main() {
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
     });
 
-    test('initial state is DayActivitiesLoading', () {
-      expect(dayActivitiesBloc.initialState, DayActivitiesLoading(today));
-      expect(dayActivitiesBloc.state, DayActivitiesLoading(today));
+    test('initial state is DayActivitiesUninitialized', () {
+      expect(dayActivitiesBloc.initialState, DayActivitiesUninitialized());
+      expect(dayActivitiesBloc.state, DayActivitiesUninitialized());
       expectLater(
         dayActivitiesBloc,
-        emitsInOrder([DayActivitiesLoading(today)]),
+        emitsInOrder([DayActivitiesUninitialized()]),
       );
     });
 
@@ -66,7 +65,7 @@ void main() {
       expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesLoading(today),
+          DayActivitiesUninitialized(),
           DayActivitiesLoaded(activities, today),
         ]),
       );
@@ -89,7 +88,7 @@ void main() {
       expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesLoading(today),
+          DayActivitiesUninitialized(),
           DayActivitiesLoaded(activitiesNow, today),
         ]),
       );
@@ -113,7 +112,7 @@ void main() {
       expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesLoading(today),
+          DayActivitiesUninitialized(),
           DayActivitiesLoaded(activitiesNow, today),
         ]),
       );
@@ -137,7 +136,7 @@ void main() {
       expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesLoading(today),
+          DayActivitiesUninitialized(),
           DayActivitiesLoaded(activitiesNow, today),
           DayActivitiesLoaded(activitiesTomorrow, tomorrow),
         ]),
@@ -162,7 +161,7 @@ void main() {
       expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesLoading(today),
+          DayActivitiesUninitialized(),
           DayActivitiesLoaded(activitiesNow, today),
           DayActivitiesLoaded(activitiesYesterDay, yesterday),
         ]),
@@ -191,7 +190,7 @@ void main() {
       expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesLoading(today),
+          DayActivitiesUninitialized(),
           DayActivitiesLoaded(Iterable.empty(), today),
           DayActivitiesLoaded(Iterable.empty(), tomorrow),
           DayActivitiesLoaded(Iterable.empty(), today),
@@ -215,7 +214,7 @@ void main() {
       expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesLoading(today),
+          DayActivitiesUninitialized(),
           DayActivitiesLoaded(Iterable.empty(), today),
           DayActivitiesLoaded(todayActivity, today),
         ]),
@@ -247,8 +246,6 @@ void main() {
           pushBloc: MockPushBloc());
       dayActivitiesBloc = DayActivitiesBloc(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
-
-      BlocSupervisor.delegate = SimpleBlocDelegate();
     });
 
     test('Shows recurring weekends', () async {
@@ -441,7 +438,7 @@ void main() {
       expectLater(
           dayActivitiesBloc,
           emitsInOrder([
-            DayActivitiesLoading(firstDay),
+            DayActivitiesUninitialized(),
             DayActivitiesLoaded(Iterable.empty(), firstDay),
             DayActivitiesLoaded(
                 Iterable<Activity>.empty().followedBy([preSplitRecurring]),
