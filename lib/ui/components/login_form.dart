@@ -131,7 +131,7 @@ class _LoginFormState extends State<LoginForm> {
                         style: Theme.of(context).textTheme.body1,
                       ),
                     ),
-                  padding191,
+                  padding192,
                   AbiliaButton(
                     key: TestKey.loggInButton,
                     label: i18n.translate.login,
@@ -156,7 +156,7 @@ class _LoginFormState extends State<LoginForm> {
   get padding16 => const Spacer(flex: 2);
   get padding32 => const Spacer(flex: 4);
   get padding56 => const Spacer(flex: 6);
-  get padding191 => const Spacer(flex: 23);
+  get padding192 => const Spacer(flex: 24);
 
   @override
   dispose() {
