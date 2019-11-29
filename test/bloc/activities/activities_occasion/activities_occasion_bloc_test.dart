@@ -436,7 +436,7 @@ void main() {
       dayPickerBloc.add(GoTo(day: friday));
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
-      // dayPickerBloc.add(NextDay());
+      dayPickerBloc.add(NextDay());
 
       // Assert
       expectLater(
@@ -480,13 +480,14 @@ void main() {
               fullDayActivities: [],
               day: sunday,
             ),
-            // // Monday
-            // ActivitiesOccasionLoaded(
-            //   activities: <ActivityOccasion>[
-            //     ActivityOccasion.forTest(mondayRecurring, Occasion.future),
-            //   ],
-            //   fullDayActivities: [],
-            // ),
+            // Monday
+            ActivitiesOccasionLoaded(
+              activities: <ActivityOccasion>[
+                ActivityOccasion.forTest(mondayRecurring, Occasion.future),
+              ],
+              fullDayActivities: [],
+              day: monday
+            ),
           ]));
     });
 

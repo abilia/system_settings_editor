@@ -4,6 +4,7 @@ import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components.dart';
+import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:intl/intl.dart';
 
@@ -31,10 +32,19 @@ class ActivityCard extends StatelessWidget {
             child: SizedBox(
               height: height,
               child: ListTile(
+                onTap: () async => await Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => AlarmPage(
+                            activity: activity,
+                            atStartTime: occasion == Occasion.current,
+                          ),
+                      fullscreenDialog: true),
+                ),
                 leading: hasImage
                     ? AnimatedOpacity(
                         opacity: occasion == Occasion.past ? .5 : 1,
-                        child: FadeInThumb(imageFileId: activity.fileId),
+                        child:
+                            FadeInCalenderImage(imageFileId: activity.fileId),
                         duration: const Duration(seconds: 1),
                       )
                     : null,

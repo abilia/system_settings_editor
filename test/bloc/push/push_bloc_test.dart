@@ -27,7 +27,7 @@ void main() {
     testWidgets('Push loads activities', (WidgetTester tester) async {
       final activityAnswers = [
         Response(json.encode([]), 200),
-        Response(json.encode([FakeActivity.onTime(DateTime.now())]), 200)
+        Response(json.encode([FakeActivity.future()]), 200)
       ];
 
       final fakeUrl = 'SomeUrl'; 

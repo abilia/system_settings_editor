@@ -24,7 +24,7 @@ void main() {
 
     testWidgets('Application starts', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        httpClient: Fakes.client(),
+        httpClient: Fakes.client([]),
         baseUrl: '',
         firebasePushService: mockFirebasePushService,
         secureStorage: mockSecureStorage,
@@ -45,7 +45,7 @@ void main() {
 
     testWidgets('Should show one activity', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        httpClient: Fakes.client([FakeActivity.onTime()]),
+        httpClient: Fakes.client([FakeActivity.future()]),
         firebasePushService: mockFirebasePushService,
         secureStorage: mockSecureStorage,
       ));
@@ -57,10 +57,22 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(App(
         httpClient: Fakes.client([FakeActivity.onTime()]),
-        firebasePushService: mockFirebasePushService,        secureStorage: mockSecureStorage,
+        firebasePushService: mockFirebasePushService,
+        secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
+    });
+
+    testWidgets('Alarms show on start',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App(
+        httpClient: Fakes.client([FakeActivity.onTime()]),
+        firebasePushService: mockFirebasePushService,
+        secureStorage: mockSecureStorage,
+      ));
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
     });
   });
 }

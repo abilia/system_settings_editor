@@ -8,3 +8,4 @@ export 'bloc/login/bloc.dart';
 export 'bloc/login/form/bloc.dart';
 export 'bloc/calendar/bloc.dart';
 export 'bloc/clock/clock_bloc.dart';
+export 'bloc/alarm/bloc.dart';

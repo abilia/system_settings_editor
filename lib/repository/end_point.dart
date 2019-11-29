@@ -10,5 +10,8 @@ const Map<String,String> backEndEnviorments = {
 
 String thumbImageUrl(String baseUrl, int userId, String imageFileId) =>
     '$baseUrl/api/v1/data/$userId/storage/image/thumb/$imageFileId';
+String imageUrl(String baseUrl, int userId, String imageFileId) =>
+    '$baseUrl/api/v1/data/$userId/storage/file/id/$imageFileId';
+
 
 Map<String, String> authHeader(String token) => {'X-Auth-Token': token};

@@ -100,7 +100,7 @@ void main() {
 
     testWidgets('Can login', (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        httpClient: Fakes.client(),
+        httpClient: Fakes.client([]),
         baseUrl: '',
         firebasePushService: mockFirebasePushService,
         secureStorage: mockSecureStorage,
