@@ -19,6 +19,9 @@ dependencies:
   uuid: ^2.0.2
   flutter_secure_storage: ^3.3.1+1
   firebase_messaging: ^6.0.1
+  sqflite: ^1.1.7+3
+  sqflite_migration: ^0.1.2
+  get_it: ^3.0.3
 
 dev_dependencies:
   flutter_test:

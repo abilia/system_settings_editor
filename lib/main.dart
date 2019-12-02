@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 
 import 'package:seagull/bloc.dart';
 import 'package:seagull/bloc/bloc_delegate.dart';
 import 'package:seagull/bloc/push/push_bloc.dart';
+import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/repositories.dart';
 import 'package:seagull/repository/push.dart';
 import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
 
+GetIt getIt = GetIt.instance;
+
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
+  initServices();
   runApp(App());
+}
+
+void initServices() {
+  GetItInitializer().init();
 }
 
 class App extends StatelessWidget {
@@ -31,10 +40,11 @@ class App extends StatelessWidget {
     Key key,
   })  : userRepository = UserRepository(
             baseUrl: baseUrl ?? T1,
-            httpClient: httpClient ?? Client(),
-            secureStorage: secureStorage ?? FlutterSecureStorage()),
-            firebasePushService = firebasePushService ?? FirebasePushService(),
-            pushBloc = pushBloc ?? PushBloc(),
+            httpClient: httpClient ?? getIt<Client>(),
+            secureStorage: secureStorage ?? getIt<FlutterSecureStorage>()),
+        firebasePushService =
+            firebasePushService ?? getIt<FirebasePushService>(),
+        pushBloc = pushBloc ?? getIt<PushBloc>(),
         super(key: key);
 
   @override
@@ -43,8 +53,7 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider<AuthenticationBloc>(
             builder: (context) =>
-                AuthenticationBloc()
-                  ..add(AppStarted(userRepository))),
+                AuthenticationBloc()..add(AppStarted(userRepository))),
         BlocProvider<PushBloc>(
           builder: (context) => pushBloc ?? PushBloc(),
         )

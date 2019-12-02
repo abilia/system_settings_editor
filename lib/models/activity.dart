@@ -148,6 +148,26 @@ class Activity extends Equatable {
         alarmType: json['alarmType'],
       );
 
+  factory Activity.fromDbMap(Map<String, dynamic> dbRow) => Activity._(
+        id: dbRow['id'],
+        seriesId: dbRow['series_id'],
+        title: dbRow['title'],
+        startTime: dbRow['start_time'],
+        endTime: dbRow['end_time'],
+        duration: dbRow['duration'],
+        fileId: _nullIfEmpty(dbRow['file_id']),
+        icon: _nullIfEmpty(dbRow['icon']),
+        infoItem: _nullIfEmpty(dbRow['info_item']),
+        category: dbRow['category'],
+        deleted: dbRow['deleted'] == 1 ? true : false,
+        fullDay: dbRow['full_day'] == 1 ? true : false,
+        recurrentType: dbRow['recurrent_type'],
+        recurrentData: dbRow['recurrent_data'],
+        reminderBefore: _parseReminders(dbRow['reminder_before']),
+        revision: dbRow['revision'],
+        alarmType: dbRow['alarm_type'],
+      );
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'seriesId': seriesId,
@@ -166,6 +186,26 @@ class Activity extends Equatable {
         'infoItem': infoItem,
         'revision': revision,
         'alarmType': alarmType,
+      };
+
+  Map<String, dynamic> toMapForDb() => {
+        'id': id,
+        'series_id': seriesId,
+        'title': title,
+        'start_time': startTime,
+        'end_time': endTime,
+        'duration': duration,
+        'file_id': fileId,
+        'category': category,
+        'deleted': deleted ? 1 : 0,
+        'full_day': fullDay ? 1 : 0,
+        'recurrent_type': recurrentType,
+        'recurrent_data': recurrentData,
+        'reminder_before': reminderBefore.map((r) => r.toString()).join(';'),
+        'icon': icon,
+        'info_item': infoItem,
+        'revision': revision,
+        'alarm_type': alarmType,
       };
 
   static String _nullIfEmpty(String value) =>

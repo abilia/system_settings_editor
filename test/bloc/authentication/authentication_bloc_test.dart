@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/authentication/bloc.dart';
 import 'package:seagull/fakes/fake_client.dart';
+import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
@@ -117,7 +118,7 @@ void main() {
       authenticationBloc.add(AppStarted(mockedUserRepository));
 
       when(mockedUserRepository.me(any))
-          .thenAnswer((_) => Future.error(Exception()));
+          .thenAnswer((_) => Future.error(UnauthorizedException()));
 
       await untilCalled(mockedUserRepository.deleteToken());
     });
@@ -129,7 +130,7 @@ void main() {
         Unauthenticated(mockedUserRepository),
       ];
       when(mockedUserRepository.me(any))
-          .thenAnswer((_) => Future.error(Exception()));
+          .thenAnswer((_) => Future.error(UnauthorizedException()));
       expectLater(
         authenticationBloc,
         emitsInOrder(expected),

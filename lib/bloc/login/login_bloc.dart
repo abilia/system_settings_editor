@@ -25,13 +25,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final authState = authenticationBloc.state as AuthenticationInitialized;
         yield LoginLoading();
 
-      try {
-        final pushToken = await pushService.initPushToken();
-        final token = await authState.userRepository.authenticate(
-          username: event.username,
-          password: event.password,
-          pushToken: pushToken,
-        );
+        try {
+          final pushToken = await pushService.initPushToken();
+          final token = await authState.userRepository.authenticate(
+            username: event.username,
+            password: event.password,
+            pushToken: pushToken,
+          );
 
           authenticationBloc.add(LoggedIn(token: token));
           yield LoginInitial();

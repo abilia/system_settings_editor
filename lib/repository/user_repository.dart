@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/login.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/end_point.dart';
@@ -64,7 +65,10 @@ class UserRepository extends Repository {
     if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
       var user = User.fromJson(responseJson['me']);
+      // store user to db
       return user;
+    } else if (response.statusCode == 401) {
+      throw UnauthorizedException();
     } else {
       throw Exception('Could not get me!');
     }
