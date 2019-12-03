@@ -26,9 +26,9 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 def getVersionCode() {
-    def property = System.getenv('APPCENTER_BUILD_ID').toInteger()
+    def property = System.getenv('APPCENTER_BUILD_ID')
     if (property) {
-        return property
+        return property.toInteger()
     }
     return flutterVersionCode.toInteger()
 }
@@ -49,7 +49,7 @@ android {
         applicationId "com.abilia.seagull"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode getVersionCode()
+        versionCode 5
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
