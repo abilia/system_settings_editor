@@ -97,7 +97,7 @@ class UserRepository extends Repository {
 
   Future<void> logout() async {
     await secureStorage.delete(key: _tokenKey);
-    await userDb.removeUser();
+    await userDb.deleteUser();
   }
 
   Future<void> persistToken(String token) =>
