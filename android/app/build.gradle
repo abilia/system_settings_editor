@@ -41,7 +41,7 @@ android {
         applicationId "com.abilia.seagull"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode System.getenv('APPCENTER_BUILD_ID').toInteger()
+        versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

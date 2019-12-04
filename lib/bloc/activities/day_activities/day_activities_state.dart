@@ -7,14 +7,14 @@ class DayActivitiesUninitialized extends DayActivitiesState {
   @override
   String toString() => 'DayActivitiesUninitialized';
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class DayActivitiesLoading extends DayActivitiesState {
   @override
   String toString() => 'DayActivitiesLoading';
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class DayActivitiesLoaded extends DayActivitiesState {
