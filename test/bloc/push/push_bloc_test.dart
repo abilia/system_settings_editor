@@ -29,7 +29,10 @@ void main() {
     });
 
     testWidgets('Push loads activities', (WidgetTester tester) async {
-      GetItInitializer().withActivityDb(mockActivityDb).init();
+      GetItInitializer()
+          .withUserDb(MockUserDb())
+          .withActivityDb(mockActivityDb)
+          .init();
       final activityResponseAnswers = [
         Response(json.encode([]), 200),
         Response(json.encode([FakeActivity.onTime(DateTime.now())]), 200)

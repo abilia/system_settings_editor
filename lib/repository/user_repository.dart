@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/db/user_db.dart';
 import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/login.dart';
 import 'package:seagull/models/user.dart';
@@ -14,11 +15,13 @@ import 'package:uuid/uuid.dart';
 class UserRepository extends Repository {
   final String _tokenKey = 'tokenKey';
   final FlutterSecureStorage secureStorage;
+  final UserDb userDb;
 
   UserRepository({
     String baseUrl,
     @required BaseClient httpClient,
     @required this.secureStorage,
+    @required this.userDb,
   })  : assert(secureStorage != null),
         super(httpClient, baseUrl);
 
@@ -28,10 +31,10 @@ class UserRepository extends Repository {
     FlutterSecureStorage secureStorage,
   }) =>
       UserRepository(
-        baseUrl: baseUrl ?? this.baseUrl,
-        httpClient: httpClient ?? this.httpClient,
-        secureStorage: secureStorage ?? this.secureStorage,
-      );
+          baseUrl: baseUrl ?? this.baseUrl,
+          httpClient: httpClient ?? this.httpClient,
+          secureStorage: secureStorage ?? this.secureStorage,
+          userDb: this.userDb);
 
   Future<String> authenticate(
       {@required String username,
@@ -59,22 +62,43 @@ class UserRepository extends Repository {
   }
 
   Future<User> me(authToken) async {
+    try {
+      final user = await getUserFromApi(authToken);
+      await userDb.insertUser(user);
+      return user;
+    } on UnauthorizedException {
+      throw UnauthorizedException();
+    } catch (_) {
+      return await getUserFromDb();
+    }
+  }
+
+  Future<User> getUserFromDb() async {
+    final user = await userDb.getUser();
+    if (user == null) {
+      throw UnauthorizedException();
+    }
+    return user;
+  }
+
+  Future<User> getUserFromApi(authToken) async {
     final response = await httpClient.get('$baseUrl/api/v1/entity/me',
         headers: authHeader(authToken));
 
     if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
-      var user = User.fromJson(responseJson['me']);
-      // store user to db
-      return user;
+      return User.fromJson(responseJson['me']);
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     } else {
-      throw Exception('Could not get me!');
+      throw Exception("Could not get user right now");
     }
   }
 
-  Future<void> deleteToken() => secureStorage.delete(key: _tokenKey);
+  Future<void> logout() async {
+    await secureStorage.delete(key: _tokenKey);
+    await userDb.removeUser();
+  }
 
   Future<void> persistToken(String token) =>
       secureStorage.write(key: _tokenKey, value: token);

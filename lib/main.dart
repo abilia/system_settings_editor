@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,6 +8,7 @@ import 'package:http/http.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/bloc/bloc_delegate.dart';
 import 'package:seagull/bloc/push/push_bloc.dart';
+import 'package:seagull/db/user_db.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/repositories.dart';
@@ -41,7 +43,8 @@ class App extends StatelessWidget {
   })  : userRepository = UserRepository(
             baseUrl: baseUrl ?? T1,
             httpClient: httpClient ?? getIt<Client>(),
-            secureStorage: secureStorage ?? getIt<FlutterSecureStorage>()),
+            secureStorage: secureStorage ?? getIt<FlutterSecureStorage>(),
+            userDb: getIt<UserDb>()),
         firebasePushService =
             firebasePushService ?? getIt<FirebasePushService>(),
         pushBloc = pushBloc ?? getIt<PushBloc>(),
@@ -53,7 +56,7 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider<AuthenticationBloc>(
             builder: (context) =>
-                AuthenticationBloc()..add(AppStarted(userRepository))),
+                getIt<AuthenticationBloc>()..add(AppStarted(userRepository))),
         BlocProvider<PushBloc>(
           builder: (context) => pushBloc ?? PushBloc(),
         )
@@ -66,6 +69,8 @@ class App extends StatelessWidget {
           Translator.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
         ],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,

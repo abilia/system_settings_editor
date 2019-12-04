@@ -3,10 +3,10 @@ import 'package:seagull/models/activity.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ActivityDb {
-
   static const String MAX_REVISION_SQL =
       'SELECT max(revision) as max_revision FROM calendar_activity';
   static const String GET_ACTIVITIES_SQL = 'SELECT * FROM calendar_activity';
+  static const String CLEAR_ACTIVITIES_SQL = 'DELETE FROM calendar_activity';
 
   Future<int> getLastRevision() async {
     final db = await DatabaseRepository().database;
@@ -24,6 +24,11 @@ class ActivityDb {
     return result.map((row) => Activity.fromDbMap(row)).toList();
   }
 
+  Future clearActivites() async {
+    final db = await DatabaseRepository().database;
+    await db.rawQuery(CLEAR_ACTIVITIES_SQL);
+  }
+
   insertActivities(List<Activity> activities) async {
     final db = await DatabaseRepository().database;
     activities.forEach((activity) async {
@@ -31,5 +36,4 @@ class ActivityDb {
           conflictAlgorithm: ConflictAlgorithm.replace);
     });
   }
-
 }

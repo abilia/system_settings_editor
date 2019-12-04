@@ -21,12 +21,20 @@ class ActivityRepository extends Repository {
   }) : super(client, baseUrl);
 
   Future<Iterable<Activity>> loadActivities() async {
-    // Try to fetch from backend
-    final fetchedActivities = await fetchActivities();
-    // Insert new to db
-    await activitiesDb.insertActivities(fetchedActivities);
-    // Get from db
+    try {
+      // Try to fetch from backend
+      final fetchedActivities = await fetchActivities();
+      // Insert new to db
+      await activitiesDb.insertActivities(fetchedActivities);
+      // Get from db
+    } catch (_) {
+      print('Could not fetch from backend');
+    }
     return await activitiesDb.getActivitiesFromDb();
+  }
+
+  Future clearActivities() async {
+    await activitiesDb.clearActivites();
   }
 
   Future saveActivities(Iterable<Activity> activities) {

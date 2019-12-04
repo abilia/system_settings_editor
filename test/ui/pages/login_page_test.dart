@@ -29,14 +29,19 @@ void main() {
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value([]));
       mockPushBloc = MockPushBloc();
+    });
+
+    void initMocks() {
       GetItInitializer()
           .withActivityDb(mockActivityDb)
           .withFireBasePushService(mockFirebasePushService)
           .withPushBloc(mockPushBloc)
+          .withUserDb(MockUserDb())
           .init();
-    });
+    }
 
     testWidgets('Application starts', (WidgetTester tester) async {
+      initMocks();
       await tester.pumpWidget(App(
         httpClient: Fakes.client(),
         secureStorage: mockSecureStorage,
@@ -46,6 +51,7 @@ void main() {
     });
 
     testWidgets('Hide password button', (WidgetTester tester) async {
+      initMocks();
       await tester.pumpWidget(App(
         httpClient: Fakes.client(),
         secureStorage: mockSecureStorage,
@@ -69,6 +75,7 @@ void main() {
 
     testWidgets('Cant login when no password or username',
         (WidgetTester tester) async {
+      initMocks();
       await tester.pumpWidget(App(
         httpClient: Fakes.client(),
         secureStorage: mockSecureStorage,
@@ -91,6 +98,7 @@ void main() {
 
     testWidgets('Error message when incorrect username or password',
         (WidgetTester tester) async {
+      initMocks();
       await tester.pumpWidget(App(
         httpClient: Fakes.client(),
         secureStorage: mockSecureStorage,
@@ -108,6 +116,7 @@ void main() {
     });
 
     testWidgets('Can login', (WidgetTester tester) async {
+      initMocks();
       await tester.pumpWidget(App(
         httpClient: Fakes.client(),
         baseUrl: '',

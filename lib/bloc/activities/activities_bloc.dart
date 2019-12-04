@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/bloc.dart';
 import 'package:seagull/bloc/push/push_bloc.dart';
 import 'package:seagull/bloc/push/push_state.dart';
 import 'package:seagull/models.dart';
@@ -12,8 +13,10 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
   final ActivityRepository activitiesRepository;
   StreamSubscription pushSubscription;
 
-  ActivitiesBloc(
-      {@required this.activitiesRepository, @required PushBloc pushBloc}) {
+  ActivitiesBloc({
+    @required this.activitiesRepository,
+    @required PushBloc pushBloc,
+  }) {
     pushSubscription = pushBloc.listen((state) {
       if (state is PushReceived) {
         add(LoadActivities());

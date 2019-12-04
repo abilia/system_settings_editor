@@ -14,8 +14,11 @@ void main() {
     UserRepository userRepository;
     setUp(() {
       userRepository = UserRepository(
-          httpClient: Fakes.client(), secureStorage: MockSecureStorage());
-      authenticationBloc = AuthenticationBloc();
+          httpClient: Fakes.client(),
+          secureStorage: MockSecureStorage(),
+          userDb: MockUserDb());
+      authenticationBloc =
+          AuthenticationBloc(databaseRepository: MockDatabaseRepository());
     });
 
     test('initial state is AuthenticationUninitialized', () {
@@ -94,7 +97,8 @@ void main() {
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc = AuthenticationBloc();
+      authenticationBloc =
+          AuthenticationBloc(databaseRepository: MockDatabaseRepository());
       when(mockedUserRepository.getToken())
           .thenAnswer((_) => Future.value(Fakes.token));
       when(mockedUserRepository.me(any))
@@ -111,7 +115,7 @@ void main() {
     test('loggedOut calls deletes token', () async {
       authenticationBloc.add(AppStarted(mockedUserRepository));
       authenticationBloc.add(LoggedOut());
-      await untilCalled(mockedUserRepository.deleteToken());
+      await untilCalled(mockedUserRepository.logout());
     });
 
     test('unauthed token gets deleted', () async {
@@ -120,7 +124,7 @@ void main() {
       when(mockedUserRepository.me(any))
           .thenAnswer((_) => Future.error(UnauthorizedException()));
 
-      await untilCalled(mockedUserRepository.deleteToken());
+      await untilCalled(mockedUserRepository.logout());
     });
 
     test('unauthed token returns state Unauthenticated', () async {

@@ -26,13 +26,18 @@ void main() {
           .thenAnswer((_) => Future.value('fakeToken'));
       mockActivityDb = MockActivityDb();
       mockPushBloc = MockPushBloc();
+    });
+
+    void initMocks() {
       GetItInitializer()
           .withPushBloc(mockPushBloc)
           .withActivityDb(mockActivityDb)
+          .withUserDb(MockUserDb())
           .init();
-    });
+    }
 
     testWidgets('Application starts', (WidgetTester tester) async {
+      initMocks();
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(<Activity>[]));
       await tester.pumpWidget(App(
@@ -46,6 +51,7 @@ void main() {
     });
 
     testWidgets('Should show up empty', (WidgetTester tester) async {
+      initMocks();
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(<Activity>[]));
       await tester.pumpWidget(App(
@@ -58,6 +64,7 @@ void main() {
     });
 
     testWidgets('Should show one activity', (WidgetTester tester) async {
+      initMocks();
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(<Activity>[FakeActivity.onTime()]));
       await tester.pumpWidget(App(
@@ -71,6 +78,7 @@ void main() {
 
     testWidgets('Should not show Go to now-button',
         (WidgetTester tester) async {
+      initMocks();
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(<Activity>[FakeActivity.onTime()]));
       await tester.pumpWidget(App(

@@ -44,9 +44,13 @@ class DatabaseRepository {
   }
 
   Future<Database> _open() async {
+    print('Open the sqflite');
     final databasesPath = await getDatabasesPath();
     final path = join(databasesPath, 'seagull.db');
-    await deleteDatabase(path);
     return await openDatabaseWithMigration(path, _config);
+  }
+
+  clearAll() async {
+    _database.rawDelete("DELETE FROM calendar_activity");
   }
 }
