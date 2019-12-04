@@ -7,4 +7,6 @@ export 'bloc/authentication/bloc.dart';
 export 'bloc/login/bloc.dart';
 export 'bloc/login/form/bloc.dart';
 export 'bloc/calendar/bloc.dart';
+export 'bloc/calendar/scroll_position/bloc.dart';
 export 'bloc/clock/clock_bloc.dart';
+export 'bloc/mixin/mixin.dart';

@@ -53,14 +53,38 @@ void main() {
       expect(find.byType(ActivityCard), findsOneWidget);
     });
 
-    testWidgets('Should not show Go to now-button',
+    testWidgets('Empty agenda should not show Go to now-button',
         (WidgetTester tester) async {
       await tester.pumpWidget(App(
-        httpClient: Fakes.client([FakeActivity.onTime()]),
-        firebasePushService: mockFirebasePushService,        secureStorage: mockSecureStorage,
+        httpClient: Fakes.client([]),
+        firebasePushService: mockFirebasePushService,
+        secureStorage: mockSecureStorage,
       ));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
     });
+
+    testWidgets('Agenda with one activity should not show Go to now-button',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App(
+        httpClient: Fakes.client([FakeActivity.onTime()]),
+        firebasePushService: mockFirebasePushService,
+        secureStorage: mockSecureStorage,
+      ));
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.goToNowButton), findsNothing);
+    });
+
+    testWidgets('Agenda with one activity hidden by passed activities should show Go to now-button',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App(
+        httpClient: Fakes.client(FakeActivities.allPast..add(FakeActivity.onTime())),
+        firebasePushService: mockFirebasePushService,
+        secureStorage: mockSecureStorage,
+      ));
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+    });
+
   });
 }
