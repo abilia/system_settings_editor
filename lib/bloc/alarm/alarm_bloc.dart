@@ -38,10 +38,9 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
       final activitiesWithAlarm =
           activitiesThisDay.where((a) => a.alarm.shouldAlarm);
 
-      final startTimeAlarms = activitiesWithAlarm
+      final Iterable<PopUpAlarmState> startTimeAlarms = activitiesWithAlarm
           .where((a) => a.startClock(time).isAtSameMomentAs(time))
-          .map((a) => NewAlarmState(a, alarmOnStart: true))
-          .cast<PopUpAlarmState>();
+          .map((a) => NewAlarmState(a, alarmOnStart: true));
 
       final endTimeAlarms = activitiesWithAlarm
           .where(
@@ -51,15 +50,15 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
       final reminders = activitiesThisDay.expand((a) => a.reminderBefore
               .map((r) => NewReminderState(a, reminderTime: r))
               .where((rs) {
-                final reminderAt = rs.activity
+            final reminderAt = rs.activity
                 .startClock(time)
                 .subtract(Duration(minutes: rs.reminderTime));
             return reminderAt.isAtSameMomentAs(time);
           }));
 
-      for (final alarms
+      for (final alarm
           in startTimeAlarms.followedBy(endTimeAlarms).followedBy(reminders)) {
-        yield alarms;
+        yield alarm;
       }
     }
   }
