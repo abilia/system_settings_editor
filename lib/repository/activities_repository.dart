@@ -22,13 +22,11 @@ class ActivityRepository extends Repository {
 
   Future<Iterable<Activity>> loadActivities() async {
     try {
-      // Try to fetch from backend
       final fetchedActivities = await fetchActivities();
-      // Insert new to db
       await activitiesDb.insertActivities(fetchedActivities);
-      // Get from db
-    } catch (_) {
-      print('Could not fetch from backend');
+    } catch (e) {
+      // Error when syncing activities. Probably offline.
+      print('Error when syncing activities $e');
     }
     return await activitiesDb.getActivitiesFromDb();
   }

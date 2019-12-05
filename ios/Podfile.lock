@@ -88,6 +88,8 @@ PODS:
   - path_provider (0.0.1):
     - Flutter
   - Protobuf (3.10.0)
+  - shared_preferences (0.0.1):
+    - Flutter
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
@@ -99,6 +101,7 @@ DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
@@ -129,6 +132,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher:
@@ -154,6 +159,7 @@ SPEC CHECKSUMS:
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
+  shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
 

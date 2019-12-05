@@ -233,13 +233,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.22.4"
-  sembast:
+  shared_preferences:
     dependency: "direct main"
     description:
-      name: sembast
+      name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "0.5.4+8"
+  shared_preferences_platform_interface:
+    dependency: transitive
+    description:
+      name: shared_preferences_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   sky_engine:
     dependency: transitive
     description: flutter

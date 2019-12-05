@@ -51,8 +51,7 @@ class Activity extends Equatable {
         assert(revision != null),
         assert(alarmType != null),
         assert(recurrentType >= 0 && recurrentType < 4),
-        assert(startTime > 0),
-        assert(endTime >= startTime);
+        assert(startTime > 0);
 
   factory Activity.createNew({
     @required String title,

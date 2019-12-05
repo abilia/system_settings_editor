@@ -8,6 +8,7 @@ import 'package:http/http.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/bloc/bloc_delegate.dart';
 import 'package:seagull/bloc/push/push_bloc.dart';
+import 'package:seagull/db/sqflite.dart';
 import 'package:seagull/db/user_db.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
@@ -15,8 +16,6 @@ import 'package:seagull/repositories.dart';
 import 'package:seagull/repository/push.dart';
 import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
-
-GetIt getIt = GetIt.instance;
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -42,12 +41,12 @@ class App extends StatelessWidget {
     Key key,
   })  : userRepository = UserRepository(
             baseUrl: baseUrl ?? T1,
-            httpClient: httpClient ?? getIt<Client>(),
-            secureStorage: secureStorage ?? getIt<FlutterSecureStorage>(),
-            userDb: getIt<UserDb>()),
+            httpClient: httpClient ?? GetIt.I<Client>(),
+            secureStorage: secureStorage ?? GetIt.I<FlutterSecureStorage>(),
+            userDb: GetIt.I<UserDb>()),
         firebasePushService =
-            firebasePushService ?? getIt<FirebasePushService>(),
-        pushBloc = pushBloc ?? getIt<PushBloc>(),
+            firebasePushService ?? GetIt.I<FirebasePushService>(),
+        pushBloc = pushBloc ?? GetIt.I<PushBloc>(),
         super(key: key);
 
   @override
@@ -55,8 +54,9 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthenticationBloc>(
-            builder: (context) =>
-                getIt<AuthenticationBloc>()..add(AppStarted(userRepository))),
+            builder: (context) => AuthenticationBloc(
+                databaseRepository: GetIt.I<DatabaseRepository>())
+              ..add(AppStarted(userRepository))),
         BlocProvider<PushBloc>(
           builder: (context) => pushBloc ?? PushBloc(),
         )
