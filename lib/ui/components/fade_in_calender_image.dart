@@ -10,19 +10,21 @@ class FadeInCalenderImage extends StatelessWidget {
     @required this.imageFileId,
     this.width,
     this.height,
-    this.isThumb = true,
-  });
+  }) : isThumb = width != null && height != null;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) => (state is Authenticated)
           ? FadeInImage(
-              width: width ?? (isThumb ? 56 : null),
-              height: height ?? (isThumb ? 56 : null),
+              width: width ?? null,
+              height: height ?? null,
               image: NetworkImage(
                   isThumb
-                      ? thumbImageUrl(state.userRepository.baseUrl, state.userId, imageFileId)
-                      : imageUrl(state.userRepository.baseUrl, state.userId, imageFileId),
+                      ? thumbImageUrl(state.userRepository.baseUrl,
+                          state.userId, imageFileId,
+                          height: height.ceil(), width: width.ceil())
+                      : imageUrl(state.userRepository.baseUrl, state.userId,
+                          imageFileId),
                   headers: authHeader(state.token)),
               placeholder:
                   ExactAssetImage('assets/graphics/seagull_icon_gray.png'),

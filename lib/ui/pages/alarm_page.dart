@@ -73,10 +73,8 @@ class AlarmPage extends StatelessWidget {
                         ),
                       if (activity.fileId?.isNotEmpty == true)
                         Expanded(
-                          child: FadeInCalenderImage(
-                            imageFileId: activity.fileId,
-                            isThumb: false,
-                          ),
+                          child:
+                              FadeInCalenderImage(imageFileId: activity.fileId),
                         )
                     ],
                   ),

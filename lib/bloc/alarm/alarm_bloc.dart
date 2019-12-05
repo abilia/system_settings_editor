@@ -6,7 +6,6 @@ import 'package:seagull/utils.dart';
 import './bloc.dart';
 
 class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
-  StreamSubscription _activitiesSubscription;
   StreamSubscription _clockSubscription;
   ActivitiesBloc activitiesBloc;
   ClockBloc clockBloc;
@@ -14,11 +13,6 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
     @required this.activitiesBloc,
     @required this.clockBloc,
   }) {
-    _activitiesSubscription = activitiesBloc.listen((state) {
-      if (state is ActivitiesLoaded) {
-        add(ActivitiesAlarmEvent());
-      }
-    });
     _clockSubscription = clockBloc.listen((now) => add(TimeAlarmEvent()));
   }
 
@@ -29,11 +23,11 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
   Stream<AlarmState> mapEventToState(
     AlarmEvent event,
   ) async* {
-    if (activitiesBloc.state is ActivitiesLoaded) {
+    final state = activitiesBloc.state;
+    if (state is ActivitiesLoaded) {
       final time = clockBloc.state;
 
-      final activitiesThisDay = (activitiesBloc.state as ActivitiesLoaded)
-          .activities
+      final activitiesThisDay = state.activities
           .where((a) => Recurs.shouldShowForDay(a, onlyDays(time)));
       final activitiesWithAlarm =
           activitiesThisDay.where((a) => a.alarm.shouldAlarm);
@@ -65,7 +59,6 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
 
   @override
   Future<void> close() async {
-    await _activitiesSubscription.cancel();
     await _clockSubscription.cancel();
     return super.close();
   }

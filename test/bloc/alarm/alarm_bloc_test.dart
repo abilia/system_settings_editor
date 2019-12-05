@@ -39,13 +39,15 @@ void main() {
           AlarmBloc(clockBloc: clockBloc, activitiesBloc: activitiesBloc);
     });
 
-    test('Load activities with current alarm shows alarm', () {
+    test('Load activities with current alarm shows alarm', () async {
       // Arrange
-      final nowActivity = FakeActivity.onTime(thisMinute);
+      final nowActivity = FakeActivity.onTime(nextMinute);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([nowActivity]));
       // Act
       activitiesBloc.add(LoadActivities());
+      await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded );
+      await _tick();
       // Assert
       expectLater(
         alarmBloc,
@@ -148,7 +150,7 @@ void main() {
       );
     });
 
-    test('three activities starts in order', () async {
+    test('two activities starts in order', () async {
       // Arrange
       final nowActivity = FakeActivity.onTime(thisMinute);
       final nextMinActivity = FakeActivity.onTime(nextMinute);
@@ -161,7 +163,6 @@ void main() {
         alarmBloc,
         emitsInOrder([
           UnInitializedAlarmState(),
-          NewAlarmState(nowActivity),
           NewAlarmState(nextMinActivity),
           NewAlarmState(inTwoMinActivity),
         ]),
@@ -201,12 +202,13 @@ void main() {
 
     test('Recuring weekly alarms shows', () async {
       // Arrange
-      final recursThursday = FakeActivity.reocurrsTuedays(thisMinute);
+      final recursThursday = FakeActivity.reocurrsTuedays(nextMinute);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([recursThursday]));
       // Act
       activitiesBloc.add(LoadActivities());
       await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await _tick();
       // Assert
       expectLater(
         alarmBloc,
@@ -222,14 +224,15 @@ void main() {
     test('Recuring monthly alarms shows', () async {
       // Arrange
       final recursTheThisDayOfMonth = FakeActivity.reocurrsOnDay(
-          thisMinute.day,
-          thisMinute.subtract(Duration(days: 60)),
-          thisMinute.add(Duration(days: 60)));
+          nextMinute.day,
+          nextMinute.subtract(Duration(days: 60)),
+          nextMinute.add(Duration(days: 60)));
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([recursTheThisDayOfMonth]));
       // Act
       activitiesBloc.add(LoadActivities());
       await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await _tick();
       // Assert
       expectLater(
           alarmBloc,
@@ -244,12 +247,13 @@ void main() {
     test('Recuring yearly alarms shows', () async {
       // Arrange
       final recursTheThisDayOfYear =
-          FakeActivity.reocurrsOnDate(thisMinute);
+          FakeActivity.reocurrsOnDate(nextMinute);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([recursTheThisDayOfYear]));
       // Act
       activitiesBloc.add(LoadActivities());
       await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await _tick();
       // Assert
       expectLater(
           alarmBloc,
@@ -264,12 +268,13 @@ void main() {
     test('Alarm on EndTime shows', () async {
       // Arrange
       final activityEnding =
-          FakeActivity.endsAt(thisMinute);
+          FakeActivity.endsAt(nextMinute);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([activityEnding]));
       // Act
       activitiesBloc.add(LoadActivities());
       await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await _tick();
       // Assert
       expectLater(
           alarmBloc,
@@ -285,12 +290,13 @@ void main() {
       // Arrange
       final reminderTime = Duration(hours: 1);
       final remind1HourBefore =
-          FakeActivity.future(thisMinute, reminderTime).copyWith(reminderBefore: [reminderTime.inMinutes]);
+          FakeActivity.future(nextMinute, reminderTime).copyWith(reminderBefore: [reminderTime.inMinutes]);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([remind1HourBefore]));
       // Act
       activitiesBloc.add(LoadActivities());
       await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await _tick();
       // Assert
       expectLater(
           alarmBloc,

@@ -43,7 +43,7 @@ class ReminderPage extends StatelessWidget {
                 Text(timeFormat.format(activity.start), style: textStyle),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text('-', style: textStyle)
+                  child: Text('-', style: textStyle),
                 ),
                 Text(timeFormat.format(activity.end), style: textStyle),
               ],
@@ -69,7 +69,6 @@ class ReminderPage extends StatelessWidget {
                           imageFileId: activity.fileId,
                           width: 96.0,
                           height: 96.0,
-                          isThumb: true,
                         ),
                       if (activity.title?.isNotEmpty == true)
                         Expanded(
