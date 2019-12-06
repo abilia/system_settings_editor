@@ -8,5 +8,7 @@ class TestKey {
     hidePasswordToggle = Key('hidePassword'),
     loggInButton = Key('loggIn'),
     loginError = Key('loginError'),
-    goToNowButton = Key('goToNow');
+    goToNowButton = Key('goToNow'),
+    onScreenAlarm = Key('onScreenAlarm')
+    ;
 }

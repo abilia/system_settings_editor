@@ -214,6 +214,8 @@ class AbiliaColors {
   static const MaterialColor transparantBlack = MaterialColor(
     _blackPrimaryValue,
     <int, Color>{
+        5: Color(0x0C000000),
+       10: Color(0x0D000000),
        20: Color(0x33000000),
        40: Color(0x66000000),
       100: Color(_blackPrimaryValue),
