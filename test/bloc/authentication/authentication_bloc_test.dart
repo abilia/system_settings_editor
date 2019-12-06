@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/authentication/bloc.dart';
 import 'package:seagull/fakes/fake_client.dart';
+import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
@@ -13,8 +14,11 @@ void main() {
     UserRepository userRepository;
     setUp(() {
       userRepository = UserRepository(
-          httpClient: Fakes.client(), secureStorage: MockSecureStorage());
-      authenticationBloc = AuthenticationBloc();
+          httpClient: Fakes.client(),
+          secureStorage: MockSecureStorage(),
+          userDb: MockUserDb());
+      authenticationBloc =
+          AuthenticationBloc(databaseRepository: MockDatabaseRepository());
     });
 
     test('initial state is AuthenticationUninitialized', () {
@@ -93,7 +97,8 @@ void main() {
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc = AuthenticationBloc();
+      authenticationBloc =
+          AuthenticationBloc(databaseRepository: MockDatabaseRepository());
       when(mockedUserRepository.getToken())
           .thenAnswer((_) => Future.value(Fakes.token));
       when(mockedUserRepository.me(any))
@@ -110,16 +115,16 @@ void main() {
     test('loggedOut calls deletes token', () async {
       authenticationBloc.add(AppStarted(mockedUserRepository));
       authenticationBloc.add(LoggedOut());
-      await untilCalled(mockedUserRepository.deleteToken());
+      await untilCalled(mockedUserRepository.logout());
     });
 
     test('unauthed token gets deleted', () async {
       authenticationBloc.add(AppStarted(mockedUserRepository));
 
       when(mockedUserRepository.me(any))
-          .thenAnswer((_) => Future.error(Exception()));
+          .thenAnswer((_) => Future.error(UnauthorizedException()));
 
-      await untilCalled(mockedUserRepository.deleteToken());
+      await untilCalled(mockedUserRepository.logout());
     });
 
     test('unauthed token returns state Unauthenticated', () async {
@@ -129,7 +134,7 @@ void main() {
         Unauthenticated(mockedUserRepository),
       ];
       when(mockedUserRepository.me(any))
-          .thenAnswer((_) => Future.error(Exception()));
+          .thenAnswer((_) => Future.error(UnauthorizedException()));
       expectLater(
         authenticationBloc,
         emitsInOrder(expected),

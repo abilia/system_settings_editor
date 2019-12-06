@@ -8,7 +8,7 @@ ThemeData get abiliaTheme => ThemeData(
       accentColor: AbiliaColors.red,
       fontFamily: 'Roboto',
       inputDecorationTheme: inputDecorationTheme,
-      textTheme: textTheme,
+      textTheme: abiliaTextTheme,
       buttonTheme: baseButtonTheme,
       buttonColor: AbiliaColors.transparantBlack[20],
       highlightColor: AbiliaColors.transparantBlack[40],
@@ -92,30 +92,81 @@ ThemeData menuButtonTheme(BuildContext context) => actionButtonTheme(context)
 BottomAppBarTheme get bottomAppBarTheme =>
     BottomAppBarTheme(color: AbiliaColors.black[80]);
 
-AppBarTheme get appBarTheme => AppBarTheme(color: AbiliaColors.black[90]);
+AppBarTheme get appBarTheme => AppBarTheme(color: AbiliaColors.black[80]);
 
-TextTheme get textTheme => TextTheme(
-      body1: TextStyle(
-        fontSize: 16,
-        letterSpacing: .5,
-        height: 28 / 16,
-        fontWeight: FontWeight.w500,
-        color: AbiliaColors.black[75],
+TextTheme get abiliaTextTheme => TextTheme(
+      display4: baseTestStyle.copyWith(
+        fontSize: 96.0,
+        fontWeight: light,
       ),
-      button: TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        letterSpacing: 0,
-        color: AbiliaColors.white,
+      display3: baseTestStyle.copyWith(
+        fontSize: 60.0,
+        fontWeight: light,
+        height: 72.0 / 60.0,
       ),
-      subtitle: TextStyle(
-        fontSize: 16,
-        letterSpacing: .15,
-        height: 24 / 16,
-        fontWeight: FontWeight.w500,
-        color: AbiliaColors.black,
+      display2: baseTestStyle.copyWith(
+        fontSize: 48.0,
+        fontWeight: regular,
+        height: 56.0 / 48.0,
+      ),
+      display1: baseTestStyle.copyWith(
+        fontSize: 34.0,
+        fontWeight: regular,
+      ),
+      headline: baseTestStyle.copyWith(
+        fontSize: 24.0,
+        fontWeight: regular,
+      ),
+      title: baseTestStyle.copyWith(
+        fontSize: 20.0,
+        fontWeight: medium,
+      ),
+      subhead: baseTestStyle.copyWith(
+        fontSize: 16.0,
+        fontWeight: medium,
+        height: 24.0 / 16.0
+      ),
+      body2: baseTestStyle.copyWith(
+        fontSize: 16.0,
+        height: 28.0 / 16.0,
+        fontWeight: medium,
+      ),
+      button: baseTestStyle.copyWith(
+        fontSize: 14.0,
+        fontWeight: medium,
+        color: AbiliaColors.white
+      ),
+      subtitle: baseTestStyle.copyWith(
+        fontSize: 14.0,
+        height: 20.0 / 14.0,
+        fontWeight: medium,
+      ),
+      body1: baseTestStyle.copyWith(
+        fontSize: 14.0,
+        height: 20.0 / 14.0,
+        fontWeight: regular,
+      ),
+      caption: baseTestStyle.copyWith(
+        fontSize: 12.0,
+        height: 16.0 / 12.0,
+        fontWeight: regular,
+      ),
+      overline: baseTestStyle.copyWith(
+        fontSize: 10.0,
+        height: 16.0 / 10.0,
+        fontWeight: medium,
       ),
     );
+
+TextStyle baseTestStyle = TextStyle(
+  fontFamily: 'Roboto',
+  color: AbiliaColors.black,
+  letterSpacing: 0.0,
+);
+
+FontWeight light = FontWeight.w300,
+    regular = FontWeight.w400,
+    medium = FontWeight.w500;
 
 Map<int, ThemeData> weekDayTheme(BuildContext context) => {
       DateTime.monday: _dayTheme(context, AbiliaColors.green),

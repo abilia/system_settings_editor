@@ -27,7 +27,7 @@ bool onOrBetween(
 // ISO 8601 states:
 // - Week 1 is the week with the first thursday of that year.
 // - 4 of january is always in week 1
-getWeekNumber(DateTime d) {
+int getWeekNumber(DateTime d) {
   final day = onlyDays(d);
   var january4th = DateTime(day.year, 1, 4);
   if (january4th.isAfter(day)) {

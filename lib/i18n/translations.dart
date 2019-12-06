@@ -14,6 +14,10 @@ abstract class Translated {
   String get now;
   String get fullDay;
   String get week;
+  String get reminder;
+  String inMinutes(int minutes);
+  String get ok => 'OK';
+  String get alarm => 'Alarm';
   String get untranslatedExample => 'Example of an yet to be translated string';
 }
 
@@ -27,7 +31,9 @@ class English extends Translated {
           'Your username/email or password is not correct. Please, try another one.',
       now = 'now',
       fullDay = 'All day',
-      week = 'week';
+      week = 'week',
+      reminder = 'Reminder';
+  String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
 class Swedish extends Translated {
@@ -39,5 +45,7 @@ class Swedish extends Translated {
       wrongCredentials = 'Fel användarnamn eller lösenord',
       now = 'nu',
       fullDay = 'Heldag',
-      week = 'vecka';
+      week = 'vecka',
+      reminder = 'Påminnelse';
+  String inMinutes(int minutes) => 'om $minutes minuter';
 }

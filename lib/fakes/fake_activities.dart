@@ -75,7 +75,7 @@ class FakeActivity {
   static Activity onTime([DateTime date]) => startsAt(date ?? _now , 'now');
   static Activity startsOneMinuteAfter([DateTime date]) => startsAt((date ?? _now).add(Duration(minutes: 1)), 'soon start');
   static Activity past([DateTime date]) => endsAt((date ?? _now).subtract(Duration(minutes: 1)), 'past');
-  static Activity future([DateTime date]) => startsAt((date ?? _now).add(Duration(hours: 1)), 'future');
+  static Activity future([DateTime date, Duration inDuration = const Duration(hours: 1)]) => startsAt((date ?? _now).add(inDuration), 'future');
   static Activity dayAfter([DateTime date]) => startsAt((date ?? _now).add(Duration(days: 1)), 'tomorrow');
   static Activity longPast([DateTime date]) => startsAt((date ?? _now).subtract(Duration(hours: 2)), 'long past');
   static Activity dayBefore([DateTime date]) => startsAt((date ?? _now).subtract(Duration(days: 1)), 'yesterday');
@@ -104,7 +104,7 @@ class FakeActivity {
       startTime: DateTime(when.year, when.month, when.day).millisecondsSinceEpoch,
       duration: Duration(hours: 16).inMilliseconds,
       category: 0,
-      reminderBefore: [0, 1, 2],
+      reminderBefore: [1, 2],
       fileId: image ? 'image' : null,
       alarmType: ALARM_SILENT);
 
@@ -133,14 +133,15 @@ class FakeActivity {
   static Activity yesterdayFullday([DateTime date]) => fulldayWhen((date ?? _now).subtract(Duration(days: 1)), 'yesterday');
   static Activity tomorrowFullday([DateTime date]) => fulldayWhen((date ?? _now).add(Duration(days: 1))).copyWith(title: 'tomorrow');
   static Activity fulldayWhen(DateTime when, [String title = 'most of day', bool image = false]) => Activity.createNew(
-      title: '$title fullday',
-      startTime: when.subtract(Duration(hours: 2)).millisecondsSinceEpoch,
-      duration: Duration(hours: 1).inMilliseconds,
+      title: '${title != null ? title : '' } fullday',
+      startTime: DateTime(when.year, when.month, when.day).millisecondsSinceEpoch,
+      endTime: DateTime(when.year, when.month, when.day + 1).millisecondsSinceEpoch - 1,
+      duration: Duration(days: 1).inMilliseconds - 1,
       category: 0,
       fullDay: true,
       reminderBefore: [60 * 60 * 1000],
       fileId: image ? 'image' : null,
-      alarmType: ALARM_SILENT);
+      alarmType: NO_ALARM);
 
   static Activity get longName => longNameWhen(_now);
   static Activity longNameWhen(DateTime when, [bool image = false]) => Activity.createNew(

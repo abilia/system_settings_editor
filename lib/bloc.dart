@@ -10,3 +10,4 @@ export 'bloc/calendar/bloc.dart';
 export 'bloc/calendar/scroll_position/bloc.dart';
 export 'bloc/clock/clock_bloc.dart';
 export 'bloc/mixin/mixin.dart';
+export 'bloc/alarm/bloc.dart';

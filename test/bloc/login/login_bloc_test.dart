@@ -14,12 +14,14 @@ void main() {
     AuthenticationBloc authenticationBloc;
     UserRepository userRepository;
     MockFirebasePushService mockFirebasePushService;
-    
+
     setUp(() {
       userRepository = UserRepository(
           httpClient: Fakes.client(),
-          secureStorage: MockSecureStorage());
-      authenticationBloc = AuthenticationBloc();
+          secureStorage: MockSecureStorage(),
+          userDb: MockUserDb());
+      authenticationBloc =
+          AuthenticationBloc(databaseRepository: MockDatabaseRepository());
       mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('pushToken'));
@@ -61,7 +63,8 @@ void main() {
       );
 
       authenticationBloc.add(AppStarted(userRepository));
-      await authenticationBloc.firstWhere((s) => s is AuthenticationInitialized);
+      await authenticationBloc
+          .firstWhere((s) => s is AuthenticationInitialized);
       loginBloc
           .add(LoginButtonPressed(username: 'username', password: 'password'));
     });
@@ -80,8 +83,9 @@ void main() {
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc = AuthenticationBloc()
-        ..add(AppStarted(mockedUserRepository));
+      authenticationBloc =
+          AuthenticationBloc(databaseRepository: MockDatabaseRepository())
+            ..add(AppStarted(mockedUserRepository));
       mockFirebasePushService = MockFirebasePushService();
       loginBloc = LoginBloc(
           authenticationBloc: authenticationBloc,
