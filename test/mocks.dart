@@ -1,7 +1,11 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
+import 'package:seagull/bloc.dart';
 import 'package:seagull/bloc/push/push_bloc.dart';
+import 'package:seagull/db/activities_db.dart';
+import 'package:seagull/db/sqflite.dart';
+import 'package:seagull/db/user_db.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/repositories.dart';
 import 'package:seagull/repository/push.dart';
@@ -18,13 +22,21 @@ class MockPushBloc extends Mock implements PushBloc {}
 
 class MockFirebasePushService extends Mock implements FirebasePushService {}
 
+class MockActivityDb extends Mock implements ActivityDb {}
+
+class MockUserDb extends Mock implements UserDb {}
+
+class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
+
+class MockDatabaseRepository extends Mock implements DatabaseRepository {}
+
 class MockClient extends Mock implements BaseClient {
   final String baseUrl;
   MockClient(this.baseUrl);
 
   whenEntityMeSuccess() {
-    when(this.get('$baseUrl/api/v1/entity/me',
-            headers: authHeader(Fakes.token)))
+    when(this
+            .get('$baseUrl/api/v1/entity/me', headers: authHeader(Fakes.token)))
         .thenAnswer((_) => Future.value(Fakes.entityMeSuccessResponse));
   }
 

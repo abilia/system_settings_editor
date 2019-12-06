@@ -1,12 +1,18 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
 import 'package:seagull/bloc.dart';
+import 'package:seagull/db/sqflite.dart';
+import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/repositories.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
+  final DatabaseRepository databaseRepository;
   UserRepository _userRepository;
+
+  AuthenticationBloc({@required this.databaseRepository});
 
   @override
   AuthenticationState get initialState => AuthenticationUninitialized();
@@ -33,8 +39,7 @@ class AuthenticationBloc
     }
     if (event is LoggedOut) {
       yield AuthenticationLoading.fromInitilized(state);
-      await _userRepository.deleteToken();
-      yield Unauthenticated.fromInitilized(state);
+      yield* _logout();
     }
   }
 
@@ -43,9 +48,16 @@ class AuthenticationBloc
       final user = await _userRepository.me(token);
       yield Authenticated(
           token: token, userId: user.id, userRepository: _userRepository);
+    } on UnauthorizedException {
+      yield* _logout();
     } catch (_) {
-      await _userRepository.deleteToken();
-      yield Unauthenticated.fromInitilized(state);
+      // Do nothing
     }
+  }
+
+  Stream<AuthenticationState> _logout() async* {
+    await _userRepository.logout();
+    await databaseRepository.clearAll();
+    yield Unauthenticated.fromInitilized(state);
   }
 }
