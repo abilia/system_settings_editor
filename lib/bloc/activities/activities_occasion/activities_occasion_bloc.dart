@@ -56,29 +56,40 @@ class ActivitiesOccasionBloc
     @required DateTime now,
     @required DateTime day,
   }) {
+    final timedActivities = activities
+        .where((a) => !a.fullDay)
+        .map((a) => ActivityOccasion(a, now: now, day: day))
+        .toList()
+          ..sort((a, b) {
+            final occasionComparing =
+                a.occasion.index.compareTo(b.occasion.index);
+            if (occasionComparing != 0) return occasionComparing;
+            final starTimeComparing = a.activity
+                .startClock(now)
+                .compareTo(b.activity.startClock(now));
+            if (starTimeComparing != 0) return starTimeComparing;
+            return a.activity.endClock(now).compareTo(b.activity.endClock(now));
+          });
+    final fullDayActivities = activities
+        .where((a) => a.fullDay)
+        .map((a) => ActivityOccasion.fullDay(a, now: now, day: day))
+        .toList();
+
+    final firstActiveIndex =
+        _indexOfFirstNoneCompletedOrLastCompletedActivity(timedActivities);
+
     return ActivitiesOccasionLoaded(
-      activities: activities
-          .where((a) => !a.fullDay)
-          .map((a) => ActivityOccasion(a, now: now, day: day))
-          .toList()
-            ..sort((a, b) {
-              final occasionComparing =
-                  a.occasion.index.compareTo(b.occasion.index);
-              if (occasionComparing != 0) return occasionComparing;
-              final starTimeComparing = a.activity
-                  .startClock(now)
-                  .compareTo(b.activity.startClock(now));
-              if (starTimeComparing != 0) return starTimeComparing;
-              return a.activity
-                  .endClock(now)
-                  .compareTo(b.activity.endClock(now));
-            }),
-      fullDayActivities: activities
-          .where((a) => a.fullDay)
-          .map((a) => ActivityOccasion.fullDay(a, now: now, day: day))
-          .toList(),
+      indexOfCurrentActivity: firstActiveIndex,
+      activities: timedActivities,
+      fullDayActivities: fullDayActivities,
       day: day,
     );
+  }
+
+  int _indexOfFirstNoneCompletedOrLastCompletedActivity(
+      List<ActivityOccasion> activities) {
+    int lastIndex = activities.indexWhere((a) => a.occasion != Occasion.past);
+    return lastIndex < 0 ? activities.length - 1 : lastIndex;
   }
 
   @override

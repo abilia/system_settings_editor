@@ -11,4 +11,6 @@ export 'components/seagull_icon.dart';
 export 'components/web_link.dart';
 export 'components/widget_test_keys.dart';
 export 'components/backend_switches.dart';
+export 'components/go_to_now_button.dart';
+export 'components/agenda.dart';
 export 'components/time_text.dart';

@@ -21,5 +21,5 @@ class ActivitiesChanged extends ActivitiesOccasionEvent {
   @override
   List<Object> get props => [activities];
   @override
-  String toString() => 'ActivitiesChanged { activities: $activities }';
+  String toString() => 'ActivitiesChanged { activities: ${activities.map((a) => a.title ?? a.id)} }';
 }

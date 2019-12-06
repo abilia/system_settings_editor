@@ -26,5 +26,5 @@ class UpdateActivities extends DayActivitiesEvent {
   List<Object> get props => [activities];
 
   @override
-  String toString() => 'UpdateActivities { activities: $activities }';
+  String toString() => 'UpdateActivities { activities: ${activities.map((a) => a.title ?? a.id)} }';
 }

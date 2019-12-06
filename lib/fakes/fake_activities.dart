@@ -23,7 +23,7 @@ class FakeActivities {
       ];
 
   static List<Activity> get oneEveryMinute => oneEveryMinuteWhen(_now);
-  static List<Activity> oneEveryMinuteWhen(DateTime when, {int minutes = 120}) {
+  static List<Activity> oneEveryMinuteWhen(DateTime when, {int minutes = 40}) {
     when = when.subtract(Duration(minutes: minutes ~/ 2));
     return [
       for (int i = 0; i < minutes; i++)
@@ -56,7 +56,7 @@ class FakeActivities {
   }
 
   static List<Activity> get allPast => allPastWhen(_now);
-  static List<Activity> allPastWhen(DateTime when, {int minutes = 60}) {
+  static List<Activity> allPastWhen(DateTime when, {int minutes = 10}) {
     when = when.subtract(Duration(minutes: 20));
     return [
       for (int i = 0; i < minutes; i++)
@@ -66,7 +66,6 @@ class FakeActivities {
             duration: Duration(minutes: 15).inMilliseconds,
             category: 0,
             reminderBefore: [],
-            fileId:  i % 3 == 0 ? 'fileId' : null,
             alarmType: ALARM_SILENT),
     ];
   }

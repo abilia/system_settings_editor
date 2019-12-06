@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:seagull/bloc.dart';
+import 'package:seagull/bloc/bloc_delegate.dart';
 import 'package:seagull/fakes/fake_activities.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/getit.dart';
@@ -70,7 +72,20 @@ void main() {
       expect(find.byType(ActivityCard), findsOneWidget);
     });
 
-    testWidgets('Should not show Go to now-button',
+    testWidgets('Empty agenda should not show Go to now-button',
+        (WidgetTester tester) async {
+      when(mockActivityDb.getActivitiesFromDb())
+          .thenAnswer((_) => Future.value(<Activity>[]));
+      await tester.pumpWidget(App(
+        httpClient: Fakes.client([]),
+        firebasePushService: mockFirebasePushService,
+        secureStorage: mockSecureStorage,
+      ));
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.goToNowButton), findsNothing);
+    });
+
+    testWidgets('Agenda with one activity should not show Go to now-button',
         (WidgetTester tester) async {
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(<Activity>[FakeActivity.onTime()]));
@@ -83,13 +98,28 @@ void main() {
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
     });
 
+    testWidgets(
+        'Agenda with one activity hidden by passed activities should show Go to now-button',
+        (WidgetTester tester) async {
+      BlocSupervisor.delegate = SimpleBlocDelegate();
+      when(mockActivityDb.getActivitiesFromDb())
+          .thenAnswer((_) => Future.value(FakeActivities.allPast..add(FakeActivity.onTime())));
+      await tester.pumpWidget(App(
+        httpClient:
+            Fakes.client(FakeActivities.allPast..add(FakeActivity.onTime())),
+        firebasePushService: mockFirebasePushService,
+        secureStorage: mockSecureStorage,
+      ));
+      await tester.pumpAndSettle(Duration(seconds: 10));
+      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+    });
+
     testWidgets('Alarms shows', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         httpClient: Fakes.client([FakeActivity.onTime()]),
         firebasePushService: mockFirebasePushService,
         secureStorage: mockSecureStorage,
       ));
-      await tester.pumpAndSettle();
       expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
     }, skip: true); // Unskip when we can Inject our own ticker
   });

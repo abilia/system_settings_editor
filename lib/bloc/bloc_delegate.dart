@@ -5,7 +5,7 @@ class SimpleBlocDelegate extends BlocDelegate {
   @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
-    if (event is! LoginFormEvent)
+    if (event is! Silent)
       print(event);
   }
  

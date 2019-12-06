@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/bloc/mixin/mixin.dart';
 
-abstract class LoginFormEvent extends Equatable {
+abstract class LoginFormEvent extends Equatable with Silent {
   const LoginFormEvent();
 
   @override

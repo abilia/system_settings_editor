@@ -18,11 +18,13 @@ class ActivitiesOccasionLoading extends ActivitiesOccasionState {
 class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
   final List<ActivityOccasion> activities;
   final List<ActivityOccasion> fullDayActivities;
+  final int indexOfCurrentActivity;
   final DateTime day;
 
   ActivitiesOccasionLoaded({
     @required this.activities,
     @required this.fullDayActivities,
+    @required this.indexOfCurrentActivity,
     @required this.day,
   }) : super();
 
