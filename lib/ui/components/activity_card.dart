@@ -34,7 +34,8 @@ class ActivityCard extends StatelessWidget {
                 leading: hasImage
                     ? AnimatedOpacity(
                         opacity: occasion == Occasion.past ? .5 : 1,
-                        child: FadeInThumb(imageFileId: activity.fileId),
+                        child:
+                            FadeInCalenderImage(imageFileId: activity.fileId, width: 56, height: 56,),
                         duration: const Duration(seconds: 1),
                       )
                     : null,

@@ -118,7 +118,7 @@ void main() {
     testWidgets('Can login', (WidgetTester tester) async {
       initMocks();
       await tester.pumpWidget(App(
-        httpClient: Fakes.client(),
+        httpClient: Fakes.client([]),
         baseUrl: '',
         secureStorage: mockSecureStorage,
       ));

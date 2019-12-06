@@ -41,7 +41,7 @@ void main() {
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(<Activity>[]));
       await tester.pumpWidget(App(
-        httpClient: Fakes.client(),
+        httpClient: Fakes.client([]),
         baseUrl: '',
         firebasePushService: mockFirebasePushService,
         secureStorage: mockSecureStorage,
@@ -68,7 +68,7 @@ void main() {
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(<Activity>[FakeActivity.onTime()]));
       await tester.pumpWidget(App(
-        httpClient: Fakes.client([FakeActivity.onTime()]),
+        httpClient: Fakes.client([FakeActivity.future()]),
         firebasePushService: mockFirebasePushService,
         secureStorage: mockSecureStorage,
       ));
@@ -89,5 +89,16 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
     });
+
+    testWidgets('Alarms shows',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App(
+        httpClient: Fakes.client([FakeActivity.onTime()]),
+        firebasePushService: mockFirebasePushService,
+        secureStorage: mockSecureStorage,
+      ));
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
+    }, skip: true); // Unskip when we can Inject our own ticker
   });
 }
