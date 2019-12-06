@@ -39,13 +39,12 @@ class ActivityRepository extends Repository {
     return Future.delayed(Duration(seconds: 1));
   }
 
-  Future<List<Activity>> fetchActivities() async {
+  Future<Iterable<Activity>> fetchActivities() async {
     final revision = await activitiesDb.getLastRevision();
     final response = await httpClient.get(
         '$baseUrl/api/v1/data/$userId/activities?revision=$revision',
         headers: authHeader(authToken));
     return (json.decode(response.body) as List)
-        .map((e) => Activity.fromJson(e))
-        .toList();
+        .map((e) => Activity.fromJson(e));
   }
 }

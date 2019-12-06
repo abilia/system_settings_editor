@@ -18,10 +18,10 @@ class ActivityDb {
     return revision;
   }
 
-  Future<List<Activity>> getActivitiesFromDb() async {
+  Future<Iterable<Activity>> getActivitiesFromDb() async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ACTIVITIES_SQL);
-    return result.map((row) => Activity.fromDbMap(row)).toList();
+    return result.map((row) => Activity.fromDbMap(row));
   }
 
   Future clearActivites() async {
@@ -29,7 +29,7 @@ class ActivityDb {
     await db.rawQuery(CLEAR_ACTIVITIES_SQL);
   }
 
-  insertActivities(List<Activity> activities) async {
+  insertActivities(Iterable<Activity> activities) async {
     final db = await DatabaseRepository().database;
     activities.forEach((activity) async {
       await db.insert('calendar_activity', activity.toMapForDb(),

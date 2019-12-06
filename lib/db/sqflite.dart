@@ -50,7 +50,7 @@ class DatabaseRepository {
     return await openDatabaseWithMigration(path, _config);
   }
 
-  clearAll() async {
-    _database.rawDelete("DELETE FROM calendar_activity");
+  Future clearAll() async {
+     return (await database).rawDelete("DELETE FROM calendar_activity");
   }
 }
