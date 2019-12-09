@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc.dart';
-import 'package:seagull/bloc/push/push_bloc.dart';
-import 'package:seagull/bloc/push/push_state.dart';
 import 'package:seagull/models.dart';
 import 'package:seagull/repositories.dart';
 
@@ -52,7 +50,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     if (state is ActivitiesLoaded) {
       yield ActivitiesLoaded(
           (state as ActivitiesLoaded).activities.followedBy([event.activity]));
-      _saveActivities([event.activity]);
+      await _saveActivities([event.activity]);
     }
   }
 
@@ -66,7 +64,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
             : activity;
       });
       yield ActivitiesLoaded(updatedActivities);
-      _saveActivities([event.updatedActivity]);
+      await _saveActivities([event.updatedActivity]);
     }
   }
 

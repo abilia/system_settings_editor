@@ -6,7 +6,7 @@ class ClockBloc extends Bloc<DateTime, DateTime> {
   StreamSubscription<DateTime> _tickerSubscription;
 
   final DateTime initialTime;
-  ClockBloc(Stream<DateTime> ticker, {this.initialTime})  {
+  ClockBloc(Stream<DateTime> ticker, {this.initialTime}) {
     _tickerSubscription = ticker.listen((tick) => add(tick));
   }
 

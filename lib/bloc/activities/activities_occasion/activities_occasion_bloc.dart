@@ -17,8 +17,9 @@ class ActivitiesOccasionBloc
     @required this.dayPickerBloc,
   }) : _initialState = ActivitiesOccasionLoading() {
     activitiesSubscription = dayActivitiesBloc.listen((activitiesState) {
-      if (activitiesState is DayActivitiesLoaded)
+      if (activitiesState is DayActivitiesLoaded) {
         add(ActivitiesChanged(activitiesState.activities, activitiesState.day));
+      }
     });
     clockSubscription = clockBloc.listen((now) => add(NowChanged(now)));
   }
@@ -46,8 +47,9 @@ class ActivitiesOccasionBloc
                 .map((a) => a.activity),
             now: event.now,
             day: dayPickerBloc.state);
-      } else
+      } else {
         yield ActivitiesOccasionLoading();
+      }
     }
   }
 

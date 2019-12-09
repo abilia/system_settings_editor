@@ -20,10 +20,12 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DateTime> {
 
   @override
   Stream<DateTime> mapEventToState(DayPickerEvent event) async* {
-    if (event is NextDay)
+    if (event is NextDay) {
       yield onlyDays(state.add(Duration(hours: 25))); // For winter time
-    if (event is PreviousDay)
+    }
+    if (event is PreviousDay) {
       yield onlyDays(state.subtract(Duration(hours: 1)));
+    }
     if (event is CurrentDay) yield initialState;
     if (event is GoTo) yield onlyDays(event.day);
   }
