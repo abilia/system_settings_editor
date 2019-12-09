@@ -46,7 +46,7 @@ void main() {
           .thenAnswer((_) => Future.value([nowActivity]));
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded );
+      await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
       await _tick();
       // Assert
       expectLater(
@@ -246,8 +246,7 @@ void main() {
 
     test('Recuring yearly alarms shows', () async {
       // Arrange
-      final recursTheThisDayOfYear =
-          FakeActivity.reocurrsOnDate(nextMinute);
+      final recursTheThisDayOfYear = FakeActivity.reocurrsOnDate(nextMinute);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([recursTheThisDayOfYear]));
       // Act
@@ -267,8 +266,7 @@ void main() {
 
     test('Alarm on EndTime shows', () async {
       // Arrange
-      final activityEnding =
-          FakeActivity.endsAt(nextMinute);
+      final activityEnding = FakeActivity.endsAt(nextMinute);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([activityEnding]));
       // Act
@@ -289,8 +287,8 @@ void main() {
     test('Reminders shows', () async {
       // Arrange
       final reminderTime = Duration(hours: 1);
-      final remind1HourBefore =
-          FakeActivity.future(nextMinute, reminderTime).copyWith(reminderBefore: [reminderTime.inMinutes]);
+      final remind1HourBefore = FakeActivity.future(nextMinute, reminderTime)
+          .copyWith(reminderBefore: [reminderTime.inMilliseconds]);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([remind1HourBefore]));
       // Act
@@ -303,7 +301,7 @@ void main() {
           emitsInOrder(
             [
               UnInitializedAlarmState(),
-              NewReminderState(remind1HourBefore, reminderTime: reminderTime.inMinutes),
+              NewReminderState(remind1HourBefore, reminder: reminderTime),
             ],
           ));
     });

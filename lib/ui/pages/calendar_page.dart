@@ -65,13 +65,12 @@ class CalendarPage extends StatelessWidget {
                       ),
                   fullscreenDialog: true),
             );
-          }
-          else if (state is NewReminderState) {
+          } else if (state is NewReminderState) {
             await Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context) => ReminderPage(
                         activity: state.activity,
-                        reminderTime: state.reminderTime,
+                        reminderTime: state.reminder.inMinutes,
                       ),
                   fullscreenDialog: true),
             );

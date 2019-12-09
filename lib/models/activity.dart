@@ -16,6 +16,8 @@ class Activity extends Equatable {
   DateTime get startDateTime => DateTime.fromMillisecondsSinceEpoch(startTime);
   DateTime get endDateTime => DateTime.fromMillisecondsSinceEpoch(endTime);
   RecurrentType get recurrance => RecurrentType.values[recurrentType];
+  Iterable<Duration> get reminders =>
+      reminderBefore.map((r) => Duration(milliseconds: r));
   final String id, seriesId, title, fileId, icon, infoItem;
   final int startTime,
       endTime,
