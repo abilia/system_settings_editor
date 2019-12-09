@@ -126,7 +126,7 @@ void main() {
             Iterable<Activity>.empty().followedBy([updatedActivity])),
       ];
 
-      expectLater(
+      await expectLater(
         activitiesBloc,
         emitsInOrder(expectedResponse),
       );

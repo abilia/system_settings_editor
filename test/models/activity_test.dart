@@ -69,7 +69,8 @@ void main() {
   });
 
   test('create, serialize and deserialize test', () {
-    final now = DateTime.now().millisecondsSinceEpoch;
+    final now =
+        DateTime(2020, 02, 02, 02, 02, 02, 02, 02).millisecondsSinceEpoch;
     final fileId = Uuid().v4();
     final duration = Duration(minutes: 90).inMilliseconds;
     final reminders = {

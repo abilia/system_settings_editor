@@ -1,5 +1,5 @@
 import 'package:seagull/db/sqflite.dart';
-import 'package:seagull/models/activity.dart';
+import 'package:seagull/models.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ActivityDb {

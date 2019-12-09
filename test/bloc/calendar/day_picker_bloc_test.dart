@@ -31,7 +31,7 @@ void main() {
 
     test('Next day should yeild next day', () async {
       dayPickerBloc.add(NextDay());
-      expectLater(
+      await expectLater(
         dayPickerBloc,
         emitsInOrder([theDay, theDayAfter]),
       );
@@ -39,7 +39,7 @@ void main() {
 
     test('Previus day should yeild previus day', () async {
       dayPickerBloc.add(PreviousDay());
-      expectLater(
+      await expectLater(
         dayPickerBloc,
         emitsInOrder([theDay, thedayBefore]),
       );
@@ -48,7 +48,7 @@ void main() {
     test('NextDay then PreviusDay should yeild same day', () async {
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(PreviousDay());
-      expectLater(
+      await expectLater(
         dayPickerBloc,
         emitsInOrder([theDay, theDayAfter, theDay]),
       );
@@ -60,7 +60,7 @@ void main() {
       }
       await Future.delayed(Duration(milliseconds: 100));
       dayPickerBloc.add(CurrentDay());
-      expectLater(
+      await expectLater(
         dayPickerBloc,
         emitsInOrder([theDay]),
       );
@@ -70,7 +70,7 @@ void main() {
       streamController.add(theDayAfter);
       await Future.doWhile(() => Future.delayed(Duration(milliseconds: 10), () => dayPickerBloc.initialState == theDay));
       dayPickerBloc.add(CurrentDay());
-      expectLater(
+      await expectLater(
         dayPickerBloc,
         emitsInOrder([theDay, theDayAfter]),
       );
@@ -80,7 +80,7 @@ void main() {
       streamController.add(theDayAfterTomorrow);
       await Future.doWhile(() => Future.delayed(Duration(milliseconds: 10), () => dayPickerBloc.initialState == theDay));
       dayPickerBloc.add(CurrentDay());
-      expectLater(
+      await expectLater(
         dayPickerBloc,
         emitsInOrder([theDay, theDayAfterTomorrow]),
       );
@@ -92,7 +92,7 @@ void main() {
       }
       await Future.delayed(Duration(milliseconds: 100));
       dayPickerBloc.add(CurrentDay());
-      expectLater(
+      await expectLater(
         dayPickerBloc,
         emitsInOrder([theDay, theDayAfter]),
       );

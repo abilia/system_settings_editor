@@ -16,8 +16,8 @@ class FadeInCalenderImage extends StatelessWidget {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) => (state is Authenticated)
           ? FadeInImage(
-              width: width ?? null,
-              height: height ?? null,
+              width: width,
+              height: height,
               image: NetworkImage(
                   isThumb
                       ? thumbImageUrl(state.userRepository.baseUrl,

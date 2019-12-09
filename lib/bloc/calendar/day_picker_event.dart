@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 
+@immutable
 abstract class DayPickerEvent {
   const DayPickerEvent();
 }

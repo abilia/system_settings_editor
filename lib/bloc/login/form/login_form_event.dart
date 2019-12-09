@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/mixin/mixin.dart';
 
+@immutable
 abstract class LoginFormEvent extends Equatable with Silent {
   const LoginFormEvent();
 
@@ -33,6 +34,6 @@ class PasswordChanged extends LoginFormEvent {
   String toString() => 'PasswordChanged { password: $password }';
 }
 
-class HidePasswordToggle extends LoginFormEvent { }
+class HidePasswordToggle extends LoginFormEvent {}
 
 class FormSubmitted extends LoginFormEvent {}

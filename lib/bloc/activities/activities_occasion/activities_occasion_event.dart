@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:seagull/models.dart';
 
+@immutable
 abstract class ActivitiesOccasionEvent extends Equatable {
   const ActivitiesOccasionEvent();
 }
@@ -21,5 +23,6 @@ class ActivitiesChanged extends ActivitiesOccasionEvent {
   @override
   List<Object> get props => [activities];
   @override
-  String toString() => 'ActivitiesChanged { activities: ${activities.map((a) => a.title ?? a.id)} }';
+  String toString() =>
+      'ActivitiesChanged { activities: ${activities.map((a) => a.title ?? a.id)} }';
 }

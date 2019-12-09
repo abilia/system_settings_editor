@@ -2,7 +2,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc.dart';
-import 'package:seagull/bloc/push/push_bloc.dart';
 import 'package:seagull/db/activities_db.dart';
 import 'package:seagull/db/sqflite.dart';
 import 'package:seagull/db/user_db.dart';

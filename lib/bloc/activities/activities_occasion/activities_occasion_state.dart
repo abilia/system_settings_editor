@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:seagull/models/activity.dart';
 import 'package:seagull/utils.dart';
 
+@immutable
 abstract class ActivitiesOccasionState extends Equatable {
   const ActivitiesOccasionState();
   @override
