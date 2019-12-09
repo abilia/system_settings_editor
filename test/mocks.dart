@@ -5,6 +5,7 @@ import 'package:seagull/bloc.dart';
 import 'package:seagull/bloc/push/push_bloc.dart';
 import 'package:seagull/db/activities_db.dart';
 import 'package:seagull/db/sqflite.dart';
+import 'package:seagull/db/token_db.dart';
 import 'package:seagull/db/user_db.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/repositories.dart';
@@ -14,9 +15,9 @@ class MockUserRepository extends Mock implements UserRepository {}
 
 class MockHttpClient extends Mock implements Client {}
 
-class MockSecureStorage extends Mock implements FlutterSecureStorage {}
-
 class MockActivityRepository extends Mock implements ActivityRepository {}
+
+class MockTokenDb extends Mock implements TokenDb {}
 
 class MockPushBloc extends Mock implements PushBloc {}
 

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc.dart';
+import 'package:seagull/db/baseurl_db.dart';
 import 'package:seagull/db/sqflite.dart';
 import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/repositories.dart';
@@ -10,9 +11,11 @@ import 'package:seagull/repositories.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final DatabaseRepository databaseRepository;
+  final BaseUrlDb baseUrlDb;
   UserRepository _userRepository;
 
-  AuthenticationBloc({@required this.databaseRepository});
+  AuthenticationBloc(
+      {@required this.databaseRepository, @required this.baseUrlDb});
 
   @override
   AuthenticationState get initialState => AuthenticationUninitialized();
