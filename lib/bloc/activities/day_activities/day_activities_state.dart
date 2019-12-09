@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:seagull/models.dart';
 
+@immutable
 abstract class DayActivitiesState extends Equatable {}
 
 class DayActivitiesUninitialized extends DayActivitiesState {
@@ -27,5 +29,6 @@ class DayActivitiesLoaded extends DayActivitiesState {
   List<Object> get props => [activities, day];
 
   @override
-  String toString() => 'DayActivitiesLoaded { activities: $activities }';
+  String toString() =>
+      'DayActivitiesLoaded { activities: $activities, day: $day }';
 }

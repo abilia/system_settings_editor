@@ -198,7 +198,7 @@ void main() {
       dayPickerBloc.add(PreviousDay());
 
       // Assert
-      expectLater(
+      await expectLater(
         activitiesOccasionBloc,
         emitsInOrder([
           ActivitiesOccasionLoading(),
@@ -377,7 +377,7 @@ void main() {
       mockedTicker.add(nextMinute);
 
       // Assert
-      expectLater(
+      await expectLater(
         activitiesOccasionBloc,
         emitsInOrder([
           ActivitiesOccasionLoaded(
@@ -457,7 +457,7 @@ void main() {
       dayPickerBloc.add(NextDay());
 
       // Assert
-      expectLater(
+      await expectLater(
           activitiesOccasionBloc,
           emitsInOrder([
             ActivitiesOccasionLoading(),

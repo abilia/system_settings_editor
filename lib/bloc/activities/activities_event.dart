@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:seagull/models.dart';
 
+@immutable
 abstract class ActivitiesEvent extends Equatable {
   const ActivitiesEvent();
 

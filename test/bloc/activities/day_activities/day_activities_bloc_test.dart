@@ -11,14 +11,16 @@ void main() {
   DayActivitiesBloc dayActivitiesBloc;
   DayPickerBloc dayPickerBloc;
   ActivitiesBloc activitiesBloc;
-  DateTime today = onlyDays(DateTime.now());
+  DateTime today = DateTime(2020, 01, 01);
   DateTime yesterday = today.subtract(Duration(days: 1));
   DateTime tomorrow = today.add(Duration(days: 1));
   MockActivityRepository mockActivityRepository;
   group('DayActivitiesBloc', () {
     setUp(() {
-      Stream<DateTime> stream = Stream.empty();
-      dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc(stream));
+      Stream<DateTime> stream = Stream.value(today);
+      dayPickerBloc = DayPickerBloc(
+        clockBloc: ClockBloc(stream, initialTime: today),
+      );
       mockActivityRepository = MockActivityRepository();
       activitiesBloc = ActivitiesBloc(
           activitiesRepository: mockActivityRepository,
@@ -73,10 +75,10 @@ void main() {
 
     test('DayActivitiesLoaded only loads todays activities', () {
       // Arrange
-      final activitiesNow = <Activity>[FakeActivity.onTime()]
-          .followedBy({}); // followedBy to make list iterable
-      final activitiesTomorrow = <Activity>[FakeActivity.dayAfter()]
-          .followedBy({}); // followedBy to make list iterable
+      final activitiesNow =
+          <Activity>[FakeActivity.onTime(today)].followedBy({});
+      final activitiesTomorrow =
+          <Activity>[FakeActivity.dayAfter(today)].followedBy({});
 
       when(mockActivityRepository.loadActivities()).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
@@ -96,11 +98,13 @@ void main() {
 
     test('only loads none deleted activities', () {
       // Arrange
-      final currentActivity = FakeActivity.onTime();
+      final currentActivity = FakeActivity.onTime(today);
       final activitiesNow =
           Iterable<Activity>.empty().followedBy([currentActivity]);
-      final activitiesTomorrow = Iterable<Activity>.empty().followedBy(
-          [FakeActivity.dayAfter(), currentActivity.copyWith(deleted: true)]);
+      final activitiesTomorrow = Iterable<Activity>.empty().followedBy([
+        FakeActivity.dayAfter(today),
+        currentActivity.copyWith(deleted: true)
+      ]);
 
       when(mockActivityRepository.loadActivities()).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
@@ -120,10 +124,10 @@ void main() {
 
     test('next day loads next days activities', () async {
       // Arrange
-      final activitiesNow = <Activity>[FakeActivity.onTime()]
-          .followedBy({}); // followedBy to make list iterable
-      final activitiesTomorrow = <Activity>[FakeActivity.dayAfter()]
-          .followedBy({}); // followedBy to make list iterable
+      final activitiesNow =
+          <Activity>[FakeActivity.onTime(today)].followedBy({});
+      final activitiesTomorrow =
+          <Activity>[FakeActivity.dayAfter(today)].followedBy({});
       when(mockActivityRepository.loadActivities()).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
 
@@ -133,7 +137,7 @@ void main() {
       dayPickerBloc.add(NextDay());
 
       // Assert
-      expectLater(
+      await expectLater(
         dayActivitiesBloc,
         emitsInOrder([
           DayActivitiesUninitialized(),
@@ -145,10 +149,10 @@ void main() {
 
     test('previous day loads previous days activities', () async {
       // Arrange
-      final activitiesNow = <Activity>[(FakeActivity.onTime())]
-          .followedBy({}); // followedBy to make list iterable
-      final activitiesYesterDay = <Activity>[FakeActivity.dayBefore()]
-          .followedBy({}); // followedBy to make list iterable
+      final activitiesNow =
+          <Activity>[(FakeActivity.onTime(today))].followedBy({});
+      final activitiesYesterDay =
+          <Activity>[FakeActivity.dayBefore(today)].followedBy({});
       when(mockActivityRepository.loadActivities()).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesYesterDay)));
 
@@ -158,7 +162,7 @@ void main() {
       dayPickerBloc.add(PreviousDay());
 
       // Assert
-      expectLater(
+      await expectLater(
         dayActivitiesBloc,
         emitsInOrder([
           DayActivitiesUninitialized(),
@@ -187,7 +191,7 @@ void main() {
       dayPickerBloc.add(PreviousDay());
 
       // Assert
-      expectLater(
+      await expectLater(
         dayActivitiesBloc,
         emitsInOrder([
           DayActivitiesUninitialized(),
@@ -201,17 +205,33 @@ void main() {
 
     test('adding activities shows', () async {
       // Arrange
-      final todayActivity = <Activity>[FakeActivity.startsAt(today)]
-          .followedBy({}); // followedBy to make list iterable
+      final todayActivity =
+          <Activity>[FakeActivity.startsAt(today)].followedBy({});
       final activitiesAdded = todayActivity.followedBy([
         FakeActivity.dayAfter(today),
         FakeActivity.dayBefore(today),
-      ]).followedBy({}); // followedBy to make list iterable
+      ]).followedBy({});
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value(Iterable.empty()));
 
+      // Act
+      activitiesBloc.add(LoadActivities());
+
       // Assert
-      expectLater(
+      await expectLater(
+        dayActivitiesBloc,
+        emits(DayActivitiesUninitialized()),
+      );
+
+      // Arrange
+      when(mockActivityRepository.loadActivities())
+          .thenAnswer((_) => Future.value(activitiesAdded));
+
+      // Act
+      activitiesBloc.add(LoadActivities());
+
+      // Assert
+      await expectLater(
         dayActivitiesBloc,
         emitsInOrder([
           DayActivitiesUninitialized(),
@@ -219,13 +239,6 @@ void main() {
           DayActivitiesLoaded(todayActivity, today),
         ]),
       );
-
-      // Act
-      activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
-      when(mockActivityRepository.loadActivities())
-          .thenAnswer((_) => Future.value(activitiesAdded));
-      activitiesBloc.add(LoadActivities());
     });
 
     tearDown(() {
@@ -262,7 +275,7 @@ void main() {
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       // Assert
-      expectLater(
+      await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
             DayActivitiesLoaded(Iterable.empty(), firstDay), // thursday
@@ -293,7 +306,7 @@ void main() {
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       // Assert
-      expectLater(
+      await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
             DayActivitiesLoaded(Iterable.empty(), firstDay),
@@ -321,7 +334,7 @@ void main() {
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       // Assert
-      expectLater(
+      await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
             DayActivitiesLoaded(Iterable.empty(), firstDay),
@@ -349,7 +362,7 @@ void main() {
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       // Assert
-      expectLater(
+      await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
             DayActivitiesLoaded(Iterable.empty(), firstDay),
@@ -377,7 +390,7 @@ void main() {
       allOtherDays.forEach((_) => dayPickerBloc.add(NextDay()));
 
       // Assert
-      expectLater(
+      await expectLater(
           dayActivitiesBloc,
           emitsInOrder([DayActivitiesLoaded(Iterable.empty(), firstDay)]
               .followedBy(allOtherDays.map((day) => DayActivitiesLoaded(
@@ -435,7 +448,7 @@ void main() {
       dayPickerBloc.add(NextDay());
 
       // Assert
-      expectLater(
+      await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
             DayActivitiesUninitialized(),

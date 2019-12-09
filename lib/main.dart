@@ -6,8 +6,6 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 
 import 'package:seagull/bloc.dart';
-import 'package:seagull/bloc/bloc_delegate.dart';
-import 'package:seagull/bloc/push/push_bloc.dart';
 import 'package:seagull/db/sqflite.dart';
 import 'package:seagull/db/user_db.dart';
 import 'package:seagull/getit.dart';
@@ -41,7 +39,7 @@ class App extends StatelessWidget {
     Key key,
   })  : userRepository = UserRepository(
             baseUrl: baseUrl ?? T1,
-            httpClient: httpClient ?? GetIt.I<Client>(),
+            httpClient: httpClient ?? GetIt.I<BaseClient>(),
             secureStorage: secureStorage ?? GetIt.I<FlutterSecureStorage>(),
             userDb: GetIt.I<UserDb>()),
         firebasePushService =

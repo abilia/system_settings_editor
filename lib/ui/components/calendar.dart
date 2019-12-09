@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components.dart';

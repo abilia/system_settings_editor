@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/repository/user_repository.dart';
 
+@immutable
 abstract class AuthenticationEvent extends Equatable {
   const AuthenticationEvent();
 

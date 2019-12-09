@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+@immutable
 class LoginFormState extends Equatable {
   final String username;
   final bool isUsernameValid;
@@ -17,7 +18,7 @@ class LoginFormState extends Equatable {
     @required this.password,
     @required this.isPasswordValid,
     @required this.hidePassword,
-    @required this.formSubmitted
+    @required this.formSubmitted,
   });
 
   factory LoginFormState.initial() {
@@ -27,7 +28,7 @@ class LoginFormState extends Equatable {
       password: '',
       isPasswordValid: false,
       hidePassword: true,
-      formSubmitted: false
+      formSubmitted: false,
     );
   }
 
@@ -45,7 +46,7 @@ class LoginFormState extends Equatable {
       password: password ?? this.password,
       isPasswordValid: isPasswordValid ?? this.isPasswordValid,
       hidePassword: hidePassword ?? this.hidePassword,
-      formSubmitted: formSubmitted ?? this.formSubmitted
+      formSubmitted: formSubmitted ?? this.formSubmitted,
     );
   }
 
@@ -66,8 +67,8 @@ class LoginFormState extends Equatable {
       isUserNameValid: $isUsernameValid,
       password length: ${password.length},
       isPasswordValid: $isPasswordValid,
-      hidePassword: $hidePassword
-      formSubmitted: $formSubmitted
+      hidePassword: $hidePassword,
+      formSubmitted: $formSubmitted,
     }''';
   }
 }
