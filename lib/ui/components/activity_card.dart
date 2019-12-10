@@ -34,8 +34,11 @@ class ActivityCard extends StatelessWidget {
                 leading: hasImage
                     ? AnimatedOpacity(
                         opacity: occasion == Occasion.past ? .5 : 1,
-                        child:
-                            FadeInCalenderImage(imageFileId: activity.fileId, width: 56, height: 56,),
+                        child: FadeInCalenderImage(
+                          imageFileId: activity.fileId,
+                          width: 56,
+                          height: 56,
+                        ),
                         duration: const Duration(seconds: 1),
                       )
                     : null,
@@ -48,7 +51,9 @@ class ActivityCard extends StatelessWidget {
                     Text(
                         activity.fullDay
                             ? Translator.of(context).translate.fullDay
-                            : '${timeFormat.format(start)} - ${timeFormat.format(end)}',
+                            : activity.hasEndTime
+                                ? '${timeFormat.format(start)} - ${timeFormat.format(end)}'
+                                : '${timeFormat.format(start)}',
                         style: Theme.of(context).textTheme.body1),
                     Row(
                       children: <Widget>[

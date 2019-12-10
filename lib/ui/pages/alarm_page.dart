@@ -39,15 +39,17 @@ class AlarmPage extends StatelessWidget {
                   active: atStartTime,
                   textStyle: textStyle,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text('-', style: textStyle),
-                ),
-                TimeText(
-                  date: activity.end,
-                  active: atEndTime,
-                  textStyle: textStyle,
-                ),
+                if (activity.hasEndTime)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text('-', style: textStyle),
+                  ),
+                if (activity.hasEndTime)
+                  TimeText(
+                    date: activity.end,
+                    active: atEndTime,
+                    textStyle: textStyle,
+                  ),
               ],
             ),
             padding24,
