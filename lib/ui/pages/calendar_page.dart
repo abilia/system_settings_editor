@@ -69,7 +69,7 @@ class CalendarPage extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => ReminderPage(
                         activity: state.activity,
-                        reminderTime: state.reminderTime,
+                        reminderTime: state.reminder.inMinutes,
                       ),
                   fullscreenDialog: true),
             );

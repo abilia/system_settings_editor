@@ -286,7 +286,7 @@ void main() {
       // Arrange
       final reminderTime = Duration(hours: 1);
       final remind1HourBefore = FakeActivity.future(nextMinute, reminderTime)
-          .copyWith(reminderBefore: [reminderTime.inMinutes]);
+          .copyWith(reminderBefore: [reminderTime.inMilliseconds]);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([remind1HourBefore]));
       // Act
@@ -299,8 +299,7 @@ void main() {
           emitsInOrder(
             [
               UnInitializedAlarmState(),
-              NewReminderState(remind1HourBefore,
-                  reminderTime: reminderTime.inMinutes),
+              NewReminderState(remind1HourBefore, reminder: reminderTime),
             ],
           ));
     });
