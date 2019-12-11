@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/models/activity.dart';
+import 'package:seagull/utils.dart';
 
 class ActivitiesOccasionBloc
     extends Bloc<ActivitiesOccasionEvent, ActivitiesOccasionState> {
@@ -53,6 +54,28 @@ class ActivitiesOccasionBloc
     }
   }
 
+  Stream<ActivitiesOccasionLoaded> get loadedStream =>
+      transform<ActivitiesOccasionLoaded>(
+        StreamTransformer.fromHandlers(
+          handleData: (state, sink) {
+            if (state is ActivitiesOccasionLoaded) {
+              sink.add(state);
+            }
+          },
+        ),
+      );
+
+  Stream<ActivitiesOccasionLoaded> get todayStream =>
+      transform<ActivitiesOccasionLoaded>(
+        StreamTransformer.fromHandlers(
+          handleData: (state, sink) {
+            if (state is ActivitiesOccasionLoaded && state.isToday) {
+              sink.add(state);
+            }
+          },
+        ),
+      );
+
   ActivitiesOccasionLoaded _mapActivitiesToActivityOccasionsState(
     Iterable<Activity> activities, {
     @required DateTime now,
@@ -77,14 +100,17 @@ class ActivitiesOccasionBloc
         .map((a) => ActivityOccasion.fullDay(a, now: now, day: day))
         .toList();
 
-    final firstActiveIndex =
-        _indexOfFirstNoneCompletedOrLastCompletedActivity(timedActivities);
+    final isToday = isAtSameDay(day, now);
+    final firstActiveIndex = isToday
+        ? _indexOfFirstNoneCompletedOrLastCompletedActivity(timedActivities)
+        : -1;
 
     return ActivitiesOccasionLoaded(
-      indexOfCurrentActivity: firstActiveIndex,
       activities: timedActivities,
       fullDayActivities: fullDayActivities,
       day: day,
+      isToday: isToday,
+      indexOfCurrentActivity: firstActiveIndex,
     );
   }
 

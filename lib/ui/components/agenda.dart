@@ -1,19 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/ui/components.dart';
 
 class Agenda extends StatefulWidget {
-  const Agenda({
-    Key key,
-    @required this.cardHeight,
-    @required ScrollController scrollController,
-    @required this.currentActivityKey,
-  })  : _scrollController = scrollController,
-        super(key: key);
-
-  final double cardHeight;
-  final ScrollController _scrollController;
-  final GlobalKey<State<StatefulWidget>> currentActivityKey;
+  final double cardHeight = 80.0;
 
   @override
   _AgendaState createState() => _AgendaState();
@@ -35,9 +27,18 @@ class _AgendaState extends State<Agenda> {
     return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
       builder: (context, state) {
         if (state is ActivitiesOccasionLoaded) {
-          WidgetsBinding.instance.addPostFrameCallback((_) =>
-              BlocProvider.of<ScrollPositionBloc>(context)
-                  .add(ListViewRenderComplete()));
+          final scrollController = ScrollController(
+              initialScrollOffset:
+                  max(state.indexOfCurrentActivity * widget.cardHeight, 0),
+              keepScrollOffset: false);
+          if (state.isToday) {
+            WidgetsBinding.instance.addPostFrameCallback((_) =>
+                BlocProvider.of<ScrollPositionBloc>(context)
+                    .add(ListViewRenderComplete(scrollController)));
+          } else {
+            BlocProvider.of<ScrollPositionBloc>(context)
+                .add(WrongDaySelected());
+          }
           final activities = state.activities;
           final fullDayActivities = state.fullDayActivities;
           return Column(
@@ -63,22 +64,18 @@ class _AgendaState extends State<Agenda> {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 4),
                     child: NotificationListener<ScrollNotification>(
-                      onNotification: _onScrollNotification,
+                      onNotification:
+                          state.isToday ? _onScrollNotification : null,
                       child: Scrollbar(
                         child: ListView.builder(
-                          physics:
-                              const AlwaysScrollableScrollPhysics(), // https://github.com/flutter/flutter/issues/22180
                           itemExtent: widget.cardHeight,
-                          controller: widget._scrollController,
+                          controller: state.isToday ? scrollController : null,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 16),
                           itemCount: activities.length,
                           itemBuilder: (context, index) => ActivityCard(
                             activityOccasion: activities[index],
                             height: widget.cardHeight,
-                            key: index == state.indexOfCurrentActivity
-                                ? widget.currentActivityKey
-                                : null,
                           ),
                         ),
                       ),
