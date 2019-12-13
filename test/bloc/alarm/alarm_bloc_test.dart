@@ -282,6 +282,30 @@ void main() {
           ));
     });
 
+    test(
+        'Alarm on EndTime does not show when it has no end time (start time is same as end time)',
+        () async {
+      // Arrange
+      final nextAlarm = FakeActivity.onTime(nextMinute, Duration());
+      final afterThatAlarm = FakeActivity.onTime(inTwoMin, Duration());
+      when(mockActivityRepository.loadActivities())
+          .thenAnswer((_) => Future.value([nextAlarm, afterThatAlarm]));
+      // Act
+      activitiesBloc.add(LoadActivities());
+      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await _tick();
+      await _tick();
+      // Assert
+      await expectLater(
+          alarmBloc,
+          emitsInOrder(
+            [
+              NewAlarmState(nextAlarm, alarmOnStart: true),
+              NewAlarmState(afterThatAlarm, alarmOnStart: true),
+            ],
+          ));
+    });
+
     test('Reminders shows', () async {
       // Arrange
       final reminderTime = Duration(hours: 1);
