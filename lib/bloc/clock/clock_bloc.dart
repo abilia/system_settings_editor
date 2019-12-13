@@ -16,7 +16,7 @@ class ClockBloc extends Bloc<DateTime, DateTime> {
   }
 
   @override
-  DateTime get initialState => onlyMinutes(initialTime ?? DateTime.now());
+  DateTime get initialState => (initialTime ?? DateTime.now()).onlyMinutes();
 
   @override
   Future<void> close() async {

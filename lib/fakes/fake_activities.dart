@@ -1,7 +1,7 @@
 import 'package:seagull/models.dart';
 import 'package:seagull/utils.dart';
 
-DateTime get _now => onlyMinutes(DateTime.now());
+DateTime get _now => DateTime.now().onlyMinutes();
 
 class FakeActivities {
   static List<Activity> get activities => activitiesWhen(_now);

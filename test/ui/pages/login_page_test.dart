@@ -11,46 +11,36 @@ import '../../mocks.dart';
 
 void main() {
   group('login page widget test', () {
-    MockTokenDb mockTokenDb;
-    MockFirebasePushService mockFirebasePushService;
-    MockActivityDb mockActivityDb;
-    MockPushBloc mockPushBloc;
     final secretPassword = 'pwfafawfa';
 
     setUp(() {
-      mockTokenDb = MockTokenDb();
+      final mockTokenDb = MockTokenDb();
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(null));
-      mockFirebasePushService = MockFirebasePushService();
+      final mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
-      mockActivityDb = MockActivityDb();
+      MockActivityDb mockActivityDb = MockActivityDb();
       when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value([]));
-      mockPushBloc = MockPushBloc();
       GetItInitializer()
           .withActivityDb(mockActivityDb)
           .withFireBasePushService(mockFirebasePushService)
-          .withPushBloc(mockPushBloc)
           .withUserDb(MockUserDb())
           .withBaseUrlDb(MockBaseUrlDb())
+          .withTokenDb(mockTokenDb)
+          .withHttpClient(Fakes.client([]))
           .init();
     });
 
     testWidgets('Application starts', (WidgetTester tester) async {
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client(),
-        tokenDb: mockTokenDb,
-      ));
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(LoginPage), findsOneWidget);
     });
 
     testWidgets('Hide password button', (WidgetTester tester) async {
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client(),
-        tokenDb: mockTokenDb,
-      ));
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
       expect(find.byKey(TestKey.hidePasswordToggle), findsNothing);
@@ -70,10 +60,7 @@ void main() {
 
     testWidgets('Cant login when no password or username',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client(),
-        tokenDb: mockTokenDb,
-      ));
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
       await tester.enterText(find.byKey(TestKey.passwordInput), secretPassword);
@@ -92,10 +79,7 @@ void main() {
 
     testWidgets('Error message when incorrect username or password',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client(),
-        tokenDb: mockTokenDb,
-      ));
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
       await tester.enterText(find.byKey(TestKey.userNameInput), Fakes.username);
@@ -109,11 +93,7 @@ void main() {
     });
 
     testWidgets('Can login', (WidgetTester tester) async {
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client([]),
-        baseUrl: '',
-        tokenDb: mockTokenDb,
-      ));
+      await tester.pumpWidget(App());
 
       await tester.pumpAndSettle();
 

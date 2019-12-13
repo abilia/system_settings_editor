@@ -14,7 +14,7 @@ class CalendarPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ActivitiesBloc>(
-            builder: (context) => ActivitiesBloc(
+            create: (context) => ActivitiesBloc(
                 activitiesRepository: ActivityRepository(
                   client: authenticatedState.userRepository.httpClient,
                   baseUrl: authenticatedState.userRepository.baseUrl,
@@ -25,28 +25,28 @@ class CalendarPage extends StatelessWidget {
                 pushBloc: BlocProvider.of<PushBloc>(context))
               ..add(LoadActivities())),
         BlocProvider<ClockBloc>(
-          builder: (context) => ClockBloc(GetIt.I<Stream<DateTime>>()),
+          create: (context) => ClockBloc(GetIt.I<Stream<DateTime>>()),
         ),
         BlocProvider<DayPickerBloc>(
-          builder: (context) => DayPickerBloc(
+          create: (context) => DayPickerBloc(
             clockBloc: BlocProvider.of<ClockBloc>(context),
           ),
         ),
         BlocProvider<DayActivitiesBloc>(
-          builder: (context) => DayActivitiesBloc(
+          create: (context) => DayActivitiesBloc(
             activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
             dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
           ),
         ),
         BlocProvider<ActivitiesOccasionBloc>(
-          builder: (context) => ActivitiesOccasionBloc(
+          create: (context) => ActivitiesOccasionBloc(
             clockBloc: BlocProvider.of<ClockBloc>(context),
             dayActivitiesBloc: BlocProvider.of<DayActivitiesBloc>(context),
             dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
           ),
         ),
         BlocProvider<AlarmBloc>(
-          builder: (context) => AlarmBloc(
+          create: (context) => AlarmBloc(
             clockBloc: BlocProvider.of<ClockBloc>(context),
             activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
           ),

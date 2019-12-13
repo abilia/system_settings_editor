@@ -27,14 +27,13 @@ class Recurs {
 
   static bool shouldShowForDay(Activity activity, DateTime day) {
     if (activity.recurrance == RecurrentType.none) {
-      final activityStartTimeDay = onlyDays(activity.startDateTime);
+      final activityStartTimeDay = activity.startDateTime.onlyDays();
       return day.isAtSameMomentAs(activityStartTimeDay);
-    } 
+    }
 
-    if (!onOrBetween(
-        dayInQuestion: day,
-        startDate: onlyDays(activity.startDateTime),
-        endDate: onlyDays(activity.endDateTime))) {
+    if (!day.onOrBetween(
+        startDate: activity.startDateTime.onlyDays(),
+        endDate: activity.endDateTime.onlyDays())) {
       return false;
     }
 
@@ -52,7 +51,7 @@ class Recurs {
 
   @visibleForTesting
   static bool onCorrectWeeklyDay(int recurrentData, DateTime date) {
-    bool isOddWeek = getWeekNumber(date).isOdd;
+    bool isOddWeek = date.getWeekNumber().isOdd;
     int leadingZeros = date.weekday - 1 + (isOddWeek ? 7 : 0);
     int bitmask = 1 << leadingZeros;
     return recurrentData & bitmask > 0;

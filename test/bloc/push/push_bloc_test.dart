@@ -14,46 +14,46 @@ import '../../mocks.dart';
 
 void main() {
   group('Push integration test', () {
-    MockTokenDb mockTokenDb;
-    MockFirebasePushService mockFirebasePushService;
-    MockActivityDb mockActivityDb;
+    final fakeUrl = 'SomeUrl';
 
     setUp(() {
-      mockTokenDb = MockTokenDb();
+      final mockTokenDb = MockTokenDb();
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
-      mockFirebasePushService = MockFirebasePushService();
-      mockActivityDb = MockActivityDb();
-    });
 
-    testWidgets('Push loads activities', (WidgetTester tester) async {
-      GetItInitializer()
-          .withUserDb(MockUserDb())
-          .withActivityDb(mockActivityDb)
-          .withBaseUrlDb(MockBaseUrlDb())
-          .init();
+      final activity = FakeActivity.future();
       final activityResponseAnswers = [
         Response(json.encode([]), 200),
-        Response(json.encode([FakeActivity.future()]), 200)
+        Response(json.encode([activity]), 200),
       ];
 
-      final activityAnswers = <List<Activity>>[
+      final activityAnswers = [
         <Activity>[],
-        [FakeActivity.onTime(DateTime.now())]
+        [activity]
       ];
+      final mockActivityDb = MockActivityDb();
+      when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(activityAnswers.removeAt(0)));
-      when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
-      final fakeUrl = 'SomeUrl';
+
       final mockClient = MockClient(fakeUrl);
       mockClient.whenEntityMeSuccess();
       mockClient.whenActivities(activityResponseAnswers);
 
+      GetItInitializer()
+          .withTokenDb(mockTokenDb)
+          .withActivityDb(mockActivityDb)
+          .withHttpClient(mockClient)
+          .withUserDb(MockUserDb())
+          .withBaseUrlDb(MockBaseUrlDb())
+          .withFireBasePushService(MockFirebasePushService())
+          .init();
+    });
+
+    testWidgets('Push loads activities', (WidgetTester tester) async {
       final pushBloc = PushBloc();
+
       await tester.pumpWidget(App(
-        httpClient: mockClient,
         baseUrl: fakeUrl,
-        firebasePushService: mockFirebasePushService,
-        tokenDb: mockTokenDb,
         pushBloc: pushBloc,
       ));
 
@@ -61,6 +61,7 @@ void main() {
       expect(find.byType(ActivityCard), findsNothing);
 
       pushBloc.add(OnPush());
+
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsOneWidget);
     });

@@ -78,7 +78,7 @@ class ActivitiesOccasionBloc
         .map((a) => ActivityOccasion.fullDay(a, now: now, day: day))
         .toList();
 
-    final isToday = isAtSameDay(day, now);
+    final isToday = day.isAtSameDay(now);
     final firstActiveIndex = isToday
         ? _indexOfFirstNoneCompletedOrLastCompletedActivity(timedActivities)
         : -1;

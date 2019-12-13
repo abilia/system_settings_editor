@@ -13,7 +13,7 @@ void main() {
   ClockBloc clockBloc;
   ActivitiesBloc activitiesBloc;
   AlarmBloc alarmBloc;
-  DateTime thisMinute = onlyMinutes(DateTime(2006, 06, 06, 06, 06));
+  DateTime thisMinute = DateTime(2006, 06, 06, 06, 06).onlyMinutes();
   DateTime nextMinute = thisMinute.add(Duration(minutes: 1));
   DateTime inTwoMin = thisMinute.add(Duration(minutes: 2));
   MockActivityRepository mockActivityRepository;

@@ -9,10 +9,10 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DateTime> {
   StreamSubscription _clockSubscription;
 
   DayPickerBloc({@required ClockBloc clockBloc})
-      : _initialState = onlyDays(clockBloc.initialState) {
+      : _initialState = clockBloc.initialState.onlyDays() {
     _clockSubscription = clockBloc
         .where((dt) => dt.hour == 0 && dt.minute == 0 && dt.second == 0)
-        .listen((now) => _initialState = onlyDays(now));
+        .listen((now) => _initialState = now.onlyDays());
   }
 
   @override
@@ -21,13 +21,13 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DateTime> {
   @override
   Stream<DateTime> mapEventToState(DayPickerEvent event) async* {
     if (event is NextDay) {
-      yield onlyDays(state.add(Duration(hours: 25))); // For winter time
+      yield state.add(Duration(hours: 25)).onlyDays(); // For winter time
     }
     if (event is PreviousDay) {
-      yield onlyDays(state.subtract(Duration(hours: 1)));
+      yield state.subtract(Duration(hours: 1)).onlyDays();
     }
     if (event is CurrentDay) yield initialState;
-    if (event is GoTo) yield onlyDays(event.day);
+    if (event is GoTo) yield event.day.onlyDays();
   }
 
   @override
