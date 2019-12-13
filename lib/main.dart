@@ -19,6 +19,7 @@ import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
   initServices();
   final baseUrl = await BaseUrlDb().initialize(T1);
@@ -59,7 +60,8 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider<AuthenticationBloc>(
             builder: (context) => AuthenticationBloc(
-                databaseRepository: GetIt.I<DatabaseRepository>(), baseUrlDb: BaseUrlDb())
+                databaseRepository: GetIt.I<DatabaseRepository>(),
+                baseUrlDb: BaseUrlDb())
               ..add(AppStarted(userRepository))),
         BlocProvider<PushBloc>(
           builder: (context) => pushBloc ?? PushBloc(),
