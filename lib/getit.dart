@@ -1,8 +1,8 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:seagull/db/activities_db.dart';
 import 'package:seagull/db/sqflite.dart';
+import 'package:seagull/db/token_db.dart';
 import 'package:seagull/db/user_db.dart';
 import 'package:seagull/repositories.dart';
 import 'package:seagull/repository/push.dart';
@@ -52,7 +52,7 @@ class GetItInitializer {
   init() async {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(Client());
-    GetIt.I.registerSingleton<FlutterSecureStorage>(FlutterSecureStorage());
+    GetIt.I.registerSingleton<TokenDb>(TokenDb());
     GetIt.I.registerSingleton<FirebasePushService>(
         _firebasePushService ?? FirebasePushService());
     GetIt.I.registerSingleton<PushBloc>(_pushBloc ?? PushBloc());

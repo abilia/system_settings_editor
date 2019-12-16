@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc.dart';
+import 'package:seagull/db/baseurl_db.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
@@ -17,10 +18,10 @@ void main() {
     setUp(() {
       userRepository = UserRepository(
           httpClient: Fakes.client(),
-          secureStorage: MockSecureStorage(),
+          tokenDb: MockTokenDb(),
           userDb: MockUserDb());
-      authenticationBloc =
-          AuthenticationBloc(databaseRepository: MockDatabaseRepository());
+      authenticationBloc = AuthenticationBloc(
+          databaseRepository: MockDatabaseRepository(), baseUrlDb: BaseUrlDb());
       mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('pushToken'));
@@ -89,9 +90,9 @@ void main() {
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc =
-          AuthenticationBloc(databaseRepository: MockDatabaseRepository())
-            ..add(AppStarted(mockedUserRepository));
+      authenticationBloc = AuthenticationBloc(
+          databaseRepository: MockDatabaseRepository(), baseUrlDb: BaseUrlDb())
+        ..add(AppStarted(mockedUserRepository));
       mockFirebasePushService = MockFirebasePushService();
       loginBloc = LoginBloc(
           authenticationBloc: authenticationBloc,

@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc.dart';
+import 'package:seagull/db/baseurl_db.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/user.dart';
@@ -15,10 +16,10 @@ void main() {
     setUp(() {
       userRepository = UserRepository(
           httpClient: Fakes.client(),
-          secureStorage: MockSecureStorage(),
+          tokenDb: MockTokenDb(),
           userDb: MockUserDb());
-      authenticationBloc =
-          AuthenticationBloc(databaseRepository: MockDatabaseRepository());
+      authenticationBloc = AuthenticationBloc(
+          databaseRepository: MockDatabaseRepository(), baseUrlDb: BaseUrlDb());
     });
 
     test('initial state is AuthenticationUninitialized', () {
@@ -98,8 +99,8 @@ void main() {
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc =
-          AuthenticationBloc(databaseRepository: MockDatabaseRepository());
+      authenticationBloc = AuthenticationBloc(
+          databaseRepository: MockDatabaseRepository(), baseUrlDb: BaseUrlDb());
       when(mockedUserRepository.getToken())
           .thenAnswer((_) => Future.value(Fakes.token));
       when(mockedUserRepository.me(any))

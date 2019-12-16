@@ -98,7 +98,7 @@ PODS:
 
 DEPENDENCIES:
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
-  - Flutter (from `.symlinks/flutter/ios`)
+  - Flutter (from `Flutter`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
@@ -127,7 +127,7 @@ EXTERNAL SOURCES:
   firebase_messaging:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
-    :path: ".symlinks/flutter/ios"
+    :path: Flutter
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   path_provider:
@@ -141,7 +141,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Firebase: 458d109512200d1aca2e1b9b6cf7d68a869a4a46
-  firebase_messaging: db3f19ec4490799e5c660723626740e539c41c04
+  firebase_messaging: 73b3e7dd7b3b6a7e4bdac10d5295211ca4f87f90
   FirebaseAnalytics: 45f36d9c429fc91d206283900ab75390cd05ee8a
   FirebaseAnalyticsInterop: d48b6ab67bcf016a05e55b71fc39c61c0cb6b7f3
   FirebaseCore: 307ea2508df730c5865334e41965bd9ea344b0e5
@@ -163,6 +163,6 @@ SPEC CHECKSUMS:
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
 
-PODFILE CHECKSUM: 10ae9c18d12c9ffc2275c9a159a3b1e281990db0
+PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
 
 COCOAPODS: 1.8.4

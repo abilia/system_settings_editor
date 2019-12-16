@@ -14,17 +14,16 @@ import '../../mocks.dart';
 
 void main() {
   group('calendar page widget test', () {
-    MockSecureStorage mockSecureStorage;
+    MockTokenDb mockTokenDb;
     MockFirebasePushService mockFirebasePushService;
     MockActivityDb mockActivityDb;
     MockPushBloc mockPushBloc;
     StreamController<DateTime> mockTicker;
 
     setUp(() {
+      mockTokenDb = MockTokenDb();
       mockTicker = StreamController<DateTime>();
-      mockSecureStorage = MockSecureStorage();
-      when(mockSecureStorage.read(key: anyNamed('key')))
-          .thenAnswer((_) => Future.value(Fakes.token));
+      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
       mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
@@ -45,7 +44,7 @@ void main() {
         httpClient: Fakes.client([]),
         baseUrl: '',
         firebasePushService: mockFirebasePushService,
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       expect(find.byType(CalendarPage), findsOneWidget);
@@ -57,7 +56,7 @@ void main() {
       await tester.pumpWidget(App(
         httpClient: Fakes.client([]),
         firebasePushService: mockFirebasePushService,
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsNothing);
@@ -69,7 +68,7 @@ void main() {
       await tester.pumpWidget(App(
         httpClient: Fakes.client([FakeActivity.future()]),
         firebasePushService: mockFirebasePushService,
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsOneWidget);
@@ -82,7 +81,7 @@ void main() {
       await tester.pumpWidget(App(
         httpClient: Fakes.client([]),
         firebasePushService: mockFirebasePushService,
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
@@ -95,7 +94,7 @@ void main() {
       await tester.pumpWidget(App(
         httpClient: Fakes.client([FakeActivity.onTime()]),
         firebasePushService: mockFirebasePushService,
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
@@ -110,7 +109,7 @@ void main() {
         httpClient:
             Fakes.client(FakeActivities.allPast..add(FakeActivity.onTime())),
         firebasePushService: mockFirebasePushService,
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
@@ -124,7 +123,7 @@ void main() {
       await tester.pumpWidget(App(
         httpClient: Fakes.client(response),
         firebasePushService: mockFirebasePushService,
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       mockTicker.add(activityWithAlarmTime);
