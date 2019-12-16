@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 
 import 'package:seagull/bloc.dart';
+import 'package:seagull/db/baseurl_db.dart';
 import 'package:seagull/db/sqflite.dart';
+import 'package:seagull/db/token_db.dart';
 import 'package:seagull/db/user_db.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
@@ -15,10 +16,14 @@ import 'package:seagull/repository/push.dart';
 import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
   initServices();
-  runApp(App());
+  final baseUrl = await BaseUrlDb().initialize(T1);
+  runApp(App(
+    baseUrl: baseUrl,
+  ));
 }
 
 void initServices() {
@@ -33,14 +38,14 @@ class App extends StatelessWidget {
   App({
     BaseClient httpClient,
     String baseUrl,
-    FlutterSecureStorage secureStorage,
+    TokenDb tokenDb,
     FirebasePushService firebasePushService,
     PushBloc pushBloc,
     Key key,
   })  : userRepository = UserRepository(
             baseUrl: baseUrl ?? T1,
             httpClient: httpClient ?? GetIt.I<BaseClient>(),
-            secureStorage: secureStorage ?? GetIt.I<FlutterSecureStorage>(),
+            tokenDb: tokenDb ?? GetIt.I<TokenDb>(),
             userDb: GetIt.I<UserDb>()),
         firebasePushService =
             firebasePushService ?? GetIt.I<FirebasePushService>(),
@@ -53,7 +58,8 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider<AuthenticationBloc>(
             builder: (context) => AuthenticationBloc(
-                databaseRepository: GetIt.I<DatabaseRepository>())
+                databaseRepository: GetIt.I<DatabaseRepository>(),
+                baseUrlDb: GetIt.I<BaseUrlDb>())
               ..add(AppStarted(userRepository))),
         BlocProvider<PushBloc>(
           builder: (context) => pushBloc ?? PushBloc(),

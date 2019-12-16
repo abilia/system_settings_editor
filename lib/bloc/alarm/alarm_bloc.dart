@@ -37,8 +37,9 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
           .map((a) => NewAlarmState(a, alarmOnStart: true));
 
       final endTimeAlarms = activitiesWithAlarm
-          .where(
-              (a) => a.alarm.atEnd && a.endClock(time).isAtSameMomentAs(time))
+          .where((a) => a.hasEndTime)
+          .where((a) => a.alarm.atEnd)
+          .where((a) => a.endClock(time).isAtSameMomentAs(time))
           .map((a) => NewAlarmState(a, alarmOnStart: false));
 
       final reminders = activitiesThisDay.expand((a) => a.reminders

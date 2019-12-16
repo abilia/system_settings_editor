@@ -15,10 +15,11 @@ void main() {
     setUp(() {
       userRepository = UserRepository(
           httpClient: Fakes.client(),
-          secureStorage: MockSecureStorage(),
+          tokenDb: MockTokenDb(),
           userDb: MockUserDb());
-      authenticationBloc =
-          AuthenticationBloc(databaseRepository: MockDatabaseRepository());
+      authenticationBloc = AuthenticationBloc(
+          databaseRepository: MockDatabaseRepository(),
+          baseUrlDb: MockBaseUrlDb());
     });
 
     test('initial state is AuthenticationUninitialized', () {
@@ -98,8 +99,9 @@ void main() {
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc =
-          AuthenticationBloc(databaseRepository: MockDatabaseRepository());
+      authenticationBloc = AuthenticationBloc(
+          databaseRepository: MockDatabaseRepository(),
+          baseUrlDb: MockBaseUrlDb());
       when(mockedUserRepository.getToken())
           .thenAnswer((_) => Future.value(Fakes.token));
       when(mockedUserRepository.me(any))

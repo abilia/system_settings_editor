@@ -41,11 +41,13 @@ class ReminderPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(timeFormat.format(activity.start), style: textStyle),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text('-', style: textStyle),
-                ),
-                Text(timeFormat.format(activity.end), style: textStyle),
+                if (activity.hasEndTime)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text('-', style: textStyle),
+                  ),
+                if (activity.hasEndTime)
+                  Text(timeFormat.format(activity.end), style: textStyle),
               ],
             ),
             padding16,
@@ -73,7 +75,7 @@ class ReminderPage extends StatelessWidget {
                       if (activity.title?.isNotEmpty == true)
                         Expanded(
                           child: Text(
-                            activity.title ?? '',
+                            activity.title,
                             style: textStyle,
                             textAlign: TextAlign.center,
                           ),
