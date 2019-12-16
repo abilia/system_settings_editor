@@ -54,28 +54,6 @@ class ActivitiesOccasionBloc
     }
   }
 
-  Stream<ActivitiesOccasionLoaded> get loadedStream =>
-      transform<ActivitiesOccasionLoaded>(
-        StreamTransformer.fromHandlers(
-          handleData: (state, sink) {
-            if (state is ActivitiesOccasionLoaded) {
-              sink.add(state);
-            }
-          },
-        ),
-      );
-
-  Stream<ActivitiesOccasionLoaded> get todayStream =>
-      transform<ActivitiesOccasionLoaded>(
-        StreamTransformer.fromHandlers(
-          handleData: (state, sink) {
-            if (state is ActivitiesOccasionLoaded && state.isToday) {
-              sink.add(state);
-            }
-          },
-        ),
-      );
-
   ActivitiesOccasionLoaded _mapActivitiesToActivityOccasionsState(
     Iterable<Activity> activities, {
     @required DateTime now,

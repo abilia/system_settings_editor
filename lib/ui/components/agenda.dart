@@ -70,6 +70,7 @@ class _AgendaState extends State<Agenda> {
                         child: ListView.builder(
                           itemExtent: widget.cardHeight,
                           controller: state.isToday ? scrollController : null,
+                          physics: const AlwaysScrollableScrollPhysics(),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 16),
                           itemCount: activities.length,
