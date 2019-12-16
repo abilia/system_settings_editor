@@ -19,7 +19,10 @@ class FakeActivities {
         FakeActivity.fullday(when),
         FakeActivity.yesterdayFullday(when),
         FakeActivity.tomorrowFullday(when),
-        FakeActivity.longNameWhen(when),
+        FakeActivity.startsAt(when,
+            title:
+                'long long, long, long long, long, long long, long, long long, long name',
+            image: true),
       ];
 
   static List<Activity> get oneEveryMinute => oneEveryMinuteWhen(_now);
@@ -33,7 +36,7 @@ class FakeActivities {
             duration: Duration(minutes: 1).inMilliseconds,
             category: 0,
             reminderBefore: [],
-            fileId:  i % 3 == 0 ? 'fileId' : null,
+            fileId: i % 3 == 0 ? 'fileId' : null,
             alarmType: ALARM_SILENT),
     ];
   }
@@ -50,7 +53,7 @@ class FakeActivities {
             duration: Duration(minutes: 5).inMilliseconds,
             category: 0,
             reminderBefore: [],
-            fileId:  i % 3 == 0 ? 'fileId' : null,
+            fileId: i % 3 == 0 ? 'fileId' : null,
             alarmType: ALARM_SILENT),
     ];
   }
@@ -62,7 +65,8 @@ class FakeActivities {
       for (int i = 0; i < minutes; i++)
         Activity.createNew(
             title: 'past $i',
-            startTime: when.subtract(Duration(minutes: i)).millisecondsSinceEpoch,
+            startTime:
+                when.subtract(Duration(minutes: i)).millisecondsSinceEpoch,
             duration: Duration(minutes: 15).inMilliseconds,
             category: 0,
             reminderBefore: [],
@@ -72,88 +76,131 @@ class FakeActivities {
 }
 
 class FakeActivity {
-  static Activity onTime([DateTime date]) => startsAt(date ?? _now , 'now');
-  static Activity startsOneMinuteAfter([DateTime date]) => startsAt((date ?? _now).add(Duration(minutes: 1)), 'soon start');
-  static Activity past([DateTime date]) => endsAt((date ?? _now).subtract(Duration(minutes: 1)), 'past');
-  static Activity future([DateTime date, Duration inDuration = const Duration(hours: 1)]) => startsAt((date ?? _now).add(inDuration), 'future');
-  static Activity dayAfter([DateTime date]) => startsAt((date ?? _now).add(Duration(days: 1)), 'tomorrow');
-  static Activity longPast([DateTime date]) => startsAt((date ?? _now).subtract(Duration(hours: 2)), 'long past');
-  static Activity dayBefore([DateTime date]) => startsAt((date ?? _now).subtract(Duration(days: 1)), 'yesterday');
-  static Activity twoDaysFromNow([DateTime date]) => startsAt((date ?? _now).add(Duration(days: 2)),'two days from now');
+  static Activity onTime(
+          [DateTime date, Duration duration = const Duration(hours: 1)]) =>
+      startsAt(date ?? _now, title: 'now', duration: duration);
+  static Activity startsOneMinuteAfter([DateTime date]) =>
+      startsAt((date ?? _now).add(Duration(minutes: 1)), title: 'soon start');
+  static Activity past([DateTime date]) =>
+      endsAt((date ?? _now).subtract(Duration(minutes: 1)), title: 'past');
+  static Activity future(
+          [DateTime date, Duration inDuration = const Duration(hours: 1)]) =>
+      startsAt((date ?? _now).add(inDuration), title: 'future');
+  static Activity dayAfter([DateTime date]) =>
+      startsAt((date ?? _now).add(Duration(days: 1)), title: 'tomorrow');
+  static Activity longPast([DateTime date]) =>
+      startsAt((date ?? _now).subtract(Duration(hours: 2)), title: 'long past');
+  static Activity dayBefore([DateTime date]) =>
+      startsAt((date ?? _now).subtract(Duration(days: 1)), title: 'yesterday');
+  static Activity twoDaysFromNow([DateTime date]) =>
+      startsAt((date ?? _now).add(Duration(days: 2)),
+          title: 'two days from now');
 
-  static Activity startsAt(DateTime when, [String title, bool image = false]) => Activity.createNew(
-      title: title ?? '$when',
-      startTime: when.millisecondsSinceEpoch,
-      duration: Duration(hours: 1).inMilliseconds,
-      category: 0,
-      reminderBefore: [],
-      fileId: image ? 'image' : null,
-      alarmType: ALARM_SILENT);
+  static Activity startsAt(DateTime when,
+          {String title,
+          bool image = false,
+          Duration duration = const Duration(hours: 1)}) =>
+      Activity.createNew(
+          title: title ?? '$when',
+          startTime: when.millisecondsSinceEpoch,
+          duration: duration.inMilliseconds,
+          category: 0,
+          reminderBefore: [],
+          fileId: image ? 'image' : null,
+          alarmType: ALARM_SILENT);
 
-  static Activity endsAt(DateTime when, [String title, bool image = false]) => Activity.createNew(
-      title: title ?? 'ends at $when',
-      startTime: when.subtract(Duration(hours: 1)).millisecondsSinceEpoch,
-      duration: Duration(hours: 1).inMilliseconds,
-      category: 0,
-      reminderBefore: [],
-      fileId: image ? 'image' : null,
-      alarmType: ALARM_SILENT);
+  static Activity endsAt(DateTime when,
+          {String title,
+          bool image = false,
+          Duration duration = const Duration(hours: 1)}) =>
+      Activity.createNew(
+          title: title ?? 'ends at $when',
+          startTime: when.subtract(duration).millisecondsSinceEpoch,
+          duration: duration.inMilliseconds,
+          category: 0,
+          reminderBefore: [],
+          fileId: image ? 'image' : null,
+          alarmType: ALARM_SILENT);
+  static Activity longSpanning(DateTime when,
+          [String title = 'most of day', bool image = false]) =>
+      startsAt(DateTime(when.year, when.month, when.day),
+          title: title, image: image, duration: Duration(hours: 16));
 
-  static Activity longSpanning(DateTime when, [String title = 'most of day', bool image = false]) => Activity.createNew(
-      title: title,
-      startTime: DateTime(when.year, when.month, when.day).millisecondsSinceEpoch,
-      duration: Duration(hours: 16).inMilliseconds,
-      category: 0,
-      reminderBefore: [1, 2],
-      fileId: image ? 'image' : null,
-      alarmType: ALARM_SILENT);
-
-  static Activity reocurrsWeekends([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, allWeekends, title: 'recurs weekend');
-  static Activity reocurrsMondays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_MONDAY | Recurs.ODD_MONDAY, title: 'recurs monday');
-  static Activity reocurrsTuedays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_TUESDAY | Recurs.ODD_TUESDAY, title: 'recurs tuesday');
-  static Activity reocurrsWednesdays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_WEDNESDAY | Recurs.ODD_WEDNESDAY, title: 'recurs wednesday');
-  static Activity reocurrsThursdays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_THURSDAY | Recurs.ODD_THURSDAY, title: 'recurs thursday');
-  static Activity reocurrsFridays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_FRIDAY | Recurs.ODD_FRIDAY, title: 'recurs friday');
-  static Activity reocurrsSaturdays([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_SATURDAY | Recurs.ODD_SATURDAY, title: 'recurs saturday');
-  static Activity reocurrsSunday([DateTime startDate]) => reoccurs(startDate, RecurrentType.weekly, Recurs.EVEN_SUNDAY | Recurs.ODD_SUNDAY, title: 'recurs sunday');
-  static Activity reocurrsOnDay(int day, [DateTime startDate, DateTime endDate]) => reoccurs(startDate, RecurrentType.monthly, Recurs.onDayOfMonth(day), endTime: endDate, title: 'recurs on month day $day');
-  static Activity reocurrsOnDate(DateTime day, [DateTime startTime, DateTime endTime]) => reoccurs(startTime ?? day, RecurrentType.yearly, Recurs.dayOfYearData(day), endTime: endTime, title: 'recurs on date $day');
-  static Activity reoccurs(DateTime startTime, RecurrentType recurrentType, int recurrrentData, {DateTime endTime, String title,} ) => Activity.createNew(
-      title: title ?? 'reocurrs $recurrentType $recurrrentData',
-      startTime: (startTime ?? _now.subtract(Duration(days: 366))).millisecondsSinceEpoch,
-      endTime: endTime?.millisecondsSinceEpoch ?? Recurs.NO_END,
-      duration: Duration(hours: 1).inMilliseconds,
-      category: 0,
-      recurrentType: recurrentType.index,
-      recurrentData: recurrrentData,
-      reminderBefore: [],
-      alarmType: ALARM_SILENT);
+  static Activity reocurrsWeekends([DateTime startDate]) =>
+      reoccurs(startDate, RecurrentType.weekly, allWeekends,
+          title: 'recurs weekend');
+  static Activity reocurrsMondays([DateTime startDate]) => reoccurs(
+      startDate, RecurrentType.weekly, Recurs.EVEN_MONDAY | Recurs.ODD_MONDAY,
+      title: 'recurs monday');
+  static Activity reocurrsTuedays([DateTime startDate]) => reoccurs(
+      startDate, RecurrentType.weekly, Recurs.EVEN_TUESDAY | Recurs.ODD_TUESDAY,
+      title: 'recurs tuesday');
+  static Activity reocurrsWednesdays([DateTime startDate]) => reoccurs(
+      startDate,
+      RecurrentType.weekly,
+      Recurs.EVEN_WEDNESDAY | Recurs.ODD_WEDNESDAY,
+      title: 'recurs wednesday');
+  static Activity reocurrsThursdays([DateTime startDate]) => reoccurs(startDate,
+      RecurrentType.weekly, Recurs.EVEN_THURSDAY | Recurs.ODD_THURSDAY,
+      title: 'recurs thursday');
+  static Activity reocurrsFridays([DateTime startDate]) => reoccurs(
+      startDate, RecurrentType.weekly, Recurs.EVEN_FRIDAY | Recurs.ODD_FRIDAY,
+      title: 'recurs friday');
+  static Activity reocurrsSaturdays([DateTime startDate]) => reoccurs(startDate,
+      RecurrentType.weekly, Recurs.EVEN_SATURDAY | Recurs.ODD_SATURDAY,
+      title: 'recurs saturday');
+  static Activity reocurrsSunday([DateTime startDate]) => reoccurs(
+      startDate, RecurrentType.weekly, Recurs.EVEN_SUNDAY | Recurs.ODD_SUNDAY,
+      title: 'recurs sunday');
+  static Activity reocurrsOnDay(int day,
+          [DateTime startDate, DateTime endDate]) =>
+      reoccurs(startDate, RecurrentType.monthly, Recurs.onDayOfMonth(day),
+          endTime: endDate, title: 'recurs on month day $day');
+  static Activity reocurrsOnDate(DateTime day,
+          [DateTime startTime, DateTime endTime]) =>
+      reoccurs(
+          startTime ?? day, RecurrentType.yearly, Recurs.dayOfYearData(day),
+          endTime: endTime, title: 'recurs on date $day');
+  static Activity reoccurs(
+    DateTime startTime,
+    RecurrentType recurrentType,
+    int recurrrentData, {
+    DateTime endTime,
+    String title,
+  }) =>
+      Activity.createNew(
+          title: title ?? 'reocurrs $recurrentType $recurrrentData',
+          startTime: (startTime ?? _now.subtract(Duration(days: 366)))
+              .millisecondsSinceEpoch,
+          endTime: endTime?.millisecondsSinceEpoch ?? Recurs.NO_END,
+          duration: Duration(hours: 1).inMilliseconds,
+          category: 0,
+          recurrentType: recurrentType.index,
+          recurrentData: recurrrentData,
+          reminderBefore: [],
+          alarmType: ALARM_SILENT);
 
   static Activity fullday([DateTime date]) => fulldayWhen(date ?? _now);
-  static Activity yesterdayFullday([DateTime date]) => fulldayWhen((date ?? _now).subtract(Duration(days: 1)), 'yesterday');
-  static Activity tomorrowFullday([DateTime date]) => fulldayWhen((date ?? _now).add(Duration(days: 1))).copyWith(title: 'tomorrow');
-  static Activity fulldayWhen(DateTime when, [String title = 'most of day', bool image = false]) => Activity.createNew(
-      title: '${title != null ? title : '' } fullday',
-      startTime: DateTime(when.year, when.month, when.day).millisecondsSinceEpoch,
-      endTime: DateTime(when.year, when.month, when.day + 1).millisecondsSinceEpoch - 1,
-      duration: Duration(days: 1).inMilliseconds - 1,
-      category: 0,
-      fullDay: true,
-      reminderBefore: [60 * 60 * 1000],
-      fileId: image ? 'image' : null,
-      alarmType: NO_ALARM);
-
-  static Activity get longName => longNameWhen(_now);
-  static Activity longNameWhen(DateTime when, [bool image = false]) => Activity.createNew(
-      title:
-          'long10 long9 long8 long7 long6 long5 long4 long3 long2 long1 long0 long-1 long-2 long-3 long-4 long-5 long-6 long-7 long-8 long-9 past',
-      startTime: when.subtract(Duration(hours: 2)).millisecondsSinceEpoch,
-      duration: Duration(hours: 1).inMilliseconds,
-      category: 0,
-      infoItem: '{some:info,in:json}',
-      reminderBefore: [60 * 60 * 1000],
-      fileId: image ? 'image' : null,
-      alarmType: ALARM_SILENT);
+  static Activity yesterdayFullday([DateTime date]) =>
+      fulldayWhen((date ?? _now).subtract(Duration(days: 1)), 'yesterday');
+  static Activity tomorrowFullday([DateTime date]) =>
+      fulldayWhen((date ?? _now).add(Duration(days: 1)))
+          .copyWith(title: 'tomorrow');
+  static Activity fulldayWhen(DateTime when,
+          [String title = 'most of day', bool image = false]) =>
+      Activity.createNew(
+          title: '${title != null ? title : ''} fullday',
+          startTime:
+              DateTime(when.year, when.month, when.day).millisecondsSinceEpoch,
+          endTime: DateTime(when.year, when.month, when.day + 1)
+                  .millisecondsSinceEpoch -
+              1,
+          duration: Duration(days: 1).inMilliseconds - 1,
+          category: 0,
+          fullDay: true,
+          reminderBefore: [60 * 60 * 1000],
+          fileId: image ? 'image' : null,
+          alarmType: NO_ALARM);
 }
 
 const int oddWeekdays = Recurs.ODD_MONDAY |

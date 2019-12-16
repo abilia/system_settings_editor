@@ -8,7 +8,7 @@ class UserDb {
 
   insertUser(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_USER_RECORD, json.encode(user.toJson()));
+    await prefs.setString(_USER_RECORD, json.encode(user.toJson()));
   }
 
   Future<User> getUser() async {

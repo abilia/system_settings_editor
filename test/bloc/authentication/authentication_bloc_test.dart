@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:seagull/bloc/authentication/bloc.dart';
+import 'package:seagull/bloc.dart';
 import 'package:seagull/db/baseurl_db.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/exceptions.dart';
@@ -27,64 +27,65 @@ void main() {
     });
 
     test('state change to Unauthenticated when app starts', () {
-      final List<AuthenticationState> expected = [
-        AuthenticationUninitialized(),
-        AuthenticationLoading(userRepository),
-        Unauthenticated(userRepository)
-      ];
+      // Act
+      authenticationBloc.add(AppStarted(userRepository));
 
+      // Assert
       expectLater(
         authenticationBloc,
-        emitsInOrder(expected),
+        emitsInOrder([
+          AuthenticationUninitialized(),
+          AuthenticationLoading(userRepository),
+          Unauthenticated(userRepository)
+        ]),
       );
-
-      authenticationBloc.add(AppStarted(userRepository));
     });
 
-    test('state change to AuthenticationAuthenticated when token provided', () {
-      final List<AuthenticationState> expected = [
-        AuthenticationUninitialized(),
-        AuthenticationLoading(userRepository),
-        Unauthenticated(userRepository),
-        AuthenticationLoading(userRepository),
-        Authenticated(
-          token: Fakes.token,
-          userId: Fakes.userId,
-          userRepository: userRepository,
-        ),
-      ];
-
-      expectLater(
-        authenticationBloc,
-        emitsInOrder(expected),
-      );
-
+    test('state change to AuthenticationAuthenticated when token provided',
+        () async {
+      // Act
       authenticationBloc.add(AppStarted(userRepository));
       authenticationBloc.add(LoggedIn(token: Fakes.token));
-    });
 
-    test('state change back to Unauthenticated when loggin out', () {
-      final List<AuthenticationState> expected = [
-        AuthenticationUninitialized(),
-        AuthenticationLoading(userRepository),
-        Unauthenticated(userRepository),
-        AuthenticationLoading(userRepository),
-        Authenticated(
+      // Assert
+      await expectLater(
+        authenticationBloc,
+        emitsInOrder([
+          AuthenticationUninitialized(),
+          AuthenticationLoading(userRepository),
+          Unauthenticated(userRepository),
+          AuthenticationLoading(userRepository),
+          Authenticated(
             token: Fakes.token,
             userId: Fakes.userId,
-            userRepository: userRepository),
-        AuthenticationLoading(userRepository),
-        Unauthenticated(userRepository),
-      ];
-
-      expectLater(
-        authenticationBloc,
-        emitsInOrder(expected),
+            userRepository: userRepository,
+          ),
+        ]),
       );
+    });
 
+    test('state change back to Unauthenticated when loggin out', () async {
+      // Act
       authenticationBloc.add(AppStarted(userRepository));
       authenticationBloc.add(LoggedIn(token: Fakes.token));
       authenticationBloc.add(LoggedOut());
+
+      // Assert
+      await expectLater(
+        authenticationBloc,
+        emitsInOrder([
+          AuthenticationUninitialized(),
+          AuthenticationLoading(userRepository),
+          Unauthenticated(userRepository),
+          AuthenticationLoading(userRepository),
+          Authenticated(
+              token: Fakes.token,
+              userId: Fakes.userId,
+              userRepository: userRepository),
+          AuthenticationLoading(userRepository),
+          Unauthenticated(userRepository),
+        ]),
+      );
     });
 
     tearDown(() {
@@ -107,40 +108,50 @@ void main() {
     });
 
     test('loggedIn event saves token', () async {
+      // Act
       authenticationBloc.add(AppStarted(mockedUserRepository));
-      final theToken = Fakes.token;
-      authenticationBloc.add(LoggedIn(token: theToken));
-      await untilCalled(mockedUserRepository.persistToken(theToken));
+      authenticationBloc.add(LoggedIn(token: Fakes.token));
+      // Assert
+      await untilCalled(mockedUserRepository.persistToken(Fakes.token));
     });
 
     test('loggedOut calls deletes token', () async {
       authenticationBloc.add(AppStarted(mockedUserRepository));
+      // Act
       authenticationBloc.add(LoggedOut());
+      // Assert
       await untilCalled(mockedUserRepository.logout());
     });
 
     test('unauthed token gets deleted', () async {
-      authenticationBloc.add(AppStarted(mockedUserRepository));
-
+      // Arrange
       when(mockedUserRepository.me(any))
           .thenAnswer((_) => Future.error(UnauthorizedException()));
 
+      // Act
+      authenticationBloc.add(AppStarted(mockedUserRepository));
+
+      // Assert
       await untilCalled(mockedUserRepository.logout());
     });
 
     test('unauthed token returns state Unauthenticated', () async {
-      final List<AuthenticationState> expected = [
-        AuthenticationUninitialized(),
-        AuthenticationLoading(mockedUserRepository),
-        Unauthenticated(mockedUserRepository),
-      ];
+      // Arrange
       when(mockedUserRepository.me(any))
           .thenAnswer((_) => Future.error(UnauthorizedException()));
-      expectLater(
-        authenticationBloc,
-        emitsInOrder(expected),
-      );
+
+      // Act
       authenticationBloc.add(AppStarted(mockedUserRepository));
+
+      // Assert
+      await expectLater(
+        authenticationBloc,
+        emitsInOrder([
+          AuthenticationUninitialized(),
+          AuthenticationLoading(mockedUserRepository),
+          Unauthenticated(mockedUserRepository),
+        ]),
+      );
     });
 
     tearDown(() {

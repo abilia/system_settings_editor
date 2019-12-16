@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:seagull/bloc/authentication/bloc.dart';
-import 'package:seagull/bloc/login/bloc.dart';
+import 'package:seagull/bloc.dart';
 import 'package:seagull/db/baseurl_db.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/user.dart';
@@ -37,37 +36,44 @@ void main() {
     });
 
     test('LoginState and AuthenticationState in correct order', () async {
-      final List<LoginState> expectedLoginStates = [
-        LoginInitial(),
-        LoginLoading(),
-        LoginInitial(),
-      ];
-      final List<AuthenticationState> expectedAuthenticationStates = [
-        AuthenticationUninitialized(),
-        AuthenticationLoading(userRepository),
-        Unauthenticated(userRepository),
-        AuthenticationLoading(userRepository),
-        Authenticated(
-            token: Fakes.token,
-            userId: Fakes.userId,
-            userRepository: userRepository),
-      ];
-
-      expectLater(
-        authenticationBloc,
-        emitsInOrder(expectedAuthenticationStates),
-      );
-
-      expectLater(
-        loginBloc,
-        emitsInOrder(expectedLoginStates),
-      );
-
+      // Act
       authenticationBloc.add(AppStarted(userRepository));
-      await authenticationBloc
-          .firstWhere((s) => s is AuthenticationInitialized);
-      loginBloc
-          .add(LoginButtonPressed(username: 'username', password: 'password'));
+
+      // Assert
+      await expectLater(
+        authenticationBloc,
+        emitsInOrder([
+          AuthenticationUninitialized(),
+          AuthenticationLoading(userRepository),
+          Unauthenticated(userRepository),
+        ]),
+      );
+
+      // Act
+      loginBloc.add(LoginButtonPressed(
+        username: 'username',
+        password: 'password',
+      ));
+
+      // Assert
+      await expectLater(
+        loginBloc,
+        emitsInOrder([
+          LoginInitial(),
+          LoginLoading(),
+          LoginInitial(),
+        ]),
+      );
+      await expectLater(
+        authenticationBloc,
+        emitsInOrder([
+          AuthenticationLoading(userRepository),
+          Authenticated(
+              token: Fakes.token,
+              userId: Fakes.userId,
+              userRepository: userRepository),
+        ]),
+      );
     });
 
     tearDown(() {
@@ -98,12 +104,15 @@ void main() {
     });
 
     test('LoginButtonPressed event calls logges in and saves token', () async {
+      // Arrange
       String username = 'username',
           password = 'password',
           fakePushToken = 'fakePushToken';
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value(fakePushToken));
+      // Act
       loginBloc.add(LoginButtonPressed(username: username, password: password));
+      // Assert
       await untilCalled(mockedUserRepository.authenticate(
           username: username, password: password, pushToken: fakePushToken));
       await untilCalled(mockedUserRepository.me(any));

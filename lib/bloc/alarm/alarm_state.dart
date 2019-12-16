@@ -36,14 +36,14 @@ class NewAlarmState extends PopUpAlarmState {
 }
 
 class NewReminderState extends PopUpAlarmState {
-  final int reminderTime;
-  NewReminderState(Activity activity, {@required this.reminderTime})
-      : assert(reminderTime != null),
-        assert(reminderTime > 0),
+  final Duration reminder;
+  NewReminderState(Activity activity, {@required this.reminder})
+      : assert(reminder != null),
+        assert(reminder > Duration.zero),
         super(activity);
   @override
-  List<Object> get props => [activity, reminderTime];
+  List<Object> get props => [activity, reminder];
   @override
   String toString() =>
-      'NewReminderState { activity: $activity, reminderTime: $reminderTime }';
+      'NewReminderState { activity: $activity, reminder: $reminder }';
 }

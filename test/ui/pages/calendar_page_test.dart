@@ -1,7 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/bloc/bloc_delegate.dart';
 import 'package:seagull/fakes/fake_activities.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/getit.dart';
@@ -18,9 +18,11 @@ void main() {
     MockFirebasePushService mockFirebasePushService;
     MockActivityDb mockActivityDb;
     MockPushBloc mockPushBloc;
+    StreamController<DateTime> mockTicker;
 
     setUp(() {
       mockTokenDb = MockTokenDb();
+      mockTicker = StreamController<DateTime>();
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
       mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
@@ -31,6 +33,7 @@ void main() {
           .withPushBloc(mockPushBloc)
           .withActivityDb(mockActivityDb)
           .withUserDb(MockUserDb())
+          .withTicker((() => mockTicker.stream))
           .init();
     });
 
@@ -100,7 +103,6 @@ void main() {
     testWidgets(
         'Agenda with one activity hidden by passed activities should show Go to now-button',
         (WidgetTester tester) async {
-      BlocSupervisor.delegate = SimpleBlocDelegate();
       when(mockActivityDb.getActivitiesFromDb()).thenAnswer((_) =>
           Future.value(FakeActivities.allPast..add(FakeActivity.onTime())));
       await tester.pumpWidget(App(
@@ -109,17 +111,24 @@ void main() {
         firebasePushService: mockFirebasePushService,
         tokenDb: mockTokenDb,
       ));
-      await tester.pumpAndSettle(Duration(seconds: 10));
+      await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
     });
 
     testWidgets('Alarms shows', (WidgetTester tester) async {
+      final activityWithAlarmTime = DateTime(2021, 12, 20, 21, 12);
+      final response = [FakeActivity.onTime(activityWithAlarmTime)];
+      when(mockActivityDb.getActivitiesFromDb())
+          .thenAnswer((_) => Future.value(response));
       await tester.pumpWidget(App(
-        httpClient: Fakes.client([FakeActivity.onTime()]),
+        httpClient: Fakes.client(response),
         firebasePushService: mockFirebasePushService,
         tokenDb: mockTokenDb,
       ));
+      await tester.pumpAndSettle();
+      mockTicker.add(activityWithAlarmTime);
+      await tester.pumpAndSettle();
       expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
-    }, skip: true); // Unskip when we can Inject our own ticker
+    });
   });
 }

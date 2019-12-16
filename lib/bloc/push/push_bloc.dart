@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:seagull/background/background.dart';
 import 'package:seagull/bloc.dart';
-import 'package:seagull/bloc/push/push_event.dart';
-import 'package:seagull/bloc/push/push_state.dart';
 
 class PushBloc extends Bloc<PushEvent, PushState> {
   PushBloc() {

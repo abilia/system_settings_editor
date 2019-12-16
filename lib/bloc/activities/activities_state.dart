@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:seagull/models.dart';
 
+@immutable
 abstract class ActivitiesState extends Equatable {
   const ActivitiesState();
 
@@ -23,4 +25,5 @@ class ActivitiesLoaded extends ActivitiesState {
 }
 
 class ActivitiesNotLoaded extends ActivitiesState {}
+
 class ActivitiesLoadedFailed extends ActivitiesState {}

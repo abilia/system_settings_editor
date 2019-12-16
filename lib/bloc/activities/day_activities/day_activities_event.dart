@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:seagull/models.dart';
 
+@immutable
 abstract class DayActivitiesEvent extends Equatable {
   const DayActivitiesEvent();
 }
@@ -14,7 +16,15 @@ class UpdateDay extends DayActivitiesEvent {
   List<Object> get props => [dayFilter];
 
   @override
-  String toString() => 'UpdateDay { ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][dayFilter.weekday-1]}, $dayFilter }';
+  String toString() => 'UpdateDay { ${[
+        'Mon',
+        'Tue',
+        'Wed',
+        'Thu',
+        'Fri',
+        'Sat',
+        'Sun'
+      ][dayFilter.weekday - 1]}, $dayFilter }';
 }
 
 class UpdateActivities extends DayActivitiesEvent {
@@ -26,5 +36,6 @@ class UpdateActivities extends DayActivitiesEvent {
   List<Object> get props => [activities];
 
   @override
-  String toString() => 'UpdateActivities { activities: ${activities.map((a) => a.title ?? a.id)} }';
+  String toString() =>
+      'UpdateActivities { activities: ${activities.map((a) => a.title ?? a.id)} }';
 }

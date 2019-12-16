@@ -37,18 +37,17 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
           .map((a) => NewAlarmState(a, alarmOnStart: true));
 
       final endTimeAlarms = activitiesWithAlarm
-          .where(
-              (a) => a.alarm.atEnd && a.endClock(time).isAtSameMomentAs(time))
+          .where((a) => a.hasEndTime)
+          .where((a) => a.alarm.atEnd)
+          .where((a) => a.endClock(time).isAtSameMomentAs(time))
           .map((a) => NewAlarmState(a, alarmOnStart: false));
 
-      final reminders = activitiesThisDay.expand((a) => a.reminderBefore
-              .map((r) => NewReminderState(a, reminderTime: r))
-              .where((rs) {
-            final reminderAt = rs.activity
-                .startClock(time)
-                .subtract(Duration(minutes: rs.reminderTime));
-            return reminderAt.isAtSameMomentAs(time);
-          }));
+      final reminders = activitiesThisDay.expand((a) => a.reminders
+          .map((r) => NewReminderState(a, reminder: r))
+          .where((rs) => rs.activity
+              .startClock(time)
+              .subtract(rs.reminder)
+              .isAtSameMomentAs(time)));
 
       for (final alarm
           in startTimeAlarms.followedBy(endTimeAlarms).followedBy(reminders)) {

@@ -5,15 +5,18 @@ class SimpleBlocDelegate extends BlocDelegate {
   @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
-    if (event is! Silent)
+    if (event is! Silent) {
       print(event);
+    }
   }
- 
+
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    if (transition.currentState.runtimeType != transition.nextState.runtimeType) 
+    if (transition.currentState.runtimeType !=
+        transition.nextState.runtimeType) {
       print(transition);
+    }
   }
 
   @override

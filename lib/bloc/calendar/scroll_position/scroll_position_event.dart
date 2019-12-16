@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:seagull/bloc/mixin/silent.dart';
 
+@immutable
 abstract class ScrollPositionEvent extends Equatable {}
 
 class ScrollPositionUpdated extends ScrollPositionEvent with Silent {
