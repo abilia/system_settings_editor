@@ -1,13 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc.dart';
-import 'package:seagull/fakes/fake_activities.dart';
-import 'package:seagull/utils.dart';
-
-import '../../../mocks.dart';
 
 class MockScrollController extends Mock implements ScrollController {}
 
@@ -15,219 +9,265 @@ class MockScrollPosition extends Mock implements ScrollPosition {}
 
 void main() {
   ScrollPositionBloc scrollPositionBloc;
-  DayActivitiesBloc dayActivitiesBloc;
-  DayPickerBloc dayPickerBloc;
-  ClockBloc clockBloc;
-  ActivitiesBloc activitiesBloc;
-  ActivitiesOccasionBloc activitiesOccasionBloc;
-  DateTime initialTime = onlyMinutes(DateTime(2006, 06, 06, 06, 06, 06, 06));
-  DateTime initialMinutes = onlyMinutes(initialTime);
-
-  MockActivityRepository mockActivityRepository;
   MockScrollController mockScrollController;
   MockScrollPosition mockScrollPosition;
-  StreamController<DateTime> mockedTicker;
-  final cardHeigt = 80.0;
-  final widgetKey = GlobalKey<State<StatefulWidget>>();
 
-  group('ScrollPositionBloc', () {
-    setUp(
-      () {
-        mockedTicker = StreamController<DateTime>();
-        clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
-        dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
-        mockActivityRepository = MockActivityRepository();
-        activitiesBloc = ActivitiesBloc(
-            activitiesRepository: mockActivityRepository,
-            pushBloc: MockPushBloc());
-        dayActivitiesBloc = DayActivitiesBloc(
-            dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
-        activitiesOccasionBloc = ActivitiesOccasionBloc(
-            clockBloc: clockBloc,
-            dayActivitiesBloc: dayActivitiesBloc,
-            dayPickerBloc: dayPickerBloc);
-        mockScrollController = MockScrollController();
-        mockScrollPosition = MockScrollPosition();
+  group(
+    'ScrollPositionBloc',
+    () {
+      setUp(
+        () {
+          mockScrollController = MockScrollController();
+          mockScrollPosition = MockScrollPosition();
+          scrollPositionBloc = ScrollPositionBloc();
+          when(mockScrollController.position).thenReturn(mockScrollPosition);
+          when(mockScrollController.hasClients).thenReturn(true);
+        },
+      );
 
-        scrollPositionBloc = ScrollPositionBloc(
-            activitiesOccasionBloc,
-            clockBloc,
-            dayPickerBloc,
-            mockScrollController,
-            cardHeigt,
-            widgetKey);
-        when(mockScrollController.position).thenReturn(mockScrollPosition);
-        when(mockScrollPosition.maxScrollExtent).thenReturn(0.0);
-      },
-    );
+      test(
+        'initial state is Unready',
+        () {
+          // Assert
+          expect(scrollPositionBloc.initialState, Unready());
+          expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              Unready(),
+            ]),
+          );
+        },
+      );
 
-    test(
-      'initial state is Unready',
-      () {
-        // Assert
-        expect(scrollPositionBloc.initialState, Unready());
-        expectLater(
-          scrollPositionBloc,
-          emitsInOrder([
-            Unready(),
-          ]),
-        );
-      },
-    );
+      test(
+        'after event ListViewRenderComplete still Unready if ScrollController has no Clients',
+        () async {
+          // Arrange
+          when(mockScrollController.hasClients).thenReturn(false);
+          // Act
+          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
 
-    test(
-      'after event ListViewRenderComplete still Unready if ScrollController has no Clients',
-      () async {
-        // Arrange
-        when(mockActivityRepository.loadActivities())
-            .thenAnswer((_) => Future.value(Iterable.empty()));
-        when(mockScrollController.hasClients).thenReturn(false);
+          // Assert
+          await expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              Unready(),
+            ]),
+          );
+        },
+      );
 
-        // Act
-        activitiesBloc.add(LoadActivities());
-        scrollPositionBloc.add(ListViewRenderComplete());
+      test(
+        'InView',
+        () async {
+          // Arrange
+          when(mockScrollController.offset).thenReturn(0);
+          when(mockScrollController.initialScrollOffset).thenReturn(0);
+          when(mockScrollPosition.maxScrollExtent).thenReturn(800);
 
-        // Assert
-        await expectLater(
-          scrollPositionBloc,
-          emitsInOrder([
-            Unready(),
-          ]),
-        );
-      },
-    );
+          // Act
+          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
 
-    test(
-      'after event ListViewRenderComplete still Unready if ActivitiesOccasionState is ActivitiesOccasionLoading',
-      () async {
-        //Arrange
-        when(mockScrollController.hasClients).thenReturn(true);
-        // Act
-        scrollPositionBloc.add(ListViewRenderComplete());
-        // Assert
-        await expectLater(
-          scrollPositionBloc,
-          emitsInOrder([
-            Unready(),
-          ]),
-        );
-      },
-    );
+          // Assert
+          await expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              Unready(),
+              InView(mockScrollController),
+            ]),
+          );
+        },
+      );
 
-    test(
-      'Empty list emits InView',
-      () async {
-        // Arrange
-        when(mockActivityRepository.loadActivities())
-            .thenAnswer((_) => Future.value(Iterable.empty()));
-        when(mockScrollController.hasClients).thenReturn(true);
+      test(
+        'OutOfView',
+        () async {
+          // Arrange
+          when(mockScrollController.offset).thenReturn(600);
+          when(mockScrollController.initialScrollOffset).thenReturn(200);
+          when(mockScrollPosition.maxScrollExtent).thenReturn(800);
 
-        // Act
-        activitiesBloc.add(LoadActivities());
-        await activitiesOccasionBloc
-            .firstWhere((s) => s is ActivitiesOccasionLoaded);
+          // Act
+          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
 
-        scrollPositionBloc.add(ListViewRenderComplete());
+          // Assert
+          await expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              Unready(),
+              OutOfView(mockScrollController),
+            ]),
+          );
+        },
+      );
 
-        // Assert
-        await expectLater(
-          scrollPositionBloc,
-          emitsInOrder([
-            Unready(),
-            InView(),
-          ]),
-        );
-      },
-    );
+      test(
+        'Just InView top',
+        () async {
+          // Arrange
+          final double init = 200;
+          when(mockScrollController.offset)
+              .thenReturn(init - scrollPositionBloc.fromBotton);
+          when(mockScrollController.initialScrollOffset).thenReturn(init);
+          when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
+          // Act
+          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
 
-    test(
-      'Empty list emits InView',
-      () async {
-        // Arrange
-        when(mockActivityRepository.loadActivities())
-            .thenAnswer((_) => Future.value(Iterable.empty()));
-        when(mockScrollController.hasClients).thenReturn(true);
+          // Assert
+          await expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              Unready(),
+              InView(mockScrollController),
+            ]),
+          );
+        },
+      );
 
-        // Act
-        activitiesBloc.add(LoadActivities());
-        await activitiesOccasionBloc
-            .firstWhere((s) => s is ActivitiesOccasionLoaded);
+      test(
+        'Just InView bottom',
+        () async {
+          // Arrange
+          final double init = 200;
+          when(mockScrollController.offset)
+              .thenReturn(init + scrollPositionBloc.fromTop);
+          when(mockScrollController.initialScrollOffset).thenReturn(init);
+          when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
+          // Act
+          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
 
-        scrollPositionBloc.add(ListViewRenderComplete());
+          // Assert
+          await expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              Unready(),
+              InView(mockScrollController),
+            ]),
+          );
+        },
+      );
 
-        // Assert
-        await expectLater(
-          scrollPositionBloc,
-          emitsInOrder([
-            Unready(),
-            InView(),
-          ]),
-        );
-      },
-    );
+      test(
+        'Just OutView top',
+        () async {
+          // Arrange
+          final double init = 200;
+          when(mockScrollController.offset)
+              .thenReturn(init - scrollPositionBloc.fromBotton - 1);
+          when(mockScrollController.initialScrollOffset).thenReturn(init);
+          when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
+          // Act
+          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
 
-    test(
-      'Unrenderd emits OutOfView',
-      () async {
-        // Arrange
-        when(mockActivityRepository.loadActivities())
-            .thenAnswer((_) => Future.value([FakeActivity.startsAt(initialTime)]));
-        when(mockScrollController.hasClients).thenReturn(true);
-        when(mockScrollController.offset).thenReturn(0.0);
+          // Assert
+          await expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              Unready(),
+              OutOfView(mockScrollController),
+            ]),
+          );
+        },
+      );
 
-        // Act
-        activitiesBloc.add(LoadActivities());
-        await activitiesOccasionBloc
-            .firstWhere((s) => s is ActivitiesOccasionLoaded);
+      test(
+        'Just OutOfView bottom',
+        () async {
+          // Arrange
+          final double init = 200;
+          when(mockScrollController.offset)
+              .thenReturn(init + scrollPositionBloc.fromTop + 1);
+          when(mockScrollController.initialScrollOffset).thenReturn(init);
+          when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
+          // Act
+          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
 
-        scrollPositionBloc.add(ListViewRenderComplete());
+          // Assert
+          await expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              Unready(),
+              OutOfView(mockScrollController),
+            ]),
+          );
+        },
+      );
 
-        // Assert
-        await expectLater(
-          scrollPositionBloc,
-          emitsInOrder([
-            Unready(),
-            OutOfView(),
-          ]),
-        );
-      },
-    );
+      test(
+        'InView then scroll down and then OutOfView',
+        () async {
+          // Arrange
+          double activityAt = 200, max = 800;
+          when(mockScrollController.offset).thenReturn(activityAt);
+          when(mockScrollController.initialScrollOffset).thenReturn(activityAt);
+          when(mockScrollPosition.maxScrollExtent).thenReturn(max);
 
-    //scrollPosition >= maxScrollExtent && offsetToActivity > maxScrollExtent;
-    test(
-      'IfAtBottomOfList emits OutOfView',
-      () async {
-        // Arrange
-        when(mockActivityRepository.loadActivities())
-            .thenAnswer((_) => Future.value([FakeActivity.startsAt(initialTime.subtract(Duration(hours: 3))), FakeActivity.startsAt(initialTime)]));
-        when(mockScrollController.hasClients).thenReturn(true);
-        when(mockScrollController.offset).thenReturn(cardHeigt * 10);
+          // Act
+          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
 
-        // Act
-        activitiesBloc.add(LoadActivities());
-        await activitiesOccasionBloc
-            .firstWhere((s) => s is ActivitiesOccasionLoaded);
+          // Assert
+          await expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              Unready(),
+              InView(mockScrollController),
+            ]),
+          );
 
-        scrollPositionBloc.add(ListViewRenderComplete());
+          // Act
+          for (var i = activityAt; i < max; i++) {
+            when(mockScrollController.offset).thenReturn(i);
+            scrollPositionBloc.add(ScrollPositionUpdated(i));
+          }
 
-        // Assert
-        await expectLater(
-          scrollPositionBloc,
-          emitsInOrder([
-            Unready(),
-            InView(),
-          ]),
-        );
-      },
-    );
+          // Assert
+          await expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              InView(mockScrollController),
+              OutOfView(mockScrollController),
+            ]),
+          );
+        },
+      );
 
-    tearDown(() {
-      dayPickerBloc.close();
-      activitiesBloc.close();
-      activitiesOccasionBloc.close();
-      dayActivitiesBloc.close();
-      clockBloc.close();
-      mockedTicker.close();
-    });
-  });
+      test(
+        'InView then scroll up and then OutOfView',
+        () async {
+          double activityAt = 200, max = 800;
+          // Arrange
+          when(mockScrollController.offset).thenReturn(activityAt);
+          when(mockScrollController.initialScrollOffset).thenReturn(activityAt);
+          when(mockScrollPosition.maxScrollExtent).thenReturn(max);
+
+          // Act
+          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
+
+          // Assert
+          await expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              Unready(),
+              InView(mockScrollController),
+            ]),
+          );
+
+          // Act
+          for (var i = activityAt; i > 0; i--) {
+            when(mockScrollController.offset).thenReturn(i);
+            scrollPositionBloc.add(ScrollPositionUpdated(i));
+          }
+
+          // Assert
+          await expectLater(
+            scrollPositionBloc,
+            emitsInOrder([
+              InView(mockScrollController),
+              OutOfView(mockScrollController),
+            ]),
+          );
+        },
+      );
+    },
+  );
 }

@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/models/activity.dart';
+import 'package:seagull/utils.dart';
 
 class ActivitiesOccasionBloc
     extends Bloc<ActivitiesOccasionEvent, ActivitiesOccasionState> {
@@ -77,14 +78,17 @@ class ActivitiesOccasionBloc
         .map((a) => ActivityOccasion.fullDay(a, now: now, day: day))
         .toList();
 
-    final firstActiveIndex =
-        _indexOfFirstNoneCompletedOrLastCompletedActivity(timedActivities);
+    final isToday = isAtSameDay(day, now);
+    final firstActiveIndex = isToday
+        ? _indexOfFirstNoneCompletedOrLastCompletedActivity(timedActivities)
+        : -1;
 
     return ActivitiesOccasionLoaded(
-      indexOfCurrentActivity: firstActiveIndex,
       activities: timedActivities,
       fullDayActivities: fullDayActivities,
       day: day,
+      isToday: isToday,
+      indexOfCurrentActivity: firstActiveIndex,
     );
   }
 

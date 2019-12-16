@@ -4,24 +4,20 @@ import 'package:seagull/ui/components.dart';
 import 'package:seagull/ui/theme.dart';
 
 class GoToNowButton extends StatelessWidget {
-  final Function onDayPressed;
-  final Function onOtherDayPressed;
+  final Function onPressed;
 
-  const GoToNowButton(
-      {Key key, @required this.onDayPressed, @required this.onOtherDayPressed})
-      : super(key: key);
+  const GoToNowButton({Key key, @required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<ScrollPositionBloc, ScrollPositionState>(
-        builder: (context, scrollState) => scrollState is WrongDay ||
-                scrollState is OutOfView
-            ? ActionButton(
-                key: TestKey.goToNowButton,
-                child: Icon(AbiliaIcons.reset),
-                onPressed:
-                    scrollState is WrongDay ? onOtherDayPressed : onDayPressed,
-                themeData: nowButtonTheme(context))
-            : const SizedBox(width: 48),
+        builder: (context, scrollState) =>
+            scrollState is WrongDay || scrollState is OutOfView
+                ? ActionButton(
+                    key: TestKey.goToNowButton,
+                    child: Icon(AbiliaIcons.reset),
+                    onPressed: onPressed,
+                    themeData: nowButtonTheme(context))
+                : const SizedBox(width: 48),
       );
 }

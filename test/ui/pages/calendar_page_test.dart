@@ -102,18 +102,21 @@ void main() {
     });
 
     testWidgets(
-        'Agenda with one activity hidden by passed activities should show Go to now-button',
+        'Agenda with one activity and a lot of passed activities should show the activity',
         (WidgetTester tester) async {
-      when(mockActivityDb.getActivitiesFromDb()).thenAnswer((_) =>
-          Future.value(FakeActivities.allPast..add(FakeActivity.onTime())));
+      final key = 'KEYKEYKEYKEYKEY';
+      final activities = FakeActivities.allPast
+        ..add(FakeActivity.onTime().copyWith(title: key));
+      when(mockActivityDb.getActivitiesFromDb())
+          .thenAnswer((_) => Future.value(activities));
       await tester.pumpWidget(App(
-        httpClient:
-            Fakes.client(FakeActivities.allPast..add(FakeActivity.onTime())),
+        httpClient: Fakes.client(activities),
         firebasePushService: mockFirebasePushService,
         tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+      expect(find.byKey(TestKey.goToNowButton), findsNothing);
+      expect(find.text(key), findsOneWidget);
     });
 
     testWidgets('Alarms shows', (WidgetTester tester) async {
