@@ -20,14 +20,15 @@ echo "Installed flutter to `pwd`/flutter"
 # run tests
 flutter test
 
+buildName=$(date "+%Y-%m-%d-%H%M")
 # build APK
-flutter build apk --release --build-number=$APPCENTER_BUILD_ID
+flutter build apk --release --build-number=$APPCENTER_BUILD_ID --build-name=$buildName
 
 # if you need build bundle (AAB) in addition to your APK, uncomment line below and last line of this script.
 #flutter build appbundle
 
 # copy the APK where AppCenter will find it
-mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/apk/release/app-release.apk $_
+mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/apk/release/app-release.apk $_/seagull-$buildName.apk
 
 # copy the AAB where AppCenter will find it
 #mkdir -p android/app/build/outputs/bundle/; mv build/app/outputs/bundle/release/app.aab $_

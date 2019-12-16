@@ -85,6 +85,8 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
+  - package_info (0.0.1):
+    - Flutter
   - path_provider (0.0.1):
     - Flutter
   - Protobuf (3.10.0)
@@ -100,6 +102,7 @@ DEPENDENCIES:
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -130,6 +133,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  package_info:
+    :path: ".symlinks/plugins/package_info/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
@@ -141,7 +146,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Firebase: 458d109512200d1aca2e1b9b6cf7d68a869a4a46
-  firebase_messaging: 73b3e7dd7b3b6a7e4bdac10d5295211ca4f87f90
+  firebase_messaging: db3f19ec4490799e5c660723626740e539c41c04
   FirebaseAnalytics: 45f36d9c429fc91d206283900ab75390cd05ee8a
   FirebaseAnalyticsInterop: d48b6ab67bcf016a05e55b71fc39c61c0cb6b7f3
   FirebaseCore: 307ea2508df730c5865334e41965bd9ea344b0e5
@@ -157,6 +162,7 @@ SPEC CHECKSUMS:
   GoogleDataTransportCCTSupport: f6ab1962e9dc05ab1fb938b795e5b310209edeec
   GoogleUtilities: 547a86735c6f0ee30ad17e94df4fc21f616b71cb
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
+  package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
   shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01

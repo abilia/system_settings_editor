@@ -3,6 +3,7 @@ import 'package:seagull/bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components.dart';
 import 'package:seagull/ui/theme.dart';
+import 'package:package_info/package_info.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -143,6 +144,15 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   padding16,
                   BackendSwitches(),
+                  Center(
+                    child: FutureBuilder(
+                      future: PackageInfo.fromPlatform(),
+                      builder: (context, AsyncSnapshot<PackageInfo> snapshot) =>
+                          Text(snapshot.hasData
+                              ? '${snapshot.data.version}(${snapshot.data.buildNumber})'
+                              : ''),
+                    ),
+                  ),
                 ],
               ),
             ),
