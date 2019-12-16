@@ -34,6 +34,7 @@ void main() {
           .withActivityDb(mockActivityDb)
           .withUserDb(MockUserDb())
           .withTicker((() => mockTicker.stream))
+          .withBaseUrlDb(MockBaseUrlDb())
           .init();
     });
 

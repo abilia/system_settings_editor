@@ -3,6 +3,7 @@ import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/db/activities_db.dart';
+import 'package:seagull/db/baseurl_db.dart';
 import 'package:seagull/db/sqflite.dart';
 import 'package:seagull/db/token_db.dart';
 import 'package:seagull/db/user_db.dart';
@@ -29,6 +30,8 @@ class MockUserDb extends Mock implements UserDb {}
 class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
 
 class MockDatabaseRepository extends Mock implements DatabaseRepository {}
+
+class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 
 class MockClient extends Mock implements BaseClient {
   final String baseUrl;

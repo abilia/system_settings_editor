@@ -59,7 +59,7 @@ class App extends StatelessWidget {
         BlocProvider<AuthenticationBloc>(
             builder: (context) => AuthenticationBloc(
                 databaseRepository: GetIt.I<DatabaseRepository>(),
-                baseUrlDb: BaseUrlDb())
+                baseUrlDb: GetIt.I<BaseUrlDb>())
               ..add(AppStarted(userRepository))),
         BlocProvider<PushBloc>(
           builder: (context) => pushBloc ?? PushBloc(),

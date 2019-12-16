@@ -5,7 +5,7 @@ class BaseUrlDb {
 
   Future setBaseUrl(String baseUrl) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_BASE_URL_RECORD, baseUrl);
+    await prefs.setString(_BASE_URL_RECORD, baseUrl);
   }
 
   Future<String> getBaseUrl() async {
