@@ -26,6 +26,7 @@ class AuthenticationBloc
   ) async* {
     if (event is AppStarted) {
       yield AuthenticationLoading(event.repository);
+      await baseUrlDb.setBaseUrl(event.repository.baseUrl);
       _userRepository = event.repository;
       final String token = await _userRepository.getToken();
       if (token != null) {
