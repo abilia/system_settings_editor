@@ -33,6 +33,7 @@ void main() {
           .withFireBasePushService(mockFirebasePushService)
           .withPushBloc(mockPushBloc)
           .withUserDb(MockUserDb())
+          .withBaseUrlDb(MockBaseUrlDb())
           .init();
     });
 

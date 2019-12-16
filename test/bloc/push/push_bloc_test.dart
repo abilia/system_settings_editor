@@ -29,6 +29,7 @@ void main() {
       GetItInitializer()
           .withUserDb(MockUserDb())
           .withActivityDb(mockActivityDb)
+          .withBaseUrlDb(MockBaseUrlDb())
           .init();
       final activityResponseAnswers = [
         Response(json.encode([]), 200),

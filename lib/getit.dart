@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:seagull/db/activities_db.dart';
+import 'package:seagull/db/baseurl_db.dart';
 import 'package:seagull/db/sqflite.dart';
 import 'package:seagull/db/token_db.dart';
 import 'package:seagull/db/user_db.dart';
@@ -16,6 +17,7 @@ class GetItInitializer {
   UserDb _userDb;
   DatabaseRepository _databaseRepository;
   FactoryFunc<Stream<DateTime>> _tickerFactory;
+  BaseUrlDb _baseUrlDb;
 
   GetItInitializer withActivityDb(ActivityDb activityDb) {
     this._activityDb = activityDb;
@@ -49,6 +51,11 @@ class GetItInitializer {
     return this;
   }
 
+  GetItInitializer withBaseUrlDb(BaseUrlDb baseUrlDb) {
+    this._baseUrlDb = baseUrlDb;
+    return this;
+  }
+
   init() async {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(Client());
@@ -60,6 +67,7 @@ class GetItInitializer {
     GetIt.I.registerSingleton<UserDb>(_userDb ?? UserDb());
     GetIt.I.registerSingleton<DatabaseRepository>(
         _databaseRepository ?? DatabaseRepository());
+    GetIt.I.registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb());
     GetIt.I.registerFactory<Stream<DateTime>>(
         _tickerFactory ?? () => Ticker.minute());
   }
