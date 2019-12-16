@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:seagull/background/background.dart';
 import 'package:seagull/bloc.dart';
 
 class PushBloc extends Bloc<PushEvent, PushState> {
   PushBloc() {
-    initFirebaseListener();
+    _initFirebaseListener();
   }
 
   @override
@@ -14,7 +17,7 @@ class PushBloc extends Bloc<PushEvent, PushState> {
     yield PushReceived();
   }
 
-  void initFirebaseListener() {
+  void _initFirebaseListener() {
     final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
     firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
@@ -29,6 +32,7 @@ class PushBloc extends Bloc<PushEvent, PushState> {
         this.add(OnPush());
         print("onResume push: $message");
       },
+      onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
     );
   }
 }

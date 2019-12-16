@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/db/token_db.dart';
 import 'package:seagull/db/user_db.dart';
 import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/login.dart';
@@ -13,27 +14,25 @@ import 'package:seagull/repository/repository.dart';
 import 'package:uuid/uuid.dart';
 
 class UserRepository extends Repository {
-  final String _tokenKey = 'tokenKey';
-  final FlutterSecureStorage secureStorage;
+  final TokenDb tokenDb;
   final UserDb userDb;
 
   UserRepository({
     String baseUrl,
     @required BaseClient httpClient,
-    @required this.secureStorage,
+    @required this.tokenDb,
     @required this.userDb,
-  })  : assert(secureStorage != null),
+  })  : assert(tokenDb != null),
         super(httpClient, baseUrl);
 
   UserRepository copyWith({
     String baseUrl,
     BaseClient httpClient,
-    FlutterSecureStorage secureStorage,
   }) =>
       UserRepository(
           baseUrl: baseUrl ?? this.baseUrl,
           httpClient: httpClient ?? this.httpClient,
-          secureStorage: secureStorage ?? this.secureStorage,
+          tokenDb: this.tokenDb,
           userDb: this.userDb);
 
   Future<String> authenticate(
@@ -96,16 +95,15 @@ class UserRepository extends Repository {
   }
 
   Future<void> logout() async {
-    await secureStorage.delete(key: _tokenKey);
+    await tokenDb.delete();
     await userDb.deleteUser();
   }
 
-  Future<void> persistToken(String token) =>
-      secureStorage.write(key: _tokenKey, value: token);
+  Future<void> persistToken(String token) => tokenDb.persistToken(token);
 
-  Future<String> getToken() => secureStorage.read(key: _tokenKey);
+  Future<String> getToken() => tokenDb.getToken();
 
   @override
   String toString() =>
-      'UserRepository: { secureStorage: $secureStorage ${super.toString()} }';
+      'UserRepository: { secureStorage: $tokenDb ${super.toString()} }';
 }

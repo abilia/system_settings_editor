@@ -11,16 +11,15 @@ import '../../mocks.dart';
 
 void main() {
   group('login page widget test', () {
-    MockSecureStorage mockSecureStorage;
+    MockTokenDb mockTokenDb;
     MockFirebasePushService mockFirebasePushService;
     MockActivityDb mockActivityDb;
     MockPushBloc mockPushBloc;
     final secretPassword = 'pwfafawfa';
 
     setUp(() {
-      mockSecureStorage = MockSecureStorage();
-      when(mockSecureStorage.read(key: anyNamed('key')))
-          .thenAnswer((_) => Future.value(null));
+      mockTokenDb = MockTokenDb();
+      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(null));
       mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
@@ -34,13 +33,14 @@ void main() {
           .withFireBasePushService(mockFirebasePushService)
           .withPushBloc(mockPushBloc)
           .withUserDb(MockUserDb())
+          .withBaseUrlDb(MockBaseUrlDb())
           .init();
     });
 
     testWidgets('Application starts', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         httpClient: Fakes.client(),
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       expect(find.byType(LoginPage), findsOneWidget);
@@ -49,7 +49,7 @@ void main() {
     testWidgets('Hide password button', (WidgetTester tester) async {
       await tester.pumpWidget(App(
         httpClient: Fakes.client(),
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
 
@@ -72,7 +72,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(App(
         httpClient: Fakes.client(),
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
 
@@ -94,7 +94,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(App(
         httpClient: Fakes.client(),
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
 
@@ -112,7 +112,7 @@ void main() {
       await tester.pumpWidget(App(
         httpClient: Fakes.client([]),
         baseUrl: '',
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
       ));
 
       await tester.pumpAndSettle();

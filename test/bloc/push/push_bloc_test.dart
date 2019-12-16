@@ -14,14 +14,13 @@ import '../../mocks.dart';
 
 void main() {
   group('Push integration test', () {
-    MockSecureStorage mockSecureStorage;
+    MockTokenDb mockTokenDb;
     MockFirebasePushService mockFirebasePushService;
     MockActivityDb mockActivityDb;
 
     setUp(() {
-      mockSecureStorage = MockSecureStorage();
-      when(mockSecureStorage.read(key: anyNamed('key')))
-          .thenAnswer((_) => Future.value(Fakes.token));
+      mockTokenDb = MockTokenDb();
+      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
       mockFirebasePushService = MockFirebasePushService();
       mockActivityDb = MockActivityDb();
     });
@@ -30,6 +29,7 @@ void main() {
       GetItInitializer()
           .withUserDb(MockUserDb())
           .withActivityDb(mockActivityDb)
+          .withBaseUrlDb(MockBaseUrlDb())
           .init();
       final activityResponseAnswers = [
         Response(json.encode([]), 200),
@@ -53,7 +53,7 @@ void main() {
         httpClient: mockClient,
         baseUrl: fakeUrl,
         firebasePushService: mockFirebasePushService,
-        secureStorage: mockSecureStorage,
+        tokenDb: mockTokenDb,
         pushBloc: pushBloc,
       ));
 
