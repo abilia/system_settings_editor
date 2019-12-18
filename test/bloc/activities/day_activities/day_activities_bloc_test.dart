@@ -378,8 +378,8 @@ void main() {
       final endTime = DateTime(2032, 12, 31);
       final weekendActivity = Iterable<Activity>.empty()
           .followedBy([FakeActivity.reocurrsOnDay(1, startTime, endTime)]);
-      final allOtherDays =
-          List.generate(300, (i) => onlyDays(startTime.add(Duration(days: i))));
+      final allOtherDays = List.generate(
+          300, (i) => startTime.add(Duration(days: i)).onlyDays());
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value(weekendActivity));
 
@@ -408,8 +408,8 @@ void main() {
           DateTime.fromMillisecondsSinceEpoch(preSplitEndTime);
       final splitStartDate =
           DateTime.fromMillisecondsSinceEpoch(splitStartTime);
-      final dayBeforeSplit = onlyDays(preSplitEndDate);
-      final dayOnSplit = onlyDays(splitStartDate);
+      final dayBeforeSplit = preSplitEndDate.onlyDays();
+      final dayOnSplit = splitStartDate.onlyDays();
 
       final preSplitRecurring = Activity.createNew(
         title: 'Pre Split Recurring',

@@ -64,7 +64,7 @@ class ActivityOccasion extends Equatable {
   }) =>
       ActivityOccasion._(
           activity,
-          isDayBefore(activity.startClock(day), now)
+          activity.startClock(day).isDayBefore(now)
               ? Occasion.past
               : Occasion.future);
 

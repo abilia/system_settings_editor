@@ -45,7 +45,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final langCode = Locale.cachedLocale.languageCode;
     return BlocProvider<ScrollPositionBloc>(
-      builder: (context) => _scrollPositionBloc,
+      create: (context) => _scrollPositionBloc,
       child: BlocBuilder<ClockBloc, DateTime>(
         builder: (context, now) => BlocBuilder<DayPickerBloc, DateTime>(
           builder: (context, pickedDay) => AnimatedTheme(
@@ -68,7 +68,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                         Opacity(
                           opacity: 0.7,
                           child: Text(
-                              '${Translator.of(context).translate.week} ${getWeekNumber(pickedDay)}'),
+                              '${Translator.of(context).translate.week} ${pickedDay.getWeekNumber()}'),
                         ),
                       ],
                     ),

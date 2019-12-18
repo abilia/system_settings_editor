@@ -17,12 +17,12 @@ class LoginPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LoginBloc>(
-          builder: (context) => LoginBloc(
+          create: (context) => LoginBloc(
             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
             pushService: push,
           ),
         ),
-        BlocProvider<LoginFormBloc>(builder: (context) => LoginFormBloc()),
+        BlocProvider<LoginFormBloc>(create: (context) => LoginFormBloc()),
       ],
       child: Scaffold(
         body: SafeArea(

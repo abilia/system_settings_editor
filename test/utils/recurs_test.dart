@@ -10,7 +10,7 @@ void main() {
       int splitStartTime = 1574380800000, splitEndTime = 253402297199000;
       final splitStartDate =
           DateTime.fromMillisecondsSinceEpoch(splitStartTime);
-      final dayOnSplit = onlyDays(splitStartDate);
+      final dayOnSplit = splitStartDate.onlyDays();
 
       final splitRecurring = Activity.createNew(
         title: 'Split recurring ',

@@ -14,51 +14,38 @@ import '../../mocks.dart';
 
 void main() {
   group('calendar page widget test', () {
-    MockTokenDb mockTokenDb;
-    MockFirebasePushService mockFirebasePushService;
     MockActivityDb mockActivityDb;
-    MockPushBloc mockPushBloc;
     StreamController<DateTime> mockTicker;
 
     setUp(() {
-      mockTokenDb = MockTokenDb();
       mockTicker = StreamController<DateTime>();
+      final mockTokenDb = MockTokenDb();
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
-      mockFirebasePushService = MockFirebasePushService();
+      final mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
       mockActivityDb = MockActivityDb();
-      mockPushBloc = MockPushBloc();
+      when(mockActivityDb.getActivitiesFromDb())
+          .thenAnswer((_) => Future.value(<Activity>[]));
       GetItInitializer()
-          .withPushBloc(mockPushBloc)
           .withActivityDb(mockActivityDb)
           .withUserDb(MockUserDb())
           .withTicker((() => mockTicker.stream))
           .withBaseUrlDb(MockBaseUrlDb())
+          .withFireBasePushService(mockFirebasePushService)
+          .withTokenDb(mockTokenDb)
+          .withHttpClient(Fakes.client([]))
           .init();
     });
 
     testWidgets('Application starts', (WidgetTester tester) async {
-      when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(<Activity>[]));
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client([]),
-        baseUrl: '',
-        firebasePushService: mockFirebasePushService,
-        tokenDb: mockTokenDb,
-      ));
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(CalendarPage), findsOneWidget);
     });
 
     testWidgets('Should show up empty', (WidgetTester tester) async {
-      when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(<Activity>[]));
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client([]),
-        firebasePushService: mockFirebasePushService,
-        tokenDb: mockTokenDb,
-      ));
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsNothing);
     });
@@ -68,8 +55,6 @@ void main() {
           .thenAnswer((_) => Future.value(<Activity>[FakeActivity.onTime()]));
       await tester.pumpWidget(App(
         httpClient: Fakes.client([FakeActivity.future()]),
-        firebasePushService: mockFirebasePushService,
-        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsOneWidget);
@@ -77,13 +62,7 @@ void main() {
 
     testWidgets('Empty agenda should not show Go to now-button',
         (WidgetTester tester) async {
-      when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(<Activity>[]));
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client([]),
-        firebasePushService: mockFirebasePushService,
-        tokenDb: mockTokenDb,
-      ));
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
     });
@@ -94,8 +73,6 @@ void main() {
           .thenAnswer((_) => Future.value(<Activity>[FakeActivity.onTime()]));
       await tester.pumpWidget(App(
         httpClient: Fakes.client([FakeActivity.onTime()]),
-        firebasePushService: mockFirebasePushService,
-        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
@@ -111,8 +88,6 @@ void main() {
           .thenAnswer((_) => Future.value(activities));
       await tester.pumpWidget(App(
         httpClient: Fakes.client(activities),
-        firebasePushService: mockFirebasePushService,
-        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
@@ -126,8 +101,6 @@ void main() {
           .thenAnswer((_) => Future.value(response));
       await tester.pumpWidget(App(
         httpClient: Fakes.client(response),
-        firebasePushService: mockFirebasePushService,
-        tokenDb: mockTokenDb,
       ));
       await tester.pumpAndSettle();
       mockTicker.add(activityWithAlarmTime);

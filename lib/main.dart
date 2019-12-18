@@ -32,24 +32,18 @@ void initServices() {
 
 class App extends StatelessWidget {
   final UserRepository userRepository;
-  final FirebasePushService firebasePushService;
   final PushBloc pushBloc;
 
   App({
     BaseClient httpClient,
     String baseUrl,
-    TokenDb tokenDb,
-    FirebasePushService firebasePushService,
-    PushBloc pushBloc,
     Key key,
+    this.pushBloc,
   })  : userRepository = UserRepository(
-            baseUrl: baseUrl ?? T1,
+            baseUrl: baseUrl,
             httpClient: httpClient ?? GetIt.I<BaseClient>(),
-            tokenDb: tokenDb ?? GetIt.I<TokenDb>(),
+            tokenDb: GetIt.I<TokenDb>(),
             userDb: GetIt.I<UserDb>()),
-        firebasePushService =
-            firebasePushService ?? GetIt.I<FirebasePushService>(),
-        pushBloc = pushBloc ?? GetIt.I<PushBloc>(),
         super(key: key);
 
   @override
@@ -57,12 +51,12 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthenticationBloc>(
-            builder: (context) => AuthenticationBloc(
+            create: (context) => AuthenticationBloc(
                 databaseRepository: GetIt.I<DatabaseRepository>(),
                 baseUrlDb: GetIt.I<BaseUrlDb>())
               ..add(AppStarted(userRepository))),
         BlocProvider<PushBloc>(
-          builder: (context) => pushBloc ?? PushBloc(),
+          create: (context) => pushBloc ?? PushBloc(),
         )
       ],
       child: MaterialApp(
@@ -91,7 +85,7 @@ class App extends StatelessWidget {
             if (state is Unauthenticated) {
               return LoginPage(
                 userRepository: userRepository,
-                push: firebasePushService,
+                push: GetIt.I<FirebasePushService>(),
               );
             }
             return Center(child: CircularProgressIndicator());

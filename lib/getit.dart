@@ -8,16 +8,15 @@ import 'package:seagull/db/user_db.dart';
 import 'package:seagull/repositories.dart';
 import 'package:seagull/repository/push.dart';
 
-import 'bloc/push/push_bloc.dart';
-
 class GetItInitializer {
   ActivityDb _activityDb;
   FirebasePushService _firebasePushService;
-  PushBloc _pushBloc;
   UserDb _userDb;
+  TokenDb _tokenDb;
   DatabaseRepository _databaseRepository;
   FactoryFunc<Stream<DateTime>> _tickerFactory;
   BaseUrlDb _baseUrlDb;
+  BaseClient _baseClient;
 
   GetItInitializer withActivityDb(ActivityDb activityDb) {
     this._activityDb = activityDb;
@@ -27,11 +26,6 @@ class GetItInitializer {
   GetItInitializer withFireBasePushService(
       FirebasePushService firebasePushService) {
     this._firebasePushService = firebasePushService;
-    return this;
-  }
-
-  GetItInitializer withPushBloc(PushBloc pushBloc) {
-    this._pushBloc = pushBloc;
     return this;
   }
 
@@ -56,13 +50,22 @@ class GetItInitializer {
     return this;
   }
 
+  GetItInitializer withHttpClient(BaseClient baseClient) {
+    this._baseClient = baseClient;
+    return this;
+  }
+
+  GetItInitializer withTokenDb(TokenDb tokenDb) {
+    this._tokenDb = tokenDb;
+    return this;
+  }
+
   init() async {
     GetIt.I.reset();
-    GetIt.I.registerSingleton<BaseClient>(Client());
-    GetIt.I.registerSingleton<TokenDb>(TokenDb());
+    GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
+    GetIt.I.registerSingleton<TokenDb>(_tokenDb ?? TokenDb());
     GetIt.I.registerSingleton<FirebasePushService>(
         _firebasePushService ?? FirebasePushService());
-    GetIt.I.registerSingleton<PushBloc>(_pushBloc ?? PushBloc());
     GetIt.I.registerSingleton<ActivityDb>(_activityDb ?? ActivityDb());
     GetIt.I.registerSingleton<UserDb>(_userDb ?? UserDb());
     GetIt.I.registerSingleton<DatabaseRepository>(

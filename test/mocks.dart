@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc.dart';
@@ -21,6 +22,8 @@ class MockTokenDb extends Mock implements TokenDb {}
 class MockPushBloc extends Mock implements PushBloc {}
 
 class MockFirebasePushService extends Mock implements FirebasePushService {}
+
+class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
 
 class MockActivityDb extends Mock implements ActivityDb {}
 

@@ -28,7 +28,7 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
       final time = clockBloc.state;
 
       final activitiesThisDay = state.activities
-          .where((a) => Recurs.shouldShowForDay(a, onlyDays(time)));
+          .where((a) => Recurs.shouldShowForDay(a, time.onlyDays()));
       final activitiesWithAlarm =
           activitiesThisDay.where((a) => a.alarm.shouldAlarm);
 
