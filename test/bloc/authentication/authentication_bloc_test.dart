@@ -18,8 +18,10 @@ void main() {
           tokenDb: MockTokenDb(),
           userDb: MockUserDb());
       authenticationBloc = AuthenticationBloc(
-          databaseRepository: MockDatabaseRepository(),
-          baseUrlDb: MockBaseUrlDb());
+        databaseRepository: MockDatabaseRepository(),
+        baseUrlDb: MockBaseUrlDb(),
+        cancleAllNotificationsFunction: () => Future.value(),
+      );
     });
 
     test('initial state is AuthenticationUninitialized', () {
@@ -96,12 +98,16 @@ void main() {
   group('AuthenticationBloc token side effect', () {
     AuthenticationBloc authenticationBloc;
     UserRepository mockedUserRepository;
+    NotificationMock notificationMock;
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
+      notificationMock = NotificationMock();
       authenticationBloc = AuthenticationBloc(
-          databaseRepository: MockDatabaseRepository(),
-          baseUrlDb: MockBaseUrlDb());
+        databaseRepository: MockDatabaseRepository(),
+        baseUrlDb: MockBaseUrlDb(),
+        cancleAllNotificationsFunction: notificationMock.mockCancleAll,
+      );
       when(mockedUserRepository.getToken())
           .thenAnswer((_) => Future.value(Fakes.token));
       when(mockedUserRepository.me(any))
@@ -117,11 +123,19 @@ void main() {
     });
 
     test('loggedOut calls deletes token', () async {
-      authenticationBloc.add(AppStarted(mockedUserRepository));
       // Act
+      authenticationBloc.add(AppStarted(mockedUserRepository));
       authenticationBloc.add(LoggedOut());
       // Assert
       await untilCalled(mockedUserRepository.logout());
+    });
+
+    test('logged out cancel all Notification Function is called', () async {
+      // Act
+      authenticationBloc.add(AppStarted(mockedUserRepository));
+      authenticationBloc.add(LoggedOut());
+      // Assert
+      await untilCalled(notificationMock.mockCancleAll());
     });
 
     test('unauthed token gets deleted', () async {
@@ -160,3 +174,9 @@ void main() {
     });
   });
 }
+
+class Notification {
+  Future mockCancleAll() => Future.value();
+}
+
+class NotificationMock extends Mock implements Notification {}

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -9,6 +10,7 @@ import 'package:seagull/main.dart';
 import 'package:seagull/models.dart';
 import 'package:seagull/ui/components.dart';
 import 'package:seagull/ui/pages.dart';
+import 'package:seagull/utils.dart';
 
 import '../../mocks.dart';
 
@@ -93,18 +95,80 @@ void main() {
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
       expect(find.text(key), findsOneWidget);
     });
+  });
 
-    testWidgets('Alarms shows', (WidgetTester tester) async {
-      final activityWithAlarmTime = DateTime(2021, 12, 20, 21, 12);
-      final response = [FakeActivity.onTime(activityWithAlarmTime)];
+  group('calendar page alarms test', () {
+    StreamController<DateTime> mockTicker;
+    StreamController<String> mockNotificationSelected;
+    final DateTime activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
+    final DateTime twoHoursAfter = activityWithAlarmTime.add(2.hours());
+    final Activity activity = FakeActivity.onTime(activityWithAlarmTime);
+    final String payloadSerial =
+        json.encode(Payload(activityId: activity.id, onStart: true).toJson());
+
+    setUp(() {
+      mockTicker = StreamController<DateTime>();
+      mockNotificationSelected = StreamController<String>();
+
+      final mockTokenDb = MockTokenDb();
+      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
+      final mockFirebasePushService = MockFirebasePushService();
+      when(mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value('fakeToken'));
+
+      final response = [activity];
+      final mockActivityDb = MockActivityDb();
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(response));
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client(response),
-      ));
+
+      GetItInitializer()
+          .withActivityDb(mockActivityDb)
+          .withUserDb(MockUserDb())
+          .withTicker((() => mockTicker.stream))
+          .withBaseUrlDb(MockBaseUrlDb())
+          .withFireBasePushService(mockFirebasePushService)
+          .withTokenDb(mockTokenDb)
+          .withHttpClient(Fakes.client(response))
+          .withNotificationStreamGetter(() => mockNotificationSelected.stream)
+          .init();
+    });
+
+    testWidgets('Alarms shows', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
+      // Act
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
+      // Assert
+      expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
+    });
+
+    testWidgets('Alarms shows when notification selected',
+        (WidgetTester tester) async {
+      // Arrange
+      mockTicker.add(twoHoursAfter);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byKey(TestKey.onScreenAlarm), findsNothing);
+      // Act
+      mockNotificationSelected.add(payloadSerial);
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
+    });
+
+    testWidgets('Alarms shows when notification selected before app start',
+        (WidgetTester tester) async {
+      // Act
+      mockTicker.add(twoHoursAfter);
+      mockNotificationSelected.add(payloadSerial);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      // Assert
       expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
     });
   });

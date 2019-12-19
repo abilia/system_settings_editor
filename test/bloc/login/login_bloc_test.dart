@@ -21,7 +21,8 @@ void main() {
           userDb: MockUserDb());
       authenticationBloc = AuthenticationBloc(
           databaseRepository: MockDatabaseRepository(),
-          baseUrlDb: MockBaseUrlDb());
+          baseUrlDb: MockBaseUrlDb(),
+          cancleAllNotificationsFunction: () => Future.value());
       mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('pushToken'));
@@ -91,9 +92,10 @@ void main() {
     setUp(() {
       mockedUserRepository = MockUserRepository();
       authenticationBloc = AuthenticationBloc(
-          databaseRepository: MockDatabaseRepository(),
-          baseUrlDb: MockBaseUrlDb())
-        ..add(AppStarted(mockedUserRepository));
+        databaseRepository: MockDatabaseRepository(),
+        baseUrlDb: MockBaseUrlDb(),
+        cancleAllNotificationsFunction: () => Future.value(),
+      )..add(AppStarted(mockedUserRepository));
       mockFirebasePushService = MockFirebasePushService();
       loginBloc = LoginBloc(
           authenticationBloc: authenticationBloc,

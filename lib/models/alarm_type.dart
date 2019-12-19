@@ -68,7 +68,7 @@ class AlarmType extends Equatable {
   }
 
   @override
-  String toString() => alarmEnumToString(type);
+  String toString() => alarmEnumToString(type) + (atEnd ? ' only start' : '');
 
   @override
   List<Object> get props => [onEndTime, type];

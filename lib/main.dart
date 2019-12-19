@@ -15,9 +15,9 @@ import 'package:seagull/repositories.dart';
 import 'package:seagull/repository/push.dart';
 import 'package:seagull/ui/pages.dart';
 import 'package:seagull/ui/theme.dart';
+import 'package:seagull/notification_isolates.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
   initServices();
   final baseUrl = await BaseUrlDb().initialize(T1);
@@ -27,6 +27,8 @@ void main() async {
 }
 
 void initServices() {
+  WidgetsFlutterBinding.ensureInitialized();
+  ensureNotificationPluginInitialized();
   GetItInitializer().init();
 }
 
@@ -52,9 +54,11 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider<AuthenticationBloc>(
             create: (context) => AuthenticationBloc(
-                databaseRepository: GetIt.I<DatabaseRepository>(),
-                baseUrlDb: GetIt.I<BaseUrlDb>())
-              ..add(AppStarted(userRepository))),
+                  databaseRepository: GetIt.I<DatabaseRepository>(),
+                  baseUrlDb: GetIt.I<BaseUrlDb>(),
+                  cancleAllNotificationsFunction: () =>
+                      notificationPlugin.cancelAll(),
+                )..add(AppStarted(userRepository))),
         BlocProvider<PushBloc>(
           create: (context) => pushBloc ?? PushBloc(),
         )

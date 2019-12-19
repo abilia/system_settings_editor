@@ -81,6 +81,8 @@ class FakeActivity {
       startsAt(date ?? _now, title: 'now', duration: duration);
   static Activity startsOneMinuteAfter([DateTime date]) =>
       startsAt((date ?? _now).add(Duration(minutes: 1)), title: 'soon start');
+  static Activity startsAfter(Duration duration, [DateTime date]) =>
+      startsAt((date ?? _now).add(duration), title: 'start in $duration');
   static Activity past([DateTime date]) =>
       endsAt((date ?? _now).subtract(Duration(minutes: 1)), title: 'past');
   static Activity future(

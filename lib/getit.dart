@@ -5,6 +5,8 @@ import 'package:seagull/db/baseurl_db.dart';
 import 'package:seagull/db/sqflite.dart';
 import 'package:seagull/db/token_db.dart';
 import 'package:seagull/db/user_db.dart';
+import 'package:seagull/models.dart';
+import 'package:seagull/notification_isolates.dart';
 import 'package:seagull/repositories.dart';
 import 'package:seagull/repository/push.dart';
 
@@ -15,6 +17,8 @@ class GetItInitializer {
   TokenDb _tokenDb;
   DatabaseRepository _databaseRepository;
   FactoryFunc<Stream<DateTime>> _tickerFactory;
+  NotificationStreamGetter _selectedNotificationStreamGetter;
+  AlarmSchedualer _alarmSchedualer;
   BaseUrlDb _baseUrlDb;
   BaseClient _baseClient;
 
@@ -45,6 +49,17 @@ class GetItInitializer {
     return this;
   }
 
+  GetItInitializer withNotificationStreamGetter(
+      NotificationStreamGetter selectedNotificationStreamGetterFunction) {
+    this._selectedNotificationStreamGetter = selectedNotificationStreamGetterFunction;
+    return this;
+  }
+
+  GetItInitializer withAlarmSchedualer(AlarmSchedualer alarmSchedualer) {
+    this._alarmSchedualer = alarmSchedualer;
+    return this;
+  }
+
   GetItInitializer withBaseUrlDb(BaseUrlDb baseUrlDb) {
     this._baseUrlDb = baseUrlDb;
     return this;
@@ -71,6 +86,10 @@ class GetItInitializer {
     GetIt.I.registerSingleton<DatabaseRepository>(
         _databaseRepository ?? DatabaseRepository());
     GetIt.I.registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb());
+    GetIt.I.registerSingleton<NotificationStreamGetter>(
+        _selectedNotificationStreamGetter ?? () => selectNotificationSubject);
+    GetIt.I.registerSingleton<AlarmSchedualer>(
+        _alarmSchedualer ?? schedualAlarmNotifications);
     GetIt.I.registerFactory<Stream<DateTime>>(
         _tickerFactory ?? () => Ticker.minute());
   }

@@ -25,7 +25,7 @@ void main() {
         fullDay: true,
       );
       // Act
-      final result = Recurs.shouldShowForDay(splitRecurring, dayOnSplit);
+      final result = splitRecurring.shouldShowForDay(dayOnSplit);
 
       // Assert
       expect(result, true);

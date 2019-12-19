@@ -25,30 +25,6 @@ class Recurs {
       daysOfMonth.fold(0, (ds, d) => ds | onDayOfMonth(d));
   static int dayOfYearData(DateTime date) => (date.month - 1) * 100 + date.day;
 
-  static bool shouldShowForDay(Activity activity, DateTime day) {
-    if (activity.recurrance == RecurrentType.none) {
-      final activityStartTimeDay = activity.startDateTime.onlyDays();
-      return day.isAtSameMomentAs(activityStartTimeDay);
-    }
-
-    if (!day.onOrBetween(
-        startDate: activity.startDateTime.onlyDays(),
-        endDate: activity.endDateTime.onlyDays())) {
-      return false;
-    }
-
-    switch (activity.recurrance) {
-      case RecurrentType.weekly:
-        return onCorrectWeeklyDay(activity.recurrentData, day);
-      case RecurrentType.monthly:
-        return onCorrectMonthDay(activity.recurrentData, day);
-      case RecurrentType.yearly:
-        return onCorrectYearsDay(activity.recurrentData, day);
-      default:
-        return false;
-    }
-  }
-
   @visibleForTesting
   static bool onCorrectWeeklyDay(int recurrentData, DateTime date) {
     bool isOddWeek = date.getWeekNumber().isOdd;
@@ -68,5 +44,29 @@ class Recurs {
     int recurringDay = recurrentData % 100;
     int recurringMonth = recurrentData ~/ 100 + 1;
     return date.month == recurringMonth && date.day == recurringDay;
+  }
+}
+
+extension RecurringActivityExtension on Activity {
+  bool shouldShowForDay(DateTime day) {
+    if (recurrance == RecurrentType.none) {
+      return day.isAtSameDay(startDateTime);
+    }
+
+    if (!day.onOrBetween(
+        startDate: startDateTime.onlyDays(), endDate: endDateTime.onlyDays())) {
+      return false;
+    }
+
+    switch (recurrance) {
+      case RecurrentType.weekly:
+        return Recurs.onCorrectWeeklyDay(recurrentData, day);
+      case RecurrentType.monthly:
+        return Recurs.onCorrectMonthDay(recurrentData, day);
+      case RecurrentType.yearly:
+        return Recurs.onCorrectYearsDay(recurrentData, day);
+      default:
+        return false;
+    }
   }
 }

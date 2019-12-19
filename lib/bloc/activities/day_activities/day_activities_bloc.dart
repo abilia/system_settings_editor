@@ -68,7 +68,7 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
       Iterable<Activity> ativities, DateTime filterDay) {
     return ativities
         .where((activity) => !activity.deleted)
-        .where((activity) => Recurs.shouldShowForDay(activity, filterDay));
+        .where((activity) => activity.shouldShowForDay(filterDay));
   }
 
   @override

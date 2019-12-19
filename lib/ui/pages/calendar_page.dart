@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc.dart';
 import 'package:seagull/db/activities_db.dart';
+import 'package:seagull/models.dart';
 import 'package:seagull/repositories.dart';
 import 'package:seagull/ui/components.dart';
 import 'package:seagull/ui/pages.dart';
+import 'package:seagull/utils.dart';
 
 class CalendarPage extends StatelessWidget {
   final Authenticated authenticatedState;
@@ -51,32 +53,61 @@ class CalendarPage extends StatelessWidget {
             activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
           ),
         ),
+        BlocProvider<NotificationBloc>(
+          create: (context) => NotificationBloc(
+            selectedNotificationStream: GetIt.I<NotificationStreamGetter>()(),
+            activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+          ),
+        ),
       ],
-      child: BlocListener<AlarmBloc, AlarmState>(
-        listener: (context, state) async {
-          if (state is NewAlarmState) {
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => AlarmPage(
-                        activity: state.activity,
-                        atStartTime: state.alarmOnStart,
-                        atEndTime: !state.alarmOnStart,
-                      ),
-                  fullscreenDialog: true),
-            );
-          } else if (state is NewReminderState) {
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => ReminderPage(
-                        activity: state.activity,
-                        reminderTime: state.reminder.inMinutes,
-                      ),
-                  fullscreenDialog: true),
-            );
-          }
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<ActivitiesBloc, ActivitiesState>(
+            listener: (context, state) async {
+              if (state is ActivitiesLoaded) {
+                final schedualAlarm = GetIt.I<AlarmSchedualer>();
+                await schedualAlarm(state.activities, forDuration: 24.hours());
+              }
+            },
+          ),
+          BlocListener<AlarmBloc, AlarmStateBase>(
+            listener: _alarmListener,
+          ),
+          BlocListener<NotificationBloc, AlarmStateBase>(
+            listener: _alarmListener,
+          ),
+        ],
         child: Calendar(),
       ),
     );
+  }
+
+  void _alarmListener(BuildContext context, AlarmStateBase state) async {
+    if (state is AlarmState) {
+      final alarm = state.alarm;
+      final navigator = Navigator.of(context);
+      if (alarm is NewAlarm) {
+        await navigator.push(
+          MaterialPageRoute(
+            builder: (context) => AlarmPage(
+              activity: alarm.activity,
+              atStartTime: alarm.alarmOnStart,
+              atEndTime: !alarm.alarmOnStart,
+            ),
+            fullscreenDialog: true,
+          ),
+        );
+      } else if (alarm is NewReminder) {
+        await navigator.push(
+          MaterialPageRoute(
+            builder: (context) => ReminderPage(
+              activity: alarm.activity,
+              reminderTime: alarm.reminder.inMinutes,
+            ),
+            fullscreenDialog: true,
+          ),
+        );
+      }
+    }
   }
 }
