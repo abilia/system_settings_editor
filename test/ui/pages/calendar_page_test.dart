@@ -3,14 +3,13 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:seagull/fakes/fake_activities.dart';
-import 'package:seagull/fakes/fake_client.dart';
+import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
-import 'package:seagull/models.dart';
-import 'package:seagull/ui/components.dart';
-import 'package:seagull/ui/pages.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/pages/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
 

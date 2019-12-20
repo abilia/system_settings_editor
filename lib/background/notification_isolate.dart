@@ -5,8 +5,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:seagull/i18n/translations.dart';
-import 'package:seagull/models.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 // Stream is created so that app can respond to notification-selected events since the plugin is initialised in the main function
 final BehaviorSubject<String> selectNotificationSubject =

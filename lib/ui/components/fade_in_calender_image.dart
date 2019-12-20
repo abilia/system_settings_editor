@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/repositories.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/repository/all.dart';
 
 class FadeInCalenderImage extends StatelessWidget {
   final String imageFileId;

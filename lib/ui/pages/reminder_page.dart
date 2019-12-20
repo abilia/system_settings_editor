@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/models.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:intl/intl.dart';
 
 class ReminderPage extends StatelessWidget {

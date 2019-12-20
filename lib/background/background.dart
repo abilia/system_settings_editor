@@ -1,9 +1,6 @@
 import 'package:http/http.dart';
-import 'package:seagull/db/activities_db.dart';
-import 'package:seagull/db/baseurl_db.dart';
-import 'package:seagull/db/token_db.dart';
-import 'package:seagull/db/user_db.dart';
-import 'package:seagull/repository/activities_repository.dart';
+import 'package:seagull/db/all.dart';
+import 'package:seagull/repository/all.dart';
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
   final userDb = UserDb();

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/bloc.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/activity.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/utils/all.dart';
 
 class ActivitiesOccasionBloc
     extends Bloc<ActivitiesOccasionEvent, ActivitiesOccasionState> {

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/models.dart';
+import 'package:seagull/models/all.dart';
 
 @immutable
 abstract class DayActivitiesEvent extends Equatable {

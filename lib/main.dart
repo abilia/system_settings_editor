@@ -4,18 +4,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 
-import 'package:seagull/bloc.dart';
-import 'package:seagull/db/baseurl_db.dart';
-import 'package:seagull/db/sqflite.dart';
-import 'package:seagull/db/token_db.dart';
-import 'package:seagull/db/user_db.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/repositories.dart';
-import 'package:seagull/repository/push.dart';
-import 'package:seagull/ui/pages.dart';
+import 'package:seagull/repository/all.dart';
+import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
-import 'package:seagull/notification_isolates.dart';
+import 'package:seagull/background/all.dart';
 
 void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();

@@ -1,15 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/db/activities_db.dart';
-import 'package:seagull/db/baseurl_db.dart';
-import 'package:seagull/db/sqflite.dart';
-import 'package:seagull/db/token_db.dart';
-import 'package:seagull/db/user_db.dart';
-import 'package:seagull/fakes/fake_client.dart';
-import 'package:seagull/repositories.dart';
-import 'package:seagull/repository/push.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
+import 'package:seagull/fakes/all.dart';
+import 'package:seagull/repository/all.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
 

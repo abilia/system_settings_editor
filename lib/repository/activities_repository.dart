@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
-import 'package:seagull/db/activities_db.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/models/activity.dart';
 import 'package:seagull/repository/end_point.dart';
 import 'package:seagull/repository/repository.dart';

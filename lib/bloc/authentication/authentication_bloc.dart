@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/db/baseurl_db.dart';
-import 'package:seagull/db/sqflite.dart';
-import 'package:seagull/models.dart';
-import 'package:seagull/repositories.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {

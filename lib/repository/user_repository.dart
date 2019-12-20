@@ -3,8 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/db/token_db.dart';
-import 'package:seagull/db/user_db.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/login.dart';
 import 'package:seagull/models/user.dart';

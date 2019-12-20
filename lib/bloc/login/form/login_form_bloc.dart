@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:seagull/bloc.dart';
+import 'package:seagull/bloc/all.dart';
 
 class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   @override
@@ -25,7 +25,9 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
       );
     }
     if (event is HidePasswordToggle) {
-      yield state.copyWith(hidePassword: !state.hidePassword,);
+      yield state.copyWith(
+        hidePassword: !state.hidePassword,
+      );
     }
     if (event is FormSubmitted) {
       yield state.copyWith(formSubmitted: true);
@@ -35,5 +37,4 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   bool _isUsernameValid(String username) => username.length > 2;
 
   bool _isPasswordValid(String password) => password.length > 2;
-
 }

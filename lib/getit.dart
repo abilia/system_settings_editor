@@ -1,14 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
-import 'package:seagull/db/activities_db.dart';
-import 'package:seagull/db/baseurl_db.dart';
-import 'package:seagull/db/sqflite.dart';
-import 'package:seagull/db/token_db.dart';
-import 'package:seagull/db/user_db.dart';
-import 'package:seagull/models.dart';
-import 'package:seagull/notification_isolates.dart';
-import 'package:seagull/repositories.dart';
-import 'package:seagull/repository/push.dart';
+import 'package:seagull/db/all.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/background/all.dart';
+import 'package:seagull/repository/all.dart';
 
 class GetItInitializer {
   ActivityDb _activityDb;
@@ -51,7 +46,8 @@ class GetItInitializer {
 
   GetItInitializer withNotificationStreamGetter(
       NotificationStreamGetter selectedNotificationStreamGetterFunction) {
-    this._selectedNotificationStreamGetter = selectedNotificationStreamGetterFunction;
+    this._selectedNotificationStreamGetter =
+        selectedNotificationStreamGetterFunction;
     return this;
   }
 

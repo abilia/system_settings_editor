@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:seagull/models.dart';
+import 'package:seagull/models/all.dart';
 import 'package:uuid/uuid.dart';
 
 class Activity extends Equatable {

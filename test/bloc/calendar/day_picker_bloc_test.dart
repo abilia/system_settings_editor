@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/bloc.dart';
+import 'package:seagull/bloc/all.dart';
 
 void main() {
   DayPickerBloc dayPickerBloc;
@@ -16,8 +16,7 @@ void main() {
     setUp(() {
       streamController = StreamController();
       dayPickerBloc = DayPickerBloc(
-          clockBloc:
-              ClockBloc(streamController.stream, initialTime: theTime));
+          clockBloc: ClockBloc(streamController.stream, initialTime: theTime));
     });
 
     test('initial state', () {
@@ -68,7 +67,8 @@ void main() {
 
     test('currentDay should change with clock passing next day', () async {
       streamController.add(theDayAfter);
-      await Future.doWhile(() => Future.delayed(Duration(milliseconds: 10), () => dayPickerBloc.initialState == theDay));
+      await Future.doWhile(() => Future.delayed(Duration(milliseconds: 10),
+          () => dayPickerBloc.initialState == theDay));
       dayPickerBloc.add(CurrentDay());
       await expectLater(
         dayPickerBloc,
@@ -76,9 +76,11 @@ void main() {
       );
     });
 
-    test('currentDay should change with clocks passing day after next', () async {
+    test('currentDay should change with clocks passing day after next',
+        () async {
       streamController.add(theDayAfterTomorrow);
-      await Future.doWhile(() => Future.delayed(Duration(milliseconds: 10), () => dayPickerBloc.initialState == theDay));
+      await Future.doWhile(() => Future.delayed(Duration(milliseconds: 10),
+          () => dayPickerBloc.initialState == theDay));
       dayPickerBloc.add(CurrentDay());
       await expectLater(
         dayPickerBloc,
@@ -87,8 +89,9 @@ void main() {
     });
 
     test('state should only be day granularity', () async {
-      for (int i = 0; i < 2*Duration.secondsPerMinute; i++) {
-        streamController.add(theDay.add(Duration(hours: 23, minutes: 59, seconds: i)));
+      for (int i = 0; i < 2 * Duration.secondsPerMinute; i++) {
+        streamController
+            .add(theDay.add(Duration(hours: 23, minutes: 59, seconds: i)));
       }
       await Future.delayed(Duration(milliseconds: 100));
       dayPickerBloc.add(CurrentDay());

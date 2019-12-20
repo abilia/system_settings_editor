@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/db/activities_db.dart';
-import 'package:seagull/models.dart';
-import 'package:seagull/repositories.dart';
-import 'package:seagull/ui/components.dart';
-import 'package:seagull/ui/pages.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
+import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/pages/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class CalendarPage extends StatelessWidget {
   final Authenticated authenticatedState;

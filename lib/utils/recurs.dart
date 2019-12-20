@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:seagull/models.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class Recurs {
   static const int EVEN_MONDAY = 0x1,

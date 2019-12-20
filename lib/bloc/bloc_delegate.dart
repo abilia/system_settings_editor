@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:seagull/bloc.dart';
+import 'all.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override

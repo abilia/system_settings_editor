@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/ui/components.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class GoToNowButton extends StatelessWidget {

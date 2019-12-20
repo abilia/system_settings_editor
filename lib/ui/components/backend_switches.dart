@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/fakes/fake_client.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/alarm_type.dart';
-import 'package:seagull/repository/end_point.dart';
-import 'package:seagull/repository/user_repository.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/colors.dart';
-import 'package:seagull/utils.dart';
-
-import '../../fakes/fake_activities.dart';
+import 'package:seagull/utils/all.dart';
 
 class BackendSwitches extends StatelessWidget {
   @override

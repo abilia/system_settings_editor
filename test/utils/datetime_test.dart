@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/utils/all.dart';
 
 void main() {
   group('week number', () {

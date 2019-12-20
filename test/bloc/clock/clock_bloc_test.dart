@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/bloc.dart';
+import 'package:seagull/bloc/all.dart';
 
 void main() {
   group('ClockBloc', () {

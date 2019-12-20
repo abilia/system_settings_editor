@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:seagull/bloc.dart';
+import 'package:seagull/bloc/all.dart';
 
 class ScrollPositionBloc
     extends Bloc<ScrollPositionEvent, ScrollPositionState> {

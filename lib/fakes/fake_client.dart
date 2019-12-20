@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
-import 'package:seagull/models.dart';
+import 'package:seagull/models/all.dart';
 
 import 'fake_activities.dart';
 

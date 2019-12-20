@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/models.dart';
+import 'package:seagull/models/all.dart';
 
 abstract class NotificationAlarm extends Equatable {
   final Activity activity;

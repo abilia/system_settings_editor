@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/repository/push.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/repository/all.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthenticationBloc authenticationBloc;

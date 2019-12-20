@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/utils/all.dart';
 
 class ClockBloc extends Bloc<DateTime, DateTime> {
   StreamSubscription<DateTime> _tickerSubscription;

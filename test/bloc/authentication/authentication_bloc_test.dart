@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/fakes/fake_client.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';

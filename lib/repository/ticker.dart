@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:seagull/utils.dart';
+import 'package:seagull/utils/all.dart';
 
 class Ticker {
   Ticker._();

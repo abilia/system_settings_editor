@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/ui/components.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/ui/components/all.dart';
 
 class Agenda extends StatefulWidget {
   final double cardHeight = 80.0;

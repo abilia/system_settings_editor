@@ -1,5 +1,5 @@
-import 'package:seagull/models.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 extension IterableActivity on Iterable<Activity> {
   Iterable<NotificationAlarm> alarmsFor(DateTime time, {DateTime end}) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/components.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:package_info/package_info.dart';
 

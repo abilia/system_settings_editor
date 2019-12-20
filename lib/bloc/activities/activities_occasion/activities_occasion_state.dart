@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/activity.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/utils/all.dart';
 
 @immutable
 abstract class ActivitiesOccasionState extends Equatable {

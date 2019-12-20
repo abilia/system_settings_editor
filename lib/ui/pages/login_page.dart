@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/repositories.dart';
-import 'package:seagull/repository/push.dart';
-import 'package:seagull/ui/components.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/repository/all.dart';
+import 'package:seagull/ui/components/all.dart';
 
 class LoginPage extends StatelessWidget {
   final UserRepository userRepository;

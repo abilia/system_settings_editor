@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:seagull/bloc.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/components.dart';
-import 'package:seagull/ui/pages.dart';
+import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:intl/intl.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/utils/all.dart';
 
 class Calendar extends StatefulWidget {
   @override

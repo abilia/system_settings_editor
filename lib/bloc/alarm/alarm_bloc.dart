@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/bloc.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/utils/all.dart';
 import './bloc.dart';
 
 class AlarmBloc extends Bloc<AlarmEvent, AlarmStateBase> {

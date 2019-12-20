@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/fakes/fake_activities.dart';
-import 'package:seagull/models.dart';
-import 'package:seagull/utils.dart';
+import 'package:seagull/fakes/all.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 void main() {
   group('Recurring activity', () {

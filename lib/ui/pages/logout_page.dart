@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:seagull/bloc.dart';
-import 'package:seagull/ui/components.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/ui/components/all.dart';
 
 class LogoutPage extends StatelessWidget {
   @override
@@ -12,12 +12,12 @@ class LogoutPage extends StatelessWidget {
       ),
       body: Center(
           child: AbiliaButton(
-          label: 'logout',
-          onPressed: () {
-            BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
-            Navigator.of(context).maybePop();
-          },
-        )),
+        label: 'logout',
+        onPressed: () {
+          BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
+          Navigator.of(context).maybePop();
+        },
+      )),
     );
   }
 }
