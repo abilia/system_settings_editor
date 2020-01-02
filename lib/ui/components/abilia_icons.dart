@@ -424,6 +424,7 @@ class AbiliaIcons {
     handi_no_alarm = IconData(0xea9e, fontFamily: fontFamily),
     handi_reminder = IconData(0xea9f, fontFamily: fontFamily),
     handi_info = IconData(0xeaa0, fontFamily: fontFamily),
+    handi_no_alarm_vibration = IconData(0xeaf3, fontFamily: fontFamily),
     ir = IconData(0xeaa1, fontFamily: fontFamily),
     ir_error = IconData(0xeaa2, fontFamily: fontFamily),
     macro = IconData(0xeaa3, fontFamily: fontFamily),
