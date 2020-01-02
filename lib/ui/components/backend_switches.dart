@@ -46,20 +46,24 @@ class BackendSwitches extends StatelessWidget {
               fileId: 'somefileid',
               alarmType: ALARM_SILENT,
               duration: 1.minutes().inMilliseconds,
-              title: 'in 1, end in 2, SILENT'),
+              title: 'ALARM_SILENT'),
+          FakeActivity.startsAfter(2.minutes()).copyWith(
+              duration: 1.minutes().inMilliseconds,
+              alarmType: ALARM_VIBRATION,
+              title: 'ALARM_VIBRATION'),
           FakeActivity.startsAfter(3.minutes()).copyWith(
-              duration: 1.minutes().inMilliseconds,
-              alarmType: ALARM_VIBRATION_ONLY_ON_START,
-              title: 'in 3, VIBRATE'),
-          FakeActivity.startsAfter(4.minutes()).copyWith(
               fileId: 'somefileid',
-              duration: 1.minutes().inMilliseconds,
+              duration: 0,
               alarmType: ALARM_SOUND_ONLY_ON_START,
-              title: 'in 4, SOUND'),
+              title: 'ALARM_SOUND_ONLY_ON_START'),
           FakeActivity.startsAfter(5.minutes()).copyWith(
               duration: 1.minutes().inMilliseconds,
               alarmType: ALARM_SOUND_AND_VIBRATION,
-              title: 'in 5, end in 6, SOUND & VIBRATION'),
+              title: 'ALARM_SOUND_AND_VIBRATION'),
+          FakeActivity.startsAfter(7.minutes()).copyWith(
+              duration: 1.minutes().inMilliseconds,
+              alarmType: NO_ALARM,
+              title: 'NO_ALARM'),
         ]),
       );
 }

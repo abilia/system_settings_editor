@@ -57,13 +57,13 @@ Future schedualNotification(
   final subtitle = getSubtitle(notificationAlarm, notificationTime);
   final hash = notificationAlarm.hashCode;
   final payload = json.encode(getPayload(notificationAlarm).toJson());
+  final notificationChannel = getNotificationChannel(alarm);
 
   final and = AndroidNotificationDetails(
-    notificationChannelName(alarm),
-    notificationChannelName(alarm),
-    notificationChannelName(alarm),
+    notificationChannel.id,
+    notificationChannel.name,
+    notificationChannel.description,
     playSound: alarm.sound,
-    enableVibration: alarm.vibrate,
     importance: Importance.Max,
     priority: Priority.High,
   );
@@ -106,8 +106,16 @@ Payload getPayload(NotificationAlarm notificationAlarm) {
   return Payload(activityId: id);
 }
 
-String notificationChannelName(AlarmType alarm) =>
-    'seagulls notifications${alarm.sound ? ' sound' : ''} ${alarm.vibrate ? ' vibration' : ''}';
+NotificationChannel getNotificationChannel(AlarmType alarm) => alarm.sound
+    ? NotificationChannel('Sound + Vibration', 'Sound + Vibration',
+        'Activities with Alarm + Vibration or Only Alarm')
+    : NotificationChannel('Vibration', 'Vibration',
+        'Activities with Only vibration or Silent Alarm');
+
+class NotificationChannel {
+  final String id, name, description;
+  NotificationChannel(this.id, this.name, this.description);
+}
 
 String getSubtitle(NotificationAlarm notificationAlarm, DateTime day) {
   final locale = Locale.cachedLocale;
@@ -116,7 +124,7 @@ String getSubtitle(NotificationAlarm notificationAlarm, DateTime day) {
       ? Translated.dictionaries[locale]
       : Translated.dictionaries.values.first;
   final a = notificationAlarm.activity;
-  String endTime = a.hasEndTime ? ' - ${tf.format(a.endClock(day))} ' : '';
+  String endTime = a.hasEndTime ? ' - ${tf.format(a.endClock(day))} ' : ' ';
   String extra = notificationAlarm is NewAlarm
       ? (notificationAlarm.alarmOnStart
           ? translater.startsNow
