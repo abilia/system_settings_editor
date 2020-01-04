@@ -6,6 +6,7 @@ import 'package:seagull/db/user_db.dart';
 import 'package:seagull/repository/activities_repository.dart';
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  print('Running myBackgroundMessageHandler');
   final userDb = UserDb();
   final baseUrlDb = BaseUrlDb();
   final baseUrl = await baseUrlDb.getBaseUrl();
@@ -18,6 +19,6 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
       activitiesDb: ActivityDb(),
       userId: user.id,
       authToken: token);
-  final activities = await activityRepository.fetchActivities();
+  final activities = await activityRepository.loadActivities();
   print('Got activities: ${activities.length}');
 }
