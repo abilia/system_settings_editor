@@ -36,7 +36,7 @@ void ensureNotificationPluginInitialized() {
   }
 }
 
-Future schedualAlarmNotifications(Iterable<Activity> allActivities,
+Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
     {Duration forDuration = const Duration(hours: 24)}) async {
   await notificationPlugin.cancelAll();
 
@@ -45,11 +45,11 @@ Future schedualAlarmNotifications(Iterable<Activity> allActivities,
       allActivities.alarmsFor(now, end: now.add(forDuration)).toList();
 
   for (final newNotification in shouldBeScheduledNotifications) {
-    await schedualNotification(newNotification, now);
+    await scheduleNotification(newNotification, now);
   }
 }
 
-Future schedualNotification(
+Future scheduleNotification(
     NotificationAlarm notificationAlarm, DateTime now) async {
   final alarm = notificationAlarm.activity.alarm;
   final title = notificationAlarm.activity.title;
@@ -73,7 +73,7 @@ Future schedualNotification(
     presentSound: alarm.sound,
   );
 
-  print('''Schedual a notification
+  print('''Schedule a notification
     ${hash}
     $notificationTime'
     ${title} /// $subtitle

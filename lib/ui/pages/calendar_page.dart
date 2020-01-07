@@ -65,8 +65,8 @@ class CalendarPage extends StatelessWidget {
           BlocListener<ActivitiesBloc, ActivitiesState>(
             listener: (context, state) async {
               if (state is ActivitiesLoaded) {
-                final schedualAlarm = GetIt.I<AlarmSchedualer>();
-                await schedualAlarm(state.activities, forDuration: 24.hours());
+                final scheduleAlarm = GetIt.I<AlarmScheduler>();
+                await scheduleAlarm(state.activities, forDuration: 24.hours());
               }
             },
           ),

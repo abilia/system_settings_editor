@@ -20,9 +20,9 @@ class ActivityRepository extends Repository {
     @required this.authToken,
   }) : super(client, baseUrl);
 
-  Future<Iterable<Activity>> loadActivities() async {
+  Future<Iterable<Activity>> loadActivities({int amount = 10000}) async {
     try {
-      final fetchedActivities = await fetchActivities();
+      final fetchedActivities = await fetchActivities(amount);
       await activitiesDb.insertActivities(fetchedActivities);
     } catch (e) {
       // Error when syncing activities. Probably offline.
@@ -39,10 +39,10 @@ class ActivityRepository extends Repository {
     return Future.delayed(Duration(seconds: 1));
   }
 
-  Future<Iterable<Activity>> fetchActivities() async {
+  Future<Iterable<Activity>> fetchActivities(amount) async {
     final revision = await activitiesDb.getLastRevision();
     final response = await httpClient.get(
-        '$baseUrl/api/v1/data/$userId/activities?revision=$revision',
+        '$baseUrl/api/v1/data/$userId/activities?revision=$revision&amount=$amount',
         headers: authHeader(authToken));
     return (json.decode(response.body) as List)
         .map((e) => Activity.fromJson(e));

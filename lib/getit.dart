@@ -13,7 +13,7 @@ class GetItInitializer {
   DatabaseRepository _databaseRepository;
   FactoryFunc<Stream<DateTime>> _tickerFactory;
   NotificationStreamGetter _selectedNotificationStreamGetter;
-  AlarmSchedualer _alarmSchedualer;
+  AlarmScheduler _alarmScheduler;
   BaseUrlDb _baseUrlDb;
   BaseClient _baseClient;
 
@@ -51,8 +51,8 @@ class GetItInitializer {
     return this;
   }
 
-  GetItInitializer withAlarmSchedualer(AlarmSchedualer alarmSchedualer) {
-    this._alarmSchedualer = alarmSchedualer;
+  GetItInitializer withAlarmScheduler(AlarmScheduler alarmScheduler) {
+    this._alarmScheduler = alarmScheduler;
     return this;
   }
 
@@ -84,8 +84,8 @@ class GetItInitializer {
     GetIt.I.registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb());
     GetIt.I.registerSingleton<NotificationStreamGetter>(
         _selectedNotificationStreamGetter ?? () => selectNotificationSubject);
-    GetIt.I.registerSingleton<AlarmSchedualer>(
-        _alarmSchedualer ?? schedualAlarmNotifications);
+    GetIt.I.registerSingleton<AlarmScheduler>(
+        _alarmScheduler ?? scheduleAlarmNotifications);
     GetIt.I.registerFactory<Stream<DateTime>>(
         _tickerFactory ?? () => Ticker.minute());
   }
