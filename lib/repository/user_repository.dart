@@ -58,9 +58,9 @@ class UserRepository extends Repository {
     }
   }
 
-  Future<User> me(authToken) async {
+  Future<User> me(String token) async {
     try {
-      final user = await getUserFromApi(authToken);
+      final user = await getUserFromApi(token);
       await userDb.insertUser(user);
       return user;
     } on UnauthorizedException {
@@ -78,9 +78,9 @@ class UserRepository extends Repository {
     return user;
   }
 
-  Future<User> getUserFromApi(authToken) async {
+  Future<User> getUserFromApi(String token) async {
     final response = await httpClient.get('$baseUrl/api/v1/entity/me',
-        headers: authHeader(authToken));
+        headers: authHeader(token));
 
     if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
@@ -92,7 +92,8 @@ class UserRepository extends Repository {
     }
   }
 
-  Future<void> logout() async {
+  Future<void> logout([String token]) async {
+    await _unregisterClient(token);
     await tokenDb.delete();
     await userDb.deleteUser();
   }
@@ -100,6 +101,17 @@ class UserRepository extends Repository {
   Future<void> persistToken(String token) => tokenDb.persistToken(token);
 
   Future<String> getToken() => tokenDb.getToken();
+
+  Future<bool> _unregisterClient([String token]) async {
+    token ??= await getToken();
+    try {
+      final response = await httpClient.delete('$baseUrl/api/v1/auth/client',
+          headers: authHeader(token));
+      return response.statusCode == 200;
+    } catch (_) {
+      return false;
+    }
+  }
 
   @override
   String toString() =>

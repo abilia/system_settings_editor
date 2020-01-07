@@ -55,14 +55,14 @@ class AuthenticationBloc
       yield Authenticated(
           token: token, userId: user.id, userRepository: _userRepository);
     } on UnauthorizedException {
-      yield* _logout();
+      yield* _logout(token);
     } catch (_) {
       // Do nothing
     }
   }
 
-  Stream<AuthenticationState> _logout() async* {
-    await _userRepository.logout();
+  Stream<AuthenticationState> _logout([String token]) async* {
+    await _userRepository.logout(token);
     await databaseRepository.clearAll();
     await cancleAllNotificationsFunction();
     yield Unauthenticated.fromInitilized(state);

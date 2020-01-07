@@ -32,7 +32,7 @@ class PushBloc extends Bloc<PushEvent, PushState> {
         this.add(OnPush());
         print("onResume push: $message");
       },
-      onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
+      onBackgroundMessage: myBackgroundMessageHandler,
     );
   }
 }

@@ -147,7 +147,7 @@ void main() {
       authenticationBloc.add(AppStarted(mockedUserRepository));
 
       // Assert
-      await untilCalled(mockedUserRepository.logout());
+      await untilCalled(mockedUserRepository.logout(any));
     });
 
     test('unauthed token returns state Unauthenticated', () async {

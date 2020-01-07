@@ -81,10 +81,12 @@ packages:
   firebase_messaging:
     dependency: "direct main"
     description:
-      name: firebase_messaging
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "6.0.3"
+      path: "packages/firebase_messaging/"
+      ref: ios-background-support
+      resolved-ref: "8e841b37c1efe829acaf68f5db6eecc8c557b08e"
+      url: "git://github.com/abilia/flutterfire.git"
+    source: git
+    version: "6.0.10"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -116,13 +118,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_secure_storage:
-    dependency: "direct main"
-    description:
-      name: flutter_secure_storage
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.3.1+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
