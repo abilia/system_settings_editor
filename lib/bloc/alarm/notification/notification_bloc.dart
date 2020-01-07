@@ -6,7 +6,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class NotificationBloc extends Bloc<Payload, AlarmStateBase> {
+class NotificationBloc extends Bloc<NotificationPayload, AlarmStateBase> {
   final ActivitiesBloc activitiesBloc;
   StreamSubscription _selectedNotificationSubscription;
   StreamSubscription _canSoundAlarmSubscription;
@@ -17,9 +17,9 @@ class NotificationBloc extends Bloc<Payload, AlarmStateBase> {
   }) {
     _selectedNotificationSubscription = selectedNotificationStream.transform(
       StreamTransformer.fromHandlers(
-        handleData: (String data, EventSink<Payload> sink) {
+        handleData: (String data, EventSink<NotificationPayload> sink) {
           try {
-            sink.add(Payload.fromJson(json.decode(data)));
+            sink.add(NotificationPayload.fromJson(json.decode(data)));
           } catch (_) {}
         },
       ),
@@ -40,7 +40,7 @@ class NotificationBloc extends Bloc<Payload, AlarmStateBase> {
 
   @override
   Stream<AlarmStateBase> mapEventToState(
-    Payload payload,
+    NotificationPayload payload,
   ) async* {
     final activitiesState = activitiesBloc.state;
     if (activitiesState is ActivitiesLoaded) {
@@ -52,14 +52,14 @@ class NotificationBloc extends Bloc<Payload, AlarmStateBase> {
     }
   }
 
-  NotificationAlarm _getAlarm(Activity activity, Payload payload) {
+  NotificationAlarm _getAlarm(Activity activity, NotificationPayload payload) {
     if (payload.reminder > 0) {
       return NewReminder(activity, reminder: payload.reminder.minutes());
     }
     return NewAlarm(activity, alarmOnStart: payload.onStart);
   }
 
-  List<Payload> _pendings(AlarmStateBase currentState, Payload payload) {
+  List<NotificationPayload> _pendings(AlarmStateBase currentState, NotificationPayload payload) {
     if (currentState is PendingAlarmState) {
       return currentState.pedingAlarms..add(payload);
     }

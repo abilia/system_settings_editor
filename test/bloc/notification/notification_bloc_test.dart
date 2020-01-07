@@ -41,7 +41,7 @@ void main() {
             .thenAnswer((_) => Future.value([nowActivity]));
 
         final payload = json.encode(
-            Payload(activityId: nowActivity.id, onStart: true).toJson());
+            NotificationPayload(activityId: nowActivity.id, onStart: true).toJson());
         // Act
         activitiesBloc.add(LoadActivities());
         await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
@@ -67,7 +67,7 @@ void main() {
             .thenAnswer((_) => Future.value([nowActivity]));
 
         final payload = json.encode(
-            Payload(activityId: nowActivity.id, reminder: reminderTime)
+            NotificationPayload(activityId: nowActivity.id, reminder: reminderTime)
                 .toJson());
         // Act
         activitiesBloc.add(LoadActivities());
@@ -94,7 +94,7 @@ void main() {
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([nowActivity]));
 
-        final payload = Payload(activityId: nowActivity.id, onStart: true);
+        final payload = NotificationPayload(activityId: nowActivity.id, onStart: true);
         final serializedPayload = json.encode(payload.toJson());
 
         // Act
@@ -124,10 +124,10 @@ void main() {
             .thenAnswer((_) => Future.value([alarmActivity, reminderActivity]));
 
         final alarmPayload =
-            Payload(activityId: alarmActivity.id, onStart: true);
+            NotificationPayload(activityId: alarmActivity.id, onStart: true);
         final alarmSerializedPayload = json.encode(alarmPayload.toJson());
 
-        final reminderPayload = Payload(
+        final reminderPayload = NotificationPayload(
             activityId: reminderActivity.id, reminder: reminderTime.inMinutes);
         final reminderSerializedPayload = json.encode(reminderPayload.toJson());
 

@@ -22,7 +22,7 @@ class AlarmState extends AlarmStateBase {
 }
 
 class PendingAlarmState extends AlarmStateBase {
-  final List<Payload> pedingAlarms;
+  final List<NotificationPayload> pedingAlarms;
   PendingAlarmState(this.pedingAlarms);
   @override
   List<Object> get props => [pedingAlarms];

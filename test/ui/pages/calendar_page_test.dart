@@ -103,7 +103,7 @@ void main() {
     final DateTime twoHoursAfter = activityWithAlarmTime.add(2.hours());
     final Activity activity = FakeActivity.onTime(activityWithAlarmTime);
     final String payloadSerial =
-        json.encode(Payload(activityId: activity.id, onStart: true).toJson());
+        json.encode(NotificationPayload(activityId: activity.id, onStart: true).toJson());
 
     setUp(() {
       mockTicker = StreamController<DateTime>();

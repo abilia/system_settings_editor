@@ -1,18 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-class Payload extends Equatable {
+class NotificationPayload extends Equatable {
   final String activityId;
   final int reminder;
   final bool onStart;
 
-  Payload({
+  NotificationPayload({
     @required this.activityId,
     int reminder,
     bool onStart,
   })  : this.reminder = reminder ?? -1,
         this.onStart = onStart ?? false;
-  factory Payload.fromJson(Map<String, dynamic> json) => Payload(
+  factory NotificationPayload.fromJson(Map<String, dynamic> json) => NotificationPayload(
         activityId: json['activityId'],
         reminder: json['reminder'],
         onStart: json['onStart'],

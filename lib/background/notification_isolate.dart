@@ -90,20 +90,20 @@ Future schedualNotification(
   );
 }
 
-Payload getPayload(NotificationAlarm notificationAlarm) {
+NotificationPayload getPayload(NotificationAlarm notificationAlarm) {
   final id = notificationAlarm.activity.id;
   if (notificationAlarm is NewAlarm) {
-    return Payload(
+    return NotificationPayload(
       activityId: id,
       onStart: notificationAlarm.alarmOnStart,
     );
   } else if (notificationAlarm is NewReminder) {
-    return Payload(
+    return NotificationPayload(
       activityId: id,
       reminder: notificationAlarm.reminder.inMinutes,
     );
   }
-  return Payload(activityId: id);
+  return NotificationPayload(activityId: id);
 }
 
 NotificationChannel getNotificationChannel(AlarmType alarm) => alarm.sound
