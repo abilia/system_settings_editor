@@ -57,9 +57,10 @@ class ActivityCard extends StatelessWidget {
                         style: Theme.of(context).textTheme.body1),
                     Row(
                       children: <Widget>[
-                        if (activity.alarm.type != Alarm.NoAlarm)
-                          Icon(AbiliaIcons.handi_alarm),
-                        if (activity.reminderBefore.isNotEmpty)
+                        if (!activity.fullDay)
+                          Icon(iconDataFor(activity.alarm)),
+                        if (!activity.fullDay &&
+                            activity.reminderBefore.isNotEmpty)
                           Icon(AbiliaIcons.handi_reminder),
                         if (activity.infoItem != null)
                           Icon(AbiliaIcons.handi_info),
@@ -70,30 +71,36 @@ class ActivityCard extends StatelessWidget {
               ),
             ),
           ),
-          NowBanner(visible: occasion == Occasion.current),
+          if (occasion == Occasion.current) NowBanner(),
         ]),
       ),
     );
   }
-}
 
-ThemeData pickTheme({BuildContext context, Occasion occasion}) {
-  final theme = Theme.of(context);
-  switch (occasion) {
-    case Occasion.past:
-      return theme.copyWith(
-          cardColor: AbiliaColors.transparantWhite[50],
-          textTheme: theme.textTheme.copyWith(
-              subtitle: theme.textTheme.subtitle.copyWith(
-                  decoration: TextDecoration.lineThrough,
-                  color: AbiliaColors.black[75]),
-              body1: theme.textTheme.body1
-                  .copyWith(decoration: TextDecoration.lineThrough)));
-    case Occasion.current:
-      return theme.copyWith(
-          cardTheme: theme.cardTheme.copyWith(shape: redOutlineInputBorder));
-    case Occasion.future:
-    default:
-      return theme;
+  IconData iconDataFor(AlarmType alarm) {
+    if (alarm.sound) return AbiliaIcons.handi_alarm_vibration;
+    if (alarm.vibrate) return AbiliaIcons.handi_vibration;
+    return AbiliaIcons.handi_no_alarm_vibration;
+  }
+
+  ThemeData pickTheme({BuildContext context, Occasion occasion}) {
+    final theme = Theme.of(context);
+    switch (occasion) {
+      case Occasion.past:
+        return theme.copyWith(
+            cardColor: AbiliaColors.transparantWhite[50],
+            textTheme: theme.textTheme.copyWith(
+                subtitle: theme.textTheme.subtitle.copyWith(
+                    decoration: TextDecoration.lineThrough,
+                    color: AbiliaColors.black[75]),
+                body1: theme.textTheme.body1
+                    .copyWith(decoration: TextDecoration.lineThrough)));
+      case Occasion.current:
+        return theme.copyWith(
+            cardTheme: theme.cardTheme.copyWith(shape: redOutlineInputBorder));
+      case Occasion.future:
+      default:
+        return theme;
+    }
   }
 }
