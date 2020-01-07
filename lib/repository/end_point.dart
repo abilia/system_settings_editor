@@ -6,7 +6,6 @@ const Map<String, String> backEndEnviorments = {
   'T1': T1,
   'Whale': WHALE,
   'Prod': PROD,
-  'Local': LOCAL
 };
 
 String thumbImageUrl(String baseUrl, int userId, String imageFileId,
