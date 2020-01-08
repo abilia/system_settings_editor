@@ -86,7 +86,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
               body: Agenda(),
               bottomNavigationBar: BottomAppBar(
                 child: Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -94,13 +94,20 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                         onPressed: () => _jumpToActivity(),
                       ),
                       ActionButton(
-                        child: Icon(AbiliaIcons.menu),
+                        width: 48,
+                        height: 48,
+                        child: Icon(
+                          AbiliaIcons.menu,
+                          size: 32,
+                        ),
                         onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) => LogoutPage()),
                         ),
                         themeData: menuButtonTheme(context),
                       ),
-                      const SizedBox(width: 48),
+                      const SizedBox(
+                        width: 48,
+                      ),
                     ],
                   ),
                 ),
