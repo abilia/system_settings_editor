@@ -44,7 +44,7 @@ Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
 
   final now = DateTime.now().add(1.minutes()).onlyMinutes();
   final List<NotificationAlarm> shouldBeScheduledNotifications =
-      allActivities.alarmsFor(now, end: now.add(forDuration)).toList();
+      allActivities.alarmsForRange(now, now.add(forDuration)).toList();
 
   for (final newNotification in shouldBeScheduledNotifications) {
     await scheduleNotification(newNotification, now, language: language);

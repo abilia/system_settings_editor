@@ -25,7 +25,8 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmStateBase> {
   ) async* {
     final state = activitiesBloc.state;
     if (state is ActivitiesLoaded) {
-      final alarmsAndReminders = state.activities.alarmsFor(clockBloc.state);
+      final alarmsAndReminders =
+          state.activities.alarmsOnExactMinute(clockBloc.state);
       for (final alarm in alarmsAndReminders) {
         yield AlarmState(alarm);
       }
