@@ -4,6 +4,7 @@ import 'package:seagull/repository/all.dart';
 import 'all.dart';
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  print('Handling background message...');
   final userDb = UserDb();
   final baseUrlDb = BaseUrlDb();
   final baseUrl = await baseUrlDb.getBaseUrl();
@@ -17,5 +18,6 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
       userId: user.id,
       authToken: token);
   final activities = await activityRepository.loadActivities(amount: 9999);
-  await scheduleAlarmNotifications(activities);
+  print('Sceduling ${activities.length} activities with language: ${user.language}');
+  await scheduleAlarmNotifications(activities, language: user.language);
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
@@ -37,7 +38,8 @@ void ensureNotificationPluginInitialized() {
 }
 
 Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
-    {Duration forDuration = const Duration(hours: 24)}) async {
+    {Duration forDuration = const Duration(hours: 24),
+    String language = "en"}) async {
   await notificationPlugin.cancelAll();
 
   final now = DateTime.now().add(1.minutes()).onlyMinutes();
@@ -45,16 +47,17 @@ Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
       allActivities.alarmsFor(now, end: now.add(forDuration)).toList();
 
   for (final newNotification in shouldBeScheduledNotifications) {
-    await scheduleNotification(newNotification, now);
+    await scheduleNotification(newNotification, now, language: language);
   }
 }
 
-Future scheduleNotification(
-    NotificationAlarm notificationAlarm, DateTime now) async {
+Future scheduleNotification(NotificationAlarm notificationAlarm, DateTime now,
+    {String language = "en"}) async {
   final alarm = notificationAlarm.activity.alarm;
   final title = notificationAlarm.activity.title;
   final notificationTime = notificationAlarm.notificationTime(now);
-  final subtitle = getSubtitle(notificationAlarm, notificationTime);
+  final subtitle =
+      getSubtitle(notificationAlarm, notificationTime, language: language);
   final hash = notificationAlarm.hashCode;
   final payload = json.encode(getPayload(notificationAlarm).toJson());
   final notificationChannel = getNotificationChannel(alarm);
@@ -117,8 +120,10 @@ class NotificationChannel {
   NotificationChannel(this.id, this.name, this.description);
 }
 
-String getSubtitle(NotificationAlarm notificationAlarm, DateTime day) {
-  final locale = Locale.cachedLocale;
+String getSubtitle(NotificationAlarm notificationAlarm, DateTime day,
+    {String language = "en"}) {
+  initializeDateFormatting(language);
+  final locale = Locale(language);
   final tf = DateFormat('jm', locale.languageCode);
   final translater = Translated.dictionaries.containsKey(locale)
       ? Translated.dictionaries[locale]

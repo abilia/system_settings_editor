@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:seagull/background/background.dart';
 import 'package:seagull/bloc/all.dart';
