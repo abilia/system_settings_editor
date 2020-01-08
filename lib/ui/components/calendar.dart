@@ -17,11 +17,13 @@ class Calendar extends StatefulWidget {
 
 class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
   DayPickerBloc _dayPickerBloc;
+  ActivitiesBloc _activitiesBloc;
   ScrollPositionBloc _scrollPositionBloc;
 
   @override
   void initState() {
     _dayPickerBloc = BlocProvider.of<DayPickerBloc>(context);
+    _activitiesBloc = BlocProvider.of<ActivitiesBloc>(context);
     _scrollPositionBloc = ScrollPositionBloc();
     WidgetsBinding.instance.addObserver(this);
     super.initState();
@@ -37,6 +39,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
+      _activitiesBloc.add(LoadActivities());
       _jumpToActivity();
     }
   }
