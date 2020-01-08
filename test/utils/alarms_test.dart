@@ -12,7 +12,7 @@ void main() {
       // Arrange
       final activities = Iterable<Activity>.empty();
       // Act
-      final alarms = activities.alarmsFor(startDate);
+      final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
       expect(alarms, isEmpty);
     });
@@ -23,7 +23,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsFor(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate).toList();
       // Assert
       expect(alarms, [NewAlarm(activity)]);
     });
@@ -34,7 +34,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsFor(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate).toList();
       // Assert
       expect(alarms, isEmpty);
     });
@@ -45,7 +45,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsFor(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate).toList();
       // Assert
       expect(alarms, isEmpty);
     });
@@ -58,7 +58,7 @@ void main() {
       final activities = [before, after, onTime];
 
       // Act
-      final alarms = activities.alarmsFor(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate).toList();
       // Assert
       expect(alarms, [NewAlarm(onTime)]);
     });
@@ -72,7 +72,7 @@ void main() {
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsFor(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate).toList();
       // Assert
       expect(
           listEquals(alarms, [
@@ -94,7 +94,7 @@ void main() {
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsFor(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate).toList();
       // Assert
       expect(alarms, [NewReminder(afterWithReminder, reminder: reminder)]);
     });
@@ -107,7 +107,7 @@ void main() {
       // Arrange
       final activities = Iterable<Activity>.empty();
       // Act
-      final alarms = activities.alarmsFor(startDate, end: endDate);
+      final alarms = activities.alarmsForRange(startDate, endDate);
       // Assert
       expect(alarms, isEmpty);
     });
@@ -118,7 +118,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsFor(startDate, end: endDate).toList();
+      final alarms = activities.alarmsForRange(startDate, endDate).toList();
       // Assert
       expect(alarms, [
         NewAlarm(activity, alarmOnStart: true),
@@ -132,9 +132,9 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsFor(startDate, end: endDate).toList();
+      final alarms = activities.alarmsForRange(startDate, endDate).toList();
       // Assert
-      expect(alarms, isEmpty);
+      expect(alarms, [NewAlarm(activity, alarmOnStart: false)]);
     });
 
     test('alarm one min after with end', () {
@@ -143,7 +143,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsFor(startDate, end: endDate).toList();
+      final alarms = activities.alarmsForRange(startDate, endDate).toList();
       // Assert
       expect(alarms, [
         NewAlarm(activity, alarmOnStart: true),
@@ -159,7 +159,7 @@ void main() {
       final activities = [before, after, onTime];
 
       // Act
-      final alarms = activities.alarmsFor(startDate, end: endDate).toList();
+      final alarms = activities.alarmsForRange(startDate, endDate).toSet();
       // Assert
       expect(
         alarms,
@@ -168,7 +168,8 @@ void main() {
           NewAlarm(onTime, alarmOnStart: true),
           NewAlarm(after, alarmOnStart: false),
           NewAlarm(onTime, alarmOnStart: false),
-        ],
+          NewAlarm(before, alarmOnStart: false),
+        ].toSet(),
       );
     });
 
@@ -182,7 +183,7 @@ void main() {
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsFor(startDate, end: endDate).toList();
+      final alarms = activities.alarmsForRange(startDate, endDate).toList();
       // Assert
       expect(alarms, [
         NewAlarm(afterWithReminder, alarmOnStart: true),
@@ -205,9 +206,38 @@ void main() {
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsFor(startDate, end: endDate).toList();
+      final alarms = activities.alarmsForRange(startDate, endDate).toList();
       // Assert
       expect(alarms, [NewReminder(afterWithReminder, reminder: reminder)]);
+    });
+
+    test('one start and end with start passed, one future without end time',
+        () {
+      // Arrange
+      final fiveMinBefore = startDate.subtract(5.minutes());
+      final end = fiveMinBefore.add(1.hours());
+      final in30 = startDate.add(30.minutes());
+
+      final overlapping = FakeActivity.onTime(fiveMinBefore).copyWith(
+          title: 'Well hello there',
+          alarmType: ALARM_SOUND_AND_VIBRATION,
+          duration: 1.hours().inMilliseconds,
+          endTime: end.millisecondsSinceEpoch);
+      final later = FakeActivity.onTime(in30).copyWith(
+          title: 'Another one bites the dust',
+          endTime: in30.millisecondsSinceEpoch,
+          duration: 0,
+          alarmType: ALARM_SOUND_AND_VIBRATION);
+      final activities = [overlapping, later];
+
+      // Act
+      final alarms = activities.alarmsForRange(startDate, endDate).toSet();
+
+      // Asserte
+      expect(
+          alarms,
+          [NewAlarm(overlapping, alarmOnStart: false), NewAlarm(later)]
+              .toSet());
     });
   });
 }
