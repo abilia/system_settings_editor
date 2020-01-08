@@ -5,19 +5,15 @@ import 'all.dart';
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
   print('Handling background message...');
-  final userDb = UserDb();
-  final baseUrlDb = BaseUrlDb();
-  final baseUrl = await baseUrlDb.getBaseUrl();
-  final user = await userDb.getUser();
-  final tokenDb = TokenDb();
-  final token = await tokenDb.getToken();
-  final activityRepository = ActivityRepository(
-      baseUrl: baseUrl,
-      client: Client(),
-      activitiesDb: ActivityDb(),
-      userId: user.id,
-      authToken: token);
-  final activities = await activityRepository.loadActivities(amount: 9999);
-  print('Sceduling ${activities.length} activities with language: ${user.language}');
+  final baseUrl = await BaseUrlDb().getBaseUrl();
+  final user = await UserDb().getUser();
+  final token = await TokenDb().getToken();
+  final activities = await ActivityRepository(
+          baseUrl: baseUrl,
+          client: Client(),
+          activitiesDb: ActivityDb(),
+          userId: user.id,
+          authToken: token)
+      .loadActivities();
   await scheduleAlarmNotifications(activities, language: user.language);
 }

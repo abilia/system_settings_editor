@@ -39,12 +39,14 @@ void ensureNotificationPluginInitialized() {
 
 Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
     {Duration forDuration = const Duration(hours: 24),
-    String language = "en"}) async {
+    String language = 'en'}) async {
   await notificationPlugin.cancelAll();
 
   final now = DateTime.now().add(1.minutes()).onlyMinutes();
   final List<NotificationAlarm> shouldBeScheduledNotifications =
       allActivities.alarmsFor(now, end: now.add(forDuration)).toList();
+  print(
+      'Scheduling ${shouldBeScheduledNotifications.length} alarm from ${allActivities.length} activities with language: ${language}');
 
   for (final newNotification in shouldBeScheduledNotifications) {
     await scheduleNotification(newNotification, now, language: language);
@@ -52,7 +54,7 @@ Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
 }
 
 Future scheduleNotification(NotificationAlarm notificationAlarm, DateTime now,
-    {String language = "en"}) async {
+    {String language}) async {
   final alarm = notificationAlarm.activity.alarm;
   final title = notificationAlarm.activity.title;
   final notificationTime = notificationAlarm.notificationTime(now);
@@ -121,13 +123,14 @@ class NotificationChannel {
 }
 
 String getSubtitle(NotificationAlarm notificationAlarm, DateTime day,
-    {String language = "en"}) {
-  initializeDateFormatting(language);
-  final locale = Locale(language);
+    {String language}) {
+  final givenLocale = Locale(language);
+  final locale = Translated.dictionaries.containsKey(givenLocale)
+      ? givenLocale
+      : Translated.dictionaries.keys.first;
+  initializeDateFormatting(locale.languageCode);
   final tf = DateFormat('jm', locale.languageCode);
-  final translater = Translated.dictionaries.containsKey(locale)
-      ? Translated.dictionaries[locale]
-      : Translated.dictionaries.values.first;
+  final translater = Translated.dictionaries[locale];
   final a = notificationAlarm.activity;
   String endTime = a.hasEndTime ? ' - ${tf.format(a.endClock(day))} ' : ' ';
   String extra = notificationAlarm is NewAlarm
