@@ -5,7 +5,8 @@ import 'package:sqflite/sqflite.dart';
 class ActivityDb {
   static const String MAX_REVISION_SQL =
       'SELECT max(revision) as max_revision FROM calendar_activity';
-  static const String GET_ACTIVITIES_SQL = 'SELECT * FROM calendar_activity';
+  static const String GET_ACTIVITIES_SQL =
+      'SELECT * FROM calendar_activity WHERE deleted == 0';
   static const String CLEAR_ACTIVITIES_SQL = 'DELETE FROM calendar_activity';
 
   Future<int> getLastRevision() async {
