@@ -51,68 +51,97 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
       create: (context) => _scrollPositionBloc,
       child: BlocBuilder<ClockBloc, DateTime>(
         builder: (context, now) => BlocBuilder<DayPickerBloc, DateTime>(
-          builder: (context, pickedDay) => AnimatedTheme(
-            data: weekDayTheme(context)[pickedDay.weekday],
-            child: Scaffold(
-              appBar: AppBar(
-                elevation: 0.0,
-                automaticallyImplyLeading: false,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    ActionButton(
-                      child: Icon(AbiliaIcons.return_to_previous_page),
-                      onPressed: () => _dayPickerBloc.add(PreviousDay()),
-                    ),
-                    Column(
-                      children: [
-                        Text(DateFormat('EEEE, d MMM', langCode)
-                            .format(pickedDay)),
-                        Opacity(
-                          opacity: 0.7,
-                          child: Text(
-                              '${Translator.of(context).translate.week} ${pickedDay.getWeekNumber()}'),
+          builder: (context, pickedDay) {
+            final themeData = weekDayTheme(context)[pickedDay.weekday];
+            return AnimatedTheme(
+              data: themeData,
+              child: Scaffold(
+                appBar: buildAppBar(langCode, pickedDay, context, themeData),
+                body: Agenda(),
+                bottomNavigationBar: BottomAppBar(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        GoToNowButton(
+                          onPressed: () => _jumpToActivity(),
+                        ),
+                        ActionButton(
+                          child: Icon(
+                            AbiliaIcons.menu,
+                            size: 32,
+                          ),
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => LogoutPage()),
+                          ),
+                          themeData: menuButtonTheme(context),
+                        ),
+                        const SizedBox(
+                          width: 48,
                         ),
                       ],
                     ),
-                    ActionButton(
-                      child: Icon(AbiliaIcons.go_to_next_page),
-                      onPressed: () => _dayPickerBloc.add(NextDay()),
-                    ),
-                  ],
-                ),
-                centerTitle: true,
-              ),
-              body: Agenda(),
-              bottomNavigationBar: BottomAppBar(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      GoToNowButton(
-                        onPressed: () => _jumpToActivity(),
-                      ),
-                      ActionButton(
-                        width: 48,
-                        height: 48,
-                        child: Icon(
-                          AbiliaIcons.menu,
-                          size: 32,
-                        ),
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => LogoutPage()),
-                        ),
-                        themeData: menuButtonTheme(context),
-                      ),
-                      const SizedBox(
-                        width: 48,
-                      ),
-                    ],
                   ),
                 ),
               ),
-            ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  PreferredSize buildAppBar(String langCode, DateTime pickedDay,
+      BuildContext context, ThemeData themeData) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(68),
+      child: AppBar(
+        elevation: 0.0,
+        automaticallyImplyLeading: false,
+        flexibleSpace: SafeArea(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: ActionButton(
+                  child: Icon(
+                    AbiliaIcons.return_to_previous_page,
+                    size: 32,
+                  ),
+                  onPressed: () => _dayPickerBloc.add(PreviousDay()),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      DateFormat('EEEE, d MMM', langCode).format(pickedDay),
+                      style: themeData.textTheme.title,
+                    ),
+                    Text(
+                      '${Translator.of(context).translate.week} ${pickedDay.getWeekNumber()}',
+                      style: themeData.textTheme.subhead,
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: ActionButton(
+                  child: Icon(
+                    AbiliaIcons.go_to_next_page,
+                    size: 32,
+                  ),
+                  onPressed: () => _dayPickerBloc.add(NextDay()),
+                ),
+              ),
+            ],
           ),
         ),
       ),
