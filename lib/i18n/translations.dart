@@ -20,6 +20,7 @@ abstract class Translated {
   String get alarm => 'Alarm';
   String get startsNow;
   String get endsNow;
+  String get noActivities;
   String get untranslatedExample => 'Example of an yet to be translated string';
 }
 
@@ -36,7 +37,8 @@ class English extends Translated {
       week = 'week',
       reminder = 'Reminder',
       endsNow = 'Ends now',
-      startsNow = 'Starts now';
+      startsNow = 'Starts now',
+      noActivities = 'No activities for today';
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
@@ -52,6 +54,7 @@ class Swedish extends Translated {
       week = 'vecka',
       reminder = 'Påminnelse',
       endsNow = 'Slutar nu',
-      startsNow = 'Börjar nu';
+      startsNow = 'Börjar nu',
+      noActivities = 'Inga aktiviteter idag';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }

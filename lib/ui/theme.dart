@@ -126,7 +126,7 @@ TextTheme get abiliaTextTheme => TextTheme(
       body2: baseTextStyle.copyWith(
         fontSize: 16.0,
         height: 28.0 / 16.0,
-        fontWeight: medium,
+        fontWeight: regular,
       ),
       button: baseTextStyle.copyWith(
           fontSize: 14.0, fontWeight: medium, color: AbiliaColors.white),

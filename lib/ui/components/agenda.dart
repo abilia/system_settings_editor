@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components/all.dart';
 
 class Agenda extends StatefulWidget {
@@ -67,18 +68,34 @@ class _AgendaState extends State<Agenda> {
                       onNotification:
                           state.isToday ? _onScrollNotification : null,
                       child: Scrollbar(
-                        child: ListView.builder(
-                          itemExtent: widget.cardHeight,
-                          controller: state.isToday ? scrollController : null,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 16),
-                          itemCount: activities.length,
-                          itemBuilder: (context, index) => ActivityCard(
-                            activityOccasion: activities[index],
-                            height: widget.cardHeight,
-                          ),
-                        ),
+                        child: activities.isEmpty && fullDayActivities.isEmpty
+                            ? ListView(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 30.0),
+                                    child: Center(
+                                        child: Text(
+                                      Translator.of(context)
+                                          .translate
+                                          .noActivities,
+                                      style: Theme.of(context).textTheme.body2,
+                                    )),
+                                  )
+                                ],
+                              )
+                            : ListView.builder(
+                                itemExtent: widget.cardHeight,
+                                controller:
+                                    state.isToday ? scrollController : null,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 16),
+                                itemCount: activities.length,
+                                itemBuilder: (context, index) => ActivityCard(
+                                  activityOccasion: activities[index],
+                                  height: widget.cardHeight,
+                                ),
+                              ),
                       ),
                     ),
                   ),
