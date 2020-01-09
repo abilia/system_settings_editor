@@ -94,9 +94,15 @@ class ReminderPage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: FractionallySizedBox(
             widthFactor: 0.55,
-            child: RaisedButton(
-              color: Colors.green,
-              child: Text(translate.ok),
+            child: FlatButton(
+              color: AbiliaColors.green,
+              child: Text(
+                translate.ok,
+                style: Theme.of(context)
+                    .textTheme
+                    .subhead
+                    .copyWith(color: AbiliaColors.white),
+              ),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),

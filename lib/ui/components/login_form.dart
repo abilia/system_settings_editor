@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:package_info/package_info.dart';
@@ -30,6 +31,11 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final i18n = Translator.of(context);
+    final theme = Theme.of(context);
+    final body1Grey =
+        theme.textTheme.body1.copyWith(color: AbiliaColors.black[75]);
+    final body2Grey =
+        theme.textTheme.body2.copyWith(color: AbiliaColors.black[75]);
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       builder: (context, formState) => BlocBuilder<LoginBloc, LoginState>(
         builder: (context, loginState) {
@@ -49,19 +55,21 @@ class _LoginFormState extends State<LoginForm> {
                   padding32,
                   Text(
                     i18n.translate.userName,
-                    style: TextStyle(fontSize: 14),
+                    style: body1Grey,
                   ),
                   padding8,
                   TextFormField(
                     key: TestKey.userNameInput,
                     controller: _usernameController,
+                    keyboardType: TextInputType.emailAddress,
+                    style: theme.textTheme.body2,
                     autovalidate: true,
                     validator: (_) => errorState ? '' : null,
                     decoration: errorState
                         ? InputDecoration(
                             suffixIcon: Icon(
                               AbiliaIcons.ir_error,
-                              color: Theme.of(context).errorColor,
+                              color: theme.errorColor,
                             ),
                           )
                         : null,
@@ -69,7 +77,7 @@ class _LoginFormState extends State<LoginForm> {
                   padding16,
                   Text(
                     i18n.translate.password,
-                    style: TextStyle(fontSize: 14),
+                    style: body1Grey,
                   ),
                   padding8,
                   Row(
@@ -80,13 +88,15 @@ class _LoginFormState extends State<LoginForm> {
                           key: TestKey.passwordInput,
                           obscureText: formState.hidePassword,
                           controller: _passwordController,
+                          keyboardType: TextInputType.visiblePassword,
+                          style: theme.textTheme.body2,
                           autovalidate: true,
                           validator: (_) => errorState ? '' : null,
                           decoration: errorState
                               ? InputDecoration(
                                   suffixIcon: Icon(
                                     AbiliaIcons.ir_error,
-                                    color: Theme.of(context).errorColor,
+                                    color: theme.errorColor,
                                   ),
                                 )
                               : null,
@@ -111,7 +121,7 @@ class _LoginFormState extends State<LoginForm> {
                     children: <Widget>[
                       Text(
                         i18n.translate.infoText1,
-                        style: Theme.of(context).textTheme.body1,
+                        style: body2Grey,
                       ),
                       WebLink(
                         text: 'myAbilia',
@@ -119,7 +129,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       Text(
                         i18n.translate.infoText2,
-                        style: Theme.of(context).textTheme.body1,
+                        style: body2Grey,
                       )
                     ],
                   ),
@@ -129,18 +139,27 @@ class _LoginFormState extends State<LoginForm> {
                       key: TestKey.loginError,
                       child: Text(
                         i18n.translate.wrongCredentials,
-                        style: Theme.of(context).textTheme.body1,
+                        style: theme.textTheme.body1,
                       ),
                     ),
                   padding192,
-                  AbiliaButton(
-                    key: TestKey.loggInButton,
-                    label: i18n.translate.login,
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    onPressed:
-                        loginState is! LoginLoading && formState.isFormValid
-                            ? _onLoginButtonPressed
-                            : null,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: FlatButton(
+                      color: AbiliaColors.red,
+                      disabledColor: AbiliaColors.red[40],
+                      key: TestKey.loggInButton,
+                      child: Text(
+                        i18n.translate.login,
+                        style: theme.textTheme.subhead
+                            .copyWith(color: AbiliaColors.white),
+                      ),
+                      onPressed: loginState is! LoginLoading &&
+                              formState.isFormValid &&
+                              !(errorState)
+                          ? _onLoginButtonPressed
+                          : null,
+                    ),
                   ),
                   padding16,
                   BackendSwitches(),
