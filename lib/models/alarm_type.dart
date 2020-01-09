@@ -33,7 +33,9 @@ class AlarmType extends Equatable {
     }
   }
   bool get vibrate =>
-      type == Alarm.SoundAndVibration || type == Alarm.Vibration;
+      type == Alarm.SoundAndVibration ||
+      type == Alarm.Vibration ||
+      type == Alarm.Silent;
   bool get sound => type == Alarm.SoundAndVibration || type == Alarm.Sound;
   bool get shouldAlarm => type != Alarm.NoAlarm;
   bool get atEnd => onEndTime;
