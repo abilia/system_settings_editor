@@ -2,14 +2,14 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 extension IterableActivity on Iterable<Activity> {
-  Iterable<NotificationAlarm> alarmsOnExactMinute(DateTime time) =>
-      _alarmsFor(time,
-          startTimeTest: (a) => a.startClock(time).isAtSameMomentAs(time),
-          endTimeTest: (a) => a.endClock(time).isAtSameMomentAs(time),
-          reminderTest: (rs) => rs.activity
-              .startClock(time)
-              .subtract(rs.reminder)
-              .isAtSameMomentAs(time));
+  Iterable<NotificationAlarm> alarmsOnExactMinute(DateTime time) => _alarmsFor(
+      time,
+      startTimeTest: (a) => a.startClock(time).isAtSameMomentAs(time),
+      endTimeTest: (a) => a.endClock(time).isAtSameMomentAs(time),
+      reminderTest: (rs) => rs.activity
+          .startClock(time)
+          .subtract(rs.reminder)
+          .isAtSameMomentAs(time));
 
   Iterable<NotificationAlarm> alarmsForRange(DateTime time, DateTime end) =>
       _alarmsFor(time,

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/recurs.dart';
 
 @immutable
 abstract class DayActivitiesState extends Equatable {}
@@ -23,7 +24,9 @@ class DayActivitiesLoaded extends DayActivitiesState {
   final Iterable<Activity> activities;
   final DateTime day;
 
-  DayActivitiesLoaded(this.activities, this.day);
+  DayActivitiesLoaded(Iterable<Activity> activities, this.day)
+      : this.activities =
+            activities.where((activity) => activity.shouldShowForDay(day));
 
   @override
   List<Object> get props => [activities, day];
