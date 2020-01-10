@@ -99,70 +99,64 @@ BottomAppBarTheme get bottomAppBarTheme =>
 AppBarTheme get appBarTheme => AppBarTheme(color: AbiliaColors.black[80]);
 
 TextTheme get abiliaTextTheme => TextTheme(
-      display4: baseTestStyle.copyWith(
+      display4: baseTextStyle.copyWith(
         fontSize: 96.0,
         fontWeight: light,
       ),
-      display3: baseTestStyle.copyWith(
+      display3: baseTextStyle.copyWith(
         fontSize: 60.0,
         fontWeight: light,
         height: 72.0 / 60.0,
       ),
-      display2: baseTestStyle.copyWith(
+      display2: baseTextStyle.copyWith(
         fontSize: 48.0,
         fontWeight: regular,
         height: 56.0 / 48.0,
       ),
-      display1: baseTestStyle.copyWith(
+      display1: baseTextStyle.copyWith(
         fontSize: 34.0,
         fontWeight: regular,
       ),
-      headline: baseTestStyle.copyWith(
+      headline: baseTextStyle.copyWith(
         fontSize: 24.0,
         fontWeight: regular,
       ),
-      title: baseTestStyle.copyWith(
+      title: baseTextStyle.copyWith(
         fontSize: 20.0,
         fontWeight: medium,
       ),
-      subhead: baseTestStyle.copyWith(
-        fontSize: 16.0,
-        fontWeight: medium,
-        height: 24.0 / 16.0,
-      ),
-      body2: baseTestStyle.copyWith(
+      subhead: baseTextStyle.copyWith(
+          fontSize: 16.0, fontWeight: medium, height: 24.0 / 16.0),
+      body2: baseTextStyle.copyWith(
         fontSize: 16.0,
         height: 28.0 / 16.0,
         fontWeight: regular,
       ),
-      button: baseTestStyle.copyWith(
-        fontSize: 14.0,
-        fontWeight: medium,
-        color: AbiliaColors.white,
-      ),
-      subtitle: baseTestStyle.copyWith(
-        fontSize: 14.0,
-        height: 20.0 / 14.0,
-        fontWeight: medium,
-      ),
-      body1: baseTestStyle.copyWith(
+      body1: baseTextStyle.copyWith(
         fontSize: 14.0,
         height: 20.0 / 14.0,
         fontWeight: regular,
       ),
-      caption: baseTestStyle.copyWith(
+      caption: baseTextStyle.copyWith(
         fontSize: 12.0,
         height: 16.0 / 12.0,
         fontWeight: regular,
       ),
-      overline: baseTestStyle.copyWith(
+      button: baseTextStyle.copyWith(
+          fontSize: 14.0, fontWeight: medium, color: AbiliaColors.white),
+      subtitle: baseTextStyle.copyWith(
+        fontSize: 14.0,
+        height: 20.0 / 14.0,
+        fontWeight: medium,
+      ),
+      overline: baseTextStyle.copyWith(
         fontSize: 10.0,
         height: 16.0 / 10.0,
         fontWeight: medium,
       ),
     );
 
-TextStyle baseTestStyle = const TextStyle(
+TextStyle baseTextStyle = const TextStyle(
   fontFamily: 'Roboto',
   color: AbiliaColors.black,
   fontStyle: FontStyle.normal,
@@ -177,15 +171,20 @@ Map<int, ThemeData> weekDayTheme(BuildContext context) => {
       DateTime.monday: _dayTheme(context, AbiliaColors.green),
       DateTime.tuesday: _dayTheme(context, AbiliaColors.blue),
       DateTime.wednesday:
-          _dayTheme(context, Colors.grey /* AbiliaColors.white */),
+          _dayTheme(context, AbiliaColors.white, textColor: AbiliaColors.black),
       DateTime.thursday: _dayTheme(context, AbiliaColors.brown),
       DateTime.friday: _dayTheme(context, AbiliaColors.yellow),
       DateTime.saturday: _dayTheme(context, AbiliaColors.pink),
       DateTime.sunday: _dayTheme(context, AbiliaColors.red),
     };
 
-ThemeData _dayTheme(BuildContext context, MaterialColor color) =>
+ThemeData _dayTheme(BuildContext context, MaterialColor color,
+        {MaterialColor textColor = AbiliaColors.white}) =>
     Theme.of(context).copyWith(
-      appBarTheme: Theme.of(context).appBarTheme.copyWith(color: color),
-      scaffoldBackgroundColor: color[20],
-    );
+        appBarTheme: Theme.of(context).appBarTheme.copyWith(
+              color: color,
+            ),
+        scaffoldBackgroundColor: color[20],
+        textTheme: abiliaTextTheme.copyWith(
+            title: abiliaTextTheme.title.copyWith(color: textColor),
+            subhead: abiliaTextTheme.subhead.copyWith(color: textColor)));
