@@ -24,12 +24,6 @@ class BackendSwitches extends StatelessWidget {
           ),
         )
                 .followedBy([
-          BackEndButton(
-            'Mock',
-            userRepository: state.userRepository,
-            backEndUrl: 'https://via.placeholder.com/190/CA0733/FFFFFF&',
-            client: Fakes.client(),
-          ),
           _alarms(state.userRepository),
         ]).toList());
       }
@@ -38,32 +32,39 @@ class BackendSwitches extends StatelessWidget {
   }
 
   BackEndButton _alarms(UserRepository repository) => BackEndButton(
-        'Alarm',
+        'Mock',
         userRepository: repository,
         backEndUrl: 'https://via.placeholder.com/190/09CDDA/FFFFFF&',
         client: Fakes.client([
-          FakeActivity.startsAfter(1.minutes()).copyWith(
+          FakeActivity.startsAfter(2.minutes()).copyWith(
               fileId: 'somefileid',
               alarmType: ALARM_SILENT,
               duration: 1.minutes().inMilliseconds,
               title: 'ALARM_SILENT'),
-          FakeActivity.startsAfter(2.minutes()).copyWith(
+          FakeActivity.startsAfter(4.minutes()).copyWith(
               duration: 1.minutes().inMilliseconds,
               alarmType: ALARM_VIBRATION,
               title: 'ALARM_VIBRATION'),
-          FakeActivity.startsAfter(3.minutes()).copyWith(
+          FakeActivity.startsAfter(6.minutes()).copyWith(
               fileId: 'somefileid',
-              duration: 0,
+              duration: 1.minutes().inMilliseconds,
               alarmType: ALARM_SOUND_ONLY_ON_START,
               title: 'ALARM_SOUND_ONLY_ON_START'),
-          FakeActivity.startsAfter(5.minutes()).copyWith(
+          FakeActivity.startsAfter(8.minutes()).copyWith(
               duration: 1.minutes().inMilliseconds,
               alarmType: ALARM_SOUND_AND_VIBRATION,
               title: 'ALARM_SOUND_AND_VIBRATION'),
-          FakeActivity.startsAfter(7.minutes()).copyWith(
+          FakeActivity.startsAfter(10.minutes()).copyWith(
               duration: 1.minutes().inMilliseconds,
+              reminderBefore: [1.minutes().inMilliseconds],
+              infoItem: 'some info',
               alarmType: NO_ALARM,
               title: 'NO_ALARM'),
+          FakeActivity.startsAfter(11.minutes()).copyWith(
+              duration: 0,
+              reminderBefore: [10.minutes().inMilliseconds],
+              alarmType: ALARM_SILENT,
+              title: 'ALARM_SILENT reminder 10 min before'),
         ]),
       );
 }
