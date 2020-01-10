@@ -73,8 +73,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                             size: 32,
                           ),
                           onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => LogoutPage()),
+                            MaterialPageRoute(builder: (context) => MenuPage()),
                           ),
                           themeData: menuButtonTheme(context),
                         ),

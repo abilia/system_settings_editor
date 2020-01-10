@@ -58,40 +58,41 @@ ButtonThemeData get baseButtonTheme => ButtonThemeData(
       highlightColor: AbiliaColors.red[120],
     );
 
-ThemeData actionButtonTheme(BuildContext context) => Theme.of(context).copyWith(
-      buttonTheme: Theme.of(context).buttonTheme.copyWith(
-          height: 48,
-          minWidth: 48,
-          shape: RoundedRectangleBorder(
-            borderRadius: borderRadius,
-            side: BorderSide(
-              width: 1,
-              color: AbiliaColors.transparantBlack[20],
-            ),
+ButtonThemeData actionButtonTheme(BuildContext context) =>
+    Theme.of(context).buttonTheme.copyWith(
+        height: 48,
+        minWidth: 48,
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius,
+          side: BorderSide(
+            width: 1,
+            color: AbiliaColors.transparantBlack[20],
           ),
-          buttonColor: AbiliaColors.transparantBlack[20],
-          disabledColor: Colors.transparent,
-          highlightColor: AbiliaColors.transparantBlack[40],
-          textTheme: ButtonTextTheme.primary),
-    );
+        ),
+        buttonColor: AbiliaColors.transparantBlack[20],
+        disabledColor: Colors.transparent,
+        highlightColor: AbiliaColors.transparantBlack[40],
+        textTheme: ButtonTextTheme.primary);
 
-ThemeData nowButtonTheme(BuildContext context) =>
-    actionButtonTheme(context).copyWith(
+ThemeData nowButtonTheme(BuildContext context) => Theme.of(context).copyWith(
+      buttonTheme: actionButtonTheme(context),
       buttonColor: AbiliaColors.red,
       disabledColor: AbiliaColors.red[40],
       highlightColor: AbiliaColors.red[120],
     );
 
-ThemeData showHideButtonTheme(BuildContext context) =>
-    actionButtonTheme(context).copyWith(
-        textTheme: Theme.of(context).textTheme.copyWith(
-            button: Theme.of(context)
-                .textTheme
-                .button
-                .copyWith(color: AbiliaColors.black[75])));
+ThemeData showHideButtonTheme(BuildContext context) {
+  final theme = Theme.of(context);
+  final textTheme = theme.textTheme;
+  return theme.copyWith(
+      buttonTheme: actionButtonTheme(context),
+      textTheme: textTheme.copyWith(
+          button: textTheme.button.copyWith(color: AbiliaColors.black[75])));
+}
 
-ThemeData menuButtonTheme(BuildContext context) => actionButtonTheme(context)
-    .copyWith(buttonColor: AbiliaColors.transparantWhite[20]);
+ThemeData menuButtonTheme(BuildContext context) => Theme.of(context).copyWith(
+    buttonTheme: actionButtonTheme(context),
+    buttonColor: AbiliaColors.transparantWhite[20]);
 
 BottomAppBarTheme get bottomAppBarTheme =>
     BottomAppBarTheme(color: AbiliaColors.black[80]);
