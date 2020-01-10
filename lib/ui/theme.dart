@@ -156,7 +156,7 @@ TextTheme get abiliaTextTheme => TextTheme(
       ),
     );
 
-TextStyle baseTestStyle = const TextStyle(
+TextStyle baseTextStyle = const TextStyle(
   fontFamily: 'Roboto',
   color: AbiliaColors.black,
   fontStyle: FontStyle.normal,
