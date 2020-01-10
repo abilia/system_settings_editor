@@ -10,6 +10,7 @@ abstract class Translated {
   String get infoText1;
   String get infoText2;
   String get login;
+  String get logout;
   String get wrongCredentials;
   String get now;
   String get fullDay;
@@ -21,15 +22,15 @@ abstract class Translated {
   String get startsNow;
   String get endsNow;
   String get noActivities;
-  String get untranslatedExample => 'Example of an yet to be translated string';
 }
 
 class English extends Translated {
   String userName = 'Username / Email',
       password = 'Password',
       infoText1 = 'Use your ',
-      infoText2 = ' account to login',
+      infoText2 = ' account to Log in',
       login = 'Log in',
+      logout = 'Log out',
       wrongCredentials =
           'Your username/email or password is not correct. Please, try another one.',
       now = 'now',
@@ -48,6 +49,7 @@ class Swedish extends Translated {
       infoText1 = 'Använd ditt ',
       infoText2 = '-konto för att logga in',
       login = 'Logga in',
+      logout = 'Logga ut',
       wrongCredentials = 'Fel användarnamn eller lösenord',
       now = 'nu',
       fullDay = 'Heldag',

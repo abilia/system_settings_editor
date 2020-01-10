@@ -21,21 +21,15 @@ ThemeData get abiliaTheme => ThemeData(
       bottomAppBarTheme: bottomAppBarTheme,
       cardTheme: CardTheme(
         elevation: 0,
-        margin: EdgeInsets.symmetric(vertical: 4),
+        margin: const EdgeInsets.symmetric(vertical: 4),
         shape: RoundedRectangleBorder(borderRadius: borderRadius),
       ),
     );
 
 InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
-    contentPadding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 16),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: AbiliaColors.white),
-      borderRadius: borderRadius,
-    ),
-    enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: AbiliaColors.white),
-      borderRadius: borderRadius,
-    ),
+    contentPadding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16),
+    focusedBorder: inputBorder,
+    enabledBorder: inputBorder,
     errorBorder: redOutlineInputBorder,
     focusedErrorBorder: redOutlineInputBorder,
     filled: true,
@@ -44,6 +38,11 @@ InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
     fillColor: AbiliaColors.white);
 
 BorderRadius get borderRadius => BorderRadius.circular(12);
+
+InputBorder get inputBorder => OutlineInputBorder(
+      borderSide: BorderSide(color: AbiliaColors.transparantBlack[20]),
+      borderRadius: borderRadius,
+    );
 
 OutlineInputBorder get redOutlineInputBorder => OutlineInputBorder(
       borderSide: BorderSide(color: AbiliaColors.red),
@@ -55,7 +54,6 @@ ButtonThemeData get baseButtonTheme => ButtonThemeData(
       minWidth: double.infinity,
       shape: RoundedRectangleBorder(borderRadius: borderRadius),
       buttonColor: AbiliaColors.red,
-      textTheme: ButtonTextTheme.primary,
       disabledColor: AbiliaColors.red[40],
       highlightColor: AbiliaColors.red[120],
     );
@@ -64,7 +62,13 @@ ThemeData actionButtonTheme(BuildContext context) => Theme.of(context).copyWith(
       buttonTheme: Theme.of(context).buttonTheme.copyWith(
           height: 48,
           minWidth: 48,
-          shape: RoundedRectangleBorder(borderRadius: borderRadius),
+          shape: RoundedRectangleBorder(
+            borderRadius: borderRadius,
+            side: BorderSide(
+              width: 1,
+              color: AbiliaColors.transparantBlack[20],
+            ),
+          ),
           buttonColor: AbiliaColors.transparantBlack[20],
           disabledColor: Colors.transparent,
           highlightColor: AbiliaColors.transparantBlack[40],
@@ -152,15 +156,16 @@ TextTheme get abiliaTextTheme => TextTheme(
       ),
     );
 
-TextStyle baseTextStyle = TextStyle(
+TextStyle baseTestStyle = const TextStyle(
   fontFamily: 'Roboto',
   color: AbiliaColors.black,
+  fontStyle: FontStyle.normal,
   letterSpacing: 0.0,
 );
 
-FontWeight light = FontWeight.w300,
-    regular = FontWeight.w400,
-    medium = FontWeight.w500;
+FontWeight get light => FontWeight.w300;
+FontWeight get regular => FontWeight.w400;
+FontWeight get medium => FontWeight.w500;
 
 Map<int, ThemeData> weekDayTheme(BuildContext context) => {
       DateTime.monday: _dayTheme(context, AbiliaColors.green),
