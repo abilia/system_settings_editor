@@ -128,13 +128,6 @@ TextTheme get abiliaTextTheme => TextTheme(
         height: 28.0 / 16.0,
         fontWeight: regular,
       ),
-      button: baseTextStyle.copyWith(
-          fontSize: 14.0, fontWeight: medium, color: AbiliaColors.white),
-      subtitle: baseTextStyle.copyWith(
-        fontSize: 14.0,
-        height: 20.0 / 14.0,
-        fontWeight: medium,
-      ),
       body1: baseTextStyle.copyWith(
         fontSize: 14.0,
         height: 20.0 / 14.0,
@@ -144,6 +137,13 @@ TextTheme get abiliaTextTheme => TextTheme(
         fontSize: 12.0,
         height: 16.0 / 12.0,
         fontWeight: regular,
+      ),
+      button: baseTextStyle.copyWith(
+          fontSize: 14.0, fontWeight: medium, color: AbiliaColors.white),
+      subtitle: baseTextStyle.copyWith(
+        fontSize: 14.0,
+        height: 20.0 / 14.0,
+        fontWeight: medium,
       ),
       overline: baseTextStyle.copyWith(
         fontSize: 10.0,

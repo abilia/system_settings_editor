@@ -6,7 +6,7 @@ import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components/all.dart';
 
 class Agenda extends StatefulWidget {
-  final double cardHeight = 80.0;
+  final double cardHeight = 56.0;
 
   @override
   _AgendaState createState() => _AgendaState();
@@ -89,7 +89,7 @@ class _AgendaState extends State<Agenda> {
                                     state.isToday ? scrollController : null,
                                 physics: const AlwaysScrollableScrollPhysics(),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 16),
+                                    horizontal: 12, vertical: 7),
                                 itemCount: activities.length,
                                 itemBuilder: (context, index) => ActivityCard(
                                   activityOccasion: activities[index],
