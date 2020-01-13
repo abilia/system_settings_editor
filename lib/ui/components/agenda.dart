@@ -148,8 +148,6 @@ class FullDayContainer extends StatelessWidget {
                           child: ActionButton(
                             child: Text(
                               "+ ${fullDayActivities.length - 2}",
-                              style:
-                                  weekDayTheme()[day.weekday].textTheme.body2,
                             ),
                             onPressed: () {},
                           ),

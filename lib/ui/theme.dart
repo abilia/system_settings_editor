@@ -191,7 +191,7 @@ ThemeData _dayTheme(MaterialColor color,
             title: abiliaTextTheme.title.copyWith(color: textColor),
             button: abiliaTextTheme.button.copyWith(color: textColor),
             subhead: abiliaTextTheme.subhead.copyWith(color: textColor),
-            body2: abiliaTextTheme.body2.copyWith(color: textColor)));
+    ));
 
 Map<int, Brightness> getThemeAppBarBrightness() => {
       DateTime.monday: Brightness.light,
