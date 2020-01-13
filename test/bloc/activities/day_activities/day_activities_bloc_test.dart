@@ -96,32 +96,6 @@ void main() {
       );
     });
 
-    test('only loads none deleted activities', () {
-      // Arrange
-      final currentActivity = FakeActivity.onTime(today);
-      final activitiesNow =
-          Iterable<Activity>.empty().followedBy([currentActivity]);
-      final activitiesTomorrow = Iterable<Activity>.empty().followedBy([
-        FakeActivity.dayAfter(today),
-        currentActivity.copyWith(deleted: true)
-      ]);
-
-      when(mockActivityRepository.loadActivities()).thenAnswer(
-          (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
-
-      // Act
-      activitiesBloc.add(LoadActivities());
-
-      // Assert
-      expectLater(
-        dayActivitiesBloc,
-        emitsInOrder([
-          DayActivitiesUninitialized(),
-          DayActivitiesLoaded(activitiesNow, today),
-        ]),
-      );
-    });
-
     test('next day loads next days activities', () async {
       // Arrange
       final activitiesNow =
