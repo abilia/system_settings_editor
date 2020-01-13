@@ -50,11 +50,10 @@ class AllDayList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     ActionButton(
-                      child: Text("Close"),
+                      child: Text(Translator.of(context).translate.close),
                       width: 65,
                       onPressed: () {
-                        final navigator = Navigator.of(context);
-                        navigator.pop();
+                        Navigator.of(context).pop();
                       },
                     ),
                     Column(
