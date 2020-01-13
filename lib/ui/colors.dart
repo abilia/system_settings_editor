@@ -5,11 +5,11 @@ class AbiliaColors {
   static const MaterialColor red = MaterialColor(
     _redPrimaryValue,
     <int, Color>{
-        0: Color(0xFFFAE8EC),
-       20: Color(0xFFF0BBC7),
-       40: Color(0xFFE68EA2),
-       60: Color(0xFFF34863),
-       80: Color(0xFFD33458),
+      0: Color(0xFFFAE8EC),
+      20: Color(0xFFF0BBC7),
+      40: Color(0xFFE68EA2),
+      60: Color(0xFFF34863),
+      80: Color(0xFFD33458),
       100: Color(_redPrimaryValue),
       120: Color(0xFFA6062A),
       140: Color(0xFF810521),
@@ -23,11 +23,11 @@ class AbiliaColors {
   static const MaterialColor pink = MaterialColor(
     _pinkPrimaryValue,
     <int, Color>{
-        0: Color(0xFFFCEAF4),
-       20: Color(0xFFF7C1DE),
-       40: Color(0xFFF298C8),
-       60: Color(0xFFED6FB2),
-       80: Color(0xFFE8469C),
+      0: Color(0xFFFCEAF4),
+      20: Color(0xFFF7C1DE),
+      40: Color(0xFFF298C8),
+      60: Color(0xFFED6FB2),
+      80: Color(0xFFE8469C),
       100: Color(_pinkPrimaryValue),
       120: Color(0xFFBA196F),
       140: Color(0xFF911456),
@@ -41,11 +41,11 @@ class AbiliaColors {
   static const MaterialColor purple = MaterialColor(
     _purplePrimaryValue,
     <int, Color>{
-        0: Color(0xFFF2E9F5),
-       20: Color(0xFFDABFE1),
-       40: Color(0xFFC295CD),
-       60: Color(0xFFA96AB9),
-       80: Color(0xFF9140A5),
+      0: Color(0xFFF2E9F5),
+      20: Color(0xFFDABFE1),
+      40: Color(0xFFC295CD),
+      60: Color(0xFFA96AB9),
+      80: Color(0xFF9140A5),
       100: Color(_purplePrimaryValue),
       120: Color(0xFF641377),
       140: Color(0xFF4E0F5D),
@@ -59,11 +59,11 @@ class AbiliaColors {
   static const MaterialColor darkBlue = MaterialColor(
     _darkBluePrimaryValue,
     <int, Color>{
-        0: Color(0xFFE9EBF5),
-       20: Color(0xFFBEC5E1),
-       40: Color(0xFF939FCD),
-       60: Color(0xFF6878B9),
-       80: Color(0xFF3D52A5),
+      0: Color(0xFFE9EBF5),
+      20: Color(0xFFBEC5E1),
+      40: Color(0xFF939FCD),
+      60: Color(0xFF6878B9),
+      80: Color(0xFF3D52A5),
       100: Color(_darkBluePrimaryValue),
       120: Color(0xFF102577),
       140: Color(0xFF0D1D5D),
@@ -77,11 +77,11 @@ class AbiliaColors {
   static const MaterialColor blue = MaterialColor(
     _bluePrimaryValue,
     <int, Color>{
-        0: Color(0xFFE8F4FC),
-       20: Color(0xFFBBDEF8),
-       40: Color(0xFF8EC8F4),
-       60: Color(0xFF61B2F0),
-       80: Color(0xFF349CEC),
+      0: Color(0xFFE8F4FC),
+      20: Color(0xFFBBDEF8),
+      40: Color(0xFF8EC8F4),
+      60: Color(0xFF61B2F0),
+      80: Color(0xFF349CEC),
       100: Color(_bluePrimaryValue),
       120: Color(0xFF066FBE),
       140: Color(0xFF055694),
@@ -95,11 +95,11 @@ class AbiliaColors {
   static const MaterialColor cyan = MaterialColor(
     _cyanPrimaryValue,
     <int, Color>{
-        0: Color(0xFFE9FCFC),
-       20: Color(0xFFBEF6F6),
-       40: Color(0xFF94F0F0),
-       60: Color(0xFF69EAEA),
-       80: Color(0xFF3EE4E4),
+      0: Color(0xFFE9FCFC),
+      20: Color(0xFFBEF6F6),
+      40: Color(0xFF94F0F0),
+      60: Color(0xFF69EAEA),
+      80: Color(0xFF3EE4E4),
       100: Color(_cyanPrimaryValue),
       120: Color(0xFF11B6B6),
       140: Color(0xFF0D8E8E),
@@ -203,10 +203,10 @@ class AbiliaColors {
   static const MaterialColor black = MaterialColor(
     _blackPrimaryValue,
     <int, Color>{
-       60: Color(0xFF666666),
-       75: Color(0xFF414141),
-       80: Color(0xFF333333),
-       90: Color(0xFF191919),
+      60: Color(0xFF666666),
+      75: Color(0xFF414141),
+      80: Color(0xFF333333),
+      90: Color(0xFF191919),
       100: Color(_blackPrimaryValue),
     },
   );
@@ -214,10 +214,10 @@ class AbiliaColors {
   static const MaterialColor transparantBlack = MaterialColor(
     _blackPrimaryValue,
     <int, Color>{
-        5: Color(0x0C000000),
-       10: Color(0x0D000000),
-       20: Color(0x33000000),
-       40: Color(0x66000000),
+      5: Color(0x0C000000),
+      10: Color(0x0D000000),
+      20: Color(0x33000000),
+      40: Color(0x66000000),
       100: Color(_blackPrimaryValue),
     },
   );
@@ -237,8 +237,10 @@ class AbiliaColors {
   static const MaterialColor transparantWhite = MaterialColor(
     _whitePrimaryValue,
     <int, Color>{
-      20:  Color(0x33FFFFFF),
-      50:  Color(0x7FFFFFFF),
+      10: Color(0x19FFFFFF),
+      20: Color(0x33FFFFFF),
+      25: Color(0x40FFFFFF),
+      50: Color(0x7FFFFFFF),
       100: Color(_whitePrimaryValue),
     },
   );

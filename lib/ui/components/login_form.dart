@@ -111,7 +111,7 @@ class _LoginFormState extends State<LoginForm> {
                                   ? Icons.visibility
                                   : Icons.visibility_off),
                               onPressed: _onHidePasswordChanged,
-                              themeData: showHideButtonTheme(),
+                              themeData: showHideButtonTheme,
                             )),
                     ],
                   ),

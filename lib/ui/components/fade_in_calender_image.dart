@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
 
+ImageProvider get placeholderImage =>
+    const ExactAssetImage('assets/graphics/seagull_icon_gray.png');
+
 class FadeInCalenderImage extends StatelessWidget {
   final String imageFileId;
   final bool isThumb;
@@ -26,8 +29,7 @@ class FadeInCalenderImage extends StatelessWidget {
                       : imageUrl(state.userRepository.baseUrl, state.userId,
                           imageFileId),
                   headers: authHeader(state.token)),
-              placeholder:
-                  ExactAssetImage('assets/graphics/seagull_icon_gray.png'),
+              placeholder: placeholderImage,
             )
           : Container(),
     );

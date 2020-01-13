@@ -11,6 +11,8 @@ abstract class Translated {
   String get infoText2;
   String get login;
   String get logout;
+  String get menu;
+  String get close;
   String get wrongCredentials;
   String get now;
   String get fullDay;
@@ -31,6 +33,8 @@ class English extends Translated {
       infoText2 = ' account to Log in',
       login = 'Log in',
       logout = 'Log out',
+      menu = 'Menu',
+      close = 'Close',
       wrongCredentials =
           'Your username/email or password is not correct. Please, try another one.',
       now = 'now',
@@ -50,6 +54,8 @@ class Swedish extends Translated {
       infoText2 = '-konto för att logga in',
       login = 'Logga in',
       logout = 'Logga ut',
+      menu = 'Meny',
+      close = 'Stäng',
       wrongCredentials = 'Fel användarnamn eller lösenord',
       now = 'nu',
       fullDay = 'Heldag',

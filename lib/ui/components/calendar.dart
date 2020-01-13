@@ -52,7 +52,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
       child: BlocBuilder<ClockBloc, DateTime>(
         builder: (context, now) => BlocBuilder<DayPickerBloc, DateTime>(
           builder: (context, pickedDay) {
-            final themeData = weekDayTheme()[pickedDay.weekday];
+            final themeData = weekDayTheme[pickedDay.weekday];
             return AnimatedTheme(
               data: themeData,
               child: Scaffold(
@@ -73,10 +73,9 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                             size: 32,
                           ),
                           onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => LogoutPage()),
+                            MaterialPageRoute(builder: (context) => MenuPage()),
                           ),
-                          themeData: menuButtonTheme(),
+                          themeData: menuButtonTheme,
                         ),
                         const SizedBox(
                           width: 48,
