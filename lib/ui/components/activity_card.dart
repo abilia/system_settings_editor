@@ -11,35 +11,25 @@ class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
   final double height;
 
-  const ActivityCard({Key key, this.activityOccasion, this.height = 56.0})
+  const ActivityCard({Key key, this.activityOccasion, this.height})
       : assert(activityOccasion != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final activity = activityOccasion.activity;
     final occasion = activityOccasion.occasion;
-    final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
-    final start = activity.start;
-    final end = activity.end;
-    final hasImage = activity.fileId != null;
     return Theme(
       data: pickTheme(context: context, occasion: occasion),
       child: Builder(
-        builder: (context) => buildCard(
-            hasImage, occasion, activity, context, timeFormat, start, end),
+        builder: (context) => buildCard(activityOccasion, context),
       ),
     );
   }
 
-  Card buildCard(
-      bool hasImage,
-      Occasion occasion,
-      Activity activity,
-      BuildContext context,
-      DateFormat timeFormat,
-      DateTime start,
-      DateTime end) {
+  Card buildCard(ActivityOccasion activityOccasion, BuildContext context) {
+    final activity = activityOccasion.activity;
+    final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
+    final hasImage = activity.fileId != null;
     return Card(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
@@ -49,7 +39,7 @@ class ActivityCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 4.0),
                 child: AnimatedOpacity(
-                  opacity: occasion == Occasion.past ? .5 : 1,
+                  opacity: activityOccasion.occasion == Occasion.past ? .5 : 1,
                   child: FadeInCalenderImage(
                     imageFileId: activity.fileId,
                     width: 48,
@@ -79,8 +69,8 @@ class ActivityCard extends StatelessWidget {
                             activity.fullDay
                                 ? Translator.of(context).translate.fullDay
                                 : activity.hasEndTime
-                                    ? '${timeFormat.format(start)} - ${timeFormat.format(end)}'
-                                    : '${timeFormat.format(start)}',
+                                    ? '${timeFormat.format(activity.start)} - ${timeFormat.format(activity.end)}'
+                                    : '${timeFormat.format(activity.start)}',
                             style: Theme.of(context)
                                 .textTheme
                                 .body2

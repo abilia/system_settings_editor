@@ -58,40 +58,38 @@ ButtonThemeData get baseButtonTheme => ButtonThemeData(
       highlightColor: AbiliaColors.red[120],
     );
 
-ButtonThemeData actionButtonTheme(BuildContext context) =>
-    Theme.of(context).buttonTheme.copyWith(
-        height: 48,
-        minWidth: 48,
-        shape: RoundedRectangleBorder(
-          borderRadius: borderRadius,
-          side: BorderSide(
-            width: 1,
-            color: AbiliaColors.transparantBlack[20],
-          ),
+ButtonThemeData get actionButtonTheme => baseButtonTheme.copyWith(
+      height: 48,
+      minWidth: 48,
+      shape: RoundedRectangleBorder(
+        borderRadius: borderRadius,
+        side: BorderSide(
+          width: 1,
+          color: AbiliaColors.transparantBlack[20],
         ),
-        buttonColor: AbiliaColors.transparantBlack[20],
-        disabledColor: Colors.transparent,
-        highlightColor: AbiliaColors.transparantBlack[40],
-        textTheme: ButtonTextTheme.primary);
-
-ThemeData nowButtonTheme(BuildContext context) => Theme.of(context).copyWith(
-      buttonTheme: actionButtonTheme(context),
-      buttonColor: AbiliaColors.red,
-      disabledColor: AbiliaColors.red[40],
-      highlightColor: AbiliaColors.red[120],
+      ),
+      buttonColor: AbiliaColors.transparantBlack[20],
+      disabledColor: Colors.transparent,
+      highlightColor: AbiliaColors.transparantBlack[40],
+      textTheme: ButtonTextTheme.primary,
     );
 
-ThemeData showHideButtonTheme(BuildContext context) {
-  final theme = Theme.of(context);
-  final textTheme = theme.textTheme;
-  return theme.copyWith(
-      buttonTheme: actionButtonTheme(context),
-      textTheme: textTheme.copyWith(
-          button: textTheme.button.copyWith(color: AbiliaColors.black[75])));
-}
+ThemeData get nowButtonTheme => abiliaTheme.copyWith(
+    buttonTheme: actionButtonTheme,
+    buttonColor: AbiliaColors.red,
+    disabledColor: AbiliaColors.red[40],
+    highlightColor: AbiliaColors.red[120],
+    textTheme: abiliaTextTheme.copyWith(
+        button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white)));
 
-ThemeData menuButtonTheme(BuildContext context) => Theme.of(context).copyWith(
-    buttonTheme: actionButtonTheme(context),
+ThemeData get showHideButtonTheme => abiliaTheme.copyWith(
+    buttonTheme: actionButtonTheme,
+    textTheme: abiliaTheme.textTheme.copyWith(
+        button: abiliaTheme.textTheme.button
+            .copyWith(color: AbiliaColors.black[75])));
+
+ThemeData get menuButtonTheme => abiliaTheme.copyWith(
+    buttonTheme: actionButtonTheme,
     buttonColor: AbiliaColors.transparantWhite[20]);
 
 BottomAppBarTheme get bottomAppBarTheme =>
@@ -168,24 +166,40 @@ FontWeight get light => FontWeight.w300;
 FontWeight get regular => FontWeight.w400;
 FontWeight get medium => FontWeight.w500;
 
-Map<int, ThemeData> weekDayTheme(BuildContext context) => {
-      DateTime.monday: _dayTheme(context, AbiliaColors.green),
-      DateTime.tuesday: _dayTheme(context, AbiliaColors.blue),
+Map<int, ThemeData> get weekDayTheme => {
+      DateTime.monday: _dayTheme(AbiliaColors.green,
+          textColor: AbiliaColors.black, primaryColor: AbiliaColors.white),
+      DateTime.tuesday: _dayTheme(AbiliaColors.blue),
       DateTime.wednesday:
-          _dayTheme(context, AbiliaColors.white, textColor: AbiliaColors.black),
-      DateTime.thursday: _dayTheme(context, AbiliaColors.brown),
-      DateTime.friday: _dayTheme(context, AbiliaColors.yellow),
-      DateTime.saturday: _dayTheme(context, AbiliaColors.pink),
-      DateTime.sunday: _dayTheme(context, AbiliaColors.red),
+          _dayTheme(AbiliaColors.white, textColor: AbiliaColors.black),
+      DateTime.thursday: _dayTheme(AbiliaColors.brown),
+      DateTime.friday: _dayTheme(AbiliaColors.yellow,
+          textColor: AbiliaColors.black, primaryColor: AbiliaColors.white),
+      DateTime.saturday:
+          _dayTheme(AbiliaColors.pink, textColor: AbiliaColors.black),
+      DateTime.sunday: _dayTheme(AbiliaColors.red),
     };
 
-ThemeData _dayTheme(BuildContext context, MaterialColor color,
-        {MaterialColor textColor = AbiliaColors.white}) =>
-    Theme.of(context).copyWith(
-        appBarTheme: Theme.of(context).appBarTheme.copyWith(
-              color: color,
-            ),
+ThemeData _dayTheme(MaterialColor color,
+        {MaterialColor textColor = AbiliaColors.white,
+        MaterialColor primaryColor = AbiliaColors.black}) =>
+    abiliaTheme.copyWith(
+        primaryColor: primaryColor,
+        appBarTheme: abiliaTheme.appBarTheme.copyWith(
+          color: color,
+        ),
         scaffoldBackgroundColor: color[20],
         textTheme: abiliaTextTheme.copyWith(
             title: abiliaTextTheme.title.copyWith(color: textColor),
+            button: abiliaTextTheme.button.copyWith(color: textColor),
             subhead: abiliaTextTheme.subhead.copyWith(color: textColor)));
+
+Map<int, Brightness> getThemeAppBarBrightness() => {
+      DateTime.monday: Brightness.light,
+      DateTime.tuesday: Brightness.dark,
+      DateTime.wednesday: Brightness.light,
+      DateTime.thursday: Brightness.dark,
+      DateTime.friday: Brightness.light,
+      DateTime.saturday: Brightness.light,
+      DateTime.sunday: Brightness.dark,
+    };
