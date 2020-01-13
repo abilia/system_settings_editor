@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/pages/all.dart';
 
 class Agenda extends StatefulWidget {
   final double cardHeight = 56.0;
@@ -149,7 +149,19 @@ class FullDayContainer extends StatelessWidget {
                             child: Text(
                               "+ ${fullDayActivities.length - 2}",
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              final navigator = Navigator.of(context);
+                              await navigator.push(
+                                MaterialPageRoute(
+                                  builder: (context) => AllDayList(
+                                    pickedDay: day,
+                                    allDayActivities: fullDayActivities,
+                                    cardHeight: this.cardHeight
+                                  ),
+                                  fullscreenDialog: true,
+                                ),
+                              );
+                            },
                           ),
                         )
                       : SizedBox(
