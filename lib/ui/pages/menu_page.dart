@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -11,55 +12,57 @@ import 'package:seagull/ui/theme.dart';
 
 class MenuPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: MenuAppBar(height: 68.0),
-        body: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-              builder: (context, state) {
-            final futureUser = state is Authenticated
-                ? state.userRepository.me(state.token)
-                : GetIt.I<UserDb>().getUser();
-            return Column(
-              children: <Widget>[
-                SizedBox(height: 32.0),
-                ProfilePicture(state, futureUser),
-                SizedBox(height: 24.0),
-                NameAndEmail(futureUser),
-                Spacer(),
-                LogoutButton(),
-              ],
-            );
-          }),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: MenuAppBar(height: 68.0),
+      body: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 32.0),
+            ProfilePictureNameAndEmail(),
+            Spacer(),
+            LogoutButton(),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }
 
-class NameAndEmail extends StatelessWidget {
-  final Future<User> _futureUser;
-  const NameAndEmail(this._futureUser, {Key key}) : super(key: key);
+class ProfilePictureNameAndEmail extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => FutureBuilder(
-        future: _futureUser,
-        builder: (context, AsyncSnapshot<User> snapshot) {
-          return Column(
-            children: <Widget>[
-              Text(
-                snapshot.data?.name ?? '',
-                style: Theme.of(context).textTheme.title,
-              ),
-              SizedBox(height: 4.0),
-              Text(
-                snapshot.data?.username ?? '',
-                style: Theme.of(context)
-                    .textTheme
-                    .body2
-                    .copyWith(color: AbiliaColors.black[75]),
-              ),
-            ],
-          );
-        },
-      );
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      builder: (context, state) => FutureBuilder(
+        future: state is Authenticated
+            ? state.userRepository.me(state.token)
+            : GetIt.I<UserDb>().getUser(),
+        builder: (context, AsyncSnapshot<User> userSnapshot) => Column(
+          children: <Widget>[
+            ProfilePicture(
+                state is AuthenticationInitialized
+                    ? state.userRepository.baseUrl
+                    : null,
+                userSnapshot.data),
+            SizedBox(height: 24.0),
+            Text(
+              userSnapshot.data?.name ?? '',
+              style: Theme.of(context).textTheme.title,
+            ),
+            SizedBox(height: 4.0),
+            Text(
+              userSnapshot.data?.username ?? '',
+              style: Theme.of(context)
+                  .textTheme
+                  .body2
+                  .copyWith(color: AbiliaColors.black[75]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class LogoutButton extends StatelessWidget {
@@ -87,10 +90,13 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   const MenuAppBar({Key key, @required this.height}) : super(key: key);
   @override
-  Widget build(BuildContext context) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).appBarTheme.color,
-        ),
+  Size get preferredSize => Size.fromHeight(height);
+  @override
+  Widget build(BuildContext context) {
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Container(
+        decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
@@ -113,32 +119,33 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ),
-      );
-
-  @override
-  Size get preferredSize => Size.fromHeight(height);
+      ),
+    );
+  }
 }
 
 class CloseButton extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Theme(
-        data: Theme.of(context)
-            .copyWith(buttonTheme: actionButtonTheme.copyWith(minWidth: 65)),
-        child: FlatButton(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
-          color: AbiliaColors.transparantWhite[20],
-          shape: RoundedRectangleBorder(
-            borderRadius: borderRadius,
-            side: BorderSide(
-              width: 1,
-              color: AbiliaColors.transparantWhite[10],
-            ),
+  Widget build(BuildContext context) {
+    return Theme(
+      data: Theme.of(context)
+          .copyWith(buttonTheme: actionButtonTheme.copyWith(minWidth: 65)),
+      child: FlatButton(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+        color: AbiliaColors.transparantWhite[20],
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius,
+          side: BorderSide(
+            width: 1,
+            color: AbiliaColors.transparantWhite[10],
           ),
-          child: Text(
-            Translator.of(context).translate.close,
-            style: Theme.of(context).textTheme.button,
-          ),
-          onPressed: () => Navigator.of(context).maybePop(),
         ),
-      );
+        child: Text(
+          Translator.of(context).translate.close,
+          style: Theme.of(context).textTheme.button,
+        ),
+        onPressed: () => Navigator.of(context).maybePop(),
+      ),
+    );
+  }
 }
