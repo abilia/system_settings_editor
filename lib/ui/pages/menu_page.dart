@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -8,13 +7,15 @@ import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
 
 class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MenuAppBar(height: 68.0),
+      appBar: AbiliaAppBar(
+        height: 68.0,
+        title: Translator.of(context).translate.menu,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Column(
@@ -82,70 +83,6 @@ class LogoutButton extends StatelessWidget {
         BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
         Navigator.of(context).maybePop();
       },
-    );
-  }
-}
-
-class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final double height;
-  const MenuAppBar({Key key, @required this.height}) : super(key: key);
-  @override
-  Size get preferredSize => Size.fromHeight(height);
-  @override
-  Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
-      child: Container(
-        decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-            child: Stack(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: CloseButton(),
-                ),
-                Center(
-                  child: Text(
-                    Translator.of(context).translate.menu,
-                    style: Theme.of(context)
-                        .textTheme
-                        .title
-                        .copyWith(color: AbiliaColors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CloseButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context)
-          .copyWith(buttonTheme: actionButtonTheme.copyWith(minWidth: 65)),
-      child: FlatButton(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
-        color: AbiliaColors.transparantWhite[20],
-        shape: RoundedRectangleBorder(
-          borderRadius: borderRadius,
-          side: BorderSide(
-            width: 1,
-            color: AbiliaColors.transparantWhite[10],
-          ),
-        ),
-        child: Text(
-          Translator.of(context).translate.close,
-          style: Theme.of(context).textTheme.button,
-        ),
-        onPressed: () => Navigator.of(context).maybePop(),
-      ),
     );
   }
 }

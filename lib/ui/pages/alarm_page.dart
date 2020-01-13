@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/theme.dart';
 
 class AlarmPage extends StatelessWidget {
   final Activity activity;
@@ -20,10 +22,10 @@ class AlarmPage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return Scaffold(
       key: TestKey.onScreenAlarm,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text(translate.alarm),
+      appBar: AbiliaAppBar(
+        height: 68.0,
+        title: translate.alarm,
+        hasClose: false,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -37,18 +39,17 @@ class AlarmPage extends StatelessWidget {
                 TimeText(
                   date: activity.start,
                   active: atStartTime,
-                  textStyle: textStyle,
                 ),
                 if (activity.hasEndTime)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text('-', style: textStyle),
+                    child:
+                        Text('-', style: Theme.of(context).textTheme.headline),
                   ),
                 if (activity.hasEndTime)
                   TimeText(
                     date: activity.end,
                     active: atEndTime,
-                    textStyle: textStyle,
                   ),
               ],
             ),
@@ -59,10 +60,10 @@ class AlarmPage extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: AbiliaColors.white,
                     border: Border.all(
-                      color: AbiliaColors.transparantBlack[5],
+                      color: AbiliaColors.transparantBlack[20],
                       width: 1.0,
                     ),
-                    borderRadius: BorderRadius.circular(16)),
+                    borderRadius: BorderRadius.circular(10)),
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
@@ -74,9 +75,14 @@ class AlarmPage extends StatelessWidget {
                           style: textStyle,
                         ),
                       if (activity.fileId?.isNotEmpty == true)
+                        SizedBox(height: 32.0),
+                      if (activity.fileId?.isNotEmpty == true)
                         Expanded(
-                          child:
-                              FadeInCalenderImage(imageFileId: activity.fileId),
+                          child: FadeInCalenderImage(
+                            imageFileId: activity.fileId,
+                            width: 287.0,
+                            height: 274.0,
+                          ),
                         )
                     ],
                   ),
@@ -87,25 +93,7 @@ class AlarmPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FractionallySizedBox(
-            widthFactor: 0.55,
-            child: FlatButton(
-              color: AbiliaColors.green,
-              child: Text(
-                translate.ok,
-                style: Theme.of(context)
-                    .textTheme
-                    .subhead
-                    .copyWith(color: AbiliaColors.white),
-              ),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ),
-        ),
-      ),
+      bottomNavigationBar: OkBottomBar(),
     );
   }
 
