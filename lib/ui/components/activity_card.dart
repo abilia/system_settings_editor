@@ -35,19 +35,23 @@ class ActivityCard extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
         child: Row(
           children: <Widget>[
-            if (hasImage)
-              Padding(
-                padding: const EdgeInsets.only(left: 4.0),
-                child: AnimatedOpacity(
-                  opacity: activityOccasion.occasion == Occasion.past ? .5 : 1,
-                  child: FadeInCalenderImage(
-                    imageFileId: activity.fileId,
-                    width: 48,
+            hasImage
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: AnimatedOpacity(
+                      opacity:
+                          activityOccasion.occasion == Occasion.past ? .5 : 1,
+                      child: FadeInCalenderImage(
+                        imageFileId: activity.fileId,
+                        width: 48,
+                        height: 48,
+                      ),
+                      duration: const Duration(seconds: 1),
+                    ),
+                  )
+                : SizedBox(
                     height: 48,
                   ),
-                  duration: const Duration(seconds: 1),
-                ),
-              ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),

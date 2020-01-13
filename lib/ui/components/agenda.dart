@@ -45,20 +45,9 @@ class _AgendaState extends State<Agenda> {
           return Column(
             children: <Widget>[
               if (fullDayActivities.isNotEmpty)
-                Container(
-                  decoration:
-                      BoxDecoration(color: Theme.of(context).appBarTheme.color),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 8.0),
-                    child: Column(
-                      children: fullDayActivities
-                          .map((ao) => ActivityCard(
-                              activityOccasion: ao, height: widget.cardHeight))
-                          .toList(),
-                    ),
-                  ),
-                ),
+                FullDayContainer(
+                    fullDayActivities: fullDayActivities,
+                    cardHeight: widget.cardHeight),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: _refresh,
@@ -118,5 +107,51 @@ class _AgendaState extends State<Agenda> {
     _scrollPositionBloc
         .add(ScrollPositionUpdated(scrollNotification.metrics.pixels));
     return false;
+  }
+}
+
+class FullDayContainer extends StatelessWidget {
+  const FullDayContainer({
+    Key key,
+    @required this.fullDayActivities,
+    @required this.cardHeight,
+  }) : super(key: key);
+
+  final List<ActivityOccasion> fullDayActivities;
+  final double cardHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    final firstTwo = this.fullDayActivities.take(2);
+    return Container(
+      decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
+      child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
+          child: Row(
+            children: firstTwo
+                .map<Widget>((fd) => Flexible(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 6.0),
+                      child: ActivityCard(activityOccasion: fd, height: 56),
+                    )))
+                .toList()
+                  ..add(fullDayActivities.length >= 3
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 6),
+                          child: ActionButton(
+                            child: Text(
+                              "+${fullDayActivities.length - 2}",
+                              style: Theme.of(context).textTheme.body2,
+                            ),
+                            onPressed: () {},
+                          ),
+                        )
+                      : SizedBox(
+                          height: 56,
+                        )),
+          )),
+    );
   }
 }
