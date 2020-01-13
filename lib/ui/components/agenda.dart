@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/theme.dart';
 
 class Agenda extends StatefulWidget {
   final double cardHeight = 56.0;
@@ -46,8 +47,10 @@ class _AgendaState extends State<Agenda> {
             children: <Widget>[
               if (fullDayActivities.isNotEmpty)
                 FullDayContainer(
-                    fullDayActivities: fullDayActivities,
-                    cardHeight: widget.cardHeight),
+                  fullDayActivities: fullDayActivities,
+                  cardHeight: widget.cardHeight,
+                  day: state.day,
+                ),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: _refresh,
@@ -111,14 +114,16 @@ class _AgendaState extends State<Agenda> {
 }
 
 class FullDayContainer extends StatelessWidget {
-  const FullDayContainer({
-    Key key,
-    @required this.fullDayActivities,
-    @required this.cardHeight,
-  }) : super(key: key);
+  const FullDayContainer(
+      {Key key,
+      @required this.fullDayActivities,
+      @required this.cardHeight,
+      @required this.day})
+      : super(key: key);
 
   final List<ActivityOccasion> fullDayActivities;
   final double cardHeight;
+  final DateTime day;
 
   @override
   Widget build(BuildContext context) {
@@ -142,8 +147,9 @@ class FullDayContainer extends StatelessWidget {
                               vertical: 0, horizontal: 6),
                           child: ActionButton(
                             child: Text(
-                              "+${fullDayActivities.length - 2}",
-                              style: Theme.of(context).textTheme.body2,
+                              "+ ${fullDayActivities.length - 2}",
+                              style:
+                                  weekDayTheme()[day.weekday].textTheme.body2,
                             ),
                             onPressed: () {},
                           ),
