@@ -109,8 +109,7 @@ class TimeText extends StatelessWidget {
   Widget build(BuildContext context) {
     final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
     return Container(
-      constraints: BoxConstraints(minWidth: 92.0),
-      height: 52.0,
+      constraints: BoxConstraints(minWidth: 92.0, minHeight: 52.0),
       foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
@@ -118,11 +117,14 @@ class TimeText extends StatelessWidget {
             width: 2.0,
             style: active ? BorderStyle.solid : BorderStyle.none),
       ),
-      child: Center(
-        child: Text(
-          timeFormat.format(date),
-          style: Theme.of(context).textTheme.headline,
-          textAlign: TextAlign.center,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        child: Center(
+          child: Text(
+            timeFormat.format(date),
+            style: Theme.of(context).textTheme.headline,
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );
