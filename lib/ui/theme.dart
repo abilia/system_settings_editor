@@ -195,19 +195,39 @@ Map<int, ThemeData> get weekDayTheme => {
       DateTime.sunday: _dayTheme(AbiliaColors.red),
     };
 
+Map<int, ThemeData> allDayTheme() => {
+      DateTime.monday: _dayTheme(AbiliaColors.green,
+          textColor: AbiliaColors.black,
+          primaryColor: AbiliaColors.white,
+          scaffoldShade: 120),
+      DateTime.tuesday: _dayTheme(AbiliaColors.blue, scaffoldShade: 120),
+      DateTime.wednesday: _dayTheme(AbiliaColors.white,
+          textColor: AbiliaColors.black, scaffoldShade: 120),
+      DateTime.thursday: _dayTheme(AbiliaColors.brown, scaffoldShade: 120),
+      DateTime.friday: _dayTheme(AbiliaColors.yellow,
+          textColor: AbiliaColors.black,
+          primaryColor: AbiliaColors.white,
+          scaffoldShade: 120),
+      DateTime.saturday: _dayTheme(AbiliaColors.pink,
+          textColor: AbiliaColors.black, scaffoldShade: 120),
+      DateTime.sunday: _dayTheme(AbiliaColors.red, scaffoldShade: 120),
+    };
+
 ThemeData _dayTheme(MaterialColor color,
         {MaterialColor textColor = AbiliaColors.white,
-        MaterialColor primaryColor = AbiliaColors.black}) =>
+        MaterialColor primaryColor = AbiliaColors.black,
+        int scaffoldShade = 20}) =>
     abiliaTheme.copyWith(
         primaryColor: primaryColor,
         appBarTheme: abiliaTheme.appBarTheme.copyWith(
           color: color,
         ),
-        scaffoldBackgroundColor: color[20],
+        scaffoldBackgroundColor: color[scaffoldShade],
         textTheme: abiliaTextTheme.copyWith(
-            title: abiliaTextTheme.title.copyWith(color: textColor),
-            button: abiliaTextTheme.button.copyWith(color: textColor),
-            subhead: abiliaTextTheme.subhead.copyWith(color: textColor)));
+          title: abiliaTextTheme.title.copyWith(color: textColor),
+          button: abiliaTextTheme.button.copyWith(color: textColor),
+          subhead: abiliaTextTheme.subhead.copyWith(color: textColor),
+        ));
 
 Map<int, Brightness> getThemeAppBarBrightness() => {
       DateTime.monday: Brightness.light,

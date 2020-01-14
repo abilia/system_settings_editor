@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/pages/all.dart';
 
 class Agenda extends StatefulWidget {
   final double cardHeight = 56.0;
@@ -45,19 +46,10 @@ class _AgendaState extends State<Agenda> {
           return Column(
             children: <Widget>[
               if (fullDayActivities.isNotEmpty)
-                Container(
-                  decoration:
-                      BoxDecoration(color: Theme.of(context).appBarTheme.color),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 8.0),
-                    child: Column(
-                      children: fullDayActivities
-                          .map((ao) => ActivityCard(
-                              activityOccasion: ao, height: widget.cardHeight))
-                          .toList(),
-                    ),
-                  ),
+                FullDayContainer(
+                  fullDayActivities: fullDayActivities,
+                  cardHeight: widget.cardHeight,
+                  day: state.day,
                 ),
               Expanded(
                 child: RefreshIndicator(
@@ -118,5 +110,64 @@ class _AgendaState extends State<Agenda> {
     _scrollPositionBloc
         .add(ScrollPositionUpdated(scrollNotification.metrics.pixels));
     return false;
+  }
+}
+
+class FullDayContainer extends StatelessWidget {
+  const FullDayContainer(
+      {Key key,
+      @required this.fullDayActivities,
+      @required this.cardHeight,
+      @required this.day})
+      : super(key: key);
+
+  final List<ActivityOccasion> fullDayActivities;
+  final double cardHeight;
+  final DateTime day;
+
+  @override
+  Widget build(BuildContext context) {
+    final firstTwo = this.fullDayActivities.take(2);
+    return Container(
+      decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
+      child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
+          child: Row(
+            children: firstTwo
+                .map<Widget>((fd) => Flexible(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 6.0),
+                      child: ActivityCard(activityOccasion: fd, height: 56),
+                    )))
+                .toList()
+                  ..add(fullDayActivities.length >= 3
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 6),
+                          child: ActionButton(
+                            child: Text(
+                              "+ ${fullDayActivities.length - 2}",
+                            ),
+                            onPressed: () async {
+                              final navigator = Navigator.of(context);
+                              await navigator.push(
+                                MaterialPageRoute(
+                                  builder: (context) => AllDayList(
+                                    pickedDay: day,
+                                    allDayActivities: fullDayActivities,
+                                    cardHeight: this.cardHeight,
+                                  ),
+                                  fullscreenDialog: true,
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : SizedBox(
+                          height: 56,
+                        )),
+          )),
+    );
   }
 }
