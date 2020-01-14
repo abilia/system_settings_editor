@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
 
 class AlarmPage extends StatelessWidget {
   final Activity activity;
@@ -22,11 +22,7 @@ class AlarmPage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return Scaffold(
       key: TestKey.onScreenAlarm,
-      appBar: AbiliaAppBar(
-        height: 68.0,
-        title: translate.alarm,
-        hasClose: false,
-      ),
+      appBar: AbiliaAppBar(title: translate.alarm),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
@@ -99,4 +95,36 @@ class AlarmPage extends StatelessWidget {
 
   Spacer get padding24 => const Spacer(flex: 3);
   Spacer get padding32 => const Spacer(flex: 4);
+}
+
+class TimeText extends StatelessWidget {
+  const TimeText({
+    Key key,
+    @required this.date,
+    this.active = false,
+  }) : super(key: key);
+  final DateTime date;
+  final bool active;
+  @override
+  Widget build(BuildContext context) {
+    final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
+    return Container(
+      constraints: BoxConstraints(minWidth: 92.0),
+      height: 52.0,
+      foregroundDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+            color: AbiliaColors.red,
+            width: 2.0,
+            style: active ? BorderStyle.solid : BorderStyle.none),
+      ),
+      child: Center(
+        child: Text(
+          timeFormat.format(date),
+          style: Theme.of(context).textTheme.headline,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
 }

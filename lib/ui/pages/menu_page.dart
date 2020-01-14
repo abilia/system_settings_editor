@@ -13,8 +13,8 @@ class MenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AbiliaAppBar(
-        height: 68.0,
         title: Translator.of(context).translate.menu,
+        hasClose: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),

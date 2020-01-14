@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
-
-ImageProvider get placeholderImage =>
-    const ExactAssetImage('assets/graphics/seagull_icon_gray.png');
+import 'package:transparent_image/transparent_image.dart';
 
 class FadeInCalenderImage extends StatelessWidget {
   final String imageFileId;
-  final bool isThumb;
   final double width, height;
   FadeInCalenderImage({
     @required this.imageFileId,
     this.width,
     this.height,
-  }) : isThumb = width != null && height != null;
+  });
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
@@ -22,14 +19,37 @@ class FadeInCalenderImage extends StatelessWidget {
               width: width,
               height: height,
               image: NetworkImage(
-                  isThumb
-                      ? thumbImageUrl(state.userRepository.baseUrl,
-                          state.userId, imageFileId,
-                          height: height.ceil(), width: width.ceil())
-                      : imageUrl(state.userRepository.baseUrl, state.userId,
-                          imageFileId),
+                  imageUrl(
+                      state.userRepository.baseUrl, state.userId, imageFileId),
                   headers: authHeader(state.token)),
-              placeholder: placeholderImage,
+              placeholder: MemoryImage(kTransparentImage),
+            )
+          : Container(),
+    );
+  }
+}
+
+class FadeInThumb extends StatelessWidget {
+  final String imageFileId;
+  final double width, height;
+  FadeInThumb({
+    @required this.imageFileId,
+    this.width,
+    this.height,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      builder: (context, state) => (state is Authenticated)
+          ? FadeInImage(
+              width: width,
+              height: height,
+              image: NetworkImage(
+                  thumbImageUrl(
+                      state.userRepository.baseUrl, state.userId, imageFileId,
+                      height: height.ceil(), width: width.ceil()),
+                  headers: authHeader(state.token)),
+              placeholder: MemoryImage(kTransparentImage),
             )
           : Container(),
     );
