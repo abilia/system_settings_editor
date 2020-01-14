@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
@@ -101,7 +103,7 @@ class AlarmPage extends StatelessWidget {
                     .subhead
                     .copyWith(color: AbiliaColors.white),
               ),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => AlarmNavigator.pop(context),
             ),
           ),
         ),
@@ -111,4 +113,37 @@ class AlarmPage extends StatelessWidget {
 
   Spacer get padding24 => const Spacer(flex: 3);
   Spacer get padding32 => const Spacer(flex: 4);
+}
+
+class AlarmNavigator {
+  static final LinkedHashMap<String, Route<dynamic>> routes = LinkedHashMap();
+
+  static Future<T> push<T extends Object>(
+      BuildContext context, Route<T> route, String id) {
+    print('Put route $id');
+    routes.putIfAbsent(id, () => route);
+    return Navigator.of(context).push(route);
+  }
+
+  static void removeRoute(BuildContext context, String id) {
+    final route = routes.remove(id);
+    if (route != null) {
+      print('Removing route: $id');
+      Navigator.of(context).removeRoute(route);
+      print('Route $id is removed');
+    } else {
+      print('No route to remove!');
+    }
+  }
+
+  static bool pop<T extends Object>(BuildContext context) {
+    final firstKey = routes.keys.first;
+    if (firstKey != null) {
+      print('Popping $firstKey');
+      routes.remove(firstKey);
+    } else {
+      print('No route when popping');
+    }
+    return Navigator.of(context).pop();
+  }
 }

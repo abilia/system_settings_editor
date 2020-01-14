@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
@@ -85,20 +87,25 @@ class CalendarPage extends StatelessWidget {
   void _alarmListener(BuildContext context, AlarmStateBase state) async {
     if (state is AlarmState) {
       final alarm = state.alarm;
-      final navigator = Navigator.of(context);
       if (alarm is NewAlarm) {
-        await navigator.push(
-          MaterialPageRoute(
-            builder: (context) => AlarmPage(
-              activity: alarm.activity,
-              atStartTime: alarm.alarmOnStart,
-              atEndTime: !alarm.alarmOnStart,
+        AlarmNavigator.removeRoute(
+            context, "${alarm.activity.id}${alarm.alarmOnStart}");
+        await AlarmNavigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AlarmPage(
+                activity: alarm.activity,
+                atStartTime: alarm.alarmOnStart,
+                atEndTime: !alarm.alarmOnStart,
+              ),
+              fullscreenDialog: true,
             ),
-            fullscreenDialog: true,
-          ),
-        );
+            "${alarm.activity.id}${alarm.alarmOnStart}");
       } else if (alarm is NewReminder) {
-        await navigator.push(
+        AlarmNavigator.removeRoute(
+            context, "${alarm.activity.id}${alarm.reminder.inMinutes}");
+        await AlarmNavigator.push(
+          context,
           MaterialPageRoute(
             builder: (context) => ReminderPage(
               activity: alarm.activity,
@@ -106,6 +113,7 @@ class CalendarPage extends StatelessWidget {
             ),
             fullscreenDialog: true,
           ),
+          "${alarm.activity.id}${alarm.reminder.inMinutes}",
         );
       }
     }

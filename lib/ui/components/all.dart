@@ -14,3 +14,4 @@ export 'go_to_now_button.dart';
 export 'agenda.dart';
 export 'time_text.dart';
 export 'profile_picture.dart';
+export 'close_button.dart';
