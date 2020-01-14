@@ -156,7 +156,7 @@ class FullDayContainer extends StatelessWidget {
                                   builder: (context) => AllDayList(
                                     pickedDay: day,
                                     allDayActivities: fullDayActivities,
-                                    cardHeight: this.cardHeight
+                                    cardHeight: this.cardHeight,
                                   ),
                                   fullscreenDialog: true,
                                 ),

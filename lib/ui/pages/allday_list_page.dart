@@ -25,14 +25,16 @@ class AllDayList extends StatelessWidget {
     return Theme(
       data: allDayTheme()[pickedDay.weekday],
       child: Scaffold(
-        body: ListView.builder(
-          itemExtent: this.cardHeight,
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-          itemCount: allDayActivities.length,
-          itemBuilder: (context, index) => ActivityCard(
-            activityOccasion: allDayActivities[index],
-            height: this.cardHeight,
+        body: Scrollbar(
+          child: ListView.builder(
+            itemExtent: this.cardHeight,
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+            itemCount: allDayActivities.length,
+            itemBuilder: (context, index) => ActivityCard(
+              activityOccasion: allDayActivities[index],
+              height: this.cardHeight,
+            ),
           ),
         ),
         appBar: PreferredSize(
