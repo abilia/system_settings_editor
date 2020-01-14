@@ -61,6 +61,7 @@ class ActivityCard extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       activity.title,
+                      overflow: TextOverflow.ellipsis,
                       style: Theme.of(context)
                           .textTheme
                           .subhead
