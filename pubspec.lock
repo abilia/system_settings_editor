@@ -28,7 +28,7 @@ packages:
       name: bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "3.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -77,13 +77,13 @@ packages:
       name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   firebase_messaging:
     dependency: "direct main"
     description:
       path: "packages/firebase_messaging/"
       ref: ios-background-support
-      resolved-ref: "8e841b37c1efe829acaf68f5db6eecc8c557b08e"
+      resolved-ref: "3ca64a2a295350d1d72c1caf4fd866597019389c"
       url: "git://github.com/abilia/flutterfire.git"
     source: git
     version: "6.0.10"
@@ -98,7 +98,7 @@ packages:
       name: flutter_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "3.1.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -134,14 +134,14 @@ packages:
       name: get_it
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.3"
+    version: "3.1.0"
   http:
     dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.0+2"
+    version: "0.12.0+4"
   http_parser:
     dependency: transitive
     description:
@@ -184,6 +184,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.1"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   package_info:
     dependency: "direct main"
     description:
@@ -239,7 +246,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.0"
+    version: "4.0.1"
   quiver:
     dependency: transitive
     description:
@@ -253,7 +260,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.22.6"
+    version: "0.23.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -384,7 +391,7 @@ packages:
       name: url_launcher_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.5"
   url_launcher_web:
     dependency: transitive
     description:

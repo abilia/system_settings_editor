@@ -12,5 +12,6 @@ export 'widget_test_keys.dart';
 export 'backend_switches.dart';
 export 'go_to_now_button.dart';
 export 'agenda.dart';
-export 'time_text.dart';
 export 'profile_picture.dart';
+export 'abilia_app_bar.dart';
+export 'ok_bottom_bar.dart';

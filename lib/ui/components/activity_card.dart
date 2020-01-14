@@ -26,7 +26,7 @@ class ActivityCard extends StatelessWidget {
     );
   }
 
-  Card buildCard(ActivityOccasion activityOccasion, BuildContext context) {
+  Widget buildCard(ActivityOccasion activityOccasion, BuildContext context) {
     final activity = activityOccasion.activity;
     final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
     final hasImage = activity.fileId != null;
@@ -41,7 +41,7 @@ class ActivityCard extends StatelessWidget {
                     child: AnimatedOpacity(
                       opacity:
                           activityOccasion.occasion == Occasion.past ? .5 : 1,
-                      child: FadeInCalenderImage(
+                      child: FadeInThumb(
                         imageFileId: activity.fileId,
                         width: 48,
                         height: 48,

@@ -58,6 +58,15 @@ ButtonThemeData get baseButtonTheme => ButtonThemeData(
       highlightColor: AbiliaColors.red[120],
     );
 
+ButtonThemeData get greenButtonTheme => ButtonThemeData(
+      height: 48,
+      minWidth: 188,
+      shape: RoundedRectangleBorder(borderRadius: borderRadius),
+      buttonColor: AbiliaColors.green,
+      disabledColor: AbiliaColors.green[40],
+      highlightColor: AbiliaColors.green[120],
+    );
+
 ButtonThemeData get actionButtonTheme => baseButtonTheme.copyWith(
       height: 48,
       minWidth: 48,
@@ -125,7 +134,10 @@ TextTheme get abiliaTextTheme => TextTheme(
         fontWeight: medium,
       ),
       subhead: baseTextStyle.copyWith(
-          fontSize: 16.0, fontWeight: medium, height: 24.0 / 16.0),
+        fontSize: 16.0,
+        fontWeight: medium,
+        height: 24.0 / 16.0,
+      ),
       body2: baseTextStyle.copyWith(
         fontSize: 16.0,
         height: 28.0 / 16.0,
@@ -142,7 +154,10 @@ TextTheme get abiliaTextTheme => TextTheme(
         fontWeight: regular,
       ),
       button: baseTextStyle.copyWith(
-          fontSize: 14.0, fontWeight: medium, color: AbiliaColors.white),
+        fontSize: 14.0,
+        fontWeight: medium,
+        color: AbiliaColors.white,
+      ),
       subtitle: baseTextStyle.copyWith(
         fontSize: 14.0,
         height: 20.0 / 14.0,
