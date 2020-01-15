@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -8,13 +7,15 @@ import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
 
 class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MenuAppBar(height: 68.0),
+      appBar: AbiliaAppBar(
+        title: Translator.of(context).translate.menu,
+        hasClose: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Column(
@@ -82,44 +83,6 @@ class LogoutButton extends StatelessWidget {
         BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
         Navigator.of(context).maybePop();
       },
-    );
-  }
-}
-
-class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final double height;
-  const MenuAppBar({Key key, @required this.height}) : super(key: key);
-  @override
-  Size get preferredSize => Size.fromHeight(height);
-  @override
-  Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
-      child: Container(
-        decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-            child: Stack(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: AbiliaCloseButton(),
-                ),
-                Center(
-                  child: Text(
-                    Translator.of(context).translate.menu,
-                    style: Theme.of(context)
-                        .textTheme
-                        .title
-                        .copyWith(color: AbiliaColors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

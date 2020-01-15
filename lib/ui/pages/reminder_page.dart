@@ -19,11 +19,7 @@ class ReminderPage extends StatelessWidget {
     final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
     return Scaffold(
       key: TestKey.onScreenAlarm,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text(translate.reminder),
-      ),
+      appBar: AbiliaAppBar(title: translate.reminder),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
@@ -33,7 +29,7 @@ class ReminderPage extends StatelessWidget {
               child: Text(translate.inMinutes(reminderTime),
                   style: Theme.of(context)
                       .textTheme
-                      .display2
+                      .display1
                       .copyWith(color: AbiliaColors.red)),
             ),
             padding64,
@@ -57,10 +53,10 @@ class ReminderPage extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: AbiliaColors.white,
                     border: Border.all(
-                      color: AbiliaColors.transparantBlack[10],
+                      color: AbiliaColors.transparantBlack[20],
                       width: 1.0,
                     ),
-                    borderRadius: BorderRadius.circular(16)),
+                    borderRadius: BorderRadius.circular(12)),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
@@ -89,25 +85,7 @@ class ReminderPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FractionallySizedBox(
-            widthFactor: 0.55,
-            child: FlatButton(
-              color: AbiliaColors.green,
-              child: Text(
-                translate.ok,
-                style: Theme.of(context)
-                    .textTheme
-                    .subhead
-                    .copyWith(color: AbiliaColors.white),
-              ),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ),
-        ),
-      ),
+      bottomNavigationBar: OkBottomBar(),
     );
   }
 
