@@ -91,7 +91,7 @@ class AlarmPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: OkBottomBar(),
+      bottomNavigationBar: AlarmOkBottomBar(),
     );
   }
 
@@ -134,33 +134,25 @@ class TimeText extends StatelessWidget {
 }
 
 class AlarmNavigator {
-  static final LinkedHashMap<String, Route<dynamic>> routes = LinkedHashMap();
+  static final Map<String, Route<dynamic>> routes = LinkedHashMap();
 
   static Future<T> push<T extends Object>(
       BuildContext context, Route<T> route, String id) {
-    print('Put route $id');
-    routes.putIfAbsent(id, () => route);
-    return Navigator.of(context).push(route);
-  }
-
-  static void removeRoute(BuildContext context, String id) {
-    final route = routes.remove(id);
-    if (route != null) {
-      print('Removing route: $id');
-      Navigator.of(context).removeRoute(route);
-      print('Route $id is removed');
+    if (routes.keys.isNotEmpty && routes.keys.last == id) {
+      return Future(() => null);
+    } else if (routes.keys.contains(id)) {
+      routes.remove(id);
+      routes.putIfAbsent(id, () => route);
+      return Navigator.of(context).push(route);
     } else {
-      print('No route to remove!');
+      routes.putIfAbsent(id, () => route);
+      return Navigator.of(context).push(route);
     }
   }
 
   static bool pop<T extends Object>(BuildContext context) {
-    final firstKey = routes.keys.first;
-    if (firstKey != null) {
-      print('Popping $firstKey');
-      routes.remove(firstKey);
-    } else {
-      print('No route when popping');
+    if (routes.keys.isNotEmpty) {
+      routes.remove(routes.keys.last);
     }
     return Navigator.of(context).pop();
   }

@@ -86,8 +86,6 @@ class CalendarPage extends StatelessWidget {
     if (state is AlarmState) {
       final alarm = state.alarm;
       if (alarm is NewAlarm) {
-        AlarmNavigator.removeRoute(
-            context, "${alarm.activity.id}${alarm.alarmOnStart}");
         await AlarmNavigator.push(
             context,
             MaterialPageRoute(
@@ -98,10 +96,8 @@ class CalendarPage extends StatelessWidget {
               ),
               fullscreenDialog: true,
             ),
-            "${alarm.activity.id}${alarm.alarmOnStart}");
+            alarm.activity.id);
       } else if (alarm is NewReminder) {
-        AlarmNavigator.removeRoute(
-            context, "${alarm.activity.id}${alarm.reminder.inMinutes}");
         await AlarmNavigator.push(
           context,
           MaterialPageRoute(
@@ -111,7 +107,7 @@ class CalendarPage extends StatelessWidget {
             ),
             fullscreenDialog: true,
           ),
-          "${alarm.activity.id}${alarm.reminder.inMinutes}",
+          alarm.activity.id,
         );
       }
     }

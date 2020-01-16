@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 
-class OkBottomBar extends StatelessWidget {
+class AlarmOkBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Translated translate = Translator.of(context).translate;
@@ -30,7 +31,7 @@ class OkBottomBar extends StatelessWidget {
                           .copyWith(color: AbiliaColors.white),
                       textAlign: TextAlign.center,
                     ),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () => AlarmNavigator.pop(context),
                   ),
                 ),
               ],
