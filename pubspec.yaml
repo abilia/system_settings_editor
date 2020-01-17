@@ -28,8 +28,11 @@ dependencies:
   shared_preferences: ^0.5.4+8
   path_provider: ^1.4.5
   package_info: ^0.4.0+13
-  flutter_local_notifications: ^0.8.4+3
-  rxdart: ^0.23.0
+  flutter_local_notifications: 
+    git:
+      url: git://github.com/abilia/flutter_local_notifications.git
+      ref: withSelectedNotificationStream
+      path: flutter_local_notifications/
   transparent_image: ^1.0.0
 
 dev_dependencies:

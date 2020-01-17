@@ -14,7 +14,7 @@ class NewAlarm extends NotificationAlarm {
       : assert(alarmOnStart != null),
         super(activity);
   @override
-  List<Object> get props => [activity.id, alarmOnStart];
+  List<Object> get props => [activity, alarmOnStart];
   @override
   String toString() =>
       'NewAlarm { activity: $activity, ${alarmOnStart ? 'START' : 'END'}-alarm }';
@@ -31,7 +31,7 @@ class NewReminder extends NotificationAlarm {
         assert(reminder > Duration.zero),
         super(activity);
   @override
-  List<Object> get props => [activity.id, reminder];
+  List<Object> get props => [activity, reminder];
   @override
   String toString() =>
       'NewReminder { activity: $activity, reminder: $reminder }';
