@@ -63,7 +63,7 @@ class CloseButton extends StatelessWidget {
           borderRadius: borderRadius,
           side: BorderSide(
             width: 1,
-            color: AbiliaColors.transparantWhite[10],
+            color: AbiliaColors.transparantWhite[15],
           ),
         ),
         child: Text(
