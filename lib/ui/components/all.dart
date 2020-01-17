@@ -15,3 +15,4 @@ export 'agenda.dart';
 export 'profile_picture.dart';
 export 'abilia_app_bar.dart';
 export 'ok_bottom_bar.dart';
+export 'calendar/change_calendar_view_dialog.dart';
