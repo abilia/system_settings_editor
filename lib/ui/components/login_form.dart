@@ -19,6 +19,7 @@ class _LoginFormState extends State<LoginForm> {
   LoginFormBloc _loginFormBloc;
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _showBackends = false;
 
   @override
   void initState() {
@@ -51,7 +52,11 @@ class _LoginFormState extends State<LoginForm> {
                   Center(
                       child: loginState is LoginLoading
                           ? CircularProgressIndicator()
-                          : SeagullIcon()),
+                          : GestureDetector(
+                              child: SeagullIcon(),
+                              onDoubleTap: () => setState(
+                                  () => _showBackends = !_showBackends),
+                            )),
                   padding32,
                   Text(
                     i18n.translate.userName,
@@ -104,7 +109,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       if (formState.password.isNotEmpty)
                         Padding(
-                            padding: const EdgeInsets.only(left: 8),
+                            padding: const EdgeInsets.only(left: 12),
                             child: ActionButton(
                               key: TestKey.hidePasswordToggle,
                               child: Icon(formState.hidePassword
@@ -142,7 +147,7 @@ class _LoginFormState extends State<LoginForm> {
                         style: theme.textTheme.body1,
                       ),
                     ),
-                  padding192,
+                  flexPadding(errorState),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: FlatButton(
@@ -161,17 +166,19 @@ class _LoginFormState extends State<LoginForm> {
                           : null,
                     ),
                   ),
-                  padding16,
-                  BackendSwitches(),
-                  Center(
-                    child: FutureBuilder(
-                      future: PackageInfo.fromPlatform(),
-                      builder: (context, AsyncSnapshot<PackageInfo> snapshot) =>
-                          Text(snapshot.hasData
-                              ? '${snapshot.data.version}(${snapshot.data.buildNumber})'
-                              : ''),
+                  padding32,
+                  if (_showBackends) BackendSwitches(),
+                  if (_showBackends)
+                    Center(
+                      child: FutureBuilder(
+                        future: PackageInfo.fromPlatform(),
+                        builder: (context,
+                                AsyncSnapshot<PackageInfo> snapshot) =>
+                            Text(snapshot.hasData
+                                ? '${snapshot.data.version}(${snapshot.data.buildNumber})'
+                                : ''),
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -181,11 +188,12 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  get padding8 => const SizedBox(height: 8);
-  get padding16 => const Spacer(flex: 2);
-  get padding32 => const Spacer(flex: 4);
-  get padding56 => const Spacer(flex: 6);
-  get padding192 => const Spacer(flex: 24);
+  get padding8 => const SizedBox(height: 8.0);
+  get padding16 => const Spacer(flex: 16);
+  get padding32 => const Spacer(flex: 32);
+  get padding56 => const Spacer(flex: 56);
+  flexPadding(bool errorState) =>
+      errorState ? const Spacer(flex: 95) : const Spacer(flex: 191);
 
   @override
   dispose() {
