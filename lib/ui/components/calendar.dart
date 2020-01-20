@@ -77,6 +77,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                                     padding:
                                         const EdgeInsets.fromLTRB(15, 0, 15, 0),
                                     child: ActionButton(
+                                      key: Key('changeView'),
                                       width: 65,
                                       child: Row(
                                         children: <Widget>[

@@ -17,6 +17,7 @@ class TimePillarViewButton extends StatelessWidget {
     return Theme(
       data: themeData,
       child: FlatButton(
+        key: Key('timePillarButton'),
         color: themeData.buttonColor,
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
         shape: RoundedRectangleBorder(
