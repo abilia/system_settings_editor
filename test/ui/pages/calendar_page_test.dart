@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/fakes/all.dart';
@@ -18,8 +17,8 @@ void main() {
   group('calendar page widget test', () {
     MockActivityDb mockActivityDb;
     StreamController<DateTime> mockTicker;
-    final changeViewButtonFinder = find.byKey(Key('changeView'));
-    final timePillarButtonFinder = find.byKey(Key('timePillarButton'));
+    final changeViewButtonFinder = find.byKey(TestKey.changeView);
+    final timePillarButtonFinder = find.byKey(TestKey.timePillarButton);
 
     setUp(() {
       mockTicker = StreamController<DateTime>();

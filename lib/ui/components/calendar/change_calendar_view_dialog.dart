@@ -40,16 +40,10 @@ class ChangeCalendarViewDialog extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(top: 33.0),
               decoration: BoxDecoration(
-                  color: AbiliaColors.white[110],
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(16.0),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 0.0,
-                      offset: Offset(0.0, 0.0),
-                    ),
-                  ]),
+                color: AbiliaColors.white[110],
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(16.0),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,8 +57,8 @@ class ChangeCalendarViewDialog extends StatelessWidget {
                         Navigator.of(context).maybePop();
                       },
                       themeData: currentViewType == CalendarViewType.TIMEPILLAR
-                          ? activeButtonTheme
-                          : inactiveButtonTheme,
+                          ? alreadySelectedChoiceButtonTheme
+                          : availableToSelectButtonTheme,
                     ),
                   ),
                   Padding(
@@ -75,10 +69,9 @@ class ChangeCalendarViewDialog extends StatelessWidget {
                               .add(CalendarViewChanged(CalendarViewType.LIST));
                           Navigator.of(context).maybePop();
                         },
-                        themeData:
-                            currentViewType == CalendarViewType.LIST
-                                ? activeButtonTheme
-                                : inactiveButtonTheme,
+                        themeData: currentViewType == CalendarViewType.LIST
+                            ? alreadySelectedChoiceButtonTheme
+                            : availableToSelectButtonTheme,
                       )),
                 ],
               ),
@@ -91,10 +84,17 @@ class ChangeCalendarViewDialog extends StatelessWidget {
                 },
                 child: Align(
                   alignment: Alignment.topRight,
-                  child: CircleAvatar(
-                    radius: 14.0,
-                    backgroundColor: AbiliaColors.white[110],
-                    child: Icon(Icons.close, color: AbiliaColors.black),
+                  child: Container(
+                    width: 28.0,
+                    height: 28.0,
+                    decoration: BoxDecoration(
+                      color: AbiliaColors.white[110],
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      color: AbiliaColors.black,
+                    ),
                   ),
                 ),
               ),

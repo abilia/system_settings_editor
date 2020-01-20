@@ -91,13 +91,13 @@ ThemeData get nowButtonTheme => abiliaTheme.copyWith(
     textTheme: abiliaTextTheme.copyWith(
         button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white)));
 
-ThemeData get activeButtonTheme => abiliaTheme.copyWith(
+ThemeData get alreadySelectedChoiceButtonTheme => abiliaTheme.copyWith(
     buttonTheme: actionButtonTheme,
     buttonColor: AbiliaColors.black,
     textTheme: abiliaTextTheme.copyWith(
         button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white)));
 
-ThemeData get inactiveButtonTheme => abiliaTheme.copyWith(
+ThemeData get availableToSelectButtonTheme => abiliaTheme.copyWith(
     buttonTheme: actionButtonTheme,
     buttonColor: AbiliaColors.white,
     textTheme: abiliaTextTheme.copyWith(

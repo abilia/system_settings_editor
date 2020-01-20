@@ -90,7 +90,6 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                                       ),
                                       onPressed: () {
                                         showDialog(
-                                            barrierDismissible: false,
                                             context: context,
                                             builder: (newContext) =>
                                                 ChangeCalendarViewDialog(
