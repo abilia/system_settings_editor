@@ -34,7 +34,7 @@ InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
     focusedErrorBorder: redOutlineInputBorder,
     filled: true,
     // Unfortunatly, can't use the validation without showing some error text, set the font size 0
-    errorStyle: TextStyle(height: 0, fontSize: 0),
+    errorStyle: TextStyle(height: 0),
     fillColor: AbiliaColors.white);
 
 BorderRadius get borderRadius => BorderRadius.circular(12);
