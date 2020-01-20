@@ -67,7 +67,7 @@ class _AgendaState extends State<Agenda> {
                             ? ListView(
                                 children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 30.0),
+                                    padding: const EdgeInsets.only(top: 24.0),
                                     child: Center(
                                         child: Text(
                                       Translator.of(context)
