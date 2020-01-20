@@ -15,7 +15,10 @@ class GoToNowButton extends StatelessWidget {
             scrollState is WrongDay || scrollState is OutOfView
                 ? ActionButton(
                     key: TestKey.goToNowButton,
-                    child: Icon(AbiliaIcons.reset),
+                    child: Icon(
+                      AbiliaIcons.reset,
+                      size: 32,
+                    ),
                     onPressed: onPressed,
                     themeData: nowButtonTheme,
                   )

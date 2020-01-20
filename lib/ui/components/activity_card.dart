@@ -9,9 +9,9 @@ import 'package:intl/intl.dart';
 
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
-  final double height;
+  final double cardMargin;
 
-  const ActivityCard({Key key, this.activityOccasion, this.height})
+  const ActivityCard({Key key, this.activityOccasion, this.cardMargin})
       : assert(activityOccasion != null),
         super(key: key);
 
@@ -30,85 +30,105 @@ class ActivityCard extends StatelessWidget {
     final activity = activityOccasion.activity;
     final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
     final hasImage = activity.fileId != null;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
-        child: Row(
-          children: <Widget>[
-            hasImage
-                ? Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: AnimatedOpacity(
-                      opacity:
-                          activityOccasion.occasion == Occasion.past ? .5 : 1,
-                      child: FadeInThumb(
-                        imageFileId: activity.fileId,
-                        width: 48,
+    return Stack(
+      overflow: Overflow.visible,
+      children: [
+        Card(
+          margin: EdgeInsets.symmetric(vertical: cardMargin),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
+            child: Row(
+              children: <Widget>[
+                hasImage
+                    ? Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: AnimatedOpacity(
+                          opacity: activityOccasion.occasion == Occasion.past
+                              ? .5
+                              : 1,
+                          child: FadeInThumb(
+                            imageFileId: activity.fileId,
+                            width: 48,
+                            height: 48,
+                          ),
+                          duration: const Duration(seconds: 1),
+                        ),
+                      )
+                    : SizedBox(
                         height: 48,
                       ),
-                      duration: const Duration(seconds: 1),
-                    ),
-                  )
-                : SizedBox(
-                    height: 48,
-                  ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      activity.title,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .subhead
-                          .copyWith(color: AbiliaColors.black, height: 1.2),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                            activity.fullDay
-                                ? Translator.of(context).translate.fullDay
-                                : activity.hasEndTime
-                                    ? '${timeFormat.format(activity.start)} - ${timeFormat.format(activity.end)}'
-                                    : '${timeFormat.format(activity.start)}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .body2
-                                .copyWith(height: 1.3)),
+                          activity.title,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subhead
+                              .copyWith(color: AbiliaColors.black),
+                        ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            if (!activity.fullDay)
-                              Icon(
-                                iconDataFor(activity.alarm),
-                                size: 16,
-                              ),
-                            if (!activity.fullDay &&
-                                activity.reminderBefore.isNotEmpty)
-                              Icon(
-                                AbiliaIcons.handi_reminder,
-                                size: 18,
-                              ),
-                            if (activity.infoItem != null)
-                              Icon(
-                                AbiliaIcons.handi_info,
-                                size: 18,
-                              ),
+                            Text(
+                                activity.fullDay
+                                    ? Translator.of(context).translate.fullDay
+                                    : activity.hasEndTime
+                                        ? '${timeFormat.format(activity.start)} - ${timeFormat.format(activity.end)}'
+                                        : '${timeFormat.format(activity.start)}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .body2
+                                    .copyWith(
+                                        color: AbiliaColors.black[75],
+                                        height: 1.4)),
+                            Row(
+                              children: <Widget>[
+                                if (!activity.fullDay)
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 4.0),
+                                    child: Icon(
+                                      iconDataFor(activity.alarm),
+                                      size: 18,
+                                    ),
+                                  ),
+                                if (!activity.fullDay &&
+                                    activity.reminderBefore.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 4.0),
+                                    child: Icon(
+                                      AbiliaIcons.handi_reminder,
+                                      size: 18,
+                                    ),
+                                  ),
+                                if (activity.infoItem != null)
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 4.0),
+                                    child: Icon(
+                                      AbiliaIcons.handi_info,
+                                      size: 18,
+                                    ),
+                                  ),
+                              ],
+                            )
                           ],
-                        )
+                        ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        if (activityOccasion.occasion == Occasion.current)
+          Positioned(right: -3, child: NowBanner())
+      ],
     );
   }
 
