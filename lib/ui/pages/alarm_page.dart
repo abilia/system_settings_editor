@@ -8,6 +8,8 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 
+import 'all.dart';
+
 class AlarmPage extends StatelessWidget {
   final Activity activity;
   final bool atStartTime, atEndTime;
@@ -136,17 +138,51 @@ class TimeText extends StatelessWidget {
 class AlarmNavigator {
   static final Map<String, Route<dynamic>> routes = LinkedHashMap();
 
-  static Future<T> push<T extends Object>(
+  static Future<T> _push<T extends Object>(
       BuildContext context, Route<T> route, String id) {
     if (routes.keys.isNotEmpty && routes.keys.last == id) {
       return Future(() => null);
     } else if (routes.keys.contains(id)) {
-      routes.remove(id);
+      final removedRoute = routes.remove(id);
       routes.putIfAbsent(id, () => route);
+      Navigator.of(context).removeRoute(removedRoute);
       return Navigator.of(context).push(route);
     } else {
       routes.putIfAbsent(id, () => route);
       return Navigator.of(context).push(route);
+    }
+  }
+
+  static Future<T> pushAlarm<T extends Object>(
+      BuildContext context, NotificationAlarm alarm) async {
+    if (alarm is NewAlarm) {
+      final alarmId = '${alarm.activity.id}${alarm.alarmOnStart}}';
+      return await AlarmNavigator._push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AlarmPage(
+              activity: alarm.activity,
+              atStartTime: alarm.alarmOnStart,
+              atEndTime: !alarm.alarmOnStart,
+            ),
+            fullscreenDialog: true,
+          ),
+          alarmId);
+    } else if (alarm is NewReminder) {
+      final reminderId = '${alarm.activity.id}${alarm.reminder.inMinutes}';
+      return await AlarmNavigator._push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ReminderPage(
+            activity: alarm.activity,
+            reminderTime: alarm.reminder.inMinutes,
+          ),
+          fullscreenDialog: true,
+        ),
+        reminderId,
+      );
+    } else {
+      throw ArgumentError();
     }
   }
 

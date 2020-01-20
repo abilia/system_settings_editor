@@ -84,32 +84,7 @@ class CalendarPage extends StatelessWidget {
 
   void _alarmListener(BuildContext context, AlarmStateBase state) async {
     if (state is AlarmState) {
-      final alarm = state.alarm;
-      if (alarm is NewAlarm) {
-        await AlarmNavigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AlarmPage(
-                activity: alarm.activity,
-                atStartTime: alarm.alarmOnStart,
-                atEndTime: !alarm.alarmOnStart,
-              ),
-              fullscreenDialog: true,
-            ),
-            alarm.activity.id);
-      } else if (alarm is NewReminder) {
-        await AlarmNavigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ReminderPage(
-              activity: alarm.activity,
-              reminderTime: alarm.reminder.inMinutes,
-            ),
-            fullscreenDialog: true,
-          ),
-          alarm.activity.id,
-        );
-      }
+      await AlarmNavigator.pushAlarm(context, state.alarm);
     }
   }
 }
