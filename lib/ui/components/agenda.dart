@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
+import 'package:seagull/ui/theme.dart';
 
 class Agenda extends StatefulWidget {
   final double cardHeight = 56.0;
@@ -146,8 +148,20 @@ class FullDayContainer extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               vertical: 0, horizontal: 6),
                           child: ActionButton(
+                            themeData: abiliaTheme.copyWith(
+                                buttonColor: AbiliaColors.transparantWhite[20],
+                                buttonTheme: actionButtonTheme.copyWith(
+                                    shape: RoundedRectangleBorder(
+                                  borderRadius: borderRadius,
+                                  side: BorderSide(
+                                    width: 1,
+                                    color: AbiliaColors.transparantWhite[15],
+                                  ),
+                                ))),
                             child: Text(
                               "+ ${fullDayActivities.length - 2}",
+                              style: Theme.of(context).textTheme.body2.copyWith(
+                                  color: AbiliaColors.white, height: 1),
                             ),
                             onPressed: () async {
                               final navigator = Navigator.of(context);
