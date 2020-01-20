@@ -184,7 +184,7 @@ FontWeight get medium => FontWeight.w500;
 Map<int, ThemeData> get weekDayTheme => {
       DateTime.monday: _dayTheme(AbiliaColors.green,
           textColor: AbiliaColors.black, primaryColor: AbiliaColors.white),
-      DateTime.tuesday: _dayTheme(AbiliaColors.blue),
+      DateTime.tuesday: _dayTheme(AbiliaColors.darkBlue),
       DateTime.wednesday:
           _dayTheme(AbiliaColors.white, textColor: AbiliaColors.black),
       DateTime.thursday: _dayTheme(AbiliaColors.brown),
