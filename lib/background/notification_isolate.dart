@@ -92,6 +92,7 @@ Future scheduleNotification(NotificationAlarm notificationAlarm, DateTime now,
     NotificationDetails(and, ios),
     payload: payload,
     androidAllowWhileIdle: true,
+    androidWakeScreen: true,
   );
 }
 
