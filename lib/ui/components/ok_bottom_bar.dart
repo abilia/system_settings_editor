@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 
@@ -22,6 +23,7 @@ class AlarmOkBottomBar extends StatelessWidget {
                   data:
                       Theme.of(context).copyWith(buttonTheme: greenButtonTheme),
                   child: FlatButton(
+                    key: TestKey.alarmOkButton,
                     color: AbiliaColors.green,
                     child: Text(
                       translate.ok,

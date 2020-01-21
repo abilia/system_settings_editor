@@ -18,14 +18,15 @@ class AlarmPage extends StatelessWidget {
       @required this.activity,
       this.atStartTime = false,
       this.atEndTime = false})
-      : super(key: key);
+      : super(
+          key: TestKey.onScreenAlarm,
+        );
 
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.headline;
     final translate = Translator.of(context).translate;
     return Scaffold(
-      key: TestKey.onScreenAlarm,
       appBar: AbiliaAppBar(title: translate.alarm),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -136,19 +137,19 @@ class TimeText extends StatelessWidget {
 }
 
 class AlarmNavigator {
-  static final Map<String, Route<dynamic>> routes = LinkedHashMap();
+  static final Map<String, Route<dynamic>> _routes = LinkedHashMap();
 
   static Future<T> _push<T extends Object>(
       BuildContext context, Route<T> route, String id) {
-    if (routes.keys.isNotEmpty && routes.keys.last == id) {
+    if (_routes.keys.isNotEmpty && _routes.keys.last == id) {
       return Future(() => null);
-    } else if (routes.keys.contains(id)) {
-      final removedRoute = routes.remove(id);
-      routes.putIfAbsent(id, () => route);
+    } else if (_routes.keys.contains(id)) {
+      final removedRoute = _routes.remove(id);
+      _routes.putIfAbsent(id, () => route);
       Navigator.of(context).removeRoute(removedRoute);
       return Navigator.of(context).push(route);
     } else {
-      routes.putIfAbsent(id, () => route);
+      _routes.putIfAbsent(id, () => route);
       return Navigator.of(context).push(route);
     }
   }
@@ -187,8 +188,8 @@ class AlarmNavigator {
   }
 
   static bool pop<T extends Object>(BuildContext context) {
-    if (routes.keys.isNotEmpty) {
-      routes.remove(routes.keys.last);
+    if (_routes.keys.isNotEmpty) {
+      _routes.remove(_routes.keys.last);
     }
     return Navigator.of(context).pop();
   }
