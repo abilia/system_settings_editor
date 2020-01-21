@@ -31,7 +31,7 @@ dependencies:
   flutter_local_notifications: 
     git:
       url: git://github.com/abilia/flutter_local_notifications.git
-      ref: withSelectedNotificationStream
+      ref: dev
       path: flutter_local_notifications/
   transparent_image: ^1.0.0
 
