@@ -17,6 +17,8 @@ void main() {
   group('calendar page widget test', () {
     MockActivityDb mockActivityDb;
     StreamController<DateTime> mockTicker;
+    final changeViewButtonFinder = find.byKey(TestKey.changeView);
+    final timePillarButtonFinder = find.byKey(TestKey.timePillarButton);
 
     setUp(() {
       mockTicker = StreamController<DateTime>();
@@ -94,6 +96,18 @@ void main() {
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
       expect(find.text(key), findsOneWidget);
     });
+
+    testWidgets('Show timepillar when timepillar is selected',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byType(Agenda), findsOneWidget);
+      await tester.tap(changeViewButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(timePillarButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(TimePillar), findsOneWidget);
+    });
   });
 
   group('calendar page alarms test', () {
@@ -102,8 +116,8 @@ void main() {
     final DateTime activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
     final DateTime twoHoursAfter = activityWithAlarmTime.add(2.hours());
     final Activity activity = FakeActivity.onTime(activityWithAlarmTime);
-    final String payloadSerial =
-        json.encode(NotificationPayload(activityId: activity.id, onStart: true).toJson());
+    final String payloadSerial = json.encode(
+        NotificationPayload(activityId: activity.id, onStart: true).toJson());
 
     setUp(() {
       mockTicker = StreamController<DateTime>();

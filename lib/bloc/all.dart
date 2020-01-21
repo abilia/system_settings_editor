@@ -13,3 +13,4 @@ export 'mixin/mixin.dart';
 export 'alarm/bloc.dart';
 export 'push/bloc.dart';
 export 'bloc_delegate.dart';
+export 'calendar_view/bloc.dart';

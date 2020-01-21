@@ -59,6 +59,9 @@ class CalendarPage extends StatelessWidget {
             activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
           ),
         ),
+        BlocProvider<CalendarViewBloc>(
+          create: (context) => CalendarViewBloc(),
+        )
       ],
       child: MultiBlocListener(
         listeners: [
