@@ -173,12 +173,19 @@ void main() {
   });
 
   group('Multiple alarms tests', () {
+    final mockActivityDb = MockActivityDb();
     StreamController<DateTime> mockTicker;
     StreamController<String> mockNotificationSelected;
     final DateTime activity1StartTime = DateTime(2011, 11, 11, 11, 11);
     final Activity activity1 =
-        FakeActivity.onTime(activity1StartTime, Duration(minutes: 1));
-    final String startTimeNotificationPayload = json.encode(
+        FakeActivity.onTime(activity1StartTime, Duration(minutes: 2));
+    final String startTimeActivity1NotificationPayload = json.encode(
+        NotificationPayload(activityId: activity1.id, onStart: true).toJson());
+
+    final DateTime activity2StartTime = DateTime(2011, 11, 11, 11, 12);
+    final Activity activity2 =
+        FakeActivity.onTime(activity1StartTime, Duration(minutes: 2));
+    final String startTimeActivity2NotificationPayload = json.encode(
         NotificationPayload(activityId: activity1.id, onStart: true).toJson());
 
     setUp(() {
@@ -191,11 +198,6 @@ void main() {
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
 
-      final response = [activity1];
-      final mockActivityDb = MockActivityDb();
-      when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(response));
-
       GetItInitializer()
           .withActivityDb(mockActivityDb)
           .withUserDb(MockUserDb())
@@ -203,7 +205,7 @@ void main() {
           .withBaseUrlDb(MockBaseUrlDb())
           .withFireBasePushService(mockFirebasePushService)
           .withTokenDb(mockTokenDb)
-          .withHttpClient(Fakes.client(response))
+          .withHttpClient(Fakes.client([]))
           .withNotificationStreamGetter(() => mockNotificationSelected.stream)
           .init();
     });
@@ -211,13 +213,15 @@ void main() {
     testWidgets('Start and end time alarm for same activity',
         (WidgetTester tester) async {
       // Arrange
+      when(mockActivityDb.getActivitiesFromDb())
+          .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       final Finder alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
 
       // Act - time goes which should display two alarms (start and end time)
       mockTicker.add(activity1StartTime);
-      mockTicker.add(activity1StartTime.add(Duration(minutes: 1)));
+      mockTicker.add(activity1StartTime.add(Duration(minutes: 2)));
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should be the end time alarm
@@ -242,17 +246,19 @@ void main() {
     testWidgets('Start alarm is displayed on top if tapped on notification',
         (WidgetTester tester) async {
       // Arrange
+      when(mockActivityDb.getActivitiesFromDb())
+          .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       final Finder alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
 
       // Act - time goes which should display two alarms (start and end time)
       mockTicker.add(activity1StartTime);
-      mockTicker.add(activity1StartTime.add(Duration(minutes: 1)));
+      mockTicker.add(activity1StartTime.add(Duration(minutes: 2)));
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm
-      mockNotificationSelected.add(startTimeNotificationPayload);
+      mockNotificationSelected.add(startTimeActivity1NotificationPayload);
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should now be the start time alarm
@@ -271,6 +277,67 @@ void main() {
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown since the start time alarm should have been moved to top
+      expect(alarmScreenFinder, findsNothing);
+    });
+
+    testWidgets('Overlapping activities', (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getActivitiesFromDb())
+          .thenAnswer((_) => Future.value([activity1, activity2]));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      final Finder alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
+
+      // Act - time goes which should display two alarms (start and end time)
+      mockTicker.add(activity1StartTime);
+      mockTicker.add(activity1StartTime.add(Duration(minutes: 1)));
+      mockTicker.add(activity1StartTime.add(Duration(minutes: 2)));
+      mockTicker.add(activity1StartTime.add(Duration(minutes: 3)));
+      await tester.pumpAndSettle();
+
+      // Act - the user taps notification of start time alarm
+      mockNotificationSelected.add(startTimeActivity1NotificationPayload);
+      await tester.pumpAndSettle();
+
+      // Expect - the top/latest alarm should now be the start time alarm for activity1
+      expect(
+          (tester.widget(alarmScreenFinder) as AlarmPage).atStartTime, isTrue);
+      expect((tester.widget(alarmScreenFinder) as AlarmPage).activity.id,
+          equals(activity1.id));
+
+      // Act - tap the ok button of the alarm
+      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.pumpAndSettle();
+
+      // Expect - the top/latest alarm should be the end time alarm for activity 2
+      expect((tester.widget(alarmScreenFinder) as AlarmPage).atEndTime, isTrue);
+      expect((tester.widget(alarmScreenFinder) as AlarmPage).activity.id,
+          equals(activity2.id));
+
+      // Act - tap the alarm ok button
+      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.pumpAndSettle();
+
+      // Expect - the top/latest alarm should be the end time alarm for activity 1
+      expect((tester.widget(alarmScreenFinder) as AlarmPage).atEndTime, isTrue);
+      expect((tester.widget(alarmScreenFinder) as AlarmPage).activity.id,
+          equals(activity1.id));
+
+      // Act - tap the alarm ok button
+      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.pumpAndSettle();
+
+      // Expect - the top/latest alarm should be the start time alarm for activity 2
+      expect(
+          (tester.widget(alarmScreenFinder) as AlarmPage).atStartTime, isTrue);
+      expect((tester.widget(alarmScreenFinder) as AlarmPage).activity.id,
+          equals(activity2.id));
+
+      // Act - tap the alarm ok button
+      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.pumpAndSettle();
+
+      // Expect - no more alarms should be shown
       expect(alarmScreenFinder, findsNothing);
     });
   });
