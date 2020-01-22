@@ -91,6 +91,18 @@ ThemeData get nowButtonTheme => abiliaTheme.copyWith(
     textTheme: abiliaTextTheme.copyWith(
         button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white)));
 
+ThemeData get alreadySelectedChoiceButtonTheme => abiliaTheme.copyWith(
+    buttonTheme: actionButtonTheme,
+    buttonColor: AbiliaColors.black,
+    textTheme: abiliaTextTheme.copyWith(
+        button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white)));
+
+ThemeData get availableToSelectButtonTheme => abiliaTheme.copyWith(
+    buttonTheme: actionButtonTheme,
+    buttonColor: AbiliaColors.white,
+    textTheme: abiliaTextTheme.copyWith(
+        button: abiliaTextTheme.button.copyWith(color: AbiliaColors.black)));
+
 ThemeData get showHideButtonTheme => abiliaTheme.copyWith(
     buttonTheme: actionButtonTheme,
     textTheme: abiliaTheme.textTheme.copyWith(
@@ -184,7 +196,7 @@ FontWeight get medium => FontWeight.w500;
 Map<int, ThemeData> get weekDayTheme => {
       DateTime.monday: _dayTheme(AbiliaColors.green,
           textColor: AbiliaColors.black, primaryColor: AbiliaColors.white),
-      DateTime.tuesday: _dayTheme(AbiliaColors.blue),
+      DateTime.tuesday: _dayTheme(AbiliaColors.darkBlue),
       DateTime.wednesday:
           _dayTheme(AbiliaColors.white, textColor: AbiliaColors.black),
       DateTime.thursday: _dayTheme(AbiliaColors.brown),

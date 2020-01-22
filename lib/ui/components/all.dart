@@ -13,5 +13,8 @@ export 'backend_switches.dart';
 export 'go_to_now_button.dart';
 export 'agenda.dart';
 export 'profile_picture.dart';
+export 'close_button.dart';
 export 'abilia_app_bar.dart';
 export 'ok_bottom_bar.dart';
+export 'timepillar.dart';
+export 'calendar/change_calendar_view_dialog.dart';

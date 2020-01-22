@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/components/timepillar.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:intl/intl.dart';
@@ -19,11 +20,13 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
   DayPickerBloc _dayPickerBloc;
   ActivitiesBloc _activitiesBloc;
   ScrollPositionBloc _scrollPositionBloc;
+  ClockBloc _clockBloc;
 
   @override
   void initState() {
     _dayPickerBloc = BlocProvider.of<DayPickerBloc>(context);
     _activitiesBloc = BlocProvider.of<ActivitiesBloc>(context);
+    _clockBloc = BlocProvider.of<ClockBloc>(context);
     _scrollPositionBloc = ScrollPositionBloc();
     WidgetsBinding.instance.addObserver(this);
     super.initState();
@@ -39,6 +42,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
+      _clockBloc.add(DateTime.now().onlyMinutes());
       _activitiesBloc.add(LoadActivities());
       _jumpToActivity();
     }
@@ -52,39 +56,82 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
       child: BlocBuilder<ClockBloc, DateTime>(
         builder: (context, now) => BlocBuilder<DayPickerBloc, DateTime>(
           builder: (context, pickedDay) {
-            final themeData = weekDayTheme[pickedDay.weekday];
-            return AnimatedTheme(
-              data: themeData,
-              child: Scaffold(
-                appBar: buildAppBar(langCode, pickedDay, context, themeData),
-                body: Agenda(),
-                bottomNavigationBar: BottomAppBar(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        GoToNowButton(
-                          onPressed: () => _jumpToActivity(),
+            return BlocBuilder<CalendarViewBloc, CalendarViewState>(
+              builder: (context, calendarViewState) {
+                final themeData = weekDayTheme[pickedDay.weekday];
+                return AnimatedTheme(
+                  data: themeData,
+                  child: Scaffold(
+                    appBar:
+                        buildAppBar(langCode, pickedDay, context, themeData),
+                    body: calendarViewState.currentView == CalendarViewType.LIST
+                        ? Agenda()
+                        : TimePillar(),
+                    bottomNavigationBar: BottomAppBar(
+                      child: SizedBox(
+                        height: 64,
+                        child: Stack(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                children: <Widget>[
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                    child: ActionButton(
+                                      key: Key('changeView'),
+                                      width: 65,
+                                      child: Row(
+                                        children: <Widget>[
+                                          calendarViewState.currentView ==
+                                                  CalendarViewType.LIST
+                                              ? Icon(AbiliaIcons.phone_log)
+                                              : Icon(AbiliaIcons.timeline),
+                                          Icon(AbiliaIcons.navigation_down)
+                                        ],
+                                      ),
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (newContext) =>
+                                                ChangeCalendarViewDialog(
+                                                  outerContext: context,
+                                                  currentViewType:
+                                                      calendarViewState
+                                                          .currentView,
+                                                ));
+                                      },
+                                      themeData: menuButtonTheme,
+                                    ),
+                                  ),
+                                  GoToNowButton(
+                                    onPressed: () => _jumpToActivity(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: ActionButton(
+                                child: Icon(
+                                  AbiliaIcons.menu,
+                                  size: 32,
+                                ),
+                                onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => MenuPage()),
+                                ),
+                                themeData: menuButtonTheme,
+                              ),
+                            ),
+                          ],
                         ),
-                        ActionButton(
-                          child: Icon(
-                            AbiliaIcons.menu,
-                            size: 32,
-                          ),
-                          onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => MenuPage()),
-                          ),
-                          themeData: menuButtonTheme,
-                        ),
-                        const SizedBox(
-                          width: 48,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             );
           },
         ),

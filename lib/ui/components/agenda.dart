@@ -10,6 +10,7 @@ import 'package:seagull/ui/theme.dart';
 
 class Agenda extends StatefulWidget {
   final double cardHeight = 56.0;
+  final double cardMargin = 6;
 
   @override
   _AgendaState createState() => _AgendaState();
@@ -32,8 +33,10 @@ class _AgendaState extends State<Agenda> {
       builder: (context, state) {
         if (state is ActivitiesOccasionLoaded) {
           final scrollController = ScrollController(
-              initialScrollOffset:
-                  max(state.indexOfCurrentActivity * widget.cardHeight, 0),
+              initialScrollOffset: max(
+                  state.indexOfCurrentActivity *
+                      (widget.cardHeight + widget.cardMargin),
+                  0),
               keepScrollOffset: false);
           if (state.isToday) {
             WidgetsBinding.instance.addPostFrameCallback((_) =>
@@ -66,7 +69,7 @@ class _AgendaState extends State<Agenda> {
                             ? ListView(
                                 children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 30.0),
+                                    padding: const EdgeInsets.only(top: 24.0),
                                     child: Center(
                                         child: Text(
                                       Translator.of(context)
@@ -78,16 +81,17 @@ class _AgendaState extends State<Agenda> {
                                 ],
                               )
                             : ListView.builder(
-                                itemExtent: widget.cardHeight,
+                                itemExtent:
+                                    widget.cardHeight + widget.cardMargin,
                                 controller:
                                     state.isToday ? scrollController : null,
                                 physics: const AlwaysScrollableScrollPhysics(),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 7),
+                                    horizontal: 12, vertical: 8),
                                 itemCount: activities.length,
                                 itemBuilder: (context, index) => ActivityCard(
                                   activityOccasion: activities[index],
-                                  height: widget.cardHeight,
+                                  cardMargin: widget.cardMargin / 2,
                                 ),
                               ),
                       ),
@@ -140,7 +144,7 @@ class FullDayContainer extends StatelessWidget {
                     flex: 2,
                     child: Padding(
                       padding: const EdgeInsets.only(right: 6.0),
-                      child: ActivityCard(activityOccasion: fd, height: 56),
+                      child: ActivityCard(activityOccasion: fd, cardMargin: 4),
                     )))
                 .toList()
                   ..add(fullDayActivities.length >= 3

@@ -24,6 +24,8 @@ abstract class Translated {
   String get startsNow;
   String get endsNow;
   String get noActivities;
+  String get timePillarView;
+  String get listView;
 }
 
 class English extends Translated {
@@ -43,7 +45,9 @@ class English extends Translated {
       reminder = 'Reminder',
       endsNow = 'Ends now',
       startsNow = 'Starts now',
-      noActivities = 'No activities for today';
+      noActivities = 'No activities for today',
+      timePillarView = 'Timepillar view',
+      listView = 'List view';
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
@@ -63,6 +67,8 @@ class Swedish extends Translated {
       reminder = 'Påminnelse',
       endsNow = 'Slutar nu',
       startsNow = 'Börjar nu',
-      noActivities = 'Inga aktiviteter idag';
+      noActivities = 'Inga aktiviteter idag',
+      timePillarView = 'Tidspelare',
+      listView = 'Listvy';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }

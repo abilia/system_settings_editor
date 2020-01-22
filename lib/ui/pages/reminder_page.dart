@@ -85,7 +85,7 @@ class ReminderPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: OkBottomBar(),
+      bottomNavigationBar: AlarmOkBottomBar(),
     );
   }
 
