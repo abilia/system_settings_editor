@@ -5,7 +5,6 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class CalendarPage extends StatelessWidget {
@@ -84,7 +83,7 @@ class CalendarPage extends StatelessWidget {
 
   void _alarmListener(BuildContext context, AlarmStateBase state) async {
     if (state is AlarmState) {
-      await AlarmNavigator.pushAlarm(context, state.alarm);
+      await GetIt.I<AlarmNavigator>().pushAlarm(context, state.alarm);
     }
   }
 }

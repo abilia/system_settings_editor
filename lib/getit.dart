@@ -4,6 +4,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class GetItInitializer {
   ActivityDb _activityDb;
@@ -88,5 +89,6 @@ class GetItInitializer {
         _alarmScheduler ?? scheduleAlarmNotifications);
     GetIt.I.registerFactory<Stream<DateTime>>(
         _tickerFactory ?? () => Ticker.minute());
+    GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());
   }
 }

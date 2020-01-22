@@ -184,9 +184,7 @@ void main() {
 
     final DateTime activity2StartTime = DateTime(2011, 11, 11, 11, 12);
     final Activity activity2 =
-        FakeActivity.onTime(activity1StartTime, Duration(minutes: 2));
-    final String startTimeActivity2NotificationPayload = json.encode(
-        NotificationPayload(activityId: activity1.id, onStart: true).toJson());
+        FakeActivity.onTime(activity2StartTime, Duration(minutes: 2));
 
     setUp(() {
       mockTicker = StreamController<DateTime>();
