@@ -5,7 +5,6 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class CalendarPage extends StatelessWidget {
@@ -87,30 +86,7 @@ class CalendarPage extends StatelessWidget {
 
   void _alarmListener(BuildContext context, AlarmStateBase state) async {
     if (state is AlarmState) {
-      final alarm = state.alarm;
-      final navigator = Navigator.of(context);
-      if (alarm is NewAlarm) {
-        await navigator.push(
-          MaterialPageRoute(
-            builder: (context) => AlarmPage(
-              activity: alarm.activity,
-              atStartTime: alarm.alarmOnStart,
-              atEndTime: !alarm.alarmOnStart,
-            ),
-            fullscreenDialog: true,
-          ),
-        );
-      } else if (alarm is NewReminder) {
-        await navigator.push(
-          MaterialPageRoute(
-            builder: (context) => ReminderPage(
-              activity: alarm.activity,
-              reminderTime: alarm.reminder.inMinutes,
-            ),
-            fullscreenDialog: true,
-          ),
-        );
-      }
+      await GetIt.I<AlarmNavigator>().pushAlarm(context, state.alarm);
     }
   }
 }

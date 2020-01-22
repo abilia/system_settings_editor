@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
+import 'package:seagull/utils/all.dart';
 
-class OkBottomBar extends StatelessWidget {
+class AlarmOkBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Translated translate = Translator.of(context).translate;
@@ -21,6 +24,7 @@ class OkBottomBar extends StatelessWidget {
                   data:
                       Theme.of(context).copyWith(buttonTheme: greenButtonTheme),
                   child: FlatButton(
+                    key: TestKey.alarmOkButton,
                     color: AbiliaColors.green,
                     child: Text(
                       translate.ok,
@@ -30,7 +34,7 @@ class OkBottomBar extends StatelessWidget {
                           .copyWith(color: AbiliaColors.white),
                       textAlign: TextAlign.center,
                     ),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () => GetIt.I<AlarmNavigator>().pop(context),
                   ),
                 ),
               ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/components/action_button.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:intl/intl.dart';
@@ -22,8 +21,9 @@ class AllDayList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final langCode = Locale.cachedLocale.languageCode;
+    final theme = allDayTheme()[pickedDay.weekday];
     return Theme(
-      data: allDayTheme()[pickedDay.weekday],
+      data: theme,
       child: Scaffold(
         body: Scrollbar(
           child: ListView.builder(
@@ -46,30 +46,27 @@ class AllDayList extends StatelessWidget {
             flexibleSpace: SafeArea(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    ActionButton(
-                      child: Text(Translator.of(context).translate.close),
-                      width: 65,
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          DateFormat('EEEE, d MMM', langCode).format(pickedDay),
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        Text(
-                          '${Translator.of(context).translate.week} ${pickedDay.getWeekNumber()}',
-                          style: Theme.of(context).textTheme.subhead,
-                        ),
-                      ],
+                    AbiliaCloseButton(),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            DateFormat('EEEE, d MMM', langCode).format(pickedDay),
+                            style: theme.textTheme.title,
+                          ),
+                          Text(
+                            '${Translator.of(context).translate.week} ${pickedDay.getWeekNumber()}',
+                            style: theme.textTheme.subhead,
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 56,

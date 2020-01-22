@@ -14,14 +14,15 @@ class AlarmPage extends StatelessWidget {
       @required this.activity,
       this.atStartTime = false,
       this.atEndTime = false})
-      : super(key: key);
+      : super(
+          key: TestKey.onScreenAlarm,
+        );
 
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.headline;
     final translate = Translator.of(context).translate;
     return Scaffold(
-      key: TestKey.onScreenAlarm,
       appBar: AbiliaAppBar(title: translate.alarm),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -89,7 +90,7 @@ class AlarmPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: OkBottomBar(),
+      bottomNavigationBar: AlarmOkBottomBar(),
     );
   }
 
