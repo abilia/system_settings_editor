@@ -4,6 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
+import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/models/all.dart';
@@ -13,16 +14,17 @@ import 'package:seagull/utils/all.dart';
 final BehaviorSubject<String> selectNotificationSubject =
     BehaviorSubject<String>();
 
-FlutterLocalNotificationsPlugin _notificationsPlugin;
+@visibleForTesting
+FlutterLocalNotificationsPlugin notificationsPluginInstance;
 FlutterLocalNotificationsPlugin get notificationPlugin {
   ensureNotificationPluginInitialized();
-  return _notificationsPlugin;
+  return notificationsPluginInstance;
 }
 
 void ensureNotificationPluginInitialized() {
-  if (_notificationsPlugin == null) {
-    _notificationsPlugin = FlutterLocalNotificationsPlugin();
-    _notificationsPlugin.initialize(
+  if (notificationsPluginInstance == null) {
+    notificationsPluginInstance = FlutterLocalNotificationsPlugin();
+    notificationsPluginInstance.initialize(
       InitializationSettings(
         AndroidInitializationSettings('@mipmap/ic_launcher'),
         IOSInitializationSettings(),

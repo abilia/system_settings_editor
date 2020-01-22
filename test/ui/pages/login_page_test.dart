@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:seagull/background/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/fakes/all.dart';
@@ -14,6 +15,8 @@ void main() {
     final secretPassword = 'pwfafawfa';
 
     setUp(() {
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
       final mockTokenDb = MockTokenDb();
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(null));
       final mockFirebasePushService = MockFirebasePushService();
