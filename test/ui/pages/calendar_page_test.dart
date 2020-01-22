@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
+import 'package:seagull/background/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
@@ -21,6 +23,8 @@ void main() {
     final timePillarButtonFinder = find.byKey(TestKey.timePillarButton);
 
     setUp(() {
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
       mockTicker = StreamController<DateTime>();
       final mockTokenDb = MockTokenDb();
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
@@ -120,6 +124,8 @@ void main() {
         NotificationPayload(activityId: activity.id, onStart: true).toJson());
 
     setUp(() {
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
       mockTicker = StreamController<DateTime>();
       mockNotificationSelected = StreamController<String>();
 

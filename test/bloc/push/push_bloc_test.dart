@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
+import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
@@ -16,6 +17,8 @@ void main() {
     final fakeUrl = 'SomeUrl';
 
     setUp(() {
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
       final mockTokenDb = MockTokenDb();
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
 
