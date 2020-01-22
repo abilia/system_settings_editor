@@ -9,5 +9,7 @@ class TestKey {
       loginError = Key('loginError'),
       goToNowButton = Key('goToNow'),
       onScreenAlarm = Key('onScreenAlarm'),
-      alarmOkButton = Key('alarmOkButton');
+      alarmOkButton = Key('alarmOkButton'),
+      changeView = Key('changeView'),
+      timePillarButton = Key('timePillarButton');
 }

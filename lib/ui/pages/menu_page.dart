@@ -38,7 +38,7 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
       builder: (context, state) => FutureBuilder(
         future: state is Authenticated
             ? state.userRepository.me(state.token)
-            : GetIt.I<UserDb>().getUser(),
+            : null,
         builder: (context, AsyncSnapshot<User> userSnapshot) => Column(
           children: <Widget>[
             ProfilePicture(

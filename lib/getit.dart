@@ -84,7 +84,8 @@ class GetItInitializer {
         _databaseRepository ?? DatabaseRepository());
     GetIt.I.registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb());
     GetIt.I.registerSingleton<NotificationStreamGetter>(
-        _selectedNotificationStreamGetter ?? () => selectNotificationSubject);
+        _selectedNotificationStreamGetter ??
+            notificationPlugin.getSelectNotificationStream);
     GetIt.I.registerSingleton<AlarmScheduler>(
         _alarmScheduler ?? scheduleAlarmNotifications);
     GetIt.I.registerFactory<Stream<DateTime>>(

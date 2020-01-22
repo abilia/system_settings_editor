@@ -238,6 +238,7 @@ class AbiliaColors {
     _whitePrimaryValue,
     <int, Color>{
       10: Color(0x19FFFFFF),
+      15: Color(0x26FFFFFF),
       20: Color(0x33FFFFFF),
       25: Color(0x40FFFFFF),
       50: Color(0x7FFFFFFF),

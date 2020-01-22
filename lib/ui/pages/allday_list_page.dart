@@ -33,7 +33,7 @@ class AllDayList extends StatelessWidget {
             itemCount: allDayActivities.length,
             itemBuilder: (context, index) => ActivityCard(
               activityOccasion: allDayActivities[index],
-              height: this.cardHeight,
+              cardMargin: this.cardHeight,
             ),
           ),
         ),

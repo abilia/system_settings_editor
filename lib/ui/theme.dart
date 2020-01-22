@@ -34,7 +34,7 @@ InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
     focusedErrorBorder: redOutlineInputBorder,
     filled: true,
     // Unfortunatly, can't use the validation without showing some error text, set the font size 0
-    errorStyle: TextStyle(height: 0, fontSize: 0),
+    errorStyle: TextStyle(height: 0),
     fillColor: AbiliaColors.white);
 
 BorderRadius get borderRadius => BorderRadius.circular(12);
@@ -90,6 +90,18 @@ ThemeData get nowButtonTheme => abiliaTheme.copyWith(
     highlightColor: AbiliaColors.red[120],
     textTheme: abiliaTextTheme.copyWith(
         button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white)));
+
+ThemeData get alreadySelectedChoiceButtonTheme => abiliaTheme.copyWith(
+    buttonTheme: actionButtonTheme,
+    buttonColor: AbiliaColors.black,
+    textTheme: abiliaTextTheme.copyWith(
+        button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white)));
+
+ThemeData get availableToSelectButtonTheme => abiliaTheme.copyWith(
+    buttonTheme: actionButtonTheme,
+    buttonColor: AbiliaColors.white,
+    textTheme: abiliaTextTheme.copyWith(
+        button: abiliaTextTheme.button.copyWith(color: AbiliaColors.black)));
 
 ThemeData get showHideButtonTheme => abiliaTheme.copyWith(
     buttonTheme: actionButtonTheme,
@@ -184,7 +196,7 @@ FontWeight get medium => FontWeight.w500;
 Map<int, ThemeData> get weekDayTheme => {
       DateTime.monday: _dayTheme(AbiliaColors.green,
           textColor: AbiliaColors.black, primaryColor: AbiliaColors.white),
-      DateTime.tuesday: _dayTheme(AbiliaColors.blue),
+      DateTime.tuesday: _dayTheme(AbiliaColors.darkBlue),
       DateTime.wednesday:
           _dayTheme(AbiliaColors.white, textColor: AbiliaColors.black),
       DateTime.thursday: _dayTheme(AbiliaColors.brown),
