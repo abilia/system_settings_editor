@@ -212,7 +212,7 @@ Map<int, ThemeData> allDayTheme() => {
           textColor: AbiliaColors.black,
           primaryColor: AbiliaColors.white,
           scaffoldShade: 120),
-      DateTime.tuesday: _dayTheme(AbiliaColors.blue, scaffoldShade: 120),
+      DateTime.tuesday: _dayTheme(AbiliaColors.darkBlue, scaffoldShade: 120),
       DateTime.wednesday: _dayTheme(AbiliaColors.white,
           textColor: AbiliaColors.black, scaffoldShade: 120),
       DateTime.thursday: _dayTheme(AbiliaColors.brown, scaffoldShade: 120),
