@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/calendar/list_view_button.dart';
-import 'package:seagull/ui/components/calendar/timepillar_view_button.dart';
+import 'package:seagull/ui/components/calendar/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class ChangeCalendarViewDialog extends StatelessWidget {
