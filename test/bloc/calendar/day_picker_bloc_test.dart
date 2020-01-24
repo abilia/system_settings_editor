@@ -10,13 +10,14 @@ void main() {
   DateTime thedayBefore = DateTime(1987, 10, 05);
   DateTime theDayAfter = DateTime(1987, 10, 07);
   DateTime theDayAfterTomorrow = DateTime(1987, 10, 08);
+  ClockBloc clockBloc;
   StreamController<DateTime> streamController;
 
   group('DayPickerBloc', () {
     setUp(() {
       streamController = StreamController();
-      dayPickerBloc = DayPickerBloc(
-          clockBloc: ClockBloc(streamController.stream, initialTime: theTime));
+      clockBloc = ClockBloc(streamController.stream, initialTime: theTime);
+      dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     });
 
     test('initial state', () {
@@ -67,8 +68,8 @@ void main() {
 
     test('currentDay should change with clock passing next day', () async {
       streamController.add(theDayAfter);
-      await Future.doWhile(() => Future.delayed(Duration(milliseconds: 10),
-          () => dayPickerBloc.initialState == theDay));
+      await Future.doWhile(() => Future.delayed(
+          Duration(milliseconds: 10), () => clockBloc.state == theDay));
       dayPickerBloc.add(CurrentDay());
       await expectLater(
         dayPickerBloc,
@@ -79,8 +80,8 @@ void main() {
     test('currentDay should change with clocks passing day after next',
         () async {
       streamController.add(theDayAfterTomorrow);
-      await Future.doWhile(() => Future.delayed(Duration(milliseconds: 10),
-          () => dayPickerBloc.initialState == theDay));
+      await Future.doWhile(() => Future.delayed(
+          Duration(milliseconds: 10), () => clockBloc.state == theDay));
       dayPickerBloc.add(CurrentDay());
       await expectLater(
         dayPickerBloc,
