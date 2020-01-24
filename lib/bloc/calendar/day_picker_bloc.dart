@@ -6,14 +6,10 @@ import 'package:seagull/utils/all.dart';
 
 class DayPickerBloc extends Bloc<DayPickerEvent, DateTime> {
   DateTime _initialState;
-  StreamSubscription _clockSubscription;
+  final ClockBloc clockBloc;
 
-  DayPickerBloc({@required ClockBloc clockBloc})
-      : _initialState = clockBloc.initialState.onlyDays() {
-    _clockSubscription = clockBloc
-        .where((dt) => dt.hour == 0 && dt.minute == 0 && dt.second == 0)
-        .listen((now) => _initialState = now.onlyDays());
-  }
+  DayPickerBloc({@required this.clockBloc})
+      : _initialState = clockBloc.initialState.onlyDays();
 
   @override
   DateTime get initialState => _initialState;
@@ -26,13 +22,12 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DateTime> {
     if (event is PreviousDay) {
       yield state.subtract(Duration(hours: 1)).onlyDays();
     }
-    if (event is CurrentDay) yield initialState;
+    if (event is CurrentDay) yield this.clockBloc.state.onlyDays();
     if (event is GoTo) yield event.day.onlyDays();
   }
 
   @override
   Future<void> close() async {
-    await _clockSubscription.cancel();
     return super.close();
   }
 }
