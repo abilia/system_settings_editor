@@ -11,12 +11,14 @@ class AllDayList extends StatelessWidget {
       {Key key,
       @required this.pickedDay,
       @required this.allDayActivities,
-      @required this.cardHeight})
+      @required this.cardHeight,
+      @required this.cardMargin})
       : super(key: key);
 
   final DateTime pickedDay;
   final List<ActivityOccasion> allDayActivities;
   final double cardHeight;
+  final double cardMargin;
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +29,12 @@ class AllDayList extends StatelessWidget {
       child: Scaffold(
         body: Scrollbar(
           child: ListView.builder(
-            itemExtent: this.cardHeight,
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+            itemExtent: this.cardHeight + this.cardMargin,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             itemCount: allDayActivities.length,
             itemBuilder: (context, index) => ActivityCard(
               activityOccasion: allDayActivities[index],
-              cardMargin: this.cardHeight,
+              cardMargin: this.cardMargin / 2,
             ),
           ),
         ),
@@ -58,7 +59,8 @@ class AllDayList extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            DateFormat('EEEE, d MMM', langCode).format(pickedDay),
+                            DateFormat('EEEE, d MMM', langCode)
+                                .format(pickedDay),
                             style: theme.textTheme.title,
                           ),
                           Text(

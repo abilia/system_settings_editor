@@ -54,6 +54,7 @@ class _AgendaState extends State<Agenda> {
                 FullDayContainer(
                   fullDayActivities: fullDayActivities,
                   cardHeight: widget.cardHeight,
+                  cardMargin: widget.cardMargin,
                   day: state.day,
                 ),
               Expanded(
@@ -124,12 +125,14 @@ class FullDayContainer extends StatelessWidget {
       {Key key,
       @required this.fullDayActivities,
       @required this.cardHeight,
+      @required this.cardMargin,
       @required this.day})
       : super(key: key);
 
   final List<ActivityOccasion> fullDayActivities;
   final double cardHeight;
   final DateTime day;
+  final double cardMargin;
 
   @override
   Widget build(BuildContext context) {
@@ -175,6 +178,7 @@ class FullDayContainer extends StatelessWidget {
                                     pickedDay: day,
                                     allDayActivities: fullDayActivities,
                                     cardHeight: this.cardHeight,
+                                    cardMargin: this.cardMargin,
                                   ),
                                   fullscreenDialog: true,
                                 ),
