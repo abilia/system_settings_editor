@@ -3,7 +3,7 @@ export 'payload.dart';
 
 import 'package:seagull/models/all.dart';
 
-typedef Stream<String> NotificationStreamGetter();
-typedef Future AlarmScheduler(Iterable<Activity> allActivities,
+typedef NotificationStreamGetter = Stream<String> Function();
+typedef AlarmScheduler = Future Function(Iterable<Activity> allActivities,
     {Duration forDuration});
-typedef Future CancelNotificationsFunction();
+typedef CancelNotificationsFunction = Future Function();

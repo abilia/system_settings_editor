@@ -21,6 +21,7 @@ void main() {
     StreamController<DateTime> mockTicker;
     final changeViewButtonFinder = find.byKey(TestKey.changeView);
     final timePillarButtonFinder = find.byKey(TestKey.timePillarButton);
+    ActivityResponse activityResponse = () => [];
 
     setUp(() {
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
@@ -35,14 +36,14 @@ void main() {
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(<Activity>[]));
       GetItInitializer()
-          .withActivityDb(mockActivityDb)
-          .withUserDb(MockUserDb())
-          .withTicker((() => mockTicker.stream))
-          .withBaseUrlDb(MockBaseUrlDb())
-          .withFireBasePushService(mockFirebasePushService)
-          .withTokenDb(mockTokenDb)
-          .withHttpClient(Fakes.client([]))
-          .init();
+        ..activityDb = mockActivityDb
+        ..userDb = MockUserDb()
+        ..ticker = (() => mockTicker.stream)
+        ..baseUrlDb = MockBaseUrlDb()
+        ..fireBasePushService = mockFirebasePushService
+        ..tokenDb = mockTokenDb
+        ..httpClient = Fakes.client(activityResponse)
+        ..init();
     });
 
     testWidgets('Application starts', (WidgetTester tester) async {
@@ -60,9 +61,10 @@ void main() {
     testWidgets('Should show one activity', (WidgetTester tester) async {
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(<Activity>[FakeActivity.onTime()]));
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client([FakeActivity.future()]),
-      ));
+
+      activityResponse = () => [FakeActivity.future()];
+
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsOneWidget);
     });
@@ -78,9 +80,10 @@ void main() {
         (WidgetTester tester) async {
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(<Activity>[FakeActivity.onTime()]));
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client([FakeActivity.onTime()]),
-      ));
+
+      activityResponse = () => [FakeActivity.onTime()];
+
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
     });
@@ -93,9 +96,10 @@ void main() {
         ..add(FakeActivity.onTime().copyWith(title: key));
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(activities));
-      await tester.pumpWidget(App(
-        httpClient: Fakes.client(activities),
-      ));
+
+      activityResponse = () => activities;
+
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
       expect(find.text(key), findsOneWidget);
@@ -141,15 +145,15 @@ void main() {
           .thenAnswer((_) => Future.value(response));
 
       GetItInitializer()
-          .withActivityDb(mockActivityDb)
-          .withUserDb(MockUserDb())
-          .withTicker((() => mockTicker.stream))
-          .withBaseUrlDb(MockBaseUrlDb())
-          .withFireBasePushService(mockFirebasePushService)
-          .withTokenDb(mockTokenDb)
-          .withHttpClient(Fakes.client(response))
-          .withNotificationStreamGetter(() => mockNotificationSelected.stream)
-          .init();
+        ..activityDb = mockActivityDb
+        ..userDb = MockUserDb()
+        ..ticker = (() => mockTicker.stream)
+        ..baseUrlDb = MockBaseUrlDb()
+        ..fireBasePushService = mockFirebasePushService
+        ..tokenDb = mockTokenDb
+        ..httpClient = Fakes.client(() => response)
+        ..notificationStreamGetter = (() => mockNotificationSelected.stream)
+        ..init();
     });
 
     testWidgets('Alarms shows', (WidgetTester tester) async {
@@ -217,15 +221,15 @@ void main() {
           .thenAnswer((_) => Future.value('fakeToken'));
 
       GetItInitializer()
-          .withActivityDb(mockActivityDb)
-          .withUserDb(MockUserDb())
-          .withTicker((() => mockTicker.stream))
-          .withBaseUrlDb(MockBaseUrlDb())
-          .withFireBasePushService(mockFirebasePushService)
-          .withTokenDb(mockTokenDb)
-          .withHttpClient(Fakes.client([]))
-          .withNotificationStreamGetter(() => mockNotificationSelected.stream)
-          .init();
+        ..activityDb = mockActivityDb
+        ..userDb = MockUserDb()
+        ..ticker = (() => mockTicker.stream)
+        ..baseUrlDb = MockBaseUrlDb()
+        ..fireBasePushService = mockFirebasePushService
+        ..tokenDb = mockTokenDb
+        ..httpClient = Fakes.client(() => [])
+        ..notificationStreamGetter = (() => mockNotificationSelected.stream)
+        ..init();
     });
 
     testWidgets('Start and end time alarm for same activity',

@@ -35,37 +35,39 @@ class BackendSwitches extends StatelessWidget {
         'Mock',
         userRepository: repository,
         backEndUrl: 'https://via.placeholder.com/190/09CDDA/FFFFFF&',
-        client: Fakes.client([
-          FakeActivity.startsAfter(2.minutes()).copyWith(
-              fileId: 'somefileid',
-              alarmType: ALARM_SILENT,
-              duration: 1.minutes().inMilliseconds,
-              title: 'ALARM_SILENT'),
-          FakeActivity.startsAfter(4.minutes()).copyWith(
-              duration: 1.minutes().inMilliseconds,
-              alarmType: ALARM_VIBRATION,
-              title: 'ALARM_VIBRATION'),
-          FakeActivity.startsAfter(6.minutes()).copyWith(
-              fileId: 'somefileid',
-              duration: 1.minutes().inMilliseconds,
-              alarmType: ALARM_SOUND_ONLY_ON_START,
-              title: 'ALARM_SOUND_ONLY_ON_START'),
-          FakeActivity.startsAfter(8.minutes()).copyWith(
-              duration: 1.minutes().inMilliseconds,
-              alarmType: ALARM_SOUND_AND_VIBRATION,
-              title: 'ALARM_SOUND_AND_VIBRATION'),
-          FakeActivity.startsAfter(10.minutes()).copyWith(
-              duration: 1.minutes().inMilliseconds,
-              reminderBefore: [1.minutes().inMilliseconds],
-              infoItem: 'some info',
-              alarmType: NO_ALARM,
-              title: 'NO_ALARM'),
-          FakeActivity.startsAfter(11.minutes()).copyWith(
-              duration: 0,
-              reminderBefore: [10.minutes().inMilliseconds],
-              alarmType: ALARM_SILENT,
-              title: 'ALARM_SILENT reminder 10 min before'),
-        ]),
+        client: Fakes.client(
+          () => [
+            FakeActivity.startsAfter(2.minutes()).copyWith(
+                fileId: 'somefileid',
+                alarmType: ALARM_SILENT,
+                duration: 1.minutes().inMilliseconds,
+                title: 'ALARM_SILENT'),
+            FakeActivity.startsAfter(4.minutes()).copyWith(
+                duration: 1.minutes().inMilliseconds,
+                alarmType: ALARM_VIBRATION,
+                title: 'ALARM_VIBRATION'),
+            FakeActivity.startsAfter(6.minutes()).copyWith(
+                fileId: 'somefileid',
+                duration: 1.minutes().inMilliseconds,
+                alarmType: ALARM_SOUND_ONLY_ON_START,
+                title: 'ALARM_SOUND_ONLY_ON_START'),
+            FakeActivity.startsAfter(8.minutes()).copyWith(
+                duration: 1.minutes().inMilliseconds,
+                alarmType: ALARM_SOUND_AND_VIBRATION,
+                title: 'ALARM_SOUND_AND_VIBRATION'),
+            FakeActivity.startsAfter(10.minutes()).copyWith(
+                duration: 1.minutes().inMilliseconds,
+                reminderBefore: [1.minutes().inMilliseconds],
+                infoItem: 'some info',
+                alarmType: NO_ALARM,
+                title: 'NO_ALARM'),
+            FakeActivity.startsAfter(11.minutes()).copyWith(
+                duration: 0,
+                reminderBefore: [10.minutes().inMilliseconds],
+                alarmType: ALARM_SILENT,
+                title: 'ALARM_SILENT reminder 10 min before'),
+          ],
+        ),
       );
 }
 

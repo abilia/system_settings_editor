@@ -27,13 +27,13 @@ void main() {
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value([]));
       GetItInitializer()
-          .withActivityDb(mockActivityDb)
-          .withFireBasePushService(mockFirebasePushService)
-          .withUserDb(MockUserDb())
-          .withBaseUrlDb(MockBaseUrlDb())
-          .withTokenDb(mockTokenDb)
-          .withHttpClient(Fakes.client([]))
-          .init();
+        ..activityDb = mockActivityDb
+        ..fireBasePushService = mockFirebasePushService
+        ..userDb = MockUserDb()
+        ..baseUrlDb = MockBaseUrlDb()
+        ..tokenDb = mockTokenDb
+        ..httpClient = Fakes.client(() => [])
+        ..init();
     });
 
     testWidgets('Application starts', (WidgetTester tester) async {

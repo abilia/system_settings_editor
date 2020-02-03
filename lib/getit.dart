@@ -8,71 +8,43 @@ import 'package:seagull/utils/all.dart';
 
 class GetItInitializer {
   ActivityDb _activityDb;
+  set activityDb(ActivityDb activityDb) => this._activityDb = activityDb;
+
   FirebasePushService _firebasePushService;
+  set fireBasePushService(FirebasePushService firebasePushService) =>
+      this._firebasePushService = firebasePushService;
+
   UserDb _userDb;
+  set userDb(UserDb userDb) => this._userDb = userDb;
+
   TokenDb _tokenDb;
+  set tokenDb(TokenDb tokenDb) => this._tokenDb = tokenDb;
+
   DatabaseRepository _databaseRepository;
+  set databaseRepository(DatabaseRepository databaseRepository) =>
+      this._databaseRepository = databaseRepository;
+
   FactoryFunc<Stream<DateTime>> _tickerFactory;
+  set ticker(FactoryFunc<Stream<DateTime>> ticker) =>
+      this._tickerFactory = ticker;
+
   NotificationStreamGetter _selectedNotificationStreamGetter;
+  set notificationStreamGetter(
+          NotificationStreamGetter selectedNotificationStreamGetterFunction) =>
+      this._selectedNotificationStreamGetter =
+          selectedNotificationStreamGetterFunction;
+
   AlarmScheduler _alarmScheduler;
+  set alarmScheduler(AlarmScheduler alarmScheduler) =>
+      this._alarmScheduler = alarmScheduler;
+
   BaseUrlDb _baseUrlDb;
+  set baseUrlDb(BaseUrlDb baseUrlDb) => this._baseUrlDb = baseUrlDb;
+
   BaseClient _baseClient;
+  set httpClient(BaseClient baseClient) => this._baseClient = baseClient;
 
-  GetItInitializer withActivityDb(ActivityDb activityDb) {
-    this._activityDb = activityDb;
-    return this;
-  }
-
-  GetItInitializer withFireBasePushService(
-      FirebasePushService firebasePushService) {
-    this._firebasePushService = firebasePushService;
-    return this;
-  }
-
-  GetItInitializer withUserDb(UserDb userDb) {
-    this._userDb = userDb;
-    return this;
-  }
-
-  GetItInitializer withDatabaseRepository(
-      DatabaseRepository databaseRepository) {
-    this._databaseRepository = databaseRepository;
-    return this;
-  }
-
-  GetItInitializer withTicker(FactoryFunc<Stream<DateTime>> ticker) {
-    this._tickerFactory = ticker;
-    return this;
-  }
-
-  GetItInitializer withNotificationStreamGetter(
-      NotificationStreamGetter selectedNotificationStreamGetterFunction) {
-    this._selectedNotificationStreamGetter =
-        selectedNotificationStreamGetterFunction;
-    return this;
-  }
-
-  GetItInitializer withAlarmScheduler(AlarmScheduler alarmScheduler) {
-    this._alarmScheduler = alarmScheduler;
-    return this;
-  }
-
-  GetItInitializer withBaseUrlDb(BaseUrlDb baseUrlDb) {
-    this._baseUrlDb = baseUrlDb;
-    return this;
-  }
-
-  GetItInitializer withHttpClient(BaseClient baseClient) {
-    this._baseClient = baseClient;
-    return this;
-  }
-
-  GetItInitializer withTokenDb(TokenDb tokenDb) {
-    this._tokenDb = tokenDb;
-    return this;
-  }
-
-  init() async {
+  init() {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
     GetIt.I.registerSingleton<TokenDb>(_tokenDb ?? TokenDb());
