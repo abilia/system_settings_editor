@@ -17,9 +17,7 @@ void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   initServices();
   final baseUrl = await BaseUrlDb().initialize(T1);
-  runApp(App(
-    baseUrl: baseUrl,
-  ));
+  runApp(App(baseUrl: baseUrl));
 }
 
 void initServices() {
@@ -33,13 +31,12 @@ class App extends StatelessWidget {
   final PushBloc pushBloc;
 
   App({
-    BaseClient httpClient,
     String baseUrl,
     Key key,
     this.pushBloc,
   })  : userRepository = UserRepository(
             baseUrl: baseUrl,
-            httpClient: httpClient ?? GetIt.I<BaseClient>(),
+            httpClient: GetIt.I<BaseClient>(),
             tokenDb: GetIt.I<TokenDb>(),
             userDb: GetIt.I<UserDb>()),
         super(key: key);

@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -22,33 +20,28 @@ void main() {
       final mockTokenDb = MockTokenDb();
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
 
-      final activity = FakeActivity.future();
-      final activityResponseAnswers = [
-        Response(json.encode([]), 200),
-        Response(json.encode([activity]), 200),
+      final dbActivityAnswers = [
+        <Activity>[],
+        [FakeActivity.future()]
+      ];
+      final serverActivityAnswers = [
+        <Activity>[],
+        [FakeActivity.future()]
       ];
 
-      final activityAnswers = [
-        <Activity>[],
-        [activity]
-      ];
       final mockActivityDb = MockActivityDb();
       when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
       when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(activityAnswers.removeAt(0)));
-
-      final mockClient = MockClient(fakeUrl);
-      mockClient.whenEntityMeSuccess();
-      mockClient.whenActivities(activityResponseAnswers);
+          .thenAnswer((_) => Future.value(dbActivityAnswers.removeAt(0)));
 
       GetItInitializer()
-          .withTokenDb(mockTokenDb)
-          .withActivityDb(mockActivityDb)
-          .withHttpClient(mockClient)
-          .withUserDb(MockUserDb())
-          .withBaseUrlDb(MockBaseUrlDb())
-          .withFireBasePushService(MockFirebasePushService())
-          .init();
+        ..tokenDb = mockTokenDb
+        ..activityDb = mockActivityDb
+        ..httpClient = Fakes.client(() => serverActivityAnswers.removeAt(0))
+        ..userDb = MockUserDb()
+        ..baseUrlDb = MockBaseUrlDb()
+        ..fireBasePushService = MockFirebasePushService()
+        ..init();
     });
 
     testWidgets('Push loads activities', (WidgetTester tester) async {

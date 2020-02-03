@@ -7,6 +7,8 @@ import 'package:seagull/models/all.dart';
 
 import 'fake_activities.dart';
 
+typedef ActivityResponse = Iterable<Activity> Function();
+
 class Fakes {
   Fakes._();
   static int get userId => 1234;
@@ -15,8 +17,8 @@ class Fakes {
       username = 'username',
       type = 'testcase',
       incorrectPassword = 'wrong';
-
-  static MockClient client([List<Activity> activitiesResponse]) => MockClient(
+  static final ActivityResponse allActivitiesFunciton = () => allActivities;
+  static MockClient client([ActivityResponse activitiesResponse]) => MockClient(
         (r) {
           final pathSegments = r.url.pathSegments.toSet();
           Response response;
@@ -36,14 +38,15 @@ class Fakes {
             response = entityMeSuccessResponse;
           }
           if (pathSegments.containsAll(['data', 'activities'])) {
-            response =
-                Response(json.encode(activitiesResponse ?? allActivities), 200);
+            response = Response(
+                json.encode((activitiesResponse ?? allActivitiesFunciton)()),
+                200);
           }
           return Future.value(response ?? Response('not found', 404));
         },
       );
 
-  static Iterable<Activity> allActivities = [
+  static final Iterable<Activity> allActivities = [
     FakeActivity.reocurrsMondays(),
     FakeActivity.reocurrsTuedays(),
     FakeActivity.reocurrsWednesdays(),
@@ -64,14 +67,14 @@ class Fakes {
     ..addAll(FakeActivities.activities)
     ..addAll([]);
 
-  static Response clientMeSuccessResponse = Response('''
+  static final Response clientMeSuccessResponse = Response('''
     {
       "token" : "$token",
       "endDate" : 1231244,
       "renewToken" : ""
     }''', 200);
 
-  static Response entityMeSuccessResponse = Response('''
+  static final Response entityMeSuccessResponse = Response('''
     {
       "me" : {
         "id" : $userId,
