@@ -9,9 +9,15 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 
+import 'package:flutter/rendering.dart';
+import 'package:seagull/utils/all.dart';
+
 class Agenda extends StatefulWidget {
   final double cardHeight = 56.0;
   final double cardMargin = 6;
+  final DateTime day;
+
+  const Agenda({Key key, this.day}) : super(key: key);
 
   @override
   _AgendaState createState() => _AgendaState();
@@ -30,83 +36,97 @@ class _AgendaState extends State<Agenda> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
-      builder: (context, state) {
-        if (state is ActivitiesOccasionLoaded) {
-          final scrollController = ScrollController(
-              initialScrollOffset: max(
-                  state.indexOfCurrentActivity *
-                      (widget.cardHeight + widget.cardMargin),
-                  0),
-              keepScrollOffset: false);
-          if (state.isToday) {
-            WidgetsBinding.instance.addPostFrameCallback((_) =>
-                BlocProvider.of<ScrollPositionBloc>(context)
-                    .add(ListViewRenderComplete(scrollController)));
-          } else {
-            BlocProvider.of<ScrollPositionBloc>(context)
-                .add(WrongDaySelected());
-          }
-          final activities = state.activities;
-          final fullDayActivities = state.fullDayActivities;
-          return Column(
-            children: <Widget>[
-              if (fullDayActivities.isNotEmpty)
-                FullDayContainer(
-                  fullDayActivities: fullDayActivities,
-                  cardHeight: widget.cardHeight,
-                  cardMargin: widget.cardMargin,
-                  day: state.day,
-                ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: _refresh,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: NotificationListener<ScrollNotification>(
-                      onNotification:
-                          state.isToday ? _onScrollNotification : null,
-                      child: Scrollbar(
-                        child: activities.isEmpty && fullDayActivities.isEmpty
-                            ? ListView(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 24.0),
-                                    child: Center(
-                                        child: Text(
-                                      Translator.of(context)
-                                          .translate
-                                          .noActivities,
-                                      style: Theme.of(context).textTheme.body2,
-                                    )),
-                                  )
-                                ],
-                              )
-                            : ListView.builder(
-                                itemExtent:
-                                    widget.cardHeight + widget.cardMargin,
-                                controller:
-                                    state.isToday ? scrollController : null,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
-                                itemCount: activities.length,
-                                itemBuilder: (context, index) => ActivityCard(
-                                  activityOccasion: activities[index],
-                                  cardMargin: widget.cardMargin / 2,
-                                ),
+    return BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, clockState) =>
+            BlocBuilder<ActivitiesBloc, ActivitiesState>(
+              builder: (context, activitiesState) {
+                if (activitiesState is ActivitiesLoaded) {
+                  final state = ActivityOccasionUtil
+                      .mapActivitiesToActivityOccasionsState(
+                          activitiesState.activities,
+                          now: clockState,
+                          day: widget.day);
+                  final scrollController = ScrollController(
+                      initialScrollOffset: max(
+                          state.indexOfCurrentActivity *
+                              (widget.cardHeight + widget.cardMargin),
+                          0),
+                      keepScrollOffset: false);
+                  if (state.isToday) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) =>
+                        BlocProvider.of<ScrollPositionBloc>(context)
+                            .add(ListViewRenderComplete(scrollController)));
+                  } else {
+                    BlocProvider.of<ScrollPositionBloc>(context)
+                        .add(WrongDaySelected());
+                  }
+                  final activities = state.activities;
+                  final fullDayActivities = state.fullDayActivities;
+                  return Column(
+                    children: <Widget>[
+                      if (fullDayActivities.isNotEmpty)
+                        FullDayContainer(
+                          fullDayActivities: fullDayActivities,
+                          cardHeight: widget.cardHeight,
+                          cardMargin: widget.cardMargin,
+                          day: state.day,
+                        ),
+                      Expanded(
+                        child: RefreshIndicator(
+                          onRefresh: _refresh,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: NotificationListener<ScrollNotification>(
+                              onNotification:
+                                  state.isToday ? _onScrollNotification : null,
+                              child: Scrollbar(
+                                child: activities.isEmpty &&
+                                        fullDayActivities.isEmpty
+                                    ? ListView(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 24.0),
+                                            child: Center(
+                                                child: Text(
+                                              Translator.of(context)
+                                                  .translate
+                                                  .noActivities,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .body2,
+                                            )),
+                                          )
+                                        ],
+                                      )
+                                    : ListView.builder(
+                                        itemExtent: widget.cardHeight +
+                                            widget.cardMargin,
+                                        controller: state.isToday
+                                            ? scrollController
+                                            : null,
+                                        physics:
+                                            const AlwaysScrollableScrollPhysics(),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 8),
+                                        itemCount: activities.length,
+                                        itemBuilder: (context, index) =>
+                                            ActivityCard(
+                                          activityOccasion: activities[index],
+                                          cardMargin: widget.cardMargin / 2,
+                                        ),
+                                      ),
                               ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        }
-        return Center(child: CircularProgressIndicator());
-      },
-    );
+                    ],
+                  );
+                }
+                return Center(child: CircularProgressIndicator());
+              },
+            ));
   }
 
   Future<void> _refresh() {

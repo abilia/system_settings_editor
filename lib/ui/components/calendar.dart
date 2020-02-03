@@ -52,92 +52,114 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final langCode = Locale.cachedLocale.languageCode;
+    final PageController controller =
+        PageController(initialPage: DayPickerBloc.startIndex);
     return BlocProvider<ScrollPositionBloc>(
-      create: (context) => _scrollPositionBloc,
-      child: BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, now) => BlocBuilder<DayPickerBloc, DateTime>(
-          builder: (context, pickedDay) {
-            return BlocBuilder<CalendarViewBloc, CalendarViewState>(
-              builder: (context, calendarViewState) {
-                final themeData = weekDayTheme[pickedDay.weekday];
-                return AnimatedTheme(
-                  data: themeData,
-                  child: Scaffold(
-                    appBar:
-                        buildAppBar(langCode, pickedDay, context, themeData),
-                    body: calendarViewState.currentView == CalendarViewType.LIST
-                        ? Agenda()
-                        : TimePillar(),
-                    bottomNavigationBar: BottomAppBar(
-                      child: SizedBox(
-                        height: 64,
-                        child: Stack(
-                          children: <Widget>[
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Row(
+        create: (context) => _scrollPositionBloc,
+        child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
+          builder: (context, activitiesState) => BlocBuilder<DayPickerBloc,
+                  DayPickerState>(
+              builder: (context, pickedDay) =>
+                  BlocBuilder<CalendarViewBloc, CalendarViewState>(
+                    builder: (context, calendarViewState) {
+                      final themeData = weekDayTheme[pickedDay.day.weekday];
+                      return Theme(
+                        data: themeData,
+                        child: Scaffold(
+                          appBar: buildAppBar(
+                              langCode, pickedDay.day, context, themeData),
+                          body: BlocListener<DayPickerBloc, DayPickerState>(
+                              listener: (context, state) {
+                                controller.animateToPage(state.index,
+                                    duration: Duration(milliseconds: 500),
+                                    curve: Curves.easeOutQuad);
+                              },
+                              child: PageView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  reverse: true,
+                                  controller: controller,
+                                  itemBuilder: (context, index) {
+                                    final day =
+                                        BlocProvider.of<DayPickerBloc>(context)
+                                            .indexToDate(index);
+                                    return calendarViewState.currentView ==
+                                            CalendarViewType.LIST
+                                        ? Agenda(
+                                            day: day,
+                                          )
+                                        : TimePillar();
+                                  })),
+                          bottomNavigationBar: BottomAppBar(
+                            child: SizedBox(
+                              height: 64,
+                              child: Stack(
                                 children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                                    child: ActionButton(
-                                      key: Key('changeView'),
-                                      width: 65,
-                                      child: Row(
-                                        children: <Widget>[
-                                          calendarViewState.currentView ==
-                                                  CalendarViewType.LIST
-                                              ? Icon(AbiliaIcons.phone_log)
-                                              : Icon(AbiliaIcons.timeline),
-                                          Icon(AbiliaIcons.navigation_down)
-                                        ],
-                                      ),
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (newContext) =>
-                                                ChangeCalendarViewDialog(
-                                                  outerContext: context,
-                                                  currentViewType:
-                                                      calendarViewState
-                                                          .currentView,
-                                                ));
-                                      },
-                                      themeData: menuButtonTheme,
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              15, 0, 15, 0),
+                                          child: ActionButton(
+                                            key: Key('changeView'),
+                                            width: 65,
+                                            child: Row(
+                                              children: <Widget>[
+                                                calendarViewState.currentView ==
+                                                        CalendarViewType.LIST
+                                                    ? Icon(
+                                                        AbiliaIcons.phone_log)
+                                                    : Icon(
+                                                        AbiliaIcons.timeline),
+                                                Icon(
+                                                    AbiliaIcons.navigation_down)
+                                              ],
+                                            ),
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (newContext) =>
+                                                      ChangeCalendarViewDialog(
+                                                        outerContext: context,
+                                                        currentViewType:
+                                                            calendarViewState
+                                                                .currentView,
+                                                      ));
+                                            },
+                                            themeData: menuButtonTheme,
+                                          ),
+                                        ),
+                                        GoToNowButton(
+                                          onPressed: () => _jumpToActivity(),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  GoToNowButton(
-                                    onPressed: () => _jumpToActivity(),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: ActionButton(
+                                      child: Icon(
+                                        AbiliaIcons.menu,
+                                        size: 32,
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => MenuPage()),
+                                      ),
+                                      themeData: menuButtonTheme,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: ActionButton(
-                                child: Icon(
-                                  AbiliaIcons.menu,
-                                  size: 32,
-                                ),
-                                onPressed: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => MenuPage()),
-                                ),
-                                themeData: menuButtonTheme,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      ),
-    );
+                      );
+                    },
+                  )),
+        ));
   }
 
   PreferredSize buildAppBar(String langCode, DateTime pickedDay,
