@@ -76,7 +76,6 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                               },
                               child: PageView.builder(
                                   physics: NeverScrollableScrollPhysics(),
-                                  reverse: true,
                                   controller: controller,
                                   itemBuilder: (context, index) {
                                     final day =
