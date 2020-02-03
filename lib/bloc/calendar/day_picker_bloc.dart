@@ -40,7 +40,7 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
     return DayPickerState(day, index);
   }
 
-  DateTime indexToDate(int index) {
+  DateTime indexToDate(int index) { 
     final indexDiff = index - startIndex;
     return _initialState.day.add(Duration(days: indexDiff));
   }
