@@ -11,5 +11,6 @@ class TestKey {
       onScreenAlarm = Key('onScreenAlarm'),
       alarmOkButton = Key('alarmOkButton'),
       changeView = Key('changeView'),
-      timePillarButton = Key('timePillarButton');
+      timePillarButton = Key('timePillarButton'),
+      activityBackButton = Key('activityBackButton');
 }

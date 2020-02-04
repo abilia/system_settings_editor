@@ -71,6 +71,7 @@ class ActivityPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 16.0),
                 child: ActionButton(
+                  key: TestKey.activityBackButton,
                   child: Icon(
                     AbiliaIcons.navigation_previous,
                     size: 32,
