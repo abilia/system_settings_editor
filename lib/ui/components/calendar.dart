@@ -51,7 +51,8 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final PageController controller = PageController();
+    final PageController controller =
+        PageController(initialPage: DayPickerBloc.startIndex);
     return BlocProvider<ScrollPositionBloc>(
       create: (context) => _scrollPositionBloc,
       child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
