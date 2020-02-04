@@ -52,10 +52,12 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
       paintExtent: paintedChildSize,
       maxPaintExtent: childExtent,
       hitTestExtent: paintedChildSize,
-      paintOrigin: paintOrigin,
+      hasVisualOverflow: true,
       visible: true,
     );
     setChildParentData(child, constraints, geometry);
+    final SliverPhysicalParentData childParentData = child.parentData;
+    childParentData.paintOffset += Offset(paintOrigin, 0);
   }
 
   @override

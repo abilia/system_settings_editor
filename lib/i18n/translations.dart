@@ -26,6 +26,8 @@ abstract class Translated {
   String get noActivities;
   String get timePillarView;
   String get listView;
+  String get left;
+  String get right;
 }
 
 class English extends Translated {
@@ -47,7 +49,9 @@ class English extends Translated {
       startsNow = 'Starts now',
       noActivities = 'No activities for today',
       timePillarView = 'Timepillar view',
-      listView = 'List view';
+      listView = 'List view',
+      left = 'Left',
+      right = 'Rigth';
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
@@ -69,6 +73,8 @@ class Swedish extends Translated {
       startsNow = 'Börjar nu',
       noActivities = 'Inga aktiviteter idag',
       timePillarView = 'Tidspelare',
-      listView = 'Listvy';
+      listView = 'Listvy',
+      left = 'Vänster',
+      right = 'Höger';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }
