@@ -42,11 +42,12 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
 enum Occasion { past, current, future }
 
 class ActivityOccasion extends Equatable {
-  ActivityOccasion._(this.activity, this.occasion);
+  final DateTime day;
+  ActivityOccasion._(this.activity, this.occasion, this.day);
   ActivityOccasion(
     this.activity, {
     @required DateTime now,
-    @required DateTime day,
+    @required this.day,
   }) : occasion = activity.endClock(day).isBefore(now)
             ? Occasion.past
             : activity.startClock(day).isAfter(now)
@@ -55,7 +56,7 @@ class ActivityOccasion extends Equatable {
 
   @visibleForTesting
   factory ActivityOccasion.forTest(activity, occasion) =>
-      ActivityOccasion._(activity, occasion);
+      ActivityOccasion._(activity, occasion, null);
 
   factory ActivityOccasion.fullDay(
     Activity activity, {
@@ -66,13 +67,14 @@ class ActivityOccasion extends Equatable {
           activity,
           activity.startClock(day).isDayBefore(now)
               ? Occasion.past
-              : Occasion.future);
+              : Occasion.future,
+          day);
 
   final Activity activity;
   final Occasion occasion;
 
   @override
-  List<Object> get props => [activity, occasion];
+  List<Object> get props => [activity, occasion, day];
 
   @override
   String toString() =>
