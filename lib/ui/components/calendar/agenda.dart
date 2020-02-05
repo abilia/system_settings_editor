@@ -9,9 +9,14 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 
+import 'package:flutter/rendering.dart';
+
 class Agenda extends StatefulWidget {
   final double cardHeight = 56.0;
   final double cardMargin = 6;
+  final ActivitiesOccasionLoaded state;
+
+  const Agenda({Key key, this.state}) : super(key: key);
 
   @override
   _AgendaState createState() => _AgendaState();
@@ -30,82 +35,71 @@ class _AgendaState extends State<Agenda> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
-      builder: (context, state) {
-        if (state is ActivitiesOccasionLoaded) {
-          final scrollController = ScrollController(
-              initialScrollOffset: max(
-                  state.indexOfCurrentActivity *
-                      (widget.cardHeight + widget.cardMargin),
-                  0),
-              keepScrollOffset: false);
-          if (state.isToday) {
-            WidgetsBinding.instance.addPostFrameCallback((_) =>
-                BlocProvider.of<ScrollPositionBloc>(context)
-                    .add(ListViewRenderComplete(scrollController)));
-          } else {
-            BlocProvider.of<ScrollPositionBloc>(context)
-                .add(WrongDaySelected());
-          }
-          final activities = state.activities;
-          final fullDayActivities = state.fullDayActivities;
-          return Column(
-            children: <Widget>[
-              if (fullDayActivities.isNotEmpty)
-                FullDayContainer(
-                  fullDayActivities: fullDayActivities,
-                  cardHeight: widget.cardHeight,
-                  cardMargin: widget.cardMargin,
-                  day: state.day,
-                ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: _refresh,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: NotificationListener<ScrollNotification>(
-                      onNotification:
-                          state.isToday ? _onScrollNotification : null,
-                      child: Scrollbar(
-                        child: activities.isEmpty && fullDayActivities.isEmpty
-                            ? ListView(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 24.0),
-                                    child: Center(
-                                        child: Text(
-                                      Translator.of(context)
-                                          .translate
-                                          .noActivities,
-                                      style: Theme.of(context).textTheme.body2,
-                                    )),
-                                  )
-                                ],
-                              )
-                            : ListView.builder(
-                                itemExtent:
-                                    widget.cardHeight + widget.cardMargin,
-                                controller:
-                                    state.isToday ? scrollController : null,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
-                                itemCount: activities.length,
-                                itemBuilder: (context, index) => ActivityCard(
-                                  activityOccasion: activities[index],
-                                  cardMargin: widget.cardMargin / 2,
+    final state = widget.state;
+    final scrollController = ScrollController(
+        initialScrollOffset: max(
+            state.indexOfCurrentActivity *
+                (widget.cardHeight + widget.cardMargin),
+            0),
+        keepScrollOffset: false);
+    if (state.isToday) {
+      WidgetsBinding.instance.addPostFrameCallback((_) =>
+          BlocProvider.of<ScrollPositionBloc>(context)
+              .add(ListViewRenderComplete(scrollController)));
+    } else {
+      BlocProvider.of<ScrollPositionBloc>(context).add(WrongDaySelected());
+    }
+    final activities = state.activities;
+    final fullDayActivities = state.fullDayActivities;
+    return Column(
+      children: <Widget>[
+        if (fullDayActivities.isNotEmpty)
+          FullDayContainer(
+            fullDayActivities: fullDayActivities,
+            cardHeight: widget.cardHeight,
+            cardMargin: widget.cardMargin,
+            day: state.day,
+          ),
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: _refresh,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: NotificationListener<ScrollNotification>(
+                onNotification: state.isToday ? _onScrollNotification : null,
+                child: Scrollbar(
+                  child: activities.isEmpty && fullDayActivities.isEmpty
+                      ? ListView(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(top: 24.0),
+                              child: Center(
+                                child: Text(
+                                  Translator.of(context).translate.noActivities,
+                                  style: Theme.of(context).textTheme.body2,
                                 ),
                               ),
-                      ),
-                    ),
-                  ),
+                            )
+                          ],
+                        )
+                      : ListView.builder(
+                          itemExtent: widget.cardHeight + widget.cardMargin,
+                          controller: state.isToday ? scrollController : null,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
+                          itemCount: activities.length,
+                          itemBuilder: (context, index) => ActivityCard(
+                            activityOccasion: activities[index],
+                            cardMargin: widget.cardMargin / 2,
+                          ),
+                        ),
                 ),
               ),
-            ],
-          );
-        }
-        return Center(child: CircularProgressIndicator());
-      },
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -141,17 +135,21 @@ class FullDayContainer extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
       child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
-          child: Row(
-            children: firstTwo
-                .map<Widget>((fd) => Flexible(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 6.0),
-                      child: ActivityCard(activityOccasion: fd, cardMargin: 4),
-                    )))
-                .toList()
-                  ..add(fullDayActivities.length >= 3
+        padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
+        child: Row(
+          children: firstTwo
+              .map<Widget>(
+                (fd) => Flexible(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 6.0),
+                    child: ActivityCard(activityOccasion: fd, cardMargin: 4),
+                  ),
+                ),
+              )
+              .toList()
+                ..add(
+                  fullDayActivities.length >= 3
                       ? Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 0, horizontal: 6),
@@ -187,10 +185,10 @@ class FullDayContainer extends StatelessWidget {
                             },
                           ),
                         )
-                      : SizedBox(
-                          height: 56,
-                        )),
-          )),
+                      : SizedBox(height: 56),
+                ),
+        ),
+      ),
     );
   }
 }

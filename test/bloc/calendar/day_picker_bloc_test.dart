@@ -21,11 +21,13 @@ void main() {
     });
 
     test('initial state', () {
-      expect(dayPickerBloc.initialState, theDay);
-      expect(dayPickerBloc.state, theDay);
+      expect(dayPickerBloc.initialState,
+          DayPickerState(theDay, DayPickerBloc.startIndex));
+      expect(dayPickerBloc.state,
+          DayPickerState(theDay, DayPickerBloc.startIndex));
       expectLater(
         dayPickerBloc,
-        emitsInOrder([theDay]),
+        emitsInOrder([DayPickerState(theDay, DayPickerBloc.startIndex)]),
       );
     });
 
@@ -33,7 +35,10 @@ void main() {
       dayPickerBloc.add(NextDay());
       await expectLater(
         dayPickerBloc,
-        emitsInOrder([theDay, theDayAfter]),
+        emitsInOrder([
+          DayPickerState(theDay, DayPickerBloc.startIndex),
+          DayPickerState(theDayAfter, DayPickerBloc.startIndex + 1)
+        ]),
       );
     });
 
@@ -41,7 +46,10 @@ void main() {
       dayPickerBloc.add(PreviousDay());
       await expectLater(
         dayPickerBloc,
-        emitsInOrder([theDay, thedayBefore]),
+        emitsInOrder([
+          DayPickerState(theDay, DayPickerBloc.startIndex),
+          DayPickerState(thedayBefore, DayPickerBloc.startIndex - 1)
+        ]),
       );
     });
 
@@ -50,7 +58,11 @@ void main() {
       dayPickerBloc.add(PreviousDay());
       await expectLater(
         dayPickerBloc,
-        emitsInOrder([theDay, theDayAfter, theDay]),
+        emitsInOrder([
+          DayPickerState(theDay, DayPickerBloc.startIndex),
+          DayPickerState(theDayAfter, DayPickerBloc.startIndex + 1),
+          DayPickerState(theDay, DayPickerBloc.startIndex)
+        ]),
       );
     });
 
@@ -62,7 +74,7 @@ void main() {
       dayPickerBloc.add(CurrentDay());
       await expectLater(
         dayPickerBloc,
-        emitsInOrder([theDay]),
+        emitsInOrder([DayPickerState(theDay, DayPickerBloc.startIndex)]),
       );
     });
 
@@ -73,7 +85,10 @@ void main() {
       dayPickerBloc.add(CurrentDay());
       await expectLater(
         dayPickerBloc,
-        emitsInOrder([theDay, theDayAfter]),
+        emitsInOrder([
+          DayPickerState(theDay, DayPickerBloc.startIndex),
+          DayPickerState(theDayAfter, DayPickerBloc.startIndex + 1)
+        ]),
       );
     });
 
@@ -85,7 +100,10 @@ void main() {
       dayPickerBloc.add(CurrentDay());
       await expectLater(
         dayPickerBloc,
-        emitsInOrder([theDay, theDayAfterTomorrow]),
+        emitsInOrder([
+          DayPickerState(theDay, DayPickerBloc.startIndex),
+          DayPickerState(theDayAfterTomorrow, DayPickerBloc.startIndex + 2)
+        ]),
       );
     });
 
@@ -98,7 +116,10 @@ void main() {
       dayPickerBloc.add(CurrentDay());
       await expectLater(
         dayPickerBloc,
-        emitsInOrder([theDay, theDayAfter]),
+        emitsInOrder([
+          DayPickerState(theDay, DayPickerBloc.startIndex),
+          DayPickerState(theDayAfter, DayPickerBloc.startIndex + 1)
+        ]),
       );
     });
 
