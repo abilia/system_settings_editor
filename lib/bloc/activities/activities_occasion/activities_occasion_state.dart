@@ -55,8 +55,8 @@ class ActivityOccasion extends Equatable {
                 : Occasion.current;
 
   @visibleForTesting
-  factory ActivityOccasion.forTest(activity, occasion) =>
-      ActivityOccasion._(activity, occasion, null);
+  factory ActivityOccasion.forTest(activity, occasion, {day}) =>
+      ActivityOccasion._(activity, occasion, day);
 
   factory ActivityOccasion.fullDay(
     Activity activity, {
@@ -78,5 +78,5 @@ class ActivityOccasion extends Equatable {
 
   @override
   String toString() =>
-      '{ $occasion,  Activity: ( ${activity.title} ${activity.start}-${activity.end} ) }';
+      '{ $occasion,  Activity: ( ${activity.title} ${activity.start}-${activity.end} ) day: $day }';
 }

@@ -93,9 +93,12 @@ void main() {
           ActivitiesOccasionLoading(),
           ActivitiesOccasionLoaded(
             activities: [
-              ActivityOccasion.forTest(pastActivity, Occasion.past),
-              ActivityOccasion.forTest(nowActivity, Occasion.current),
-              ActivityOccasion.forTest(futureActivity, Occasion.future),
+              ActivityOccasion.forTest(pastActivity, Occasion.past,
+                  day: initialDay),
+              ActivityOccasion.forTest(nowActivity, Occasion.current,
+                  day: initialDay),
+              ActivityOccasion.forTest(futureActivity, Occasion.future,
+                  day: initialDay),
             ],
             fullDayActivities: <ActivityOccasion>[],
             indexOfCurrentActivity: 1,
@@ -129,7 +132,8 @@ void main() {
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
             fullDayActivities: [
-              ActivityOccasion.forTest(fullDayActivity, Occasion.future)
+              ActivityOccasion.forTest(fullDayActivity, Occasion.future,
+                  day: initialDay)
             ],
             indexOfCurrentActivity: -1,
             day: initialDay,
@@ -167,12 +171,16 @@ void main() {
           ActivitiesOccasionLoading(),
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
-              ActivityOccasion.forTest(pastActivity, Occasion.past),
-              ActivityOccasion.forTest(nowActivity, Occasion.current),
-              ActivityOccasion.forTest(futureActivity, Occasion.future),
+              ActivityOccasion.forTest(pastActivity, Occasion.past,
+                  day: initialDay),
+              ActivityOccasion.forTest(nowActivity, Occasion.current,
+                  day: initialDay),
+              ActivityOccasion.forTest(futureActivity, Occasion.future,
+                  day: initialDay),
             ],
             fullDayActivities: [
-              ActivityOccasion.forTest(fullDayActivity, Occasion.future)
+              ActivityOccasion.forTest(fullDayActivity, Occasion.future,
+                  day: initialDay)
             ],
             indexOfCurrentActivity: 1,
             day: initialDay,
@@ -209,7 +217,8 @@ void main() {
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
             fullDayActivities: [
-              ActivityOccasion.forTest(fullDayActivity, Occasion.future)
+              ActivityOccasion.forTest(fullDayActivity, Occasion.future,
+                  day: initialDay)
             ],
             indexOfCurrentActivity: -1,
             day: initialDay,
@@ -218,7 +227,8 @@ void main() {
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
             fullDayActivities: [
-              ActivityOccasion.forTest(tomorrowFullday, Occasion.future)
+              ActivityOccasion.forTest(tomorrowFullday, Occasion.future,
+                  day: nextDay)
             ],
             indexOfCurrentActivity: -1,
             day: nextDay,
@@ -227,7 +237,8 @@ void main() {
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
             fullDayActivities: [
-              ActivityOccasion.forTest(fullDayActivity, Occasion.future)
+              ActivityOccasion.forTest(fullDayActivity, Occasion.future,
+                  day: initialDay)
             ],
             indexOfCurrentActivity: -1,
             day: initialDay,
@@ -236,7 +247,8 @@ void main() {
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
             fullDayActivities: [
-              ActivityOccasion.forTest(yesterdayFullday, Occasion.past)
+              ActivityOccasion.forTest(yesterdayFullday, Occasion.past,
+                  day: previusDay)
             ],
             indexOfCurrentActivity: -1,
             day: previusDay,
@@ -268,12 +280,16 @@ void main() {
           ActivitiesOccasionLoading(),
           ActivitiesOccasionLoaded(
             activities: [
-              ActivityOccasion.forTest(pastActivity, Occasion.future),
-              ActivityOccasion.forTest(nowActivity, Occasion.future),
-              ActivityOccasion.forTest(futureActivity, Occasion.future),
+              ActivityOccasion.forTest(pastActivity, Occasion.future,
+                  day: nextDay),
+              ActivityOccasion.forTest(nowActivity, Occasion.future,
+                  day: nextDay),
+              ActivityOccasion.forTest(futureActivity, Occasion.future,
+                  day: nextDay),
             ],
             fullDayActivities: [
-              ActivityOccasion.forTest(fulldayActivity, Occasion.future)
+              ActivityOccasion.forTest(fulldayActivity, Occasion.future,
+                  day: nextDay)
             ],
             day: nextDay,
             indexOfCurrentActivity: -1,
@@ -305,12 +321,16 @@ void main() {
           ActivitiesOccasionLoading(),
           ActivitiesOccasionLoaded(
             activities: [
-              ActivityOccasion.forTest(pastActivity, Occasion.past),
-              ActivityOccasion.forTest(nowActivity, Occasion.past),
-              ActivityOccasion.forTest(futureActivity, Occasion.past),
+              ActivityOccasion.forTest(pastActivity, Occasion.past,
+                  day: previusDay),
+              ActivityOccasion.forTest(nowActivity, Occasion.past,
+                  day: previusDay),
+              ActivityOccasion.forTest(futureActivity, Occasion.past,
+                  day: previusDay),
             ],
             fullDayActivities: [
-              ActivityOccasion.forTest(fulldayActivity, Occasion.past)
+              ActivityOccasion.forTest(fulldayActivity, Occasion.past,
+                  day: previusDay)
             ],
             indexOfCurrentActivity: -1,
             day: previusDay,
@@ -335,7 +355,8 @@ void main() {
           ActivitiesOccasionLoading(),
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
-              ActivityOccasion.forTest(endsSoon, Occasion.current),
+              ActivityOccasion.forTest(endsSoon, Occasion.current,
+                  day: initialDay),
             ],
             fullDayActivities: [],
             indexOfCurrentActivity: 0,
@@ -362,7 +383,8 @@ void main() {
           ActivitiesOccasionLoading(),
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
-              ActivityOccasion.forTest(startsNow, Occasion.current),
+              ActivityOccasion.forTest(startsNow, Occasion.current,
+                  day: initialDay),
             ],
             fullDayActivities: [],
             indexOfCurrentActivity: 0,
@@ -394,9 +416,12 @@ void main() {
         emitsInOrder([
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
-              ActivityOccasion.forTest(nowActivity, Occasion.current),
-              ActivityOccasion.forTest(endsSoonActivity, Occasion.current),
-              ActivityOccasion.forTest(startSoonActivity, Occasion.future),
+              ActivityOccasion.forTest(nowActivity, Occasion.current,
+                  day: initialDay),
+              ActivityOccasion.forTest(endsSoonActivity, Occasion.current,
+                  day: initialDay),
+              ActivityOccasion.forTest(startSoonActivity, Occasion.future,
+                  day: initialDay),
             ],
             fullDayActivities: <ActivityOccasion>[],
             indexOfCurrentActivity: 0,
@@ -405,9 +430,12 @@ void main() {
           ),
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
-              ActivityOccasion.forTest(endsSoonActivity, Occasion.past),
-              ActivityOccasion.forTest(nowActivity, Occasion.current),
-              ActivityOccasion.forTest(startSoonActivity, Occasion.current),
+              ActivityOccasion.forTest(endsSoonActivity, Occasion.past,
+                  day: initialDay),
+              ActivityOccasion.forTest(nowActivity, Occasion.current,
+                  day: initialDay),
+              ActivityOccasion.forTest(startSoonActivity, Occasion.current,
+                  day: initialDay),
             ],
             fullDayActivities: <ActivityOccasion>[],
             indexOfCurrentActivity: 1,
@@ -478,7 +506,8 @@ void main() {
             // Tuesday
             ActivitiesOccasionLoaded(
               activities: <ActivityOccasion>[
-                ActivityOccasion.forTest(tuesdayRecurring, Occasion.current),
+                ActivityOccasion.forTest(tuesdayRecurring, Occasion.current,
+                    day: initialDay),
               ],
               fullDayActivities: [],
               indexOfCurrentActivity: 0,
@@ -488,7 +517,8 @@ void main() {
             // monday
             ActivitiesOccasionLoaded(
               activities: <ActivityOccasion>[
-                ActivityOccasion.forTest(mondayRecurring, Occasion.past),
+                ActivityOccasion.forTest(mondayRecurring, Occasion.past,
+                    day: initialDay.subtract(Duration(days: 1))),
               ],
               fullDayActivities: [],
               indexOfCurrentActivity: -1,
@@ -506,7 +536,8 @@ void main() {
             // Saturday
             ActivitiesOccasionLoaded(
               activities: <ActivityOccasion>[
-                ActivityOccasion.forTest(weekendActivity, Occasion.future),
+                ActivityOccasion.forTest(weekendActivity, Occasion.future,
+                    day: saturday),
               ],
               fullDayActivities: [],
               indexOfCurrentActivity: -1,
@@ -516,7 +547,8 @@ void main() {
             // Sunday
             ActivitiesOccasionLoaded(
               activities: <ActivityOccasion>[
-                ActivityOccasion.forTest(weekendActivity, Occasion.future),
+                ActivityOccasion.forTest(weekendActivity, Occasion.future,
+                    day: sunday),
               ],
               fullDayActivities: [],
               indexOfCurrentActivity: -1,
@@ -526,7 +558,8 @@ void main() {
             // Monday
             ActivitiesOccasionLoaded(
               activities: <ActivityOccasion>[
-                ActivityOccasion.forTest(mondayRecurring, Occasion.future),
+                ActivityOccasion.forTest(mondayRecurring, Occasion.future,
+                    day: monday),
               ],
               fullDayActivities: [],
               indexOfCurrentActivity: -1,
