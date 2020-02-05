@@ -47,7 +47,7 @@ class ActivitiesOccasionBloc
                 .followedBy(loadedState.fullDayActivities)
                 .map((a) => a.activity),
             now: event.now,
-            day: dayPickerBloc.state);
+            day: dayPickerBloc.state.day);
       } else {
         yield ActivitiesOccasionLoading();
       }

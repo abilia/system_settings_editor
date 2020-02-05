@@ -45,7 +45,7 @@ class TimePillar extends StatelessWidget {
             SliverFillViewport(
               viewportFraction: 0.1,
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+                (BuildContext context, int index) { 
                   return TileWidget(index);
                 },
                 childCount: 50,
