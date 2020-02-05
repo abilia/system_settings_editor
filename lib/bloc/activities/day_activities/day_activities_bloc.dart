@@ -18,7 +18,7 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
       }
     });
     _dayPickerSubscription =
-        dayPickerBloc.listen((state) => add(UpdateDay(state)));
+        dayPickerBloc.listen((state) => add(UpdateDay(state.day)));
   }
 
   @override
@@ -26,7 +26,7 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
     final activitiesState = activitiesBloc.state;
     if (activitiesState is ActivitiesLoaded) {
       return DayActivitiesLoaded(
-          activitiesState.activities, dayPickerBloc.state);
+          activitiesState.activities, dayPickerBloc.state.day);
     } else {
       return DayActivitiesUninitialized();
     }
@@ -40,7 +40,7 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
         yield DayActivitiesLoaded(activityState.activities, event.dayFilter);
       }
     } else if (event is UpdateActivities) {
-      yield DayActivitiesLoaded(event.activities, dayPickerBloc.state);
+      yield DayActivitiesLoaded(event.activities, dayPickerBloc.state.day);
     }
   }
 
