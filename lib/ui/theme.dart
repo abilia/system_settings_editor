@@ -110,7 +110,15 @@ ThemeData get showHideButtonTheme => abiliaTheme.copyWith(
             .copyWith(color: AbiliaColors.black[75])));
 
 ThemeData get menuButtonTheme => abiliaTheme.copyWith(
-    buttonTheme: actionButtonTheme,
+    buttonTheme: actionButtonTheme.copyWith(
+      shape: RoundedRectangleBorder(
+        borderRadius: borderRadius,
+        side: BorderSide(
+          width: 1,
+          color: AbiliaColors.transparantWhite[15],
+        ),
+      ),
+    ),
     buttonColor: AbiliaColors.transparantWhite[20]);
 
 BottomAppBarTheme get bottomAppBarTheme =>
