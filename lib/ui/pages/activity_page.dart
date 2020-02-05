@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/components/calendar/day_app_bar.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/utils/all.dart';
@@ -20,7 +21,21 @@ class ActivityPage extends StatelessWidget {
     return Theme(
       data: themeData,
       child: Scaffold(
-        appBar: buildAppBar(context),
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(68),
+            child: DayAppBar(
+              day: occasion.day,
+              leftAction: ActionButton(
+                key: TestKey.activityBackButton,
+                child: Icon(
+                  AbiliaIcons.navigation_previous,
+                  size: 32,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            )),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -34,10 +49,12 @@ class ActivityPage extends StatelessWidget {
                   child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    occasion.activity.title,
-                    style: themeData.textTheme.headline,
-                  ),
+                  if (occasion.activity.title != null &&
+                      occasion.activity.title.isNotEmpty)
+                    Text(
+                      occasion.activity.title,
+                      style: themeData.textTheme.headline,
+                    ),
                   Text(
                       occasion.activity.fullDay
                           ? Translator.of(context).translate.fullDay
