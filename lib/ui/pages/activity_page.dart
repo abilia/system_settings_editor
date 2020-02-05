@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/components/activity/activity_info.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/components/calendar/day_app_bar.dart';
 import 'package:seagull/ui/theme.dart';
@@ -17,7 +17,6 @@ class ActivityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = weekDayTheme[occasion.day.weekday];
-    final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
     return Theme(
       data: themeData,
       child: Scaffold(
@@ -36,36 +35,52 @@ class ActivityPage extends StatelessWidget {
                 },
               ),
             )),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: AbiliaColors.white,
-                  borderRadius: BorderRadius.all(
-                    const Radius.circular(10.0),
-                  )),
-              constraints: BoxConstraints.expand(),
-              child: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  if (occasion.activity.title != null &&
-                      occasion.activity.title.isNotEmpty)
-                    Text(
-                      occasion.activity.title,
-                      style: themeData.textTheme.headline,
+        body: ActivityInfo(
+          occasion: occasion,
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: SizedBox(
+              height: 64,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 23.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    ActionButton(
+                      themeData: menuButtonTheme,
+                      child: Icon(
+                        AbiliaIcons.handi_vibration,
+                        size: 32,
+                      ),
+                      onPressed: () {},
                     ),
-                  Text(
-                      occasion.activity.fullDay
-                          ? Translator.of(context).translate.fullDay
-                          : occasion.activity.hasEndTime
-                              ? '${timeFormat.format(occasion.activity.start)} - ${timeFormat.format(occasion.activity.end)}'
-                              : '${timeFormat.format(occasion.activity.start)}',
-                      style: themeData.textTheme.subhead.copyWith(
-                        color: AbiliaColors.black,
-                      )),
-                ],
-              ))),
+                    ActionButton(
+                      themeData: menuButtonTheme,
+                      child: Icon(
+                        AbiliaIcons.handi_reminder,
+                        size: 32,
+                      ),
+                      onPressed: () {},
+                    ),
+                    ActionButton(
+                      themeData: menuButtonTheme,
+                      child: Icon(
+                        AbiliaIcons.edit,
+                        size: 32,
+                      ),
+                      onPressed: () {},
+                    ),
+                    ActionButton(
+                      themeData: menuButtonTheme,
+                      child: Icon(
+                        AbiliaIcons.delete_all_clear,
+                        size: 32,
+                      ),
+                      onPressed: () {},
+                    )
+                  ],
+                ),
+              )),
         ),
       ),
     );
