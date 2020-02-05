@@ -51,7 +51,7 @@ class English extends Translated {
       timePillarView = 'Timepillar view',
       listView = 'List view',
       left = 'Left',
-      right = 'Rigth';
+      right = 'Right';
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
