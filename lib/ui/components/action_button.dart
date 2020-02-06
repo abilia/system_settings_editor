@@ -16,21 +16,24 @@ class ActionButton extends StatelessWidget {
   final double width, height;
 
   @override
-  Widget build(BuildContext context) => Theme(
-        data: themeData ?? Theme.of(context),
-        child: Builder(
-          builder: (context) => SizedBox(
-            width: width,
-            height: height,
-            child: FlatButton(
-              color: Theme.of(context).buttonColor,
-              highlightColor: Theme.of(context).highlightColor,
-              padding: const EdgeInsets.all(8),
-              textColor: Theme.of(context).textTheme.button.color,
-              child: child,
-              onPressed: onPressed,
-            ),
+  Widget build(BuildContext context) {
+    final theme = themeData ?? Theme.of(context);
+    return Theme(
+      data: themeData ?? Theme.of(context),
+      child: Builder(
+        builder: (context) => SizedBox(
+          width: width,
+          height: height,
+          child: FlatButton(
+            color: theme.buttonColor,
+            highlightColor: theme.highlightColor,
+            padding: const EdgeInsets.all(8),
+            textColor: theme.textTheme.button.color,
+            child: child,
+            onPressed: onPressed,
           ),
         ),
-      );
+      ),
+    );
+  }
 }

@@ -92,7 +92,6 @@ class ActivityPage extends StatelessWidget {
     return PreferredSize(
       preferredSize: Size.fromHeight(68),
       child: AppBar(
-        brightness: getThemeAppBarBrightness()[occasion.day.weekday],
         elevation: 0.0,
         automaticallyImplyLeading: false,
         flexibleSpace: SafeArea(

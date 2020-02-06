@@ -5,6 +5,7 @@ import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/theme.dart';
 
 class MenuPage extends StatelessWidget {
   @override
@@ -67,20 +68,21 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
 class LogoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      color: AbiliaColors.red,
-      key: TestKey.loggInButton,
-      child: Text(
-        Translator.of(context).translate.logout,
-        style: Theme.of(context)
-            .textTheme
-            .subhead
-            .copyWith(color: AbiliaColors.white),
+    final theme = redButtonTheme;
+    return Theme(
+      data: theme,
+      child: FlatButton(
+        color: theme.buttonColor,
+        key: TestKey.loggInButton,
+        child: Text(
+          Translator.of(context).translate.logout,
+          style: theme.textTheme.subhead.copyWith(color: AbiliaColors.white),
+        ),
+        onPressed: () {
+          BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
+          Navigator.of(context).maybePop();
+        },
       ),
-      onPressed: () {
-        BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
-        Navigator.of(context).maybePop();
-      },
     );
   }
 }

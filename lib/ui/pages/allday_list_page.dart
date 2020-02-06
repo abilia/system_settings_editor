@@ -23,7 +23,8 @@ class AllDayList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final langCode = Locale.cachedLocale.languageCode;
-    final theme = allDayTheme()[pickedDay.weekday];
+    final theme = weekDayTheme[pickedDay.weekday].copyWith(
+        scaffoldBackgroundColor: weekDayColor[pickedDay.weekday][120]);
     return Theme(
       data: theme,
       child: Scaffold(
@@ -43,7 +44,6 @@ class AllDayList extends StatelessWidget {
           child: AppBar(
             automaticallyImplyLeading: false,
             elevation: 0,
-            brightness: getThemeAppBarBrightness()[pickedDay.weekday],
             flexibleSpace: SafeArea(
               child: Padding(
                 padding:
@@ -52,7 +52,13 @@ class AllDayList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    AbiliaCloseButton(),
+                    ActionButton(
+                      child: Icon(
+                        AbiliaIcons.close_program,
+                        size: 32,
+                      ),
+                      onPressed: () => Navigator.of(context).maybePop(),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: Column(
