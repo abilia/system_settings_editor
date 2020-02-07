@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -16,54 +17,114 @@ class ActivityInfo extends StatelessWidget {
     final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
     final hasImage = occasion.activity.fileId?.isNotEmpty ?? false;
     final hasAttachment = occasion.activity.infoItem?.isNotEmpty ?? false;
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: AbiliaColors.white,
+    Translated translate = Translator.of(context).translate;
+    return Stack(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Container(
+            decoration: BoxDecoration(
+                color: AbiliaColors.white,
+                borderRadius: BorderRadius.all(
+                  const Radius.circular(12.0),
+                )),
+            constraints: BoxConstraints.expand(),
+            child: Column(
+              children: <Widget>[
+                Flexible(
+                  flex: 5,
+                  child: TopInfo(
+                      occasion: occasion,
+                      themeData: themeData,
+                      timeFormat: timeFormat),
+                ),
+                if (hasAttachment)
+                  Flexible(
+                    flex: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                      child: Container(
+                        child: Center(
+                          child: Text('Attachment'),
+                        ),
+                        decoration: BoxDecoration(
+                            color: AbiliaColors.white[110],
+                            borderRadius: BorderRadius.all(
+                              const Radius.circular(12.0),
+                            )),
+                      ),
+                    ),
+                  ),
+                if (hasImage && !hasAttachment)
+                  Flexible(
+                    flex: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                      child: FadeInCalenderImage(
+                        imageFileId: occasion.activity.fileId,
+                        width: 327.0,
+                        height: 289.0,
+                      ),
+                    ),
+                  )
+              ],
+            ),
+          ),
+        ),
+        if (occasion.activity.checkable)
+          CheckButton(themeData: themeData, translate: translate),
+      ],
+    );
+  }
+}
+
+class CheckButton extends StatelessWidget {
+  const CheckButton({
+    Key key,
+    @required this.themeData,
+    @required this.translate,
+  }) : super(key: key);
+
+  final ThemeData themeData;
+  final Translated translate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 4,
+      right: 4,
+      child: Theme(
+        data: Theme.of(context).copyWith(buttonTheme: checkButtonTheme),
+        child: Container(
+          decoration: BoxDecoration(
+            color: themeData.scaffoldBackgroundColor,
             borderRadius: BorderRadius.all(
               const Radius.circular(12.0),
-            )),
-        constraints: BoxConstraints.expand(),
-        child: Column(
-          children: <Widget>[
-            Flexible(
-              flex: 5,
-              child: TopInfo(
-                  occasion: occasion,
-                  themeData: themeData,
-                  timeFormat: timeFormat),
             ),
-            if (hasAttachment)
-              Flexible(
-                flex: 8,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                  child: Container(
-                    child: Center(
-                      child: Text('Attachment'),
-                    ),
-                    decoration: BoxDecoration(
-                        color: AbiliaColors.white[110],
-                        borderRadius: BorderRadius.all(
-                          const Radius.circular(12.0),
-                        )),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: FlatButton(
+              color: AbiliaColors.green,
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Icon(AbiliaIcons.check_button),
                   ),
-                ),
+                  Text(
+                    translate.check,
+                    style: Theme.of(context)
+                        .textTheme
+                        .body2
+                        .copyWith(color: AbiliaColors.black),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
-            if (hasImage && !hasAttachment)
-              Flexible(
-                flex: 8,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                  child: FadeInCalenderImage(
-                    imageFileId: occasion.activity.fileId,
-                    width: 327.0,
-                    height: 289.0,
-                  ),
-                ),
-              )
-          ],
+              onPressed: () => {},
+            ),
+          ),
         ),
       ),
     );
