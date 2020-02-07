@@ -47,7 +47,7 @@ class FadeInThumb extends StatelessWidget {
               image: NetworkImage(
                   thumbImageUrl(
                       state.userRepository.baseUrl, state.userId, imageFileId,
-                      height: height.ceil(), width: width.ceil()),
+                      height: (height * 3).ceil(), width: (width * 3).ceil()),
                   headers: authHeader(state.token)),
               placeholder: MemoryImage(kTransparentImage),
             )

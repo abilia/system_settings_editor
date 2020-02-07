@@ -25,7 +25,6 @@ class DayAppBar extends StatelessWidget {
     final langCode = Locale.cachedLocale.languageCode;
     final themeData = weekDayTheme[day.weekday];
     return AppBar(
-      brightness: getThemeAppBarBrightness()[day.weekday],
       elevation: 0.0,
       automaticallyImplyLeading: false,
       flexibleSpace: SafeArea(

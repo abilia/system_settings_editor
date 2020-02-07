@@ -19,126 +19,138 @@ class ActivityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final occasion = activityOccasion.occasion;
-    return Theme(
-      data: pickTheme(context: context, occasion: occasion),
-      child: Builder(
-        builder: (context) => buildCard(activityOccasion, context),
-      ),
-    );
-  }
-
-  Widget buildCard(ActivityOccasion activityOccasion, BuildContext context) {
     final activity = activityOccasion.activity;
+    final theme = pickTheme(context: context, occasion: occasion);
     final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
     final hasImage = activity.fileId != null;
-    return Stack(
-      overflow: Overflow.visible,
-      children: [
-        Card(
-          margin: EdgeInsets.symmetric(vertical: cardMargin),
-          child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => ActivityPage(occasion: activityOccasion,)));
-            },
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
-              child: Row(
-                children: <Widget>[
-                  hasImage
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: 4.0),
-                          child: AnimatedOpacity(
-                            opacity: activityOccasion.occasion == Occasion.past
-                                ? .5
-                                : 1,
-                            child: FadeInThumb(
-                              imageFileId: activity.fileId,
-                              width: 48,
-                              height: 48,
-                            ),
-                            duration: const Duration(seconds: 1),
-                          ),
-                        )
-                      : SizedBox(
-                          height: 48,
-                        ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            activity.title,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .subhead
-                                .copyWith(color: AbiliaColors.black),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                  activity.fullDay
-                                      ? Translator.of(context).translate.fullDay
-                                      : activity.hasEndTime
-                                          ? '${timeFormat.format(activity.start)} - ${timeFormat.format(activity.end)}'
-                                          : '${timeFormat.format(activity.start)}',
+    final current = activityOccasion.occasion == Occasion.current;
+    return Theme(
+      data: theme,
+      child: Stack(
+        overflow: Overflow.visible,
+        children: [
+          AnimatedOpacity(
+            opacity: activityOccasion.occasion == Occasion.past ? .4 : 1,
+            duration: const Duration(seconds: 1),
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: cardMargin),
+              decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                border: Border.all(
+                    color: current
+                        ? AbiliaColors.red
+                        : AbiliaColors.transparantBlack[5]),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: borderRadius,
+                  color: theme.cardColor,
+                ),
+                child: InkWell(
+                  borderRadius: borderRadius,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ActivityPage(occasion: activityOccasion),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
+                    child: Row(
+                      children: <Widget>[
+                        hasImage
+                            ? Padding(
+                                padding: const EdgeInsets.only(left: 4.0),
+                                child: FadeInThumb(
+                                  imageFileId: activity.fileId,
+                                  width: 48,
+                                  height: 48,
+                                ),
+                              )
+                            : SizedBox(height: 48),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  activity.title ?? '',
+                                  overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .body2
-                                      .copyWith(
-                                          color: AbiliaColors.black[75],
-                                          height: 1.4)),
-                              Row(
-                                children: <Widget>[
-                                  if (!activity.fullDay)
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 4.0),
-                                      child: Icon(
-                                        iconDataFor(activity.alarm),
-                                        size: 18,
-                                      ),
-                                    ),
-                                  if (!activity.fullDay &&
-                                      activity.reminderBefore.isNotEmpty)
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 4.0),
-                                      child: Icon(
-                                        AbiliaIcons.handi_reminder,
-                                        size: 18,
-                                      ),
-                                    ),
-                                  if (activity.infoItem != null)
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 4.0),
-                                      child: Icon(
-                                        AbiliaIcons.handi_info,
-                                        size: 18,
-                                      ),
-                                    ),
-                                ],
-                              )
-                            ],
+                                      .subhead
+                                      .copyWith(color: AbiliaColors.black),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                        activity.fullDay
+                                            ? Translator.of(context)
+                                                .translate
+                                                .fullDay
+                                            : activity.hasEndTime
+                                                ? '${timeFormat.format(activity.start)} - ${timeFormat.format(activity.end)}'
+                                                : '${timeFormat.format(activity.start)}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .body2
+                                            .copyWith(
+                                                color: AbiliaColors.black[75],
+                                                height: 1.4)),
+                                    Row(
+                                      children: <Widget>[
+                                        if (!activity.fullDay)
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 4.0),
+                                            child: Icon(
+                                              iconDataFor(activity.alarm),
+                                              size: 18,
+                                            ),
+                                          ),
+                                        if (!activity.fullDay &&
+                                            activity.reminderBefore.isNotEmpty)
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 4.0),
+                                            child: Icon(
+                                              AbiliaIcons.handi_reminder,
+                                              size: 18,
+                                            ),
+                                          ),
+                                        if (activity.infoItem != null)
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 4.0),
+                                            child: Icon(
+                                              AbiliaIcons.handi_info,
+                                              size: 18,
+                                            ),
+                                          ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-        if (activityOccasion.occasion == Occasion.current)
-          Positioned(right: -3, child: NowBanner())
-      ],
+          if (current) Positioned(right: -3, child: NowBanner())
+        ],
+      ),
     );
   }
 
@@ -161,8 +173,6 @@ class ActivityCard extends StatelessWidget {
                 body2: theme.textTheme.body1
                     .copyWith(decoration: TextDecoration.lineThrough)));
       case Occasion.current:
-        return theme.copyWith(
-            cardTheme: theme.cardTheme.copyWith(shape: redOutlineInputBorder));
       case Occasion.future:
       default:
         return theme;

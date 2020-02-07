@@ -116,7 +116,7 @@ class _LoginFormState extends State<LoginForm> {
                                   ? Icons.visibility
                                   : Icons.visibility_off),
                               onPressed: _onHidePasswordChanged,
-                              themeData: showHideButtonTheme,
+                              themeData: darkButtonTheme,
                             )),
                     ],
                   ),
@@ -150,20 +150,23 @@ class _LoginFormState extends State<LoginForm> {
                   flexPadding(errorState),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: FlatButton(
-                      color: AbiliaColors.red,
-                      disabledColor: AbiliaColors.red[40],
-                      key: TestKey.loggInButton,
-                      child: Text(
-                        i18n.translate.login,
-                        style: theme.textTheme.subhead
-                            .copyWith(color: AbiliaColors.white),
+                    child: Theme(
+                      data: redButtonTheme,
+                      child: FlatButton(
+                        color: AbiliaColors.red,
+                        disabledColor: AbiliaColors.red[40],
+                        key: TestKey.loggInButton,
+                        child: Text(
+                          i18n.translate.login,
+                          style: theme.textTheme.subhead
+                              .copyWith(color: AbiliaColors.white),
+                        ),
+                        onPressed: loginState is! LoginLoading &&
+                                formState.isFormValid &&
+                                !(errorState)
+                            ? _onLoginButtonPressed
+                            : null,
                       ),
-                      onPressed: loginState is! LoginLoading &&
-                              formState.isFormValid &&
-                              !(errorState)
-                          ? _onLoginButtonPressed
-                          : null,
                     ),
                   ),
                   padding32,
