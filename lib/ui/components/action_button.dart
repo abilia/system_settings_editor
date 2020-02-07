@@ -19,7 +19,7 @@ class ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = themeData ?? Theme.of(context);
     return Theme(
-      data: themeData ?? Theme.of(context),
+      data: themeData,
       child: Builder(
         builder: (context) => SizedBox(
           width: width,
