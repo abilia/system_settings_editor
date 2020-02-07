@@ -28,6 +28,7 @@ abstract class Translated {
   String get listView;
   String get left;
   String get right;
+  String get check;
 }
 
 class English extends Translated {
@@ -51,7 +52,8 @@ class English extends Translated {
       timePillarView = 'Timepillar view',
       listView = 'List view',
       left = 'Left',
-      right = 'Right';
+      right = 'Right',
+      check = 'Check';
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
@@ -75,6 +77,7 @@ class Swedish extends Translated {
       timePillarView = 'Tidspelare',
       listView = 'Listvy',
       left = 'Vänster',
-      right = 'Höger';
+      right = 'Höger',
+      check = 'Klar';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }

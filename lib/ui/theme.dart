@@ -66,6 +66,21 @@ ButtonThemeData greenButtonTheme = ButtonThemeData(
   highlightColor: AbiliaColors.green[120],
 );
 
+ButtonThemeData checkButtonTheme = ButtonThemeData(
+  height: 48,
+  minWidth: 111,
+  shape: OutlineInputBorder(
+    borderSide: BorderSide(
+      color: AbiliaColors.transparantBlack[15],
+      width: 1,
+    ),
+    borderRadius: borderRadius,
+  ),
+  buttonColor: AbiliaColors.green,
+  disabledColor: AbiliaColors.green[40],
+  highlightColor: AbiliaColors.green[120],
+);
+
 ButtonThemeData actionButtonThemeData = baseButtonTheme.copyWith(
   disabledColor: Colors.transparent,
   height: 48,

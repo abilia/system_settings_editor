@@ -27,7 +27,11 @@ class DatabaseRepository {
     ''',
   ];
 
-  static final _migrations = <String>[];
+  static final _migrations = <String>[
+    '''
+      ALTER TABLE calendar_activity ADD COLUMN checkable int default 0
+    '''
+  ];
 
   static final _config = MigrationConfig(
       initializationScript: _initialScript, migrationScripts: _migrations);
@@ -51,6 +55,6 @@ class DatabaseRepository {
   }
 
   Future clearAll() async {
-     return (await database).rawDelete("DELETE FROM calendar_activity");
+    return (await database).rawDelete("DELETE FROM calendar_activity");
   }
 }
