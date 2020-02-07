@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/calendar/overlay/all.dart';
 
 import 'all.dart';
@@ -35,33 +34,25 @@ class _TimePillarState extends State<TimePillar> {
     final translate = Translator.of(context).translate;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
-        return SingleChildScrollView(
-          controller: verticalScrollController,
-          child: LimitedBox(
-            maxHeight: scrollHeight,
-            child: CustomScrollView(
-              scrollDirection: Axis.horizontal,
-              center: center,
-              controller: horizontalScrollController,
-              slivers: <Widget>[
-                SliverLayoutBuilder(
-                  builder: (context, sliverConstraints) {
-                    return SliverOverlayBuilder(
+        return Stack(
+          children: <Widget>[
+            SingleChildScrollView(
+              controller: verticalScrollController,
+              child: LimitedBox(
+                maxHeight: scrollHeight,
+                child: CustomScrollView(
+                  scrollDirection: Axis.horizontal,
+                  center: center,
+                  controller: horizontalScrollController,
+                  slivers: <Widget>[
+                    SliverOverlay(
                       height: boxConstraints.maxHeight,
-                      builder: (context, state) {
-                        return ScrollTranslated(
-                          controller: verticalScrollController,
-                          child: Stack(
-                            children: <Widget>[
-                              Placeholder(),
-                              Category(
-                                right: false,
-                                child: Text(translate.left),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                      overlay: ScrollTranslated(
+                        controller: verticalScrollController,
+                        child: CategoryLeft(
+                          child: Text(translate.left),
+                        ),
+                      ),
                       sliver: SliverGrid(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 5,
@@ -72,79 +63,51 @@ class _TimePillarState extends State<TimePillar> {
                           childCount: 20,
                         ),
                       ),
-                    );
-                  },
-                ),
-                SliverTimePillar(
-                  key: center,
-                  child: Container(
-                    width: timePillarWidth,
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                          colors: colors, tileMode: TileMode.mirror),
                     ),
-                  ),
-                ),
-                SliverOverlay(
-                  height: boxConstraints.maxHeight,
-                  overlay: ScrollTranslated(
-                    controller: verticalScrollController,
-                    child: Stack(
-                      children: <Widget>[
-                        Placeholder(),
-                        Category(
-                          right: true,
+                    SliverTimePillar(
+                      key: center,
+                      child: Container(
+                        width: timePillarWidth,
+                        decoration: BoxDecoration(
+                          gradient: RadialGradient(
+                              colors: colors, tileMode: TileMode.mirror),
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverOverlay(
+                      height: boxConstraints.maxHeight,
+                      overlay: ScrollTranslated(
+                        controller: verticalScrollController,
+                        child: CategoryRight(
                           child: Text(translate.right),
                         ),
-                      ],
+                      ),
+                      sliver: SliverGrid(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 5,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) =>
+                              TileWidget(index),
+                          childCount: 20,
+                        ),
+                      ),
                     ),
-                  ),
-                  sliver: SliverFillViewport(
-                    viewportFraction: 0.1,
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) => TileWidget(index),
-                      childCount: 50,
-                    ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            ArrowLeft(controller: horizontalScrollController),
+            ArrowUp(controller: verticalScrollController),
+            ArrowRight(controller: horizontalScrollController),
+            ArrowDown(controller: verticalScrollController),
+          ],
         );
       },
-    );
-  }
-}
-
-class Category extends StatelessWidget {
-  final Widget child;
-  final bool right;
-  const Category({
-    Key key,
-    this.child,
-    this.right,
-  }) : super(key: key);
-  final radius = const Radius.circular(12);
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: 18.0,
-      left: right ? null : 0,
-      right: right ? 0 : null,
-      child: Container(
-        width: 83,
-        height: 38,
-        decoration: BoxDecoration(
-          borderRadius: right
-              ? BorderRadius.only(topLeft: radius, bottomLeft: radius)
-              : BorderRadius.only(topRight: radius, bottomRight: radius),
-          color: AbiliaColors.white[135],
-        ),
-        child: Container(
-          decoration: BoxDecoration(),
-          child: Center(child: child),
-        ),
-      ),
     );
   }
 }
@@ -156,10 +119,10 @@ class ScrollTranslated extends StatefulWidget {
   const ScrollTranslated({Key key, this.controller, this.child})
       : super(key: key);
   @override
-  _ScrollTranslatedState createState() => _ScrollTranslatedState();
+  _ScrollTranslated createState() => _ScrollTranslated();
 }
 
-class _ScrollTranslatedState extends State<ScrollTranslated> {
+class _ScrollTranslated extends State<ScrollTranslated> {
   double scrollOffset;
   @override
   void initState() {
