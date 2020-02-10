@@ -36,7 +36,7 @@ void main() {
           'Notification selected after Activities loaded emits new alarm state',
           () async {
         // Arrange
-        final nowActivity = FakeActivity.onTime(aTime);
+        final nowActivity = FakeActivity.starts(aTime);
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([nowActivity]));
 
@@ -61,7 +61,7 @@ void main() {
           () async {
         // Arrange
         final reminderTime = 5;
-        final nowActivity = FakeActivity.onTime(aTime)
+        final nowActivity = FakeActivity.starts(aTime)
             .copyWith(reminderBefore: [reminderTime.minutes().inMilliseconds]);
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([nowActivity]));
@@ -90,7 +90,7 @@ void main() {
           'Notification selected before Activities loaded emits after Activities loaded',
           () async {
         // Arrange
-        final nowActivity = FakeActivity.onTime(aTime);
+        final nowActivity = FakeActivity.starts(aTime);
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([nowActivity]));
 
@@ -115,9 +115,9 @@ void main() {
           'Notifications selected before Activities loaded emits after Activities loaded',
           () async {
         // Arrange
-        final alarmActivity = FakeActivity.onTime(aTime);
+        final alarmActivity = FakeActivity.starts(aTime);
         final reminderTime = 5.minutes();
-        final reminderActivity = FakeActivity.onTime(aTime)
+        final reminderActivity = FakeActivity.starts(aTime)
             .copyWith(reminderBefore: [reminderTime.inMilliseconds]);
 
         when(mockActivityRepository.loadActivities())

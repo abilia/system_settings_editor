@@ -60,9 +60,9 @@ void main() {
 
     testWidgets('Should show one activity', (WidgetTester tester) async {
       when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.onTime()]));
+          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.statsNow()]));
 
-      activityResponse = () => [FakeActivity.future()];
+      activityResponse = () => [FakeActivity.startsIn(1.hours())];
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -79,9 +79,9 @@ void main() {
     testWidgets('Agenda with one activity should not show Go to now-button',
         (WidgetTester tester) async {
       when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.onTime()]));
+          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.statsNow()]));
 
-      activityResponse = () => [FakeActivity.onTime()];
+      activityResponse = () => [FakeActivity.statsNow()];
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -93,7 +93,7 @@ void main() {
         (WidgetTester tester) async {
       final key = 'KEYKEYKEYKEYKEY';
       final activities = FakeActivities.allPast
-        ..add(FakeActivity.onTime().copyWith(title: key));
+        ..add(FakeActivity.statsNow().copyWith(title: key));
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(activities));
 
@@ -123,7 +123,7 @@ void main() {
     StreamController<String> mockNotificationSelected;
     final DateTime activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
     final DateTime twoHoursAfter = activityWithAlarmTime.add(2.hours());
-    final Activity activity = FakeActivity.onTime(activityWithAlarmTime);
+    final Activity activity = FakeActivity.starts(activityWithAlarmTime);
     final String payloadSerial = json.encode(
         NotificationPayload(activityId: activity.id, onStart: true).toJson());
 
@@ -202,13 +202,13 @@ void main() {
     StreamController<String> mockNotificationSelected;
     final DateTime activity1StartTime = DateTime(2011, 11, 11, 11, 11);
     final Activity activity1 =
-        FakeActivity.onTime(activity1StartTime, Duration(minutes: 2));
+        FakeActivity.starts(activity1StartTime, duration: 2.minutes());
     final String startTimeActivity1NotificationPayload = json.encode(
         NotificationPayload(activityId: activity1.id, onStart: true).toJson());
 
     final DateTime activity2StartTime = DateTime(2011, 11, 11, 11, 12);
     final Activity activity2 =
-        FakeActivity.onTime(activity2StartTime, Duration(minutes: 2));
+        FakeActivity.starts(activity2StartTime, duration: 2.minutes());
 
     setUp(() {
       mockTicker = StreamController<DateTime>();

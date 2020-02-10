@@ -72,7 +72,7 @@ void main() {
     test('calles add activities on mockActivityRepostitory', () async {
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value(<Activity>[]));
-      final anActivity = FakeActivity.onTime();
+      final anActivity = FakeActivity.statsNow();
       activitiesBloc.add(LoadActivities());
       await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
       activitiesBloc.add(AddActivity(anActivity));
@@ -85,7 +85,7 @@ void main() {
         () async {
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value(<Activity>[]));
-      final anActivity = FakeActivity.onTime();
+      final anActivity = FakeActivity.statsNow();
       activitiesBloc.add(LoadActivities());
       await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
       activitiesBloc.add(AddActivity(anActivity));
@@ -95,7 +95,7 @@ void main() {
 
     test('UpdateActivities calles save activities on mockActivityRepostitory',
         () async {
-      final anActivity = FakeActivity.onTime();
+      final anActivity = FakeActivity.statsNow();
 
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value(<Activity>[anActivity]));
@@ -109,7 +109,7 @@ void main() {
     });
 
     test('UpdateActivities state order', () async {
-      final anActivity = FakeActivity.onTime();
+      final anActivity = FakeActivity.statsNow();
 
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value(<Activity>[anActivity]));
