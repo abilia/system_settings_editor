@@ -62,46 +62,59 @@ class ActivityCard extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(cardPadding),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        if (checked) SizedBox(width: imageSize + cardPadding),
-                        if (hasImage)
-                          FadeInThumb(
-                            imageFileId: activity.fileId,
-                            width: imageSize,
-                            height: imageSize,
-                          ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: cardPadding),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                if (hasTitle)
-                                  Text(
-                                    activity.title,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: theme.textTheme.subhead
-                                        .copyWith(color: AbiliaColors.black),
-                                  ),
-                                Text(
-                                  activity.fullDay
-                                      ? Translator.of(context).translate.fullDay
-                                      : activity.hasEndTime
-                                          ? '${timeFormat.format(activity.start)} - ${timeFormat.format(activity.end)}'
-                                          : '${timeFormat.format(activity.start)}',
-                                  style: theme.textTheme.body2.copyWith(
-                                    color: AbiliaColors.black[75],
-                                    height: 1.4,
-                                  ),
+                    child: Stack(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            if (checked)
+                              SizedBox(width: imageSize + cardPadding),
+                            if (hasImage)
+                              FadeInThumb(
+                                imageFileId: activity.fileId,
+                                width: imageSize,
+                                height: imageSize,
+                              ),
+                            Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: cardPadding),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    if (hasTitle)
+                                      Text(
+                                        activity.title,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: theme.textTheme.subhead.copyWith(
+                                            color: AbiliaColors.black),
+                                      ),
+                                    Text(
+                                      activity.fullDay
+                                          ? Translator.of(context)
+                                              .translate
+                                              .fullDay
+                                          : activity.hasEndTime
+                                              ? '${timeFormat.format(activity.start)} - ${timeFormat.format(activity.end)}'
+                                              : '${timeFormat.format(activity.start)}',
+                                      style: theme.textTheme.body2.copyWith(
+                                        color: AbiliaColors.black[75],
+                                        height: 1.4,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                        buildInfoIcons(activity),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: buildInfoIcons(activity),
+                        ),
                       ],
                     ),
                   ),
