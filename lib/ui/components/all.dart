@@ -16,3 +16,4 @@ export 'ok_bottom_bar.dart';
 export 'calendar.dart';
 export 'calendar/agenda.dart';
 export 'calendar/timepillar.dart';
+export 'activity/activity_info.dart';
