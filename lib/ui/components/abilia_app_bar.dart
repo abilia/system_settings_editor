@@ -28,6 +28,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: ActionButton(
+                      key: TestKey.appBarCloseButton,
                       child: Icon(
                         AbiliaIcons.close_program,
                         size: 32,
