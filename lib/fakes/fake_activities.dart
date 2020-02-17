@@ -6,23 +6,18 @@ DateTime get _now => DateTime.now().onlyMinutes();
 class FakeActivities {
   static List<Activity> get activities => activitiesWhen(_now);
   static List<Activity> activitiesWhen(DateTime when) => [
-        FakeActivity.dayAfter(when),
-        FakeActivity.longPast(when),
-        FakeActivity.past(when),
-        FakeActivity.endsAt(when),
-        FakeActivity.onTime(when),
-        FakeActivity.startsOneMinuteAfter(when),
-        FakeActivity.future(when),
-        FakeActivity.dayBefore(when),
-        FakeActivity.twoDaysFromNow(when),
-        FakeActivity.longSpanning(when),
+        FakeActivity.starts(when.add(1.days())),
+        FakeActivity.ends(when.subtract(2.hours())),
+        FakeActivity.ends(when.subtract(1.minutes())),
+        FakeActivity.ends(when),
+        FakeActivity.starts(when),
+        FakeActivity.starts(when.add(1.minutes())),
+        FakeActivity.starts(when.add(1.hours())),
+        FakeActivity.starts(when.subtract(1.days())),
+        FakeActivity.starts(when.add(2.days())),
         FakeActivity.fullday(when),
-        FakeActivity.yesterdayFullday(when),
-        FakeActivity.tomorrowFullday(when),
-        FakeActivity.startsAt(when,
-            title:
-                'long long, long, long long, long, long long, long, long long, long name',
-            image: true),
+        FakeActivity.fullday(when.subtract(1.days())),
+        FakeActivity.fullday(when.add(1.days())),
       ];
 
   static List<Activity> get oneEveryMinute => oneEveryMinuteWhen(_now);
@@ -76,57 +71,37 @@ class FakeActivities {
 }
 
 class FakeActivity {
-  static Activity onTime(
-          [DateTime date, Duration duration = const Duration(hours: 1)]) =>
-      startsAt(date ?? _now, title: 'now', duration: duration);
-  static Activity startsOneMinuteAfter([DateTime date]) =>
-      startsAt((date ?? _now).add(Duration(minutes: 1)), title: 'soon start');
-  static Activity startsAfter(Duration duration, [DateTime date]) =>
-      startsAt((date ?? _now).add(duration), title: 'start in $duration');
-  static Activity past([DateTime date]) =>
-      endsAt((date ?? _now).subtract(Duration(minutes: 1)), title: 'past');
-  static Activity future(
-          [DateTime date, Duration inDuration = const Duration(hours: 1)]) =>
-      startsAt((date ?? _now).add(inDuration), title: 'future');
-  static Activity dayAfter([DateTime date]) =>
-      startsAt((date ?? _now).add(Duration(days: 1)), title: 'tomorrow');
-  static Activity longPast([DateTime date]) =>
-      startsAt((date ?? _now).subtract(Duration(hours: 2)), title: 'long past');
-  static Activity dayBefore([DateTime date]) =>
-      startsAt((date ?? _now).subtract(Duration(days: 1)), title: 'yesterday');
-  static Activity twoDaysFromNow([DateTime date]) =>
-      startsAt((date ?? _now).add(Duration(days: 2)),
-          title: 'two days from now');
+  static Activity startsNow([Duration duration = const Duration(hours: 1)]) =>
+      starts(_now, title: 'now', duration: duration);
 
-  static Activity startsAt(DateTime when,
-          {String title,
-          bool image = false,
-          Duration duration = const Duration(hours: 1)}) =>
+  static Activity startsIn(Duration duration) =>
+      starts(_now.add(duration), title: 'start in $duration');
+
+  static Activity starts(
+    DateTime when, {
+    String title = 'starts at',
+    Duration duration = const Duration(hours: 1),
+  }) =>
       Activity.createNew(
-          title: title ?? '$when',
+          title: title,
           startTime: when.millisecondsSinceEpoch,
           duration: duration.inMilliseconds,
           category: 0,
           reminderBefore: [],
-          fileId: image ? 'image' : null,
           alarmType: ALARM_SILENT);
 
-  static Activity endsAt(DateTime when,
-          {String title,
-          bool image = false,
-          Duration duration = const Duration(hours: 1)}) =>
+  static Activity ends(
+    DateTime when, {
+    String title = 'ends at',
+    Duration duration = const Duration(hours: 1),
+  }) =>
       Activity.createNew(
-          title: title ?? 'ends at $when',
+          title: title,
           startTime: when.subtract(duration).millisecondsSinceEpoch,
           duration: duration.inMilliseconds,
           category: 0,
           reminderBefore: [],
-          fileId: image ? 'image' : null,
           alarmType: ALARM_SILENT);
-  static Activity longSpanning(DateTime when,
-          [String title = 'most of day', bool image = false]) =>
-      startsAt(DateTime(when.year, when.month, when.day),
-          title: title, image: image, duration: Duration(hours: 16));
 
   static Activity reocurrsWeekends([DateTime startDate]) =>
       reoccurs(startDate, RecurrentType.weekly, allWeekends,
@@ -171,9 +146,9 @@ class FakeActivity {
     String title,
   }) =>
       Activity.createNew(
-          title: title ?? 'reocurrs $recurrentType $recurrrentData',
-          startTime: (startTime ?? _now.subtract(Duration(days: 366)))
-              .millisecondsSinceEpoch,
+          title: title,
+          startTime:
+              (startTime ?? _now.subtract(366.days())).millisecondsSinceEpoch,
           endTime: endTime?.millisecondsSinceEpoch ?? Recurs.NO_END,
           duration: Duration(hours: 1).inMilliseconds,
           category: 0,
@@ -182,26 +157,15 @@ class FakeActivity {
           reminderBefore: [],
           alarmType: ALARM_SILENT);
 
-  static Activity fullday([DateTime date]) => fulldayWhen(date ?? _now);
-  static Activity yesterdayFullday([DateTime date]) =>
-      fulldayWhen((date ?? _now).subtract(Duration(days: 1)), 'yesterday');
-  static Activity tomorrowFullday([DateTime date]) =>
-      fulldayWhen((date ?? _now).add(Duration(days: 1)))
-          .copyWith(title: 'tomorrow');
-  static Activity fulldayWhen(DateTime when,
-          [String title = 'most of day', bool image = false]) =>
+  static Activity fullday(DateTime when, [String title = 'fullday']) =>
       Activity.createNew(
-          title: '${title != null ? title : ''} fullday',
-          startTime:
-              DateTime(when.year, when.month, when.day).millisecondsSinceEpoch,
-          endTime: DateTime(when.year, when.month, when.day + 1)
-                  .millisecondsSinceEpoch -
-              1,
+          title: title,
+          startTime: when.onlyDays().millisecondsSinceEpoch,
+          endTime: when.add(25.hours()).onlyDays().millisecondsSinceEpoch - 1,
           duration: Duration(days: 1).inMilliseconds - 1,
           category: 0,
           fullDay: true,
           reminderBefore: [60 * 60 * 1000],
-          fileId: image ? 'image' : null,
           alarmType: NO_ALARM);
 }
 

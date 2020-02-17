@@ -19,7 +19,7 @@ void main() {
 
     test('one same start alarms', () {
       // Arrange
-      final activity = FakeActivity.onTime(startDate);
+      final activity = FakeActivity.starts(startDate);
       final activities = [activity];
 
       // Act
@@ -30,7 +30,7 @@ void main() {
 
     test('alarm one min before', () {
       // Arrange
-      final activity = FakeActivity.onTime(startDate.subtract(1.minutes()));
+      final activity = FakeActivity.starts(startDate.subtract(1.minutes()));
       final activities = [activity];
 
       // Act
@@ -41,7 +41,7 @@ void main() {
 
     test('alarm one min after', () {
       // Arrange
-      final activity = FakeActivity.onTime(startDate.add(1.minutes()));
+      final activity = FakeActivity.starts(startDate.add(1.minutes()));
       final activities = [activity];
 
       // Act
@@ -52,9 +52,9 @@ void main() {
 
     test('one on, one after, one before', () {
       // Arrange
-      final before = FakeActivity.onTime(startDate.subtract(1.minutes()));
-      final after = FakeActivity.onTime(startDate.add(1.minutes()));
-      final onTime = FakeActivity.onTime(startDate);
+      final before = FakeActivity.starts(startDate.subtract(1.minutes()));
+      final after = FakeActivity.starts(startDate.add(1.minutes()));
+      final onTime = FakeActivity.starts(startDate);
       final activities = [before, after, onTime];
 
       // Act
@@ -66,9 +66,9 @@ void main() {
     test('one on, and one reminder after', () {
       // Arrange
       final reminder = 5.minutes();
-      final afterWithReminder = FakeActivity.onTime(startDate.add(reminder))
+      final afterWithReminder = FakeActivity.starts(startDate.add(reminder))
           .copyWith(reminderBefore: [5.minutes().inMilliseconds]);
-      final onTime = FakeActivity.onTime(startDate);
+      final onTime = FakeActivity.starts(startDate);
       final activities = [afterWithReminder, onTime];
 
       // Act
@@ -85,12 +85,12 @@ void main() {
     test('one on without alarm, and one reminder after', () {
       // Arrange
       final reminder = 5.minutes();
-      final afterWithReminder = FakeActivity.onTime(startDate.add(reminder))
+      final afterWithReminder = FakeActivity.starts(startDate.add(reminder))
           .copyWith(
               reminderBefore: [5.minutes().inMilliseconds],
               alarmType: NO_ALARM);
       final onTime =
-          FakeActivity.onTime(startDate).copyWith(alarmType: NO_ALARM);
+          FakeActivity.starts(startDate).copyWith(alarmType: NO_ALARM);
       final activities = [afterWithReminder, onTime];
 
       // Act
@@ -114,7 +114,7 @@ void main() {
 
     test('one same start alarms with end', () {
       // Arrange
-      final activity = FakeActivity.onTime(startDate);
+      final activity = FakeActivity.starts(startDate);
       final activities = [activity];
 
       // Act
@@ -128,7 +128,7 @@ void main() {
 
     test('alarm one min before with end', () {
       // Arrange
-      final activity = FakeActivity.onTime(startDate.subtract(1.minutes()));
+      final activity = FakeActivity.starts(startDate.subtract(1.minutes()));
       final activities = [activity];
 
       // Act
@@ -139,7 +139,7 @@ void main() {
 
     test('alarm one min after with end', () {
       // Arrange
-      final activity = FakeActivity.onTime(startDate.add(1.minutes()));
+      final activity = FakeActivity.starts(startDate.add(1.minutes()));
       final activities = [activity];
 
       // Act
@@ -153,9 +153,9 @@ void main() {
 
     test('one on, one after, one before with end', () {
       // Arrange
-      final before = FakeActivity.onTime(startDate.subtract(1.minutes()));
-      final after = FakeActivity.onTime(startDate.add(1.minutes()));
-      final onTime = FakeActivity.onTime(startDate);
+      final before = FakeActivity.starts(startDate.subtract(1.minutes()));
+      final after = FakeActivity.starts(startDate.add(1.minutes()));
+      final onTime = FakeActivity.starts(startDate);
       final activities = [before, after, onTime];
 
       // Act
@@ -176,10 +176,10 @@ void main() {
     test('one on, and one reminder after', () {
       // Arrange
       final reminder = 5.minutes();
-      final afterWithReminder = FakeActivity.startsAt(startDate.add(reminder),
+      final afterWithReminder = FakeActivity.starts(startDate.add(reminder),
               title: 'after with reminder')
           .copyWith(reminderBefore: [5.minutes().inMilliseconds]);
-      final onTime = FakeActivity.startsAt(startDate, title: 'onTime');
+      final onTime = FakeActivity.starts(startDate, title: 'onTime');
       final activities = [afterWithReminder, onTime];
 
       // Act
@@ -197,12 +197,12 @@ void main() {
     test('one on without alarm, and one reminder after', () {
       // Arrange
       final reminder = 5.minutes();
-      final afterWithReminder = FakeActivity.onTime(startDate.add(reminder))
+      final afterWithReminder = FakeActivity.starts(startDate.add(reminder))
           .copyWith(
               reminderBefore: [5.minutes().inMilliseconds],
               alarmType: NO_ALARM);
       final onTime =
-          FakeActivity.onTime(startDate).copyWith(alarmType: NO_ALARM);
+          FakeActivity.starts(startDate).copyWith(alarmType: NO_ALARM);
       final activities = [afterWithReminder, onTime];
 
       // Act
@@ -218,12 +218,12 @@ void main() {
       final end = fiveMinBefore.add(1.hours());
       final in30 = startDate.add(30.minutes());
 
-      final overlapping = FakeActivity.onTime(fiveMinBefore).copyWith(
+      final overlapping = FakeActivity.starts(fiveMinBefore).copyWith(
           title: 'Well hello there',
           alarmType: ALARM_SOUND_AND_VIBRATION,
           duration: 1.hours().inMilliseconds,
           endTime: end.millisecondsSinceEpoch);
-      final later = FakeActivity.onTime(in30).copyWith(
+      final later = FakeActivity.starts(in30).copyWith(
           title: 'Another one bites the dust',
           endTime: in30.millisecondsSinceEpoch,
           duration: 0,

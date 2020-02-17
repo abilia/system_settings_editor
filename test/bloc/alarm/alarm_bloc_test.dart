@@ -43,7 +43,7 @@ void main() {
 
       test('Load activities with current alarm shows alarm', () async {
         // Arrange
-        final nowActivity = FakeActivity.onTime(nextMinute);
+        final nowActivity = FakeActivity.starts(nextMinute);
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([nowActivity]));
         // Act
@@ -62,7 +62,7 @@ void main() {
 
       test('Ticks before Load activities does nothing', () async {
         // Arrange
-        final nowActivity = FakeActivity.onTime(thisMinute);
+        final nowActivity = FakeActivity.starts(thisMinute);
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([nowActivity]));
         // Act
@@ -81,7 +81,7 @@ void main() {
 
       test('Does not show if clock is not on start time', () async {
         // Arrange
-        final soonActivity = FakeActivity.onTime(thisMinute);
+        final soonActivity = FakeActivity.starts(thisMinute);
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([soonActivity]));
         // Act
@@ -98,7 +98,7 @@ void main() {
 
       test('Next minut alarm does nothing', () async {
         // Arrange
-        final soonActivity = FakeActivity.onTime(nextMinute);
+        final soonActivity = FakeActivity.starts(nextMinute);
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([soonActivity]));
         // Act
@@ -114,7 +114,7 @@ void main() {
 
       test('Next minut alarm alarm next minute', () async {
         // Arrange
-        final soonActivity = FakeActivity.onTime(nextMinute);
+        final soonActivity = FakeActivity.starts(nextMinute);
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([soonActivity]));
         // Act
@@ -133,8 +133,8 @@ void main() {
 
       test('Two activities at the same time emits', () async {
         // Arrange
-        final soonActivity = FakeActivity.onTime(nextMinute);
-        final soonActivity2 = FakeActivity.onTime(nextMinute);
+        final soonActivity = FakeActivity.starts(nextMinute);
+        final soonActivity2 = FakeActivity.starts(nextMinute);
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([soonActivity, soonActivity2]));
         // Act
@@ -154,9 +154,9 @@ void main() {
 
       test('two activities starts in order', () async {
         // Arrange
-        final nowActivity = FakeActivity.onTime(thisMinute);
-        final nextMinActivity = FakeActivity.onTime(nextMinute);
-        final inTwoMinActivity = FakeActivity.onTime(inTwoMin);
+        final nowActivity = FakeActivity.starts(thisMinute);
+        final nextMinActivity = FakeActivity.starts(nextMinute);
+        final inTwoMinActivity = FakeActivity.starts(inTwoMin);
         when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
             Future.value([inTwoMinActivity, nowActivity, nextMinActivity]));
 
@@ -179,10 +179,10 @@ void main() {
       test('Activity with no alarm set does not trigger an alarm', () async {
         // Arrange
         final inOneMinuteWithoutAlarmActivity =
-            FakeActivity.startsOneMinuteAfter(thisMinute)
+            FakeActivity.starts(thisMinute.add(1.minutes()))
                 .copyWith(alarmType: NO_ALARM);
         final inTwoMinutesActivity =
-            FakeActivity.startsOneMinuteAfter(nextMinute);
+            FakeActivity.starts(nextMinute.add(1.minutes()));
         when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
             Future.value(
                 [inTwoMinutesActivity, inOneMinuteWithoutAlarmActivity]));
@@ -266,7 +266,7 @@ void main() {
 
       test('Alarm on EndTime shows', () async {
         // Arrange
-        final activityEnding = FakeActivity.endsAt(nextMinute);
+        final activityEnding = FakeActivity.ends(nextMinute);
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([activityEnding]));
         // Act
@@ -288,8 +288,10 @@ void main() {
         'Alarm on EndTime does not show when it has no end time (start time is same as end time)',
         () async {
           // Arrange
-          final nextAlarm = FakeActivity.onTime(nextMinute, Duration());
-          final afterThatAlarm = FakeActivity.onTime(inTwoMin, Duration());
+          final nextAlarm =
+              FakeActivity.starts(nextMinute, duration: Duration.zero);
+          final afterThatAlarm =
+              FakeActivity.starts(inTwoMin, duration: Duration.zero);
           when(mockActivityRepository.loadActivities())
               .thenAnswer((_) => Future.value([nextAlarm, afterThatAlarm]));
           // Act
@@ -316,7 +318,7 @@ void main() {
           // Arrange
           final reminderTime = Duration(hours: 1);
           final remind1HourBefore =
-              FakeActivity.future(nextMinute, reminderTime)
+              FakeActivity.starts(nextMinute.add(reminderTime))
                   .copyWith(reminderBefore: [reminderTime.inMilliseconds]);
           when(mockActivityRepository.loadActivities())
               .thenAnswer((_) => Future.value([remind1HourBefore]));

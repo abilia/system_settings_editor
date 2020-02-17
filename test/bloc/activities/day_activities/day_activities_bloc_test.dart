@@ -76,9 +76,9 @@ void main() {
     test('DayActivitiesLoaded only loads todays activities', () {
       // Arrange
       final activitiesNow =
-          <Activity>[FakeActivity.onTime(today)].followedBy({});
+          <Activity>[FakeActivity.starts(today)].followedBy({});
       final activitiesTomorrow =
-          <Activity>[FakeActivity.dayAfter(today)].followedBy({});
+          <Activity>[FakeActivity.starts(today.add(1.days()))].followedBy({});
 
       when(mockActivityRepository.loadActivities()).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
@@ -99,9 +99,10 @@ void main() {
     test('next day loads next days activities', () async {
       // Arrange
       final activitiesNow =
-          <Activity>[FakeActivity.onTime(today)].followedBy({});
-      final activitiesTomorrow =
-          <Activity>[FakeActivity.dayAfter(today)].followedBy({});
+          <Activity>[FakeActivity.starts(today)].followedBy({});
+      final activitiesTomorrow = <Activity>[
+        FakeActivity.starts(today.subtract(1.days()))
+      ].followedBy({});
       when(mockActivityRepository.loadActivities()).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
 
@@ -124,9 +125,10 @@ void main() {
     test('previous day loads previous days activities', () async {
       // Arrange
       final activitiesNow =
-          <Activity>[(FakeActivity.onTime(today))].followedBy({});
-      final activitiesYesterDay =
-          <Activity>[FakeActivity.dayBefore(today)].followedBy({});
+          <Activity>[(FakeActivity.starts(today))].followedBy({});
+      final activitiesYesterDay = <Activity>[
+        FakeActivity.starts(today.subtract(1.days()))
+      ].followedBy({});
       when(mockActivityRepository.loadActivities()).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesYesterDay)));
 
@@ -152,9 +154,9 @@ void main() {
 
       when(mockActivityRepository.loadActivities()).thenAnswer(
           (_) => Future.value(Iterable<Activity>.empty().followedBy([
-                FakeActivity.startsAt(nextYear),
-                FakeActivity.dayAfter(nextYear),
-                FakeActivity.dayBefore(nextYear),
+                FakeActivity.starts(nextYear),
+                FakeActivity.starts(nextYear.add(1.days())),
+                FakeActivity.starts(nextYear.subtract(1.days())),
               ])));
 
       // Act
@@ -180,10 +182,10 @@ void main() {
     test('adding activities shows', () async {
       // Arrange
       final todayActivity =
-          <Activity>[FakeActivity.startsAt(today)].followedBy({});
+          <Activity>[FakeActivity.starts(today)].followedBy({});
       final activitiesAdded = todayActivity.followedBy([
-        FakeActivity.dayAfter(today),
-        FakeActivity.dayBefore(today),
+        FakeActivity.starts(today.add(1.days())),
+        FakeActivity.starts(today.subtract(1.days())),
       ]).followedBy({});
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value(Iterable.empty()));

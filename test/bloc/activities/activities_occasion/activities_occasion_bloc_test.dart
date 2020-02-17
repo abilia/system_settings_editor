@@ -76,9 +76,11 @@ void main() {
     test('only loads todays activities with correct occasion in correct order',
         () {
       // Arrange
-      final nowActivity = FakeActivity.onTime(initialMinutes);
-      final pastActivity = FakeActivity.past(initialMinutes);
-      final futureActivity = FakeActivity.future(initialMinutes);
+      final nowActivity = FakeActivity.starts(initialMinutes);
+      final pastActivity =
+          FakeActivity.ends(initialMinutes.subtract(1.minutes()));
+      final futureActivity =
+          FakeActivity.starts(initialMinutes.add(1.minutes()));
       when(mockActivityRepository.loadActivities()).thenAnswer(
           (_) => Future.value([nowActivity, pastActivity, futureActivity]));
 
@@ -112,8 +114,10 @@ void main() {
     test('fullday activities', () {
       // Arrange
       final fullDayActivity = FakeActivity.fullday(initialMinutes);
-      final tomorrowFullday = FakeActivity.tomorrowFullday(initialMinutes);
-      final yesterdayFullday = FakeActivity.yesterdayFullday(initialMinutes);
+      final tomorrowFullday =
+          FakeActivity.fullday(initialMinutes.add(1.days()));
+      final yesterdayFullday =
+          FakeActivity.fullday(initialMinutes.subtract(1.days()));
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([
                 yesterdayFullday,
@@ -147,11 +151,14 @@ void main() {
         'only loads todays activities with correct occasion in correct order and fullday activities',
         () {
       // Arrange
-      final nowActivity = FakeActivity.onTime(initialMinutes);
-      final pastActivity = FakeActivity.past(initialMinutes);
-      final futureActivity = FakeActivity.future(initialMinutes);
+      final nowActivity = FakeActivity.starts(initialMinutes);
+      final pastActivity =
+          FakeActivity.ends(initialMinutes.subtract(1.minutes()));
+      final futureActivity =
+          FakeActivity.starts(initialMinutes.add(1.minutes()));
       final fullDayActivity = FakeActivity.fullday(initialMinutes);
-      final tomorrowActivity = FakeActivity.dayAfter(initialMinutes);
+      final tomorrowActivity =
+          FakeActivity.starts(initialMinutes.add(1.days()));
       when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
           Future.value([
             nowActivity,
@@ -193,8 +200,10 @@ void main() {
     test('fullday activities, today, tomorrow, yesterday', () async {
       // Arrange
       final fullDayActivity = FakeActivity.fullday(initialMinutes);
-      final tomorrowFullday = FakeActivity.tomorrowFullday(initialMinutes);
-      final yesterdayFullday = FakeActivity.yesterdayFullday(initialMinutes);
+      final tomorrowFullday =
+          FakeActivity.fullday(initialMinutes.add(1.days()));
+      final yesterdayFullday =
+          FakeActivity.fullday(initialMinutes.subtract(1.days()));
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([
                 yesterdayFullday,
@@ -263,10 +272,10 @@ void main() {
         () {
       //Arrange
       final tomorrow = initialMinutes.add(Duration(days: 1));
-      final nowActivity = FakeActivity.startsAt(tomorrow);
-      final pastActivity = FakeActivity.past(tomorrow);
-      final futureActivity = FakeActivity.future(tomorrow);
-      final fulldayActivity = FakeActivity.fulldayWhen(tomorrow);
+      final nowActivity = FakeActivity.starts(tomorrow);
+      final pastActivity = FakeActivity.ends(tomorrow.add(1.minutes()));
+      final futureActivity = FakeActivity.starts(tomorrow.add(1.minutes()));
+      final fulldayActivity = FakeActivity.fullday(tomorrow);
       when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
           Future.value(
               [nowActivity, pastActivity, futureActivity, fulldayActivity]));
@@ -304,10 +313,10 @@ void main() {
         () {
       //Arrange
       final yesterday = initialMinutes.subtract(Duration(days: 1));
-      final nowActivity = FakeActivity.startsAt(yesterday);
-      final pastActivity = FakeActivity.past(yesterday);
-      final futureActivity = FakeActivity.future(yesterday);
-      final fulldayActivity = FakeActivity.fulldayWhen(yesterday);
+      final nowActivity = FakeActivity.starts(yesterday);
+      final pastActivity = FakeActivity.ends(yesterday.add(1.minutes()));
+      final futureActivity = FakeActivity.starts(yesterday.add(1.minutes()));
+      final fulldayActivity = FakeActivity.fullday(yesterday);
       when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
           Future.value(
               [nowActivity, pastActivity, futureActivity, fulldayActivity]));
@@ -342,7 +351,7 @@ void main() {
 
     test('Activity ends this minute is current', () {
       // Arrange
-      final endsSoon = FakeActivity.endsAt(initialMinutes);
+      final endsSoon = FakeActivity.ends(initialMinutes);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([endsSoon]));
 
@@ -369,7 +378,7 @@ void main() {
 
     test('Activity start this minute is current', () {
       // Arrange
-      final startsNow = FakeActivity.startsAt(initialMinutes);
+      final startsNow = FakeActivity.starts(initialMinutes);
       when(mockActivityRepository.loadActivities())
           .thenAnswer((_) => Future.value([startsNow]));
 
@@ -398,10 +407,11 @@ void main() {
     test('Changing now changing order', () async {
       // Arrange
       final nextMinute = initialMinutes.add(Duration(minutes: 1));
-      final nowActivity = FakeActivity.longSpanning(initialMinutes);
-      final endsSoonActivity = FakeActivity.endsAt(initialMinutes);
+      final nowActivity =
+          FakeActivity.starts(initialMinutes.onlyDays(), duration: 16.hours());
+      final endsSoonActivity = FakeActivity.ends(initialMinutes);
       final startSoonActivity =
-          FakeActivity.startsOneMinuteAfter(initialMinutes);
+          FakeActivity.starts(initialMinutes.add(1.minutes()));
       when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
           Future.value([nowActivity, startSoonActivity, endsSoonActivity]));
 

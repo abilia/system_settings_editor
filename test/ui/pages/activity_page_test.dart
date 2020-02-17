@@ -40,7 +40,7 @@ void main() {
 
     testWidgets('Navigate to activity page and back', (WidgetTester tester) async {
       when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.onTime()]));
+          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.startsNow()]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsOneWidget);
