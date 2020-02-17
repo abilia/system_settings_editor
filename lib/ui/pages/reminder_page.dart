@@ -6,16 +6,20 @@ import 'package:seagull/ui/components/all.dart';
 
 class ReminderPage extends StatelessWidget {
   final Activity activity;
+  final DateTime day;
   final int reminderTime;
-  const ReminderPage(
-      {Key key, @required this.activity, @required this.reminderTime})
-      : super(key: key);
+  const ReminderPage({
+    Key key,
+    @required this.activity,
+    @required this.day,
+    @required this.reminderTime,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return Scaffold(
-      key: TestKey.onScreenAlarm,
+      key: TestKey.onScreenReminder,
       appBar: AbiliaAppBar(title: translate.reminder),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -35,8 +39,8 @@ class ReminderPage extends StatelessWidget {
             ),
             Expanded(
               child: ActivityInfo(
-                activity: activity,
-                showCheckable: false,
+                givenActivity: activity,
+                day: day,
               ),
             ),
           ],

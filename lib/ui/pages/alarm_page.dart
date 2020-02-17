@@ -8,10 +8,12 @@ import 'package:seagull/ui/components/all.dart';
 
 class AlarmPage extends StatelessWidget {
   final Activity activity;
+  final DateTime day;
   final bool atStartTime, atEndTime;
   const AlarmPage(
       {Key key,
       @required this.activity,
+      @required this.day,
       this.atStartTime = false,
       this.atEndTime = false})
       : super(key: TestKey.onScreenAlarm);
@@ -33,7 +35,10 @@ class AlarmPage extends StatelessWidget {
                   atEndTime: atEndTime),
             ),
             Expanded(
-              child: ActivityInfo(activity: activity),
+              child: ActivityInfo(
+                givenActivity: activity,
+                day: day,
+              ),
             ),
           ],
         ),

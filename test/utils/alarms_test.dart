@@ -6,8 +6,9 @@ import 'package:seagull/utils/all.dart';
 
 void main() {
   group('get alarms and reminders', () {
-    DateTime startDate = DateTime(2008, 8, 8, 8, 8);
-    DateTime endDate = DateTime(2008, 8, 9, 8, 8);
+    final startDate = DateTime(2008, 8, 8, 8, 8);
+    final day = startDate.onlyDays();
+    final endDate = DateTime(2008, 8, 9, 8, 8);
     test('no alarms', () {
       // Arrange
       final activities = Iterable<Activity>.empty();
@@ -25,7 +26,7 @@ void main() {
       // Act
       final alarms = activities.alarmsOnExactMinute(startDate).toList();
       // Assert
-      expect(alarms, [NewAlarm(activity)]);
+      expect(alarms, [NewAlarm(activity, day)]);
     });
 
     test('alarm one min before', () {
@@ -60,7 +61,7 @@ void main() {
       // Act
       final alarms = activities.alarmsOnExactMinute(startDate).toList();
       // Assert
-      expect(alarms, [NewAlarm(onTime)]);
+      expect(alarms, [NewAlarm(onTime, day)]);
     });
 
     test('one on, and one reminder after', () {
@@ -76,8 +77,8 @@ void main() {
       // Assert
       expect(
           listEquals(alarms, [
-            NewAlarm(onTime),
-            NewReminder(afterWithReminder, reminder: reminder)
+            NewAlarm(onTime, day),
+            NewReminder(afterWithReminder, day, reminder: reminder)
           ]),
           isTrue);
     });
@@ -96,7 +97,7 @@ void main() {
       // Act
       final alarms = activities.alarmsOnExactMinute(startDate).toList();
       // Assert
-      expect(alarms, [NewReminder(afterWithReminder, reminder: reminder)]);
+      expect(alarms, [NewReminder(afterWithReminder, day, reminder: reminder)]);
     });
 
 //////////////////////////////////////////////
@@ -121,8 +122,8 @@ void main() {
       final alarms = activities.alarmsForRange(startDate, endDate).toList();
       // Assert
       expect(alarms, [
-        NewAlarm(activity, alarmOnStart: true),
-        NewAlarm(activity, alarmOnStart: false)
+        NewAlarm(activity, day, alarmOnStart: true),
+        NewAlarm(activity, day, alarmOnStart: false)
       ]);
     });
 
@@ -134,7 +135,7 @@ void main() {
       // Act
       final alarms = activities.alarmsForRange(startDate, endDate).toList();
       // Assert
-      expect(alarms, [NewAlarm(activity, alarmOnStart: false)]);
+      expect(alarms, [NewAlarm(activity, day, alarmOnStart: false)]);
     });
 
     test('alarm one min after with end', () {
@@ -146,8 +147,8 @@ void main() {
       final alarms = activities.alarmsForRange(startDate, endDate).toList();
       // Assert
       expect(alarms, [
-        NewAlarm(activity, alarmOnStart: true),
-        NewAlarm(activity, alarmOnStart: false)
+        NewAlarm(activity, day, alarmOnStart: true),
+        NewAlarm(activity, day, alarmOnStart: false)
       ]);
     });
 
@@ -164,11 +165,11 @@ void main() {
       expect(
         alarms,
         [
-          NewAlarm(after, alarmOnStart: true),
-          NewAlarm(onTime, alarmOnStart: true),
-          NewAlarm(after, alarmOnStart: false),
-          NewAlarm(onTime, alarmOnStart: false),
-          NewAlarm(before, alarmOnStart: false),
+          NewAlarm(after, day, alarmOnStart: true),
+          NewAlarm(onTime, day, alarmOnStart: true),
+          NewAlarm(after, day, alarmOnStart: false),
+          NewAlarm(onTime, day, alarmOnStart: false),
+          NewAlarm(before, day, alarmOnStart: false),
         ].toSet(),
       );
     });
@@ -186,11 +187,11 @@ void main() {
       final alarms = activities.alarmsForRange(startDate, endDate).toList();
       // Assert
       expect(alarms, [
-        NewAlarm(afterWithReminder, alarmOnStart: true),
-        NewAlarm(onTime, alarmOnStart: true),
-        NewAlarm(afterWithReminder, alarmOnStart: false),
-        NewAlarm(onTime, alarmOnStart: false),
-        NewReminder(afterWithReminder, reminder: reminder)
+        NewAlarm(afterWithReminder, day, alarmOnStart: true),
+        NewAlarm(onTime, day, alarmOnStart: true),
+        NewAlarm(afterWithReminder, day, alarmOnStart: false),
+        NewAlarm(onTime, day, alarmOnStart: false),
+        NewReminder(afterWithReminder, day, reminder: reminder)
       ]);
     });
 
@@ -208,7 +209,7 @@ void main() {
       // Act
       final alarms = activities.alarmsForRange(startDate, endDate).toList();
       // Assert
-      expect(alarms, [NewReminder(afterWithReminder, reminder: reminder)]);
+      expect(alarms, [NewReminder(afterWithReminder, day, reminder: reminder)]);
     });
 
     test('one start and end with start passed, one future without end time',
@@ -236,8 +237,10 @@ void main() {
       // Asserte
       expect(
           alarms,
-          [NewAlarm(overlapping, alarmOnStart: false), NewAlarm(later)]
-              .toSet());
+          [
+            NewAlarm(overlapping, day, alarmOnStart: false),
+            NewAlarm(later, day),
+          ].toSet());
     });
   });
 }

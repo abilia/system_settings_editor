@@ -38,7 +38,7 @@ class ActivityPage extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(12.0),
           child: ActivityInfo(
-            activity: occasion.activity,
+            givenActivity: occasion.activity,
             day: occasion.day,
           ),
         ),

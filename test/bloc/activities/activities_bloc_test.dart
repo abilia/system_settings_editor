@@ -109,21 +109,27 @@ void main() {
     });
 
     test('UpdateActivities state order', () async {
+      // Arrange
       final anActivity = FakeActivity.startsNow();
+      final activityList = [anActivity];
+      final updatedActivity = anActivity.copyWith(title: 'new title');
+      final updatedActivityList = [updatedActivity];
 
       when(mockActivityRepository.loadActivities())
-          .thenAnswer((_) => Future.value(<Activity>[anActivity]));
-      activitiesBloc.add(LoadActivities());
+          .thenAnswer((_) => Future.value(activityList));
+      when(mockActivityRepository.saveActivities(updatedActivityList))
+          .thenAnswer((_) => Future.value(updatedActivityList));
 
-      final updatedActivity = anActivity.copyWith(title: 'new title');
+      // Act
+      activitiesBloc.add(LoadActivities());
       activitiesBloc.add(UpdateActivity(updatedActivity));
 
+      // Assert
       final expectedResponse = [
         ActivitiesNotLoaded(),
         ActivitiesLoading(),
-        ActivitiesLoaded([anActivity]),
-        ActivitiesLoaded(
-            Iterable<Activity>.empty().followedBy([updatedActivity])),
+        ActivitiesLoaded(activityList),
+        ActivitiesLoaded(updatedActivityList.followedBy([])),
       ];
 
       await expectLater(

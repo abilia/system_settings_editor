@@ -13,9 +13,10 @@ void main() {
   ClockBloc clockBloc;
   ActivitiesBloc activitiesBloc;
   AlarmBloc alarmBloc;
-  DateTime thisMinute = DateTime(2006, 06, 06, 06, 06).onlyMinutes();
-  DateTime nextMinute = thisMinute.add(Duration(minutes: 1));
-  DateTime inTwoMin = thisMinute.add(Duration(minutes: 2));
+  final thisMinute = DateTime(2006, 06, 06, 06, 06).onlyMinutes();
+  final nextMinute = thisMinute.add(Duration(minutes: 1));
+  final inTwoMin = thisMinute.add(Duration(minutes: 2));
+  final day = thisMinute.onlyDays();
   MockActivityRepository mockActivityRepository;
   StreamController<DateTime> mockedTicker;
 
@@ -55,7 +56,7 @@ void main() {
           alarmBloc,
           emitsInOrder([
             UnInitializedAlarmState(),
-            AlarmState(NewAlarm(nowActivity)),
+            AlarmState(NewAlarm(nowActivity, day)),
           ]),
         );
       });
@@ -75,7 +76,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          neverEmits(AlarmState(NewAlarm(nowActivity))),
+          neverEmits(AlarmState(NewAlarm(nowActivity, day))),
         );
       });
 
@@ -92,7 +93,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          neverEmits(AlarmState(NewAlarm(soonActivity))),
+          neverEmits(AlarmState(NewAlarm(soonActivity, day))),
         );
       });
 
@@ -108,7 +109,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          neverEmits(AlarmState(NewAlarm(soonActivity))),
+          neverEmits(AlarmState(NewAlarm(soonActivity, day))),
         );
       });
 
@@ -126,7 +127,7 @@ void main() {
           alarmBloc,
           emitsInOrder([
             UnInitializedAlarmState(),
-            AlarmState(NewAlarm(soonActivity)),
+            AlarmState(NewAlarm(soonActivity, day)),
           ]),
         );
       });
@@ -146,8 +147,8 @@ void main() {
           alarmBloc,
           emitsInAnyOrder([
             UnInitializedAlarmState(),
-            AlarmState(NewAlarm(soonActivity)),
-            AlarmState(NewAlarm(soonActivity2)),
+            AlarmState(NewAlarm(soonActivity, day)),
+            AlarmState(NewAlarm(soonActivity2, day)),
           ]),
         );
       });
@@ -170,8 +171,8 @@ void main() {
         await expectLater(
           alarmBloc,
           emitsInOrder([
-            AlarmState(NewAlarm(nextMinActivity)),
-            AlarmState(NewAlarm(inTwoMinActivity)),
+            AlarmState(NewAlarm(nextMinActivity, day)),
+            AlarmState(NewAlarm(inTwoMinActivity, day)),
           ]),
         );
       });
@@ -196,7 +197,7 @@ void main() {
             alarmBloc,
             emitsInOrder([
               UnInitializedAlarmState(),
-              AlarmState(NewAlarm(inTwoMinutesActivity))
+              AlarmState(NewAlarm(inTwoMinutesActivity, day))
             ]));
       });
 
@@ -215,7 +216,7 @@ void main() {
           emitsInOrder(
             [
               UnInitializedAlarmState(),
-              AlarmState(NewAlarm(recursThursday)),
+              AlarmState(NewAlarm(recursThursday, day)),
             ],
           ),
         );
@@ -239,7 +240,7 @@ void main() {
             emitsInOrder(
               [
                 UnInitializedAlarmState(),
-                AlarmState(NewAlarm(recursTheThisDayOfMonth)),
+                AlarmState(NewAlarm(recursTheThisDayOfMonth, day)),
               ],
             ));
       });
@@ -259,7 +260,7 @@ void main() {
             emitsInOrder(
               [
                 UnInitializedAlarmState(),
-                AlarmState(NewAlarm(recursTheThisDayOfYear)),
+                AlarmState(NewAlarm(recursTheThisDayOfYear, day)),
               ],
             ));
       });
@@ -279,7 +280,7 @@ void main() {
             emitsInOrder(
               [
                 UnInitializedAlarmState(),
-                AlarmState(NewAlarm(activityEnding, alarmOnStart: false)),
+                AlarmState(NewAlarm(activityEnding, day, alarmOnStart: false)),
               ],
             ));
       });
@@ -304,8 +305,8 @@ void main() {
             alarmBloc,
             emitsInOrder(
               [
-                AlarmState(NewAlarm(nextAlarm, alarmOnStart: true)),
-                AlarmState(NewAlarm(afterThatAlarm, alarmOnStart: true)),
+                AlarmState(NewAlarm(nextAlarm, day, alarmOnStart: true)),
+                AlarmState(NewAlarm(afterThatAlarm, day, alarmOnStart: true)),
               ],
             ),
           );
@@ -332,8 +333,8 @@ void main() {
             emitsInOrder(
               [
                 UnInitializedAlarmState(),
-                AlarmState(
-                    NewReminder(remind1HourBefore, reminder: reminderTime)),
+                AlarmState(NewReminder(remind1HourBefore, day,
+                    reminder: reminderTime)),
               ],
             ),
           );
