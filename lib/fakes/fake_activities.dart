@@ -71,7 +71,7 @@ class FakeActivities {
 }
 
 class FakeActivity {
-  static Activity statsNow([Duration duration = const Duration(hours: 1)]) =>
+  static Activity startsNow([Duration duration = const Duration(hours: 1)]) =>
       starts(_now, title: 'now', duration: duration);
 
   static Activity startsIn(Duration duration) =>

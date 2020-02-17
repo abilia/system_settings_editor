@@ -60,7 +60,7 @@ void main() {
 
     testWidgets('Should show one activity', (WidgetTester tester) async {
       when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.statsNow()]));
+          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.startsNow()]));
 
       activityResponse = () => [FakeActivity.startsIn(1.hours())];
 
@@ -79,9 +79,9 @@ void main() {
     testWidgets('Agenda with one activity should not show Go to now-button',
         (WidgetTester tester) async {
       when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.statsNow()]));
+          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.startsNow()]));
 
-      activityResponse = () => [FakeActivity.statsNow()];
+      activityResponse = () => [FakeActivity.startsNow()];
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -93,7 +93,7 @@ void main() {
         (WidgetTester tester) async {
       final key = 'KEYKEYKEYKEYKEY';
       final activities = FakeActivities.allPast
-        ..add(FakeActivity.statsNow().copyWith(title: key));
+        ..add(FakeActivity.startsNow().copyWith(title: key));
       when(mockActivityDb.getActivitiesFromDb())
           .thenAnswer((_) => Future.value(activities));
 
