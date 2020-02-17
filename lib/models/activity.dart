@@ -1,14 +1,15 @@
 import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 import 'package:uuid/uuid.dart';
 
 class Activity extends Equatable {
   AlarmType get alarm => AlarmType.fromInt(alarmType);
   DateTime endClock(DateTime day) =>
-      startClock(day).add(Duration(milliseconds: duration));
+      startClock(day).add(duration.milliseconds());
   DateTime startClock(DateTime day) => DateTime(
       day.year, day.month, day.day, startDateTime.hour, startDateTime.minute);
   DateTime get start => DateTime.fromMillisecondsSinceEpoch(startTime);
@@ -18,7 +19,9 @@ class Activity extends Equatable {
   bool get hasEndTime => !start.isAtSameMomentAs(end);
   RecurrentType get recurrance => RecurrentType.values[recurrentType];
   Iterable<Duration> get reminders =>
-      reminderBefore.map((r) => Duration(milliseconds: r));
+      reminderBefore.map((r) => r.milliseconds());
+  bool isSignedOff(DateTime day) => checkable && signedOffDates.contains(day);
+
   final String id, seriesId, title, fileId, icon, infoItem;
   final int startTime,
       endTime,
@@ -30,6 +33,7 @@ class Activity extends Equatable {
       recurrentData;
   final bool deleted, fullDay, checkable;
   final UnmodifiableListView<int> reminderBefore;
+  final UnmodifiableListView<DateTime> signedOffDates;
   const Activity._({
     @required this.id,
     @required this.seriesId,
@@ -49,6 +53,7 @@ class Activity extends Equatable {
     this.infoItem,
     this.icon,
     this.fileId,
+    this.signedOffDates,
   })  : assert(title != null || fileId != null),
         assert(id != null),
         assert(seriesId != null),
@@ -67,9 +72,11 @@ class Activity extends Equatable {
     int recurrentType,
     int recurrentData,
     bool fullDay = false,
+    bool checkable = false,
     int alarmType = ALARM_SOUND_AND_VIBRATION_ONLY_ON_START,
     String infoItem,
     String fileId,
+    Iterable<DateTime> signedOffDates = const [],
   }) {
     final id = Uuid().v4();
     return Activity._(
@@ -83,7 +90,7 @@ class Activity extends Equatable {
       icon: _nullIfEmpty(fileId),
       category: category,
       deleted: false,
-      checkable: false,
+      checkable: checkable,
       fullDay: fullDay,
       recurrentType: recurrentType ?? 0,
       recurrentData: recurrentData ?? 0,
@@ -91,6 +98,7 @@ class Activity extends Equatable {
       reminderBefore: UnmodifiableListView(reminderBefore),
       alarmType: alarmType,
       infoItem: _nullIfEmpty(infoItem),
+      signedOffDates: UnmodifiableListView(signedOffDates),
     );
   }
 
@@ -110,6 +118,7 @@ class Activity extends Equatable {
     int recurrentType,
     int recurrentData,
     String infoItem,
+    Iterable<DateTime> signedOffDates,
   }) =>
       Activity._(
         id: id,
@@ -132,6 +141,9 @@ class Activity extends Equatable {
         revision: revision ?? this.revision,
         alarmType: alarmType ?? this.alarmType,
         infoItem: infoItem == null ? this.infoItem : _nullIfEmpty(infoItem),
+        signedOffDates: signedOffDates != null
+            ? UnmodifiableListView(signedOffDates)
+            : this.signedOffDates,
       );
 
   factory Activity.fromJson(Map<String, dynamic> json) => Activity._(
@@ -153,6 +165,7 @@ class Activity extends Equatable {
         reminderBefore: _parseReminders(json['reminderBefore']),
         revision: json['revision'],
         alarmType: json['alarmType'],
+        signedOffDates: _parseSignedOffDates(json['signedOffDates']),
       );
 
   factory Activity.fromDbMap(Map<String, dynamic> dbRow) => Activity._(
@@ -174,6 +187,7 @@ class Activity extends Equatable {
         reminderBefore: _parseReminders(dbRow['reminder_before']),
         revision: dbRow['revision'],
         alarmType: dbRow['alarm_type'],
+        signedOffDates: _parseSignedOffDates(dbRow['signed_off_dates']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -190,11 +204,12 @@ class Activity extends Equatable {
         'fullDay': fullDay,
         'recurrentType': recurrentType,
         'recurrentData': recurrentData,
-        'reminderBefore': reminderBefore.map((r) => r.toString()).join(';'),
+        'reminderBefore': reminderBefore.join(';'),
         'icon': icon,
         'infoItem': infoItem,
         'revision': revision,
         'alarmType': alarmType,
+        'signedOffDates': signedOffDates.tryEncodeSignedOffDates(),
       };
 
   Map<String, dynamic> toMapForDb() => {
@@ -211,22 +226,25 @@ class Activity extends Equatable {
         'full_day': fullDay ? 1 : 0,
         'recurrent_type': recurrentType,
         'recurrent_data': recurrentData,
-        'reminder_before': reminderBefore.map((r) => r.toString()).join(';'),
+        'reminder_before': reminderBefore.join(';'),
         'icon': icon,
         'info_item': infoItem,
         'revision': revision,
         'alarm_type': alarmType,
+        'signed_off_dates': signedOffDates.tryEncodeSignedOffDates(),
       };
 
   static String _nullIfEmpty(String value) =>
       value?.isNotEmpty == true ? value : null;
 
+  static UnmodifiableListView<DateTime> _parseSignedOffDates(signedOffDates) =>
+      UnmodifiableListView(
+          (signedOffDates as String)?.tryDecodeSignedOffDates() ?? []);
+
   static UnmodifiableListView<int> _parseReminders(String reminders) =>
-      UnmodifiableListView(reminders
-              ?.split(';')
-              ?.map((t) => int.tryParse(t))
-              ?.where((v) => v != null) ??
-          []);
+      UnmodifiableListView(
+          reminders?.split(';')?.map(int.tryParse)?.where((v) => v != null) ??
+              []);
 
   @override
   List<Object> get props => [
@@ -248,8 +266,8 @@ class Activity extends Equatable {
         fileId,
         infoItem,
         icon,
+        signedOffDates,
       ];
   @override
-  String toString() =>
-      ['Activity: { ', props.map((p) => p.toString()).join(', '), ' }'].join();
+  String toString() => 'Activity: { ${props.join(', ')} }';
 }

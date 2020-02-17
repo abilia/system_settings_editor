@@ -26,9 +26,9 @@ class ActivityCard extends StatelessWidget {
     final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
     final hasImage = activity.fileId != null;
     final hasTitle = activity.title?.isNotEmpty == true;
-    final checked = activity.checkable;
+    final signedOff = activity.isSignedOff(activityOccasion.day);
     final current = occasion == Occasion.current;
-    final inactive = occasion == Occasion.past || checked;
+    final inactive = occasion == Occasion.past || signedOff;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: cardMargin),
       child: Stack(
@@ -67,7 +67,7 @@ class ActivityCard extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            if (checked)
+                            if (signedOff)
                               SizedBox(width: imageSize + cardPadding),
                             if (hasImage)
                               FadeInThumb(
@@ -123,7 +123,7 @@ class ActivityCard extends StatelessWidget {
             ),
           ),
           if (current) buildNowBanner(context),
-          if (checked)
+          if (signedOff)
             Icon(
               AbiliaIcons.check_button,
               size: 64,

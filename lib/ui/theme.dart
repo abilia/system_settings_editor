@@ -57,16 +57,7 @@ ButtonThemeData redButtonThemeData = baseButtonTheme.copyWith(
   highlightColor: AbiliaColors.red[120],
 );
 
-ButtonThemeData greenButtonTheme = ButtonThemeData(
-  height: 48,
-  minWidth: 188,
-  shape: RoundedRectangleBorder(borderRadius: borderRadius),
-  buttonColor: AbiliaColors.green,
-  disabledColor: AbiliaColors.green[40],
-  highlightColor: AbiliaColors.green[120],
-);
-
-ButtonThemeData checkButtonTheme = ButtonThemeData(
+ButtonThemeData checkButtonThemeData = ButtonThemeData(
   height: 48,
   minWidth: 111,
   shape: OutlineInputBorder(
@@ -79,6 +70,11 @@ ButtonThemeData checkButtonTheme = ButtonThemeData(
   buttonColor: AbiliaColors.green,
   disabledColor: AbiliaColors.green[40],
   highlightColor: AbiliaColors.green[120],
+);
+
+ButtonThemeData uncheckButtonThemeData = checkButtonThemeData.copyWith(
+  buttonColor: AbiliaColors.transparantBlack[20],
+  highlightColor: AbiliaColors.transparantBlack[40],
 );
 
 ButtonThemeData actionButtonThemeData = baseButtonTheme.copyWith(

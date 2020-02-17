@@ -10,14 +10,16 @@ import 'package:seagull/ui/theme.dart';
 class ActivityInfo extends StatelessWidget {
   final Activity activity;
   final bool showCheckable;
+  final DateTime day;
   const ActivityInfo(
-      {Key key, @required this.activity, this.showCheckable = true})
+      {Key key, @required this.activity, this.showCheckable = true, this.day})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final hasImage = activity.fileId?.isNotEmpty ?? false;
     final hasAttachment = activity.infoItem?.isNotEmpty ?? false;
+    final signedOff = showCheckable && activity.isSignedOff(day);
     return Stack(
       overflow: Overflow.visible,
       children: <Widget>[
@@ -26,94 +28,104 @@ class ActivityInfo extends StatelessWidget {
             borderRadius: borderRadius,
             border: Border.all(color: AbiliaColors.transparantBlack[5]),
           ),
-          child: Container(
-            decoration: BoxDecoration(
-                color: AbiliaColors.white, borderRadius: borderRadius),
-            constraints: BoxConstraints.expand(),
-            child: Column(
-              children: <Widget>[
-                Flexible(
-                  flex: 5,
-                  child: TopInfo(activity: activity),
-                ),
-                if (hasAttachment)
+          child: Opacity(
+            opacity: signedOff ? .5 : 1,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: AbiliaColors.white, borderRadius: borderRadius),
+              constraints: BoxConstraints.expand(),
+              child: Column(
+                children: <Widget>[
                   Flexible(
-                    flex: 8,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                      child: Container(
-                        child: Center(
-                          child: Text('Attachment'),
-                        ),
-                        decoration: BoxDecoration(
-                            color: AbiliaColors.white[110],
-                            borderRadius: BorderRadius.all(
-                              const Radius.circular(12.0),
-                            )),
-                      ),
-                    ),
+                    flex: 5,
+                    child: TopInfo(activity: activity),
                   ),
-                if (hasImage && !hasAttachment)
-                  Flexible(
-                    flex: 8,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                      child: FadeInCalenderImage(
-                        imageFileId: activity.fileId,
-                        width: 327.0,
-                        height: 289.0,
+                  if (hasAttachment)
+                    Flexible(
+                      flex: 8,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                        child: Container(
+                          child: Center(
+                            child: Text('Attachment'),
+                          ),
+                          decoration: BoxDecoration(
+                              color: AbiliaColors.white[110],
+                              borderRadius: BorderRadius.all(
+                                const Radius.circular(12.0),
+                              )),
+                        ),
                       ),
                     ),
-                  )
-              ],
+                  if (hasImage && !hasAttachment)
+                    Flexible(
+                      flex: 8,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                        child: FadeInCalenderImage(
+                          imageFileId: activity.fileId,
+                          width: 327.0,
+                          height: 289.0,
+                        ),
+                      ),
+                    )
+                ],
+              ),
             ),
           ),
         ),
-        if (showCheckable && activity.checkable) CheckButton(),
+        if (showCheckable && activity.checkable)
+          CheckButton(
+            signedOff: signedOff,
+          ),
+        if (signedOff)
+          Center(
+            child: Icon(
+              AbiliaIcons.check_button,
+              size: 328,
+              color: AbiliaColors.green,
+            ),
+          ),
       ],
     );
   }
 }
 
 class CheckButton extends StatelessWidget {
+  final bool signedOff;
+
+  const CheckButton({Key key, this.signedOff}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Translated translate = Translator.of(context).translate;
-    final ThemeData themeData =
-        Theme.of(context).copyWith(buttonTheme: checkButtonTheme);
-
+    final theme = Theme.of(context);
+    final ThemeData newTheme = signedOff
+        ? theme.copyWith(
+            buttonTheme: uncheckButtonThemeData,
+            buttonColor: AbiliaColors.transparantBlack[20])
+        : theme.copyWith(
+            buttonTheme: checkButtonThemeData, buttonColor: AbiliaColors.green);
     return Positioned(
       top: -8,
       right: -8,
       child: Theme(
-        data: themeData,
+        data: newTheme,
         child: Container(
+          padding: const EdgeInsets.all(4.0),
           decoration: BoxDecoration(
-            color: themeData.scaffoldBackgroundColor,
-            borderRadius: BorderRadius.all(
-              const Radius.circular(12.0),
-            ),
+            color: newTheme.scaffoldBackgroundColor,
+            borderRadius: borderRadius,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: FlatButton(
-              color: AbiliaColors.green,
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Icon(AbiliaIcons.check_button),
-                  ),
-                  Text(
-                    translate.check,
-                    style: themeData.textTheme.body2
-                        .copyWith(color: AbiliaColors.black),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-              onPressed: () => {},
+          child: FlatButton.icon(
+            icon: Icon(
+              signedOff ? AbiliaIcons.close_program : AbiliaIcons.check_button,
             ),
+            label: Text(
+              signedOff ? translate.uncheck : translate.check,
+              style: newTheme.textTheme.body2,
+            ),
+            color: newTheme.buttonColor,
+            onPressed: () => {},
           ),
         ),
       ),

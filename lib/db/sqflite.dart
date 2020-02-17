@@ -30,7 +30,10 @@ class DatabaseRepository {
   static final _migrations = <String>[
     '''
       ALTER TABLE calendar_activity ADD COLUMN checkable int default 0
+    ''',
     '''
+      ALTER TABLE calendar_activity ADD COLUMN signed_off_dates text
+    ''',
   ];
 
   static final _config = MigrationConfig(
