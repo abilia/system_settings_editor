@@ -4,7 +4,6 @@ export 'activity_card.dart';
 export 'error_message.dart';
 export 'fade_in_calender_image.dart';
 export 'login_form.dart';
-export 'now_banner.dart';
 export 'seagull_icon.dart';
 export 'web_link.dart';
 export 'widget_test_keys.dart';
