@@ -14,88 +14,68 @@ class AlarmPage extends StatelessWidget {
       @required this.activity,
       this.atStartTime = false,
       this.atEndTime = false})
-      : super(
-          key: TestKey.onScreenAlarm,
-        );
+      : super(key: TestKey.onScreenAlarm);
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.headline;
-    final translate = Translator.of(context).translate;
     return Scaffold(
-      appBar: AbiliaAppBar(title: translate.alarm),
+      appBar: AbiliaAppBar(title: Translator.of(context).translate.alarm),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            padding24,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TimeText(
-                  date: activity.start,
-                  active: atStartTime,
-                ),
-                if (activity.hasEndTime)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child:
-                        Text('-', style: Theme.of(context).textTheme.headline),
-                  ),
-                if (activity.hasEndTime)
-                  TimeText(
-                    date: activity.end,
-                    active: atEndTime,
-                  ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 12.0, bottom: 24.0),
+              child: AlarmActivityTimeRange(
+                  activity: activity,
+                  atStartTime: atStartTime,
+                  atEndTime: atEndTime),
             ),
-            padding24,
             Expanded(
-              flex: 48,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: AbiliaColors.white,
-                    border: Border.all(
-                      color: AbiliaColors.transparantBlack[20],
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      if (activity.title?.isNotEmpty == true)
-                        Text(
-                          activity.title ?? '',
-                          style: textStyle,
-                        ),
-                      if (activity.fileId?.isNotEmpty == true)
-                        SizedBox(height: 32.0),
-                      if (activity.fileId?.isNotEmpty == true)
-                        Expanded(
-                          child: FadeInCalenderImage(
-                            imageFileId: activity.fileId,
-                            width: 287.0,
-                            height: 274.0,
-                          ),
-                        )
-                    ],
-                  ),
-                ),
-              ),
+              child: ActivityInfo(activity: activity),
             ),
-            padding32,
           ],
         ),
       ),
-      bottomNavigationBar: AlarmOkBottomBar(),
     );
   }
+}
 
-  Spacer get padding24 => const Spacer(flex: 3);
-  Spacer get padding32 => const Spacer(flex: 4);
+class AlarmActivityTimeRange extends StatelessWidget {
+  const AlarmActivityTimeRange({
+    Key key,
+    @required this.activity,
+    @required this.atStartTime,
+    @required this.atEndTime,
+  }) : super(key: key);
+
+  final Activity activity;
+  final bool atStartTime;
+  final bool atEndTime;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        TimeText(
+          date: activity.start,
+          active: atStartTime,
+        ),
+        if (activity.hasEndTime)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text('-', style: Theme.of(context).textTheme.headline),
+          ),
+        if (activity.hasEndTime)
+          TimeText(
+            date: activity.end,
+            active: atEndTime,
+          ),
+      ],
+    );
+  }
 }
 
 class TimeText extends StatelessWidget {

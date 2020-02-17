@@ -7,12 +7,7 @@ import 'package:seagull/ui/theme.dart';
 class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   final String title;
-  final bool hasClose;
-  const AbiliaAppBar(
-      {Key key,
-      @required this.title,
-      this.height = 68.0,
-      this.hasClose = false})
+  const AbiliaAppBar({Key key, @required this.title, this.height = 68.0})
       : super(key: key);
   @override
   Size get preferredSize => Size.fromHeight(height);
@@ -30,17 +25,17 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Stack(
                 children: <Widget>[
-                  if (hasClose)
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: ActionButton(
-                        child: Icon(
-                          AbiliaIcons.close_program,
-                          size: 32,
-                        ),
-                        onPressed: () => Navigator.of(context).maybePop(),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: ActionButton(
+                      key: TestKey.appBarCloseButton,
+                      child: Icon(
+                        AbiliaIcons.close_program,
+                        size: 32,
                       ),
+                      onPressed: () => Navigator.of(context).maybePop(),
                     ),
+                  ),
                   Center(
                     child: Text(
                       title,

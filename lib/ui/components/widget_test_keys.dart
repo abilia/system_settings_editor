@@ -9,7 +9,7 @@ class TestKey {
       loginError = Key('loginError'),
       goToNowButton = Key('goToNow'),
       onScreenAlarm = Key('onScreenAlarm'),
-      alarmOkButton = Key('alarmOkButton'),
+      appBarCloseButton = Key('appBarCloseButton'),
       changeView = Key('changeView'),
       timePillarButton = Key('timePillarButton'),
       activityBackButton = Key('activityBackButton');

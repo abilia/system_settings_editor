@@ -213,6 +213,7 @@ void main() {
     setUp(() {
       mockTicker = StreamController<DateTime>();
       mockNotificationSelected = StreamController<String>();
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
       final mockTokenDb = MockTokenDb();
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
@@ -250,7 +251,7 @@ void main() {
       expect((tester.widget(alarmScreenFinder) as AlarmPage).atEndTime, isTrue);
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.tap(find.byKey(TestKey.appBarCloseButton));
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should now be the start time alarm
@@ -258,7 +259,7 @@ void main() {
           (tester.widget(alarmScreenFinder) as AlarmPage).atStartTime, isTrue);
 
       // Act - tap the alarm ok button
-      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.tap(find.byKey(TestKey.appBarCloseButton));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms is displayed
@@ -288,14 +289,14 @@ void main() {
           (tester.widget(alarmScreenFinder) as AlarmPage).atStartTime, isTrue);
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.tap(find.byKey(TestKey.appBarCloseButton));
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should be the end time alarm
       expect((tester.widget(alarmScreenFinder) as AlarmPage).atEndTime, isTrue);
 
       // Act - tap the alarm ok button
-      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.tap(find.byKey(TestKey.appBarCloseButton));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown since the start time alarm should have been moved to top
@@ -328,7 +329,7 @@ void main() {
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.tap(find.byKey(TestKey.appBarCloseButton));
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should be the end time alarm for activity 2
@@ -337,7 +338,7 @@ void main() {
           equals(activity2.id));
 
       // Act - tap the alarm ok button
-      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.tap(find.byKey(TestKey.appBarCloseButton));
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should be the end time alarm for activity 1
@@ -346,7 +347,7 @@ void main() {
           equals(activity1.id));
 
       // Act - tap the alarm ok button
-      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.tap(find.byKey(TestKey.appBarCloseButton));
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should be the start time alarm for activity 2
@@ -356,7 +357,7 @@ void main() {
           equals(activity2.id));
 
       // Act - tap the alarm ok button
-      await tester.tap(find.byKey(TestKey.alarmOkButton));
+      await tester.tap(find.byKey(TestKey.appBarCloseButton));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown

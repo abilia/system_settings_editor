@@ -35,8 +35,9 @@ class ActivityPage extends StatelessWidget {
                 },
               ),
             )),
-        body: ActivityInfo(
-          occasion: occasion,
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: ActivityInfo(activity: occasion.activity),
         ),
         bottomNavigationBar: BottomAppBar(
           child: SizedBox(
