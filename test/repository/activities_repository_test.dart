@@ -49,22 +49,24 @@ void main() {
     ).thenAnswer(
       (_) => Future.value(
         Response(
-          '''{
-  "previousRevision" : 100,
-  "dataRevisionUpdates" : [ {
-    "id" : "${successActivity.id}",
-    "newRevision" : 101
-  } ],
-  "failedUpdates" : [ {
-    "id" : "${failedActivity.id}",
-    "newRevision" : 100
-  } ]
-}''',
+          '''
+          {
+            "previousRevision" : 100,
+            "dataRevisionUpdates" : [ {
+              "id" : "${successActivity.id}",
+              "newRevision" : 102
+            } ],
+            "failedUpdates" : [ {
+              "id" : "${failedActivity.id}",
+              "newRevision" : 101
+            } ]
+          }
+          ''',
           200,
         ),
       ),
     );
-    final expectedResult = [successActivity.copyWith(revision: 101)];
+    final expectedResult = [successActivity.copyWith(revision: 102)];
 
     // Act
     final result = await activityRepo.saveActivities(activities);
