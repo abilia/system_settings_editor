@@ -25,11 +25,6 @@ class ActivityDb {
     return result.map((row) => Activity.fromDbMap(row));
   }
 
-  Future clearActivites() async {
-    final db = await DatabaseRepository().database;
-    await db.rawQuery(CLEAR_ACTIVITIES_SQL);
-  }
-
   Future insertActivities(Iterable<Activity> activities) async {
     final db = await DatabaseRepository().database;
     await activities.forEach((activity) async {
