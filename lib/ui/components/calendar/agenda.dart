@@ -149,15 +149,20 @@ class FullDayContainer extends StatelessWidget {
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 6),
                           child: ActionButton(
+                            key: TestKey.showAllFullDays,
                             child: Text('+ ${fullDayActivities.length - 2}'),
                             onPressed: () async {
                               await Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => AllDayList(
-                                    pickedDay: day,
-                                    allDayActivities: fullDayActivities,
-                                    cardHeight: this.cardHeight,
-                                    cardMargin: this.cardMargin,
+                                  builder: (innerContext) => BlocProvider.value(
+                                    value: BlocProvider.of<ActivitiesBloc>(
+                                        context),
+                                    child: AllDayList(
+                                      pickedDay: day,
+                                      allDayActivities: fullDayActivities,
+                                      cardHeight: this.cardHeight,
+                                      cardMargin: this.cardMargin,
+                                    ),
                                   ),
                                   fullscreenDialog: true,
                                 ),

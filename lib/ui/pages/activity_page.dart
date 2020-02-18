@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/components/activity/activity_info.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/components/calendar/day_app_bar.dart';
 import 'package:seagull/ui/theme.dart';
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/utils/all.dart';
 
 class ActivityPage extends StatelessWidget {
   final ActivityOccasion occasion;
@@ -85,58 +82,6 @@ class ActivityPage extends StatelessWidget {
                   ],
                 ),
               )),
-        ),
-      ),
-    );
-  }
-
-  PreferredSize buildAppBar(BuildContext context) {
-    final langCode = Locale.cachedLocale.languageCode;
-    final themeData = weekDayTheme[occasion.day.weekday];
-    return PreferredSize(
-      preferredSize: Size.fromHeight(68),
-      child: AppBar(
-        elevation: 0.0,
-        automaticallyImplyLeading: false,
-        flexibleSpace: SafeArea(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: ActionButton(
-                  key: TestKey.activityBackButton,
-                  child: Icon(
-                    AbiliaIcons.navigation_previous,
-                    size: 32,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      DateFormat('EEEE, d MMM', langCode).format(occasion.day),
-                      style: themeData.textTheme.title,
-                    ),
-                    Text(
-                      '${Translator.of(context).translate.week} ${occasion.day.getWeekNumber()}',
-                      style: themeData.textTheme.subhead,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: 48,
-              ),
-            ],
-          ),
         ),
       ),
     );

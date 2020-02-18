@@ -19,8 +19,6 @@ void main() {
   group('calendar page widget test', () {
     MockActivityDb mockActivityDb;
     StreamController<DateTime> mockTicker;
-    final changeViewButtonFinder = find.byKey(TestKey.changeView);
-    final timePillarButtonFinder = find.byKey(TestKey.timePillarButton);
     ActivityResponse activityResponse = () => [];
 
     setUp(() {
@@ -103,18 +101,6 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
       expect(find.text(key), findsOneWidget);
-    });
-
-    testWidgets('Show timepillar when timepillar is selected',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      expect(find.byType(Agenda), findsOneWidget);
-      await tester.tap(changeViewButtonFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(timePillarButtonFinder);
-      await tester.pumpAndSettle();
-      expect(find.byType(TimePillar), findsOneWidget);
     });
   });
 

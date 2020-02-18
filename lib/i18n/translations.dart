@@ -19,7 +19,6 @@ abstract class Translated {
   String get week;
   String get reminder;
   String inMinutes(int minutes);
-  String get ok => 'OK';
   String get alarm => 'Alarm';
   String get startsNow;
   String get endsNow;
