@@ -5,17 +5,18 @@ import 'package:seagull/models/activity_update_response.dart';
 
 void main() {
   test('parse json', () {
-    final response = '''{
-  "previousRevision" : 100,
-  "dataRevisionUpdates" : [ {
-    "id" : "cc207923-2946-465d-be17-128fb19765cb",
-    "newRevision" : 101
-  } ],
-  "failedUpdates" : [ {
-    "id" : "99e777cb-f4d5-4899-9be2-d5dcc9f309d2",
-    "newRevision" : 100
-  } ]
-}''';
+    final response = '''
+    {
+      "previousRevision" : 100,
+      "dataRevisionUpdates" : [ {
+        "id" : "cc207923-2946-465d-be17-128fb19765cb",
+        "newRevision" : 101
+      } ],
+      "failedUpdates" : [ {
+        "id" : "99e777cb-f4d5-4899-9be2-d5dcc9f309d2",
+        "newRevision" : 100
+      } ]
+    }''';
     final asJson = json.decode(response);
     final data = ActivityUpdateResponse.fromJson(asJson);
     expect(data.previousRevision, 100);
@@ -30,13 +31,14 @@ void main() {
     expect(failedUpdate.revision, 100);
   });
   test('parse json with no failedUpdates', () {
-    final response = '''{
-  "previousRevision" : 100,
-  "dataRevisionUpdates" : [ {
-    "id" : "cc207923-2946-465d-be17-128fb19765cb",
-    "newRevision" : 101
-  } ]
-}''';
+    final response = '''
+    {
+      "previousRevision" : 100,
+      "dataRevisionUpdates" : [ {
+        "id" : "cc207923-2946-465d-be17-128fb19765cb",
+        "newRevision" : 101
+      } ]
+    }''';
     final asJson = json.decode(response);
     final data = ActivityUpdateResponse.fromJson(asJson);
     expect(data.previousRevision, 100);
