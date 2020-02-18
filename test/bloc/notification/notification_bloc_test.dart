@@ -13,7 +13,8 @@ import '../../mocks.dart';
 void main() {
   ActivitiesBloc activitiesBloc;
   MockActivityRepository mockActivityRepository;
-  DateTime aTime = DateTime(1999, 12, 20, 20, 12);
+  final aTime = DateTime(1999, 12, 20, 20, 12);
+  final aDay = aTime.onlyDays();
   StreamController<String> notificationSelected;
   NotificationBloc notificationBloc;
 
@@ -40,8 +41,9 @@ void main() {
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([nowActivity]));
 
-        final payload = json.encode(
-            NotificationPayload(activityId: nowActivity.id, onStart: true).toJson());
+        final payload = json.encode(NotificationPayload(
+                activityId: nowActivity.id, day: aDay, onStart: true)
+            .toJson());
         // Act
         activitiesBloc.add(LoadActivities());
         await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
@@ -52,7 +54,7 @@ void main() {
             notificationBloc,
             emitsInOrder([
               UnInitializedAlarmState(),
-              AlarmState(NewAlarm(nowActivity)),
+              AlarmState(NewAlarm(nowActivity, aDay)),
             ]));
       });
 
@@ -66,9 +68,9 @@ void main() {
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([nowActivity]));
 
-        final payload = json.encode(
-            NotificationPayload(activityId: nowActivity.id, reminder: reminderTime)
-                .toJson());
+        final payload = json.encode(NotificationPayload(
+                activityId: nowActivity.id, day: aDay, reminder: reminderTime)
+            .toJson());
         // Act
         activitiesBloc.add(LoadActivities());
         await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
@@ -81,6 +83,7 @@ void main() {
               UnInitializedAlarmState(),
               AlarmState(NewReminder(
                 nowActivity,
+                aDay,
                 reminder: reminderTime.minutes(),
               )),
             ]));
@@ -94,7 +97,11 @@ void main() {
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([nowActivity]));
 
-        final payload = NotificationPayload(activityId: nowActivity.id, onStart: true);
+        final payload = NotificationPayload(
+          activityId: nowActivity.id,
+          day: aDay,
+          onStart: true,
+        );
         final serializedPayload = json.encode(payload.toJson());
 
         // Act
@@ -107,7 +114,7 @@ void main() {
             emitsInOrder([
               UnInitializedAlarmState(),
               PendingAlarmState([payload]),
-              AlarmState(NewAlarm(nowActivity)),
+              AlarmState(NewAlarm(nowActivity, aDay)),
             ]));
       });
 
@@ -123,12 +130,18 @@ void main() {
         when(mockActivityRepository.loadActivities())
             .thenAnswer((_) => Future.value([alarmActivity, reminderActivity]));
 
-        final alarmPayload =
-            NotificationPayload(activityId: alarmActivity.id, onStart: true);
+        final alarmPayload = NotificationPayload(
+          activityId: alarmActivity.id,
+          day: aDay,
+          onStart: true,
+        );
         final alarmSerializedPayload = json.encode(alarmPayload.toJson());
 
         final reminderPayload = NotificationPayload(
-            activityId: reminderActivity.id, reminder: reminderTime.inMinutes);
+          activityId: reminderActivity.id,
+          day: aDay,
+          reminder: reminderTime.inMinutes,
+        );
         final reminderSerializedPayload = json.encode(reminderPayload.toJson());
 
         // Act
@@ -151,8 +164,9 @@ void main() {
             notificationBloc,
             emitsInAnyOrder([
               PendingAlarmState([alarmPayload, reminderPayload]),
-              AlarmState(NewReminder(reminderActivity, reminder: reminderTime)),
-              AlarmState(NewAlarm(alarmActivity)),
+              AlarmState(
+                  NewReminder(reminderActivity, aDay, reminder: reminderTime)),
+              AlarmState(NewAlarm(alarmActivity, aDay)),
             ]));
       });
       tearDown(

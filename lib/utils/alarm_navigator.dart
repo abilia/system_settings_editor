@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 
@@ -23,36 +24,42 @@ class AlarmNavigator {
   }
 
   Future<T> pushAlarm<T extends Object>(
-      BuildContext context, NotificationAlarm alarm) async {
+    BuildContext context,
+    NotificationAlarm alarm,
+    ActivitiesBloc activitiesBloc,
+  ) async {
+    String id;
+    Widget page;
+
     if (alarm is NewAlarm) {
-      final alarmId = '${alarm.activity.id}${alarm.alarmOnStart}}';
-      return await _push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AlarmPage(
-              activity: alarm.activity,
-              atStartTime: alarm.alarmOnStart,
-              atEndTime: !alarm.alarmOnStart,
-            ),
-            fullscreenDialog: true,
-          ),
-          alarmId);
+      id = '${alarm.activity.id}${alarm.alarmOnStart}}';
+      page = AlarmPage(
+        activity: alarm.activity,
+        day: alarm.day,
+        atStartTime: alarm.alarmOnStart,
+        atEndTime: !alarm.alarmOnStart,
+      );
     } else if (alarm is NewReminder) {
-      final reminderId = '${alarm.activity.id}${alarm.reminder.inMinutes}';
-      return await _push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ReminderPage(
-            activity: alarm.activity,
-            reminderTime: alarm.reminder.inMinutes,
-          ),
-          fullscreenDialog: true,
-        ),
-        reminderId,
+      id = '${alarm.activity.id}${alarm.reminder.inMinutes}';
+      page = ReminderPage(
+        activity: alarm.activity,
+        day: alarm.day,
+        reminderTime: alarm.reminder.inMinutes,
       );
     } else {
       throw ArgumentError();
     }
+    return await _push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BlocProvider.value(
+          value: activitiesBloc,
+          child: page,
+        ),
+        fullscreenDialog: true,
+      ),
+      id,
+    );
   }
 
   bool pop<T extends Object>(BuildContext context) {

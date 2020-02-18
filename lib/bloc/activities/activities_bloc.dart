@@ -30,9 +30,9 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     if (event is LoadActivities) {
       yield* _mapLoadActivitiesToState();
     } else if (event is AddActivity) {
-      yield* _mapAddActivityToState(event);
+      yield* _mapAddActivityToState(event, state);
     } else if (event is UpdateActivity) {
-      yield* _mapUpdateActivityToState(event);
+      yield* _mapUpdateActivityToState(event, state);
     }
   }
 
@@ -46,29 +46,30 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     }
   }
 
-  Stream<ActivitiesState> _mapAddActivityToState(AddActivity event) async* {
-    if (state is ActivitiesLoaded) {
-      yield ActivitiesLoaded(
-          (state as ActivitiesLoaded).activities.followedBy([event.activity]));
-      await _saveActivities([event.activity]);
+  Stream<ActivitiesState> _mapAddActivityToState(
+      AddActivity event, ActivitiesState oldState) async* {
+    if (oldState is ActivitiesLoaded) {
+      final updated = await _saveActivities([event.activity]);
+      yield ActivitiesLoaded(oldState.activities.followedBy(updated));
     }
   }
 
   Stream<ActivitiesState> _mapUpdateActivityToState(
-      UpdateActivity event) async* {
-    if (state is ActivitiesLoaded) {
-      final updatedActivities =
-          (state as ActivitiesLoaded).activities.map((activity) {
-        return activity.id == event.updatedActivity.id
-            ? event.updatedActivity
-            : activity;
-      });
-      yield ActivitiesLoaded(updatedActivities);
-      await _saveActivities([event.updatedActivity]);
+      UpdateActivity event, ActivitiesState oldState) async* {
+    if (oldState is ActivitiesLoaded) {
+      final successUpdated = await _saveActivities([event.updatedActivity]);
+      if (successUpdated.isNotEmpty) {
+        final updatedActivities = oldState.activities.map<Activity>((activity) {
+          return activity.id == successUpdated.first.id
+              ? successUpdated.first
+              : activity;
+        });
+        yield ActivitiesLoaded(updatedActivities);
+      }
     }
   }
 
-  Future _saveActivities(Iterable<Activity> activities) =>
+  Future<Iterable<Activity>> _saveActivities(Iterable<Activity> activities) =>
       activitiesRepository.saveActivities(activities);
 
   @override

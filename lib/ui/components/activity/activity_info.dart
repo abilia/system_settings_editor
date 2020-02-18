@@ -1,132 +1,176 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class ActivityInfo extends StatelessWidget {
-  final Activity activity;
-  final bool showCheckable;
+  final Activity givenActivity;
   final DateTime day;
-  const ActivityInfo(
-      {Key key, @required this.activity, this.showCheckable = true, this.day})
-      : super(key: key);
+  const ActivityInfo({
+    Key key,
+    @required this.givenActivity,
+    @required this.day,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<ActivitiesBloc, ActivitiesState>(
+      builder: (context, activitiesState) {
+        return _ActivityInfo(
+          activity: (activitiesState is ActivitiesLoaded)
+              ? activitiesState.activities.firstWhere(
+                  (a) => a.id == givenActivity.id,
+                  orElse: () => givenActivity)
+              : givenActivity,
+          day: day,
+        );
+      },
+    );
+  }
+}
+
+class _ActivityInfo extends StatelessWidget {
+  final Activity activity;
+  final DateTime day;
+  final animationDuration = const Duration(milliseconds: 500);
+
+  const _ActivityInfo({
+    Key key,
+    @required this.activity,
+    @required this.day,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+
     final hasImage = activity.fileId?.isNotEmpty ?? false;
     final hasAttachment = activity.infoItem?.isNotEmpty ?? false;
-    final signedOff = showCheckable && activity.isSignedOff(day);
-    return Stack(
-      overflow: Overflow.visible,
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: borderRadius,
-            border: Border.all(color: AbiliaColors.transparantBlack[5]),
-          ),
-          child: Opacity(
-            opacity: signedOff ? .5 : 1,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: AbiliaColors.white, borderRadius: borderRadius),
-              constraints: BoxConstraints.expand(),
-              child: Column(
-                children: <Widget>[
-                  Flexible(
-                    flex: 5,
-                    child: TopInfo(activity: activity),
-                  ),
-                  if (hasAttachment)
+    final signedOff = activity.isSignedOff(day);
+    return AnimatedTheme(
+      duration: animationDuration,
+      data: signedOff
+          ? Theme.of(context).copyWith(
+              buttonTheme: uncheckButtonThemeData,
+              buttonColor: AbiliaColors.transparantBlack[20])
+          : Theme.of(context).copyWith(
+              buttonTheme: checkButtonThemeData,
+              buttonColor: AbiliaColors.green),
+      child: Stack(
+        overflow: Overflow.visible,
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: borderRadius,
+              border: Border.all(color: AbiliaColors.transparantBlack[5]),
+            ),
+            child: AnimatedOpacity(
+              duration: animationDuration,
+              opacity: signedOff ? .5 : 1,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: AbiliaColors.white, borderRadius: borderRadius),
+                constraints: BoxConstraints.expand(),
+                child: Column(
+                  children: <Widget>[
                     Flexible(
-                      flex: 8,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                        child: Container(
-                          child: Center(
-                            child: Text('Attachment'),
-                          ),
-                          decoration: BoxDecoration(
-                              color: AbiliaColors.white[110],
-                              borderRadius: BorderRadius.all(
-                                const Radius.circular(12.0),
-                              )),
-                        ),
-                      ),
+                      flex: 5,
+                      child: TopInfo(activity: activity),
                     ),
-                  if (hasImage && !hasAttachment)
-                    Flexible(
-                      flex: 8,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                        child: FadeInCalenderImage(
-                          imageFileId: activity.fileId,
-                          width: 327.0,
-                          height: 289.0,
+                    if (hasAttachment)
+                      Flexible(
+                        flex: 8,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                          child: Container(
+                            child: Center(
+                              child: Text('Attachment'),
+                            ),
+                            decoration: BoxDecoration(
+                                color: AbiliaColors.white[110],
+                                borderRadius: BorderRadius.all(
+                                  const Radius.circular(12.0),
+                                )),
+                          ),
                         ),
                       ),
-                    )
-                ],
+                    if (hasImage && !hasAttachment)
+                      Flexible(
+                        flex: 8,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                          child: Hero(
+                            tag: activity.id,
+                            child: FadeInCalenderImage(
+                              imageFileId: activity.fileId,
+                              width: 327.0,
+                              height: 289.0,
+                            ),
+                          ),
+                        ),
+                      )
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        if (showCheckable && activity.checkable)
-          CheckButton(
-            signedOff: signedOff,
-          ),
-        if (signedOff)
-          Center(
-            child: Icon(
-              AbiliaIcons.check_button,
-              size: 328,
-              color: AbiliaColors.green,
+          if (activity.checkable)
+            CheckButton(
+              iconData: signedOff
+                  ? AbiliaIcons.close_program
+                  : AbiliaIcons.check_button,
+              text: signedOff ? translate.uncheck : translate.check,
+              onPressed: () {
+                BlocProvider.of<ActivitiesBloc>(context)
+                    .add(UpdateActivity(activity.signOff(day)));
+              },
+            ),
+          AnimatedOpacity(
+            opacity: signedOff ? 1.0 : 0.0,
+            duration: animationDuration,
+            child: Center(
+              child: Icon(
+                AbiliaIcons.check_button,
+                size: 328,
+                color: AbiliaColors.green,
+              ),
             ),
           ),
-      ],
+        ],
+      ),
     );
   }
 }
 
 class CheckButton extends StatelessWidget {
-  final bool signedOff;
+  final VoidCallback onPressed;
+  final IconData iconData;
+  final String text;
 
-  const CheckButton({Key key, this.signedOff}) : super(key: key);
+  const CheckButton({Key key, this.onPressed, this.iconData, this.text})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    Translated translate = Translator.of(context).translate;
     final theme = Theme.of(context);
-    final ThemeData newTheme = signedOff
-        ? theme.copyWith(
-            buttonTheme: uncheckButtonThemeData,
-            buttonColor: AbiliaColors.transparantBlack[20])
-        : theme.copyWith(
-            buttonTheme: checkButtonThemeData, buttonColor: AbiliaColors.green);
     return Positioned(
       top: -8,
       right: -8,
-      child: Theme(
-        data: newTheme,
-        child: Container(
-          padding: const EdgeInsets.all(4.0),
-          decoration: BoxDecoration(
-            color: newTheme.scaffoldBackgroundColor,
-            borderRadius: borderRadius,
-          ),
-          child: FlatButton.icon(
-            icon: Icon(
-              signedOff ? AbiliaIcons.close_program : AbiliaIcons.check_button,
-            ),
-            label: Text(
-              signedOff ? translate.uncheck : translate.check,
-              style: newTheme.textTheme.body2,
-            ),
-            color: newTheme.buttonColor,
-            onPressed: () => {},
-          ),
+      child: Container(
+        padding: const EdgeInsets.all(4.0),
+        decoration: BoxDecoration(
+          color: theme.scaffoldBackgroundColor,
+          borderRadius: borderRadius,
+        ),
+        child: FlatButton.icon(
+          icon: Icon(iconData),
+          label: Text(text, style: theme.textTheme.body2),
+          color: theme.buttonColor,
+          onPressed: onPressed,
         ),
       ),
     );

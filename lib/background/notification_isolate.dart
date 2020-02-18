@@ -100,18 +100,21 @@ Future scheduleNotification(NotificationAlarm notificationAlarm, DateTime now,
 
 NotificationPayload getPayload(NotificationAlarm notificationAlarm) {
   final id = notificationAlarm.activity.id;
+  final day = notificationAlarm.day;
   if (notificationAlarm is NewAlarm) {
     return NotificationPayload(
       activityId: id,
+      day: day,
       onStart: notificationAlarm.alarmOnStart,
     );
   } else if (notificationAlarm is NewReminder) {
     return NotificationPayload(
       activityId: id,
+      day: day,
       reminder: notificationAlarm.reminder.inMinutes,
     );
   }
-  return NotificationPayload(activityId: id);
+  return NotificationPayload(activityId: id, day: day);
 }
 
 NotificationChannel getNotificationChannel(AlarmType alarm) => alarm.sound

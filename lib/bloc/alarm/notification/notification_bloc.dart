@@ -20,7 +20,9 @@ class NotificationBloc extends Bloc<NotificationPayload, AlarmStateBase> {
         handleData: (String data, EventSink<NotificationPayload> sink) {
           try {
             sink.add(NotificationPayload.fromJson(json.decode(data)));
-          } catch (_) {}
+          } catch (e) {
+            print('failed to parse selected notification payload: $data $e');
+          }
         },
       ),
     ).listen((payload) => add(payload));
@@ -54,12 +56,23 @@ class NotificationBloc extends Bloc<NotificationPayload, AlarmStateBase> {
 
   NotificationAlarm _getAlarm(Activity activity, NotificationPayload payload) {
     if (payload.reminder > 0) {
-      return NewReminder(activity, reminder: payload.reminder.minutes());
+      return NewReminder(
+        activity,
+        payload.day,
+        reminder: payload.reminder.minutes(),
+      );
     }
-    return NewAlarm(activity, alarmOnStart: payload.onStart);
+    return NewAlarm(
+      activity,
+      payload.day,
+      alarmOnStart: payload.onStart,
+    );
   }
 
-  List<NotificationPayload> _pendings(AlarmStateBase currentState, NotificationPayload payload) {
+  List<NotificationPayload> _pendings(
+    AlarmStateBase currentState,
+    NotificationPayload payload,
+  ) {
     if (currentState is PendingAlarmState) {
       return currentState.pedingAlarms..add(payload);
     }

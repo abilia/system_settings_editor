@@ -22,6 +22,11 @@ class Activity extends Equatable {
       reminderBefore.map((r) => r.milliseconds());
   bool isSignedOff(DateTime day) => checkable && signedOffDates.contains(day);
 
+  Activity signOff(DateTime day) => copyWith(
+      signedOffDates: signedOffDates.contains(day)
+          ? (signedOffDates.toList()..remove(day))
+          : signedOffDates.followedBy([day]));
+
   final String id, seriesId, title, fileId, icon, infoItem;
   final int startTime,
       endTime,

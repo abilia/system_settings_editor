@@ -26,22 +26,23 @@ extension IterableActivity on Iterable<Activity> {
       {bool Function(Activity) startTimeTest,
       bool Function(Activity) endTimeTest,
       bool Function(NewReminder) reminderTest}) {
-    final activitiesThisDay = where((a) => a.shouldShowForDay(time.onlyDays()));
+    final day = time.onlyDays();
+    final activitiesThisDay = where((a) => a.shouldShowForDay(day));
     final activitiesWithAlarm =
         activitiesThisDay.where((a) => a.alarm.shouldAlarm);
 
     final Iterable<NotificationAlarm> startTimeAlarms = activitiesWithAlarm
         .where(startTimeTest)
-        .map((a) => NewAlarm(a, alarmOnStart: true));
+        .map((a) => NewAlarm(a, day, alarmOnStart: true));
 
     final endTimeAlarms = activitiesWithAlarm
         .where((a) => a.hasEndTime)
         .where((a) => a.alarm.atEnd)
         .where(endTimeTest)
-        .map((a) => NewAlarm(a, alarmOnStart: false));
+        .map((a) => NewAlarm(a, day, alarmOnStart: false));
 
     final reminders = activitiesThisDay.expand((a) => a.reminders
-        .map((r) => NewReminder(a, reminder: r))
+        .map((r) => NewReminder(a, day, reminder: r))
         .where(reminderTest));
 
     return startTimeAlarms.followedBy(endTimeAlarms).followedBy(reminders);

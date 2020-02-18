@@ -1,0 +1,29 @@
+import 'dart:collection';
+
+class ActivityUpdateResponse {
+  final int previousRevision;
+  final UnmodifiableListView<DataRevisionUpdates> succeded, failed;
+
+  ActivityUpdateResponse.fromJson(Map<String, dynamic> json)
+      : previousRevision = json['previousRevision'],
+        failed = _parseDataRevisionUpdates(json['failedUpdates']),
+        succeded = _parseDataRevisionUpdates(json['dataRevisionUpdates']);
+
+  static UnmodifiableListView<DataRevisionUpdates> _parseDataRevisionUpdates(
+          List jsonList) =>
+      UnmodifiableListView(jsonList
+              ?.whereType<Map<String, dynamic>>()
+              ?.map(DataRevisionUpdates.fromJson) ??
+          []);
+  @override
+  String toString() =>
+      'ActivityUpdateResponse { previousRevision: $previousRevision, succeded: $succeded, failed: $failed }';
+}
+
+class DataRevisionUpdates {
+  final String id;
+  final int revision;
+  const DataRevisionUpdates._(this.id, this.revision);
+  static DataRevisionUpdates fromJson(Map<String, dynamic> json) =>
+      DataRevisionUpdates._(json['id'], json['newRevision']);
+}

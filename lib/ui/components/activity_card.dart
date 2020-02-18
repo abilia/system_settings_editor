@@ -37,10 +37,13 @@ class ActivityCard extends StatelessWidget {
           InkWell(
             borderRadius: borderRadius,
             onTap: () {
-              Navigator.of(context).push(
+              Navigator.push(
+                context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      ActivityPage(occasion: activityOccasion),
+                  builder: (innerContext) => BlocProvider.value(
+                    value: BlocProvider.of<ActivitiesBloc>(context),
+                    child: ActivityPage(occasion: activityOccasion),
+                  ),
                 ),
               );
             },
@@ -70,10 +73,13 @@ class ActivityCard extends StatelessWidget {
                             if (signedOff)
                               SizedBox(width: imageSize + cardPadding),
                             if (hasImage)
-                              FadeInThumb(
-                                imageFileId: activity.fileId,
-                                width: imageSize,
-                                height: imageSize,
+                              Hero(
+                                tag: activity.id,
+                                child: FadeInThumb(
+                                  imageFileId: activity.fileId,
+                                  width: imageSize,
+                                  height: imageSize,
+                                ),
                               ),
                             Expanded(
                               child: Padding(

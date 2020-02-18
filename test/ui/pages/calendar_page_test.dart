@@ -59,8 +59,8 @@ void main() {
     });
 
     testWidgets('Should show one activity', (WidgetTester tester) async {
-      when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+      when(mockActivityDb.getActivitiesFromDb()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
 
       activityResponse = () => [FakeActivity.startsIn(1.hours())];
 
@@ -78,8 +78,8 @@ void main() {
 
     testWidgets('Agenda with one activity should not show Go to now-button',
         (WidgetTester tester) async {
-      when(mockActivityDb.getActivitiesFromDb())
-          .thenAnswer((_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+      when(mockActivityDb.getActivitiesFromDb()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
 
       activityResponse = () => [FakeActivity.startsNow()];
 
@@ -122,10 +122,14 @@ void main() {
     StreamController<DateTime> mockTicker;
     StreamController<String> mockNotificationSelected;
     final DateTime activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
+    final DateTime activityWithAlarmday = activityWithAlarmTime.onlyDays();
     final DateTime twoHoursAfter = activityWithAlarmTime.add(2.hours());
     final Activity activity = FakeActivity.starts(activityWithAlarmTime);
-    final String payloadSerial = json.encode(
-        NotificationPayload(activityId: activity.id, onStart: true).toJson());
+    final String payloadSerial = json.encode(NotificationPayload(
+      activityId: activity.id,
+      day: activityWithAlarmday,
+      onStart: true,
+    ).toJson());
 
     setUp(() {
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
@@ -196,15 +200,70 @@ void main() {
     });
   });
 
+  group('calendar page reminder test', () {
+    StreamController<DateTime> mockTicker;
+    StreamController<String> mockNotificationSelected;
+    final activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
+    final reminderTime = 5.minutes();
+    final activity =
+        FakeActivity.starts(activityWithAlarmTime.add(reminderTime))
+            .copyWith(reminderBefore: [reminderTime.inMilliseconds]);
+
+    setUp(() {
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
+      mockTicker = StreamController<DateTime>();
+      mockNotificationSelected = StreamController<String>();
+
+      final mockTokenDb = MockTokenDb();
+      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
+      final mockFirebasePushService = MockFirebasePushService();
+      when(mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value('fakeToken'));
+
+      final response = [activity];
+      final mockActivityDb = MockActivityDb();
+      when(mockActivityDb.getActivitiesFromDb())
+          .thenAnswer((_) => Future.value(response));
+
+      GetItInitializer()
+        ..activityDb = mockActivityDb
+        ..userDb = MockUserDb()
+        ..ticker = (() => mockTicker.stream)
+        ..baseUrlDb = MockBaseUrlDb()
+        ..fireBasePushService = mockFirebasePushService
+        ..tokenDb = mockTokenDb
+        ..httpClient = Fakes.client(() => response)
+        ..notificationStreamGetter = (() => mockNotificationSelected.stream)
+        ..init();
+    });
+
+    testWidgets('Reminder shows', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Act
+      mockTicker.add(activityWithAlarmTime);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byKey(TestKey.onScreenReminder), findsOneWidget);
+    });
+  });
+
   group('Multiple alarms tests', () {
     final mockActivityDb = MockActivityDb();
     StreamController<DateTime> mockTicker;
     StreamController<String> mockNotificationSelected;
     final DateTime activity1StartTime = DateTime(2011, 11, 11, 11, 11);
+    final DateTime day = DateTime(2011, 11, 11);
     final Activity activity1 =
         FakeActivity.starts(activity1StartTime, duration: 2.minutes());
-    final String startTimeActivity1NotificationPayload = json.encode(
-        NotificationPayload(activityId: activity1.id, onStart: true).toJson());
+    final String startTimeActivity1NotificationPayload =
+        json.encode(NotificationPayload(
+      activityId: activity1.id,
+      day: day,
+      onStart: true,
+    ).toJson());
 
     final DateTime activity2StartTime = DateTime(2011, 11, 11, 11, 12);
     final Activity activity2 =
