@@ -16,7 +16,8 @@ void main() {
         "id" : "99e777cb-f4d5-4899-9be2-d5dcc9f309d2",
         "newRevision" : 100
       } ]
-    }''';
+    }
+    ''';
     final asJson = json.decode(response);
     final data = ActivityUpdateResponse.fromJson(asJson);
     expect(data.previousRevision, 100);
@@ -38,7 +39,8 @@ void main() {
         "id" : "cc207923-2946-465d-be17-128fb19765cb",
         "newRevision" : 101
       } ]
-    }''';
+    }
+    ''';
     final asJson = json.decode(response);
     final data = ActivityUpdateResponse.fromJson(asJson);
     expect(data.previousRevision, 100);
@@ -48,5 +50,23 @@ void main() {
     expect(dataRevisionUpdate.revision, 101);
 
     expect(data.failed.length, 0);
+  });
+
+  test('Parse json with no successful', () {
+    final response = '''
+    {
+      "previousRevision" : 100,
+      "dataRevisionUpdates" : [],
+      "failedUpdates" : [ {
+        "id" : "99e777cb-f4d5-4899-9be2-d5dcc9f309d2",
+        "newRevision" : 101
+      } ]
+    }
+    ''';
+    final asJson = json.decode(response);
+    final data = ActivityUpdateResponse.fromJson(asJson);
+    expect(data.previousRevision, 100);
+    expect(data.succeded.length, 0);
+    expect(data.failed.length, 1);
   });
 }
