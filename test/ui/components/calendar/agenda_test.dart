@@ -139,6 +139,7 @@ void main() {
     await tester.tap(find.text(forthFullDayTitle));
     await tester.pumpAndSettle();
 
+    expect(find.byType(ActivityPage), findsOneWidget);
     expect(find.text(forthFullDayTitle), findsOneWidget);
   });
 }
