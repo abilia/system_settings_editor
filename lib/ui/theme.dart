@@ -171,6 +171,22 @@ ThemeData menuButtonTheme = abiliaTheme.copyWith(
   buttonColor: AbiliaColors.transparantWhite[20],
 );
 
+ThemeData addButtonTheme = abiliaTheme.copyWith(
+  buttonTheme: lightActionButtonThemeData.copyWith(
+    shape: RoundedRectangleBorder(
+      borderRadius: borderRadius,
+      side: BorderSide(
+        width: 1,
+        color: AbiliaColors.transparantBlack[15],
+      ),
+    ),
+  ),
+  buttonColor: AbiliaColors.white,
+  textTheme: abiliaTextTheme.copyWith(
+    button: abiliaTextTheme.button.copyWith(color: AbiliaColors.black),
+  ),
+);
+
 TextTheme abiliaTextTheme = TextTheme(
   display4: baseTextStyle.copyWith(
     fontSize: 96.0,

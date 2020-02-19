@@ -92,72 +92,58 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                       },
                     ),
                   ),
-                  bottomNavigationBar: BottomAppBar(
-                    child: SizedBox(
-                      height: 64,
-                      child: Stack(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Row(
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                                  child: ActionButton(
-                                    key: TestKey.changeView,
-                                    width: 65,
-                                    child: Row(
-                                      children: <Widget>[
-                                        calendarViewState.currentView ==
-                                                CalendarViewType.LIST
-                                            ? Icon(AbiliaIcons.phone_log)
-                                            : Icon(AbiliaIcons.timeline),
-                                        Icon(AbiliaIcons.navigation_down)
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (newContext) =>
-                                            ChangeCalendarViewDialog(
-                                          outerContext: context,
-                                          currentViewType:
-                                              calendarViewState.currentView,
-                                        ),
-                                      );
-                                    },
-                                    themeData: menuButtonTheme,
-                                  ),
-                                ),
-                                GoToNowButton(
-                                  onPressed: () => _jumpToActivity(),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: ActionButton(
-                              child: Icon(
-                                AbiliaIcons.menu,
-                                size: 32,
-                              ),
-                              onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => MenuPage()),
-                              ),
-                              themeData: menuButtonTheme,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  bottomNavigationBar:
+                      buildBottomAppBar(calendarViewState.currentView, context),
                 ),
               );
             },
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildBottomAppBar(CalendarViewType currentView, BuildContext context) {
+    return Container(
+      decoration:
+          BoxDecoration(color: Theme.of(context).bottomAppBarTheme.color),
+      height: 64,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Stack(
+          children: <Widget>[
+            CalenderViewSwitchButton(currentView),
+            Align(
+              alignment: Alignment(-0.42, 0.0),
+              child: GoToNowButton(
+                onPressed: () => _jumpToActivity(),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: ActionButton(
+                child: Icon(
+                  AbiliaIcons.plus,
+                  size: 32,
+                ),
+                onPressed: () => {},
+                themeData: addButtonTheme,
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ActionButton(
+                child: Icon(
+                  AbiliaIcons.menu,
+                  size: 32,
+                ),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => MenuPage()),
+                ),
+                themeData: menuButtonTheme,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -196,5 +182,49 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
     } else if (scrollState is WrongDay) {
       _dayPickerBloc.add(CurrentDay());
     }
+  }
+}
+
+class CalenderViewSwitchButton extends StatelessWidget {
+  const CalenderViewSwitchButton(this.currentView, {Key key}) : super(key: key);
+  final CalendarViewType currentView;
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: menuButtonTheme,
+      child: SizedBox(
+        width: 72,
+        height: 48,
+        child: FlatButton(
+          color: menuButtonTheme.buttonColor,
+          highlightColor: menuButtonTheme.highlightColor,
+          padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+          textColor: menuButtonTheme.textTheme.button.color,
+          child: Row(
+            children: <Widget>[
+              Icon(
+                currentView == CalendarViewType.LIST
+                    ? AbiliaIcons.list_order
+                    : AbiliaIcons.timeline,
+                size: 32,
+              ),
+              Icon(
+                AbiliaIcons.navigation_down,
+                size: 32,
+              ),
+            ],
+          ),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (newContext) => ChangeCalendarViewDialog(
+                outerContext: context,
+                currentViewType: currentView,
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
