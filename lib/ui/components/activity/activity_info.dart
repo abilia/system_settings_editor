@@ -83,6 +83,7 @@ class _ActivityInfo extends StatelessWidget {
                     ),
                     if (hasAttachment)
                       Flexible(
+                        key: TestKey.attachment,
                         flex: 8,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
@@ -103,13 +104,10 @@ class _ActivityInfo extends StatelessWidget {
                         flex: 8,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                          child: Hero(
-                            tag: activity.id,
-                            child: FadeInCalenderImage(
-                              imageFileId: activity.fileId,
-                              width: 327.0,
-                              height: 289.0,
-                            ),
+                          child: HeroImage(
+                            activity: activity,
+                            width: 327.0,
+                            height: 289.0,
                           ),
                         ),
                       )
@@ -120,6 +118,9 @@ class _ActivityInfo extends StatelessWidget {
           ),
           if (activity.checkable)
             CheckButton(
+              key: signedOff
+                  ? TestKey.activityUncheckButton
+                  : TestKey.activityCheckButton,
               iconData: signedOff
                   ? AbiliaIcons.close_program
                   : AbiliaIcons.check_button,
@@ -202,8 +203,8 @@ class TopInfo extends StatelessWidget {
         if (imageToTheLeft)
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
-            child: FadeInCalenderImage(
-              imageFileId: activity.fileId,
+            child: HeroImage(
+              activity: activity,
               height: 109,
               width: 109,
             ),
@@ -233,8 +234,8 @@ class TopInfo extends StatelessWidget {
             if (imageBelow)
               Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
-                child: FadeInCalenderImage(
-                  imageFileId: activity.fileId,
+                child: HeroImage(
+                  activity: activity,
                   height: 109,
                   width: 109,
                 ),
@@ -242,6 +243,26 @@ class TopInfo extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class HeroImage extends StatelessWidget {
+  final Activity activity;
+  final double width;
+  final double height;
+
+  const HeroImage({Key key, this.activity, this.width, this.height})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: activity.id,
+      child: FadeInCalenderImage(
+        imageFileId: activity.fileId,
+        width: width,
+        height: height,
+      ),
     );
   }
 }

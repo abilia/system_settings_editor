@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 
 class TestKey {
-  TestKey._();
   static const Key userNameInput = Key('userName'),
       passwordInput = Key('password'),
       hidePasswordToggle = Key('hidePassword'),
@@ -11,7 +10,11 @@ class TestKey {
       onScreenAlarm = Key('onScreenAlarm'),
       onScreenReminder = Key('onScreenReminder'),
       appBarCloseButton = Key('appBarCloseButton'),
+      showAllFullDays = Key('showAllFullDays'),
       changeView = Key('changeView'),
       timePillarButton = Key('timePillarButton'),
-      activityBackButton = Key('activityBackButton');
+      activityBackButton = Key('activityBackButton'),
+      activityUncheckButton = Key('activityUncheckButton'),
+      activityCheckButton = Key('activityCheckButton'),
+      attachment = Key('attachment');
 }

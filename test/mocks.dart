@@ -24,8 +24,6 @@ class MockActivityDb extends Mock implements ActivityDb {}
 
 class MockUserDb extends Mock implements UserDb {}
 
-class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
-
 class MockDatabaseRepository extends Mock implements DatabaseRepository {}
 
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
@@ -34,3 +32,21 @@ class MockClient extends Mock implements BaseClient {}
 
 class MockFlutterLocalNotificationsPlugin extends Mock
     implements FlutterLocalNotificationsPlugin {}
+
+class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesState>
+    implements ActivitiesBloc {}
+
+class MockAuthenticationBloc
+    extends MockBloc<AuthenticationEvent, AuthenticationState>
+    implements AuthenticationBloc {}
+
+class MockBloc<E, S> extends Mock {
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    final memberName = invocation.memberName.toString().split('"')[1];
+    final result = super.noSuchMethod(invocation);
+    return (memberName == 'skip' && result == null)
+        ? Stream<S>.empty()
+        : result;
+  }
+}
