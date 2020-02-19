@@ -13,19 +13,21 @@ class BackendSwitches extends StatelessWidget {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
       if (state is AuthenticationInitialized) {
-        return Row(
-            children: backEndEnviorments.entries
-                .map(
-          (kvp) => BackEndButton(
-            kvp.key,
-            userRepository: state.userRepository,
-            client: Client(),
-            backEndUrl: kvp.value,
-          ),
-        )
-                .followedBy([
-          _alarms(state.userRepository),
-        ]).toList());
+        return Center(
+          child: Wrap(
+              children: backEndEnviorments.entries
+                  .map(
+            (kvp) => BackEndButton(
+              kvp.key,
+              userRepository: state.userRepository,
+              client: Client(),
+              backEndUrl: kvp.value,
+            ),
+          )
+                  .followedBy([
+            _alarms(state.userRepository),
+          ]).toList()),
+        );
       }
       return Container();
     });
@@ -90,16 +92,14 @@ class BackEndButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: FlatButton(
-        padding: EdgeInsets.zero,
-        textColor: userRepository.baseUrl == backEndUrl
-            ? AbiliaColors.green
-            : AbiliaColors.blue,
-        onPressed: () => authBloc(context).add(AppStarted(
-            userRepository.copyWith(httpClient: client, baseUrl: backEndUrl))),
-        child: Text(text),
-      ),
+    return FlatButton(
+      padding: EdgeInsets.zero,
+      textColor: userRepository.baseUrl == backEndUrl
+          ? AbiliaColors.green
+          : AbiliaColors.blue,
+      onPressed: () => authBloc(context).add(AppStarted(
+          userRepository.copyWith(httpClient: client, baseUrl: backEndUrl))),
+      child: Text(text),
     );
   }
 }
