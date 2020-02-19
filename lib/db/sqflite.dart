@@ -1,9 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_migration/sqflite_migration.dart';
 
 class DatabaseRepository {
-  static final _initialScript = [
+  @visibleForTesting
+  static final initialScript = [
     '''
       create table calendar_activity (
         id text primary key not null,
@@ -22,42 +23,50 @@ class DatabaseRepository {
         icon text,
         info_item text,
         revision int,
-        alarm_type int
+        alarm_type int,
+        checkable int default 0,
+        signed_off_dates text
       )
     ''',
   ];
-
-  static final _migrations = <String>[
-    '''
-      ALTER TABLE calendar_activity ADD COLUMN checkable int default 0
-    ''',
-    '''
-      ALTER TABLE calendar_activity ADD COLUMN signed_off_dates text
-    ''',
-  ];
-
-  static final _config = MigrationConfig(
-      initializationScript: _initialScript, migrationScripts: _migrations);
+  @visibleForTesting
+  static final migrations = <String>[];
 
   static Database _database;
-
-  Future<Database> get database async {
-    if (_database != null) {
-      return _database;
-    }
-
-    _database = await _open();
-    return _database;
-  }
+  Future<Database> get database async => _database ??= await _open();
 
   Future<Database> _open() async {
     print('Open the sqflite');
     final databasesPath = await getDatabasesPath();
-    final path = join(databasesPath, 'seagull.db');
-    return await openDatabaseWithMigration(path, _config);
+    return await openDatabase(
+      join(databasesPath, 'seagull.db'),
+      version: migrations.length + 1,
+      onCreate: executeInitialization,
+      onUpgrade: executeMigration,
+    );
   }
 
   Future clearAll() async {
-    return (await database).rawDelete("DELETE FROM calendar_activity");
+    return (await database).rawDelete('DELETE FROM calendar_activity');
+  }
+
+  @visibleForTesting
+  Future<void> executeInitialization(Database db, int version) async {
+    initialScript.forEach((script) async => await db.execute(script));
+    migrations.forEach((script) async => await db.execute(script));
+  }
+
+  @visibleForTesting
+  Future<void> executeMigration(
+      Database db, int oldVersion, int newVersion) async {
+    await internalMigration(db, oldVersion, newVersion, migrations);
+  }
+
+  @visibleForTesting
+  Future<void> internalMigration(Database db, int oldVersion, int newVersion,
+      List<String> migrationScripts) async {
+    migrationScripts
+        .skip(oldVersion - 1)
+        .forEach((script) async => await db.execute(script));
   }
 }

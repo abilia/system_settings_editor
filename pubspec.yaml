@@ -23,7 +23,6 @@ dependencies:
       ref: ios-background-support
       path: packages/firebase_messaging/
   sqflite: ^1.1.7+3
-  sqflite_migration: ^0.1.2
   get_it: ^3.0.3
   shared_preferences: ^0.5.4+8
   path_provider: ^1.4.5
