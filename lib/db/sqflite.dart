@@ -59,7 +59,13 @@ class DatabaseRepository {
   @visibleForTesting
   Future<void> executeMigration(
       Database db, int oldVersion, int newVersion) async {
-    migrations
+    await internalMigration(db, oldVersion, newVersion, migrations);
+  }
+
+  @visibleForTesting
+  Future<void> internalMigration(Database db, int oldVersion, int newVersion,
+      List<String> migrationScripts) async {
+    migrationScripts
         .skip(oldVersion - 1)
         .forEach((script) async => await db.execute(script));
   }

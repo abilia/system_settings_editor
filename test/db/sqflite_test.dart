@@ -14,9 +14,13 @@ void main() {
     DatabaseRepository.migrations.forEach((m) => verify(mockDb.execute(m)));
   });
 
-  test('executeMigration calls all scripts new scripts', () {
+  test('executeMigration do not call old scripts', () {
+    final migrationScript1 = 'script1';
+    final migrationScript2 = 'script2';
+    final migrations = <String>[migrationScript1, migrationScript2];
     final mockDb = MockDatabase();
-    DatabaseRepository().executeMigration(mockDb, 1, 1);
-    DatabaseRepository.migrations.forEach((m) => verify(mockDb.execute(m)));
+    DatabaseRepository().internalMigration(mockDb, 2, 3, migrations);
+    verifyNever(mockDb.execute(migrationScript1));
+    verify(mockDb.execute(migrationScript2));
   });
 }
