@@ -70,45 +70,44 @@ class _ActivityInfo extends StatelessWidget {
             ),
             child: AnimatedOpacity(
               duration: animationDuration,
-              opacity: signedOff ? .5 : 1,
+              opacity: signedOff ? .5 : 1.0,
               child: Container(
                 decoration: BoxDecoration(
                     color: AbiliaColors.white, borderRadius: borderRadius),
                 constraints: BoxConstraints.expand(),
+                padding: const EdgeInsets.all(12.0),
                 child: Column(
                   children: <Widget>[
                     Flexible(
                       flex: 5,
-                      child: TopInfo(activity: activity),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            bottom: hasAttachment || hasImage ? 12.0 : 0.0),
+                        child: TopInfo(activity: activity),
+                      ),
                     ),
                     if (hasAttachment)
                       Flexible(
                         key: TestKey.attachment,
                         flex: 8,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                          child: Container(
-                            child: Center(
-                              child: Text('Attachment'),
-                            ),
-                            decoration: BoxDecoration(
-                                color: AbiliaColors.white[110],
-                                borderRadius: BorderRadius.all(
-                                  const Radius.circular(12.0),
-                                )),
+                        child: Container(
+                          child: Center(
+                            child: Text('Attachment'),
                           ),
+                          decoration: BoxDecoration(
+                              color: AbiliaColors.white[110],
+                              borderRadius: BorderRadius.all(
+                                const Radius.circular(12.0),
+                              )),
                         ),
                       ),
                     if (hasImage && !hasAttachment)
                       Flexible(
                         flex: 8,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                          child: HeroImage(
-                            activity: activity,
-                            width: 327.0,
-                            height: 289.0,
-                          ),
+                        child: HeroImage(
+                          activity: activity,
+                          width: 327.0,
+                          height: 289.0,
                         ),
                       )
                   ],
@@ -202,45 +201,47 @@ class TopInfo extends StatelessWidget {
       children: <Widget>[
         if (imageToTheLeft)
           Padding(
-            padding: const EdgeInsets.only(left: 12.0),
+            padding: const EdgeInsets.only(right: 12.0),
             child: HeroImage(
               activity: activity,
               height: 109,
               width: 109,
             ),
           ),
-        Column(
-          crossAxisAlignment: imageToTheLeft
-              ? CrossAxisAlignment.start
-              : CrossAxisAlignment.center,
-          mainAxisAlignment:
-              imageBelow ? MainAxisAlignment.end : MainAxisAlignment.center,
-          children: <Widget>[
-            if (activity.title?.isNotEmpty ?? false)
+        Expanded(
+          child: Column(
+            crossAxisAlignment: imageToTheLeft
+                ? CrossAxisAlignment.start
+                : CrossAxisAlignment.center,
+            mainAxisAlignment:
+                imageBelow ? MainAxisAlignment.end : MainAxisAlignment.center,
+            children: <Widget>[
+              if (hasTitle)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(activity.title,
+                      style: themeData.textTheme.headline,
+                      textAlign:
+                          imageToTheLeft ? TextAlign.left : TextAlign.center),
+                ),
               Text(
-                activity.title,
-                style: themeData.textTheme.headline,
+                activity.fullDay
+                    ? Translator.of(context).translate.fullDay
+                    : activity.hasEndTime
+                        ? '${timeFormat.format(activity.start)} - ${timeFormat.format(activity.end)}'
+                        : '${timeFormat.format(activity.start)}',
+                style: themeData.textTheme.subhead.copyWith(
+                  color: AbiliaColors.black,
+                ),
               ),
-            Text(
-              activity.fullDay
-                  ? Translator.of(context).translate.fullDay
-                  : activity.hasEndTime
-                      ? '${timeFormat.format(activity.start)} - ${timeFormat.format(activity.end)}'
-                      : '${timeFormat.format(activity.start)}',
-              style: themeData.textTheme.subhead.copyWith(
-                color: AbiliaColors.black,
-              ),
-            ),
-            if (imageBelow)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: HeroImage(
+              if (imageBelow)
+                HeroImage(
                   activity: activity,
                   height: 109,
                   width: 109,
                 ),
-              )
-          ],
+            ],
+          ),
         ),
       ],
     );

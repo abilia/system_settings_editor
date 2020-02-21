@@ -14,7 +14,7 @@ class ActivityCard extends StatelessWidget {
   static const double cardPadding = 4.0;
   static const double imageSize = 48.0;
 
-  const ActivityCard({Key key, this.activityOccasion, this.cardMargin})
+  const ActivityCard({Key key, this.activityOccasion, this.cardMargin = 0})
       : assert(activityOccasion != null),
         super(key: key);
 

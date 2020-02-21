@@ -9,7 +9,7 @@ import 'package:seagull/ui/pages/all.dart';
 
 class Agenda extends StatefulWidget {
   final double cardHeight = 56.0;
-  final double cardMargin = 6;
+  final double cardMargin = 4;
   final ActivitiesOccasionLoaded state;
 
   const Agenda({Key key, this.state}) : super(key: key);
@@ -127,19 +127,19 @@ class FullDayContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firstTwo = this.fullDayActivities.take(2);
+    final firstTwo = fullDayActivities.take(2);
     return Container(
       decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
+        padding: const EdgeInsets.all(12),
         child: Row(
           children: firstTwo
               .map<Widget>(
                 (fd) => Flexible(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 6.0),
-                    child: ActivityCard(activityOccasion: fd, cardMargin: 4),
+                    padding: EdgeInsets.only(right: cardMargin),
+                    child: ActivityCard(activityOccasion: fd),
                   ),
                 ),
               )
@@ -147,7 +147,7 @@ class FullDayContainer extends StatelessWidget {
                 ..add(
                   fullDayActivities.length >= 3
                       ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
                           child: ActionButton(
                             key: TestKey.showAllFullDays,
                             child: Text('+ ${fullDayActivities.length - 2}'),
