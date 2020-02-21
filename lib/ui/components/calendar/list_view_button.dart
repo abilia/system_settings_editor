@@ -30,7 +30,7 @@ class ListViewButton extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(AbiliaIcons.phone_log,
+              child: Icon(AbiliaIcons.list_order,
                   color: themeData.textTheme.button.color),
             ),
             Text(
