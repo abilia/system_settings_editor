@@ -112,7 +112,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Stack(
           children: <Widget>[
-            CalenderViewSwitchButton(currentView),
+            CalendarViewSwitchButton(currentView),
             Align(
               alignment: Alignment(-0.42, 0.0),
               child: GoToNowButton(
@@ -185,8 +185,8 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
   }
 }
 
-class CalenderViewSwitchButton extends StatelessWidget {
-  const CalenderViewSwitchButton(this.currentView, {Key key}) : super(key: key);
+class CalendarViewSwitchButton extends StatelessWidget {
+  const CalendarViewSwitchButton(this.currentView, {Key key}) : super(key: key);
   final CalendarViewType currentView;
   @override
   Widget build(BuildContext context) {
