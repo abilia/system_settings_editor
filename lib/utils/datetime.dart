@@ -5,6 +5,9 @@ extension DateTimeExtensions on DateTime {
 
   DateTime onlyMinutes() => DateTime(year, month, day, hour, minute);
 
+  DateTime nextHalfHour() => DateTime(
+      year, month, day, minute >= 30 ? hour + 1 : hour, minute >= 30 ? 0 : 30);
+
   bool isAtSameDay(DateTime otherDate) =>
       onlyDays().isAtSameMomentAs(otherDate.onlyDays());
 

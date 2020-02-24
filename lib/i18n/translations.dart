@@ -19,7 +19,7 @@ abstract class Translated {
   String get week;
   String get reminder;
   String inMinutes(int minutes);
-  String get alarm => 'Alarm';
+  String get alarm;
   String get startsNow;
   String get endsNow;
   String get noActivities;
@@ -29,6 +29,20 @@ abstract class Translated {
   String get right;
   String get check;
   String get uncheck;
+  String get newActivity;
+  String get category;
+  String get noColor;
+  String get alarmAndVibration;
+  String get alarmOnlyAtStartTime;
+  String get checkable;
+  String get deleteAfter;
+  String get availableFor;
+  String get meAndSupportPersons;
+  String get name;
+  String get date;
+  String get today;
+  String get startTime;
+  String get endTime;
 }
 
 class English extends Translated {
@@ -46,6 +60,7 @@ class English extends Translated {
       fullDay = 'All day',
       week = 'week',
       reminder = 'Reminder',
+      alarm = 'Alarm',
       endsNow = 'Ends now',
       startsNow = 'Starts now',
       noActivities = 'No activities for today',
@@ -54,7 +69,21 @@ class English extends Translated {
       left = 'Left',
       right = 'Right',
       check = 'Check',
-      uncheck = 'Uncheck';
+      uncheck = 'Uncheck',
+      newActivity = 'New activity',
+      category = 'Category',
+      noColor = 'No color',
+      alarmAndVibration = 'Alarm + vibration',
+      alarmOnlyAtStartTime = 'Alarm only at Start time',
+      checkable = 'Checkable',
+      deleteAfter = 'Delete after',
+      availableFor = 'Available for',
+      meAndSupportPersons = 'Me and support persons',
+      name = 'Name',
+      date = 'Date',
+      today = 'Today',
+      startTime = 'Start time',
+      endTime = 'End time';
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
@@ -72,6 +101,7 @@ class Swedish extends Translated {
       fullDay = 'Heldag',
       week = 'vecka',
       reminder = 'Påminnelse',
+      alarm = 'Larm',
       endsNow = 'Slutar nu',
       startsNow = 'Börjar nu',
       noActivities = 'Inga aktiviteter idag',
@@ -80,6 +110,20 @@ class Swedish extends Translated {
       left = 'Vänster',
       right = 'Höger',
       check = 'Klar',
-      uncheck = 'Ångra';
+      uncheck = 'Ångra',
+      newActivity = 'Ny aktivitet',
+      category = 'Kategori',
+      noColor = 'Ingen färg',
+      alarmAndVibration = 'Larm + vibration',
+      alarmOnlyAtStartTime = 'Larm endast vid starttid',
+      checkable = 'Kvittera',
+      deleteAfter = 'Ta bort efteråt',
+      availableFor = 'Tillgänglig för',
+      meAndSupportPersons = 'Mig och stödpersoner',
+      name = 'Namn',
+      date = 'Datum',
+      today = 'Idag',
+      startTime = 'Starttid',
+      endTime = 'Sluttid';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }
