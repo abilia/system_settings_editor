@@ -18,9 +18,4 @@ void main() {
         wrapWithAuthBlocProvider(FadeInCalenderImage(imageFileId: 'fileid')));
     expect(find.byType(NetworkImage), findsNothing);
   });
-  testWidgets('FadeInThumb', (WidgetTester tester) async {
-    await tester.pumpWidget(
-        wrapWithAuthBlocProvider(FadeInThumb(imageFileId: 'fileid')));
-    expect(find.byType(NetworkImage), findsNothing);
-  });
 }
