@@ -23,11 +23,11 @@ void main() {
 
       final dbActivityAnswers = [
         <Activity>[],
-        [FakeActivity.startsIn(1.hours())]
+        [FakeActivity.startsNow(1.hours())]
       ];
       final serverActivityAnswers = [
         <Activity>[],
-        [FakeActivity.startsIn(1.hours())]
+        [FakeActivity.startsNow(1.hours())]
       ];
 
       final mockActivityDb = MockActivityDb();

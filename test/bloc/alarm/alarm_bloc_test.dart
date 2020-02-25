@@ -47,7 +47,7 @@ void main() {
       test('Load activities with current alarm shows alarm', () async {
         // Arrange
         final nowActivity = FakeActivity.starts(nextMinute);
-        when(mockActivityRepository.loadActivities())
+        when(mockActivityRepository.loadNewActivitiesFromBackend())
             .thenAnswer((_) => Future.value([nowActivity]));
         // Act
         activitiesBloc.add(LoadActivities());
@@ -66,7 +66,7 @@ void main() {
       test('Ticks before Load activities does nothing', () async {
         // Arrange
         final nowActivity = FakeActivity.starts(thisMinute);
-        when(mockActivityRepository.loadActivities())
+        when(mockActivityRepository.loadNewActivitiesFromBackend())
             .thenAnswer((_) => Future.value([nowActivity]));
         // Act
         await _tick();
@@ -85,7 +85,7 @@ void main() {
       test('Does not show if clock is not on start time', () async {
         // Arrange
         final soonActivity = FakeActivity.starts(thisMinute);
-        when(mockActivityRepository.loadActivities())
+        when(mockActivityRepository.loadNewActivitiesFromBackend())
             .thenAnswer((_) => Future.value([soonActivity]));
         // Act
         await _tick();
@@ -102,7 +102,7 @@ void main() {
       test('Next minut alarm does nothing', () async {
         // Arrange
         final soonActivity = FakeActivity.starts(nextMinute);
-        when(mockActivityRepository.loadActivities())
+        when(mockActivityRepository.loadNewActivitiesFromBackend())
             .thenAnswer((_) => Future.value([soonActivity]));
         // Act
         activitiesBloc.add(LoadActivities());
@@ -118,7 +118,7 @@ void main() {
       test('Next minut alarm alarm next minute', () async {
         // Arrange
         final soonActivity = FakeActivity.starts(nextMinute);
-        when(mockActivityRepository.loadActivities())
+        when(mockActivityRepository.loadNewActivitiesFromBackend())
             .thenAnswer((_) => Future.value([soonActivity]));
         // Act
         activitiesBloc.add(LoadActivities());
@@ -138,7 +138,7 @@ void main() {
         // Arrange
         final soonActivity = FakeActivity.starts(nextMinute);
         final soonActivity2 = FakeActivity.starts(nextMinute);
-        when(mockActivityRepository.loadActivities())
+        when(mockActivityRepository.loadNewActivitiesFromBackend())
             .thenAnswer((_) => Future.value([soonActivity, soonActivity2]));
         // Act
         activitiesBloc.add(LoadActivities());
@@ -160,7 +160,7 @@ void main() {
         final nowActivity = FakeActivity.starts(thisMinute);
         final nextMinActivity = FakeActivity.starts(nextMinute);
         final inTwoMinActivity = FakeActivity.starts(inTwoMin);
-        when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
+        when(mockActivityRepository.loadNewActivitiesFromBackend()).thenAnswer((_) =>
             Future.value([inTwoMinActivity, nowActivity, nextMinActivity]));
 
         // Act
@@ -186,7 +186,7 @@ void main() {
                 .copyWith(alarmType: NO_ALARM);
         final inTwoMinutesActivity =
             FakeActivity.starts(nextMinute.add(1.minutes()));
-        when(mockActivityRepository.loadActivities()).thenAnswer((_) =>
+        when(mockActivityRepository.loadNewActivitiesFromBackend()).thenAnswer((_) =>
             Future.value(
                 [inTwoMinutesActivity, inOneMinuteWithoutAlarmActivity]));
         // Act
@@ -206,7 +206,7 @@ void main() {
       test('Recuring weekly alarms shows', () async {
         // Arrange
         final recursThursday = FakeActivity.reocurrsTuedays(nextMinute);
-        when(mockActivityRepository.loadActivities())
+        when(mockActivityRepository.loadNewActivitiesFromBackend())
             .thenAnswer((_) => Future.value([recursThursday]));
         // Act
         activitiesBloc.add(LoadActivities());
@@ -230,7 +230,7 @@ void main() {
             nextMinute.day,
             nextMinute.subtract(Duration(days: 60)),
             nextMinute.add(Duration(days: 60)));
-        when(mockActivityRepository.loadActivities())
+        when(mockActivityRepository.loadNewActivitiesFromBackend())
             .thenAnswer((_) => Future.value([recursTheThisDayOfMonth]));
         // Act
         activitiesBloc.add(LoadActivities());
@@ -250,7 +250,7 @@ void main() {
       test('Recuring yearly alarms shows', () async {
         // Arrange
         final recursTheThisDayOfYear = FakeActivity.reocurrsOnDate(nextMinute);
-        when(mockActivityRepository.loadActivities())
+        when(mockActivityRepository.loadNewActivitiesFromBackend())
             .thenAnswer((_) => Future.value([recursTheThisDayOfYear]));
         // Act
         activitiesBloc.add(LoadActivities());
@@ -270,7 +270,7 @@ void main() {
       test('Alarm on EndTime shows', () async {
         // Arrange
         final activityEnding = FakeActivity.ends(nextMinute);
-        when(mockActivityRepository.loadActivities())
+        when(mockActivityRepository.loadNewActivitiesFromBackend())
             .thenAnswer((_) => Future.value([activityEnding]));
         // Act
         activitiesBloc.add(LoadActivities());
@@ -295,7 +295,7 @@ void main() {
               FakeActivity.starts(nextMinute, duration: Duration.zero);
           final afterThatAlarm =
               FakeActivity.starts(inTwoMin, duration: Duration.zero);
-          when(mockActivityRepository.loadActivities())
+          when(mockActivityRepository.loadNewActivitiesFromBackend())
               .thenAnswer((_) => Future.value([nextAlarm, afterThatAlarm]));
           // Act
           activitiesBloc.add(LoadActivities());
@@ -323,7 +323,7 @@ void main() {
           final remind1HourBefore =
               FakeActivity.starts(nextMinute.add(reminderTime))
                   .copyWith(reminderBefore: [reminderTime.inMilliseconds]);
-          when(mockActivityRepository.loadActivities())
+          when(mockActivityRepository.loadNewActivitiesFromBackend())
               .thenAnswer((_) => Future.value([remind1HourBefore]));
           // Act
           activitiesBloc.add(LoadActivities());

@@ -2,15 +2,18 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:seagull/backend/all.dart';
+import 'package:meta/meta.dart';
+import 'package:seagull/repository/all.dart';
 
 part 'sync_event.dart';
 part 'sync_state.dart';
 
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
-  final BackendSyncService backendSyncService;
+  final ActivityRepository activityRepository;
 
-  SyncBloc(this.backendSyncService);
+  SyncBloc({
+    @required this.activityRepository,
+  });
 
   @override
   SyncState get initialState => SyncInitial();
@@ -21,7 +24,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   ) async* {
     if (event is ActivitySaved) {
       yield SyncPending();
-      final syncResult = await backendSyncService.runSync();
+      final syncResult = await activityRepository.synchronizeLocalWithBackend();
       if (syncResult) {
         yield SyncDone();
       } else {

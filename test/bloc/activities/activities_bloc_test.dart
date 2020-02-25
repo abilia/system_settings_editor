@@ -11,14 +11,13 @@ void main() {
     ActivitiesBloc activitiesBloc;
     MockActivityRepository mockActivityRepository;
     MockPushBloc mockPushBloc;
-    MockSyncBloc mockSyncBloc;
     setUp(() {
       mockActivityRepository = MockActivityRepository();
       mockPushBloc = MockPushBloc();
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
         pushBloc: mockPushBloc,
-        syncBloc: mockSyncBloc,
+        syncBloc: MockSyncBloc(),
       );
     });
 
@@ -29,16 +28,13 @@ void main() {
     test('load activities calles load activities on mockActivityRepostitory',
         () async {
       activitiesBloc.add(LoadActivities());
-      await untilCalled(mockActivityRepository.loadActivities());
-      verify(mockActivityRepository.loadActivities());
+      await untilCalled(mockActivityRepository.loadNewActivitiesFromBackend());
+      verify(mockActivityRepository.loadNewActivitiesFromBackend());
     });
 
     test('LoadActivities event returns ActivitiesLoaded state', () {
-      final expected = [
-        ActivitiesNotLoaded(),
-        ActivitiesLoaded([])
-      ];
-      when(mockActivityRepository.loadActivities())
+      final expected = [ActivitiesNotLoaded(), ActivitiesLoaded([])];
+      when(mockActivityRepository.loadNewActivitiesFromBackend())
           .thenAnswer((_) => Future.value(<Activity>[]));
 
       expectLater(
@@ -61,7 +57,7 @@ void main() {
         ActivitiesNotLoaded(),
         ActivitiesLoaded([exptectedActivity])
       ];
-      when(mockActivityRepository.loadActivities())
+      when(mockActivityRepository.loadNewActivitiesFromBackend())
           .thenAnswer((_) => Future.value(<Activity>[exptectedActivity]));
 
       expectLater(
@@ -72,7 +68,7 @@ void main() {
     });
 
     test('calles add activities on mockActivityRepostitory', () async {
-      when(mockActivityRepository.loadActivities())
+      when(mockActivityRepository.loadNewActivitiesFromBackend())
           .thenAnswer((_) => Future.value(<Activity>[]));
       final anActivity = FakeActivity.startsNow();
       activitiesBloc.add(LoadActivities());
@@ -85,7 +81,7 @@ void main() {
 
     test('AddActivity calles add activities on mockActivityRepostitory',
         () async {
-      when(mockActivityRepository.loadActivities())
+      when(mockActivityRepository.loadNewActivitiesFromBackend())
           .thenAnswer((_) => Future.value(<Activity>[]));
       final anActivity = FakeActivity.startsNow();
       activitiesBloc.add(LoadActivities());
@@ -99,7 +95,7 @@ void main() {
         () async {
       final anActivity = FakeActivity.startsNow();
 
-      when(mockActivityRepository.loadActivities())
+      when(mockActivityRepository.loadNewActivitiesFromBackend())
           .thenAnswer((_) => Future.value(<Activity>[anActivity]));
       activitiesBloc.add(LoadActivities());
 
@@ -117,7 +113,7 @@ void main() {
       final updatedActivity = anActivity.copyWith(title: 'new title');
       final updatedActivityList = [updatedActivity];
 
-      when(mockActivityRepository.loadActivities())
+      when(mockActivityRepository.loadNewActivitiesFromBackend())
           .thenAnswer((_) => Future.value(activityList));
       when(mockActivityRepository.saveActivities(updatedActivityList))
           .thenAnswer((_) => Future.value(updatedActivityList));

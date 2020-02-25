@@ -5,7 +5,6 @@ import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/backend/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -14,34 +13,23 @@ class CalendarPage extends StatelessWidget {
   CalendarPage({@required this.authenticatedState});
   @override
   Widget build(BuildContext context) {
+    final activityRepository = ActivityRepository(
+      client: authenticatedState.userRepository.httpClient,
+      baseUrl: authenticatedState.userRepository.baseUrl,
+      activityDb: GetIt.I<ActivityDb>(),
+      userId: authenticatedState.userId,
+      authToken: authenticatedState.token,
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider<SyncBloc>(
           create: (context) => SyncBloc(
-            BackendSyncService(
-              activityDb: GetIt.I<ActivityDb>(),
-              activityApi: ActivityApi(
-                authToken: authenticatedState.token,
-                baseUrl: authenticatedState.userRepository.baseUrl,
-                httpClient: authenticatedState.userRepository.httpClient,
-              ),
-              userId: authenticatedState.userId,
-            ),
+            activityRepository: activityRepository,
           ),
         ),
         BlocProvider<ActivitiesBloc>(
           create: (context) => ActivitiesBloc(
-              activityRepository: ActivityRepository(
-                client: authenticatedState.userRepository.httpClient,
-                baseUrl: authenticatedState.userRepository.baseUrl,
-                activityDb: GetIt.I<ActivityDb>(),
-                activityApi: ActivityApi(
-                  authToken: authenticatedState.token,
-                  baseUrl: authenticatedState.userRepository.baseUrl,
-                  httpClient: authenticatedState.userRepository.httpClient,
-                ),
-                userId: authenticatedState.userId,
-              ),
+              activityRepository: activityRepository,
               syncBloc: BlocProvider.of<SyncBloc>(context),
               pushBloc: BlocProvider.of<PushBloc>(context))
             ..add(

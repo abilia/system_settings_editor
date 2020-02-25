@@ -27,7 +27,7 @@ class ActivityDb {
     return result.map((row) => Activity.fromDbMap(row));
   }
 
-  Future<Iterable<Activity>> getDirtyActivitiesFromDb() async {
+  Future<Iterable<Activity>> getDirtyActivities() async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ALL_DIRTY);
     return result.map((row) => Activity.fromDbMap(row));
@@ -40,8 +40,12 @@ class ActivityDb {
           columns: ['dirty', 'revision'],
           where: 'id = ?',
           whereArgs: [activity.id]);
-      final dirty = existingDirtyAndRevision.isEmpty ? 0 : existingDirtyAndRevision.first['dirty'];
-      final revision = existingDirtyAndRevision.isEmpty ? 0 : existingDirtyAndRevision.first['revision'];
+      final dirty = existingDirtyAndRevision.isEmpty
+          ? 0
+          : existingDirtyAndRevision.first['dirty'];
+      final revision = existingDirtyAndRevision.isEmpty
+          ? 0
+          : existingDirtyAndRevision.first['revision'];
       return await db.insert('calendar_activity',
           activity.copyWith(dirty: dirty + 1, revision: revision).toMapForDb(),
           conflictAlgorithm: ConflictAlgorithm.replace);
@@ -49,11 +53,12 @@ class ActivityDb {
     return await Future.wait(insertResult);
   }
 
-  Future insertActivities(Iterable<Activity> activities) async {
+  Future<List<int>> insertActivities(Iterable<Activity> activities) async {
     final db = await DatabaseRepository().database;
-    await activities.forEach((activity) async {
-      await db.insert('calendar_activity', activity.toMapForDb(),
+    final insertResults = await activities.map((activity) async {
+      return await db.insert('calendar_activity', activity.toMapForDb(),
           conflictAlgorithm: ConflictAlgorithm.replace);
     });
+    return Future.wait(insertResults);
   }
 }
