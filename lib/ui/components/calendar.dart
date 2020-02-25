@@ -112,7 +112,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Stack(
           children: <Widget>[
-            CalendarViewSwitchButton(currentView),
+            CalendarViewSwitchButton(currentView, key: TestKey.changeView),
             Align(
               alignment: Alignment(-0.42, 0.0),
               child: GoToNowButton(
