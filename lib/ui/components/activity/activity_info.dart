@@ -51,9 +51,6 @@ class _ActivityInfo extends StatelessWidget {
     final hasImage = activity.fileId?.isNotEmpty ?? false;
     final hasAttachment = activity.infoItem?.isNotEmpty ?? false;
     final signedOff = activity.isSignedOff(day);
-    print(
-        '-------- Building activity info with signedOff: $signedOff on day $day ------------');
-    print('------And the activity: $activity -----------');
     return AnimatedTheme(
       duration: animationDuration,
       data: signedOff
