@@ -36,8 +36,10 @@ void main() {
         clockBloc = ClockBloc(mockedTicker.stream, initialTime: thisMinute);
         mockActivityRepository = MockActivityRepository();
         activitiesBloc = ActivitiesBloc(
-            activitiesRepository: mockActivityRepository,
-            pushBloc: MockPushBloc());
+          activityRepository: mockActivityRepository,
+          syncBloc: MockSyncBloc(),
+          pushBloc: MockPushBloc(),
+        );
         alarmBloc =
             AlarmBloc(clockBloc: clockBloc, activitiesBloc: activitiesBloc);
       });

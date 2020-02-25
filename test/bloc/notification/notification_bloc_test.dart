@@ -25,8 +25,10 @@ void main() {
         notificationSelected = StreamController<String>();
         mockActivityRepository = MockActivityRepository();
         activitiesBloc = ActivitiesBloc(
-            activitiesRepository: mockActivityRepository,
-            pushBloc: MockPushBloc());
+          activityRepository: mockActivityRepository,
+          syncBloc: MockSyncBloc(),
+          pushBloc: MockPushBloc(),
+        );
 
         notificationBloc = NotificationBloc(
           activitiesBloc: activitiesBloc,

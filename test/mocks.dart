@@ -3,8 +3,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/backend/all.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
 
@@ -16,11 +18,15 @@ class MockTokenDb extends Mock implements TokenDb {}
 
 class MockPushBloc extends Mock implements PushBloc {}
 
+class MockSyncBloc extends Mock implements SyncBloc {}
+
 class MockFirebasePushService extends Mock implements FirebasePushService {}
 
 class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
 
 class MockActivityDb extends Mock implements ActivityDb {}
+
+class MockActivityApi extends Mock implements ActivityApi {}
 
 class MockUserDb extends Mock implements UserDb {}
 
@@ -29,6 +35,8 @@ class MockDatabaseRepository extends Mock implements DatabaseRepository {}
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 
 class MockClient extends Mock implements BaseClient {}
+
+class MockBackendSyncService extends Mock implements BackendSyncService {}
 
 class MockFlutterLocalNotificationsPlugin extends Mock
     implements FlutterLocalNotificationsPlugin {}

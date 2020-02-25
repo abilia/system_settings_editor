@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/backend/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -14,17 +16,38 @@ class CalendarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<SyncBloc>(
+          create: (context) => SyncBloc(
+            BackendSyncService(
+              activityDb: GetIt.I<ActivityDb>(),
+              activityApi: ActivityApi(
+                authToken: authenticatedState.token,
+                baseUrl: authenticatedState.userRepository.baseUrl,
+                httpClient: authenticatedState.userRepository.httpClient,
+              ),
+              userId: authenticatedState.userId,
+            ),
+          ),
+        ),
         BlocProvider<ActivitiesBloc>(
-            create: (context) => ActivitiesBloc(
-                activitiesRepository: ActivityRepository(
-                  client: authenticatedState.userRepository.httpClient,
-                  baseUrl: authenticatedState.userRepository.baseUrl,
-                  activitiesDb: GetIt.I<ActivityDb>(),
+          create: (context) => ActivitiesBloc(
+              activityRepository: ActivityRepository(
+                client: authenticatedState.userRepository.httpClient,
+                baseUrl: authenticatedState.userRepository.baseUrl,
+                activityDb: GetIt.I<ActivityDb>(),
+                activityApi: ActivityApi(
                   authToken: authenticatedState.token,
-                  userId: authenticatedState.userId,
+                  baseUrl: authenticatedState.userRepository.baseUrl,
+                  httpClient: authenticatedState.userRepository.httpClient,
                 ),
-                pushBloc: BlocProvider.of<PushBloc>(context))
-              ..add(LoadActivities())),
+                userId: authenticatedState.userId,
+              ),
+              syncBloc: BlocProvider.of<SyncBloc>(context),
+              pushBloc: BlocProvider.of<PushBloc>(context))
+            ..add(
+              LoadActivities(),
+            ),
+        ),
         BlocProvider<ClockBloc>(
           create: (context) => ClockBloc(GetIt.I<Stream<DateTime>>()),
         ),

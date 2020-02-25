@@ -32,11 +32,12 @@ void main() {
   final activities = [successActivity, failedActivity];
 
   final activityRepo = ActivityRepository(
-      baseUrl: baseUrl,
-      client: mockClient,
-      activitiesDb: mockActivitiesDb,
-      authToken: Fakes.token,
-      userId: userId);
+    baseUrl: baseUrl,
+    client: mockClient,
+    activityDb: mockActivitiesDb,
+    activityApi: MockActivityApi(),
+    userId: userId,
+  );
 
   test('Successfully saved are stored and returned', () async {
     // Arrange

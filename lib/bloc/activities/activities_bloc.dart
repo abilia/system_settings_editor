@@ -2,17 +2,20 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
 import 'bloc.dart';
 
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
-  final ActivityRepository activitiesRepository;
+  final ActivityRepository activityRepository;
   StreamSubscription pushSubscription;
+  final SyncBloc syncBloc;
 
   ActivitiesBloc({
-    @required this.activitiesRepository,
+    @required this.activityRepository,
+    @required this.syncBloc,
     @required PushBloc pushBloc,
   }) {
     pushSubscription = pushBloc.listen((state) {
@@ -38,8 +41,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
 
   Stream<ActivitiesState> _mapLoadActivitiesToState() async* {
     try {
-      yield ActivitiesLoading();
-      final activities = await activitiesRepository.loadActivities();
+      final activities = await activityRepository.loadActivities();
       yield ActivitiesLoaded(activities);
     } catch (_) {
       yield ActivitiesLoadedFailed();
@@ -69,8 +71,12 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     }
   }
 
-  Future<Iterable<Activity>> _saveActivities(Iterable<Activity> activities) =>
-      activitiesRepository.saveActivities(activities);
+  Future<Iterable<Activity>> _saveActivities(
+      Iterable<Activity> activities) async {
+    final savedActivities = await activityRepository.saveActivities(activities);
+    syncBloc.add(ActivitySaved());
+    return savedActivities;
+  }
 
   @override
   Future<void> close() async {

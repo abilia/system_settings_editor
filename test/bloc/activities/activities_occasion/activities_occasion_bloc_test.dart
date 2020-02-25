@@ -30,8 +30,10 @@ void main() {
       dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
       mockActivityRepository = MockActivityRepository();
       activitiesBloc = ActivitiesBloc(
-          activitiesRepository: mockActivityRepository,
-          pushBloc: MockPushBloc());
+        activityRepository: mockActivityRepository,
+        syncBloc: MockSyncBloc(),
+        pushBloc: MockPushBloc(),
+      );
       dayActivitiesBloc = DayActivitiesBloc(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
       activitiesOccasionBloc = ActivitiesOccasionBloc(
@@ -473,8 +475,10 @@ void main() {
       dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
       mockActivityRepository = MockActivityRepository();
       activitiesBloc = ActivitiesBloc(
-          activitiesRepository: mockActivityRepository,
-          pushBloc: MockPushBloc());
+        activityRepository: mockActivityRepository,
+        syncBloc: MockSyncBloc(),
+        pushBloc: MockPushBloc(),
+      );
       dayActivitiesBloc = DayActivitiesBloc(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
       activitiesOccasionBloc = ActivitiesOccasionBloc(

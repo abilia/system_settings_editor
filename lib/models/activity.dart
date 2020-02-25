@@ -35,7 +35,8 @@ class Activity extends Equatable {
       revision,
       alarmType,
       recurrentType,
-      recurrentData;
+      recurrentData,
+      dirty;
   final bool deleted, fullDay, checkable;
   final UnmodifiableListView<int> reminderBefore;
   final UnmodifiableListView<DateTime> signedOffDates;
@@ -59,6 +60,7 @@ class Activity extends Equatable {
     this.icon,
     this.fileId,
     this.signedOffDates,
+    this.dirty = 0,
   })  : assert(title != null || fileId != null),
         assert(id != null),
         assert(seriesId != null),
@@ -82,6 +84,7 @@ class Activity extends Equatable {
     String infoItem,
     String fileId,
     Iterable<DateTime> signedOffDates = const [],
+    dirty = 0,
   }) {
     final id = Uuid().v4();
     return Activity._(
@@ -104,6 +107,7 @@ class Activity extends Equatable {
       alarmType: alarmType,
       infoItem: _nullIfEmpty(infoItem),
       signedOffDates: UnmodifiableListView(signedOffDates),
+      dirty: dirty,
     );
   }
 
@@ -124,6 +128,7 @@ class Activity extends Equatable {
     int recurrentData,
     String infoItem,
     Iterable<DateTime> signedOffDates,
+    int dirty,
   }) =>
       Activity._(
         id: id,
@@ -149,6 +154,7 @@ class Activity extends Equatable {
         signedOffDates: signedOffDates != null
             ? UnmodifiableListView(signedOffDates)
             : this.signedOffDates,
+        dirty: dirty ?? this.dirty,
       );
 
   factory Activity.fromJson(Map<String, dynamic> json) => Activity._(
@@ -171,6 +177,7 @@ class Activity extends Equatable {
         revision: json['revision'],
         alarmType: json['alarmType'],
         signedOffDates: _parseSignedOffDates(json['signedOffDates']),
+        dirty: json['dirty'],
       );
 
   factory Activity.fromDbMap(Map<String, dynamic> dbRow) => Activity._(
@@ -193,6 +200,7 @@ class Activity extends Equatable {
         revision: dbRow['revision'],
         alarmType: dbRow['alarm_type'],
         signedOffDates: _parseSignedOffDates(dbRow['signed_off_dates']),
+        dirty: dbRow['dirty'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -215,6 +223,7 @@ class Activity extends Equatable {
         'revision': revision,
         'alarmType': alarmType,
         'signedOffDates': signedOffDates.tryEncodeSignedOffDates(),
+        'dirty': dirty,
       };
 
   Map<String, dynamic> toMapForDb() => {
@@ -237,6 +246,7 @@ class Activity extends Equatable {
         'revision': revision,
         'alarm_type': alarmType,
         'signed_off_dates': signedOffDates.tryEncodeSignedOffDates(),
+        'dirty': dirty,
       };
 
   static String _nullIfEmpty(String value) =>
@@ -272,6 +282,7 @@ class Activity extends Equatable {
         infoItem,
         icon,
         signedOffDates,
+        dirty,
       ];
   @override
   String toString() => 'Activity: { ${props.join(', ')} }';

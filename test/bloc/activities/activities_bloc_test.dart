@@ -11,11 +11,15 @@ void main() {
     ActivitiesBloc activitiesBloc;
     MockActivityRepository mockActivityRepository;
     MockPushBloc mockPushBloc;
+    MockSyncBloc mockSyncBloc;
     setUp(() {
       mockActivityRepository = MockActivityRepository();
       mockPushBloc = MockPushBloc();
       activitiesBloc = ActivitiesBloc(
-          activitiesRepository: mockActivityRepository, pushBloc: mockPushBloc);
+        activityRepository: mockActivityRepository,
+        pushBloc: mockPushBloc,
+        syncBloc: mockSyncBloc,
+      );
     });
 
     test('initial state is ActivitiesNotLoaded', () {

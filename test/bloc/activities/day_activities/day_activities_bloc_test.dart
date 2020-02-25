@@ -23,8 +23,10 @@ void main() {
       );
       mockActivityRepository = MockActivityRepository();
       activitiesBloc = ActivitiesBloc(
-          activitiesRepository: mockActivityRepository,
-          pushBloc: MockPushBloc());
+        activityRepository: mockActivityRepository,
+        syncBloc: MockSyncBloc(),
+        pushBloc: MockPushBloc(),
+      );
       dayActivitiesBloc = DayActivitiesBloc(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
     });
@@ -231,8 +233,10 @@ void main() {
           DayPickerBloc(clockBloc: ClockBloc(stream, initialTime: firstDay));
       mockActivityRepository = MockActivityRepository();
       activitiesBloc = ActivitiesBloc(
-          activitiesRepository: mockActivityRepository,
-          pushBloc: MockPushBloc());
+        activityRepository: mockActivityRepository,
+        syncBloc: MockSyncBloc(),
+        pushBloc: MockPushBloc(),
+      );
       dayActivitiesBloc = DayActivitiesBloc(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
     });
