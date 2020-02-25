@@ -36,7 +36,6 @@ void main() {
     test('LoadActivities event returns ActivitiesLoaded state', () {
       final expected = [
         ActivitiesNotLoaded(),
-        ActivitiesLoading(),
         ActivitiesLoaded([])
       ];
       when(mockActivityRepository.loadActivities())
@@ -60,7 +59,6 @@ void main() {
           category: 0);
       final expectedStates = [
         ActivitiesNotLoaded(),
-        ActivitiesLoading(),
         ActivitiesLoaded([exptectedActivity])
       ];
       when(mockActivityRepository.loadActivities())
@@ -131,7 +129,6 @@ void main() {
       // Assert
       final expectedResponse = [
         ActivitiesNotLoaded(),
-        ActivitiesLoading(),
         ActivitiesLoaded(activityList),
         ActivitiesLoaded(updatedActivityList.followedBy([])),
       ];
