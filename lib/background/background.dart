@@ -16,6 +16,6 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
     activityDb: activityDb,
     userId: user.id,
     authToken: token,
-  ).loadNewActivitiesFromBackend();
+  ).load();
   await scheduleAlarmNotifications(activities, language: user.language);
 }

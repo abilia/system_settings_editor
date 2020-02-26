@@ -41,7 +41,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
 
   Stream<ActivitiesState> _mapLoadActivitiesToState() async* {
     try {
-      final activities = await activityRepository.loadNewActivitiesFromBackend();
+      final activities = await activityRepository.load();
       yield ActivitiesLoaded(activities);
     } catch (_) {
       yield ActivitiesLoadedFailed();
@@ -51,31 +51,27 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
   Stream<ActivitiesState> _mapAddActivityToState(
       AddActivity event, ActivitiesState oldState) async* {
     if (oldState is ActivitiesLoaded) {
-      final updated = await _saveActivities([event.activity]);
-      yield ActivitiesLoaded(oldState.activities.followedBy(updated));
+      await _saveActivities([event.activity]);
+      yield ActivitiesLoaded(oldState.activities.followedBy([event.activity]));
     }
   }
 
   Stream<ActivitiesState> _mapUpdateActivityToState(
       UpdateActivity event, ActivitiesState oldState) async* {
     if (oldState is ActivitiesLoaded) {
-      final successUpdated = await _saveActivities([event.updatedActivity]);
-      if (successUpdated.isNotEmpty) {
-        final updatedActivities = oldState.activities.map<Activity>((activity) {
-          return activity.id == successUpdated.first.id
-              ? successUpdated.first
-              : activity;
-        });
-        yield ActivitiesLoaded(updatedActivities);
-      }
+      await _saveActivities([event.updatedActivity]);
+      final updatedActivities = oldState.activities.map<Activity>((activity) {
+        return activity.id == event.updatedActivity.id
+            ? event.updatedActivity
+            : activity;
+      });
+      yield ActivitiesLoaded(updatedActivities);
     }
   }
 
-  Future<Iterable<Activity>> _saveActivities(
-      Iterable<Activity> activities) async {
-    final savedActivities = await activityRepository.saveActivities(activities);
+  Future<void> _saveActivities(Iterable<Activity> activities) async {
+    await activityRepository.save(activities);
     syncBloc.add(ActivitySaved());
-    return savedActivities;
   }
 
   @override

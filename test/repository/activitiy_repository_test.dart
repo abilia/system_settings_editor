@@ -41,19 +41,9 @@ void main() {
 
   test('Save activities saves to db', () async {
     // Act
-    await activityRepo.saveActivities(activities);
+    await activityRepo.save(activities);
     // Assert
     verify(mockActivityDb.insertDirtyActivities(activities));
-  });
-
-  test('Get dirty gets dirty from db', () async {
-    await activityRepo.getDirtyActivities();
-    verify(mockActivityDb.getDirtyActivities());
-  });
-
-  test('Insert activities inserts to db', () async {
-    await activityRepo.insertActivities(activities);
-    verify(mockActivityDb.insertActivities(activities));
   });
 
   test('Post activities gets correct answer', () async {
@@ -150,7 +140,7 @@ void main() {
         .thenAnswer((_) => Future.value(successActivity.copyWith(dirty: 5)));
 
     // Act
-    await activityRepo.synchronizeLocalWithBackend();
+    await activityRepo.synchronize();
 
     // Expect
     verify(mockClient.post(
@@ -207,7 +197,7 @@ void main() {
             )));
 
     // Act
-    await activityRepo.synchronizeLocalWithBackend();
+    await activityRepo.synchronize();
 
     // Expect/Verify
     verify(mockActivityDb

@@ -21,31 +21,79 @@ class ActivityRepository extends Repository {
     @required this.authToken,
   }) : super(client, baseUrl);
 
-  // Local database access
+  Future<void> save(Iterable<Activity> activities) =>
+      activityDb.insertDirtyActivities(activities);
 
-  Future<Iterable<Activity>> saveActivities(
-      Iterable<Activity> activities) async {
-    await activityDb.insertDirtyActivities(activities);
-    return activities;
+  Future<Iterable<Activity>> load() async {
+    try {
+      final fetchedActivities =
+          await _fetchActivities(await activityDb.getLastRevision());
+      await activityDb.insertActivities(fetchedActivities);
+    } catch (e) {
+      // Error when syncing activities. Probably offline.
+      print('Error when syncing activities $e');
+    }
+    return activityDb.getActivitiesFromDb();
   }
 
-  Future<Iterable<Activity>> getDirtyActivities() async {
-    return activityDb.getDirtyActivities();
+  Future<bool> synchronize() async {
+    return synchronized(() async {
+      final dirtyActivities = await activityDb.getDirtyActivities();
+      if (dirtyActivities.isNotEmpty) {
+        try {
+          final res = await postActivities(dirtyActivities);
+          if (res.succeded.isNotEmpty) {
+            // Update revision and dirty for all successful saves
+            await _handleSuccessfullSync(res.succeded, dirtyActivities);
+          }
+          if (res.failed.isNotEmpty) {
+            // If we have failed a fetch from backend needs to be performed
+            await _handleFailedSync(res.failed);
+          }
+        } catch (e) {
+          print('Failed to synchronize with backend $e');
+          return false;
+        }
+      }
+      return true;
+    });
   }
 
-  Future insertActivities(Iterable<Activity> activities) async {
-    return activityDb.insertActivities(activities);
+  Future _handleSuccessfullSync(Iterable<DataRevisionUpdates> succeded,
+      Iterable<Activity> dirtyActivities) async {
+    final toUpdate = succeded.map((success) async {
+      final activityBeforeSync =
+          dirtyActivities.firstWhere((activity) => activity.id == success.id);
+      final currentActivity = await activityDb.getActivityById(success.id);
+      return currentActivity.copyWith(
+          revision: success.revision,
+          dirty: currentActivity.dirty - activityBeforeSync.dirty);
+    });
+    await activityDb.insertActivities(await Future.wait(toUpdate));
   }
 
-  // Backend access
+  Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
+    final minRevision = failed.map((f) => f.revision).reduce(min);
+    final fetchedActivities = await _fetchActivities(minRevision);
+    await activityDb.insertActivities(fetchedActivities);
+  }
 
+  Future<Iterable<Activity>> _fetchActivities(int revision) async {
+    final response = await httpClient.get(
+        '$baseUrl/api/v1/data/$userId/activities?revision=$revision',
+        headers: authHeader(authToken));
+    return (json.decode(response.body) as List)
+        .map((e) => Activity.fromJson(e));
+  }
+
+  @visibleForTesting
   Future<ActivityUpdateResponse> postActivities(
-    List<Activity> activities,
+    Iterable<Activity> activities,
   ) async {
     final response = await httpClient.post(
       '$baseUrl/api/v1/data/$userId/activities',
       headers: jsonAuthHeader(authToken),
-      body: jsonEncode(activities),
+      body: jsonEncode(activities.toList()),
     );
 
     if (response.statusCode == 200) {
@@ -56,76 +104,5 @@ class ActivityRepository extends Repository {
       throw UnauthorizedException();
     }
     throw UnavailableException();
-  }
-
-  Future<Iterable<Activity>> fetchActivities(int revision) async {
-    final response = await httpClient.get(
-        '$baseUrl/api/v1/data/$userId/activities?revision=$revision',
-        headers: authHeader(authToken));
-    return (json.decode(response.body) as List)
-        .map((e) => Activity.fromJson(e));
-  }
-
-  // Synchronize
-
-  Future<Iterable<Activity>> loadNewActivitiesFromBackend() async {
-    try {
-      final fetchedActivities = await _fetchActivitiesFromLatestRevision();
-      await activityDb.insertActivities(fetchedActivities);
-    } catch (e) {
-      // Error when syncing activities. Probably offline.
-      print('Error when syncing activities $e');
-    }
-    return activityDb.getActivitiesFromDb();
-  }
-
-  Future<void> loadActivitiesFromRevision(int revision) async {
-    try {
-      final fetchedActivities = await fetchActivities(revision);
-      await activityDb.insertActivities(fetchedActivities);
-    } catch (e) {
-      // Error when syncing activities. Probably offline.
-      print('Error when syncing activities $e');
-    }
-  }
-
-  Future<Iterable<Activity>> _fetchActivitiesFromLatestRevision() async {
-    final revision = await activityDb.getLastRevision();
-    return fetchActivities(revision);
-  }
-
-  Future<bool> synchronizeLocalWithBackend() async {
-    return synchronized(() async {
-      final dirtyActivities = await getDirtyActivities();
-      if (dirtyActivities.isNotEmpty) {
-        try {
-          final res = await postActivities(
-            dirtyActivities.toList(),
-          );
-          if (res.succeded.isNotEmpty) {
-            // Update revision and dirty for all successful saves
-            final toUpdate = res.succeded.map((success) async {
-              final activityBeforeSync = dirtyActivities
-                  .firstWhere((activity) => activity.id == success.id);
-              final currentActivity =
-                  await activityDb.getActivityById(success.id);
-              return currentActivity.copyWith(
-                  revision: success.revision,
-                  dirty: currentActivity.dirty - activityBeforeSync.dirty);
-            });
-            await insertActivities(await Future.wait(toUpdate));
-          }
-          if (res.failed.isNotEmpty) {
-            // If we have failed a fetch from backend needs to be performed
-            final minRevision = res.failed.map((f) => f.revision).reduce(min);
-            await loadActivitiesFromRevision(minRevision);
-          }
-        } catch (e) {
-          print('Failed to synchronize with backend $e');
-          return false;
-        }
-      }
-      return true;
-    });
   }
 }
