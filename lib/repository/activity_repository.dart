@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:synchronized/extension.dart';
 
 class ActivityRepository extends Repository {
   final int userId;
@@ -94,34 +95,37 @@ class ActivityRepository extends Repository {
   }
 
   Future<bool> synchronizeLocalWithBackend() async {
-    print('Sync is running....');
-    final dirtyActivities = await getDirtyActivities();
-    if (dirtyActivities.isNotEmpty) {
-      try {
-        final res = await postActivities(
-          dirtyActivities.toList(),
-        );
-        if (res.succeded.isNotEmpty) {
-          // Update revision and dirty for all successful saves
-          final toUpdate = res.succeded.map((s) {
-            final a = dirtyActivities.firstWhere((a) => a.id == s.id);
-            return a.copyWith(
-              dirty: 0,
-              revision: s.revision,
-            ); // TODO get current dirty and subtract
-          });
-          await insertActivities(toUpdate);
+    return synchronized(() async {
+      final dirtyActivities = await getDirtyActivities();
+      if (dirtyActivities.isNotEmpty) {
+        try {
+          final res = await postActivities(
+            dirtyActivities.toList(),
+          );
+          if (res.succeded.isNotEmpty) {
+            // Update revision and dirty for all successful saves
+            final toUpdate = res.succeded.map((success) async {
+              final activityBeforeSync = dirtyActivities
+                  .firstWhere((activity) => activity.id == success.id);
+              final currentActivity =
+                  await activityDb.getActivityById(success.id);
+              return currentActivity.copyWith(
+                  revision: success.revision,
+                  dirty: currentActivity.dirty - activityBeforeSync.dirty);
+            });
+            await insertActivities(await Future.wait(toUpdate));
+          }
+          if (res.failed.isNotEmpty) {
+            // If we have failed a fetch from backend needs to be performed
+            final minRevision = res.failed.map((f) => f.revision).reduce(min);
+            await loadActivitiesFromRevision(minRevision);
+          }
+        } catch (e) {
+          print('Failed to synchronize with backend $e');
+          return false;
         }
-        if (res.failed.isNotEmpty) {
-          // If we have failed a fetch from backend needs to be performed
-          final minRevision = res.failed.map((f) => f.revision).reduce(min);
-          await loadActivitiesFromRevision(minRevision);
-        }
-      } catch (e) {
-        print('Failed to synchronize with backend $e');
-        return false;
       }
-    }
-    return true;
+      return true;
+    });
   }
 }

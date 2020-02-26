@@ -246,7 +246,7 @@ class Activity extends Equatable {
         'revision': revision,
         'alarm_type': alarmType,
         'signed_off_dates': signedOffDates.tryEncodeSignedOffDates(),
-        'dirty': dirty,
+        'dirty': dirty ?? 0,
       };
 
   static String _nullIfEmpty(String value) =>

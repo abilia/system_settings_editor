@@ -128,6 +128,7 @@ void main() {
             "failedUpdates" : []
           }
           ''';
+    final firstDirty = 1;
     final activities = [successActivity.copyWith(dirty: 1)];
     when(mockActivityDb.getDirtyActivities())
         .thenAnswer((_) => Future.value(activities));
@@ -144,6 +145,9 @@ void main() {
     when(mockActivityDb.insertActivities(
             [successActivity.copyWith(revision: newRevision)]))
         .thenAnswer((_) => Future.value(List(1)));
+    final newDirty = 5;
+    when(mockActivityDb.getActivityById(successActivity.id))
+        .thenAnswer((_) => Future.value(successActivity.copyWith(dirty: 5)));
 
     // Act
     await activityRepo.synchronizeLocalWithBackend();
@@ -154,8 +158,10 @@ void main() {
       headers: jsonAuthHeader(Fakes.token),
       body: jsonEncode(activities),
     ));
-    verify(mockActivityDb
-        .insertActivities([successActivity.copyWith(revision: newRevision)]));
+    verify(mockActivityDb.insertActivities([
+      successActivity.copyWith(
+          revision: newRevision, dirty: newDirty - firstDirty)
+    ]));
   });
 
   test('synchronizeLocalWithBackend - failed sync fetches from backend',

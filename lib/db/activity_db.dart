@@ -8,6 +8,8 @@ class ActivityDb {
       'SELECT max(revision) as max_revision FROM $ACTIVITY_TABLE';
   static const String GET_ACTIVITIES_SQL =
       'SELECT * FROM $ACTIVITY_TABLE WHERE deleted == 0';
+  static const String GET_ACTIVITIES_BY_ID_SQL =
+      'SELECT * FROM $ACTIVITY_TABLE WHERE id == ?';
   static const String GET_ALL_DIRTY =
       'SELECT * FROM $ACTIVITY_TABLE WHERE dirty > 0';
 
@@ -25,6 +27,17 @@ class ActivityDb {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ACTIVITIES_SQL);
     return result.map((row) => Activity.fromDbMap(row));
+  }
+
+  Future<Activity> getActivityById(String id) async {
+    final db = await DatabaseRepository().database;
+    final result = await db.rawQuery(GET_ACTIVITIES_BY_ID_SQL, [id]);
+    final activities = result.map((row) => Activity.fromDbMap(row));
+    if (activities.length == 1) {
+      return activities.first;
+    } else {
+      return null;
+    }
   }
 
   Future<Iterable<Activity>> getDirtyActivities() async {
