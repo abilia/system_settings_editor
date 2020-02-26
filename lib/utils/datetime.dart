@@ -8,6 +8,25 @@ extension DateTimeExtensions on DateTime {
   DateTime nextHalfHour() => DateTime(
       year, month, day, minute >= 30 ? hour + 1 : hour, minute >= 30 ? 0 : 30);
 
+  DateTime copyWith(
+          {int year,
+          int month,
+          int day,
+          int hour,
+          int minute,
+          int second,
+          int millisecond,
+          int microsecond}) =>
+      DateTime(
+          year ?? this.year,
+          month ?? this.month,
+          day ?? this.day,
+          hour ?? this.hour,
+          minute ?? this.minute,
+          second ?? this.second,
+          millisecond ?? this.millisecond,
+          microsecond ?? this.microsecond);
+
   bool isAtSameDay(DateTime otherDate) =>
       onlyDays().isAtSameMomentAs(otherDate.onlyDays());
 

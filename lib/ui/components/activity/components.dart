@@ -93,43 +93,35 @@ class PickField extends StatelessWidget {
   }
 }
 
-class SwitchField extends StatefulWidget {
-  final GestureTapCallback onTap;
+class SwitchField extends StatelessWidget {
+  final ValueChanged<bool> onChanged;
   final Widget leading, label;
   final double heigth, width;
-  final bool startValue;
+  final bool value;
 
   const SwitchField({
     Key key,
-    this.onTap,
+    this.onChanged,
     this.leading,
     this.label,
     this.heigth = 56,
     this.width,
-    this.startValue = false,
+    this.value = false,
   }) : super(key: key);
 
   @override
-  _SwitchFieldState createState() => _SwitchFieldState(startValue);
-}
-
-class _SwitchFieldState extends State<SwitchField> {
-  bool value;
-
-  _SwitchFieldState(this.value);
-  @override
   Widget build(BuildContext context) {
+    final switchToggle = Switch(
+      value: value,
+      onChanged: onChanged,
+      key: ObjectKey(key),
+    );
     return InkWell(
-      onTap: () {
-        setState(() {
-          value = !value;
-        });
-        if (widget.onTap != null) widget.onTap();
-      },
+      onTap: onChanged != null ? () => onChanged(!switchToggle.value) : null,
       borderRadius: borderRadius,
       child: Ink(
         height: 56,
-        width: widget.width,
+        width: width,
         decoration: BoxDecoration(
           borderRadius: borderRadius,
           border: Border.all(
@@ -143,19 +135,12 @@ class _SwitchFieldState extends State<SwitchField> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                if (widget.leading != null) widget.leading,
+                if (leading != null) leading,
                 const SizedBox(width: 12),
-                if (widget.label != null) widget.label,
+                if (label != null) label,
               ],
             ),
-            Switch(
-                value: value,
-                onChanged: (v) {
-                  setState(() {
-                    value = !value;
-                  });
-                  if (widget.onTap != null) widget.onTap();
-                }),
+            switchToggle,
           ],
         ),
       ),
@@ -227,6 +212,7 @@ class RadioField<T> extends StatelessWidget {
                     width: 24,
                     height: 24,
                     child: Radio(
+                      key: ObjectKey(key),
                       value: value,
                       groupValue: groupValue,
                       onChanged: onChanged,

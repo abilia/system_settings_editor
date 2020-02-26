@@ -12,7 +12,7 @@ class Activity extends Equatable {
       startClock(day).add(duration.milliseconds());
   DateTime startClock(DateTime day) => DateTime(
       day.year, day.month, day.day, startDateTime.hour, startDateTime.minute);
-  DateTime get start => DateTime.fromMillisecondsSinceEpoch(startTime);
+  DateTime get start => startDateTime;
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(startTime + duration);
   DateTime get startDateTime => DateTime.fromMillisecondsSinceEpoch(startTime);
   DateTime get endDateTime => DateTime.fromMillisecondsSinceEpoch(endTime);
@@ -65,17 +65,29 @@ class Activity extends Equatable {
         assert(revision != null),
         assert(alarmType != null),
         assert(recurrentType >= 0 && recurrentType < 4),
-        assert(startTime > 0);
+        assert(startTime > 0),
+        assert(endTime > 0),
+        assert(duration != null),
+        assert(duration >= 0),
+        assert(category != null),
+        assert(category >= 0),
+        assert(deleted != null),
+        assert(checkable != null),
+        assert(fullDay != null),
+        assert(recurrentType != null),
+        assert(recurrentData != null),
+        assert(reminderBefore != null),
+        assert(signedOffDates != null);
 
   factory Activity.createNew({
     @required String title,
     @required int startTime,
-    @required int duration,
-    @required int category,
-    @required Iterable<int> reminderBefore,
     int endTime,
-    int recurrentType,
-    int recurrentData,
+    int duration = 0,
+    int category = 0,
+    Iterable<int> reminderBefore = const <int>[],
+    int recurrentType = 0,
+    int recurrentData = 0,
     bool fullDay = false,
     bool checkable = false,
     int alarmType = ALARM_SOUND_AND_VIBRATION_ONLY_ON_START,
@@ -97,8 +109,8 @@ class Activity extends Equatable {
       deleted: false,
       checkable: checkable,
       fullDay: fullDay,
-      recurrentType: recurrentType ?? 0,
-      recurrentData: recurrentData ?? 0,
+      recurrentType: recurrentType,
+      recurrentData: recurrentData,
       revision: 0,
       reminderBefore: UnmodifiableListView(reminderBefore),
       alarmType: alarmType,
@@ -118,8 +130,10 @@ class Activity extends Equatable {
     String icon,
     bool deleted,
     bool checkable,
+    bool fullDay,
     int revision,
     int alarmType,
+    AlarmType alarm,
     int recurrentType,
     int recurrentData,
     String infoItem,
@@ -144,7 +158,7 @@ class Activity extends Equatable {
         fileId: fileId == null ? this.fileId : _nullIfEmpty(fileId),
         icon: fileId == null ? this.fileId : _nullIfEmpty(fileId),
         revision: revision ?? this.revision,
-        alarmType: alarmType ?? this.alarmType,
+        alarmType: alarmType ?? alarm?.toInt ?? this.alarmType,
         infoItem: infoItem == null ? this.infoItem : _nullIfEmpty(infoItem),
         signedOffDates: signedOffDates != null
             ? UnmodifiableListView(signedOffDates)

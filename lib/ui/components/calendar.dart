@@ -125,29 +125,31 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
               alignment: Alignment.center,
               child: ActionButton(
                 key: TestKey.addActivity,
+                themeData: addButtonTheme,
                 child: Icon(
                   AbiliaIcons.plus,
                   size: 32,
                 ),
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) {
-                    return BlocProvider<AddActivityBloc>(
-                        create: (context) => AddActivityBloc(
-                              BlocProvider.of<ActivitiesBloc>(context),
-                              Activity.createNew(
+                onPressed: () async {
+                  final now = BlocProvider.of<ClockBloc>(context).state;
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (innerContext) {
+                        final addActivitybloc = AddActivityBloc(
+                            activitiesBloc:
+                                BlocProvider.of<ActivitiesBloc>(context),
+                            activity: Activity.createNew(
                                 title: '',
-                                startTime: BlocProvider.of<ClockBloc>(context)
-                                    .state
-                                    .millisecondsSinceEpoch,
-                                duration: 0,
-                                category: 0,
-                                reminderBefore: [],
-                              ),
-                            ),
-                        child: NewActivityPage());
-                  }),
-                ),
-                themeData: addButtonTheme,
+                                startTime:
+                                    now.nextHalfHour().millisecondsSinceEpoch));
+                        return BlocProvider<AddActivityBloc>(
+                          create: (context) => addActivitybloc,
+                          child: NewActivityPage(today: now.onlyDays()),
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
             ),
             Align(

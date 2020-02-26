@@ -1,13 +1,23 @@
 part of 'add_activity_bloc.dart';
 
-class AddActivityState extends Equatable {
+abstract class AddActivityState extends Equatable {
   const AddActivityState(this.activity);
   final Activity activity;
   bool get canSave =>
-      activity.title != null ||
-      activity.fileId != null && activity.startDateTime != null;
+      activity.title?.isNotEmpty == true ||
+      activity.fileId?.isNotEmpty == true && activity.startDateTime != null;
   @override
   List<Object> get props => [activity];
+}
+
+class UnsavedActivityState extends AddActivityState {
+  const UnsavedActivityState(Activity activity) : super(activity);
   @override
-  String toString() => 'AddActivityState: {activity: $activity}';
+  String toString() => 'UnsavedActivityState: {activity: $activity}';
+}
+
+class SavedActivityState extends AddActivityState {
+  const SavedActivityState(Activity activity) : super(activity);
+  @override
+  String toString() => 'SavedActivityState: {activity: $activity}';
 }
