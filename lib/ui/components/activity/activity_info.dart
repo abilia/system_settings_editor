@@ -48,7 +48,7 @@ class _ActivityInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
 
-    final hasImage = activity.fileId?.isNotEmpty ?? false;
+    final hasImage = activity.hasImage;
     final hasAttachment = activity.infoItem?.isNotEmpty ?? false;
     final signedOff = activity.isSignedOff(day);
     return AnimatedTheme(
@@ -187,7 +187,7 @@ class TopInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasImage = activity.fileId?.isNotEmpty ?? false;
+    final hasImage = activity.hasImage;
     final hasAttachment = activity.infoItem?.isNotEmpty ?? false;
     final hasTitle = activity.title?.isNotEmpty ?? false;
     final imageToTheLeft = hasImage && hasAttachment && hasTitle;
@@ -259,8 +259,9 @@ class HeroImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: activity.id,
-      child: FadeInCalenderImage(
+      child: FadeInCalendarImage(
         imageFileId: activity.fileId,
+        imageFilePath: activity.icon,
         width: width,
         height: height,
       ),

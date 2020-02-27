@@ -2,7 +2,7 @@ export 'abilia_icons.dart';
 export 'action_button.dart';
 export 'activity_card.dart';
 export 'error_message.dart';
-export 'fade_in_calender_image.dart';
+export 'fade_in_calendar_image.dart';
 export 'login_form.dart';
 export 'seagull_icon.dart';
 export 'web_link.dart';
