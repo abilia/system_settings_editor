@@ -26,13 +26,13 @@ class ActivityDb {
   Future<Iterable<Activity>> getActivitiesFromDb() async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ACTIVITIES_SQL);
-    return result.map((row) => Activity.fromDbMap(row));
+    return result.map((row) => DbActivity.fromDbMap(row).activity);
   }
 
-  Future<Activity> getActivityById(String id) async {
+  Future<DbActivity> getActivityById(String id) async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ACTIVITIES_BY_ID_SQL, [id]);
-    final activities = result.map((row) => Activity.fromDbMap(row));
+    final activities = result.map((row) => DbActivity.fromDbMap(row));
     if (activities.length == 1) {
       return activities.first;
     } else {
@@ -40,10 +40,10 @@ class ActivityDb {
     }
   }
 
-  Future<Iterable<Activity>> getDirtyActivities() async {
+  Future<Iterable<DbActivity>> getDirtyActivities() async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ALL_DIRTY);
-    return result.map((row) => Activity.fromDbMap(row));
+    return result.map((row) => DbActivity.fromDbMap(row));
   }
 
   Future<List<int>> insertDirtyActivities(Iterable<Activity> activities) async {
@@ -59,14 +59,17 @@ class ActivityDb {
       final revision = existingDirtyAndRevision.isEmpty
           ? 0
           : existingDirtyAndRevision.first['revision'];
-      return await db.insert('calendar_activity',
-          activity.copyWith(dirty: dirty + 1, revision: revision).toMapForDb(),
+      return await db.insert(
+          'calendar_activity',
+          activity
+              .asDbActivity(dirty: dirty + 1, revision: revision)
+              .toMapForDb(),
           conflictAlgorithm: ConflictAlgorithm.replace);
     });
     return await Future.wait(insertResult);
   }
 
-  Future<List<int>> insertActivities(Iterable<Activity> activities) async {
+  Future<List<int>> insertActivities(Iterable<DbActivity> activities) async {
     final db = await DatabaseRepository().database;
     final insertResults = await activities.map((activity) async {
       return await db.insert('calendar_activity', activity.toMapForDb(),
