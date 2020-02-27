@@ -10,8 +10,6 @@ abstract class ActivitiesState extends Equatable {
   List<Object> get props => [];
 }
 
-class ActivitiesLoading extends ActivitiesState {}
-
 class ActivitiesLoaded extends ActivitiesState {
   final Iterable<Activity> activities;
 

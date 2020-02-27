@@ -6,5 +6,5 @@ abstract class SyncEvent extends Equatable {
 
 class ActivitySaved extends SyncEvent {
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }

@@ -21,15 +21,16 @@ void main() {
     duration: 0,
     category: 0,
     reminderBefore: [],
-  );
+  ).asDbActivity();
   final failedActivity = Activity.createNew(
     title: 'title2',
     startTime: startTime.millisecondsSinceEpoch,
     duration: 0,
     category: 0,
     reminderBefore: [],
-  );
-  final activities = [successActivity, failedActivity];
+  ).asDbActivity();
+  final dbActivities = [successActivity, failedActivity];
+  final activities = dbActivities.map((a) => a.activity);
 
   final activityRepo = ActivityRepository(
     baseUrl: baseUrl,
@@ -41,19 +42,9 @@ void main() {
 
   test('Save activities saves to db', () async {
     // Act
-    await activityRepo.saveActivities(activities);
+    await activityRepo.save(activities);
     // Assert
     verify(mockActivityDb.insertDirtyActivities(activities));
-  });
-
-  test('Get dirty gets dirty from db', () async {
-    await activityRepo.getDirtyActivities();
-    verify(mockActivityDb.getDirtyActivities());
-  });
-
-  test('Insert activities inserts to db', () async {
-    await activityRepo.insertActivities(activities);
-    verify(mockActivityDb.insertActivities(activities));
   });
 
   test('Post activities gets correct answer', () async {
@@ -62,11 +53,11 @@ void main() {
           {
             "previousRevision" : 100,
             "dataRevisionUpdates" : [ {
-              "id" : "${successActivity.id}",
+              "id" : "${successActivity.activity.id}",
               "newRevision" : 102
             } ],
             "failedUpdates" : [ {
-              "id" : "${failedActivity.id}",
+              "id" : "${failedActivity.activity.id}",
               "newRevision" : 101
             } ]
           }
@@ -75,7 +66,7 @@ void main() {
       mockClient.post(
         '$baseUrl/api/v1/data/$userId/activities',
         headers: jsonAuthHeader(Fakes.token),
-        body: jsonEncode(activities),
+        body: jsonEncode(dbActivities),
       ),
     ).thenAnswer(
       (_) => Future.value(
@@ -87,7 +78,7 @@ void main() {
     );
 
     // Act
-    final result = await activityRepo.postActivities(activities);
+    final result = await activityRepo.postActivities(dbActivities);
     final expected = ActivityUpdateResponse.fromJson(json.decode(jsonString));
 
     // Assert
@@ -100,7 +91,7 @@ void main() {
       mockClient.post(
         '$baseUrl/api/v1/data/$userId/activities',
         headers: jsonAuthHeader(Fakes.token),
-        body: jsonEncode(activities),
+        body: jsonEncode(dbActivities),
       ),
     ).thenAnswer(
       (_) => Future.value(
@@ -112,7 +103,7 @@ void main() {
     );
 
     // Act and expect
-    expect(() => activityRepo.postActivities(activities), throwsException);
+    expect(() => activityRepo.postActivities(dbActivities), throwsException);
   });
 
   test('synchronizeLocalWithBackend updates revision from backend', () async {
@@ -122,7 +113,7 @@ void main() {
           {
             "previousRevision" : 100,
             "dataRevisionUpdates" : [ {
-              "id" : "${successActivity.id}",
+              "id" : "${successActivity.activity.id}",
               "newRevision" : $newRevision
             } ],
             "failedUpdates" : []
@@ -146,11 +137,11 @@ void main() {
             [successActivity.copyWith(revision: newRevision)]))
         .thenAnswer((_) => Future.value(List(1)));
     final newDirty = 5;
-    when(mockActivityDb.getActivityById(successActivity.id))
+    when(mockActivityDb.getActivityById(successActivity.activity.id))
         .thenAnswer((_) => Future.value(successActivity.copyWith(dirty: 5)));
 
     // Act
-    await activityRepo.synchronizeLocalWithBackend();
+    await activityRepo.synchronize();
 
     // Expect
     verify(mockClient.post(
@@ -174,7 +165,7 @@ void main() {
             "dataRevisionUpdates" : [],
             "failedUpdates" : [
               {
-              "id" : "${failedActivity.id}",
+              "id" : "${failedActivity.activity.id}",
               "newRevision" : $failedRevision
             }
             ]
@@ -207,7 +198,7 @@ void main() {
             )));
 
     // Act
-    await activityRepo.synchronizeLocalWithBackend();
+    await activityRepo.synchronize();
 
     // Expect/Verify
     verify(mockActivityDb

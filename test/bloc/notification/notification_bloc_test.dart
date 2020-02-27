@@ -40,7 +40,7 @@ void main() {
           () async {
         // Arrange
         final nowActivity = FakeActivity.starts(aTime);
-        when(mockActivityRepository.loadNewActivitiesFromBackend())
+        when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value([nowActivity]));
 
         final payload = json.encode(NotificationPayload(
@@ -67,7 +67,7 @@ void main() {
         final reminderTime = 5;
         final nowActivity = FakeActivity.starts(aTime)
             .copyWith(reminderBefore: [reminderTime.minutes().inMilliseconds]);
-        when(mockActivityRepository.loadNewActivitiesFromBackend())
+        when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value([nowActivity]));
 
         final payload = json.encode(NotificationPayload(
@@ -96,7 +96,7 @@ void main() {
           () async {
         // Arrange
         final nowActivity = FakeActivity.starts(aTime);
-        when(mockActivityRepository.loadNewActivitiesFromBackend())
+        when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value([nowActivity]));
 
         final payload = NotificationPayload(
@@ -129,7 +129,7 @@ void main() {
         final reminderActivity = FakeActivity.starts(aTime)
             .copyWith(reminderBefore: [reminderTime.inMilliseconds]);
 
-        when(mockActivityRepository.loadNewActivitiesFromBackend())
+        when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value([alarmActivity, reminderActivity]));
 
         final alarmPayload = NotificationPayload(
