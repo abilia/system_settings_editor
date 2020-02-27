@@ -8,12 +8,14 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
   final baseUrl = await BaseUrlDb().getBaseUrl();
   final user = await UserDb().getUser();
   final token = await TokenDb().getToken();
+  final activityDb = ActivityDb();
+  final httpClient = Client();
   final activities = await ActivityRepository(
-          baseUrl: baseUrl,
-          client: Client(),
-          activitiesDb: ActivityDb(),
-          userId: user.id,
-          authToken: token)
-      .loadActivities();
+    baseUrl: baseUrl,
+    client: httpClient,
+    activityDb: activityDb,
+    userId: user.id,
+    authToken: token,
+  ).load();
   await scheduleAlarmNotifications(activities, language: user.language);
 }

@@ -54,7 +54,7 @@ class App extends StatelessWidget {
                 )..add(AppStarted(userRepository))),
         BlocProvider<PushBloc>(
           create: (context) => pushBloc ?? PushBloc(),
-        )
+        ),
       ],
       child: MaterialApp(
         title: 'Seagull',
