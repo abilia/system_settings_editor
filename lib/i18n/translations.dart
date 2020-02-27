@@ -79,7 +79,7 @@ class Swedish extends Translated {
       listView = 'Listvy',
       left = 'Vänster',
       right = 'Höger',
-      check = 'Klar',
+      check = 'Kvittera',
       uncheck = 'Ångra';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }
