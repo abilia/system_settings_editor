@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 abstract class PushEvent extends Equatable {
   const PushEvent();
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class OnPush extends PushEvent {}

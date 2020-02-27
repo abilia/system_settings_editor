@@ -1,4 +1,4 @@
-export 'activities_db.dart';
+export 'activity_db.dart';
 export 'baseurl_db.dart';
 export 'sqflite.dart';
 export 'token_db.dart';

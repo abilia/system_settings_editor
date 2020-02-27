@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -12,19 +13,29 @@ class CalendarPage extends StatelessWidget {
   CalendarPage({@required this.authenticatedState});
   @override
   Widget build(BuildContext context) {
+    final activityRepository = ActivityRepository(
+      client: authenticatedState.userRepository.httpClient,
+      baseUrl: authenticatedState.userRepository.baseUrl,
+      activityDb: GetIt.I<ActivityDb>(),
+      userId: authenticatedState.userId,
+      authToken: authenticatedState.token,
+    );
     return MultiBlocProvider(
       providers: [
+        BlocProvider<SyncBloc>(
+          create: (context) => SyncBloc(
+            activityRepository: activityRepository,
+          ),
+        ),
         BlocProvider<ActivitiesBloc>(
-            create: (context) => ActivitiesBloc(
-                activitiesRepository: ActivityRepository(
-                  client: authenticatedState.userRepository.httpClient,
-                  baseUrl: authenticatedState.userRepository.baseUrl,
-                  activitiesDb: GetIt.I<ActivityDb>(),
-                  authToken: authenticatedState.token,
-                  userId: authenticatedState.userId,
-                ),
-                pushBloc: BlocProvider.of<PushBloc>(context))
-              ..add(LoadActivities())),
+          create: (context) => ActivitiesBloc(
+              activityRepository: activityRepository,
+              syncBloc: BlocProvider.of<SyncBloc>(context),
+              pushBloc: BlocProvider.of<PushBloc>(context))
+            ..add(
+              LoadActivities(),
+            ),
+        ),
         BlocProvider<ClockBloc>(
           create: (context) => ClockBloc(GetIt.I<Stream<DateTime>>()),
         ),

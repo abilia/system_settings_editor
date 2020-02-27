@@ -30,7 +30,11 @@ class DatabaseRepository {
     ''',
   ];
   @visibleForTesting
-  static final migrations = <String>[];
+  static final migrations = <String>[
+    '''
+      ALTER TABLE calendar_activity ADD COLUMN dirty int default 0
+    '''
+  ];
 
   static Database _database;
   Future<Database> get database async => _database ??= await _open();

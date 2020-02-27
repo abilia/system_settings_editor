@@ -36,13 +36,13 @@ void main() {
           "fileId" : "1a1b1678-781e-4b6f-9518-b6858560433f"
         } ]''';
     final resultList = (json.decode(response) as List)
-        .map((e) => Activity.fromJson(e))
+        .map((e) => DbActivity.fromJson(e))
         .toList();
     expect(resultList.length, 1);
-    final result = resultList.first;
+    final result = resultList.first.activity;
     expect(result.id, "33451ee6-cec6-4ce0-b515-f58767b13c8f");
     // expect(result.owner, 104);
-    expect(result.revision, 100);
+    expect(resultList.first.revision, 100);
     // expect(result.revisionTime, 0);
     expect(result.deleted, false);
     expect(result.seriesId, "33451ee6-cec6-4ce0-b515-f58767b13c8f");
@@ -105,10 +105,10 @@ void main() {
           "fileId" : null
         } ]''';
     final resultList = (json.decode(response) as List)
-        .map((e) => Activity.fromJson(e))
+        .map((e) => DbActivity.fromJson(e))
         .toList();
     expect(resultList.length, 1);
-    final result = resultList.first;
+    final result = resultList.first.activity;
 
     // expect(result.groupActivityId, null);
     expect(result.icon, null);
@@ -149,10 +149,10 @@ void main() {
           "fileId" : ""
         } ]''';
     final resultList = (json.decode(response) as List)
-        .map((e) => Activity.fromJson(e))
+        .map((e) => DbActivity.fromJson(e))
         .toList();
     expect(resultList.length, 1);
-    final result = resultList.first;
+    final result = resultList.first.activity;
 
     // expect(result.groupActivityId, null);
     expect(result.icon, null);
@@ -185,8 +185,10 @@ void main() {
         fileId: fileId,
         checkable: true,
         signedOffDates: [DateTime(2000, 02, 20)]);
-    final asJson = activity.toJson();
-    final deserializedActivity = Activity.fromJson(asJson);
+    final dbActivity = activity.asDbActivity();
+    final asJson = dbActivity.toJson();
+    final deserializedDbActivity = DbActivity.fromJson(asJson);
+    final deserializedActivity = deserializedDbActivity.activity;
     expect(deserializedActivity.id, activity.id);
     expect(deserializedActivity.seriesId, activity.seriesId);
     expect(deserializedActivity.title, activity.title);
@@ -200,7 +202,7 @@ void main() {
     expect(deserializedActivity.recurrentType, activity.recurrentType);
     expect(deserializedActivity.recurrentData, activity.recurrentData);
     expect(deserializedActivity.deleted, activity.deleted);
-    expect(deserializedActivity.revision, activity.revision);
+    expect(deserializedDbActivity.revision, dbActivity.revision);
     expect(deserializedActivity.alarmType, activity.alarmType);
     expect(deserializedActivity.checkable, activity.checkable);
     expect(deserializedActivity.signedOffDates, activity.signedOffDates);
