@@ -10,7 +10,7 @@ import '../mocks.dart';
 
 void main() {
   final url = 'oneUrl';
-  final mockClient = MockClient();
+  final mockClient = MockedClient();
   final mockUserDb = MockUserDb();
   final mockTokenDb = MockTokenDb();
   final userRepo = UserRepository(

@@ -42,19 +42,23 @@ class BackendSwitches extends StatelessWidget {
             FakeActivity.startsIn(2.minutes()).copyWith(
                 fileId: 'somefileid',
                 alarmType: ALARM_SILENT,
+                checkable: true,
                 duration: 1.minutes().inMilliseconds,
                 title: 'ALARM_SILENT'),
             FakeActivity.startsIn(4.minutes()).copyWith(
                 duration: 1.minutes().inMilliseconds,
+                checkable: true,
                 alarmType: ALARM_VIBRATION,
                 title: 'ALARM_VIBRATION'),
             FakeActivity.startsIn(6.minutes()).copyWith(
                 fileId: 'somefileid',
+                checkable: true,
                 duration: 1.minutes().inMilliseconds,
                 alarmType: ALARM_SOUND_ONLY_ON_START,
                 title: 'ALARM_SOUND_ONLY_ON_START'),
             FakeActivity.startsIn(8.minutes()).copyWith(
                 duration: 1.minutes().inMilliseconds,
+                checkable: true,
                 alarmType: ALARM_SOUND_AND_VIBRATION,
                 title: 'ALARM_SOUND_AND_VIBRATION'),
             FakeActivity.startsIn(10.minutes()).copyWith(
@@ -62,10 +66,12 @@ class BackendSwitches extends StatelessWidget {
                 reminderBefore: [1.minutes().inMilliseconds],
                 infoItem: 'some info',
                 alarmType: NO_ALARM,
+                checkable: true,
                 title: 'NO_ALARM'),
             FakeActivity.startsIn(11.minutes()).copyWith(
                 duration: 0,
                 reminderBefore: [10.minutes().inMilliseconds],
+                checkable: true,
                 alarmType: ALARM_SILENT,
                 title: 'ALARM_SILENT reminder 10 min before'),
           ],

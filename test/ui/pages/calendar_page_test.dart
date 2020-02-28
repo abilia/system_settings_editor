@@ -110,7 +110,8 @@ void main() {
     final DateTime activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
     final DateTime activityWithAlarmday = activityWithAlarmTime.onlyDays();
     final DateTime twoHoursAfter = activityWithAlarmTime.add(2.hours());
-    final Activity activity = FakeActivity.starts(activityWithAlarmTime);
+    final Activity activity =
+        FakeActivity.starts(activityWithAlarmTime).copyWith(checkable: true);
     final String payloadSerial = json.encode(NotificationPayload(
       activityId: activity.id,
       day: activityWithAlarmday,
@@ -183,6 +184,67 @@ void main() {
 
       // Assert
       expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
+    });
+
+    testWidgets('Alarms can be checked when notification selected',
+        (WidgetTester tester) async {
+      // Arrange
+      mockTicker.add(twoHoursAfter);
+      await tester.pumpWidget(App());
+      mockNotificationSelected.add(payloadSerial);
+      await tester.pumpAndSettle();
+
+      // Assert -- Alarm is on screen and alarm is checkable
+      expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
+      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
+      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+
+      // Act -- Tap the check button
+      await tester.tap(find.byKey(TestKey.activityCheckButton));
+      await tester.pumpAndSettle();
+
+      // Assert -- Alarm is checked
+      expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
+      expect(find.byKey(TestKey.activityCheckButton), findsNothing);
+
+      // Act -- Tap the uncheck button
+      await tester.tap(find.byKey(TestKey.activityUncheckButton));
+      await tester.pumpAndSettle();
+
+      // Assert -- Alarm is unchecked again
+      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
+      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+    });
+
+    testWidgets('Popup Alarms can be signed off', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      // Act -- alarm time happend
+      mockTicker.add(activityWithAlarmTime);
+      await tester.pumpAndSettle();
+
+      // Assert -- On screen alarm showing and check button showing
+      expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
+      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
+      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+
+      // Act -- Tap the check button
+      await tester.tap(find.byKey(TestKey.activityCheckButton));
+      await tester.pumpAndSettle();
+
+      // Assert -- Check button not showing and uncheck button showing
+      expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
+      expect(find.byKey(TestKey.activityCheckButton), findsNothing);
+
+      // Act -- Tap the uncheck button
+      await tester.tap(find.byKey(TestKey.activityUncheckButton));
+      await tester.pumpAndSettle();
+
+      // Assert -- Check button showing and uncheck not showing
+      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
+      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
     });
   });
 

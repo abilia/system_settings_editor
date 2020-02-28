@@ -39,7 +39,9 @@ class Fakes {
           }
           if (pathSegments.containsAll(['data', 'activities'])) {
             response = Response(
-                json.encode((activitiesResponse ?? allActivitiesFunciton)()),
+                json.encode((activitiesResponse ?? allActivitiesFunciton)()
+                    .map((a) => a.asDbActivity())
+                    .toList()),
                 200);
           }
           return Future.value(response ?? Response('not found', 404));
