@@ -14,3 +14,4 @@ export 'calendar.dart';
 export 'calendar/agenda.dart';
 export 'calendar/timepillar.dart';
 export 'activity/all.dart';
+export 'dialogs/all.dart';

@@ -33,6 +33,12 @@ class DatabaseRepository {
   static final migrations = <String>[
     '''
       ALTER TABLE calendar_activity ADD COLUMN dirty int default 0
+    ''',
+    '''
+      ALTER TABLE calendar_activity ADD COLUMN remove_after int default 0
+    ''',
+    '''
+      ALTER TABLE calendar_activity ADD COLUMN secret int default 0
     '''
   ];
 

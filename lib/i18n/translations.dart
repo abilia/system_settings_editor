@@ -32,17 +32,26 @@ abstract class Translated {
   String get newActivity;
   String get category;
   String get noColor;
+  String get selectAlarmType;
   String get alarmAndVibration;
+  String get vibration;
+  String get noAlarm;
   String get alarmOnlyAtStartTime;
   String get checkable;
   String get deleteAfter;
   String get availableFor;
   String get meAndSupportPersons;
+  String get onlyMe;
   String get name;
   String get date;
   String get today;
   String get startTime;
   String get endTime;
+  String get calendarView;
+  String get selectPicture;
+  String get imageArchive;
+  String get myPhotos;
+  String get takeNewPhoto;
 }
 
 class English extends Translated {
@@ -73,17 +82,26 @@ class English extends Translated {
       newActivity = 'New activity',
       category = 'Category',
       noColor = 'No color',
+      selectAlarmType = 'Select alarm type',
       alarmAndVibration = 'Alarm + vibration',
+      vibration = 'Vibration',
+      noAlarm = 'No alarm',
       alarmOnlyAtStartTime = 'Alarm only at Start time',
       checkable = 'Checkable',
       deleteAfter = 'Delete after',
       availableFor = 'Available for',
       meAndSupportPersons = 'Me and support persons',
+      onlyMe = 'Only me',
       name = 'Name',
       date = 'Date',
       today = 'Today',
       startTime = 'Start time',
-      endTime = 'End time';
+      endTime = 'End time',
+      calendarView = 'Calendar view',
+      selectPicture = 'Select picture',
+      imageArchive = 'Image archive',
+      myPhotos = 'My photos',
+      takeNewPhoto = 'Take new photo';
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
@@ -109,21 +127,30 @@ class Swedish extends Translated {
       listView = 'Listvy',
       left = 'Vänster',
       right = 'Höger',
-      check = 'Klar',
+      check = 'Kvittera',
       uncheck = 'Ångra',
       newActivity = 'Ny aktivitet',
       category = 'Kategori',
       noColor = 'Ingen färg',
+      selectAlarmType = 'Välj typ av larm',
       alarmAndVibration = 'Larm + vibration',
+      vibration = 'Vibration',
+      noAlarm = 'Inget larm',
       alarmOnlyAtStartTime = 'Larm endast vid starttid',
       checkable = 'Kvittera',
       deleteAfter = 'Ta bort efteråt',
       availableFor = 'Tillgänglig för',
       meAndSupportPersons = 'Mig och stödpersoner',
+      onlyMe = 'Bara mig',
       name = 'Namn',
       date = 'Datum',
       today = 'Idag',
       startTime = 'Starttid',
-      endTime = 'Sluttid';
+      endTime = 'Sluttid',
+      calendarView = 'Kalendervy',
+      selectPicture = 'Välj bild',
+      imageArchive = 'Bildarkiv',
+      myPhotos = 'Mina bilder',
+      takeNewPhoto = 'Ta bild';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }

@@ -7,7 +7,6 @@ import 'package:seagull/bloc/activities/add_activity/add_activity_bloc.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/components/calendar/all.dart';
 import 'package:seagull/ui/components/calendar/day_app_bar.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -236,14 +235,17 @@ class CalendarViewSwitchButton extends StatelessWidget {
               ),
             ],
           ),
-          onPressed: () {
-            showDialog(
+          onPressed: () async {
+            final result = await showDialog<CalendarViewType>(
               context: context,
-              builder: (newContext) => ChangeCalendarViewDialog(
-                outerContext: context,
+              builder: (context) => ChangeCalendarDialog(
                 currentViewType: currentView,
               ),
             );
+            if (result != null) {
+              BlocProvider.of<CalendarViewBloc>(context)
+                  .add(CalendarViewChanged(result));
+            }
           },
         ),
       ),

@@ -21,7 +21,8 @@ class Activity extends Equatable {
   Iterable<Duration> get reminders =>
       reminderBefore.map((r) => r.milliseconds());
   bool isSignedOff(DateTime day) => checkable && signedOffDates.contains(day);
-  bool get hasImage => (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
+  bool get hasImage =>
+      (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
 
   Activity signOff(DateTime day) => copyWith(
       signedOffDates: signedOffDates.contains(day)
@@ -36,7 +37,7 @@ class Activity extends Equatable {
       alarmType,
       recurrentType,
       recurrentData;
-  final bool deleted, fullDay, checkable;
+  final bool deleted, fullDay, checkable, removeAfter, secret;
   final UnmodifiableListView<int> reminderBefore;
   final UnmodifiableListView<DateTime> signedOffDates;
   const Activity._({
@@ -49,6 +50,8 @@ class Activity extends Equatable {
     @required this.category,
     @required this.deleted,
     @required this.checkable,
+    @required this.removeAfter,
+    @required this.secret,
     @required this.alarmType,
     @required this.fullDay,
     @required this.recurrentType,
@@ -69,6 +72,10 @@ class Activity extends Equatable {
         assert(category >= 0),
         assert(deleted != null),
         assert(checkable != null),
+        assert(removeAfter != null),
+        assert(secret != null),
+        assert(fullDay != null),
+        assert(recurrentData != null),
         assert(reminderBefore != null),
         assert(signedOffDates != null);
 
@@ -82,6 +89,8 @@ class Activity extends Equatable {
     int recurrentData = 0,
     bool fullDay = false,
     bool checkable = false,
+    bool removeAfter = false,
+    bool secret = false,
     int alarmType = ALARM_SOUND_AND_VIBRATION_ONLY_ON_START,
     String infoItem,
     String fileId,
@@ -101,6 +110,8 @@ class Activity extends Equatable {
       category: category,
       deleted: false,
       checkable: checkable,
+      removeAfter: removeAfter,
+      secret: secret,
       fullDay: fullDay,
       recurrentType: recurrentType,
       recurrentData: recurrentData,
@@ -128,6 +139,8 @@ class Activity extends Equatable {
     String icon,
     bool deleted,
     bool checkable,
+    bool removeAfter,
+    bool secret,
     bool fullDay,
     int revision,
     int alarmType,
@@ -147,6 +160,8 @@ class Activity extends Equatable {
         category: category ?? this.category,
         deleted: deleted ?? this.deleted,
         checkable: checkable ?? this.checkable,
+        removeAfter: removeAfter ?? this.removeAfter,
+        secret: secret ?? this.secret,
         fullDay: fullDay ?? this.fullDay,
         recurrentType: recurrentType ?? this.recurrentType,
         recurrentData: recurrentData ?? this.recurrentData,
@@ -173,6 +188,8 @@ class Activity extends Equatable {
         category,
         deleted,
         checkable,
+        removeAfter,
+        secret,
         fullDay,
         recurrentType,
         recurrentData,
@@ -224,6 +241,8 @@ class DbActivity extends Equatable {
           category: json['category'],
           deleted: json['deleted'],
           checkable: json['checkable'],
+          removeAfter: json['removeAfter'],
+          secret: json['secret'],
           fullDay: json['fullDay'],
           recurrentType: json['recurrentType'],
           recurrentData: json['recurrentData'],
@@ -249,6 +268,8 @@ class DbActivity extends Equatable {
           category: dbRow['category'],
           deleted: dbRow['deleted'] == 1 ? true : false,
           checkable: dbRow['checkable'] == 1 ? true : false,
+          removeAfter: dbRow['remove_after'] == 1 ? true : false,
+          secret: dbRow['secret'] == 1 ? true : false,
           fullDay: dbRow['full_day'] == 1 ? true : false,
           recurrentType: dbRow['recurrent_type'],
           recurrentData: dbRow['recurrent_data'],
@@ -271,6 +292,8 @@ class DbActivity extends Equatable {
         'category': activity.category,
         'deleted': activity.deleted,
         'checkable': activity.checkable,
+        'removeAfter': activity.removeAfter,
+        'secret': activity.secret,
         'fullDay': activity.fullDay,
         'recurrentType': activity.recurrentType,
         'recurrentData': activity.recurrentData,
@@ -293,6 +316,8 @@ class DbActivity extends Equatable {
         'category': activity.category,
         'deleted': activity.deleted ? 1 : 0,
         'checkable': activity.checkable ? 1 : 0,
+        'remove_after': activity.removeAfter ? 1 : 0,
+        'secret': activity.secret ? 1 : 0,
         'full_day': activity.fullDay ? 1 : 0,
         'recurrent_type': activity.recurrentType,
         'recurrent_data': activity.recurrentData,
@@ -313,7 +338,11 @@ class DbActivity extends Equatable {
           reminders?.split(';')?.map(int.tryParse)?.where((v) => v != null) ??
               []);
   @override
-  List<Object> get props => activity.props..addAll([revision, dirty]);
+  List<Object> get props => [activity, revision, dirty];
+
+  @override
+  String toString() =>
+      'DbActivity: { revision: $revision, dirty: $dirty $activity }';
 }
 
 String _nullIfEmpty(String value) => value?.isNotEmpty == true ? value : null;

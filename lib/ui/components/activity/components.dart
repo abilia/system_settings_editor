@@ -51,14 +51,16 @@ class PickField extends StatelessWidget {
   final Widget leading, label;
   final double heigth;
   final bool active;
+  final bool showTrailingArrow;
 
   const PickField({
     Key key,
-    this.onTap,
     this.leading,
     this.label,
+    this.onTap,
     this.heigth = 56,
     this.active = true,
+    this.showTrailingArrow = true,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -85,7 +87,12 @@ class PickField extends StatelessWidget {
                 if (label != null) label,
               ],
             ),
-            Icon(AbiliaIcons.navigation_next),
+            if (showTrailingArrow)
+              Icon(
+                AbiliaIcons.navigation_next,
+                size: 32.0,
+                color: AbiliaColors.black[60],
+              ),
           ],
         ),
       ),
@@ -172,56 +179,54 @@ class RadioField<T> extends StatelessWidget {
     );
     return Theme(
       data: theme,
-      child: Expanded(
-        child: InkWell(
-          onTap: () => onChanged(value),
-          borderRadius: borderRadius,
-          child: Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Ink(
-                height: 56,
-                width: width,
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius,
-                  border: Border.all(
-                    color: AbiliaColors.transparantBlack[15],
-                  ),
-                  color: value == groupValue
-                      ? AbiliaColors.white
-                      : Colors.transparent,
+      child: InkWell(
+        onTap: () => onChanged(value),
+        borderRadius: borderRadius,
+        child: Stack(
+          overflow: Overflow.visible,
+          children: <Widget>[
+            Ink(
+              height: 56,
+              width: width,
+              decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                border: Border.all(
+                  color: AbiliaColors.transparantBlack[15],
                 ),
-                padding: const EdgeInsets.all(12),
-                child: Row(
-                  children: <Widget>[
-                    if (leading != null) leading,
-                    const SizedBox(width: 12),
-                    if (label != null) label,
-                  ],
+                color: value == groupValue
+                    ? AbiliaColors.white
+                    : Colors.transparent,
+              ),
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: <Widget>[
+                  if (leading != null) leading,
+                  const SizedBox(width: 12),
+                  if (label != null) label,
+                ],
+              ),
+            ),
+            Positioned(
+              top: -8,
+              right: -8,
+              child: Container(
+                padding: const EdgeInsets.all(1.0),
+                decoration: BoxDecoration(
+                    color: theme.scaffoldBackgroundColor,
+                    shape: BoxShape.circle),
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: Radio(
+                    key: ObjectKey(key),
+                    value: value,
+                    groupValue: groupValue,
+                    onChanged: onChanged,
+                  ),
                 ),
               ),
-              Positioned(
-                top: -8,
-                right: -8,
-                child: Container(
-                  padding: const EdgeInsets.all(2.0),
-                  decoration: BoxDecoration(
-                      color: theme.scaffoldBackgroundColor,
-                      shape: BoxShape.circle),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: Radio(
-                      key: ObjectKey(key),
-                      value: value,
-                      groupValue: groupValue,
-                      onChanged: onChanged,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
