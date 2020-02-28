@@ -24,7 +24,7 @@ class ActivityCard extends StatelessWidget {
     final occasion = activityOccasion.occasion;
     final activity = activityOccasion.activity;
     final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
-    final hasImage = activity.fileId != null;
+    final hasImage = activity.hasImage;
     final hasTitle = activity.title?.isNotEmpty == true;
     final signedOff = activity.isSignedOff(activityOccasion.day);
     final current = occasion == Occasion.current;
@@ -75,8 +75,9 @@ class ActivityCard extends StatelessWidget {
                             if (hasImage)
                               Hero(
                                 tag: activity.id,
-                                child: FadeInThumb(
+                                child: FadeInCalendarImage(
                                   imageFileId: activity.fileId,
+                                  imageFilePath: activity.icon,
                                   width: imageSize,
                                   height: imageSize,
                                 ),

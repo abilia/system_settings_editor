@@ -21,6 +21,7 @@ class Activity extends Equatable {
   Iterable<Duration> get reminders =>
       reminderBefore.map((r) => r.milliseconds());
   bool isSignedOff(DateTime day) => checkable && signedOffDates.contains(day);
+  bool get hasImage => (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
 
   Activity signOff(DateTime day) => copyWith(
       signedOffDates: signedOffDates.contains(day)

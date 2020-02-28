@@ -13,14 +13,9 @@ void main() {
         child: child,
       );
 
-  testWidgets('FadeInCalenderImage', (WidgetTester tester) async {
+  testWidgets('FadeInCalendarImage', (WidgetTester tester) async {
     await tester.pumpWidget(
-        wrapWithAuthBlocProvider(FadeInCalenderImage(imageFileId: 'fileid')));
-    expect(find.byType(NetworkImage), findsNothing);
-  });
-  testWidgets('FadeInThumb', (WidgetTester tester) async {
-    await tester.pumpWidget(
-        wrapWithAuthBlocProvider(FadeInThumb(imageFileId: 'fileid')));
+        wrapWithAuthBlocProvider(FadeInCalendarImage(imageFileId: 'fileid', imageFilePath: 'path',)));
     expect(find.byType(NetworkImage), findsNothing);
   });
 }
