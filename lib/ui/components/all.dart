@@ -1,6 +1,5 @@
 export 'abilia_icons.dart';
 export 'action_button.dart';
-export 'activity_card.dart';
 export 'error_message.dart';
 export 'fade_in_calendar_image.dart';
 export 'login_form.dart';
@@ -14,4 +13,4 @@ export 'abilia_app_bar.dart';
 export 'calendar.dart';
 export 'calendar/agenda.dart';
 export 'calendar/timepillar.dart';
-export 'activity/activity_info.dart';
+export 'activity/all.dart';

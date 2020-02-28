@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seagull/ui/theme.dart';
 
 class ActionButton extends StatelessWidget {
   const ActionButton({
@@ -26,6 +27,10 @@ class ActionButton extends StatelessWidget {
           height: height,
           child: FlatButton(
             color: theme.buttonColor,
+            shape: onPressed != null
+                ? theme.buttonTheme.shape
+                : transparantOutlineInputBorder,
+            disabledTextColor: theme.disabledColor,
             highlightColor: theme.highlightColor,
             padding: const EdgeInsets.all(8),
             textColor: theme.textTheme.button.color,

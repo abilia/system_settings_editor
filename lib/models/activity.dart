@@ -12,7 +12,7 @@ class Activity extends Equatable {
       startClock(day).add(duration.milliseconds());
   DateTime startClock(DateTime day) => DateTime(
       day.year, day.month, day.day, startDateTime.hour, startDateTime.minute);
-  DateTime get start => DateTime.fromMillisecondsSinceEpoch(startTime);
+  DateTime get start => startDateTime;
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(startTime + duration);
   DateTime get startDateTime => DateTime.fromMillisecondsSinceEpoch(startTime);
   DateTime get endDateTime => DateTime.fromMillisecondsSinceEpoch(endTime);
@@ -128,8 +128,10 @@ class Activity extends Equatable {
     String icon,
     bool deleted,
     bool checkable,
+    bool fullDay,
     int revision,
     int alarmType,
+    AlarmType alarm,
     int recurrentType,
     int recurrentData,
     String infoItem,
@@ -153,7 +155,7 @@ class Activity extends Equatable {
             : this.reminderBefore,
         fileId: fileId == null ? this.fileId : _nullIfEmpty(fileId),
         icon: fileId == null ? this.fileId : _nullIfEmpty(fileId),
-        alarmType: alarmType ?? this.alarmType,
+        alarmType: alarmType ?? alarm?.toInt ?? this.alarmType,
         infoItem: infoItem == null ? this.infoItem : _nullIfEmpty(infoItem),
         signedOffDates: signedOffDates != null
             ? UnmodifiableListView(signedOffDates)

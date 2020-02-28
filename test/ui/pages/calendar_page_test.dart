@@ -409,4 +409,39 @@ void main() {
       expect(alarmScreenFinder, findsNothing);
     });
   });
+  group('calendar page add new activity widget test', () {
+    MockActivityDb mockActivityDb;
+    StreamController<DateTime> mockTicker;
+    ActivityResponse activityResponse = () => [];
+
+    setUp(() {
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
+      mockTicker = StreamController<DateTime>();
+      final mockTokenDb = MockTokenDb();
+      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
+      final mockFirebasePushService = MockFirebasePushService();
+      when(mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value('fakeToken'));
+      mockActivityDb = MockActivityDb();
+      when(mockActivityDb.getActivitiesFromDb())
+          .thenAnswer((_) => Future.value(<Activity>[]));
+      GetItInitializer()
+        ..activityDb = mockActivityDb
+        ..userDb = MockUserDb()
+        ..ticker = (() => mockTicker.stream)
+        ..baseUrlDb = MockBaseUrlDb()
+        ..fireBasePushService = mockFirebasePushService
+        ..tokenDb = mockTokenDb
+        ..httpClient = Fakes.client(activityResponse)
+        ..init();
+    });
+    testWidgets('New activity', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.addActivity));
+      await tester.pumpAndSettle();
+      expect(find.byType(NewActivityPage), findsOneWidget);
+    });
+  });
 }

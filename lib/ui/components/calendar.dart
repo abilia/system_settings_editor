@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:seagull/bloc/activities/add_activity/add_activity_bloc.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/components/calendar/all.dart';
 import 'package:seagull/ui/components/calendar/day_app_bar.dart';
@@ -122,12 +124,32 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
             Align(
               alignment: Alignment.center,
               child: ActionButton(
+                key: TestKey.addActivity,
+                themeData: addButtonTheme,
                 child: Icon(
                   AbiliaIcons.plus,
                   size: 32,
                 ),
-                onPressed: () => {},
-                themeData: addButtonTheme,
+                onPressed: () async {
+                  final now = BlocProvider.of<ClockBloc>(context).state;
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (innerContext) {
+                        final addActivitybloc = AddActivityBloc(
+                            activitiesBloc:
+                                BlocProvider.of<ActivitiesBloc>(context),
+                            activity: Activity.createNew(
+                                title: '',
+                                startTime:
+                                    now.nextHalfHour().millisecondsSinceEpoch));
+                        return BlocProvider<AddActivityBloc>(
+                          create: (context) => addActivitybloc,
+                          child: NewActivityPage(today: now.onlyDays()),
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
             ),
             Align(

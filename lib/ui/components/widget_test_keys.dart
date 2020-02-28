@@ -16,5 +16,16 @@ class TestKey {
       activityBackButton = Key('activityBackButton'),
       activityUncheckButton = Key('activityUncheckButton'),
       activityCheckButton = Key('activityCheckButton'),
-      attachment = Key('attachment');
+      attachment = Key('attachment'),
+      addActivity = Key('addActivity'),
+      newActivityNameInput = Key('newActivityNameInput'),
+      finishNewActivityButton = Key('finishNewActivityButton'),
+      fullDaySwitch = Key('fullDaySwitch'),
+      datePicker = Key('datePicker'),
+      startTimePicker = Key('startTimePicker'),
+      endTimePicker = Key('endTimePicker'),
+      rightCategoryRadio = Key('rightCategoryRadio'),
+      leftCategoryRadio = Key('leftCategoryRadio'),
+      alarmAtStartSwitch = Key('alarmAtStartSwitch'),
+      checkableSwitch = Key('checkableSwitch');
 }

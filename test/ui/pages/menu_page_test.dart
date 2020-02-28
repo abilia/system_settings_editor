@@ -7,8 +7,6 @@ import 'package:seagull/ui/pages/menu_page.dart';
 import '../../mocks.dart';
 
 void main() {
-  AuthenticationBloc mockedActivitiesBloc = MockAuthenticationBloc();
-
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [Translator.delegate],
@@ -17,7 +15,7 @@ void main() {
                 orElse: () => supportedLocales.first),
         home: MultiBlocProvider(providers: [
           BlocProvider<AuthenticationBloc>(
-              create: (context) => mockedActivitiesBloc),
+              create: (context) => MockAuthenticationBloc()),
           BlocProvider<ActivitiesBloc>(
               create: (context) => MockActivitiesBloc()),
         ], child: widget),

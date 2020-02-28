@@ -6,3 +6,4 @@ export 'alarm_page.dart';
 export 'reminder_page.dart';
 export 'allday_list_page.dart';
 export 'activity_page.dart';
+export 'new_activity_page.dart';
