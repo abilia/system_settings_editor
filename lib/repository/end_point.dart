@@ -6,10 +6,14 @@ const Map<String, String> backEndEnviorments = {
   'T1': T1,
   'Whale': WHALE,
   'Prod': PROD,
+  'Local': LOCAL,
 };
 
-String imageUrl(String baseUrl, int userId, String imageFileId) =>
+String imageIdUrl(String baseUrl, int userId, String imageFileId) =>
     '$baseUrl/api/v1/data/$userId/storage/file/id/$imageFileId';
+
+String imagePathUrl(String baseUrl, int userId, String imagePath) =>
+    '$baseUrl/api/v1/data/$userId/storage/root/$imagePath';
 
 String profileImageUrl(String baseUrl, String imageFileId, {int size = 400}) =>
     '$baseUrl/open/v1/file/$imageFileId?size=$size';
