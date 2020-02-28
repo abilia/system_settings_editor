@@ -70,10 +70,14 @@ void main() {
     });
 
     testWidgets('Can enter text', (WidgetTester tester) async {
+      final newActivtyTitle = 'activity title';
       await tester
           .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
       await tester.pumpAndSettle();
-      expect(find.byType(NewActivityPage), findsOneWidget);
+      expect(find.text(newActivtyTitle), findsNothing);
+      await tester.enterText(
+          find.byKey(TestKey.newActivityNameInput), newActivtyTitle);
+      expect(find.text(newActivtyTitle), findsOneWidget);
     });
 
     testWidgets(
