@@ -58,7 +58,7 @@ class ActivityCard extends StatelessWidget {
               child: AnimatedOpacity(
                 opacity: inactive ? .5 : 1,
                 duration: const Duration(seconds: 1),
-                child: Ink(
+                child: Container(
                   decoration: BoxDecoration(
                     borderRadius: borderRadius,
                     color: theme.cardColor,
