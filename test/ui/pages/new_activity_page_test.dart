@@ -19,6 +19,7 @@ void main() {
       startTime: startTime.millisecondsSinceEpoch,
     );
     final locale = Locale('en');
+    final translate = Translator(locale).translate;
 
     Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
           supportedLocales: Translator.supportedLocals,
@@ -80,6 +81,18 @@ void main() {
       expect(find.text(newActivtyTitle), findsOneWidget);
     });
 
+    testWidgets('Select picture dialog shows', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.addPicture));
+      await tester.pumpAndSettle();
+      expect(find.byType(SelectPictureDialog), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.closeDialog));
+      await tester.pumpAndSettle();
+      expect(find.byType(SelectPictureDialog), findsNothing);
+    });
+
     testWidgets(
         'Add activity button is disabled when no title and enabled when titled entered',
         (WidgetTester tester) async {
@@ -102,6 +115,8 @@ void main() {
             .onPressed,
         isNotNull,
       );
+      await tester.tap(find.byKey(TestKey.finishNewActivityButton));
+      await tester.pumpAndSettle();
     });
 
     testWidgets('full day switch', (WidgetTester tester) async {
@@ -143,6 +158,24 @@ void main() {
           isTrue);
     });
 
+    testWidgets('Select alarm dialog', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+      await tester.pumpAndSettle();
+      await scrollDown(tester);
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
+      expect(find.text(translate.vibration), findsNothing);
+      expect(find.byIcon(AbiliaIcons.handi_vibration), findsNothing);
+      await tester.tap(find.byKey(TestKey.selectAlarm));
+      await tester.pumpAndSettle();
+      expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.vibrationAlarm));
+      await tester.pumpAndSettle();
+      expect(find.text(translate.vibration), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
+    });
+
     testWidgets('checkable switch', (WidgetTester tester) async {
       await tester
           .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
@@ -160,6 +193,27 @@ void main() {
       expect(
           tester
               .widget<Switch>(find.byKey(ObjectKey(TestKey.checkableSwitch)))
+              .value,
+          isTrue);
+    });
+
+    testWidgets('delete after switch', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+      await tester.pumpAndSettle();
+      await scrollDown(tester);
+      expect(
+          tester
+              .widget<Switch>(find.byKey(ObjectKey(TestKey.deleteAfterSwitch)))
+              .value,
+          isFalse);
+      expect(find.byKey(TestKey.deleteAfterSwitch), findsOneWidget);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.deleteAfterSwitch));
+      await tester.pumpAndSettle();
+      expect(
+          tester
+              .widget<Switch>(find.byKey(ObjectKey(TestKey.deleteAfterSwitch)))
               .value,
           isTrue);
     });
@@ -239,6 +293,25 @@ void main() {
 
       expect(leftCategoryRadio3.groupValue, leftCategoryRadio3.value);
       expect(rightCategoryRadio3.groupValue, isNot(rightCategoryRadio3.value));
+    });
+
+    testWidgets('Availible for dialog', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+      await tester.pumpAndSettle();
+      await scrollDown(tester);
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(TestKey.availibleFor), findsOneWidget);
+      expect(find.text(translate.onlyMe), findsNothing);
+      expect(find.byIcon(AbiliaIcons.password_protection), findsNothing);
+      await tester.tap(find.byKey(TestKey.availibleFor));
+      await tester.pumpAndSettle();
+      expect(find.byType(SelectAvailableForDialog), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.onlyMe));
+      await tester.pumpAndSettle();
+      expect(find.text(translate.onlyMe), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.password_protection), findsOneWidget);
     });
   });
 }

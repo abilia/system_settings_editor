@@ -22,7 +22,7 @@ class NewActivityPage extends StatelessWidget {
           CategoryWidget(state.activity),
           AlarmWidget(state.activity),
           CheckableAndDeleteAfterWidget(state.activity),
-          AvailibleForWidget(),
+          AvailibleForWidget(state.activity),
         ];
         return Form(
           child: Scaffold(

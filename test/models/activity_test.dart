@@ -71,8 +71,8 @@ void main() {
     expect(result.endTime, 1570109039424);
     expect(result.fullDay, false);
     expect(result.checkable, true);
-    // expect(result.removeAfter, false);
-    // expect(result.secret, false);
+    expect(result.removeAfter, false);
+    expect(result.secret, false);
     expect(result.fileId, "1a1b1678-781e-4b6f-9518-b6858560433f");
   });
   test('parse json with nulls test', () {
@@ -205,6 +205,8 @@ void main() {
     expect(deserializedDbActivity.revision, dbActivity.revision);
     expect(deserializedActivity.alarmType, activity.alarmType);
     expect(deserializedActivity.checkable, activity.checkable);
+    expect(deserializedActivity.removeAfter, activity.removeAfter);
+    expect(deserializedActivity.secret, activity.secret);
     expect(deserializedActivity.signedOffDates, activity.signedOffDates);
     expect(deserializedActivity, activity);
   });

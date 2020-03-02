@@ -4,3 +4,4 @@ export 'alarms.dart';
 export 'duration.dart';
 export 'alarm_navigator.dart';
 export 'signed_off_dates.dart';
+export 'alarm_extensions.dart';

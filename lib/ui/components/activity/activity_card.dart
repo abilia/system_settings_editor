@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
@@ -165,19 +166,13 @@ class ActivityCard extends StatelessWidget {
       );
 
   Widget buildInfoIcons(Activity activity) {
-    IconData iconDataFor(AlarmType alarm) {
-      if (alarm.sound) return AbiliaIcons.handi_alarm_vibration;
-      if (alarm.vibrate) return AbiliaIcons.handi_vibration;
-      return AbiliaIcons.handi_no_alarm_vibration;
-    }
-
     return Row(
       children: <Widget>[
         if (!activity.fullDay)
           Padding(
             padding: const EdgeInsets.only(right: 4.0),
             child: Icon(
-              iconDataFor(activity.alarm),
+              activity.alarm.iconData(),
               size: 18,
             ),
           ),

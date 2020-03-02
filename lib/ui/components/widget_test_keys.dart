@@ -27,5 +27,12 @@ class TestKey {
       rightCategoryRadio = Key('rightCategoryRadio'),
       leftCategoryRadio = Key('leftCategoryRadio'),
       alarmAtStartSwitch = Key('alarmAtStartSwitch'),
-      checkableSwitch = Key('checkableSwitch');
+      checkableSwitch = Key('checkableSwitch'),
+      deleteAfterSwitch = Key('deleteAfterSwitch'),
+      addPicture = Key('addPicture'),
+      selectAlarm = Key('selectAlarm'),
+      vibrationAlarm = Key('vibrationAlarm'),
+      availibleFor = Key('availibleFor'),
+      onlyMe = Key('onlyMe'),
+      closeDialog = Key('closeDialog');
 }
