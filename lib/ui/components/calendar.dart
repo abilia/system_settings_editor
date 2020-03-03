@@ -105,11 +105,9 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
   }
 
   Widget buildBottomAppBar(CalendarViewType currentView, BuildContext context) {
-    return Container(
-      decoration:
-          BoxDecoration(color: Theme.of(context).bottomAppBarTheme.color),
-      height: 64,
-      child: Padding(
+    return BottomAppBar(
+      child: Container(
+        height: 64,
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Stack(
           children: <Widget>[
