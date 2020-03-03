@@ -83,6 +83,7 @@ class _LoginFormState extends State<LoginForm> {
                   Text(
                     i18n.translate.password,
                     style: body1Grey,
+                    key: Key('passwordLabel'),
                   ),
                   padding8,
                   Row(
