@@ -28,8 +28,11 @@ class DateAndTimeWidget extends StatelessWidget {
             today: today,
           ),
           SizedBox(height: 12),
-          TimeIntervallPicker(activity),
-          SizedBox(height: 12),
+          CollapsableWidget(
+            collapsed: activity.fullDay,
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: TimeIntervallPicker(activity),
+          ),
           SwitchField(
             key: TestKey.fullDaySwitch,
             leading: Icon(AbiliaIcons.restore),
@@ -38,13 +41,26 @@ class DateAndTimeWidget extends StatelessWidget {
             onChanged: (v) => BlocProvider.of<AddActivityBloc>(context)
                 .add(ChangeActivity(activity.copyWith(fullDay: v))),
           ),
-          SizedBox(height: 12),
-          SwitchField(
-            leading: Icon(AbiliaIcons.handi_reminder),
-            label: Text(translator.reminder),
-            value: false,
-            onChanged: null,
-          )
+          CollapsableWidget(
+            collapsed: activity.fullDay,
+            padding: const EdgeInsets.only(top: 8.0),
+            child: SwitchField(
+              leading: Icon(AbiliaIcons.handi_reminder),
+              label: Text(translator.reminder),
+              value: activity.reminders.isNotEmpty,
+              onChanged: (switchOn) {
+                final reminders =
+                    switchOn ? [15.minutes().inMilliseconds] : <int>[];
+                BlocProvider.of<AddActivityBloc>(context).add(ChangeActivity(
+                    activity.copyWith(reminderBefore: reminders)));
+              },
+            ),
+          ),
+          CollapsableWidget(
+            padding: const EdgeInsets.only(top: 8.0),
+            collapsed: activity.fullDay || activity.reminderBefore.isEmpty,
+            child: Reminders(activity: activity),
+          ),
         ],
       ),
     );
@@ -67,16 +83,18 @@ class DatePicker extends StatelessWidget {
         final newDate = await showDatePicker(
             context: context,
             initialDate: date,
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2040),
+            firstDate: DateTime(date.year - 20),
+            lastDate: DateTime(date.year + 20),
             builder: (BuildContext context, Widget child) => child);
         if (newDate != null) {
           BlocProvider.of<AddActivityBloc>(context).add(ChangeDate(newDate));
         }
       },
       leading: Icon(AbiliaIcons.calendar),
-      label: Text((today.isAtSameDay(date) ? '(${translator.today}) ' : '') +
-          '${timeFormat.format(date)}'),
+      label: Text(
+        (today.isAtSameDay(date) ? '(${translator.today}) ' : '') +
+            '${timeFormat.format(date)}',
+      ),
     );
   }
 }
@@ -181,6 +199,40 @@ class TimePicker extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+class Reminders extends StatelessWidget {
+  final Activity activity;
+
+  const Reminders({Key key, this.activity}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final translator = Translator.of(context).translate;
+    return Wrap(
+      spacing: 14.0,
+      runSpacing: 8.0,
+      children: [
+        5.minutes(),
+        15.minutes(),
+        30.minutes(),
+        1.hours(),
+        2.hours(),
+        1.days(),
+      ]
+          .map(
+            (r) => SelectableField(
+              label: Text(
+                r.toReminderString(translator),
+                style: Theme.of(context).textTheme.body2,
+              ),
+              selected: activity.reminders.contains(r),
+              onTap: () => BlocProvider.of<AddActivityBloc>(context)
+                  .add(AddOrRemoveReminder(r)),
+            ),
+          )
+          .toList(),
     );
   }
 }

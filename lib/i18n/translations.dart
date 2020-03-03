@@ -52,6 +52,11 @@ abstract class Translated {
   String get imageArchive;
   String get myPhotos;
   String get takeNewPhoto;
+  String get days;
+  String get day;
+  String get hours;
+  String get hour;
+  String get min;
 }
 
 class English extends Translated {
@@ -101,7 +106,12 @@ class English extends Translated {
       selectPicture = 'Select picture',
       imageArchive = 'Image archive',
       myPhotos = 'My photos',
-      takeNewPhoto = 'Take new photo';
+      takeNewPhoto = 'Take new photo',
+      days = 'days',
+      day = 'day',
+      hours = 'hours',
+      hour = 'hour',
+      min = 'min';
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
@@ -151,6 +161,11 @@ class Swedish extends Translated {
       selectPicture = 'Välj bild',
       imageArchive = 'Bildarkiv',
       myPhotos = 'Mina bilder',
-      takeNewPhoto = 'Ta bild';
+      takeNewPhoto = 'Ta bild',
+      days = 'dagar',
+      day = 'dag',
+      hours = 'timmar',
+      hour = 'timme',
+      min = 'min';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }

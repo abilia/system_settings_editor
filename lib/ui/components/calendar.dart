@@ -135,12 +135,14 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                     MaterialPageRoute(
                       builder: (innerContext) {
                         final addActivitybloc = AddActivityBloc(
-                            activitiesBloc:
-                                BlocProvider.of<ActivitiesBloc>(context),
-                            activity: Activity.createNew(
-                                title: '',
-                                startTime:
-                                    now.nextHalfHour().millisecondsSinceEpoch));
+                          activitiesBloc:
+                              BlocProvider.of<ActivitiesBloc>(context),
+                          activity: Activity.createNew(
+                            title: '',
+                            startTime:
+                                now.nextHalfHour().millisecondsSinceEpoch,
+                          ),
+                        );
                         return BlocProvider<AddActivityBloc>(
                           create: (context) => addActivitybloc,
                           child: NewActivityPage(today: now.onlyDays()),

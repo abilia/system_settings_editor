@@ -40,6 +40,8 @@ class NameAndPictureWidget extends StatelessWidget {
               children: <Widget>[
                 SubHeading(translator.name),
                 TextFormField(
+                  initialValue: activity.title,
+                  textCapitalization: TextCapitalization.sentences,
                   onChanged: (text) => BlocProvider.of<AddActivityBloc>(context)
                       .add(ChangeActivity(activity.copyWith(title: text))),
                   key: TestKey.newActivityNameInput,
@@ -74,7 +76,7 @@ class CategoryWidget extends StatelessWidget {
                     .add(ChangeActivity(activity.copyWith(category: v))),
                 leading: circle(),
                 groupValue: activity.category,
-                value: 0,
+                value: Category.left,
                 label: Text(translator.left),
               ),
             ),
@@ -86,7 +88,7 @@ class CategoryWidget extends StatelessWidget {
                     .add(ChangeActivity(activity.copyWith(category: v))),
                 leading: circle(),
                 groupValue: activity.category,
-                value: 1,
+                value: Category.right,
                 label: Text(translator.right),
               ),
             ),
@@ -139,7 +141,7 @@ class AlarmWidget extends StatelessWidget {
             }
           },
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8.0),
         SwitchField(
           key: TestKey.alarmAtStartSwitch,
           leading: Icon(AbiliaIcons.handi_alarm),
@@ -177,7 +179,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
           onChanged: (v) => BlocProvider.of<AddActivityBloc>(context)
               .add(ChangeActivity(activity.copyWith(checkable: v))),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8.0),
         SwitchField(
           key: TestKey.deleteAfterSwitch,
           leading: Icon(AbiliaIcons.delete_all_clear),
