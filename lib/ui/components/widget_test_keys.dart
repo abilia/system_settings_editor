@@ -13,6 +13,7 @@ class TestKey {
       showAllFullDays = Key('showAllFullDays'),
       changeView = Key('changeView'),
       timePillarButton = Key('timePillarButton'),
+      agendaListButton = Key('agendaListButton  '),
       activityBackButton = Key('activityBackButton'),
       activityUncheckButton = Key('activityUncheckButton'),
       activityCheckButton = Key('activityCheckButton'),

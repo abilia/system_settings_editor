@@ -33,6 +33,7 @@ class ChangeCalendarDialog extends StatelessWidget {
           ),
           SizedBox(height: 8.0),
           PickField(
+            key: TestKey.agendaListButton,
             leading: Icon(AbiliaIcons.list_order),
             label: Text(
               translate.listView,
@@ -40,8 +41,7 @@ class ChangeCalendarDialog extends StatelessWidget {
             ),
             active: currentViewType == CalendarViewType.LIST,
             showTrailingArrow: currentViewType != CalendarViewType.LIST,
-            onTap: () =>
-                Navigator.of(context).maybePop(CalendarViewType.TIMEPILLAR),
+            onTap: () => Navigator.of(context).maybePop(CalendarViewType.LIST),
           ),
         ],
       ),
