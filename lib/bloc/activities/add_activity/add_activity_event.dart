@@ -47,3 +47,12 @@ class ChangeEndTime extends ChangeTime {
   @override
   String toString() => 'ChangeEndTime { $time }';
 }
+
+class ImageSelected extends AddActivityEvent {
+  final String imageId;
+  ImageSelected(this.imageId);
+  @override
+  List<Object> get props => [imageId];
+  @override
+  String toString() => 'ImageSelected { $imageId }';
+}

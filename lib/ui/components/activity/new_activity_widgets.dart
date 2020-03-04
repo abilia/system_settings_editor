@@ -17,29 +17,40 @@ class NameAndPictureWidget extends StatelessWidget {
       height: 84,
       child: Row(
         children: <Widget>[
-          BlocBuilder<SortableBloc, SortableState>(
-              builder: (context, sortableState) {
-            print('Number of sortables: ${sortableState}');
-            return LinedBorder(
-              key: TestKey.addPicture,
-              padding: const EdgeInsets.all(26),
-              child: Icon(
-                AbiliaIcons.add_photo,
-                size: 32,
-                color: AbiliaColors.black[75],
-              ),
-              onTap: () async {
-                await showDialog(
-                  context: context,
-                  builder: (innerContext) => SelectPictureDialog(
-                    sortables: (sortableState is SortablesLoaded)
-                        ? sortableState.sortables.toList()
-                        : <Sortable>[],
-                    outerContext: context,
-                  ),
-                );
-              },
-            );
+          BlocBuilder<AddActivityBloc, AddActivityState>(
+              builder: (context, addActivityState) {
+            return addActivityState.activity.hasImage
+                //TODO clean up a bit here. Two onTap....
+                ? LinedBorder(
+                    child: FadeInCalendarImage(
+                      imageFileId: activity.fileId,
+                      imageFilePath: activity.icon,
+                    ),
+                    onTap: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (innerContext) => SelectPictureDialog(
+                          outerContext: context,
+                        ),
+                      );
+                    })
+                : LinedBorder(
+                    key: TestKey.addPicture,
+                    padding: const EdgeInsets.all(26),
+                    child: Icon(
+                      AbiliaIcons.add_photo,
+                      size: 32,
+                      color: AbiliaColors.black[75],
+                    ),
+                    onTap: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (innerContext) => SelectPictureDialog(
+                          outerContext: context,
+                        ),
+                      );
+                    },
+                  );
           }),
           const SizedBox(width: 12),
           Expanded(

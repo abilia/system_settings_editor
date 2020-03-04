@@ -2,65 +2,74 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/sortable/image_archive/image_archive_bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class ImageArchiveDialog extends StatelessWidget {
-  final List<Sortable> sortables;
   final BuildContext outerContext;
 
   const ImageArchiveDialog({
     Key key,
-    this.sortables,
     this.outerContext,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final sS = BlocProvider.of<SortableBloc>(outerContext).state;
-    if (sS is SortablesLoaded) {
-      print(
-          '--------------------- IT IS LOADED --------------------- ${sS.sortables.length}');
-    }
+    final sortableBloc = BlocProvider.of<SortableBloc>(outerContext);
+    final addActivityBloc = BlocProvider.of<AddActivityBloc>(outerContext);
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
-    return ViewDialog(
-      fullScreen: true,
-      heading: Text(translate.imageArchive, style: theme.textTheme.title),
-      onOk: () {
-        print('Valet är gjort');
-      },
-      child: GridView.count(
-        crossAxisCount: 3,
-        childAspectRatio: 0.96,
-        children: sortables.take(10).map((s) {
-          final j = json.decode(s.data);
-          final fileId = j['fileId'];
-          final name = j['name'];
-          final icon = j['icon'];
-          return Column(
-            children: <Widget>[
-              s.isGroup
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Folder(
-                        name: name,
-                        onTap: () {},
-                      ),
-                    )
-                  : ArchiveImage(
-                      name: name,
-                      imageId: fileId,
-                      iconPath: icon,
-                      onTap: () {},
-                    )
-            ],
-          );
-        }).toList(),
+    return BlocProvider<ImageArchiveBloc>(
+      create: (context) => ImageArchiveBloc(
+        sortableBloc: sortableBloc,
       ),
+      child: BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
+          builder: (context, archiveState) {
+        return ViewDialog(
+          fullScreen: true,
+          heading: Text(translate.imageArchive, style: theme.textTheme.title),
+          onOk: archiveState.selected != null
+              ? () => addActivityBloc.add(ImageSelected(archiveState.selected))
+              : null,
+          child: GridView.count(
+            crossAxisCount: 3,
+            childAspectRatio: 0.96,
+            children: archiveState.all[archiveState.currentFolder].map((s) {
+              final j = json.decode(s.data);
+              final fileId = j['fileId'];
+              final name = j['name'];
+              final icon = j['icon'];
+              return Column(
+                children: <Widget>[
+                  s.isGroup
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Folder(
+                            name: name,
+                            onTap: () {
+                              BlocProvider.of<ImageArchiveBloc>(context)
+                                  .add(FolderChanged(s.id));
+                            },
+                          ),
+                        )
+                      : ArchiveImage(
+                          name: name,
+                          imageId: fileId,
+                          iconPath: icon,
+                          onChanged: (val) {
+                            BlocProvider.of<ImageArchiveBloc>(context)
+                                .add(ArchiveImageSelected(val));
+                          },
+                        )
+                ],
+              );
+            }).toList(),
+          ),
+        );
+      }),
     );
   }
 }
@@ -97,59 +106,62 @@ class Folder extends StatelessWidget {
 }
 
 class ArchiveImage extends StatelessWidget {
-  final GestureTapCallback onTap;
+  final ValueChanged<String> onChanged;
   final String name;
   final String imageId;
   final String iconPath;
   const ArchiveImage({
     Key key,
     @required this.name,
-    @required this.onTap,
+    @required this.onChanged,
     @required this.imageId,
     @required this.iconPath,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final h = 86.0;
-    final w = 84.0;
+    final imageHeight = 86.0;
+    final imageWidth = 84.0;
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: ArchiveRadio(
-        width: 110,
-        heigth: 112,
-        value: false,
-        onChanged: (val) => {},
-        groupValue: null,
-        child: Column(
-          children: <Widget>[
-            Text(
-              name,
-              overflow: TextOverflow.ellipsis,
-              style: abiliaTextTheme.caption,
-            ),
-            Container(
-              height: h,
-              width: w,
-              decoration: BoxDecoration(
-                borderRadius: borderRadius,
-                color: AbiliaColors.white,
+      child: BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
+          builder: (context, archiveState) {
+        return ArchiveRadio(
+          width: 110,
+          heigth: 112,
+          value: imageId,
+          onChanged: onChanged,
+          groupValue: archiveState.selected,
+          child: Column(
+            children: <Widget>[
+              Text(
+                name,
+                overflow: TextOverflow.ellipsis,
+                style: abiliaTextTheme.caption,
               ),
-              child: Center(
-                child: ClipRRect(
+              Container(
+                height: imageHeight,
+                width: imageWidth,
+                decoration: BoxDecoration(
                   borderRadius: borderRadius,
-                  child: FadeInCalendarImage(
-                    imageFileId: imageId,
-                    imageFilePath: iconPath,
-                    width: w,
-                    height: h,
+                  color: AbiliaColors.white,
+                ),
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: borderRadius,
+                    child: FadeInCalendarImage(
+                      imageFileId: imageId,
+                      imageFilePath: iconPath,
+                      width: imageWidth,
+                      height: imageHeight,
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
-        ),
-      ),
+              )
+            ],
+          ),
+        );
+      }),
     );
   }
 }

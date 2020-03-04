@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/components/dialogs/image_archive_dialog.dart';
 import 'package:seagull/ui/theme.dart';
 
 class SelectPictureDialog extends StatelessWidget {
   final BuildContext outerContext;
-  final List<Sortable> sortables;
 
-  const SelectPictureDialog({Key key, this.sortables, this.outerContext})
-      : super(key: key);
+  const SelectPictureDialog({Key key, this.outerContext}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +30,6 @@ class SelectPictureDialog extends StatelessWidget {
               await showDialog(
                 context: context,
                 builder: (innerContext) => ImageArchiveDialog(
-                  sortables: sortables,
                   outerContext: outerContext,
                 ),
               );

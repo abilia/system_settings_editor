@@ -37,6 +37,10 @@ class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
       activitiesBloc.add(AddActivity(state.activity));
       yield SavedActivityState(state.activity);
     }
+    if (event is ImageSelected) {
+      yield UnsavedActivityState(
+          state.activity.copyWith(fileId: event.imageId));
+    }
   }
 
   Stream<UnsavedActivityState> _mapChangeDateToState(ChangeDate event) async* {
