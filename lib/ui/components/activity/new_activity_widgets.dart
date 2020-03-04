@@ -26,7 +26,7 @@ class NameAndPictureWidget extends StatelessWidget {
               color: AbiliaColors.black[75],
             ),
             onTap: () async {
-              await showDialog(
+              await showViewDialog(
                 context: context,
                 builder: (context) => SelectPictureDialog(),
               );
@@ -128,7 +128,7 @@ class AlarmWidget extends StatelessWidget {
           leading: Icon(alarm.iconData()),
           label: Text(alarm.text(translator)),
           onTap: () async {
-            final result = await showDialog<Alarm>(
+            final result = await showViewDialog<Alarm>(
               context: context,
               builder: (context) => SelectAlarmTypeDialog(
                 alarm: alarm.type,
@@ -213,7 +213,7 @@ class AvailibleForWidget extends StatelessWidget {
           label:
               Text(secret ? translator.onlyMe : translator.meAndSupportPersons),
           onTap: () async {
-            final result = await showDialog<bool>(
+            final result = await showViewDialog<bool>(
               context: context,
               builder: (context) => SelectAvailableForDialog(
                 secret: activity.secret,

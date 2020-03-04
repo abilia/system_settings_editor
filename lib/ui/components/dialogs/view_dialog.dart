@@ -6,6 +6,55 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
+/// copied from [showDialog]
+Future<T> showViewDialog<T>({
+  @required BuildContext context,
+  bool barrierDismissible = true,
+  WidgetBuilder builder,
+  bool useRootNavigator = true,
+}) {
+  assert(builder != null);
+  assert(useRootNavigator != null);
+  assert(debugCheckHasMaterialLocalizations(context));
+
+  final ThemeData theme = Theme.of(context, shadowThemeOnly: true);
+  return showGeneralDialog(
+    context: context,
+    pageBuilder: (BuildContext buildContext, Animation<double> animation,
+        Animation<double> secondaryAnimation) {
+      final Widget pageChild = Builder(builder: builder);
+      return SafeArea(
+        bottom: false,
+        child: Builder(builder: (BuildContext context) {
+          return theme != null
+              ? Theme(data: theme, child: pageChild)
+              : pageChild;
+        }),
+      );
+    },
+    barrierDismissible: barrierDismissible,
+    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    barrierColor: AbiliaColors.transparantBlack[90],
+    transitionDuration: const Duration(milliseconds: 150),
+    transitionBuilder: _buildMaterialDialogTransitions,
+    useRootNavigator: useRootNavigator,
+  );
+}
+
+Widget _buildMaterialDialogTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child) {
+  return FadeTransition(
+    opacity: CurvedAnimation(
+      parent: animation,
+      curve: Curves.easeOut,
+    ),
+    child: child,
+  );
+}
+
 class ViewDialog extends StatelessWidget {
   final Widget heading;
   final Widget child;

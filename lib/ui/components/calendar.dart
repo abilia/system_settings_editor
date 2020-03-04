@@ -238,7 +238,7 @@ class CalendarViewSwitchButton extends StatelessWidget {
             ],
           ),
           onPressed: () async {
-            final result = await showDialog<CalendarViewType>(
+            final result = await showViewDialog<CalendarViewType>(
               context: context,
               builder: (context) => ChangeCalendarDialog(
                 currentViewType: currentView,
