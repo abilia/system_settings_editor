@@ -6,3 +6,4 @@ export 'user.dart';
 export 'recur.dart';
 export 'exceptions.dart';
 export 'notification/all.dart';
+export 'sortable.dart';

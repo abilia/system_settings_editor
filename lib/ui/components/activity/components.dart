@@ -186,7 +186,7 @@ class RadioField<T> extends StatelessWidget {
           overflow: Overflow.visible,
           children: <Widget>[
             Ink(
-              height: 56,
+              height: heigth,
               width: width,
               decoration: BoxDecoration(
                 borderRadius: borderRadius,

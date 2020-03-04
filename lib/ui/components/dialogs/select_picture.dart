@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/components/dialogs/image_archive_dialog.dart';
 import 'package:seagull/ui/theme.dart';
 
 class SelectPictureDialog extends StatelessWidget {
+  final BuildContext outerContext;
+  final List<Sortable> sortables;
+
+  const SelectPictureDialog({Key key, this.sortables, this.outerContext})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -19,7 +28,16 @@ class SelectPictureDialog extends StatelessWidget {
               translate.imageArchive,
               style: abiliaTheme.textTheme.body2,
             ),
-            active: false,
+            onTap: () async {
+              await Navigator.of(context).maybePop();
+              await showDialog(
+                context: context,
+                builder: (innerContext) => ImageArchiveDialog(
+                  sortables: sortables,
+                  outerContext: outerContext,
+                ),
+              );
+            },
           ),
           SizedBox(height: 8.0),
           PickField(
@@ -28,7 +46,11 @@ class SelectPictureDialog extends StatelessWidget {
               translate.myPhotos,
               style: abiliaTheme.textTheme.body2,
             ),
-            active: false,
+            onTap: () async {
+              var image =
+                  await ImagePicker.pickImage(source: ImageSource.gallery);
+              print(image);
+            },
           ),
           SizedBox(height: 8.0),
           PickField(
@@ -37,7 +59,11 @@ class SelectPictureDialog extends StatelessWidget {
               translate.takeNewPhoto,
               style: abiliaTheme.textTheme.body2,
             ),
-            active: false,
+            onTap: () async {
+              var image =
+                  await ImagePicker.pickImage(source: ImageSource.camera);
+              print(image);
+            },
           ),
         ],
       ),

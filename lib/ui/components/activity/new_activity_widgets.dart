@@ -17,21 +17,30 @@ class NameAndPictureWidget extends StatelessWidget {
       height: 84,
       child: Row(
         children: <Widget>[
-          LinedBorder(
-            key: TestKey.addPicture,
-            padding: const EdgeInsets.all(26),
-            child: Icon(
-              AbiliaIcons.add_photo,
-              size: 32,
-              color: AbiliaColors.black[75],
-            ),
-            onTap: () async {
-              await showDialog(
-                context: context,
-                builder: (context) => SelectPictureDialog(),
-              );
-            },
-          ),
+          BlocBuilder<SortableBloc, SortableState>(
+              builder: (context, sortableState) {
+            print('Number of sortables: ${sortableState}');
+            return LinedBorder(
+              key: TestKey.addPicture,
+              padding: const EdgeInsets.all(26),
+              child: Icon(
+                AbiliaIcons.add_photo,
+                size: 32,
+                color: AbiliaColors.black[75],
+              ),
+              onTap: () async {
+                await showDialog(
+                  context: context,
+                  builder: (innerContext) => SelectPictureDialog(
+                    sortables: (sortableState is SortablesLoaded)
+                        ? sortableState.sortables.toList()
+                        : <Sortable>[],
+                    outerContext: context,
+                  ),
+                );
+              },
+            );
+          }),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

@@ -44,6 +44,9 @@ class GetItInitializer {
   BaseClient _baseClient;
   set httpClient(BaseClient baseClient) => this._baseClient = baseClient;
 
+  SortableDb _sortableDb;
+  set sortableDb(SortableDb sortableDb) => this._sortableDb = sortableDb;
+
   init() {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
@@ -62,5 +65,6 @@ class GetItInitializer {
     GetIt.I.registerFactory<Stream<DateTime>>(
         _tickerFactory ?? () => Ticker.minute());
     GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());
+    GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb());
   }
 }

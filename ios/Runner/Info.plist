@@ -48,5 +48,9 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera needed to add pictures to calendar activity</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo library needed to add pictures to calendar activity</string>
 </dict>
 </plist>

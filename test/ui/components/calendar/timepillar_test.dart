@@ -31,7 +31,7 @@ void main() {
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
       mockActivityDb = MockActivityDb();
-      when(mockActivityDb.getActivitiesFromDb())
+      when(mockActivityDb.getActivities())
           .thenAnswer((_) => Future.value(<Activity>[]));
       GetItInitializer()
         ..activityDb = mockActivityDb

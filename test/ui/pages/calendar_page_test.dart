@@ -31,7 +31,7 @@ void main() {
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
       mockActivityDb = MockActivityDb();
-      when(mockActivityDb.getActivitiesFromDb())
+      when(mockActivityDb.getActivities())
           .thenAnswer((_) => Future.value(<Activity>[]));
       GetItInitializer()
         ..activityDb = mockActivityDb
@@ -57,7 +57,7 @@ void main() {
     });
 
     testWidgets('Should show one activity', (WidgetTester tester) async {
-      when(mockActivityDb.getActivitiesFromDb()).thenAnswer(
+      when(mockActivityDb.getActivities()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
 
       activityResponse = () => [FakeActivity.startsIn(1.hours())];
@@ -76,7 +76,7 @@ void main() {
 
     testWidgets('Agenda with one activity should not show Go to now-button',
         (WidgetTester tester) async {
-      when(mockActivityDb.getActivitiesFromDb()).thenAnswer(
+      when(mockActivityDb.getActivities()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
 
       activityResponse = () => [FakeActivity.startsNow()];
@@ -92,7 +92,7 @@ void main() {
       final key = 'KEYKEYKEYKEYKEY';
       final activities = FakeActivities.allPast
         ..add(FakeActivity.startsNow().copyWith(title: key));
-      when(mockActivityDb.getActivitiesFromDb())
+      when(mockActivityDb.getActivities())
           .thenAnswer((_) => Future.value(activities));
 
       activityResponse = () => activities;
@@ -131,7 +131,7 @@ void main() {
 
       final response = [activity];
       final mockActivityDb = MockActivityDb();
-      when(mockActivityDb.getActivitiesFromDb())
+      when(mockActivityDb.getActivities())
           .thenAnswer((_) => Future.value(response));
 
       GetItInitializer()
@@ -209,7 +209,7 @@ void main() {
 
       final response = [activity];
       final mockActivityDb = MockActivityDb();
-      when(mockActivityDb.getActivitiesFromDb())
+      when(mockActivityDb.getActivities())
           .thenAnswer((_) => Future.value(response));
 
       GetItInitializer()
@@ -281,7 +281,7 @@ void main() {
     testWidgets('Start and end time alarm for same activity',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getActivitiesFromDb())
+      when(mockActivityDb.getActivities())
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -314,7 +314,7 @@ void main() {
     testWidgets('Start alarm is displayed on top if tapped on notification',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getActivitiesFromDb())
+      when(mockActivityDb.getActivities())
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -350,7 +350,7 @@ void main() {
 
     testWidgets('Overlapping activities', (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getActivitiesFromDb())
+      when(mockActivityDb.getActivities())
           .thenAnswer((_) => Future.value([activity1, activity2]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -424,7 +424,7 @@ void main() {
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
       mockActivityDb = MockActivityDb();
-      when(mockActivityDb.getActivitiesFromDb())
+      when(mockActivityDb.getActivities())
           .thenAnswer((_) => Future.value(<Activity>[]));
       GetItInitializer()
         ..activityDb = mockActivityDb
