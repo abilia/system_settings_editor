@@ -57,6 +57,17 @@ void main() {
       expect(find.byType(TimePillar), findsOneWidget);
     });
 
+    testWidgets('Can navigate back to agenda view',
+        (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      await tester.tap(changeViewButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.agendaListButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(TimePillar), findsNothing);
+      expect(find.byType(Agenda), findsOneWidget);
+    });
+
     testWidgets('Shows timepillar', (WidgetTester tester) async {
       await goToTimePillar(tester);
       expect(find.byType(SliverTimePillar), findsOneWidget);

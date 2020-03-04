@@ -33,6 +33,7 @@ class ChangeCalendarDialog extends StatelessWidget {
           ),
           SizedBox(height: 8.0),
           PickField(
+            key: TestKey.agendaListButton,
             leading: Icon(AbiliaIcons.list_order),
             label: Text(
               translate.listView,
