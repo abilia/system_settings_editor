@@ -14,39 +14,37 @@ class NewActivityPage extends StatelessWidget {
     return BlocBuilder<AddActivityBloc, AddActivityState>(
       builder: (context, state) {
         final activity = state.activity;
-        return Form(
-          child: Scaffold(
-            appBar: AbiliaAppBar(
-              title: translator.newActivity,
-              trailing: ActionButton(
-                key: TestKey.finishNewActivityButton,
-                child: Icon(
-                  AbiliaIcons.ok,
-                  size: 32,
-                ),
-                onPressed: state.canSave
-                    ? () async {
-                        BlocProvider.of<AddActivityBloc>(context)
-                            .add(SaveActivity());
-                        await Navigator.of(context).maybePop();
-                      }
-                    : null,
+        return Scaffold(
+          appBar: AbiliaAppBar(
+            title: translator.newActivity,
+            trailing: ActionButton(
+              key: TestKey.finishNewActivityButton,
+              child: Icon(
+                AbiliaIcons.ok,
+                size: 32,
               ),
+              onPressed: state.canSave
+                  ? () async {
+                      BlocProvider.of<AddActivityBloc>(context)
+                          .add(SaveActivity());
+                      await Navigator.of(context).maybePop();
+                    }
+                  : null,
             ),
-            body: ListView(
-              padding: const EdgeInsets.fromLTRB(0, 4.0, 12, 52.0),
-              children: <Widget>[
-                separated(NameAndPictureWidget(activity)),
-                separated(DateAndTimeWidget(activity, today: today)),
-                separated(CategoryWidget(activity)),
-                CollapsableWidget(
-                  child: separated(AlarmWidget(activity)),
-                  collapsed: activity.fullDay,
-                ),
-                separated(CheckableAndDeleteAfterWidget(activity)),
-                padded(AvailibleForWidget(activity)),
-              ],
-            ),
+          ),
+          body: ListView(
+            padding: const EdgeInsets.fromLTRB(0, 4.0, 12, 52.0),
+            children: <Widget>[
+              separated(NameAndPictureWidget(activity)),
+              separated(DateAndTimeWidget(activity, today: today)),
+              separated(CategoryWidget(activity)),
+              CollapsableWidget(
+                child: separated(AlarmWidget(activity)),
+                collapsed: activity.fullDay,
+              ),
+              separated(CheckableAndDeleteAfterWidget(activity)),
+              padded(AvailibleForWidget(activity)),
+            ],
           ),
         );
       },

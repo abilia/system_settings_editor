@@ -110,10 +110,9 @@ class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
 
   Stream<UnsavedActivityState> _mapChangeEndTimeToState(
       ChangeEndTime event) async* {
-    final a = state.activity;
-    final startTime = a.start;
+    final activity = state.activity;
+    final startTime = activity.start;
     final newEndTime = event.time;
-    if (TimeOfDay.fromDateTime(startTime) == newEndTime) return;
 
     final pickedEndTimeBeforeStartTime = newEndTime.hour < startTime.hour ||
         newEndTime.hour == startTime.hour &&
@@ -132,7 +131,7 @@ class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
           );
 
     yield UnsavedActivityState(
-      a.copyWith(duration: newDuration.inMilliseconds),
+      activity.copyWith(duration: newDuration.inMilliseconds),
     );
   }
 }

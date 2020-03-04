@@ -115,7 +115,7 @@ class TimeIntervallPicker extends StatelessWidget {
             activity.start,
             key: TestKey.startTimePicker,
             onTap: () async {
-              final newStartTime = await getTime(context, activity.start);
+              final newStartTime = await getStartTime(context, activity.start);
               if (newStartTime != null) {
                 BlocProvider.of<AddActivityBloc>(context)
                     .add(ChangeStartTime(newStartTime));
@@ -141,7 +141,8 @@ class TimeIntervallPicker extends StatelessWidget {
             activity.hasEndTime ? activity.end : null,
             key: TestKey.endTimePicker,
             onTap: () async {
-              final newEndTime = await getTime(context, activity.end);
+              final newEndTime =
+                  await getEndTime(context, activity.end, activity.start);
               if (newEndTime != null) {
                 BlocProvider.of<AddActivityBloc>(context)
                     .add(ChangeEndTime(newEndTime));
@@ -153,11 +154,33 @@ class TimeIntervallPicker extends StatelessWidget {
     );
   }
 
-  Future<TimeOfDay> getTime(BuildContext context, DateTime time) {
+  Future<TimeOfDay> getStartTime(BuildContext context, DateTime time) {
     return showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(time),
         builder: (BuildContext context, Widget child) => child);
+  }
+
+  Future<TimeOfDay> getEndTime(
+      BuildContext context, DateTime endTime, DateTime startTime) {
+    return showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(endTime),
+      builder: (BuildContext context, Widget child) => Stack(
+        children: <Widget>[
+          child,
+          Align(
+            alignment: Alignment(-0.58, 0.71),
+            child: DeleteFloatingButton(
+                onDelete: () {
+                  Navigator.of(context)
+                      .maybePop(TimeOfDay.fromDateTime(startTime));
+                },
+                text: 'Remove'),
+          ),
+        ],
+      ),
+    );
   }
 }
 
