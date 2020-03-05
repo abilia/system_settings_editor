@@ -24,7 +24,7 @@ void main() {
           ], child: widget),
         );
 
-    testWidgets('New activity shows', (WidgetTester tester) async {
+    testWidgets('Image archive smoke test', (WidgetTester tester) async {
       await tester.pumpWidget(wrapWithMaterialApp(ImageArchive(
         onChanged: (val) {},
       )));
