@@ -19,6 +19,8 @@ class MockPushBloc extends Mock implements PushBloc {}
 
 class MockSyncBloc extends Mock implements SyncBloc {}
 
+class MockSortableBloc extends Mock implements SortableBloc {}
+
 class MockFirebasePushService extends Mock implements FirebasePushService {}
 
 class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
