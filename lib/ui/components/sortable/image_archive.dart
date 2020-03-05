@@ -27,10 +27,10 @@ class ImageArchive extends StatelessWidget {
           crossAxisCount: 3,
           childAspectRatio: 0.96,
           children: currentFolderContent.map((s) {
-            final j = json.decode(s.data);
-            final fileId = j['fileId'];
-            final name = j['name'];
-            final icon = j['icon'];
+            final sortableData = json.decode(s.data);
+            final fileId = sortableData['fileId'];
+            final name = sortableData['name'];
+            final icon = sortableData['icon'];
             return Column(
               children: <Widget>[
                 s.isGroup
