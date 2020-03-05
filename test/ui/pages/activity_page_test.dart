@@ -68,6 +68,79 @@ void main() {
       expect(find.byType(ActivityCard), findsOneWidget);
     });
   });
+  group('Change alarm', () {
+    final alarmButtonFinder = find.byKey(TestKey.editAlarm);
+    final alarmDialogFinder = find.byType(SelectAlarmTypeDialog);
+    final vibrationRadioButtonFinder = find.byKey(TestKey.vibrationAlarm);
+    final noAlarmIconFinder = find.byIcon(AbiliaIcons.handi_no_alarm_vibration);
+    final vibrateAlarmIconFinder = find.byIcon(AbiliaIcons.handi_vibration);
+    final soundVibrateAlarmIconFinder =
+        find.byIcon(AbiliaIcons.handi_alarm_vibration);
+
+    testWidgets('Alarm view dialog shows', (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getActivitiesFromDb()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+      await navigateToActivityPage(tester);
+      // Act
+      await tester.tap(alarmButtonFinder);
+      await tester.pump();
+      // Assert
+      expect(alarmDialogFinder, findsOneWidget);
+    });
+
+    testWidgets('Alarm button shows correct icon vibration',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getActivitiesFromDb()).thenAnswer((_) =>
+          Future.value(<Activity>[
+            FakeActivity.startsNow().copyWith(alarmType: ALARM_VIBRATION)
+          ]));
+      // Act
+      await navigateToActivityPage(tester);
+      // Assert
+      expect(vibrateAlarmIconFinder, findsOneWidget);
+    });
+    testWidgets('Alarm button shows correct icon sound and vibratio',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getActivitiesFromDb())
+          .thenAnswer((_) => Future.value(<Activity>[
+                FakeActivity.startsNow().copyWith(
+                    alarmType: ALARM_SOUND_AND_VIBRATION_ONLY_ON_START)
+              ]));
+      // Act
+      await navigateToActivityPage(tester);
+      // Assert
+      expect(soundVibrateAlarmIconFinder, findsOneWidget);
+    });
+    testWidgets('Alarm button shows correct icon no alarm',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getActivitiesFromDb()).thenAnswer((_) => Future.value(
+          <Activity>[FakeActivity.startsNow().copyWith(alarmType: NO_ALARM)]));
+      // Act
+      await navigateToActivityPage(tester);
+      // Assert
+      expect(noAlarmIconFinder, findsOneWidget);
+    });
+
+    testWidgets('Alarm button changes alarm correct icon',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getActivitiesFromDb()).thenAnswer((_) => Future.value(
+          <Activity>[FakeActivity.startsNow().copyWith(alarmType: NO_ALARM)]));
+      // Act
+      await navigateToActivityPage(tester);
+      await tester.tap(alarmButtonFinder);
+      await tester.pump();
+      await tester.tap(vibrationRadioButtonFinder);
+      await tester.pump();
+      // Assert
+      expect(noAlarmIconFinder, findsNothing);
+      expect(vibrateAlarmIconFinder, findsOneWidget);
+    });
+  });
 
   group('Change reminder', () {
     final reminderButtonFinder = find.byKey(TestKey.editReminder);

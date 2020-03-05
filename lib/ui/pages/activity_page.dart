@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/activity.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -59,12 +60,27 @@ class ActivityPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               ActionButton(
+                key: TestKey.editAlarm,
                 themeData: menuButtonTheme,
                 child: Icon(
-                  AbiliaIcons.handi_vibration,
+                  activity.alarm.iconData(),
                   size: 32,
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  final alarm = activity.alarm;
+                  final result = await showViewDialog<Alarm>(
+                    context: context,
+                    builder: (context) => SelectAlarmTypeDialog(
+                      alarm: alarm.type,
+                    ),
+                  );
+                  if (result != null) {
+                    final changedActivity =
+                        activity.copyWith(alarm: alarm.copyWith(type: result));
+                    BlocProvider.of<ActivitiesBloc>(context)
+                        .add(UpdateActivity(changedActivity));
+                  }
+                },
               ),
               ActionButton(
                 key: TestKey.editReminder,
