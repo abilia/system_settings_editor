@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/sortable/image_archive/bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -26,26 +28,31 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final sortableBloc = BlocProvider.of<SortableBloc>(widget.outerContext);
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
-    return ViewDialog(
-      fullScreen: imageArchiveView,
-      heading: Text(translate.selectPicture, style: theme.textTheme.title),
-      onOk: imageSelected != null
-          ? () {
-              widget.onChanged(imageSelected);
-            }
-          : null,
-      child: imageArchiveView
-          ? ImageArchive(
-              outerContext: widget.outerContext,
-              onChanged: (imageId) {
-                setState(() {
-                  imageSelected = imageId;
-                });
-              },
-            )
-          : buildSelectPictureSource(translate),
+    return BlocProvider<ImageArchiveBloc>(
+      create: (context) => ImageArchiveBloc(
+        sortableBloc: sortableBloc,
+      ),
+      child: ViewDialog(
+        fullScreen: imageArchiveView,
+        heading: Text(translate.selectPicture, style: theme.textTheme.title),
+        onOk: imageSelected != null
+            ? () {
+                widget.onChanged(imageSelected);
+              }
+            : null,
+        child: imageArchiveView
+            ? ImageArchive(
+                onChanged: (imageId) {
+                  setState(() {
+                    imageSelected = imageId;
+                  });
+                },
+              )
+            : buildSelectPictureSource(translate),
+      ),
     );
   }
 

@@ -8,24 +8,17 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class ImageArchive extends StatelessWidget {
-  final BuildContext outerContext;
   final ValueChanged<String> onChanged;
 
   const ImageArchive({
     Key key,
-    @required this.outerContext,
     @required this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final sortableBloc = BlocProvider.of<SortableBloc>(outerContext);
-    return BlocProvider<ImageArchiveBloc>(
-      create: (context) => ImageArchiveBloc(
-        sortableBloc: sortableBloc,
-      ),
-      child: BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
-          builder: (context, archiveState) {
+    return BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
+      builder: (context, archiveState) {
         final currentFolderContent =
             archiveState.all[archiveState.currentFolder] == null
                 ? []
@@ -65,7 +58,7 @@ class ImageArchive extends StatelessWidget {
             );
           }).toList(),
         );
-      }),
+      },
     );
   }
 }
