@@ -126,16 +126,18 @@ class _ArrowState extends State<_Arrow> {
   }
 
   @override
-  Widget build(BuildContext context) => AnimatedContainer(
-        transform: condition ? widget.translation : widget.hiddenTranslation,
-        width: widget.width,
-        height: widget.heigth,
-        decoration: BoxDecoration(
-          borderRadius: widget.borderRadius,
-          color: AbiliaColors.white[135],
+  Widget build(BuildContext context) => ClipRect(
+        child: AnimatedContainer(
+          transform: condition ? widget.translation : widget.hiddenTranslation,
+          width: widget.width,
+          height: widget.heigth,
+          decoration: BoxDecoration(
+            borderRadius: widget.borderRadius,
+            color: AbiliaColors.white[135],
+          ),
+          child: Icon(widget.icon, size: 36),
+          duration: Duration(milliseconds: 100),
         ),
-        child: Icon(widget.icon, size: 36),
-        duration: Duration(milliseconds: 100),
       );
 
   void listener() {

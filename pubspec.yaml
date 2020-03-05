@@ -43,6 +43,9 @@ dev_dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.7.3
   mockito: ^4.1.1
+  flutter_driver:
+    sdk: flutter
+  test: any
 
 flutter_icons:
   android: true

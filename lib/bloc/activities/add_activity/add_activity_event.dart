@@ -30,22 +30,30 @@ class ChangeDate extends AddActivityEvent {
 
 abstract class ChangeTime extends AddActivityEvent {
   final TimeOfDay time;
-
-  ChangeTime(this.time);
+  const ChangeTime(this.time);
   @override
   List<Object> get props => [time];
 }
 
 class ChangeStartTime extends ChangeTime {
-  ChangeStartTime(TimeOfDay time) : super(time);
+  const ChangeStartTime(TimeOfDay time) : super(time);
   @override
   String toString() => 'ChangeStartTime { $time }';
 }
 
 class ChangeEndTime extends ChangeTime {
-  ChangeEndTime(TimeOfDay time) : super(time);
+  const ChangeEndTime(TimeOfDay time) : super(time);
   @override
   String toString() => 'ChangeEndTime { $time }';
+}
+
+class AddOrRemoveReminder extends AddActivityEvent {
+  final Duration reminder;
+  const AddOrRemoveReminder(this.reminder);
+  @override
+  String toString() => 'AddOrRemoveReminder { $reminder }';
+  @override
+  List<Object> get props => [reminder];
 }
 
 class ImageSelected extends AddActivityEvent {

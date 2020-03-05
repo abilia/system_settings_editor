@@ -31,7 +31,7 @@ class MockDatabaseRepository extends Mock implements DatabaseRepository {}
 
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 
-class MockClient extends Mock implements BaseClient {}
+class MockedClient extends Mock implements BaseClient {}
 
 class MockFlutterLocalNotificationsPlugin extends Mock
     implements FlutterLocalNotificationsPlugin {}

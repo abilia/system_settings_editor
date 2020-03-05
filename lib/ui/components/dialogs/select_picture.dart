@@ -36,7 +36,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
         sortableBloc: sortableBloc,
       ),
       child: ViewDialog(
-        fullScreen: imageArchiveView,
+        expanded: imageArchiveView,
         heading: Text(translate.selectPicture, style: theme.textTheme.title),
         onOk: imageSelected != null
             ? () {

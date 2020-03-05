@@ -11,7 +11,7 @@ import '../mocks.dart';
 
 void main() {
   final baseUrl = 'oneUrl';
-  final mockClient = MockClient();
+  final mockClient = MockedClient();
   final mockActivityDb = MockActivityDb();
   final userId = 1;
   final startTime = DateTime(2020, 12, 12, 12, 12);

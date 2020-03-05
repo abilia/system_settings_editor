@@ -83,7 +83,7 @@ class Activity extends Equatable {
     @required String title,
     @required int startTime,
     int duration = 0,
-    int category = 0,
+    int category = Category.right,
     int endTime,
     int recurrentType = 0,
     int recurrentData = 0,

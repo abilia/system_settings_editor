@@ -105,11 +105,9 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
   }
 
   Widget buildBottomAppBar(CalendarViewType currentView, BuildContext context) {
-    return Container(
-      decoration:
-          BoxDecoration(color: Theme.of(context).bottomAppBarTheme.color),
-      height: 64,
-      child: Padding(
+    return BottomAppBar(
+      child: Container(
+        height: 64,
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Stack(
           children: <Widget>[
@@ -136,12 +134,14 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                     MaterialPageRoute(
                       builder: (innerContext) {
                         final addActivitybloc = AddActivityBloc(
-                            activitiesBloc:
-                                BlocProvider.of<ActivitiesBloc>(context),
-                            activity: Activity.createNew(
-                                title: '',
-                                startTime:
-                                    now.nextHalfHour().millisecondsSinceEpoch));
+                          activitiesBloc:
+                              BlocProvider.of<ActivitiesBloc>(context),
+                          activity: Activity.createNew(
+                            title: '',
+                            startTime:
+                                now.nextHalfHour().millisecondsSinceEpoch,
+                          ),
+                        );
                         return MultiBlocProvider(
                           providers: [
                             BlocProvider<AddActivityBloc>(
@@ -246,7 +246,7 @@ class CalendarViewSwitchButton extends StatelessWidget {
             ],
           ),
           onPressed: () async {
-            final result = await showDialog<CalendarViewType>(
+            final result = await showViewDialog<CalendarViewType>(
               context: context,
               builder: (context) => ChangeCalendarDialog(
                 currentViewType: currentView,
