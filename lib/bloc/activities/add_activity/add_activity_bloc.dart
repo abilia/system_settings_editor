@@ -33,10 +33,46 @@ class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
     if (event is ChangeEndTime && event.time != null) {
       yield* _mapChangeEndTimeToState(event);
     }
-    if (event is SaveActivity && state.canSave) {
-      activitiesBloc.add(AddActivity(state.activity));
-      yield SavedActivityState(state.activity);
+    if (event is AddOrRemoveReminder) {
+      yield* _mapAddOrRemoveReminderToState(event.reminder.inMilliseconds);
     }
+    if (event is SaveActivity && state.canSave) {
+      yield* _mapSaveActivityToState(state.activity);
+    }
+  }
+
+  Stream<UnsavedActivityState> _mapAddOrRemoveReminderToState(
+    int reminder,
+  ) async* {
+    final reminders = state.activity.reminderBefore.toSet();
+    if (!reminders.add(reminder)) {
+      reminders.remove(reminder);
+    }
+    yield UnsavedActivityState(
+      state.activity.copyWith(reminderBefore: reminders),
+    );
+  }
+
+  Stream<SavedActivityState> _mapSaveActivityToState(Activity activity) async* {
+    if (activity.fullDay) {
+      final startOfDay = activity.startDateTime.onlyDays();
+      final endTime = startOfDay
+          .add(25.hours())
+          .onlyDays()
+          .subtract(1.milliseconds())
+          .millisecondsSinceEpoch;
+      final starTime = startOfDay.millisecondsSinceEpoch;
+      activity = activity.copyWith(
+        startTime: starTime,
+        endTime: endTime,
+        duration: endTime - starTime,
+        alarmType: NO_ALARM,
+        reminderBefore: [],
+      );
+    }
+
+    activitiesBloc.add(AddActivity(activity));
+    yield SavedActivityState(activity);
   }
 
   Stream<UnsavedActivityState> _mapChangeDateToState(ChangeDate event) async* {
@@ -74,10 +110,9 @@ class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
 
   Stream<UnsavedActivityState> _mapChangeEndTimeToState(
       ChangeEndTime event) async* {
-    final a = state.activity;
-    final startTime = a.start;
+    final activity = state.activity;
+    final startTime = activity.start;
     final newEndTime = event.time;
-    if (TimeOfDay.fromDateTime(startTime) == newEndTime) return;
 
     final pickedEndTimeBeforeStartTime = newEndTime.hour < startTime.hour ||
         newEndTime.hour == startTime.hour &&
@@ -96,7 +131,7 @@ class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
           );
 
     yield UnsavedActivityState(
-      a.copyWith(duration: newDuration.inMilliseconds),
+      activity.copyWith(duration: newDuration.inMilliseconds),
     );
   }
 }

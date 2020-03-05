@@ -13,49 +13,59 @@ class NewActivityPage extends StatelessWidget {
     final translator = Translator.of(context).translate;
     return BlocBuilder<AddActivityBloc, AddActivityState>(
       builder: (context, state) {
-        final tiles = <Widget>[
-          NameAndPictureWidget(state.activity),
-          DateAndTimeWidget(
-            state.activity,
-            today: today,
+        final activity = state.activity;
+        return Scaffold(
+          appBar: AbiliaAppBar(
+            title: translator.newActivity,
+            trailing: ActionButton(
+              key: TestKey.finishNewActivityButton,
+              child: Icon(
+                AbiliaIcons.ok,
+                size: 32,
+              ),
+              onPressed: state.canSave
+                  ? () async {
+                      BlocProvider.of<AddActivityBloc>(context)
+                          .add(SaveActivity());
+                      await Navigator.of(context).maybePop();
+                    }
+                  : null,
+            ),
           ),
-          CategoryWidget(state.activity),
-          AlarmWidget(state.activity),
-          CheckableAndDeleteAfterWidget(state.activity),
-          AvailibleForWidget(state.activity),
-        ];
-        return Form(
-          child: Scaffold(
-            appBar: AbiliaAppBar(
-              title: translator.newActivity,
-              trailing: ActionButton(
-                key: TestKey.finishNewActivityButton,
-                child: Icon(
-                  AbiliaIcons.ok,
-                  size: 32,
-                ),
-                onPressed: state.canSave
-                    ? () async {
-                        BlocProvider.of<AddActivityBloc>(context)
-                            .add(SaveActivity());
-                        await Navigator.of(context).maybePop();
-                      }
-                    : null,
+          body: ListView(
+            padding: const EdgeInsets.fromLTRB(0, 4.0, 12, 52.0),
+            children: <Widget>[
+              separated(NameAndPictureWidget(activity)),
+              separated(DateAndTimeWidget(activity, today: today)),
+              separated(CategoryWidget(activity)),
+              CollapsableWidget(
+                child: separated(AlarmWidget(activity)),
+                collapsed: activity.fullDay,
               ),
-            ),
-            body: ListView.separated(
-              padding: const EdgeInsets.fromLTRB(0, 20, 16, 72),
-              itemCount: tiles.length,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: tiles[index],
-              ),
-              separatorBuilder: (context, index) =>
-                  Divider(color: AbiliaColors.transparantBlack[10], height: 32),
-            ),
+              separated(CheckableAndDeleteAfterWidget(activity)),
+              padded(AvailibleForWidget(activity)),
+            ],
           ),
         );
       },
+    );
+  }
+
+  Widget separated(Widget child) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: AbiliaColors.transparantBlack[10]),
+        ),
+      ),
+      child: padded(child),
+    );
+  }
+
+  Widget padded(Widget child) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12.0, 16.0, 4.0, 16.0),
+      child: child,
     );
   }
 }

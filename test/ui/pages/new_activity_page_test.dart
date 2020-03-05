@@ -47,10 +47,10 @@ void main() {
       initializeDateFormatting();
     });
 
-    Future scrollDown(WidgetTester tester) async {
+    Future scrollDown(WidgetTester tester, {double dy = -800.0}) async {
       final Offset center =
           tester.getCenter(find.byKey(TestKey.leftCategoryRadio));
-      await tester.dragFrom(center, Offset(0.0, -800.0));
+      await tester.dragFrom(center, Offset(0.0, dy));
       await tester.pump();
     }
 
@@ -128,6 +128,8 @@ void main() {
               .widget<Switch>(find.byKey(ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isFalse);
+      expect(find.byKey(TestKey.startTimePicker), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.handi_reminder), findsOneWidget);
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
       expect(
@@ -135,6 +137,8 @@ void main() {
               .widget<Switch>(find.byKey(ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isTrue);
+      expect(find.byKey(TestKey.startTimePicker), findsNothing);
+      expect(find.byIcon(AbiliaIcons.handi_reminder), findsNothing);
     });
 
     testWidgets('alarm at start switch', (WidgetTester tester) async {
@@ -273,26 +277,28 @@ void main() {
       final rightCategoryRadio1 =
           tester.widget<Radio>(find.byKey(rightRadioKey));
 
-      expect(leftCategoryRadio1.groupValue, leftCategoryRadio1.value);
-      expect(rightCategoryRadio1.groupValue, isNot(rightCategoryRadio1.value));
+      expect(leftCategoryRadio1.value, Category.left);
+      expect(rightCategoryRadio1.value, Category.right);
+      expect(leftCategoryRadio1.groupValue, Category.right);
+      expect(rightCategoryRadio1.groupValue, Category.right);
 
-      await tester.tap(find.byKey(TestKey.rightCategoryRadio));
+      await tester.tap(find.byKey(TestKey.leftCategoryRadio));
       await tester.pumpAndSettle();
       final leftCategoryRadio2 = tester.widget<Radio>(find.byKey(leftRadioKey));
       final rightCategoryRadio2 =
           tester.widget<Radio>(find.byKey(rightRadioKey));
 
-      expect(leftCategoryRadio2.groupValue, isNot(leftCategoryRadio2.value));
-      expect(rightCategoryRadio2.groupValue, rightCategoryRadio2.value);
+      expect(leftCategoryRadio2.groupValue, Category.left);
+      expect(rightCategoryRadio2.groupValue, Category.left);
 
-      await tester.tap(find.byKey(TestKey.leftCategoryRadio));
+      await tester.tap(find.byKey(TestKey.rightCategoryRadio));
       await tester.pumpAndSettle();
       final leftCategoryRadio3 = tester.widget<Radio>(find.byKey(leftRadioKey));
       final rightCategoryRadio3 =
           tester.widget<Radio>(find.byKey(rightRadioKey));
 
-      expect(leftCategoryRadio3.groupValue, leftCategoryRadio3.value);
-      expect(rightCategoryRadio3.groupValue, isNot(rightCategoryRadio3.value));
+      expect(leftCategoryRadio3.groupValue, Category.right);
+      expect(rightCategoryRadio3.groupValue, Category.right);
     });
 
     testWidgets('Availible for dialog', (WidgetTester tester) async {
@@ -312,6 +318,78 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text(translate.onlyMe), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.password_protection), findsOneWidget);
+    });
+
+    testWidgets('Reminder', (WidgetTester tester) async {
+      // Arrange
+      await tester
+          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+      await tester.pumpAndSettle();
+      final reminderSwitchFinder = find.byIcon(AbiliaIcons.handi_reminder);
+      final reminder15MinFinder =
+          find.text(15.minutes().toReminderString(translate));
+      final reminderDayFinder = find.text(1.days().toReminderString(translate));
+      final remindersAllSelected =
+          find.byIcon(AbiliaIcons.radiocheckbox_selected);
+      final remindersAll = find.byType(SelectableField);
+      final reminderField = find.byType(Reminders);
+
+      // Assert -- reminder switch is visible but reminders field is collapsed
+      expect(reminderSwitchFinder, findsOneWidget);
+      expect(remindersAll, findsNothing);
+      expect(reminderField, findsNothing);
+
+      // Act -- tap reminder switch
+      await tester.tap(reminderSwitchFinder);
+      await tester.pumpAndSettle();
+      // Assert -- 15 min reminder is selected, all reminders shows
+      expect(reminderField, findsOneWidget);
+      expect(remindersAll, findsNWidgets(6));
+      expect(reminder15MinFinder, findsOneWidget);
+      expect(remindersAllSelected, findsOneWidget);
+
+      // Act -- tap on day reminder
+      await tester.tap(reminderDayFinder);
+      await tester.pumpAndSettle();
+      // Assert -- 15 min and 1 day reminder is selected, all reminders shows
+      expect(reminderField, findsOneWidget);
+      expect(remindersAll, findsNWidgets(6));
+      expect(reminder15MinFinder, findsOneWidget);
+      expect(reminderDayFinder, findsOneWidget);
+      expect(remindersAllSelected, findsNWidgets(2));
+
+      // Act -- tap reminder switch
+      await tester.tap(reminderSwitchFinder);
+      await tester.pumpAndSettle();
+      // Assert -- no reminders shows, is collapsed
+      expect(reminderField, findsNothing);
+      expect(remindersAll, findsNothing);
+      expect(reminder15MinFinder, findsNothing);
+      expect(reminderDayFinder, findsNothing);
+      expect(remindersAllSelected, findsNothing);
+
+      // Act -- tap reminder switch then day reminder
+      await tester.tap(reminderSwitchFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(reminderDayFinder);
+      await tester.pumpAndSettle();
+      // Assert -- 15 min and 1 day reminder is selected, all reminders shows
+      expect(reminderField, findsOneWidget);
+      expect(remindersAll, findsNWidgets(6));
+      expect(reminder15MinFinder, findsOneWidget);
+      expect(reminderDayFinder, findsOneWidget);
+      expect(remindersAllSelected, findsNWidgets(2));
+
+      // Act -- tap 15 min and day reminder
+      await tester.tap(reminder15MinFinder);
+      await tester.tap(reminderDayFinder);
+      await tester.pumpAndSettle();
+      // Assert -- no reminders shows, is collapsed
+      expect(reminderField, findsNothing);
+      expect(remindersAll, findsNothing);
+      expect(reminder15MinFinder, findsNothing);
+      expect(reminderDayFinder, findsNothing);
+      expect(remindersAllSelected, findsNothing);
     });
   });
 }

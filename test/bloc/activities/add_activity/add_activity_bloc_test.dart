@@ -72,6 +72,44 @@ void main() {
     );
   });
 
+  test('Saving full day activity sets correct time and alarms', () async {
+    // Arrange
+    final activity = Activity.createNew(
+      title: 'a title',
+      fullDay: true,
+      startTime: aTime.millisecondsSinceEpoch,
+      endTime: aTime.add(5.hours()).millisecondsSinceEpoch,
+      reminderBefore: [10.minutes().inMilliseconds, 1.hours().inMilliseconds],
+      alarmType: ALARM_SOUND_AND_VIBRATION,
+    );
+
+    final activityExpectedToBeSaved = activity.copyWith(
+      alarmType: NO_ALARM,
+      startTime: activity.startDateTime.onlyDays().millisecondsSinceEpoch,
+      endTime: activity.startDateTime
+              .add(1.days())
+              .onlyDays()
+              .millisecondsSinceEpoch -
+          1,
+      duration: 1.days().inMilliseconds - 1,
+      reminderBefore: [],
+    );
+
+    AddActivityBloc addActivityBloc =
+        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    // Act
+    addActivityBloc.add(SaveActivity());
+
+    // Assert
+    await expectLater(
+      addActivityBloc,
+      emitsInOrder([
+        UnsavedActivityState(activity),
+        SavedActivityState(activityExpectedToBeSaved),
+      ]),
+    );
+  });
+
   test('Changing date changes date but not time', () async {
     // Arrange
     final DateTime aDate = DateTime(2022, 02, 22, 22, 30);
@@ -192,6 +230,46 @@ void main() {
       emitsInOrder([
         UnsavedActivityState(activity),
         UnsavedActivityState(expetedNewActivity),
+      ]),
+    );
+  });
+
+  test('Add or remove reminders', () async {
+    // Arrange
+    final DateTime aDate = DateTime(2001, 01, 01, 20, 30);
+
+    final activity = Activity.createNew(
+      title: '',
+      startTime: aDate.millisecondsSinceEpoch,
+      duration: 30.minutes().inMilliseconds,
+    );
+    final min15Reminder = 15.minutes();
+    final hour1Reminder = 1.hours();
+    final with15MinReminder =
+        activity.copyWith(reminderBefore: [min15Reminder.inMilliseconds]);
+    final with15MinAnd1HourReminder = activity.copyWith(reminderBefore: [
+      min15Reminder.inMilliseconds,
+      hour1Reminder.inMilliseconds
+    ]);
+
+    AddActivityBloc addActivityBloc =
+        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+
+    // Act
+    addActivityBloc.add(AddOrRemoveReminder(min15Reminder));
+    addActivityBloc.add(AddOrRemoveReminder(hour1Reminder));
+    addActivityBloc.add(AddOrRemoveReminder(hour1Reminder));
+    addActivityBloc.add(AddOrRemoveReminder(min15Reminder));
+
+    // Assert
+    await expectLater(
+      addActivityBloc,
+      emitsInOrder([
+        UnsavedActivityState(activity),
+        UnsavedActivityState(with15MinReminder),
+        UnsavedActivityState(with15MinAnd1HourReminder),
+        UnsavedActivityState(with15MinReminder),
+        UnsavedActivityState(activity),
       ]),
     );
   });

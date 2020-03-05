@@ -221,6 +221,7 @@ class AbiliaColors {
       25: Color(0x40000000),
       40: Color(0x66000000),
       50: Color(0x80000000),
+      90: Color(0xE6000000),
       100: Color(_blackPrimaryValue),
     },
   );
@@ -247,6 +248,7 @@ class AbiliaColors {
       25: Color(0x40FFFFFF),
       40: Color(0x66FFFFFF),
       50: Color(0x80FFFFFF),
+      90: Color(0xE6FFFFFF),
       100: Color(_whitePrimaryValue),
     },
   );
