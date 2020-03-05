@@ -41,9 +41,11 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
       yield ImageArchiveState(state.allByFolder, state.allById,
           state.currentFolderId, event.imageId);
     } else if (event is SortablesUpdated) {
+      final imageArchive =
+          event.sortables.where((s) => s.type == 'imagearchive');
       final allByFolder =
-          groupBy<Sortable, String>(event.sortables, (s) => s.groupId);
-      final allById = Map<String, Sortable>.fromIterable(event.sortables,
+          groupBy<Sortable, String>(imageArchive, (s) => s.groupId);
+      final allById = Map<String, Sortable>.fromIterable(imageArchive,
           key: (s) => s.id, value: (s) => s);
       final selectedImage = allById[state.selectedImageId];
       final currentFolder = allById[state.currentFolderId];
