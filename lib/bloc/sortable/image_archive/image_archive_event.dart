@@ -30,3 +30,8 @@ class SortablesUpdated extends ImageArchiveEvent {
   @override
   List<Object> get props => [sortables];
 }
+
+class NavigateUp extends ImageArchiveEvent {
+  @override
+  List<Object> get props => [];
+}

@@ -60,6 +60,7 @@ class ViewDialog extends StatelessWidget {
   final Widget child;
   final GestureTapCallback onOk;
   final Widget deleteButton;
+  final Widget backButton;
   final bool expanded;
 
   const ViewDialog({
@@ -68,6 +69,7 @@ class ViewDialog extends StatelessWidget {
     this.heading,
     this.onOk,
     this.deleteButton,
+    this.backButton,
     this.expanded = false,
   }) : super(key: key);
 
@@ -113,11 +115,21 @@ class ViewDialog extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                if (heading != null)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 16.0),
-                    child: heading,
-                  ),
+                Row(
+                  children: <Widget>[
+                    if (backButton != null)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                        child: backButton,
+                      ),
+                    if (heading != null)
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 16.0),
+                        child: heading,
+                      ),
+                  ],
+                ),
                 Divider(
                   color: AbiliaColors.transparantBlack[10],
                   endIndent: 12.0,

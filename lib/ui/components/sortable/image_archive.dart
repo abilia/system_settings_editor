@@ -20,9 +20,9 @@ class ImageArchive extends StatelessWidget {
     return BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
       builder: (context, archiveState) {
         final currentFolderContent =
-            archiveState.all[archiveState.currentFolder] == null
+            archiveState.allByFolder[archiveState.currentFolderId] == null
                 ? []
-                : archiveState.all[archiveState.currentFolder];
+                : archiveState.allByFolder[archiveState.currentFolderId];
         return GridView.count(
           crossAxisCount: 3,
           childAspectRatio: 0.96,
@@ -120,7 +120,7 @@ class ArchiveImage extends StatelessWidget {
           heigth: 112,
           value: imageId,
           onChanged: onChanged,
-          groupValue: archiveState.selected,
+          groupValue: archiveState.selectedImageId,
           child: Column(
             children: <Widget>[
               Text(

@@ -39,6 +39,10 @@ class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
     if (event is SaveActivity && state.canSave) {
       yield* _mapSaveActivityToState(state.activity);
     }
+    if (event is ImageSelected) {
+      yield UnsavedActivityState(
+          state.activity.copyWith(fileId: event.imageId));
+    }
   }
 
   Stream<UnsavedActivityState> _mapAddOrRemoveReminderToState(

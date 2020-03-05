@@ -27,20 +27,32 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
   }
 
   @override
-  ImageArchiveState get initialState => ImageArchiveState(Map(), null, null);
+  ImageArchiveState get initialState =>
+      ImageArchiveState(Map(), Map(), null, null);
 
   @override
   Stream<ImageArchiveState> mapEventToState(
     ImageArchiveEvent event,
   ) async* {
     if (event is FolderChanged) {
-      yield ImageArchiveState(state.all, event.folderId, state.selected);
+      yield ImageArchiveState(state.allByFolder, state.allById, event.folderId,
+          state.selectedImageId);
     } else if (event is ArchiveImageSelected) {
-      yield ImageArchiveState(state.all, state.currentFolder, event.imageId);
+      yield ImageArchiveState(state.allByFolder, state.allById,
+          state.currentFolderId, event.imageId);
     } else if (event is SortablesUpdated) {
-      final all = groupBy<Sortable, String>(event.sortables, (s) => s.groupId);
-      // TODO check if current folder and selected image is still present among updated sortables
-      yield ImageArchiveState(all, state.currentFolder, state.selected);
+      final allByFolder =
+          groupBy<Sortable, String>(event.sortables, (s) => s.groupId);
+      final allById = Map<String, Sortable>.fromIterable(event.sortables,
+          key: (s) => s.id, value: (s) => s);
+      final selectedImage = allById[state.selectedImageId];
+      final currentFolder = allById[state.currentFolderId];
+      yield ImageArchiveState(
+          allByFolder, allById, currentFolder?.id, selectedImage?.id);
+    } else if (event is NavigateUp) {
+      final currentFolder = state.allById[state.currentFolderId];
+      yield ImageArchiveState(state.allByFolder, state.allById,
+          currentFolder.groupId, state.selectedImageId);
     }
   }
 }
