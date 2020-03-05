@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/sortable/image_archive/image_archive_bloc.dart';
 import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -20,6 +21,8 @@ class MockPushBloc extends Mock implements PushBloc {}
 class MockSyncBloc extends Mock implements SyncBloc {}
 
 class MockSortableBloc extends Mock implements SortableBloc {}
+
+class MockImageArchiveBloc extends Mock implements ImageArchiveBloc {}
 
 class MockFirebasePushService extends Mock implements FirebasePushService {}
 
