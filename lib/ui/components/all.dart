@@ -15,3 +15,4 @@ export 'calendar/agenda.dart';
 export 'calendar/timepillar.dart';
 export 'activity/all.dart';
 export 'dialogs/all.dart';
+export 'sortable/image_archive.dart';

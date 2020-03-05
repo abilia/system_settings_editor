@@ -3,71 +3,67 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sortable/image_archive/image_archive_bloc.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
-class ImageArchiveDialog extends StatelessWidget {
+class ImageArchive extends StatelessWidget {
   final BuildContext outerContext;
+  final ValueChanged<String> onChanged;
 
-  const ImageArchiveDialog({
+  const ImageArchive({
     Key key,
-    this.outerContext,
+    @required this.outerContext,
+    @required this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final sortableBloc = BlocProvider.of<SortableBloc>(outerContext);
-    final addActivityBloc = BlocProvider.of<AddActivityBloc>(outerContext);
-    final translate = Translator.of(context).translate;
-    final theme = abiliaTheme;
     return BlocProvider<ImageArchiveBloc>(
       create: (context) => ImageArchiveBloc(
         sortableBloc: sortableBloc,
       ),
       child: BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
           builder: (context, archiveState) {
-        return ViewDialog(
-          fullScreen: true,
-          heading: Text(translate.imageArchive, style: theme.textTheme.title),
-          onOk: archiveState.selected != null
-              ? () => addActivityBloc.add(ImageSelected(archiveState.selected))
-              : null,
-          child: GridView.count(
-            crossAxisCount: 3,
-            childAspectRatio: 0.96,
-            children: archiveState.all[archiveState.currentFolder].map((s) {
-              final j = json.decode(s.data);
-              final fileId = j['fileId'];
-              final name = j['name'];
-              final icon = j['icon'];
-              return Column(
-                children: <Widget>[
-                  s.isGroup
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Folder(
-                            name: name,
-                            onTap: () {
-                              BlocProvider.of<ImageArchiveBloc>(context)
-                                  .add(FolderChanged(s.id));
-                            },
-                          ),
-                        )
-                      : ArchiveImage(
+        final currentFolderContent =
+            archiveState.all[archiveState.currentFolder] == null
+                ? []
+                : archiveState.all[archiveState.currentFolder];
+        return GridView.count(
+          crossAxisCount: 3,
+          childAspectRatio: 0.96,
+          children: currentFolderContent.map((s) {
+            final j = json.decode(s.data);
+            final fileId = j['fileId'];
+            final name = j['name'];
+            final icon = j['icon'];
+            return Column(
+              children: <Widget>[
+                s.isGroup
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Folder(
                           name: name,
-                          imageId: fileId,
-                          iconPath: icon,
-                          onChanged: (val) {
+                          onTap: () {
                             BlocProvider.of<ImageArchiveBloc>(context)
-                                .add(ArchiveImageSelected(val));
+                                .add(FolderChanged(s.id));
                           },
-                        )
-                ],
-              );
-            }).toList(),
-          ),
+                        ),
+                      )
+                    : ArchiveImage(
+                        name: name,
+                        imageId: fileId,
+                        iconPath: icon,
+                        onChanged: (val) {
+                          BlocProvider.of<ImageArchiveBloc>(context)
+                              .add(ArchiveImageSelected(val));
+                          onChanged(val);
+                        },
+                      )
+              ],
+            );
+          }).toList(),
         );
       }),
     );

@@ -19,21 +19,26 @@ class NameAndPictureWidget extends StatelessWidget {
         children: <Widget>[
           BlocBuilder<AddActivityBloc, AddActivityState>(
               builder: (context, addActivityState) {
+            final imageClick = () async {
+              await showDialog(
+                context: context,
+                builder: (innerContext) => SelectPictureDialog(
+                  outerContext: context,
+                  onChanged: (imageId) {
+                    BlocProvider.of<AddActivityBloc>(context)
+                        .add(ImageSelected(imageId));
+                  },
+                ),
+              );
+            };
             return addActivityState.activity.hasImage
-                //TODO clean up a bit here. Two onTap....
-                ? LinedBorder(
+                ? InkWell(
+                    onTap: imageClick,
                     child: FadeInCalendarImage(
-                      imageFileId: activity.fileId,
-                      imageFilePath: activity.icon,
+                      imageFileId: addActivityState.activity.fileId,
+                      imageFilePath: addActivityState.activity.icon,
                     ),
-                    onTap: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (innerContext) => SelectPictureDialog(
-                          outerContext: context,
-                        ),
-                      );
-                    })
+                  )
                 : LinedBorder(
                     key: TestKey.addPicture,
                     padding: const EdgeInsets.all(26),
@@ -42,14 +47,7 @@ class NameAndPictureWidget extends StatelessWidget {
                       size: 32,
                       color: AbiliaColors.black[75],
                     ),
-                    onTap: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (innerContext) => SelectPictureDialog(
-                          outerContext: context,
-                        ),
-                      );
-                    },
+                    onTap: imageClick,
                   );
           }),
           const SizedBox(width: 12),
