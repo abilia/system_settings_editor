@@ -57,6 +57,7 @@ abstract class Translated {
   String get hours;
   String get hour;
   String get min;
+  String get remove;
 }
 
 class English extends Translated {
@@ -111,7 +112,8 @@ class English extends Translated {
       day = 'day',
       hours = 'hours',
       hour = 'hour',
-      min = 'min';
+      min = 'min',
+      remove = 'Remove';
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
@@ -166,6 +168,7 @@ class Swedish extends Translated {
       day = 'dag',
       hours = 'timmar',
       hour = 'timme',
-      min = 'min';
+      min = 'min',
+      remove = 'Ta bort';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }

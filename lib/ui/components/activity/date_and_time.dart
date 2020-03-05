@@ -163,6 +163,7 @@ class TimeIntervallPicker extends StatelessWidget {
 
   Future<TimeOfDay> getEndTime(
       BuildContext context, DateTime endTime, DateTime startTime) {
+    final translator = Translator.of(context).translate;
     return showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(endTime),
@@ -176,7 +177,7 @@ class TimeIntervallPicker extends StatelessWidget {
                   Navigator.of(context)
                       .maybePop(TimeOfDay.fromDateTime(startTime));
                 },
-                text: 'Remove'),
+                text: translator.remove),
           ),
         ],
       ),
@@ -232,6 +233,7 @@ class Reminders extends StatelessWidget {
   const Reminders({Key key, this.activity}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    
     final translator = Translator.of(context).translate;
     return Wrap(
       spacing: 14.0,
