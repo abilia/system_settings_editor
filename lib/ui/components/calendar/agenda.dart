@@ -154,9 +154,19 @@ class FullDayContainer extends StatelessWidget {
                             onPressed: () async {
                               await Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (innerContext) => BlocProvider.value(
-                                    value: BlocProvider.of<ActivitiesBloc>(
-                                        context),
+                                  builder: (innerContext) => MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider<ActivitiesBloc>.value(
+                                        value: BlocProvider.of<ActivitiesBloc>(
+                                          context,
+                                        ),
+                                      ),
+                                      BlocProvider<ClockBloc>.value(
+                                        value: BlocProvider.of<ClockBloc>(
+                                          context,
+                                        ),
+                                      ),
+                                    ],
                                     child: AllDayList(
                                       pickedDay: day,
                                       allDayActivities: fullDayActivities,

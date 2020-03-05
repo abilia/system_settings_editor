@@ -77,7 +77,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text(newActivtyTitle), findsNothing);
       await tester.enterText(
-          find.byKey(TestKey.newActivityNameInput), newActivtyTitle);
+          find.byKey(TestKey.editTitleTextFormField), newActivtyTitle);
       expect(find.text(newActivtyTitle), findsOneWidget);
     });
 
@@ -106,7 +106,7 @@ void main() {
               .onPressed,
           isNull);
       await tester.enterText(
-          find.byKey(TestKey.newActivityNameInput), newActivtyName);
+          find.byKey(TestKey.editTitleTextFormField), newActivtyName);
       await tester.pumpAndSettle();
 
       expect(

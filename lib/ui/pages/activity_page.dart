@@ -4,6 +4,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/activity.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/theme.dart';
 
@@ -110,7 +111,25 @@ class ActivityPage extends StatelessWidget {
                   AbiliaIcons.edit,
                   size: 32,
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  final now = BlocProvider.of<ClockBloc>(context).state;
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (innerContext) {
+                        final addActivitybloc = AddActivityBloc(
+                          activitiesBloc:
+                              BlocProvider.of<ActivitiesBloc>(context),
+                          activity: activity,
+                          newActivity: false,
+                        );
+                        return BlocProvider<AddActivityBloc>(
+                          create: (context) => addActivitybloc,
+                          child: NewActivityPage(today: now.onlyDays()),
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
               ActionButton(
                 themeData: menuButtonTheme,

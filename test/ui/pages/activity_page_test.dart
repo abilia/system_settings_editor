@@ -11,6 +11,7 @@ import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
@@ -56,7 +57,7 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  group('Activity page test', () {
+  group('Activity page', () {
     testWidgets('Navigate to activity page and back',
         (WidgetTester tester) async {
       when(mockActivityDb.getActivitiesFromDb()).thenAnswer(
@@ -68,6 +69,84 @@ void main() {
       expect(find.byType(ActivityCard), findsOneWidget);
     });
   });
+
+  group('Edit activity', () {
+    final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
+    final editActivityPageFinder = find.byType(NewActivityPage);
+    final titleTextFormFieldFinder = find.byKey(TestKey.editTitleTextFormField);
+    final finishActivityFinder = find.byKey(TestKey.finishNewActivityButton);
+    testWidgets('Edit activity button shows', (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getActivitiesFromDb()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+      // Act
+      await navigateToActivityPage(tester);
+      // Assert -- Find the edit activity button
+      expect(editActivityButtonFinder, findsOneWidget);
+    });
+
+    testWidgets('Can open edit activity page', (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getActivitiesFromDb()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+      await navigateToActivityPage(tester);
+      // Act -- tap the edit activity button
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+      // Assert -- edit activity shows
+      expect(editActivityPageFinder, findsOneWidget);
+    });
+
+    testWidgets('Correct activity shows in edit activity',
+        (WidgetTester tester) async {
+      // Arrange
+      final title = 'an interesting title';
+      when(mockActivityDb.getActivitiesFromDb()).thenAnswer((_) => Future.value(
+          <Activity>[FakeActivity.startsNow().copyWith(title: title)]));
+      await navigateToActivityPage(tester);
+
+      // Act -- tap the edit activity button
+      expect(find.text(title), findsOneWidget);
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- edit activity title is same as aticity title
+      expect(editActivityPageFinder, findsOneWidget);
+      expect(find.text(title), findsOneWidget);
+    });
+
+    testWidgets('Changes in edit activity shows in activity page',
+        (WidgetTester tester) async {
+      // Arrange
+      final title = 'an interesting title';
+      final newTitle = 'an new super interesting title';
+      when(mockActivityDb.getActivitiesFromDb()).thenAnswer((_) => Future.value(
+          <Activity>[FakeActivity.startsNow().copyWith(title: title)]));
+      await navigateToActivityPage(tester);
+
+      // Assert -- original title
+      expect(find.text(title), findsOneWidget);
+
+      // Act -- tap edit acvtivity button
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- that the old title is there
+      expect(titleTextFormFieldFinder, findsOneWidget);
+      expect(find.text(title), findsOneWidget);
+
+      // Act -- Enter new title and save
+      await tester.enterText(titleTextFormFieldFinder, newTitle);
+      await tester.tap(finishActivityFinder);
+      await tester.pump();
+
+      // Assert -- we are at activity page, the old title is not there, the new title is
+      expect(find.text(title), findsNothing);
+      expect(find.byType(ActivityPage), findsOneWidget);
+      expect(find.text(newTitle), findsOneWidget);
+    });
+  });
+
   group('Change alarm', () {
     final alarmButtonFinder = find.byKey(TestKey.editAlarm);
     final alarmDialogFinder = find.byType(SelectAlarmTypeDialog);

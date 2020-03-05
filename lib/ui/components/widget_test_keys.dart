@@ -19,7 +19,7 @@ class TestKey {
       activityCheckButton = Key('activityCheckButton'),
       attachment = Key('attachment'),
       addActivity = Key('addActivity'),
-      newActivityNameInput = Key('newActivityNameInput'),
+      editTitleTextFormField = Key('editTitleTextFormField'),
       finishNewActivityButton = Key('finishNewActivityButton'),
       fullDaySwitch = Key('fullDaySwitch'),
       datePicker = Key('datePicker'),
