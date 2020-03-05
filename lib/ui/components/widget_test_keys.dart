@@ -35,5 +35,7 @@ class TestKey {
       vibrationAlarm = Key('vibrationAlarm'),
       availibleFor = Key('availibleFor'),
       onlyMe = Key('onlyMe'),
-      closeDialog = Key('closeDialog');
+      closeDialog = Key('closeDialog'),
+      okDialog = Key('okDialog'),
+      editReminder = Key('editReminder');
 }
