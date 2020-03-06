@@ -68,6 +68,7 @@ class Folder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         child: Column(
@@ -175,6 +176,7 @@ class ArchiveRadio<T> extends StatelessWidget {
     return Theme(
       data: theme,
       child: Material(
+        color: Colors.transparent,
         child: InkWell(
           onTap: () => onChanged(value),
           borderRadius: borderRadius,
