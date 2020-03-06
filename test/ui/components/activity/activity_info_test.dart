@@ -53,7 +53,7 @@ void main() {
     await tester.pumpWidget(
       wrapWithMaterialApp(
         ActivityInfo(
-          givenActivity: activity,
+          activity: activity,
           day: day,
         ),
       ),
@@ -80,7 +80,7 @@ void main() {
     await tester.pumpWidget(
       wrapWithMaterialApp(
         ActivityInfo(
-          givenActivity: activity,
+          activity: activity,
           day: day,
         ),
       ),
@@ -107,7 +107,7 @@ void main() {
     await tester.pumpWidget(
       wrapWithMaterialApp(
         ActivityInfo(
-          givenActivity: activity,
+          activity: activity,
           day: day,
         ),
       ),
@@ -131,7 +131,7 @@ void main() {
     await tester.pumpWidget(
       wrapWithMaterialApp(
         ActivityInfo(
-          givenActivity: activity,
+          activity: activity,
           day: day,
         ),
       ),
@@ -153,7 +153,7 @@ void main() {
     await tester.pumpWidget(
       wrapWithMaterialApp(
         ActivityInfo(
-          givenActivity: activity,
+          activity: activity,
           day: day,
         ),
       ),
@@ -177,7 +177,7 @@ void main() {
     await tester.pumpWidget(
       wrapWithMaterialApp(
         ActivityInfo(
-          givenActivity: activity,
+          activity: activity,
           day: day,
         ),
       ),
@@ -202,7 +202,7 @@ void main() {
     await tester.pumpWidget(
       wrapWithMaterialApp(
         ActivityInfo(
-          givenActivity: activity,
+          activity: activity,
           day: day,
         ),
       ),
@@ -228,7 +228,7 @@ void main() {
     await tester.pumpWidget(
       wrapWithMaterialApp(
         ActivityInfo(
-          givenActivity: activity,
+          activity: activity,
           day: day,
         ),
       ),
@@ -253,7 +253,7 @@ void main() {
     await tester.pumpWidget(
       wrapWithMaterialApp(
         ActivityInfo(
-          givenActivity: activity,
+          activity: activity,
           day: day,
         ),
       ),

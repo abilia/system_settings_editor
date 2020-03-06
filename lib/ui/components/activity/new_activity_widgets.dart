@@ -44,7 +44,7 @@ class NameAndPictureWidget extends StatelessWidget {
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (text) => BlocProvider.of<AddActivityBloc>(context)
                       .add(ChangeActivity(activity.copyWith(title: text))),
-                  key: TestKey.newActivityNameInput,
+                  key: TestKey.editTitleTextFormField,
                 ),
               ],
             ),

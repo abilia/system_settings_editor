@@ -87,6 +87,7 @@ class ViewDialog extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: RoundFloatingButton(
                   AbiliaIcons.ok,
+                  key: TestKey.okDialog,
                   onTap: onOk,
                 ),
               ),
@@ -156,6 +157,7 @@ class RoundFloatingButton extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
+        key: ObjectKey(key),
         borderRadius: BorderRadius.all(Radius.circular(28.0)),
         onTap: onTap,
         child: Ink(
