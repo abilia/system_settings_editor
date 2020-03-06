@@ -12,8 +12,13 @@ part 'add_activity_state.dart';
 class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
   final Activity activity;
   final ActivitiesBloc activitiesBloc;
+  final bool newActivity;
 
-  AddActivityBloc({@required this.activitiesBloc, @required this.activity});
+  AddActivityBloc({
+    @required this.activitiesBloc,
+    @required this.activity,
+    this.newActivity = true,
+  });
   @override
   UnsavedActivityState get initialState => UnsavedActivityState(activity);
 
@@ -75,7 +80,8 @@ class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
       );
     }
 
-    activitiesBloc.add(AddActivity(activity));
+    activitiesBloc
+        .add(newActivity ? AddActivity(activity) : UpdateActivity(activity));
     yield SavedActivityState(activity);
   }
 

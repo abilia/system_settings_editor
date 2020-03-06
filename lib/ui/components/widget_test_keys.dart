@@ -19,7 +19,7 @@ class TestKey {
       activityCheckButton = Key('activityCheckButton'),
       attachment = Key('attachment'),
       addActivity = Key('addActivity'),
-      newActivityNameInput = Key('newActivityNameInput'),
+      editTitleTextFormField = Key('editTitleTextFormField'),
       finishNewActivityButton = Key('finishNewActivityButton'),
       fullDaySwitch = Key('fullDaySwitch'),
       datePicker = Key('datePicker'),
@@ -35,5 +35,8 @@ class TestKey {
       vibrationAlarm = Key('vibrationAlarm'),
       availibleFor = Key('availibleFor'),
       onlyMe = Key('onlyMe'),
-      closeDialog = Key('closeDialog');
+      closeDialog = Key('closeDialog'),
+      okDialog = Key('okDialog'),
+      editReminder = Key('editReminder'),
+      editAlarm = Key('editAlarm');
 }

@@ -44,17 +44,7 @@ class DateAndTimeWidget extends StatelessWidget {
           CollapsableWidget(
             collapsed: activity.fullDay,
             padding: const EdgeInsets.only(top: 8.0),
-            child: SwitchField(
-              leading: Icon(AbiliaIcons.handi_reminder),
-              label: Text(translator.reminder),
-              value: activity.reminders.isNotEmpty,
-              onChanged: (switchOn) {
-                final reminders =
-                    switchOn ? [15.minutes().inMilliseconds] : <int>[];
-                BlocProvider.of<AddActivityBloc>(context).add(ChangeActivity(
-                    activity.copyWith(reminderBefore: reminders)));
-              },
-            ),
+            child: ReminderSwitch(activity: activity),
           ),
           CollapsableWidget(
             padding: const EdgeInsets.only(top: 8.0),
@@ -63,6 +53,29 @@ class DateAndTimeWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ReminderSwitch extends StatelessWidget {
+  const ReminderSwitch({
+    Key key,
+    @required this.activity,
+  }) : super(key: key);
+
+  final Activity activity;
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchField(
+      leading: Icon(AbiliaIcons.handi_reminder),
+      label: Text(Translator.of(context).translate.reminder),
+      value: activity.reminders.isNotEmpty,
+      onChanged: (switchOn) {
+        final reminders = switchOn ? [15.minutes().inMilliseconds] : <int>[];
+        BlocProvider.of<AddActivityBloc>(context)
+            .add(ChangeActivity(activity.copyWith(reminderBefore: reminders)));
+      },
     );
   }
 }
@@ -230,7 +243,7 @@ class TimePicker extends StatelessWidget {
 class Reminders extends StatelessWidget {
   final Activity activity;
 
-  const Reminders({Key key, this.activity}) : super(key: key);
+  const Reminders({Key key, @required this.activity}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     

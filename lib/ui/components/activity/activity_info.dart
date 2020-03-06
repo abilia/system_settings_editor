@@ -8,41 +8,15 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class ActivityInfo extends StatelessWidget {
-  final Activity givenActivity;
-  final DateTime day;
-  const ActivityInfo({
-    Key key,
-    @required this.givenActivity,
-    @required this.day,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ActivitiesBloc, ActivitiesState>(
-      builder: (context, activitiesState) {
-        return _ActivityInfo(
-          activity: (activitiesState is ActivitiesLoaded)
-              ? activitiesState.activities.firstWhere(
-                  (a) => a.id == givenActivity.id,
-                  orElse: () => givenActivity)
-              : givenActivity,
-          day: day,
-        );
-      },
-    );
-  }
-}
-
-class _ActivityInfo extends StatelessWidget {
   final Activity activity;
   final DateTime day;
-  final animationDuration = const Duration(milliseconds: 500);
-
-  const _ActivityInfo({
+  const ActivityInfo({
     Key key,
     @required this.activity,
     @required this.day,
   }) : super(key: key);
+
+  final animationDuration = const Duration(milliseconds: 500);
 
   @override
   Widget build(BuildContext context) {

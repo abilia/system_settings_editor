@@ -12,7 +12,7 @@ export 'profile_picture.dart';
 export 'abilia_app_bar.dart';
 export 'calendar.dart';
 export 'calendar/agenda.dart';
-export 'calendar/timepillar.dart';
+export 'calendar/all.dart';
 export 'activity/all.dart';
 export 'dialogs/all.dart';
 export 'sortable/image_archive.dart';

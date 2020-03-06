@@ -19,7 +19,7 @@ class Activity extends Equatable {
   bool get hasEndTime => !start.isAtSameMomentAs(end);
   RecurrentType get recurrance => RecurrentType.values[recurrentType];
   Iterable<Duration> get reminders =>
-      reminderBefore.map((r) => r.milliseconds());
+      reminderBefore.map((r) => r.milliseconds()).toSet();
   bool isSignedOff(DateTime day) => checkable && signedOffDates.contains(day);
   bool get hasImage =>
       (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
