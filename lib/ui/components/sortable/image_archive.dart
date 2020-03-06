@@ -75,20 +75,23 @@ class Folder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        children: <Widget>[
-          Text(
-            name,
-            style: abiliaTextTheme.caption,
-          ),
-          Icon(
-            AbiliaIcons.folder,
-            size: 86,
-            color: AbiliaColors.orange,
-          ),
-        ],
+    return Material(
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          children: <Widget>[
+            Text(
+              name,
+              style: abiliaTextTheme.caption,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Icon(
+              AbiliaIcons.folder,
+              size: 86,
+              color: AbiliaColors.orange,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -178,48 +181,50 @@ class ArchiveRadio<T> extends StatelessWidget {
     );
     return Theme(
       data: theme,
-      child: InkWell(
-        onTap: () => onChanged(value),
-        borderRadius: borderRadius,
-        child: Stack(
-          overflow: Overflow.visible,
-          children: <Widget>[
-            Ink(
-              height: heigth,
-              width: width,
-              decoration: BoxDecoration(
-                borderRadius: borderRadius,
-                border: Border.all(
-                  color: AbiliaColors.transparantBlack[15],
-                ),
-                color: value == groupValue
-                    ? AbiliaColors.white
-                    : Colors.transparent,
-              ),
-              padding: const EdgeInsets.fromLTRB(13, 2, 13, 4),
-              child: child,
-            ),
-            Positioned(
-              top: -8,
-              right: -8,
-              child: Container(
-                padding: const EdgeInsets.all(1.0),
+      child: Material(
+        child: InkWell(
+          onTap: () => onChanged(value),
+          borderRadius: borderRadius,
+          child: Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Ink(
+                height: heigth,
+                width: width,
                 decoration: BoxDecoration(
-                    color: theme.scaffoldBackgroundColor,
-                    shape: BoxShape.circle),
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: Radio(
-                    key: ObjectKey(key),
-                    value: value,
-                    groupValue: groupValue,
-                    onChanged: onChanged,
+                  borderRadius: borderRadius,
+                  border: Border.all(
+                    color: AbiliaColors.transparantBlack[15],
+                  ),
+                  color: value == groupValue
+                      ? AbiliaColors.white
+                      : Colors.transparent,
+                ),
+                padding: const EdgeInsets.fromLTRB(13, 2, 13, 4),
+                child: child,
+              ),
+              Positioned(
+                top: -8,
+                right: -8,
+                child: Container(
+                  padding: const EdgeInsets.all(1.0),
+                  decoration: BoxDecoration(
+                      color: theme.scaffoldBackgroundColor,
+                      shape: BoxShape.circle),
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Radio(
+                      key: ObjectKey(key),
+                      value: value,
+                      groupValue: groupValue,
+                      onChanged: onChanged,
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

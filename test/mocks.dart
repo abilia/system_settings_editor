@@ -7,12 +7,15 @@ import 'package:seagull/bloc/sortable/image_archive/image_archive_bloc.dart';
 import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/repository/sortable_repository.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
 
 class MockHttpClient extends Mock implements Client {}
 
 class MockActivityRepository extends Mock implements ActivityRepository {}
+
+class MockSortableRepository extends Mock implements SortableRepository {}
 
 class MockTokenDb extends Mock implements TokenDb {}
 
@@ -22,7 +25,9 @@ class MockSyncBloc extends Mock implements SyncBloc {}
 
 class MockSortableBloc extends Mock implements SortableBloc {}
 
-class MockImageArchiveBloc extends Mock implements ImageArchiveBloc {}
+class MockImageArchiveBloc
+    extends MockBloc<ImageArchiveEvent, ImageArchiveState>
+    implements ImageArchiveBloc {}
 
 class MockFirebasePushService extends Mock implements FirebasePushService {}
 

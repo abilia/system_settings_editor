@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 
 class Sortable extends Equatable {
   final String id, type, data, groupId, sortOrder;
@@ -16,9 +17,35 @@ class Sortable extends Equatable {
     @required this.isVisible,
   }) : assert(id != null);
 
+  static Sortable createNew({
+    String type,
+    String data,
+    String groupId,
+    String sortOrder,
+    bool deleted = false,
+    bool isGroup = false,
+    bool isVisible = true,
+  }) {
+    final id = Uuid().v4();
+    return Sortable._(
+      id: id,
+      type: type,
+      data: data,
+      groupId: groupId,
+      sortOrder: sortOrder,
+      deleted: deleted,
+      isGroup: isGroup,
+      isVisible: isVisible,
+    );
+  }
+
   @override
   List<Object> get props =>
       [id, type, data, groupId, sortOrder, deleted, isGroup, isVisible];
+}
+
+class SortableType {
+  static const String imageArchive = 'imagearchive', checklist = 'checklist';
 }
 
 class DbSortable extends Equatable {

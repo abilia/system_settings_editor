@@ -48,4 +48,34 @@ void main() {
     expect(dbS.dirty, 0);
     expect(dbS.revision, revision);
   });
+
+  test('To dbMap and back', () {
+    final dbMap = {
+      "id": "id-111",
+      "type": "type",
+      "data": "dbdata",
+      "group_id": "group_id",
+      "sort_order": "sort_order",
+      "deleted": 1,
+      "is_group": 1,
+      "visible": 1,
+      "revision": 999,
+      "dirty": 1,
+    };
+    final dbSortable = DbSortable.fromDbMap(dbMap);
+    expect(dbSortable.dirty, 1);
+    expect(dbSortable.revision, 999);
+    final s = dbSortable.sortable;
+    expect(s.id, "id-111");
+    expect(s.data, "dbdata");
+    expect(s.type, "type");
+    expect(s.groupId, "group_id");
+    expect(s.sortOrder, "sort_order");
+    expect(s.isGroup, true);
+    expect(s.isVisible, true);
+    expect(s.deleted, true);
+
+    final mapAgain = dbSortable.toMapForDb();
+    expect(mapAgain, dbMap);
+  });
 }
