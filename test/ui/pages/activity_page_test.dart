@@ -138,7 +138,7 @@ void main() {
       // Act -- Enter new title and save
       await tester.enterText(titleTextFormFieldFinder, newTitle);
       await tester.tap(finishActivityFinder);
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       // Assert -- we are at activity page, the old title is not there, the new title is
       expect(find.text(title), findsNothing);
