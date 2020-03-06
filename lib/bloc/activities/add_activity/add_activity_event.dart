@@ -55,3 +55,12 @@ class AddOrRemoveReminder extends AddActivityEvent {
   @override
   List<Object> get props => [reminder];
 }
+
+class ImageSelected extends AddActivityEvent {
+  final String imageId;
+  ImageSelected(this.imageId);
+  @override
+  List<Object> get props => [imageId];
+  @override
+  String toString() => 'ImageSelected { $imageId }';
+}

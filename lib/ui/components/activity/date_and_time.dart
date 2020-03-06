@@ -137,7 +137,7 @@ class TimeIntervallPicker extends StatelessWidget {
           ),
         ),
         Expanded(
-          flex: 51,
+          flex: 48,
           child: Transform.translate(
             offset: Offset(0, -20),
             child: Divider(

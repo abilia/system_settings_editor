@@ -24,7 +24,7 @@ void main() {
           .thenAnswer((_) => Future.value('fakeToken'));
       MockActivityDb mockActivityDb = MockActivityDb();
       when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
-      when(mockActivityDb.getActivitiesFromDb())
+      when(mockActivityDb.getActivities())
           .thenAnswer((_) => Future.value([]));
       GetItInitializer()
         ..activityDb = mockActivityDb

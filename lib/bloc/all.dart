@@ -15,3 +15,4 @@ export 'alarm/bloc.dart';
 export 'push/bloc.dart';
 export 'bloc_delegate.dart';
 export 'calendar_view/bloc.dart';
+export 'sortable/bloc.dart';

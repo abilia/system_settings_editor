@@ -36,6 +36,19 @@ class CalendarPage extends StatelessWidget {
               LoadActivities(),
             ),
         ),
+        BlocProvider<SortableBloc>(
+          create: (context) => SortableBloc(
+            sortableRepository: SortableRepository(
+              baseUrl: authenticatedState.userRepository.baseUrl,
+              client: authenticatedState.userRepository.httpClient,
+              sortableDb: GetIt.I<SortableDb>(),
+              userId: authenticatedState.userId,
+              authToken: authenticatedState.token,
+            ),
+          )..add(
+              LoadSortables(),
+            ),
+        ),
         BlocProvider<ClockBloc>(
           create: (context) => ClockBloc(GetIt.I<Stream<DateTime>>()),
         ),
@@ -71,7 +84,7 @@ class CalendarPage extends StatelessWidget {
         ),
         BlocProvider<CalendarViewBloc>(
           create: (context) => CalendarViewBloc(),
-        )
+        ),
       ],
       child: MultiBlocListener(
         listeners: [

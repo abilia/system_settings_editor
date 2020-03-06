@@ -129,6 +129,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                 ),
                 onPressed: () async {
                   final now = BlocProvider.of<ClockBloc>(context).state;
+                  final sortableBloc = BlocProvider.of<SortableBloc>(context);
                   await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (innerContext) {
@@ -141,9 +142,18 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                                 now.nextHalfHour().millisecondsSinceEpoch,
                           ),
                         );
-                        return BlocProvider<AddActivityBloc>(
-                          create: (context) => addActivitybloc,
-                          child: NewActivityPage(today: now.onlyDays()),
+                        return MultiBlocProvider(
+                          providers: [
+                            BlocProvider<AddActivityBloc>(
+                              create: (context) => addActivitybloc,
+                            ),
+                            BlocProvider<SortableBloc>(
+                              create: (context) => sortableBloc,
+                            )
+                          ],
+                          child: NewActivityPage(
+                            today: now.onlyDays(),
+                          ),
                         );
                       },
                     ),

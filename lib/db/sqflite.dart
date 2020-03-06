@@ -3,10 +3,12 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseRepository {
+  static const CALENDAR_TABLE_NAME = 'calendar_activity';
+  static const SORTABLE_TABLE_NAME = 'sortable';
   @visibleForTesting
   static final initialScript = [
     '''
-      create table calendar_activity (
+      create table $CALENDAR_TABLE_NAME (
         id text primary key not null,
         series_id text not null,
         title text,
@@ -32,13 +34,27 @@ class DatabaseRepository {
   @visibleForTesting
   static final migrations = <String>[
     '''
-      ALTER TABLE calendar_activity ADD COLUMN dirty int default 0
+      ALTER TABLE $CALENDAR_TABLE_NAME ADD COLUMN dirty int default 0
     ''',
     '''
-      ALTER TABLE calendar_activity ADD COLUMN remove_after int default 0
+      ALTER TABLE $CALENDAR_TABLE_NAME ADD COLUMN remove_after int default 0
     ''',
     '''
-      ALTER TABLE calendar_activity ADD COLUMN secret int default 0
+      ALTER TABLE $CALENDAR_TABLE_NAME ADD COLUMN secret int default 0
+    ''',
+    '''
+      CREATE TABLE $SORTABLE_TABLE_NAME (
+        id text primary key not null,
+        revision int,
+        deleted int,
+        type text,
+        data text,
+        is_group int,
+        group_id text,
+        sort_order text,
+        visible int,
+        dirty int
+      )
     '''
   ];
 
@@ -57,7 +73,11 @@ class DatabaseRepository {
   }
 
   Future clearAll() async {
-    return (await database).rawDelete('DELETE FROM calendar_activity');
+    final db = await database;
+    final batch = db.batch();
+    batch.delete(CALENDAR_TABLE_NAME);
+    batch.delete(SORTABLE_TABLE_NAME);
+    await batch.commit();
   }
 
   @visibleForTesting

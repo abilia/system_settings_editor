@@ -17,21 +17,42 @@ class NameAndPictureWidget extends StatelessWidget {
       height: 84,
       child: Row(
         children: <Widget>[
-          LinedBorder(
-            key: TestKey.addPicture,
-            padding: const EdgeInsets.all(26),
-            child: Icon(
-              AbiliaIcons.add_photo,
-              size: 32,
-              color: AbiliaColors.black[75],
-            ),
-            onTap: () async {
-              await showViewDialog(
+          BlocBuilder<AddActivityBloc, AddActivityState>(
+              builder: (context, addActivityState) {
+            final imageClick = () async {
+              final imageId = await showDialog<String>(
                 context: context,
-                builder: (context) => SelectPictureDialog(),
+                builder: (_) => BlocProvider<ImageArchiveBloc>(
+                  create: (_) => ImageArchiveBloc(
+                    sortableBloc: BlocProvider.of<SortableBloc>(context),
+                  ),
+                  child: SelectPictureDialog(),
+                ),
               );
-            },
-          ),
+              if (imageId != null) {
+                BlocProvider.of<AddActivityBloc>(context)
+                    .add(ImageSelected(imageId));
+              }
+            };
+            return addActivityState.activity.hasImage
+                ? InkWell(
+                    onTap: imageClick,
+                    child: FadeInCalendarImage(
+                      imageFileId: addActivityState.activity.fileId,
+                      imageFilePath: addActivityState.activity.icon,
+                    ),
+                  )
+                : LinedBorder(
+                    key: TestKey.addPicture,
+                    padding: const EdgeInsets.all(26),
+                    child: Icon(
+                      AbiliaIcons.add_photo,
+                      size: 32,
+                      color: AbiliaColors.black[75],
+                    ),
+                    onTap: imageClick,
+                  );
+          }),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

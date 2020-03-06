@@ -23,7 +23,7 @@ class ActivityDb {
     return revision;
   }
 
-  Future<Iterable<Activity>> getActivitiesFromDb() async {
+  Future<Iterable<Activity>> getActivities() async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ACTIVITIES_SQL);
     return result.map((row) => DbActivity.fromDbMap(row).activity);

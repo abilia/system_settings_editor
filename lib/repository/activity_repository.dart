@@ -6,9 +6,10 @@ import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/repository/dynamic_repository.dart';
 import 'package:synchronized/extension.dart';
 
-class ActivityRepository extends Repository {
+class ActivityRepository extends DataRepository<Activity> {
   final int userId;
   final ActivityDb activityDb;
   final String authToken;
@@ -33,7 +34,7 @@ class ActivityRepository extends Repository {
       // Error when syncing activities. Probably offline.
       print('Error when syncing activities $e');
     }
-    return activityDb.getActivitiesFromDb();
+    return activityDb.getActivities();
   }
 
   Future<bool> synchronize() async {
@@ -62,8 +63,8 @@ class ActivityRepository extends Repository {
   Future _handleSuccessfullSync(Iterable<DataRevisionUpdates> succeded,
       Iterable<DbActivity> dirtyActivities) async {
     final toUpdate = succeded.map((success) async {
-      final activityBeforeSync =
-          dirtyActivities.firstWhere((activity) => activity.activity.id == success.id);
+      final activityBeforeSync = dirtyActivities
+          .firstWhere((activity) => activity.activity.id == success.id);
       final currentActivity = await activityDb.getActivityById(success.id);
       return currentActivity.copyWith(
           revision: success.revision,

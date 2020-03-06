@@ -39,6 +39,8 @@ void main() {
                 activity: startActivity,
               ),
             ),
+            BlocProvider<SortableBloc>(
+                create: (context) => MockSortableBloc()),
           ], child: widget),
         );
 
