@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sortable/sortable_bloc.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/repository/sortable_repository.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -21,15 +19,6 @@ class CalendarPage extends StatelessWidget {
       activityDb: GetIt.I<ActivityDb>(),
       userId: authenticatedState.userId,
       authToken: authenticatedState.token,
-    );
-    final sortableBloc = SortableBloc(
-      sortableRepository: SortableRepository(
-        baseUrl: authenticatedState.userRepository.baseUrl,
-        client: authenticatedState.userRepository.httpClient,
-        sortableDb: GetIt.I<SortableDb>(),
-        userId: authenticatedState.userId,
-        authToken: authenticatedState.token,
-      ),
     );
     return MultiBlocProvider(
       providers: [
@@ -48,8 +37,15 @@ class CalendarPage extends StatelessWidget {
             ),
         ),
         BlocProvider<SortableBloc>(
-          create: (context) => sortableBloc
-            ..add(
+          create: (context) => SortableBloc(
+            sortableRepository: SortableRepository(
+              baseUrl: authenticatedState.userRepository.baseUrl,
+              client: authenticatedState.userRepository.httpClient,
+              sortableDb: GetIt.I<SortableDb>(),
+              userId: authenticatedState.userId,
+              authToken: authenticatedState.token,
+            ),
+          )..add(
               LoadSortables(),
             ),
         ),

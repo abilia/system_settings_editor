@@ -6,10 +6,7 @@ abstract class SortableState extends Equatable {
   List<Object> get props => [];
 }
 
-class SortablesNotLoaded extends SortableState {
-  @override
-  List<Object> get props => [];
-}
+class SortablesNotLoaded extends SortableState {}
 
 class SortablesLoaded extends SortableState {
   final Iterable<Sortable> sortables;

@@ -11,29 +11,22 @@ class SortableDb {
   Future<Iterable<Sortable>> getSortables() async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ALL_SORTABLES);
-    final sortables = result.map((row) {
-      final dbS = DbSortable.fromDbMap(row);
-      return dbS.sortable;
-    });
-    return sortables;
+    return result.map(DbSortable.fromDbMap).map((s) => s.sortable);
   }
 
   Future<List<int>> insertSortables(Iterable<DbSortable> sortables) async {
     final db = await DatabaseRepository().database;
-    final insertResults = await sortables.map((sortable) async {
-      return await db.insert('sortable', sortable.toMapForDb(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-    });
-    return Future.wait(insertResults);
+    final batch = db.batch();
+    sortables.forEach((sortable) =>
+      batch.insert('sortable', sortable.toMapForDb(),
+          conflictAlgorithm: ConflictAlgorithm.replace)
+    );
+    return await batch.commit();
   }
 
   Future<int> getLastRevision() async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(MAX_REVISION_SQL);
-    final revision = result.first['max_revision'];
-    if (revision == null) {
-      return 0;
-    }
-    return revision;
+    return result.first['max_revision'] ?? 0;
   }
 }
