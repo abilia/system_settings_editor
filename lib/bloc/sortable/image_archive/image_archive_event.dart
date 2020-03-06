@@ -23,7 +23,7 @@ class ArchiveImageSelected extends ImageArchiveEvent {
 }
 
 class SortablesUpdated extends ImageArchiveEvent {
-  final List<Sortable> sortables;
+  final Iterable<Sortable> sortables;
 
   SortablesUpdated(this.sortables);
 

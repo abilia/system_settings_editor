@@ -20,16 +20,19 @@ class NameAndPictureWidget extends StatelessWidget {
           BlocBuilder<AddActivityBloc, AddActivityState>(
               builder: (context, addActivityState) {
             final imageClick = () async {
-              await showDialog(
+              final imageId = await showDialog<String>(
                 context: context,
-                builder: (innerContext) => SelectPictureDialog(
-                  outerContext: context,
-                  onChanged: (imageId) {
-                    BlocProvider.of<AddActivityBloc>(context)
-                        .add(ImageSelected(imageId));
-                  },
+                builder: (_) => BlocProvider<ImageArchiveBloc>(
+                  create: (_) => ImageArchiveBloc(
+                    sortableBloc: BlocProvider.of<SortableBloc>(context),
+                  ),
+                  child: SelectPictureDialog(),
                 ),
               );
+              if (imageId != null) {
+                BlocProvider.of<AddActivityBloc>(context)
+                    .add(ImageSelected(imageId));
+              }
             };
             return addActivityState.activity.hasImage
                 ? InkWell(

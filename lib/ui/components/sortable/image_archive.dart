@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sortable/image_archive/image_archive_bloc.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -19,10 +19,8 @@ class ImageArchive extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
       builder: (context, archiveState) {
-        final currentFolderContent =
-            archiveState.allByFolder[archiveState.currentFolderId] == null
-                ? []
-                : archiveState.allByFolder[archiveState.currentFolderId];
+        final Iterable<Sortable> currentFolderContent =
+            archiveState.allByFolder[archiveState.currentFolderId] ?? [];
         return GridView.count(
           crossAxisCount: 3,
           childAspectRatio: 0.96,
@@ -126,11 +124,12 @@ class ArchiveImage extends StatelessWidget {
           groupValue: archiveState.selectedImageId,
           child: Column(
             children: <Widget>[
-              Text(
-                name,
-                overflow: TextOverflow.ellipsis,
-                style: abiliaTextTheme.caption,
-              ),
+              if (name != null)
+                Text(
+                  name,
+                  overflow: TextOverflow.ellipsis,
+                  style: abiliaTextTheme.caption,
+                ),
               Container(
                 height: imageHeight,
                 width: imageWidth,
