@@ -25,6 +25,9 @@ void main() {
 
   final activityBackButtonFinder = find.byKey(TestKey.activityBackButton);
   final selectReminderDialogFinder = find.byType(SelectReminderDialog);
+  final activityCardFinder = find.byType(ActivityCard);
+  final activityPageFinder = find.byType(ActivityPage);
+  final agendaFinder = find.byType(Agenda);
 
   final okInkWellFinder = find.byKey(ObjectKey(TestKey.okDialog));
   final closeButtonFinder = find.byKey(TestKey.closeDialog);
@@ -53,7 +56,7 @@ void main() {
   Future<void> navigateToActivityPage(WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    await tester.tap(find.byType(ActivityCard));
+    await tester.tap(activityCardFinder);
     await tester.pumpAndSettle();
   }
 
@@ -66,7 +69,7 @@ void main() {
       expect(activityBackButtonFinder, findsOneWidget);
       await tester.tap(activityBackButtonFinder);
       await tester.pumpAndSettle();
-      expect(find.byType(ActivityCard), findsOneWidget);
+      expect(activityCardFinder, findsOneWidget);
     });
   });
 
@@ -142,7 +145,7 @@ void main() {
 
       // Assert -- we are at activity page, the old title is not there, the new title is
       expect(find.text(title), findsNothing);
-      expect(find.byType(ActivityPage), findsOneWidget);
+      expect(activityPageFinder, findsOneWidget);
       expect(find.text(newTitle), findsOneWidget);
     });
   });
@@ -457,6 +460,66 @@ void main() {
       expect(reminderSwitchFinder, findsOneWidget);
       expect(closeButtonFinder, findsOneWidget);
       expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNull);
+    });
+
+    group('Delete', () {
+      final deleteButtonFinder = find.byIcon(AbiliaIcons.delete_all_clear);
+      final deleteAppBarFinder = find.byType(DeleteAppBar);
+      final confirmDeleteButtonFinder = find.byKey(TestKey.confirmDelete);
+
+      testWidgets('Finds delete button and no delete app bar',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getActivities()).thenAnswer(
+            (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+        // Act
+        await navigateToActivityPage(tester);
+
+        // Assert
+        expect(deleteButtonFinder, findsOneWidget);
+        expect(deleteAppBarFinder, findsNothing);
+        expect(confirmDeleteButtonFinder, findsNothing);
+      });
+
+      testWidgets('When delete button pressed delete app bar showing',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getActivities()).thenAnswer(
+            (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(deleteButtonFinder, findsNothing);
+        expect(deleteAppBarFinder, findsOneWidget);
+        expect(confirmDeleteButtonFinder, findsOneWidget);
+      });
+
+      testWidgets(
+          'When delete then confirm delete pressed, navigate back and do not show origial widget',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getActivities()).thenAnswer(
+            (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(confirmDeleteButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(deleteButtonFinder, findsNothing);
+        expect(deleteAppBarFinder, findsNothing);
+        expect(confirmDeleteButtonFinder, findsNothing);
+        expect(activityCardFinder, findsNothing);
+        expect(activityPageFinder, findsNothing);
+        expect(agendaFinder, findsOneWidget);
+      });
     });
   });
 }

@@ -38,5 +38,6 @@ class TestKey {
       closeDialog = Key('closeDialog'),
       okDialog = Key('okDialog'),
       editReminder = Key('editReminder'),
-      editAlarm = Key('editAlarm');
+      editAlarm = Key('editAlarm'),
+      confirmDelete = Key('confirmDelete');
 }

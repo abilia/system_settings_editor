@@ -58,6 +58,7 @@ abstract class Translated {
   String get hour;
   String get min;
   String get remove;
+  String get deleteActivity;
 }
 
 class English extends Translated {
@@ -113,7 +114,9 @@ class English extends Translated {
       hours = 'hours',
       hour = 'hour',
       min = 'min',
-      remove = 'Remove';
+      remove = 'Remove',
+      deleteActivity = 'Delete activity';
+
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
@@ -169,6 +172,7 @@ class Swedish extends Translated {
       hours = 'timmar',
       hour = 'timme',
       min = 'min',
-      remove = 'Ta bort';
+      remove = 'Ta bort',
+      deleteActivity = 'Ta bort aktivitet';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }
