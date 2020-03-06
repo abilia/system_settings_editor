@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
@@ -5,6 +7,17 @@ import 'package:uuid/uuid.dart';
 class Sortable extends Equatable {
   final String id, type, data, groupId, sortOrder;
   final bool deleted, isGroup, isVisible;
+
+  SortableData get sortableData {
+    final sortableData = json.decode(data);
+    return type == SortableType.imageArchive
+        ? SortableData(
+            name: sortableData['name'],
+            fileId: sortableData['fileId'],
+            icon: sortableData['icon'],
+          )
+        : SortableData();
+  }
 
   const Sortable._({
     @required this.id,
@@ -100,4 +113,14 @@ class DbSortable extends Equatable {
         'revision': revision,
         'dirty': dirty,
       };
+}
+
+class SortableData {
+  final String name, fileId, icon;
+
+  SortableData({
+    this.name,
+    this.fileId,
+    this.icon,
+  });
 }

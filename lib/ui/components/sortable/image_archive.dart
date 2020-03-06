@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -25,17 +23,13 @@ class ImageArchive extends StatelessWidget {
           crossAxisCount: 3,
           childAspectRatio: 0.96,
           children: currentFolderContent.map((s) {
-            final sortableData = json.decode(s.data);
-            final fileId = sortableData['fileId'];
-            final name = sortableData['name'];
-            final icon = sortableData['icon'];
             return Column(
               children: <Widget>[
                 s.isGroup
                     ? Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Folder(
-                          name: name,
+                          name: s.sortableData.name,
                           onTap: () {
                             BlocProvider.of<ImageArchiveBloc>(context)
                                 .add(FolderChanged(s.id));
@@ -43,9 +37,9 @@ class ImageArchive extends StatelessWidget {
                         ),
                       )
                     : ArchiveImage(
-                        name: name,
-                        imageId: fileId,
-                        iconPath: icon,
+                        name: s.sortableData.name,
+                        imageId: s.sortableData.fileId,
+                        iconPath: s.sortableData.icon,
                         onChanged: (val) {
                           BlocProvider.of<ImageArchiveBloc>(context)
                               .add(ArchiveImageSelected(val));
