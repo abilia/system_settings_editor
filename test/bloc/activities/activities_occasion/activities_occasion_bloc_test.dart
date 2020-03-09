@@ -120,12 +120,11 @@ void main() {
           FakeActivity.fullday(initialMinutes.add(1.days()));
       final yesterdayFullday =
           FakeActivity.fullday(initialMinutes.subtract(1.days()));
-      when(mockActivityRepository.load())
-          .thenAnswer((_) => Future.value([
-                yesterdayFullday,
-                tomorrowFullday,
-                fullDayActivity,
-              ]));
+      when(mockActivityRepository.load()).thenAnswer((_) => Future.value([
+            yesterdayFullday,
+            tomorrowFullday,
+            fullDayActivity,
+          ]));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -161,8 +160,7 @@ void main() {
       final fullDayActivity = FakeActivity.fullday(initialMinutes);
       final tomorrowActivity =
           FakeActivity.starts(initialMinutes.add(1.days()));
-      when(mockActivityRepository.load()).thenAnswer((_) =>
-          Future.value([
+      when(mockActivityRepository.load()).thenAnswer((_) => Future.value([
             nowActivity,
             pastActivity,
             futureActivity,
@@ -206,12 +204,11 @@ void main() {
           FakeActivity.fullday(initialMinutes.add(1.days()));
       final yesterdayFullday =
           FakeActivity.fullday(initialMinutes.subtract(1.days()));
-      when(mockActivityRepository.load())
-          .thenAnswer((_) => Future.value([
-                yesterdayFullday,
-                tomorrowFullday,
-                fullDayActivity,
-              ]));
+      when(mockActivityRepository.load()).thenAnswer((_) => Future.value([
+            yesterdayFullday,
+            tomorrowFullday,
+            fullDayActivity,
+          ]));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -278,9 +275,8 @@ void main() {
       final pastActivity = FakeActivity.ends(tomorrow.add(1.minutes()));
       final futureActivity = FakeActivity.starts(tomorrow.add(1.minutes()));
       final fulldayActivity = FakeActivity.fullday(tomorrow);
-      when(mockActivityRepository.load()).thenAnswer((_) =>
-          Future.value(
-              [nowActivity, pastActivity, futureActivity, fulldayActivity]));
+      when(mockActivityRepository.load()).thenAnswer((_) => Future.value(
+          [nowActivity, pastActivity, futureActivity, fulldayActivity]));
       //Act
       activitiesBloc.add(LoadActivities());
       dayPickerBloc.add(NextDay());
@@ -319,9 +315,8 @@ void main() {
       final pastActivity = FakeActivity.ends(yesterday.add(1.minutes()));
       final futureActivity = FakeActivity.starts(yesterday.add(1.minutes()));
       final fulldayActivity = FakeActivity.fullday(yesterday);
-      when(mockActivityRepository.load()).thenAnswer((_) =>
-          Future.value(
-              [nowActivity, pastActivity, futureActivity, fulldayActivity]));
+      when(mockActivityRepository.load()).thenAnswer((_) => Future.value(
+          [nowActivity, pastActivity, futureActivity, fulldayActivity]));
       //Act
       activitiesBloc.add(LoadActivities());
       dayPickerBloc.add(PreviousDay());
@@ -578,6 +573,142 @@ void main() {
               fullDayActivities: [],
               indexOfCurrentActivity: -1,
               day: monday,
+              isToday: false,
+            ),
+          ]));
+    });
+
+    tearDown(() {
+      dayPickerBloc.close();
+      activitiesBloc.close();
+      activitiesOccasionBloc.close();
+      dayActivitiesBloc.close();
+      clockBloc.close();
+      mockedTicker.close();
+    });
+  });
+  group('Remove after', () {
+    setUp(() {
+      mockedTicker = StreamController<DateTime>();
+      clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
+      dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+      mockActivityRepository = MockActivityRepository();
+      activitiesBloc = ActivitiesBloc(
+        activityRepository: mockActivityRepository,
+        syncBloc: MockSyncBloc(),
+        pushBloc: MockPushBloc(),
+      );
+      dayActivitiesBloc = DayActivitiesBloc(
+          dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
+      activitiesOccasionBloc = ActivitiesOccasionBloc(
+          clockBloc: clockBloc,
+          dayActivitiesBloc: dayActivitiesBloc,
+          dayPickerBloc: dayPickerBloc);
+    });
+
+    test(
+        'Dont show past days remove after activities, but show present and future',
+        () async {
+      // Arrange
+      final longAgo = initialMinutes.subtract(1111.days());
+      final yesterday = initialDay.subtract(1.days());
+      final tomorrow = initialDay.add(1.days());
+      final in1Hour = initialTime.add(1.hours());
+
+      final everyDayRecurring =
+          FakeActivity.reocurrsEveryDay(longAgo).copyWith(removeAfter: true);
+      final todayActivity =
+          FakeActivity.starts(in1Hour).copyWith(removeAfter: true);
+      final yesterdayActivity = FakeActivity.starts(in1Hour.subtract(1.days()))
+          .copyWith(removeAfter: true);
+      final tomorrowActivity = FakeActivity.starts(in1Hour.add(1.days()))
+          .copyWith(removeAfter: true);
+      final everyDayFullDayRecurring = FakeActivity.fullday(longAgo).copyWith(
+        endTime: 253402297199000,
+        removeAfter: true,
+        recurrentType: RecurrentType.weekly.index,
+        recurrentData: allWeekdays,
+      );
+
+      final activities = Iterable<Activity>.empty().followedBy([
+        everyDayRecurring,
+        todayActivity,
+        yesterdayActivity,
+        tomorrowActivity,
+        everyDayFullDayRecurring
+      ]);
+      when(mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(activities));
+
+      // Act
+      activitiesBloc.add(LoadActivities());
+      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      dayPickerBloc.add(PreviousDay());
+      dayPickerBloc.add(NextDay());
+      dayPickerBloc.add(NextDay());
+
+      // Assert
+      await expectLater(
+          activitiesOccasionBloc,
+          emitsInOrder([
+            ActivitiesOccasionLoading(),
+            // Tuesday
+            ActivitiesOccasionLoaded(
+              activities: <ActivityOccasion>[
+                ActivityOccasion.forTest(everyDayRecurring, Occasion.current,
+                    day: initialDay),
+                ActivityOccasion.forTest(todayActivity, Occasion.future,
+                    day: initialDay),
+              ],
+              fullDayActivities: [
+                ActivityOccasion.forTest(
+                    everyDayFullDayRecurring, Occasion.future,
+                    day: initialDay),
+              ],
+              indexOfCurrentActivity: 0,
+              day: initialDay,
+              isToday: true,
+            ),
+            // Monday
+            ActivitiesOccasionLoaded(
+              activities: <ActivityOccasion>[],
+              fullDayActivities: [],
+              indexOfCurrentActivity: -1,
+              day: yesterday,
+              isToday: false,
+            ),
+            // Tuesday
+            ActivitiesOccasionLoaded(
+              activities: <ActivityOccasion>[
+                ActivityOccasion.forTest(everyDayRecurring, Occasion.current,
+                    day: initialDay),
+                ActivityOccasion.forTest(todayActivity, Occasion.future,
+                    day: initialDay),
+              ],
+              fullDayActivities: [
+                ActivityOccasion.forTest(
+                    everyDayFullDayRecurring, Occasion.future,
+                    day: initialDay),
+              ],
+              indexOfCurrentActivity: 0,
+              day: initialDay,
+              isToday: true,
+            ),
+            // Wednesday
+            ActivitiesOccasionLoaded(
+              activities: <ActivityOccasion>[
+                ActivityOccasion.forTest(everyDayRecurring, Occasion.future,
+                    day: tomorrow),
+                ActivityOccasion.forTest(tomorrowActivity, Occasion.future,
+                    day: tomorrow),
+              ],
+              fullDayActivities: [
+                ActivityOccasion.forTest(
+                    everyDayFullDayRecurring, Occasion.future,
+                    day: tomorrow),
+              ],
+              indexOfCurrentActivity: -1,
+              day: tomorrow,
               isToday: false,
             ),
           ]));
