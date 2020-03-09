@@ -18,6 +18,8 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
+  final double cardHeight = 56.0;
+  final double cardMargin = 4.0;
   DayPickerBloc _dayPickerBloc;
   ActivitiesBloc _activitiesBloc;
   ScrollPositionBloc _scrollPositionBloc;
@@ -76,10 +78,28 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                       return BlocBuilder<ActivitiesOccasionBloc,
                           ActivitiesOccasionState>(builder: (context, state) {
                         if (state is ActivitiesOccasionLoaded) {
-                          return calendarViewState.currentView ==
-                                  CalendarViewType.LIST
-                              ? Agenda(state: state)
-                              : TimePillar();
+                          final fullDayActivities = state.fullDayActivities;
+                          return Column(
+                            children: <Widget>[
+                              if (fullDayActivities.isNotEmpty)
+                                FullDayContainer(
+                                  fullDayActivities: fullDayActivities,
+                                  cardHeight: cardHeight,
+                                  cardMargin: cardMargin,
+                                  day: state.day,
+                                ),
+                              Expanded(
+                                child: calendarViewState.currentView ==
+                                        CalendarViewType.LIST
+                                    ? Agenda(
+                                        state: state,
+                                        cardHeight: cardHeight,
+                                        cardMargin: cardMargin,
+                                      )
+                                    : TimePillar(),
+                              )
+                            ],
+                          );
                         }
                         return Center(child: CircularProgressIndicator());
                       }, condition: (oldState, newState) {
