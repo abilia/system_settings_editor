@@ -127,13 +127,13 @@ class FullDayContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firstTwo = fullDayActivities.take(2);
     return Container(
       decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
-          children: firstTwo
+          children: fullDayActivities
+              .take(2)
               .map<Widget>(
                 (fd) => Flexible(
                   flex: 2,
@@ -143,46 +143,56 @@ class FullDayContainer extends StatelessWidget {
                   ),
                 ),
               )
-              .toList()
-                ..add(
-                  fullDayActivities.length >= 3
-                      ? Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
-                          child: ActionButton(
-                            key: TestKey.showAllFullDays,
-                            child: Text('+ ${fullDayActivities.length - 2}'),
-                            onPressed: () async {
-                              await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (innerContext) => MultiBlocProvider(
-                                    providers: [
-                                      BlocProvider<ActivitiesBloc>.value(
-                                        value: BlocProvider.of<ActivitiesBloc>(
-                                          context,
-                                        ),
-                                      ),
-                                      BlocProvider<ClockBloc>.value(
-                                        value: BlocProvider.of<ClockBloc>(
-                                          context,
-                                        ),
-                                      ),
-                                    ],
-                                    child: AllDayList(
-                                      pickedDay: day,
-                                      allDayActivities: fullDayActivities,
-                                      cardHeight: this.cardHeight,
-                                      cardMargin: this.cardMargin,
-                                    ),
-                                  ),
-                                  fullscreenDialog: true,
-                                ),
-                              );
-                            },
-                          ),
-                        )
-                      : SizedBox(height: 56),
-                ),
+              .followedBy([
+            if (fullDayActivities.length >= 3)
+              ShowAllFullDayActivitiesButton(
+                  fullDayActivities: fullDayActivities,
+                  day: day,
+                  cardHeight: cardHeight,
+                  cardMargin: cardMargin)
+          ]).toList(),
         ),
+      ),
+    );
+  }
+}
+
+class ShowAllFullDayActivitiesButton extends StatelessWidget {
+  const ShowAllFullDayActivitiesButton({
+    Key key,
+    @required this.fullDayActivities,
+    @required this.day,
+    @required this.cardHeight,
+    @required this.cardMargin,
+  }) : super(key: key);
+
+  final List<ActivityOccasion> fullDayActivities;
+  final DateTime day;
+  final double cardHeight;
+  final double cardMargin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
+      child: ActionButton(
+        child: Text('+ ${fullDayActivities.length - 2}'),
+        onPressed: () async {
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (innerContext) => editActivityMultiBlocProvider(
+                context,
+                child: AllDayList(
+                  pickedDay: day,
+                  allDayActivities: fullDayActivities,
+                  cardHeight: this.cardHeight,
+                  cardMargin: this.cardMargin,
+                ),
+              ),
+              fullscreenDialog: true,
+            ),
+          );
+        },
       ),
     );
   }

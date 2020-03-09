@@ -55,50 +55,47 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
         PageController(initialPage: DayPickerBloc.startIndex);
     return BlocProvider<ScrollPositionBloc>(
       create: (context) => _scrollPositionBloc,
-      child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
-        builder: (context, activitiesState) =>
-            BlocBuilder<DayPickerBloc, DayPickerState>(
-          builder: (context, pickedDay) =>
-              BlocBuilder<CalendarViewBloc, CalendarViewState>(
-            builder: (context, calendarViewState) {
-              return AnimatedTheme(
-                data: weekDayTheme[pickedDay.day.weekday],
-                child: Scaffold(
-                  appBar: buildAppBar(pickedDay.day),
-                  body: BlocListener<DayPickerBloc, DayPickerState>(
-                    listener: (context, state) {
-                      controller.animateToPage(state.index,
-                          duration: Duration(milliseconds: 500),
-                          curve: Curves.easeOutQuad);
+      child: BlocBuilder<DayPickerBloc, DayPickerState>(
+        builder: (context, pickedDay) =>
+            BlocBuilder<CalendarViewBloc, CalendarViewState>(
+          builder: (context, calendarViewState) {
+            return AnimatedTheme(
+              data: weekDayTheme[pickedDay.day.weekday],
+              child: Scaffold(
+                appBar: buildAppBar(pickedDay.day),
+                body: BlocListener<DayPickerBloc, DayPickerState>(
+                  listener: (context, state) {
+                    controller.animateToPage(state.index,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.easeOutQuad);
+                  },
+                  child: PageView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: controller,
+                    itemBuilder: (context, index) {
+                      return BlocBuilder<ActivitiesOccasionBloc,
+                          ActivitiesOccasionState>(builder: (context, state) {
+                        if (state is ActivitiesOccasionLoaded) {
+                          return calendarViewState.currentView ==
+                                  CalendarViewType.LIST
+                              ? Agenda(state: state)
+                              : TimePillar();
+                        }
+                        return Center(child: CircularProgressIndicator());
+                      }, condition: (oldState, newState) {
+                        return (oldState is ActivitiesOccasionLoaded &&
+                                newState is ActivitiesOccasionLoaded &&
+                                oldState.day == newState.day) ||
+                            oldState.runtimeType != newState.runtimeType;
+                      });
                     },
-                    child: PageView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      controller: controller,
-                      itemBuilder: (context, index) {
-                        return BlocBuilder<ActivitiesOccasionBloc,
-                            ActivitiesOccasionState>(builder: (context, state) {
-                          if (state is ActivitiesOccasionLoaded) {
-                            return calendarViewState.currentView ==
-                                    CalendarViewType.LIST
-                                ? Agenda(state: state)
-                                : TimePillar();
-                          }
-                          return Center(child: CircularProgressIndicator());
-                        }, condition: (oldState, newState) {
-                          return (oldState is ActivitiesOccasionLoaded &&
-                                  newState is ActivitiesOccasionLoaded &&
-                                  oldState.day == newState.day) ||
-                              oldState.runtimeType != newState.runtimeType;
-                        });
-                      },
-                    ),
                   ),
-                  bottomNavigationBar:
-                      buildBottomAppBar(calendarViewState.currentView, context),
                 ),
-              );
-            },
-          ),
+                bottomNavigationBar:
+                    buildBottomAppBar(calendarViewState.currentView, context),
+              ),
+            );
+          },
         ),
       ),
     );

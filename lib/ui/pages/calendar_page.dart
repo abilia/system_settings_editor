@@ -50,7 +50,10 @@ class CalendarPage extends StatelessWidget {
             ),
         ),
         BlocProvider<ClockBloc>(
-          create: (context) => ClockBloc(GetIt.I<Stream<DateTime>>()),
+          create: (context) => ClockBloc(
+            GetIt.I<Stream<DateTime>>(),
+            initialTime: GetIt.I<DateTime>(),
+          ),
         ),
         BlocProvider<DayPickerBloc>(
           create: (context) => DayPickerBloc(

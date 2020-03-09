@@ -38,29 +38,21 @@ void main() {
         title3 = 'allDay3';
     final allDayActivities = [
       Activity.createNew(
-          title: title0,
-          startTime: day.millisecondsSinceEpoch,
-          duration: 0,
-          category: 0,
-          reminderBefore: []),
+        title: title0,
+        startTime: day.millisecondsSinceEpoch,
+      ),
       Activity.createNew(
-          title: title1,
-          startTime: day.millisecondsSinceEpoch,
-          duration: 0,
-          category: 0,
-          reminderBefore: []),
+        title: title1,
+        startTime: day.millisecondsSinceEpoch,
+      ),
       Activity.createNew(
-          title: title2,
-          startTime: day.millisecondsSinceEpoch,
-          duration: 0,
-          category: 0,
-          reminderBefore: []),
+        title: title2,
+        startTime: day.millisecondsSinceEpoch,
+      ),
       Activity.createNew(
-          title: title3,
-          startTime: day.millisecondsSinceEpoch,
-          duration: 0,
-          category: 0,
-          reminderBefore: []),
+        title: title3,
+        startTime: day.millisecondsSinceEpoch,
+      ),
     ].map((a) => ActivityOccasion(a, now: day, day: day)).toList();
 
     await tester.pumpWidget(wrapWithMaterialApp(AllDayList(

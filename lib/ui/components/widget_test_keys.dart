@@ -10,7 +10,6 @@ class TestKey {
       onScreenAlarm = Key('onScreenAlarm'),
       onScreenReminder = Key('onScreenReminder'),
       appBarCloseButton = Key('appBarCloseButton'),
-      showAllFullDays = Key('showAllFullDays'),
       changeView = Key('changeView'),
       timePillarButton = Key('timePillarButton'),
       agendaListButton = Key('agendaListButton  '),

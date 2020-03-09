@@ -113,17 +113,25 @@ class ActivityPage extends StatelessWidget {
                 ),
                 onPressed: () async {
                   final now = BlocProvider.of<ClockBloc>(context).state;
+                  final sortableBloc = BlocProvider.of<SortableBloc>(context);
+                  final activitiesBloc =
+                      BlocProvider.of<ActivitiesBloc>(context);
                   await Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (innerContext) {
-                        final addActivitybloc = AddActivityBloc(
-                          activitiesBloc:
-                              BlocProvider.of<ActivitiesBloc>(context),
-                          activity: activity,
-                          newActivity: false,
-                        );
-                        return BlocProvider<AddActivityBloc>(
-                          create: (context) => addActivitybloc,
+                      builder: (_) {
+                        return MultiBlocProvider(
+                          providers: [
+                            BlocProvider<AddActivityBloc>(
+                              create: (context) => AddActivityBloc(
+                                activitiesBloc: activitiesBloc,
+                                activity: activity,
+                                newActivity: false,
+                              ),
+                            ),
+                            BlocProvider<SortableBloc>.value(
+                              value: sortableBloc,
+                            ),
+                          ],
                           child: NewActivityPage(today: now.onlyDays()),
                         );
                       },

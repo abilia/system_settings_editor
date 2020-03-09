@@ -29,8 +29,6 @@ class FakeActivities {
             title: 'Minute $i',
             startTime: when.add(Duration(minutes: i)).millisecondsSinceEpoch,
             duration: Duration(minutes: 1).inMilliseconds,
-            category: 0,
-            reminderBefore: [],
             fileId: i % 3 == 0 ? 'fileId' : null,
             alarmType: ALARM_SILENT),
     ];
@@ -46,8 +44,6 @@ class FakeActivities {
             fullDay: true,
             startTime: when.add(Duration(days: i)).millisecondsSinceEpoch,
             duration: Duration(minutes: 5).inMilliseconds,
-            category: 0,
-            reminderBefore: [],
             fileId: i % 3 == 0 ? 'fileId' : null,
             alarmType: ALARM_SILENT),
     ];
@@ -63,8 +59,6 @@ class FakeActivities {
             startTime:
                 when.subtract(Duration(minutes: i)).millisecondsSinceEpoch,
             duration: Duration(minutes: 15).inMilliseconds,
-            category: 0,
-            reminderBefore: [],
             alarmType: ALARM_SILENT),
     ];
   }
@@ -86,8 +80,6 @@ class FakeActivity {
           title: title,
           startTime: when.millisecondsSinceEpoch,
           duration: duration.inMilliseconds,
-          category: 0,
-          reminderBefore: [],
           alarmType: ALARM_SILENT);
 
   static Activity ends(
@@ -99,8 +91,6 @@ class FakeActivity {
           title: title,
           startTime: when.subtract(duration).millisecondsSinceEpoch,
           duration: duration.inMilliseconds,
-          category: 0,
-          reminderBefore: [],
           alarmType: ALARM_SILENT);
 
   static Activity reocurrsWeekends([DateTime startDate]) =>
@@ -151,10 +141,8 @@ class FakeActivity {
               (startTime ?? _now.subtract(366.days())).millisecondsSinceEpoch,
           endTime: endTime?.millisecondsSinceEpoch ?? Recurs.NO_END,
           duration: Duration(hours: 1).inMilliseconds,
-          category: 0,
           recurrentType: recurrentType.index,
           recurrentData: recurrrentData,
-          reminderBefore: [],
           alarmType: ALARM_SILENT);
 
   static Activity fullday(DateTime when, [String title = 'fullday']) =>
@@ -163,7 +151,6 @@ class FakeActivity {
           startTime: when.onlyDays().millisecondsSinceEpoch,
           endTime: when.add(25.hours()).onlyDays().millisecondsSinceEpoch - 1,
           duration: Duration(days: 1).inMilliseconds - 1,
-          category: 0,
           fullDay: true,
           reminderBefore: [60 * 60 * 1000],
           alarmType: NO_ALARM);

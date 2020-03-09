@@ -66,7 +66,7 @@ void main() {
 
     expect(find.text(firstFullDayTitle), findsOneWidget);
     expect(find.text(secondFullDayTitle), findsOneWidget);
-    expect(find.byKey(TestKey.showAllFullDays), findsNothing);
+    expect(find.byType(ShowAllFullDayActivitiesButton), findsNothing);
   });
 
   testWidgets(
@@ -80,7 +80,7 @@ void main() {
     expect(find.text(firstFullDayTitle), findsOneWidget);
     expect(find.text(secondFullDayTitle), findsOneWidget);
     expect(find.text(thirdFullDayTitle), findsNothing);
-    expect(find.byKey(TestKey.showAllFullDays), findsOneWidget);
+    expect(find.byType(ShowAllFullDayActivitiesButton), findsOneWidget);
   });
 
   testWidgets('tapping show-all-full-day-button shows all full days',
@@ -98,9 +98,9 @@ void main() {
     expect(find.text(secondFullDayTitle), findsOneWidget);
     expect(find.text(thirdFullDayTitle), findsNothing);
     expect(find.text(forthFullDayTitle), findsNothing);
-    expect(find.byKey(TestKey.showAllFullDays), findsOneWidget);
+    expect(find.byType(ShowAllFullDayActivitiesButton), findsOneWidget);
 
-    await tester.tap(find.byKey(TestKey.showAllFullDays));
+    await tester.tap(find.byType(ShowAllFullDayActivitiesButton));
     await tester.pumpAndSettle();
 
     expect(find.text(firstFullDayTitle), findsOneWidget);
@@ -134,7 +134,7 @@ void main() {
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(TestKey.showAllFullDays));
+    await tester.tap(find.byType(ShowAllFullDayActivitiesButton));
     await tester.pumpAndSettle();
     await tester.tap(find.text(forthFullDayTitle));
     await tester.pumpAndSettle();
