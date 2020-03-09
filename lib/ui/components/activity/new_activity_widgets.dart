@@ -167,11 +167,11 @@ class AlarmWidget extends StatelessWidget {
           key: TestKey.alarmAtStartSwitch,
           leading: Icon(AbiliaIcons.handi_alarm),
           label: Text(translator.alarmOnlyAtStartTime),
-          value: alarm.atEnd,
+          value: alarm.onlyStart,
           onChanged: alarm.shouldAlarm
               ? (v) => BlocProvider.of<AddActivityBloc>(context).add(
                     ChangeActivity(
-                        activity.copyWith(alarm: alarm.copyWith(onEndTime: v))),
+                        activity.copyWith(alarm: alarm.copyWith(onlyStart: v))),
                   )
               : null,
         ),

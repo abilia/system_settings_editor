@@ -91,7 +91,7 @@ class Activity extends Equatable {
     bool checkable = false,
     bool removeAfter = false,
     bool secret = false,
-    int alarmType = ALARM_SOUND_AND_VIBRATION_ONLY_ON_START,
+    int alarmType = ALARM_SOUND_AND_VIBRATION,
     String infoItem,
     String fileId,
     Iterable<int> reminderBefore = const [],
