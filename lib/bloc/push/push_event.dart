@@ -1,11 +1,7 @@
-import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-abstract class PushEvent extends Equatable {
-  const PushEvent();
-  @override
-  List<Object> get props => [];
+class PushEvent {
+  final String collapseKey;
+  const PushEvent(this.collapseKey);
 }
-
-class OnPush extends PushEvent {}

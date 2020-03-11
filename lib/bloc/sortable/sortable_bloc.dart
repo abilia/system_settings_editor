@@ -19,7 +19,8 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     @required PushBloc pushBloc,
   }) {
     pushSubscription = pushBloc.listen((state) {
-      if (state is PushReceived) {
+      print('got push to sortable bloc with state: $state');
+      if (state is PushReceived && state.pushType == PushType.sortable) {
         add(LoadSortables());
       }
     });
