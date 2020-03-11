@@ -165,34 +165,19 @@ class ActivityCard extends StatelessWidget {
         ),
       );
 
-  Widget buildInfoIcons(Activity activity) {
-    return Row(
-      children: <Widget>[
-        if (!activity.fullDay)
-          Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-            child: Icon(
-              activity.alarm.iconData(),
-              size: 18,
-            ),
-          ),
+  Widget buildInfoIcons(Activity activity) => Row(
+          children: [
+        if (activity.checkable) AbiliaIcons.handi_check,
+        if (!activity.fullDay) activity.alarm.iconData(),
         if (!activity.fullDay && activity.reminderBefore.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-            child: Icon(
-              AbiliaIcons.handi_reminder,
-              size: 18,
-            ),
-          ),
-        if (activity.infoItem != null)
-          Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-            child: Icon(
-              AbiliaIcons.handi_info,
-              size: 18,
-            ),
-          ),
-      ],
-    );
-  }
+          AbiliaIcons.handi_reminder,
+        if (activity.infoItem != null) AbiliaIcons.handi_info,
+      ]
+              .map(
+                (icon) => Padding(
+                  padding: const EdgeInsets.only(right: 4.0),
+                  child: Icon(icon, size: 18),
+                ),
+              )
+              .toList());
 }
