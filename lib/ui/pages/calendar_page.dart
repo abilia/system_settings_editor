@@ -45,6 +45,7 @@ class CalendarPage extends StatelessWidget {
               userId: authenticatedState.userId,
               authToken: authenticatedState.token,
             ),
+            pushBloc: BlocProvider.of<PushBloc>(context),
           )..add(
               LoadSortables(),
             ),

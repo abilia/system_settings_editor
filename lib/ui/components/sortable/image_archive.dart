@@ -22,24 +22,22 @@ class ImageArchive extends StatelessWidget {
         return GridView.count(
           crossAxisCount: 3,
           childAspectRatio: 0.96,
-          children: currentFolderContent.map((s) {
+          children: currentFolderContent.map((sortable) {
             return Column(
               children: <Widget>[
-                s.isGroup
+                sortable.isGroup
                     ? Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Folder(
-                          name: s.sortableData.name,
+                          sortable: sortable,
                           onTap: () {
                             BlocProvider.of<ImageArchiveBloc>(context)
-                                .add(FolderChanged(s.id));
+                                .add(FolderChanged(sortable.id));
                           },
                         ),
                       )
                     : ArchiveImage(
-                        name: s.sortableData.name,
-                        imageId: s.sortableData.fileId,
-                        iconPath: s.sortableData.icon,
+                        sortable: sortable,
                         onChanged: (val) {
                           BlocProvider.of<ImageArchiveBloc>(context)
                               .add(ArchiveImageSelected(val));
@@ -57,12 +55,12 @@ class ImageArchive extends StatelessWidget {
 
 class Folder extends StatelessWidget {
   final GestureTapCallback onTap;
-  final String name;
+  final Sortable sortable;
 
   const Folder({
     Key key,
     @required this.onTap,
-    @required this.name,
+    @required this.sortable,
   }) : super(key: key);
 
   @override
@@ -74,14 +72,35 @@ class Folder extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(
-              name,
+              sortable.sortableData.name,
               style: abiliaTextTheme.caption,
               overflow: TextOverflow.ellipsis,
             ),
-            Icon(
-              AbiliaIcons.folder,
-              size: 86,
-              color: AbiliaColors.orange,
+            Stack(
+              children: [
+                Icon(
+                  AbiliaIcons.folder,
+                  size: 86,
+                  color: AbiliaColors.orange,
+                ),
+                Positioned(
+                  bottom: 16,
+                  left: 10,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Align(
+                      alignment: Alignment.center,
+                      heightFactor: 42 / 66,
+                      child: FadeInCalendarImage(
+                        imageFileId: sortable.sortableData.fileId,
+                        imageFilePath: sortable.sortableData.icon,
+                        width: 66,
+                        height: 66,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -92,16 +111,10 @@ class Folder extends StatelessWidget {
 
 class ArchiveImage extends StatelessWidget {
   final ValueChanged<String> onChanged;
-  final String name;
-  final String imageId;
-  final String iconPath;
-  const ArchiveImage({
-    Key key,
-    @required this.name,
-    @required this.onChanged,
-    @required this.imageId,
-    @required this.iconPath,
-  }) : super(key: key);
+  final Sortable sortable;
+  const ArchiveImage(
+      {Key key, @required this.onChanged, @required this.sortable})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +124,9 @@ class ArchiveImage extends StatelessWidget {
       padding: const EdgeInsets.all(4.0),
       child: BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
           builder: (context, archiveState) {
+        final imageId = sortable.sortableData.fileId;
+        final name = sortable.sortableData.name;
+        final iconPath = sortable.sortableData.file;
         return ArchiveRadio(
           width: 110,
           heigth: 112,

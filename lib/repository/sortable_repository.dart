@@ -27,7 +27,7 @@ class SortableRepository extends DataRepository<Sortable> {
           await _fetchSortables(await sortableDb.getLastRevision());
       await sortableDb.insertSortables(fetchedSortables);
     } catch (e) {
-      print('Error when syncing sortables $e');
+      print('Error when loading sortables $e');
     }
     return sortableDb.getSortables();
   }

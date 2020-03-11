@@ -56,7 +56,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsNothing);
 
-      pushBloc.add(OnPush());
+      pushBloc.add(PushEvent('calendar'));
 
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsOneWidget);

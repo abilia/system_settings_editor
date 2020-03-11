@@ -15,6 +15,7 @@ class Sortable extends Equatable {
             name: sortableData['name'],
             fileId: sortableData['fileId'],
             icon: sortableData['icon'],
+            file: sortableData['file'],
           )
         : SortableData();
   }
@@ -116,11 +117,12 @@ class DbSortable extends Equatable {
 }
 
 class SortableData {
-  final String name, fileId, icon;
+  final String name, fileId, icon, file;
 
   SortableData({
     this.name,
     this.fileId,
     this.icon,
+    this.file,
   });
 }
