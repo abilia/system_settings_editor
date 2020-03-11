@@ -25,7 +25,7 @@ void main() {
       expect(activitiesBloc.initialState, ActivitiesNotLoaded());
     });
 
-    test('load activities calles load activities on mockActivityRepostitory',
+    test('load activities calls load activities on mockActivityRepostitory',
         () async {
       activitiesBloc.add(LoadActivities());
       await untilCalled(mockActivityRepository.load());
@@ -67,7 +67,7 @@ void main() {
       activitiesBloc.add(LoadActivities());
     });
 
-    test('calles add activities on mockActivityRepostitory', () async {
+    test('calls add activities on mockActivityRepostitory', () async {
       when(mockActivityRepository.load())
           .thenAnswer((_) => Future.value(<Activity>[]));
       final anActivity = FakeActivity.startsNow();
@@ -79,7 +79,7 @@ void main() {
       verify(mockActivityRepository.save([anActivity]));
     });
 
-    test('AddActivity calles add activities on mockActivityRepostitory',
+    test('AddActivity calls add activities on mockActivityRepostitory',
         () async {
       when(mockActivityRepository.load())
           .thenAnswer((_) => Future.value(<Activity>[]));
@@ -91,7 +91,7 @@ void main() {
       await untilCalled(mockActivityRepository.save(any));
     });
 
-    test('UpdateActivities calles save activities on mockActivityRepostitory',
+    test('UpdateActivities calls save activities on mockActivityRepostitory',
         () async {
       final anActivity = FakeActivity.startsNow();
 
@@ -105,7 +105,7 @@ void main() {
       await untilCalled(mockActivityRepository.save([updatedActivity]));
     });
 
-    test('DeleteActivities calles save activities on mockActivityRepostitory',
+    test('DeleteActivities calls save activities on mockActivityRepostitory',
         () async {
       // Arrange
       final anActivity = FakeActivity.startsNow();
