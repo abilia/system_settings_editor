@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/activity.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -91,14 +92,14 @@ class ActivityPage extends StatelessWidget {
                   size: 32,
                 ),
                 onPressed: () {
-                  final addAcitivityBloc = AddActivityBloc(
+                  final addAcitivityBloc = EditActivityBloc(
                     activity: activity,
                     activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
                     newActivity: false,
                   );
                   showViewDialog<bool>(
                     context: context,
-                    builder: (context) => BlocProvider<AddActivityBloc>.value(
+                    builder: (context) => BlocProvider<EditActivityBloc>.value(
                       value: addAcitivityBloc,
                       child: SelectReminderDialog(activity: activity),
                     ),
@@ -121,8 +122,8 @@ class ActivityPage extends StatelessWidget {
                       builder: (_) {
                         return MultiBlocProvider(
                           providers: [
-                            BlocProvider<AddActivityBloc>(
-                              create: (context) => AddActivityBloc(
+                            BlocProvider<EditActivityBloc>(
+                              create: (context) => EditActivityBloc(
                                 activitiesBloc: activitiesBloc,
                                 activity: activity,
                                 newActivity: false,
@@ -132,7 +133,11 @@ class ActivityPage extends StatelessWidget {
                               value: sortableBloc,
                             ),
                           ],
-                          child: NewActivityPage(today: now.onlyDays()),
+                          child: EditActivityPage(
+                            today: now.onlyDays(),
+                            title:
+                                Translator.of(context).translate.editActivity,
+                          ),
                         );
                       },
                     ),

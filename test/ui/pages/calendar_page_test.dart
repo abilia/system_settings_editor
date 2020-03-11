@@ -503,7 +503,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.addActivity));
       await tester.pumpAndSettle();
-      expect(find.byType(NewActivityPage), findsOneWidget);
+      expect(find.byType(EditActivityPage), findsOneWidget);
     });
   });
 
@@ -521,10 +521,10 @@ void main() {
     final showAllFullDayButtonFinder =
         find.byType(ShowAllFullDayActivitiesButton);
     final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
-    final editActivityPageFinder = find.byType(NewActivityPage);
+    final editActivityPageFinder = find.byType(EditActivityPage);
     final editTitleFieldFinder = find.byKey(TestKey.editTitleTextFormField);
     final saveEditActivityButtonFinder =
-        find.byKey(TestKey.finishNewActivityButton);
+        find.byKey(TestKey.finishEditActivityButton);
     final activityBackButtonFinder = find.byKey(TestKey.activityBackButton);
 
     final editPictureFinder = find.byKey(TestKey.addPicture);

@@ -15,13 +15,14 @@ class SelectReminderDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = abiliaTheme;
-    return BlocBuilder<AddActivityBloc, AddActivityState>(
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
       builder: (context, state) {
         final sameReminders = eq(activity.reminders, state.activity.reminders);
         return ViewDialog(
           onOk: !sameReminders
               ? () {
-                  BlocProvider.of<AddActivityBloc>(context).add(SaveActivity());
+                  BlocProvider.of<EditActivityBloc>(context)
+                      .add(SaveActivity());
                   Navigator.of(context).maybePop(true);
                 }
               : null,

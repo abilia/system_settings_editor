@@ -2,7 +2,7 @@ export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:bloc/bloc.dart';
 export 'activities/bloc.dart';
 export 'activities/day_activities/bloc.dart';
-export 'activities/add_activity/add_activity_bloc.dart';
+export 'activities/edit_activity/edit_activity_bloc.dart';
 export 'activities/activities_occasion/bloc.dart';
 export 'authentication/bloc.dart';
 export 'login/bloc.dart';

@@ -72,9 +72,9 @@ void main() {
 
   group('Edit activity', () {
     final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
-    final editActivityPageFinder = find.byType(NewActivityPage);
+    final editActivityPageFinder = find.byType(EditActivityPage);
     final titleTextFormFieldFinder = find.byKey(TestKey.editTitleTextFormField);
-    final finishActivityFinder = find.byKey(TestKey.finishNewActivityButton);
+    final finishActivityFinder = find.byKey(TestKey.finishEditActivityButton);
     testWidgets('Edit activity button shows', (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getActivities()).thenAnswer(

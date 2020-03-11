@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 
-class NewActivityPage extends StatelessWidget {
+class EditActivityPage extends StatelessWidget {
   final DateTime today;
+  final String title;
 
-  const NewActivityPage({@required this.today, Key key}) : super(key: key);
+  const EditActivityPage({
+    @required this.today,
+    this.title = '',
+    Key key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
-    return BlocBuilder<AddActivityBloc, AddActivityState>(
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
       builder: (context, state) {
         final activity = state.activity;
         return Scaffold(
           appBar: AbiliaAppBar(
-            title: translator.newActivity,
+            title: title,
             trailing: ActionButton(
-              key: TestKey.finishNewActivityButton,
+              key: TestKey.finishEditActivityButton,
               child: Icon(
                 AbiliaIcons.ok,
                 size: 32,
               ),
               onPressed: state.canSave
                   ? () async {
-                      BlocProvider.of<AddActivityBloc>(context)
+                      BlocProvider.of<EditActivityBloc>(context)
                           .add(SaveActivity());
                       await Navigator.of(context).maybePop();
                     }

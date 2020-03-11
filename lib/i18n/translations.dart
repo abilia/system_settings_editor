@@ -30,6 +30,7 @@ abstract class Translated {
   String get check;
   String get uncheck;
   String get newActivity;
+  String get editActivity;
   String get category;
   String get noColor;
   String get selectAlarmType;
@@ -86,6 +87,7 @@ class English extends Translated {
       check = 'Check',
       uncheck = 'Uncheck',
       newActivity = 'New activity',
+      editActivity = 'Edit activity',
       category = 'Category',
       noColor = 'No color',
       selectAlarmType = 'Select alarm type',
@@ -142,6 +144,7 @@ class Swedish extends Translated {
       check = 'Kvittera',
       uncheck = 'Ångra',
       newActivity = 'Ny aktivitet',
+      editActivity = 'Ändra aktivitet',
       category = 'Kategori',
       noColor = 'Ingen färg',
       selectAlarmType = 'Välj typ av larm',
