@@ -90,7 +90,7 @@ class Folder extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                     child: Align(
                       alignment: Alignment.center,
-                      heightFactor: 0.6,
+                      heightFactor: 42 / 66,
                       child: FadeInCalendarImage(
                         imageFileId: sortable.sortableData.fileId,
                         imageFilePath: sortable.sortableData.icon,
