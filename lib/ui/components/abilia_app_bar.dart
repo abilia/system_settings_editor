@@ -8,12 +8,15 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   final String title;
   final Widget trailing;
+  final Function onClosedPressed;
   const AbiliaAppBar({
     Key key,
     @required this.title,
     this.height = 68.0,
     this.trailing,
+    this.onClosedPressed,
   }) : super(key: key);
+
   @override
   Size get preferredSize => Size.fromHeight(height);
   @override
@@ -38,7 +41,8 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                         AbiliaIcons.close_program,
                         size: 32,
                       ),
-                      onPressed: () => Navigator.of(context).maybePop(),
+                      onPressed: onClosedPressed ??
+                          () => Navigator.of(context).maybePop(),
                     ),
                   ),
                   Center(

@@ -25,7 +25,7 @@ void main() {
       expect(activitiesBloc.initialState, ActivitiesNotLoaded());
     });
 
-    test('load activities calles load activities on mockActivityRepostitory',
+    test('load activities calls load activities on mockActivityRepostitory',
         () async {
       activitiesBloc.add(LoadActivities());
       await untilCalled(mockActivityRepository.load());
@@ -67,7 +67,7 @@ void main() {
       activitiesBloc.add(LoadActivities());
     });
 
-    test('calles add activities on mockActivityRepostitory', () async {
+    test('calls add activities on mockActivityRepostitory', () async {
       when(mockActivityRepository.load())
           .thenAnswer((_) => Future.value(<Activity>[]));
       final anActivity = FakeActivity.startsNow();
@@ -79,7 +79,7 @@ void main() {
       verify(mockActivityRepository.save([anActivity]));
     });
 
-    test('AddActivity calles add activities on mockActivityRepostitory',
+    test('AddActivity calls add activities on mockActivityRepostitory',
         () async {
       when(mockActivityRepository.load())
           .thenAnswer((_) => Future.value(<Activity>[]));
@@ -91,7 +91,7 @@ void main() {
       await untilCalled(mockActivityRepository.save(any));
     });
 
-    test('UpdateActivities calles save activities on mockActivityRepostitory',
+    test('UpdateActivities calls save activities on mockActivityRepostitory',
         () async {
       final anActivity = FakeActivity.startsNow();
 
@@ -102,8 +102,61 @@ void main() {
       final updatedActivity = anActivity.copyWith(title: 'new title');
       activitiesBloc.add(UpdateActivity(updatedActivity));
 
-      await untilCalled(
-          mockActivityRepository.save([updatedActivity]));
+      await untilCalled(mockActivityRepository.save([updatedActivity]));
+    });
+
+    test('DeleteActivities calls save activities on mockActivityRepostitory',
+        () async {
+      // Arrange
+      final anActivity = FakeActivity.startsNow();
+      when(mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(<Activity>[anActivity]));
+      activitiesBloc.add(LoadActivities());
+      final deletedActivity = anActivity.copyWith(deleted: true);
+
+      // Act
+      activitiesBloc.add(DeleteActivity(anActivity));
+
+      // Assert
+      await untilCalled(mockActivityRepository.save([deletedActivity]));
+    });
+
+    test('DeleteActivities does not yeild the deleted activity', () async {
+      // Arrange
+      final activity1 = FakeActivity.startsNow();
+      final activity2 = FakeActivity.startsNow();
+      final activity3 = FakeActivity.startsNow();
+      final activity4 = FakeActivity.startsNow();
+      final fullActivityList = [
+        activity1,
+        activity2,
+        activity3,
+        activity4,
+      ];
+      final activityListDeleted = [
+        activity1,
+        activity2,
+        activity4,
+      ].followedBy({});
+      when(mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(fullActivityList));
+
+      activitiesBloc.add(LoadActivities());
+
+      // Act
+      activitiesBloc.add(DeleteActivity(activity3));
+
+      // Assert
+      final expectedResponse = [
+        ActivitiesNotLoaded(),
+        ActivitiesLoaded(fullActivityList),
+        ActivitiesLoaded(activityListDeleted),
+      ];
+
+      await expectLater(
+        activitiesBloc,
+        emitsInOrder(expectedResponse),
+      );
     });
 
     test('UpdateActivities state order', () async {

@@ -36,6 +36,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
       yield* _mapAddActivityToState(event, state);
     } else if (event is UpdateActivity) {
       yield* _mapUpdateActivityToState(event, state);
+    } else if (event is DeleteActivity) {
+      yield* _mapDeleteActivityToState(event, state);
     }
   }
 
@@ -53,6 +55,18 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     if (oldState is ActivitiesLoaded) {
       await _saveActivities([event.activity]);
       yield ActivitiesLoaded(oldState.activities.followedBy([event.activity]));
+    }
+  }
+
+  Stream<ActivitiesState> _mapDeleteActivityToState(
+      DeleteActivity event, ActivitiesState oldState) async* {
+    if (oldState is ActivitiesLoaded) {
+      final activity = event.activity;
+      final activities = oldState.activities.toSet();
+      if (activities.remove(activity)) {
+        await _saveActivities([activity.copyWith(deleted: true)]);
+        yield ActivitiesLoaded(activities);
+      }
     }
   }
 

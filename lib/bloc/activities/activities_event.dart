@@ -21,7 +21,7 @@ class AddActivity extends ActivitiesEvent {
   List<Object> get props => [activity];
 
   @override
-  String toString() => 'AddActivity { activity: $activity }';
+  String toString() => 'AddActivity { $activity }';
 }
 
 class UpdateActivity extends ActivitiesEvent {
@@ -33,5 +33,17 @@ class UpdateActivity extends ActivitiesEvent {
   List<Object> get props => [updatedActivity];
 
   @override
-  String toString() => 'UpdateActivity { updatedActivity: $updatedActivity }';
+  String toString() => 'UpdateActivity { $updatedActivity }';
+}
+
+class DeleteActivity extends ActivitiesEvent {
+  final Activity activity;
+
+  const DeleteActivity(this.activity);
+
+  @override
+  List<Object> get props => [activity];
+
+  @override
+  String toString() => 'DeleteActivity { $activity }';
 }

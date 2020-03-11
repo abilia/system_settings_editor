@@ -199,6 +199,19 @@ ThemeData addButtonTheme = abiliaTheme.copyWith(
   ),
 );
 
+ThemeData deleteActivityThemeData = lightButtonTheme.copyWith(
+  appBarTheme: abiliaTheme.appBarTheme.copyWith(
+    color: AbiliaColors.red,
+    brightness: Brightness.dark,
+  ),
+  scaffoldBackgroundColor: AbiliaColors.red[20],
+  textTheme: abiliaTextTheme.copyWith(
+    title: abiliaTextTheme.title.copyWith(color: AbiliaColors.white),
+    button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white),
+    subhead: abiliaTextTheme.subhead.copyWith(color: AbiliaColors.white),
+  ),
+);
+
 TextTheme abiliaTextTheme = TextTheme(
   display4: baseTextStyle.copyWith(
     fontSize: 96.0,
