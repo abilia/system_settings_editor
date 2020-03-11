@@ -147,7 +147,6 @@ void main() {
       activitiesBloc.add(DeleteActivity(activity3));
 
       // Assert
-      // Assert
       final expectedResponse = [
         ActivitiesNotLoaded(),
         ActivitiesLoaded(fullActivityList),
