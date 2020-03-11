@@ -47,6 +47,9 @@ class GetItInitializer {
   SortableDb _sortableDb;
   set sortableDb(SortableDb sortableDb) => this._sortableDb = sortableDb;
 
+  FactoryFunc<DateTime> _startTime;
+  set startTime(DateTime startTime) => this._startTime = () => startTime;
+
   init() {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
@@ -66,5 +69,6 @@ class GetItInitializer {
         _tickerFactory ?? () => Ticker.minute());
     GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());
     GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb());
+    GetIt.I.registerFactory<DateTime>(_startTime ?? () => DateTime.now());
   }
 }

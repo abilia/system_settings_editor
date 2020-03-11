@@ -506,4 +506,182 @@ void main() {
       expect(find.byType(NewActivityPage), findsOneWidget);
     });
   });
+
+  group('edit all day', () {
+    final title1 = 'fulldaytitle1';
+    final title2 = 'fullday title 2';
+    final title3 = 'full day title 3';
+    DateTime date = DateTime(1994, 04, 04, 04, 04);
+
+    final day1Finder = find.text(title1);
+    final day2Finder = find.text(title2);
+    final day3Finder = find.text(title3);
+    final cardFinder = find.byType(ActivityCard);
+    final infoFinder = find.byType(ActivityInfo);
+    final showAllFullDayButtonFinder =
+        find.byType(ShowAllFullDayActivitiesButton);
+    final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
+    final editActivityPageFinder = find.byType(NewActivityPage);
+    final editTitleFieldFinder = find.byKey(TestKey.editTitleTextFormField);
+    final saveEditActivityButtonFinder =
+        find.byKey(TestKey.finishNewActivityButton);
+    final activityBackButtonFinder = find.byKey(TestKey.activityBackButton);
+
+    final editPictureFinder = find.byKey(TestKey.addPicture);
+    final selectPictureDialogFinder = find.byType(SelectPictureDialog);
+    final selectImageArchiveFinder = find.byIcon(AbiliaIcons.folder);
+    final imageArchiveFinder = find.byType(ImageArchive);
+
+    setUp(() {
+      final fullDayActivities = [
+        FakeActivity.fullday(date, title1),
+        FakeActivity.fullday(date, title2),
+        FakeActivity.fullday(date, title3),
+      ];
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+      final mockTokenDb = MockTokenDb();
+      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
+      final mockFirebasePushService = MockFirebasePushService();
+      when(mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value('fakeToken'));
+      MockActivityDb mockActivityDb = MockActivityDb();
+      when(mockActivityDb.getActivities())
+          .thenAnswer((_) => Future.value(fullDayActivities));
+      GetItInitializer()
+        ..activityDb = mockActivityDb
+        ..userDb = MockUserDb()
+        ..ticker = (() => StreamController<DateTime>().stream)
+        ..startTime = date
+        ..baseUrlDb = MockBaseUrlDb()
+        ..fireBasePushService = mockFirebasePushService
+        ..tokenDb = mockTokenDb
+        ..httpClient = Fakes.client(() => fullDayActivities)
+        ..init();
+    });
+
+    testWidgets('Show full days activity', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(day1Finder, findsOneWidget);
+      expect(day2Finder, findsOneWidget);
+      expect(day3Finder, findsNothing);
+      expect(cardFinder, findsNWidgets(2));
+      expect(showAllFullDayButtonFinder, findsOneWidget);
+    });
+
+    testWidgets('Show all full days activity list',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(showAllFullDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(day1Finder, findsOneWidget);
+      expect(day2Finder, findsOneWidget);
+      expect(day3Finder, findsOneWidget);
+      expect(cardFinder, findsNWidgets(3));
+    });
+
+    testWidgets('Show info on full days activity from activity list',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(showAllFullDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(day3Finder);
+      await tester.pumpAndSettle();
+      expect(day1Finder, findsNothing);
+      expect(day2Finder, findsNothing);
+      expect(day3Finder, findsOneWidget);
+      expect(cardFinder, findsNothing);
+      expect(infoFinder, findsOneWidget);
+    });
+
+    testWidgets('Can show edit from full day list',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(showAllFullDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(day3Finder);
+      await tester.pumpAndSettle();
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(day3Finder, findsOneWidget);
+      expect(editActivityPageFinder, findsOneWidget);
+    });
+
+    testWidgets('Can edit from full day list', (WidgetTester tester) async {
+      final newTitle = 'A brand new title!';
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(showAllFullDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(day3Finder);
+      await tester.pumpAndSettle();
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.enterText(editTitleFieldFinder, newTitle);
+      await tester.tap(saveEditActivityButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.text(newTitle), findsOneWidget);
+    });
+
+    testWidgets('Can edit from full day list shows on full day list',
+        (WidgetTester tester) async {
+      final newTitle = 'A brand new title!';
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(showAllFullDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(day3Finder);
+      await tester.pumpAndSettle();
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.enterText(editTitleFieldFinder, newTitle);
+      await tester.tap(saveEditActivityButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(activityBackButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(day1Finder, findsOneWidget);
+      expect(day2Finder, findsOneWidget);
+      expect(cardFinder, findsNWidgets(3));
+      expect(day3Finder, findsNothing, skip: 'bug SGC-18');
+      expect(find.text(newTitle), findsOneWidget, skip: 'bug SGC-18');
+    });
+
+    testWidgets('Can edit picture from full day list',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(showAllFullDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(day3Finder);
+      await tester.pumpAndSettle();
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(editPictureFinder);
+      await tester.pumpAndSettle();
+      expect(selectPictureDialogFinder, findsOneWidget);
+    });
+
+    testWidgets('Can show image archive from full day list',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(showAllFullDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(day3Finder);
+      await tester.pumpAndSettle();
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(editPictureFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(selectImageArchiveFinder);
+      await tester.pumpAndSettle();
+      expect(imageArchiveFinder, findsOneWidget);
+    });
+  });
 }

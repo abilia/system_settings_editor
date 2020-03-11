@@ -41,15 +41,8 @@ class ActivityCard extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (innerContext) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider<ClockBloc>.value(
-                        value: BlocProvider.of<ClockBloc>(context),
-                      ),
-                      BlocProvider<ActivitiesBloc>.value(
-                        value: BlocProvider.of<ActivitiesBloc>(context),
-                      ),
-                    ],
+                  builder: (innerContext) => editActivityMultiBlocProvider(
+                    context,
                     child: ActivityPage(occasion: activityOccasion),
                   ),
                 ),

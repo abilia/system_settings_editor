@@ -20,7 +20,7 @@ class NameAndPictureWidget extends StatelessWidget {
           BlocBuilder<AddActivityBloc, AddActivityState>(
               builder: (context, addActivityState) {
             final imageClick = () async {
-              final imageId = await showDialog<String>(
+              final imageId = await showViewDialog<String>(
                 context: context,
                 builder: (_) => BlocProvider<ImageArchiveBloc>(
                   create: (_) => ImageArchiveBloc(
