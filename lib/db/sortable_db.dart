@@ -4,7 +4,8 @@ import 'package:sqflite/sqflite.dart';
 
 class SortableDb {
   static const SORTABLE_TABLE = 'sortable';
-  static const GET_ALL_SORTABLES = "SELECT * FROM $SORTABLE_TABLE";
+  static const GET_ALL_SORTABLES =
+      'SELECT * FROM $SORTABLE_TABLE WHERE deleted == 0';
   static const String MAX_REVISION_SQL =
       'SELECT max(revision) as max_revision FROM $SORTABLE_TABLE';
 
@@ -17,10 +18,9 @@ class SortableDb {
   Future<List<int>> insertSortables(Iterable<DbSortable> sortables) async {
     final db = await DatabaseRepository().database;
     final batch = db.batch();
-    sortables.forEach((sortable) =>
-      batch.insert('sortable', sortable.toMapForDb(),
-          conflictAlgorithm: ConflictAlgorithm.replace)
-    );
+    sortables.forEach((sortable) => batch.insert(
+        'sortable', sortable.toMapForDb(),
+        conflictAlgorithm: ConflictAlgorithm.replace));
     return await batch.commit();
   }
 
