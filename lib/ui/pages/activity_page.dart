@@ -117,14 +117,14 @@ class _ActivityPageState extends State<ActivityPage> {
                   size: 32,
                 ),
                 onPressed: () {
-                  final addAcitivityBloc = AddActivityBloc(
+                  final addAcitivityBloc = EditActivityBloc(
                     activity: activity,
                     activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
                     newActivity: false,
                   );
                   showViewDialog<bool>(
                     context: context,
-                    builder: (context) => BlocProvider<AddActivityBloc>.value(
+                    builder: (context) => BlocProvider<EditActivityBloc>.value(
                       value: addAcitivityBloc,
                       child: SelectReminderDialog(activity: activity),
                     ),
@@ -147,8 +147,8 @@ class _ActivityPageState extends State<ActivityPage> {
                       builder: (_) {
                         return MultiBlocProvider(
                           providers: [
-                            BlocProvider<AddActivityBloc>(
-                              create: (context) => AddActivityBloc(
+                            BlocProvider<EditActivityBloc>(
+                              create: (context) => EditActivityBloc(
                                 activitiesBloc: activitiesBloc,
                                 activity: activity,
                                 newActivity: false,
@@ -158,7 +158,11 @@ class _ActivityPageState extends State<ActivityPage> {
                               value: sortableBloc,
                             ),
                           ],
-                          child: NewActivityPage(today: now.onlyDays()),
+                          child: EditActivityPage(
+                            today: now.onlyDays(),
+                            title:
+                                Translator.of(context).translate.editActivity,
+                          ),
                         );
                       },
                     ),

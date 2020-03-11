@@ -17,7 +17,7 @@ class NameAndPictureWidget extends StatelessWidget {
       height: 84,
       child: Row(
         children: <Widget>[
-          BlocBuilder<AddActivityBloc, AddActivityState>(
+          BlocBuilder<EditActivityBloc, EditActivityState>(
               builder: (context, addActivityState) {
             final imageClick = () async {
               final imageId = await showViewDialog<String>(
@@ -30,7 +30,7 @@ class NameAndPictureWidget extends StatelessWidget {
                 ),
               );
               if (imageId != null) {
-                BlocProvider.of<AddActivityBloc>(context)
+                BlocProvider.of<EditActivityBloc>(context)
                     .add(ImageSelected(imageId));
               }
             };
@@ -63,8 +63,9 @@ class NameAndPictureWidget extends StatelessWidget {
                 TextFormField(
                   initialValue: activity.title,
                   textCapitalization: TextCapitalization.sentences,
-                  onChanged: (text) => BlocProvider.of<AddActivityBloc>(context)
-                      .add(ChangeActivity(activity.copyWith(title: text))),
+                  onChanged: (text) =>
+                      BlocProvider.of<EditActivityBloc>(context)
+                          .add(ChangeActivity(activity.copyWith(title: text))),
                   key: TestKey.editTitleTextFormField,
                 ),
               ],
@@ -93,7 +94,7 @@ class CategoryWidget extends StatelessWidget {
             Expanded(
               child: RadioField(
                 key: TestKey.leftCategoryRadio,
-                onChanged: (v) => BlocProvider.of<AddActivityBloc>(context)
+                onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
                     .add(ChangeActivity(activity.copyWith(category: v))),
                 leading: circle(),
                 groupValue: activity.category,
@@ -105,7 +106,7 @@ class CategoryWidget extends StatelessWidget {
             Expanded(
               child: RadioField(
                 key: TestKey.rightCategoryRadio,
-                onChanged: (v) => BlocProvider.of<AddActivityBloc>(context)
+                onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
                     .add(ChangeActivity(activity.copyWith(category: v))),
                 leading: circle(),
                 groupValue: activity.category,
@@ -156,7 +157,7 @@ class AlarmWidget extends StatelessWidget {
               ),
             );
             if (result != null) {
-              BlocProvider.of<AddActivityBloc>(context).add(ChangeActivity(
+              BlocProvider.of<EditActivityBloc>(context).add(ChangeActivity(
                   activity.copyWith(
                       alarm: activity.alarm.copyWith(type: result))));
             }
@@ -169,7 +170,7 @@ class AlarmWidget extends StatelessWidget {
           label: Text(translator.alarmOnlyAtStartTime),
           value: alarm.onlyStart,
           onChanged: alarm.shouldAlarm
-              ? (v) => BlocProvider.of<AddActivityBloc>(context).add(
+              ? (v) => BlocProvider.of<EditActivityBloc>(context).add(
                     ChangeActivity(
                         activity.copyWith(alarm: alarm.copyWith(onlyStart: v))),
                   )
@@ -197,7 +198,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
           leading: Icon(AbiliaIcons.handi_check),
           label: Text(translator.checkable),
           value: activity.checkable,
-          onChanged: (v) => BlocProvider.of<AddActivityBloc>(context)
+          onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
               .add(ChangeActivity(activity.copyWith(checkable: v))),
         ),
         const SizedBox(height: 8.0),
@@ -206,7 +207,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
           leading: Icon(AbiliaIcons.delete_all_clear),
           label: Text(translator.deleteAfter),
           value: activity.removeAfter,
-          onChanged: (v) => BlocProvider.of<AddActivityBloc>(context)
+          onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
               .add(ChangeActivity(activity.copyWith(removeAfter: v))),
         ),
       ],
@@ -241,7 +242,7 @@ class AvailibleForWidget extends StatelessWidget {
               ),
             );
             if (result != null) {
-              BlocProvider.of<AddActivityBloc>(context)
+              BlocProvider.of<EditActivityBloc>(context)
                   .add(ChangeActivity(activity.copyWith(secret: result)));
             }
           },

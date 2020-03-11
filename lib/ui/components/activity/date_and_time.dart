@@ -38,7 +38,7 @@ class DateAndTimeWidget extends StatelessWidget {
             leading: Icon(AbiliaIcons.restore),
             label: Text(translator.fullDay),
             value: activity.fullDay,
-            onChanged: (v) => BlocProvider.of<AddActivityBloc>(context)
+            onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
                 .add(ChangeActivity(activity.copyWith(fullDay: v))),
           ),
           CollapsableWidget(
@@ -73,7 +73,7 @@ class ReminderSwitch extends StatelessWidget {
       value: activity.reminders.isNotEmpty,
       onChanged: (switchOn) {
         final reminders = switchOn ? [15.minutes().inMilliseconds] : <int>[];
-        BlocProvider.of<AddActivityBloc>(context)
+        BlocProvider.of<EditActivityBloc>(context)
             .add(ChangeActivity(activity.copyWith(reminderBefore: reminders)));
       },
     );
@@ -100,7 +100,7 @@ class DatePicker extends StatelessWidget {
             lastDate: DateTime(date.year + 20),
             builder: (BuildContext context, Widget child) => child);
         if (newDate != null) {
-          BlocProvider.of<AddActivityBloc>(context).add(ChangeDate(newDate));
+          BlocProvider.of<EditActivityBloc>(context).add(ChangeDate(newDate));
         }
       },
       leading: Icon(AbiliaIcons.calendar),
@@ -130,7 +130,7 @@ class TimeIntervallPicker extends StatelessWidget {
             onTap: () async {
               final newStartTime = await getStartTime(context, activity.start);
               if (newStartTime != null) {
-                BlocProvider.of<AddActivityBloc>(context)
+                BlocProvider.of<EditActivityBloc>(context)
                     .add(ChangeStartTime(newStartTime));
               }
             },
@@ -157,7 +157,7 @@ class TimeIntervallPicker extends StatelessWidget {
               final newEndTime =
                   await getEndTime(context, activity.end, activity.start);
               if (newEndTime != null) {
-                BlocProvider.of<AddActivityBloc>(context)
+                BlocProvider.of<EditActivityBloc>(context)
                     .add(ChangeEndTime(newEndTime));
               }
             },
@@ -246,7 +246,6 @@ class Reminders extends StatelessWidget {
   const Reminders({Key key, @required this.activity}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    
     final translator = Translator.of(context).translate;
     return Wrap(
       spacing: 14.0,
@@ -266,7 +265,7 @@ class Reminders extends StatelessWidget {
                 style: Theme.of(context).textTheme.body2,
               ),
               selected: activity.reminders.contains(r),
-              onTap: () => BlocProvider.of<AddActivityBloc>(context)
+              onTap: () => BlocProvider.of<EditActivityBloc>(context)
                   .add(AddOrRemoveReminder(r)),
             ),
           )

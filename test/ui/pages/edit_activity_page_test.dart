@@ -33,14 +33,13 @@ void main() {
                 create: (context) => MockAuthenticationBloc()),
             BlocProvider<ActivitiesBloc>(
                 create: (context) => MockActivitiesBloc()),
-            BlocProvider<AddActivityBloc>(
-              create: (context) => AddActivityBloc(
+            BlocProvider<EditActivityBloc>(
+              create: (context) => EditActivityBloc(
                 activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
                 activity: startActivity,
               ),
             ),
-            BlocProvider<SortableBloc>(
-                create: (context) => MockSortableBloc()),
+            BlocProvider<SortableBloc>(create: (context) => MockSortableBloc()),
           ], child: widget),
         );
 
@@ -58,14 +57,14 @@ void main() {
 
     testWidgets('New activity shows', (WidgetTester tester) async {
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
-      expect(find.byType(NewActivityPage), findsOneWidget);
+      expect(find.byType(EditActivityPage), findsOneWidget);
     });
 
     testWidgets('Scroll to end of page', (WidgetTester tester) async {
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       expect(find.byType(AvailibleForWidget), findsNothing);
       await scrollDown(tester);
@@ -75,7 +74,7 @@ void main() {
     testWidgets('Can enter text', (WidgetTester tester) async {
       final newActivtyTitle = 'activity title';
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       expect(find.text(newActivtyTitle), findsNothing);
       await tester.enterText(
@@ -85,7 +84,7 @@ void main() {
 
     testWidgets('Select picture dialog shows', (WidgetTester tester) async {
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.addPicture));
       await tester.pumpAndSettle();
@@ -100,11 +99,12 @@ void main() {
         (WidgetTester tester) async {
       final newActivtyName = 'new activity name';
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       expect(
           tester
-              .widget<ActionButton>(find.byKey(TestKey.finishNewActivityButton))
+              .widget<ActionButton>(
+                  find.byKey(TestKey.finishEditActivityButton))
               .onPressed,
           isNull);
       await tester.enterText(
@@ -113,17 +113,17 @@ void main() {
 
       expect(
         tester
-            .widget<ActionButton>(find.byKey(TestKey.finishNewActivityButton))
+            .widget<ActionButton>(find.byKey(TestKey.finishEditActivityButton))
             .onPressed,
         isNotNull,
       );
-      await tester.tap(find.byKey(TestKey.finishNewActivityButton));
+      await tester.tap(find.byKey(TestKey.finishEditActivityButton));
       await tester.pumpAndSettle();
     });
 
     testWidgets('full day switch', (WidgetTester tester) async {
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       expect(
           tester
@@ -145,7 +145,7 @@ void main() {
 
     testWidgets('alarm at start switch', (WidgetTester tester) async {
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       await scrollDown(tester);
       expect(
@@ -166,7 +166,7 @@ void main() {
 
     testWidgets('Select alarm dialog', (WidgetTester tester) async {
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       await scrollDown(tester);
       await tester.pumpAndSettle();
@@ -184,7 +184,7 @@ void main() {
 
     testWidgets('checkable switch', (WidgetTester tester) async {
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       await scrollDown(tester);
       expect(
@@ -205,7 +205,7 @@ void main() {
 
     testWidgets('delete after switch', (WidgetTester tester) async {
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       await scrollDown(tester);
       expect(
@@ -226,7 +226,7 @@ void main() {
 
     testWidgets('Datetime picker', (WidgetTester tester) async {
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       expect(find.text('(Today) February 25, 2020'), findsOneWidget);
 
@@ -242,7 +242,7 @@ void main() {
 
     testWidgets('Time picker', (WidgetTester tester) async {
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       expect(find.text('3:30 PM'), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.plus), findsOneWidget);
@@ -273,7 +273,7 @@ void main() {
       final rightRadioKey = ObjectKey(TestKey.rightCategoryRadio);
       final leftRadioKey = ObjectKey(TestKey.leftCategoryRadio);
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       final leftCategoryRadio1 = tester.widget<Radio>(find.byKey(leftRadioKey));
       final rightCategoryRadio1 =
@@ -305,7 +305,7 @@ void main() {
 
     testWidgets('Availible for dialog', (WidgetTester tester) async {
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       await scrollDown(tester);
       await tester.pumpAndSettle();
@@ -325,7 +325,7 @@ void main() {
     testWidgets('Reminder', (WidgetTester tester) async {
       // Arrange
       await tester
-          .pumpWidget(wrapWithMaterialApp(NewActivityPage(today: today)));
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
       final reminderSwitchFinder = find.byIcon(AbiliaIcons.handi_reminder);
       final reminder15MinFinder =

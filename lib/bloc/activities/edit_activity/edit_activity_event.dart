@@ -1,10 +1,10 @@
-part of 'add_activity_bloc.dart';
+part of 'edit_activity_bloc.dart';
 
-abstract class AddActivityEvent extends Equatable {
-  const AddActivityEvent();
+abstract class EditActivityEvent extends Equatable {
+  const EditActivityEvent();
 }
 
-class ChangeActivity extends AddActivityEvent {
+class ChangeActivity extends EditActivityEvent {
   final Activity activity;
   ChangeActivity(this.activity);
 
@@ -14,12 +14,12 @@ class ChangeActivity extends AddActivityEvent {
   String toString() => 'ChangeActivity { $activity }';
 }
 
-class SaveActivity extends AddActivityEvent {
+class SaveActivity extends EditActivityEvent {
   @override
   List<Object> get props => [];
 }
 
-class ChangeDate extends AddActivityEvent {
+class ChangeDate extends EditActivityEvent {
   final DateTime date;
   ChangeDate(this.date);
   @override
@@ -28,7 +28,7 @@ class ChangeDate extends AddActivityEvent {
   String toString() => 'ChangeDate { $date }';
 }
 
-abstract class ChangeTime extends AddActivityEvent {
+abstract class ChangeTime extends EditActivityEvent {
   final TimeOfDay time;
   const ChangeTime(this.time);
   @override
@@ -47,7 +47,7 @@ class ChangeEndTime extends ChangeTime {
   String toString() => 'ChangeEndTime { $time }';
 }
 
-class AddOrRemoveReminder extends AddActivityEvent {
+class AddOrRemoveReminder extends EditActivityEvent {
   final Duration reminder;
   const AddOrRemoveReminder(this.reminder);
   @override
@@ -56,7 +56,7 @@ class AddOrRemoveReminder extends AddActivityEvent {
   List<Object> get props => [reminder];
 }
 
-class ImageSelected extends AddActivityEvent {
+class ImageSelected extends EditActivityEvent {
   final String imageId;
   ImageSelected(this.imageId);
   @override

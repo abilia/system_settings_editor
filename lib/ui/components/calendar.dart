@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:seagull/bloc/activities/add_activity/add_activity_bloc.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/components/calendar/day_app_bar.dart';
@@ -130,7 +130,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                   await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (innerContext) {
-                        final addActivitybloc = AddActivityBloc(
+                        final editActivitybloc = EditActivityBloc(
                           activitiesBloc:
                               BlocProvider.of<ActivitiesBloc>(context),
                           activity: Activity.createNew(
@@ -141,15 +141,16 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                         );
                         return MultiBlocProvider(
                           providers: [
-                            BlocProvider<AddActivityBloc>(
-                              create: (context) => addActivitybloc,
+                            BlocProvider<EditActivityBloc>(
+                              create: (context) => editActivitybloc,
                             ),
                             BlocProvider<SortableBloc>(
                               create: (context) => sortableBloc,
                             )
                           ],
-                          child: NewActivityPage(
+                          child: EditActivityPage(
                             today: now.onlyDays(),
+                            title: Translator.of(context).translate.newActivity,
                           ),
                         );
                       },

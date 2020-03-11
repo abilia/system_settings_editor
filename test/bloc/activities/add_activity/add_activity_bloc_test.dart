@@ -14,19 +14,19 @@ void main() {
     // Arrange
     final activity =
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
-    AddActivityBloc addActivityBloc =
-        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc =
+        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act // Assert
-    expect(addActivityBloc.initialState.activity, activity);
+    expect(editActivityBloc.initialState.activity, activity);
   });
   test('Initial state with no title is not saveable', () {
     // Arrange
     final activity =
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
-    AddActivityBloc addActivityBloc =
-        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc =
+        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act // Assert
-    expect(addActivityBloc.initialState.canSave, isFalse);
+    expect(editActivityBloc.initialState.canSave, isFalse);
   });
   test('Changing activity changes activity', () async {
     // Arrange
@@ -34,14 +34,14 @@ void main() {
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
     final activityWithTitle = activity.copyWith(title: 'new title');
 
-    AddActivityBloc addActivityBloc =
-        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc =
+        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
-    addActivityBloc.add(ChangeActivity(activityWithTitle));
+    editActivityBloc.add(ChangeActivity(activityWithTitle));
 
     // Assert
     await expectLater(
-      addActivityBloc,
+      editActivityBloc,
       emitsInOrder([
         UnsavedActivityState(activity),
         UnsavedActivityState(activityWithTitle),
@@ -54,16 +54,16 @@ void main() {
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
     final activityWithTitle = activity.copyWith(title: 'new title');
 
-    AddActivityBloc addActivityBloc =
-        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc =
+        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
-    addActivityBloc.add(SaveActivity());
-    addActivityBloc.add(ChangeActivity(activityWithTitle));
-    addActivityBloc.add(SaveActivity());
+    editActivityBloc.add(SaveActivity());
+    editActivityBloc.add(ChangeActivity(activityWithTitle));
+    editActivityBloc.add(SaveActivity());
 
     // Assert
     await expectLater(
-      addActivityBloc,
+      editActivityBloc,
       emitsInOrder([
         UnsavedActivityState(activity),
         UnsavedActivityState(activityWithTitle),
@@ -95,14 +95,14 @@ void main() {
       reminderBefore: [],
     );
 
-    AddActivityBloc addActivityBloc =
-        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc =
+        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
-    addActivityBloc.add(SaveActivity());
+    editActivityBloc.add(SaveActivity());
 
     // Assert
     await expectLater(
-      addActivityBloc,
+      editActivityBloc,
       emitsInOrder([
         UnsavedActivityState(activity),
         SavedActivityState(activityExpectedToBeSaved),
@@ -122,14 +122,14 @@ void main() {
         startTime: expetedNewDate.millisecondsSinceEpoch,
         endTime: expetedNewDate.millisecondsSinceEpoch);
 
-    AddActivityBloc addActivityBloc =
-        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc =
+        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
-    addActivityBloc.add(ChangeDate(newDate));
+    editActivityBloc.add(ChangeDate(newDate));
 
     // Assert
     await expectLater(
-      addActivityBloc,
+      editActivityBloc,
       emitsInOrder([
         UnsavedActivityState(activity),
         UnsavedActivityState(expetedNewActivity),
@@ -154,15 +154,15 @@ void main() {
         startTime: expetedNewDate.millisecondsSinceEpoch,
         endTime: expetedNewDate.millisecondsSinceEpoch);
 
-    AddActivityBloc addActivityBloc =
-        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc =
+        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
-    addActivityBloc.add(ChangeStartTime(newStartTime));
+    editActivityBloc.add(ChangeStartTime(newStartTime));
 
     // Assert
     await expectLater(
-        addActivityBloc,
+        editActivityBloc,
         emitsInOrder([
           UnsavedActivityState(activity),
           UnsavedActivityState(expetedNewActivity),
@@ -185,15 +185,15 @@ void main() {
     final expetedNewActivity =
         activity.copyWith(duration: expectedDuration.inMilliseconds);
 
-    AddActivityBloc addActivityBloc =
-        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc =
+        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
-    addActivityBloc.add(ChangeEndTime(newEndTime));
+    editActivityBloc.add(ChangeEndTime(newEndTime));
 
     // Assert
     await expectLater(
-      addActivityBloc,
+      editActivityBloc,
       emitsInOrder([
         UnsavedActivityState(activity),
         UnsavedActivityState(expetedNewActivity),
@@ -218,15 +218,15 @@ void main() {
     final expetedNewActivity =
         activity.copyWith(duration: expectedDuration.inMilliseconds);
 
-    AddActivityBloc addActivityBloc =
-        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc =
+        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
-    addActivityBloc.add(ChangeEndTime(newEndTime));
+    editActivityBloc.add(ChangeEndTime(newEndTime));
 
     // Assert
     await expectLater(
-      addActivityBloc,
+      editActivityBloc,
       emitsInOrder([
         UnsavedActivityState(activity),
         UnsavedActivityState(expetedNewActivity),
@@ -252,18 +252,18 @@ void main() {
       hour1Reminder.inMilliseconds
     ]);
 
-    AddActivityBloc addActivityBloc =
-        AddActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc =
+        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
-    addActivityBloc.add(AddOrRemoveReminder(min15Reminder));
-    addActivityBloc.add(AddOrRemoveReminder(hour1Reminder));
-    addActivityBloc.add(AddOrRemoveReminder(hour1Reminder));
-    addActivityBloc.add(AddOrRemoveReminder(min15Reminder));
+    editActivityBloc.add(AddOrRemoveReminder(min15Reminder));
+    editActivityBloc.add(AddOrRemoveReminder(hour1Reminder));
+    editActivityBloc.add(AddOrRemoveReminder(hour1Reminder));
+    editActivityBloc.add(AddOrRemoveReminder(min15Reminder));
 
     // Assert
     await expectLater(
-      addActivityBloc,
+      editActivityBloc,
       emitsInOrder([
         UnsavedActivityState(activity),
         UnsavedActivityState(with15MinReminder),

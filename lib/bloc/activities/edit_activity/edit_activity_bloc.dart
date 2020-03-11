@@ -6,15 +6,15 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'add_activity_event.dart';
-part 'add_activity_state.dart';
+part 'edit_activity_event.dart';
+part 'edit_activity_state.dart';
 
-class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
+class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   final Activity activity;
   final ActivitiesBloc activitiesBloc;
   final bool newActivity;
 
-  AddActivityBloc({
+  EditActivityBloc({
     @required this.activitiesBloc,
     @required this.activity,
     this.newActivity = true,
@@ -23,8 +23,8 @@ class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
   UnsavedActivityState get initialState => UnsavedActivityState(activity);
 
   @override
-  Stream<AddActivityState> mapEventToState(
-    AddActivityEvent event,
+  Stream<EditActivityState> mapEventToState(
+    EditActivityEvent event,
   ) async* {
     if (event is ChangeActivity) {
       yield UnsavedActivityState(event.activity);
