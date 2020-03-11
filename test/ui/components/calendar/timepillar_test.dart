@@ -7,7 +7,6 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/components/calendar/all.dart';
 
@@ -19,7 +18,10 @@ void main() {
     StreamController<DateTime> mockTicker;
     final changeViewButtonFinder = find.byKey(TestKey.changeView);
     final timePillarButtonFinder = find.byKey(TestKey.timePillarButton);
-    ActivityResponse activityResponse = () => [];
+    final date = DateTime(2002, 03, 04, 05, 06);
+    final activities = [FakeActivity.fullday(date)];
+
+    ActivityResponse activityResponse = () => activities;
 
     setUp(() {
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
@@ -32,7 +34,7 @@ void main() {
           .thenAnswer((_) => Future.value('fakeToken'));
       mockActivityDb = MockActivityDb();
       when(mockActivityDb.getActivities())
-          .thenAnswer((_) => Future.value(<Activity>[]));
+          .thenAnswer((_) => Future.value(activities));
       GetItInitializer()
         ..activityDb = mockActivityDb
         ..userDb = MockUserDb()
@@ -40,6 +42,7 @@ void main() {
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
+        ..startTime = date
         ..httpClient = Fakes.client(activityResponse)
         ..init();
     });
@@ -71,6 +74,11 @@ void main() {
     testWidgets('Shows timepillar', (WidgetTester tester) async {
       await goToTimePillar(tester);
       expect(find.byType(SliverTimePillar), findsOneWidget);
+    });
+
+    testWidgets('Shows all days activities', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      expect(find.byType(FullDayContainer), findsOneWidget);
     });
 
     testWidgets('Shows timepillar when scrolled in x',
