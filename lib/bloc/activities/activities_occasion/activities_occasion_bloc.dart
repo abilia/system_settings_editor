@@ -59,7 +59,10 @@ class ActivitiesOccasionBloc
     @required DateTime now,
     @required DateTime day,
   }) {
-    final timedActivities = activities
+    final removeAfterFiltered = day.isBefore(now.onlyDays())
+        ? activities.where((a) => !a.removeAfter)
+        : activities;
+    final timedActivities = removeAfterFiltered
         .where((a) => !a.fullDay)
         .map((a) => ActivityOccasion(a, now: now, day: day))
         .toList()
@@ -73,7 +76,7 @@ class ActivitiesOccasionBloc
             if (starTimeComparing != 0) return starTimeComparing;
             return a.activity.endClock(now).compareTo(b.activity.endClock(now));
           });
-    final fullDayActivities = activities
+    final fullDayActivities = removeAfterFiltered
         .where((a) => a.fullDay)
         .map((a) => ActivityOccasion.fullDay(a, now: now, day: day))
         .toList();

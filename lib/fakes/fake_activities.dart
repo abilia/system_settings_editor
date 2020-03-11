@@ -93,6 +93,9 @@ class FakeActivity {
           duration: duration.inMilliseconds,
           alarmType: ALARM_SILENT);
 
+  static Activity reocurrsEveryDay([DateTime startDate]) =>
+      reoccurs(startDate, RecurrentType.weekly, allWeek,
+          title: 'recurs everyday');
   static Activity reocurrsWeekends([DateTime startDate]) =>
       reoccurs(startDate, RecurrentType.weekly, allWeekends,
           title: 'recurs weekend');
