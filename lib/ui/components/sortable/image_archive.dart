@@ -39,7 +39,7 @@ class ImageArchive extends StatelessWidget {
                     : ArchiveImage(
                         name: s.sortableData.name,
                         imageId: s.sortableData.fileId,
-                        iconPath: s.sortableData.icon,
+                        iconPath: s.sortableData.file,
                         onChanged: (val) {
                           BlocProvider.of<ImageArchiveBloc>(context)
                               .add(ArchiveImageSelected(val));

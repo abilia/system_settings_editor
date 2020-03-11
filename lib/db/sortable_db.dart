@@ -15,13 +15,13 @@ class SortableDb {
     return result.map(DbSortable.fromDbMap).map((s) => s.sortable);
   }
 
-  Future<List<int>> insertSortables(Iterable<DbSortable> sortables) async {
+  void insertSortables(Iterable<DbSortable> sortables) async {
     final db = await DatabaseRepository().database;
     final batch = db.batch();
     sortables.forEach((sortable) => batch.insert(
         'sortable', sortable.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace));
-    return await batch.commit();
+    await batch.commit();
   }
 
   Future<int> getLastRevision() async {

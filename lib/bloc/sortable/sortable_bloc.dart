@@ -45,4 +45,12 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       yield SortablesLoadedFailed();
     }
   }
+
+  @override
+  Future<void> close() async {
+    if (pushSubscription != null) {
+      await pushSubscription.cancel();
+    }
+    return super.close();
+  }
 }
