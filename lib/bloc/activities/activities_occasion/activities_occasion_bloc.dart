@@ -90,7 +90,9 @@ class ActivitiesOccasionBloc
       activities: timedActivities,
       fullDayActivities: fullDayActivities,
       day: day,
-      isToday: isToday,
+      occasion: isToday
+          ? Occasion.current
+          : day.isAfter(now) ? Occasion.future : Occasion.past,
       indexOfCurrentActivity: firstActiveIndex,
     );
   }

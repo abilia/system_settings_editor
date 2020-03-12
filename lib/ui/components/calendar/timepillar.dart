@@ -1,197 +1,173 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/components/calendar/overlay/all.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/ui/colors.dart';
+import 'package:intl/intl.dart';
+import 'package:seagull/utils/all.dart';
 
-import 'all.dart';
+const _pastDotShape = ShapeDecoration(shape: CircleBorder(side: BorderSide())),
+    _futureDotShape =
+        ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder()),
+    _currentDotShape =
+        ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder());
+const int dotsPerHour = 4, minutesPerDot = 60 ~/ dotsPerHour;
+const double dotSize = 10.0,
+    hourPadding = 1.0,
+    dotPadding = hourPadding * 3,
+    timePillarPadding = 4.0,
+    timePillarWidth = 42.0,
+    timePillarTotalWidth = 42.0 + timePillarPadding * 2,
+    hourHeigt = (dotSize + dotPadding) * dotsPerHour,
+    scrollHeight = hourHeigt * 24;
 
-class TimePillar extends StatefulWidget {
-  const TimePillar({Key key}) : super(key: key);
+class TimePillar extends StatelessWidget {
+  final DateTime day;
+  final Occasion dayOccasion;
 
-  @override
-  _TimePillarState createState() => _TimePillarState();
-}
-
-class _TimePillarState extends State<TimePillar> {
-  ScrollController verticalScrollController;
-  ScrollController horizontalScrollController;
-  final scrollHeight = 1536.0;
-  final timePillarWidth = 60.0;
-  final center = ObjectKey('center');
-
-  @override
-  void didChangeDependencies() {
-    double screenWidth = MediaQuery.of(context).size.width;
-    verticalScrollController =
-        ScrollController(initialScrollOffset: (scrollHeight / 2));
-    horizontalScrollController = ScrollController(
-        initialScrollOffset: -(screenWidth / 2) + (timePillarWidth / 2));
-    super.didChangeDependencies();
-  }
+  const TimePillar({
+    Key key,
+    @required this.day,
+    @required this.dayOccasion,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    return LayoutBuilder(
-      builder: (context, boxConstraints) {
-        return Stack(
-          children: <Widget>[
-            SingleChildScrollView(
-              controller: verticalScrollController,
-              child: LimitedBox(
-                maxHeight: scrollHeight,
-                child: CustomScrollView(
-                  scrollDirection: Axis.horizontal,
-                  center: center,
-                  controller: horizontalScrollController,
-                  slivers: <Widget>[
-                    SliverOverlay(
-                      height: boxConstraints.maxHeight,
-                      overlay: ScrollTranslated(
-                        controller: verticalScrollController,
-                        child: CategoryLeft(
-                          child: Text(translate.left),
-                        ),
-                      ),
-                      sliver: SliverGrid(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5,
-                        ),
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) =>
-                              TileWidget(index),
-                          childCount: 20,
-                        ),
+    final Widget Function(DateTime) dots = dayOccasion == Occasion.current
+        ? _todayDots
+        : dayOccasion == Occasion.past
+            ? (_) => const PastDots()
+            : (_) => const FutureDots();
+    return DefaultTextStyle(
+      style:
+          Theme.of(context).textTheme.title.copyWith(color: AbiliaColors.black),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: timePillarPadding),
+        child: SizedBox(
+          width: timePillarWidth,
+          child: Column(
+            children: List.generate(
+              24,
+              (hourIndex) {
+                final hour = day.copyWith(hour: hourIndex);
+                return Container(
+                  height: hourHeigt,
+                  padding: const EdgeInsets.symmetric(vertical: hourPadding),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: AbiliaColors.black,
+                        width: hourPadding,
                       ),
                     ),
-                    SliverTimePillar(
-                      key: center,
-                      child: Container(
-                        width: timePillarWidth,
-                        decoration: BoxDecoration(
-                          gradient: RadialGradient(
-                              colors: colors, tileMode: TileMode.mirror),
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: 25.0,
+                        child: Text(
+                          _formatHour(hour),
+                          textAlign: TextAlign.end,
                         ),
                       ),
-                    ),
-                    SliverOverlay(
-                      height: boxConstraints.maxHeight,
-                      overlay: ScrollTranslated(
-                        controller: verticalScrollController,
-                        child: CategoryRight(
-                          child: Text(translate.right),
-                        ),
-                      ),
-                      sliver: SliverGrid(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5,
-                        ),
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) =>
-                              TileWidget(index),
-                          childCount: 20,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                      dots(hour),
+                    ],
+                  ),
+                );
+              },
             ),
-            ArrowLeft(controller: horizontalScrollController),
-            ArrowUp(controller: verticalScrollController),
-            ArrowRight(controller: horizontalScrollController),
-            ArrowDown(controller: verticalScrollController),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class ScrollTranslated extends StatefulWidget {
-  final ScrollController controller;
-  final Widget child;
-
-  const ScrollTranslated({Key key, this.controller, this.child})
-      : super(key: key);
-  @override
-  _ScrollTranslated createState() => _ScrollTranslated();
-}
-
-class _ScrollTranslated extends State<ScrollTranslated> {
-  double scrollOffset;
-  @override
-  void initState() {
-    widget.controller.addListener(listener);
-    scrollOffset =
-        widget.controller.hasClients ? widget.controller.offset : 0.0;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener(listener);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.translate(
-        offset: Offset(0.0, scrollOffset), child: widget.child);
-  }
-
-  void listener() {
-    if (widget.controller.offset != scrollOffset) {
-      setState(() => scrollOffset = widget.controller.offset);
-    }
-  }
-}
-
-const colors = [
-  Colors.amber,
-  Colors.red,
-  Colors.yellow,
-  Colors.blue,
-  Colors.teal,
-  Colors.pink,
-  Colors.orange
-];
-
-class TileWidget extends StatelessWidget {
-  TileWidget(this.index, {Key key})
-      : color = colors[index % colors.length],
-        super(key: key);
-
-  final int index;
-  final MaterialColor color;
-
-  @override
-  Widget build(BuildContext context) {
-    final color1 = color[max(index % 10 * 100, 50)];
-    final color2 = color[max((index + 5) % 10 * 100, 50)];
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        gradient: LinearGradient(
-          colors: [color1, color2],
-          begin: Alignment.center,
-          end: Alignment.topCenter,
-          tileMode: TileMode.mirror,
-        ),
-        border: Border.all(
-          color: Colors.black,
-          width: 1.0,
+          ),
         ),
       ),
-      child: Center(
-          child: CircleAvatar(
-        backgroundColor: Colors.white,
-        child: Text('$index'),
-      )),
     );
   }
+
+  String _formatHour(DateTime hour) {
+    final hourFormatedText =
+        DateFormat('j', Locale.cachedLocaleString).format(hour);
+    final withoutLeadingZeroOrTrailingAmPm =
+        hourFormatedText.substring(hourFormatedText.startsWith('0') ? 1 : 0, 2);
+    return withoutLeadingZeroOrTrailingAmPm;
+  }
+
+  BlocBuilder<ClockBloc, DateTime> _todayDots(DateTime hour) =>
+      BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, now) => Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(
+            dotsPerHour,
+            (q) {
+              final dotTime = hour.copyWith(minute: q * minutesPerDot);
+              if (dotTime.isAfter(now)) return const FutureDot();
+              final nextDotTime = dotTime.add(minutesPerDot.minutes());
+              if (now.isBefore(nextDotTime)) return const CurrentDot();
+              return const PastDot();
+            },
+          ),
+        ),
+      );
+}
+
+class PastDots extends StatelessWidget {
+  const PastDots({
+    Key key,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) => const Dots(decoration: _pastDotShape);
+}
+
+class FutureDots extends StatelessWidget {
+  const FutureDots({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) => const Dots(decoration: _futureDotShape);
+}
+
+class Dots extends StatelessWidget {
+  final Decoration decoration;
+  const Dots({Key key, @required this.decoration}) : super(key: key);
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(
+          dotsPerHour,
+          (_) => Container(
+            height: dotSize,
+            width: dotSize,
+            decoration: decoration,
+          ),
+        ),
+      );
+}
+
+class AnimatedDot extends StatelessWidget {
+  final Decoration decoration;
+  const AnimatedDot({Key key, @required this.decoration}) : super(key: key);
+  @override
+  Widget build(BuildContext context) => AnimatedContainer(
+        duration: 2.seconds(),
+        height: dotSize,
+        width: dotSize,
+        decoration: decoration,
+      );
+}
+
+class FutureDot extends StatelessWidget {
+  const FutureDot({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) =>
+      const AnimatedDot(decoration: _futureDotShape);
+}
+
+class PastDot extends StatelessWidget {
+  const PastDot({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) =>
+      const AnimatedDot(decoration: _pastDotShape);
+}
+
+class CurrentDot extends StatelessWidget {
+  const CurrentDot({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) =>
+      const AnimatedDot(decoration: _currentDotShape);
 }
