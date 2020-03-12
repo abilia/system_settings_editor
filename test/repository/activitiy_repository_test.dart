@@ -21,14 +21,14 @@ void main() {
     duration: 0,
     category: 0,
     reminderBefore: [],
-  ).asDbActivity();
+  ).wrapWithDbModel();
   final failedActivity = Activity.createNew(
     title: 'title2',
     startTime: startTime.millisecondsSinceEpoch,
     duration: 0,
     category: 0,
     reminderBefore: [],
-  ).asDbActivity();
+  ).wrapWithDbModel();
   final dbActivities = [successActivity, failedActivity];
   final activities = dbActivities.map((a) => a.activity);
 
@@ -44,7 +44,7 @@ void main() {
     // Act
     await activityRepo.save(activities);
     // Assert
-    verify(mockActivityDb.insertDirtyActivities(activities));
+    verify(mockActivityDb.insertAndAddDirty(activities));
   });
 
   test('Post activities gets correct answer', () async {
@@ -121,7 +121,7 @@ void main() {
           ''';
     final firstDirty = 1;
     final activities = [successActivity.copyWith(dirty: 1)];
-    when(mockActivityDb.getDirtyActivities())
+    when(mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(activities));
     when(mockClient.post(
       '$baseUrl/api/v1/data/$userId/activities',
@@ -133,11 +133,11 @@ void main() {
             200,
           ),
         ));
-    when(mockActivityDb.insertActivities(
+    when(mockActivityDb.insert(
             [successActivity.copyWith(revision: newRevision)]))
         .thenAnswer((_) => Future.value(List(1)));
     final newDirty = 5;
-    when(mockActivityDb.getActivityById(successActivity.activity.id))
+    when(mockActivityDb.getById(successActivity.activity.id))
         .thenAnswer((_) => Future.value(successActivity.copyWith(dirty: 5)));
 
     // Act
@@ -149,7 +149,7 @@ void main() {
       headers: jsonAuthHeader(Fakes.token),
       body: jsonEncode(activities),
     ));
-    verify(mockActivityDb.insertActivities([
+    verify(mockActivityDb.insert([
       successActivity.copyWith(
           revision: newRevision, dirty: newDirty - firstDirty)
     ]));
@@ -172,7 +172,7 @@ void main() {
           }
           ''';
     final activities = [failedActivity.copyWith(dirty: 1)];
-    when(mockActivityDb.getDirtyActivities())
+    when(mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(activities));
     when(mockClient.post(
       '$baseUrl/api/v1/data/$userId/activities',
@@ -202,6 +202,6 @@ void main() {
 
     // Expect/Verify
     verify(mockActivityDb
-        .insertActivities([failedActivity.copyWith(revision: failedRevision)]));
+        .insert([failedActivity.copyWith(revision: failedRevision)]));
   });
 }

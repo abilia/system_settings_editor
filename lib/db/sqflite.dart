@@ -5,6 +5,7 @@ import 'package:sqflite/sqflite.dart';
 class DatabaseRepository {
   static const CALENDAR_TABLE_NAME = 'calendar_activity';
   static const SORTABLE_TABLE_NAME = 'sortable';
+  static const USER_FILE_TABLE_NAME = 'user_file';
   @visibleForTesting
   static final initialScript = [
     '''
@@ -47,6 +48,18 @@ class DatabaseRepository {
         id text primary key not null,
         revision int,
         deleted int,
+        sha1 text,
+        path text,
+        content_type text,
+        file_size int,
+        dirty int
+      )
+    ''',
+    '''
+      CREATE TABLE $USER_FILE_TABLE_NAME (
+        id text primary key not null,
+        revision int,
+        deleted int,
         type text,
         data text,
         is_group int,
@@ -55,7 +68,7 @@ class DatabaseRepository {
         visible int,
         dirty int
       )
-    '''
+    ''',
   ];
 
   static Database _database;
@@ -77,6 +90,7 @@ class DatabaseRepository {
     final batch = db.batch();
     batch.delete(CALENDAR_TABLE_NAME);
     batch.delete(SORTABLE_TABLE_NAME);
+    batch.delete(USER_FILE_TABLE_NAME);
     await batch.commit();
   }
 

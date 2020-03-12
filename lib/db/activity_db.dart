@@ -2,7 +2,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:sqflite/sqflite.dart';
 
-class ActivityDb {
+class ActivityDb extends DataDb<Activity> {
   static const ACTIVITY_TABLE = 'calendar_activity';
   static const String MAX_REVISION_SQL =
       'SELECT max(revision) as max_revision FROM $ACTIVITY_TABLE';
@@ -23,13 +23,13 @@ class ActivityDb {
     return revision;
   }
 
-  Future<Iterable<Activity>> getActivities() async {
+  Future<Iterable<Activity>> getAllNonDeleted() async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ACTIVITIES_SQL);
     return result.map((row) => DbActivity.fromDbMap(row).activity);
   }
 
-  Future<DbActivity> getActivityById(String id) async {
+  Future<DbModel<Activity>> getById(String id) async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ACTIVITIES_BY_ID_SQL, [id]);
     final activities = result.map((row) => DbActivity.fromDbMap(row));
@@ -40,36 +40,17 @@ class ActivityDb {
     }
   }
 
-  Future<Iterable<DbActivity>> getDirtyActivities() async {
+  Future<Iterable<DbModel<Activity>>> getAllDirty() async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ALL_DIRTY);
     return result.map((row) => DbActivity.fromDbMap(row));
   }
 
-  Future<List<int>> insertDirtyActivities(Iterable<Activity> activities) async {
-    final db = await DatabaseRepository().database;
-    final insertResult = await activities.map((activity) async {
-      List<Map> existingDirtyAndRevision = await db.query(ACTIVITY_TABLE,
-          columns: ['dirty', 'revision'],
-          where: 'id = ?',
-          whereArgs: [activity.id]);
-      final dirty = existingDirtyAndRevision.isEmpty
-          ? 0
-          : existingDirtyAndRevision.first['dirty'];
-      final revision = existingDirtyAndRevision.isEmpty
-          ? 0
-          : existingDirtyAndRevision.first['revision'];
-      return await db.insert(
-          'calendar_activity',
-          activity
-              .asDbActivity(dirty: dirty + 1, revision: revision)
-              .toMapForDb(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-    });
-    return await Future.wait(insertResult);
+  Future<List<int>> insertAndAddDirty(Iterable<Activity> activities) async {
+    return insertWithDirtyAndRevision(activities, ACTIVITY_TABLE);
   }
 
-  Future<List<int>> insertActivities(Iterable<DbActivity> activities) async {
+  Future<Iterable<int>> insert(Iterable<DbModel<Activity>> activities) async {
     final db = await DatabaseRepository().database;
     final insertResults = await activities.map((activity) async {
       return await db.insert('calendar_activity', activity.toMapForDb(),

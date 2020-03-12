@@ -5,3 +5,5 @@ export 'end_point.dart';
 export 'push.dart';
 export 'repository.dart';
 export 'sortable_repository.dart';
+export 'file_repository.dart';
+export 'data_repository.dart';

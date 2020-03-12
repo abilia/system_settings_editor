@@ -4,7 +4,6 @@ import 'package:http/src/base_client.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/dynamic_repository.dart';
 
 import 'all.dart';
 

@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/user_file/bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
+import 'package:uuid/uuid.dart';
 
 class SelectPictureDialog extends StatefulWidget {
   @override
@@ -60,6 +62,8 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
               var image =
                   await ImagePicker.pickImage(source: ImageSource.gallery);
               print(image);
+              final id = Uuid().v4();
+              BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
             },
           ),
           SizedBox(height: 8.0),
@@ -70,9 +74,11 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
               style: abiliaTheme.textTheme.body2,
             ),
             onTap: () async {
-              var image =
+              final image =
                   await ImagePicker.pickImage(source: ImageSource.camera);
               print(image);
+              final id = Uuid().v4();
+              BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
             },
           ),
         ],

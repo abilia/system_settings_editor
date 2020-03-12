@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
+import 'package:seagull/bloc/user_file/user_file_bloc.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -35,6 +36,15 @@ class CalendarPage extends StatelessWidget {
             ..add(
               LoadActivities(),
             ),
+        ),
+        BlocProvider<UserFileBloc>(
+          create: (context) => UserFileBloc(
+            userFileRepository: UserFileRepository(
+              httpClient: authenticatedState.userRepository.httpClient,
+              baseUrl: authenticatedState.userRepository.baseUrl,
+              userFileDb: GetIt.I<UserFileDb>(),
+            ),
+          ),
         ),
         BlocProvider<SortableBloc>(
           create: (context) => SortableBloc(
