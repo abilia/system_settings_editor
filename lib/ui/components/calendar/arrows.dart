@@ -4,8 +4,8 @@ import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:vector_math/vector_math_64.dart';
 
 const Radius radius = Radius.circular(100);
-const double size = 48.0;
-const double translationPixels = 12.0;
+const double arrowSize = 48.0;
+const double translationPixels = arrowSize / 2;
 
 class ArrowLeft extends StatelessWidget {
   final ScrollController controller;
@@ -19,7 +19,7 @@ class ArrowLeft extends StatelessWidget {
           borderRadius:
               const BorderRadius.only(topRight: radius, bottomRight: radius),
           vectorTranslation: Vector3(-translationPixels, 0, 0),
-          heigth: size,
+          heigth: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
               sc.position.pixels > sc.position.minScrollExtent,
@@ -39,7 +39,7 @@ class ArrowUp extends StatelessWidget {
           borderRadius:
               const BorderRadius.only(bottomLeft: radius, bottomRight: radius),
           vectorTranslation: Vector3(0, -translationPixels, 0),
-          width: size,
+          width: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
               sc.position.pixels > sc.position.minScrollExtent,
@@ -58,7 +58,7 @@ class ArrowRight extends StatelessWidget {
           borderRadius:
               const BorderRadius.only(topLeft: radius, bottomLeft: radius),
           vectorTranslation: Vector3(translationPixels, 0, 0),
-          heigth: size,
+          heigth: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
               sc.position.pixels < sc.position.maxScrollExtent,
@@ -79,7 +79,7 @@ class ArrowDown extends StatelessWidget {
           borderRadius:
               const BorderRadius.only(topLeft: radius, topRight: radius),
           vectorTranslation: Vector3(0, translationPixels, 0),
-          width: size,
+          width: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
               sc.position.pixels < sc.position.maxScrollExtent,
@@ -94,7 +94,6 @@ class _Arrow extends StatefulWidget {
   final Matrix4 translation;
   final Matrix4 hiddenTranslation;
   final ScrollController controller;
-  final bool condition;
   final bool Function(ScrollController) conditionFunction;
   _Arrow({
     @required this.icon,
@@ -104,18 +103,17 @@ class _Arrow extends StatefulWidget {
     this.heigth,
     @required this.controller,
     @required this.conditionFunction,
-    this.condition = true,
-  })  : translation = Matrix4.translation(vectorTranslation),
-        hiddenTranslation = Matrix4.translation(vectorTranslation * 3);
-  _ArrowState createState() => _ArrowState(condition);
+  })  : translation = Matrix4.identity(),
+        hiddenTranslation = Matrix4.translation(vectorTranslation);
+  _ArrowState createState() => _ArrowState();
 }
 
 class _ArrowState extends State<_Arrow> {
-  _ArrowState(this.condition);
   bool condition = true;
   @override
   void initState() {
     widget.controller.addListener(listener);
+    WidgetsBinding.instance.addPostFrameCallback((_) => listener());
     super.initState();
   }
 
@@ -129,14 +127,14 @@ class _ArrowState extends State<_Arrow> {
   Widget build(BuildContext context) => ClipRect(
         child: AnimatedContainer(
           transform: condition ? widget.translation : widget.hiddenTranslation,
-          width: widget.width,
-          height: widget.heigth,
+          width: widget.width != null ? condition ? widget.width : 1 : null,
+          height: widget.heigth != null ? condition ? widget.heigth : 1 : null,
           decoration: BoxDecoration(
             borderRadius: widget.borderRadius,
-            color: AbiliaColors.white[135],
+            color: AbiliaColors.white.withAlpha(condition ? 245 : 0),
           ),
-          child: Icon(widget.icon, size: 36),
-          duration: Duration(milliseconds: 100),
+          child: Icon(widget.icon, size: 24),
+          duration: const Duration(milliseconds: 200),
         ),
       );
 

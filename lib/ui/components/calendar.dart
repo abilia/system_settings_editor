@@ -76,38 +76,45 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                     controller: controller,
                     itemBuilder: (context, index) {
                       return BlocBuilder<ActivitiesOccasionBloc,
-                          ActivitiesOccasionState>(builder: (context, state) {
-                        if (state is ActivitiesOccasionLoaded) {
-                          final fullDayActivities = state.fullDayActivities;
-                          return Column(
-                            children: <Widget>[
-                              if (fullDayActivities.isNotEmpty)
-                                FullDayContainer(
-                                  fullDayActivities: fullDayActivities,
-                                  cardHeight: cardHeight,
-                                  cardMargin: cardMargin,
-                                  day: state.day,
-                                ),
-                              Expanded(
-                                child: calendarViewState.currentView ==
-                                        CalendarViewType.LIST
-                                    ? Agenda(
-                                        state: state,
-                                        cardHeight: cardHeight,
-                                        cardMargin: cardMargin,
-                                      )
-                                    : TimePillar(),
-                              )
-                            ],
-                          );
-                        }
-                        return Center(child: CircularProgressIndicator());
-                      }, condition: (oldState, newState) {
-                        return (oldState is ActivitiesOccasionLoaded &&
-                                newState is ActivitiesOccasionLoaded &&
-                                oldState.day == newState.day) ||
-                            oldState.runtimeType != newState.runtimeType;
-                      });
+                          ActivitiesOccasionState>(
+                        condition: (oldState, newState) {
+                          return (oldState is ActivitiesOccasionLoaded &&
+                                  newState is ActivitiesOccasionLoaded &&
+                                  oldState.day == newState.day) ||
+                              oldState.runtimeType != newState.runtimeType;
+                        },
+                        builder: (context, state) {
+                          if (state is ActivitiesOccasionLoaded) {
+                            if (!state.isToday) {
+                              BlocProvider.of<ScrollPositionBloc>(context)
+                                  .add(WrongDaySelected());
+                            }
+                            final fullDayActivities = state.fullDayActivities;
+                            return Column(
+                              children: <Widget>[
+                                if (fullDayActivities.isNotEmpty)
+                                  FullDayContainer(
+                                    fullDayActivities: fullDayActivities,
+                                    cardHeight: cardHeight,
+                                    cardMargin: cardMargin,
+                                    day: state.day,
+                                  ),
+                                Expanded(
+                                  child: calendarViewState.currentView ==
+                                          CalendarViewType.LIST
+                                      ? Agenda(
+                                          state: state,
+                                          cardHeight: cardHeight,
+                                          cardMargin: cardMargin,
+                                        )
+                                      : TimePillarCalendar(state: state),
+                                )
+                              ],
+                            );
+                          }
+                          return Center(child: CircularProgressIndicator());
+                        },
+                      );
                     },
                   ),
                 ),

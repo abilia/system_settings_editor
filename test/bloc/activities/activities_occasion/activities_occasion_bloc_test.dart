@@ -69,7 +69,7 @@ void main() {
             fullDayActivities: <ActivityOccasion>[],
             indexOfCurrentActivity: -1,
             day: initialDay,
-            isToday: true,
+            occasion: Occasion.current,
           ),
         ]),
       );
@@ -107,7 +107,7 @@ void main() {
             fullDayActivities: <ActivityOccasion>[],
             indexOfCurrentActivity: 1,
             day: initialDay,
-            isToday: true,
+            occasion: Occasion.current,
           ),
         ]),
       );
@@ -142,7 +142,7 @@ void main() {
             ],
             indexOfCurrentActivity: -1,
             day: initialDay,
-            isToday: true,
+            occasion: Occasion.current,
           ),
         ]),
       );
@@ -191,7 +191,7 @@ void main() {
             ],
             indexOfCurrentActivity: 1,
             day: initialDay,
-            isToday: true,
+            occasion: Occasion.current,
           ),
         ]),
       );
@@ -230,7 +230,7 @@ void main() {
             ],
             indexOfCurrentActivity: -1,
             day: initialDay,
-            isToday: true,
+            occasion: Occasion.current,
           ),
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
@@ -240,7 +240,7 @@ void main() {
             ],
             indexOfCurrentActivity: -1,
             day: nextDay,
-            isToday: false,
+            occasion: Occasion.future,
           ),
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
@@ -250,7 +250,7 @@ void main() {
             ],
             indexOfCurrentActivity: -1,
             day: initialDay,
-            isToday: true,
+            occasion: Occasion.current,
           ),
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
@@ -260,7 +260,7 @@ void main() {
             ],
             indexOfCurrentActivity: -1,
             day: previusDay,
-            isToday: false,
+            occasion: Occasion.past,
           ),
         ]),
       );
@@ -300,7 +300,7 @@ void main() {
             ],
             day: nextDay,
             indexOfCurrentActivity: -1,
-            isToday: false,
+            occasion: Occasion.future,
           ),
         ]),
       );
@@ -340,7 +340,7 @@ void main() {
             ],
             indexOfCurrentActivity: -1,
             day: previusDay,
-            isToday: false,
+            occasion: Occasion.past,
           ),
         ]),
       );
@@ -367,7 +367,7 @@ void main() {
             fullDayActivities: [],
             indexOfCurrentActivity: 0,
             day: initialDay,
-            isToday: true,
+            occasion: Occasion.current,
           ),
         ]),
       );
@@ -395,7 +395,7 @@ void main() {
             fullDayActivities: [],
             indexOfCurrentActivity: 0,
             day: initialDay,
-            isToday: true,
+            occasion: Occasion.current,
           ),
         ]),
       );
@@ -433,7 +433,7 @@ void main() {
             fullDayActivities: <ActivityOccasion>[],
             indexOfCurrentActivity: 0,
             day: initialDay,
-            isToday: true,
+            occasion: Occasion.current,
           ),
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
@@ -447,7 +447,7 @@ void main() {
             fullDayActivities: <ActivityOccasion>[],
             indexOfCurrentActivity: 1,
             day: initialDay,
-            isToday: true,
+            occasion: Occasion.current,
           ),
         ]),
       );
@@ -521,7 +521,7 @@ void main() {
               fullDayActivities: [],
               indexOfCurrentActivity: 0,
               day: initialDay,
-              isToday: true,
+              occasion: Occasion.current,
             ),
             // monday
             ActivitiesOccasionLoaded(
@@ -532,7 +532,7 @@ void main() {
               fullDayActivities: [],
               indexOfCurrentActivity: -1,
               day: previusDay,
-              isToday: false,
+              occasion: Occasion.past,
             ),
             // Friday
             ActivitiesOccasionLoaded(
@@ -540,7 +540,7 @@ void main() {
               fullDayActivities: [],
               indexOfCurrentActivity: -1,
               day: friday,
-              isToday: false,
+              occasion: Occasion.future,
             ),
             // Saturday
             ActivitiesOccasionLoaded(
@@ -551,7 +551,7 @@ void main() {
               fullDayActivities: [],
               indexOfCurrentActivity: -1,
               day: saturday,
-              isToday: false,
+              occasion: Occasion.future,
             ),
             // Sunday
             ActivitiesOccasionLoaded(
@@ -562,7 +562,7 @@ void main() {
               fullDayActivities: [],
               indexOfCurrentActivity: -1,
               day: sunday,
-              isToday: false,
+              occasion: Occasion.future,
             ),
             // Monday
             ActivitiesOccasionLoaded(
@@ -573,7 +573,7 @@ void main() {
               fullDayActivities: [],
               indexOfCurrentActivity: -1,
               day: monday,
-              isToday: false,
+              occasion: Occasion.future,
             ),
           ]));
     });
@@ -667,7 +667,7 @@ void main() {
               ],
               indexOfCurrentActivity: 0,
               day: initialDay,
-              isToday: true,
+              occasion: Occasion.current,
             ),
             // Monday
             ActivitiesOccasionLoaded(
@@ -675,7 +675,7 @@ void main() {
               fullDayActivities: [],
               indexOfCurrentActivity: -1,
               day: yesterday,
-              isToday: false,
+              occasion: Occasion.past,
             ),
             // Tuesday
             ActivitiesOccasionLoaded(
@@ -692,7 +692,7 @@ void main() {
               ],
               indexOfCurrentActivity: 0,
               day: initialDay,
-              isToday: true,
+              occasion: Occasion.current,
             ),
             // Wednesday
             ActivitiesOccasionLoaded(
@@ -709,7 +709,7 @@ void main() {
               ],
               indexOfCurrentActivity: -1,
               day: tomorrow,
-              isToday: false,
+              occasion: Occasion.future,
             ),
           ]));
     });
