@@ -20,15 +20,16 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
   final List<ActivityOccasion> activities;
   final List<ActivityOccasion> fullDayActivities;
   final int indexOfCurrentActivity;
+  final Occasion occasion;
   final DateTime day;
-  final bool isToday;
+  bool get isToday => occasion == Occasion.current;
 
   ActivitiesOccasionLoaded({
     @required this.activities,
     @required this.fullDayActivities,
     @required this.indexOfCurrentActivity,
     @required this.day,
-    @required this.isToday,
+    @required this.occasion,
   }) : super();
 
   @override

@@ -46,8 +46,6 @@ class _AgendaState extends State<Agenda> {
       WidgetsBinding.instance.addPostFrameCallback((_) =>
           BlocProvider.of<ScrollPositionBloc>(context)
               .add(ListViewRenderComplete(scrollController)));
-    } else {
-      BlocProvider.of<ScrollPositionBloc>(context).add(WrongDaySelected());
     }
     final activities = state.activities;
     final fullDayActivities = state.fullDayActivities;
