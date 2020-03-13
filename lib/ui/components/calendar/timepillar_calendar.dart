@@ -36,7 +36,8 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
 
   @override
   void didChangeDependencies() {
-    categoryMinWidth = (MediaQuery.of(context).size.width - timePillarTotalWidth);
+    categoryMinWidth =
+        (MediaQuery.of(context).size.width - timePillarTotalWidth);
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => horizontalScrollController.jumpTo(-categoryMinWidth / 2));
     super.didChangeDependencies();

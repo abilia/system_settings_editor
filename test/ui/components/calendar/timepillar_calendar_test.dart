@@ -7,6 +7,7 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
+import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/components/calendar/all.dart';
 
@@ -104,15 +105,9 @@ void main() {
   group('timepillar dots', () {
     testWidgets('Current dots shows', (WidgetTester tester) async {
       await goToTimePillar(tester);
-      expect(find.byType(CurrentDot), findsOneWidget);
-    });
-    testWidgets('Past dots shows', (WidgetTester tester) async {
-      await goToTimePillar(tester);
-      expect(find.byType(PastDot), findsWidgets);
-    });
-    testWidgets('Future dots shows', (WidgetTester tester) async {
-      await goToTimePillar(tester);
-      expect(find.byType(FutureDot), findsWidgets);
+      expect(find.byType(PastDots), findsNothing);
+      expect(find.byType(AnimatedDot), findsWidgets);
+      expect(find.byType(FutureDots), findsNothing);
     });
     testWidgets('Yesterday shows only past dots', (WidgetTester tester) async {
       await goToTimePillar(tester);
@@ -120,8 +115,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(PastDots), findsWidgets);
-      expect(find.byType(CurrentDot), findsNothing);
-      expect(find.byType(FutureDot), findsNothing);
+      expect(find.byType(AnimatedDot), findsNothing);
       expect(find.byType(FutureDots), findsNothing);
     });
     testWidgets('Tomorrow shows only future dots', (WidgetTester tester) async {
@@ -131,8 +125,29 @@ void main() {
 
       expect(find.byType(FutureDots), findsWidgets);
       expect(find.byType(PastDots), findsNothing);
-      expect(find.byType(CurrentDot), findsNothing);
-      expect(find.byType(FutureDot), findsNothing);
+      expect(find.byType(AnimatedDot), findsNothing);
+    });
+
+    testWidgets('Only one current dot', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      expect(
+          tester
+              .widgetList<AnimatedDot>(find.byType(AnimatedDot))
+              .where((d) => d.decoration == currentDotShape),
+          hasLength(1));
+    });
+
+    testWidgets('Alwasy only one current dots', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      for (var i = 0; i < 20; i++) {
+        mockTicker.add(time.add(1.minutes()));
+        await tester.pumpAndSettle();
+        expect(
+            tester
+                .widgetList<AnimatedDot>(find.byType(AnimatedDot))
+                .where((d) => d.decoration == currentDotShape),
+            hasLength(1));
+      }
     });
   });
 }

@@ -4,10 +4,10 @@ import 'package:seagull/ui/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:seagull/utils/all.dart';
 
-const _pastDotShape = ShapeDecoration(shape: CircleBorder(side: BorderSide())),
-    _futureDotShape =
+const pastDotShape = ShapeDecoration(shape: CircleBorder(side: BorderSide())),
+    futureDotShape =
         ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder()),
-    _currentDotShape =
+    currentDotShape =
         ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder());
 const int dotsPerHour = 4, minutesPerDot = 60 ~/ dotsPerHour;
 const double dotSize = 10.0,
@@ -98,10 +98,12 @@ class TimePillar extends StatelessWidget {
             dotsPerHour,
             (q) {
               final dotTime = hour.copyWith(minute: q * minutesPerDot);
-              if (dotTime.isAfter(now)) return const FutureDot();
-              final nextDotTime = dotTime.add(minutesPerDot.minutes());
-              if (now.isBefore(nextDotTime)) return const CurrentDot();
-              return const PastDot();
+              if (dotTime.isAfter(now)) {
+                return const AnimatedDot(decoration: futureDotShape);
+              } else if (now.isBefore(dotTime.add(minutesPerDot.minutes()))) {
+                return const AnimatedDot(decoration: currentDotShape);
+              }
+              return const AnimatedDot(decoration: pastDotShape);
             },
           ),
         ),
@@ -113,13 +115,13 @@ class PastDots extends StatelessWidget {
     Key key,
   }) : super(key: key);
   @override
-  Widget build(BuildContext context) => const Dots(decoration: _pastDotShape);
+  Widget build(BuildContext context) => const Dots(decoration: pastDotShape);
 }
 
 class FutureDots extends StatelessWidget {
   const FutureDots({Key key}) : super(key: key);
   @override
-  Widget build(BuildContext context) => const Dots(decoration: _futureDotShape);
+  Widget build(BuildContext context) => const Dots(decoration: futureDotShape);
 }
 
 class Dots extends StatelessWidget {
@@ -149,25 +151,4 @@ class AnimatedDot extends StatelessWidget {
         width: dotSize,
         decoration: decoration,
       );
-}
-
-class FutureDot extends StatelessWidget {
-  const FutureDot({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) =>
-      const AnimatedDot(decoration: _futureDotShape);
-}
-
-class PastDot extends StatelessWidget {
-  const PastDot({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) =>
-      const AnimatedDot(decoration: _pastDotShape);
-}
-
-class CurrentDot extends StatelessWidget {
-  const CurrentDot({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) =>
-      const AnimatedDot(decoration: _currentDotShape);
 }
