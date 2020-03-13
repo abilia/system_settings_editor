@@ -58,6 +58,7 @@ Widget _buildMaterialDialogTransitions(
 class ViewDialog extends StatelessWidget {
   final Widget heading;
   final Widget child;
+  final Widget trailing;
   final GestureTapCallback onOk;
   final Widget deleteButton;
   final Widget backButton;
@@ -71,6 +72,7 @@ class ViewDialog extends StatelessWidget {
     this.deleteButton,
     this.backButton,
     this.expanded = false,
+    this.trailing,
   }) : super(key: key);
 
   @override
@@ -139,13 +141,35 @@ class ViewDialog extends StatelessWidget {
                 Flexible(
                   flex: expanded ? 1 : 0,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 24.0, 16.0, 24.0),
-                    child: Material(
-                      child: child,
-                      color: Colors.transparent,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(12.0, 24.0, 16.0, 0.0),
+                    child: child,
                   ),
                 ),
+                if (trailing == null)
+                  const SizedBox(height: 24.0)
+                else
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(height: 16.0),
+                      Divider(
+                        color: AbiliaColors.transparantBlack[10],
+                        endIndent: 12.0,
+                        height: 0,
+                      ),
+                      Flexible(
+                        flex: expanded ? 1 : 0,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(12.0, 16.0, 16.0, 24.0),
+                          child: Material(
+                            child: trailing,
+                            color: Colors.transparent,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
               ],
             ),
           ),
