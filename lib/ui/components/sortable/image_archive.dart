@@ -17,8 +17,9 @@ class ImageArchive extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
       builder: (context, archiveState) {
-        final Iterable<Sortable> currentFolderContent =
+        final List<Sortable> currentFolderContent =
             archiveState.allByFolder[archiveState.currentFolderId] ?? [];
+        currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
         return GridView.count(
           crossAxisCount: 3,
           childAspectRatio: 0.96,

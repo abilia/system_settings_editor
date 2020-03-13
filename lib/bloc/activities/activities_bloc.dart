@@ -19,8 +19,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     @required PushBloc pushBloc,
   }) {
     pushSubscription = pushBloc.listen((state) {
-      print('got push to activities bloc with state: $state');
-      if (state is PushReceived && state.pushType == PushType.calendar) {
+      if (state is PushReceived) {
         add(LoadActivities());
       }
     });
