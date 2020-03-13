@@ -149,5 +149,43 @@ void main() {
             hasLength(1));
       }
     });
+
+    group('Timeline', () {
+      testWidgets('Exists', (WidgetTester tester) async {
+        await goToTimePillar(tester);
+        expect(find.byType(Timeline), findsOneWidget);
+      });
+
+      testWidgets('Tomorrow does not show timeline',
+          (WidgetTester tester) async {
+        await goToTimePillar(tester);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        expect(find.byType(Timeline), findsNothing);
+      });
+
+      testWidgets('Yesterday does not show timline',
+          (WidgetTester tester) async {
+        await goToTimePillar(tester);
+        await tester.tap(previusDayButtonFinder);
+        await tester.pumpAndSettle();
+        expect(find.byType(Timeline), findsNothing);
+      });
+
+      testWidgets('timeline is at same y pos as current-time-dot',
+          (WidgetTester tester) async {
+        await goToTimePillar(tester);
+
+        final currentDot = tester
+            .widgetList<AnimatedDot>(find.byType(AnimatedDot))
+            .firstWhere((d) => d.decoration == currentDotShape);
+
+        final currentDotPosition =
+            await tester.getCenter(find.byWidget(currentDot));
+        final timeLinePostion = await tester.getCenter(find.byType(Timeline));
+
+        expect(timeLinePostion.dy, closeTo(currentDotPosition.dy, 0.0001));
+      });
+    });
   });
 }

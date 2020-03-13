@@ -9,24 +9,33 @@ const pastDotShape = ShapeDecoration(shape: CircleBorder(side: BorderSide())),
         ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder()),
     currentDotShape =
         ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder());
+
+double timeToPixelDistance(DateTime now) =>
+    (now.hour * dotsPerHour + now.minute ~/ minutesPerDot) * dotDistance +
+    hourPadding +
+    dotSize / 2;
 const int dotsPerHour = 4, minutesPerDot = 60 ~/ dotsPerHour;
 const double dotSize = 10.0,
     hourPadding = 1.0,
     dotPadding = hourPadding * 3,
+    dotDistance = dotSize + dotPadding,
     timePillarPadding = 4.0,
     timePillarWidth = 42.0,
-    timePillarTotalWidth = 42.0 + timePillarPadding * 2,
-    hourHeigt = (dotSize + dotPadding) * dotsPerHour,
+    timePillarTotalWidth = timePillarWidth + timePillarPadding * 2,
+    hourHeigt = dotDistance * dotsPerHour,
     scrollHeight = hourHeigt * 24;
+const transitionDuration = Duration(seconds: 1);
 
 class TimePillar extends StatelessWidget {
   final DateTime day;
   final Occasion dayOccasion;
+  final DateTime now;
 
   const TimePillar({
     Key key,
     @required this.day,
     @required this.dayOccasion,
+    @required this.now,
   }) : super(key: key);
 
   @override
@@ -90,22 +99,19 @@ class TimePillar extends StatelessWidget {
     return withoutLeadingZeroOrTrailingAmPm;
   }
 
-  BlocBuilder<ClockBloc, DateTime> _todayDots(DateTime hour) =>
-      BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, now) => Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(
-            dotsPerHour,
-            (q) {
-              final dotTime = hour.copyWith(minute: q * minutesPerDot);
-              if (dotTime.isAfter(now)) {
-                return const AnimatedDot(decoration: futureDotShape);
-              } else if (now.isBefore(dotTime.add(minutesPerDot.minutes()))) {
-                return const AnimatedDot(decoration: currentDotShape);
-              }
-              return const AnimatedDot(decoration: pastDotShape);
-            },
-          ),
+  Widget _todayDots(DateTime hour) => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(
+          dotsPerHour,
+          (q) {
+            final dotTime = hour.copyWith(minute: q * minutesPerDot);
+            if (dotTime.isAfter(now)) {
+              return const AnimatedDot(decoration: futureDotShape);
+            } else if (now.isBefore(dotTime.add(minutesPerDot.minutes()))) {
+              return const AnimatedDot(decoration: currentDotShape);
+            }
+            return const AnimatedDot(decoration: pastDotShape);
+          },
         ),
       );
 }
@@ -146,7 +152,7 @@ class AnimatedDot extends StatelessWidget {
   const AnimatedDot({Key key, @required this.decoration}) : super(key: key);
   @override
   Widget build(BuildContext context) => AnimatedContainer(
-        duration: 2.seconds(),
+        duration: transitionDuration,
         height: dotSize,
         width: dotSize,
         decoration: decoration,
