@@ -60,9 +60,10 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
                 style: abiliaTheme.textTheme.body2,
               ),
               onTap: () async {
-                var image =
-                    await ImagePicker.pickImage(source: ImageSource.gallery);
-                print(image);
+                var image = await ImagePicker.pickImage(
+                  source: ImageSource.gallery,
+                  imageQuality: 50,
+                );
                 final id = Uuid().v4();
                 BlocProvider.of<UserFileBloc>(innerContext)
                     .add(FileAdded(id, image));
@@ -77,9 +78,10 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
                 style: abiliaTheme.textTheme.body2,
               ),
               onTap: () async {
-                final image =
-                    await ImagePicker.pickImage(source: ImageSource.camera);
-                print(image);
+                final image = await ImagePicker.pickImage(
+                  source: ImageSource.camera,
+                  imageQuality: 50,
+                );
                 final id = Uuid().v4();
                 BlocProvider.of<UserFileBloc>(innerContext)
                     .add(FileAdded(id, image));

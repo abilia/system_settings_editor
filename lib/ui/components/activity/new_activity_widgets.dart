@@ -30,7 +30,8 @@ class NameAndPictureWidget extends StatelessWidget {
                       ),
                     ),
                     BlocProvider<UserFileBloc>.value(
-                        value: BlocProvider.of<UserFileBloc>(context)),
+                      value: BlocProvider.of<UserFileBloc>(context),
+                    ),
                   ],
                   child: SelectPictureDialog(),
                 ),
