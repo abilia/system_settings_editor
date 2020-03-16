@@ -27,7 +27,7 @@ abstract class DataDb<M extends DataModel> {
           ? 0
           : existingDirtyAndRevision.first['revision'];
       return await db.insert(
-          'calendar_activity',
+          table,
           model
               .wrapWithDbModel(dirty: dirty + 1, revision: revision)
               .toMapForDb(),
@@ -54,6 +54,7 @@ abstract class DbModel<M extends DataModel> extends Equatable {
     @required this.model,
   });
   Map<String, dynamic> toMapForDb();
+  Map<String, dynamic> toJson();
   DbModel<M> copyWith({
     int revision,
     int dirty,

@@ -24,7 +24,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   @override
   Widget build(BuildContext context) {
     if (imageArchiveView) {
-      return buildImageArchiveDialog(context);
+      return buildImageArchiveDialog();
     } else {
       return buildPictureSourceDialog(context);
     }
@@ -36,57 +36,63 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     return ViewDialog(
       heading: Text(translate.selectPicture, style: theme.textTheme.title),
       onOk: onOk,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          PickField(
-            leading: Icon(AbiliaIcons.folder),
-            label: Text(
-              translate.imageArchive,
-              style: abiliaTheme.textTheme.body2,
+      child: Builder(
+        builder: (BuildContext innerContext) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            PickField(
+              leading: Icon(AbiliaIcons.folder),
+              label: Text(
+                translate.imageArchive,
+                style: abiliaTheme.textTheme.body2,
+              ),
+              onTap: () {
+                setState(() {
+                  imageArchiveView = !imageArchiveView;
+                });
+              },
             ),
-            onTap: () {
-              setState(() {
-                imageArchiveView = !imageArchiveView;
-              });
-            },
-          ),
-          SizedBox(height: 8.0),
-          PickField(
-            leading: Icon(AbiliaIcons.my_photos),
-            label: Text(
-              translate.myPhotos,
-              style: abiliaTheme.textTheme.body2,
+            SizedBox(height: 8.0),
+            PickField(
+              leading: Icon(AbiliaIcons.my_photos),
+              label: Text(
+                translate.myPhotos,
+                style: abiliaTheme.textTheme.body2,
+              ),
+              onTap: () async {
+                var image =
+                    await ImagePicker.pickImage(source: ImageSource.gallery);
+                print(image);
+                final id = Uuid().v4();
+                BlocProvider.of<UserFileBloc>(innerContext)
+                    .add(FileAdded(id, image));
+                setState(() => imageSelected = id);
+              },
             ),
-            onTap: () async {
-              var image =
-                  await ImagePicker.pickImage(source: ImageSource.gallery);
-              print(image);
-              final id = Uuid().v4();
-              BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
-            },
-          ),
-          SizedBox(height: 8.0),
-          PickField(
-            leading: Icon(AbiliaIcons.camera_photo),
-            label: Text(
-              translate.takeNewPhoto,
-              style: abiliaTheme.textTheme.body2,
+            SizedBox(height: 8.0),
+            PickField(
+              leading: Icon(AbiliaIcons.camera_photo),
+              label: Text(
+                translate.takeNewPhoto,
+                style: abiliaTheme.textTheme.body2,
+              ),
+              onTap: () async {
+                final image =
+                    await ImagePicker.pickImage(source: ImageSource.camera);
+                print(image);
+                final id = Uuid().v4();
+                BlocProvider.of<UserFileBloc>(innerContext)
+                    .add(FileAdded(id, image));
+                setState(() => imageSelected = id);
+              },
             ),
-            onTap: () async {
-              final image =
-                  await ImagePicker.pickImage(source: ImageSource.camera);
-              print(image);
-              final id = Uuid().v4();
-              BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget buildImageArchiveDialog(BuildContext context) {
+  Widget buildImageArchiveDialog() {
     return BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
       builder: (innerContext, imageArchiveState) => ViewDialog(
         expanded: true,

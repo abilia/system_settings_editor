@@ -40,7 +40,7 @@ class ActivityDb extends DataDb<Activity> {
     }
   }
 
-  Future<Iterable<DbModel<Activity>>> getAllDirty() async {
+  Future<Iterable<DbActivity>> getAllDirty() async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ALL_DIRTY);
     return result.map((row) => DbActivity.fromDbMap(row));
@@ -53,7 +53,7 @@ class ActivityDb extends DataDb<Activity> {
   Future<Iterable<int>> insert(Iterable<DbModel<Activity>> activities) async {
     final db = await DatabaseRepository().database;
     final insertResults = await activities.map((activity) async {
-      return await db.insert('calendar_activity', activity.toMapForDb(),
+      return await db.insert(ACTIVITY_TABLE, activity.toMapForDb(),
           conflictAlgorithm: ConflictAlgorithm.replace);
     });
     return Future.wait(insertResults);

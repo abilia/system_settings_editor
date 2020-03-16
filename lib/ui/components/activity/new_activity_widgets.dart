@@ -22,10 +22,16 @@ class NameAndPictureWidget extends StatelessWidget {
             final imageClick = () async {
               final imageId = await showViewDialog<String>(
                 context: context,
-                builder: (_) => BlocProvider<ImageArchiveBloc>(
-                  create: (_) => ImageArchiveBloc(
-                    sortableBloc: BlocProvider.of<SortableBloc>(context),
-                  ),
+                builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<ImageArchiveBloc>(
+                      create: (_) => ImageArchiveBloc(
+                        sortableBloc: BlocProvider.of<SortableBloc>(context),
+                      ),
+                    ),
+                    BlocProvider<UserFileBloc>.value(
+                        value: BlocProvider.of<UserFileBloc>(context)),
+                  ],
                   child: SelectPictureDialog(),
                 ),
               );

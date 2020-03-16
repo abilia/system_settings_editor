@@ -6,6 +6,7 @@ import 'package:seagull/bloc/user_file/user_file_bloc.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -21,30 +22,35 @@ class CalendarPage extends StatelessWidget {
       userId: authenticatedState.userId,
       authToken: authenticatedState.token,
     );
+    final userFileRepository = UserFileRepository(
+      httpClient: authenticatedState.userRepository.httpClient,
+      baseUrl: authenticatedState.userRepository.baseUrl,
+      userFileDb: GetIt.I<UserFileDb>(),
+      fileStorage: GetIt.I<FileStorage>(),
+      userId: authenticatedState.userId,
+      authToken: authenticatedState.token,
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider<SyncBloc>(
           create: (context) => SyncBloc(
             activityRepository: activityRepository,
+            userFileRepository: userFileRepository,
           ),
         ),
         BlocProvider<ActivitiesBloc>(
           create: (context) => ActivitiesBloc(
-              activityRepository: activityRepository,
-              syncBloc: BlocProvider.of<SyncBloc>(context),
-              pushBloc: BlocProvider.of<PushBloc>(context))
-            ..add(
-              LoadActivities(),
-            ),
+            activityRepository: activityRepository,
+            syncBloc: BlocProvider.of<SyncBloc>(context),
+            pushBloc: BlocProvider.of<PushBloc>(context),
+          )..add(LoadActivities()),
         ),
         BlocProvider<UserFileBloc>(
           create: (context) => UserFileBloc(
-            userFileRepository: UserFileRepository(
-              httpClient: authenticatedState.userRepository.httpClient,
-              baseUrl: authenticatedState.userRepository.baseUrl,
-              userFileDb: GetIt.I<UserFileDb>(),
-            ),
-          ),
+            userFileRepository: userFileRepository,
+            syncBloc: BlocProvider.of<SyncBloc>(context),
+            fileStorage: GetIt.I<FileStorage>(),
+          )..add(LoadUserFiles()),
         ),
         BlocProvider<SortableBloc>(
           create: (context) => SortableBloc(
@@ -56,9 +62,7 @@ class CalendarPage extends StatelessWidget {
               authToken: authenticatedState.token,
             ),
             pushBloc: BlocProvider.of<PushBloc>(context),
-          )..add(
-              LoadSortables(),
-            ),
+          )..add(LoadSortables()),
         ),
         BlocProvider<ClockBloc>(
           create: (context) => ClockBloc(
