@@ -233,7 +233,7 @@ class HeroImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: activity.id,
-      child: FadeInCalendarImage(
+      child: FadeInLocalImage(
         imageFileId: activity.fileId,
         imageFilePath: activity.icon,
         width: width,

@@ -51,7 +51,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> _mapFileAddedToState(
     FileAdded event,
   ) async* {
-    final fileBytes = event.file.readAsBytesSync();
+    final fileBytes = await event.file.readAsBytes();
     final sha1Hex = sha1.convert(fileBytes).toString();
     final md5Hex = md5.convert(fileBytes).toString();
     final path = 'seagull/${event.id}';

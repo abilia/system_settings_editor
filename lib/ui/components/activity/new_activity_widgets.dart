@@ -43,7 +43,7 @@ class NameAndPictureWidget extends StatelessWidget {
             return addActivityState.activity.hasImage
                 ? InkWell(
                     onTap: imageClick,
-                    child: FadeInCalendarImage(
+                    child: FadeInLocalImage(
                       imageFileId: addActivityState.activity.fileId,
                       imageFilePath: addActivityState.activity.icon,
                     ),

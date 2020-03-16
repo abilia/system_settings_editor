@@ -76,7 +76,7 @@ class ActivityCard extends StatelessWidget {
                             if (hasImage)
                               Hero(
                                 tag: activity.id,
-                                child: FadeInCalendarImage(
+                                child: FadeInLocalImage(
                                   imageFileId: activity.fileId,
                                   imageFilePath: activity.icon,
                                   width: imageSize,

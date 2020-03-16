@@ -3,6 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/components/fade_in_local_image.dart';
 import 'package:seagull/ui/theme.dart';
 
 class ImageArchive extends StatelessWidget {
@@ -91,7 +92,7 @@ class Folder extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.center,
                       heightFactor: 42 / 66,
-                      child: FadeInCalendarImage(
+                      child: FadeInLocalImage(
                         imageFileId: sortable.sortableData.fileId,
                         imageFilePath: sortable.sortableData.icon,
                         width: 66,
@@ -151,7 +152,7 @@ class ArchiveImage extends StatelessWidget {
                 child: Center(
                   child: ClipRRect(
                     borderRadius: borderRadius,
-                    child: FadeInCalendarImage(
+                    child: FadeInLocalImage(
                       imageFileId: imageId,
                       imageFilePath: iconPath,
                       width: imageWidth,

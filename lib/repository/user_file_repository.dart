@@ -32,6 +32,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       final fetchedUserFiles =
           await _fetchUserFiles(await userFileDb.getLastRevision());
       await userFileDb.insert(fetchedUserFiles);
+      await getAndStoreFileData(fetchedUserFiles);
     } catch (e) {
       print('Error when loading $e');
     }
@@ -128,5 +129,21 @@ class UserFileRepository extends DataRepository<UserFile> {
       print('Could not save file to backend $e');
       return false;
     }
+  }
+
+  Future<bool> getAndStoreFileData(Iterable<DbUserFile> dbUserFiles) async {
+    for (final dbUserFile in dbUserFiles) {
+      final fileResponse = await httpClient.get(
+        imageIdUrl(baseUrl, userId, dbUserFile.userFile.id),
+        headers: authHeader(authToken),
+      );
+      if (fileResponse.statusCode == 200) {
+        await fileStorage.storeFile(
+            fileResponse.bodyBytes, dbUserFile.userFile.id);
+      } else {
+        return false;
+      }
+    }
+    return true;
   }
 }

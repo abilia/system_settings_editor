@@ -17,3 +17,4 @@ export 'calendar/all.dart';
 export 'activity/all.dart';
 export 'dialogs/all.dart';
 export 'sortable/image_archive.dart';
+export 'fade_in_local_image.dart';
