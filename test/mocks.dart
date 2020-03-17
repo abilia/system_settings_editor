@@ -25,6 +25,8 @@ class MockSyncBloc extends Mock implements SyncBloc {}
 
 class MockSortableBloc extends Mock implements SortableBloc {}
 
+class MockUserFileBloc extends Mock implements UserFileBloc {}
+
 class MockImageArchiveBloc
     extends MockBloc<ImageArchiveEvent, ImageArchiveState>
     implements ImageArchiveBloc {}

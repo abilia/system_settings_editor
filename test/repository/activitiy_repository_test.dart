@@ -133,8 +133,8 @@ void main() {
             200,
           ),
         ));
-    when(mockActivityDb.insert(
-            [successActivity.copyWith(revision: newRevision)]))
+    when(mockActivityDb
+            .insert([successActivity.copyWith(revision: newRevision)]))
         .thenAnswer((_) => Future.value(List(1)));
     final newDirty = 5;
     when(mockActivityDb.getById(successActivity.activity.id))
@@ -174,6 +174,7 @@ void main() {
     final activities = [failedActivity.copyWith(dirty: 1)];
     when(mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(activities));
+    when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(100));
     when(mockClient.post(
       '$baseUrl/api/v1/data/$userId/activities',
       headers: jsonAuthHeader(Fakes.token),

@@ -40,6 +40,7 @@ void main() {
               ),
             ),
             BlocProvider<SortableBloc>(create: (context) => MockSortableBloc()),
+            BlocProvider<UserFileBloc>(create: (context) => MockUserFileBloc()),
           ], child: widget),
         );
 
