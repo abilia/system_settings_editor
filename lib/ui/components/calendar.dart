@@ -107,7 +107,10 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                                           cardHeight: cardHeight,
                                           cardMargin: cardMargin,
                                         )
-                                      : TimePillarCalendar(state: state),
+                                      : TimePillarCalendar(
+                                          state: state,
+                                          calendarViewState: calendarViewState,
+                                        ),
                                 )
                               ],
                             );

@@ -9,8 +9,13 @@ import 'all.dart';
 
 class TimePillarCalendar extends StatefulWidget {
   final ActivitiesOccasionLoaded state;
+  final CalendarViewState calendarViewState;
 
-  const TimePillarCalendar({Key key, @required this.state}) : super(key: key);
+  const TimePillarCalendar({
+    Key key,
+    @required this.state,
+    @required this.calendarViewState,
+  }) : super(key: key);
 
   @override
   _TimePillarCalendarState createState() => _TimePillarCalendarState();
@@ -36,7 +41,8 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
 
   @override
   void didChangeDependencies() {
-    categoryMinWidth = (MediaQuery.of(context).size.width - timePillarTotalWidth);
+    categoryMinWidth =
+        (MediaQuery.of(context).size.width - timePillarTotalWidth);
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => horizontalScrollController.jumpTo(-categoryMinWidth / 2));
     super.didChangeDependencies();
@@ -57,7 +63,9 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                     controller: horizontalScrollController,
                     slivers: <Widget>[
                       category(
-                        category: CategoryLeft(maxWidth: categoryMinWidth),
+                        CategoryLeft(
+                            expanded:
+                                widget.calendarViewState.expandLeftCategory),
                         height: boxConstraints.maxHeight,
                       ),
                       SliverTimePillar(
@@ -68,7 +76,9 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                         ),
                       ),
                       category(
-                        category: CategoryRight(maxWidth: categoryMinWidth),
+                        CategoryRight(
+                            expanded:
+                                widget.calendarViewState.expandRightCategory),
                         height: boxConstraints.maxHeight,
                       ),
                     ],
@@ -84,7 +94,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
         },
       );
 
-  Widget category({Widget category, double height}) => SliverOverlay(
+  Widget category(Widget category, {double height}) => SliverOverlay(
         height: height,
         overlay: ScrollTranslated(
           controller: verticalScrollController,
