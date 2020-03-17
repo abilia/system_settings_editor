@@ -5,6 +5,7 @@ import 'package:file/memory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/fakes/fake_user_files.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
@@ -88,8 +89,7 @@ void main() {
     test('State contains two files when two is added', () async {
       // Arrange
       final fileId = 'file1';
-      final fileContent = base64.decode(
-          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==');
+      final fileContent = base64.decode(FakeUserFile.ONE_PIXEL_PNG);
       File file = MemoryFileSystem().file('test.dart');
       await file.writeAsBytes(fileContent);
 

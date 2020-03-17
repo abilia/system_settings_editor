@@ -40,6 +40,8 @@ class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
 
 class MockActivityDb extends Mock implements ActivityDb {}
 
+class MockUserFileDb extends Mock implements UserFileDb {}
+
 class MockUserDb extends Mock implements UserDb {}
 
 class MockDatabaseRepository extends Mock implements DatabaseRepository {}
@@ -47,6 +49,10 @@ class MockDatabaseRepository extends Mock implements DatabaseRepository {}
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 
 class MockFileStorage extends Mock implements FileStorage {}
+
+class MockMultipartRequestBuilder extends Mock implements MultipartRequestBuilder {}
+
+class MockMultipartRequest extends Mock implements MultipartRequest {}
 
 class MockedClient extends Mock implements BaseClient {}
 

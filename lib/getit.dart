@@ -54,6 +54,11 @@ class GetItInitializer {
   FileStorage _fileStorage;
   set fileStorage(FileStorage fileStorage) => this._fileStorage = fileStorage;
 
+  MultipartRequestBuilder _multipartRequestBuilder;
+  set multipartRequestBuilder(
+          MultipartRequestBuilder multipartRequestBuilder) =>
+      this._multipartRequestBuilder = multipartRequestBuilder;
+
   FactoryFunc<DateTime> _startTime;
   set startTime(DateTime startTime) => this._startTime = () => startTime;
 
@@ -78,6 +83,8 @@ class GetItInitializer {
     GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb());
     GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb());
     GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage());
+    GetIt.I.registerSingleton<MultipartRequestBuilder>(
+        _multipartRequestBuilder ?? MultipartRequestBuilder());
     GetIt.I.registerFactory<DateTime>(_startTime ?? () => DateTime.now());
   }
 }

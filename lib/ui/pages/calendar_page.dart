@@ -29,6 +29,7 @@ class CalendarPage extends StatelessWidget {
       fileStorage: GetIt.I<FileStorage>(),
       userId: authenticatedState.userId,
       authToken: authenticatedState.token,
+      multipartRequestBuilder: GetIt.I<MultipartRequestBuilder>(),
     );
     return MultiBlocProvider(
       providers: [

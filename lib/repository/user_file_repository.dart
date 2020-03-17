@@ -14,6 +14,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   final int userId;
   final String authToken;
   final FileStorage fileStorage;
+  final MultipartRequestBuilder multipartRequestBuilder;
 
   UserFileRepository({
     @required BaseClient httpClient,
@@ -22,6 +23,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     @required this.fileStorage,
     @required this.userId,
     @required this.authToken,
+    @required this.multipartRequestBuilder,
   }) : super(httpClient, baseUrl);
 
   @override
@@ -139,17 +141,13 @@ class UserFileRepository extends DataRepository<UserFile> {
     try {
       final bytes = await file.readAsBytes();
 
-      var url = Uri.parse('$baseUrl/api/v1/data/$userId/storage/files');
-      var request = MultipartRequest('POST', url)
-        ..files.add(MultipartFile.fromBytes(
-          'file',
-          bytes,
-          filename: 'test.jpg',
-        ))
-        ..headers['X-Auth-Token'] = authToken
-        ..fields.addAll({
-          'sha1': sha1,
-        });
+      final uri = Uri.parse('$baseUrl/api/v1/data/$userId/storage/files');
+      final request = multipartRequestBuilder.generateFileMultipartRequest(
+        uri: uri,
+        bytes: bytes,
+        authToken: authToken,
+        sha1: sha1,
+      );
       final streamedResponse = await request.send();
       if (streamedResponse.statusCode == 200) {
         return true;
