@@ -46,6 +46,7 @@ dev_dependencies:
   flutter_driver:
     sdk: flutter
   test: any
+  file: ^5.1.0
 
 flutter_icons:
   android: true
