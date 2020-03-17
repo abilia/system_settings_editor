@@ -16,10 +16,4 @@ class FileStorage {
     final directory = await getApplicationDocumentsDirectory();
     return File('${directory.path}/$folder/$id');
   }
-
-  Future<List<int>> getFileBytes(String id) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/$folder/$id');
-    return file.readAsBytes();
-  }
 }
