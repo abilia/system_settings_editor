@@ -35,7 +35,7 @@ class Sortable extends Equatable {
     String type,
     String data,
     String groupId,
-    String sortOrder,
+    String sortOrder = '',
     bool deleted = false,
     bool isGroup = false,
     bool isVisible = true,
