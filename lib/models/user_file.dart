@@ -22,6 +22,9 @@ class UserFile extends DataModel {
       [id, sha1, md5, path, contentType, fileSize, deleted];
 
   @override
+  String toString() => 'UserFile: { ${props.join(', ')} }';
+
+  @override
   DbModel<DataModel> wrapWithDbModel({int revision = 0, int dirty = 0}) =>
       DbUserFile._(
         userFile: this,

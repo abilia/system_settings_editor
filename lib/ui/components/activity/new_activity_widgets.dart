@@ -13,53 +13,51 @@ class NameAndPictureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
+    final imageClick = () async {
+      final imageId = await showViewDialog<String>(
+        context: context,
+        builder: (_) => MultiBlocProvider(
+          providers: [
+            BlocProvider<ImageArchiveBloc>(
+              create: (_) => ImageArchiveBloc(
+                sortableBloc: BlocProvider.of<SortableBloc>(context),
+              ),
+            ),
+            BlocProvider<UserFileBloc>.value(
+              value: BlocProvider.of<UserFileBloc>(context),
+            ),
+          ],
+          child: SelectPictureDialog(),
+        ),
+      );
+      if (imageId != null) {
+        BlocProvider.of<EditActivityBloc>(context).add(ImageSelected(imageId));
+      }
+    };
     return SizedBox(
       height: 84,
       child: Row(
         children: <Widget>[
-          BlocBuilder<EditActivityBloc, EditActivityState>(
-              builder: (context, addActivityState) {
-            final imageClick = () async {
-              final imageId = await showViewDialog<String>(
-                context: context,
-                builder: (_) => MultiBlocProvider(
-                  providers: [
-                    BlocProvider<ImageArchiveBloc>(
-                      create: (_) => ImageArchiveBloc(
-                        sortableBloc: BlocProvider.of<SortableBloc>(context),
-                      ),
-                    ),
-                    BlocProvider<UserFileBloc>.value(
-                      value: BlocProvider.of<UserFileBloc>(context),
-                    ),
-                  ],
-                  child: SelectPictureDialog(),
+          activity.hasImage
+              ? InkWell(
+                  onTap: imageClick,
+                  child: FadeInLocalImage(
+                    height: 84,
+                    width: 84,
+                    imageFileId: activity.fileId,
+                    imageFilePath: activity.icon,
+                  ),
+                )
+              : LinedBorder(
+                  key: TestKey.addPicture,
+                  padding: const EdgeInsets.all(26),
+                  child: Icon(
+                    AbiliaIcons.add_photo,
+                    size: 32,
+                    color: AbiliaColors.black[75],
+                  ),
+                  onTap: imageClick,
                 ),
-              );
-              if (imageId != null) {
-                BlocProvider.of<EditActivityBloc>(context)
-                    .add(ImageSelected(imageId));
-              }
-            };
-            return addActivityState.activity.hasImage
-                ? InkWell(
-                    onTap: imageClick,
-                    child: FadeInCalendarImage(
-                      imageFileId: addActivityState.activity.fileId,
-                      imageFilePath: addActivityState.activity.icon,
-                    ),
-                  )
-                : LinedBorder(
-                    key: TestKey.addPicture,
-                    padding: const EdgeInsets.all(26),
-                    child: Icon(
-                      AbiliaIcons.add_photo,
-                      size: 32,
-                      color: AbiliaColors.black[75],
-                    ),
-                    onTap: imageClick,
-                  );
-          }),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

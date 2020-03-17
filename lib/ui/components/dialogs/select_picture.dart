@@ -36,60 +36,56 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     return ViewDialog(
       heading: Text(translate.selectPicture, style: theme.textTheme.title),
       onOk: onOk,
-      child: Builder(
-        builder: (BuildContext innerContext) => Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            PickField(
-              leading: Icon(AbiliaIcons.folder),
-              label: Text(
-                translate.imageArchive,
-                style: abiliaTheme.textTheme.body2,
-              ),
-              onTap: () {
-                setState(() {
-                  imageArchiveView = !imageArchiveView;
-                });
-              },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          PickField(
+            leading: Icon(AbiliaIcons.folder),
+            label: Text(
+              translate.imageArchive,
+              style: abiliaTheme.textTheme.body2,
             ),
-            SizedBox(height: 8.0),
-            PickField(
-              leading: Icon(AbiliaIcons.my_photos),
-              label: Text(
-                translate.myPhotos,
-                style: abiliaTheme.textTheme.body2,
-              ),
-              onTap: () async {
-                var image = await ImagePicker.pickImage(
-                  source: ImageSource.gallery,
-                  imageQuality: 50,
-                );
-                final id = Uuid().v4();
-                BlocProvider.of<UserFileBloc>(innerContext)
-                    .add(FileAdded(id, image));
-                setState(() => imageSelected = id);
-              },
+            onTap: () {
+              setState(() {
+                imageArchiveView = !imageArchiveView;
+              });
+            },
+          ),
+          SizedBox(height: 8.0),
+          PickField(
+            leading: Icon(AbiliaIcons.my_photos),
+            label: Text(
+              translate.myPhotos,
+              style: abiliaTheme.textTheme.body2,
             ),
-            SizedBox(height: 8.0),
-            PickField(
-              leading: Icon(AbiliaIcons.camera_photo),
-              label: Text(
-                translate.takeNewPhoto,
-                style: abiliaTheme.textTheme.body2,
-              ),
-              onTap: () async {
-                final image = await ImagePicker.pickImage(
-                  source: ImageSource.camera,
-                  imageQuality: 50,
-                );
-                final id = Uuid().v4();
-                BlocProvider.of<UserFileBloc>(innerContext)
-                    .add(FileAdded(id, image));
-                setState(() => imageSelected = id);
-              },
+            onTap: () async {
+              var image = await ImagePicker.pickImage(
+                source: ImageSource.gallery,
+                imageQuality: 50,
+              );
+              final id = Uuid().v4();
+              BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
+              setState(() => imageSelected = id);
+            },
+          ),
+          SizedBox(height: 8.0),
+          PickField(
+            leading: Icon(AbiliaIcons.camera_photo),
+            label: Text(
+              translate.takeNewPhoto,
+              style: abiliaTheme.textTheme.body2,
             ),
-          ],
-        ),
+            onTap: () async {
+              final image = await ImagePicker.pickImage(
+                source: ImageSource.camera,
+                imageQuality: 50,
+              );
+              final id = Uuid().v4();
+              BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
+              setState(() => imageSelected = id);
+            },
+          ),
+        ],
       ),
     );
   }

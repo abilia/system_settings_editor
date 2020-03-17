@@ -154,7 +154,6 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                 onPressed: () async {
                   final now = BlocProvider.of<ClockBloc>(context).state;
                   final sortableBloc = BlocProvider.of<SortableBloc>(context);
-                  final userFileBloc = BlocProvider.of<UserFileBloc>(context);
                   await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (innerContext) {
@@ -175,8 +174,8 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                             BlocProvider<SortableBloc>(
                               create: (context) => sortableBloc,
                             ),
-                            BlocProvider<UserFileBloc>(
-                              create: (context) => userFileBloc,
+                            BlocProvider<UserFileBloc>.value(
+                              value: BlocProvider.of<UserFileBloc>(context),
                             ),
                           ],
                           child: EditActivityPage(

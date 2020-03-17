@@ -74,7 +74,9 @@ class ActivityRepository extends DataRepository<Activity> {
 
   Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
     final minRevision = failed.map((f) => f.revision).reduce(min);
-    final fetchedActivities = await _fetchActivities(minRevision);
+    final latestRevision = await activityDb.getLastRevision();
+    final fetchedActivities =
+        await _fetchActivities(min(minRevision, latestRevision));
     await activityDb.insert(fetchedActivities);
   }
 

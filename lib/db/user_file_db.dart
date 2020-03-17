@@ -11,6 +11,8 @@ class UserFileDb extends DataDb<UserFile> {
       'SELECT max(revision) as max_revision FROM $USER_FILE_TABLE_NAME';
   static const String GET_USER_FILES_SQL =
       'SELECT * FROM $USER_FILE_TABLE_NAME WHERE deleted == 0';
+  static const String GET_USER_FILES_BY_ID_SQL =
+      'SELECT * FROM $USER_FILE_TABLE_NAME WHERE id == ?';
 
   @override
   Future<Iterable<DbUserFile>> getAllDirty() async {
@@ -27,9 +29,15 @@ class UserFileDb extends DataDb<UserFile> {
   }
 
   @override
-  Future<DbModel<UserFile>> getById(String id) {
-    // TODO: implement getById
-    return null;
+  Future<DbModel<UserFile>> getById(String id) async {
+    final db = await DatabaseRepository().database;
+    final result = await db.rawQuery(GET_USER_FILES_BY_ID_SQL, [id]);
+    final userFiles = result.map((row) => DbUserFile.fromDbMap(row));
+    if (userFiles.length == 1) {
+      return userFiles.first;
+    } else {
+      return null;
+    }
   }
 
   @override

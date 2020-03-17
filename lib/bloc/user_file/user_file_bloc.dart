@@ -6,6 +6,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:mime/mime.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -18,12 +19,21 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   final UserFileRepository userFileRepository;
   final SyncBloc syncBloc;
   final FileStorage fileStorage;
+  StreamSubscription pushSubscription;
 
   UserFileBloc({
     @required this.userFileRepository,
     @required this.syncBloc,
     @required this.fileStorage,
-  });
+    @required PushBloc pushBloc,
+  }) {
+    pushSubscription = pushBloc.listen((state) {
+      print('got push to user file bloc with state: $state');
+      if (state is PushReceived) {
+        add(LoadUserFiles());
+      }
+    });
+  }
 
   @override
   UserFileState get initialState => UserFilesNotLoaded();
@@ -32,6 +42,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> mapEventToState(
     UserFileEvent event,
   ) async* {
+    print('----- got an event to user_file_bloc $event');
     if (event is FileAdded) {
       print('File added in user file bloc');
       yield* _mapFileAddedToState(event);

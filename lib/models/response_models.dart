@@ -23,3 +23,21 @@ class SyncResponse extends Equatable {
     );
   }
 }
+
+class ResponseError {
+  final String code;
+  final String message;
+
+  ResponseError({
+    @required this.code,
+    @required this.message,
+  });
+
+  static ResponseError fromJson(Map<String, dynamic> data) {
+    return ResponseError(code: data['code'], message: data['message']);
+  }
+}
+
+class ErrorCodes {
+  static const String WRONG_REVISION = 'WHALE-0900';
+}

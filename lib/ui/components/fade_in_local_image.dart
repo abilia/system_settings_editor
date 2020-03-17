@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/storage/file_storage.dart';
+import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/theme.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class FadeInLocalImage extends StatelessWidget {
@@ -20,15 +24,23 @@ class FadeInLocalImage extends StatelessWidget {
     return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
       if (userFileState is UserFilesLoaded) {
-        return FutureBuilder<List<int>>(
-          future: fileStorage.getFileBytes(imageFileId),
+        return FutureBuilder<File>(
+          future: fileStorage.getFile(imageFileId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return FadeInImage(
-                width: width,
-                height: height,
-                image: Image.memory(snapshot.data).image,
-                placeholder: MemoryImage(kTransparentImage),
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: borderRadius,
+                  color: AbiliaColors.white,
+                ),
+                child: FadeInImage(
+                  width: width,
+                  height: height,
+                  image: Image.file(
+                    snapshot.data,
+                  ).image,
+                  placeholder: MemoryImage(kTransparentImage),
+                ),
               );
             } else {
               return SizedBox(

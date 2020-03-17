@@ -117,7 +117,7 @@ class _ActivityPageState extends State<ActivityPage> {
                   size: 32,
                 ),
                 onPressed: () {
-                  final addAcitivityBloc = EditActivityBloc(
+                  final editActivityBloc = EditActivityBloc(
                     activity: activity,
                     activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
                     newActivity: false,
@@ -125,7 +125,7 @@ class _ActivityPageState extends State<ActivityPage> {
                   showViewDialog<bool>(
                     context: context,
                     builder: (context) => BlocProvider<EditActivityBloc>.value(
-                      value: addAcitivityBloc,
+                      value: editActivityBloc,
                       child: SelectReminderDialog(activity: activity),
                     ),
                   );
@@ -140,6 +140,7 @@ class _ActivityPageState extends State<ActivityPage> {
                 onPressed: () async {
                   final now = BlocProvider.of<ClockBloc>(context).state;
                   final sortableBloc = BlocProvider.of<SortableBloc>(context);
+                  final userFileBloc = BlocProvider.of<UserFileBloc>(context);
                   final activitiesBloc =
                       BlocProvider.of<ActivitiesBloc>(context);
                   await Navigator.of(context).push(
@@ -156,6 +157,9 @@ class _ActivityPageState extends State<ActivityPage> {
                             ),
                             BlocProvider<SortableBloc>.value(
                               value: sortableBloc,
+                            ),
+                            BlocProvider<UserFileBloc>.value(
+                              value: userFileBloc,
                             ),
                           ],
                           child: EditActivityPage(

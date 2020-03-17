@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -7,7 +6,6 @@ import 'package:http/src/base_client.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/db/user_file_db.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/models/sync_response.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 
@@ -46,11 +44,9 @@ class UserFileRepository extends DataRepository<UserFile> {
 
   @override
   Future<bool> synchronize() async {
-    // Get all dirty user files
     final dirtyFiles = await userFileDb.getAllDirty();
     if (dirtyFiles.isNotEmpty) {
       final lastRevision = await userFileDb.getLastRevision();
-      // First save actual files to backend
       for (var dirtyFile in dirtyFiles) {
         final file = await fileStorage.getFile(dirtyFile.userFile.id);
         final postFileSuccess = await postFileData(
@@ -62,10 +58,39 @@ class UserFileRepository extends DataRepository<UserFile> {
           return false;
         }
       }
-      // Then post user files to backend
-      await postUserFiles(dirtyFiles, lastRevision);
+      try {
+        final syncResponses = await postUserFiles(dirtyFiles, lastRevision);
+        await _handleSuccessfulSync(syncResponses, dirtyFiles);
+      } on WrongRevisionException catch (_) {
+        print('Wrong revision when posting user files');
+        await _handleFailedSync();
+        return false;
+      } catch (e) {
+        print('Cannot post user files to backend $e');
+        return false;
+      }
     }
     return true;
+  }
+
+  Future<void> _handleSuccessfulSync(
+      List<SyncResponse> syncResponses, Iterable<DbUserFile> dirtyFiles) async {
+    final toUpdate = syncResponses.map((response) async {
+      final fileBeforeSync =
+          dirtyFiles.firstWhere((file) => file.userFile.id == response.id);
+      final currentFile = await userFileDb.getById(response.id);
+      return currentFile.copyWith(
+          revision: response.newRevision,
+          dirty: currentFile.dirty - fileBeforeSync.dirty);
+    });
+    await userFileDb.insert(await Future.wait(toUpdate));
+  }
+
+  Future<void> _handleFailedSync() async {
+    final latestRevision = await userFileDb.getLastRevision();
+    final fetchedUserFiles = await _fetchUserFiles(latestRevision);
+    await getAndStoreFileData(fetchedUserFiles);
+    await userFileDb.insert(fetchedUserFiles);
   }
 
   Future<Iterable<DbUserFile>> _fetchUserFiles(int revision) async {
@@ -76,7 +101,7 @@ class UserFileRepository extends DataRepository<UserFile> {
         .map((e) => DbUserFile.fromJson(e));
   }
 
-  Future<List<SyncResponse>> postUserFiles(
+  Future<Iterable<SyncResponse>> postUserFiles(
     Iterable<DbUserFile> userFiles,
     int latestRevision,
   ) async {
@@ -87,10 +112,19 @@ class UserFileRepository extends DataRepository<UserFile> {
     );
 
     if (response.statusCode == 200) {
-      final l = json.decode(response.body);
-      return UnmodifiableListView(
-          l?.whereType<Map<String, dynamic>>()?.map(SyncResponse.fromJson) ??
-              []);
+      final syncResponseJson = json.decode(response.body) as List;
+      return syncResponseJson.map((r) => SyncResponse.fromJson(r)).toList();
+    } else if (response.statusCode == 400) {
+      final errorResponse = json.decode(response.body);
+      final errors = (errorResponse['errors'] as List)
+          .map((r) => ResponseError.fromJson(r));
+      errors.forEach((error) {
+        if (error.code == ErrorCodes.WRONG_REVISION) {
+          throw WrongRevisionException();
+        } else {
+          print('Unhandled error code: $error');
+        }
+      });
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     }
@@ -140,6 +174,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       if (fileResponse.statusCode == 200) {
         await fileStorage.storeFile(
             fileResponse.bodyBytes, dbUserFile.userFile.id);
+        print('File ${dbUserFile.userFile.id} downloaded and stored');
       } else {
         return false;
       }
