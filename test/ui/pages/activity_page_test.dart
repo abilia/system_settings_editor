@@ -464,8 +464,7 @@ void main() {
 
     group('Delete', () {
       final deleteButtonFinder = find.byIcon(AbiliaIcons.delete_all_clear);
-      final deleteAppBarFinder = find.byType(DeleteAppBar);
-      final confirmDeleteButtonFinder = find.byKey(TestKey.confirmDelete);
+      final deleteViewDialogFinder = find.byType(DeleteActivityDialog);
 
       testWidgets('Finds delete button and no delete app bar',
           (WidgetTester tester) async {
@@ -477,11 +476,12 @@ void main() {
 
         // Assert
         expect(deleteButtonFinder, findsOneWidget);
-        expect(deleteAppBarFinder, findsNothing);
-        expect(confirmDeleteButtonFinder, findsNothing);
+        expect(deleteViewDialogFinder, findsNothing);
+        expect(okInkWellFinder, findsNothing);
       });
 
-      testWidgets('When delete button pressed delete app bar showing',
+      testWidgets(
+          'When delete button pressed Delete Activity Dialog is showing',
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getActivities()).thenAnswer(
@@ -493,9 +493,28 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert
-        expect(deleteButtonFinder, findsNothing);
-        expect(deleteAppBarFinder, findsOneWidget);
-        expect(confirmDeleteButtonFinder, findsOneWidget);
+        expect(deleteViewDialogFinder, findsOneWidget);
+        expect(okInkWellFinder, findsOneWidget);
+        expect(find.byType(ActivityCard), findsOneWidget);
+      });
+
+      testWidgets('When cancel pressed, nothing happens',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getActivities()).thenAnswer(
+            (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(closeButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(deleteButtonFinder, findsOneWidget);
+        expect(deleteViewDialogFinder, findsNothing);
+        expect(okInkWellFinder, findsNothing);
       });
 
       testWidgets(
@@ -509,13 +528,13 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(confirmDeleteButtonFinder);
+        await tester.tap(okInkWellFinder);
         await tester.pumpAndSettle();
 
         // Assert
         expect(deleteButtonFinder, findsNothing);
-        expect(deleteAppBarFinder, findsNothing);
-        expect(confirmDeleteButtonFinder, findsNothing);
+        expect(deleteViewDialogFinder, findsNothing);
+        expect(okInkWellFinder, findsNothing);
         expect(activityCardFinder, findsNothing);
         expect(activityPageFinder, findsNothing);
         expect(agendaFinder, findsOneWidget);
