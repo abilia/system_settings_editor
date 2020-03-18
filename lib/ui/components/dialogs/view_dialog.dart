@@ -142,7 +142,10 @@ class ViewDialog extends StatelessWidget {
                   flex: expanded ? 1 : 0,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(12.0, 24.0, 16.0, 0.0),
-                    child: child,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: child,
+                    ),
                   ),
                 ),
                 if (trailing == null)
