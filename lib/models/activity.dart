@@ -29,7 +29,7 @@ class Activity extends DataModel {
           ? (signedOffDates.toList()..remove(day))
           : signedOffDates.followedBy([day]));
 
-  final String id, seriesId, title, fileId, icon, infoItem;
+  final String seriesId, title, fileId, icon, infoItem;
   final int startTime,
       endTime,
       duration,
@@ -41,7 +41,7 @@ class Activity extends DataModel {
   final UnmodifiableListView<int> reminderBefore;
   final UnmodifiableListView<DateTime> signedOffDates;
   const Activity._({
-    @required this.id,
+    @required String id,
     @required this.seriesId,
     @required this.title,
     @required this.startTime,
@@ -62,7 +62,6 @@ class Activity extends DataModel {
     @required this.fileId,
     @required this.signedOffDates,
   })  : assert(title != null || fileId != null),
-        assert(id != null),
         assert(seriesId != null),
         assert(recurrentType >= 0 && recurrentType < 4),
         assert(alarmType >= 0),
@@ -207,18 +206,12 @@ class Activity extends DataModel {
 }
 
 class DbActivity extends DbModel<Activity> {
-  final Activity activity;
-  final int revision, dirty;
+  Activity get activity => model;
   const DbActivity._({
-    @required this.activity,
-    @required this.dirty,
-    @required this.revision,
-  })  : assert(activity != null),
-        assert(dirty != null),
-        assert(dirty >= 0),
-        assert(revision != null),
-        assert(revision >= 0),
-        super(revision: revision, dirty: dirty, model: activity);
+    Activity activity,
+    int dirty,
+    int revision,
+  }) : super(revision: revision, dirty: dirty, model: activity);
 
   DbActivity copyWith({
     int revision,

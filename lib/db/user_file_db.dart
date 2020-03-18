@@ -52,13 +52,20 @@ class UserFileDb extends DataDb<UserFile> {
   }
 
   @override
-  Future<Iterable<int>> insert(Iterable<DbModel<UserFile>> userFiles) async {
+  Future insert(Iterable<DbModel<UserFile>> userFiles) async {
     final db = await DatabaseRepository().database;
-    final insertResults = await userFiles.map((userFile) async {
-      return await db.insert(USER_FILE_TABLE_NAME, userFile.toMapForDb(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-    });
-    return Future.wait(insertResults);
+    final batch = db.batch();
+
+    await userFiles
+        .map(
+          (userFile) => userFile.toMapForDb(),
+        )
+        .forEach(
+          (value) => batch.insert(USER_FILE_TABLE_NAME, value,
+              conflictAlgorithm: ConflictAlgorithm.replace),
+        );
+
+    return batch.commit();
   }
 
   @override

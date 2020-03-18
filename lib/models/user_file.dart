@@ -2,20 +2,19 @@ import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
 
 class UserFile extends DataModel {
-  final String id, sha1, md5, path, contentType;
+  final String sha1, md5, path, contentType;
   final int fileSize;
   final bool deleted;
 
   UserFile({
-    @required this.id,
+    @required String id,
     @required this.sha1,
     @required this.md5,
     @required this.path,
     @required this.contentType,
     @required this.fileSize,
     @required this.deleted,
-  })  : assert(id != null),
-        super(id);
+  }) : super(id);
 
   @override
   List<Object> get props =>
@@ -33,9 +32,9 @@ class UserFile extends DataModel {
 }
 
 class DbUserFile extends DbModel<UserFile> {
-  final UserFile userFile;
+  UserFile get userFile => model;
 
-  const DbUserFile._({int dirty, int revision, this.userFile})
+  const DbUserFile._({int dirty, int revision, UserFile userFile})
       : super(dirty: dirty, revision: revision, model: userFile);
 
   static DbUserFile fromDbMap(Map<String, dynamic> dbRow) => DbUserFile._(

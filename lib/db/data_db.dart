@@ -5,8 +5,8 @@ import 'package:sqflite/sqflite.dart';
 import 'all.dart';
 
 abstract class DataDb<M extends DataModel> {
-  Future<Iterable<int>> insert(Iterable<DbModel<M>> dataModels);
-  insertAndAddDirty(Iterable<M> data);
+  Future insert(Iterable<DbModel<M>> dataModels);
+  Future insertAndAddDirty(Iterable<M> data);
   Future<Iterable<DbModel<M>>> getAllDirty();
   Future<DbModel<M>> getById(String id);
   Future<Iterable<M>> getAllNonDeleted();
@@ -40,7 +40,7 @@ abstract class DataDb<M extends DataModel> {
 abstract class DataModel extends Equatable {
   final String id;
 
-  const DataModel(this.id);
+  const DataModel(this.id) : assert(id != null);
   DbModel wrapWithDbModel({int revision = 0, int dirty = 0});
 }
 
@@ -52,7 +52,9 @@ abstract class DbModel<M extends DataModel> extends Equatable {
     @required this.dirty,
     @required this.revision,
     @required this.model,
-  });
+  })  : assert(dirty >= 0),
+        assert(revision >= 0),
+        assert(model != null);
   Map<String, dynamic> toMapForDb();
   Map<String, dynamic> toJson();
   DbModel<M> copyWith({

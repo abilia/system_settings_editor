@@ -230,7 +230,7 @@ void main() {
     testWidgets('Alarm on start time is disabled when no alarm',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getActivities()).thenAnswer((_) => Future.value(
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
           <Activity>[FakeActivity.startsNow().copyWith(alarmType: NO_ALARM)]));
 
       // Act
@@ -249,7 +249,7 @@ void main() {
 
     testWidgets('Alarm on start time changes', (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getActivities())
+      when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(<Activity>[
                 FakeActivity.startsNow().copyWith(
                     alarmType: ALARM_SOUND_AND_VIBRATION_ONLY_ON_START)
@@ -544,7 +544,7 @@ void main() {
       testWidgets('When cancel pressed, nothing happens',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getActivities()).thenAnswer(
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer(
             (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
         await navigateToActivityPage(tester);
 
