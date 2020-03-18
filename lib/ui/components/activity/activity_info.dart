@@ -30,7 +30,7 @@ class ActivityInfo extends StatelessWidget {
       data: signedOff
           ? Theme.of(context).copyWith(
               buttonTheme: uncheckButtonThemeData,
-              buttonColor: AbiliaColors.transparantBlack[20])
+              buttonColor: AbiliaColors.transparentBlack[20])
           : Theme.of(context).copyWith(
               buttonTheme: checkButtonThemeData,
               buttonColor: AbiliaColors.green),
@@ -40,7 +40,7 @@ class ActivityInfo extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: borderRadius,
-              border: Border.all(color: AbiliaColors.transparantBlack[5]),
+              border: Border.all(color: AbiliaColors.transparentBlack[5]),
             ),
             child: AnimatedOpacity(
               duration: animationDuration,

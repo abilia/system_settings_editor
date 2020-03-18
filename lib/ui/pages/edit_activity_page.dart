@@ -58,7 +58,7 @@ class EditActivityPage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: AbiliaColors.transparantBlack[10]),
+          bottom: BorderSide(color: AbiliaColors.transparentBlack[10]),
         ),
       ),
       child: padded(child),

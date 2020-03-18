@@ -54,7 +54,7 @@ class ActivityCard extends StatelessWidget {
                 border: Border.all(
                     color: current
                         ? AbiliaColors.red
-                        : AbiliaColors.transparantBlack[5]),
+                        : AbiliaColors.transparentBlack[5]),
               ),
               child: AnimatedOpacity(
                 opacity: inactive ? .5 : 1,

@@ -75,7 +75,7 @@ class PickField extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: borderRadius,
             border: Border.all(
-              color: AbiliaColors.transparantBlack[15],
+              color: AbiliaColors.transparentBlack[15],
             ),
             color: active ? AbiliaColors.white : Colors.transparent,
           ),
@@ -142,7 +142,7 @@ class SwitchField extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: borderRadius,
             border: Border.all(
-              color: AbiliaColors.transparantBlack[15],
+              color: AbiliaColors.transparentBlack[15],
             ),
             color: value && onChanged != null
                 ? AbiliaColors.white
@@ -206,7 +206,7 @@ class RadioField<T> extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: borderRadius,
                   border: Border.all(
-                    color: AbiliaColors.transparantBlack[15],
+                    color: AbiliaColors.transparentBlack[15],
                   ),
                   color: value == groupValue
                       ? AbiliaColors.white
@@ -324,7 +324,7 @@ class SelectableField extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: borderRadius,
                   border: Border.all(
-                    color: AbiliaColors.transparantBlack[15],
+                    color: AbiliaColors.transparentBlack[15],
                   ),
                   color: selected ? AbiliaColors.white : Colors.transparent,
                 ),
@@ -364,7 +364,7 @@ class SelectableField extends StatelessWidget {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: AbiliaColors.transparantBlack[15],
+                                  color: AbiliaColors.transparentBlack[15],
                                 ),
                               ),
                             ),
