@@ -74,15 +74,14 @@ class ActivityPage extends StatelessWidget {
                 ),
                 onPressed: () async {
                   final alarm = activity.alarm;
-                  final result = await showViewDialog<Alarm>(
+                  final result = await showViewDialog<AlarmType>(
                     context: context,
-                    builder: (context) => SelectAlarmTypeDialog(
-                      alarm: alarm.type,
+                    builder: (context) => SelectAlarmDialog(
+                      alarm: alarm,
                     ),
                   );
                   if (result != null) {
-                    final changedActivity =
-                        activity.copyWith(alarm: alarm.copyWith(type: result));
+                    final changedActivity = activity.copyWith(alarm: result);
                     BlocProvider.of<ActivitiesBloc>(context)
                         .add(UpdateActivity(changedActivity));
                   }

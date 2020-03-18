@@ -144,7 +144,9 @@ class SwitchField extends StatelessWidget {
             border: Border.all(
               color: AbiliaColors.transparantBlack[15],
             ),
-            color: value ? AbiliaColors.white : Colors.transparent,
+            color: value && onChanged != null
+                ? AbiliaColors.white
+                : Colors.transparent,
           ),
           padding: const EdgeInsets.only(left: 12.0, right: 4.0),
           child: Row(
