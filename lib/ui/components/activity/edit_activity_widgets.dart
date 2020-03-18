@@ -169,21 +169,37 @@ class AlarmWidget extends StatelessWidget {
           },
         ),
         const SizedBox(height: 8.0),
-        SwitchField(
-          key: TestKey.alarmAtStartSwitch,
-          leading: Icon(AbiliaIcons.handi_alarm),
-          label: Text(translator.alarmOnlyAtStartTime),
-          value: alarm.onlyStart,
-          onChanged: alarm.shouldAlarm
-              ? (v) => BlocProvider.of<EditActivityBloc>(context).add(
-                    ChangeActivity(
-                        activity.copyWith(alarm: alarm.copyWith(onlyStart: v))),
-                  )
-              : null,
+        AlarmOnlyAtStartSwitch(
+          alarm: alarm,
+          onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
+            ChangeActivity(
+              activity.copyWith(alarm: alarm.copyWith(onlyStart: v)),
+            ),
+          ),
         ),
       ],
     );
   }
+}
+
+class AlarmOnlyAtStartSwitch extends StatelessWidget {
+  const AlarmOnlyAtStartSwitch({
+    Key key,
+    @required this.alarm,
+    @required this.onChanged,
+  }) : super(key: key);
+
+  final AlarmType alarm;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) => SwitchField(
+        key: TestKey.alarmAtStartSwitch,
+        leading: Icon(AbiliaIcons.handi_alarm),
+        label: Text(Translator.of(context).translate.alarmOnlyAtStartTime),
+        value: alarm.onlyStart,
+        onChanged: alarm.shouldAlarm ? onChanged : null,
+      );
 }
 
 class CheckableAndDeleteAfterWidget extends StatelessWidget {

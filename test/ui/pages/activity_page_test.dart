@@ -152,12 +152,13 @@ void main() {
 
   group('Change alarm', () {
     final alarmButtonFinder = find.byKey(TestKey.editAlarm);
-    final alarmDialogFinder = find.byType(SelectAlarmTypeDialog);
+    final alarmDialogFinder = find.byType(SelectAlarmDialog);
     final vibrationRadioButtonFinder = find.byKey(TestKey.vibrationAlarm);
     final noAlarmIconFinder = find.byIcon(AbiliaIcons.handi_no_alarm_vibration);
     final vibrateAlarmIconFinder = find.byIcon(AbiliaIcons.handi_vibration);
     final soundVibrateAlarmIconFinder =
         find.byIcon(AbiliaIcons.handi_alarm_vibration);
+    final alarmAtStartSwichFinder = find.byKey(TestKey.alarmAtStartSwitch);
 
     testWidgets('Alarm view dialog shows', (WidgetTester tester) async {
       // Arrange
@@ -217,10 +218,52 @@ void main() {
       await tester.tap(alarmButtonFinder);
       await tester.pump();
       await tester.tap(vibrationRadioButtonFinder);
-      await tester.pump();
+      await tester.pumpAndSettle();
+      await tester.tap(okInkWellFinder);
+      await tester.pumpAndSettle();
+
       // Assert
       expect(noAlarmIconFinder, findsNothing);
       expect(vibrateAlarmIconFinder, findsOneWidget);
+    });
+
+    testWidgets('Alarm on start time is disabled when no alarm',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getActivities()).thenAnswer((_) => Future.value(
+          <Activity>[FakeActivity.startsNow().copyWith(alarmType: NO_ALARM)]));
+
+      // Act
+      await navigateToActivityPage(tester);
+      await tester.tap(alarmButtonFinder);
+      await tester.pump();
+
+      // Assert -- alarm At Start Switch and ok button is disabled
+      expect(
+          tester
+              .widget<Switch>(find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
+              .onChanged,
+          isNull);
+      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNull);
+    });
+
+    testWidgets('Alarm on start time changes', (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getActivities())
+          .thenAnswer((_) => Future.value(<Activity>[
+                FakeActivity.startsNow().copyWith(
+                    alarmType: ALARM_SOUND_AND_VIBRATION_ONLY_ON_START)
+              ]));
+
+      // Act
+      await navigateToActivityPage(tester);
+      await tester.tap(alarmButtonFinder);
+      await tester.pump();
+      await tester.tap(alarmAtStartSwichFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- ok button is enabled
+      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNotNull);
     });
   });
 
@@ -464,8 +507,7 @@ void main() {
 
     group('Delete', () {
       final deleteButtonFinder = find.byIcon(AbiliaIcons.delete_all_clear);
-      final deleteAppBarFinder = find.byType(DeleteAppBar);
-      final confirmDeleteButtonFinder = find.byKey(TestKey.confirmDelete);
+      final deleteViewDialogFinder = find.byType(DeleteActivityDialog);
 
       testWidgets('Finds delete button and no delete app bar',
           (WidgetTester tester) async {
@@ -477,11 +519,12 @@ void main() {
 
         // Assert
         expect(deleteButtonFinder, findsOneWidget);
-        expect(deleteAppBarFinder, findsNothing);
-        expect(confirmDeleteButtonFinder, findsNothing);
+        expect(deleteViewDialogFinder, findsNothing);
+        expect(okInkWellFinder, findsNothing);
       });
 
-      testWidgets('When delete button pressed delete app bar showing',
+      testWidgets(
+          'When delete button pressed Delete Activity Dialog is showing',
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer(
@@ -493,9 +536,28 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert
-        expect(deleteButtonFinder, findsNothing);
-        expect(deleteAppBarFinder, findsOneWidget);
-        expect(confirmDeleteButtonFinder, findsOneWidget);
+        expect(deleteViewDialogFinder, findsOneWidget);
+        expect(okInkWellFinder, findsOneWidget);
+        expect(find.byType(ActivityCard), findsOneWidget);
+      });
+
+      testWidgets('When cancel pressed, nothing happens',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getActivities()).thenAnswer(
+            (_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(closeButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(deleteButtonFinder, findsOneWidget);
+        expect(deleteViewDialogFinder, findsNothing);
+        expect(okInkWellFinder, findsNothing);
       });
 
       testWidgets(
@@ -509,13 +571,13 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(confirmDeleteButtonFinder);
+        await tester.tap(okInkWellFinder);
         await tester.pumpAndSettle();
 
         // Assert
         expect(deleteButtonFinder, findsNothing);
-        expect(deleteAppBarFinder, findsNothing);
-        expect(confirmDeleteButtonFinder, findsNothing);
+        expect(deleteViewDialogFinder, findsNothing);
+        expect(okInkWellFinder, findsNothing);
         expect(activityCardFinder, findsNothing);
         expect(activityPageFinder, findsNothing);
         expect(agendaFinder, findsOneWidget);
