@@ -117,7 +117,7 @@ class English extends Translated {
       hour = 'hour',
       min = 'min',
       remove = 'Remove',
-      deleteActivity = 'Delete activity';
+      deleteActivity = 'Delete activity?';
 
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
@@ -176,6 +176,6 @@ class Swedish extends Translated {
       hour = 'timme',
       min = 'min',
       remove = 'Ta bort',
-      deleteActivity = 'Ta bort aktivitet';
+      deleteActivity = 'Ta bort aktivitet?';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }

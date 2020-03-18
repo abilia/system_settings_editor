@@ -12,7 +12,13 @@ class CalendarViewBloc extends Bloc<CalendarViewEvent, CalendarViewState> {
     CalendarViewEvent event,
   ) async* {
     if (event is CalendarViewChanged) {
-      yield CalendarViewState(event.calendarView);
+      yield state.copyWith(currentView: event.calendarView);
+    }
+    if (event is ToggleLeft) {
+      yield state.copyWith(expandLeftCategory: !state.expandLeftCategory);
+    }
+    if (event is ToggleRight) {
+      yield state.copyWith(expandRightCategory: !state.expandRightCategory);
     }
   }
 }

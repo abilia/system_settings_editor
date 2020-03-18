@@ -10,8 +10,13 @@ import 'all.dart';
 
 class TimePillarCalendar extends StatefulWidget {
   final ActivitiesOccasionLoaded state;
+  final CalendarViewState calendarViewState;
 
-  const TimePillarCalendar({Key key, @required this.state}) : super(key: key);
+  const TimePillarCalendar({
+    Key key,
+    @required this.state,
+    @required this.calendarViewState,
+  }) : super(key: key);
 
   @override
   _TimePillarCalendarState createState() => _TimePillarCalendarState();
@@ -67,7 +72,9 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                           controller: horizontalScrollController,
                           slivers: <Widget>[
                             category(
-                              CategoryLeft(maxWidth: categoryMinWidth),
+                              CategoryLeft(
+                                  expanded: widget
+                                      .calendarViewState.expandLeftCategory),
                               height: boxConstraints.maxHeight,
                             ),
                             SliverTimePillar(
@@ -79,7 +86,9 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                               ),
                             ),
                             category(
-                              CategoryRight(maxWidth: categoryMinWidth),
+                              CategoryRight(
+                                  expanded: widget
+                                      .calendarViewState.expandRightCategory),
                               height: boxConstraints.maxHeight,
                             ),
                           ],

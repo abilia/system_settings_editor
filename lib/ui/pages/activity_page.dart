@@ -9,69 +9,48 @@ import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/theme.dart';
 
-class ActivityPage extends StatefulWidget {
-  final ActivityOccasion occasion;
-
-  const ActivityPage({Key key, @required this.occasion}) : super(key: key);
-
-  @override
-  _ActivityPageState createState() => _ActivityPageState(occasion);
-}
-
-class _ActivityPageState extends State<ActivityPage> {
+class ActivityPage extends StatelessWidget {
   final ActivityOccasion occasion;
   final ThemeData dayThemeData;
 
-  _ActivityPageState(this.occasion)
-      : dayThemeData = weekDayTheme[occasion.day.weekday];
-
-  bool inDeleteMode = false;
+  ActivityPage({Key key, @required this.occasion})
+      : dayThemeData = weekDayTheme[occasion.day.weekday],
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ActivitiesBloc, ActivitiesState>(
       builder: (context, state) {
-        final activity =
-            state.newActivityFromLoadedOrGiven(widget.occasion.activity);
-        final day = widget.occasion.day;
+        final activity = state.newActivityFromLoadedOrGiven(occasion.activity);
+        final day = occasion.day;
         return AnimatedTheme(
-          data: inDeleteMode ? deleteActivityThemeData : dayThemeData,
+          data: dayThemeData,
           child: Scaffold(
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(68),
-              child: AnimatedSwitcher(
-                duration: 200.milliseconds(),
-                child: inDeleteMode
-                    ? DeleteAppBar(
-                        activity: activity,
-                        onClosedPressed: () =>
-                            setState(() => inDeleteMode = false),
-                      )
-                    : DayAppBar(
-                        day: day,
-                        leftAction: ActionButton(
-                          key: TestKey.activityBackButton,
-                          child: Icon(
-                            AbiliaIcons.navigation_previous,
-                            size: 32,
-                          ),
-                          onPressed: () => Navigator.of(context).maybePop(),
-                        ),
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(68),
+                child: AnimatedSwitcher(
+                  duration: 200.milliseconds(),
+                  child: DayAppBar(
+                    day: day,
+                    leftAction: ActionButton(
+                      key: TestKey.activityBackButton,
+                      child: Icon(
+                        AbiliaIcons.navigation_previous,
+                        size: 32,
                       ),
+                      onPressed: () => Navigator.of(context).maybePop(),
+                    ),
+                  ),
+                ),
               ),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: ActivityInfo(
-                activity: activity,
-                day: day,
+              body: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: ActivityInfo(
+                  activity: activity,
+                  day: day,
+                ),
               ),
-            ),
-            bottomNavigationBar: CollapsableWidget(
-              child: buildBottomAppBar(activity, context),
-              collapsed: inDeleteMode,
-            ),
-          ),
+              bottomNavigationBar: buildBottomAppBar(activity, context)),
         );
       },
     );
@@ -175,42 +154,22 @@ class _ActivityPageState extends State<ActivityPage> {
                   AbiliaIcons.delete_all_clear,
                   size: 32,
                 ),
-                onPressed: () => setState(() => inDeleteMode = true),
+                onPressed: () async {
+                  final shouldDelete = await showViewDialog<bool>(
+                    context: context,
+                    builder: (context) =>
+                        DeleteActivityDialog(activityOccasion: occasion),
+                  );
+                  if (shouldDelete == true) {
+                    BlocProvider.of<ActivitiesBloc>(context)
+                        .add(DeleteActivity(activity));
+                    await Navigator.of(context).maybePop();
+                  }
+                },
               )
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class DeleteAppBar extends StatelessWidget {
-  const DeleteAppBar({
-    Key key,
-    @required this.activity,
-    @required this.onClosedPressed,
-  }) : super(key: key);
-
-  final Activity activity;
-  final Function onClosedPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return AbiliaAppBar(
-      title: Translator.of(context).translate.deleteActivity,
-      onClosedPressed: onClosedPressed,
-      trailing: ActionButton(
-        key: TestKey.confirmDelete,
-        child: Icon(
-          AbiliaIcons.ok,
-          size: 32,
-        ),
-        onPressed: () async {
-          BlocProvider.of<ActivitiesBloc>(context)
-              .add(DeleteActivity(activity));
-          await Navigator.of(context).maybePop();
-        },
       ),
     );
   }

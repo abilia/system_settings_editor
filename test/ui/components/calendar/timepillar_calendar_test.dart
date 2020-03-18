@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -6,6 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
+import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -185,6 +187,69 @@ void main() {
         final timeLinePostion = await tester.getCenter(find.byType(Timeline));
 
         expect(timeLinePostion.dy, closeTo(currentDotPosition.dy, 0.0001));
+      });
+    });
+    group('Categories', () {
+      Finder leftCollapsedFinder;
+      Finder rightCollapsedFinder;
+      Finder leftFinder;
+      Finder rightFinder;
+      setUp(() {
+        final translator = Translated.dictionaries[Locale('en')];
+        final right = translator.right;
+        final left = translator.left;
+        leftFinder = find.text(left);
+        rightFinder = find.text(right);
+        leftCollapsedFinder = find.text(left.substring(0, 1));
+        rightCollapsedFinder = find.text(right.substring(0, 1));
+      });
+
+      testWidgets('Starts collapsed', (WidgetTester tester) async {
+        await goToTimePillar(tester);
+        expect(leftCollapsedFinder, findsOneWidget);
+        expect(rightCollapsedFinder, findsOneWidget);
+        expect(leftFinder, findsNothing);
+        expect(rightFinder, findsNothing);
+      });
+      testWidgets('Tap right', (WidgetTester tester) async {
+        await goToTimePillar(tester);
+        await tester.tap(rightCollapsedFinder);
+        await tester.pumpAndSettle();
+        expect(leftCollapsedFinder, findsOneWidget);
+        expect(rightCollapsedFinder, findsNothing);
+        expect(leftFinder, findsNothing);
+        expect(rightFinder, findsOneWidget);
+      });
+      testWidgets('Tap left', (WidgetTester tester) async {
+        await goToTimePillar(tester);
+        await tester.tap(leftCollapsedFinder);
+        await tester.pumpAndSettle();
+        expect(leftCollapsedFinder, findsNothing);
+        expect(rightCollapsedFinder, findsOneWidget);
+        expect(leftFinder, findsOneWidget);
+        expect(rightFinder, findsNothing);
+      });
+      testWidgets('Tap left, change day', (WidgetTester tester) async {
+        await goToTimePillar(tester);
+        await tester.tap(leftCollapsedFinder);
+        await tester.tap(previusDayButtonFinder);
+        await tester.pumpAndSettle();
+        expect(leftCollapsedFinder, findsNothing);
+        expect(rightCollapsedFinder, findsOneWidget);
+        expect(leftFinder, findsOneWidget);
+        expect(rightFinder, findsNothing);
+      });
+
+      testWidgets('Tap right, change day', (WidgetTester tester) async {
+        await goToTimePillar(tester);
+        await tester.tap(rightCollapsedFinder);
+        await tester.tap(nextDayButtonFinder);
+
+        await tester.pumpAndSettle();
+        expect(leftCollapsedFinder, findsOneWidget);
+        expect(rightCollapsedFinder, findsNothing);
+        expect(leftFinder, findsNothing);
+        expect(rightFinder, findsOneWidget);
       });
     });
   });
