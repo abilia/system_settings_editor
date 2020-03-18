@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/calendar/overlay/all.dart';
 
 import 'all.dart';
@@ -57,31 +58,43 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                 controller: verticalScrollController,
                 child: LimitedBox(
                   maxHeight: scrollHeight,
-                  child: CustomScrollView(
-                    center: center,
-                    scrollDirection: Axis.horizontal,
-                    controller: horizontalScrollController,
-                    slivers: <Widget>[
-                      category(
-                        CategoryLeft(
-                            expanded:
-                                widget.calendarViewState.expandLeftCategory),
-                        height: boxConstraints.maxHeight,
-                      ),
-                      SliverTimePillar(
-                        key: center,
-                        child: TimePillar(
-                          day: widget.state.day,
-                          dayOccasion: widget.state.occasion,
+                  child: BlocBuilder<ClockBloc, DateTime>(
+                    builder: (context, now) => Stack(
+                      children: <Widget>[
+                        if (widget.state.isToday)
+                          Timeline(
+                            now: now,
+                            width: boxConstraints.maxWidth,
+                          ),
+                        CustomScrollView(
+                          center: center,
+                          scrollDirection: Axis.horizontal,
+                          controller: horizontalScrollController,
+                          slivers: <Widget>[
+                            category(
+                              CategoryLeft(
+                                  expanded: widget
+                                      .calendarViewState.expandLeftCategory),
+                              height: boxConstraints.maxHeight,
+                            ),
+                            SliverTimePillar(
+                              key: center,
+                              child: TimePillar(
+                                day: widget.state.day,
+                                dayOccasion: widget.state.occasion,
+                                now: now,
+                              ),
+                            ),
+                            category(
+                              CategoryRight(
+                                  expanded: widget
+                                      .calendarViewState.expandRightCategory),
+                              height: boxConstraints.maxHeight,
+                            ),
+                          ],
                         ),
-                      ),
-                      category(
-                        CategoryRight(
-                            expanded:
-                                widget.calendarViewState.expandRightCategory),
-                        height: boxConstraints.maxHeight,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -104,6 +117,29 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
           child: Container(width: categoryMinWidth),
         ),
       );
+}
+
+class Timeline extends StatelessWidget {
+  final DateTime now;
+  final double width;
+  const Timeline({
+    Key key,
+    @required this.now,
+    @required this.width,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPositioned(
+      duration: transitionDuration,
+      child: Container(
+        width: width,
+        height: 2,
+        decoration: BoxDecoration(color: AbiliaColors.red),
+      ),
+      top: timeToPixelDistance(now),
+    );
+  }
 }
 
 class ScrollTranslated extends StatefulWidget {
