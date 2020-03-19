@@ -27,7 +27,7 @@ class NameAndPictureWidget extends StatelessWidget {
               value: BlocProvider.of<UserFileBloc>(context),
             ),
           ],
-          child: SelectPictureDialog(),
+          child: SelectPictureDialog(previousImage: activity.fileId),
         ),
       );
       if (imageId != null) {
