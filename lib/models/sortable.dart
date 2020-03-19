@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/models/all.dart';
 import 'package:uuid/uuid.dart';
 
-class Sortable extends Equatable {
-  final String id, type, data, groupId, sortOrder;
+class Sortable extends DataModel {
+  final String type, data, groupId, sortOrder;
   final bool deleted, isGroup, isVisible;
 
   SortableData get sortableData {
@@ -21,7 +21,7 @@ class Sortable extends Equatable {
   }
 
   const Sortable._({
-    @required this.id,
+    @required String id,
     @required this.type,
     @required this.data,
     @required this.groupId,
@@ -29,7 +29,7 @@ class Sortable extends Equatable {
     @required this.deleted,
     @required this.isGroup,
     @required this.isVisible,
-  }) : assert(id != null);
+  }) : super(id);
 
   static Sortable createNew({
     String type,
@@ -56,18 +56,35 @@ class Sortable extends Equatable {
   @override
   List<Object> get props =>
       [id, type, data, groupId, sortOrder, deleted, isGroup, isVisible];
+
+  @override
+  String toString() => 'Sortable: { ${props.join(', ')} }';
+
+  @override
+  DbModel<DataModel> wrapWithDbModel({int revision = 0, int dirty = 0}) =>
+      DbSortable._(sortable: this, revision: revision, dirty: dirty);
 }
 
 class SortableType {
   static const String imageArchive = 'imagearchive', checklist = 'checklist';
 }
 
-class DbSortable extends Equatable {
-  final Sortable sortable;
-  final int revision, dirty;
-
+class DbSortable extends DbModel<Sortable> {
+  Sortable get sortable => model;
   const DbSortable._(
-      {@required this.sortable, @required this.revision, @required this.dirty});
+      {@required Sortable sortable,
+      @required int revision,
+      @required int dirty})
+      : super(model: sortable, revision: revision, dirty: dirty);
+
+  @override
+  DbSortable copyWith({int revision, int dirty}) {
+    return DbSortable._(
+      sortable: sortable,
+      revision: revision ?? this.revision,
+      dirty: dirty ?? this.dirty,
+    );
+  }
 
   static DbSortable fromJson(Map<String, dynamic> json) => DbSortable._(
         sortable: Sortable._(
@@ -85,7 +102,10 @@ class DbSortable extends Equatable {
       );
 
   @override
-  List<Object> get props => [sortable, revision, dirty];
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    return null;
+  }
 
   static DbSortable fromDbMap(Map<String, dynamic> dbRow) => DbSortable._(
         sortable: Sortable._(
@@ -114,6 +134,12 @@ class DbSortable extends Equatable {
         'revision': revision,
         'dirty': dirty,
       };
+
+  @override
+  List<Object> get props => [sortable, revision, dirty];
+  @override
+  String toString() =>
+      'DbSortable: { revision: $revision, dirty: $dirty $sortable }';
 }
 
 class SortableData {

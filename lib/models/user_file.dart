@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:seagull/db/all.dart';
+import 'all.dart';
 
 class UserFile extends DataModel {
   final String sha1, md5, path, contentType;

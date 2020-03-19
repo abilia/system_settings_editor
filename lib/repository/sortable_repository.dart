@@ -24,11 +24,11 @@ class SortableRepository extends DataRepository<Sortable> {
     try {
       final fetchedSortables =
           await _fetchSortables(await sortableDb.getLastRevision());
-      await sortableDb.insertSortables(fetchedSortables);
+      await sortableDb.insert(fetchedSortables);
     } catch (e) {
       print('Error when loading sortables $e');
     }
-    return sortableDb.getSortables();
+    return sortableDb.getAllNonDeleted();
   }
 
   Future<Iterable<DbSortable>> _fetchSortables(int revision) async {
