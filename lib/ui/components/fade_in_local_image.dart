@@ -20,41 +20,44 @@ class FadeInLocalImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fileStorage = GetIt.I<FileStorage>();
+    final emptyImage = SizedBox(
+      height: height,
+      width: width,
+    );
 
     return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
-      if (userFileState is UserFilesLoaded) {
+      if (userFileState is UserFilesLoaded &&
+          userFileState.userFiles.any((f) => f.id == imageFileId)) {
+        print('Yes the file with $imageFileId is now present!');
         return FutureBuilder<File>(
           future: fileStorage.getFile(imageFileId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius,
-                  color: AbiliaColors.white,
-                ),
-                child: FadeInImage(
-                  width: width,
-                  height: height,
-                  image: Image.file(
-                    snapshot.data,
-                  ).image,
-                  placeholder: MemoryImage(kTransparentImage),
-                ),
-              );
+              return snapshot.data == null
+                  ? emptyImage
+                  : Container(
+                      decoration: BoxDecoration(
+                        borderRadius: borderRadius,
+                        color: AbiliaColors.white,
+                      ),
+                      child: FadeInImage(
+                        width: width,
+                        height: height,
+                        image: Image.file(
+                          snapshot.data,
+                        ).image,
+                        placeholder: MemoryImage(kTransparentImage),
+                      ),
+                    );
             } else {
-              return SizedBox(
-                height: height,
-                width: width,
-              );
+              return emptyImage;
             }
           },
         );
       } else {
-        return SizedBox(
-          height: height,
-          width: width,
-        );
+        print('No image with id $imageFileId yet');
+        return emptyImage;
       }
     });
   }

@@ -14,6 +14,10 @@ class FileStorage {
 
   Future<File> getFile(String id) async {
     final directory = await getApplicationDocumentsDirectory();
-    return File('${directory.path}/$folder/$id');
+    final path = '${directory.path}/$folder/$id';
+    if (await FileSystemEntity.type(path) != FileSystemEntityType.notFound) {
+      return File('${directory.path}/$folder/$id');
+    }
+    return null;
   }
 }

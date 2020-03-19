@@ -101,7 +101,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   }
 
   Future<Iterable<SyncResponse>> postUserFiles(
-    Iterable<DbUserFile> userFiles,
+    Iterable<DbModel<UserFile>> userFiles,
     int latestRevision,
   ) async {
     final response = await httpClient.post(
@@ -160,16 +160,17 @@ class UserFileRepository extends DataRepository<UserFile> {
     }
   }
 
-  Future<bool> getAndStoreFileData(Iterable<DbUserFile> dbUserFiles) async {
+  Future<bool> getAndStoreFileData(
+      Iterable<DbModel<UserFile>> dbUserFiles) async {
     for (final dbUserFile in dbUserFiles) {
       final fileResponse = await httpClient.get(
-        imageIdUrl(baseUrl, userId, dbUserFile.userFile.id),
+        imageIdUrl(baseUrl, userId, dbUserFile.model.id),
         headers: authHeader(authToken),
       );
       if (fileResponse.statusCode == 200) {
         await fileStorage.storeFile(
-            fileResponse.bodyBytes, dbUserFile.userFile.id);
-        print('File ${dbUserFile.userFile.id} downloaded and stored');
+            fileResponse.bodyBytes, dbUserFile.model.id);
+        print('File ${dbUserFile.model.id} downloaded and stored');
       } else {
         return false;
       }
