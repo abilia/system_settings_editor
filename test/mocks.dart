@@ -8,6 +8,7 @@ import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/repository/sortable_repository.dart';
+import 'package:seagull/storage/all.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
 
@@ -17,6 +18,8 @@ class MockActivityRepository extends Mock implements ActivityRepository {}
 
 class MockSortableRepository extends Mock implements SortableRepository {}
 
+class MockUserFileRepository extends Mock implements UserFileRepository {}
+
 class MockTokenDb extends Mock implements TokenDb {}
 
 class MockPushBloc extends Mock implements PushBloc {}
@@ -24,6 +27,8 @@ class MockPushBloc extends Mock implements PushBloc {}
 class MockSyncBloc extends Mock implements SyncBloc {}
 
 class MockSortableBloc extends Mock implements SortableBloc {}
+
+class MockUserFileBloc extends Mock implements UserFileBloc {}
 
 class MockImageArchiveBloc
     extends MockBloc<ImageArchiveEvent, ImageArchiveState>
@@ -35,11 +40,19 @@ class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
 
 class MockActivityDb extends Mock implements ActivityDb {}
 
+class MockUserFileDb extends Mock implements UserFileDb {}
+
 class MockUserDb extends Mock implements UserDb {}
 
 class MockDatabaseRepository extends Mock implements DatabaseRepository {}
 
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
+
+class MockFileStorage extends Mock implements FileStorage {}
+
+class MockMultipartRequestBuilder extends Mock implements MultipartRequestBuilder {}
+
+class MockMultipartRequest extends Mock implements MultipartRequest {}
 
 class MockedClient extends Mock implements BaseClient {}
 

@@ -32,7 +32,7 @@ void main() {
 
       final mockActivityDb = MockActivityDb();
       when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
-      when(mockActivityDb.getActivities())
+      when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(dbActivityAnswers.removeAt(0)));
 
       GetItInitializer()

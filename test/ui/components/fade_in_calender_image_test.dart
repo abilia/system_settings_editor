@@ -14,8 +14,10 @@ void main() {
       );
 
   testWidgets('FadeInCalendarImage', (WidgetTester tester) async {
-    await tester.pumpWidget(
-        wrapWithAuthBlocProvider(FadeInCalendarImage(imageFileId: 'fileid', imageFilePath: 'path',)));
+    await tester.pumpWidget(wrapWithAuthBlocProvider(FadeInCalendarImage(
+      imageFileId: 'fileid',
+      imageFilePath: 'path',
+    )));
     expect(find.byType(NetworkImage), findsNothing);
   });
 }
