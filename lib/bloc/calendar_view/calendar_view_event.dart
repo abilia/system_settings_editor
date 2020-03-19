@@ -13,3 +13,17 @@ class CalendarViewChanged extends CalendarViewEvent {
   @override
   List<Object> get props => [calendarView];
 }
+
+abstract class ToggleCategory extends CalendarViewEvent {
+  const ToggleCategory();
+  @override
+  List<Object> get props => [];
+}
+
+class ToggleRight extends ToggleCategory {
+  const ToggleRight();
+}
+
+class ToggleLeft extends ToggleCategory {
+  const ToggleLeft();
+}

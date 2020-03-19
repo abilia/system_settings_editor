@@ -80,12 +80,6 @@ Future scheduleNotification(NotificationAlarm notificationAlarm, DateTime now,
     presentSound: alarm.sound,
   );
 
-  print('''Schedule a notification
-    ${hash}
-    $notificationTime'
-    ${title} /// $subtitle
-    payload: $payload''');
-
   await notificationPlugin.schedule(
     hash,
     title,

@@ -22,5 +22,31 @@ void main() {
         ]),
       );
     });
+    test('Toggle left category', () async {
+      calendarViewBloc.add(ToggleLeft());
+      await expectLater(
+        calendarViewBloc,
+        emitsInOrder([
+          CalendarViewState(CalendarViewType.LIST),
+          CalendarViewState(
+            CalendarViewType.LIST,
+            expandLeftCategory: true,
+          )
+        ]),
+      );
+    });
+    test('Toggle right category', () async {
+      calendarViewBloc.add(ToggleRight());
+      await expectLater(
+        calendarViewBloc,
+        emitsInOrder([
+          CalendarViewState(CalendarViewType.LIST),
+          CalendarViewState(
+            CalendarViewType.LIST,
+            expandRightCategory: true,
+          )
+        ]),
+      );
+    });
   });
 }
