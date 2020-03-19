@@ -47,32 +47,29 @@ class UserFileRepository extends DataRepository<UserFile> {
   @override
   Future<bool> synchronize() async {
     final dirtyFiles = await userFileDb.getAllDirty();
-    if (dirtyFiles.isNotEmpty) {
-      final lastRevision = await userFileDb.getLastRevision();
-      for (var dirtyFile in dirtyFiles) {
-        final file = await fileStorage.getFile(dirtyFile.userFile.id);
-        final postFileSuccess = await postFileData(
-          file,
-          dirtyFile.userFile.sha1,
-          dirtyFile.userFile.contentType,
-        );
-        if (!postFileSuccess) {
-          return false;
-        }
-      }
-      try {
-        final syncResponses = await postUserFiles(dirtyFiles, lastRevision);
-        await _handleSuccessfulSync(syncResponses, dirtyFiles);
-      } on WrongRevisionException catch (_) {
-        print('Wrong revision when posting user files');
-        await _handleFailedSync();
-        return false;
-      } catch (e) {
-        print('Cannot post user files to backend $e');
-        return false;
-      }
+    if (dirtyFiles.isEmpty) return true;
+    for (var dirtyFile in dirtyFiles.map((dirty) => dirty.model)) {
+      final file = await fileStorage.getFile(dirtyFile.id);
+      final postFileSuccess = await postFileData(
+        file,
+        dirtyFile.sha1,
+        dirtyFile.contentType,
+      );
+      if (!postFileSuccess) return false;
     }
-    return true;
+
+    try {
+      final lastRevision = await userFileDb.getLastRevision();
+      final syncResponses = await postUserFiles(dirtyFiles, lastRevision);
+      await _handleSuccessfulSync(syncResponses, dirtyFiles);
+      return true;
+    } on WrongRevisionException catch (_) {
+      print('Wrong revision when posting user files');
+      await _handleFailedSync();
+    } catch (e) {
+      print('Cannot post user files to backend $e');
+    }
+    return false;
   }
 
   Future<void> _handleSuccessfulSync(
