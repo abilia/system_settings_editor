@@ -11,7 +11,9 @@ class SortablesNotLoaded extends SortableState {}
 class SortablesLoaded extends SortableState {
   final Iterable<Sortable> sortables;
 
-  const SortablesLoaded(this.sortables);
+  const SortablesLoaded({
+    this.sortables,
+  });
 
   @override
   List<Object> get props => [sortables];

@@ -3,11 +3,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/user_file/bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:uuid/uuid.dart';
 
 class SelectPictureDialog extends StatefulWidget {
+  final String previousImage;
+
+  const SelectPictureDialog({Key key, this.previousImage}) : super(key: key);
   @override
   _SelectPictureDialogState createState() => _SelectPictureDialogState();
 }
@@ -32,12 +36,26 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
     return ViewDialog(
+      deleteButton: widget.previousImage != null || imageSelected != null
+          ? RemoveButton(
+              key: TestKey.removePicture,
+              onTap: () {
+                Navigator.of(context).maybePop('');
+              },
+              icon: Icon(
+                AbiliaIcons.delete_all_clear,
+                color: AbiliaColors.white,
+              ),
+              text: translate.removePicture,
+            )
+          : null,
       heading: Text(translate.selectPicture, style: theme.textTheme.title),
       onOk: onOk,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           PickField(
+            key: TestKey.imageArchiveButton,
             leading: Icon(AbiliaIcons.folder),
             label: Text(
               translate.imageArchive,

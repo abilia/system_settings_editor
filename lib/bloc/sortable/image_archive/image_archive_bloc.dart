@@ -22,7 +22,7 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
     });
     final sortableState = sortableBloc.state;
     if (sortableState is SortablesLoaded) {
-      SortablesUpdated(sortableState.sortables);
+      add(SortablesUpdated(sortableState.sortables));
     }
   }
 
@@ -39,8 +39,11 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
           event.sortables.where((s) => s.type == SortableType.imageArchive);
       final allByFolder =
           groupBy<Sortable, String>(imageArchive, (s) => s.groupId);
-      final allById = Map<String, Sortable>.fromIterable(imageArchive,
-          key: (s) => s.id, value: (s) => s);
+      final allById = Map<String, Sortable>.fromIterable(
+        imageArchive,
+        key: (s) => s.id,
+        value: (s) => s,
+      );
       final selectedImage = allById[state.selectedImageId];
       final currentFolder = allById[state.currentFolderId];
       yield ImageArchiveState(

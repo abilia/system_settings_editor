@@ -11,8 +11,8 @@ ThemeData abiliaTheme = ThemeData(
   inputDecorationTheme: inputDecorationTheme,
   textTheme: abiliaTextTheme,
   buttonTheme: baseButtonTheme,
-  buttonColor: AbiliaColors.transparantBlack[20],
-  highlightColor: AbiliaColors.transparantBlack[40],
+  buttonColor: AbiliaColors.transparentBlack[20],
+  highlightColor: AbiliaColors.transparentBlack[40],
   cursorColor: AbiliaColors.black,
   textSelectionHandleColor: AbiliaColors.black,
   appBarTheme: AppBarTheme(color: AbiliaColors.black[80]),
@@ -39,7 +39,7 @@ const Radius radius = Radius.circular(12);
 const BorderRadius borderRadius = BorderRadius.all(radius);
 
 OutlineInputBorder inputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: AbiliaColors.transparantBlack[15]),
+  borderSide: BorderSide(color: AbiliaColors.transparentBlack[15]),
   borderRadius: borderRadius,
 );
 
@@ -48,7 +48,7 @@ const OutlineInputBorder redOutlineInputBorder = OutlineInputBorder(
   borderRadius: borderRadius,
 );
 
-const OutlineInputBorder transparantOutlineInputBorder = OutlineInputBorder(
+const OutlineInputBorder transparentOutlineInputBorder = OutlineInputBorder(
   borderSide: BorderSide(color: Colors.transparent),
   borderRadius: borderRadius,
 );
@@ -71,7 +71,7 @@ ButtonThemeData checkButtonThemeData = ButtonThemeData(
   minWidth: 111,
   shape: OutlineInputBorder(
     borderSide: BorderSide(
-      color: AbiliaColors.transparantBlack[15],
+      color: AbiliaColors.transparentBlack[15],
       width: 1,
     ),
     borderRadius: borderRadius,
@@ -82,8 +82,8 @@ ButtonThemeData checkButtonThemeData = ButtonThemeData(
 );
 
 ButtonThemeData uncheckButtonThemeData = checkButtonThemeData.copyWith(
-  buttonColor: AbiliaColors.transparantBlack[20],
-  highlightColor: AbiliaColors.transparantBlack[40],
+  buttonColor: AbiliaColors.transparentBlack[20],
+  highlightColor: AbiliaColors.transparentBlack[40],
 );
 
 ButtonThemeData actionButtonThemeData = baseButtonTheme.copyWith(
@@ -92,12 +92,12 @@ ButtonThemeData actionButtonThemeData = baseButtonTheme.copyWith(
 );
 
 ButtonThemeData lightActionButtonThemeData = actionButtonThemeData.copyWith(
-  buttonColor: AbiliaColors.transparantWhite[20],
-  highlightColor: AbiliaColors.transparantWhite[40],
+  buttonColor: AbiliaColors.transparentWhite[20],
+  highlightColor: AbiliaColors.transparentWhite[40],
   disabledColor: Colors.transparent,
   shape: OutlineInputBorder(
     borderSide: BorderSide(
-      color: AbiliaColors.transparantWhite[15],
+      color: AbiliaColors.transparentWhite[15],
       width: 1,
     ),
     borderRadius: borderRadius,
@@ -105,11 +105,11 @@ ButtonThemeData lightActionButtonThemeData = actionButtonThemeData.copyWith(
 );
 
 ButtonThemeData darkActionButtonThemeData = baseButtonTheme.copyWith(
-  buttonColor: AbiliaColors.transparantBlack[20],
-  highlightColor: AbiliaColors.transparantBlack[40],
+  buttonColor: AbiliaColors.transparentBlack[20],
+  highlightColor: AbiliaColors.transparentBlack[40],
   shape: OutlineInputBorder(
     borderSide: BorderSide(
-      color: AbiliaColors.transparantBlack[15],
+      color: AbiliaColors.transparentBlack[15],
       width: 1,
     ),
     borderRadius: borderRadius,
@@ -121,13 +121,13 @@ ThemeData darkButtonTheme = abiliaTheme.copyWith(
   textTheme: abiliaTheme.textTheme.copyWith(
       button:
           abiliaTheme.textTheme.button.copyWith(color: AbiliaColors.black[75])),
-  buttonColor: AbiliaColors.transparantBlack[20],
+  buttonColor: AbiliaColors.transparentBlack[20],
 );
 
 ThemeData lightButtonTheme = abiliaTheme.copyWith(
   buttonTheme: lightActionButtonThemeData,
-  buttonColor: AbiliaColors.transparantWhite[20],
-  disabledColor: AbiliaColors.transparantWhite[40],
+  buttonColor: AbiliaColors.transparentWhite[20],
+  disabledColor: AbiliaColors.transparentWhite[40],
 );
 
 ThemeData redButtonTheme = abiliaTheme.copyWith(
@@ -176,11 +176,11 @@ ThemeData menuButtonTheme = abiliaTheme.copyWith(
       borderRadius: borderRadius,
       side: BorderSide(
         width: 1,
-        color: AbiliaColors.transparantWhite[15],
+        color: AbiliaColors.transparentWhite[15],
       ),
     ),
   ),
-  buttonColor: AbiliaColors.transparantWhite[20],
+  buttonColor: AbiliaColors.transparentWhite[20],
 );
 
 ThemeData addButtonTheme = abiliaTheme.copyWith(
@@ -189,7 +189,7 @@ ThemeData addButtonTheme = abiliaTheme.copyWith(
       borderRadius: borderRadius,
       side: BorderSide(
         width: 1,
-        color: AbiliaColors.transparantBlack[15],
+        color: AbiliaColors.transparentBlack[15],
       ),
     ),
   ),

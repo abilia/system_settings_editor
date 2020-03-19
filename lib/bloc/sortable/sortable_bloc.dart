@@ -40,7 +40,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   Stream<SortableState> _mapLoadSortablesToState() async* {
     try {
       final sortables = await sortableRepository.load();
-      yield SortablesLoaded(sortables);
+      yield SortablesLoaded(sortables: sortables);
     } catch (_) {
       yield SortablesLoadedFailed();
     }

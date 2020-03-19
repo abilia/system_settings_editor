@@ -27,7 +27,7 @@ class NameAndPictureWidget extends StatelessWidget {
               value: BlocProvider.of<UserFileBloc>(context),
             ),
           ],
-          child: SelectPictureDialog(),
+          child: SelectPictureDialog(previousImage: activity.fileId),
         ),
       );
       if (imageId != null) {
@@ -131,7 +131,7 @@ class CategoryWidget extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: AbiliaColors.transparantBlack[15],
+            color: AbiliaColors.transparentBlack[15],
           ),
           color: AbiliaColors.white,
         ),
