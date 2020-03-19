@@ -3,5 +3,9 @@ class UnauthorizedException implements Exception {
 }
 
 class UnavailableException implements Exception {
-  String errMes() => 'Unavailable';
+  String errMsg() => 'Unavailable';
+}
+
+class WrongRevisionException implements Exception {
+  String errMsg() => 'Unavailable';
 }

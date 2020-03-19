@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
@@ -43,6 +42,9 @@ void main() {
             ),
             BlocProvider<SortableBloc>(
               create: (context) => sortableBloc,
+            ),
+            BlocProvider<UserFileBloc>(
+              create: (context) => MockUserFileBloc(),
             ),
           ], child: widget),
         );

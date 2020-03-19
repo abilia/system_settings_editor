@@ -95,7 +95,7 @@ class ActivityPage extends StatelessWidget {
                   size: 32,
                 ),
                 onPressed: () {
-                  final addAcitivityBloc = EditActivityBloc(
+                  final editActivityBloc = EditActivityBloc(
                     activity: activity,
                     activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
                     newActivity: false,
@@ -103,7 +103,7 @@ class ActivityPage extends StatelessWidget {
                   showViewDialog<bool>(
                     context: context,
                     builder: (context) => BlocProvider<EditActivityBloc>.value(
-                      value: addAcitivityBloc,
+                      value: editActivityBloc,
                       child: SelectReminderDialog(activity: activity),
                     ),
                   );
@@ -117,23 +117,24 @@ class ActivityPage extends StatelessWidget {
                 ),
                 onPressed: () async {
                   final now = BlocProvider.of<ClockBloc>(context).state;
-                  final sortableBloc = BlocProvider.of<SortableBloc>(context);
-                  final activitiesBloc =
-                      BlocProvider.of<ActivitiesBloc>(context);
                   await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) {
                         return MultiBlocProvider(
                           providers: [
                             BlocProvider<EditActivityBloc>(
-                              create: (context) => EditActivityBloc(
-                                activitiesBloc: activitiesBloc,
+                              create: (_) => EditActivityBloc(
+                                activitiesBloc:
+                                    BlocProvider.of<ActivitiesBloc>(context),
                                 activity: activity,
                                 newActivity: false,
                               ),
                             ),
                             BlocProvider<SortableBloc>.value(
-                              value: sortableBloc,
+                              value: BlocProvider.of<SortableBloc>(context),
+                            ),
+                            BlocProvider<UserFileBloc>.value(
+                              value: BlocProvider.of<UserFileBloc>(context),
                             ),
                           ],
                           child: EditActivityPage(

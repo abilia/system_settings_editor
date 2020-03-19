@@ -1,12 +1,12 @@
 import 'dart:collection';
 
-import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:uuid/uuid.dart';
 
-class Activity extends Equatable {
+class Activity extends DataModel {
   AlarmType get alarm => AlarmType.fromInt(alarmType);
   DateTime endClock(DateTime day) =>
       startClock(day).add(duration.milliseconds());
@@ -29,7 +29,7 @@ class Activity extends Equatable {
           ? (signedOffDates.toList()..remove(day))
           : signedOffDates.followedBy([day]));
 
-  final String id, seriesId, title, fileId, icon, infoItem;
+  final String seriesId, title, fileId, icon, infoItem;
   final int startTime,
       endTime,
       duration,
@@ -41,7 +41,7 @@ class Activity extends Equatable {
   final UnmodifiableListView<int> reminderBefore;
   final UnmodifiableListView<DateTime> signedOffDates;
   const Activity._({
-    @required this.id,
+    @required String id,
     @required this.seriesId,
     @required this.title,
     @required this.startTime,
@@ -62,7 +62,6 @@ class Activity extends Equatable {
     @required this.fileId,
     @required this.signedOffDates,
   })  : assert(title != null || fileId != null),
-        assert(id != null),
         assert(seriesId != null),
         assert(recurrentType >= 0 && recurrentType < 4),
         assert(alarmType >= 0),
@@ -77,7 +76,8 @@ class Activity extends Equatable {
         assert(fullDay != null),
         assert(recurrentData != null),
         assert(reminderBefore != null),
-        assert(signedOffDates != null);
+        assert(signedOffDates != null),
+        super(id);
 
   static Activity createNew({
     @required String title,
@@ -122,7 +122,8 @@ class Activity extends Equatable {
     );
   }
 
-  DbActivity asDbActivity({int revision = 0, int dirty = 0}) => DbActivity._(
+  @override
+  DbActivity wrapWithDbModel({int revision = 0, int dirty = 0}) => DbActivity._(
         activity: this,
         dirty: dirty,
         revision: revision,
@@ -204,18 +205,13 @@ class Activity extends Equatable {
   String toString() => 'Activity: { ${props.join(', ')} }';
 }
 
-class DbActivity extends Equatable {
-  final Activity activity;
-  final int revision, dirty;
+class DbActivity extends DbModel<Activity> {
+  Activity get activity => model;
   const DbActivity._({
-    @required this.activity,
-    @required this.dirty,
-    @required this.revision,
-  })  : assert(activity != null),
-        assert(dirty != null),
-        assert(dirty >= 0),
-        assert(revision != null),
-        assert(revision >= 0);
+    Activity activity,
+    int dirty,
+    int revision,
+  }) : super(revision: revision, dirty: dirty, model: activity);
 
   DbActivity copyWith({
     int revision,

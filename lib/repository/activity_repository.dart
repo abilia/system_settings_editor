@@ -6,7 +6,6 @@ import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/repository/dynamic_repository.dart';
 import 'package:synchronized/extension.dart';
 
 class ActivityRepository extends DataRepository<Activity> {
@@ -23,23 +22,23 @@ class ActivityRepository extends DataRepository<Activity> {
   }) : super(client, baseUrl);
 
   Future<void> save(Iterable<Activity> activities) =>
-      activityDb.insertDirtyActivities(activities);
+      activityDb.insertAndAddDirty(activities);
 
   Future<Iterable<Activity>> load() async {
     try {
       final fetchedActivities =
           await _fetchActivities(await activityDb.getLastRevision());
-      await activityDb.insertActivities(fetchedActivities);
+      await activityDb.insert(fetchedActivities);
     } catch (e) {
       // Error when syncing activities. Probably offline.
       print('Error when syncing activities $e');
     }
-    return activityDb.getActivities();
+    return activityDb.getAllNonDeleted();
   }
 
   Future<bool> synchronize() async {
     return synchronized(() async {
-      final dirtyActivities = await activityDb.getDirtyActivities();
+      final dirtyActivities = await activityDb.getAllDirty();
       if (dirtyActivities.isNotEmpty) {
         try {
           final res = await postActivities(dirtyActivities);
@@ -65,18 +64,20 @@ class ActivityRepository extends DataRepository<Activity> {
     final toUpdate = succeded.map((success) async {
       final activityBeforeSync = dirtyActivities
           .firstWhere((activity) => activity.activity.id == success.id);
-      final currentActivity = await activityDb.getActivityById(success.id);
+      final currentActivity = await activityDb.getById(success.id);
       return currentActivity.copyWith(
           revision: success.revision,
           dirty: currentActivity.dirty - activityBeforeSync.dirty);
     });
-    await activityDb.insertActivities(await Future.wait(toUpdate));
+    await activityDb.insert(await Future.wait(toUpdate));
   }
 
   Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
     final minRevision = failed.map((f) => f.revision).reduce(min);
-    final fetchedActivities = await _fetchActivities(minRevision);
-    await activityDb.insertActivities(fetchedActivities);
+    final latestRevision = await activityDb.getLastRevision();
+    final fetchedActivities =
+        await _fetchActivities(min(minRevision, latestRevision));
+    await activityDb.insert(fetchedActivities);
   }
 
   Future<Iterable<DbActivity>> _fetchActivities(int revision) async {

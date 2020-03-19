@@ -185,7 +185,7 @@ void main() {
         fileId: fileId,
         checkable: true,
         signedOffDates: [DateTime(2000, 02, 20)]);
-    final dbActivity = activity.asDbActivity();
+    final dbActivity = activity.wrapWithDbModel();
     final asJson = dbActivity.toJson();
     final deserializedDbActivity = DbActivity.fromJson(asJson);
     final deserializedActivity = deserializedDbActivity.activity;

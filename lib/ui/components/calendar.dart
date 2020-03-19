@@ -156,27 +156,28 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                 ),
                 onPressed: () async {
                   final now = BlocProvider.of<ClockBloc>(context).state;
-                  final sortableBloc = BlocProvider.of<SortableBloc>(context);
                   await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (innerContext) {
-                        final editActivitybloc = EditActivityBloc(
-                          activitiesBloc:
-                              BlocProvider.of<ActivitiesBloc>(context),
-                          activity: Activity.createNew(
-                            title: '',
-                            startTime:
-                                now.nextHalfHour().millisecondsSinceEpoch,
-                          ),
-                        );
                         return MultiBlocProvider(
                           providers: [
                             BlocProvider<EditActivityBloc>(
-                              create: (context) => editActivitybloc,
+                              create: (_) => EditActivityBloc(
+                                activitiesBloc:
+                                    BlocProvider.of<ActivitiesBloc>(context),
+                                activity: Activity.createNew(
+                                  title: '',
+                                  startTime:
+                                      now.nextHalfHour().millisecondsSinceEpoch,
+                                ),
+                              ),
                             ),
-                            BlocProvider<SortableBloc>(
-                              create: (context) => sortableBloc,
-                            )
+                            BlocProvider<SortableBloc>.value(
+                              value: BlocProvider.of<SortableBloc>(context),
+                            ),
+                            BlocProvider<UserFileBloc>.value(
+                              value: BlocProvider.of<UserFileBloc>(context),
+                            ),
                           ],
                           child: EditActivityPage(
                             today: now.onlyDays(),
