@@ -49,7 +49,7 @@ void main() {
   });
 
   testWidgets('full day shows', (WidgetTester tester) async {
-    when(mockActivityDb.getActivities())
+    when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value([firstFullDay]));
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -59,7 +59,7 @@ void main() {
 
   testWidgets('two full day shows, but no show all full days button',
       (WidgetTester tester) async {
-    when(mockActivityDb.getActivities())
+    when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value([firstFullDay, secondFullDay]));
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -72,7 +72,7 @@ void main() {
   testWidgets(
       'two full day and show-all-full-day-button shows, but not third full day',
       (WidgetTester tester) async {
-    when(mockActivityDb.getActivities()).thenAnswer(
+    when(mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value([firstFullDay, secondFullDay, thirdFullDay]));
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -85,7 +85,7 @@ void main() {
 
   testWidgets('tapping show-all-full-day-button shows all full days',
       (WidgetTester tester) async {
-    when(mockActivityDb.getActivities()).thenAnswer((_) => Future.value([
+    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
           firstFullDay,
           secondFullDay,
           thirdFullDay,
@@ -111,7 +111,7 @@ void main() {
 
   testWidgets('tapping on a full day shows the full day',
       (WidgetTester tester) async {
-    when(mockActivityDb.getActivities())
+    when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value([firstFullDay]));
 
     await tester.pumpWidget(App());
@@ -125,7 +125,7 @@ void main() {
   testWidgets(
       'tapping show-all-full-day-button then on a full day shows all the tapped full day',
       (WidgetTester tester) async {
-    when(mockActivityDb.getActivities()).thenAnswer((_) => Future.value([
+    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
           firstFullDay,
           secondFullDay,
           thirdFullDay,

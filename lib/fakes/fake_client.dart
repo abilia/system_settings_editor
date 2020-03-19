@@ -40,7 +40,7 @@ class Fakes {
           if (pathSegments.containsAll(['data', 'activities'])) {
             response = Response(
                 json.encode((activitiesResponse ?? allActivitiesFunciton)()
-                    .map((a) => a.asDbActivity())
+                    .map((a) => a.wrapWithDbModel())
                     .toList()),
                 200);
           }

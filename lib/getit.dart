@@ -4,6 +4,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
 
 class GetItInitializer {
@@ -47,6 +48,17 @@ class GetItInitializer {
   SortableDb _sortableDb;
   set sortableDb(SortableDb sortableDb) => this._sortableDb = sortableDb;
 
+  UserFileDb _userFileDb;
+  set userFileDb(UserFileDb userFileDb) => this._userFileDb = userFileDb;
+
+  FileStorage _fileStorage;
+  set fileStorage(FileStorage fileStorage) => this._fileStorage = fileStorage;
+
+  MultipartRequestBuilder _multipartRequestBuilder;
+  set multipartRequestBuilder(
+          MultipartRequestBuilder multipartRequestBuilder) =>
+      this._multipartRequestBuilder = multipartRequestBuilder;
+
   FactoryFunc<DateTime> _startTime;
   set startTime(DateTime startTime) => this._startTime = () => startTime;
 
@@ -69,6 +81,10 @@ class GetItInitializer {
         _tickerFactory ?? () => Ticker.minute());
     GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());
     GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb());
+    GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb());
+    GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage());
+    GetIt.I.registerSingleton<MultipartRequestBuilder>(
+        _multipartRequestBuilder ?? MultipartRequestBuilder());
     GetIt.I.registerFactory<DateTime>(_startTime ?? () => DateTime.now());
   }
 }

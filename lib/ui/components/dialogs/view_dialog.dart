@@ -34,7 +34,7 @@ Future<T> showViewDialog<T>({
     },
     barrierDismissible: barrierDismissible,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    barrierColor: AbiliaColors.transparantBlack[90],
+    barrierColor: AbiliaColors.transparentBlack[90],
     transitionDuration: const Duration(milliseconds: 150),
     transitionBuilder: _buildMaterialDialogTransitions,
     useRootNavigator: useRootNavigator,
@@ -134,7 +134,7 @@ class ViewDialog extends StatelessWidget {
                   ],
                 ),
                 Divider(
-                  color: AbiliaColors.transparantBlack[10],
+                  color: AbiliaColors.transparentBlack[10],
                   endIndent: 12.0,
                   height: 0,
                 ),
@@ -156,7 +156,7 @@ class ViewDialog extends StatelessWidget {
                     children: <Widget>[
                       const SizedBox(height: 16.0),
                       Divider(
-                        color: AbiliaColors.transparantBlack[10],
+                        color: AbiliaColors.transparentBlack[10],
                         endIndent: 12.0,
                         height: 0,
                       ),
@@ -206,7 +206,7 @@ class RoundFloatingButton extends StatelessWidget {
             color: AbiliaColors.white,
             shape: BoxShape.circle,
             border: Border.all(
-              color: AbiliaColors.transparantBlack[15],
+              color: AbiliaColors.transparentBlack[15],
             ),
           ),
           child: Icon(

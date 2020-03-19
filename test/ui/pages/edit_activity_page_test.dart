@@ -20,6 +20,7 @@ void main() {
     );
     final locale = Locale('en');
     final translate = Translator(locale).translate;
+    final sortableBloc = MockSortableBloc();
 
     Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
           supportedLocales: Translator.supportedLocals,
@@ -39,7 +40,12 @@ void main() {
                 activity: startActivity,
               ),
             ),
-            BlocProvider<SortableBloc>(create: (context) => MockSortableBloc()),
+            BlocProvider<SortableBloc>(
+              create: (context) => sortableBloc,
+            ),
+            BlocProvider<UserFileBloc>(
+              create: (context) => MockUserFileBloc(),
+            ),
           ], child: widget),
         );
 

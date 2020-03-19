@@ -29,7 +29,7 @@ class ActionButton extends StatelessWidget {
             color: theme.buttonColor,
             shape: onPressed != null
                 ? theme.buttonTheme.shape
-                : transparantOutlineInputBorder,
+                : transparentOutlineInputBorder,
             disabledTextColor: theme.disabledColor,
             highlightColor: theme.highlightColor,
             padding: const EdgeInsets.all(8),

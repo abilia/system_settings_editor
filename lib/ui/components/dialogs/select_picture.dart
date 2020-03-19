@@ -1,13 +1,17 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/user_file/bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
+import 'package:uuid/uuid.dart';
 
 class SelectPictureDialog extends StatefulWidget {
+  final String previousImage;
+
+  const SelectPictureDialog({Key key, this.previousImage}) : super(key: key);
   @override
   _SelectPictureDialogState createState() => _SelectPictureDialogState();
 }
@@ -22,7 +26,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   @override
   Widget build(BuildContext context) {
     if (imageArchiveView) {
-      return buildImageArchiveDialog(context);
+      return buildImageArchiveDialog();
     } else {
       return buildPictureSourceDialog(context);
     }
@@ -32,12 +36,26 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
     return ViewDialog(
+      deleteButton: widget.previousImage != null || imageSelected != null
+          ? RemoveButton(
+              key: TestKey.removePicture,
+              onTap: () {
+                Navigator.of(context).maybePop('');
+              },
+              icon: Icon(
+                AbiliaIcons.delete_all_clear,
+                color: AbiliaColors.white,
+              ),
+              text: translate.removePicture,
+            )
+          : null,
       heading: Text(translate.selectPicture, style: theme.textTheme.title),
       onOk: onOk,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           PickField(
+            key: TestKey.imageArchiveButton,
             leading: Icon(AbiliaIcons.folder),
             label: Text(
               translate.imageArchive,
@@ -56,11 +74,8 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
               translate.myPhotos,
               style: abiliaTheme.textTheme.body2,
             ),
-            onTap: () async {
-              var image =
-                  await ImagePicker.pickImage(source: ImageSource.gallery);
-              print(image);
-            },
+            onTap: () async =>
+                await _getExternalFile(source: ImageSource.gallery),
           ),
           SizedBox(height: 8.0),
           PickField(
@@ -69,18 +84,24 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
               translate.takeNewPhoto,
               style: abiliaTheme.textTheme.body2,
             ),
-            onTap: () async {
-              var image =
-                  await ImagePicker.pickImage(source: ImageSource.camera);
-              print(image);
-            },
+            onTap: () async =>
+                await _getExternalFile(source: ImageSource.camera),
           ),
         ],
       ),
     );
   }
 
-  Widget buildImageArchiveDialog(BuildContext context) {
+  Future _getExternalFile({ImageSource source}) async {
+    final image = await ImagePicker.pickImage(source: source, imageQuality: 50);
+    if (image != null) {
+      final id = Uuid().v4();
+      BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
+      setState(() => imageSelected = id);
+    }
+  }
+
+  Widget buildImageArchiveDialog() {
     return BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
       builder: (innerContext, imageArchiveState) => ViewDialog(
         expanded: true,
@@ -110,13 +131,9 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   }
 
   Text getImageArchiveHeading(ImageArchiveState state) {
-    final translate = Translator.of(context).translate;
-    if (state.currentFolderId == null) {
-      return Text(translate.imageArchive, style: abiliaTheme.textTheme.title);
-    }
-    final sortable = state.allById[state.currentFolderId];
-    final sortableData = json.decode(sortable.data);
-    final folderName = sortableData['name'];
+    final folderName =
+        state.allById[state.currentFolderId]?.sortableData?.name ??
+            Translator.of(context).translate.imageArchive;
     return Text(folderName, style: abiliaTheme.textTheme.title);
   }
 }

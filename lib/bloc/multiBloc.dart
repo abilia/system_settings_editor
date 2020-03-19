@@ -13,6 +13,8 @@ MultiBlocProvider editActivityMultiBlocProvider(
             value: BlocProvider.of<SortableBloc>(context)),
         BlocProvider<ClockBloc>.value(
             value: BlocProvider.of<ClockBloc>(context)),
+        BlocProvider<UserFileBloc>.value(
+            value: BlocProvider.of<UserFileBloc>(context)),
       ],
       child: child,
     );

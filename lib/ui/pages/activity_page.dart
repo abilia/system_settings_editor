@@ -100,21 +100,18 @@ class ActivityPage extends StatelessWidget {
                     AbiliaIcons.handi_reminder,
                     size: 32,
                   ),
-                  onPressed: () {
-                    final addAcitivityBloc = EditActivityBloc(
-                      activity: activity,
-                      activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-                      newActivity: false,
-                    );
-                    showViewDialog<bool>(
-                      context: context,
-                      builder: (context) =>
-                          BlocProvider<EditActivityBloc>.value(
-                        value: addAcitivityBloc,
-                        child: SelectReminderDialog(activity: activity),
+                  onPressed: () => showViewDialog<bool>(
+                    context: context,
+                    builder: (_) => BlocProvider<EditActivityBloc>.value(
+                      value: EditActivityBloc(
+                        activity: activity,
+                        activitiesBloc:
+                            BlocProvider.of<ActivitiesBloc>(context),
+                        newActivity: false,
                       ),
-                    );
-                  },
+                      child: SelectReminderDialog(activity: activity),
+                    ),
+                  ),
                 ),
               ActionButton(
                 themeData: menuButtonTheme,
@@ -124,23 +121,24 @@ class ActivityPage extends StatelessWidget {
                 ),
                 onPressed: () async {
                   final now = BlocProvider.of<ClockBloc>(context).state;
-                  final sortableBloc = BlocProvider.of<SortableBloc>(context);
-                  final activitiesBloc =
-                      BlocProvider.of<ActivitiesBloc>(context);
                   await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) {
                         return MultiBlocProvider(
                           providers: [
                             BlocProvider<EditActivityBloc>(
-                              create: (context) => EditActivityBloc(
-                                activitiesBloc: activitiesBloc,
+                              create: (_) => EditActivityBloc(
+                                activitiesBloc:
+                                    BlocProvider.of<ActivitiesBloc>(context),
                                 activity: activity,
                                 newActivity: false,
                               ),
                             ),
                             BlocProvider<SortableBloc>.value(
-                              value: sortableBloc,
+                              value: BlocProvider.of<SortableBloc>(context),
+                            ),
+                            BlocProvider<UserFileBloc>.value(
+                              value: BlocProvider.of<UserFileBloc>(context),
                             ),
                           ],
                           child: EditActivityPage(

@@ -24,7 +24,7 @@ class TimePillarViewButton extends StatelessWidget {
           borderRadius: borderRadius,
           side: BorderSide(
             width: 1,
-            color: AbiliaColors.transparantWhite[10],
+            color: AbiliaColors.transparentWhite[10],
           ),
         ),
         child: Row(

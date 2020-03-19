@@ -12,7 +12,6 @@ class AuthenticationBloc
   final DatabaseRepository databaseRepository;
   final BaseUrlDb baseUrlDb;
   final CancelNotificationsFunction cancleAllNotificationsFunction;
-  UserRepository _userRepository;
 
   AuthenticationBloc(
       {@required this.databaseRepository,
@@ -27,42 +26,48 @@ class AuthenticationBloc
     AuthenticationEvent event,
   ) async* {
     if (event is AppStarted) {
-      yield AuthenticationLoading(event.repository);
-      await baseUrlDb.setBaseUrl(event.repository.baseUrl);
-      _userRepository = event.repository;
-      final String token = await _userRepository.getToken();
+      final repo = event.repository;
+      yield AuthenticationLoading(repo);
+      await baseUrlDb.setBaseUrl(repo.baseUrl);
+      final String token = await repo.getToken();
       if (token != null) {
-        yield* _tryGetUser(token);
+        yield* _tryGetUser(repo, token);
       } else {
-        yield Unauthenticated(event.repository);
+        yield Unauthenticated(repo);
       }
     }
 
-    if (event is LoggedIn) {
-      yield AuthenticationLoading.fromInitilized(state);
-      await _userRepository.persistToken(event.token);
-      yield* _tryGetUser(event.token);
-    }
-    if (event is LoggedOut) {
-      yield AuthenticationLoading.fromInitilized(state);
-      yield* _logout();
+    final thisState = state;
+    if (thisState is AuthenticationInitialized) {
+      final repo = thisState.userRepository;
+
+      if (event is LoggedIn) {
+        yield AuthenticationLoading.fromInitilized(state);
+        await repo.persistToken(event.token);
+        yield* _tryGetUser(repo, event.token);
+      } else if (event is LoggedOut) {
+        yield AuthenticationLoading.fromInitilized(state);
+        yield* _logout(repo);
+      }
     }
   }
 
-  Stream<AuthenticationState> _tryGetUser(String token) async* {
+  Stream<AuthenticationState> _tryGetUser(
+      UserRepository repo, String token) async* {
     try {
-      final user = await _userRepository.me(token);
-      yield Authenticated(
-          token: token, userId: user.id, userRepository: _userRepository);
+      final user = await repo.me(token);
+      yield Authenticated(token: token, userId: user.id, userRepository: repo);
     } on UnauthorizedException {
-      yield* _logout(token);
+      yield* _logout(repo, token);
     } catch (_) {
+      yield Unauthenticated(repo);
       // Do nothing
     }
   }
 
-  Stream<AuthenticationState> _logout([String token]) async* {
-    await _userRepository.logout(token);
+  Stream<AuthenticationState> _logout(UserRepository repo,
+      [String token]) async* {
+    await repo.logout(token);
     await databaseRepository.clearAll();
     await cancleAllNotificationsFunction();
     yield Unauthenticated.fromInitilized(state);
