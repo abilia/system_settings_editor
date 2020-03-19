@@ -38,6 +38,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     return ViewDialog(
       deleteButton: widget.previousImage != null || imageSelected != null
           ? RemoveButton(
+              key: TestKey.removePicture,
               onTap: () {
                 Navigator.of(context).maybePop('');
               },
@@ -54,6 +55,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           PickField(
+            key: TestKey.imageArchiveButton,
             leading: Icon(AbiliaIcons.folder),
             label: Text(
               translate.imageArchive,

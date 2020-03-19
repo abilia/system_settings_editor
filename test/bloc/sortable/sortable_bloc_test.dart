@@ -29,7 +29,7 @@ void main() {
         sortableBloc,
         emitsInOrder([
           SortablesNotLoaded(),
-          SortablesLoaded([]),
+          SortablesLoaded(sortables: []),
         ]),
       );
     });
