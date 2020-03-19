@@ -65,50 +65,54 @@ class ActivityPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              ActionButton(
-                key: TestKey.editAlarm,
-                themeData: menuButtonTheme,
-                child: Icon(
-                  activity.alarm.iconData(),
-                  size: 32,
+              if (activity.fullDay)
+                const SizedBox(width: 48)
+              else
+                ActionButton(
+                  key: TestKey.editAlarm,
+                  themeData: menuButtonTheme,
+                  child: Icon(
+                    activity.alarm.iconData(),
+                    size: 32,
+                  ),
+                  onPressed: () async {
+                    final alarm = activity.alarm;
+                    final result = await showViewDialog<AlarmType>(
+                      context: context,
+                      builder: (context) => SelectAlarmDialog(
+                        alarm: alarm,
+                      ),
+                    );
+                    if (result != null) {
+                      final changedActivity = activity.copyWith(alarm: result);
+                      BlocProvider.of<ActivitiesBloc>(context)
+                          .add(UpdateActivity(changedActivity));
+                    }
+                  },
                 ),
-                onPressed: () async {
-                  final alarm = activity.alarm;
-                  final result = await showViewDialog<AlarmType>(
+              if (activity.fullDay)
+                const SizedBox(width: 48)
+              else
+                ActionButton(
+                  key: TestKey.editReminder,
+                  themeData: menuButtonTheme,
+                  child: Icon(
+                    AbiliaIcons.handi_reminder,
+                    size: 32,
+                  ),
+                  onPressed: () => showViewDialog<bool>(
                     context: context,
-                    builder: (context) => SelectAlarmDialog(
-                      alarm: alarm,
-                    ),
-                  );
-                  if (result != null) {
-                    final changedActivity = activity.copyWith(alarm: result);
-                    BlocProvider.of<ActivitiesBloc>(context)
-                        .add(UpdateActivity(changedActivity));
-                  }
-                },
-              ),
-              ActionButton(
-                key: TestKey.editReminder,
-                themeData: menuButtonTheme,
-                child: Icon(
-                  AbiliaIcons.handi_reminder,
-                  size: 32,
-                ),
-                onPressed: () {
-                  final editActivityBloc = EditActivityBloc(
-                    activity: activity,
-                    activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-                    newActivity: false,
-                  );
-                  showViewDialog<bool>(
-                    context: context,
-                    builder: (context) => BlocProvider<EditActivityBloc>.value(
-                      value: editActivityBloc,
+                    builder: (_) => BlocProvider<EditActivityBloc>.value(
+                      value: EditActivityBloc(
+                        activity: activity,
+                        activitiesBloc:
+                            BlocProvider.of<ActivitiesBloc>(context),
+                        newActivity: false,
+                      ),
                       child: SelectReminderDialog(activity: activity),
                     ),
-                  );
-                },
-              ),
+                  ),
+                ),
               ActionButton(
                 themeData: menuButtonTheme,
                 child: Icon(
