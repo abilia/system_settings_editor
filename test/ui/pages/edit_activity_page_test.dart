@@ -100,19 +100,6 @@ void main() {
       expect(find.byType(SelectPictureDialog), findsNothing);
     });
 
-    testWidgets('Select and remove image', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.addPicture));
-      await tester.pumpAndSettle();
-      expect(find.byType(SelectPictureDialog), findsOneWidget);
-      expect(find.byType(ImageArchive), findsNothing);
-      await tester.tap(find.byKey(TestKey.imageArchiveButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(ImageArchive), findsOneWidget);
-    });
-
     testWidgets(
         'Add activity button is disabled when no title and enabled when titled entered',
         (WidgetTester tester) async {
