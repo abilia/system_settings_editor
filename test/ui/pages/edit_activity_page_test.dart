@@ -4,7 +4,6 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
@@ -22,11 +21,7 @@ void main() {
     );
     final locale = Locale('en');
     final translate = Translator(locale).translate;
-    SortableRepository mockSortableRepository = MockSortableRepository();
-    final sortableBloc = SortableBloc(
-      pushBloc: MockPushBloc(),
-      sortableRepository: mockSortableRepository,
-    );
+    final sortableBloc = MockSortableBloc();
 
     Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
           supportedLocales: Translator.supportedLocals,
@@ -104,11 +99,6 @@ void main() {
     });
 
     testWidgets('Select and remove image', (WidgetTester tester) async {
-      final sortables = [Sortable.createNew(type: SortableType.imageArchive)];
-      when(mockSortableRepository.load())
-          .thenAnswer((_) => Future.value(sortables));
-      sortableBloc.add(LoadSortables());
-
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(today: today)));
       await tester.pumpAndSettle();
@@ -119,21 +109,6 @@ void main() {
       await tester.tap(find.byKey(TestKey.imageArchiveButton));
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchive), findsOneWidget);
-
-      expectLater(
-        sortableBloc,
-        emitsInOrder(
-          [
-            SortablesNotLoaded(),
-            SortablesLoaded(sortables: sortables),
-          ],
-        ),
-      ).then((_) async {
-        await tester.pumpAndSettle();
-        expect(find.byType(ArchiveImage), findsOneWidget);
-      });
-      // await tester.pumpAndSettle();
-      // expect(find.byType(ArchiveImage), findsOneWidget);
     });
 
     testWidgets(
