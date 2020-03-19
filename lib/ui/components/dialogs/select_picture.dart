@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
@@ -58,15 +56,8 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
               translate.myPhotos,
               style: abiliaTheme.textTheme.body2,
             ),
-            onTap: () async {
-              var image = await ImagePicker.pickImage(
-                source: ImageSource.gallery,
-                imageQuality: 50,
-              );
-              final id = Uuid().v4();
-              BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
-              setState(() => imageSelected = id);
-            },
+            onTap: () async =>
+                await _getExternalFile(source: ImageSource.gallery),
           ),
           SizedBox(height: 8.0),
           PickField(
@@ -75,19 +66,21 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
               translate.takeNewPhoto,
               style: abiliaTheme.textTheme.body2,
             ),
-            onTap: () async {
-              final image = await ImagePicker.pickImage(
-                source: ImageSource.camera,
-                imageQuality: 50,
-              );
-              final id = Uuid().v4();
-              BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
-              setState(() => imageSelected = id);
-            },
+            onTap: () async =>
+                await _getExternalFile(source: ImageSource.camera),
           ),
         ],
       ),
     );
+  }
+
+  Future _getExternalFile({ImageSource source}) async {
+    final image = await ImagePicker.pickImage(source: source, imageQuality: 50);
+    if (image != null) {
+      final id = Uuid().v4();
+      BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
+      setState(() => imageSelected = id);
+    }
   }
 
   Widget buildImageArchiveDialog() {
@@ -120,13 +113,9 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   }
 
   Text getImageArchiveHeading(ImageArchiveState state) {
-    final translate = Translator.of(context).translate;
-    if (state.currentFolderId == null) {
-      return Text(translate.imageArchive, style: abiliaTheme.textTheme.title);
-    }
-    final sortable = state.allById[state.currentFolderId];
-    final sortableData = json.decode(sortable.data);
-    final folderName = sortableData['name'];
+    final folderName =
+        state.allById[state.currentFolderId]?.sortableData?.name ??
+            Translator.of(context).translate.imageArchive;
     return Text(folderName, style: abiliaTheme.textTheme.title);
   }
 }

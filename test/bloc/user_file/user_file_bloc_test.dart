@@ -15,6 +15,7 @@ void main() {
   group('User file bloc', () {
     UserFileBloc userFileBloc;
     UserFileRepository mockUserFileRepository;
+    MockFileStorage mockedFileStorage;
 
     final userFile = UserFile(
       id: "",
@@ -28,10 +29,14 @@ void main() {
 
     setUp(() {
       mockUserFileRepository = MockUserFileRepository();
+      mockedFileStorage = MockFileStorage();
+      when(mockUserFileRepository.save(any)).thenAnswer((_) => Future.value());
+      when(mockedFileStorage.storeFile(any, any))
+          .thenAnswer((_) => Future.value());
       userFileBloc = UserFileBloc(
         userFileRepository: mockUserFileRepository,
         pushBloc: MockPushBloc(),
-        fileStorage: MockFileStorage(),
+        fileStorage: mockedFileStorage,
         syncBloc: MockSyncBloc(),
       );
     });

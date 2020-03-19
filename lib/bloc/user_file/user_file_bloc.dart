@@ -28,7 +28,6 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     @required PushBloc pushBloc,
   }) {
     pushSubscription = pushBloc.listen((state) {
-      print('got push to user file bloc with state: $state');
       if (state is PushReceived) {
         add(LoadUserFiles());
       }
@@ -42,20 +41,16 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> mapEventToState(
     UserFileEvent event,
   ) async* {
-    print('----- got an event to user_file_bloc $event');
     if (event is FileAdded) {
-      print('File added in user file bloc');
       yield* _mapFileAddedToState(event);
     }
     if (event is LoadUserFiles) {
-      print('Load user files');
       yield* _mapLoadUserFilesToState();
     }
   }
 
   Stream<UserFileState> _mapLoadUserFilesToState() async* {
     final userFiles = await userFileRepository.load();
-    print('got user files $userFiles');
     yield UserFilesLoaded(userFiles);
   }
 
@@ -63,22 +58,19 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     FileAdded event,
   ) async* {
     final fileBytes = await event.file.readAsBytes();
-    final sha1Hex = sha1.convert(fileBytes).toString();
-    final md5Hex = md5.convert(fileBytes).toString();
-    final path = 'seagull/${event.id}';
-    final contentType = lookupMimeType(event.file.path, headerBytes: fileBytes);
-    final fileSize = await event.file.length();
     final userFile = UserFile(
       id: event.id,
-      sha1: sha1Hex,
-      md5: md5Hex,
-      path: path,
-      contentType: contentType,
-      fileSize: fileSize,
+      sha1: sha1.convert(fileBytes).toString(),
+      md5: md5.convert(fileBytes).toString(),
+      path: 'seagull/${event.id}',
+      contentType: lookupMimeType(event.file.path, headerBytes: fileBytes),
+      fileSize: fileBytes.length,
       deleted: false,
     );
-    await userFileRepository.save([userFile]);
-    await fileStorage.storeFile(fileBytes, event.id);
+    await Future.wait([
+      userFileRepository.save([userFile]),
+      fileStorage.storeFile(fileBytes, event.id),
+    ]);
     syncBloc.add(FileSaved());
     final currentState = state;
     if (currentState is UserFilesLoaded) {
