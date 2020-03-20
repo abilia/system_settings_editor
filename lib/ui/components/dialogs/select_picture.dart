@@ -97,7 +97,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     if (image != null) {
       final id = Uuid().v4();
       BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
-      setState(() => imageSelected = id);
+      await Navigator.of(context).maybePop(id);
     }
   }
 

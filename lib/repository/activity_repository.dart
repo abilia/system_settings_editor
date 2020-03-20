@@ -60,10 +60,10 @@ class ActivityRepository extends DataRepository<Activity> {
   }
 
   Future _handleSuccessfullSync(Iterable<DataRevisionUpdates> succeded,
-      Iterable<DbActivity> dirtyActivities) async {
+      Iterable<DbModel<Activity>> dirtyActivities) async {
     final toUpdate = succeded.map((success) async {
       final activityBeforeSync = dirtyActivities
-          .firstWhere((activity) => activity.activity.id == success.id);
+          .firstWhere((activity) => activity.model.id == success.id);
       final currentActivity = await activityDb.getById(success.id);
       return currentActivity.copyWith(
           revision: success.revision,
@@ -90,7 +90,7 @@ class ActivityRepository extends DataRepository<Activity> {
 
   @visibleForTesting
   Future<ActivityUpdateResponse> postActivities(
-    Iterable<DbActivity> activities,
+    Iterable<DbModel<Activity>> activities,
   ) async {
     final response = await httpClient.post(
       '$baseUrl/api/v1/data/$userId/activities',

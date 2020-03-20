@@ -23,6 +23,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
   DayPickerBloc _dayPickerBloc;
   ActivitiesBloc _activitiesBloc;
   ScrollPositionBloc _scrollPositionBloc;
+  SortableBloc _sortableBloc;
   ClockBloc _clockBloc;
 
   @override
@@ -31,6 +32,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
     _activitiesBloc = BlocProvider.of<ActivitiesBloc>(context);
     _clockBloc = BlocProvider.of<ClockBloc>(context);
     _scrollPositionBloc = ScrollPositionBloc();
+    _sortableBloc = BlocProvider.of<SortableBloc>(context);
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -47,6 +49,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
     if (state == AppLifecycleState.resumed) {
       _clockBloc.add(DateTime.now().onlyMinutes());
       _activitiesBloc.add(LoadActivities());
+      _sortableBloc.add(LoadSortables());
       _jumpToActivity();
     }
   }
