@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:bloc/bloc.dart';
@@ -57,13 +56,13 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> _mapFileAddedToState(
     FileAdded event,
   ) async* {
-    final fileBytes = await event.file.readAsBytes();
+    final fileBytes = event.fileBytes;
     final userFile = UserFile(
       id: event.id,
       sha1: sha1.convert(fileBytes).toString(),
       md5: md5.convert(fileBytes).toString(),
       path: 'seagull/${event.id}',
-      contentType: lookupMimeType(event.file.path, headerBytes: fileBytes),
+      contentType: lookupMimeType(event.path, headerBytes: fileBytes),
       fileSize: fileBytes.length,
       deleted: false,
     );

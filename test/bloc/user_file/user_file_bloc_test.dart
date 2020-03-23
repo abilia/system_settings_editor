@@ -65,11 +65,12 @@ void main() {
       final fileId = 'file1';
       final fileContent = base64.decode(
           'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==');
-      File file = MemoryFileSystem().file('test.dart');
+      final String filePath = 'test.dart';
+      File file = MemoryFileSystem().file(filePath);
       await file.writeAsBytes(fileContent);
 
       // Act
-      userFileBloc.add(FileAdded(fileId, file));
+      userFileBloc.add(FileAdded(fileId, await file.readAsBytes(), filePath));
 
       final expectedFile = UserFile(
         id: fileId,
@@ -95,16 +96,19 @@ void main() {
       // Arrange
       final fileId = 'file1';
       final fileContent = base64.decode(FakeUserFile.ONE_PIXEL_PNG);
-      File file = MemoryFileSystem().file('test.dart');
+      final filePath1 = 'test';
+      File file = MemoryFileSystem().file(filePath1);
       await file.writeAsBytes(fileContent);
 
       final fileId2 = 'fileId1';
-      File file2 = MemoryFileSystem().file('test.dart');
+      final filePath2 = 'test.dart';
+      File file2 = MemoryFileSystem().file(filePath2);
       await file2.writeAsString('hej');
 
       // Act
-      userFileBloc.add(FileAdded(fileId, file));
-      userFileBloc.add(FileAdded(fileId2, file2));
+      userFileBloc.add(FileAdded(fileId, await file.readAsBytes(), filePath1));
+      userFileBloc
+          .add(FileAdded(fileId2, await file2.readAsBytes(), filePath2));
 
       // Assert
       final expectedFile1 = UserFile(
