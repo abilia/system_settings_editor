@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as img;
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/user_file/bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
@@ -93,10 +95,13 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   }
 
   Future _getExternalFile({ImageSource source}) async {
-    final image = await ImagePicker.pickImage(source: source, imageQuality: 50);
+    final image = await ImagePicker.pickImage(source: source, imageQuality: 20);
     if (image != null) {
       final id = Uuid().v4();
-      BlocProvider.of<UserFileBloc>(context).add(FileAdded(id, image));
+      final bakedOrientationImage =
+          img.bakeOrientation(img.decodeImage(await image.readAsBytes()));
+      BlocProvider.of<UserFileBloc>(context)
+          .add(FileAdded(id, img.encodeJpg(bakedOrientationImage, quality: 20), image.path));
       await Navigator.of(context).maybePop(id);
     }
   }
