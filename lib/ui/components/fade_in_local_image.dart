@@ -34,7 +34,6 @@ class FadeInLocalImage extends StatelessWidget {
         builder: (context, userFileState) {
       if (userFileState is UserFilesLoaded &&
           userFileState.userFiles.any((f) => f.id == imageFileId)) {
-        print('Yes the file with $imageFileId is now present!');
         final file =
             fileStorage.getImageThumb(ImageThumb(imageFileId, 350, 350));
         return Container(
@@ -55,7 +54,6 @@ class FadeInLocalImage extends StatelessWidget {
           ),
         );
       } else {
-        print('No image with id $imageFileId yet. Displaying network image');
         return Hero(
           tag: imageFileId,
           child: FadeInCalendarImage(
