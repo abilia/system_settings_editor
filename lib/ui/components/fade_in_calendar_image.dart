@@ -14,7 +14,6 @@ class FadeInCalendarImage extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    print('Render image with fileId: $imageFileId and path: $imageFilePath');
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) => (state is Authenticated)
           ? FadeInImage(

@@ -8,7 +8,7 @@ abstract class NotificationAlarm extends Equatable {
   NotificationAlarm(this.activity, this.day)
       : assert(activity != null),
         assert(day != null);
-  DateTime notificationTime(DateTime now);
+  DateTime get notificationTime;
 }
 
 class NewAlarm extends NotificationAlarm {
@@ -23,8 +23,8 @@ class NewAlarm extends NotificationAlarm {
       'NewAlarm { activity: $activity, day: $day, ${alarmOnStart ? 'START' : 'END'}-alarm }';
 
   @override
-  DateTime notificationTime(DateTime now) =>
-      alarmOnStart ? activity.startClock(now) : activity.endClock(now);
+  DateTime get notificationTime =>
+      alarmOnStart ? activity.startClock(day) : activity.endClock(day);
 }
 
 class NewReminder extends NotificationAlarm {
@@ -40,6 +40,5 @@ class NewReminder extends NotificationAlarm {
       'NewReminder { activity: $activity, reminder: $reminder, day: $day }';
 
   @override
-  DateTime notificationTime(DateTime now) =>
-      activity.startClock(now).subtract(reminder);
+  DateTime get notificationTime => activity.startClock(day).subtract(reminder);
 }

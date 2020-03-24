@@ -8,7 +8,6 @@ void main() {
   group('get alarms and reminders', () {
     final startDate = DateTime(2008, 8, 8, 8, 8);
     final day = startDate.onlyDays();
-    final endDate = DateTime(2008, 8, 9, 8, 8);
     test('no alarms', () {
       // Arrange
       final activities = Iterable<Activity>.empty();
@@ -99,16 +98,18 @@ void main() {
       // Assert
       expect(alarms, [NewReminder(afterWithReminder, day, reminder: reminder)]);
     });
+  });
 
-//////////////////////////////////////////////
-// Testing with end dates ////////////////////
-//////////////////////////////////////////////
-
+  group('all alarms from', () {
+    final startDate = DateTime(2008, 8, 8, 8, 8);
+    final day = startDate.onlyDays();
+    final now = DateTime(2020, 03, 24);
+    final tomorrow = now.nextDay();
     test('no alarms with end', () {
       // Arrange
       final activities = Iterable<Activity>.empty();
       // Act
-      final alarms = activities.alarmsForRange(startDate, endDate);
+      final alarms = activities.alarmsFrom(startDate);
       // Assert
       expect(alarms, isEmpty);
     });
@@ -119,7 +120,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsForRange(startDate, endDate).toList();
+      final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [
         NewAlarm(activity, day, alarmOnStart: true),
@@ -133,7 +134,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsForRange(startDate, endDate).toList();
+      final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [NewAlarm(activity, day, alarmOnStart: false)]);
     });
@@ -144,7 +145,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsForRange(startDate, endDate).toList();
+      final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [
         NewAlarm(activity, day, alarmOnStart: true),
@@ -160,7 +161,7 @@ void main() {
       final activities = [before, after, onTime];
 
       // Act
-      final alarms = activities.alarmsForRange(startDate, endDate).toSet();
+      final alarms = activities.alarmsFrom(startDate).toSet();
       // Assert
       expect(
         alarms,
@@ -179,12 +180,12 @@ void main() {
       final reminder = 5.minutes();
       final afterWithReminder = FakeActivity.starts(startDate.add(reminder),
               title: 'after with reminder')
-          .copyWith(reminderBefore: [5.minutes().inMilliseconds]);
+          .copyWith(reminderBefore: [reminder.inMilliseconds]);
       final onTime = FakeActivity.starts(startDate, title: 'onTime');
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsForRange(startDate, endDate).toList();
+      final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [
         NewAlarm(afterWithReminder, day, alarmOnStart: true),
@@ -207,7 +208,7 @@ void main() {
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsForRange(startDate, endDate).toList();
+      final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [NewReminder(afterWithReminder, day, reminder: reminder)]);
     });
@@ -232,7 +233,7 @@ void main() {
       final activities = [overlapping, later];
 
       // Act
-      final alarms = activities.alarmsForRange(startDate, endDate).toSet();
+      final alarms = activities.alarmsFrom(startDate).toSet();
 
       // Asserte
       expect(
@@ -241,6 +242,149 @@ void main() {
             NewAlarm(overlapping, day, alarmOnStart: false),
             NewAlarm(later, day),
           ].toSet());
+    });
+
+    test('empty list gives back no alarms or reminders', () {
+      final got = <Activity>[].alarmsFrom(now, take: 100);
+      expect(got, isEmpty);
+    });
+
+    test('one activity gives back one ativity', () {
+      final activity =
+          Activity.createNew(title: '', startTime: now.millisecondsSinceEpoch);
+      final got = <Activity>[activity].alarmsFrom(now, take: 100);
+      expect(got, [NewAlarm(activity, now)]);
+    });
+
+    test('reaccurs daily gives back all daily', () {
+      final activity = FakeActivity.reocurrsEveryDay(now)
+          .copyWith(alarmType: ALARM_SOUND_ONLY_ON_START);
+      final got = <Activity>[activity].alarmsFrom(now, take: 100);
+      expect(got, hasLength(100));
+    });
+
+    test('reaccurs weekly gives back all week in the given days', () {
+      final lenght = 100;
+      final maxDays = 400;
+      final activity = FakeActivity.reocurrsFridays(now)
+          .copyWith(alarmType: ALARM_SOUND_ONLY_ON_START);
+      final got =
+          <Activity>[activity].alarmsFrom(now, take: lenght, maxDays: maxDays);
+      expect(got, hasLength(maxDays ~/ 7));
+    });
+
+    test('reminder right on time', () {
+      final activity = Activity.createNew(
+          title: 'null',
+          alarmType: NO_ALARM,
+          startTime: now.add(5.minutes()).millisecondsSinceEpoch,
+          reminderBefore: [5.minutes().inMilliseconds]);
+      final got = <Activity>[activity].alarmsFrom(now);
+      expect(got, [NewReminder(activity, now, reminder: 5.minutes())]);
+    });
+
+    test(
+        'reaccurs daily and one other activity gives back that other one aswell',
+        () {
+      final lenght = 100;
+      final in50Days = now.copyWith(day: now.day + 50);
+      final reoccuringActivity = FakeActivity.reocurrsEveryDay(now)
+          .copyWith(alarmType: ALARM_SOUND_ONLY_ON_START);
+      final normalActivity = Activity.createNew(
+          title: 'THIS HAPPENS IN 20 days',
+          startTime: in50Days.millisecondsSinceEpoch,
+          alarmType: ALARM_SOUND_AND_VIBRATION);
+      final got = <Activity>[reoccuringActivity, normalActivity]
+          .alarmsFrom(now, take: lenght);
+
+      expect(got, hasLength(100));
+      expect(got, contains(NewAlarm(normalActivity, in50Days)));
+    });
+
+    test('returns reminders', () {
+      final reminder = 2.hours();
+
+      final reminderActivity = Activity.createNew(
+          title: 'has a reminder',
+          alarmType: NO_ALARM,
+          startTime: tomorrow.millisecondsSinceEpoch,
+          reminderBefore: [reminder.inMilliseconds]);
+
+      final got = <Activity>[
+        reminderActivity,
+      ].alarmsFrom(now, take: 100);
+
+      expect(
+          got, [NewReminder(reminderActivity, tomorrow, reminder: reminder)]);
+    });
+
+    test('returns only todays first 50', () {
+      final manyToday = Iterable.generate(
+          70,
+          (i) => Activity.createNew(
+              title: 'has a reminder',
+              startTime: now.add(i.minutes()).millisecondsSinceEpoch));
+      final manyTomorrow = Iterable.generate(
+          70,
+          (i) => Activity.createNew(
+              title: 'has a reminder',
+              startTime: tomorrow.add(i.minutes()).millisecondsSinceEpoch));
+
+      final got = manyTomorrow.followedBy(manyToday).alarmsFrom(now, take: 50);
+
+      expect(got, hasLength(50));
+      expect(got.any((a) => a.activity.start.isAtSameDay(tomorrow)), isFalse);
+    });
+
+    test('returns reminders and start end time', () {
+      final remindersDates = [
+        5.minutes(),
+        15.minutes(),
+        30.minutes(),
+        1.hours(),
+        2.hours(),
+        1.days(),
+      ].map((r) => r.inMilliseconds);
+      final reoccuringActivity = FakeActivity.reocurrsEveryDay(now)
+          .copyWith(reminderBefore: remindersDates);
+
+      final got = <Activity>[
+        reoccuringActivity,
+      ].alarmsFrom(now, take: 100);
+
+      expect(got, hasLength(100));
+      expect(
+          got,
+          containsAll([
+            NewAlarm(reoccuringActivity, now),
+            NewAlarm(reoccuringActivity, now, alarmOnStart: false),
+            NewAlarm(reoccuringActivity, tomorrow),
+            NewAlarm(reoccuringActivity, tomorrow, alarmOnStart: false)
+          ]));
+
+      expect(
+        got,
+        containsAll(
+          remindersDates.map(
+            (r) => NewReminder(
+              reoccuringActivity,
+              tomorrow,
+              reminder: Duration(milliseconds: r),
+            ),
+          ),
+        ),
+      );
+
+      final shouldNotContainTheseReminders = remindersDates
+          .map(
+            (r) => NewReminder(
+              reoccuringActivity,
+              now,
+              reminder: Duration(milliseconds: r),
+            ),
+          )
+          .toSet();
+      expect(got.toSet().intersection(shouldNotContainTheseReminders), isEmpty);
     });
   });
 }

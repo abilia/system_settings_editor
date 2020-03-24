@@ -5,6 +5,8 @@ extension DateTimeExtensions on DateTime {
 
   DateTime onlyMinutes() => DateTime(year, month, day, hour, minute);
 
+  DateTime nextDay() => copyWith(day: day + 1);
+
   DateTime nextHalfHour() => DateTime(
       year, month, day, minute >= 30 ? hour + 1 : hour, minute >= 30 ? 0 : 30);
 
@@ -38,6 +40,8 @@ extension DateTimeExtensions on DateTime {
       (isAfter(startDate) && isBefore(endDate)) ||
       isAtSameMomentAs(startDate) ||
       isAtSameMomentAs(endDate);
+
+  bool onOrAfter(DateTime time) => isAfter(time) || isAtSameMomentAs(time);
 
   // ISO 8601 states:
   // - Week 1 is the week with the first thursday of that year.

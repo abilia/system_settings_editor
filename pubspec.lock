@@ -150,11 +150,11 @@ packages:
     dependency: "direct main"
     description:
       path: "flutter_local_notifications/"
-      ref: "dev-1.2.1"
-      resolved-ref: "9f26f01ab89b4ba606549cb0e5cfdb4741b68deb"
+      ref: "dev-1.3.0"
+      resolved-ref: "8ec0030b77e8ada18ebb8414e52144d72eaed920"
       url: "git://github.com/abilia/flutter_local_notifications.git"
     source: git
-    version: "1.2.1"
+    version: "1.3.0"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
