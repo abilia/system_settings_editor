@@ -74,14 +74,11 @@ class ActivityCard extends StatelessWidget {
                             if (signedOff)
                               SizedBox(width: imageSize + cardPadding),
                             if (hasImage)
-                              Hero(
-                                tag: activity.id,
-                                child: FadeInCalendarImage(
-                                  imageFileId: activity.fileId,
-                                  imageFilePath: activity.icon,
-                                  width: imageSize,
-                                  height: imageSize,
-                                ),
+                              FadeInLocalImage(
+                                imageFileId: activity.fileId,
+                                imageFilePath: activity.icon,
+                                width: imageSize,
+                                height: imageSize,
                               ),
                             Expanded(
                               child: Padding(

@@ -75,7 +75,7 @@ void main() {
 
       when(
         mockClient.get(
-          imageIdUrl(baseUrl, userId, fileId),
+          fileIdUrl(baseUrl, userId, fileId),
           headers: authHeader(Fakes.token),
         ),
       ).thenAnswer(

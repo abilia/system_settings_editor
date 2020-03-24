@@ -22,7 +22,7 @@ class FadeInCalendarImage extends StatelessWidget {
               height: height,
               image: NetworkImage(
                   imageFileId?.isNotEmpty ?? false
-                      ? imageIdUrl(state.userRepository.baseUrl, state.userId,
+                      ? fileIdUrl(state.userRepository.baseUrl, state.userId,
                           imageFileId)
                       : imagePathUrl(state.userRepository.baseUrl, state.userId,
                           imageFilePath),

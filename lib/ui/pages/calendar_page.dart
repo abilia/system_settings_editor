@@ -52,7 +52,7 @@ class CalendarPage extends StatelessWidget {
             syncBloc: BlocProvider.of<SyncBloc>(context),
             fileStorage: GetIt.I<FileStorage>(),
             pushBloc: BlocProvider.of<PushBloc>(context),
-          )..add(LoadUserFiles()),
+          ),
         ),
         BlocProvider<SortableBloc>(
           create: (context) => SortableBloc(

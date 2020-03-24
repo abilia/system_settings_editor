@@ -6,6 +6,7 @@ import 'package:http/src/base_client.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/db/user_file_db.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/models/image_thumb.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 
@@ -163,14 +164,23 @@ class UserFileRepository extends DataRepository<UserFile> {
   Future<bool> getAndStoreFileData(
       Iterable<DbModel<UserFile>> dbUserFiles) async {
     for (final dbUserFile in dbUserFiles) {
+      final fileUrl = dbUserFile.model.isImage
+          ? imageThumbUrl(baseUrl, userId, dbUserFile.model.id, 350, 350)
+          : fileIdUrl(baseUrl, userId, dbUserFile.model.id);
       final fileResponse = await httpClient.get(
-        imageIdUrl(baseUrl, userId, dbUserFile.model.id),
+        fileUrl,
         headers: authHeader(authToken),
       );
       if (fileResponse.statusCode == 200) {
-        await fileStorage.storeFile(
-            fileResponse.bodyBytes, dbUserFile.model.id);
-        print('File ${dbUserFile.model.id} downloaded and stored');
+        if (dbUserFile.model.isImage) {
+          await fileStorage.storeImageThumb(fileResponse.bodyBytes,
+              ImageThumb(dbUserFile.model.id, 350, 350));
+          print('Stored image thumb with id: ${dbUserFile.model.id}');
+        } else {
+          await fileStorage.storeFile(
+              fileResponse.bodyBytes, dbUserFile.model.id);
+          print('File ${dbUserFile.model.id} downloaded and stored');
+        }
       } else {
         return false;
       }

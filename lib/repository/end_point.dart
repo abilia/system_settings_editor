@@ -9,8 +9,12 @@ const Map<String, String> backEndEnviorments = {
   'Local': LOCAL,
 };
 
-String imageIdUrl(String baseUrl, int userId, String imageFileId) =>
+String fileIdUrl(String baseUrl, int userId, String imageFileId) =>
     '$baseUrl/api/v1/data/$userId/storage/file/id/$imageFileId';
+
+String imageThumbUrl(String baseUrl, int userId, String imageFileId, int height,
+        int width) =>
+    '$baseUrl/api/v1/data/$userId/storage/image/thumb/$imageFileId?height=$height&width=$width';
 
 String imagePathUrl(String baseUrl, int userId, String imagePath) =>
     '$baseUrl/api/v1/data/$userId/storage/root/$imagePath';
