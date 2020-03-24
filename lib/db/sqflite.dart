@@ -76,7 +76,6 @@ class DatabaseRepository {
   Future<Database> get database async => _database ??= await _open();
 
   Future<Database> _open() async {
-    print('Open the sqflite');
     final databasesPath = await getDatabasesPath();
     return await openDatabase(
       join(databasesPath, 'seagull.db'),

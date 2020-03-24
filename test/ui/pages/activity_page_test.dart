@@ -56,6 +56,7 @@ void main() {
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(activityResponse)
+      ..fileStorage = MockFileStorage()
       ..init();
   });
   Future<void> navigateToActivityPage(WidgetTester tester) async {

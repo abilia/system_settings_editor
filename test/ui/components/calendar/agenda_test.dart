@@ -45,6 +45,7 @@ void main() {
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(() => [])
+      ..fileStorage = MockFileStorage()
       ..init();
   });
 

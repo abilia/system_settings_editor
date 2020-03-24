@@ -33,6 +33,7 @@ void main() {
         ..baseUrlDb = MockBaseUrlDb()
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => [])
+        ..fileStorage = MockFileStorage()
         ..init();
     });
 
