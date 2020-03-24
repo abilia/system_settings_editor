@@ -48,6 +48,7 @@ abstract class Translated {
   String get today;
   String get startTime;
   String get endTime;
+  String get noEndTime;
   String get calendarView;
   String get selectPicture;
   String get imageArchive;
@@ -58,6 +59,8 @@ abstract class Translated {
   String get hours;
   String get hour;
   String get min;
+  String get am;
+  String get pm;
   String get remove;
   String get deleteActivity;
   String get removePicture;
@@ -107,6 +110,7 @@ class English extends Translated {
       today = 'Today',
       startTime = 'Start time',
       endTime = 'End time',
+      noEndTime = 'No end time',
       calendarView = 'Calendar view',
       selectPicture = 'Select picture',
       imageArchive = 'Image archive',
@@ -117,6 +121,8 @@ class English extends Translated {
       hours = 'hours',
       hour = 'hour',
       min = 'min',
+      am = 'AM',
+      pm = 'PM',
       remove = 'Remove',
       deleteActivity = 'Delete activity?',
       removePicture = 'Remove picture';
@@ -167,6 +173,7 @@ class Swedish extends Translated {
       today = 'Idag',
       startTime = 'Starttid',
       endTime = 'Sluttid',
+      noEndTime = 'Ingen sluttid',
       calendarView = 'Kalendervy',
       selectPicture = 'Välj bild',
       imageArchive = 'Bildarkiv',
@@ -177,6 +184,8 @@ class Swedish extends Translated {
       hours = 'timmar',
       hour = 'timme',
       min = 'min',
+      am = 'fm',
+      pm = 'em',
       remove = 'Ta bort',
       deleteActivity = 'Ta bort aktivitet?',
       removePicture = 'Ta bort bild';
