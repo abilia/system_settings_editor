@@ -128,7 +128,11 @@ class TimeIntervallPicker extends StatelessWidget {
             activity.start,
             key: TestKey.startTimePicker,
             onTap: () async {
-              final newStartTime = await getStartTime(context, activity.start);
+              final newStartTime = await showViewDialog<TimeOfDay>(
+                context: context,
+                builder: (context) =>
+                    StartTimeInputDialog(time: activity.start),
+              );
               if (newStartTime != null) {
                 BlocProvider.of<EditActivityBloc>(context)
                     .add(ChangeStartTime(newStartTime));
@@ -154,8 +158,13 @@ class TimeIntervallPicker extends StatelessWidget {
             activity.hasEndTime ? activity.end : null,
             key: TestKey.endTimePicker,
             onTap: () async {
-              final newEndTime =
-                  await getEndTime(context, activity.end, activity.start);
+              final newEndTime = await showViewDialog<TimeOfDay>(
+                context: context,
+                builder: (context) => EndTimeInputDialog(
+                  time: activity.end,
+                  startTime: activity.start,
+                ),
+              );
               if (newEndTime != null) {
                 BlocProvider.of<EditActivityBloc>(context)
                     .add(ChangeEndTime(newEndTime));
@@ -164,36 +173,6 @@ class TimeIntervallPicker extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Future<TimeOfDay> getStartTime(BuildContext context, DateTime time) {
-    return showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.fromDateTime(time),
-        builder: (BuildContext context, Widget child) => child);
-  }
-
-  Future<TimeOfDay> getEndTime(
-      BuildContext context, DateTime endTime, DateTime startTime) {
-    final translator = Translator.of(context).translate;
-    return showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.fromDateTime(endTime),
-      builder: (BuildContext context, Widget child) => Stack(
-        children: <Widget>[
-          child,
-          Align(
-            alignment: Alignment(-0.58, 0.71),
-            child: DeleteFloatingButton(
-                onDelete: () {
-                  Navigator.of(context)
-                      .maybePop(TimeOfDay.fromDateTime(startTime));
-                },
-                text: translator.remove),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -208,7 +187,8 @@ class TimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
+    final timeFormat =
+        DateFormat('jm', Intl.defaultLocale ?? Locale.cachedLocaleString);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
