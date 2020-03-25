@@ -131,7 +131,7 @@ class CalendarPage extends StatelessWidget {
   void _alarmListener(BuildContext context, AlarmStateBase state) async {
     if (state is AlarmState) {
       await GetIt.I<AlarmNavigator>().pushAlarm(
-          context, state.alarm, BlocProvider.of<ActivitiesBloc>(context));
+          context, state.alarm);
     }
   }
 }
