@@ -73,11 +73,11 @@ class UserFileRepository extends DataRepository<UserFile> {
     return false;
   }
 
-  Future<void> _handleSuccessfulSync(
-      List<SyncResponse> syncResponses, Iterable<DbUserFile> dirtyFiles) async {
+  Future<void> _handleSuccessfulSync(List<SyncResponse> syncResponses,
+      Iterable<DbModel<UserFile>> dirtyFiles) async {
     final toUpdate = syncResponses.map((response) async {
       final fileBeforeSync =
-          dirtyFiles.firstWhere((file) => file.userFile.id == response.id);
+          dirtyFiles.firstWhere((file) => file.model.id == response.id);
       final currentFile = await userFileDb.getById(response.id);
       return currentFile.copyWith(
           revision: response.newRevision,
