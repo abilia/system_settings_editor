@@ -165,7 +165,13 @@ class UserFileRepository extends DataRepository<UserFile> {
       Iterable<DbModel<UserFile>> dbUserFiles) async {
     for (final dbUserFile in dbUserFiles) {
       final fileUrl = dbUserFile.model.isImage
-          ? imageThumbUrl(baseUrl, userId, dbUserFile.model.id, 350, 350)
+          ? imageThumbUrl(
+              baseUrl,
+              userId,
+              dbUserFile.model.id,
+              ImageThumb.DEFAULT_THUMB_SIZE,
+              ImageThumb.DEFAULT_THUMB_SIZE,
+            )
           : fileIdUrl(baseUrl, userId, dbUserFile.model.id);
       final fileResponse = await httpClient.get(
         fileUrl,
@@ -173,13 +179,11 @@ class UserFileRepository extends DataRepository<UserFile> {
       );
       if (fileResponse.statusCode == 200) {
         if (dbUserFile.model.isImage) {
-          await fileStorage.storeImageThumb(fileResponse.bodyBytes,
-              ImageThumb(dbUserFile.model.id, 350, 350));
-          print('Stored image thumb with id: ${dbUserFile.model.id}');
+          await fileStorage.storeImageThumb(
+              fileResponse.bodyBytes, ImageThumb(id: dbUserFile.model.id));
         } else {
           await fileStorage.storeFile(
               fileResponse.bodyBytes, dbUserFile.model.id);
-          print('File ${dbUserFile.model.id} downloaded and stored');
         }
       } else {
         return false;

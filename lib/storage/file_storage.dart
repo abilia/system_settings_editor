@@ -23,7 +23,7 @@ class FileStorage {
 
   Future<void> storeImageThumb(
       List<int> fileBytes, ImageThumb imageThumb) async {
-    await storeFile(fileBytes, imageThumb.thumbId);
+    return storeFile(fileBytes, imageThumb.thumbId);
   }
 
   File getFile(String id) {

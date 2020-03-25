@@ -34,8 +34,9 @@ class FadeInLocalImage extends StatelessWidget {
         builder: (context, userFileState) {
       if (userFileState is UserFilesLoaded &&
           userFileState.userFiles.any((f) => f.id == imageFileId)) {
-        final file =
-            fileStorage.getImageThumb(ImageThumb(imageFileId, 350, 350));
+        final file = fileStorage.getImageThumb(ImageThumb(
+          id: imageFileId,
+        ));
         return Container(
           decoration: BoxDecoration(
             borderRadius: borderRadius,

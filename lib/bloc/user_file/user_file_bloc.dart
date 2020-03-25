@@ -61,22 +61,10 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     final originalBytes = await event.file.readAsBytes();
     final originalContentType =
         lookupMimeType(event.file.path, headerBytes: originalBytes);
-    final fileBytes = originalContentType.startsWith('image')
-        ? processImageBytes(originalBytes)
-        : originalBytes;
-    final userFile = UserFile(
-      id: event.id,
-      sha1: sha1.convert(fileBytes).toString(),
-      md5: md5.convert(fileBytes).toString(),
-      path: 'seagull/${event.id}',
-      contentType: lookupMimeType(event.file.path, headerBytes: fileBytes),
-      fileSize: fileBytes.length,
-      deleted: false,
-    );
-    await Future.wait([
-      userFileRepository.save([userFile]),
-      fileStorage.storeFile(fileBytes, event.id),
-    ]);
+    final isImage = originalContentType.startsWith('image');
+    final userFile = isImage
+        ? await handleImage(originalBytes, event.id, event.file.path)
+        : await handleNonImage(originalBytes, event.id, event.file.path);
     syncBloc.add(FileSaved());
     final currentState = state;
     if (currentState is UserFilesLoaded) {
@@ -87,9 +75,56 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     // TODO Save new sortable to the uploads folder
   }
 
-  List<int> processImageBytes(List<int> originalBytes) {
+  UserFile generateUserFile(
+    String id,
+    String path,
+    List<int> fileBytes,
+  ) {
+    final userFile = UserFile(
+      id: id,
+      sha1: sha1.convert(fileBytes).toString(),
+      md5: md5.convert(fileBytes).toString(),
+      path: 'seagull/$id',
+      contentType: lookupMimeType(path, headerBytes: fileBytes),
+      fileSize: fileBytes.length,
+      deleted: false,
+    );
+    return userFile;
+  }
+
+  Future<UserFile> handleImage(
+      List<int> originalBytes, String id, String path) async {
     final bakedOrientationImage =
         img.bakeOrientation(img.decodeImage(originalBytes));
-    return img.encodeJpg(bakedOrientationImage, quality: 20);
+    int width, height;
+    if (bakedOrientationImage.height > bakedOrientationImage.width) {
+      height = ImageThumb.DEFAULT_THUMB_SIZE;
+    } else {
+      width = ImageThumb.DEFAULT_THUMB_SIZE;
+    }
+    final thumbImage = img.copyResize(
+      bakedOrientationImage,
+      height: height,
+      width: width,
+    );
+    final jpgFile = img.encodeJpg(bakedOrientationImage, quality: 20);
+    final thumbJpgFile = img.encodeJpg(thumbImage, quality: 20);
+
+    final userFile = generateUserFile(id, path, jpgFile);
+
+    await userFileRepository.save([userFile]);
+    await fileStorage.storeFile(jpgFile, id);
+    await fileStorage.storeImageThumb(thumbJpgFile, ImageThumb(id: id));
+    return userFile;
+  }
+
+  Future<UserFile> handleNonImage(
+      List<int> originalBytes, String id, String path) async {
+    final userFile = generateUserFile(id, path, originalBytes);
+    await Future.wait([
+      userFileRepository.save([userFile]),
+      fileStorage.storeFile(originalBytes, id),
+    ]);
+    return userFile;
   }
 }
