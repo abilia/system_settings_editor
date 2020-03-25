@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sortable/image_archive/image_archive_bloc.dart';
+import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -12,6 +13,12 @@ import '../../../mocks.dart';
 
 void main() {
   group('Image archive test', () {
+    setUp(() {
+      GetItInitializer()
+        ..fileStorage = MockFileStorage()
+        ..init();
+    });
+
     final imageData = '''
           {"name":"bingo","fileId":"351d5e7d-0d87-4037-9829-538a14936128","file":"/images/Basic/Basic/bingo.gif"}
           ''';
@@ -38,6 +45,13 @@ void main() {
                 create: (context) => MockAuthenticationBloc()),
             BlocProvider<ImageArchiveBloc>(
                 create: (context) => imageArchiveBlocMock),
+            BlocProvider<UserFileBloc>(
+                create: (context) => UserFileBloc(
+                      fileStorage: MockFileStorage(),
+                      pushBloc: MockPushBloc(),
+                      syncBloc: MockSyncBloc(),
+                      userFileRepository: MockUserFileRepository(),
+                    )),
           ], child: widget),
         );
 

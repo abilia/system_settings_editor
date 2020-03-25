@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/getit.dart';
 
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/i18n/translations.dart';
@@ -16,7 +17,7 @@ void main() {
   final day = startTime.onlyDays();
   final locale = Locale('en');
   final translator = Translated.dictionaries[locale];
-  MockAuthenticationBloc mockedActivitiesBloc;
+  MockAuthenticationBloc mockedAuthenticationBloc;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -26,16 +27,28 @@ void main() {
                 orElse: () => supportedLocales.first),
         home: MultiBlocProvider(providers: [
           BlocProvider<AuthenticationBloc>(
-              create: (context) => mockedActivitiesBloc),
+              create: (context) => mockedAuthenticationBloc),
           BlocProvider<ActivitiesBloc>(
-              create: (context) => MockActivitiesBloc()),
+            create: (context) => MockActivitiesBloc(),
+          ),
+          BlocProvider<UserFileBloc>(
+            create: (context) => UserFileBloc(
+              fileStorage: MockFileStorage(),
+              pushBloc: MockPushBloc(),
+              syncBloc: MockSyncBloc(),
+              userFileRepository: MockUserFileRepository(),
+            ),
+          ),
         ], child: widget),
       );
 
   setUp(() {
     Locale.cachedLocale = locale;
     initializeDateFormatting();
-    mockedActivitiesBloc = MockAuthenticationBloc();
+    mockedAuthenticationBloc = MockAuthenticationBloc();
+    GetItInitializer()
+      ..fileStorage = MockFileStorage()
+      ..init();
   });
 
   testWidgets('activity none checkable activity does not show check button ',
@@ -209,7 +222,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(HeroImage), findsOneWidget);
+    expect(find.byType(Hero), findsOneWidget);
   });
 
   testWidgets('image to the left -> (hasImage && hasAttachment && hasTitle)',
@@ -235,7 +248,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(HeroImage), findsOneWidget);
+    expect(find.byType(Hero), findsOneWidget);
   });
   testWidgets('image below -> (hasImage && hasAttachment && !hasTitle)',
       (WidgetTester tester) async {
@@ -260,6 +273,6 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(HeroImage), findsOneWidget);
+    expect(find.byType(Hero), findsOneWidget);
   });
 }
