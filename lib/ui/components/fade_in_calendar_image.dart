@@ -19,13 +19,20 @@ class FadeInCalendarImage extends StatelessWidget {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) => (state is Authenticated)
           ? CachedNetworkImage(
+              httpHeaders: authHeader(state.token),
               height: height,
               width: width,
               imageUrl: imageFileId?.isNotEmpty ?? false
-                  ? fileIdUrl(
-                      state.userRepository.baseUrl, state.userId, imageFileId)
-                  : imagePathUrl(state.userRepository.baseUrl, state.userId,
-                      imageFilePath),
+                  ? imageThumbUrl(
+                      baseUrl: state.userRepository.baseUrl,
+                      userId: state.userId,
+                      imageFileId: imageFileId,
+                    )
+                  : imagePathUrl(
+                      state.userRepository.baseUrl,
+                      state.userId,
+                      imageFilePath,
+                    ),
               placeholder: (context, url) => Container(),
               errorWidget: (context, url, error) => Icon(AbiliaIcons.error),
             )

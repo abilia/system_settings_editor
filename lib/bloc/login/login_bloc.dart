@@ -26,8 +26,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         try {
           final pushToken = await pushService.initPushToken();
           final token = await authState.userRepository.authenticate(
-            username: event.username,
-            password: event.password,
+            username: event.username.trim(),
+            password: event.password.trim(),
             pushToken: pushToken,
           );
 

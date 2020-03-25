@@ -1,3 +1,6 @@
+import 'package:meta/meta.dart';
+import 'package:seagull/models/all.dart';
+
 const T1 = 'https://t1.abilia-gbg.se';
 const WHALE = 'https://whale.abilia-gbg.se';
 const PROD = 'https://myabilia.com';
@@ -12,8 +15,13 @@ const Map<String, String> backEndEnviorments = {
 String fileIdUrl(String baseUrl, int userId, String imageFileId) =>
     '$baseUrl/api/v1/data/$userId/storage/file/id/$imageFileId';
 
-String imageThumbUrl(String baseUrl, int userId, String imageFileId, int height,
-        int width) =>
+String imageThumbUrl({
+  @required String baseUrl,
+  @required int userId,
+  @required String imageFileId,
+  int height = ImageThumb.DEFAULT_THUMB_SIZE,
+  int width = ImageThumb.DEFAULT_THUMB_SIZE,
+}) =>
     '$baseUrl/api/v1/data/$userId/storage/image/thumb/$imageFileId?height=$height&width=$width';
 
 String imagePathUrl(String baseUrl, int userId, String imagePath) =>

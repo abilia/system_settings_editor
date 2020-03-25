@@ -166,11 +166,9 @@ class UserFileRepository extends DataRepository<UserFile> {
     for (final dbUserFile in dbUserFiles) {
       final fileUrl = dbUserFile.model.isImage
           ? imageThumbUrl(
-              baseUrl,
-              userId,
-              dbUserFile.model.id,
-              ImageThumb.DEFAULT_THUMB_SIZE,
-              ImageThumb.DEFAULT_THUMB_SIZE,
+              baseUrl: baseUrl,
+              userId: userId,
+              imageFileId: dbUserFile.model.id,
             )
           : fileIdUrl(baseUrl, userId, dbUserFile.model.id);
       final fileResponse = await httpClient.get(
