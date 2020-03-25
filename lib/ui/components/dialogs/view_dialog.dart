@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
 /// copied from [showDialog]
@@ -81,7 +80,7 @@ class ViewDialog extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        const SizedBox(height: 24),
+        const SizedBox(height: 8),
         Padding(
           padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 8.0),
           child: Stack(
@@ -213,58 +212,6 @@ class RoundFloatingButton extends StatelessWidget {
             iconData,
             color: AbiliaColors.black,
             size: 24,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class DeleteFloatingButton extends StatelessWidget {
-  final GestureTapCallback onDelete;
-  final String text;
-  const DeleteFloatingButton({
-    @required this.onDelete,
-    Key key,
-    @required this.text,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: borderRadius,
-        onTap: onDelete,
-        child: Ink(
-          height: 36.0,
-          padding: EdgeInsets.only(left: 8.0, right: 10.0),
-          decoration: BoxDecoration(
-            color: AbiliaColors.red.withAlpha(0xCC),
-            borderRadius: borderRadius,
-            border: Border.all(
-              color: AbiliaColors.red,
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Icon(
-                AbiliaIcons.delete_all_clear,
-                color: AbiliaColors.white,
-                size: 24,
-              ),
-              SizedBox(
-                width: 4.0,
-              ),
-              Text(
-                text,
-                style: Theme.of(context)
-                    .textTheme
-                    .body2
-                    .copyWith(color: AbiliaColors.white),
-              ),
-            ],
           ),
         ),
       ),

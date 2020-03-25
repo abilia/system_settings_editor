@@ -80,7 +80,6 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
   __CategoryState(this.value);
   @override
   void initState() {
-    print('__CategoryState initState $value');
     controller = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
     intAnimation = IntTween(

@@ -40,26 +40,23 @@ void ensureNotificationPluginInitialized() {
 }
 
 Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
-    {Duration forDuration = const Duration(hours: 24),
-    String language = 'en'}) async {
+    {String language = 'en'}) async {
   await notificationPlugin.cancelAll();
 
   final now = DateTime.now().add(1.minutes()).onlyMinutes();
   final List<NotificationAlarm> shouldBeScheduledNotifications =
-      allActivities.alarmsForRange(now, now.add(forDuration)).toList();
-  print(
-      'Scheduling ${shouldBeScheduledNotifications.length} alarm from ${allActivities.length} activities with language: ${language}');
+      allActivities.alarmsFrom(now, take: 50).toList();
 
   for (final newNotification in shouldBeScheduledNotifications) {
-    await scheduleNotification(newNotification, now, language: language);
+    await scheduleNotification(newNotification, language: language);
   }
 }
 
-Future scheduleNotification(NotificationAlarm notificationAlarm, DateTime now,
+Future scheduleNotification(NotificationAlarm notificationAlarm,
     {String language}) async {
   final alarm = notificationAlarm.activity.alarm;
   final title = notificationAlarm.activity.title;
-  final notificationTime = notificationAlarm.notificationTime(now);
+  final notificationTime = notificationAlarm.notificationTime;
   final subtitle =
       getSubtitle(notificationAlarm, notificationTime, language: language);
   final hash = notificationAlarm.hashCode;
