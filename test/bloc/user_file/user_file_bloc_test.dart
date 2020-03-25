@@ -70,15 +70,15 @@ void main() {
       await file.writeAsBytes(fileContent);
 
       // Act
-      userFileBloc.add(FileAdded(fileId, await file.readAsBytes(), filePath));
+      userFileBloc.add(FileAdded(fileId, file));
 
       final expectedFile = UserFile(
         id: fileId,
-        sha1: '0f9ba331e2922f27ad7d8d90c4f8198b1eac9f89',
-        md5: 'ef593e1899bd8f423f7e747439aa1d46',
+        sha1: '6584be044e97e76725933e55db4bc8e155b66970',
+        md5: 'c9f224037b29bd87f4930a2f6fc12257',
         path: 'seagull/$fileId',
-        contentType: 'image/png',
-        fileSize: 70,
+        contentType: 'image/jpeg', // File is converted to jpeg
+        fileSize: 614,
         deleted: false,
       );
 
@@ -106,18 +106,17 @@ void main() {
       await file2.writeAsString('hej');
 
       // Act
-      userFileBloc.add(FileAdded(fileId, await file.readAsBytes(), filePath1));
-      userFileBloc
-          .add(FileAdded(fileId2, await file2.readAsBytes(), filePath2));
+      userFileBloc.add(FileAdded(fileId, file));
+      userFileBloc.add(FileAdded(fileId2, file2));
 
       // Assert
       final expectedFile1 = UserFile(
         id: fileId,
-        sha1: '0f9ba331e2922f27ad7d8d90c4f8198b1eac9f89',
-        md5: 'ef593e1899bd8f423f7e747439aa1d46',
+        sha1: '6584be044e97e76725933e55db4bc8e155b66970',
+        md5: 'c9f224037b29bd87f4930a2f6fc12257',
         path: 'seagull/$fileId',
-        contentType: 'image/png',
-        fileSize: 70,
+        contentType: 'image/jpeg', // images are converted to jpeg
+        fileSize: 614,
         deleted: false,
       );
 

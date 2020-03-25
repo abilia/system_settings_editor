@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:image/image.dart' as img;
 import 'package:crypto/crypto.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -56,13 +58,18 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> _mapFileAddedToState(
     FileAdded event,
   ) async* {
-    final fileBytes = event.fileBytes;
+    final originalBytes = await event.file.readAsBytes();
+    final originalContentType =
+        lookupMimeType(event.file.path, headerBytes: originalBytes);
+    final fileBytes = originalContentType.startsWith('image')
+        ? processImageBytes(originalBytes)
+        : originalBytes;
     final userFile = UserFile(
       id: event.id,
       sha1: sha1.convert(fileBytes).toString(),
       md5: md5.convert(fileBytes).toString(),
       path: 'seagull/${event.id}',
-      contentType: lookupMimeType(event.path, headerBytes: fileBytes),
+      contentType: lookupMimeType(event.file.path, headerBytes: fileBytes),
       fileSize: fileBytes.length,
       deleted: false,
     );
@@ -78,5 +85,11 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
       yield UserFilesLoaded([userFile]);
     }
     // TODO Save new sortable to the uploads folder
+  }
+
+  List<int> processImageBytes(List<int> originalBytes) {
+    final bakedOrientationImage =
+        img.bakeOrientation(img.decodeImage(originalBytes));
+    return img.encodeJpg(bakedOrientationImage, quality: 20);
   }
 }

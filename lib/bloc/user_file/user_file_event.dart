@@ -10,11 +10,10 @@ class LoadUserFiles extends UserFileEvent {}
 
 class FileAdded extends UserFileEvent {
   final String id;
-  final List<int> fileBytes;
-  final String path;
+  final File file;
 
-  FileAdded(this.id, this.fileBytes, this.path);
+  FileAdded(this.id, this.file);
 
   @override
-  List<Object> get props => [id, fileBytes];
+  List<Object> get props => [id, file];
 }
