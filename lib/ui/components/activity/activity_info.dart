@@ -224,24 +224,3 @@ class TopInfo extends StatelessWidget {
     );
   }
 }
-
-class HeroImage extends StatelessWidget {
-  final Activity activity;
-  final double width;
-  final double height;
-
-  const HeroImage({Key key, this.activity, this.width, this.height})
-      : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Hero(
-      tag: activity.id,
-      child: FadeInLocalImage(
-        imageFileId: activity.fileId,
-        imageFilePath: activity.icon,
-        width: width,
-        height: height,
-      ),
-    );
-  }
-}
