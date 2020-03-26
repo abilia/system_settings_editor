@@ -1,9 +1,8 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image/image.dart' as img;
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/user_file/bloc.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -22,7 +21,9 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   bool imageArchiveView = false;
   String imageSelected;
   Function get onOk => imageSelected != null
-      ? () => Navigator.of(context).maybePop(imageSelected)
+      ? () => Navigator.of(context).maybePop(SelectedImage(
+            id: imageSelected,
+          ))
       : null;
 
   @override
@@ -42,7 +43,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
           ? RemoveButton(
               key: TestKey.removePicture,
               onTap: () {
-                Navigator.of(context).maybePop('');
+                Navigator.of(context).maybePop(SelectedImage(id: ''));
               },
               icon: Icon(
                 AbiliaIcons.delete_all_clear,
@@ -98,11 +99,10 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     final image = await ImagePicker.pickImage(source: source, imageQuality: 20);
     if (image != null) {
       final id = Uuid().v4();
-      final bakedOrientationImage =
-          img.bakeOrientation(img.decodeImage(await image.readAsBytes()));
-      BlocProvider.of<UserFileBloc>(context)
-          .add(FileAdded(id, img.encodeJpg(bakedOrientationImage, quality: 20), image.path));
-      await Navigator.of(context).maybePop(id);
+      await Navigator.of(context).maybePop(SelectedImage(
+        id: id,
+        newImage: image,
+      ));
     }
   }
 
@@ -141,4 +141,14 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
             Translator.of(context).translate.imageArchive;
     return Text(folderName, style: abiliaTheme.textTheme.title);
   }
+}
+
+class SelectedImage {
+  final String id;
+  final File newImage;
+
+  SelectedImage({
+    this.id,
+    this.newImage,
+  });
 }

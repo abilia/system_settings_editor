@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'all.dart';
 
 class UserFile extends DataModel {
+  static const IMAGE_ENDINGS = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff'];
   final String sha1, md5, path, contentType;
   final int fileSize;
   final bool deleted;
@@ -29,6 +30,10 @@ class UserFile extends DataModel {
         dirty: dirty,
         revision: revision,
       );
+
+  bool get isImage =>
+      (contentType?.toLowerCase()?.startsWith('image') ?? false) ||
+      IMAGE_ENDINGS.contains(path?.toLowerCase()?.split('.')?.last);
 }
 
 class DbUserFile extends DbModel<UserFile> {

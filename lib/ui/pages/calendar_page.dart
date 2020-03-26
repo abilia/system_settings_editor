@@ -52,7 +52,7 @@ class CalendarPage extends StatelessWidget {
             syncBloc: BlocProvider.of<SyncBloc>(context),
             fileStorage: GetIt.I<FileStorage>(),
             pushBloc: BlocProvider.of<PushBloc>(context),
-          )..add(LoadUserFiles()),
+          ),
         ),
         BlocProvider<SortableBloc>(
           create: (context) => SortableBloc(
@@ -131,7 +131,7 @@ class CalendarPage extends StatelessWidget {
   void _alarmListener(BuildContext context, AlarmStateBase state) async {
     if (state is AlarmState) {
       await GetIt.I<AlarmNavigator>().pushAlarm(
-          context, state.alarm, BlocProvider.of<ActivitiesBloc>(context));
+          context, state.alarm);
     }
   }
 }

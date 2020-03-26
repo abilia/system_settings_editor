@@ -78,8 +78,9 @@ class ActivityInfo extends StatelessWidget {
                     if (hasImage && !hasAttachment)
                       Flexible(
                         flex: 8,
-                        child: HeroImage(
-                          activity: activity,
+                        child: FadeInCalendarImage(
+                          imageFileId: activity.fileId,
+                          imageFilePath: activity.icon,
                           width: 327.0,
                           height: 289.0,
                         ),
@@ -176,8 +177,9 @@ class TopInfo extends StatelessWidget {
         if (imageToTheLeft)
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
-            child: HeroImage(
-              activity: activity,
+            child: FadeInCalendarImage(
+              imageFileId: activity.fileId,
+              imageFilePath: activity.icon,
               height: 109,
               width: 109,
             ),
@@ -209,8 +211,9 @@ class TopInfo extends StatelessWidget {
                 ),
               ),
               if (imageBelow)
-                HeroImage(
-                  activity: activity,
+                FadeInCalendarImage(
+                  imageFileId: activity.fileId,
+                  imageFilePath: activity.icon,
                   height: 109,
                   width: 109,
                 ),
@@ -218,27 +221,6 @@ class TopInfo extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class HeroImage extends StatelessWidget {
-  final Activity activity;
-  final double width;
-  final double height;
-
-  const HeroImage({Key key, this.activity, this.width, this.height})
-      : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Hero(
-      tag: activity.id,
-      child: FadeInCalendarImage(
-        imageFileId: activity.fileId,
-        imageFilePath: activity.icon,
-        width: width,
-        height: height,
-      ),
     );
   }
 }

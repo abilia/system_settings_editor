@@ -82,7 +82,7 @@ class GetItInitializer {
     GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());
     GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb());
     GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb());
-    GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage());
+    GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage(''));
     GetIt.I.registerSingleton<MultipartRequestBuilder>(
         _multipartRequestBuilder ?? MultipartRequestBuilder());
     GetIt.I.registerFactory<DateTime>(_startTime ?? () => DateTime.now());

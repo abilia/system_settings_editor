@@ -24,9 +24,8 @@ class AlarmNavigator {
   }
 
   Future<T> pushAlarm<T extends Object>(
-    BuildContext context,
+    BuildContext outerContext,
     NotificationAlarm alarm,
-    ActivitiesBloc activitiesBloc,
   ) async {
     String id;
     Widget page;
@@ -50,10 +49,10 @@ class AlarmNavigator {
       throw ArgumentError();
     }
     return await _push(
-      context,
+      outerContext,
       MaterialPageRoute(
-        builder: (context) => BlocProvider.value(
-          value: activitiesBloc,
+        builder: (context) => editActivityMultiBlocProvider(
+          outerContext,
           child: page,
         ),
         fullscreenDialog: true,

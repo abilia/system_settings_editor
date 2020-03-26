@@ -41,6 +41,7 @@ void main() {
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(activityResponse)
+        ..fileStorage = MockFileStorage()
         ..init();
     });
 
@@ -144,6 +145,7 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => response)
         ..notificationStreamGetter = (() => mockNotificationSelected.stream)
+        ..fileStorage = MockFileStorage()
         ..init();
     });
 
@@ -283,6 +285,7 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => response)
         ..notificationStreamGetter = (() => mockNotificationSelected.stream)
+        ..fileStorage = MockFileStorage()
         ..init();
     });
 
@@ -337,6 +340,7 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => [])
         ..notificationStreamGetter = (() => mockNotificationSelected.stream)
+        ..fileStorage = MockFileStorage()
         ..init();
     });
 
@@ -496,6 +500,7 @@ void main() {
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(activityResponse)
+        ..fileStorage = MockFileStorage()
         ..init();
     });
     testWidgets('New activity', (WidgetTester tester) async {
@@ -556,6 +561,7 @@ void main() {
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => fullDayActivities)
+        ..fileStorage = MockFileStorage()
         ..init();
     });
 

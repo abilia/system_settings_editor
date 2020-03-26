@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:image/image.dart' as img;
 import 'package:crypto/crypto.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -56,20 +59,13 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> _mapFileAddedToState(
     FileAdded event,
   ) async* {
-    final fileBytes = event.fileBytes;
-    final userFile = UserFile(
-      id: event.id,
-      sha1: sha1.convert(fileBytes).toString(),
-      md5: md5.convert(fileBytes).toString(),
-      path: 'seagull/${event.id}',
-      contentType: lookupMimeType(event.path, headerBytes: fileBytes),
-      fileSize: fileBytes.length,
-      deleted: false,
-    );
-    await Future.wait([
-      userFileRepository.save([userFile]),
-      fileStorage.storeFile(fileBytes, event.id),
-    ]);
+    final originalBytes = await event.file.readAsBytes();
+    final originalContentType =
+        lookupMimeType(event.file.path, headerBytes: originalBytes);
+    final isImage = originalContentType.startsWith('image');
+    final userFile = isImage
+        ? await handleImage(originalBytes, event.id, event.file.path)
+        : await handleNonImage(originalBytes, event.id, event.file.path);
     syncBloc.add(FileSaved());
     final currentState = state;
     if (currentState is UserFilesLoaded) {
@@ -79,4 +75,74 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     }
     // TODO Save new sortable to the uploads folder
   }
+
+  UserFile generateUserFile(
+    String id,
+    String path,
+    List<int> fileBytes,
+  ) {
+    final userFile = UserFile(
+      id: id,
+      sha1: sha1.convert(fileBytes).toString(),
+      md5: md5.convert(fileBytes).toString(),
+      path: 'seagull/$id',
+      contentType: lookupMimeType(path, headerBytes: fileBytes),
+      fileSize: fileBytes.length,
+      deleted: false,
+    );
+    return userFile;
+  }
+
+  Future<UserFile> handleImage(
+      List<int> originalBytes, String id, String path) async {
+    final ImageResult imageResult = await compute<List<int>, ImageResult>(
+        imageProcessingIsolate, originalBytes);
+
+    final userFile = generateUserFile(id, path, imageResult.originalImage);
+
+    await userFileRepository.save([userFile]);
+    await fileStorage.storeFile(imageResult.originalImage, id);
+    await fileStorage.storeImageThumb(
+        imageResult.thumbImage, ImageThumb(id: id));
+    return userFile;
+  }
+
+  Future<UserFile> handleNonImage(
+      List<int> originalBytes, String id, String path) async {
+    final userFile = generateUserFile(id, path, originalBytes);
+    await Future.wait([
+      userFileRepository.save([userFile]),
+      fileStorage.storeFile(originalBytes, id),
+    ]);
+    return userFile;
+  }
+}
+
+class ImageResult {
+  final List<int> originalImage;
+  final List<int> thumbImage;
+
+  ImageResult({
+    this.originalImage,
+    this.thumbImage,
+  });
+}
+
+ImageResult imageProcessingIsolate(List<int> originalData) {
+  final bakedOrientationImage =
+      img.bakeOrientation(img.decodeImage(originalData));
+  int width, height;
+  if (bakedOrientationImage.height > bakedOrientationImage.width) {
+    height = ImageThumb.DEFAULT_THUMB_SIZE;
+  } else {
+    width = ImageThumb.DEFAULT_THUMB_SIZE;
+  }
+  final thumbImage = img.copyResize(
+    bakedOrientationImage,
+    height: height,
+    width: width,
+  );
+  final jpgFile = img.encodeJpg(bakedOrientationImage, quality: 50);
+  final thumbJpgFile = img.encodeJpg(thumbImage, quality: 50);
+  return ImageResult(originalImage: jpgFile, thumbImage: thumbJpgFile);
 }

@@ -50,6 +50,7 @@ void main() {
       ..tokenDb = mockTokenDb
       ..startTime = time
       ..httpClient = Fakes.client(activityResponse)
+      ..fileStorage = MockFileStorage()
       ..init();
   });
   goToTimePillar(WidgetTester tester) async {

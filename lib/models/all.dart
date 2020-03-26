@@ -11,3 +11,4 @@ export 'sortable.dart';
 export 'user_file.dart';
 export 'response_models.dart';
 export 'meta_models.dart';
+export 'image_thumb.dart';

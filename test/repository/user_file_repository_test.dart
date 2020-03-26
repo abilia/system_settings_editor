@@ -75,7 +75,7 @@ void main() {
 
       when(
         mockClient.get(
-          imageIdUrl(baseUrl, userId, fileId),
+          fileIdUrl(baseUrl, userId, fileId),
           headers: authHeader(Fakes.token),
         ),
       ).thenAnswer(
@@ -111,8 +111,7 @@ void main() {
 
       File file = MemoryFileSystem().file('hej.txt');
       await file.writeAsString('hej');
-      when(mockFileStorage.getFile(userFileId))
-          .thenAnswer((_) => Future.value(file));
+      when(mockFileStorage.getFile(userFileId)).thenAnswer((_) => file);
       final MultipartRequest mockMultipartRequest = MockMultipartRequest();
       final streamedResponse =
           StreamedResponse(ByteStream.fromBytes(await file.readAsBytes()), 200);

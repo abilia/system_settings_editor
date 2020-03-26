@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
@@ -13,17 +14,22 @@ import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/background/all.dart';
 
+import 'storage/all.dart';
+
 void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  initServices();
+  await initServices();
   final baseUrl = await BaseUrlDb().initialize(T1);
   runApp(App(baseUrl: baseUrl));
 }
 
-void initServices() {
+Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   ensureNotificationPluginInitialized();
-  GetItInitializer().init();
+  final documentDirectory = await getApplicationDocumentsDirectory();
+  GetItInitializer()
+    ..fileStorage = FileStorage(documentDirectory.path)
+    ..init();
 }
 
 class App extends StatelessWidget {

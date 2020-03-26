@@ -6,6 +6,7 @@ import 'package:http/src/base_client.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/db/user_file_db.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/models/image_thumb.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 
@@ -49,7 +50,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     final dirtyFiles = await userFileDb.getAllDirty();
     if (dirtyFiles.isEmpty) return true;
     for (var dirtyFile in dirtyFiles.map((dirty) => dirty.model)) {
-      final file = await fileStorage.getFile(dirtyFile.id);
+      final file = fileStorage.getFile(dirtyFile.id);
       final postFileSuccess = await postFileData(
         file,
         dirtyFile.sha1,
@@ -72,11 +73,11 @@ class UserFileRepository extends DataRepository<UserFile> {
     return false;
   }
 
-  Future<void> _handleSuccessfulSync(
-      List<SyncResponse> syncResponses, Iterable<DbUserFile> dirtyFiles) async {
+  Future<void> _handleSuccessfulSync(List<SyncResponse> syncResponses,
+      Iterable<DbModel<UserFile>> dirtyFiles) async {
     final toUpdate = syncResponses.map((response) async {
       final fileBeforeSync =
-          dirtyFiles.firstWhere((file) => file.userFile.id == response.id);
+          dirtyFiles.firstWhere((file) => file.model.id == response.id);
       final currentFile = await userFileDb.getById(response.id);
       return currentFile.copyWith(
           revision: response.newRevision,
@@ -163,14 +164,25 @@ class UserFileRepository extends DataRepository<UserFile> {
   Future<bool> getAndStoreFileData(
       Iterable<DbModel<UserFile>> dbUserFiles) async {
     for (final dbUserFile in dbUserFiles) {
+      final fileUrl = dbUserFile.model.isImage
+          ? imageThumbUrl(
+              baseUrl: baseUrl,
+              userId: userId,
+              imageFileId: dbUserFile.model.id,
+            )
+          : fileIdUrl(baseUrl, userId, dbUserFile.model.id);
       final fileResponse = await httpClient.get(
-        imageIdUrl(baseUrl, userId, dbUserFile.model.id),
+        fileUrl,
         headers: authHeader(authToken),
       );
       if (fileResponse.statusCode == 200) {
-        await fileStorage.storeFile(
-            fileResponse.bodyBytes, dbUserFile.model.id);
-        print('File ${dbUserFile.model.id} downloaded and stored');
+        if (dbUserFile.model.isImage) {
+          await fileStorage.storeImageThumb(
+              fileResponse.bodyBytes, ImageThumb(id: dbUserFile.model.id));
+        } else {
+          await fileStorage.storeFile(
+              fileResponse.bodyBytes, dbUserFile.model.id);
+        }
       } else {
         return false;
       }

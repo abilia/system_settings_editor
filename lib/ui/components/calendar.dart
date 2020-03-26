@@ -33,6 +33,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
     _clockBloc = BlocProvider.of<ClockBloc>(context);
     _scrollPositionBloc = ScrollPositionBloc();
     _sortableBloc = BlocProvider.of<SortableBloc>(context);
+    BlocProvider.of<UserFileBloc>(context).add(LoadUserFiles());
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
