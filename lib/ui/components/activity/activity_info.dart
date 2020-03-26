@@ -78,7 +78,7 @@ class ActivityInfo extends StatelessWidget {
                     if (hasImage && !hasAttachment)
                       Flexible(
                         flex: 8,
-                        child: FadeInLocalImage(
+                        child: FadeInCalendarImage(
                           imageFileId: activity.fileId,
                           imageFilePath: activity.icon,
                           width: 327.0,
@@ -177,7 +177,7 @@ class TopInfo extends StatelessWidget {
         if (imageToTheLeft)
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
-            child: FadeInLocalImage(
+            child: FadeInCalendarImage(
               imageFileId: activity.fileId,
               imageFilePath: activity.icon,
               height: 109,
@@ -211,7 +211,7 @@ class TopInfo extends StatelessWidget {
                 ),
               ),
               if (imageBelow)
-                FadeInLocalImage(
+                FadeInCalendarImage(
                   imageFileId: activity.fileId,
                   imageFilePath: activity.icon,
                   height: 109,

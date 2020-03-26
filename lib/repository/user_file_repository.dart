@@ -50,7 +50,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     final dirtyFiles = await userFileDb.getAllDirty();
     if (dirtyFiles.isEmpty) return true;
     for (var dirtyFile in dirtyFiles.map((dirty) => dirty.model)) {
-      final file = await fileStorage.getFile(dirtyFile.id);
+      final file = fileStorage.getFile(dirtyFile.id);
       final postFileSuccess = await postFileData(
         file,
         dirtyFile.sha1,
