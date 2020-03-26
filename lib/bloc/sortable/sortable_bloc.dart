@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -35,6 +36,9 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     if (event is LoadSortables) {
       yield* _mapLoadSortablesToState();
     }
+    if (event is ImageArchiveImageAdded) {
+      yield* _mapImageArchiveImageAddedToState(event);
+    }
   }
 
   Stream<SortableState> _mapLoadSortablesToState() async* {
@@ -43,6 +47,27 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       yield SortablesLoaded(sortables: sortables);
     } catch (_) {
       yield SortablesLoadedFailed();
+    }
+  }
+
+  _mapImageArchiveImageAddedToState(ImageArchiveImageAdded event) {
+    final currentState = state;
+    if (currentState is SortablesLoaded) {
+      final uploadFolder = currentState.sortables
+          .firstWhere((s) => json.decode(s.data)['upload']);
+      final name = event.imagePath.split('/').last.split('.').first;
+      final sortableData = SortableData(
+        name: '',
+        file: event.imagePath,
+        fileId: event.imageId,
+      ).toJson();
+      final newSortable = Sortable.createNew(
+        type: SortableType.imageArchive,
+        data: json.encode(sortableData),
+        groupId: uploadFolder.id,
+        sortOrder: 'A', // TODO generate more correct sort order
+      );
+      sortableRepository.save([newSortable]);
     }
   }
 

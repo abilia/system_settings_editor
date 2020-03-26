@@ -70,7 +70,7 @@ void main() {
       await file.writeAsBytes(fileContent);
 
       // Act
-      userFileBloc.add(FileAdded(fileId, file));
+      userFileBloc.add(ImageAdded(fileId, file));
 
       final expectedFile = UserFile(
         id: fileId,
@@ -106,8 +106,8 @@ void main() {
       await file2.writeAsString('hej');
 
       // Act
-      userFileBloc.add(FileAdded(fileId, file));
-      userFileBloc.add(FileAdded(fileId2, file2));
+      userFileBloc.add(ImageAdded(fileId, file));
+      userFileBloc.add(ImageAdded(fileId2, file2));
 
       // Assert
       final expectedFile1 = UserFile(

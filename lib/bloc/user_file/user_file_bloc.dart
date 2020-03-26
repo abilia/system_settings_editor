@@ -43,7 +43,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> mapEventToState(
     UserFileEvent event,
   ) async* {
-    if (event is FileAdded) {
+    if (event is ImageAdded) {
       yield* _mapFileAddedToState(event);
     }
     if (event is LoadUserFiles) {
@@ -57,15 +57,11 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   }
 
   Stream<UserFileState> _mapFileAddedToState(
-    FileAdded event,
+    ImageAdded event,
   ) async* {
     final originalBytes = await event.file.readAsBytes();
-    final originalContentType =
-        lookupMimeType(event.file.path, headerBytes: originalBytes);
-    final isImage = originalContentType.startsWith('image');
-    final userFile = isImage
-        ? await handleImage(originalBytes, event.id, event.file.path)
-        : await handleNonImage(originalBytes, event.id, event.file.path);
+    final userFile =
+        await handleImage(originalBytes, event.id, event.file.path);
     syncBloc.add(FileSaved());
     final currentState = state;
     if (currentState is UserFilesLoaded) {
@@ -104,16 +100,6 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     await fileStorage.storeFile(imageResult.originalImage, id);
     await fileStorage.storeImageThumb(
         imageResult.thumbImage, ImageThumb(id: id));
-    return userFile;
-  }
-
-  Future<UserFile> handleNonImage(
-      List<int> originalBytes, String id, String path) async {
-    final userFile = generateUserFile(id, path, originalBytes);
-    await Future.wait([
-      userFileRepository.save([userFile]),
-      fileStorage.storeFile(originalBytes, id),
-    ]);
     return userFile;
   }
 }

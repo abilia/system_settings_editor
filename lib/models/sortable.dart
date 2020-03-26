@@ -151,4 +151,13 @@ class SortableData {
     this.icon,
     this.file,
   });
+
+  toJson() {
+    return {
+      'name': name,
+      'fileId': fileId,
+      'icon': icon,
+      'file': file,
+    };
+  }
 }
