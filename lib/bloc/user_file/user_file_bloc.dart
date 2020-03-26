@@ -142,7 +142,7 @@ ImageResult imageProcessingIsolate(List<int> originalData) {
     height: height,
     width: width,
   );
-  final jpgFile = img.encodeJpg(bakedOrientationImage, quality: 20);
+  final jpgFile = img.encodeJpg(bakedOrientationImage, quality: 50);
   final thumbJpgFile = img.encodeJpg(thumbImage, quality: 50);
   return ImageResult(originalImage: jpgFile, thumbImage: thumbJpgFile);
 }
