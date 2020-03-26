@@ -30,5 +30,9 @@ void main() {
         userFileWith(path: 'apa.txt', contentType: 'application/octet-stream')
             .isImage,
         false);
+    expect(
+        userFileWith(path: 'apa.JPG', contentType: 'application/octet-stream')
+            .isImage,
+        true);
   });
 }
