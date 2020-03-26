@@ -4,15 +4,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:seagull/models/image_thumb.dart';
 
 class FileStorage {
-  String _storageDirectory;
+  final String _storageDirectory;
 
   static const folder = 'seagull';
 
-  FileStorage() {
-    getApplicationDocumentsDirectory().then((directory) {
-      _storageDirectory = directory.path;
-    });
-  }
+  FileStorage(this._storageDirectory);
 
   Future<void> storeFile(List<int> fileBytes, String fileName) async {
     final directory = await getApplicationDocumentsDirectory();
