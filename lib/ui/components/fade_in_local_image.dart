@@ -32,39 +32,34 @@ class FadeInLocalImage extends StatelessWidget {
 
     return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
-      if (userFileState is UserFilesLoaded &&
-          userFileState.userFiles.any((f) => f.id == imageFileId)) {
-        final file = fileStorage.getImageThumb(ImageThumb(
-          id: imageFileId,
-        ));
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: borderRadius,
-            color: AbiliaColors.white,
-          ),
-          child: Hero(
-            tag: imageFileId,
-            child: FadeInImage(
-              width: width,
-              height: height,
-              image: Image.file(
-                file,
-              ).image,
-              placeholder: MemoryImage(kTransparentImage),
-            ),
-          ),
-        );
-      } else {
-        return Hero(
+      final userFileLoaded = userFileState is UserFilesLoaded &&
+          userFileState.userFiles.any((f) => f.id == imageFileId);
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+          color: AbiliaColors.white,
+        ),
+        child: Hero(
           tag: imageFileId,
-          child: FadeInCalendarImage(
-            imageFileId: imageFileId,
-            imageFilePath: imageFilePath,
-            height: height,
-            width: width,
-          ),
-        );
-      }
+          child: userFileLoaded
+              ? FadeInImage(
+                  width: width,
+                  height: height,
+                  image: Image.file(
+                    fileStorage.getImageThumb(ImageThumb(
+                      id: imageFileId,
+                    )),
+                  ).image,
+                  placeholder: MemoryImage(kTransparentImage),
+                )
+              : FadeInNetworkImage(
+                  imageFileId: imageFileId,
+                  imageFilePath: imageFilePath,
+                  height: height,
+                  width: width,
+                ),
+        ),
+      );
     });
   }
 }

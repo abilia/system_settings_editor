@@ -14,7 +14,7 @@ void main() {
       );
 
   testWidgets('FadeInCalendarImage', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithAuthBlocProvider(FadeInCalendarImage(
+    await tester.pumpWidget(wrapWithAuthBlocProvider(FadeInNetworkImage(
       imageFileId: 'fileid',
       imageFilePath: 'path',
     )));

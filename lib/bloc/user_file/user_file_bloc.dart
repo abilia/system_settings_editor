@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
 import 'package:crypto/crypto.dart';
 import 'package:bloc/bloc.dart';
@@ -94,27 +95,15 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
 
   Future<UserFile> handleImage(
       List<int> originalBytes, String id, String path) async {
-    final bakedOrientationImage =
-        img.bakeOrientation(img.decodeImage(originalBytes));
-    int width, height;
-    if (bakedOrientationImage.height > bakedOrientationImage.width) {
-      height = ImageThumb.DEFAULT_THUMB_SIZE;
-    } else {
-      width = ImageThumb.DEFAULT_THUMB_SIZE;
-    }
-    final thumbImage = img.copyResize(
-      bakedOrientationImage,
-      height: height,
-      width: width,
-    );
-    final jpgFile = img.encodeJpg(bakedOrientationImage, quality: 20);
-    final thumbJpgFile = img.encodeJpg(thumbImage, quality: 20);
+    final ImageResult imageResult = await compute<List<int>, ImageResult>(
+        imageProcessingIsolate, originalBytes);
 
-    final userFile = generateUserFile(id, path, jpgFile);
+    final userFile = generateUserFile(id, path, imageResult.originalImage);
 
     await userFileRepository.save([userFile]);
-    await fileStorage.storeFile(jpgFile, id);
-    await fileStorage.storeImageThumb(thumbJpgFile, ImageThumb(id: id));
+    await fileStorage.storeFile(imageResult.originalImage, id);
+    await fileStorage.storeImageThumb(
+        imageResult.thumbImage, ImageThumb(id: id));
     return userFile;
   }
 
@@ -127,4 +116,33 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     ]);
     return userFile;
   }
+}
+
+class ImageResult {
+  final List<int> originalImage;
+  final List<int> thumbImage;
+
+  ImageResult({
+    this.originalImage,
+    this.thumbImage,
+  });
+}
+
+ImageResult imageProcessingIsolate(List<int> originalData) {
+  final bakedOrientationImage =
+      img.bakeOrientation(img.decodeImage(originalData));
+  int width, height;
+  if (bakedOrientationImage.height > bakedOrientationImage.width) {
+    height = ImageThumb.DEFAULT_THUMB_SIZE;
+  } else {
+    width = ImageThumb.DEFAULT_THUMB_SIZE;
+  }
+  final thumbImage = img.copyResize(
+    bakedOrientationImage,
+    height: height,
+    width: width,
+  );
+  final jpgFile = img.encodeJpg(bakedOrientationImage, quality: 20);
+  final thumbJpgFile = img.encodeJpg(thumbImage, quality: 20);
+  return ImageResult(originalImage: jpgFile, thumbImage: thumbJpgFile);
 }

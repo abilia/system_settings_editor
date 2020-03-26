@@ -14,7 +14,7 @@ class NameAndPictureWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
     final imageClick = () async {
-      final imageId = await showViewDialog<String>(
+      final selectedImage = await showViewDialog<SelectedImage>(
         context: context,
         builder: (_) => MultiBlocProvider(
           providers: [
@@ -30,8 +30,13 @@ class NameAndPictureWidget extends StatelessWidget {
           child: SelectPictureDialog(previousImage: activity.fileId),
         ),
       );
-      if (imageId != null) {
-        BlocProvider.of<EditActivityBloc>(context).add(ImageSelected(imageId));
+      if (selectedImage != null) {
+        BlocProvider.of<EditActivityBloc>(context)
+            .add(ImageSelected(selectedImage.id));
+        if (selectedImage.newImage != null) {
+          BlocProvider.of<UserFileBloc>(context)
+              .add(FileAdded(selectedImage.id, selectedImage.newImage));
+        }
       }
     };
     return SizedBox(
