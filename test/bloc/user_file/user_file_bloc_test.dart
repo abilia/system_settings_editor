@@ -74,8 +74,8 @@ void main() {
 
       final expectedFile = UserFile(
         id: fileId,
-        sha1: '6584be044e97e76725933e55db4bc8e155b66970',
-        md5: 'c9f224037b29bd87f4930a2f6fc12257',
+        sha1: '9b19c33bb426e35611e56f74bc5fd0bc36a7b8ea',
+        md5: '235530b427469f824fdc82c20da055e2',
         path: 'seagull/$fileId',
         contentType: 'image/jpeg', // File is converted to jpeg
         fileSize: 614,
@@ -112,8 +112,8 @@ void main() {
       // Assert
       final expectedFile1 = UserFile(
         id: fileId,
-        sha1: '6584be044e97e76725933e55db4bc8e155b66970',
-        md5: 'c9f224037b29bd87f4930a2f6fc12257',
+        sha1: '9b19c33bb426e35611e56f74bc5fd0bc36a7b8ea',
+        md5: '235530b427469f824fdc82c20da055e2',
         path: 'seagull/$fileId',
         contentType: 'image/jpeg', // images are converted to jpeg
         fileSize: 614,
