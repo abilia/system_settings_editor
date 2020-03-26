@@ -32,8 +32,8 @@ class UserFile extends DataModel {
       );
 
   bool get isImage =>
-      contentType.startsWith('image') ||
-      IMAGE_ENDINGS.contains(path.split('.').last);
+      (contentType?.toLowerCase()?.startsWith('image') ?? false) ||
+      IMAGE_ENDINGS.contains(path?.split('.')?.last);
 }
 
 class DbUserFile extends DbModel<UserFile> {
