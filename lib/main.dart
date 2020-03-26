@@ -27,7 +27,9 @@ Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   ensureNotificationPluginInitialized();
   final documentDirectory = await getApplicationDocumentsDirectory();
-  GetItInitializer().init()..fileStorage = FileStorage(documentDirectory.path);
+  GetItInitializer()
+    ..fileStorage = FileStorage(documentDirectory.path)
+    ..init();
 }
 
 class App extends StatelessWidget {
