@@ -106,10 +106,15 @@ class CategoryWidget extends StatelessWidget {
                 key: TestKey.leftCategoryRadio,
                 onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
                     .add(ChangeActivity(activity.copyWith(category: v))),
-                leading: circle(),
+                child: Row(
+                  children: <Widget>[
+                    circle(),
+                    const SizedBox(width: 12),
+                    Text(translator.left)
+                  ],
+                ),
                 groupValue: activity.category,
                 value: Category.left,
-                label: Text(translator.left),
               ),
             ),
             const SizedBox(width: 8),
@@ -118,10 +123,15 @@ class CategoryWidget extends StatelessWidget {
                 key: TestKey.rightCategoryRadio,
                 onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
                     .add(ChangeActivity(activity.copyWith(category: v))),
-                leading: circle(),
+                child: Row(
+                  children: <Widget>[
+                    circle(),
+                    const SizedBox(width: 12),
+                    Text(translator.right)
+                  ],
+                ),
                 groupValue: activity.category,
                 value: Category.right,
-                label: Text(translator.right),
               ),
             ),
           ],
