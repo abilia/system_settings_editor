@@ -2,11 +2,11 @@ import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
 
-class ActivityUpdateResponse extends Equatable {
+class DataUpdateResponse extends Equatable {
   final int previousRevision;
   final UnmodifiableListView<DataRevisionUpdates> succeded, failed;
 
-  ActivityUpdateResponse.fromJson(Map<String, dynamic> json)
+  DataUpdateResponse.fromJson(Map<String, dynamic> json)
       : previousRevision = json['previousRevision'],
         failed = _parseDataRevisionUpdates(json['failedUpdates']),
         succeded = _parseDataRevisionUpdates(json['dataRevisionUpdates']);

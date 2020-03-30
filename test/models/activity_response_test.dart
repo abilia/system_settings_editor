@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/models/activity_update_response.dart';
+import 'package:seagull/models/all.dart';
 
 void main() {
   test('parse json', () {
@@ -19,7 +19,7 @@ void main() {
     }
     ''';
     final asJson = json.decode(response);
-    final data = ActivityUpdateResponse.fromJson(asJson);
+    final data = DataUpdateResponse.fromJson(asJson);
     expect(data.previousRevision, 100);
     expect(data.succeded.length, 1);
     final dataRevisionUpdate = data.succeded.first;
@@ -42,7 +42,7 @@ void main() {
     }
     ''';
     final asJson = json.decode(response);
-    final data = ActivityUpdateResponse.fromJson(asJson);
+    final data = DataUpdateResponse.fromJson(asJson);
     expect(data.previousRevision, 100);
     expect(data.succeded.length, 1);
     final dataRevisionUpdate = data.succeded.first;
@@ -64,7 +64,7 @@ void main() {
     }
     ''';
     final asJson = json.decode(response);
-    final data = ActivityUpdateResponse.fromJson(asJson);
+    final data = DataUpdateResponse.fromJson(asJson);
     expect(data.previousRevision, 100);
     expect(data.succeded.length, 0);
     expect(data.failed.length, 1);

@@ -48,6 +48,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   @override
   Future<bool> synchronize() async {
     final dirtyFiles = await userFileDb.getAllDirty();
+    print('Got some dirty files: ${dirtyFiles}');
     if (dirtyFiles.isEmpty) return true;
     for (var dirtyFile in dirtyFiles.map((dirty) => dirty.model)) {
       final file = fileStorage.getFile(dirtyFile.id);

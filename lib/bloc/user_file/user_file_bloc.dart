@@ -69,7 +69,6 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     } else {
       yield UserFilesLoaded([userFile]);
     }
-    // TODO Save new sortable to the uploads folder
   }
 
   UserFile generateUserFile(

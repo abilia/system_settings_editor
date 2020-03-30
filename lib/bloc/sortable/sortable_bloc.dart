@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/sortable_repository.dart';
 
@@ -14,10 +15,12 @@ part 'sortable_state.dart';
 class SortableBloc extends Bloc<SortableEvent, SortableState> {
   final SortableRepository sortableRepository;
   StreamSubscription pushSubscription;
+  final SyncBloc syncBloc;
 
   SortableBloc({
     @required this.sortableRepository,
     @required PushBloc pushBloc,
+    @required this.syncBloc,
   }) {
     pushSubscription = pushBloc.listen((state) {
       if (state is PushReceived) {
@@ -50,14 +53,16 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     }
   }
 
-  _mapImageArchiveImageAddedToState(ImageArchiveImageAdded event) {
+  Stream<SortableState> _mapImageArchiveImageAddedToState(
+      ImageArchiveImageAdded event) async* {
+    print('Image archive added: $event');
     final currentState = state;
     if (currentState is SortablesLoaded) {
-      final uploadFolder = currentState.sortables
-          .firstWhere((s) => json.decode(s.data)['upload']);
+      final uploadFolder =
+          await getOrGenerateUploadFolder(currentState.sortables);
       final name = event.imagePath.split('/').last.split('.').first;
       final sortableData = SortableData(
-        name: '',
+        name: name,
         file: event.imagePath,
         fileId: event.imageId,
       ).toJson();
@@ -67,7 +72,25 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
         groupId: uploadFolder.id,
         sortOrder: 'A', // TODO generate more correct sort order
       );
-      sortableRepository.save([newSortable]);
+      await sortableRepository.save([newSortable]);
+      print('Image archive sortable added now sending message to syncbloc');
+      syncBloc.add(SortableSaved());
+      print('yielding sortablesLoaded');
+      yield SortablesLoaded(
+        sortables: currentState.sortables.followedBy([newSortable]),
+      );
+    }
+  }
+
+  Future<Sortable> getOrGenerateUploadFolder(
+      Iterable<Sortable> sortables) async {
+    try {
+      return sortables.firstWhere(
+        (s) => json.decode(s.data)['upload'] ?? false,
+      );
+    } catch (e) {
+      print('No upload folder. Create one');
+      return sortableRepository.generateUploadFolder();
     }
   }
 
