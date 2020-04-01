@@ -614,6 +614,7 @@ void main() {
       await tester.tap(hourInputFinder);
       expect(find.text('00'), findsOneWidget);
       expect(find.text('01'), findsOneWidget);
+      await tester.pumpAndSettle();
 
       await tester.tap(okFinder);
       await tester.pumpAndSettle();
