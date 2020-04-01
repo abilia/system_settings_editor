@@ -64,9 +64,11 @@ class ActivityRepository extends DataRepository<Activity> {
       final activityBeforeSync = dirtyActivities
           .firstWhere((activity) => activity.model.id == success.id);
       final currentActivity = await activityDb.getById(success.id);
+      final dirtyDiff = currentActivity.dirty - activityBeforeSync.dirty;
       return currentActivity.copyWith(
         revision: success.revision,
-        dirty: currentActivity.dirty - activityBeforeSync.dirty,
+        dirty: max(dirtyDiff,
+            0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
       );
     });
     await activityDb.insert(await Future.wait(toUpdate));

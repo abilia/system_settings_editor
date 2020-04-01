@@ -51,7 +51,6 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
 
   Stream<SyncState> _mapFileSavedToState() async* {
     yield SyncPending();
-    print('Sync user files');
     final syncResult = await userFileRepository.synchronize();
     if (syncResult) {
       yield SyncDone();
@@ -63,7 +62,6 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
 
   Stream<SyncState> _mapSortableSavedToState() async* {
     yield SyncPending();
-    print('Sync sortables');
     final syncResult = await sortableRepository.synchronize();
     if (syncResult) {
       yield SyncDone();

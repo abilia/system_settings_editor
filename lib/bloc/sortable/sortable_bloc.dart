@@ -8,6 +8,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/sortable_repository.dart';
+import 'package:seagull/utils/all.dart';
 
 part 'sortable_event.dart';
 part 'sortable_state.dart';
@@ -55,7 +56,6 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
 
   Stream<SortableState> _mapImageArchiveImageAddedToState(
       ImageArchiveImageAdded event) async* {
-    print('Image archive added: $event');
     final currentState = state;
     if (currentState is SortablesLoaded) {
       final uploadFolder =
@@ -66,16 +66,23 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
         file: event.imagePath,
         fileId: event.imageId,
       ).toJson();
+
+      final uploadFolderContent = currentState.sortables
+          .where((s) => s.groupId == uploadFolder.id)
+          .toList();
+      uploadFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+      final sortOrder = uploadFolderContent.isEmpty
+          ? getStartSortOrder()
+          : calculateNextSortOrder(uploadFolderContent.last.sortOrder, 1);
+
       final newSortable = Sortable.createNew(
         type: SortableType.imageArchive,
         data: json.encode(sortableData),
         groupId: uploadFolder.id,
-        sortOrder: 'A', // TODO generate more correct sort order
+        sortOrder: sortOrder,
       );
       await sortableRepository.save([newSortable]);
-      print('Image archive sortable added now sending message to syncbloc');
       syncBloc.add(SortableSaved());
-      print('yielding sortablesLoaded');
       yield SortablesLoaded(
         sortables: currentState.sortables.followedBy([newSortable]),
       );

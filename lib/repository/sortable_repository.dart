@@ -5,6 +5,7 @@ import 'package:http/src/base_client.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import 'all.dart';
 
@@ -47,7 +48,6 @@ class SortableRepository extends DataRepository<Sortable> {
   @override
   Future<bool> synchronize() async {
     final dirtySortables = await sortableDb.getAllDirty();
-    print('Found dirty sortables: ${dirtySortables}');
     if (dirtySortables.isEmpty) return true;
     final res = await postSortables(dirtySortables);
     try {
@@ -70,9 +70,11 @@ class SortableRepository extends DataRepository<Sortable> {
       final sortableBeforeSync = dirtySortables
           .firstWhere((sortable) => sortable.model.id == success.id);
       final currentSortable = await sortableDb.getById(success.id);
+      final dirtyDiff = currentSortable.dirty - sortableBeforeSync.dirty;
       return currentSortable.copyWith(
         revision: success.revision,
-        dirty: currentSortable.dirty - sortableBeforeSync.dirty,
+        dirty: max(dirtyDiff,
+            0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
       );
     });
     await sortableDb.insert(await Future.wait(toUpdate));
@@ -88,7 +90,6 @@ class SortableRepository extends DataRepository<Sortable> {
 
   Future<DataUpdateResponse> postSortables(
       Iterable<DbModel<Sortable>> sortables) async {
-    print('Posting sortables: ${sortables}');
     final response = await httpClient.post(
       '$baseUrl/api/v1/data/$userId/sortableitems',
       headers: jsonAuthHeader(authToken),
@@ -96,7 +97,6 @@ class SortableRepository extends DataRepository<Sortable> {
     );
 
     if (response.statusCode == 200) {
-      print('Got successful post of sortables');
       return DataUpdateResponse.fromJson(json.decode(response.body));
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
@@ -105,17 +105,25 @@ class SortableRepository extends DataRepository<Sortable> {
   }
 
   Future<Sortable> generateUploadFolder() async {
+    final all = await sortableDb.getAllNonDeleted();
+    final root = all.where((s) => s.groupId == null).toList();
+    root.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+    final sortOrder = root.isEmpty
+        ? getStartSortOrder()
+        : calculateNextSortOrder(root.first.sortOrder, -1);
+
     final sortableData = SortableData(
       name: 'myAbilia',
       icon: '',
       upload: true,
     ).toJson();
+
     final upload = Sortable.createNew(
       type: SortableType.imageArchive,
       data: json.encode(sortableData),
       groupId: null,
       isGroup: true,
-      sortOrder: 'A',
+      sortOrder: sortOrder,
     );
     await sortableDb.insertAndAddDirty([upload]);
     return upload;

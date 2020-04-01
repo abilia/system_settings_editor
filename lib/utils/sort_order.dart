@@ -2,7 +2,6 @@
 /// Sort order algorithm copied from myAbilia frontend code with adjustments to dart.
 ///
 
-
 const String SORT_ORDER_CHARACTERS =
     '!"#\$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}';
 const START_CHAR = '!';
