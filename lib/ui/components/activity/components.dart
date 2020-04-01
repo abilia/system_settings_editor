@@ -169,7 +169,7 @@ class SwitchField extends StatelessWidget {
 }
 
 class RadioField<T> extends StatelessWidget {
-  final Widget leading, label;
+  final Widget child;
   final double heigth, width;
   final T value, groupValue;
   final ValueChanged<T> onChanged;
@@ -179,8 +179,7 @@ class RadioField<T> extends StatelessWidget {
     @required this.value,
     @required this.groupValue,
     @required this.onChanged,
-    this.leading,
-    this.label,
+    this.child,
     this.heigth = 56,
     this.width,
   }) : super(key: key);
@@ -213,13 +212,7 @@ class RadioField<T> extends StatelessWidget {
                       : Colors.transparent,
                 ),
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: <Widget>[
-                    if (leading != null) leading,
-                    const SizedBox(width: 12),
-                    if (label != null) label,
-                  ],
-                ),
+                child: child,
               ),
               Positioned(
                 top: -8,

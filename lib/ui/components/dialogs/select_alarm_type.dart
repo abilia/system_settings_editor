@@ -31,8 +31,13 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
             groupValue: alarm,
             onChanged: onChanged,
             value: Alarm.SoundAndVibration,
-            leading: Icon(AbiliaIcons.handi_alarm_vibration),
-            label: Text(translate.alarmAndVibration),
+            child: Row(
+              children: <Widget>[
+                Icon(AbiliaIcons.handi_alarm_vibration),
+                const SizedBox(width: 12),
+                Text(translate.alarmAndVibration)
+              ],
+            ),
           ),
           const SizedBox(height: 8.0),
           RadioField(
@@ -40,16 +45,26 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
             groupValue: alarm,
             onChanged: onChanged,
             value: Alarm.Vibration,
-            leading: Icon(AbiliaIcons.handi_vibration),
-            label: Text(translate.vibration),
+            child: Row(
+              children: <Widget>[
+                Icon(AbiliaIcons.handi_vibration),
+                const SizedBox(width: 12),
+                Text(translate.vibration),
+              ],
+            ),
           ),
           const SizedBox(height: 8.0),
           RadioField(
             groupValue: alarm,
             onChanged: onChanged,
             value: Alarm.NoAlarm,
-            leading: Icon(AbiliaIcons.handi_no_alarm_vibration),
-            label: Text(translate.noAlarm),
+            child: Row(
+              children: <Widget>[
+                Icon(AbiliaIcons.handi_no_alarm_vibration),
+                const SizedBox(width: 12),
+                Text(translate.noAlarm),
+              ],
+            ),
           ),
         ],
       ),

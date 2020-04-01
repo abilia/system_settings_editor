@@ -126,7 +126,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
     return ViewDialog(
       expanded: true,
       heading: Text(widget.heading, style: theme.textTheme.title),
-      onOk: inputTime != null
+      onOk: inputTime != null && inputTime != widget.time
           ? () => Navigator.of(context).maybePop<TimeOfDay>(inputTime)
           : null,
       deleteButton: widget.deleteButton,
@@ -135,9 +135,12 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
             textSelectionColor: AbiliaColors.white,
             textTheme: theme.textTheme.copyWith(subhead: textStyle)),
         child: Padding(
-          padding: const EdgeInsets.all(61.0),
+          padding: twelveHourClock
+              ? const EdgeInsets.only(top: 45.0, left: 16.0)
+              : const EdgeInsets.only(top: 66.0, left: 4.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               _InputField(
                 key: TestKey.hourTextInput,
@@ -154,6 +157,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
                 child: Text(
                   ':',
                   style: textStyle,
+                  textAlign: TextAlign.end,
                 ),
               ),
               _InputField(
@@ -166,22 +170,33 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
               ),
               if (twelveHourClock)
                 Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
+                  padding: const EdgeInsets.only(left: 12.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       RadioField(
+                        width: 63.0,
+                        heigth: 48.0,
                         key: TestKey.amRadioField,
-                        leading: Text(Translator.of(context).translate.am),
+                        child: Text(
+                          Translator.of(context).translate.am,
+                          style: theme.textTheme.body2,
+                          textAlign: TextAlign.center,
+                        ),
                         value: DayPeriod.am,
                         groupValue: period,
                         onChanged: (p) => setState(() => period = p),
                       ),
                       SizedBox(height: 6),
                       RadioField(
+                        width: 63.0,
+                        heigth: 48.0,
                         key: TestKey.pmRadioField,
-                        leading: Text(Translator.of(context).translate.pm),
+                        child: Text(
+                          Translator.of(context).translate.pm,
+                          style: theme.textTheme.body2,
+                        ),
                         value: DayPeriod.pm,
                         groupValue: period,
                         onChanged: (p) => setState(() => period = p),

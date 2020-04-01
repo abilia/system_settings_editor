@@ -21,8 +21,13 @@ class SelectAvailableForDialog extends StatelessWidget {
             groupValue: secret,
             onChanged: Navigator.of(context).maybePop,
             value: false,
-            leading: Icon(AbiliaIcons.user_group),
-            label: Text(translate.meAndSupportPersons),
+            child: Row(
+              children: <Widget>[
+                Icon(AbiliaIcons.user_group),
+                const SizedBox(width: 12),
+                Text(translate.meAndSupportPersons),
+              ],
+            ),
           ),
           SizedBox(height: 8.0),
           RadioField(
@@ -30,8 +35,13 @@ class SelectAvailableForDialog extends StatelessWidget {
             groupValue: secret,
             onChanged: Navigator.of(context).maybePop,
             value: true,
-            leading: Icon(AbiliaIcons.password_protection),
-            label: Text(translate.onlyMe),
+            child: Row(
+              children: <Widget>[
+                Icon(AbiliaIcons.password_protection),
+                const SizedBox(width: 12),
+                Text(translate.onlyMe),
+              ],
+            ),
           ),
         ],
       ),
