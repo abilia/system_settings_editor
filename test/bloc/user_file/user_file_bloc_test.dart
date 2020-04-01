@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:file/memory.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -68,14 +69,15 @@ void main() {
       final String filePath = 'test.dart';
       File file = MemoryFileSystem().file(filePath);
       await file.writeAsBytes(fileContent);
+      final processedFile1 = imageProcessingIsolate(fileContent);
 
       // Act
       userFileBloc.add(ImageAdded(fileId, file));
 
       final expectedFile = UserFile(
         id: fileId,
-        sha1: '6584be044e97e76725933e55db4bc8e155b66970',
-        md5: 'c9f224037b29bd87f4930a2f6fc12257',
+        sha1: sha1.convert(processedFile1.originalImage).toString(),
+        md5: md5.convert(processedFile1.originalImage).toString(),
         path: 'seagull/$fileId',
         contentType: 'image/jpeg', // File is converted to jpeg
         fileSize: 614,
@@ -99,11 +101,12 @@ void main() {
       final filePath1 = 'test';
       File file = MemoryFileSystem().file(filePath1);
       await file.writeAsBytes(fileContent);
+      final processedFile1 = imageProcessingIsolate(fileContent);
 
       final fileId2 = 'fileId1';
       final filePath2 = 'test.dart';
       File file2 = MemoryFileSystem().file(filePath2);
-      await file2.writeAsString('hej');
+      await file2.writeAsBytes(fileContent);
 
       // Act
       userFileBloc.add(ImageAdded(fileId, file));
@@ -112,21 +115,21 @@ void main() {
       // Assert
       final expectedFile1 = UserFile(
         id: fileId,
-        sha1: '6584be044e97e76725933e55db4bc8e155b66970',
-        md5: 'c9f224037b29bd87f4930a2f6fc12257',
+        sha1: sha1.convert(processedFile1.originalImage).toString(),
+        md5: md5.convert(processedFile1.originalImage).toString(),
         path: 'seagull/$fileId',
         contentType: 'image/jpeg', // images are converted to jpeg
-        fileSize: 614,
+        fileSize: processedFile1.originalImage.length,
         deleted: false,
       );
 
       final expectedFile2 = UserFile(
         id: fileId2,
-        sha1: 'c412b37f8c0484e6db8bce177ae88c5443b26e92',
-        md5: '541c57960bb997942655d14e3b9607f9',
+        sha1: sha1.convert(processedFile1.originalImage).toString(),
+        md5: md5.convert(processedFile1.originalImage).toString(),
         path: 'seagull/$fileId2',
-        contentType: 'text/x-dart',
-        fileSize: 3,
+        contentType: 'image/jpeg',
+        fileSize: processedFile1.originalImage.length,
         deleted: false,
       );
 
