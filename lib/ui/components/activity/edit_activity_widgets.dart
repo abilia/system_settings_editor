@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
@@ -8,8 +10,13 @@ import 'package:seagull/ui/components/all.dart';
 
 class NameAndPictureWidget extends StatelessWidget {
   final Activity activity;
+  final File newImage;
 
-  const NameAndPictureWidget(this.activity, {Key key}) : super(key: key);
+  const NameAndPictureWidget(
+    this.activity, {
+    Key key,
+    this.newImage,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -32,15 +39,13 @@ class NameAndPictureWidget extends StatelessWidget {
       );
       if (selectedImage != null) {
         BlocProvider.of<EditActivityBloc>(context)
-            .add(ImageSelected(selectedImage.id));
-        if (selectedImage.newImage != null) {
-          BlocProvider.of<UserFileBloc>(context)
-              .add(ImageAdded(selectedImage.id, selectedImage.newImage));
-          BlocProvider.of<SortableBloc>(context).add(ImageArchiveImageAdded(
-            selectedImage.id,
-            selectedImage.newImage.path,
-          ));
-        }
+            .add(ImageSelected(selectedImage.id, selectedImage.newImage));
+        BlocProvider.of<UserFileBloc>(context)
+            .add(ImageAdded(selectedImage.id, selectedImage.newImage));
+        BlocProvider.of<SortableBloc>(context).add(ImageArchiveImageAdded(
+          selectedImage.id,
+          selectedImage.newImage.path,
+        ));
       }
     };
     return SizedBox(
@@ -55,6 +60,7 @@ class NameAndPictureWidget extends StatelessWidget {
                     width: 84,
                     imageFileId: activity.fileId,
                     imageFilePath: activity.icon,
+                    imageFile: newImage,
                   ),
                 )
               : LinedBorder(

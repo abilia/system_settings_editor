@@ -38,7 +38,10 @@ class EditActivityPage extends StatelessWidget {
           body: ListView(
             padding: const EdgeInsets.fromLTRB(0, 4.0, 12, 52.0),
             children: <Widget>[
-              separated(NameAndPictureWidget(activity)),
+              separated(NameAndPictureWidget(
+                activity,
+                newImage: state.newImage,
+              )),
               separated(DateAndTimeWidget(activity, today: today)),
               separated(CategoryWidget(activity)),
               CollapsableWidget(

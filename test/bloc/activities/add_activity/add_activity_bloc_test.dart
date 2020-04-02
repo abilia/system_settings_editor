@@ -14,8 +14,8 @@ void main() {
     // Arrange
     final activity =
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act // Assert
     expect(editActivityBloc.initialState.activity, activity);
   });
@@ -23,8 +23,8 @@ void main() {
     // Arrange
     final activity =
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act // Assert
     expect(editActivityBloc.initialState.canSave, isFalse);
   });
@@ -34,8 +34,8 @@ void main() {
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
     final activityWithTitle = activity.copyWith(title: 'new title');
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
     editActivityBloc.add(ChangeActivity(activityWithTitle));
 
@@ -54,8 +54,8 @@ void main() {
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
     final activityWithTitle = activity.copyWith(title: 'new title');
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
     editActivityBloc.add(SaveActivity());
     editActivityBloc.add(ChangeActivity(activityWithTitle));
@@ -95,8 +95,8 @@ void main() {
       reminderBefore: [],
     );
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
     editActivityBloc.add(SaveActivity());
 
@@ -122,8 +122,8 @@ void main() {
         startTime: expetedNewDate.millisecondsSinceEpoch,
         endTime: expetedNewDate.millisecondsSinceEpoch);
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
     editActivityBloc.add(ChangeDate(newDate));
 
@@ -154,8 +154,8 @@ void main() {
         startTime: expetedNewDate.millisecondsSinceEpoch,
         endTime: expetedNewDate.millisecondsSinceEpoch);
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
     editActivityBloc.add(ChangeStartTime(newStartTime));
@@ -185,8 +185,8 @@ void main() {
     final expetedNewActivity =
         activity.copyWith(duration: expectedDuration.inMilliseconds);
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
     editActivityBloc.add(ChangeEndTime(newEndTime));
@@ -218,8 +218,8 @@ void main() {
     final expetedNewActivity =
         activity.copyWith(duration: expectedDuration.inMilliseconds);
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
     editActivityBloc.add(ChangeEndTime(newEndTime));
@@ -252,8 +252,8 @@ void main() {
       hour1Reminder.inMilliseconds
     ]);
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
     editActivityBloc.add(AddOrRemoveReminder(min15Reminder));
