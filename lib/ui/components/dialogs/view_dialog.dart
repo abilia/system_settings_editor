@@ -81,29 +81,36 @@ class ViewDialog extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         const SizedBox(height: 8),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 8.0),
-          child: Stack(
-            children: <Widget>[
-              if (deleteButton != null) deleteButton,
-              Align(
-                alignment: Alignment.centerRight,
-                child: RoundFloatingButton(
-                  AbiliaIcons.ok,
-                  key: TestKey.okDialog,
-                  onTap: onOk,
+        Container(
+          // This container is only to prevent closing of the dialog when clicking just outside the buttons.
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 8.0),
+            child: Stack(
+              children: <Widget>[
+                if (deleteButton != null) deleteButton,
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: RoundFloatingButton(
+                    AbiliaIcons.ok,
+                    key: TestKey.okDialog,
+                    onTap: onOk,
+                  ),
                 ),
-              ),
-              AnimatedAlign(
-                duration: 200.milliseconds(),
-                alignment: hasOk ? Alignment(0.6, 1.0) : Alignment.centerRight,
-                child: RoundFloatingButton(
-                  AbiliaIcons.close_program,
-                  key: TestKey.closeDialog,
-                  onTap: Navigator.of(context).maybePop,
+                AnimatedAlign(
+                  duration: 200.milliseconds(),
+                  alignment:
+                      hasOk ? Alignment(0.6, 1.0) : Alignment.centerRight,
+                  child: RoundFloatingButton(
+                    AbiliaIcons.close_program,
+                    key: TestKey.closeDialog,
+                    onTap: Navigator.of(context).maybePop,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         Flexible(
