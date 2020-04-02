@@ -31,12 +31,20 @@ class CalendarPage extends StatelessWidget {
       authToken: authenticatedState.token,
       multipartRequestBuilder: GetIt.I<MultipartRequestBuilder>(),
     );
+    final sortableRepository = SortableRepository(
+      baseUrl: authenticatedState.userRepository.baseUrl,
+      client: authenticatedState.userRepository.httpClient,
+      sortableDb: GetIt.I<SortableDb>(),
+      userId: authenticatedState.userId,
+      authToken: authenticatedState.token,
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider<SyncBloc>(
           create: (context) => SyncBloc(
             activityRepository: activityRepository,
             userFileRepository: userFileRepository,
+            sortableRepository: sortableRepository,
           ),
         ),
         BlocProvider<ActivitiesBloc>(
@@ -56,13 +64,8 @@ class CalendarPage extends StatelessWidget {
         ),
         BlocProvider<SortableBloc>(
           create: (context) => SortableBloc(
-            sortableRepository: SortableRepository(
-              baseUrl: authenticatedState.userRepository.baseUrl,
-              client: authenticatedState.userRepository.httpClient,
-              sortableDb: GetIt.I<SortableDb>(),
-              userId: authenticatedState.userId,
-              authToken: authenticatedState.token,
-            ),
+            sortableRepository: sortableRepository,
+            syncBloc: BlocProvider.of<SyncBloc>(context),
             pushBloc: BlocProvider.of<PushBloc>(context),
           )..add(LoadSortables()),
         ),
@@ -130,8 +133,7 @@ class CalendarPage extends StatelessWidget {
 
   void _alarmListener(BuildContext context, AlarmStateBase state) async {
     if (state is AlarmState) {
-      await GetIt.I<AlarmNavigator>().pushAlarm(
-          context, state.alarm);
+      await GetIt.I<AlarmNavigator>().pushAlarm(context, state.alarm);
     }
   }
 }

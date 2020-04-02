@@ -12,10 +12,12 @@ part 'sync_state.dart';
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final ActivityRepository activityRepository;
   final UserFileRepository userFileRepository;
+  final SortableRepository sortableRepository;
 
   SyncBloc({
     @required this.activityRepository,
     @required this.userFileRepository,
+    @required this.sortableRepository,
   });
 
   @override
@@ -30,6 +32,9 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     }
     if (event is FileSaved) {
       yield* _mapFileSavedToState();
+    }
+    if (event is SortableSaved) {
+      yield* _mapSortableSavedToState();
     }
   }
 
@@ -52,6 +57,17 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     } else {
       yield SyncFailed();
       Future.delayed(1.minutes(), () => add(FileSaved()));
+    }
+  }
+
+  Stream<SyncState> _mapSortableSavedToState() async* {
+    yield SyncPending();
+    final syncResult = await sortableRepository.synchronize();
+    if (syncResult) {
+      yield SyncDone();
+    } else {
+      yield SyncFailed();
+      Future.delayed(1.minutes(), () => add(SortableSaved()));
     }
   }
 }

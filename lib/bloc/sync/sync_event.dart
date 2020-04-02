@@ -9,3 +9,5 @@ abstract class SyncEvent extends Equatable {
 class ActivitySaved extends SyncEvent {}
 
 class FileSaved extends SyncEvent {}
+
+class SortableSaved extends SyncEvent {}

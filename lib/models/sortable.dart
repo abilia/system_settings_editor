@@ -102,10 +102,17 @@ class DbSortable extends DbModel<Sortable> {
       );
 
   @override
-  Map<String, dynamic> toJson() {
-    // TODO: implement toJson
-    return null;
-  }
+  Map<String, dynamic> toJson() => {
+        'id': sortable.id,
+        'type': sortable.type,
+        'data': sortable.data,
+        'groupId': sortable.groupId,
+        'sortOrder': sortable.sortOrder,
+        'deleted': sortable.deleted,
+        'group': sortable.isGroup,
+        'isVisible': sortable.isVisible,
+        'revision': revision,
+      };
 
   static DbSortable fromDbMap(Map<String, dynamic> dbRow) => DbSortable._(
         sortable: Sortable._(
@@ -144,11 +151,23 @@ class DbSortable extends DbModel<Sortable> {
 
 class SortableData {
   final String name, fileId, icon, file;
+  final bool upload;
 
   SortableData({
     this.name,
     this.fileId,
     this.icon,
     this.file,
+    this.upload,
   });
+
+  toJson() {
+    return {
+      'name': name,
+      'fileId': fileId,
+      'icon': icon,
+      'file': file,
+      'upload': upload,
+    };
+  }
 }

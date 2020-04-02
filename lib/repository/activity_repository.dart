@@ -39,35 +39,37 @@ class ActivityRepository extends DataRepository<Activity> {
   Future<bool> synchronize() async {
     return synchronized(() async {
       final dirtyActivities = await activityDb.getAllDirty();
-      if (dirtyActivities.isNotEmpty) {
-        try {
-          final res = await postActivities(dirtyActivities);
-          if (res.succeded.isNotEmpty) {
-            // Update revision and dirty for all successful saves
-            await _handleSuccessfullSync(res.succeded, dirtyActivities);
-          }
-          if (res.failed.isNotEmpty) {
-            // If we have failed a fetch from backend needs to be performed
-            await _handleFailedSync(res.failed);
-          }
-        } catch (e) {
-          print('Failed to synchronize with backend $e');
-          return false;
+      if (dirtyActivities.isEmpty) return true;
+      try {
+        final res = await postActivities(dirtyActivities);
+        if (res.succeded.isNotEmpty) {
+          // Update revision and dirty for all successful saves
+          await _handleSuccessfullSync(res.succeded, dirtyActivities);
         }
+        if (res.failed.isNotEmpty) {
+          // If we have failed a fetch from backend needs to be performed
+          await _handleFailedSync(res.failed);
+        }
+      } catch (e) {
+        print('Failed to synchronize with backend $e');
+        return false;
       }
       return true;
     });
   }
 
-  Future _handleSuccessfullSync(Iterable<DataRevisionUpdates> succeded,
+  Future _handleSuccessfullSync(Iterable<DataRevisionUpdates> succeeded,
       Iterable<DbModel<Activity>> dirtyActivities) async {
-    final toUpdate = succeded.map((success) async {
+    final toUpdate = succeeded.map((success) async {
       final activityBeforeSync = dirtyActivities
           .firstWhere((activity) => activity.model.id == success.id);
       final currentActivity = await activityDb.getById(success.id);
+      final dirtyDiff = currentActivity.dirty - activityBeforeSync.dirty;
       return currentActivity.copyWith(
-          revision: success.revision,
-          dirty: currentActivity.dirty - activityBeforeSync.dirty);
+        revision: success.revision,
+        dirty: max(dirtyDiff,
+            0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
+      );
     });
     await activityDb.insert(await Future.wait(toUpdate));
   }
@@ -89,7 +91,7 @@ class ActivityRepository extends DataRepository<Activity> {
   }
 
   @visibleForTesting
-  Future<ActivityUpdateResponse> postActivities(
+  Future<DataUpdateResponse> postActivities(
     Iterable<DbModel<Activity>> activities,
   ) async {
     final response = await httpClient.post(
@@ -100,7 +102,7 @@ class ActivityRepository extends DataRepository<Activity> {
 
     if (response.statusCode == 200) {
       final activityUpdateResponse =
-          ActivityUpdateResponse.fromJson(json.decode(response.body));
+          DataUpdateResponse.fromJson(json.decode(response.body));
       return activityUpdateResponse;
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();

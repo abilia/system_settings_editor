@@ -8,11 +8,11 @@ abstract class UserFileEvent extends Equatable {
 
 class LoadUserFiles extends UserFileEvent {}
 
-class FileAdded extends UserFileEvent {
+class ImageAdded extends UserFileEvent {
   final String id;
   final File file;
 
-  FileAdded(this.id, this.file);
+  ImageAdded(this.id, this.file);
 
   @override
   List<Object> get props => [id, file];

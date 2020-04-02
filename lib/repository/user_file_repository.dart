@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:http/http.dart';
 import 'package:http/src/base_client.dart';
@@ -79,9 +80,12 @@ class UserFileRepository extends DataRepository<UserFile> {
       final fileBeforeSync =
           dirtyFiles.firstWhere((file) => file.model.id == response.id);
       final currentFile = await userFileDb.getById(response.id);
+      final dirtyDiff = currentFile.dirty - fileBeforeSync.dirty;
       return currentFile.copyWith(
-          revision: response.newRevision,
-          dirty: currentFile.dirty - fileBeforeSync.dirty);
+        revision: response.newRevision,
+        dirty: max(dirtyDiff,
+            0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
+      );
     });
     await userFileDb.insert(await Future.wait(toUpdate));
   }

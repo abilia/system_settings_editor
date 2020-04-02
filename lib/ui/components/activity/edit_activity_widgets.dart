@@ -35,7 +35,11 @@ class NameAndPictureWidget extends StatelessWidget {
             .add(ImageSelected(selectedImage.id));
         if (selectedImage.newImage != null) {
           BlocProvider.of<UserFileBloc>(context)
-              .add(FileAdded(selectedImage.id, selectedImage.newImage));
+              .add(ImageAdded(selectedImage.id, selectedImage.newImage));
+          BlocProvider.of<SortableBloc>(context).add(ImageArchiveImageAdded(
+            selectedImage.id,
+            selectedImage.newImage.path,
+          ));
         }
       }
     };

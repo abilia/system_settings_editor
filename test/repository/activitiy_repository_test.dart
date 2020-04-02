@@ -79,7 +79,7 @@ void main() {
 
     // Act
     final result = await activityRepo.postActivities(dbActivities);
-    final expected = ActivityUpdateResponse.fromJson(json.decode(jsonString));
+    final expected = DataUpdateResponse.fromJson(json.decode(jsonString));
 
     // Assert
     expect(result, expected);
