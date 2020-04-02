@@ -126,7 +126,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
     return ViewDialog(
       expanded: true,
       heading: Text(widget.heading, style: theme.textTheme.title),
-      onOk: inputTime != null && inputTime != widget.time
+      onOk: inputTime != null
           ? () => Navigator.of(context).maybePop<TimeOfDay>(inputTime)
           : null,
       deleteButton: widget.deleteButton,
