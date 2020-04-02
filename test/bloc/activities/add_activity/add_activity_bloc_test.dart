@@ -14,8 +14,8 @@ void main() {
     // Arrange
     final activity =
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act // Assert
     expect(editActivityBloc.initialState.activity, activity);
   });
@@ -23,8 +23,8 @@ void main() {
     // Arrange
     final activity =
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act // Assert
     expect(editActivityBloc.initialState.canSave, isFalse);
   });
@@ -34,8 +34,8 @@ void main() {
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
     final activityWithTitle = activity.copyWith(title: 'new title');
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
     editActivityBloc.add(ChangeActivity(activityWithTitle));
 
@@ -43,8 +43,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(activityWithTitle),
+        UnsavedActivityState(activity, null),
+        UnsavedActivityState(activityWithTitle, null),
       ]),
     );
   });
@@ -54,8 +54,8 @@ void main() {
         Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
     final activityWithTitle = activity.copyWith(title: 'new title');
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
     editActivityBloc.add(SaveActivity());
     editActivityBloc.add(ChangeActivity(activityWithTitle));
@@ -65,8 +65,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(activityWithTitle),
+        UnsavedActivityState(activity, null),
+        UnsavedActivityState(activityWithTitle, null),
         SavedActivityState(activityWithTitle),
       ]),
     );
@@ -95,8 +95,8 @@ void main() {
       reminderBefore: [],
     );
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
     editActivityBloc.add(SaveActivity());
 
@@ -104,7 +104,7 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
+        UnsavedActivityState(activity, null),
         SavedActivityState(activityExpectedToBeSaved),
       ]),
     );
@@ -122,8 +122,8 @@ void main() {
         startTime: expetedNewDate.millisecondsSinceEpoch,
         endTime: expetedNewDate.millisecondsSinceEpoch);
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
     editActivityBloc.add(ChangeDate(newDate));
 
@@ -131,8 +131,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(expetedNewActivity),
+        UnsavedActivityState(activity, null),
+        UnsavedActivityState(expetedNewActivity, null),
       ]),
     );
   });
@@ -154,8 +154,8 @@ void main() {
         startTime: expetedNewDate.millisecondsSinceEpoch,
         endTime: expetedNewDate.millisecondsSinceEpoch);
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
     editActivityBloc.add(ChangeStartTime(newStartTime));
@@ -164,8 +164,8 @@ void main() {
     await expectLater(
         editActivityBloc,
         emitsInOrder([
-          UnsavedActivityState(activity),
-          UnsavedActivityState(expetedNewActivity),
+          UnsavedActivityState(activity, null),
+          UnsavedActivityState(expetedNewActivity, null),
         ]));
   });
 
@@ -185,8 +185,8 @@ void main() {
     final expetedNewActivity =
         activity.copyWith(duration: expectedDuration.inMilliseconds);
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
     editActivityBloc.add(ChangeEndTime(newEndTime));
@@ -195,8 +195,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(expetedNewActivity),
+        UnsavedActivityState(activity, null),
+        UnsavedActivityState(expetedNewActivity, null),
       ]),
     );
   });
@@ -218,8 +218,8 @@ void main() {
     final expetedNewActivity =
         activity.copyWith(duration: expectedDuration.inMilliseconds);
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
     editActivityBloc.add(ChangeEndTime(newEndTime));
@@ -228,8 +228,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(expetedNewActivity),
+        UnsavedActivityState(activity, null),
+        UnsavedActivityState(expetedNewActivity, null),
       ]),
     );
   });
@@ -252,8 +252,8 @@ void main() {
       hour1Reminder.inMilliseconds
     ]);
 
-    EditActivityBloc editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, activity: activity);
+    EditActivityBloc editActivityBloc = EditActivityBloc(
+        activitiesBloc: mockActivitiesBloc, activity: activity);
 
     // Act
     editActivityBloc.add(AddOrRemoveReminder(min15Reminder));
@@ -265,11 +265,11 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(with15MinReminder),
-        UnsavedActivityState(with15MinAnd1HourReminder),
-        UnsavedActivityState(with15MinReminder),
-        UnsavedActivityState(activity),
+        UnsavedActivityState(activity, null),
+        UnsavedActivityState(with15MinReminder, null),
+        UnsavedActivityState(with15MinAnd1HourReminder, null),
+        UnsavedActivityState(with15MinReminder, null),
+        UnsavedActivityState(activity, null),
       ]),
     );
   });

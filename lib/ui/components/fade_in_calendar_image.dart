@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -11,12 +13,14 @@ import 'package:transparent_image/transparent_image.dart';
 
 class FadeInCalendarImage extends StatelessWidget {
   final String imageFileId, imageFilePath;
+  final File imageFile;
   final double width, height;
   FadeInCalendarImage({
     @required this.imageFileId,
     @required this.imageFilePath,
     this.width,
     this.height,
+    this.imageFile,
   });
   @override
   Widget build(BuildContext context) {
@@ -42,23 +46,30 @@ class FadeInCalendarImage extends StatelessWidget {
         ),
         child: Hero(
           tag: imageFileId,
-          child: userFileLoaded
+          child: imageFile != null
               ? FadeInImage(
                   width: width,
                   height: height,
-                  image: Image.file(
-                    fileStorage.getImageThumb(ImageThumb(
-                      id: imageFileId,
-                    )),
-                  ).image,
+                  image: Image.file(imageFile).image,
                   placeholder: MemoryImage(kTransparentImage),
                 )
-              : FadeInNetworkImage(
-                  imageFileId: imageFileId,
-                  imageFilePath: imageFilePath,
-                  height: height,
-                  width: width,
-                ),
+              : userFileLoaded
+                  ? FadeInImage(
+                      width: width,
+                      height: height,
+                      image: Image.file(
+                        fileStorage.getImageThumb(ImageThumb(
+                          id: imageFileId,
+                        )),
+                      ).image,
+                      placeholder: MemoryImage(kTransparentImage),
+                    )
+                  : FadeInNetworkImage(
+                      imageFileId: imageFileId,
+                      imageFilePath: imageFilePath,
+                      height: height,
+                      width: width,
+                    ),
         ),
       );
     });

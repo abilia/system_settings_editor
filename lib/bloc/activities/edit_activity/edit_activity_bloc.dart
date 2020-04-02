@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -20,14 +21,14 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     this.newActivity = true,
   });
   @override
-  UnsavedActivityState get initialState => UnsavedActivityState(activity);
+  UnsavedActivityState get initialState => UnsavedActivityState(activity, null);
 
   @override
   Stream<EditActivityState> mapEventToState(
     EditActivityEvent event,
   ) async* {
     if (event is ChangeActivity) {
-      yield UnsavedActivityState(event.activity);
+      yield UnsavedActivityState(event.activity, state.newImage);
     }
     if (event is ChangeDate) {
       yield* _mapChangeDateToState(event);
@@ -46,7 +47,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     }
     if (event is ImageSelected) {
       yield UnsavedActivityState(
-          state.activity.copyWith(fileId: event.imageId));
+          state.activity.copyWith(fileId: event.imageId), event.newImage);
     }
   }
 
@@ -59,6 +60,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     }
     yield UnsavedActivityState(
       state.activity.copyWith(reminderBefore: reminders),
+      state.newImage,
     );
   }
 
@@ -95,6 +97,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
         startTime: newStartDate.millisecondsSinceEpoch,
         endTime: newStartDate.millisecondsSinceEpoch,
       ),
+      state.newImage,
     );
   }
 
@@ -115,6 +118,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
         startTime: newStartTime,
         endTime: newStartTime,
       ),
+      state.newImage,
     );
   }
 
@@ -142,6 +146,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
 
     yield UnsavedActivityState(
       activity.copyWith(duration: newDuration.inMilliseconds),
+      state.newImage,
     );
   }
 }
