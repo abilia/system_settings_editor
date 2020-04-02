@@ -1,7 +1,7 @@
 part of 'edit_activity_bloc.dart';
 
 abstract class EditActivityState extends Equatable {
-  const EditActivityState(this.activity, this.newImage);
+  const EditActivityState(this.activity, [this.newImage]);
   final Activity activity;
   final File newImage;
   bool get canSave =>
@@ -12,15 +12,15 @@ abstract class EditActivityState extends Equatable {
 }
 
 class UnsavedActivityState extends EditActivityState {
-  const UnsavedActivityState(Activity activity, File newImage)
+  const UnsavedActivityState(Activity activity, [File newImage])
       : super(activity, newImage);
   @override
   String toString() =>
-      'UnsavedActivityState: {activity: $activity, newImage: ${newImage == null ? null : newImage.path}';
+      'UnsavedActivityState: {activity: $activity, newImage: ${newImage?.path}';
 }
 
 class SavedActivityState extends EditActivityState {
-  const SavedActivityState(Activity activity) : super(activity, null);
+  const SavedActivityState(Activity activity) : super(activity);
   @override
   String toString() => 'SavedActivityState: {activity: $activity}';
 }

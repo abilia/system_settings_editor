@@ -21,7 +21,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     this.newActivity = true,
   });
   @override
-  UnsavedActivityState get initialState => UnsavedActivityState(activity, null);
+  UnsavedActivityState get initialState => UnsavedActivityState(activity);
 
   @override
   Stream<EditActivityState> mapEventToState(

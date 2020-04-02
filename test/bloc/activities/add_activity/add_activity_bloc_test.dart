@@ -43,8 +43,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity, null),
-        UnsavedActivityState(activityWithTitle, null),
+        UnsavedActivityState(activity),
+        UnsavedActivityState(activityWithTitle),
       ]),
     );
   });
@@ -65,8 +65,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity, null),
-        UnsavedActivityState(activityWithTitle, null),
+        UnsavedActivityState(activity),
+        UnsavedActivityState(activityWithTitle),
         SavedActivityState(activityWithTitle),
       ]),
     );
@@ -104,7 +104,7 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity, null),
+        UnsavedActivityState(activity),
         SavedActivityState(activityExpectedToBeSaved),
       ]),
     );
@@ -131,8 +131,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity, null),
-        UnsavedActivityState(expetedNewActivity, null),
+        UnsavedActivityState(activity),
+        UnsavedActivityState(expetedNewActivity),
       ]),
     );
   });
@@ -164,8 +164,8 @@ void main() {
     await expectLater(
         editActivityBloc,
         emitsInOrder([
-          UnsavedActivityState(activity, null),
-          UnsavedActivityState(expetedNewActivity, null),
+          UnsavedActivityState(activity),
+          UnsavedActivityState(expetedNewActivity),
         ]));
   });
 
@@ -195,8 +195,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity, null),
-        UnsavedActivityState(expetedNewActivity, null),
+        UnsavedActivityState(activity),
+        UnsavedActivityState(expetedNewActivity),
       ]),
     );
   });
@@ -228,8 +228,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity, null),
-        UnsavedActivityState(expetedNewActivity, null),
+        UnsavedActivityState(activity),
+        UnsavedActivityState(expetedNewActivity),
       ]),
     );
   });
@@ -265,11 +265,11 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity, null),
-        UnsavedActivityState(with15MinReminder, null),
-        UnsavedActivityState(with15MinAnd1HourReminder, null),
-        UnsavedActivityState(with15MinReminder, null),
-        UnsavedActivityState(activity, null),
+        UnsavedActivityState(activity),
+        UnsavedActivityState(with15MinReminder),
+        UnsavedActivityState(with15MinAnd1HourReminder),
+        UnsavedActivityState(with15MinReminder),
+        UnsavedActivityState(activity),
       ]),
     );
   });
