@@ -117,9 +117,9 @@ void main() {
 
     test('Daylight saving winter time going forward', () async {
       // Arrange
-      final daybeforeDST = DateTime(2020, 10, 28);
-      final dayLightSavingTime = DateTime(2020, 10, 24);
-      final daysAfterDST = DateTime(2020, 10, 25);
+      final daybeforeDST = DateTime(2020, 10, 24);
+      final dayLightSavingTime = DateTime(2020, 10, 25);
+      final daysAfterDST = DateTime(2020, 10, 26);
 
       clockBloc = ClockBloc(StreamController<DateTime>().stream,
           initialTime: daybeforeDST);
@@ -142,9 +142,9 @@ void main() {
 
     test('Daylight saving winter time going backwards', () async {
       // Arrange
-      final dayLightSavingTime = DateTime(2020, 10, 24);
-      final daysAfterDST = DateTime(2020, 10, 25);
-      final twoDaysAfterDST = DateTime(2020, 10, 26);
+      final dayLightSavingTime = DateTime(2020, 10, 25);
+      final daysAfterDST = DateTime(2020, 10, 26);
+      final twoDaysAfterDST = DateTime(2020, 10, 27);
       clockBloc = ClockBloc(StreamController<DateTime>().stream,
           initialTime: twoDaysAfterDST);
       dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
