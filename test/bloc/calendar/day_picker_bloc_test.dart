@@ -66,6 +66,104 @@ void main() {
       );
     });
 
+    test('Daylight saving summer time going forward', () async {
+      // Arrange
+      final daybeforeDST = DateTime(2020, 03, 28);
+      final dayLightSavingTime = DateTime(2020, 03, 29);
+      final daysAfterDST = DateTime(2020, 03, 30);
+
+      clockBloc = ClockBloc(StreamController<DateTime>().stream,
+          initialTime: daybeforeDST);
+      dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+
+      // Act
+      dayPickerBloc.add(NextDay());
+      dayPickerBloc.add(NextDay());
+
+      // Assert
+      await expectLater(
+        dayPickerBloc,
+        emitsInOrder([
+          DayPickerState(daybeforeDST, DayPickerBloc.startIndex),
+          DayPickerState(dayLightSavingTime, DayPickerBloc.startIndex + 1),
+          DayPickerState(daysAfterDST, DayPickerBloc.startIndex + 2)
+        ]),
+      );
+    });
+
+    test('Daylight saving summer time going backwards', () async {
+      // Arrange
+      final dayLightSavingTime = DateTime(2020, 03, 29);
+      final daysAfterDST = DateTime(2020, 03, 30);
+      final twoDaysAfterDST = DateTime(2020, 03, 31);
+      clockBloc = ClockBloc(StreamController<DateTime>().stream,
+          initialTime: twoDaysAfterDST);
+      dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+
+      // Act
+      dayPickerBloc.add(PreviousDay());
+      dayPickerBloc.add(PreviousDay());
+
+      // Assert
+      await expectLater(
+        dayPickerBloc,
+        emitsInOrder([
+          DayPickerState(twoDaysAfterDST, DayPickerBloc.startIndex),
+          DayPickerState(daysAfterDST, DayPickerBloc.startIndex - 1),
+          DayPickerState(dayLightSavingTime, DayPickerBloc.startIndex - 2)
+        ]),
+      );
+    });
+
+    test('Daylight saving winter time going forward', () async {
+      // Arrange
+      final daybeforeDST = DateTime(2020, 10, 28);
+      final dayLightSavingTime = DateTime(2020, 10, 24);
+      final daysAfterDST = DateTime(2020, 10, 25);
+
+      clockBloc = ClockBloc(StreamController<DateTime>().stream,
+          initialTime: daybeforeDST);
+      dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+
+      // Act
+      dayPickerBloc.add(NextDay());
+      dayPickerBloc.add(NextDay());
+
+      // Assert
+      await expectLater(
+        dayPickerBloc,
+        emitsInOrder([
+          DayPickerState(daybeforeDST, DayPickerBloc.startIndex),
+          DayPickerState(dayLightSavingTime, DayPickerBloc.startIndex + 1),
+          DayPickerState(daysAfterDST, DayPickerBloc.startIndex + 2)
+        ]),
+      );
+    });
+
+    test('Daylight saving winter time going backwards', () async {
+      // Arrange
+      final dayLightSavingTime = DateTime(2020, 10, 24);
+      final daysAfterDST = DateTime(2020, 10, 25);
+      final twoDaysAfterDST = DateTime(2020, 10, 26);
+      clockBloc = ClockBloc(StreamController<DateTime>().stream,
+          initialTime: twoDaysAfterDST);
+      dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+
+      // Act
+      dayPickerBloc.add(PreviousDay());
+      dayPickerBloc.add(PreviousDay());
+
+      // Assert
+      await expectLater(
+        dayPickerBloc,
+        emitsInOrder([
+          DayPickerState(twoDaysAfterDST, DayPickerBloc.startIndex),
+          DayPickerState(daysAfterDST, DayPickerBloc.startIndex - 1),
+          DayPickerState(dayLightSavingTime, DayPickerBloc.startIndex - 2)
+        ]),
+      );
+    });
+
     test('currentDay state should not change until next day', () async {
       for (int i = 0; i < Duration.minutesPerDay; i++) {
         streamController.add(theDay.add(Duration(minutes: i)));
