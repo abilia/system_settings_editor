@@ -36,10 +36,8 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
   DayPickerState generateState(DateTime day) {
     day = day.onlyDays();
     // DateTime.days does not work for daylight saving
-    final diff = (day.difference(_initialState.day).inHours / 24);
-    final dayDiff = diff < 0 ? diff.floor() : diff.ceil();
-    final index = startIndex + dayDiff;
-    return DayPickerState(day, index);
+    final dayDiff = (day.difference(_initialState.day).inHours / 24).round();
+    return DayPickerState(day, startIndex + dayDiff);
   }
 
   @override
