@@ -20,29 +20,26 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
   @override
   Stream<DayPickerState> mapEventToState(DayPickerEvent event) async* {
     if (event is NextDay) {
-      yield generateState(
-          state.day.add(Duration(hours: 25)).onlyDays()); // For winter time
+      yield generateState(state.day.nextDay());
     }
     if (event is PreviousDay) {
-      yield generateState(state.day.subtract(Duration(hours: 1)).onlyDays());
+      yield generateState(state.day.previousDay());
     }
     if (event is CurrentDay) {
-      yield generateState(this.clockBloc.state.onlyDays());
+      yield generateState(this.clockBloc.state);
     }
     if (event is GoTo) {
-      yield generateState(event.day.onlyDays());
+      yield generateState(event.day);
     }
   }
 
   DayPickerState generateState(DateTime day) {
-    final dayDiff = day.difference(_initialState.day).inDays;
+    day = day.onlyDays();
+    // DateTime.days does not work for daylight saving
+    final diff = (day.difference(_initialState.day).inHours / 24);
+    final dayDiff = diff < 0 ? diff.floor() : diff.ceil();
     final index = startIndex + dayDiff;
     return DayPickerState(day, index);
-  }
-
-  DateTime indexToDate(int index) { 
-    final indexDiff = index - startIndex;
-    return _initialState.day.add(Duration(days: indexDiff));
   }
 
   @override

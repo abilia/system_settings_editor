@@ -6,6 +6,7 @@ extension DateTimeExtensions on DateTime {
   DateTime onlyMinutes() => DateTime(year, month, day, hour, minute);
 
   DateTime nextDay() => copyWith(day: day + 1);
+  DateTime previousDay() => copyWith(day: day - 1);
 
   DateTime nextHalfHour() => DateTime(
       year, month, day, minute >= 30 ? hour + 1 : hour, minute >= 30 ? 0 : 30);
