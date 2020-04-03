@@ -29,7 +29,7 @@ class EndTimeInputDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return _TimeInputDialog(
       time: TimeOfDay.fromDateTime(time),
-      heading: Translator.of(context).translate.startTime,
+      heading: Translator.of(context).translate.endTime,
       is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
       deleteButton: time != startTime
           ? RemoveButton(
