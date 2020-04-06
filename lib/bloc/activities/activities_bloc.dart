@@ -180,7 +180,9 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
 
         final overlappingInSeries = series
             .where((a) => a.start.isDayBefore(newStart))
-            .where((a) => !a.end.isDayAfter(newStart))
+            .where((a) =>
+                a.recurringEnd.isDayAfter(newStart) ||
+                a.recurringEnd.isAtSameDay(newStart))
             .toSet(); // Should be split
 
         final activityBeforeSplit = overlappingInSeries
