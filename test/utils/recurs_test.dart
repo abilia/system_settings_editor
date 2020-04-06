@@ -30,6 +30,28 @@ void main() {
       // Assert
       expect(result, true);
     });
+
+    test(
+        'Activity with endtime before start time does not shows ( bug SGC-148 )',
+        () {
+      // Arrange
+      int splitStartTime = 1585735200000, splitEndTime = 1585605599999;
+
+      final day = DateTime(2020, 04, 01);
+
+      final splitRecurring = Activity.createNew(
+        title: 'test',
+        recurrentType: 1,
+        recurrentData: 16383,
+        startTime: splitStartTime,
+        endTime: splitEndTime,
+      );
+      // Act
+      final result = splitRecurring.shouldShowForDay(day);
+
+      // Assert
+      expect(result, isFalse);
+    });
   });
 
   group('Recurring tests', () {

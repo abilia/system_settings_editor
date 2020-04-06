@@ -36,11 +36,13 @@ extension DateTimeExtensions on DateTime {
   bool isDayBefore(DateTime otherDate) =>
       onlyDays().isBefore(otherDate.onlyDays());
 
-  bool onOrBetween(
-          {@required DateTime startDate, @required DateTime endDate}) =>
-      (isAfter(startDate) && isBefore(endDate)) ||
-      isAtSameMomentAs(startDate) ||
-      isAtSameMomentAs(endDate);
+  bool onOrBetween({@required DateTime startDate, @required DateTime endDate}) {
+    if (endDate.isBefore(startDate)) return false;
+    if (isBefore(endDate) && isAfter(startDate)) return true;
+    if (isAtSameMomentAs(startDate)) return true;
+    if (isAtSameMomentAs(endDate)) return true;
+    return false;
+  }
 
   bool onOrAfter(DateTime time) => isAfter(time) || isAtSameMomentAs(time);
 
