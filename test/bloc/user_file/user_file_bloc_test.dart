@@ -9,6 +9,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/fake_user_files.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
 
@@ -69,7 +70,7 @@ void main() {
       final String filePath = 'test.dart';
       File file = MemoryFileSystem().file(filePath);
       await file.writeAsBytes(fileContent);
-      final processedFile1 = imageProcessingIsolate(fileContent);
+      final processedFile1 = await imageProcessingIsolate(fileContent);
 
       // Act
       userFileBloc.add(ImageAdded(fileId, file));
@@ -80,7 +81,7 @@ void main() {
         md5: md5.convert(processedFile1.originalImage).toString(),
         path: 'seagull/$fileId',
         contentType: 'image/jpeg', // File is converted to jpeg
-        fileSize: 614,
+        fileSize: processedFile1.originalImage.length,
         deleted: false,
       );
 
@@ -101,7 +102,7 @@ void main() {
       final filePath1 = 'test';
       File file = MemoryFileSystem().file(filePath1);
       await file.writeAsBytes(fileContent);
-      final processedFile1 = imageProcessingIsolate(fileContent);
+      final processedFile1 = await imageProcessingIsolate(fileContent);
 
       final fileId2 = 'fileId1';
       final filePath2 = 'test.dart';

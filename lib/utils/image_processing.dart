@@ -27,12 +27,11 @@ Future<ImageResult> imageProcessingIsolate(List<int> originalData) async {
 
   int width, height, thumbWidth, thumbHeight;
   if (adjustedOrientation.height > adjustedOrientation.width) {
-    height = IMAGE_MAX_SIZE;
-    thumbHeight =
-        min(ImageThumb.DEFAULT_THUMB_SIZE, adjustedOrientation.height);
+    height = min(IMAGE_MAX_SIZE, adjustedOrientation.height);
+    thumbHeight = ImageThumb.DEFAULT_THUMB_SIZE;
   } else {
-    width = IMAGE_MAX_SIZE;
-    thumbWidth = min(ImageThumb.DEFAULT_THUMB_SIZE, adjustedOrientation.width);
+    width = min(IMAGE_MAX_SIZE, adjustedOrientation.width);
+    thumbWidth = ImageThumb.DEFAULT_THUMB_SIZE;
   }
 
   final resizedOriginal = img.copyResize(
