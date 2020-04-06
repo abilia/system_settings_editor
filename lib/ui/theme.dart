@@ -337,7 +337,7 @@ ThemeData _dayTheme(
         color: color,
         brightness: appBarBrightness,
       ),
-      scaffoldBackgroundColor: color[20],
+      scaffoldBackgroundColor: AbiliaColors.white[110],
       textTheme: abiliaTextTheme.copyWith(
         title: abiliaTextTheme.title.copyWith(color: textColor),
         button: abiliaTextTheme.button.copyWith(color: textColor),
