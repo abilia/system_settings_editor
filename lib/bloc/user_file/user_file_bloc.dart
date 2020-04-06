@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:image/image.dart' as img;
 import 'package:crypto/crypto.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -13,6 +12,7 @@ import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
+import 'package:seagull/utils/all.dart';
 
 part 'user_file_event.dart';
 part 'user_file_state.dart';
@@ -101,33 +101,4 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
         imageResult.thumbImage, ImageThumb(id: id));
     return userFile;
   }
-}
-
-class ImageResult {
-  final List<int> originalImage;
-  final List<int> thumbImage;
-
-  ImageResult({
-    this.originalImage,
-    this.thumbImage,
-  });
-}
-
-ImageResult imageProcessingIsolate(List<int> originalData) {
-  final bakedOrientationImage =
-      img.bakeOrientation(img.decodeImage(originalData));
-  int width, height;
-  if (bakedOrientationImage.height > bakedOrientationImage.width) {
-    height = ImageThumb.DEFAULT_THUMB_SIZE;
-  } else {
-    width = ImageThumb.DEFAULT_THUMB_SIZE;
-  }
-  final thumbImage = img.copyResize(
-    bakedOrientationImage,
-    height: height,
-    width: width,
-  );
-  final jpgFile = img.encodeJpg(bakedOrientationImage, quality: 50);
-  final thumbJpgFile = img.encodeJpg(thumbImage, quality: 50);
-  return ImageResult(originalImage: jpgFile, thumbImage: thumbJpgFile);
 }

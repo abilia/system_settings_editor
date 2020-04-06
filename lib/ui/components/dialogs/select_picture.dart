@@ -96,7 +96,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   }
 
   Future _getExternalFile({ImageSource source}) async {
-    final image = await ImagePicker.pickImage(source: source, imageQuality: 20);
+    final image = await ImagePicker.pickImage(source: source);
     if (image != null) {
       final id = Uuid().v4();
       await Navigator.of(context).maybePop(SelectedImage(
