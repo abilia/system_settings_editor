@@ -38,6 +38,7 @@ dependencies:
   image_picker: ^0.6.3+4
   mime: ^0.9.6+3
   cached_network_image: ^2.0.0
+  exif: ^1.0.2
 
 dev_dependencies:
   flutter_test:

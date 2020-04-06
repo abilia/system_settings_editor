@@ -7,13 +7,13 @@ import 'package:intl/intl.dart';
 import 'package:seagull/utils/all.dart';
 
 class AllDayList extends StatelessWidget {
-  const AllDayList(
-      {Key key,
-      @required this.pickedDay,
-      @required this.allDayActivities,
-      @required this.cardHeight,
-      @required this.cardMargin})
-      : super(key: key);
+  const AllDayList({
+    Key key,
+    @required this.pickedDay,
+    @required this.allDayActivities,
+    @required this.cardHeight,
+    @required this.cardMargin,
+  }) : super(key: key);
 
   final DateTime pickedDay;
   final List<ActivityOccasion> allDayActivities;
