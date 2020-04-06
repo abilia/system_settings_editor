@@ -9,14 +9,15 @@ class Activity extends DataModel {
   AlarmType get alarm => AlarmType.fromInt(alarmType);
   DateTime endClock(DateTime day) =>
       startClock(day).add(duration.milliseconds());
-  DateTime startClock(DateTime day) => DateTime(
-      day.year, day.month, day.day, startDateTime.hour, startDateTime.minute);
-  DateTime get start => startDateTime;
+  DateTime startClock(DateTime day) =>
+      DateTime(day.year, day.month, day.day, start.hour, start.minute);
+  DateTime get start => DateTime.fromMillisecondsSinceEpoch(startTime);
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(startTime + duration);
-  DateTime get startDateTime => DateTime.fromMillisecondsSinceEpoch(startTime);
-  DateTime get endDateTime => DateTime.fromMillisecondsSinceEpoch(endTime);
-  bool get hasEndTime => !start.isAtSameMomentAs(end);
-  RecurrentType get recurrance => RecurrentType.values[recurrentType];
+  DateTime get recurringEnd => DateTime.fromMillisecondsSinceEpoch(endTime);
+  bool get hasEndTime => duration > 0;
+  RecurrentType get recurrance =>
+      RecurrentType.values[recurrentType] ?? RecurrentType.none;
+  bool get isRecurring => recurrance != RecurrentType.none;
   Iterable<Duration> get reminders =>
       reminderBefore.map((r) => r.milliseconds()).toSet();
   bool isSignedOff(DateTime day) => checkable && signedOffDates.contains(day);
@@ -142,7 +143,6 @@ class Activity extends DataModel {
     bool removeAfter,
     bool secret,
     bool fullDay,
-    int revision,
     int alarmType,
     AlarmType alarm,
     int recurrentType,
@@ -152,6 +152,54 @@ class Activity extends DataModel {
   }) =>
       Activity._(
         id: id,
+        seriesId: seriesId,
+        title: title ?? this.title,
+        startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
+        duration: duration ?? this.duration,
+        category: category ?? this.category,
+        deleted: deleted ?? this.deleted,
+        checkable: checkable ?? this.checkable,
+        removeAfter: removeAfter ?? this.removeAfter,
+        secret: secret ?? this.secret,
+        fullDay: fullDay ?? this.fullDay,
+        recurrentType: recurrentType ?? this.recurrentType,
+        recurrentData: recurrentData ?? this.recurrentData,
+        reminderBefore: reminderBefore != null
+            ? UnmodifiableListView(reminderBefore)
+            : this.reminderBefore,
+        fileId: fileId == null ? this.fileId : _nullIfEmpty(fileId),
+        icon: fileId == null ? this.fileId : _nullIfEmpty(fileId),
+        alarmType: alarmType ?? alarm?.toInt ?? this.alarmType,
+        infoItem: infoItem == null ? this.infoItem : _nullIfEmpty(infoItem),
+        signedOffDates: signedOffDates != null
+            ? UnmodifiableListView(signedOffDates)
+            : this.signedOffDates,
+      );
+
+  Activity copyWithNewId({
+    String title,
+    int startTime,
+    int endTime,
+    int duration,
+    int category,
+    Iterable<int> reminderBefore,
+    String fileId,
+    String icon,
+    bool deleted,
+    bool checkable,
+    bool removeAfter,
+    bool secret,
+    bool fullDay,
+    int alarmType,
+    AlarmType alarm,
+    int recurrentType,
+    int recurrentData,
+    String infoItem,
+    Iterable<DateTime> signedOffDates,
+  }) =>
+      Activity._(
+        id: Uuid().v4(),
         seriesId: seriesId,
         title: title ?? this.title,
         startTime: startTime ?? this.startTime,

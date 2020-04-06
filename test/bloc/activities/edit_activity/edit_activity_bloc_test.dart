@@ -43,8 +43,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(activityWithTitle),
+        UnstoredActivityState(activity),
+        UnstoredActivityState(activityWithTitle),
       ]),
     );
   });
@@ -65,9 +65,9 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(activityWithTitle),
-        SavedActivityState(activityWithTitle),
+        UnstoredActivityState(activity),
+        UnstoredActivityState(activityWithTitle),
+        StoredActivityState(activityWithTitle, aTime.onlyDays()),
       ]),
     );
   });
@@ -76,21 +76,19 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: 'a title',
-      fullDay: true,
       startTime: aTime.millisecondsSinceEpoch,
-      endTime: aTime.add(5.hours()).millisecondsSinceEpoch,
+      duration: 5.hours().inMilliseconds,
       reminderBefore: [10.minutes().inMilliseconds, 1.hours().inMilliseconds],
       alarmType: ALARM_SOUND_AND_VIBRATION,
     );
 
-    final activityExpectedToBeSaved = activity.copyWith(
+    final activityAsFullDay = activity.copyWith(
+      fullDay: true,
+    );
+
+    final activityExpectedToBeSaved = activityAsFullDay.copyWith(
       alarmType: NO_ALARM,
-      startTime: activity.startDateTime.onlyDays().millisecondsSinceEpoch,
-      endTime: activity.startDateTime
-              .add(1.days())
-              .onlyDays()
-              .millisecondsSinceEpoch -
-          1,
+      startTime: activity.start.onlyDays().millisecondsSinceEpoch,
       duration: 1.days().inMilliseconds - 1,
       reminderBefore: [],
     );
@@ -98,14 +96,17 @@ void main() {
     EditActivityBloc editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity);
     // Act
+    editActivityBloc.add(ChangeActivity(activityAsFullDay));
     editActivityBloc.add(SaveActivity());
 
     // Assert
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        SavedActivityState(activityExpectedToBeSaved),
+        UnstoredActivityState(activity),
+        UnstoredActivityState(activityAsFullDay),
+        StoredActivityState(activityExpectedToBeSaved,
+            activityExpectedToBeSaved.start.onlyDays()),
       ]),
     );
   });
@@ -118,9 +119,8 @@ void main() {
         Activity.createNew(title: '', startTime: aDate.millisecondsSinceEpoch);
     final newDate = DateTime(2011, 11, 11, 11, 11, 11, 11, 11);
     final expetedNewDate = DateTime(2011, 11, 11, 22, 30);
-    final expetedNewActivity = activity.copyWith(
-        startTime: expetedNewDate.millisecondsSinceEpoch,
-        endTime: expetedNewDate.millisecondsSinceEpoch);
+    final expetedNewActivity =
+        activity.copyWith(startTime: expetedNewDate.millisecondsSinceEpoch);
 
     EditActivityBloc editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity);
@@ -131,14 +131,13 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(expetedNewActivity),
+        UnstoredActivityState(activity),
+        UnstoredActivityState(expetedNewActivity),
       ]),
     );
   });
 
-  test('Changing start time changes start and end time but not duration',
-      () async {
+  test('Changing start time changes start time but not duration', () async {
     // Arrange
     final DateTime aDate = DateTime(2022, 02, 22, 22, 30);
 
@@ -150,9 +149,8 @@ void main() {
     final newStartTime = TimeOfDay(hour: 11, minute: 11);
     final expetedNewDate = DateTime(2022, 02, 22, 11, 11);
 
-    final expetedNewActivity = activity.copyWith(
-        startTime: expetedNewDate.millisecondsSinceEpoch,
-        endTime: expetedNewDate.millisecondsSinceEpoch);
+    final expetedNewActivity =
+        activity.copyWith(startTime: expetedNewDate.millisecondsSinceEpoch);
 
     EditActivityBloc editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity);
@@ -164,8 +162,8 @@ void main() {
     await expectLater(
         editActivityBloc,
         emitsInOrder([
-          UnsavedActivityState(activity),
-          UnsavedActivityState(expetedNewActivity),
+          UnstoredActivityState(activity),
+          UnstoredActivityState(expetedNewActivity),
         ]));
   });
 
@@ -195,8 +193,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(expetedNewActivity),
+        UnstoredActivityState(activity),
+        UnstoredActivityState(expetedNewActivity),
       ]),
     );
   });
@@ -228,8 +226,8 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(expetedNewActivity),
+        UnstoredActivityState(activity),
+        UnstoredActivityState(expetedNewActivity),
       ]),
     );
   });
@@ -265,11 +263,11 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnsavedActivityState(activity),
-        UnsavedActivityState(with15MinReminder),
-        UnsavedActivityState(with15MinAnd1HourReminder),
-        UnsavedActivityState(with15MinReminder),
-        UnsavedActivityState(activity),
+        UnstoredActivityState(activity),
+        UnstoredActivityState(with15MinReminder),
+        UnstoredActivityState(with15MinAnd1HourReminder),
+        UnstoredActivityState(with15MinReminder),
+        UnstoredActivityState(activity),
       ]),
     );
   });

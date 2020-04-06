@@ -10,8 +10,12 @@ import 'package:collection/collection.dart';
 class SelectReminderDialog extends StatelessWidget {
   static Function eq = const DeepCollectionEquality().equals;
   final Activity activity;
-  const SelectReminderDialog({Key key, @required this.activity})
-      : super(key: key);
+  final DateTime day;
+  const SelectReminderDialog({
+    Key key,
+    @required this.activity,
+    @required this.day,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final theme = abiliaTheme;
@@ -20,10 +24,20 @@ class SelectReminderDialog extends StatelessWidget {
         final sameReminders = eq(activity.reminders, state.activity.reminders);
         return ViewDialog(
           onOk: !sameReminders
-              ? () {
-                  BlocProvider.of<EditActivityBloc>(context)
-                      .add(SaveActivity());
-                  Navigator.of(context).maybePop(true);
+              ? () async {
+                  final editActivityBloc =
+                      BlocProvider.of<EditActivityBloc>(context);
+                  await Navigator.of(context).maybePop(true);
+                  if (activity.isRecurring) {
+                    final applyTo = await showViewDialog<ApplyTo>(
+                      context: context,
+                      builder: (context) => EditRecurrentDialog(),
+                    );
+                    if (applyTo == null) return;
+                    editActivityBloc.add(SaveRecurringActivity(applyTo, day));
+                  } else {
+                    editActivityBloc.add(SaveActivity());
+                  }
                 }
               : null,
           heading: Text(Translator.of(context).translate.reminder,

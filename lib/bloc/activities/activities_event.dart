@@ -36,6 +36,21 @@ class UpdateActivity extends ActivitiesEvent {
   String toString() => 'UpdateActivity { $updatedActivity }';
 }
 
+class UpdateRecurringActivity extends UpdateActivity {
+  final ApplyTo applyTo;
+  final DateTime day;
+  const UpdateRecurringActivity(Activity activity, this.applyTo, this.day)
+      : assert(applyTo != ApplyTo.allDays),
+        super(activity);
+
+  @override
+  List<Object> get props => [updatedActivity, applyTo, day];
+
+  @override
+  String toString() =>
+      'UpdateRecurringActivity { $updatedActivity, $applyTo, $day }';
+}
+
 class DeleteActivity extends ActivitiesEvent {
   final Activity activity;
 
@@ -46,4 +61,17 @@ class DeleteActivity extends ActivitiesEvent {
 
   @override
   String toString() => 'DeleteActivity { $activity }';
+}
+
+class DeleteRecurringActivity extends DeleteActivity {
+  final ApplyTo applyTo;
+  final DateTime day;
+  const DeleteRecurringActivity(Activity activity, this.applyTo, this.day)
+      : super(activity);
+
+  @override
+  List<Object> get props => [activity, applyTo, day];
+
+  @override
+  String toString() => 'DeleteRecurringActivity { $activity, $applyTo, $day }';
 }

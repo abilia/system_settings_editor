@@ -50,13 +50,14 @@ class ActivityPage extends StatelessWidget {
                   day: day,
                 ),
               ),
-              bottomNavigationBar: buildBottomAppBar(activity, context)),
+              bottomNavigationBar: buildBottomAppBar(activity, day, context)),
         );
       },
     );
   }
 
-  BottomAppBar buildBottomAppBar(Activity activity, BuildContext context) {
+  BottomAppBar buildBottomAppBar(
+      Activity activity, DateTime day, BuildContext context) {
     return BottomAppBar(
       child: SizedBox(
         height: 64,
@@ -85,8 +86,23 @@ class ActivityPage extends StatelessWidget {
                     );
                     if (result != null) {
                       final changedActivity = activity.copyWith(alarm: result);
-                      BlocProvider.of<ActivitiesBloc>(context)
-                          .add(UpdateActivity(changedActivity));
+                      if (activity.isRecurring) {
+                        final applyTo = await showViewDialog<ApplyTo>(
+                          context: context,
+                          builder: (context) => EditRecurrentDialog(),
+                        );
+                        if (applyTo == null) return;
+                        BlocProvider.of<ActivitiesBloc>(context).add(
+                          UpdateRecurringActivity(
+                            changedActivity,
+                            applyTo,
+                            day,
+                          ),
+                        );
+                      } else {
+                        BlocProvider.of<ActivitiesBloc>(context)
+                            .add(UpdateActivity(changedActivity));
+                      }
                     }
                   },
                 ),
@@ -104,12 +120,14 @@ class ActivityPage extends StatelessWidget {
                     context: context,
                     builder: (_) => BlocProvider<EditActivityBloc>.value(
                       value: EditActivityBloc(
+                          activity: activity,
+                          day: day,
+                          activitiesBloc:
+                              BlocProvider.of<ActivitiesBloc>(context)),
+                      child: SelectReminderDialog(
                         activity: activity,
-                        activitiesBloc:
-                            BlocProvider.of<ActivitiesBloc>(context),
-                        newActivity: false,
+                        day: day,
                       ),
-                      child: SelectReminderDialog(activity: activity),
                     ),
                   ),
                 ),
@@ -120,29 +138,23 @@ class ActivityPage extends StatelessWidget {
                   size: 32,
                 ),
                 onPressed: () async {
-                  final now = BlocProvider.of<ClockBloc>(context).state;
                   await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) {
-                        return MultiBlocProvider(
-                          providers: [
+                        return editActivityMultiBlocProvider(
+                          context,
+                          extraProviders: [
                             BlocProvider<EditActivityBloc>(
                               create: (_) => EditActivityBloc(
                                 activitiesBloc:
                                     BlocProvider.of<ActivitiesBloc>(context),
                                 activity: activity,
-                                newActivity: false,
+                                day: day,
                               ),
-                            ),
-                            BlocProvider<SortableBloc>.value(
-                              value: BlocProvider.of<SortableBloc>(context),
-                            ),
-                            BlocProvider<UserFileBloc>.value(
-                              value: BlocProvider.of<UserFileBloc>(context),
-                            ),
+                            )
                           ],
                           child: EditActivityPage(
-                            today: now.onlyDays(),
+                            day: day,
                             title:
                                 Translator.of(context).translate.editActivity,
                           ),
@@ -167,8 +179,24 @@ class ActivityPage extends StatelessWidget {
                     ),
                   );
                   if (shouldDelete == true) {
-                    BlocProvider.of<ActivitiesBloc>(context)
-                        .add(DeleteActivity(activity));
+                    if (activity.isRecurring) {
+                      final applyTo = await showViewDialog<ApplyTo>(
+                        context: context,
+                        builder: (context) =>
+                            EditRecurrentDialog(allDaysVisible: true),
+                      );
+                      if (applyTo == null) return;
+                      BlocProvider.of<ActivitiesBloc>(context).add(
+                        DeleteRecurringActivity(
+                          activity,
+                          applyTo,
+                          occasion.day,
+                        ),
+                      );
+                    } else {
+                      BlocProvider.of<ActivitiesBloc>(context)
+                          .add(DeleteActivity(activity));
+                    }
                     await Navigator.of(context).maybePop();
                   }
                 },

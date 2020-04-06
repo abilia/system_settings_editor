@@ -64,6 +64,10 @@ abstract class Translated {
   String get remove;
   String get deleteActivity;
   String get removePicture;
+  String get appyTo;
+  String get onlyThisDay;
+  String get allDays;
+  String get thisDayAndForward;
 }
 
 class English extends Translated {
@@ -125,7 +129,11 @@ class English extends Translated {
       pm = 'PM',
       remove = 'Remove',
       deleteActivity = 'Delete activity?',
-      removePicture = 'Remove picture';
+      removePicture = 'Remove picture',
+      appyTo = 'Apply to',
+      onlyThisDay = 'Only this day',
+      allDays = 'All days',
+      thisDayAndForward = 'This day and forward';
 
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
@@ -188,6 +196,10 @@ class Swedish extends Translated {
       pm = 'em',
       remove = 'Ta bort',
       deleteActivity = 'Ta bort aktivitet?',
-      removePicture = 'Ta bort bild';
+      removePicture = 'Ta bort bild',
+      appyTo = 'Ändra på',
+      onlyThisDay = 'Endast denna dag',
+      allDays = 'Alla dagar',
+      thisDayAndForward = 'Denna dag och framåt';
   String inMinutes(int minutes) => 'om $minutes minuter';
 }

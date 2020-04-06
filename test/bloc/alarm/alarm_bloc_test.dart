@@ -186,9 +186,8 @@ void main() {
                 .copyWith(alarmType: NO_ALARM);
         final inTwoMinutesActivity =
             FakeActivity.starts(nextMinute.add(1.minutes()));
-        when(mockActivityRepository.load()).thenAnswer((_) =>
-            Future.value(
-                [inTwoMinutesActivity, inOneMinuteWithoutAlarmActivity]));
+        when(mockActivityRepository.load()).thenAnswer((_) => Future.value(
+            [inTwoMinutesActivity, inOneMinuteWithoutAlarmActivity]));
         // Act
         activitiesBloc.add(LoadActivities());
         await _tick();

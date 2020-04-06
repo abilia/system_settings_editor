@@ -9,9 +9,9 @@ import 'package:intl/intl.dart';
 
 class DateAndTimeWidget extends StatelessWidget {
   final Activity activity;
-  final DateTime today;
+  final DateTime day;
 
-  const DateAndTimeWidget(this.activity, {@required this.today, Key key})
+  const DateAndTimeWidget(this.activity, {@required this.day, Key key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,7 @@ class DateAndTimeWidget extends StatelessWidget {
         children: <Widget>[
           SubHeading(translator.date),
           DatePicker(
-            activity.startDateTime,
-            today: today,
+            activity.start,
           ),
           SizedBox(height: 12),
           CollapsableWidget(
@@ -82,8 +81,7 @@ class ReminderSwitch extends StatelessWidget {
 
 class DatePicker extends StatelessWidget {
   final DateTime date;
-  final DateTime today;
-  const DatePicker(this.date, {@required this.today});
+  const DatePicker(this.date);
 
   @override
   Widget build(BuildContext context) {
@@ -104,9 +102,11 @@ class DatePicker extends StatelessWidget {
         }
       },
       leading: Icon(AbiliaIcons.calendar),
-      label: Text(
-        (today.isAtSameDay(date) ? '(${translator.today}) ' : '') +
-            '${timeFormat.format(date)}',
+      label: BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, time) => Text(
+          (time.isAtSameDay(date) ? '(${translator.today}) ' : '') +
+              '${timeFormat.format(date)}',
+        ),
       ),
     );
   }

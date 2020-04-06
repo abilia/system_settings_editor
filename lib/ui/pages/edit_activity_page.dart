@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 
 class EditActivityPage extends StatelessWidget {
-  final DateTime today;
+  final DateTime day;
   final String title;
-
   const EditActivityPage({
-    @required this.today,
+    @required this.day,
     this.title = '',
     Key key,
   }) : super(key: key);
@@ -28,8 +28,20 @@ class EditActivityPage extends StatelessWidget {
               ),
               onPressed: state.canSave
                   ? () async {
-                      BlocProvider.of<EditActivityBloc>(context)
-                          .add(SaveActivity());
+                      if (state is StoredActivityState &&
+                          state.activity.isRecurring) {
+                        final applyTo = await showViewDialog<ApplyTo>(
+                          context: context,
+                          builder: (context) =>
+                              EditRecurrentDialog(),
+                        );
+                        if (applyTo == null) return;
+                        BlocProvider.of<EditActivityBloc>(context)
+                            .add(SaveRecurringActivity(applyTo, state.day));
+                      } else {
+                        BlocProvider.of<EditActivityBloc>(context)
+                            .add(SaveActivity());
+                      }
                       await Navigator.of(context).maybePop();
                     }
                   : null,
@@ -42,7 +54,7 @@ class EditActivityPage extends StatelessWidget {
                 activity,
                 newImage: state.newImage,
               )),
-              separated(DateAndTimeWidget(activity, today: today)),
+              separated(DateAndTimeWidget(activity, day: day)),
               separated(CategoryWidget(activity)),
               CollapsableWidget(
                 child: separated(AlarmWidget(activity)),
