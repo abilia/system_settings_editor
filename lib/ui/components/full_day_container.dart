@@ -69,19 +69,24 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
       child: ActionButton(
         child: Text('+ ${fullDayActivities.length - 2}'),
-        onPressed: () async {
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (innerContext) => editActivityMultiBlocProvider(
-                context,
-                child: AllDayList(
-                  pickedDay: day,
-                  allDayActivities: fullDayActivities,
-                  cardHeight: this.cardHeight,
-                  cardMargin: this.cardMargin,
+        onPressed: () {
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              pageBuilder: (_, animation, secondaryAnimation) => FadeTransition(
+                opacity: CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeOut,
+                ),
+                child: editActivityMultiBlocProvider(
+                  context,
+                  child: AllDayList(
+                    pickedDay: day,
+                    allDayActivities: fullDayActivities,
+                    cardHeight: this.cardHeight,
+                    cardMargin: this.cardMargin,
+                  ),
                 ),
               ),
-              fullscreenDialog: true,
             ),
           );
         },
