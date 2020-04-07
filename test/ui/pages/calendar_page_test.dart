@@ -103,6 +103,28 @@ void main() {
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
       expect(find.text(key), findsOneWidget);
     });
+
+    testWidgets(
+        'Past days are crossed over, future days and present day is not',
+        (WidgetTester tester) async {
+      final crossOverFinder = find.byType(CrossOver);
+      final previousDayButtonFinder =
+          find.byIcon(AbiliaIcons.return_to_previous_page);
+      final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
+      when(mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value([]));
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(crossOverFinder, findsNothing);
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(crossOverFinder, findsNothing);
+      await tester.tap(previousDayButtonFinder);
+      await tester.tap(previousDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(crossOverFinder, findsOneWidget);
+    });
   });
 
   group('calendar page alarms test', () {
