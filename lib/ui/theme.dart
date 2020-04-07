@@ -6,7 +6,7 @@ import 'colors.dart';
 ThemeData abiliaTheme = ThemeData(
   scaffoldBackgroundColor: AbiliaColors.white[110],
   primaryColor: AbiliaColors.black,
-  accentColor: AbiliaColors.red,
+  accentColor: AbiliaColors.black,
   fontFamily: 'Roboto',
   inputDecorationTheme: inputDecorationTheme,
   textTheme: abiliaTextTheme,
@@ -333,6 +333,7 @@ ThemeData _dayTheme(
 }) =>
     themeData.copyWith(
       primaryColor: primaryColor,
+      accentColor: textColor,
       appBarTheme: abiliaTheme.appBarTheme.copyWith(
         color: color,
         brightness: appBarBrightness,

@@ -213,30 +213,23 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
     );
   }
 
-  PreferredSize buildAppBar(DateTime pickedDay) {
-    final leftAction = ActionButton(
-      child: Icon(
-        AbiliaIcons.return_to_previous_page,
-        size: 32,
-      ),
-      onPressed: () => _dayPickerBloc.add(PreviousDay()),
-    );
-    final rightAction = ActionButton(
-      child: Icon(
-        AbiliaIcons.go_to_next_page,
-        size: 32,
-      ),
-      onPressed: () => _dayPickerBloc.add(NextDay()),
-    );
-    return PreferredSize(
-      preferredSize: Size.fromHeight(68),
-      child: DayAppBar(
+  Widget buildAppBar(DateTime pickedDay) => DayAppBar(
         day: pickedDay,
-        leftAction: leftAction,
-        rightAction: rightAction,
-      ),
-    );
-  }
+        leftAction: ActionButton(
+          child: Icon(
+            AbiliaIcons.return_to_previous_page,
+            size: 32,
+          ),
+          onPressed: () => _dayPickerBloc.add(PreviousDay()),
+        ),
+        rightAction: ActionButton(
+          child: Icon(
+            AbiliaIcons.go_to_next_page,
+            size: 32,
+          ),
+          onPressed: () => _dayPickerBloc.add(NextDay()),
+        ),
+      );
 
   void _jumpToActivity() async {
     final scrollState = await _scrollPositionBloc.first;
