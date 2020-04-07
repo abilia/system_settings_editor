@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
@@ -10,6 +12,7 @@ import '../../mocks.dart';
 
 void main() {
   AuthenticationBloc mockedActivitiesBloc = MockAuthenticationBloc();
+  final day = DateTime(2111, 11, 11);
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -22,16 +25,18 @@ void main() {
               create: (context) => mockedActivitiesBloc),
           BlocProvider<ActivitiesBloc>(
               create: (context) => MockActivitiesBloc()),
+          BlocProvider<ClockBloc>(
+            create: (context) => ClockBloc(StreamController<DateTime>().stream,
+                initialTime: day),
+          )
         ], child: widget),
       );
 
   setUp(() {
     initializeDateFormatting();
-
     Locale.cachedLocale = Locale('en');
   });
   testWidgets('All DayList shows', (WidgetTester tester) async {
-    final day = DateTime(2111, 11, 11);
     final title0 = 'allDay0',
         title1 = 'allDay1',
         title2 = 'allDay2',
