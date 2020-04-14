@@ -2,14 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/src/base_client.dart';
 import 'package:meta/meta.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:seagull/db/user_file_db.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/models/image_thumb.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
+import 'package:seagull/utils/all.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
   final UserFileDb userFileDb;
@@ -34,9 +36,9 @@ class UserFileRepository extends DataRepository<UserFile> {
       final fetchedUserFiles =
           await _fetchUserFiles(await userFileDb.getLastRevision());
       await userFileDb.insert(fetchedUserFiles);
-      await getAndStoreFileData(fetchedUserFiles);
+      await getAndStoreFileData();
     } catch (e) {
-      print('Error when loading $e');
+      print('Error when loading user files $e');
     }
     return userFileDb.getAllNonDeleted();
   }
@@ -93,7 +95,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   Future<void> _handleFailedSync() async {
     final latestRevision = await userFileDb.getLastRevision();
     final fetchedUserFiles = await _fetchUserFiles(latestRevision);
-    await getAndStoreFileData(fetchedUserFiles);
+    await getAndStoreFileData();
     await userFileDb.insert(fetchedUserFiles);
   }
 
@@ -165,32 +167,74 @@ class UserFileRepository extends DataRepository<UserFile> {
     }
   }
 
-  Future<bool> getAndStoreFileData(
-      Iterable<DbModel<UserFile>> dbUserFiles) async {
-    for (final dbUserFile in dbUserFiles) {
-      final fileUrl = dbUserFile.model.isImage
-          ? imageThumbUrl(
-              baseUrl: baseUrl,
-              userId: userId,
-              imageFileId: dbUserFile.model.id,
-            )
-          : fileIdUrl(baseUrl, userId, dbUserFile.model.id);
-      final fileResponse = await httpClient.get(
-        fileUrl,
-        headers: authHeader(authToken),
-      );
-      if (fileResponse.statusCode == 200) {
-        if (dbUserFile.model.isImage) {
-          await fileStorage.storeImageThumb(
-              fileResponse.bodyBytes, ImageThumb(id: dbUserFile.model.id));
+  Future<bool> getAndStoreFileData() async {
+    final missingFiles = await userFileDb.getAllWithMissingFiles();
+    try {
+      for (final userFile in missingFiles) {
+        if (userFile.isImage) {
+          await handleImageFile(userFile);
         } else {
-          await fileStorage.storeFile(
-              fileResponse.bodyBytes, dbUserFile.model.id);
+          await handleNonImage(userFile);
         }
-      } else {
-        return false;
       }
+    } catch (e) {
+      print('Exception when getting and storing file data $e');
     }
     return true;
+  }
+
+  Future<Response> getImageThumb(String id, int size) {
+    return httpClient.get(
+      imageThumbUrl(
+        baseUrl: baseUrl,
+        userId: userId,
+        imageFileId: id,
+        size: size,
+      ),
+      headers: authHeader(authToken),
+    );
+  }
+
+  void handleNonImage(UserFile userFile) async {
+    final originalFileResponse = await httpClient.get(
+      fileIdUrl(baseUrl, userId, userFile.id),
+      headers: authHeader(authToken),
+    );
+    if (originalFileResponse.statusCode == 200) {
+      await fileStorage.storeFile(originalFileResponse.bodyBytes, userFile.id);
+      await userFileDb.setFileLoadedForId(userFile.id);
+    } else {
+      throw UnavailableException();
+    }
+  }
+
+  void handleImageFile(UserFile userFile) async {
+    final originalFileResponse = httpClient.get(
+      fileIdUrl(baseUrl, userId, userFile.id),
+      headers: authHeader(authToken),
+    );
+    final mediumThumbResponse =
+        getImageThumb(userFile.id, ImageThumb.MEDIUM_THUMB_SIZE);
+    final smallThumbResponse =
+        getImageThumb(userFile.id, ImageThumb.SMALL_THUMB_SIZE);
+    final List<Response> responses = await Future.wait([
+      originalFileResponse,
+      mediumThumbResponse,
+      smallThumbResponse,
+    ]);
+    if (responses[0].statusCode == 200 &&
+        responses[1].statusCode == 200 &&
+        responses[2].statusCode == 200) {
+      await Future.wait([
+        fileStorage.storeFile(responses[0].bodyBytes, userFile.id),
+        fileStorage.storeImageThumb(
+            responses[1].bodyBytes, MediumThumb(userFile.id)),
+        fileStorage.storeImageThumb(
+            responses[2].bodyBytes, SmallThumb(userFile.id)),
+      ]);
+      await userFileDb.setFileLoadedForId(userFile.id);
+    } else {
+      throw UnavailableException();
+    }
   }
 }

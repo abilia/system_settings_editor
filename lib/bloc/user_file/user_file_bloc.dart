@@ -44,7 +44,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     UserFileEvent event,
   ) async* {
     if (event is ImageAdded) {
-      yield* _mapFileAddedToState(event);
+      yield* _mapImageAddedToState(event);
     }
     if (event is LoadUserFiles) {
       yield* _mapLoadUserFilesToState();
@@ -56,7 +56,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     yield UserFilesLoaded(userFiles);
   }
 
-  Stream<UserFileState> _mapFileAddedToState(
+  Stream<UserFileState> _mapImageAddedToState(
     ImageAdded event,
   ) async* {
     final originalBytes = await event.file.readAsBytes();
@@ -84,21 +84,24 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
       contentType: lookupMimeType(path, headerBytes: fileBytes),
       fileSize: fileBytes.length,
       deleted: false,
+      fileLoaded: true,
     );
     return userFile;
   }
 
   Future<UserFile> handleImage(
       List<int> originalBytes, String id, String path) async {
-    final ImageResult imageResult = await compute<List<int>, ImageResult>(
-        imageProcessingIsolate, originalBytes);
+    final ImageResponse imageResult =
+        await compute<List<int>, ImageResponse>(adjustRotationAndCreateThumbs, originalBytes);
+
+    await fileStorage.storeFile(imageResult.originalImage, id);
+    await fileStorage.storeImageThumb(imageResult.mediumThumb,
+        ImageThumb(id: id, size: ImageThumb.MEDIUM_THUMB_SIZE));
+    await fileStorage.storeImageThumb(imageResult.smallThumb,
+        ImageThumb(id: id, size: ImageThumb.SMALL_THUMB_SIZE));
 
     final userFile = generateUserFile(id, path, imageResult.originalImage);
-
     await userFileRepository.save([userFile]);
-    await fileStorage.storeFile(imageResult.originalImage, id);
-    await fileStorage.storeImageThumb(
-        imageResult.thumbImage, ImageThumb(id: id));
     return userFile;
   }
 }

@@ -62,6 +62,7 @@ class NameAndPictureWidget extends StatelessWidget {
                     width: 84,
                     imageFileId: activity.fileId,
                     imageFilePath: activity.icon,
+                    activityId: activity.id,
                     imageFile: newImage,
                   ),
                 )

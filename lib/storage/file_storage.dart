@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:seagull/models/image_thumb.dart';
+import 'package:seagull/utils/all.dart';
 
 class FileStorage {
   final String _storageDirectory;
@@ -11,8 +12,7 @@ class FileStorage {
   FileStorage(this._storageDirectory);
 
   Future<void> storeFile(List<int> fileBytes, String fileName) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = await File('${directory.path}/$folder/$fileName')
+    final file = await File('${_storageDirectory}/$folder/$fileName')
         .create(recursive: true);
     await file.writeAsBytes(fileBytes);
   }

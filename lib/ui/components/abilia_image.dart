@@ -12,12 +12,13 @@ import 'package:seagull/ui/theme.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class FadeInCalendarImage extends StatelessWidget {
-  final String imageFileId, imageFilePath;
+  final String imageFileId, imageFilePath, activityId;
   final File imageFile;
   final double width, height;
   FadeInCalendarImage({
     @required this.imageFileId,
     @required this.imageFilePath,
+    @required this.activityId,
     this.width,
     this.height,
     this.imageFile,
@@ -45,7 +46,7 @@ class FadeInCalendarImage extends StatelessWidget {
           color: AbiliaColors.white,
         ),
         child: Hero(
-          tag: imageFileId,
+          tag: '${imageFileId}_$activityId',
           child: imageFile != null
               ? FadeInImage(
                   width: width,
@@ -71,6 +72,60 @@ class FadeInCalendarImage extends StatelessWidget {
                       width: width,
                     ),
         ),
+      );
+    });
+  }
+}
+
+class FadeInAbiliaImage extends StatelessWidget {
+  final String imageFileId, imageFilePath;
+  final double width, height;
+
+  FadeInAbiliaImage({
+    @required this.imageFileId,
+    @required this.imageFilePath,
+    @required this.height,
+    @required this.width,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final fileStorage = GetIt.I<FileStorage>();
+    final emptyImage = SizedBox(
+      height: height,
+      width: width,
+    );
+
+    if ((imageFileId == null || imageFileId.isEmpty) &&
+        (imageFilePath == null || imageFilePath.isEmpty)) {
+      return emptyImage;
+    }
+
+    return BlocBuilder<UserFileBloc, UserFileState>(
+        builder: (context, userFileState) {
+      final userFileLoaded = userFileState is UserFilesLoaded &&
+          userFileState.userFiles
+              .any((f) => f.id == imageFileId && f.fileLoaded);
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+          color: AbiliaColors.white,
+        ),
+        child: userFileLoaded
+            ? FadeInImage(
+                width: width,
+                height: height,
+                image: Image.file(
+                  fileStorage.getImageThumb(SmallThumb(imageFileId)),
+                ).image,
+                placeholder: MemoryImage(kTransparentImage),
+              )
+            : FadeInNetworkImage(
+                imageFileId: imageFileId,
+                imageFilePath: imageFilePath,
+                height: height,
+                width: width,
+              ),
       );
     });
   }
@@ -102,6 +157,7 @@ class FadeInNetworkImage extends StatelessWidget {
                       baseUrl: state.userRepository.baseUrl,
                       userId: state.userId,
                       imageFileId: imageFileId,
+                      size: ImageThumb.SMALL_THUMB_SIZE,
                     )
                   : imagePathUrl(
                       state.userRepository.baseUrl,
