@@ -32,8 +32,7 @@ class EditActivityPage extends StatelessWidget {
                           state.activity.isRecurring) {
                         final applyTo = await showViewDialog<ApplyTo>(
                           context: context,
-                          builder: (context) =>
-                              EditRecurrentDialog(),
+                          builder: (context) => EditRecurrentDialog(),
                         );
                         if (applyTo == null) return;
                         BlocProvider.of<EditActivityBloc>(context)

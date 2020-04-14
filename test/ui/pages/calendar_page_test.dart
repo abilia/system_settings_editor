@@ -654,8 +654,8 @@ void main() {
       expect(day1Finder, findsOneWidget);
       expect(day2Finder, findsOneWidget);
       expect(cardFinder, findsNWidgets(3));
-      expect(day3Finder, findsNothing, skip: 'bug SGC-18');
-      expect(find.text(newTitle), findsOneWidget, skip: 'bug SGC-18');
+      expect(day3Finder, findsNothing, skip: 'bug SGC-150');
+      expect(find.text(newTitle), findsOneWidget, skip: 'bug SGC-150');
     });
 
     testWidgets('Can edit picture from full day list',

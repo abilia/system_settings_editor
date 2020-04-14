@@ -9,7 +9,7 @@ abstract class EditActivityState extends Equatable {
       activity.fileId?.isNotEmpty == true && activity.start != null;
   @override
   List<Object> get props => [activity, newImage];
-  EditActivityState   copyWith(Activity activity, [File newImage]);
+  EditActivityState copyWith(Activity activity, [File newImage]);
 }
 
 class UnstoredActivityState extends EditActivityState {

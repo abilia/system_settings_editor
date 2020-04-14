@@ -130,6 +130,7 @@ class Activity extends DataModel {
       );
 
   Activity copyWith({
+    bool newId = false,
     String title,
     int startTime,
     int endTime,
@@ -151,7 +152,7 @@ class Activity extends DataModel {
     Iterable<DateTime> signedOffDates,
   }) =>
       Activity._(
-        id: id,
+        id: newId ? Uuid().v4() : id,
         seriesId: seriesId,
         title: title ?? this.title,
         startTime: startTime ?? this.startTime,
@@ -177,52 +178,22 @@ class Activity extends DataModel {
             : this.signedOffDates,
       );
 
-  Activity copyWithNewId({
-    String title,
-    int startTime,
-    int endTime,
-    int duration,
-    int category,
-    Iterable<int> reminderBefore,
-    String fileId,
-    String icon,
-    bool deleted,
-    bool checkable,
-    bool removeAfter,
-    bool secret,
-    bool fullDay,
-    int alarmType,
-    AlarmType alarm,
-    int recurrentType,
-    int recurrentData,
-    String infoItem,
-    Iterable<DateTime> signedOffDates,
-  }) =>
-      Activity._(
-        id: Uuid().v4(),
-        seriesId: seriesId,
-        title: title ?? this.title,
-        startTime: startTime ?? this.startTime,
-        endTime: endTime ?? this.endTime,
-        duration: duration ?? this.duration,
-        category: category ?? this.category,
-        deleted: deleted ?? this.deleted,
-        checkable: checkable ?? this.checkable,
-        removeAfter: removeAfter ?? this.removeAfter,
-        secret: secret ?? this.secret,
-        fullDay: fullDay ?? this.fullDay,
-        recurrentType: recurrentType ?? this.recurrentType,
-        recurrentData: recurrentData ?? this.recurrentData,
-        reminderBefore: reminderBefore != null
-            ? UnmodifiableListView(reminderBefore)
-            : this.reminderBefore,
-        fileId: fileId == null ? this.fileId : _nullIfEmpty(fileId),
-        icon: fileId == null ? this.fileId : _nullIfEmpty(fileId),
-        alarmType: alarmType ?? alarm?.toInt ?? this.alarmType,
-        infoItem: infoItem == null ? this.infoItem : _nullIfEmpty(infoItem),
-        signedOffDates: signedOffDates != null
-            ? UnmodifiableListView(signedOffDates)
-            : this.signedOffDates,
+  Activity copyActivity(Activity other) => copyWith(
+        title: other.title,
+        startTime: start
+            .copyWith(hour: other.start.hour, minute: other.start.minute)
+            .millisecondsSinceEpoch,
+        duration: other.duration,
+        category: other.category,
+        checkable: other.checkable,
+        removeAfter: other.removeAfter,
+        secret: other.secret,
+        fullDay: other.fullDay,
+        reminderBefore: other.reminderBefore,
+        fileId: other.fileId,
+        icon: other.icon,
+        alarmType: other.alarmType,
+        infoItem: other.infoItem,
       );
 
   @override

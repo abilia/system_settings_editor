@@ -17,13 +17,20 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
 
   EditActivityBloc({
     @required this.activitiesBloc,
-    @required Activity activity,
     this.day,
-  })  : assert(!activity.isRecurring || day != null),
-        activity = activity.isRecurring
-            ? activity.copyWith(
-                startTime: activity.startClock(day).millisecondsSinceEpoch)
-            : activity;
+    Activity activity,
+    DateTime now,
+  })  : assert(
+            activity == null && now != null || activity != null && day != null),
+        activity = activity == null
+            ? Activity.createNew(
+                title: '',
+                startTime: now.nextHalfHour().millisecondsSinceEpoch,
+              )
+            : activity.isRecurring
+                ? activity.copyWith(
+                    startTime: activity.startClock(day).millisecondsSinceEpoch)
+                : activity;
   @override
   EditActivityState get initialState => day == null
       ? UnstoredActivityState(activity)

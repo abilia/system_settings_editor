@@ -1,11 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:collection/collection.dart';
 
+import '../../matchers.dart';
 import '../../mocks.dart';
 
 void main() {
@@ -15,15 +16,19 @@ void main() {
   ActivitiesBloc activitiesBloc;
   MockActivityRepository mockActivityRepository;
   MockPushBloc mockPushBloc;
+  MockSyncBloc mockSyncBloc;
   setUp(() {
     mockActivityRepository = MockActivityRepository();
     mockPushBloc = MockPushBloc();
+    mockSyncBloc = MockSyncBloc();
+
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
       pushBloc: mockPushBloc,
-      syncBloc: MockSyncBloc(),
+      syncBloc: mockSyncBloc,
     );
   });
+
   group('ActivitiesBloc', () {
     test('initial state is ActivitiesNotLoaded', () {
       expect(activitiesBloc.initialState, ActivitiesNotLoaded());
@@ -79,8 +84,10 @@ void main() {
       await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
       activitiesBloc.add(AddActivity(anActivity));
       await untilCalled(mockActivityRepository.save(any));
+      await untilCalled(mockSyncBloc.add(ActivitySaved()));
 
       verify(mockActivityRepository.save([anActivity]));
+      verify(mockSyncBloc.add(ActivitySaved()));
     });
 
     test('AddActivity calls add activities on mockActivityRepostitory',
@@ -93,6 +100,7 @@ void main() {
       activitiesBloc.add(AddActivity(anActivity));
 
       await untilCalled(mockActivityRepository.save(any));
+      await untilCalled(mockSyncBloc.add(ActivitySaved()));
     });
 
     test('UpdateActivities calls save activities on mockActivityRepostitory',
@@ -107,6 +115,7 @@ void main() {
       activitiesBloc.add(UpdateActivity(updatedActivity));
 
       await untilCalled(mockActivityRepository.save([updatedActivity]));
+      await untilCalled(mockSyncBloc.add(ActivitySaved()));
     });
 
     test('DeleteActivities calls save activities on mockActivityRepostitory',
@@ -123,6 +132,7 @@ void main() {
 
       // Assert
       await untilCalled(mockActivityRepository.save([deletedActivity]));
+      await untilCalled(mockSyncBloc.add(ActivitySaved()));
     });
 
     test('DeleteActivities does not yeild the deleted activity', () async {
@@ -161,6 +171,7 @@ void main() {
         activitiesBloc,
         emitsInOrder(expectedResponse),
       );
+      verify(mockSyncBloc.add(ActivitySaved()));
     });
 
     test('UpdateActivities state order', () async {
@@ -190,6 +201,7 @@ void main() {
         activitiesBloc,
         emitsInOrder(expectedResponse),
       );
+      verify(mockSyncBloc.add(ActivitySaved()));
     });
   });
 
@@ -198,7 +210,7 @@ void main() {
       // Arrange
       final anActivity = FakeActivity.starts(anyTime);
       final recurrringActivity = FakeActivity.reocurrsFridays(anyTime);
-      final recurrringActivity2 = recurrringActivity.copyWithNewId();
+      final recurrringActivity2 = recurrringActivity.copyWith(newId: true);
 
       final activityList = [
         anActivity,
@@ -228,7 +240,9 @@ void main() {
         recurrringActivity,
         recurrringActivity2
       ].map((a) => a.copyWith(deleted: true))));
+      verify(mockSyncBloc.add(ActivitySaved()));
     });
+
     group('Only this day', () {
       test('for first day edits start time', () async {
         // Arrange
@@ -237,7 +251,8 @@ void main() {
         final ogRecurrringActivity = FakeActivity.reocurrsFridays(anyTime);
         final recurrringActivity =
             ogRecurrringActivity.copyWith(endTime: inAWeek - 1);
-        final recurrringActivity2 = ogRecurrringActivity.copyWithNewId(
+        final recurrringActivity2 = ogRecurrringActivity.copyWith(
+          newId: true,
           startTime: inAWeek,
         );
 
@@ -276,6 +291,7 @@ void main() {
         verify(mockActivityRepository.save([
           expextedRecurring,
         ]));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
 
       test('for last day edits end time', () async {
@@ -286,7 +302,8 @@ void main() {
         final in6Days = inAWeek.previousDay();
         final recurrringActivity = ogRecurrringActivity.copyWith(
             endTime: inAWeek.onlyDays().millisecondsSinceEpoch - 1);
-        final recurrringActivity2 = ogRecurrringActivity.copyWithNewId(
+        final recurrringActivity2 = ogRecurrringActivity.copyWith(
+          newId: true,
           title: 'other title',
           startTime: inAWeek.millisecondsSinceEpoch,
         );
@@ -326,6 +343,7 @@ void main() {
         verify(mockActivityRepository.save([
           expextedRecurring,
         ]));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
 
       test('for a mid day splits the activity up', () async {
@@ -341,8 +359,10 @@ void main() {
 
         final expextedRecurring1 = recurrringActivity.copyWith(
             endTime: inAWeekDays.millisecondsSinceEpoch - 1);
-        final expextedRecurring2 = recurrringActivity.copyWithNewId(
-            startTime: inAWeek.nextDay().millisecondsSinceEpoch);
+        final expextedRecurring2 = recurrringActivity.copyWith(
+          newId: true,
+          startTime: inAWeek.nextDay().millisecondsSinceEpoch,
+        );
 
         final expectedActivityList = [
           expextedRecurring1,
@@ -360,12 +380,13 @@ void main() {
           emitsInOrder([
             ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
-            _MatchActivitiesWithoutId(expectedActivityList),
+            MatchActivitiesWithoutId(expectedActivityList),
           ]),
         );
         // Assert calls save with deleted recurring
         verify(mockActivityRepository
-            .save(argThat(_MatchActivitiesWithoutId(expectedActivityList))));
+            .save(argThat(MatchActivitiesWithoutId(expectedActivityList))));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
     });
 
@@ -377,7 +398,8 @@ void main() {
         final ogRecurrringActivity = FakeActivity.reocurrsFridays(anyTime);
         final recurrringActivity =
             ogRecurrringActivity.copyWith(endTime: inAWeek - 1);
-        final recurrringActivity2 = ogRecurrringActivity.copyWithNewId(
+        final recurrringActivity2 = ogRecurrringActivity.copyWith(
+          newId: true,
           startTime: inAWeek,
         );
 
@@ -409,6 +431,7 @@ void main() {
           recurrringActivity,
           recurrringActivity2
         ].map((a) => a.copyWith(deleted: true))));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
 
       test('for a day modifies end time on activity', () async {
@@ -439,6 +462,7 @@ void main() {
         );
         // Assert calls save with deleted recurring
         verify(mockActivityRepository.save([recurrringActivityWithEndTime]));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
 
       test('for a day modifies end time on activity and deletes future series',
@@ -452,7 +476,8 @@ void main() {
         final recurrringActivity1 = ogRecurrringActivity.copyWith(
           endTime: inTwoWeeks.millisecondsSinceEpoch - 1,
         );
-        final recurrringActivity2 = ogRecurrringActivity.copyWithNewId(
+        final recurrringActivity2 = ogRecurrringActivity.copyWith(
+          newId: true,
           startTime: inTwoWeeks
               .copyWith(hour: anyTime.hour, minute: anyTime.minute)
               .millisecondsSinceEpoch,
@@ -484,6 +509,7 @@ void main() {
           recurrringActivity2.copyWith(deleted: true),
           recurrringActivity1AfterDelete,
         ]));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
     });
   });
@@ -521,7 +547,9 @@ void main() {
 
         // Assert calls save
         verify(mockActivityRepository.save([expected]));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
+
       test('on first day split activity in two and updates the activty ',
           () async {
         // Arrange
@@ -535,7 +563,8 @@ void main() {
         final updated =
             recurring.copyWith(title: 'new title', startTime: starttime);
 
-        final expcetedUpdatedActivity = updated.copyWithNewId(
+        final expcetedUpdatedActivity = updated.copyWith(
+          newId: true,
           endTime: starttime + recurring.duration,
           recurrentData: 0,
           recurrentType: 0,
@@ -554,30 +583,37 @@ void main() {
           emitsInOrder([
             ActivitiesNotLoaded(),
             ActivitiesLoaded([recurring]),
-            _MatchActivitiesWithoutId(
+            MatchActivitiesWithoutId(
                 [expcetedUpdatedActivity, updatedOldActivity]),
           ]),
         );
 
         // Assert calls save
-        verify(mockActivityRepository.save(argThat(_MatchActivitiesWithoutId(
+        verify(mockActivityRepository.save(argThat(MatchActivitiesWithoutId(
             [expcetedUpdatedActivity, updatedOldActivity]))));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
       test('on last day split activity in two and updates the activty ',
           () async {
         // Arrange
-        final lastDay = anyDay.add(5.days());
-        final recurring = FakeActivity.reocurrsEveryDay(anyTime)
-            .copyWith(endTime: lastDay.millisecondsSinceEpoch - 1);
+        final startTime = DateTime(2020, 01, 01, 15, 20);
+        final lastDay = DateTime(2020, 05, 05);
+        final lastDayEndTime =
+            DateTime(2020, 05, 06).millisecondsSinceEpoch - 1;
+        final recurring = FakeActivity.reocurrsEveryDay(startTime)
+            .copyWith(endTime: lastDayEndTime);
         when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value([recurring]));
 
-        final newStartTime =
-            recurring.start.subtract(1.hours()).millisecondsSinceEpoch;
+        final newStartTime = recurring
+            .startClock(lastDay)
+            .subtract(1.hours())
+            .millisecondsSinceEpoch;
         final updated =
             recurring.copyWith(title: 'new title', startTime: newStartTime);
 
-        final expectedUpdatedActivity = updated.copyWithNewId(
+        final expectedUpdatedActivity = updated.copyWith(
+          newId: true,
           endTime: newStartTime + recurring.duration,
           recurrentData: 0,
           recurrentType: 0,
@@ -585,8 +621,8 @@ void main() {
         final exptectedUpdatedOldActivity =
             recurring.copyWith(endTime: lastDay.millisecondsSinceEpoch - 1);
 
-        final exptected = _MatchActivitiesWithoutId(
-            [expectedUpdatedActivity, exptectedUpdatedOldActivity]);
+        final exptected = MatchActivitiesWithoutId(
+            [exptectedUpdatedOldActivity, expectedUpdatedActivity]);
 
         // Act
         activitiesBloc.add(LoadActivities());
@@ -605,7 +641,9 @@ void main() {
 
         // Assert calls save
         verify(mockActivityRepository.save(argThat(exptected)));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
+
       test('on a day split activity in three and updates the activty ',
           () async {
         // Arrange
@@ -620,21 +658,23 @@ void main() {
                 .copyWith(hour: anyTime.hour - 1, minute: anyTime.millisecond)
                 .millisecondsSinceEpoch);
 
-        final expectedUpdatedActivity = updated.copyWithNewId(
+        final expectedUpdatedActivity = updated.copyWith(
+          newId: true,
           endTime: updated.startTime + updated.duration,
           recurrentType: 0,
           recurrentData: 0,
         );
         final preModDaySeries =
             recurring.copyWith(endTime: aDay.millisecondsSinceEpoch - 1);
-        final postModDaySeries = recurring.copyWithNewId(
+        final postModDaySeries = recurring.copyWith(
+            newId: true,
             startTime: aDay
                 .nextDay()
                 .copyWith(
                     hour: recurring.start.hour, minute: recurring.start.minute)
                 .millisecondsSinceEpoch);
 
-        final expected = _MatchActivitiesWithoutId(
+        final expected = MatchActivitiesWithoutId(
             [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
 
         // Act
@@ -654,6 +694,7 @@ void main() {
 
         // Assert calls save
         verify(mockActivityRepository.save(argThat(expected)));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
 
       test('fullday split', () async {
@@ -671,7 +712,8 @@ void main() {
             duration: 1.days().inMilliseconds - 1,
             startTime: aDay.millisecondsSinceEpoch);
 
-        final expectedUpdatedActivity = fullday.copyWithNewId(
+        final expectedUpdatedActivity = fullday.copyWith(
+          newId: true,
           endTime: aDay.nextDay().millisecondsSinceEpoch - 1,
           recurrentType: 0,
           recurrentData: 0,
@@ -679,14 +721,15 @@ void main() {
 
         final preModDaySeries =
             recurring.copyWith(endTime: aDay.millisecondsSinceEpoch - 1);
-        final postModDaySeries = recurring.copyWithNewId(
+        final postModDaySeries = recurring.copyWith(
+            newId: true,
             startTime: aDay
                 .nextDay()
                 .copyWith(
                     hour: recurring.start.hour, minute: recurring.start.minute)
                 .millisecondsSinceEpoch);
 
-        final expected = _MatchActivitiesWithoutId(
+        final expected = MatchActivitiesWithoutId(
             [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
 
         // Act
@@ -706,8 +749,10 @@ void main() {
 
         // Assert calls save
         verify(mockActivityRepository.save(argThat(expected)));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
     });
+
     group('This day and forward', () {
       test('on first day, just updates the activty ', () async {
         // Arrange
@@ -735,6 +780,7 @@ void main() {
 
         // Assert calls save with deleted recurring
         verify(mockActivityRepository.save([updatedRecurrringActivity]));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
 
       test('on second day splits the activity ', () async {
@@ -746,8 +792,10 @@ void main() {
             startTime:
                 aDay.copyWith(hour: 4, minute: 4).millisecondsSinceEpoch);
 
-        final beforeModifiedDay = recurrringActivity.copyWithNewId(
-            endTime: aDay.millisecondsSinceEpoch - 1);
+        final beforeModifiedDay = recurrringActivity.copyWith(
+          newId: true,
+          endTime: aDay.millisecondsSinceEpoch - 1,
+        );
         final onAndAfterModifiedDay = updatedRecurrringActivity.copyWith();
 
         when(mockActivityRepository.load())
@@ -769,11 +817,12 @@ void main() {
           emitsInOrder([
             ActivitiesNotLoaded(),
             ActivitiesLoaded([recurrringActivity]),
-            _MatchActivitiesWithoutId(exptected),
+            MatchActivitiesWithoutId(exptected),
           ]),
         );
         verify(mockActivityRepository
-            .save(argThat(_MatchActivitiesWithoutId(exptected))));
+            .save(argThat(MatchActivitiesWithoutId(exptected))));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
 
       test('change on occourance backwards ', () async {
@@ -788,7 +837,8 @@ void main() {
         when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value([recurrringActivity]));
 
-        final expectedPreModified = recurrringActivity.copyWithNewId(
+        final expectedPreModified = recurrringActivity.copyWith(
+            newId: true,
             endTime: inAWeek.onlyDays().millisecondsSinceEpoch - 1);
         final exptectedList = [expectedPreModified, updatedRecurrringActivity];
 
@@ -806,12 +856,13 @@ void main() {
           emitsInOrder([
             ActivitiesNotLoaded(),
             ActivitiesLoaded([recurrringActivity]),
-            _MatchActivitiesWithoutId(exptectedList),
+            MatchActivitiesWithoutId(exptectedList),
           ]),
         );
 
         verify(mockActivityRepository
-            .save(argThat(_MatchActivitiesWithoutId(exptectedList))));
+            .save(argThat(MatchActivitiesWithoutId(exptectedList))));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
 
       test('change on occourance forward ', () async {
@@ -829,7 +880,8 @@ void main() {
         when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value([recurrringActivity]));
 
-        final expectedPreModified = recurrringActivity.copyWithNewId(
+        final expectedPreModified = recurrringActivity.copyWith(
+            newId: true,
             endTime: inTwoWeeks.onlyDays().millisecondsSinceEpoch - 1);
         final exptectedList = [expectedPreModified, updatedRecurrringActivity];
 
@@ -847,54 +899,14 @@ void main() {
           emitsInOrder([
             ActivitiesNotLoaded(),
             ActivitiesLoaded([recurrringActivity]),
-            _MatchActivitiesWithoutId(exptectedList),
+            MatchActivitiesWithoutId(exptectedList),
           ]),
         );
 
         verify(mockActivityRepository
-            .save(argThat(_MatchActivitiesWithoutId(exptectedList))));
+            .save(argThat(MatchActivitiesWithoutId(exptectedList))));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
-
-      test('change on occourance past endTime ', () async {
-        // Arrange
-        final inAWeek = anyTime.copyWith(day: anyTime.day + 7);
-        final inFourWeeks = anyTime.copyWith(day: anyTime.day + 4 * 7);
-        final inSixWeeks = anyTime.copyWith(day: anyTime.day + 6 * 7);
-
-        final recurrringActivity = FakeActivity.reocurrsEveryDay(anyTime)
-            .copyWith(endTime: inFourWeeks.millisecondsSinceEpoch);
-
-        final updatedRecurrringActivity = recurrringActivity.copyWith(
-            title: 'new title', startTime: inSixWeeks.millisecondsSinceEpoch);
-
-        when(mockActivityRepository.load())
-            .thenAnswer((_) => Future.value([recurrringActivity]));
-
-        final expectedPreModified = recurrringActivity.copyWithNewId(
-            endTime: inSixWeeks.onlyDays().millisecondsSinceEpoch - 1);
-        final exptectedList = [expectedPreModified, updatedRecurrringActivity];
-
-        // Act
-        activitiesBloc.add(LoadActivities());
-        activitiesBloc.add(UpdateRecurringActivity(
-          updatedRecurrringActivity,
-          ApplyTo.thisDayAndForward,
-          inAWeek.onlyDays(),
-        ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc,
-          emitsInOrder([
-            ActivitiesNotLoaded(),
-            ActivitiesLoaded([recurrringActivity]),
-            _MatchActivitiesWithoutId(exptectedList),
-          ]),
-        );
-
-        verify(mockActivityRepository
-            .save(argThat(_MatchActivitiesWithoutId(exptectedList))));
-      }, skip: true); // Have to be sure what to do here
 
       test('changes all future activities in series ', () async {
         // Arrange
@@ -908,12 +920,14 @@ void main() {
             endTime: inSevenDays.onlyDays().millisecondsSinceEpoch - 1,
             title: 'original');
 
-        final after = og.copyWithNewId(
+        final after = og.copyWith(
+            newId: true,
             startTime: inNineDays.millisecondsSinceEpoch,
             fullDay: true,
             title: 'now full day');
 
-        final stray = og.copyWithNewId(
+        final stray = og.copyWith(
+            newId: true,
             startTime: in12Days.millisecondsSinceEpoch,
             duration: 10.minutes().inMilliseconds,
             endTime:
@@ -922,7 +936,8 @@ void main() {
             recurrentType: 0,
             title: 'a stray');
 
-        final stray2 = og.copyWithNewId(
+        final stray2 = og.copyWith(
+            newId: true,
             startTime: inFiveDays.millisecondsSinceEpoch,
             endTime: inFiveDays.add(66.minutes()).millisecondsSinceEpoch,
             duration: 66.minutes().inMilliseconds,
@@ -946,7 +961,8 @@ void main() {
         final beforePostMod = before.copyWith(
             endTime: inFiveDays.onlyDays().millisecondsSinceEpoch - 1);
 
-        final beforeSplitPostMod = before.copyWithNewId(
+        final beforeSplitPostMod = before.copyWith(
+          newId: true,
           title: newTitle,
           startTime: newTime.millisecondsSinceEpoch,
           duration: newDuration,
@@ -993,12 +1009,13 @@ void main() {
           emitsInOrder([
             ActivitiesNotLoaded(),
             ActivitiesLoaded(currentActivities),
-            _MatchActivitiesWithoutId(exptectedList),
+            MatchActivitiesWithoutId(exptectedList),
           ]),
         );
 
         verify(mockActivityRepository
-            .save(argThat(_MatchActivitiesWithoutId(exptectedList))));
+            .save(argThat(MatchActivitiesWithoutId(exptectedList))));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
 
       test('dont edited activity before ', () async {
@@ -1015,13 +1032,15 @@ void main() {
             endTime: a1End,
             recurrentType: 1,
             recurrentData: 16383);
-        final a2 = a1.copyWithNewId(
+        final a2 = a1.copyWith(
+            newId: true,
             title: 'asdf',
             startTime: a2Start,
             endTime: a2End,
             recurrentType: 1,
             recurrentData: 16383);
-        final a3 = a2.copyWithNewId(
+        final a3 = a2.copyWith(
+          newId: true,
           title: 'Moved',
           startTime: a3Time,
           endTime: a3Time,
@@ -1056,11 +1075,12 @@ void main() {
           emitsInOrder([
             ActivitiesNotLoaded(),
             ActivitiesLoaded([a1, a2, a3]),
-            _MatchActivitiesWithoutId([a1, a2Part1, updatedA2, expectedA3]),
+            MatchActivitiesWithoutId([a1, a2Part1, updatedA2, expectedA3]),
           ]),
         );
         verify(mockActivityRepository.save(argThat(
-            _MatchActivitiesWithoutId([a2Part1, updatedA2, expectedA3]))));
+            MatchActivitiesWithoutId([a2Part1, updatedA2, expectedA3]))));
+        verify(mockSyncBloc.add(ActivitySaved()));
       });
     });
   });
@@ -1069,34 +1089,4 @@ void main() {
     activitiesBloc.close();
     mockPushBloc.close();
   });
-}
-
-Function deepEq = const DeepCollectionEquality.unordered().equals;
-
-class _MatchActivitiesWithoutId extends Matcher {
-  final Iterable<Activity> _expected;
-  const _MatchActivitiesWithoutId(Iterable<Activity> expected)
-      : _expected = expected;
-
-  @override
-  bool matches(item, Map matchState) {
-    Iterable<Activity> activities;
-    if (item is ActivitiesLoaded) activities = item.activities;
-    if (item is Iterable<Activity>) activities = item;
-    if (activities == null) return false;
-    final actual = activities.map((a) => a.props.sublist(1));
-    final exptected = _expected.map((a) => a.props.sublist(1));
-    return deepEq(actual, exptected);
-  }
-
-  @override
-  Description describe(Description description) => description
-      .add('same ActivitiesLoaded but ignores all Activity.id ')
-      .addDescriptionOf(_expected);
-
-  @override
-  Description describeMismatch(
-      item, Description mismatchDescription, Map matchState, bool verbose) {
-    return mismatchDescription.add(' is not same');
-  }
 }
