@@ -15,6 +15,7 @@ class FadeInCalendarImage extends StatelessWidget {
   final String imageFileId, imageFilePath, activityId;
   final File imageFile;
   final double width, height;
+  final ImageSize imageSize;
   FadeInCalendarImage({
     @required this.imageFileId,
     @required this.imageFilePath,
@@ -22,6 +23,7 @@ class FadeInCalendarImage extends StatelessWidget {
     this.width,
     this.height,
     this.imageFile,
+    this.imageSize = ImageSize.SMALL,
   });
   @override
   Widget build(BuildContext context) {
@@ -59,9 +61,9 @@ class FadeInCalendarImage extends StatelessWidget {
                       width: width,
                       height: height,
                       image: Image.file(
-                        fileStorage.getImageThumb(ImageThumb(
-                          id: imageFileId,
-                        )),
+                        fileStorage.getImageThumb(imageSize == ImageSize.SMALL
+                            ? SmallThumb(imageFileId)
+                            : MediumThumb(imageFileId)),
                       ).image,
                       placeholder: MemoryImage(kTransparentImage),
                     )
@@ -80,12 +82,14 @@ class FadeInCalendarImage extends StatelessWidget {
 class FadeInAbiliaImage extends StatelessWidget {
   final String imageFileId, imageFilePath;
   final double width, height;
+  final ImageSize imageSize;
 
   FadeInAbiliaImage({
     @required this.imageFileId,
     @required this.imageFilePath,
     @required this.height,
     @required this.width,
+    this.imageSize = ImageSize.SMALL,
   });
 
   @override
@@ -116,7 +120,9 @@ class FadeInAbiliaImage extends StatelessWidget {
                 width: width,
                 height: height,
                 image: Image.file(
-                  fileStorage.getImageThumb(SmallThumb(imageFileId)),
+                  fileStorage.getImageThumb(imageSize == ImageSize.SMALL
+                      ? SmallThumb(imageFileId)
+                      : MediumThumb(imageFileId)),
                 ).image,
                 placeholder: MemoryImage(kTransparentImage),
               )

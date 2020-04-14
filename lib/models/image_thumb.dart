@@ -25,3 +25,5 @@ class MediumThumb extends ImageThumb {
 class SmallThumb extends ImageThumb {
   SmallThumb(String id) : super(id: id, size: ImageThumb.SMALL_THUMB_SIZE);
 }
+
+enum ImageSize { SMALL, MEDIUM }

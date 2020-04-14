@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:seagull/models/image_thumb.dart';
-import 'package:seagull/utils/all.dart';
 
 class FileStorage {
   final String _storageDirectory;

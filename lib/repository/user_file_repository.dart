@@ -6,12 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/src/base_client.dart';
 import 'package:meta/meta.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:seagull/db/user_file_db.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
-import 'package:seagull/utils/all.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
   final UserFileDb userFileDb;
