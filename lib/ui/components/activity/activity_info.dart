@@ -21,102 +21,110 @@ class ActivityInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-
     final hasImage = activity.hasImage;
     final hasAttachment = activity.infoItem?.isNotEmpty ?? false;
     final signedOff = activity.isSignedOff(day);
-    return AnimatedTheme(
-      duration: animationDuration,
-      data: signedOff
-          ? Theme.of(context).copyWith(
-              buttonTheme: uncheckButtonThemeData,
-              buttonColor: AbiliaColors.transparentBlack[20])
-          : Theme.of(context).copyWith(
-              buttonTheme: checkButtonThemeData,
-              buttonColor: AbiliaColors.green),
-      child: Stack(
-        overflow: Overflow.visible,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: borderRadius,
-              border: Border.all(color: AbiliaColors.transparentBlack[5]),
-            ),
-            child: AnimatedOpacity(
-              duration: animationDuration,
-              opacity: signedOff ? .5 : 1.0,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: AbiliaColors.white, borderRadius: borderRadius),
-                constraints: BoxConstraints.expand(),
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: <Widget>[
-                    Flexible(
-                      flex: 5,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            bottom: hasAttachment || hasImage ? 12.0 : 0.0),
-                        child: TopInfo(activity: activity),
+    return Column(
+      children: <Widget>[
+        ActivityTimeRange(activity: activity, day: day),
+        AnimatedTheme(
+          duration: animationDuration,
+          data: signedOff
+              ? Theme.of(context).copyWith(
+                  buttonTheme: uncheckButtonThemeData,
+                  buttonColor: AbiliaColors.transparentBlack[20])
+              : Theme.of(context).copyWith(
+                  buttonTheme: checkButtonThemeData,
+                  buttonColor: AbiliaColors.green),
+          child: Expanded(
+            child: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: borderRadius,
+                    border: Border.all(color: AbiliaColors.transparentBlack[5]),
+                  ),
+                  child: AnimatedOpacity(
+                    duration: animationDuration,
+                    opacity: signedOff ? .5 : 1.0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: AbiliaColors.white,
+                          borderRadius: borderRadius),
+                      constraints: BoxConstraints.expand(),
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        children: <Widget>[
+                          Flexible(
+                            flex: 5,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      hasAttachment || hasImage ? 12.0 : 0.0),
+                              child: TopInfo(activity: activity),
+                            ),
+                          ),
+                          if (hasAttachment)
+                            Flexible(
+                              key: TestKey.attachment,
+                              flex: 8,
+                              child: Container(
+                                child: Center(
+                                  child: Text('Attachment'),
+                                ),
+                                decoration: BoxDecoration(
+                                    color: AbiliaColors.white[110],
+                                    borderRadius: BorderRadius.all(
+                                      const Radius.circular(12.0),
+                                    )),
+                              ),
+                            ),
+                          if (hasImage && !hasAttachment)
+                            Flexible(
+                              flex: 8,
+                              child: FadeInCalendarImage(
+                                imageFileId: activity.fileId,
+                                imageFilePath: activity.icon,
+                                width: 327.0,
+                                height: 289.0,
+                              ),
+                            )
+                        ],
                       ),
                     ),
-                    if (hasAttachment)
-                      Flexible(
-                        key: TestKey.attachment,
-                        flex: 8,
-                        child: Container(
-                          child: Center(
-                            child: Text('Attachment'),
-                          ),
-                          decoration: BoxDecoration(
-                              color: AbiliaColors.white[110],
-                              borderRadius: BorderRadius.all(
-                                const Radius.circular(12.0),
-                              )),
-                        ),
-                      ),
-                    if (hasImage && !hasAttachment)
-                      Flexible(
-                        flex: 8,
-                        child: FadeInCalendarImage(
-                          imageFileId: activity.fileId,
-                          imageFilePath: activity.icon,
-                          width: 327.0,
-                          height: 289.0,
-                        ),
-                      )
-                  ],
+                  ),
                 ),
-              ),
+                if (activity.checkable)
+                  CheckButton(
+                    key: signedOff
+                        ? TestKey.activityUncheckButton
+                        : TestKey.activityCheckButton,
+                    iconData: signedOff
+                        ? AbiliaIcons.close_program
+                        : AbiliaIcons.check_button,
+                    text: signedOff ? translate.uncheck : translate.check,
+                    onPressed: () {
+                      BlocProvider.of<ActivitiesBloc>(context)
+                          .add(UpdateActivity(activity.signOff(day)));
+                    },
+                  ),
+                AnimatedOpacity(
+                  opacity: signedOff ? 1.0 : 0.0,
+                  duration: animationDuration,
+                  child: Center(
+                    child: Icon(
+                      AbiliaIcons.check_button,
+                      size: 328,
+                      color: AbiliaColors.green,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          if (activity.checkable)
-            CheckButton(
-              key: signedOff
-                  ? TestKey.activityUncheckButton
-                  : TestKey.activityCheckButton,
-              iconData: signedOff
-                  ? AbiliaIcons.close_program
-                  : AbiliaIcons.check_button,
-              text: signedOff ? translate.uncheck : translate.check,
-              onPressed: () {
-                BlocProvider.of<ActivitiesBloc>(context)
-                    .add(UpdateActivity(activity.signOff(day)));
-              },
-            ),
-          AnimatedOpacity(
-            opacity: signedOff ? 1.0 : 0.0,
-            duration: animationDuration,
-            child: Center(
-              child: Icon(
-                AbiliaIcons.check_button,
-                size: 328,
-                color: AbiliaColors.green,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -195,10 +203,12 @@ class TopInfo extends StatelessWidget {
               if (hasTitle)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(activity.title,
-                      style: themeData.textTheme.headline,
-                      textAlign:
-                          imageToTheLeft ? TextAlign.left : TextAlign.center),
+                  child: Text(
+                    activity.title,
+                    style: themeData.textTheme.headline,
+                    textAlign:
+                        imageToTheLeft ? TextAlign.left : TextAlign.center,
+                  ),
                 ),
               Text(
                 activity.fullDay
