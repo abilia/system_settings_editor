@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -40,6 +42,9 @@ void main() {
               userFileRepository: MockUserFileRepository(),
             ),
           ),
+          BlocProvider<ClockBloc>(
+            create: (context) => ClockBloc(StreamController<DateTime>().stream),
+          )
         ], child: widget),
       );
 
