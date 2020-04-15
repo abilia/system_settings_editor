@@ -1,20 +1,29 @@
 import 'package:equatable/equatable.dart';
 
 class ImageThumb extends Equatable {
-  static const DEFAULT_THUMB_SIZE = 350;
+  static const SMALL_THUMB_SIZE = 350;
+  static const MEDIUM_THUMB_SIZE = 750;
 
   final id;
-  final height;
-  final width;
+  final size;
 
   ImageThumb({
     this.id,
-    this.height = DEFAULT_THUMB_SIZE,
-    this.width = DEFAULT_THUMB_SIZE,
+    this.size = MEDIUM_THUMB_SIZE,
   });
 
-  String get thumbId => '${id}_${height}_${width}';
+  String get thumbId => '${id}_${size}';
 
   @override
-  List<Object> get props => [id, height, width];
+  List<Object> get props => [id, size];
 }
+
+class MediumThumb extends ImageThumb {
+  MediumThumb(String id) : super(id: id, size: ImageThumb.MEDIUM_THUMB_SIZE);
+}
+
+class SmallThumb extends ImageThumb {
+  SmallThumb(String id) : super(id: id, size: ImageThumb.SMALL_THUMB_SIZE);
+}
+
+enum ImageSize { SMALL, MEDIUM }

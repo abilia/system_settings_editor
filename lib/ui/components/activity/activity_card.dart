@@ -77,6 +77,7 @@ class ActivityCard extends StatelessWidget {
                               FadeInCalendarImage(
                                 imageFileId: activity.fileId,
                                 imageFilePath: activity.icon,
+                                activityId: activity.id,
                                 width: imageSize,
                                 height: imageSize,
                               ),

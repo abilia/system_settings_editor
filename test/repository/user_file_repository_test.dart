@@ -40,8 +40,8 @@ void main() {
       final revision = 99;
       when(mockUserFileDb.getLastRevision())
           .thenAnswer((_) => Future.value(revision));
-      final fileId = 'id';
 
+      final fileId = 'id';
       final userFilesJson = '''
           [
             {
@@ -72,6 +72,9 @@ void main() {
       final expectedFiles = (json.decode(userFilesJson) as List)
           .map((l) => DbUserFile.fromJson(l))
           .toList();
+
+      when(mockUserFileDb.getAllWithMissingFiles())
+          .thenAnswer((_) => Future.value(expectedFiles.map((f) => f.model)));
 
       when(
         mockClient.get(

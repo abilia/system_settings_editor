@@ -1,7 +1,7 @@
 export 'abilia_icons.dart';
 export 'action_button.dart';
 export 'error_message.dart';
-export 'fade_in_calendar_image.dart';
+export 'abilia_image.dart';
 export 'login_form.dart';
 export 'seagull_icon.dart';
 export 'web_link.dart';
@@ -18,5 +18,4 @@ export 'activity/all.dart';
 export 'dialogs/all.dart';
 export 'sortable/image_archive.dart';
 export 'remove_button.dart';
-export 'fade_in_calendar_image.dart';
 export 'cross_over.dart';

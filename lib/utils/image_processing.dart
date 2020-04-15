@@ -5,33 +5,44 @@ import 'package:image/image.dart' as img;
 import 'package:image/src/exif_data.dart';
 import 'package:image/src/transform/flip.dart';
 import 'package:image/src/transform/copy_rotate.dart';
-
 import 'package:seagull/models/all.dart';
 
 const IMAGE_ORIENTATION_FLAG = 'Image Orientation';
 const IMAGE_QUALITY = 80;
 const IMAGE_MAX_SIZE = 1500;
 
-class ImageResult {
+class ImageResponse {
   final List<int> originalImage;
-  final List<int> thumbImage;
+  final List<int> mediumThumb;
+  final List<int> smallThumb;
 
-  ImageResult({
+  ImageResponse({
     this.originalImage,
-    this.thumbImage,
+    this.mediumThumb,
+    this.smallThumb,
   });
 }
 
-Future<ImageResult> imageProcessingIsolate(List<int> originalData) async {
+class ImageRequest {
+  final List<int> data;
+  final String id;
+  final String path;
+
+  ImageRequest({
+    this.data,
+    this.id,
+    this.path,
+  });
+}
+
+Future<List<int>> adjustImageSizeAndRotation(List<int> originalData) async {
   final adjustedOrientation = await adjustRotationToExif(originalData);
 
-  int width, height, thumbWidth, thumbHeight;
+  int width, height;
   if (adjustedOrientation.height > adjustedOrientation.width) {
     height = min(IMAGE_MAX_SIZE, adjustedOrientation.height);
-    thumbHeight = ImageThumb.DEFAULT_THUMB_SIZE;
   } else {
     width = min(IMAGE_MAX_SIZE, adjustedOrientation.width);
-    thumbWidth = ImageThumb.DEFAULT_THUMB_SIZE;
   }
 
   final resizedOriginal = img.copyResize(
@@ -40,15 +51,22 @@ Future<ImageResult> imageProcessingIsolate(List<int> originalData) async {
     width: width,
   );
 
-  final thumbImage = img.copyResize(
-    adjustedOrientation,
-    height: thumbHeight,
-    width: thumbWidth,
-  );
+  return img.encodeJpg(resizedOriginal, quality: IMAGE_QUALITY);
+}
 
-  final jpgFile = img.encodeJpg(resizedOriginal, quality: IMAGE_QUALITY);
-  final thumbJpgFile = img.encodeJpg(thumbImage, quality: IMAGE_QUALITY);
-  return ImageResult(originalImage: jpgFile, thumbImage: thumbJpgFile);
+Future<img.Image> resizeImg(img.Image image, int size) async {
+  int width, height;
+  if (image.height > image.width) {
+    height = min(size, image.height);
+  } else {
+    width = min(size, image.width);
+  }
+
+  return img.copyResize(
+    image,
+    height: height,
+    width: width,
+  );
 }
 
 Future<img.Image> adjustRotationToExif(List<int> imageBytes) async {
@@ -80,4 +98,29 @@ Future<img.Image> adjustRotationToExif(List<int> imageBytes) async {
       return copyRotate(bakedImage, -90);
   }
   return bakedImage;
+}
+
+Future<ImageResponse> adjustRotationAndCreateThumbs(List<int> originalBytes) async {
+  final adjustedImage = await adjustRotationToExif(originalBytes);
+  final original = img.encodeJpg(adjustedImage, quality: IMAGE_QUALITY);
+
+  final mediumThumb = (max(adjustedImage.height, adjustedImage.width) >
+          ImageThumb.MEDIUM_THUMB_SIZE)
+      ? img.encodeJpg(
+          await resizeImg(adjustedImage, ImageThumb.MEDIUM_THUMB_SIZE),
+          quality: IMAGE_QUALITY)
+      : original;
+
+  final smallThumb = (max(adjustedImage.height, adjustedImage.width) >
+          ImageThumb.SMALL_THUMB_SIZE)
+      ? img.encodeJpg(
+          await resizeImg(adjustedImage, ImageThumb.SMALL_THUMB_SIZE),
+          quality: IMAGE_QUALITY)
+      : original;
+
+  return ImageResponse(
+    originalImage: original,
+    mediumThumb: mediumThumb,
+    smallThumb: smallThumb,
+  );
 }
