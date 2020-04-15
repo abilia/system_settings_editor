@@ -3,6 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/components/activity/check_mark.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
@@ -116,11 +117,7 @@ class ActivityInfo extends StatelessWidget {
                   opacity: signedOff ? 1.0 : 0.0,
                   duration: animationDuration,
                   child: Center(
-                    child: Icon(
-                      AbiliaIcons.check_button,
-                      size: 328,
-                      color: AbiliaColors.green,
-                    ),
+                    child: CheckMark(),
                   ),
                 ),
               ],
