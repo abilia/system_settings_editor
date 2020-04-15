@@ -193,7 +193,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     );
   }
 
-  void handleNonImage(UserFile userFile) async {
+  Future<void> handleNonImage(UserFile userFile) async {
     final originalFileResponse = await httpClient.get(
       fileIdUrl(baseUrl, userId, userFile.id),
       headers: authHeader(authToken),
@@ -206,7 +206,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     }
   }
 
-  void handleImageFile(UserFile userFile) async {
+  Future<void> handleImageFile(UserFile userFile) async {
     final originalFileResponse = httpClient.get(
       fileIdUrl(baseUrl, userId, userFile.id),
       headers: authHeader(authToken),
