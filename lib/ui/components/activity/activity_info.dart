@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
@@ -26,7 +25,10 @@ class ActivityInfo extends StatelessWidget {
     final signedOff = activity.isSignedOff(day);
     return Column(
       children: <Widget>[
-        ActivityTimeRange(activity: activity, day: day),
+        if (activity.fullDay)
+          Text(translate.fullDay)
+        else
+          ActivityTimeRange(activity: activity, day: day),
         AnimatedTheme(
           duration: animationDuration,
           data: signedOff
@@ -177,7 +179,6 @@ class TopInfo extends StatelessWidget {
     final imageToTheLeft = hasImage && hasAttachment && hasTitle;
     final imageBelow = hasImage && hasAttachment && !hasTitle;
     final themeData = Theme.of(context);
-    final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
 
     return Row(
       mainAxisAlignment:
@@ -212,16 +213,6 @@ class TopInfo extends StatelessWidget {
                         imageToTheLeft ? TextAlign.left : TextAlign.center,
                   ),
                 ),
-              Text(
-                activity.fullDay
-                    ? Translator.of(context).translate.fullDay
-                    : activity.hasEndTime
-                        ? '${timeFormat.format(activity.start)} - ${timeFormat.format(activity.end)}'
-                        : '${timeFormat.format(activity.start)}',
-                style: themeData.textTheme.subhead.copyWith(
-                  color: AbiliaColors.black,
-                ),
-              ),
               if (imageBelow)
                 FadeInCalendarImage(
                   imageFileId: activity.fileId,
