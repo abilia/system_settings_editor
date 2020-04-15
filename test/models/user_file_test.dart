@@ -14,6 +14,7 @@ void main() {
       md5: 'md5',
       path: path,
       sha1: 'sha1',
+      fileLoaded: true,
     );
   }
 

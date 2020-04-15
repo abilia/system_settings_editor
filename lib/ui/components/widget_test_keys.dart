@@ -43,5 +43,8 @@ class TestKey {
       editReminder = Key('editReminder'),
       editAlarm = Key('editAlarm'),
       removePicture = Key('removePicture'),
-      imageArchiveButton = Key('imageArchiveButton');
+      imageArchiveButton = Key('imageArchiveButton'),
+      onlyThisDay = Key('onlyThisDay'),
+      allDays = Key('allDays'),
+      thisDayAndForward = Key('thisDayAndForward');
 }

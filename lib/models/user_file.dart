@@ -5,7 +5,7 @@ class UserFile extends DataModel {
   static const IMAGE_ENDINGS = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff'];
   final String sha1, md5, path, contentType;
   final int fileSize;
-  final bool deleted;
+  final bool deleted, fileLoaded;
 
   UserFile({
     @required String id,
@@ -15,11 +15,12 @@ class UserFile extends DataModel {
     @required this.contentType,
     @required this.fileSize,
     @required this.deleted,
+    @required this.fileLoaded,
   }) : super(id);
 
   @override
   List<Object> get props =>
-      [id, sha1, md5, path, contentType, fileSize, deleted];
+      [id, sha1, md5, path, contentType, fileSize, deleted, fileLoaded];
 
   @override
   String toString() => 'UserFile: { ${props.join(', ')} }';
@@ -51,6 +52,7 @@ class DbUserFile extends DbModel<UserFile> {
         contentType: dbRow['content_type'],
         fileSize: dbRow['file_size'],
         deleted: dbRow['deleted'] == 1,
+        fileLoaded: dbRow['file_loaded'] == 1,
       ),
       revision: dbRow['revision'],
       dirty: dbRow['dirty']);
@@ -64,6 +66,7 @@ class DbUserFile extends DbModel<UserFile> {
           contentType: json['contentType'],
           fileSize: json['size'],
           deleted: json['deleted'],
+          fileLoaded: json['fileLoaded'] ?? false,
         ),
         revision: json['revision'],
         dirty: 0,
@@ -92,6 +95,7 @@ class DbUserFile extends DbModel<UserFile> {
         'content_type': userFile.contentType,
         'file_size': userFile.fileSize,
         'deleted': userFile.deleted ? 1 : 0,
+        'file_loaded': userFile.fileLoaded,
         'revision': revision,
         'dirty': dirty,
       };
@@ -105,6 +109,7 @@ class DbUserFile extends DbModel<UserFile> {
         'contentType': userFile.contentType,
         'size': userFile.fileSize,
         'deleted': userFile.deleted ? 1 : 0,
+        'fileLoaded': userFile.fileLoaded,
         'revision': revision,
       };
 }

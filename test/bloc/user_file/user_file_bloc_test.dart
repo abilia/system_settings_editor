@@ -27,6 +27,7 @@ void main() {
       contentType: "",
       fileSize: 1,
       deleted: false,
+      fileLoaded: true,
     );
 
     setUp(() {
@@ -70,19 +71,20 @@ void main() {
       final String filePath = 'test.dart';
       File file = MemoryFileSystem().file(filePath);
       await file.writeAsBytes(fileContent);
-      final processedFile1 = await imageProcessingIsolate(fileContent);
+      final processedFile1 = await adjustImageSizeAndRotation(fileContent);
 
       // Act
       userFileBloc.add(ImageAdded(fileId, file));
 
       final expectedFile = UserFile(
         id: fileId,
-        sha1: sha1.convert(processedFile1.originalImage).toString(),
-        md5: md5.convert(processedFile1.originalImage).toString(),
+        sha1: sha1.convert(processedFile1).toString(),
+        md5: md5.convert(processedFile1).toString(),
         path: 'seagull/$fileId',
         contentType: 'image/jpeg', // File is converted to jpeg
-        fileSize: processedFile1.originalImage.length,
+        fileSize: processedFile1.length,
         deleted: false,
+        fileLoaded: true,
       );
 
       // Assert
@@ -102,7 +104,7 @@ void main() {
       final filePath1 = 'test';
       File file = MemoryFileSystem().file(filePath1);
       await file.writeAsBytes(fileContent);
-      final processedFile1 = await imageProcessingIsolate(fileContent);
+      final processedFile1 = await adjustImageSizeAndRotation(fileContent);
 
       final fileId2 = 'fileId1';
       final filePath2 = 'test.dart';
@@ -116,22 +118,24 @@ void main() {
       // Assert
       final expectedFile1 = UserFile(
         id: fileId,
-        sha1: sha1.convert(processedFile1.originalImage).toString(),
-        md5: md5.convert(processedFile1.originalImage).toString(),
+        sha1: sha1.convert(processedFile1).toString(),
+        md5: md5.convert(processedFile1).toString(),
         path: 'seagull/$fileId',
         contentType: 'image/jpeg', // images are converted to jpeg
-        fileSize: processedFile1.originalImage.length,
+        fileSize: processedFile1.length,
         deleted: false,
+        fileLoaded: true,
       );
 
       final expectedFile2 = UserFile(
         id: fileId2,
-        sha1: sha1.convert(processedFile1.originalImage).toString(),
-        md5: md5.convert(processedFile1.originalImage).toString(),
+        sha1: sha1.convert(processedFile1).toString(),
+        md5: md5.convert(processedFile1).toString(),
         path: 'seagull/$fileId2',
         contentType: 'image/jpeg',
-        fileSize: processedFile1.originalImage.length,
+        fileSize: processedFile1.length,
         deleted: false,
+        fileLoaded: true,
       );
 
       await expectLater(

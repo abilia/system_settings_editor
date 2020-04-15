@@ -92,7 +92,7 @@ class Folder extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.center,
                       heightFactor: 42 / 66,
-                      child: FadeInCalendarImage(
+                      child: FadeInAbiliaImage(
                         imageFileId: sortable.sortableData.fileId,
                         imageFilePath: sortable.sortableData.icon,
                         width: 66,
@@ -152,7 +152,7 @@ class ArchiveImage extends StatelessWidget {
                 child: Center(
                   child: ClipRRect(
                     borderRadius: borderRadius,
-                    child: FadeInCalendarImage(
+                    child: FadeInAbiliaImage(
                       imageFileId: imageId,
                       imageFilePath: iconPath,
                       width: imageWidth,

@@ -70,6 +70,9 @@ class DatabaseRepository {
         dirty int
       )
     ''',
+    '''
+      ALTER TABLE $USER_FILE_TABLE_NAME ADD COLUMN file_loaded int default 0
+    '''
   ];
 
   static Database _database;

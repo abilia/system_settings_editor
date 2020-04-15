@@ -86,6 +86,7 @@ class ActivityInfo extends StatelessWidget {
                               child: FadeInCalendarImage(
                                 imageFileId: activity.fileId,
                                 imageFilePath: activity.icon,
+                                activityId: activity.id,
                                 width: 327.0,
                                 height: 289.0,
                               ),
@@ -188,6 +189,7 @@ class TopInfo extends StatelessWidget {
             child: FadeInCalendarImage(
               imageFileId: activity.fileId,
               imageFilePath: activity.icon,
+              activityId: activity.id,
               height: 109,
               width: 109,
             ),
@@ -224,6 +226,7 @@ class TopInfo extends StatelessWidget {
                 FadeInCalendarImage(
                   imageFileId: activity.fileId,
                   imageFilePath: activity.icon,
+                  activityId: activity.id,
                   height: 109,
                   width: 109,
                 ),

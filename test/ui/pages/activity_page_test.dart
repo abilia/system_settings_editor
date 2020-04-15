@@ -23,6 +23,7 @@ void main() {
   final locale = Locale('en');
   final translate = Translator(locale).translate;
   final starTime = DateTime(2111, 11, 11, 11, 11);
+  final tenDaysAgo = DateTime(2111, 11, 01, 11, 11);
 
   final activityBackButtonFinder = find.byKey(TestKey.activityBackButton);
   final selectReminderDialogFinder = find.byType(SelectReminderDialog);
@@ -30,11 +31,20 @@ void main() {
   final activityPageFinder = find.byType(ActivityPage);
   final agendaFinder = find.byType(Agenda);
 
+  final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
+  final finishActivityFinder = find.byKey(TestKey.finishEditActivityButton);
+
   final alarmButtonFinder = find.byKey(TestKey.editAlarm);
+  final alarmAtStartSwichFinder = find.byKey(TestKey.alarmAtStartSwitch);
   final reminderButtonFinder = find.byKey(TestKey.editReminder);
+  final reminderSwitchFinder = find.byType(ReminderSwitch);
 
   final okInkWellFinder = find.byKey(ObjectKey(TestKey.okDialog));
   final closeButtonFinder = find.byKey(TestKey.closeDialog);
+
+  final deleteButtonFinder = find.byIcon(AbiliaIcons.delete_all_clear);
+  final deleteViewDialogFinder = find.byType(DeleteActivityDialog);
+
   ActivityResponse activityResponse = () => [];
 
   setUp(() {
@@ -46,7 +56,10 @@ void main() {
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
+
     mockActivityDb = MockActivityDb();
+    when(mockActivityDb.getAllDirty())
+        .thenAnswer((_) => Future.value(<DbActivity>[]));
     GetItInitializer()
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
@@ -89,10 +102,8 @@ void main() {
   });
 
   group('Edit activity', () {
-    final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
     final editActivityPageFinder = find.byType(EditActivityPage);
     final titleTextFormFieldFinder = find.byKey(TestKey.editTitleTextFormField);
-    final finishActivityFinder = find.byKey(TestKey.finishEditActivityButton);
     testWidgets('Edit activity button shows', (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
@@ -172,7 +183,6 @@ void main() {
     final vibrateAlarmIconFinder = find.byIcon(AbiliaIcons.handi_vibration);
     final soundVibrateAlarmIconFinder =
         find.byIcon(AbiliaIcons.handi_alarm_vibration);
-    final alarmAtStartSwichFinder = find.byKey(TestKey.alarmAtStartSwitch);
 
     testWidgets('Alarm view dialog shows', (WidgetTester tester) async {
       // Arrange
@@ -288,8 +298,6 @@ void main() {
   });
 
   group('Change reminder', () {
-    final reminderSwitchFinder = find.byType(ReminderSwitch);
-
     final reminder5MinFinder =
         find.text(5.minutes().toReminderString(translate));
     final reminderDayFinder = find.text(1.days().toReminderString(translate));
@@ -469,8 +477,7 @@ void main() {
                   1.days().inMilliseconds,
                 ])
               ]));
-      when(mockActivityDb.getAllDirty())
-          .thenAnswer((_) => Future.value(<DbActivity>[]));
+
       await navigateToActivityPage(tester);
       await tester.tap(reminderButtonFinder);
       await tester.pumpAndSettle();
@@ -498,8 +505,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
-      when(mockActivityDb.getAllDirty())
-          .thenAnswer((_) => Future.value(<DbActivity>[]));
+
       await navigateToActivityPage(tester);
       await tester.tap(reminderButtonFinder);
       await tester.pumpAndSettle();
@@ -523,72 +529,238 @@ void main() {
       expect(closeButtonFinder, findsOneWidget);
       expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNull);
     });
+  });
+  group('Delete activity', () {
+    testWidgets('Finds delete button and no delete app bar',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+      // Act
+      await navigateToActivityPage(tester);
 
-    group('Delete', () {
-      final deleteButtonFinder = find.byIcon(AbiliaIcons.delete_all_clear);
-      final deleteViewDialogFinder = find.byType(DeleteActivityDialog);
+      // Assert
+      expect(deleteButtonFinder, findsOneWidget);
+      expect(deleteViewDialogFinder, findsNothing);
+      expect(okInkWellFinder, findsNothing);
+    });
 
-      testWidgets('Finds delete button and no delete app bar',
+    testWidgets('When delete button pressed Delete Activity Dialog is showing',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+      await navigateToActivityPage(tester);
+
+      // Act
+      await tester.tap(deleteButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(deleteViewDialogFinder, findsOneWidget);
+      expect(okInkWellFinder, findsOneWidget);
+      expect(find.byType(ActivityCard), findsOneWidget);
+    });
+
+    testWidgets('When cancel pressed, nothing happens',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+      await navigateToActivityPage(tester);
+
+      // Act
+      await tester.tap(deleteButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(closeButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(deleteButtonFinder, findsOneWidget);
+      expect(deleteViewDialogFinder, findsNothing);
+      expect(okInkWellFinder, findsNothing);
+    });
+
+    testWidgets(
+        'When delete then confirm delete pressed, navigate back and do not show origial widget',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+      await navigateToActivityPage(tester);
+
+      // Act
+      await tester.tap(deleteButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(okInkWellFinder);
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(deleteButtonFinder, findsNothing);
+      expect(deleteViewDialogFinder, findsNothing);
+      expect(okInkWellFinder, findsNothing);
+      expect(activityCardFinder, findsNothing);
+      expect(activityPageFinder, findsNothing);
+      expect(agendaFinder, findsOneWidget);
+    });
+  });
+  group('Edit recurring', () {
+    final editRecurrentFinder = find.byType(EditRecurrentDialog);
+    final onlyThisDayRadioFinder = find.byKey(ObjectKey(TestKey.onlyThisDay));
+    final allDaysRadioFinder = find.byKey(ObjectKey(TestKey.allDays));
+    final thisDayAndForwardRadioFinder =
+        find.byKey(ObjectKey(TestKey.thisDayAndForward));
+
+    group('Delete recurring', () {
+      testWidgets('Deleting recurring should show apply to dialog',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-            (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
-        // Act
-        await navigateToActivityPage(tester);
-
-        // Assert
-        expect(deleteButtonFinder, findsOneWidget);
-        expect(deleteViewDialogFinder, findsNothing);
-        expect(okInkWellFinder, findsNothing);
-      });
-
-      testWidgets(
-          'When delete button pressed Delete Activity Dialog is showing',
-          (WidgetTester tester) async {
-        // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-            (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
         await navigateToActivityPage(tester);
 
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
 
         // Assert
-        expect(deleteViewDialogFinder, findsOneWidget);
-        expect(okInkWellFinder, findsOneWidget);
-        expect(find.byType(ActivityCard), findsOneWidget);
+        expect(editRecurrentFinder, findsOneWidget);
       });
 
-      testWidgets('When cancel pressed, nothing happens',
+      testWidgets(
+          'Does not delete activity when not pressing confirm on recurring delete dialog',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-            (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
         await navigateToActivityPage(tester);
 
         // Act
         await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
         await tester.pumpAndSettle();
         await tester.tap(closeButtonFinder);
         await tester.pumpAndSettle();
 
-        // Assert
-        expect(deleteButtonFinder, findsOneWidget);
-        expect(deleteViewDialogFinder, findsNothing);
-        expect(okInkWellFinder, findsNothing);
+        // Assert -- Still on activity page
+        expect(activityPageFinder, findsOneWidget);
       });
 
       testWidgets(
-          'When delete then confirm delete pressed, navigate back and do not show origial widget',
+          'When delete recurring activity then show three alternativs for deletion',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-            (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
         await navigateToActivityPage(tester);
 
         // Act
         await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(onlyThisDayRadioFinder, findsOneWidget);
+        expect(allDaysRadioFinder, findsOneWidget);
+        expect(thisDayAndForwardRadioFinder, findsOneWidget);
+      });
+
+      testWidgets('When delete recurring the choosen alternativ is onlyThisDay',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+
+        final onlyThisDayRadio1 = tester.widget<Radio>(onlyThisDayRadioFinder);
+        final allDaysRadio1 = tester.widget<Radio>(allDaysRadioFinder);
+        final thisDayAndForwardRadio1 =
+            tester.widget<Radio>(thisDayAndForwardRadioFinder);
+
+        // Assert
+        expect(onlyThisDayRadio1.value, ApplyTo.onlyThisDay);
+        expect(allDaysRadio1.value, ApplyTo.allDays);
+        expect(thisDayAndForwardRadio1.value, ApplyTo.thisDayAndForward);
+
+        expect(onlyThisDayRadio1.groupValue, ApplyTo.onlyThisDay);
+        expect(allDaysRadio1.groupValue, ApplyTo.onlyThisDay);
+        expect(thisDayAndForwardRadio1.groupValue, ApplyTo.onlyThisDay);
+      });
+
+      testWidgets('When delete recurring tapping All days',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(allDaysRadioFinder);
+        await tester.pumpAndSettle();
+
+        final onlyThisDayRadio1 = tester.widget<Radio>(onlyThisDayRadioFinder);
+        final allDaysRadio1 = tester.widget<Radio>(allDaysRadioFinder);
+        final thisDayAndForwardRadio1 =
+            tester.widget<Radio>(thisDayAndForwardRadioFinder);
+
+        // Assert
+        expect(onlyThisDayRadio1.groupValue, ApplyTo.allDays);
+        expect(allDaysRadio1.groupValue, ApplyTo.allDays);
+        expect(thisDayAndForwardRadio1.groupValue, ApplyTo.allDays);
+      });
+
+      testWidgets('When delete recurring tapping This day and forward',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(thisDayAndForwardRadioFinder);
+        await tester.pumpAndSettle();
+
+        final onlyThisDayRadio1 = tester.widget<Radio>(onlyThisDayRadioFinder);
+        final allDaysRadio1 = tester.widget<Radio>(allDaysRadioFinder);
+        final thisDayAndForwardRadio1 =
+            tester.widget<Radio>(thisDayAndForwardRadioFinder);
+
+        // Assert
+        expect(onlyThisDayRadio1.groupValue, ApplyTo.thisDayAndForward);
+        expect(allDaysRadio1.groupValue, ApplyTo.thisDayAndForward);
+        expect(thisDayAndForwardRadio1.groupValue, ApplyTo.thisDayAndForward);
+      });
+
+      testWidgets(
+          'When delete recurring and confirm Only this day, navigate back and do not show origial widget',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
         await tester.pumpAndSettle();
         await tester.tap(okInkWellFinder);
         await tester.pumpAndSettle();
@@ -600,6 +772,185 @@ void main() {
         expect(activityCardFinder, findsNothing);
         expect(activityPageFinder, findsNothing);
         expect(agendaFinder, findsOneWidget);
+      });
+
+      final goToNextPageFinder = find.byIcon(AbiliaIcons.go_to_next_page);
+      final goToPreviusPageFinder =
+          find.byIcon(AbiliaIcons.return_to_previous_page);
+      testWidgets(
+          'When delete recurring and confirm Only this day, go to next day and previus day shows activity card',
+          (WidgetTester tester) async {
+        // Arrange
+        final title = 'Unique title to search for';
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[
+              FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title)
+            ]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(goToNextPageFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(activityCardFinder, findsOneWidget);
+        expect(find.text(title), findsOneWidget);
+
+        // Act -- to to yesterday
+        await tester.tap(goToPreviusPageFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(goToPreviusPageFinder);
+        await tester.pumpAndSettle();
+
+        expect(activityCardFinder, findsOneWidget);
+        expect(find.text(title), findsOneWidget);
+      });
+
+      testWidgets(
+          'When delete recurring a confirm all days, go to previus day and next day shows no activity card',
+          (WidgetTester tester) async {
+        // Arrange
+        final title = 'Unique title to search for';
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[
+              FakeActivity.reocurrsEveryDay(starTime).copyWith(title: title)
+            ]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(allDaysRadioFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(goToPreviusPageFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(activityCardFinder, findsNothing);
+        expect(find.text(title), findsNothing);
+
+        await tester.tap(goToNextPageFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(goToNextPageFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(activityCardFinder, findsNothing);
+        expect(find.text(title), findsNothing);
+      });
+
+      testWidgets(
+          'When delete recurring and confirming This day and forward, this day and next day does not shows activity card but previus day does',
+          (WidgetTester tester) async {
+        // Arrange
+        final title = 'Unique title to search for';
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[
+              FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title)
+            ]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(thisDayAndForwardRadioFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(activityCardFinder, findsNothing);
+        expect(find.text(title), findsNothing);
+
+        // Act -- go to yesterday
+        await tester.tap(goToPreviusPageFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(activityCardFinder, findsOneWidget);
+        expect(find.text(title), findsOneWidget);
+
+        // Act -- go to tomorrow
+        await tester.tap(goToNextPageFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(goToNextPageFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(activityCardFinder, findsNothing);
+        expect(find.text(title), findsNothing);
+      });
+    });
+
+    group('Edit recurring alarm', () {
+      testWidgets('Changing alarm on recurring should show apply to dialog',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(alarmButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(alarmAtStartSwichFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(editRecurrentFinder, findsOneWidget);
+      });
+    });
+
+    group('Edit recurring reminder', () {
+      testWidgets('Changing reminder on recurring should show apply to dialog',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(reminderButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(reminderSwitchFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(editRecurrentFinder, findsOneWidget);
+      });
+    });
+    group('Edit recurring Activity', () {
+      testWidgets('Edit an recurring should show Apply to dialog',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(editActivityButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(finishActivityFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(editRecurrentFinder, findsOneWidget);
       });
     });
   });
