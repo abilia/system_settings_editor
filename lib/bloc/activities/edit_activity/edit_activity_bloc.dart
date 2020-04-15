@@ -13,22 +13,35 @@ part 'edit_activity_state.dart';
 class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   final Activity activity;
   final ActivitiesBloc activitiesBloc;
-  final bool newActivity;
+  final DateTime day;
 
   EditActivityBloc({
     @required this.activitiesBloc,
-    @required this.activity,
-    this.newActivity = true,
-  });
+    this.day,
+    Activity activity,
+    DateTime now,
+  })  : assert(
+            activity == null && now != null || activity != null && day != null),
+        activity = activity == null
+            ? Activity.createNew(
+                title: '',
+                startTime: now.nextHalfHour().millisecondsSinceEpoch,
+              )
+            : activity.isRecurring
+                ? activity.copyWith(
+                    startTime: activity.startClock(day).millisecondsSinceEpoch)
+                : activity;
   @override
-  UnsavedActivityState get initialState => UnsavedActivityState(activity);
+  EditActivityState get initialState => day == null
+      ? UnstoredActivityState(activity)
+      : StoredActivityState(activity, day);
 
   @override
   Stream<EditActivityState> mapEventToState(
     EditActivityEvent event,
   ) async* {
     if (event is ChangeActivity) {
-      yield UnsavedActivityState(event.activity, state.newImage);
+      yield state.copyWith(event.activity);
     }
     if (event is ChangeDate) {
       yield* _mapChangeDateToState(event);
@@ -43,86 +56,76 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       yield* _mapAddOrRemoveReminderToState(event.reminder.inMilliseconds);
     }
     if (event is SaveActivity && state.canSave) {
-      yield* _mapSaveActivityToState(state.activity);
+      yield* _mapSaveActivityToState(state, event);
     }
     if (event is ImageSelected) {
-      yield UnsavedActivityState(
+      yield state.copyWith(
           state.activity.copyWith(fileId: event.imageId), event.newImage);
     }
   }
 
-  Stream<UnsavedActivityState> _mapAddOrRemoveReminderToState(
+  Stream<EditActivityState> _mapAddOrRemoveReminderToState(
     int reminder,
   ) async* {
     final reminders = state.activity.reminderBefore.toSet();
     if (!reminders.add(reminder)) {
       reminders.remove(reminder);
     }
-    yield UnsavedActivityState(
-      state.activity.copyWith(reminderBefore: reminders),
-      state.newImage,
-    );
+    yield state.copyWith(state.activity.copyWith(reminderBefore: reminders));
   }
 
-  Stream<SavedActivityState> _mapSaveActivityToState(Activity activity) async* {
+  Stream<StoredActivityState> _mapSaveActivityToState(
+    EditActivityState state,
+    SaveActivity event,
+  ) async* {
+    var activity = state.activity;
+    if (this.activity == activity) return;
     if (activity.fullDay) {
-      final startOfDay = activity.startDateTime.onlyDays();
-      final endTime = startOfDay
-          .add(25.hours())
-          .onlyDays()
-          .subtract(1.milliseconds())
-          .millisecondsSinceEpoch;
-      final starTime = startOfDay.millisecondsSinceEpoch;
       activity = activity.copyWith(
-        startTime: starTime,
-        endTime: endTime,
-        duration: endTime - starTime,
+        startTime: activity.start.onlyDays().millisecondsSinceEpoch,
+        duration: 1.days().inMilliseconds - 1,
         alarmType: NO_ALARM,
         reminderBefore: [],
       );
     }
 
-    activitiesBloc
-        .add(newActivity ? AddActivity(activity) : UpdateActivity(activity));
-    yield SavedActivityState(activity);
+    if (state is UnstoredActivityState) {
+      activitiesBloc.add(AddActivity(activity));
+    } else if (event is SaveRecurringActivity) {
+      activitiesBloc
+          .add(UpdateRecurringActivity(activity, event.applyTo, event.day));
+    } else {
+      activitiesBloc.add(UpdateActivity(activity));
+    }
+    yield StoredActivityState(activity,
+        state is StoredActivityState ? state.day : activity.start.onlyDays());
   }
 
-  Stream<UnsavedActivityState> _mapChangeDateToState(ChangeDate event) async* {
-    final oldStartDate = state.activity.startDateTime;
+  Stream<EditActivityState> _mapChangeDateToState(ChangeDate event) async* {
+    final oldStartDate = state.activity.start;
     final newStartDate = event.date
-        .onlyDays()
-        .add(Duration(hours: oldStartDate.hour, minutes: oldStartDate.minute));
-    yield UnsavedActivityState(
-      state.activity.copyWith(
-        startTime: newStartDate.millisecondsSinceEpoch,
-        endTime: newStartDate.millisecondsSinceEpoch,
-      ),
-      state.newImage,
-    );
+        .copyWith(hour: oldStartDate.hour, minute: oldStartDate.minute)
+        .onlyMinutes();
+    yield state.copyWith(state.activity.copyWith(
+      startTime: newStartDate.millisecondsSinceEpoch,
+    ));
   }
 
-  Stream<UnsavedActivityState> _mapChangeStartTimeToState(
+  Stream<EditActivityState> _mapChangeStartTimeToState(
       ChangeStartTime event) async* {
     final a = state.activity;
     final newStartTime = a.start
-        .onlyDays()
-        .add(
-          Duration(
-            hours: event.time.hour,
-            minutes: event.time.minute,
-          ),
+        .copyWith(
+          hour: event.time.hour,
+          minute: event.time.minute,
         )
         .millisecondsSinceEpoch;
-    yield UnsavedActivityState(
-      a.copyWith(
-        startTime: newStartTime,
-        endTime: newStartTime,
-      ),
-      state.newImage,
-    );
+    yield state.copyWith(a.copyWith(
+      startTime: newStartTime,
+    ));
   }
 
-  Stream<UnsavedActivityState> _mapChangeEndTimeToState(
+  Stream<EditActivityState> _mapChangeEndTimeToState(
       ChangeEndTime event) async* {
     final activity = state.activity;
     final startTime = activity.start;
@@ -144,7 +147,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
             minutes: event.time.minute - startTime.minute,
           );
 
-    yield UnsavedActivityState(
+    yield state.copyWith(
       activity.copyWith(duration: newDuration.inMilliseconds),
       state.newImage,
     );

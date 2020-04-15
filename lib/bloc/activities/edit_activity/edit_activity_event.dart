@@ -15,8 +15,18 @@ class ChangeActivity extends EditActivityEvent {
 }
 
 class SaveActivity extends EditActivityEvent {
+  const SaveActivity();
   @override
   List<Object> get props => [];
+}
+
+class SaveRecurringActivity extends SaveActivity {
+  final ApplyTo applyTo;
+  final DateTime day;
+  const SaveRecurringActivity(this.applyTo, this.day);
+  @override
+  List<Object> get props => [applyTo];
+  String toString() => 'SaveRecurringActivity { $applyTo, $day }';
 }
 
 class ChangeDate extends EditActivityEvent {

@@ -35,6 +35,8 @@ extension DateTimeExtensions on DateTime {
 
   bool isDayBefore(DateTime otherDate) =>
       onlyDays().isBefore(otherDate.onlyDays());
+  bool isDayAfter(DateTime otherDate) =>
+      onlyDays().isAfter(otherDate.onlyDays());
 
   bool onOrBetween({@required DateTime startDate, @required DateTime endDate}) {
     if (endDate.isBefore(startDate)) return false;

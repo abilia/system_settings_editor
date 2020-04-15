@@ -152,7 +152,6 @@ class FakeActivity {
       Activity.createNew(
           title: title,
           startTime: when.onlyDays().millisecondsSinceEpoch,
-          endTime: when.add(25.hours()).onlyDays().millisecondsSinceEpoch - 1,
           duration: Duration(days: 1).inMilliseconds - 1,
           fullDay: true,
           reminderBefore: [60 * 60 * 1000],

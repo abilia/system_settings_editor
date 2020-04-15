@@ -9,6 +9,7 @@ import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../mocks.dart';
 
@@ -210,7 +211,7 @@ void main() {
       category: 0,
       checkable: true,
       reminderBefore: [],
-      fileId: 'somefileid',
+      fileId: Uuid().v4(),
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(
@@ -235,7 +236,7 @@ void main() {
       category: 0,
       checkable: true,
       reminderBefore: [],
-      fileId: 'somefileid',
+      fileId: Uuid().v4(),
       infoItem: 'infoitem',
     );
     await tester.pumpWidget(
@@ -260,7 +261,7 @@ void main() {
       category: 0,
       checkable: true,
       reminderBefore: [],
-      fileId: 'somefileid',
+      fileId: Uuid().v4(),
       infoItem: 'infoitem',
     );
     await tester.pumpWidget(

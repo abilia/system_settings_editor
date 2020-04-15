@@ -217,17 +217,14 @@ void main() {
         () {
       // Arrange
       final fiveMinBefore = startDate.subtract(5.minutes());
-      final end = fiveMinBefore.add(1.hours());
       final in30 = startDate.add(30.minutes());
 
       final overlapping = FakeActivity.starts(fiveMinBefore).copyWith(
           title: 'Well hello there',
           alarmType: ALARM_SOUND_AND_VIBRATION,
-          duration: 1.hours().inMilliseconds,
-          endTime: end.millisecondsSinceEpoch);
+          duration: 1.hours().inMilliseconds);
       final later = FakeActivity.starts(in30).copyWith(
           title: 'Another one bites the dust',
-          endTime: in30.millisecondsSinceEpoch,
           duration: 0,
           alarmType: ALARM_SOUND_AND_VIBRATION);
       final activities = [overlapping, later];

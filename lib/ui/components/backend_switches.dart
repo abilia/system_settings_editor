@@ -6,6 +6,7 @@ import 'package:seagull/models/alarm_type.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:uuid/uuid.dart';
 
 class BackendSwitches extends StatelessWidget {
   @override
@@ -40,7 +41,7 @@ class BackendSwitches extends StatelessWidget {
         client: Fakes.client(
           () => [
             FakeActivity.startsIn(2.minutes()).copyWith(
-                fileId: 'somefileid',
+                fileId: Uuid().v4(),
                 alarmType: ALARM_SILENT,
                 checkable: true,
                 duration: 1.minutes().inMilliseconds,
@@ -51,7 +52,7 @@ class BackendSwitches extends StatelessWidget {
                 alarmType: ALARM_VIBRATION,
                 title: 'ALARM_VIBRATION'),
             FakeActivity.startsIn(6.minutes()).copyWith(
-                fileId: 'somefileid',
+                fileId: Uuid().v4(),
                 checkable: true,
                 duration: 1.minutes().inMilliseconds,
                 alarmType: ALARM_SOUND_ONLY_ON_START,

@@ -9,14 +9,15 @@ class Activity extends DataModel {
   AlarmType get alarm => AlarmType.fromInt(alarmType);
   DateTime endClock(DateTime day) =>
       startClock(day).add(duration.milliseconds());
-  DateTime startClock(DateTime day) => DateTime(
-      day.year, day.month, day.day, startDateTime.hour, startDateTime.minute);
-  DateTime get start => startDateTime;
+  DateTime startClock(DateTime day) =>
+      DateTime(day.year, day.month, day.day, start.hour, start.minute);
+  DateTime get start => DateTime.fromMillisecondsSinceEpoch(startTime);
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(startTime + duration);
-  DateTime get startDateTime => DateTime.fromMillisecondsSinceEpoch(startTime);
-  DateTime get endDateTime => DateTime.fromMillisecondsSinceEpoch(endTime);
-  bool get hasEndTime => !start.isAtSameMomentAs(end);
-  RecurrentType get recurrance => RecurrentType.values[recurrentType];
+  DateTime get recurringEnd => DateTime.fromMillisecondsSinceEpoch(endTime);
+  bool get hasEndTime => duration > 0;
+  RecurrentType get recurrance =>
+      RecurrentType.values[recurrentType] ?? RecurrentType.none;
+  bool get isRecurring => recurrance != RecurrentType.none;
   Iterable<Duration> get reminders =>
       reminderBefore.map((r) => r.milliseconds()).toSet();
   bool isSignedOff(DateTime day) => checkable && signedOffDates.contains(day);
@@ -129,6 +130,7 @@ class Activity extends DataModel {
       );
 
   Activity copyWith({
+    bool newId = false,
     String title,
     int startTime,
     int endTime,
@@ -142,7 +144,6 @@ class Activity extends DataModel {
     bool removeAfter,
     bool secret,
     bool fullDay,
-    int revision,
     int alarmType,
     AlarmType alarm,
     int recurrentType,
@@ -151,7 +152,7 @@ class Activity extends DataModel {
     Iterable<DateTime> signedOffDates,
   }) =>
       Activity._(
-        id: id,
+        id: newId ? Uuid().v4() : id,
         seriesId: seriesId,
         title: title ?? this.title,
         startTime: startTime ?? this.startTime,
@@ -175,6 +176,24 @@ class Activity extends DataModel {
         signedOffDates: signedOffDates != null
             ? UnmodifiableListView(signedOffDates)
             : this.signedOffDates,
+      );
+
+  Activity copyActivity(Activity other) => copyWith(
+        title: other.title,
+        startTime: start
+            .copyWith(hour: other.start.hour, minute: other.start.minute)
+            .millisecondsSinceEpoch,
+        duration: other.duration,
+        category: other.category,
+        checkable: other.checkable,
+        removeAfter: other.removeAfter,
+        secret: other.secret,
+        fullDay: other.fullDay,
+        reminderBefore: other.reminderBefore,
+        fileId: other.fileId,
+        icon: other.icon,
+        alarmType: other.alarmType,
+        infoItem: other.infoItem,
       );
 
   @override

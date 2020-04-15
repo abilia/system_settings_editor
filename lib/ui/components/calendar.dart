@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/components/calendar/day_app_bar.dart';
 import 'package:seagull/ui/pages/all.dart';
@@ -162,29 +161,20 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                   final now = BlocProvider.of<ClockBloc>(context).state;
                   await Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (innerContext) {
-                        return MultiBlocProvider(
-                          providers: [
+                      builder: (_) {
+                        return editActivityMultiBlocProvider(
+                          context,
+                          extraProviders: [
                             BlocProvider<EditActivityBloc>(
                               create: (_) => EditActivityBloc(
                                 activitiesBloc:
                                     BlocProvider.of<ActivitiesBloc>(context),
-                                activity: Activity.createNew(
-                                  title: '',
-                                  startTime:
-                                      now.nextHalfHour().millisecondsSinceEpoch,
-                                ),
+                                now: now,
                               ),
-                            ),
-                            BlocProvider<SortableBloc>.value(
-                              value: BlocProvider.of<SortableBloc>(context),
-                            ),
-                            BlocProvider<UserFileBloc>.value(
-                              value: BlocProvider.of<UserFileBloc>(context),
                             ),
                           ],
                           child: EditActivityPage(
-                            today: now.onlyDays(),
+                            day: now.onlyDays(),
                             title: Translator.of(context).translate.newActivity,
                           ),
                         );
