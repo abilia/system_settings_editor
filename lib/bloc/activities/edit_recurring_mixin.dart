@@ -119,39 +119,48 @@ mixin EditRecurringMixin {
         recurrentType: 0,
         recurrentData: 0,
         endTime: activity.startTime + activity.duration);
-    final newId = onlyDayActivity.copyWith(newId: true);
 
     final oldActivity = activities.firstWhere((a) => a.id == activity.id);
 
     final bool atFirstDay = oldActivity.start.isAtSameDay(day);
     final bool atLastDay = oldActivity.recurringEnd.isAtSameDay(day);
 
-    if (atFirstDay && atLastDay) {
-      return _updateActivityToResult(onlyDayActivity, activities);
-    } else if (atFirstDay) {
-      final updatedOldActivity = oldActivity.copyWith(
-          startTime: oldActivity.start.nextDay().millisecondsSinceEpoch);
-      return _updateActivityToResult(updatedOldActivity, activities,
-          andAdd: [newId]);
-    } else if (atLastDay) {
-      final updatedOldActivity =
-          oldActivity.copyWith(endTime: day.millisecondsSinceEpoch - 1);
-      return _updateActivityToResult(updatedOldActivity, activities,
-          andAdd: [newId]);
-    } else {
-      final seriesBeforeModified =
-          oldActivity.copyWith(endTime: day.millisecondsSinceEpoch - 1);
-      final seriesAfterModified = oldActivity.copyWith(
+    final newActivities = List<Activity>();
+    if (atFirstDay && !atLastDay) {
+      newActivities.add(
+        oldActivity.copyWith(
           newId: true,
-          startTime: day
-              .nextDay()
-              .copyWith(
-                  hour: oldActivity.start.hour,
-                  minute: oldActivity.start.minute)
-              .millisecondsSinceEpoch);
-      return _updateActivityToResult(seriesBeforeModified, activities,
-          andAdd: [seriesAfterModified, newId]);
+          startTime: oldActivity.start.nextDay().millisecondsSinceEpoch,
+        ),
+      );
+    } else if (atLastDay && !atFirstDay) {
+      newActivities.add(
+        oldActivity.copyWith(
+          newId: true,
+          endTime: day.millisecondsSinceEpoch - 1,
+        ),
+      );
+    } else if (!atFirstDay && !atLastDay) {
+      newActivities.addAll(
+        [
+          oldActivity.copyWith(
+            newId: true,
+            endTime: day.millisecondsSinceEpoch - 1,
+          ),
+          oldActivity.copyWith(
+            newId: true,
+            startTime: day
+                .nextDay()
+                .copyWith(
+                    hour: oldActivity.start.hour,
+                    minute: oldActivity.start.minute)
+                .millisecondsSinceEpoch,
+          ),
+        ],
+      );
     }
+    return _updateActivityToResult(onlyDayActivity, activities,
+        andAdd: newActivities);
   }
 
   ActivityMappingResult _updateActivityToResult(
