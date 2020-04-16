@@ -63,7 +63,7 @@ class ActivityCard extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: borderRadius,
-                    color: theme.cardColor,
+                    color: inactive ? AbiliaColors.white[110] : theme.cardColor,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(cardPadding),
@@ -72,7 +72,7 @@ class ActivityCard extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            if (signedOff)
+                            if (signedOff && !hasImage)
                               SizedBox(width: imageSize + cardPadding),
                             if (hasImage)
                               FadeInCalendarImage(
