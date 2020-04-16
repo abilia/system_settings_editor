@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:seagull/bloc/all.dart';
 
 extension DateTimeExtensions on DateTime {
   DateTime onlyDays() => DateTime(year, month, day);
@@ -65,4 +66,8 @@ extension DateTimeExtensions on DateTime {
     if (week == 53 && thursdayWeekx.month == 1) return 1;
     return week;
   }
+
+  Occasion occasion(DateTime now) => isAfter(now)
+      ? Occasion.future
+      : isBefore(now) ? Occasion.past : Occasion.current;
 }

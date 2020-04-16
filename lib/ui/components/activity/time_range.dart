@@ -6,6 +6,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
+import 'package:seagull/utils/all.dart';
 
 class ActivityTimeRange extends StatelessWidget {
   const ActivityTimeRange({
@@ -51,9 +52,7 @@ class _TimeText extends StatelessWidget {
     Key key,
     @required this.date,
     @required DateTime now,
-  })  : occasion = date.isAfter(now)
-            ? Occasion.future
-            : date.isBefore(now) ? Occasion.past : Occasion.current,
+  })  : occasion = date.occasion(now),
         super(key: key);
 
   final DateTime date;
