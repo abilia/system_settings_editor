@@ -3,19 +3,21 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/calendar/overlay/all.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/components/calendar/all.dart';
 
 import 'all.dart';
 
 class TimePillarCalendar extends StatefulWidget {
   final ActivitiesOccasionLoaded state;
   final CalendarViewState calendarViewState;
+  final DateTime now;
 
   const TimePillarCalendar({
     Key key,
     @required this.state,
     @required this.calendarViewState,
+    @required this.now,
   }) : super(key: key);
 
   @override
@@ -25,12 +27,17 @@ class TimePillarCalendar extends StatefulWidget {
 class _TimePillarCalendarState extends State<TimePillarCalendar> {
   ScrollController verticalScrollController;
   ScrollController horizontalScrollController;
+
   final Key center = Key('center');
-  double categoryMinWidth;
+  double categoryLeftMinWidth, categoryRightMinWidth;
   @override
   void initState() {
-    verticalScrollController = ScrollController(
-        initialScrollOffset: scrollHeight * (8 / 24 /* 8th hour */));
+    final scrollOffset = widget.state.isToday
+        ? timeToPixelDistance(widget.now) - hourHeigt * 2
+        : scrollHeight * (8 / 24 /* 8th hour */);
+    verticalScrollController =
+        ScrollController(initialScrollOffset: scrollOffset);
+
     horizontalScrollController = ScrollController();
     if (widget.state.isToday) {
       WidgetsBinding.instance.addPostFrameCallback((_) =>
@@ -42,10 +49,11 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
 
   @override
   void didChangeDependencies() {
-    categoryMinWidth =
-        (MediaQuery.of(context).size.width - timePillarTotalWidth);
+    categoryRightMinWidth =
+        MediaQuery.of(context).size.width - timePillarTotalWidth;
+    categoryLeftMinWidth = categoryRightMinWidth / 2;
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => horizontalScrollController.jumpTo(-categoryMinWidth / 2));
+        (_) => horizontalScrollController.jumpTo(-categoryLeftMinWidth));
     super.didChangeDependencies();
   }
 
@@ -76,6 +84,14 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                                   expanded: widget
                                       .calendarViewState.expandLeftCategory),
                               height: boxConstraints.maxHeight,
+                              sliver: ActivityBoard(
+                                category: Category.left,
+                                activities: widget.state.activities.where(
+                                  (ao) =>
+                                      ao.activity.category != Category.right,
+                                ),
+                                categoryMinWidth: categoryLeftMinWidth,
+                              ),
                             ),
                             SliverTimePillar(
                               key: center,
@@ -90,6 +106,13 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                                   expanded: widget
                                       .calendarViewState.expandRightCategory),
                               height: boxConstraints.maxHeight,
+                              sliver: ActivityBoard(
+                                activities: widget.state.activities.where(
+                                  (ao) =>
+                                      ao.activity.category == Category.right,
+                                ),
+                                categoryMinWidth: categoryRightMinWidth,
+                              ),
                             ),
                           ],
                         ),
@@ -107,37 +130,46 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
         },
       );
 
-  Widget category(Widget category, {double height}) => SliverOverlay(
+  Widget category(Widget category, {Widget sliver, double height}) =>
+      SliverOverlay(
         height: height,
         overlay: ScrollTranslated(
           controller: verticalScrollController,
           child: category,
         ),
-        sliver: SliverToBoxAdapter(
-          child: Container(width: categoryMinWidth),
-        ),
+        sliver: sliver,
       );
 }
 
-class Timeline extends StatelessWidget {
-  final DateTime now;
-  final double width;
-  const Timeline({
+class ActivityBoard extends StatelessWidget {
+  const ActivityBoard({
     Key key,
-    @required this.now,
-    @required this.width,
+    @required this.categoryMinWidth,
+    @required this.activities,
+    this.category = Category.right,
   }) : super(key: key);
+
+  final double categoryMinWidth;
+  final Iterable<ActivityOccasion> activities;
+  final int category;
+  bool get right => category == Category.right;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedPositioned(
-      duration: transitionDuration,
-      child: Container(
-        width: width,
-        height: 2,
-        decoration: BoxDecoration(color: AbiliaColors.red),
+    return SliverToBoxAdapter(
+      child: Stack(
+        children: activities
+            .map<Widget>(
+          (ao) => Positioned(
+            right: right ? null : 0,
+            top: timeToPixelDistance(ao.activity.start),
+            child: ActivityTimepillarCard(
+              activityOccasion: ao,
+            ),
+          ),
+        )
+            .followedBy([Container(width: categoryMinWidth)]).toList(),
       ),
-      top: timeToPixelDistance(now),
     );
   }
 }
