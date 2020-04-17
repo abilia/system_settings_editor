@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/components/activity/check_mark.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -62,7 +63,7 @@ class ActivityCard extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: borderRadius,
-                    color: theme.cardColor,
+                    color: inactive ? AbiliaColors.white[110] : theme.cardColor,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(cardPadding),
@@ -71,7 +72,7 @@ class ActivityCard extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            if (signedOff)
+                            if (signedOff && !hasImage)
                               SizedBox(width: imageSize + cardPadding),
                             if (hasImage)
                               FadeInCalendarImage(
@@ -130,10 +131,9 @@ class ActivityCard extends StatelessWidget {
           ),
           if (current) buildNowBanner(context),
           if (signedOff)
-            Icon(
-              AbiliaIcons.check_button,
-              size: 64,
-              color: AbiliaColors.green,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CheckMarkWithBorder(),
             ),
         ],
       ),
