@@ -936,6 +936,8 @@ void main() {
       });
     });
     group('Edit recurring Activity', () {
+      final titleTextFormFieldFinder =
+          find.byKey(TestKey.editTitleTextFormField);
       testWidgets('Edit an recurring should show Apply to dialog',
           (WidgetTester tester) async {
         // Arrange
@@ -951,6 +953,27 @@ void main() {
 
         // Assert
         expect(editRecurrentFinder, findsOneWidget);
+      });
+
+      testWidgets('Edit an recurring Only this days shows changes',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+        await navigateToActivityPage(tester);
+        final newTitle = 'newTitle';
+
+        // Act
+        await tester.tap(editActivityButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.enterText(titleTextFormFieldFinder, newTitle);
+        await tester.tap(finishActivityFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.text(newTitle), findsOneWidget);
       });
     });
   });
