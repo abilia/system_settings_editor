@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:seagull/ui/components/calendar/timepillar/all.dart';
 import 'package:seagull/utils/all.dart';
 
 const pastDotShape = ShapeDecoration(shape: CircleBorder(side: BorderSide())),
@@ -30,6 +31,7 @@ class TimePillar extends StatelessWidget {
   final DateTime day;
   final Occasion dayOccasion;
   final DateTime now;
+  bool get today => dayOccasion == Occasion.current;
 
   const TimePillar({
     Key key,
@@ -40,52 +42,66 @@ class TimePillar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget Function(DateTime) dots = dayOccasion == Occasion.current
+    final Widget Function(DateTime) dots = today
         ? _todayDots
         : dayOccasion == Occasion.past
             ? (_) => const PastDots()
             : (_) => const FutureDots();
+    final theme = Theme.of(context);
     return DefaultTextStyle(
-      style:
-          Theme.of(context).textTheme.title.copyWith(color: AbiliaColors.black),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: timePillarPadding),
-        child: SizedBox(
-          width: timePillarWidth,
-          child: Column(
-            children: List.generate(
-              24,
-              (hourIndex) {
-                final hour = day.copyWith(hour: hourIndex);
-                return Container(
-                  height: hourHeigt,
-                  padding: const EdgeInsets.symmetric(vertical: hourPadding),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                        color: AbiliaColors.black,
-                        width: hourPadding,
-                      ),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: 25.0,
-                        child: Text(
-                          _formatHour(hour),
-                          textAlign: TextAlign.end,
+      style: theme.textTheme.title.copyWith(color: AbiliaColors.black),
+      child: Container(
+        color: theme.scaffoldBackgroundColor,
+        child: Stack(
+          children: <Widget>[
+            if (today)
+              Timeline(
+                now: now,
+                width: timePillarTotalWidth,
+              ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: timePillarPadding),
+              child: SizedBox(
+                width: timePillarWidth,
+                child: Column(
+                  children: List.generate(
+                    24,
+                    (hourIndex) {
+                      final hour = day.copyWith(hour: hourIndex);
+                      return Container(
+                        height: hourHeigt,
+                        padding:
+                            const EdgeInsets.symmetric(vertical: hourPadding),
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              color: AbiliaColors.black,
+                              width: hourPadding,
+                            ),
+                          ),
                         ),
-                      ),
-                      dots(hour),
-                    ],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              width: 25.0,
+                              child: Text(
+                                _formatHour(hour),
+                                textAlign: TextAlign.end,
+                              ),
+                            ),
+                            dots(hour),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

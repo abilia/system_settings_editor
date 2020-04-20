@@ -112,6 +112,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
                                         )
                                       : TimePillarCalendar(
                                           state: state,
+                                          now: _clockBloc.state,
                                           calendarViewState: calendarViewState,
                                         ),
                                 )
