@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/models/info_item.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -125,7 +126,9 @@ class ActivityContainer extends StatelessWidget {
                     indent: 12.0,
                     height: 1,
                   ),
-                  Text('Attachment'),
+                  Attachment(
+                    infoItem: InfoItem.fromBase64(activity.infoItem),
+                  ),
                 ],
               ),
             ),
@@ -153,6 +156,24 @@ class ActivityContainer extends StatelessWidget {
             )
         ],
       ),
+    );
+  }
+}
+
+class Attachment extends StatelessWidget {
+  final InfoItem infoItem;
+  const Attachment({
+    Key key,
+    @required this.infoItem,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final info = infoItem.type == InfoItemType.NOTE
+        ? Text((infoItem.infoItemData as NoteData).text)
+        : Text('No note...');
+    return Container(
+      child: info,
     );
   }
 }
