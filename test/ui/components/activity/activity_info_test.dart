@@ -307,5 +307,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(NoteBlock), findsOneWidget);
+    expect(find.text('Test'), findsOneWidget);
   });
 }
