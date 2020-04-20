@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -9,11 +11,13 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/main.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/components/calendar/all.dart';
 
-import '../../../mocks.dart';
+import '../../../../mocks.dart';
 
 void main() {
   MockActivityDb mockActivityDb;
@@ -21,7 +25,20 @@ void main() {
   final changeViewButtonFinder = find.byKey(TestKey.changeView);
   final timePillarButtonFinder = find.byKey(TestKey.timePillarButton);
   final time = DateTime(2007, 08, 09, 10, 11);
-  final activities = [FakeActivity.fullday(time)];
+  final leftTitle = 'LeftCategoryActivity',
+      rightTitle = 'RigthCategoryActivity';
+  final activities = [
+    FakeActivity.fullday(time),
+    FakeActivity.starts(
+      time,
+      title: rightTitle,
+    ).copyWith(checkable: true),
+    FakeActivity.starts(time.add(30.minutes())).copyWith(
+      category: Category.left,
+      title: leftTitle,
+      fileId: 'fileId',
+    )
+  ];
 
   ActivityResponse activityResponse = () => activities;
 
@@ -156,7 +173,7 @@ void main() {
     group('Timeline', () {
       testWidgets('Exists', (WidgetTester tester) async {
         await goToTimePillar(tester);
-        expect(find.byType(Timeline), findsOneWidget);
+        expect(find.byType(Timeline), findsWidgets);
       });
 
       testWidgets('Tomorrow does not show timeline',
@@ -178,16 +195,19 @@ void main() {
       testWidgets('timeline is at same y pos as current-time-dot',
           (WidgetTester tester) async {
         await goToTimePillar(tester);
-
         final currentDot = tester
             .widgetList<AnimatedDot>(find.byType(AnimatedDot))
             .firstWhere((d) => d.decoration == currentDotShape);
 
         final currentDotPosition =
             await tester.getCenter(find.byWidget(currentDot));
-        final timeLinePostion = await tester.getCenter(find.byType(Timeline));
 
-        expect(timeLinePostion.dy, closeTo(currentDotPosition.dy, 0.0001));
+        for (final element in find.byType(Timeline).evaluate()) {
+          final RenderBox box = element.renderObject as RenderBox;
+          final timeLinePostion =
+              box.localToGlobal(box.size.center(Offset.zero));
+          expect(timeLinePostion.dy, closeTo(currentDotPosition.dy, 0.0001));
+        }
       });
     });
     group('Categories', () {
@@ -251,6 +271,67 @@ void main() {
         expect(rightCollapsedFinder, findsNothing);
         expect(leftFinder, findsNothing);
         expect(rightFinder, findsOneWidget);
+      });
+    });
+    group('Activities', () {
+      final leftActivityFinder = find.text(leftTitle);
+      final rightActivityFinder = find.text(rightTitle);
+      final cardFinder = find.byType(ActivityTimepillarCard);
+
+      testWidgets('Shows activity', (WidgetTester tester) async {
+        // Act
+        await goToTimePillar(tester);
+        // Assert
+        expect(leftActivityFinder, findsOneWidget);
+        expect(rightActivityFinder, findsOneWidget);
+        expect(cardFinder, findsNWidgets(2));
+      });
+
+      testWidgets('Activities is right or left of timeline',
+          (WidgetTester tester) async {
+        // Arrange
+        await goToTimePillar(tester);
+
+        // Act
+        final timelineXPostion =
+            await tester.getCenter(find.byType(Timeline).first).dx;
+        final leftActivityXPostion =
+            await tester.getCenter(leftActivityFinder).dx;
+        final rightActivityXPostion =
+            await tester.getCenter(rightActivityFinder).dx;
+
+        // Assert
+        expect(leftActivityXPostion, lessThan(timelineXPostion));
+        expect(rightActivityXPostion, greaterThan(timelineXPostion));
+      });
+
+      testWidgets('tapping activity shows activity info',
+          (WidgetTester tester) async {
+        // Arrange
+        await goToTimePillar(tester);
+        // Act
+        await tester.tap(leftActivityFinder);
+        await tester.pumpAndSettle();
+        // Assert
+        expect(leftActivityFinder, findsOneWidget);
+        expect(rightActivityFinder, findsNothing);
+        expect(find.byType(ActivityPage), findsOneWidget);
+      });
+
+      testWidgets('changing activity shows in timepillar card',
+          (WidgetTester tester) async {
+        // Arrange
+        await goToTimePillar(tester);
+        // Act
+        await tester.tap(rightActivityFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(CheckButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.activityBackButton));
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.byType(CheckMarkWithBorder), findsOneWidget);
       });
     });
   });
