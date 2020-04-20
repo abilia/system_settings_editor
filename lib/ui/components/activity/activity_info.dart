@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
@@ -126,8 +127,20 @@ class ActivityContainer extends StatelessWidget {
                     indent: 12.0,
                     height: 1,
                   ),
-                  Attachment(
-                    infoItem: InfoItem.fromBase64(activity.infoItem),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(18, 10, 18, 12),
+                      child: LayoutBuilder(builder:
+                          (BuildContext context, BoxConstraints constraints) {
+                        return SingleChildScrollView(
+                          child: Attachment(
+                            infoItem: InfoItem.fromBase64(activity.infoItem),
+                            height: constraints.maxHeight,
+                            width: constraints.maxWidth,
+                          ),
+                        );
+                      }),
+                    ),
                   ),
                 ],
               ),
@@ -162,15 +175,23 @@ class ActivityContainer extends StatelessWidget {
 
 class Attachment extends StatelessWidget {
   final InfoItem infoItem;
+  final double height;
+  final double width;
   const Attachment({
     Key key,
     @required this.infoItem,
+    @required this.height,
+    @required this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final info = infoItem.type == InfoItemType.NOTE
-        ? Text((infoItem.infoItemData as NoteData).text)
+    final info = infoItem?.type == InfoItemType.NOTE
+        ? NoteBlock(
+            text: (infoItem.infoItemData as NoteData).text,
+            height: this.height,
+            width: width,
+          )
         : Text('No note...');
     return Container(
       child: info,

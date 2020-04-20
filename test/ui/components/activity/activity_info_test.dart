@@ -256,6 +256,7 @@ void main() {
 
     expect(find.byType(Hero), findsOneWidget);
   });
+
   testWidgets('image below -> (hasImage && hasAttachment && !hasTitle)',
       (WidgetTester tester) async {
     // Arrange
@@ -280,5 +281,31 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(Hero), findsOneWidget);
+  });
+
+  testWidgets('Note attachment is present', (WidgetTester tester) async {
+    final activity = Activity.createNew(
+      title: null,
+      startTime: startTime.millisecondsSinceEpoch,
+      duration: 0,
+      category: 0,
+      checkable: true,
+      reminderBefore: [],
+      fileId: Uuid().v4(),
+      infoItem:
+          'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19',
+    );
+
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        ActivityInfo(
+          activity: activity,
+          day: day,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(NoteBlock), findsOneWidget);
   });
 }
