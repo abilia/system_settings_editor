@@ -61,7 +61,7 @@ class FadeInCalendarImage extends StatelessWidget {
                       width: width,
                       height: height,
                       image: imageSize == ImageSize.ORIGINAL
-                          ? fileStorage.getFile(imageFileId)
+                          ? Image.file(fileStorage.getFile(imageFileId)).image
                           : Image.file(
                               fileStorage.getImageThumb(
                                   imageSize == ImageSize.SMALL
