@@ -53,9 +53,8 @@ class ActivityCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: borderRadius,
                 border: Border.all(
-                    color: current
-                        ? AbiliaColors.red
-                        : AbiliaColors.transparentBlack[5]),
+                  color: current ? AbiliaColors.red : borderColor,
+                ),
               ),
               child: AnimatedOpacity(
                 opacity: inactive ? .5 : 1,
