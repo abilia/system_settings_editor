@@ -37,6 +37,13 @@ InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
 
 const Radius radius = Radius.circular(12);
 const BorderRadius borderRadius = BorderRadius.all(radius);
+const borderColor = AbiliaColors.white120;
+const borderSide = BorderSide(color: AbiliaColors.white120);
+const border = Border.fromBorderSide(borderSide);
+const BoxDecoration borderDecoration = BoxDecoration(
+  borderRadius: borderRadius,
+  border: border,
+);
 
 OutlineInputBorder inputBorder = OutlineInputBorder(
   borderSide: BorderSide(color: AbiliaColors.transparentBlack[15]),
