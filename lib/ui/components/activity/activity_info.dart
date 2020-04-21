@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/models/info_item.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -125,7 +127,21 @@ class ActivityContainer extends StatelessWidget {
                     indent: 12.0,
                     height: 1,
                   ),
-                  Text('Attachment'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(18, 10, 18, 12),
+                      child: LayoutBuilder(builder:
+                          (BuildContext context, BoxConstraints constraints) {
+                        return SingleChildScrollView(
+                          child: Attachment(
+                            infoItem: InfoItem.fromBase64(activity.infoItem),
+                            height: constraints.maxHeight,
+                            width: constraints.maxWidth,
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -153,6 +169,32 @@ class ActivityContainer extends StatelessWidget {
             )
         ],
       ),
+    );
+  }
+}
+
+class Attachment extends StatelessWidget {
+  final InfoItem infoItem;
+  final double height;
+  final double width;
+  const Attachment({
+    Key key,
+    @required this.infoItem,
+    @required this.height,
+    @required this.width,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final info = infoItem is NoteInfoItem
+        ? NoteBlock(
+            text: (infoItem as NoteInfoItem).text,
+            height: this.height,
+            width: width,
+          )
+        : Text('No note...');
+    return Container(
+      child: info,
     );
   }
 }
