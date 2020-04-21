@@ -155,6 +155,7 @@ class ActivityContainer extends StatelessWidget {
                           activityId: activity.id,
                           width: 327.0,
                           height: 289.0,
+                          imageSize: ImageSize.ORIGINAL,
                         )
                       : SizedBox(
                           height: 289,

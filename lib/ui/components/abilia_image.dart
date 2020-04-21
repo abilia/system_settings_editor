@@ -60,11 +60,14 @@ class FadeInCalendarImage extends StatelessWidget {
                   ? FadeInImage(
                       width: width,
                       height: height,
-                      image: Image.file(
-                        fileStorage.getImageThumb(imageSize == ImageSize.SMALL
-                            ? SmallThumb(imageFileId)
-                            : MediumThumb(imageFileId)),
-                      ).image,
+                      image: imageSize == ImageSize.ORIGINAL
+                          ? fileStorage.getFile(imageFileId)
+                          : Image.file(
+                              fileStorage.getImageThumb(
+                                  imageSize == ImageSize.SMALL
+                                      ? SmallThumb(imageFileId)
+                                      : MediumThumb(imageFileId)),
+                            ).image,
                       placeholder: MemoryImage(kTransparentImage),
                     )
                   : FadeInNetworkImage(
