@@ -186,9 +186,9 @@ class Attachment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final info = infoItem?.type == InfoItemType.NOTE
+    final info = infoItem is NoteInfoItem
         ? NoteBlock(
-            text: (infoItem.infoItemData as NoteData).text,
+            text: (infoItem as NoteInfoItem).text,
             height: this.height,
             width: width,
           )

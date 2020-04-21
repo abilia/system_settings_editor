@@ -6,7 +6,6 @@ void main() {
     final testString =
         'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19';
     final infoItem = InfoItem.fromBase64(testString);
-    expect(infoItem.type, InfoItemType.NOTE);
-    expect((infoItem.infoItemData as NoteData).text, 'Test');
+    expect((infoItem as NoteInfoItem).text, 'Test');
   });
 }

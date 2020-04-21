@@ -25,7 +25,7 @@ class NoteBlock extends StatelessWidget {
       child: Stack(children: [
         Text(text, style: textStyle),
         Lines(
-          lineHeight: 28,
+          lineHeight: lineHeight,
           numberOfLines: numberOfLines.ceil(),
         ),
       ]),
