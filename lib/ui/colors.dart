@@ -231,13 +231,14 @@ class AbiliaColors {
     <int, Color>{
       100: Color(_whitePrimaryValue),
       110: Color(0xFFE6E6E6),
-      120: Color(0xFFCCCCCC),
+      120: white120,
       135: Color(0xFFA5A5A5),
       140: Color(0xFF999999),
       150: Color(0xFF7F7F7F),
     },
   );
   static const int _whitePrimaryValue = 0xFFFFFFFF;
+  static const white120 = Color(0xFFCCCCCC);
   static const MaterialColor transparentWhite = MaterialColor(
     _whitePrimaryValue,
     <int, Color>{

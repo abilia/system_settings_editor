@@ -47,10 +47,7 @@ class ActivityInfo extends StatelessWidget {
               ActivityTimeRange(activity: activity, day: day),
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius,
-                  border: Border.all(color: AbiliaColors.transparentBlack[5]),
-                ),
+                decoration: borderDecoration,
                 child: ActivityContainer(
                     activity: activity, day: day, signedOff: signedOff),
               ),
