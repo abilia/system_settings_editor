@@ -13,13 +13,11 @@ const IMAGE_MAX_SIZE = 1500;
 
 class ImageResponse {
   final List<int> originalImage;
-  final List<int> mediumThumb;
-  final List<int> smallThumb;
+  final List<int> thumb;
 
   ImageResponse({
     this.originalImage,
-    this.mediumThumb,
-    this.smallThumb,
+    this.thumb,
   });
 }
 
@@ -100,27 +98,19 @@ Future<img.Image> adjustRotationToExif(List<int> imageBytes) async {
   return bakedImage;
 }
 
-Future<ImageResponse> adjustRotationAndCreateThumbs(List<int> originalBytes) async {
+Future<ImageResponse> adjustRotationAndCreateThumbs(
+    List<int> originalBytes) async {
   final adjustedImage = await adjustRotationToExif(originalBytes);
   final original = img.encodeJpg(adjustedImage, quality: IMAGE_QUALITY);
 
-  final mediumThumb = (max(adjustedImage.height, adjustedImage.width) >
-          ImageThumb.MEDIUM_THUMB_SIZE)
-      ? img.encodeJpg(
-          await resizeImg(adjustedImage, ImageThumb.MEDIUM_THUMB_SIZE),
-          quality: IMAGE_QUALITY)
-      : original;
-
-  final smallThumb = (max(adjustedImage.height, adjustedImage.width) >
-          ImageThumb.SMALL_THUMB_SIZE)
-      ? img.encodeJpg(
-          await resizeImg(adjustedImage, ImageThumb.SMALL_THUMB_SIZE),
-          quality: IMAGE_QUALITY)
-      : original;
+  final thumb =
+      (max(adjustedImage.height, adjustedImage.width) > ImageThumb.THUMB_SIZE)
+          ? img.encodeJpg(await resizeImg(adjustedImage, ImageThumb.THUMB_SIZE),
+              quality: IMAGE_QUALITY)
+          : original;
 
   return ImageResponse(
     originalImage: original,
-    mediumThumb: mediumThumb,
-    smallThumb: smallThumb,
+    thumb: thumb,
   );
 }

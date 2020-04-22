@@ -19,7 +19,7 @@ String imageThumbUrl({
   @required String baseUrl,
   @required int userId,
   @required String imageFileId,
-  int size = ImageThumb.MEDIUM_THUMB_SIZE,
+  int size = ImageThumb.THUMB_SIZE,
 }) =>
     '$baseUrl/api/v1/data/$userId/storage/image/thumb/$imageFileId?height=$size&width=$size';
 
