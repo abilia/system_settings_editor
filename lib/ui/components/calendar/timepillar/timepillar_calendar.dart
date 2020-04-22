@@ -8,6 +8,8 @@ import 'package:seagull/ui/components/calendar/all.dart';
 
 import 'all.dart';
 
+const transitionDuration = Duration(seconds: 1);
+
 class TimePillarCalendar extends StatefulWidget {
   final ActivitiesOccasionLoaded state;
   final CalendarViewState calendarViewState;
@@ -33,7 +35,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
   @override
   void initState() {
     final scrollOffset = widget.state.isToday
-        ? timeToPixelDistance(widget.now) - hourHeigt * 2
+        ? timeToPixelDistanceHour(widget.now) - hourHeigt * 2
         : scrollHeight * (8 / 24 /* 8th hour */);
     verticalScrollController =
         ScrollController(initialScrollOffset: scrollOffset);
@@ -71,7 +73,6 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                       children: <Widget>[
                         if (widget.state.isToday)
                           Timeline(
-                            now: now,
                             width: boxConstraints.maxWidth,
                           ),
                         CustomScrollView(
@@ -85,7 +86,6 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                                       .calendarViewState.expandLeftCategory),
                               height: boxConstraints.maxHeight,
                               sliver: ActivityBoard(
-                                category: Category.left,
                                 activities: widget.state.activities.where(
                                   (ao) =>
                                       ao.activity.category != Category.right,
@@ -98,7 +98,6 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                               child: TimePillar(
                                 day: widget.state.day,
                                 dayOccasion: widget.state.occasion,
-                                now: now,
                               ),
                             ),
                             category(
@@ -146,29 +145,21 @@ class ActivityBoard extends StatelessWidget {
     Key key,
     @required this.categoryMinWidth,
     @required this.activities,
-    this.category = Category.right,
   }) : super(key: key);
 
   final double categoryMinWidth;
   final Iterable<ActivityOccasion> activities;
-  final int category;
-  bool get right => category == Category.right;
 
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-      child: Stack(
-        children: activities
-            .map<Widget>(
-          (ao) => Positioned(
-            right: right ? null : 0,
-            top: timeToPixelDistance(ao.activity.start),
-            child: ActivityTimepillarCard(
-              activityOccasion: ao,
-            ),
-          ),
-        )
-            .followedBy([Container(width: categoryMinWidth)]).toList(),
+      child: Container(
+        width: categoryMinWidth,
+        child: Stack(
+          children: activities
+              .map<Widget>((ao) => ActivityTimepillarCard(activityOccasion: ao))
+              .toList(),
+        ),
       ),
     );
   }

@@ -8,7 +8,7 @@ extension IntToDuration on int {
   Duration milliseconds() => Duration(milliseconds: this);
 }
 
-extension DurationToString on Duration {
+extension DurationExtensions on Duration {
   String toReminderString(Translated translater) {
     if (inDays > 1) return '$inDays ${translater.days}';
     if (inDays == 1) return '$inDays ${translater.day}';
@@ -16,4 +16,8 @@ extension DurationToString on Duration {
     if (inHours == 1) return '$inHours ${translater.hour}';
     return '$inMinutes ${translater.min}';
   }
+
+  int inDots(int minutesPerDot, roundingMinute) =>
+      (inMinutes ~/ minutesPerDot) +
+      (inMinutes % minutesPerDot > roundingMinute ? 1 : 0);
 }
