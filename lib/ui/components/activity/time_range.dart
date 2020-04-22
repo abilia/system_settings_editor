@@ -22,7 +22,7 @@ class ActivityTimeRange extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) => Padding(
-        padding: const EdgeInsets.fromLTRB(16, 4, 0, 8),
+        padding: const EdgeInsets.only(top: 4, bottom: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
