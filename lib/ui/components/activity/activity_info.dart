@@ -146,22 +146,25 @@ class ActivityContainer extends StatelessWidget {
             Flexible(
               flex: activity.checkable ? 236 : 298,
               child: Center(
-                child: CheckMarkWrapper(
-                  checked: signedOff,
-                  child: hasImage
-                      ? FadeInCalendarImage(
-                          imageFileId: activity.fileId,
-                          imageFilePath: activity.icon,
-                          activityId: activity.id,
-                          width: 327.0,
-                          height: 289.0,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                  child: CheckMarkWrapper(
+                    checked: signedOff,
+                    child: hasImage
+                        ? FadeInCalendarImage(
+                            imageFileId: activity.fileId,
+                            imageFilePath: activity.icon,
+                            activityId: activity.id,
+                            width: 327.0,
+                            height: 289.0,
                           imageSize: ImageSize.ORIGINAL,
-                        )
-                      : SizedBox(
-                          height: 289,
-                          width: 327,
-                        ),
-                  small: false,
+                          )
+                        : SizedBox(
+                            height: 289,
+                            width: 327,
+                          ),
+                    small: false,
+                  ),
                 ),
               ),
             )
