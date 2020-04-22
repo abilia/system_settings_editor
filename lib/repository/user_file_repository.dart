@@ -211,24 +211,16 @@ class UserFileRepository extends DataRepository<UserFile> {
       fileIdUrl(baseUrl, userId, userFile.id),
       headers: authHeader(authToken),
     );
-    final mediumThumbResponse =
-        getImageThumb(userFile.id, ImageThumb.MEDIUM_THUMB_SIZE);
-    final smallThumbResponse =
-        getImageThumb(userFile.id, ImageThumb.SMALL_THUMB_SIZE);
+    final thumbResponse = getImageThumb(userFile.id, ImageThumb.THUMB_SIZE);
     final List<Response> responses = await Future.wait([
       originalFileResponse,
-      mediumThumbResponse,
-      smallThumbResponse,
+      thumbResponse,
     ]);
-    if (responses[0].statusCode == 200 &&
-        responses[1].statusCode == 200 &&
-        responses[2].statusCode == 200) {
+    if (responses[0].statusCode == 200 && responses[1].statusCode == 200) {
       await Future.wait([
         fileStorage.storeFile(responses[0].bodyBytes, userFile.id),
         fileStorage.storeImageThumb(
-            responses[1].bodyBytes, MediumThumb(userFile.id)),
-        fileStorage.storeImageThumb(
-            responses[2].bodyBytes, SmallThumb(userFile.id)),
+            responses[1].bodyBytes, ImageThumb(id: userFile.id)),
       ]);
       await userFileDb.setFileLoadedForId(userFile.id);
     } else {

@@ -95,10 +95,8 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
         adjustRotationAndCreateThumbs, originalBytes);
 
     await fileStorage.storeFile(imageResult.originalImage, id);
-    await fileStorage.storeImageThumb(imageResult.mediumThumb,
-        ImageThumb(id: id, size: ImageThumb.MEDIUM_THUMB_SIZE));
-    await fileStorage.storeImageThumb(imageResult.smallThumb,
-        ImageThumb(id: id, size: ImageThumb.SMALL_THUMB_SIZE));
+    await fileStorage.storeImageThumb(imageResult.thumb,
+        ImageThumb(id: id));
 
     final userFile = generateUserFile(id, path, imageResult.originalImage);
     await userFileRepository.save([userFile]);

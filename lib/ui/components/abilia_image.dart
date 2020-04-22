@@ -23,7 +23,7 @@ class FadeInCalendarImage extends StatelessWidget {
     this.width,
     this.height,
     this.imageFile,
-    this.imageSize = ImageSize.SMALL,
+    this.imageSize = ImageSize.THUMB,
   });
   @override
   Widget build(BuildContext context) {
@@ -64,9 +64,8 @@ class FadeInCalendarImage extends StatelessWidget {
                           ? Image.file(fileStorage.getFile(imageFileId)).image
                           : Image.file(
                               fileStorage.getImageThumb(
-                                  imageSize == ImageSize.SMALL
-                                      ? SmallThumb(imageFileId)
-                                      : MediumThumb(imageFileId)),
+                                ImageThumb(id: imageFileId),
+                              ),
                             ).image,
                       placeholder: MemoryImage(kTransparentImage),
                     )
@@ -92,7 +91,7 @@ class FadeInAbiliaImage extends StatelessWidget {
     @required this.imageFilePath,
     @required this.height,
     @required this.width,
-    this.imageSize = ImageSize.SMALL,
+    this.imageSize = ImageSize.THUMB,
   });
 
   @override
@@ -123,9 +122,7 @@ class FadeInAbiliaImage extends StatelessWidget {
                 width: width,
                 height: height,
                 image: Image.file(
-                  fileStorage.getImageThumb(imageSize == ImageSize.SMALL
-                      ? SmallThumb(imageFileId)
-                      : MediumThumb(imageFileId)),
+                  fileStorage.getImageThumb(ImageThumb(id: imageFileId)),
                 ).image,
                 placeholder: MemoryImage(kTransparentImage),
               )
@@ -166,7 +163,7 @@ class FadeInNetworkImage extends StatelessWidget {
                       baseUrl: state.userRepository.baseUrl,
                       userId: state.userId,
                       imageFileId: imageFileId,
-                      size: ImageThumb.SMALL_THUMB_SIZE,
+                      size: ImageThumb.THUMB_SIZE,
                     )
                   : imagePathUrl(
                       state.userRepository.baseUrl,
