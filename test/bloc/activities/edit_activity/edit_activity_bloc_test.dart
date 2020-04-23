@@ -27,7 +27,10 @@ void main() {
   test('Initial state is a new activity', () {
     // Arrange
     final activity = Activity.createNew(
-        title: '', startTime: aTime.nextHalfHour().millisecondsSinceEpoch);
+      title: '',
+      startTime: aTime.nextHalfHour().millisecondsSinceEpoch,
+      timezone: aTime.timeZoneName,
+    );
     EditActivityBloc editActivityBloc =
         EditActivityBloc(activitiesBloc: mockActivitiesBloc, now: aTime);
     // Act // Assert
