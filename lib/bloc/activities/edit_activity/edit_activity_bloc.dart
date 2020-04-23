@@ -26,6 +26,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
             ? Activity.createNew(
                 title: '',
                 startTime: now.nextHalfHour().millisecondsSinceEpoch,
+                timezone: now.timeZoneName,
               )
             : activity.isRecurring
                 ? activity.copyWith(

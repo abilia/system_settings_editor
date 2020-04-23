@@ -72,7 +72,10 @@ class DatabaseRepository {
     ''',
     '''
       ALTER TABLE $USER_FILE_TABLE_NAME ADD COLUMN file_loaded int default 0
+    ''',
     '''
+      ALTER TABLE $CALENDAR_TABLE_NAME ADD COLUMN timezone text
+    ''',
   ];
 
   static Database _database;
