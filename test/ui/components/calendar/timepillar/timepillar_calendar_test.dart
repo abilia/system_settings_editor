@@ -27,19 +27,8 @@ void main() {
   final time = DateTime(2007, 08, 09, 10, 11);
   final leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
-  final activities = [
-    FakeActivity.fullday(time),
-    FakeActivity.starts(
-      time,
-      title: rightTitle,
-    ).copyWith(checkable: true),
-    FakeActivity.starts(time.add(30.minutes())).copyWith(
-      category: Category.left,
-      title: leftTitle,
-      fileId: 'fileId',
-    )
-  ];
-  List<Activity> givenActivities = activities;
+
+  List<Activity> givenActivities = [];
 
   ActivityResponse activityResponse = () => givenActivities;
 
@@ -59,6 +48,7 @@ void main() {
     mockActivityDb = MockActivityDb();
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(givenActivities));
+    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     GetItInitializer()
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
@@ -72,7 +62,7 @@ void main() {
       ..init();
   });
   tearDown(() {
-    givenActivities = activities;
+    givenActivities = [];
   });
   goToTimePillar(WidgetTester tester) async {
     await tester.pumpWidget(App());
@@ -98,6 +88,7 @@ void main() {
     expect(find.byType(Agenda), findsOneWidget);
   });
   testWidgets('Shows all days activities', (WidgetTester tester) async {
+    givenActivities = [FakeActivity.fullday(time)];
     await goToTimePillar(tester);
     expect(find.byType(FullDayContainer), findsOneWidget);
   });
@@ -285,6 +276,22 @@ void main() {
       final leftActivityFinder = find.text(leftTitle);
       final rightActivityFinder = find.text(rightTitle);
       final cardFinder = find.byType(ActivityTimepillarCard);
+      setUp(() {
+        givenActivities = [
+          FakeActivity.starts(
+            time,
+            title: rightTitle,
+          ).copyWith(
+            checkable: true,
+          ),
+          FakeActivity.starts(
+            time,
+            title: leftTitle,
+          ).copyWith(
+            category: Category.left,
+          ),
+        ];
+      });
 
       testWidgets('Shows activity', (WidgetTester tester) async {
         // Act

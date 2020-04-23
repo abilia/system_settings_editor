@@ -85,12 +85,17 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                                   expanded: widget
                                       .calendarViewState.expandLeftCategory),
                               height: boxConstraints.maxHeight,
-                              sliver: ActivityBoard(
-                                activities: widget.state.activities.where(
-                                  (ao) =>
-                                      ao.activity.category != Category.right,
+                              sliver: SliverToBoxAdapter(
+                                child: ActivityBoard(
+                                  activities: widget.state.activities
+                                      .where(
+                                        (ao) =>
+                                            ao.activity.category !=
+                                            Category.right,
+                                      )
+                                      .toList(),
+                                  categoryMinWidth: categoryLeftMinWidth,
                                 ),
-                                categoryMinWidth: categoryLeftMinWidth,
                               ),
                             ),
                             SliverTimePillar(
@@ -105,12 +110,17 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                                   expanded: widget
                                       .calendarViewState.expandRightCategory),
                               height: boxConstraints.maxHeight,
-                              sliver: ActivityBoard(
-                                activities: widget.state.activities.where(
-                                  (ao) =>
-                                      ao.activity.category == Category.right,
+                              sliver: SliverToBoxAdapter(
+                                child: ActivityBoard(
+                                  activities: widget.state.activities
+                                      .where(
+                                        (ao) =>
+                                            ao.activity.category ==
+                                            Category.right,
+                                      )
+                                      .toList(),
+                                  categoryMinWidth: categoryRightMinWidth,
                                 ),
-                                categoryMinWidth: categoryRightMinWidth,
                               ),
                             ),
                           ],
@@ -138,31 +148,6 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
         ),
         sliver: sliver,
       );
-}
-
-class ActivityBoard extends StatelessWidget {
-  const ActivityBoard({
-    Key key,
-    @required this.categoryMinWidth,
-    @required this.activities,
-  }) : super(key: key);
-
-  final double categoryMinWidth;
-  final Iterable<ActivityOccasion> activities;
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-        width: categoryMinWidth,
-        child: Stack(
-          children: activities
-              .map<Widget>((ao) => ActivityTimepillarCard(activityOccasion: ao))
-              .toList(),
-        ),
-      ),
-    );
-  }
 }
 
 class ScrollTranslated extends StatefulWidget {
