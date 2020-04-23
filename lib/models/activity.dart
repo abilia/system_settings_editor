@@ -29,7 +29,7 @@ class Activity extends DataModel {
           ? (signedOffDates.toList()..remove(day))
           : signedOffDates.followedBy([day]));
 
-  final String seriesId, title, fileId, icon, infoItem;
+  final String seriesId, title, fileId, icon, infoItem, timezone;
   final int startTime,
       endTime,
       duration,
@@ -61,6 +61,7 @@ class Activity extends DataModel {
     @required this.icon,
     @required this.fileId,
     @required this.signedOffDates,
+    @required this.timezone,
   })  : assert(title != null || fileId != null),
         assert(seriesId != null),
         assert(recurrentType >= 0 && recurrentType < 4),
@@ -96,6 +97,7 @@ class Activity extends DataModel {
     String fileId,
     Iterable<int> reminderBefore = const [],
     Iterable<DateTime> signedOffDates = const [],
+    String timezone,
   }) {
     final id = Uuid().v4();
     return Activity._(
@@ -119,6 +121,7 @@ class Activity extends DataModel {
       alarmType: alarmType,
       infoItem: _nullIfEmpty(infoItem),
       signedOffDates: UnmodifiableListView(signedOffDates),
+      timezone: timezone,
     );
   }
 
@@ -150,6 +153,7 @@ class Activity extends DataModel {
     int recurrentData,
     String infoItem,
     Iterable<DateTime> signedOffDates,
+    String timezone,
   }) =>
       Activity._(
         id: newId ? Uuid().v4() : id,
@@ -176,6 +180,7 @@ class Activity extends DataModel {
         signedOffDates: signedOffDates != null
             ? UnmodifiableListView(signedOffDates)
             : this.signedOffDates,
+        timezone: timezone ?? this.timezone,
       );
 
   Activity copyActivity(Activity other) => copyWith(
@@ -194,6 +199,7 @@ class Activity extends DataModel {
         icon: other.icon,
         alarmType: other.alarmType,
         infoItem: other.infoItem,
+        timezone: other.timezone,
       );
 
   @override
@@ -218,6 +224,7 @@ class Activity extends DataModel {
         infoItem,
         icon,
         signedOffDates,
+        timezone,
       ];
   @override
   String toString() => 'Activity: { ${props.join(', ')} }';
@@ -263,6 +270,7 @@ class DbActivity extends DbModel<Activity> {
           reminderBefore: _parseReminders(json['reminderBefore']),
           alarmType: json['alarmType'],
           signedOffDates: _parseSignedOffDates(json['signedOffDates']),
+          timezone: json['timezone'],
         ),
         revision: json['revision'],
         dirty: 0,
@@ -290,6 +298,7 @@ class DbActivity extends DbModel<Activity> {
           reminderBefore: _parseReminders(dbRow['reminder_before']),
           alarmType: dbRow['alarm_type'],
           signedOffDates: _parseSignedOffDates(dbRow['signed_off_dates']),
+          timezone: dbRow['timezone'],
         ),
         revision: dbRow['revision'],
         dirty: dbRow['dirty'],
@@ -317,6 +326,7 @@ class DbActivity extends DbModel<Activity> {
         'alarmType': activity.alarmType,
         'signedOffDates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'revision': revision,
+        'timezone': activity.timezone,
       };
 
   Map<String, dynamic> toMapForDb() => {
@@ -340,6 +350,7 @@ class DbActivity extends DbModel<Activity> {
         'info_item': activity.infoItem,
         'alarm_type': activity.alarmType,
         'signed_off_dates': activity.signedOffDates.tryEncodeSignedOffDates(),
+        'timezone': activity.timezone,
         'revision': revision,
         'dirty': dirty,
       };

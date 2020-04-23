@@ -6,7 +6,7 @@ import 'package:uuid/uuid.dart';
 
 class Sortable extends DataModel {
   final String type, data, groupId, sortOrder;
-  final bool deleted, isGroup, isVisible;
+  final bool deleted, isGroup, visible;
 
   SortableData get sortableData {
     final sortableData = json.decode(data);
@@ -28,7 +28,7 @@ class Sortable extends DataModel {
     @required this.sortOrder,
     @required this.deleted,
     @required this.isGroup,
-    @required this.isVisible,
+    @required this.visible,
   }) : super(id);
 
   static Sortable createNew({
@@ -49,13 +49,13 @@ class Sortable extends DataModel {
       sortOrder: sortOrder,
       deleted: deleted,
       isGroup: isGroup,
-      isVisible: isVisible,
+      visible: isVisible,
     );
   }
 
   @override
   List<Object> get props =>
-      [id, type, data, groupId, sortOrder, deleted, isGroup, isVisible];
+      [id, type, data, groupId, sortOrder, deleted, isGroup, visible];
 
   @override
   String toString() => 'Sortable: { ${props.join(', ')} }';
@@ -95,7 +95,7 @@ class DbSortable extends DbModel<Sortable> {
           sortOrder: json['sortOrder'],
           deleted: json['deleted'],
           isGroup: json['group'],
-          isVisible: json['visible'],
+          visible: json['visible'],
         ),
         revision: json['revision'],
         dirty: 0,
@@ -110,7 +110,7 @@ class DbSortable extends DbModel<Sortable> {
         'sortOrder': sortable.sortOrder,
         'deleted': sortable.deleted,
         'group': sortable.isGroup,
-        'isVisible': sortable.isVisible,
+        'visible': sortable.visible,
         'revision': revision,
       };
 
@@ -123,7 +123,7 @@ class DbSortable extends DbModel<Sortable> {
           sortOrder: dbRow['sort_order'],
           deleted: dbRow['deleted'] == 1,
           isGroup: dbRow['is_group'] == 1,
-          isVisible: dbRow['visible'] == 1,
+          visible: dbRow['visible'] == 1,
         ),
         revision: dbRow['revision'],
         dirty: dbRow['dirty'],
@@ -137,7 +137,7 @@ class DbSortable extends DbModel<Sortable> {
         'sort_order': sortable.sortOrder,
         'deleted': sortable.deleted ? 1 : 0,
         'is_group': sortable.isGroup ? 1 : 0,
-        'visible': sortable.isVisible ? 1 : 0,
+        'visible': sortable.visible ? 1 : 0,
         'revision': revision,
         'dirty': dirty,
       };
