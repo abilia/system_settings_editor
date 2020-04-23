@@ -56,8 +56,9 @@ class ActivityOccasion extends Equatable {
                 : Occasion.current;
 
   @visibleForTesting
-  factory ActivityOccasion.forTest(activity, occasion, {day}) =>
-      ActivityOccasion._(activity, occasion, day);
+  factory ActivityOccasion.forTest(Activity activity, Occasion occasion,
+          {DateTime day}) =>
+      ActivityOccasion._(activity, occasion, day ?? activity.start.onlyDays());
 
   factory ActivityOccasion.fullDay(
     Activity activity, {

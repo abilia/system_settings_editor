@@ -39,8 +39,9 @@ void main() {
       fileId: 'fileId',
     )
   ];
+  List<Activity> givenActivities = activities;
 
-  ActivityResponse activityResponse = () => activities;
+  ActivityResponse activityResponse = () => givenActivities;
 
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
   final previusDayButtonFinder =
@@ -57,7 +58,7 @@ void main() {
         .thenAnswer((_) => Future.value('fakeToken'));
     mockActivityDb = MockActivityDb();
     when(mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(activities));
+        .thenAnswer((_) => Future.value(givenActivities));
     GetItInitializer()
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
@@ -69,6 +70,9 @@ void main() {
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
       ..init();
+  });
+  tearDown(() {
+    givenActivities = activities;
   });
   goToTimePillar(WidgetTester tester) async {
     await tester.pumpWidget(App());
@@ -149,6 +153,8 @@ void main() {
     });
 
     testWidgets('Only one current dot', (WidgetTester tester) async {
+      givenActivities = [];
+
       await goToTimePillar(tester);
       expect(
           tester
@@ -158,6 +164,8 @@ void main() {
     });
 
     testWidgets('Alwasy only one current dots', (WidgetTester tester) async {
+      givenActivities = [];
+
       await goToTimePillar(tester);
       for (var i = 0; i < 20; i++) {
         mockTicker.add(time.add(1.minutes()));
