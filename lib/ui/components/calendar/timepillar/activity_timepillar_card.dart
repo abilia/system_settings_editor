@@ -110,10 +110,7 @@ class ActivityTimepillarCard extends StatelessWidget {
       ? BoxDecoration(
           color: AbiliaColors.white[110],
           borderRadius: borderRadius,
-          border: Border.all(
-            color: AbiliaColors.white[120],
-            width: 1.0,
-          ),
+          border: border,
         )
       : current
           ? BoxDecoration(
@@ -127,9 +124,6 @@ class ActivityTimepillarCard extends StatelessWidget {
           : BoxDecoration(
               color: AbiliaColors.white,
               borderRadius: borderRadius,
-              border: Border.all(
-                color: AbiliaColors.white[120],
-                width: 1.0,
-              ),
+              border: border,
             );
 }
