@@ -115,7 +115,10 @@ class CalendarPage extends StatelessWidget {
             listener: (context, state) async {
               if (state is ActivitiesLoaded) {
                 final scheduleAlarm = GetIt.I<AlarmScheduler>();
-                await scheduleAlarm(state.activities);
+                await scheduleAlarm(
+                  state.activities,
+                  language: Locale.cachedLocale.languageCode,
+                );
               }
             },
           ),
