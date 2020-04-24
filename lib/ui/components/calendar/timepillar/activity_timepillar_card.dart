@@ -49,10 +49,8 @@ class ActivityTimepillarCard extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (innerContext) => editActivityMultiBlocProvider(
-                    context,
-                    child: ActivityPage(occasion: activityOccasion),
-                  ),
+                  builder: (innerContext) =>
+                      ActivityPage(occasion: activityOccasion),
                 ),
               );
             },

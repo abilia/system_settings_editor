@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 
@@ -51,10 +50,7 @@ class AlarmNavigator {
     return await _push(
       outerContext,
       MaterialPageRoute(
-        builder: (context) => editActivityMultiBlocProvider(
-          outerContext,
-          child: page,
-        ),
+        builder: (context) => page,
         fullscreenDialog: true,
       ),
       id,

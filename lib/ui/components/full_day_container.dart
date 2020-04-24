@@ -77,14 +77,11 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
                   parent: animation,
                   curve: Curves.easeOut,
                 ),
-                child: editActivityMultiBlocProvider(
-                  context,
-                  child: AllDayList(
-                    pickedDay: day,
-                    allDayActivities: fullDayActivities,
-                    cardHeight: this.cardHeight,
-                    cardMargin: this.cardMargin,
-                  ),
+                child: AllDayList(
+                  pickedDay: day,
+                  allDayActivities: fullDayActivities,
+                  cardHeight: this.cardHeight,
+                  cardMargin: this.cardMargin,
                 ),
               ),
             ),

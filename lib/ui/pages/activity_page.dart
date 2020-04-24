@@ -141,18 +141,13 @@ class ActivityPage extends StatelessWidget {
                   await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) {
-                        return editActivityMultiBlocProvider(
-                          context,
-                          extraProviders: [
-                            BlocProvider<EditActivityBloc>(
-                              create: (_) => EditActivityBloc(
-                                activitiesBloc:
-                                    BlocProvider.of<ActivitiesBloc>(context),
-                                activity: activity,
-                                day: day,
-                              ),
-                            )
-                          ],
+                        return BlocProvider<EditActivityBloc>(
+                          create: (_) => EditActivityBloc(
+                            activitiesBloc:
+                                BlocProvider.of<ActivitiesBloc>(context),
+                            activity: activity,
+                            day: day,
+                          ),
                           child: EditActivityPage(
                             day: day,
                             title:
