@@ -8,7 +8,6 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class CalendarPage extends StatelessWidget {
   final Authenticated authenticatedState;
@@ -117,43 +116,5 @@ class CalendarPage extends StatelessWidget {
       ],
       child: child,
     );
-  }
-}
-
-class AlarmListener extends StatelessWidget {
-  const AlarmListener({
-    Key key,
-    @required this.child,
-  }) : super(key: key);
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<ActivitiesBloc, ActivitiesState>(
-          listener: (context, state) async {
-            if (state is ActivitiesLoaded) {
-              final scheduleAlarm = GetIt.I<AlarmScheduler>();
-              await scheduleAlarm(state.activities);
-            }
-          },
-        ),
-        BlocListener<AlarmBloc, AlarmStateBase>(
-          listener: _alarmListener,
-        ),
-        BlocListener<NotificationBloc, AlarmStateBase>(
-          listener: _alarmListener,
-        ),
-      ],
-      child: child,
-    );
-  }
-
-  void _alarmListener(BuildContext context, AlarmStateBase state) async {
-    if (state is AlarmState) {
-      await GetIt.I<AlarmNavigator>().pushAlarm(context, state.alarm);
-    }
   }
 }
