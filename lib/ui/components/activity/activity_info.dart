@@ -151,14 +151,12 @@ class ActivityContainer extends StatelessWidget {
                   child: CheckMarkWrapper(
                     checked: signedOff,
                     child: hasImage
-                        ? SizedBox.expand(
-                            child: FadeInCalendarImage(
-                              imageFileId: activity.fileId,
-                              imageFilePath: activity.icon,
-                              activityId: activity.id,
-                              imageSize: ImageSize.ORIGINAL,
-                            ),
-                          )
+                        ? FadeInCalendarImage(
+                          imageFileId: activity.fileId,
+                          imageFilePath: activity.icon,
+                          activityId: activity.id,
+                          imageSize: ImageSize.ORIGINAL,
+                        )
                         : SizedBox.expand(),
                     small: false,
                   ),
