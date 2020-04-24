@@ -12,7 +12,6 @@ import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
-import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/background/all.dart';
@@ -65,10 +64,10 @@ class App extends StatelessWidget {
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state is Authenticated) {
-            return CalendarPage(
+            return AuthenticatedBlocsProvider(
               authenticatedState: state,
               child: SeagullApp(
-                home: AlarmListener(child: Calendar()),
+                home: AlarmListener(child: CalendarPage()),
               ),
             );
           }

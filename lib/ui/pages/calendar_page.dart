@@ -1,120 +1,276 @@
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:seagull/background/all.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sync/sync_bloc.dart';
-import 'package:seagull/bloc/user_file/user_file_bloc.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/all.dart';
+import 'dart:math';
 
-class CalendarPage extends StatelessWidget {
-  final Authenticated authenticatedState;
-  final Widget child;
-  CalendarPage({
-    @required this.authenticatedState,
-    @required this.child,
-  }) {
-    ensureNotificationPluginInitialized();
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/components/calendar/day_app_bar.dart';
+import 'package:seagull/ui/pages/all.dart';
+import 'package:seagull/ui/theme.dart';
+import 'package:seagull/utils/all.dart';
+
+class CalendarPage extends StatefulWidget {
+  @override
+  _CalendarPageState createState() => _CalendarPageState();
+}
+
+class _CalendarPageState extends State<CalendarPage> with WidgetsBindingObserver {
+  final double cardHeight = 56.0;
+  final double cardMargin = 4.0;
+  DayPickerBloc _dayPickerBloc;
+  ActivitiesBloc _activitiesBloc;
+  ScrollPositionBloc _scrollPositionBloc;
+  SortableBloc _sortableBloc;
+  ClockBloc _clockBloc;
+
+  @override
+  void initState() {
+    _dayPickerBloc = BlocProvider.of<DayPickerBloc>(context);
+    _activitiesBloc = BlocProvider.of<ActivitiesBloc>(context);
+    _clockBloc = BlocProvider.of<ClockBloc>(context);
+    _scrollPositionBloc = ScrollPositionBloc();
+    _sortableBloc = BlocProvider.of<SortableBloc>(context);
+    BlocProvider.of<UserFileBloc>(context).add(LoadUserFiles());
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      _clockBloc.add(DateTime.now().onlyMinutes());
+      _activitiesBloc.add(LoadActivities());
+      _sortableBloc.add(LoadSortables());
+      _jumpToActivity();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final activityRepository = ActivityRepository(
-      client: authenticatedState.userRepository.httpClient,
-      baseUrl: authenticatedState.userRepository.baseUrl,
-      activityDb: GetIt.I<ActivityDb>(),
-      userId: authenticatedState.userId,
-      authToken: authenticatedState.token,
+    final PageController controller =
+        PageController(initialPage: DayPickerBloc.startIndex);
+    return BlocProvider<ScrollPositionBloc>(
+      create: (context) => _scrollPositionBloc,
+      child: BlocBuilder<DayPickerBloc, DayPickerState>(
+        builder: (context, pickedDay) =>
+            BlocBuilder<CalendarViewBloc, CalendarViewState>(
+          builder: (context, calendarViewState) {
+            return AnimatedTheme(
+              data: weekDayTheme[pickedDay.day.weekday],
+              child: Scaffold(
+                appBar: buildAppBar(pickedDay.day),
+                body: BlocListener<DayPickerBloc, DayPickerState>(
+                  listener: (context, state) {
+                    controller.animateToPage(state.index,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.easeOutQuad);
+                  },
+                  child: PageView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: controller,
+                    itemBuilder: (context, index) {
+                      return BlocBuilder<ActivitiesOccasionBloc,
+                          ActivitiesOccasionState>(
+                        condition: (oldState, newState) {
+                          return (oldState is ActivitiesOccasionLoaded &&
+                                  newState is ActivitiesOccasionLoaded &&
+                                  oldState.day == newState.day) ||
+                              oldState.runtimeType != newState.runtimeType;
+                        },
+                        builder: (context, state) {
+                          if (state is ActivitiesOccasionLoaded) {
+                            if (!state.isToday) {
+                              BlocProvider.of<ScrollPositionBloc>(context)
+                                  .add(WrongDaySelected());
+                            }
+                            final fullDayActivities = state.fullDayActivities;
+                            return Column(
+                              children: <Widget>[
+                                if (fullDayActivities.isNotEmpty)
+                                  FullDayContainer(
+                                    fullDayActivities: fullDayActivities,
+                                    cardHeight: cardHeight,
+                                    cardMargin: cardMargin,
+                                    day: state.day,
+                                  ),
+                                Expanded(
+                                  child: calendarViewState.currentView ==
+                                          CalendarViewType.LIST
+                                      ? Agenda(
+                                          state: state,
+                                          cardHeight: cardHeight,
+                                          cardMargin: cardMargin,
+                                        )
+                                      : TimePillarCalendar(
+                                          state: state,
+                                          now: _clockBloc.state,
+                                          calendarViewState: calendarViewState,
+                                        ),
+                                )
+                              ],
+                            );
+                          }
+                          return Center(child: CircularProgressIndicator());
+                        },
+                      );
+                    },
+                  ),
+                ),
+                bottomNavigationBar:
+                    buildBottomAppBar(calendarViewState.currentView, context),
+              ),
+            );
+          },
+        ),
+      ),
     );
-    final userFileRepository = UserFileRepository(
-      httpClient: authenticatedState.userRepository.httpClient,
-      baseUrl: authenticatedState.userRepository.baseUrl,
-      userFileDb: GetIt.I<UserFileDb>(),
-      fileStorage: GetIt.I<FileStorage>(),
-      userId: authenticatedState.userId,
-      authToken: authenticatedState.token,
-      multipartRequestBuilder: GetIt.I<MultipartRequestBuilder>(),
+  }
+
+  Widget buildBottomAppBar(CalendarViewType currentView, BuildContext context) {
+    return BottomAppBar(
+      child: Container(
+        height: 64,
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Stack(
+          children: <Widget>[
+            CalendarViewSwitchButton(currentView, key: TestKey.changeView),
+            Align(
+              alignment: Alignment(-0.42, 0.0),
+              child: GoToNowButton(
+                onPressed: () => _jumpToActivity(),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: ActionButton(
+                key: TestKey.addActivity,
+                themeData: addButtonTheme,
+                child: Icon(
+                  AbiliaIcons.plus,
+                  size: 32,
+                ),
+                onPressed: () async {
+                  final now = BlocProvider.of<ClockBloc>(context).state;
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) {
+                        return BlocProvider<EditActivityBloc>(
+                          create: (_) => EditActivityBloc(
+                            activitiesBloc:
+                                BlocProvider.of<ActivitiesBloc>(context),
+                            now: now,
+                          ),
+                          child: EditActivityPage(
+                            day: now.onlyDays(),
+                            title: Translator.of(context).translate.newActivity,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ActionButton(
+                child: Icon(
+                  AbiliaIcons.menu,
+                  size: 32,
+                ),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => MenuPage()),
+                ),
+                themeData: menuButtonTheme,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
-    final sortableRepository = SortableRepository(
-      baseUrl: authenticatedState.userRepository.baseUrl,
-      client: authenticatedState.userRepository.httpClient,
-      sortableDb: GetIt.I<SortableDb>(),
-      userId: authenticatedState.userId,
-      authToken: authenticatedState.token,
-    );
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<SyncBloc>(
-          create: (context) => SyncBloc(
-            activityRepository: activityRepository,
-            userFileRepository: userFileRepository,
-            sortableRepository: sortableRepository,
+  }
+
+  Widget buildAppBar(DateTime pickedDay) => DayAppBar(
+        day: pickedDay,
+        leftAction: ActionButton(
+          child: Icon(
+            AbiliaIcons.return_to_previous_page,
+            size: 32,
           ),
+          onPressed: () => _dayPickerBloc.add(PreviousDay()),
         ),
-        BlocProvider<ActivitiesBloc>(
-          create: (context) => ActivitiesBloc(
-            activityRepository: activityRepository,
-            syncBloc: BlocProvider.of<SyncBloc>(context),
-            pushBloc: BlocProvider.of<PushBloc>(context),
-          )..add(LoadActivities()),
-        ),
-        BlocProvider<UserFileBloc>(
-          create: (context) => UserFileBloc(
-            userFileRepository: userFileRepository,
-            syncBloc: BlocProvider.of<SyncBloc>(context),
-            fileStorage: GetIt.I<FileStorage>(),
-            pushBloc: BlocProvider.of<PushBloc>(context),
+        rightAction: ActionButton(
+          child: Icon(
+            AbiliaIcons.go_to_next_page,
+            size: 32,
           ),
+          onPressed: () => _dayPickerBloc.add(NextDay()),
         ),
-        BlocProvider<SortableBloc>(
-          create: (context) => SortableBloc(
-            sortableRepository: sortableRepository,
-            syncBloc: BlocProvider.of<SyncBloc>(context),
-            pushBloc: BlocProvider.of<PushBloc>(context),
-          )..add(LoadSortables()),
-        ),
-        BlocProvider<ClockBloc>(
-          create: (context) => ClockBloc(
-            GetIt.I<Stream<DateTime>>(),
-            initialTime: GetIt.I<DateTime>(),
+      );
+
+  void _jumpToActivity() async {
+    final scrollState = await _scrollPositionBloc.first;
+    if (scrollState is OutOfView) {
+      final sc = scrollState.scrollController;
+      sc.jumpTo(min(sc.initialScrollOffset, sc.position.maxScrollExtent));
+    } else if (scrollState is WrongDay) {
+      _dayPickerBloc.add(CurrentDay());
+    }
+  }
+}
+
+class CalendarViewSwitchButton extends StatelessWidget {
+  const CalendarViewSwitchButton(this.currentView, {Key key}) : super(key: key);
+  final CalendarViewType currentView;
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: menuButtonTheme,
+      child: SizedBox(
+        width: 72,
+        height: 48,
+        child: FlatButton(
+          color: menuButtonTheme.buttonColor,
+          highlightColor: menuButtonTheme.highlightColor,
+          padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+          textColor: menuButtonTheme.textTheme.button.color,
+          child: Row(
+            children: <Widget>[
+              Icon(
+                currentView == CalendarViewType.LIST
+                    ? AbiliaIcons.list_order
+                    : AbiliaIcons.timeline,
+                size: 32,
+              ),
+              Icon(
+                AbiliaIcons.navigation_down,
+                size: 32,
+              ),
+            ],
           ),
+          onPressed: () async {
+            final result = await showViewDialog<CalendarViewType>(
+              context: context,
+              builder: (context) => ChangeCalendarDialog(
+                currentViewType: currentView,
+              ),
+            );
+            if (result != null) {
+              BlocProvider.of<CalendarViewBloc>(context)
+                  .add(CalendarViewChanged(result));
+            }
+          },
         ),
-        BlocProvider<DayPickerBloc>(
-          create: (context) => DayPickerBloc(
-            clockBloc: BlocProvider.of<ClockBloc>(context),
-          ),
-        ),
-        BlocProvider<DayActivitiesBloc>(
-          create: (context) => DayActivitiesBloc(
-            activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-            dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
-          ),
-        ),
-        BlocProvider<ActivitiesOccasionBloc>(
-          create: (context) => ActivitiesOccasionBloc(
-            clockBloc: BlocProvider.of<ClockBloc>(context),
-            dayActivitiesBloc: BlocProvider.of<DayActivitiesBloc>(context),
-            dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
-          ),
-        ),
-        BlocProvider<AlarmBloc>(
-          create: (context) => AlarmBloc(
-            clockBloc: BlocProvider.of<ClockBloc>(context),
-            activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-          ),
-        ),
-        BlocProvider<NotificationBloc>(
-          create: (context) => NotificationBloc(
-            selectedNotificationStream: GetIt.I<NotificationStreamGetter>()(),
-            activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-          ),
-        ),
-        BlocProvider<CalendarViewBloc>(
-          create: (context) => CalendarViewBloc(),
-        ),
-      ],
-      child: child,
+      ),
     );
   }
 }

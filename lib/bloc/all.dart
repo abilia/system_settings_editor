@@ -17,3 +17,4 @@ export 'bloc_delegate.dart';
 export 'calendar_view/bloc.dart';
 export 'sortable/bloc.dart';
 export 'user_file/bloc.dart';
+export 'authenticated_blocs_provider.dart';
