@@ -103,8 +103,8 @@ class ActivityCard extends StatelessWidget {
                                               .translate
                                               .fullDay
                                           : activity.hasEndTime
-                                              ? '${timeFormat.format(activity.start)} - ${timeFormat.format(activity.end)}'
-                                              : '${timeFormat.format(activity.start)}',
+                                              ? '${timeFormat.format(activity.startTime)} - ${timeFormat.format(activity.end)}'
+                                              : '${timeFormat.format(activity.startTime)}',
                                       style: theme.textTheme.body2.copyWith(
                                         color: AbiliaColors.black[75],
                                         height: 1.4,

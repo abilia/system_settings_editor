@@ -106,7 +106,7 @@ void main() {
 
     final activityExpectedToBeSaved = activityAsFullDay.copyWith(
       alarmType: NO_ALARM,
-      startTime: activity.start.onlyDays(),
+      startTime: activity.startTime.onlyDays(),
       duration: 1.days() - 1.milliseconds(),
       reminderBefore: [],
     );
@@ -124,7 +124,7 @@ void main() {
         StoredActivityState(activity, aDay),
         StoredActivityState(activityAsFullDay, aDay),
         StoredActivityState(activityExpectedToBeSaved,
-            activityExpectedToBeSaved.start.onlyDays()),
+            activityExpectedToBeSaved.startTime.onlyDays()),
       ]),
     );
   });

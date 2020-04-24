@@ -82,7 +82,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     if (this.activity == activity) return;
     if (activity.fullDay) {
       activity = activity.copyWith(
-        startTime: activity.start.onlyDays(),
+        startTime: activity.startTime.onlyDays(),
         duration: 1.days() - 1.milliseconds(),
         alarmType: NO_ALARM,
         reminderBefore: [],
@@ -98,11 +98,11 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       activitiesBloc.add(UpdateActivity(activity));
     }
     yield StoredActivityState(activity,
-        state is StoredActivityState ? state.day : activity.start.onlyDays());
+        state is StoredActivityState ? state.day : activity.startTime.onlyDays());
   }
 
   Stream<EditActivityState> _mapChangeDateToState(ChangeDate event) async* {
-    final oldStartDate = state.activity.start;
+    final oldStartDate = state.activity.startTime;
     final newStartDate = event.date
         .copyWith(hour: oldStartDate.hour, minute: oldStartDate.minute)
         .onlyMinutes();
@@ -114,7 +114,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   Stream<EditActivityState> _mapChangeStartTimeToState(
       ChangeStartTime event) async* {
     final a = state.activity;
-    final newStartTime = a.start.copyWith(
+    final newStartTime = a.startTime.copyWith(
       hour: event.time.hour,
       minute: event.time.minute,
     );
@@ -126,7 +126,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   Stream<EditActivityState> _mapChangeEndTimeToState(
       ChangeEndTime event) async* {
     final activity = state.activity;
-    final startTime = activity.start;
+    final startTime = activity.startTime;
     final newEndTime = event.time;
 
     final pickedEndTimeBeforeStartTime = newEndTime.hour < startTime.hour ||

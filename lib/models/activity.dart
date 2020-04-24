@@ -10,9 +10,7 @@ class Activity extends DataModel {
   DateTime endClock(DateTime day) => startClock(day).add(duration);
   DateTime startClock(DateTime day) =>
       DateTime(day.year, day.month, day.day, startTime.hour, startTime.minute);
-  DateTime get start => startTime;
   DateTime get end => startTime.add(duration);
-  DateTime get recurringEnd => endTime;
   bool get hasEndTime => duration.inMinutes > 0;
   RecurrentType get recurrance =>
       RecurrentType.values[recurrentType] ?? RecurrentType.none;

@@ -327,7 +327,8 @@ void main() {
       final got = manyTomorrow.followedBy(manyToday).alarmsFrom(now, take: 50);
 
       expect(got, hasLength(50));
-      expect(got.any((a) => a.activity.start.isAtSameDay(tomorrow)), isFalse);
+      expect(
+          got.any((a) => a.activity.startTime.isAtSameDay(tomorrow)), isFalse);
     });
 
     test('returns reminders and start end time', () {

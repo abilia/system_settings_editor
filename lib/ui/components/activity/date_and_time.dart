@@ -24,7 +24,7 @@ class DateAndTimeWidget extends StatelessWidget {
         children: <Widget>[
           SubHeading(translator.date),
           DatePicker(
-            activity.start,
+            activity.startTime,
           ),
           SizedBox(height: 12),
           CollapsableWidget(
@@ -125,13 +125,13 @@ class TimeIntervallPicker extends StatelessWidget {
           flex: 148,
           child: TimePicker(
             translator.startTime,
-            activity.start,
+            activity.startTime,
             key: TestKey.startTimePicker,
             onTap: () async {
               final newStartTime = await showViewDialog<TimeOfDay>(
                 context: context,
                 builder: (context) =>
-                    StartTimeInputDialog(time: activity.start),
+                    StartTimeInputDialog(time: activity.startTime),
               );
               if (newStartTime != null) {
                 BlocProvider.of<EditActivityBloc>(context)
@@ -162,7 +162,7 @@ class TimeIntervallPicker extends StatelessWidget {
                 context: context,
                 builder: (context) => EndTimeInputDialog(
                   time: activity.end,
-                  startTime: activity.start,
+                  startTime: activity.startTime,
                 ),
               );
               if (newEndTime != null) {

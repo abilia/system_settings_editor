@@ -8,7 +8,8 @@ extension DateTimeExtensions on DateTime {
 
   DateTime nextDay() => copyWith(day: day + 1);
   DateTime previousDay() => copyWith(day: day - 1);
-  DateTime justBefore() => this.subtract(const Duration(milliseconds: 1));
+  DateTime millisecondBefore() =>
+      DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch - 1);
 
   DateTime nextHalfHour() => DateTime(
       year, month, day, minute >= 30 ? hour + 1 : hour, minute >= 30 ? 0 : 30);

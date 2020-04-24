@@ -30,7 +30,7 @@ class ActivityTimepillarCard extends StatelessWidget {
         activity.duration.inDots(minutesPerDot, roundingMinute);
     final double height = dots * dotDistance,
         topOffset = timeToPixelDistanceHour(
-            activity.start.roundToMinute(minutesPerDot, roundingMinute));
+            activity.startTime.roundToMinute(minutesPerDot, roundingMinute));
 
     return Positioned(
       right: right ? null : 0.0,

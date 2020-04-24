@@ -6,7 +6,7 @@ abstract class EditActivityState extends Equatable {
   final File newImage;
   bool get canSave =>
       activity.title?.isNotEmpty == true ||
-      activity.fileId?.isNotEmpty == true && activity.start != null;
+      activity.fileId?.isNotEmpty == true && activity.startTime != null;
   @override
   List<Object> get props => [activity, newImage];
   EditActivityState copyWith(Activity activity, [File newImage]);

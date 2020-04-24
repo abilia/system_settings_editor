@@ -51,11 +51,11 @@ class Recurs {
 extension RecurringActivityExtension on Activity {
   bool shouldShowForDay(DateTime day) {
     if (!isRecurring) {
-      return day.isAtSameDay(start);
+      return day.isAtSameDay(startTime);
     }
 
     if (!day.onOrBetween(
-        startDate: start.onlyDays(), endDate: recurringEnd.onlyDays())) {
+        startDate: startTime.onlyDays(), endDate: endTime.onlyDays())) {
       return false;
     }
 
