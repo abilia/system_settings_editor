@@ -18,7 +18,8 @@ class Recurs {
       ODD_SATURDAY = 0x1000,
       ODD_SUNDAY = 0x2000;
 
-  static const NO_END = 253402297199000;
+  static final DateTime NO_END =
+      DateTime.fromMillisecondsSinceEpoch(253402297199000);
 
   static int onDayOfMonth(int dayOfMonth) => 1 << (dayOfMonth - 1);
   static int onDaysOfMonth(List<int> daysOfMonth) =>

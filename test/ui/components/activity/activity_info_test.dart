@@ -62,9 +62,7 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: 'title',
-      startTime: startTime.millisecondsSinceEpoch,
-      duration: 0,
-      category: 0,
+      startTime: startTime,
       reminderBefore: [],
     );
 
@@ -89,9 +87,7 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: 'title',
-      startTime: startTime.millisecondsSinceEpoch,
-      duration: 0,
-      category: 0,
+      startTime: startTime,
       checkable: true,
       reminderBefore: [],
     );
@@ -116,9 +112,7 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: 'title',
-      startTime: startTime.millisecondsSinceEpoch,
-      duration: 0,
-      category: 0,
+      startTime: startTime,
       checkable: true,
       reminderBefore: [],
       signedOffDates: [day],
@@ -141,8 +135,7 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: 'title',
-      startTime: startTime.millisecondsSinceEpoch,
-      duration: 0,
+      startTime: startTime,
       category: 0,
       checkable: true,
       reminderBefore: [],
@@ -163,8 +156,7 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: 'title',
-      startTime: startTime.millisecondsSinceEpoch,
-      duration: 0,
+      startTime: startTime,
       category: 0,
       reminderBefore: [],
       infoItem: 'some info item',
@@ -187,8 +179,7 @@ void main() {
     final title = 'thefirsttitls';
     final activity = Activity.createNew(
       title: title,
-      startTime: startTime.millisecondsSinceEpoch,
-      duration: 0,
+      startTime: startTime,
       category: 0,
       reminderBefore: [],
       fullDay: true,
@@ -211,8 +202,7 @@ void main() {
     final title = 'thefirsttitls';
     final activity = Activity.createNew(
       title: title,
-      startTime: startTime.millisecondsSinceEpoch,
-      duration: 0,
+      startTime: startTime,
       category: 0,
       checkable: true,
       reminderBefore: [],
@@ -236,8 +226,7 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: 'title',
-      startTime: startTime.millisecondsSinceEpoch,
-      duration: 0,
+      startTime: startTime,
       category: 0,
       checkable: true,
       reminderBefore: [],
@@ -262,8 +251,7 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: null,
-      startTime: startTime.millisecondsSinceEpoch,
-      duration: 0,
+      startTime: startTime,
       category: 0,
       checkable: true,
       reminderBefore: [],
@@ -286,8 +274,7 @@ void main() {
   testWidgets('Note attachment is present', (WidgetTester tester) async {
     final activity = Activity.createNew(
       title: null,
-      startTime: startTime.millisecondsSinceEpoch,
-      duration: 0,
+      startTime: startTime,
       category: 0,
       checkable: true,
       reminderBefore: [],

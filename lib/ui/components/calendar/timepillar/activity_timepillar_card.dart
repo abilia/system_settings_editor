@@ -27,7 +27,7 @@ class ActivityTimepillarCard extends StatelessWidget {
         current = activityOccasion.occasion == Occasion.current,
         inactive = activityOccasion.occasion == Occasion.past || signedOff;
     final int dots =
-        activity.duration.milliseconds().inDots(minutesPerDot, roundingMinute);
+        activity.duration.inDots(minutesPerDot, roundingMinute);
     final double height = dots * dotDistance,
         topOffset = timeToPixelDistanceHour(
             activity.start.roundToMinute(minutesPerDot, roundingMinute));

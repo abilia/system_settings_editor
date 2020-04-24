@@ -15,8 +15,7 @@ void main() {
 
   test('Initial state is the given activity', () {
     // Arrange
-    final activity =
-        Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
+    final activity = Activity.createNew(title: '', startTime: aTime);
     EditActivityBloc editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
     // Act // Assert
@@ -28,7 +27,7 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: '',
-      startTime: aTime.nextHalfHour().millisecondsSinceEpoch,
+      startTime: aTime.nextHalfHour(),
       timezone: aTime.timeZoneName,
     );
     EditActivityBloc editActivityBloc =
@@ -41,7 +40,7 @@ void main() {
   test('Initial state with no title is not saveable', () {
     // Arrange
     final activity =
-        Activity.createNew(title: '', startTime: aTime.millisecondsSinceEpoch);
+        Activity.createNew(title: '', startTime: aTime);
     EditActivityBloc editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
     // Act // Assert
@@ -95,8 +94,8 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: 'a title',
-      startTime: aTime.millisecondsSinceEpoch,
-      duration: 5.hours().inMilliseconds,
+      startTime: aTime,
+      duration: 5.hours(),
       reminderBefore: [10.minutes().inMilliseconds, 1.hours().inMilliseconds],
       alarmType: ALARM_SOUND_AND_VIBRATION,
     );
@@ -107,8 +106,8 @@ void main() {
 
     final activityExpectedToBeSaved = activityAsFullDay.copyWith(
       alarmType: NO_ALARM,
-      startTime: activity.start.onlyDays().millisecondsSinceEpoch,
-      duration: 1.days().inMilliseconds - 1,
+      startTime: activity.start.onlyDays(),
+      duration: 1.days() - 1.milliseconds(),
       reminderBefore: [],
     );
 
@@ -140,7 +139,7 @@ void main() {
     final newDate = DateTime(2011, 11, 11, 11, 11, 11, 11, 11);
     final expetedNewDate = DateTime(2011, 11, 11, 22, 30);
     final expetedNewActivity =
-        activity.copyWith(startTime: expetedNewDate.millisecondsSinceEpoch);
+        activity.copyWith(startTime: expetedNewDate);
 
     // Act
     editActivityBloc.add(ChangeDate(newDate));
@@ -162,14 +161,14 @@ void main() {
 
     final activity = Activity.createNew(
       title: '',
-      startTime: aDate.millisecondsSinceEpoch,
-      duration: 30.minutes().inMilliseconds,
+      startTime: aDate,
+      duration: 30.minutes(),
     );
     final newStartTime = TimeOfDay(hour: 11, minute: 11);
     final expetedNewDate = DateTime(2022, 02, 22, 11, 11);
 
     final expetedNewActivity =
-        activity.copyWith(startTime: expetedNewDate.millisecondsSinceEpoch);
+        activity.copyWith(startTime: expetedNewDate);
 
     EditActivityBloc editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: day);
@@ -194,14 +193,14 @@ void main() {
 
     final activity = Activity.createNew(
       title: '',
-      startTime: aDate.millisecondsSinceEpoch,
-      duration: 30.minutes().inMilliseconds,
+      startTime: aDate,
+      duration: 30.minutes(),
     );
     final newEndTime = TimeOfDay(hour: 11, minute: 11);
     final expectedDuration = Duration(hours: 10, minutes: 10);
 
     final expetedNewActivity =
-        activity.copyWith(duration: expectedDuration.inMilliseconds);
+        activity.copyWith(duration: expectedDuration);
 
     EditActivityBloc editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
@@ -227,15 +226,15 @@ void main() {
 
     final activity = Activity.createNew(
       title: '',
-      startTime: aDate.millisecondsSinceEpoch,
-      duration: 30.minutes().inMilliseconds,
+      startTime: aDate,
+      duration: 30.minutes(),
     );
     final newEndTime = TimeOfDay(hour: 20, minute: 00);
 
     final expectedDuration = Duration(hours: 23, minutes: 30);
 
     final expetedNewActivity =
-        activity.copyWith(duration: expectedDuration.inMilliseconds);
+        activity.copyWith(duration: expectedDuration);
 
     EditActivityBloc editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
@@ -260,8 +259,8 @@ void main() {
 
     final activity = Activity.createNew(
       title: '',
-      startTime: aDate.millisecondsSinceEpoch,
-      duration: 30.minutes().inMilliseconds,
+      startTime: aDate,
+      duration: 30.minutes(),
     );
     final min15Reminder = 15.minutes();
     final hour1Reminder = 1.hours();

@@ -222,11 +222,11 @@ void main() {
       final overlapping = FakeActivity.starts(fiveMinBefore).copyWith(
           title: 'Well hello there',
           alarmType: ALARM_SOUND_AND_VIBRATION,
-          duration: 1.hours().inMilliseconds);
+          duration: 1.hours());
       final later = FakeActivity.starts(in30).copyWith(
           title: 'Another one bites the dust',
-          duration: 0,
-          alarmType: ALARM_SOUND_AND_VIBRATION);
+          alarmType: ALARM_SOUND_AND_VIBRATION,
+          duration: 0.minutes());
       final activities = [overlapping, later];
 
       // Act
@@ -247,8 +247,7 @@ void main() {
     });
 
     test('one activity gives back one ativity', () {
-      final activity =
-          Activity.createNew(title: '', startTime: now.millisecondsSinceEpoch);
+      final activity = Activity.createNew(title: '', startTime: now);
       final got = <Activity>[activity].alarmsFrom(now, take: 100);
       expect(got, [NewAlarm(activity, now)]);
     });
@@ -274,7 +273,7 @@ void main() {
       final activity = Activity.createNew(
           title: 'null',
           alarmType: NO_ALARM,
-          startTime: now.add(5.minutes()).millisecondsSinceEpoch,
+          startTime: now.add(5.minutes()),
           reminderBefore: [5.minutes().inMilliseconds]);
       final got = <Activity>[activity].alarmsFrom(now);
       expect(got, [NewReminder(activity, now, reminder: 5.minutes())]);
@@ -289,7 +288,7 @@ void main() {
           .copyWith(alarmType: ALARM_SOUND_ONLY_ON_START);
       final normalActivity = Activity.createNew(
           title: 'THIS HAPPENS IN 20 days',
-          startTime: in50Days.millisecondsSinceEpoch,
+          startTime: in50Days,
           alarmType: ALARM_SOUND_AND_VIBRATION);
       final got = <Activity>[reoccuringActivity, normalActivity]
           .alarmsFrom(now, take: lenght);
@@ -304,7 +303,7 @@ void main() {
       final reminderActivity = Activity.createNew(
           title: 'has a reminder',
           alarmType: NO_ALARM,
-          startTime: tomorrow.millisecondsSinceEpoch,
+          startTime: tomorrow,
           reminderBefore: [reminder.inMilliseconds]);
 
       final got = <Activity>[
@@ -319,13 +318,11 @@ void main() {
       final manyToday = Iterable.generate(
           70,
           (i) => Activity.createNew(
-              title: 'has a reminder',
-              startTime: now.add(i.minutes()).millisecondsSinceEpoch));
+              title: 'has a reminder', startTime: now.add(i.minutes())));
       final manyTomorrow = Iterable.generate(
           70,
           (i) => Activity.createNew(
-              title: 'has a reminder',
-              startTime: tomorrow.add(i.minutes()).millisecondsSinceEpoch));
+              title: 'has a reminder', startTime: tomorrow.add(i.minutes())));
 
       final got = manyTomorrow.followedBy(manyToday).alarmsFrom(now, take: 50);
 

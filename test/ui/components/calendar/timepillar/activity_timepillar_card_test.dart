@@ -9,8 +9,8 @@ import 'package:seagull/utils/all.dart';
 
 void main() {
   final title = 'title';
-  final time = DateTime(1987, 05, 22, 04, 04);
-  final startTime = time.millisecondsSinceEpoch;
+  final startTime = DateTime(1987, 05, 22, 04, 04);
+
   StreamController<DateTime> streamController;
   Stream<DateTime> stream;
 
@@ -25,7 +25,7 @@ void main() {
       textDirection: TextDirection.ltr,
       child: BlocProvider(
         create: (context) =>
-            ClockBloc(stream, initialTime: initialTime ?? time),
+            ClockBloc(stream, initialTime: initialTime ?? startTime),
         child: Stack(
           children: activities
               .map<Widget>(
@@ -65,7 +65,7 @@ void main() {
         time.add(7.minutes()),
       ]
           .map((st) => Activity.createNew(
-              title: st.toString(), startTime: st.millisecondsSinceEpoch))
+              title: st.toString(), startTime: st))
           .toList();
 
       await tester.pumpWidget(multiWrap(activities, initialTime: time));
@@ -90,7 +90,7 @@ void main() {
         time.add(8.minutes()),
       ]
           .map((st) => Activity.createNew(
-              title: st.toString(), startTime: st.millisecondsSinceEpoch))
+              title: st.toString(), startTime: st))
           .toList();
 
       await tester.pumpWidget(multiWrap(activities));
@@ -126,7 +126,7 @@ void main() {
           Activity.createNew(
             title: title,
             startTime: startTime,
-            duration: 7.minutes().inMilliseconds,
+            duration: 7.minutes(),
           ),
         ),
       );
@@ -138,7 +138,7 @@ void main() {
           Activity.createNew(
             title: title,
             startTime: startTime,
-            duration: 8.minutes().inMilliseconds,
+            duration: 8.minutes(),
           ),
         ),
       );
@@ -150,7 +150,7 @@ void main() {
           Activity.createNew(
             title: title,
             startTime: startTime,
-            duration: 22.minutes().inMilliseconds,
+            duration: 22.minutes(),
           ),
         ),
       );
@@ -162,7 +162,7 @@ void main() {
           Activity.createNew(
             title: title,
             startTime: startTime,
-            duration: 23.minutes().inMilliseconds,
+            duration: 23.minutes(),
           ),
         ),
       );
@@ -173,8 +173,8 @@ void main() {
         wrap(
           Activity.createNew(
             title: title,
-            startTime: time.subtract(30.minutes()).millisecondsSinceEpoch,
-            duration: 60.minutes().inMilliseconds,
+            startTime: startTime.subtract(30.minutes()),
+            duration: 60.minutes(),
           ),
         ),
       );

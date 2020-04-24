@@ -24,7 +24,7 @@ mixin EditRecurringMixin {
         .toSet(); // Should change endDate
     final deleted = startsOnOrAfter.map((a) => a.copyWith(deleted: true));
     final newEndTime = startBeforeEndsNotBefore
-        .map((a) => a.copyWith(endTime: day.millisecondsSinceEpoch - 1));
+        .map((a) => a.copyWith(endTime: day.justBefore()));
 
     final shouldSave = deleted.followedBy(newEndTime);
     final allShouldChanged = startsOnOrAfter.union(startBeforeEndsNotBefore);
@@ -45,26 +45,18 @@ mixin EditRecurringMixin {
       return ActivityMappingResult(save, activities);
     } else if (isFirstDay) {
       final newActivityStartTime = activity.copyWith(
-          startTime: day
-              .nextDay()
-              .copyWith(
-                  hour: activity.start.hour, minute: activity.start.minute)
-              .millisecondsSinceEpoch);
+          startTime: day.nextDay().copyWith(
+              hour: activity.start.hour, minute: activity.start.minute));
       return _updateActivityToResult(newActivityStartTime, activities);
     } else if (isLastDay) {
-      final newEndTime =
-          activity.copyWith(endTime: day.millisecondsSinceEpoch - 1);
+      final newEndTime = activity.copyWith(endTime: day.justBefore());
       return _updateActivityToResult(newEndTime, activities);
     } else {
-      final newEndTime =
-          activity.copyWith(endTime: day.millisecondsSinceEpoch - 1);
+      final newEndTime = activity.copyWith(endTime: day.justBefore());
       final newActivityStartTime = activity.copyWith(
           newId: true,
-          startTime: day
-              .nextDay()
-              .copyWith(
-                  hour: activity.start.hour, minute: activity.start.minute)
-              .millisecondsSinceEpoch);
+          startTime: day.nextDay().copyWith(
+              hour: activity.start.hour, minute: activity.start.minute));
       return _updateActivityToResult(newEndTime, activities,
           andAdd: [newActivityStartTime]);
     }
@@ -85,12 +77,11 @@ mixin EditRecurringMixin {
         .toSet(); // Should be split
 
     final activityBeforeSplit = overlappingInSeries
-        .map((a) =>
-            a.copyWith(endTime: newStart.onlyDays().millisecondsSinceEpoch - 1))
+        .map((a) => a.copyWith(endTime: newStart.onlyDays().justBefore()))
         .toSet();
 
-    final activityAfterDateSplit = overlappingInSeries.map((a) =>
-        a.copyWith(newId: true, startTime: newStart.millisecondsSinceEpoch));
+    final activityAfterDateSplit = overlappingInSeries
+        .map((a) => a.copyWith(newId: true, startTime: newStart));
 
     final startDayIsOnOrAfter = series
         .where((a) => !a.start.isDayBefore(newStart))
@@ -116,9 +107,10 @@ mixin EditRecurringMixin {
     @required DateTime day,
   }) {
     final onlyDayActivity = activity.copyWith(
-        recurrentType: 0,
-        recurrentData: 0,
-        endTime: activity.startTime + activity.duration);
+      recurrentType: 0,
+      recurrentData: 0,
+      endTime: activity.startTime.add(activity.duration),
+    );
 
     final oldActivity = activities.firstWhere((a) => a.id == activity.id);
 
@@ -130,14 +122,14 @@ mixin EditRecurringMixin {
       newActivities.add(
         oldActivity.copyWith(
           newId: true,
-          startTime: oldActivity.start.nextDay().millisecondsSinceEpoch,
+          startTime: oldActivity.start.nextDay(),
         ),
       );
     } else if (atLastDay && !atFirstDay) {
       newActivities.add(
         oldActivity.copyWith(
           newId: true,
-          endTime: day.millisecondsSinceEpoch - 1,
+          endTime: day.justBefore(),
         ),
       );
     } else if (!atFirstDay && !atLastDay) {
@@ -145,16 +137,12 @@ mixin EditRecurringMixin {
         [
           oldActivity.copyWith(
             newId: true,
-            endTime: day.millisecondsSinceEpoch - 1,
+            endTime: day.justBefore(),
           ),
           oldActivity.copyWith(
             newId: true,
-            startTime: day
-                .nextDay()
-                .copyWith(
-                    hour: oldActivity.start.hour,
-                    minute: oldActivity.start.minute)
-                .millisecondsSinceEpoch,
+            startTime: day.nextDay().copyWith(
+                hour: oldActivity.start.hour, minute: oldActivity.start.minute),
           ),
         ],
       );

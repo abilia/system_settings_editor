@@ -149,7 +149,7 @@ void main() {
     test('Should not accept reveresed spans ( bug SGC-148 )', () {
       // arrange
       DateTime startDay = DateTime(2020, 04, 01);
-      DateTime endDay = DateTime(2020, 04, 01).subtract(1.milliseconds());
+      DateTime endDay = DateTime(2020, 04, 01).justBefore();
       DateTime day = DateTime(2020, 04, 01);
       // act
       bool result = day.onOrBetween(

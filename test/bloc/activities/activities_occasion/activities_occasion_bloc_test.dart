@@ -624,7 +624,7 @@ void main() {
       final tomorrowActivity = FakeActivity.starts(in1Hour.add(1.days()))
           .copyWith(removeAfter: true);
       final everyDayFullDayRecurring = FakeActivity.fullday(longAgo).copyWith(
-        endTime: 253402297199000,
+        endTime: DateTime.fromMillisecondsSinceEpoch(253402297199000),
         removeAfter: true,
         recurrentType: RecurrentType.weekly.index,
         recurrentData: allWeekdays,

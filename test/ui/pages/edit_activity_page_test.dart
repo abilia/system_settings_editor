@@ -18,7 +18,7 @@ void main() {
   DateTime today = startTime.onlyDays();
   Activity startActivity = Activity.createNew(
     title: '',
-    startTime: startTime.millisecondsSinceEpoch,
+    startTime: startTime,
   );
   final translate = Translator(Locale('en')).translate;
 
@@ -396,8 +396,7 @@ void main() {
     testWidgets('Start time shows start time', (WidgetTester tester) async {
       // Arrange
       final acivity = Activity.createNew(
-          title: '',
-          startTime: DateTime(2000, 11, 22, 11, 55).millisecondsSinceEpoch);
+          title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
         wrapWithMaterialApp(
           EditActivityPage(day: today),
@@ -419,8 +418,7 @@ void main() {
     testWidgets('can change start time', (WidgetTester tester) async {
       // Arrange
       final acivity = Activity.createNew(
-          title: '',
-          startTime: DateTime(2000, 11, 22, 11, 55).millisecondsSinceEpoch);
+          title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
         wrapWithMaterialApp(
           EditActivityPage(day: today),
@@ -450,8 +448,8 @@ void main() {
       // Arrange
       final acivity = Activity.createNew(
           title: '',
-          startTime: DateTime(2000, 11, 22, 11, 55).millisecondsSinceEpoch,
-          duration: 3.hours().inMilliseconds);
+          startTime: DateTime(2000, 11, 22, 11, 55),
+          duration: 3.hours());
 
       await tester.pumpWidget(
         wrapWithMaterialApp(
@@ -482,8 +480,7 @@ void main() {
     testWidgets('can change am to pm', (WidgetTester tester) async {
       // Arrange
       final acivity = Activity.createNew(
-          title: '',
-          startTime: DateTime(2000, 11, 22, 11, 55).millisecondsSinceEpoch);
+          title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
         wrapWithMaterialApp(
           EditActivityPage(day: today),
@@ -519,8 +516,7 @@ void main() {
     testWidgets('can change pm to am', (WidgetTester tester) async {
       // Arrange
       final acivity = Activity.createNew(
-          title: '',
-          startTime: DateTime(2000, 11, 22, 12, 55).millisecondsSinceEpoch);
+          title: '', startTime: DateTime(2000, 11, 22, 12, 55));
       await tester.pumpWidget(
         wrapWithMaterialApp(
           EditActivityPage(day: today),
@@ -548,8 +544,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       final acivity = Activity.createNew(
-          title: '',
-          startTime: DateTime(2000, 11, 22, 3, 44).millisecondsSinceEpoch);
+          title: '', startTime: DateTime(2000, 11, 22, 3, 44));
       await tester.pumpWidget(
         wrapWithMaterialApp(
           EditActivityPage(day: today),
@@ -580,8 +575,7 @@ void main() {
       Intl.defaultLocale = 'sv_SE';
       addTearDown(() => Intl.defaultLocale = null);
       final acivity = Activity.createNew(
-          title: '',
-          startTime: DateTime(2000, 11, 22, 13, 44).millisecondsSinceEpoch);
+          title: '', startTime: DateTime(2000, 11, 22, 13, 44));
       await tester.pumpWidget(
         wrapWithMaterialApp(
           EditActivityPage(day: today),

@@ -7,14 +7,13 @@ import 'package:uuid/uuid.dart';
 
 class Activity extends DataModel {
   AlarmType get alarm => AlarmType.fromInt(alarmType);
-  DateTime endClock(DateTime day) =>
-      startClock(day).add(duration.milliseconds());
+  DateTime endClock(DateTime day) => startClock(day).add(duration);
   DateTime startClock(DateTime day) =>
-      DateTime(day.year, day.month, day.day, start.hour, start.minute);
-  DateTime get start => DateTime.fromMillisecondsSinceEpoch(startTime);
-  DateTime get end => DateTime.fromMillisecondsSinceEpoch(startTime + duration);
-  DateTime get recurringEnd => DateTime.fromMillisecondsSinceEpoch(endTime);
-  bool get hasEndTime => duration > 0;
+      DateTime(day.year, day.month, day.day, startTime.hour, startTime.minute);
+  DateTime get start => startTime;
+  DateTime get end => startTime.add(duration);
+  DateTime get recurringEnd => endTime;
+  bool get hasEndTime => duration.inMinutes > 0;
   RecurrentType get recurrance =>
       RecurrentType.values[recurrentType] ?? RecurrentType.none;
   bool get isRecurring => recurrance != RecurrentType.none;
@@ -30,13 +29,9 @@ class Activity extends DataModel {
           : signedOffDates.followedBy([day]));
 
   final String seriesId, title, fileId, icon, infoItem, timezone;
-  final int startTime,
-      endTime,
-      duration,
-      category,
-      alarmType,
-      recurrentType,
-      recurrentData;
+  final DateTime startTime, endTime;
+  final Duration duration;
+  final int category, alarmType, recurrentType, recurrentData;
   final bool deleted, fullDay, checkable, removeAfter, secret;
   final UnmodifiableListView<int> reminderBefore;
   final UnmodifiableListView<DateTime> signedOffDates;
@@ -66,9 +61,9 @@ class Activity extends DataModel {
         assert(seriesId != null),
         assert(recurrentType >= 0 && recurrentType < 4),
         assert(alarmType >= 0),
-        assert(startTime > 0),
-        assert(endTime > 0),
-        assert(duration >= 0),
+        assert(startTime != null),
+        assert(endTime != null),
+        assert(duration != null),
         assert(category >= 0),
         assert(deleted != null),
         assert(checkable != null),
@@ -82,10 +77,10 @@ class Activity extends DataModel {
 
   static Activity createNew({
     @required String title,
-    @required int startTime,
-    int duration = 0,
+    @required DateTime startTime,
+    Duration duration = Duration.zero,
     int category = Category.right,
-    int endTime,
+    DateTime endTime,
     int recurrentType = 0,
     int recurrentData = 0,
     bool fullDay = false,
@@ -105,7 +100,7 @@ class Activity extends DataModel {
       seriesId: id,
       title: title,
       startTime: startTime,
-      endTime: endTime ?? startTime + duration,
+      endTime: endTime ?? startTime.add(duration),
       duration: duration,
       fileId: _nullIfEmpty(fileId),
       icon: _nullIfEmpty(fileId),
@@ -135,9 +130,9 @@ class Activity extends DataModel {
   Activity copyWith({
     bool newId = false,
     String title,
-    int startTime,
-    int endTime,
-    int duration,
+    DateTime startTime,
+    DateTime endTime,
+    Duration duration,
     int category,
     Iterable<int> reminderBefore,
     String fileId,
@@ -185,9 +180,8 @@ class Activity extends DataModel {
 
   Activity copyActivity(Activity other) => copyWith(
         title: other.title,
-        startTime: start
-            .copyWith(hour: other.start.hour, minute: other.start.minute)
-            .millisecondsSinceEpoch,
+        startTime: this.startTime.copyWith(
+            hour: other.startTime.hour, minute: other.startTime.minute),
         duration: other.duration,
         category: other.category,
         checkable: other.checkable,
@@ -253,9 +247,9 @@ class DbActivity extends DbModel<Activity> {
           id: json['id'],
           seriesId: json['seriesId'],
           title: json['title'],
-          startTime: json['startTime'],
-          endTime: json['endTime'],
-          duration: json['duration'],
+          startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime']),
+          endTime: DateTime.fromMillisecondsSinceEpoch(json['endTime']),
+          duration: Duration(milliseconds: json['duration']),
           fileId: _nullIfEmpty(json['fileId']),
           icon: _nullIfEmpty(json['icon']),
           infoItem: _nullIfEmpty(json['infoItem']),
@@ -281,9 +275,9 @@ class DbActivity extends DbModel<Activity> {
           id: dbRow['id'],
           seriesId: dbRow['series_id'],
           title: dbRow['title'],
-          startTime: dbRow['start_time'],
-          endTime: dbRow['end_time'],
-          duration: dbRow['duration'],
+          startTime: DateTime.fromMillisecondsSinceEpoch(dbRow['start_time']),
+          endTime: DateTime.fromMillisecondsSinceEpoch(dbRow['end_time']),
+          duration: Duration(milliseconds: dbRow['duration']),
           fileId: _nullIfEmpty(dbRow['file_id']),
           icon: _nullIfEmpty(dbRow['icon']),
           infoItem: _nullIfEmpty(dbRow['info_item']),
@@ -308,9 +302,9 @@ class DbActivity extends DbModel<Activity> {
         'id': activity.id,
         'seriesId': activity.seriesId,
         'title': activity.title,
-        'startTime': activity.startTime,
-        'endTime': activity.endTime,
-        'duration': activity.duration,
+        'startTime': activity.startTime.millisecondsSinceEpoch,
+        'endTime': activity.endTime.millisecondsSinceEpoch,
+        'duration': activity.duration.inMilliseconds,
         'fileId': activity.fileId,
         'category': activity.category,
         'deleted': activity.deleted,
@@ -333,9 +327,9 @@ class DbActivity extends DbModel<Activity> {
         'id': activity.id,
         'series_id': activity.seriesId,
         'title': activity.title,
-        'start_time': activity.startTime,
-        'end_time': activity.endTime,
-        'duration': activity.duration,
+        'start_time': activity.startTime.millisecondsSinceEpoch,
+        'end_time': activity.endTime.millisecondsSinceEpoch,
+        'duration': activity.duration.inMilliseconds,
         'file_id': activity.fileId,
         'category': activity.category,
         'deleted': activity.deleted ? 1 : 0,
