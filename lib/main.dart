@@ -1,3 +1,4 @@
+import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -20,7 +21,8 @@ import 'storage/all.dart';
 void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   await initServices();
-  await LanguageDb().setLanguage(Locale.cachedLocale.languageCode);
+  final currentLocale = await Devicelocale.currentLocale;
+  await LanguageDb().setLanguage(currentLocale.split(RegExp('-|_'))[0]);
   final baseUrl = await BaseUrlDb().initialize(T1);
   runApp(App(baseUrl: baseUrl));
 }
