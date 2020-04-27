@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:seagull/alarm_listener.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
@@ -12,11 +13,10 @@ import 'package:seagull/db/language_db.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/background/all.dart';
-
-import 'storage/all.dart';
 
 void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -29,7 +29,6 @@ void main() async {
 
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ensureNotificationPluginInitialized();
   final documentDirectory = await getApplicationDocumentsDirectory();
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
@@ -66,39 +65,56 @@ class App extends StatelessWidget {
           create: (context) => pushBloc ?? PushBloc(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Seagull',
-        theme: abiliaTheme,
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: [
-          Translator.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
-        ],
-        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
-            .firstWhere((l) => l.languageCode == locale?.languageCode,
-                // English should be the first one and also the default.
-                orElse: () => supportedLocales.first),
-        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, state) {
-            if (state is AuthenticationUninitialized) {
-              return SplashPage();
-            }
-            if (state is Authenticated) {
-              return CalendarPage(authenticatedState: state);
-            }
-            if (state is Unauthenticated) {
-              return LoginPage(
-                userRepository: userRepository,
-                push: GetIt.I<FirebasePushService>(),
-              );
-            }
-            return Center(child: CircularProgressIndicator());
-          },
-        ),
+      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) {
+          if (state is Authenticated) {
+            return AuthenticatedBlocsProvider(
+              authenticatedState: state,
+              child: SeagullApp(
+                home: AlarmListener(child: CalendarPage()),
+              ),
+            );
+          }
+          return SeagullApp(
+            home: (state is Unauthenticated)
+                ? LoginPage(
+                    userRepository: userRepository,
+                    push: GetIt.I<FirebasePushService>(),
+                  )
+                : SplashPage(),
+          );
+        },
       ),
+    );
+  }
+}
+
+class SeagullApp extends StatelessWidget {
+  final Widget home;
+
+  const SeagullApp({
+    Key key,
+    @required this.home,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Seagull',
+      theme: abiliaTheme,
+      supportedLocales: Translator.supportedLocals,
+      localizationsDelegates: [
+        Translator.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+      ],
+      localeResolutionCallback: (locale, supportedLocales) => supportedLocales
+          .firstWhere((l) => l.languageCode == locale?.languageCode,
+              // English should be the first one and also the default.
+              orElse: () => supportedLocales.first),
+      home: home,
     );
   }
 }
