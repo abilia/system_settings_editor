@@ -8,6 +8,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
     print('Handling background message...');
     final baseUrl = await BaseUrlDb().getBaseUrl();
     final user = await UserDb().getUser();
+    final language = await LanguageDb().getLanguage();
     final token = await TokenDb().getToken();
     final activityDb = ActivityDb();
     final httpClient = Client();
@@ -18,7 +19,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
       userId: user.id,
       authToken: token,
     ).load();
-    await scheduleAlarmNotifications(activities, language: user.language);
+    await scheduleAlarmNotifications(activities, language: language);
 
     final sortableDb = SortableDb();
     await SortableRepository(
