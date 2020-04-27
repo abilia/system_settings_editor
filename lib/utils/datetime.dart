@@ -8,6 +8,8 @@ extension DateTimeExtensions on DateTime {
 
   DateTime nextDay() => copyWith(day: day + 1);
   DateTime previousDay() => copyWith(day: day - 1);
+  DateTime millisecondBefore() =>
+      DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch - 1);
 
   DateTime nextHalfHour() => DateTime(
       year, month, day, minute >= 30 ? hour + 1 : hour, minute >= 30 ? 0 : 30);
@@ -80,4 +82,9 @@ extension DateTimeExtensions on DateTime {
   Occasion occasion(DateTime now) => isAfter(now)
       ? Occasion.future
       : isBefore(now) ? Occasion.past : Occasion.current;
+}
+
+extension IntDateTimeExtensions on int {
+  DateTime fromMillisecondsSinceEpoch() =>
+      DateTime.fromMillisecondsSinceEpoch(this);
 }

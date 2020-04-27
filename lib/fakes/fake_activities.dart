@@ -27,8 +27,8 @@ class FakeActivities {
       for (int i = 0; i < minutes; i++)
         Activity.createNew(
             title: 'Minute $i',
-            startTime: when.add(Duration(minutes: i)).millisecondsSinceEpoch,
-            duration: Duration(minutes: 1).inMilliseconds,
+            startTime: when.add(Duration(minutes: i)),
+            duration: Duration(minutes: 1),
             fileId: i % 3 == 0 ? 'fileId' : null,
             alarmType: ALARM_SILENT),
     ];
@@ -42,8 +42,8 @@ class FakeActivities {
         Activity.createNew(
             title: 'fullDay $i',
             fullDay: true,
-            startTime: when.add(Duration(days: i)).millisecondsSinceEpoch,
-            duration: Duration(minutes: 5).inMilliseconds,
+            startTime: when.add(Duration(days: i)),
+            duration: Duration(minutes: 5),
             fileId: i % 3 == 0 ? 'fileId' : null,
             alarmType: ALARM_SILENT),
     ];
@@ -56,9 +56,8 @@ class FakeActivities {
       for (int i = 0; i < minutes; i++)
         Activity.createNew(
             title: 'past $i',
-            startTime:
-                when.subtract(Duration(minutes: i)).millisecondsSinceEpoch,
-            duration: Duration(minutes: 15).inMilliseconds,
+            startTime: when.subtract(Duration(minutes: i)),
+            duration: Duration(minutes: 15),
             alarmType: ALARM_SILENT),
     ];
   }
@@ -78,8 +77,8 @@ class FakeActivity {
   }) =>
       Activity.createNew(
           title: title,
-          startTime: when.millisecondsSinceEpoch,
-          duration: duration.inMilliseconds,
+          startTime: when,
+          duration: duration,
           alarmType: ALARM_SILENT);
 
   static Activity ends(
@@ -89,8 +88,8 @@ class FakeActivity {
   }) =>
       Activity.createNew(
           title: title,
-          startTime: when.subtract(duration).millisecondsSinceEpoch,
-          duration: duration.inMilliseconds,
+          startTime: when.subtract(duration),
+          duration: duration,
           alarmType: ALARM_SILENT);
 
   static Activity reocurrsEveryDay([DateTime startDate]) =>
@@ -140,10 +139,9 @@ class FakeActivity {
   }) =>
       Activity.createNew(
           title: title,
-          startTime:
-              (startTime ?? _now.subtract(366.days())).millisecondsSinceEpoch,
-          endTime: endTime?.millisecondsSinceEpoch ?? Recurs.NO_END,
-          duration: Duration(hours: 1).inMilliseconds,
+          startTime: (startTime ?? _now.subtract(366.days())),
+          endTime: endTime ?? Recurs.NO_END,
+          duration: Duration(hours: 1),
           recurrentType: recurrentType.index,
           recurrentData: recurrrentData,
           alarmType: ALARM_SILENT);
@@ -151,8 +149,8 @@ class FakeActivity {
   static Activity fullday(DateTime when, [String title = 'fullday']) =>
       Activity.createNew(
           title: title,
-          startTime: when.onlyDays().millisecondsSinceEpoch,
-          duration: Duration(days: 1).inMilliseconds - 1,
+          startTime: when.onlyDays(),
+          duration: 1.days() - 1.milliseconds(),
           fullDay: true,
           reminderBefore: [60 * 60 * 1000],
           alarmType: NO_ALARM);

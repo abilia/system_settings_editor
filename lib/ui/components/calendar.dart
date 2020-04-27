@@ -42,6 +42,7 @@ class _CalendarState extends State<Calendar> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+  
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {

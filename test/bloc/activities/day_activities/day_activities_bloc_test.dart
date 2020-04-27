@@ -43,8 +43,7 @@ void main() {
     test('initial state is DayActivitiesLoaded if started with loaded activity',
         () async {
       // Arrange
-      when(mockActivityRepository.load())
-          .thenAnswer((_) => Future.value([]));
+      when(mockActivityRepository.load()).thenAnswer((_) => Future.value([]));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -380,16 +379,13 @@ void main() {
     test('Split up activity shows on day it was split up on ( bug test )',
         () async {
       // Arrange
-      int preSplitStartTime = 1573513200000,
-          preSplitEndTime = 1574377199999,
-          splitStartTime = 1574380800000,
-          splitEndTime = 253402297199000;
-      final preSplitEndDate =
-          DateTime.fromMillisecondsSinceEpoch(preSplitEndTime);
-      final splitStartDate =
-          DateTime.fromMillisecondsSinceEpoch(splitStartTime);
-      final dayBeforeSplit = preSplitEndDate.onlyDays();
-      final dayOnSplit = splitStartDate.onlyDays();
+      DateTime preSplitStartTime = 1573513200000.fromMillisecondsSinceEpoch(),
+          preSplitEndTime = 1574377199999.fromMillisecondsSinceEpoch(),
+          splitStartTime = 1574380800000.fromMillisecondsSinceEpoch(),
+          splitEndTime = 253402297199000.fromMillisecondsSinceEpoch();
+
+      final dayBeforeSplit = preSplitEndTime.onlyDays();
+      final dayOnSplit = splitStartTime.onlyDays();
 
       final preSplitRecurring = Activity.createNew(
         title: 'Pre Split Recurring',
@@ -397,7 +393,7 @@ void main() {
         recurrentType: 1,
         recurrentData: 16383,
         alarmType: 104,
-        duration: 86399999,
+        duration: 86399999.milliseconds(),
         category: 0,
         startTime: preSplitStartTime,
         endTime: preSplitEndTime,
@@ -410,7 +406,7 @@ void main() {
         recurrentType: 1,
         recurrentData: 16383,
         alarmType: 104,
-        duration: 86399999,
+        duration: 86399999.milliseconds(),
         category: 0,
         startTime: splitStartTime,
         endTime: splitEndTime,

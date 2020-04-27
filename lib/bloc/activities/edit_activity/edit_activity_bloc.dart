@@ -25,12 +25,11 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
         activity = activity == null
             ? Activity.createNew(
                 title: '',
-                startTime: now.nextHalfHour().millisecondsSinceEpoch,
+                startTime: now.nextHalfHour(),
                 timezone: now.timeZoneName,
               )
             : activity.isRecurring
-                ? activity.copyWith(
-                    startTime: activity.startClock(day).millisecondsSinceEpoch)
+                ? activity.copyWith(startTime: activity.startClock(day))
                 : activity;
   @override
   EditActivityState get initialState => day == null
@@ -83,8 +82,8 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     if (this.activity == activity) return;
     if (activity.fullDay) {
       activity = activity.copyWith(
-        startTime: activity.start.onlyDays().millisecondsSinceEpoch,
-        duration: 1.days().inMilliseconds - 1,
+        startTime: activity.startTime.onlyDays(),
+        duration: 1.days() - 1.milliseconds(),
         alarmType: NO_ALARM,
         reminderBefore: [],
       );
@@ -99,28 +98,26 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       activitiesBloc.add(UpdateActivity(activity));
     }
     yield StoredActivityState(activity,
-        state is StoredActivityState ? state.day : activity.start.onlyDays());
+        state is StoredActivityState ? state.day : activity.startTime.onlyDays());
   }
 
   Stream<EditActivityState> _mapChangeDateToState(ChangeDate event) async* {
-    final oldStartDate = state.activity.start;
+    final oldStartDate = state.activity.startTime;
     final newStartDate = event.date
         .copyWith(hour: oldStartDate.hour, minute: oldStartDate.minute)
         .onlyMinutes();
     yield state.copyWith(state.activity.copyWith(
-      startTime: newStartDate.millisecondsSinceEpoch,
+      startTime: newStartDate,
     ));
   }
 
   Stream<EditActivityState> _mapChangeStartTimeToState(
       ChangeStartTime event) async* {
     final a = state.activity;
-    final newStartTime = a.start
-        .copyWith(
-          hour: event.time.hour,
-          minute: event.time.minute,
-        )
-        .millisecondsSinceEpoch;
+    final newStartTime = a.startTime.copyWith(
+      hour: event.time.hour,
+      minute: event.time.minute,
+    );
     yield state.copyWith(a.copyWith(
       startTime: newStartTime,
     ));
@@ -129,7 +126,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   Stream<EditActivityState> _mapChangeEndTimeToState(
       ChangeEndTime event) async* {
     final activity = state.activity;
-    final startTime = activity.start;
+    final startTime = activity.startTime;
     final newEndTime = event.time;
 
     final pickedEndTimeBeforeStartTime = newEndTime.hour < startTime.hour ||
@@ -149,7 +146,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
           );
 
     yield state.copyWith(
-      activity.copyWith(duration: newDuration.inMilliseconds),
+      activity.copyWith(duration: newDuration),
       state.newImage,
     );
   }

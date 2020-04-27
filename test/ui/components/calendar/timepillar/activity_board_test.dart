@@ -9,8 +9,8 @@ import 'package:seagull/utils/all.dart';
 
 void main() {
   final title = 'title';
-  final time = DateTime(1987, 05, 22, 04, 04);
-  final startTime = time.millisecondsSinceEpoch;
+  final startTime = DateTime(1987, 05, 22, 04, 04);
+
   StreamController<DateTime> streamController;
   Stream<DateTime> stream;
 
@@ -25,7 +25,7 @@ void main() {
       textDirection: TextDirection.ltr,
       child: BlocProvider(
         create: (context) =>
-            ClockBloc(stream, initialTime: initialTime ?? time),
+            ClockBloc(stream, initialTime: initialTime ?? startTime),
         child: Stack(
           children: <Widget>[
             Timeline(width: 40),
@@ -68,7 +68,9 @@ void main() {
           .map(
             (st) => ActivityOccasion.forTest(
               Activity.createNew(
-                  title: st.toString(), startTime: st.millisecondsSinceEpoch),
+                title: st.toString(),
+                startTime: st,
+              ),
             ),
           )
           .toList();
@@ -98,7 +100,7 @@ void main() {
             (st) => ActivityOccasion.forTest(
               Activity.createNew(
                 title: st.toString(),
-                startTime: st.millisecondsSinceEpoch,
+                startTime: st,
               ),
             ),
           )
@@ -126,7 +128,7 @@ void main() {
           Activity.createNew(
             title: 'activity $i',
             startTime: startTime,
-            duration: ((i * 10) % 60).minutes().inMilliseconds,
+            duration: ((i * 10) % 60).minutes(),
           ),
         ),
       );
@@ -146,8 +148,7 @@ void main() {
         (i) => ActivityOccasion.forTest(
           Activity.createNew(
             title: 'activity $i',
-            startTime:
-                DateTime(2020, 04, 23).add(i.minutes()).millisecondsSinceEpoch,
+            startTime: DateTime(2020, 04, 23).add(i.minutes()),
           ),
         ),
       );
@@ -179,7 +180,7 @@ void main() {
             Activity.createNew(
               title: title,
               startTime: startTime,
-              duration: 7.minutes().inMilliseconds,
+              duration: 7.minutes(),
             ),
           ),
         ),
@@ -193,7 +194,7 @@ void main() {
             Activity.createNew(
               title: title,
               startTime: startTime,
-              duration: 8.minutes().inMilliseconds,
+              duration: 8.minutes(),
             ),
           ),
         ),
@@ -207,7 +208,7 @@ void main() {
             Activity.createNew(
               title: title,
               startTime: startTime,
-              duration: 22.minutes().inMilliseconds,
+              duration: 22.minutes(),
             ),
           ),
         ),
@@ -221,7 +222,7 @@ void main() {
             Activity.createNew(
               title: title,
               startTime: startTime,
-              duration: 23.minutes().inMilliseconds,
+              duration: 23.minutes(),
             ),
           ),
         ),
@@ -234,8 +235,8 @@ void main() {
           ActivityOccasion.forTest(
             Activity.createNew(
               title: title,
-              startTime: time.subtract(30.minutes()).millisecondsSinceEpoch,
-              duration: 60.minutes().inMilliseconds,
+              startTime: startTime.subtract(30.minutes()),
+              duration: 60.minutes(),
             ),
           ),
         ),

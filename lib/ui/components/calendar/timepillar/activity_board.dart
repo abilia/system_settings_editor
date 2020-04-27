@@ -33,13 +33,12 @@ class ActivityBoard extends StatelessWidget {
     List<List<ActivityTimepillarCard>> scheduled = [];
     ActivityLoop:
     for (final ao in activities) {
-      final int dots = ao.activity.duration
-          .milliseconds()
-          .inDots(minutesPerDot, roundingMinute);
+      final int dots =
+          ao.activity.duration.inDots(minutesPerDot, roundingMinute);
       final double height =
           max(dots * dotDistance, ActivityTimepillarCard.minHeight);
       final double topOffset = timeToPixelDistanceHour(
-        ao.activity.start.roundToMinute(
+        ao.activity.startTime.roundToMinute(
           minutesPerDot,
           roundingMinute,
         ),

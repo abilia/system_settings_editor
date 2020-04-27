@@ -65,10 +65,10 @@ void main() {
     expect(result.recurrentType, 0);
     expect(result.recurrentData, 0);
     expect(result.alarmType, 0);
-    expect(result.duration, 3600000);
+    expect(result.duration, 3600000.milliseconds());
     expect(result.category, 0);
-    expect(result.startTime, 1570105439424);
-    expect(result.endTime, 1570109039424);
+    expect(result.startTime, 1570105439424.fromMillisecondsSinceEpoch());
+    expect(result.endTime, 1570109039424.fromMillisecondsSinceEpoch());
     expect(result.fullDay, false);
     expect(result.checkable, true);
     expect(result.removeAfter, false);
@@ -165,10 +165,9 @@ void main() {
   });
 
   test('create, serialize and deserialize test', () {
-    final now =
-        DateTime(2020, 02, 02, 02, 02, 02, 02, 02).millisecondsSinceEpoch;
+    final now = DateTime(2020, 02, 02, 02, 02, 02, 02);
     final fileId = Uuid().v4();
-    final duration = Duration(minutes: 90).inMilliseconds;
+    final duration = Duration(minutes: 90);
     final reminders = {
       Duration(minutes: 5).inMilliseconds,
       Duration(hours: 1).inMilliseconds

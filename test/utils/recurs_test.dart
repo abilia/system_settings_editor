@@ -7,10 +7,9 @@ void main() {
   group('Recurring activity', () {
     test('Split up activity shows on day it was split up on ( bug test )', () {
       // Arrange
-      int splitStartTime = 1574380800000, splitEndTime = 253402297199000;
-      final splitStartDate =
-          DateTime.fromMillisecondsSinceEpoch(splitStartTime);
-      final dayOnSplit = splitStartDate.onlyDays();
+      DateTime splitStartTime = 1574380800000.fromMillisecondsSinceEpoch(),
+          splitEndTime = 253402297199000.fromMillisecondsSinceEpoch();
+      final dayOnSplit = splitStartTime.onlyDays();
 
       final splitRecurring = Activity.createNew(
         title: 'Split recurring ',
@@ -18,7 +17,7 @@ void main() {
         recurrentType: 1,
         recurrentData: 16383,
         alarmType: 104,
-        duration: 86399999,
+        duration: 86399999.milliseconds(),
         category: 0,
         startTime: splitStartTime,
         endTime: splitEndTime,
@@ -43,8 +42,8 @@ void main() {
         title: 'test',
         recurrentType: 1,
         recurrentData: 16383,
-        startTime: splitStartTime,
-        endTime: splitEndTime,
+        startTime: splitStartTime.fromMillisecondsSinceEpoch(),
+        endTime: splitEndTime.fromMillisecondsSinceEpoch(),
       );
       // Act
       final result = splitRecurring.shouldShowForDay(day);
