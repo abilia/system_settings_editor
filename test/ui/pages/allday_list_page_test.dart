@@ -44,19 +44,19 @@ void main() {
     final allDayActivities = [
       Activity.createNew(
         title: title0,
-        startTime: day.millisecondsSinceEpoch,
+        startTime: day,
       ),
       Activity.createNew(
         title: title1,
-        startTime: day.millisecondsSinceEpoch,
+        startTime: day,
       ),
       Activity.createNew(
         title: title2,
-        startTime: day.millisecondsSinceEpoch,
+        startTime: day,
       ),
       Activity.createNew(
         title: title3,
-        startTime: day.millisecondsSinceEpoch,
+        startTime: day,
       ),
     ].map((a) => ActivityOccasion(a, now: day, day: day)).toList();
 

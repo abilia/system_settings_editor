@@ -17,15 +17,13 @@ void main() {
   final startTime = DateTime(2020, 12, 12, 12, 12);
   final successActivity = Activity.createNew(
     title: 'title',
-    startTime: startTime.millisecondsSinceEpoch,
-    duration: 0,
+    startTime: startTime,
     category: 0,
     reminderBefore: [],
   ).wrapWithDbModel();
   final failedActivity = Activity.createNew(
     title: 'title2',
-    startTime: startTime.millisecondsSinceEpoch,
-    duration: 0,
+    startTime: startTime,
     category: 0,
     reminderBefore: [],
   ).wrapWithDbModel();

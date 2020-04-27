@@ -8,27 +8,20 @@ extension DateTimeExtensions on DateTime {
 
   DateTime nextDay() => copyWith(day: day + 1);
   DateTime previousDay() => copyWith(day: day - 1);
+  DateTime millisecondBefore() =>
+      DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch - 1);
 
   DateTime nextHalfHour() => DateTime(
       year, month, day, minute >= 30 ? hour + 1 : hour, minute >= 30 ? 0 : 30);
 
-  DateTime roundToMinute(int minutesPerDot, int rounding) =>
-      minute % minutesPerDot > rounding
-          ? DateTime(
-              year,
-              month,
-              day,
-              hour,
-              ((minute ~/ minutesPerDot) + 1) * minutesPerDot,
-            )
-          : roundDownToMinute(minutesPerDot);
-
-  DateTime roundDownToMinute(int min) => DateTime(
+  DateTime roundToMinute(int minutesPerDot, int rounding) => DateTime(
         year,
         month,
         day,
         hour,
-        (minute ~/ min) * min,
+        minute % minutesPerDot > rounding
+            ? ((minute ~/ minutesPerDot) + 1) * minutesPerDot
+            : (minute ~/ minutesPerDot) * minutesPerDot,
       );
 
   DateTime copyWith(
@@ -89,4 +82,9 @@ extension DateTimeExtensions on DateTime {
   Occasion occasion(DateTime now) => isAfter(now)
       ? Occasion.future
       : isBefore(now) ? Occasion.past : Occasion.current;
+}
+
+extension IntDateTimeExtensions on int {
+  DateTime fromMillisecondsSinceEpoch() =>
+      DateTime.fromMillisecondsSinceEpoch(this);
 }

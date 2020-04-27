@@ -5,16 +5,27 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
-import 'package:seagull/utils/all.dart';
 
 class ActivityTimepillarCard extends StatelessWidget {
-  static const double imageSize = 56.0, width = 72.0, minHeight = 84.0;
+  static const double imageSize = 56.0,
+      width = 72.0,
+      padding = 12.0,
+      minHeight = 84.0,
+      totalWith = dotSize + width + padding;
+
   final ActivityOccasion activityOccasion;
+  final int dots, column;
+  final double top, height, endPos;
 
   const ActivityTimepillarCard({
     Key key,
     @required this.activityOccasion,
+    @required this.dots,
+    @required this.top,
+    @required this.column,
+    @required this.height,
   })  : assert(activityOccasion != null),
+        endPos = top + height,
         super(key: key);
 
   @override
@@ -26,15 +37,11 @@ class ActivityTimepillarCard extends StatelessWidget {
         signedOff = activity.isSignedOff(activityOccasion.day),
         current = activityOccasion.occasion == Occasion.current,
         inactive = activityOccasion.occasion == Occasion.past || signedOff;
-    final int dots =
-        activity.duration.milliseconds().inDots(minutesPerDot, roundingMinute);
-    final double height = dots * dotDistance,
-        topOffset = timeToPixelDistanceHour(
-            activity.start.roundToMinute(minutesPerDot, roundingMinute));
 
     return Positioned(
-      right: right ? null : 0.0,
-      top: topOffset,
+      right: right ? null : column * totalWith,
+      left: right ? column * totalWith : null,
+      top: top,
       child: Row(
         textDirection: right ? TextDirection.ltr : TextDirection.rtl,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,10 +65,11 @@ class ActivityTimepillarCard extends StatelessWidget {
               decoration: _getBoxDecoration(current, inactive),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                    maxWidth: width,
-                    minWidth: width,
-                    minHeight: minHeight,
-                    maxHeight: height < minHeight ? double.infinity : height),
+                  maxWidth: width,
+                  minWidth: width,
+                  minHeight: minHeight,
+                  maxHeight: height <= minHeight ? double.infinity : height,
+                ),
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
