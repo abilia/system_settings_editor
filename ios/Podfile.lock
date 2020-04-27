@@ -1,4 +1,6 @@
 PODS:
+  - devicelocale (0.0.1):
+    - Flutter
   - Firebase/Core (6.13.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 6.1.6)
@@ -113,6 +115,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - devicelocale (from `.symlinks/plugins/devicelocale/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
@@ -148,6 +151,8 @@ SPEC REPOS:
     - Protobuf
 
 EXTERNAL SOURCES:
+  devicelocale:
+    :path: ".symlinks/plugins/devicelocale/ios"
   firebase_messaging:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
@@ -180,6 +185,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_web/ios"
 
 SPEC CHECKSUMS:
+  devicelocale: feebbe5e7a30adb8c4f83185de1b50ff19b44f00
   Firebase: 458d109512200d1aca2e1b9b6cf7d68a869a4a46
   firebase_messaging: b6e11bf4d1a1d10a4e1fe3ab9a13bc66e97eb3ce
   FirebaseAnalytics: 45f36d9c429fc91d206283900ab75390cd05ee8a

@@ -39,6 +39,7 @@ dependencies:
   mime: ^0.9.6+3
   cached_network_image: ^2.0.0
   exif: ^1.0.2
+  devicelocale: ^0.2.3
 
 dev_dependencies:
   flutter_test:
