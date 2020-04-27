@@ -1,5 +1,9 @@
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
+
+final yMd = DateFormat('y-MM-dd').format;
+final hm = DateFormat.Hm().format;
 
 extension DateTimeExtensions on DateTime {
   DateTime onlyDays() => DateTime(year, month, day);

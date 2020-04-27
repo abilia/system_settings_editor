@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 @immutable
 abstract class ActivitiesOccasionEvent extends Equatable {
@@ -13,7 +14,7 @@ class NowChanged extends ActivitiesOccasionEvent {
   @override
   List<Object> get props => [now];
   @override
-  String toString() => 'NowChanged { $now }';
+  String toString() => 'NowChanged { ${hm(now)} }';
 }
 
 class ActivitiesChanged extends ActivitiesOccasionEvent {
