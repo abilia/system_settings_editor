@@ -19,37 +19,38 @@ void main() {
     stream = streamController.stream;
   });
 
-  Widget multiWrap(Iterable<Activity> activities,
-      {occasion = Occasion.current, DateTime initialTime}) {
+  Widget multiWrap(List<ActivityOccasion> activityOccasions,
+      {DateTime initialTime}) {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: BlocProvider(
         create: (context) =>
             ClockBloc(stream, initialTime: initialTime ?? time),
         child: Stack(
-          children: activities
-              .map<Widget>(
-                (a) => ActivityTimepillarCard(
-                  key: ObjectKey(a),
-                  activityOccasion: ActivityOccasion.forTest(a, occasion),
-                ),
-              )
-              .toList()
-                ..add(Timeline(width: 40.0)),
+          children: <Widget>[
+            Timeline(width: 40),
+            ActivityBoard(
+              activities: activityOccasions,
+              categoryMinWidth: 400,
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget wrap(activity, {occasion = Occasion.current}) =>
-      multiWrap([activity], occasion: occasion);
+  Widget wrap(ActivityOccasion activityOccasion,
+          {occasion = Occasion.current}) =>
+      multiWrap([activityOccasion]);
 
   testWidgets('shows title', (WidgetTester tester) async {
     await tester.pumpWidget(
       wrap(
-        Activity.createNew(
-          title: title,
-          startTime: startTime,
+        ActivityOccasion.forTest(
+          Activity.createNew(
+            title: title,
+            startTime: startTime,
+          ),
         ),
       ),
     );
@@ -64,8 +65,12 @@ void main() {
         time,
         time.add(7.minutes()),
       ]
-          .map((st) => Activity.createNew(
-              title: st.toString(), startTime: st.millisecondsSinceEpoch))
+          .map(
+            (st) => ActivityOccasion.forTest(
+              Activity.createNew(
+                  title: st.toString(), startTime: st.millisecondsSinceEpoch),
+            ),
+          )
           .toList();
 
       await tester.pumpWidget(multiWrap(activities, initialTime: time));
@@ -89,8 +94,14 @@ void main() {
         time.subtract(8.minutes()),
         time.add(8.minutes()),
       ]
-          .map((st) => Activity.createNew(
-              title: st.toString(), startTime: st.millisecondsSinceEpoch))
+          .map(
+            (st) => ActivityOccasion.forTest(
+              Activity.createNew(
+                title: st.toString(),
+                startTime: st.millisecondsSinceEpoch,
+              ),
+            ),
+          )
           .toList();
 
       await tester.pumpWidget(multiWrap(activities));
@@ -106,15 +117,56 @@ void main() {
         expect((y - timelineYPostion).abs(), greaterThan(dotDistance));
       }
     });
+
+    testWidgets('Is not placed at same horizontal position',
+        (WidgetTester tester) async {
+      final activities = List.generate(
+        10,
+        (i) => ActivityOccasion.forTest(
+          Activity.createNew(
+            title: 'activity $i',
+            startTime: startTime,
+            duration: ((i * 10) % 60).minutes().inMilliseconds,
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(multiWrap(activities));
+      expect(find.byType(Timeline), findsOneWidget);
+
+      final activityXPositions = activities.map(
+        (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dx,
+      );
+      expect(activityXPositions.toSet().length, activityXPositions.length);
+    });
+
+    test('all position are unique', () async {
+      final activities = List.generate(
+        12 * 60,
+        (i) => ActivityOccasion.forTest(
+          Activity.createNew(
+            title: 'activity $i',
+            startTime:
+                DateTime(2020, 04, 23).add(i.minutes()).millisecondsSinceEpoch,
+          ),
+        ),
+      );
+      final cards = ActivityBoard.positionTimepillarCards(activities);
+      final uniques = cards.map((f) => {f.top, f.column});
+
+      expect(uniques.toSet().length, uniques.length);
+    });
   });
 
   group('side dots', () {
     testWidgets('only start does not show dots', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          Activity.createNew(
-            title: title,
-            startTime: startTime,
+          ActivityOccasion.forTest(
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+            ),
           ),
         ),
       );
@@ -123,10 +175,12 @@ void main() {
     testWidgets('7 minutes does not show dots', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          Activity.createNew(
-            title: title,
-            startTime: startTime,
-            duration: 7.minutes().inMilliseconds,
+          ActivityOccasion.forTest(
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+              duration: 7.minutes().inMilliseconds,
+            ),
           ),
         ),
       );
@@ -135,10 +189,12 @@ void main() {
     testWidgets('8 minutes shows one dot', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          Activity.createNew(
-            title: title,
-            startTime: startTime,
-            duration: 8.minutes().inMilliseconds,
+          ActivityOccasion.forTest(
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+              duration: 8.minutes().inMilliseconds,
+            ),
           ),
         ),
       );
@@ -147,10 +203,12 @@ void main() {
     testWidgets('22 minutes shows one dot', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          Activity.createNew(
-            title: title,
-            startTime: startTime,
-            duration: 22.minutes().inMilliseconds,
+          ActivityOccasion.forTest(
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+              duration: 22.minutes().inMilliseconds,
+            ),
           ),
         ),
       );
@@ -159,10 +217,12 @@ void main() {
     testWidgets('23 minutes shows two dot', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          Activity.createNew(
-            title: title,
-            startTime: startTime,
-            duration: 23.minutes().inMilliseconds,
+          ActivityOccasion.forTest(
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+              duration: 23.minutes().inMilliseconds,
+            ),
           ),
         ),
       );
@@ -171,10 +231,12 @@ void main() {
     testWidgets('All different dots', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          Activity.createNew(
-            title: title,
-            startTime: time.subtract(30.minutes()).millisecondsSinceEpoch,
-            duration: 60.minutes().inMilliseconds,
+          ActivityOccasion.forTest(
+            Activity.createNew(
+              title: title,
+              startTime: time.subtract(30.minutes()).millisecondsSinceEpoch,
+              duration: 60.minutes().inMilliseconds,
+            ),
           ),
         ),
       );

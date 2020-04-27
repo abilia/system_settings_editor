@@ -113,7 +113,7 @@ class SideDots extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final flat = startTime.roundDownToMinute(minutesPerDot);
+    final flat = startTime.roundToMinute(minutesPerDot, roundingMinute);
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (_, now) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
