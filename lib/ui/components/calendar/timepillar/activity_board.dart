@@ -17,11 +17,11 @@ class ActivityBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final schedualed = positionTimepillarCards(activities);
+    final scheduled = positionTimepillarCards(activities);
     return Container(
       width: max(categoryMinWidth,
-          schedualed.length * ActivityTimepillarCard.totalWith),
-      child: Stack(children: schedualed),
+          scheduled.length * ActivityTimepillarCard.totalWith),
+      child: Stack(children: scheduled),
     );
   }
 
@@ -30,7 +30,7 @@ class ActivityBoard extends StatelessWidget {
     activities.sort((a1, a2) => a1.activity
         .startClock(a1.day)
         .compareTo(a2.activity.startClock(a2.day)));
-    List<List<ActivityTimepillarCard>> schedualed = [];
+    List<List<ActivityTimepillarCard>> scheduled = [];
     ActivityLoop:
     for (final ao in activities) {
       final int dots = ao.activity.duration
@@ -53,15 +53,15 @@ class ActivityBoard extends StatelessWidget {
             height: height,
           );
 
-      for (int i = 0; i < schedualed.length; i++) {
-        final row = schedualed[i];
+      for (int i = 0; i < scheduled.length; i++) {
+        final row = scheduled[i];
         if (topOffset > row.last.endPos) {
           row.add(card(i));
           continue ActivityLoop;
         }
       }
-      schedualed.add([card(schedualed.length)]);
+      scheduled.add([card(scheduled.length)]);
     }
-    return schedualed.expand((c) => c).toList();
+    return scheduled.expand((c) => c).toList();
   }
 }

@@ -19,7 +19,7 @@ void main() {
     stream = streamController.stream;
   });
 
-  Widget multiWrap(List<ActivityOccasion> activityOccasion,
+  Widget multiWrap(List<ActivityOccasion> activityOccasions,
       {DateTime initialTime}) {
     return Directionality(
       textDirection: TextDirection.ltr,
@@ -30,7 +30,7 @@ void main() {
           children: <Widget>[
             Timeline(width: 40),
             ActivityBoard(
-              activities: activityOccasion,
+              activities: activityOccasions,
               categoryMinWidth: 400,
             ),
           ],
@@ -118,7 +118,7 @@ void main() {
       }
     });
 
-    testWidgets('Is not placed at same vertical position',
+    testWidgets('Is not placed at same horizontal position',
         (WidgetTester tester) async {
       final activities = List.generate(
         10,
@@ -134,10 +134,10 @@ void main() {
       await tester.pumpWidget(multiWrap(activities));
       expect(find.byType(Timeline), findsOneWidget);
 
-      final activityYPos = activities.map(
+      final activityXPositions = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dx,
       );
-      expect(activityYPos.toSet().length, activityYPos.length);
+      expect(activityXPositions.toSet().length, activityXPositions.length);
     });
 
     test('all position are unique', () async {
