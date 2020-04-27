@@ -25,22 +25,42 @@ class ActivityTimeRange extends StatelessWidget {
         padding: const EdgeInsets.only(top: 4, bottom: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _TimeText(
-              date: activity.startClock(day),
-              now: now,
-            ),
-            if (activity.hasEndTime)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text('-', style: Theme.of(context).textTheme.headline),
-              ),
-            if (activity.hasEndTime)
-              _TimeText(
-                date: activity.endClock(day),
-                now: now,
-              ),
-          ],
+          children: !activity.hasEndTime
+              ? [
+                  _TimeText(
+                    date: activity.startClock(day),
+                    now: now,
+                  ),
+                ]
+              : [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Spacer(),
+                        _TimeText(
+                          date: activity.startClock(day),
+                          now: now,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child:
+                        Text('-', style: Theme.of(context).textTheme.headline),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        _TimeText(
+                          date: activity.endClock(day),
+                          now: now,
+                        ),
+                        Spacer(),
+                      ],
+                    ),
+                  ),
+                ],
         ),
       ),
     );
