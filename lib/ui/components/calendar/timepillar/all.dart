@@ -6,3 +6,4 @@ export 'activity_timepillar_card.dart';
 export 'category.dart';
 export 'dots.dart';
 export 'overlay/all.dart';
+export 'activity_board.dart';
