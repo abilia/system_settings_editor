@@ -6,22 +6,23 @@ class SimpleBlocDelegate extends BlocDelegate {
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
     if (event is! Silent) {
-      print(event);
+      log(event);
     }
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    if (transition.currentState.runtimeType !=
-        transition.nextState.runtimeType) {
-      print(transition);
+    if (transition.event is! Silent) {
+      log(transition);
     }
   }
 
   @override
   void onError(Bloc bloc, Object error, StackTrace stacktrace) {
     super.onError(bloc, error, stacktrace);
-    print(error);
+    log(error);
   }
 }
+
+log(Object o) => print('${DateTime.now()}: $o');

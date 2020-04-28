@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:seagull/bloc/mixin/silent.dart';
 
 @immutable
-abstract class ScrollPositionEvent extends Equatable {}
+abstract class ScrollPositionEvent extends Equatable with Silent {}
 
 class WrongDaySelected extends ScrollPositionEvent {
   @override

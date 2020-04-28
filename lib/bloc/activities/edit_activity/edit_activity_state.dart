@@ -1,6 +1,6 @@
 part of 'edit_activity_bloc.dart';
 
-abstract class EditActivityState extends Equatable {
+abstract class EditActivityState extends Equatable with Silent {
   const EditActivityState(this.activity, [this.newImage]);
   final Activity activity;
   final File newImage;

@@ -1,7 +1,8 @@
 import 'package:meta/meta.dart';
+import 'package:seagull/bloc/all.dart';
 
 @immutable
-abstract class AlarmEvent {}
+abstract class AlarmEvent with Silent {}
 
 class TimeAlarmEvent extends AlarmEvent {
   @override

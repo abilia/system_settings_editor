@@ -37,7 +37,7 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
       [activities, fullDayActivities, day, indexOfCurrentActivity, isToday];
   @override
   String toString() =>
-      'ActivitiesOccasionLoaded { ActivityOccasion: $activities, fullDay ActivityOccasion: $fullDayActivities, day; $day, indexOfCurrentActivity; $indexOfCurrentActivity, [${isToday ? '' : ' not '} today ] }';
+      'ActivitiesOccasionLoaded { ${activities.length} activities, ${fullDayActivities.length} fullDay activities, day; ${yMd(day)}, ${isToday ? 'today, indexOfCurrentActivity; $indexOfCurrentActivity' : 'not today'}';
 }
 
 enum Occasion { past, current, future }

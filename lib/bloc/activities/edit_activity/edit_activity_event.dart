@@ -4,9 +4,13 @@ abstract class EditActivityEvent extends Equatable {
   const EditActivityEvent();
 }
 
-class ChangeActivity extends EditActivityEvent {
+abstract class ActivityChangedEvent extends EditActivityEvent with Silent {
+  const ActivityChangedEvent();
+}
+
+class ReplaceActivity extends ActivityChangedEvent {
   final Activity activity;
-  ChangeActivity(this.activity);
+  ReplaceActivity(this.activity);
 
   @override
   List<Object> get props => [activity];
@@ -29,7 +33,7 @@ class SaveRecurringActivity extends SaveActivity {
   String toString() => 'SaveRecurringActivity { $applyTo, $day }';
 }
 
-class ChangeDate extends EditActivityEvent {
+class ChangeDate extends ActivityChangedEvent {
   final DateTime date;
   ChangeDate(this.date);
   @override
@@ -38,7 +42,7 @@ class ChangeDate extends EditActivityEvent {
   String toString() => 'ChangeDate { $date }';
 }
 
-abstract class ChangeTime extends EditActivityEvent {
+abstract class ChangeTime extends ActivityChangedEvent {
   final TimeOfDay time;
   const ChangeTime(this.time);
   @override
@@ -57,7 +61,7 @@ class ChangeEndTime extends ChangeTime {
   String toString() => 'ChangeEndTime { $time }';
 }
 
-class AddOrRemoveReminder extends EditActivityEvent {
+class AddOrRemoveReminder extends ActivityChangedEvent {
   final Duration reminder;
   const AddOrRemoveReminder(this.reminder);
   @override
@@ -66,7 +70,7 @@ class AddOrRemoveReminder extends EditActivityEvent {
   List<Object> get props => [reminder];
 }
 
-class ImageSelected extends EditActivityEvent {
+class ImageSelected extends ActivityChangedEvent {
   final String imageId;
   final File newImage;
   ImageSelected(this.imageId, this.newImage);
