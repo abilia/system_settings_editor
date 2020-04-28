@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/background/all.dart';
@@ -62,6 +63,10 @@ class GetItInitializer {
   FactoryFunc<DateTime> _startTime;
   set startTime(DateTime startTime) => this._startTime = () => startTime;
 
+  AnalyticsService _analyticsService;
+  set analyticsService(AnalyticsService service) =>
+      this._analyticsService = service;
+
   init() {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
@@ -83,6 +88,8 @@ class GetItInitializer {
     GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb());
     GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb());
     GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage(''));
+    GetIt.I.registerSingleton<AnalyticsService>(
+        _analyticsService ?? AnalyticsService(null, null));
     GetIt.I.registerSingleton<MultipartRequestBuilder>(
         _multipartRequestBuilder ?? MultipartRequestBuilder());
     GetIt.I.registerFactory<DateTime>(_startTime ?? () => DateTime.now());

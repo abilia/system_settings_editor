@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:seagull/analytics/all.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
@@ -70,6 +71,7 @@ void main() {
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
+      ..analyticsService = MockAnalyticsService()
       ..init();
   });
   Future<void> navigateToActivityPage(WidgetTester tester) async {

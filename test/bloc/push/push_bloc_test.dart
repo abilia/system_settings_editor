@@ -42,6 +42,7 @@ void main() {
         ..userDb = MockUserDb()
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = MockFirebasePushService()
+        ..analyticsService = MockAnalyticsService()
         ..init();
     });
 

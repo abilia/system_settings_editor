@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/analytics/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
@@ -56,6 +58,7 @@ class AuthenticationBloc
       UserRepository repo, String token) async* {
     try {
       final user = await repo.me(token);
+      await GetIt.I<AnalyticsService>().setUserId(user.id);
       yield Authenticated(token: token, userId: user.id, userRepository: repo);
     } on UnauthorizedException {
       yield* _logout(repo, token);

@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
+import 'package:seagull/getit.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
@@ -26,6 +27,10 @@ void main() {
       mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('pushToken'));
+
+      GetItInitializer()
+        ..analyticsService = MockAnalyticsService()
+        ..init();
 
       loginBloc = LoginBloc(
           authenticationBloc: authenticationBloc,

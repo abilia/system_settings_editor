@@ -1,7 +1,9 @@
+import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
+import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sortable/image_archive/image_archive_bloc.dart';
 import 'package:seagull/bloc/sync/bloc.dart';
@@ -50,7 +52,10 @@ class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 
 class MockFileStorage extends Mock implements FileStorage {}
 
-class MockMultipartRequestBuilder extends Mock implements MultipartRequestBuilder {}
+class MockAnalyticsService extends Mock implements AnalyticsService {}
+
+class MockMultipartRequestBuilder extends Mock
+    implements MultipartRequestBuilder {}
 
 class MockMultipartRequest extends Mock implements MultipartRequest {}
 
