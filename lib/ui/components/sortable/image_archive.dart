@@ -149,8 +149,6 @@ class ArchiveImage extends StatelessWidget {
                   child: FadeInAbiliaImage(
                     imageFileId: imageId,
                     imageFilePath: iconPath,
-                    width: imageWidth,
-                    height: imageHeight,
                   ),
                 ),
               )

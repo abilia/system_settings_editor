@@ -86,8 +86,8 @@ class FadeInAbiliaImage extends StatelessWidget {
   FadeInAbiliaImage({
     @required this.imageFileId,
     @required this.imageFilePath,
-    @required this.height,
-    @required this.width,
+    this.height,
+    this.width,
     this.imageSize = ImageSize.THUMB,
   });
 
@@ -110,18 +110,23 @@ class FadeInAbiliaImage extends StatelessWidget {
           userFileState.userFiles
               .any((f) => f.id == imageFileId && f.fileLoaded);
       return ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: userFileLoaded
-              ? FadeInImage(
-                  image: Image.file(
-                    fileStorage.getImageThumb(ImageThumb(id: imageFileId)),
-                  ).image,
-                  placeholder: MemoryImage(kTransparentImage),
-                )
-              : FadeInNetworkImage(
-                  imageFileId: imageFileId,
-                  imageFilePath: imageFilePath,
-                ));
+        borderRadius: BorderRadius.circular(12),
+        child: userFileLoaded
+            ? FadeInImage(
+                height: height,
+                width: width,
+                image: Image.file(
+                  fileStorage.getImageThumb(ImageThumb(id: imageFileId)),
+                ).image,
+                placeholder: MemoryImage(kTransparentImage),
+              )
+            : FadeInNetworkImage(
+                height: height,
+                width: width,
+                imageFileId: imageFileId,
+                imageFilePath: imageFilePath,
+              ),
+      );
     });
   }
 }
