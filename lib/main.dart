@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:devicelocale/devicelocale.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -9,6 +11,7 @@ import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:seagull/alarm_listener.dart';
 import 'package:seagull/analytics/analytics_service.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
@@ -27,6 +30,8 @@ void main() async {
   final currentLocale = await Devicelocale.currentLocale;
   await LanguageDb().setLanguage(currentLocale.split(RegExp('-|_'))[0]);
   final baseUrl = await BaseUrlDb().initialize(T1);
+
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
   runApp(App(baseUrl: baseUrl));
 }
 
