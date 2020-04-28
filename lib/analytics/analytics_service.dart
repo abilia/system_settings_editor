@@ -25,8 +25,7 @@ class AnalyticsService {
         'fullDay': activity.fullDay,
         'checkable': activity.checkable,
         'removeAfter': activity.removeAfter,
-        'alarm': activity.alarm,
-        'reminders': activity.reminders,
+        'alarm': activity.alarm.toInt,
         'recurring': activity.recurrance.toString(),
       },
     );
