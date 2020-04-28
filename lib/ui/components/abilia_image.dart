@@ -42,39 +42,36 @@ class FadeInCalendarImage extends StatelessWidget {
         builder: (context, userFileState) {
       final userFileLoaded = userFileState is UserFilesLoaded &&
           userFileState.userFiles.any((f) => f.id == imageFileId);
-      return Container(
-        decoration: BoxDecoration(
-          borderRadius: borderRadius,
-          color: AbiliaColors.white,
-        ),
+      return SizedBox(
+        height: height,
+        width: width,
         child: Hero(
           tag: '${imageFileId}_$activityId',
-          child: imageFile != null
-              ? FadeInImage(
-                  width: width,
-                  height: height,
-                  image: Image.file(imageFile).image,
-                  placeholder: MemoryImage(kTransparentImage),
-                )
-              : userFileLoaded
-                  ? FadeInImage(
-                      width: width,
-                      height: height,
-                      image: imageSize == ImageSize.ORIGINAL
-                          ? Image.file(fileStorage.getFile(imageFileId)).image
-                          : Image.file(
-                              fileStorage.getImageThumb(
-                                ImageThumb(id: imageFileId),
-                              ),
-                            ).image,
-                      placeholder: MemoryImage(kTransparentImage),
-                    )
-                  : FadeInNetworkImage(
-                      imageFileId: imageFileId,
-                      imageFilePath: imageFilePath,
-                      height: height,
-                      width: width,
-                    ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: imageFile != null
+                ? FadeInImage(
+                    fit: BoxFit.cover,
+                    image: Image.file(imageFile).image,
+                    placeholder: MemoryImage(kTransparentImage),
+                  )
+                : userFileLoaded
+                    ? FadeInImage(
+                        fit: BoxFit.cover,
+                        image: imageSize == ImageSize.ORIGINAL
+                            ? Image.file(fileStorage.getFile(imageFileId)).image
+                            : Image.file(
+                                fileStorage.getImageThumb(
+                                  ImageThumb(id: imageFileId),
+                                ),
+                              ).image,
+                        placeholder: MemoryImage(kTransparentImage),
+                      )
+                    : FadeInNetworkImage(
+                        imageFileId: imageFileId,
+                        imageFilePath: imageFilePath,
+                      ),
+          ),
         ),
       );
     });
@@ -112,27 +109,19 @@ class FadeInAbiliaImage extends StatelessWidget {
       final userFileLoaded = userFileState is UserFilesLoaded &&
           userFileState.userFiles
               .any((f) => f.id == imageFileId && f.fileLoaded);
-      return Container(
-        decoration: BoxDecoration(
-          borderRadius: borderRadius,
-          color: AbiliaColors.white,
-        ),
-        child: userFileLoaded
-            ? FadeInImage(
-                width: width,
-                height: height,
-                image: Image.file(
-                  fileStorage.getImageThumb(ImageThumb(id: imageFileId)),
-                ).image,
-                placeholder: MemoryImage(kTransparentImage),
-              )
-            : FadeInNetworkImage(
-                imageFileId: imageFileId,
-                imageFilePath: imageFilePath,
-                height: height,
-                width: width,
-              ),
-      );
+      return ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: userFileLoaded
+              ? FadeInImage(
+                  image: Image.file(
+                    fileStorage.getImageThumb(ImageThumb(id: imageFileId)),
+                  ).image,
+                  placeholder: MemoryImage(kTransparentImage),
+                )
+              : FadeInNetworkImage(
+                  imageFileId: imageFileId,
+                  imageFilePath: imageFilePath,
+                ));
     });
   }
 }
@@ -155,6 +144,7 @@ class FadeInNetworkImage extends StatelessWidget {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) => (state is Authenticated)
           ? CachedNetworkImage(
+              fit: BoxFit.cover,
               httpHeaders: authHeader(state.token),
               height: height,
               width: width,

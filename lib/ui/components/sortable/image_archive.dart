@@ -145,19 +145,12 @@ class ArchiveImage extends StatelessWidget {
               Container(
                 height: imageHeight,
                 width: imageWidth,
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius,
-                  color: AbiliaColors.white,
-                ),
                 child: Center(
-                  child: ClipRRect(
-                    borderRadius: borderRadius,
-                    child: FadeInAbiliaImage(
-                      imageFileId: imageId,
-                      imageFilePath: iconPath,
-                      width: imageWidth,
-                      height: imageHeight,
-                    ),
+                  child: FadeInAbiliaImage(
+                    imageFileId: imageId,
+                    imageFilePath: iconPath,
+                    width: imageWidth,
+                    height: imageHeight,
                   ),
                 ),
               )
