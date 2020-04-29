@@ -1,6 +1,12 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/models/activity.dart';
 import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/calendar/timepillar/all.dart';
 
@@ -8,8 +14,10 @@ const int dotsPerHour = 4,
     minutesPerDot = 60 ~/ dotsPerHour,
     roundingMinute = minutesPerDot ~/ 2;
 const double dotSize = 10.0,
+    bigDotSize = 24.0,
     hourPadding = 1.0,
     dotPadding = hourPadding * 3,
+    bigDotPadding = 6.0,
     dotDistance = dotSize + dotPadding,
     hourHeigt = dotDistance * dotsPerHour;
 
@@ -91,12 +99,14 @@ class Dots extends StatelessWidget {
 
 class AnimatedDot extends StatelessWidget {
   final Decoration decoration;
-  const AnimatedDot({Key key, @required this.decoration}) : super(key: key);
+  final double size;
+  const AnimatedDot({Key key, @required this.decoration, this.size})
+      : super(key: key);
   @override
   Widget build(BuildContext context) => AnimatedContainer(
         duration: transitionDuration,
-        height: dotSize,
-        width: dotSize,
+        height: size ?? dotSize,
+        width: size ?? dotSize,
         decoration: decoration,
       );
 }
@@ -135,6 +145,131 @@ class SideDots extends StatelessWidget {
           },
         ).expand((d) => [d, const SizedBox(height: dotPadding)]).toList()
           ..add(const SizedBox(width: dotSize)),
+      ),
+    );
+  }
+}
+
+class ActivityInfoSideDots extends StatelessWidget {
+  static const int maxDots = 8;
+  static const hours = (maxDots ~/ dotsPerHour);
+
+  final Activity activity;
+  final DateTime day;
+  const ActivityInfoSideDots({
+    Key key,
+    @required this.activity,
+    @required this.day,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ClockBloc, DateTime>(builder: (_, now) {
+      final endTime = activity.endClock(day);
+      final startTime = activity.startClock(day);
+      final bool onSameDay = day.isAtSameDay(now),
+          notStarted = startTime.isAfter(now),
+          isCurrent = activity.hasEndTime &&
+              now.isOnOrBetween(startDate: startTime, endDate: endTime);
+      final bool shouldHaveSideDots = onSameDay && (notStarted || isCurrent);
+      if (!shouldHaveSideDots) {
+        return SizedBox(width: ActivityInfo.margin);
+      }
+      if (now.isBefore(startTime)) {
+        final start = startTime.subtract(hours.hours());
+        final end = startTime;
+        return SideDotsLarge(
+          dots: maxDots,
+          startTime: start,
+          endTime: end,
+          now: now,
+        );
+      }
+      return SideDotsLarge(
+        dots: activity.duration.inDots(minutesPerDot, roundingMinute),
+        startTime: startTime,
+        endTime: endTime,
+        now: now,
+      );
+    });
+  }
+}
+
+class SideDotsLarge extends StatelessWidget {
+  const SideDotsLarge(
+      {Key key,
+      @required this.dots,
+      @required this.startTime,
+      @required this.endTime,
+      @required this.now})
+      : super(key: key);
+
+  final int dots;
+  final DateTime startTime, endTime, now;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Spacer(),
+        BigDots(
+          dots: max(dots, 1),
+          startTime: startTime,
+          endTime: endTime,
+          now: now,
+        ),
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(4.0, 16.0, 4.0, 0),
+                child: Text(
+                  endTime
+                      .difference(now)
+                      .toUntilString(Translator.of(context).translate),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Spacer(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class BigDots extends StatelessWidget {
+  final int dots;
+  final DateTime startTime, endTime, now;
+  const BigDots({
+    Key key,
+    @required this.dots,
+    @required this.startTime,
+    @required this.endTime,
+    @required this.now,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: ActivityInfo.margin),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: List.generate(
+          min(dots, ActivityInfoSideDots.maxDots),
+          (dot) {
+            final dotEndTime = dot == 0
+                ? endTime
+                : endTime.subtract((dot * (minutesPerDot + 1)).minutes());
+            final past = now.isAtSameMomentOrAfter(dotEndTime);
+            final decoration = past ? pastDotShape : futureDotShape;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: bigDotPadding),
+              child: AnimatedDot(decoration: decoration, size: bigDotSize),
+            );
+          },
+        ).reversed.toList(),
       ),
     );
   }

@@ -55,7 +55,8 @@ extension DateTimeExtensions on DateTime {
   bool isDayAfter(DateTime otherDate) =>
       onlyDays().isAfter(otherDate.onlyDays());
 
-  bool onOrBetween({@required DateTime startDate, @required DateTime endDate}) {
+  bool isOnOrBetween(
+      {@required DateTime startDate, @required DateTime endDate}) {
     if (endDate.isBefore(startDate)) return false;
     if (isBefore(endDate) && isAfter(startDate)) return true;
     if (isAtSameMomentAs(startDate)) return true;
@@ -63,7 +64,8 @@ extension DateTimeExtensions on DateTime {
     return false;
   }
 
-  bool onOrAfter(DateTime time) => isAfter(time) || isAtSameMomentAs(time);
+  bool isAtSameMomentOrAfter(DateTime time) =>
+      isAfter(time) || isAtSameMomentAs(time);
 
   // ISO 8601 states:
   // - Week 1 is the week with the first thursday of that year.

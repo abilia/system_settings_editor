@@ -54,7 +54,7 @@ extension RecurringActivityExtension on Activity {
       return day.isAtSameDay(startTime);
     }
 
-    if (!day.onOrBetween(
+    if (!day.isOnOrBetween(
         startDate: startTime.onlyDays(), endDate: endTime.onlyDays())) {
       return false;
     }

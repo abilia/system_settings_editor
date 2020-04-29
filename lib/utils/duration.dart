@@ -17,6 +17,18 @@ extension DurationExtensions on Duration {
     return '$inMinutes ${translater.min}';
   }
 
+  String toUntilString(Translated translater) {
+    final sb = StringBuffer();
+    if (inHours > 0) {
+      sb.writeln('$inHours ${translater.h}');
+    }
+    final minutes = inMinutes % Duration.minutesPerHour;
+    if (minutes > 0) {
+      sb.writeln('$minutes ${translater.min}');
+    }
+    return sb.toString();
+  }
+
   int inDots(int minutesPerDot, roundingMinute) =>
       (inMinutes ~/ minutesPerDot) +
       (inMinutes % minutesPerDot > roundingMinute ? 1 : 0);

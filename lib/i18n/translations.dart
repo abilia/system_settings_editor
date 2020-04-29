@@ -58,6 +58,7 @@ abstract class Translated {
   String get day;
   String get hours;
   String get hour;
+  String get h;
   String get min;
   String get am;
   String get pm;
@@ -124,6 +125,7 @@ class English extends Translated {
       day = 'day',
       hours = 'hours',
       hour = 'hour',
+      h = 'h',
       min = 'min',
       am = 'AM',
       pm = 'PM',
@@ -191,6 +193,7 @@ class Swedish extends Translated {
       day = 'dag',
       hours = 'timmar',
       hour = 'timme',
+      h = 't',
       min = 'min',
       am = 'fm',
       pm = 'em',
