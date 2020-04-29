@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:devicelocale/devicelocale.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -10,8 +8,8 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:seagull/alarm_listener.dart';
-import 'package:seagull/analytics/analytics_service.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:seagull/analytics/analytics_service.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
@@ -38,12 +36,9 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   final documentDirectory = await getApplicationDocumentsDirectory();
-  FirebaseAnalytics analytics = FirebaseAnalytics();
-  FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
-    ..analyticsService = AnalyticsService(observer, analytics)
     ..init();
 }
 
@@ -114,6 +109,7 @@ class SeagullApp extends StatelessWidget {
     return MaterialApp(
       title: 'Seagull',
       theme: abiliaTheme,
+      navigatorObservers: [AnalyticsService.observer],
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: [
         Translator.delegate,

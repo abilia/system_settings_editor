@@ -51,7 +51,6 @@ void main() {
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
-      ..analyticsService = MockAnalyticsService()
       ..init();
   });
 

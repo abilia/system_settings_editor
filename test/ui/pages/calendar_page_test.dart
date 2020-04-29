@@ -40,7 +40,6 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(activityResponse)
         ..fileStorage = MockFileStorage()
-        ..analyticsService = MockAnalyticsService()
         ..init();
     });
     testWidgets('New activity', (WidgetTester tester) async {
@@ -102,7 +101,6 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => fullDayActivities)
         ..fileStorage = MockFileStorage()
-        ..analyticsService = MockAnalyticsService()
         ..init();
     });
 

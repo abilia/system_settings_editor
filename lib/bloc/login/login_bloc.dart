@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
 
@@ -34,7 +32,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           );
 
           authenticationBloc.add(LoggedIn(token: token));
-          await GetIt.I<AnalyticsService>().sendLoginEvent();
           yield LoginInitial();
         } catch (error) {
           yield LoginFailure(error: error.toString());

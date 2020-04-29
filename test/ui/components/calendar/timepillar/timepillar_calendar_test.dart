@@ -59,7 +59,6 @@ void main() {
       ..startTime = time
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
-      ..analyticsService = MockAnalyticsService()
       ..init();
   });
   tearDown(() {

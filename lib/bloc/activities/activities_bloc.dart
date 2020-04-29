@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/analytics/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/models/all.dart';
@@ -59,8 +57,6 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
       AddActivity event, ActivitiesState oldState) async* {
     if (oldState is ActivitiesLoaded) {
       await _saveActivities([event.activity]);
-      await GetIt.I<AnalyticsService>()
-          .sendActivityCreatedEvent(event.activity);
       yield ActivitiesLoaded(oldState.activities.followedBy([event.activity]));
     }
   }
