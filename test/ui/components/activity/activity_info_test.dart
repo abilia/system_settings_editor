@@ -281,8 +281,7 @@ void main() {
       checkable: true,
       reminderBefore: [],
       fileId: Uuid().v4(),
-      infoItem:
-          'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19',
+      infoItem: infoItemWithTestNote,
     );
 
     await tester.pumpWidget(
