@@ -7,7 +7,7 @@ class SimpleBlocDelegate extends BlocDelegate {
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
     if (event is! Silent) {
-      print(event);
+      log(event);
     }
   }
 
@@ -15,16 +15,15 @@ class SimpleBlocDelegate extends BlocDelegate {
   void onTransition(Bloc bloc, Transition transition) async {
     super.onTransition(bloc, transition);
     await logEventToAnalytics(transition);
-    if (transition.currentState.runtimeType !=
-        transition.nextState.runtimeType) {
-      print(transition);
+    if (transition.event is! Silent) {
+      log(transition);
     }
   }
 
   @override
   void onError(Bloc bloc, Object error, StackTrace stacktrace) {
     super.onError(bloc, error, stacktrace);
-    print(error);
+    log(error);
   }
 
   void logEventToAnalytics(Transition transition) async {
@@ -40,3 +39,5 @@ class SimpleBlocDelegate extends BlocDelegate {
     }
   }
 }
+
+log(Object o) => print('${DateTime.now()}: $o');

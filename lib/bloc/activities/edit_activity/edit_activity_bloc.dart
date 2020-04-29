@@ -40,7 +40,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   Stream<EditActivityState> mapEventToState(
     EditActivityEvent event,
   ) async* {
-    if (event is ChangeActivity) {
+    if (event is ReplaceActivity) {
       yield state.copyWith(event.activity);
     }
     if (event is ChangeDate) {

@@ -55,7 +55,7 @@ void main() {
     final activityWithTitle = activity.copyWith(title: 'new title');
 
     // Act
-    editActivityBloc.add(ChangeActivity(activityWithTitle));
+    editActivityBloc.add(ReplaceActivity(activityWithTitle));
 
     // Assert
     await expectLater(
@@ -76,7 +76,7 @@ void main() {
     final activityWithTitle = activity.copyWith(title: 'new title');
     // Act
     editActivityBloc.add(SaveActivity());
-    editActivityBloc.add(ChangeActivity(activityWithTitle));
+    editActivityBloc.add(ReplaceActivity(activityWithTitle));
     editActivityBloc.add(SaveActivity());
 
     // Assert
@@ -114,7 +114,7 @@ void main() {
     EditActivityBloc editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
     // Act
-    editActivityBloc.add(ChangeActivity(activityAsFullDay));
+    editActivityBloc.add(ReplaceActivity(activityAsFullDay));
     editActivityBloc.add(SaveActivity());
 
     // Assert

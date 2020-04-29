@@ -6,9 +6,9 @@ const WHALE = 'https://whale.abilia-gbg.se';
 const PROD = 'https://myabilia.com';
 const LOCAL = 'http://192.168.13.213:9103';
 const Map<String, String> backEndEnviorments = {
-  'T1': T1,
-  'Whale': WHALE,
   'Prod': PROD,
+  'Whale': WHALE,
+  'T1': T1,
   'Local': LOCAL,
 };
 

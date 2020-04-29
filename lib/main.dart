@@ -27,7 +27,7 @@ void main() async {
   await initServices();
   final currentLocale = await Devicelocale.currentLocale;
   await LanguageDb().setLanguage(currentLocale.split(RegExp('-|_'))[0]);
-  final baseUrl = await BaseUrlDb().initialize(T1);
+  final baseUrl = await BaseUrlDb().initialize(PROD);
 
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
   runApp(App(baseUrl: baseUrl));

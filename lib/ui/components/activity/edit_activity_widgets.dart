@@ -91,7 +91,7 @@ class NameAndPictureWidget extends StatelessWidget {
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (text) =>
                       BlocProvider.of<EditActivityBloc>(context)
-                          .add(ChangeActivity(activity.copyWith(title: text))),
+                          .add(ReplaceActivity(activity.copyWith(title: text))),
                   key: TestKey.editTitleTextFormField,
                 ),
               ],
@@ -121,7 +121,7 @@ class CategoryWidget extends StatelessWidget {
               child: RadioField(
                 key: TestKey.leftCategoryRadio,
                 onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-                    .add(ChangeActivity(activity.copyWith(category: v))),
+                    .add(ReplaceActivity(activity.copyWith(category: v))),
                 child: Row(
                   children: <Widget>[
                     circle(),
@@ -138,7 +138,7 @@ class CategoryWidget extends StatelessWidget {
               child: RadioField(
                 key: TestKey.rightCategoryRadio,
                 onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-                    .add(ChangeActivity(activity.copyWith(category: v))),
+                    .add(ReplaceActivity(activity.copyWith(category: v))),
                 child: Row(
                   children: <Widget>[
                     circle(),
@@ -193,7 +193,7 @@ class AlarmWidget extends StatelessWidget {
               ),
             );
             if (result != null) {
-              BlocProvider.of<EditActivityBloc>(context).add(ChangeActivity(
+              BlocProvider.of<EditActivityBloc>(context).add(ReplaceActivity(
                   activity.copyWith(
                       alarm: activity.alarm.copyWith(type: result))));
             }
@@ -203,7 +203,7 @@ class AlarmWidget extends StatelessWidget {
         AlarmOnlyAtStartSwitch(
           alarm: alarm,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
-            ChangeActivity(
+            ReplaceActivity(
               activity.copyWith(alarm: alarm.copyWith(onlyStart: v)),
             ),
           ),
@@ -251,7 +251,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
           label: Text(translator.checkable),
           value: activity.checkable,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-              .add(ChangeActivity(activity.copyWith(checkable: v))),
+              .add(ReplaceActivity(activity.copyWith(checkable: v))),
         ),
         const SizedBox(height: 8.0),
         SwitchField(
@@ -260,7 +260,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
           label: Text(translator.deleteAfter),
           value: activity.removeAfter,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-              .add(ChangeActivity(activity.copyWith(removeAfter: v))),
+              .add(ReplaceActivity(activity.copyWith(removeAfter: v))),
         ),
       ],
     );
@@ -295,7 +295,7 @@ class AvailibleForWidget extends StatelessWidget {
             );
             if (result != null) {
               BlocProvider.of<EditActivityBloc>(context)
-                  .add(ChangeActivity(activity.copyWith(secret: result)));
+                  .add(ReplaceActivity(activity.copyWith(secret: result)));
             }
           },
         ),

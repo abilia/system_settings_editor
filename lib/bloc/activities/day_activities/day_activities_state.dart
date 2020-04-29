@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 import 'package:seagull/utils/recurs.dart';
 
 @immutable
@@ -33,5 +34,5 @@ class DayActivitiesLoaded extends DayActivitiesState {
 
   @override
   String toString() =>
-      'DayActivitiesLoaded { activities: $activities, day: $day }';
+      'DayActivitiesLoaded { ${activities.length} activities, day: ${yMd(day)} }';
 }

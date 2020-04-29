@@ -38,7 +38,7 @@ class DateAndTimeWidget extends StatelessWidget {
             label: Text(translator.fullDay),
             value: activity.fullDay,
             onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-                .add(ChangeActivity(activity.copyWith(fullDay: v))),
+                .add(ReplaceActivity(activity.copyWith(fullDay: v))),
           ),
           CollapsableWidget(
             collapsed: activity.fullDay,
@@ -73,7 +73,7 @@ class ReminderSwitch extends StatelessWidget {
       onChanged: (switchOn) {
         final reminders = switchOn ? [15.minutes().inMilliseconds] : <int>[];
         BlocProvider.of<EditActivityBloc>(context)
-            .add(ChangeActivity(activity.copyWith(reminderBefore: reminders)));
+            .add(ReplaceActivity(activity.copyWith(reminderBefore: reminders)));
       },
     );
   }
