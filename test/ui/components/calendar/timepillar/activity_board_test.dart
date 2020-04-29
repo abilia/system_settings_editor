@@ -84,7 +84,6 @@ void main() {
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
 
-      print(timelineYPostion);
       for (final y in activityYPos) {
         expect(y, closeTo(timelineYPostion, dotSize / 2));
       }

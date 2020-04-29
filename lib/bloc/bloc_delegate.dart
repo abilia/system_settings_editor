@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:seagull/analytics/analytics_service.dart';
 import 'all.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
@@ -11,8 +12,9 @@ class SimpleBlocDelegate extends BlocDelegate {
   }
 
   @override
-  void onTransition(Bloc bloc, Transition transition) {
+  void onTransition(Bloc bloc, Transition transition) async {
     super.onTransition(bloc, transition);
+    await logEventToAnalytics(transition);
     if (transition.event is! Silent) {
       log(transition);
     }
@@ -22,6 +24,19 @@ class SimpleBlocDelegate extends BlocDelegate {
   void onError(Bloc bloc, Object error, StackTrace stacktrace) {
     super.onError(bloc, error, stacktrace);
     log(error);
+  }
+
+  void logEventToAnalytics(Transition transition) async {
+    final event = transition.event;
+    final nextState = transition.nextState;
+    if (event is AddActivity) {
+      await AnalyticsService.sendActivityCreatedEvent(event.activity);
+    } else if (event is LoggedIn) {
+      await AnalyticsService.sendLoginEvent();
+    }
+    if (nextState is Authenticated) {
+      await AnalyticsService.setUserId(nextState.userId);
+    }
   }
 }
 

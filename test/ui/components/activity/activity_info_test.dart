@@ -21,6 +21,8 @@ void main() {
   final locale = Locale('en');
   final translator = Translated.dictionaries[locale];
   MockAuthenticationBloc mockedAuthenticationBloc;
+  final String infoItemWithTestNote =
+      'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19';
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -159,7 +161,7 @@ void main() {
       startTime: startTime,
       category: 0,
       reminderBefore: [],
-      infoItem: 'some info item',
+      infoItem: infoItemWithTestNote,
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(
@@ -231,7 +233,7 @@ void main() {
       checkable: true,
       reminderBefore: [],
       fileId: Uuid().v4(),
-      infoItem: 'infoitem',
+      infoItem: infoItemWithTestNote,
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(
@@ -256,7 +258,7 @@ void main() {
       checkable: true,
       reminderBefore: [],
       fileId: Uuid().v4(),
-      infoItem: 'infoitem',
+      infoItem: infoItemWithTestNote,
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(
@@ -279,8 +281,7 @@ void main() {
       checkable: true,
       reminderBefore: [],
       fileId: Uuid().v4(),
-      infoItem:
-          'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19',
+      infoItem: infoItemWithTestNote,
     );
 
     await tester.pumpWidget(
