@@ -1,8 +1,10 @@
+import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/colors.dart';
-import 'package:intl/intl.dart';
-import 'package:seagull/ui/components/calendar/timepillar/all.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
 double timeToPixelDistance(DateTime now) =>

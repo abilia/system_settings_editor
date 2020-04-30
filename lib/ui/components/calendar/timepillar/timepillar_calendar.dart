@@ -2,11 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/calendar/all.dart';
-
-import 'all.dart';
+import 'package:seagull/ui/components/all.dart';
 
 const transitionDuration = Duration(seconds: 1);
 
