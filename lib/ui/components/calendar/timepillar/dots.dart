@@ -12,9 +12,11 @@ import 'package:seagull/ui/components/calendar/timepillar/all.dart';
 
 const int dotsPerHour = 4,
     minutesPerDot = 60 ~/ dotsPerHour,
+    minutePerSubDot = minutesPerDot ~/ 5,
     roundingMinute = minutesPerDot ~/ 2;
 const double dotSize = 10.0,
     bigDotSize = 24.0,
+    miniDotSize = 4.0,
     hourPadding = 1.0,
     dotPadding = hourPadding * 3,
     bigDotPadding = 6.0,
@@ -24,6 +26,8 @@ const double dotSize = 10.0,
 const pastDotShape = ShapeDecoration(shape: CircleBorder(side: BorderSide())),
     futureDotShape =
         ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder()),
+    transparantDotShape =
+        ShapeDecoration(color: Colors.transparent, shape: CircleBorder()),
     currentDotShape =
         ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder());
 final futureSideDotShape = ShapeDecoration(
@@ -100,7 +104,8 @@ class Dots extends StatelessWidget {
 class AnimatedDot extends StatelessWidget {
   final Decoration decoration;
   final double size;
-  const AnimatedDot({Key key, @required this.decoration, this.size})
+  final Widget child;
+  const AnimatedDot({Key key, @required this.decoration, this.size, this.child})
       : super(key: key);
   @override
   Widget build(BuildContext context) => AnimatedContainer(
@@ -108,6 +113,7 @@ class AnimatedDot extends StatelessWidget {
         height: size ?? dotSize,
         width: size ?? dotSize,
         decoration: decoration,
+        child: child,
       );
 }
 
@@ -221,7 +227,7 @@ class SideDotsLarge extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(4.0, 16.0, 4.0, 0),
+                padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
                   endTime
                       .difference(now)
@@ -256,21 +262,66 @@ class BigDots extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: List.generate(
-          min(dots, ActivityInfoSideDots.maxDots),
-          (dot) {
-            final dotEndTime = dot == 0
-                ? endTime
-                : endTime.subtract((dot * (minutesPerDot + 1)).minutes());
-            final past = now.isAtSameMomentOrAfter(dotEndTime);
-            final decoration = past ? pastDotShape : futureDotShape;
-            return Padding(
-              padding: const EdgeInsets.only(bottom: bigDotPadding),
-              child: AnimatedDot(decoration: decoration, size: bigDotSize),
-            );
-          },
-        ).reversed.toList(),
+        children: List.generate(min(dots, ActivityInfoSideDots.maxDots), (dot) {
+          if (dot == 0) {
+            final timeLeft = endTime.difference(now).inMinutes;
+            return SubQuarerDot(minutes: timeLeft);
+          }
+          final dotEndTime =
+              endTime.subtract((dot * (minutesPerDot + 1)).minutes());
+          final past = now.isAtSameMomentOrAfter(dotEndTime);
+          final decoration = past ? pastDotShape : futureDotShape;
+          return AnimatedDot(decoration: decoration, size: bigDotSize);
+        })
+            .reversed
+            .map(
+              (dot) => Padding(
+                  padding: const EdgeInsets.only(bottom: bigDotPadding),
+                  child: dot),
+            )
+            .toList(),
       ),
     );
   }
+}
+
+class SubQuarerDot extends StatelessWidget {
+  final int minutes;
+  const SubQuarerDot({Key key, @required this.minutes}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => minutes > minutesPerDot
+      ? AnimatedDot(decoration: futureDotShape, size: bigDotSize)
+      : AnimatedDot(
+          size: bigDotSize,
+          decoration: pastDotShape,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              dot(2),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  dot(3),
+                  dot(0),
+                  dot(1),
+                ],
+              ),
+              dot(4)
+            ],
+          ),
+        );
+  Widget dot(int i) => MiniDot(minutes > (minutePerSubDot * i));
+}
+
+class MiniDot extends StatelessWidget {
+  final bool visible;
+  const MiniDot(this.visible);
+  @override
+  Widget build(BuildContext context) => AnimatedContainer(
+      duration: transitionDuration,
+      margin: const EdgeInsets.all(1.0),
+      width: miniDotSize,
+      height: miniDotSize,
+      decoration: visible ? futureDotShape : transparantDotShape);
 }
