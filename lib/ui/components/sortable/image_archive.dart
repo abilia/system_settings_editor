@@ -6,7 +6,7 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class ImageArchive extends StatelessWidget {
-  final ValueChanged<String> onChanged;
+  final ValueChanged<SortableData> onChanged;
 
   const ImageArchive({
     Key key,
@@ -111,7 +111,7 @@ class Folder extends StatelessWidget {
 }
 
 class ArchiveImage extends StatelessWidget {
-  final ValueChanged<String> onChanged;
+  final ValueChanged<SortableData> onChanged;
   final Sortable sortable;
   const ArchiveImage(
       {Key key, @required this.onChanged, @required this.sortable})
@@ -128,12 +128,12 @@ class ArchiveImage extends StatelessWidget {
         final imageId = sortable.sortableData.fileId;
         final name = sortable.sortableData.name;
         final iconPath = sortable.sortableData.file;
-        return ArchiveRadio(
+        return ArchiveRadio<SortableData>(
           width: 110,
           heigth: 112,
-          value: imageId,
+          value: sortable.sortableData,
           onChanged: onChanged,
-          groupValue: archiveState.selectedImageId,
+          groupValue: archiveState.selectedImageData,
           child: Column(
             children: <Widget>[
               if (name != null)

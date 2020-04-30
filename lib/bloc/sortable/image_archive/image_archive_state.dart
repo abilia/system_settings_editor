@@ -4,16 +4,16 @@ class ImageArchiveState extends Equatable {
   final Map<String, Iterable<Sortable>> allByFolder;
   final Map<String, Sortable> allById;
   final String currentFolderId;
-  final String selectedImageId;
+  final SortableData selectedImageData;
 
   ImageArchiveState(this.allByFolder, this.allById, this.currentFolderId,
-      this.selectedImageId);
+      this.selectedImageData);
 
   @override
   List<Object> get props =>
-      [allByFolder, allById, currentFolderId, selectedImageId];
+      [allByFolder, allById, currentFolderId, selectedImageData];
 
   @override
   String toString() =>
-      'ImageArchiveState { allByFoldler: $allByFolder, allById: $allById, currentFolderId: $currentFolderId, selectedImageId: $selectedImageId }';
+      'ImageArchiveState { allByFoldler: $allByFolder, allById: $allById, currentFolderId: $currentFolderId, selectedImageId: $selectedImageData }';
 }

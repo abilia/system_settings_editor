@@ -38,11 +38,14 @@ class NameAndPictureWidget extends StatelessWidget {
         ),
       );
       if (selectedImage != null) {
-        BlocProvider.of<EditActivityBloc>(context)
-            .add(ImageSelected(selectedImage.id, selectedImage.newImage));
+        BlocProvider.of<EditActivityBloc>(context).add(ImageSelected(
+          selectedImage.id,
+          selectedImage.path,
+          selectedImage.newImage,
+        ));
         if (selectedImage.newImage != null) {
-          BlocProvider.of<UserFileBloc>(context)
-              .add(ImageAdded(selectedImage.id, selectedImage.newImage));
+          BlocProvider.of<UserFileBloc>(context).add(ImageAdded(
+              selectedImage.id, selectedImage.path, selectedImage.newImage));
           BlocProvider.of<SortableBloc>(context).add(ImageArchiveImageAdded(
             selectedImage.id,
             selectedImage.newImage.path,
