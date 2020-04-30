@@ -31,6 +31,7 @@ void main() {
       mockActivityDb = MockActivityDb();
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(<Activity>[]));
+      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
       GetItInitializer()
         ..activityDb = mockActivityDb
         ..userDb = MockUserDb()
@@ -91,6 +92,7 @@ void main() {
       MockActivityDb mockActivityDb = MockActivityDb();
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(fullDayActivities));
+      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
       GetItInitializer()
         ..activityDb = mockActivityDb
         ..userDb = MockUserDb()
