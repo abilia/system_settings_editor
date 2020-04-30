@@ -116,7 +116,6 @@ void main() {
       await expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesUninitialized(),
           DayActivitiesLoaded(activitiesNow, today),
           DayActivitiesLoaded(activitiesTomorrow, tomorrow),
         ]),
@@ -142,7 +141,6 @@ void main() {
       await expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesUninitialized(),
           DayActivitiesLoaded(activitiesNow, today),
           DayActivitiesLoaded(activitiesYesterDay, yesterday),
         ]),
@@ -171,7 +169,6 @@ void main() {
       await expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesUninitialized(),
           DayActivitiesLoaded(Iterable.empty(), today),
           DayActivitiesLoaded(Iterable.empty(), tomorrow),
           DayActivitiesLoaded(Iterable.empty(), today),
@@ -427,7 +424,6 @@ void main() {
       await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
-            DayActivitiesUninitialized(),
             DayActivitiesLoaded(Iterable.empty(), firstDay),
             DayActivitiesLoaded(
                 Iterable<Activity>.empty().followedBy([preSplitRecurring]),

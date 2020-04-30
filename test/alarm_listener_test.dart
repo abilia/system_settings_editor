@@ -47,6 +47,7 @@ void main() {
 
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(response));
+    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
     GetItInitializer()
       ..activityDb = mockActivityDb

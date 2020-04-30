@@ -56,10 +56,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          emitsInOrder([
-            UnInitializedAlarmState(),
-            AlarmState(NewAlarm(nowActivity, day)),
-          ]),
+          emits(AlarmState(NewAlarm(nowActivity, day))),
         );
       });
 
@@ -127,10 +124,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          emitsInOrder([
-            UnInitializedAlarmState(),
-            AlarmState(NewAlarm(soonActivity, day)),
-          ]),
+          emits(AlarmState(NewAlarm(soonActivity, day))),
         );
       });
 
@@ -143,9 +137,8 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         await activitiesBloc.any((s) => s is ActivitiesLoaded);
-        await _tick();
         // Assert
-        await expectLater(
+        final futureExpect = expectLater(
           alarmBloc,
           emitsInAnyOrder([
             UnInitializedAlarmState(),
@@ -153,6 +146,8 @@ void main() {
             AlarmState(NewAlarm(soonActivity2, day)),
           ]),
         );
+        await _tick();
+        await futureExpect;
       });
 
       test('two activities starts in order', () async {
@@ -167,15 +162,19 @@ void main() {
         activitiesBloc.add(LoadActivities());
         await activitiesBloc.any((s) => s is ActivitiesLoaded);
         await _tick();
-        await _tick();
 
         // Assert
         await expectLater(
           alarmBloc,
-          emitsInOrder([
-            AlarmState(NewAlarm(nextMinActivity, day)),
-            AlarmState(NewAlarm(inTwoMinActivity, day)),
-          ]),
+          emits(AlarmState(NewAlarm(nextMinActivity, day))),
+        );
+
+        // Act
+        await _tick();
+        // Assert
+        await expectLater(
+          alarmBloc,
+          emits(AlarmState(NewAlarm(inTwoMinActivity, day))),
         );
       });
 
@@ -195,11 +194,7 @@ void main() {
 
         // Assert
         await expectLater(
-            alarmBloc,
-            emitsInOrder([
-              UnInitializedAlarmState(),
-              AlarmState(NewAlarm(inTwoMinutesActivity, day))
-            ]));
+            alarmBloc, emits(AlarmState(NewAlarm(inTwoMinutesActivity, day))));
       });
 
       test('Recuring weekly alarms shows', () async {
@@ -213,14 +208,7 @@ void main() {
         await _tick();
         // Assert
         await expectLater(
-          alarmBloc,
-          emitsInOrder(
-            [
-              UnInitializedAlarmState(),
-              AlarmState(NewAlarm(recursThursday, day)),
-            ],
-          ),
-        );
+            alarmBloc, emits(AlarmState(NewAlarm(recursThursday, day))));
       });
 
       test('Recuring monthly alarms shows', () async {
@@ -236,14 +224,8 @@ void main() {
         await activitiesBloc.any((s) => s is ActivitiesLoaded);
         await _tick();
         // Assert
-        await expectLater(
-            alarmBloc,
-            emitsInOrder(
-              [
-                UnInitializedAlarmState(),
-                AlarmState(NewAlarm(recursTheThisDayOfMonth, day)),
-              ],
-            ));
+        await expectLater(alarmBloc,
+            emits(AlarmState(NewAlarm(recursTheThisDayOfMonth, day))));
       });
 
       test('Recuring yearly alarms shows', () async {
@@ -256,14 +238,8 @@ void main() {
         await activitiesBloc.any((s) => s is ActivitiesLoaded);
         await _tick();
         // Assert
-        await expectLater(
-            alarmBloc,
-            emitsInOrder(
-              [
-                UnInitializedAlarmState(),
-                AlarmState(NewAlarm(recursTheThisDayOfYear, day)),
-              ],
-            ));
+        await expectLater(alarmBloc,
+            emits(AlarmState(NewAlarm(recursTheThisDayOfYear, day))));
       });
 
       test('Alarm on EndTime shows', () async {
@@ -278,11 +254,8 @@ void main() {
         // Assert
         await expectLater(
             alarmBloc,
-            emitsInOrder(
-              [
-                UnInitializedAlarmState(),
-                AlarmState(NewAlarm(activityEnding, day, alarmOnStart: false)),
-              ],
+            emits(
+              AlarmState(NewAlarm(activityEnding, day, alarmOnStart: false)),
             ));
       });
 
@@ -300,17 +273,17 @@ void main() {
           activitiesBloc.add(LoadActivities());
           await activitiesBloc.any((s) => s is ActivitiesLoaded);
           await _tick();
-          await _tick();
+
           // Assert
+          await expectLater(alarmBloc,
+              emits(AlarmState(NewAlarm(nextAlarm, day, alarmOnStart: true))));
+
+          // Act
+          await _tick();
           await expectLater(
-            alarmBloc,
-            emitsInOrder(
-              [
-                AlarmState(NewAlarm(nextAlarm, day, alarmOnStart: true)),
-                AlarmState(NewAlarm(afterThatAlarm, day, alarmOnStart: true)),
-              ],
-            ),
-          );
+              alarmBloc,
+              emits(AlarmState(
+                  NewAlarm(afterThatAlarm, day, alarmOnStart: true))));
         },
       );
 
@@ -331,12 +304,9 @@ void main() {
           // Assert
           await expectLater(
             alarmBloc,
-            emitsInOrder(
-              [
-                UnInitializedAlarmState(),
-                AlarmState(NewReminder(remind1HourBefore, day,
-                    reminder: reminderTime)),
-              ],
+            emits(
+              AlarmState(
+                  NewReminder(remind1HourBefore, day, reminder: reminderTime)),
             ),
           );
         },
