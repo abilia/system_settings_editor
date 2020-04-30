@@ -301,6 +301,7 @@ void main() {
     });
 
     testWidgets('Correct type of dots', (WidgetTester tester) async {
+      // Arrange
       final activity = Activity.createNew(
         title: 'null',
         startTime: startTime.subtract(30.minutes()),
@@ -316,6 +317,39 @@ void main() {
         ),
       );
 
+      // Act
+      await tester.pumpAndSettle();
+      final dots = tester.widgetList<AnimatedDot>(find.byType(AnimatedDot));
+
+      // Assert
+      expect(dots, hasLength(6));
+      expect(dots.where((d) => d.decoration == currentDotShape), hasLength(0),
+          reason: 'no current dots');
+      expect(dots.where((d) => d.decoration == pastDotShape), hasLength(2),
+          reason: 'two past dots');
+      expect(dots.where((d) => d.decoration == futureDotShape), hasLength(4),
+          reason: 'four future dots');
+    });
+
+    testWidgets('Correct type of dots', (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(
+        title: 'null',
+        startTime: startTime.subtract(30.minutes()),
+        duration: 88.minutes(),
+      );
+
+      // Act
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          ActivityInfoSideDots(
+            activity: activity,
+            day: day,
+          ),
+        ),
+      );
+
+      // Assert
       await tester.pumpAndSettle();
       final dots = tester.widgetList<AnimatedDot>(find.byType(AnimatedDot));
 
@@ -326,6 +360,61 @@ void main() {
           reason: 'two past dots');
       expect(dots.where((d) => d.decoration == futureDotShape), hasLength(4),
           reason: 'four future dots');
+    });
+
+    testWidgets('When 15 min left show one sub dot with 5 mini dots',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(
+        title: 'null',
+        startTime: startTime.subtract(15.minutes()),
+        duration: 30.minutes(),
+      );
+
+      // Act
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          ActivityInfoSideDots(
+            activity: activity,
+            day: day,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(SubQuarerDot), findsOneWidget);
+      final dots = tester.widgetList<MiniDot>(find.byType(MiniDot)).toList();
+
+      expect(dots, hasLength(5));
+      expect(dots.where((d) => d.visible), hasLength(5), reason: '5 mini dots');
+    });
+
+    testWidgets('When 3 min left show one sub dot with 1 mini dot',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(
+        title: 'null',
+        startTime: startTime.subtract(15.minutes()),
+        duration: 18.minutes(),
+      );
+
+      // Act
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          ActivityInfoSideDots(
+            activity: activity,
+            day: day,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(SubQuarerDot), findsOneWidget);
+      final dots = tester.widgetList<MiniDot>(find.byType(MiniDot)).toList();
+      expect(dots, hasLength(5));
+      expect(dots.where((d) => d.visible), hasLength(1), reason: '1 mini dot');
     });
   });
 }

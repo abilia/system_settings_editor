@@ -45,10 +45,7 @@ void main() {
             ),
           ),
           BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc(
-              StreamController<DateTime>().stream,
-              initialTime: startTime,
-            ),
+            create: (context) => ClockBloc(StreamController<DateTime>().stream),
           )
         ], child: widget),
       );
