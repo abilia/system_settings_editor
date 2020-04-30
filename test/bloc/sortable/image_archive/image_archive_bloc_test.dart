@@ -37,13 +37,13 @@ void main() {
 
     test('ArchiveImageSelected will set the selected image in the state',
         () async {
-      String imageId = '123';
-      imageArchiveBloc.add(ArchiveImageSelected(imageId));
+      final imageData = SortableData(fileId: '123');
+      imageArchiveBloc.add(ArchiveImageSelected(imageData));
       await expectLater(
         imageArchiveBloc,
         emitsInOrder([
           ImageArchiveState(Map(), Map(), null, null),
-          ImageArchiveState(Map(), Map(), null, imageId),
+          ImageArchiveState(Map(), Map(), null, imageData),
         ]),
       );
     });

@@ -44,27 +44,27 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
         key: (s) => s.id,
         value: (s) => s,
       );
-      final selectedImage = allById[state.selectedImageId];
+      final selectedImage = allById[state.selectedImageData?.fileId];
       final currentFolder = allById[state.currentFolderId];
       yield ImageArchiveState(
         allByFolder,
         allById,
         currentFolder?.id,
-        selectedImage?.id,
+        selectedImage?.sortableData,
       );
     } else if (event is FolderChanged) {
       yield ImageArchiveState(
         state.allByFolder,
         state.allById,
         event.folderId,
-        state.selectedImageId,
+        state.selectedImageData,
       );
     } else if (event is ArchiveImageSelected) {
       yield ImageArchiveState(
         state.allByFolder,
         state.allById,
         state.currentFolderId,
-        event.imageId,
+        event.imageData,
       );
     } else if (event is NavigateUp) {
       final currentFolder = state.allById[state.currentFolderId];
@@ -72,7 +72,7 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
         state.allByFolder,
         state.allById,
         currentFolder.groupId,
-        state.selectedImageId,
+        state.selectedImageData,
       );
     }
   }

@@ -167,7 +167,7 @@ class Activity extends DataModel {
             ? UnmodifiableListView(reminderBefore)
             : this.reminderBefore,
         fileId: fileId == null ? this.fileId : _nullIfEmpty(fileId),
-        icon: fileId == null ? this.fileId : _nullIfEmpty(fileId),
+        icon: icon == null ? this.icon : _nullIfEmpty(icon),
         alarmType: alarmType ?? alarm?.toInt ?? this.alarmType,
         infoItem: infoItem == null ? this.infoItem : _nullIfEmpty(infoItem),
         signedOffDates: signedOffDates != null

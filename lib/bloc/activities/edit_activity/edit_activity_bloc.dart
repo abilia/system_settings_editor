@@ -60,7 +60,11 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     }
     if (event is ImageSelected) {
       yield state.copyWith(
-          state.activity.copyWith(fileId: event.imageId), event.newImage);
+          state.activity.copyWith(
+            fileId: event.imageId,
+            icon: event.path,
+          ),
+          event.newImage);
     }
   }
 
@@ -97,8 +101,11 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     } else {
       activitiesBloc.add(UpdateActivity(activity));
     }
-    yield StoredActivityState(activity,
-        state is StoredActivityState ? state.day : activity.startTime.onlyDays());
+    yield StoredActivityState(
+        activity,
+        state is StoredActivityState
+            ? state.day
+            : activity.startTime.onlyDays());
   }
 
   Stream<EditActivityState> _mapChangeDateToState(ChangeDate event) async* {

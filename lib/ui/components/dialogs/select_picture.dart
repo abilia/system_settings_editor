@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -19,10 +21,11 @@ class SelectPictureDialog extends StatefulWidget {
 
 class _SelectPictureDialogState extends State<SelectPictureDialog> {
   bool imageArchiveView = false;
-  String imageSelected;
-  Function get onOk => imageSelected != null
+  SortableData selectedImageData;
+  Function get onOk => selectedImageData != null
       ? () => Navigator.of(context).maybePop(SelectedImage(
-            id: imageSelected,
+            id: selectedImageData.fileId,
+            path: selectedImageData.file,
           ))
       : null;
 
@@ -39,11 +42,14 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
     return ViewDialog(
-      deleteButton: widget.previousImage != null || imageSelected != null
+      deleteButton: widget.previousImage != null || selectedImageData != null
           ? RemoveButton(
               key: TestKey.removePicture,
               onTap: () {
-                Navigator.of(context).maybePop(SelectedImage(id: ''));
+                Navigator.of(context).maybePop(SelectedImage(
+                  id: '',
+                  path: '',
+                ));
               },
               icon: Icon(
                 AbiliaIcons.delete_all_clear,
@@ -99,8 +105,10 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     final image = await ImagePicker.pickImage(source: source);
     if (image != null) {
       final id = Uuid().v4();
+      final path = '${FileStorage.folder}/$id';
       await Navigator.of(context).maybePop(SelectedImage(
         id: id,
+        path: path,
         newImage: image,
       ));
     }
@@ -128,7 +136,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
         onOk: onOk,
         child: ImageArchive(
           onChanged: (imageId) {
-            setState(() => imageSelected = imageId);
+            setState(() => selectedImageData = imageId);
           },
         ),
       ),
@@ -145,10 +153,12 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
 
 class SelectedImage {
   final String id;
+  final String path;
   final File newImage;
 
   SelectedImage({
-    this.id,
+    @required this.id,
+    @required this.path,
     this.newImage,
   });
 }
