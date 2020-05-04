@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/components/activity/timeformat.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
@@ -187,8 +188,7 @@ class TimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat =
-        DateFormat('jm', Intl.defaultLocale ?? Locale.cachedLocaleString);
+    final timeFormat = hourAndMinuteFormat(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -198,7 +198,7 @@ class TimePicker extends StatelessWidget {
             onTap: onTap,
             heigth: heigth,
             leading: Icon(AbiliaIcons.clock),
-            label: Text(timeFormat.format(time)),
+            label: Text(timeFormat(time)),
           )
         else
           InkWell(

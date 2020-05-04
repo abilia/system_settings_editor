@@ -3,12 +3,12 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/activity/check_mark.dart';
+import 'package:seagull/ui/components/activity/timeformat.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
-import 'package:intl/intl.dart';
 
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
@@ -25,7 +25,7 @@ class ActivityCard extends StatelessWidget {
     final theme = Theme.of(context);
     final occasion = activityOccasion.occasion;
     final activity = activityOccasion.activity;
-    final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
+    final timeFormat = hourAndMinuteFormat(context);
     final hasImage = activity.hasImage;
     final hasTitle = activity.title?.isNotEmpty == true;
     final signedOff = activity.isSignedOff(activityOccasion.day);
@@ -101,8 +101,8 @@ class ActivityCard extends StatelessWidget {
                                               .translate
                                               .fullDay
                                           : activity.hasEndTime
-                                              ? '${timeFormat.format(activity.startTime)} - ${timeFormat.format(activity.end)}'
-                                              : '${timeFormat.format(activity.startTime)}',
+                                              ? '${timeFormat(activity.startTime)} - ${timeFormat(activity.end)}'
+                                              : '${timeFormat(activity.startTime)}',
                                       style: theme.textTheme.body2.copyWith(
                                         color: AbiliaColors.black[75],
                                         height: 1.4,
