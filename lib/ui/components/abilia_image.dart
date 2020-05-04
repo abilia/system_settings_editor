@@ -7,8 +7,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/image_thumb.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/theme.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class FadeInCalendarImage extends StatelessWidget {

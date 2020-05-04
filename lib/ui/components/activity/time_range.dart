@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/components/activity/timeformat.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
@@ -83,7 +83,7 @@ class _TimeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = DateFormat('jm', Locale.cachedLocale.languageCode);
+    final timeFormat = hourAndMinuteFormat(context);
     final textStyle = Theme.of(context)
         .textTheme
         .title
@@ -98,7 +98,7 @@ class _TimeText extends StatelessWidget {
           alignment: Alignment.center,
           children: <Widget>[
             Text(
-              timeFormat.format(date),
+              timeFormat(date),
               style: textStyle,
               textAlign: TextAlign.center,
             ),
