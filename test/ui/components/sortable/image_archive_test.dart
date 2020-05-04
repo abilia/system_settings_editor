@@ -93,10 +93,13 @@ void main() {
   });
 }
 
-ImageArchiveState stateFromSortables(List<Sortable> sortables,
-    {String folderId, String imageId}) {
+ImageArchiveState stateFromSortables(
+  List<Sortable> sortables, {
+  String folderId,
+  SortableData imageData,
+}) {
   final allByFolder = groupBy<Sortable, String>(sortables, (s) => s.groupId);
   final allById = Map<String, Sortable>.fromIterable(sortables,
       key: (s) => s.id, value: (s) => s);
-  return ImageArchiveState(allByFolder, allById, folderId, imageId);
+  return ImageArchiveState(allByFolder, allById, folderId, imageData);
 }

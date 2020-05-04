@@ -10,9 +10,10 @@ class LoadUserFiles extends UserFileEvent {}
 
 class ImageAdded extends UserFileEvent {
   final String id;
+  final String path;
   final File file;
 
-  ImageAdded(this.id, this.file);
+  ImageAdded(this.id, this.path, this.file);
 
   @override
   List<Object> get props => [id, file];

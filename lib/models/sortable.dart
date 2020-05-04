@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 import 'package:uuid/uuid.dart';
@@ -149,7 +150,7 @@ class DbSortable extends DbModel<Sortable> {
       'DbSortable: { revision: $revision, dirty: $dirty $sortable }';
 }
 
-class SortableData {
+class SortableData extends Equatable {
   final String name, fileId, icon, file;
   final bool upload;
 
@@ -170,4 +171,7 @@ class SortableData {
       'upload': upload,
     };
   }
+
+  @override
+  List<Object> get props => [name, fileId, icon, file];
 }

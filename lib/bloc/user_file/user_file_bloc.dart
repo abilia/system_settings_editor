@@ -80,7 +80,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
       id: id,
       sha1: sha1.convert(fileBytes).toString(),
       md5: md5.convert(fileBytes).toString(),
-      path: 'seagull/$id',
+      path: '${FileStorage.folder}/$id',
       contentType: lookupMimeType(path, headerBytes: fileBytes),
       fileSize: fileBytes.length,
       deleted: false,
@@ -95,8 +95,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
         adjustRotationAndCreateThumbs, originalBytes);
 
     await fileStorage.storeFile(imageResult.originalImage, id);
-    await fileStorage.storeImageThumb(imageResult.thumb,
-        ImageThumb(id: id));
+    await fileStorage.storeImageThumb(imageResult.thumb, ImageThumb(id: id));
 
     final userFile = generateUserFile(id, path, imageResult.originalImage);
     await userFileRepository.save([userFile]);
