@@ -61,11 +61,11 @@ extension IterableActivity on Iterable<Activity> {
           DateTime start, DateTime end) =>
       _alarmsFor(start,
           startTimeTest: (a) =>
-              a.startClock(start).onOrBetween(startDate: start, endDate: end),
+              a.startClock(start).isOnOrBetween(startDate: start, endDate: end),
           endTimeTest: (a) =>
               a.startClock(start).isAtSameDay(start) &&
-              a.endClock(start).onOrAfter(start),
-          reminderTest: (rs) => rs.notificationTime.onOrAfter(start));
+              a.endClock(start).isAtSameMomentOrAfter(start),
+          reminderTest: (rs) => rs.notificationTime.isAtSameMomentOrAfter(start));
 
   Iterable<NotificationAlarm> _alarmsForDay(DateTime day,
       {@required DateTime notBefore, @required int take, @required int depth}) {
@@ -74,7 +74,7 @@ extension IterableActivity on Iterable<Activity> {
     final alarms = _alarmsFor(day,
         startTimeTest: (a) => a.startClock(day).isAtSameDay(day),
         endTimeTest: (a) => a.startClock(day).isAtSameDay(day),
-        reminderTest: (rs) => rs.notificationTime.onOrAfter(notBefore));
+        reminderTest: (rs) => rs.notificationTime.isAtSameMomentOrAfter(notBefore));
 
     final int amountOfAlarms = alarms.length;
     if (amountOfAlarms < take) {

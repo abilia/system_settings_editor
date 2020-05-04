@@ -9,7 +9,28 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
+class ActivityInfoWithDots extends StatelessWidget {
+  final Activity activity;
+  final DateTime day;
+
+  const ActivityInfoWithDots({Key key, this.activity, this.day})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        ActivityInfoSideDots(
+          activity: activity,
+          day: day,
+        ),
+        Expanded(child: ActivityInfo(activity: activity, day: day)),
+      ],
+    );
+  }
+}
+
 class ActivityInfo extends StatelessWidget {
+  static const margin = 12.0;
   final Activity activity;
   final DateTime day;
   const ActivityInfo({
@@ -105,8 +126,11 @@ class ActivityContainer extends StatelessWidget {
             Flexible(
               flex: 126,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    12, 12, 12, hasAttachment || hasImage ? 12.0 : 0.0),
+                padding: EdgeInsets.all(ActivityInfo.margin).subtract(
+                  EdgeInsets.only(
+                    bottom: hasAttachment || hasImage ? 0 : ActivityInfo.margin,
+                  ),
+                ),
                 child: TopInfo(
                   activity: activity,
                   day: day,
@@ -121,7 +145,7 @@ class ActivityContainer extends StatelessWidget {
                 children: <Widget>[
                   Divider(
                     color: AbiliaColors.white[120],
-                    indent: 12.0,
+                    indent: ActivityInfo.margin,
                     height: 1,
                   ),
                   Expanded(
@@ -152,11 +176,11 @@ class ActivityContainer extends StatelessWidget {
                     checked: signedOff,
                     child: hasImage
                         ? FadeInCalendarImage(
-                          imageFileId: activity.fileId,
-                          imageFilePath: activity.icon,
-                          activityId: activity.id,
-                          imageSize: ImageSize.ORIGINAL,
-                        )
+                            imageFileId: activity.fileId,
+                            imageFilePath: activity.icon,
+                            activityId: activity.id,
+                            imageSize: ImageSize.ORIGINAL,
+                          )
                         : SizedBox.expand(),
                     small: false,
                   ),
@@ -270,7 +294,7 @@ class TopInfo extends StatelessWidget {
       children: <Widget>[
         if (imageToTheLeft)
           Padding(
-            padding: const EdgeInsets.only(right: 12.0),
+            padding: const EdgeInsets.only(right: ActivityInfo.margin),
             child: checkableImage,
           ),
         Expanded(

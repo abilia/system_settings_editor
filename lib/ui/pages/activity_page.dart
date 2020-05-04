@@ -44,8 +44,9 @@ class ActivityPage extends StatelessWidget {
                 ),
               ),
               body: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: ActivityInfo(
+                padding: const EdgeInsets.all(ActivityInfo.margin)
+                    .subtract(const EdgeInsets.only(left: ActivityInfo.margin)),
+                child: ActivityInfoWithDots(
                   activity: activity,
                   day: day,
                 ),

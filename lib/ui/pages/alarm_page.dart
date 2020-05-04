@@ -23,7 +23,7 @@ class AlarmPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(title: Translator.of(context).translate.alarm),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(ActivityInfo.margin),
         child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
           builder: (context, activitiesState) => ActivityInfo(
             activity: activitiesState.newActivityFromLoadedOrGiven(activity),

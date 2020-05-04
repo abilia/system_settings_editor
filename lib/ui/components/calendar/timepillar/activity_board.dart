@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/components/calendar/timepillar/all.dart';
+import 'package:seagull/ui/components/all.dart';
 
 class ActivityBoard extends StatelessWidget {
   const ActivityBoard({
