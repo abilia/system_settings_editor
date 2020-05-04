@@ -191,7 +191,8 @@ class ActivityInfoSideDots extends StatelessWidget {
         );
       }
       return SideDotsLarge(
-        dots: activity.duration.inDots(minutesPerDot, roundingMinute),
+        dots: min(activity.duration.inDots(minutesPerDot, roundingMinute),
+            ActivityInfoSideDots.maxDots),
         startTime: startTime,
         endTime: endTime,
         now: now,
@@ -262,7 +263,7 @@ class BigDots extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: List.generate(min(dots, ActivityInfoSideDots.maxDots), (dot) {
+        children: List.generate(dots, (dot) {
           if (dot == 0) {
             final timeLeft = endTime.difference(now).inMinutes;
             return SubQuarerDot(minutes: timeLeft);
