@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 import 'package:flutter/material.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -38,6 +36,8 @@ class TimePillar extends StatelessWidget {
         : dayOccasion == Occasion.past
             ? (_) => const PastDots()
             : (_) => const FutureDots();
+
+    final formatHour = onlyHourFormat(context);
     final theme = Theme.of(context);
     return DefaultTextStyle(
       style: theme.textTheme.title.copyWith(color: AbiliaColors.black),
@@ -79,7 +79,7 @@ class TimePillar extends StatelessWidget {
                             Container(
                               width: 25.0,
                               child: Text(
-                                _formatHour(hour),
+                                formatHour(hour),
                                 textAlign: TextAlign.end,
                               ),
                             ),
@@ -96,14 +96,6 @@ class TimePillar extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _formatHour(DateTime hour) {
-    final hourFormatedText =
-        DateFormat('j', Locale.cachedLocaleString).format(hour);
-    final withoutLeadingZeroOrTrailingAmPm =
-        hourFormatedText.substring(hourFormatedText.startsWith('0') ? 1 : 0, 2);
-    return withoutLeadingZeroOrTrailingAmPm;
   }
 
   Widget _todayDots(DateTime hour) => TodayDots(hour: hour);

@@ -25,8 +25,6 @@ import 'package:seagull/background/all.dart';
 void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   await initServices();
-  final currentLocale = await Devicelocale.currentLocale;
-  await LanguageDb().setLanguage(currentLocale.split(RegExp('-|_'))[0]);
   final baseUrl = await BaseUrlDb().initialize(PROD);
 
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
@@ -35,8 +33,9 @@ void main() async {
 
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final currentLocale = await Devicelocale.currentLocale;
+  await LanguageDb().setLanguage(currentLocale.split(RegExp('-|_'))[0]);
   final documentDirectory = await getApplicationDocumentsDirectory();
-
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
     ..init();
