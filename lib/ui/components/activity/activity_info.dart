@@ -172,16 +172,11 @@ class ActivityContainer extends StatelessWidget {
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                  child: CheckMarkWrapper(
-                    checked: signedOff,
-                    child: hasImage
-                        ? FadeInCalendarImage(
-                            imageFileId: activity.fileId,
-                            imageFilePath: activity.icon,
-                            activityId: activity.id,
-                            imageSize: ImageSize.ORIGINAL,
-                          )
-                        : SizedBox.expand(),
+                  child: CheckedImage(
+                    activity: activity,
+                    day: day,
+                    imageSize: ImageSize.ORIGINAL,
+                    fit: BoxFit.contain,
                     small: false,
                   ),
                 ),
@@ -269,23 +264,10 @@ class TopInfo extends StatelessWidget {
     final themeData = Theme.of(context);
     final imageToTheLeft = (hasImage || signedOff) && hasAttachment && hasTitle;
 
-    final checkableImage = CheckMarkWrapper(
-      checked: signedOff,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: hasImage
-            ? FadeInCalendarImage(
-                imageFileId: activity.fileId,
-                imageFilePath: activity.icon,
-                activityId: activity.id,
-                height: 96,
-                width: 96,
-              )
-            : SizedBox(
-                height: 96,
-                width: 96,
-              ),
-      ),
+    final checkableImage = CheckedImage(
+      activity: activity,
+      size: 96,
+      day: day,
     );
 
     return Row(

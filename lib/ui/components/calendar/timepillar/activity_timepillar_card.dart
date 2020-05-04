@@ -85,21 +85,9 @@ class ActivityTimepillarCard extends StatelessWidget {
                                   : AbiliaColors.black),
                         ),
                       if (hasImage || signedOff)
-                        SizedBox(
-                          width: imageSize,
-                          height: imageSize,
-                          child: CheckMarkWrapper(
-                            checked: signedOff,
-                            child: hasImage
-                                ? FadeInCalendarImage(
-                                    imageFileId: activity.fileId,
-                                    imageFilePath: activity.icon,
-                                    activityId: activity.id,
-                                    width: imageSize,
-                                    height: imageSize,
-                                  )
-                                : Container(),
-                          ),
+                        CheckedImage.fromActivityOccasion(
+                          activityOccasion: activityOccasion,
+                          size: imageSize,
                         ),
                     ],
                   ),

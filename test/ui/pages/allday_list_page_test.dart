@@ -63,8 +63,6 @@ void main() {
     await tester.pumpWidget(wrapWithMaterialApp(AllDayList(
       allDayActivities: allDayActivities,
       pickedDay: day,
-      cardHeight: 150,
-      cardMargin: 6,
     )));
     await tester.pumpAndSettle();
     expect(find.text(title0), findsOneWidget);
