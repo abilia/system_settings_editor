@@ -8,3 +8,4 @@ export 'alarm_extensions.dart';
 export 'activities_state_extensions.dart';
 export 'sort_order.dart';
 export 'image_processing.dart';
+export 'strings.dart';
