@@ -46,11 +46,14 @@ class ActivityBoard extends StatelessWidget {
       final dotHeight = dots * dotDistance;
 
       final textHeight = (a.hasTitle
-              ? a.title.textSize(textStyle, ActivityTimepillarCard.width).height
-              : 0.0) *
-          scaleFactor;
-      final imageHeight = a.hasImage ? ActivityTimepillarCard.imageSize : 0.0;
-      final renderedHeight = textHeight + imageHeight + 16.0;
+          ? a.title
+              .textSize(textStyle, ActivityTimepillarCard.width,
+                  scaleFactor: scaleFactor)
+              .height
+          : 0.0);
+      final imageHeight =
+          a.hasImage ? ActivityTimepillarCard.imageSize + 16.0 : 0.0;
+      final renderedHeight = textHeight + imageHeight;
 
       final double height = max(
         max(dotHeight, renderedHeight),

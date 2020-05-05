@@ -20,11 +20,11 @@ class NoteBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     final scaleFactor = MediaQuery.of(context).textScaleFactor;
     final textStyle = abiliaTextTheme.body2;
-    final textSize = text.textSize(textStyle, width);
-    final scaledTextHeight = textSize.height * scaleFactor;
+    final textSize =
+        text.textSize(textStyle, width, scaleFactor: scaleFactor).height;
     final scaledLineHeight =
         textStyle.fontSize * textStyle.height * scaleFactor;
-    final numberOfLines = max(height, scaledTextHeight) / scaledLineHeight;
+    final numberOfLines = max(height, textSize) / scaledLineHeight;
     return Container(
       child: Stack(children: [
         Text(text, style: textStyle),
