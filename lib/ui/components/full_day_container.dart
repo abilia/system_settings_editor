@@ -5,17 +5,11 @@ import 'package:seagull/ui/pages/all.dart';
 
 class FullDayContainer extends StatelessWidget {
   const FullDayContainer(
-      {Key key,
-      @required this.fullDayActivities,
-      @required this.cardHeight,
-      @required this.cardMargin,
-      @required this.day})
+      {Key key, @required this.fullDayActivities, @required this.day})
       : super(key: key);
 
   final List<ActivityOccasion> fullDayActivities;
-  final double cardHeight;
   final DateTime day;
-  final double cardMargin;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +24,7 @@ class FullDayContainer extends StatelessWidget {
                 (fd) => Flexible(
                   flex: 2,
                   child: Padding(
-                    padding: EdgeInsets.only(right: cardMargin),
+                    padding: EdgeInsets.only(right: ActivityCard.cardMargin),
                     child: ActivityCard(activityOccasion: fd),
                   ),
                 ),
@@ -38,10 +32,9 @@ class FullDayContainer extends StatelessWidget {
               .followedBy([
             if (fullDayActivities.length >= 3)
               ShowAllFullDayActivitiesButton(
-                  fullDayActivities: fullDayActivities,
-                  day: day,
-                  cardHeight: cardHeight,
-                  cardMargin: cardMargin)
+                fullDayActivities: fullDayActivities,
+                day: day
+              )
           ]).toList(),
         ),
       ),
@@ -54,14 +47,10 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
     Key key,
     @required this.fullDayActivities,
     @required this.day,
-    @required this.cardHeight,
-    @required this.cardMargin,
   }) : super(key: key);
 
   final List<ActivityOccasion> fullDayActivities;
   final DateTime day;
-  final double cardHeight;
-  final double cardMargin;
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +69,6 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
                 child: AllDayList(
                   pickedDay: day,
                   allDayActivities: fullDayActivities,
-                  cardHeight: this.cardHeight,
-                  cardMargin: this.cardMargin,
                 ),
               ),
             ),

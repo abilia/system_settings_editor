@@ -16,9 +16,8 @@ class CalendarPage extends StatefulWidget {
   _CalendarPageState createState() => _CalendarPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage> with WidgetsBindingObserver {
-  final double cardHeight = 56.0;
-  final double cardMargin = 4.0;
+class _CalendarPageState extends State<CalendarPage>
+    with WidgetsBindingObserver {
   DayPickerBloc _dayPickerBloc;
   ActivitiesBloc _activitiesBloc;
   ScrollPositionBloc _scrollPositionBloc;
@@ -98,8 +97,6 @@ class _CalendarPageState extends State<CalendarPage> with WidgetsBindingObserver
                                 if (fullDayActivities.isNotEmpty)
                                   FullDayContainer(
                                     fullDayActivities: fullDayActivities,
-                                    cardHeight: cardHeight,
-                                    cardMargin: cardMargin,
                                     day: state.day,
                                   ),
                                 Expanded(
@@ -107,8 +104,6 @@ class _CalendarPageState extends State<CalendarPage> with WidgetsBindingObserver
                                           CalendarViewType.LIST
                                       ? Agenda(
                                           state: state,
-                                          cardHeight: cardHeight,
-                                          cardMargin: cardMargin,
                                         )
                                       : TimePillarCalendar(
                                           state: state,

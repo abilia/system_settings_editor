@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/activity/check_mark.dart';
 import 'package:seagull/ui/components/activity/timeformat.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/colors.dart';
@@ -12,17 +11,20 @@ import 'package:seagull/ui/theme.dart';
 
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
-  final double cardMargin;
-  static const double cardPadding = 4.0;
-  static const double imageSize = 48.0;
+  final double margin;
+  static const double cardHeight = 56.0,
+      cardPadding = 4.0,
+      cardMargin = 4.0,
+      imageSize = 48.0;
+  static const Duration duration = Duration(seconds: 1);
 
-  const ActivityCard({Key key, this.activityOccasion, this.cardMargin = 0})
+  const ActivityCard({Key key, this.activityOccasion, this.margin = 0.0})
       : assert(activityOccasion != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = abiliaTheme.textTheme;
     final occasion = activityOccasion.occasion;
     final activity = activityOccasion.activity;
     final timeFormat = hourAndMinuteFormat(context);
@@ -31,36 +33,47 @@ class ActivityCard extends StatelessWidget {
     final signedOff = activity.isSignedOff(activityOccasion.day);
     final current = occasion == Occasion.current;
     final inactive = occasion == Occasion.past || signedOff;
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: cardMargin),
-      child: Stack(
-        overflow: Overflow.visible,
-        children: [
-          InkWell(
-            borderRadius: borderRadius,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (innerContext) =>
-                      ActivityPage(occasion: activityOccasion),
-                ),
-              );
-            },
-            child: Container(
-              decoration: BoxDecoration(
+    final themeData = inactive
+        ? abiliaTheme.copyWith(
+            cardColor: AbiliaColors.white[110],
+            textTheme: textTheme.copyWith(
+              subhead:
+                  textTheme.subhead.copyWith(color: AbiliaColors.white[140]),
+              body2: textTheme.body2.copyWith(color: AbiliaColors.white[140]),
+            ),
+            iconTheme:
+                abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white[140]))
+        : abiliaTheme;
+    return AnimatedTheme(
+      duration: duration,
+      data: themeData,
+      child: Builder(
+        builder: (context) => Padding(
+          padding: EdgeInsets.symmetric(vertical: margin),
+          child: Stack(
+            overflow: Overflow.visible,
+            children: [
+              InkWell(
                 borderRadius: borderRadius,
-                border: Border.all(
-                  color: current ? AbiliaColors.red : borderColor,
-                ),
-              ),
-              child: AnimatedOpacity(
-                opacity: inactive ? .5 : 1,
-                duration: const Duration(seconds: 1),
-                child: Container(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (innerContext) =>
+                          ActivityPage(occasion: activityOccasion),
+                    ),
+                  );
+                },
+                child: AnimatedContainer(
+                  duration: duration,
+                  height: cardHeight,
                   decoration: BoxDecoration(
                     borderRadius: borderRadius,
-                    color: inactive ? AbiliaColors.white[110] : theme.cardColor,
+                    color: Theme.of(context).cardColor,
+                    border: Border.all(
+                      color: current ? AbiliaColors.red : borderColor,
+                      width: current ? 2.0 : 1.0,
+                    ),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(cardPadding),
@@ -69,33 +82,27 @@ class ActivityCard extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            if (signedOff && !hasImage)
-                              SizedBox(width: imageSize + cardPadding),
-                            if (hasImage)
-                              FadeInCalendarImage(
-                                imageFileId: activity.fileId,
-                                imageFilePath: activity.icon,
-                                activityId: activity.id,
-                                width: imageSize,
-                                height: imageSize,
+                            if (hasImage || signedOff)
+                              CheckedImage.fromActivityOccasion(
+                                activityOccasion: activityOccasion,
+                                size: imageSize,
+                                fit: BoxFit.cover,
                               ),
                             Expanded(
                               child: Padding(
                                 padding:
                                     const EdgeInsets.only(left: cardPadding),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    if (hasTitle)
-                                      Text(
-                                        activity.title,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: theme.textTheme.subhead.copyWith(
-                                            color: AbiliaColors.black),
-                                      ),
+                                child: Stack(children: <Widget>[
+                                  if (hasTitle)
                                     Text(
+                                      activity.title,
+                                      overflow: TextOverflow.ellipsis,
+                                      style:
+                                          Theme.of(context).textTheme.subhead,
+                                    ),
+                                  Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
                                       activity.fullDay
                                           ? Translator.of(context)
                                               .translate
@@ -103,13 +110,10 @@ class ActivityCard extends StatelessWidget {
                                           : activity.hasEndTime
                                               ? '${timeFormat(activity.startTime)} - ${timeFormat(activity.end)}'
                                               : '${timeFormat(activity.startTime)}',
-                                      style: theme.textTheme.body2.copyWith(
-                                        color: AbiliaColors.black[75],
-                                        height: 1.4,
-                                      ),
+                                      style: Theme.of(context).textTheme.body2,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ]),
                               ),
                             ),
                           ],
@@ -124,22 +128,17 @@ class ActivityCard extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+              if (current) buildNowBanner(context),
+            ],
           ),
-          if (current) buildNowBanner(context),
-          if (signedOff)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CheckMarkWithBorder(),
-            ),
-        ],
+        ),
       ),
     );
   }
 
   Widget buildNowBanner(BuildContext context) => Positioned(
-        right: -4.0,
-        top: -cardMargin,
+        right: -cardPadding,
+        top: -margin,
         child: Container(
           height: 24.0,
           width: 59.0,

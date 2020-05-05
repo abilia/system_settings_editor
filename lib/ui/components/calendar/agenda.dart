@@ -7,16 +7,9 @@ import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components/all.dart';
 
 class Agenda extends StatefulWidget {
-  final double cardHeight;
-  final double cardMargin;
   final ActivitiesOccasionLoaded state;
 
-  const Agenda({
-    Key key,
-    @required this.state,
-    @required this.cardHeight,
-    @required this.cardMargin,
-  }) : super(key: key);
+  const Agenda({Key key, @required this.state}) : super(key: key);
 
   @override
   _AgendaState createState() => _AgendaState();
@@ -39,7 +32,7 @@ class _AgendaState extends State<Agenda> {
     final scrollController = ScrollController(
         initialScrollOffset: max(
             state.indexOfCurrentActivity *
-                (widget.cardHeight + widget.cardMargin),
+                (ActivityCard.cardHeight + ActivityCard.cardMargin),
             0),
         keepScrollOffset: false);
     if (state.isToday) {
@@ -71,7 +64,8 @@ class _AgendaState extends State<Agenda> {
                     ],
                   )
                 : ListView.builder(
-                    itemExtent: widget.cardHeight + widget.cardMargin,
+                    itemExtent:
+                        ActivityCard.cardHeight + ActivityCard.cardMargin,
                     controller: state.isToday ? scrollController : null,
                     physics: const AlwaysScrollableScrollPhysics(),
                     padding:
@@ -79,7 +73,7 @@ class _AgendaState extends State<Agenda> {
                     itemCount: activities.length,
                     itemBuilder: (context, index) => ActivityCard(
                       activityOccasion: activities[index],
-                      cardMargin: widget.cardMargin / 2,
+                      margin: ActivityCard.cardMargin / 2,
                     ),
                   ),
           ),

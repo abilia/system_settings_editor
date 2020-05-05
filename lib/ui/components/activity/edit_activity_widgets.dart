@@ -60,8 +60,8 @@ class NameAndPictureWidget extends StatelessWidget {
           activity.hasImage
               ? InkWell(
                   onTap: imageClick,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                  child: Hero(
+                    tag: activity.id,
                     child: FadeInCalendarImage(
                       height: 84,
                       width: 84,
