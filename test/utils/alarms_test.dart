@@ -5,7 +5,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 void main() {
-  group('get alarms and reminders', () {
+  group('alarms On Exact Minute', () {
     final startDate = DateTime(2008, 8, 8, 8, 8);
     final day = startDate.onlyDays();
     test('no alarms', () {
@@ -97,6 +97,31 @@ void main() {
       final alarms = activities.alarmsOnExactMinute(startDate).toList();
       // Assert
       expect(alarms, [NewReminder(afterWithReminder, day, reminder: reminder)]);
+    });
+
+    test('full day is no alarm', () {
+      // Arrange
+      final activity = FakeActivity.starts(startDate).copyWith(fullDay: true);
+      final activities = [activity];
+
+      // Act
+      final alarms = activities.alarmsOnExactMinute(startDate).toList();
+      // Assert
+      expect(alarms, isEmpty);
+    });
+    test('fullday with reminders or alarm is no alarm', () {
+      // Arrange
+      final reminder = 5.minutes();
+      final afterWithReminder = FakeActivity.starts(startDate.add(reminder))
+          .copyWith(
+              reminderBefore: [5.minutes().inMilliseconds], fullDay: true);
+      final onTime = FakeActivity.starts(startDate).copyWith(fullDay: true);
+      final activities = [afterWithReminder, onTime];
+
+      // Act
+      final alarms = activities.alarmsOnExactMinute(startDate).toList();
+      // Assert
+      expect(alarms, isEmpty);
     });
   });
 
@@ -380,6 +405,25 @@ void main() {
           )
           .toSet();
       expect(got.toSet().intersection(shouldNotContainTheseReminders), isEmpty);
+    });
+    test('fullday is not alarm or reminders ', () {
+      // Arrange
+      final reminder = 5.minutes();
+      final afterWithReminder = FakeActivity.starts(startDate.add(reminder),
+              title: 'after with reminder')
+          .copyWith(
+        reminderBefore: [reminder.inMilliseconds],
+        fullDay: true,
+      );
+      final onTime = FakeActivity.starts(startDate, title: 'onTime').copyWith(
+        fullDay: true,
+      );
+      final activities = [afterWithReminder, onTime];
+
+      // Act
+      final alarms = activities.alarmsFrom(startDate).toList();
+      // Assert
+      expect(alarms, isEmpty);
     });
   });
 }
