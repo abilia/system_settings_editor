@@ -14,8 +14,9 @@ class ActivityTimepillarCard extends StatelessWidget {
       totalWith = dotSize + width + padding;
 
   final ActivityOccasion activityOccasion;
+  final TextStyle textStyle;
   final int dots, column;
-  final double top, height, endPos;
+  final double top, endPos;
 
   const ActivityTimepillarCard({
     Key key,
@@ -23,7 +24,8 @@ class ActivityTimepillarCard extends StatelessWidget {
     @required this.dots,
     @required this.top,
     @required this.column,
-    @required this.height,
+    @required double height,
+    @required this.textStyle,
   })  : assert(activityOccasion != null),
         endPos = top + height,
         super(key: key);
@@ -33,7 +35,7 @@ class ActivityTimepillarCard extends StatelessWidget {
     final activity = activityOccasion.activity;
     final bool right = activity.category == Category.right,
         hasImage = activity.hasImage,
-        hasTitle = activity.title?.isNotEmpty == true,
+        hasTitle = activity.hasTitle,
         signedOff = activity.isSignedOff(activityOccasion.day),
         current = activityOccasion.occasion == Occasion.current,
         inactive = activityOccasion.occasion == Occasion.past || signedOff;
@@ -68,7 +70,6 @@ class ActivityTimepillarCard extends StatelessWidget {
                   maxWidth: width,
                   minWidth: width,
                   minHeight: minHeight,
-                  maxHeight: height <= minHeight ? double.infinity : height,
                 ),
                 child: Center(
                   child: Column(
@@ -79,7 +80,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                           activity.title,
                           overflow: TextOverflow.visible,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.caption.copyWith(
+                          style: textStyle.copyWith(
                               color: inactive
                                   ? AbiliaColors.white[140]
                                   : AbiliaColors.black),

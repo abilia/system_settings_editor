@@ -20,7 +20,7 @@ class AnalyticsService {
       name: 'activity_created',
       parameters: <String, dynamic>{
         'image': activity.hasImage,
-        'title': activity.title?.isNotEmpty ?? false,
+        'title': activity.hasTitle ?? false,
         'fullDay': activity.fullDay,
         'checkable': activity.checkable,
         'removeAfter': activity.removeAfter,

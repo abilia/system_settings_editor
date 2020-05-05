@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
@@ -92,6 +93,7 @@ class NameAndPictureWidget extends StatelessWidget {
                 TextFormField(
                   initialValue: activity.title,
                   textCapitalization: TextCapitalization.sentences,
+                  inputFormatters: [LengthLimitingTextInputFormatter(50)],
                   onChanged: (text) =>
                       BlocProvider.of<EditActivityBloc>(context)
                           .add(ReplaceActivity(activity.copyWith(title: text))),
