@@ -110,15 +110,7 @@ class _TimeText extends StatelessWidget {
   }
 
   BoxDecoration _getBoxDecoration() => current
-      ? BoxDecoration(
-          color: AbiliaColors.white,
-          borderRadius: borderRadius,
-          border: Border.all(
-            color: AbiliaColors.red,
-            width: 2.0,
-            style: BorderStyle.solid,
-          ),
-        )
+      ? currentBoxDecoration
       : BoxDecoration(
           borderRadius: borderRadius,
           border: Border.all(

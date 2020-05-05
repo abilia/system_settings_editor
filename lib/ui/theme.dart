@@ -37,13 +37,31 @@ InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
 
 const Radius radius = Radius.circular(12);
 const BorderRadius borderRadius = BorderRadius.all(radius);
-const borderColor = AbiliaColors.white120;
-const borderSide = BorderSide(color: AbiliaColors.white120);
-const border = Border.fromBorderSide(borderSide);
+const activiteBorder =
+    Border.fromBorderSide(BorderSide(color: AbiliaColors.red, width: 2.0));
+const border = Border.fromBorderSide(BorderSide(color: AbiliaColors.white120));
 const BoxDecoration borderDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: border,
 );
+const BoxDecoration currentBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white,
+  borderRadius: borderRadius,
+  border: activiteBorder,
+);
+const BoxDecoration futureBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white,
+  borderRadius: borderRadius,
+  border: border,
+);
+const BoxDecoration inactiveBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white110,
+  borderRadius: borderRadius,
+  border: border,
+);
+BoxDecoration getBoxDecoration(bool current, bool inactive) => inactive
+    ? inactiveBoxDecoration
+    : current ? currentBoxDecoration : futureBoxDecoration;
 
 OutlineInputBorder inputBorder = OutlineInputBorder(
   borderSide: BorderSide(color: AbiliaColors.transparentBlack[15]),
