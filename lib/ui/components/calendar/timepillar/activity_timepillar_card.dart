@@ -16,7 +16,7 @@ class ActivityTimepillarCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
   final TextStyle textStyle;
   final int dots, column;
-  final double top, endPos;
+  final double top, endPos, height;
 
   const ActivityTimepillarCard({
     Key key,
@@ -24,7 +24,7 @@ class ActivityTimepillarCard extends StatelessWidget {
     @required this.dots,
     @required this.top,
     @required this.column,
-    @required double height,
+    @required this.height,
     @required this.textStyle,
   })  : assert(activityOccasion != null),
         endPos = top + height,
@@ -70,6 +70,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                   maxWidth: width,
                   minWidth: width,
                   minHeight: minHeight,
+                  maxHeight: height,
                 ),
                 child: Center(
                   child: Column(
