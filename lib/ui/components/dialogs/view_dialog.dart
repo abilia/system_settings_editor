@@ -96,6 +96,7 @@ class ViewDialog extends StatelessWidget {
                   child: RoundFloatingButton(
                     AbiliaIcons.ok,
                     key: TestKey.okDialog,
+                    color: AbiliaColors.green,
                     onTap: onOk,
                   ),
                 ),
@@ -191,10 +192,12 @@ class ViewDialog extends StatelessWidget {
 class RoundFloatingButton extends StatelessWidget {
   final IconData iconData;
   final GestureTapCallback onTap;
+  final MaterialColor color;
   const RoundFloatingButton(
     this.iconData, {
     @required this.onTap,
     Key key,
+    this.color = AbiliaColors.white,
   }) : super(key: key);
 
   @override
@@ -209,10 +212,10 @@ class RoundFloatingButton extends StatelessWidget {
           width: 40.0,
           height: 40.0,
           decoration: BoxDecoration(
-            color: AbiliaColors.white,
+            color: color,
             shape: BoxShape.circle,
             border: Border.all(
-              color: AbiliaColors.transparentBlack[15],
+              color: color[120],
             ),
           ),
           child: Icon(
