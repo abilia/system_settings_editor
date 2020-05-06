@@ -64,7 +64,7 @@ class ActivityTimepillarCard extends StatelessWidget {
               );
             },
             child: Container(
-              decoration: _getBoxDecoration(current, inactive),
+              decoration: getBoxDecoration(current, inactive),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxWidth: width,
@@ -101,25 +101,4 @@ class ActivityTimepillarCard extends StatelessWidget {
       ),
     );
   }
-
-  BoxDecoration _getBoxDecoration(bool current, bool inactive) => inactive
-      ? BoxDecoration(
-          color: AbiliaColors.white[110],
-          borderRadius: borderRadius,
-          border: border,
-        )
-      : current
-          ? BoxDecoration(
-              color: AbiliaColors.white,
-              borderRadius: borderRadius,
-              border: Border.all(
-                color: AbiliaColors.red,
-                width: 2.0,
-              ),
-            )
-          : BoxDecoration(
-              color: AbiliaColors.white,
-              borderRadius: borderRadius,
-              border: border,
-            );
 }
