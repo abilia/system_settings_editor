@@ -161,6 +161,8 @@ void main() {
           isTrue);
       expect(startTimeFieldFinder, findsNothing);
       expect(find.byIcon(AbiliaIcons.handi_reminder), findsNothing);
+      expect(find.byKey(TestKey.leftCategoryRadio), findsNothing);
+      expect(find.byKey(TestKey.rightCategoryRadio), findsNothing);
     });
 
     testWidgets('alarm at start switch', (WidgetTester tester) async {
