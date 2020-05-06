@@ -258,7 +258,7 @@ class TopInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasImage = activity.hasImage;
     final hasAttachment = activity.infoItem?.isNotEmpty ?? false;
-    final hasTitle = activity.title?.isNotEmpty ?? false;
+    final hasTitle = activity.hasTitle;
     final imageBelow = hasImage && hasAttachment && !hasTitle;
     final signedOff = activity.isSignedOff(day);
     final themeData = Theme.of(context);

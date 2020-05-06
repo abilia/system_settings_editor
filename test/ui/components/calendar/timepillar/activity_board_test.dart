@@ -21,19 +21,22 @@ void main() {
 
   Widget multiWrap(List<ActivityOccasion> activityOccasions,
       {DateTime initialTime}) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: BlocProvider(
-        create: (context) =>
-            ClockBloc(stream, initialTime: initialTime ?? startTime),
-        child: Stack(
-          children: <Widget>[
-            Timeline(width: 40),
-            ActivityBoard(
-              activities: activityOccasions,
-              categoryMinWidth: 400,
-            ),
-          ],
+    return MediaQuery(
+      data: MediaQueryData(),
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: BlocProvider(
+          create: (context) =>
+              ClockBloc(stream, initialTime: initialTime ?? startTime),
+          child: Stack(
+            children: <Widget>[
+              Timeline(width: 40),
+              ActivityBoard(
+                activities: activityOccasions,
+                categoryMinWidth: 400,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -57,7 +60,7 @@ void main() {
     expect(find.text(title), findsOneWidget);
   });
   group('position', () {
-    testWidgets('Has same position', (WidgetTester tester) async {
+    testWidgets('Has same horizontal position', (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);
 
       final activities = [
@@ -89,7 +92,8 @@ void main() {
       }
     });
 
-    testWidgets('Has not same position', (WidgetTester tester) async {
+    testWidgets('Has not same horizontal position',
+        (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);
       final activities = [
         time.subtract(8.minutes()),
@@ -117,6 +121,90 @@ void main() {
       for (final y in activityYPos) {
         expect((y - timelineYPostion).abs(), greaterThan(dotDistance));
       }
+    });
+    testWidgets(
+        'two activities with sufficient time distance has same vertical position',
+        (WidgetTester tester) async {
+      final time = DateTime(2020, 04, 21, 07, 30);
+      final activityA = ActivityOccasion.forTest(
+        Activity.createNew(
+          title: 'a',
+          startTime: time,
+        ),
+      );
+      final activityB = ActivityOccasion.forTest(
+        Activity.createNew(
+          title: 'b',
+          startTime: time.add(2.hours()),
+        ),
+      );
+
+      await tester.pumpWidget(multiWrap([activityA, activityB]));
+      expect(find.byType(Timeline), findsOneWidget);
+
+      final activityAXPos =
+          tester.getTopLeft(find.byKey(ObjectKey(activityA))).dx;
+      final activityBXPos =
+          tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
+
+      expect(activityAXPos, activityBXPos);
+    });
+    testWidgets(
+        'two activities to small time distance does not has same vertical position',
+        (WidgetTester tester) async {
+      final time = DateTime(2020, 04, 21, 07, 30);
+      final activityA = ActivityOccasion.forTest(
+        Activity.createNew(
+          title: 'a',
+          startTime: time,
+        ),
+      );
+      final activityB = ActivityOccasion.forTest(
+        Activity.createNew(
+          title: 'b',
+          startTime: time.add(1.hours()),
+        ),
+      );
+
+      await tester.pumpWidget(multiWrap([activityA, activityB]));
+      expect(find.byType(Timeline), findsOneWidget);
+
+      final activityAXPos =
+          tester.getTopLeft(find.byKey(ObjectKey(activityA))).dx;
+      final activityBXPos =
+          tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
+
+      expect((activityAXPos - activityBXPos).abs(),
+          greaterThanOrEqualTo(ActivityTimepillarCard.totalWith));
+    });
+    testWidgets(
+        'two activities to sufficient time distance but the fist with a long title does not has same vertical position',
+        (WidgetTester tester) async {
+      final time = DateTime(2020, 04, 21, 07, 30);
+      final activityA = ActivityOccasion.forTest(
+        Activity.createNew(
+          title:
+              'aaAAaaaAaaaAaaAAAAAAAAAAAaaaaaaaaaaaaaaaaaaAaAaaaAAAaaaAaaAAAaAaaaAaAAAAaAaAaaAaaaaaaaaa',
+          startTime: time,
+        ),
+      );
+      final activityB = ActivityOccasion.forTest(
+        Activity.createNew(
+          title: 'b',
+          startTime: time.add(2.hours()),
+        ),
+      );
+
+      await tester.pumpWidget(multiWrap([activityA, activityB]));
+      expect(find.byType(Timeline), findsOneWidget);
+
+      final activityAXPos =
+          tester.getTopLeft(find.byKey(ObjectKey(activityA))).dx;
+      final activityBXPos =
+          tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
+
+      expect((activityAXPos - activityBXPos).abs(),
+          greaterThanOrEqualTo(ActivityTimepillarCard.totalWith));
     });
 
     testWidgets('Is not placed at same horizontal position',
@@ -151,7 +239,8 @@ void main() {
           ),
         ),
       );
-      final cards = ActivityBoard.positionTimepillarCards(activities);
+      final cards =
+          ActivityBoard.positionTimepillarCards(activities, TextStyle(), 1.0);
       final uniques = cards.map((f) => {f.top, f.column});
 
       expect(uniques.toSet().length, uniques.length);
