@@ -157,8 +157,7 @@ class SideDots extends StatelessWidget {
 }
 
 class ActivityInfoSideDots extends StatelessWidget {
-  static const int maxDots = 8;
-  static const hours = (maxDots ~/ dotsPerHour);
+  static const int dots = 8, hours = (dots ~/ dotsPerHour);
 
   final Activity activity;
   final DateTime day;
@@ -176,23 +175,21 @@ class ActivityInfoSideDots extends StatelessWidget {
           notStarted = startTime.isAfter(now),
           isCurrent = activity.hasEndTime &&
               now.isOnOrBetween(startDate: startTime, endDate: endTime);
-      final bool shouldHaveSideDots = onSameDay && (notStarted || isCurrent);
+      final bool shouldHaveSideDots =
+          !activity.fullDay && onSameDay && (notStarted || isCurrent);
       if (!shouldHaveSideDots) {
         return SizedBox(width: ActivityInfo.margin);
       }
       if (now.isBefore(startTime)) {
-        final start = startTime.subtract(hours.hours());
-        final end = startTime;
         return SideDotsLarge(
-          dots: maxDots,
-          startTime: start,
-          endTime: end,
+          dots: dots,
+          startTime: startTime.subtract(hours.hours()),
+          endTime: startTime,
           now: now,
         );
       }
       return SideDotsLarge(
-        dots: min(activity.duration.inDots(minutesPerDot, roundingMinute),
-            ActivityInfoSideDots.maxDots),
+        dots: dots,
         startTime: startTime,
         endTime: endTime,
         now: now,
