@@ -1,4 +1,18 @@
 PODS:
+  - appcenter (0.0.1):
+    - AppCenter
+    - Flutter
+  - AppCenter (1.2.0):
+    - AppCenter/Analytics (= 1.2.0)
+    - AppCenter/Crashes (= 1.2.0)
+  - AppCenter/Analytics (1.2.0):
+    - AppCenter/Core
+  - AppCenter/Core (1.2.0)
+  - AppCenter/Crashes (1.2.0):
+    - AppCenter/Core
+  - appcenter_analytics (0.0.1):
+    - AppCenter/Analytics
+    - Flutter
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
   - devicelocale (0.0.1):
@@ -129,6 +143,8 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - appcenter (from `.symlinks/plugins/appcenter/ios`)
+  - appcenter_analytics (from `.symlinks/plugins/appcenter_analytics/ios`)
   - devicelocale (from `.symlinks/plugins/devicelocale/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
@@ -150,6 +166,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppCenter
     - Crashlytics
     - Fabric
     - Firebase
@@ -169,6 +186,10 @@ SPEC REPOS:
     - Protobuf
 
 EXTERNAL SOURCES:
+  appcenter:
+    :path: ".symlinks/plugins/appcenter/ios"
+  appcenter_analytics:
+    :path: ".symlinks/plugins/appcenter_analytics/ios"
   devicelocale:
     :path: ".symlinks/plugins/devicelocale/ios"
   firebase_analytics:
@@ -207,6 +228,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_web/ios"
 
 SPEC CHECKSUMS:
+  AppCenter: d0b68b2a7a87ac0aed78e66f36d87fd321d0a29c
+  appcenter: ec63d9079174977ead44a0040ff083d6dd4c94c5
+  appcenter_analytics: 46cd35cb5fac57f7a4b2ae5d5040f984b4ad4b5a
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   devicelocale: feebbe5e7a30adb8c4f83185de1b50ff19b44f00
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
@@ -243,6 +267,6 @@ SPEC CHECKSUMS:
   url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313
   url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
 
-PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
+PODFILE CHECKSUM: 3a3db558cc071068e6e0ab7593875974d2184d8b
 
 COCOAPODS: 1.8.4
