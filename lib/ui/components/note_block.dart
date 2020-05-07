@@ -2,37 +2,46 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
 class NoteBlock extends StatelessWidget {
   final String text;
-  final double height;
-  final double width;
   const NoteBlock({
     Key key,
     @required this.text,
-    @required this.height,
-    @required this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final scaleFactor = MediaQuery.of(context).textScaleFactor;
-    final textStyle = abiliaTextTheme.body2;
-    final textSize =
-        text.textSize(textStyle, width, scaleFactor: scaleFactor).height;
-    final scaledLineHeight =
-        textStyle.fontSize * textStyle.height * scaleFactor;
-    final numberOfLines = max(height, textSize) / scaledLineHeight;
-    return Container(
-      child: Stack(children: [
-        Text(text, style: textStyle),
-        Lines(
-          lineHeight: scaledLineHeight,
-          numberOfLines: numberOfLines.ceil(),
-        ),
-      ]),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final scaleFactor = MediaQuery.of(context).textScaleFactor;
+        final textStyle = abiliaTextTheme.body2;
+        final textSize = text.textSize(textStyle, constraints.maxWidth);
+        final scaledTextHeight = textSize.height * scaleFactor;
+        final scaledLineHeight =
+            textStyle.fontSize * textStyle.height * scaleFactor;
+        final numberOfLines =
+            max(constraints.maxHeight, scaledTextHeight) / scaledLineHeight;
+        return Scrollbar(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: Attachment.padding,
+              child: Stack(
+                children: [
+                  Text(text, style: textStyle),
+                  Lines(
+                    lineHeight: scaledLineHeight,
+                    numberOfLines: numberOfLines.ceil(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

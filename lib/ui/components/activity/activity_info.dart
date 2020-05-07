@@ -109,7 +109,7 @@ class ActivityContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasImage = activity.hasImage;
-    final hasAttachment = activity.infoItem?.isNotEmpty ?? false;
+    final hasAttachment = activity.hasAttachment;
     final hasTopInfo = !(hasImage && !hasAttachment && activity.title.isEmpty);
     return Container(
       decoration: BoxDecoration(
@@ -146,19 +146,7 @@ class ActivityContainer extends StatelessWidget {
                     height: 1,
                   ),
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(18, 10, 18, 12),
-                      child: LayoutBuilder(builder:
-                          (BuildContext context, BoxConstraints constraints) {
-                        return SingleChildScrollView(
-                          child: Attachment(
-                            infoItem: InfoItem.fromBase64(activity.infoItem),
-                            height: constraints.maxHeight,
-                            width: constraints.maxWidth,
-                          ),
-                        );
-                      }),
-                    ),
+                    child: Attachment(infoItem: activity.attachment),
                   ),
                 ],
               ),
@@ -186,28 +174,22 @@ class ActivityContainer extends StatelessWidget {
 }
 
 class Attachment extends StatelessWidget {
+  static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 18.0, 0.0);
   final InfoItem infoItem;
-  final double height;
-  final double width;
   const Attachment({
     Key key,
     @required this.infoItem,
-    @required this.height,
-    @required this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final info = infoItem is NoteInfoItem
-        ? NoteBlock(
-            text: (infoItem as NoteInfoItem).text,
-            height: this.height,
-            width: width,
-          )
-        : Text('No note...');
-    return Container(
-      child: info,
-    );
+    final item = infoItem;
+    if (item is NoteInfoItem) {
+      return NoteBlock(text: item.text);
+    } else if (item is Checklist) {
+      return CheckListView(item);
+    }
+    return Text('Not supported...'); // TODO ignore none supported types?
   }
 }
 
@@ -254,8 +236,8 @@ class TopInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasImage = activity.hasImage;
-    final hasAttachment = activity.infoItem?.isNotEmpty ?? false;
     final hasTitle = activity.hasTitle;
+    final hasAttachment = activity.hasAttachment;
     final imageBelow = hasImage && hasAttachment && !hasTitle;
     final signedOff = activity.isSignedOff(day);
     final themeData = Theme.of(context);
