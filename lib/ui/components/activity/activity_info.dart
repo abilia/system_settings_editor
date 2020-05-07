@@ -39,7 +39,7 @@ class ActivityInfo extends StatelessWidget {
     @required this.day,
   }) : super(key: key);
 
-  final animationDuration = const Duration(milliseconds: 500);
+  static const animationDuration = Duration(milliseconds: 500);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class ActivityInfo extends StatelessWidget {
             ? Theme.of(context).copyWith(
                 buttonTheme: uncheckButtonThemeData,
                 buttonColor: AbiliaColors.transparentBlack[20],
-                cardColor: AbiliaColors.white[110],
+                cardColor: AbiliaColors.white110,
               )
             : Theme.of(context).copyWith(
                 buttonTheme: checkButtonThemeData,
@@ -62,10 +62,7 @@ class ActivityInfo extends StatelessWidget {
               ),
         child: Column(
           children: <Widget>[
-            if (activity.fullDay)
-              Text(translate.fullDay)
-            else
-              ActivityTimeRange(activity: activity, day: day),
+            ActivityTimeRange(activity: activity, day: day),
             Expanded(
               child: Container(
                 decoration: borderDecoration,
