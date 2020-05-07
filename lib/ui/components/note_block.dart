@@ -6,7 +6,7 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
-class NoteBlock extends StatelessWidget {
+class NoteBlock extends StatefulWidget {
   final String text;
   const NoteBlock({
     Key key,
@@ -14,32 +14,47 @@ class NoteBlock extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _NoteBlockState createState() => _NoteBlockState(ScrollController());
+}
+
+class _NoteBlockState extends State<NoteBlock> {
+  final ScrollController controller;
+
+  _NoteBlockState(this.controller);
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         final scaleFactor = MediaQuery.of(context).textScaleFactor;
         final textStyle = abiliaTextTheme.body2;
-        final textSize = text.textSize(textStyle, constraints.maxWidth);
+        final textSize = widget.text.textSize(textStyle, constraints.maxWidth);
         final scaledTextHeight = textSize.height * scaleFactor;
         final scaledLineHeight =
             textStyle.fontSize * textStyle.height * scaleFactor;
         final numberOfLines =
             max(constraints.maxHeight, scaledTextHeight) / scaledLineHeight;
-        return Scrollbar(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: Attachment.padding,
-              child: Stack(
-                children: [
-                  Text(text, style: textStyle),
-                  Lines(
-                    lineHeight: scaledLineHeight,
-                    numberOfLines: numberOfLines.ceil(),
+        return Stack(
+          children: <Widget>[
+            Scrollbar(
+              child: SingleChildScrollView(
+                controller: controller,
+                child: Padding(
+                  padding: Attachment.padding,
+                  child: Stack(
+                    children: [
+                      Text(widget.text, style: textStyle),
+                      Lines(
+                        lineHeight: scaledLineHeight,
+                        numberOfLines: numberOfLines.ceil(),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
+            ArrowUp(controller: controller),
+            ArrowDown(controller: controller),
+          ],
         );
       },
     );
