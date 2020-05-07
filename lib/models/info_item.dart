@@ -86,6 +86,8 @@ class Question {
   final String name;
   final int id;
   final String fileId;
+  bool get hasImage =>
+      (fileId?.isNotEmpty ?? false) || (image?.isNotEmpty ?? false);
 
   Question({
     @required this.image,
