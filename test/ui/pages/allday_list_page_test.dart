@@ -34,7 +34,6 @@ void main() {
 
   setUp(() {
     initializeDateFormatting();
-    Locale.cachedLocale = Locale('en');
   });
   testWidgets('All DayList shows', (WidgetTester tester) async {
     final title0 = 'allDay0',
