@@ -13,8 +13,6 @@ import 'package:seagull/utils/all.dart';
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = startTime.onlyDays();
-  final locale = Locale('en');
-
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: [Translator.delegate],
@@ -30,7 +28,6 @@ void main() {
       ));
 
   setUp(() {
-    Locale.cachedLocale = locale;
     initializeDateFormatting();
   });
 

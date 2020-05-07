@@ -25,7 +25,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final langCode = Locale.cachedLocale.languageCode;
+    final langCode = Localizations.localeOf(context).toLanguageTag();
     final themeData = weekDayTheme[day.weekday];
     return AppBar(
       elevation: 0.0,

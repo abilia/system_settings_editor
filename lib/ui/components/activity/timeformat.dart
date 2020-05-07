@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 String Function(DateTime) hourAndMinuteFormat(BuildContext context) {
-  final language = Locale.cachedLocale.languageCode;
+  final language = Localizations.localeOf(context).toLanguageTag();
   final use24 = MediaQuery.of(context).alwaysUse24HourFormat;
   return use24 ? DateFormat.Hm().format : DateFormat('h:mm a', language).format;
 }
