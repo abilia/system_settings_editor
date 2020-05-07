@@ -36,6 +36,8 @@ class _NoteBlockState extends State<NoteBlock> {
         return Stack(
           children: <Widget>[
             Scrollbar(
+              controller: controller,
+              isAlwaysShown: true,
               child: SingleChildScrollView(
                 controller: controller,
                 child: Padding(

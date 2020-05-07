@@ -174,7 +174,7 @@ class ActivityContainer extends StatelessWidget {
 }
 
 class Attachment extends StatelessWidget {
-  static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 18.0, 0.0);
+  static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 14.0, 0.0);
   final InfoItem infoItem;
   const Attachment({
     Key key,

@@ -22,6 +22,8 @@ class _CheckListViewState extends State<CheckListView> {
     return Stack(
       children: <Widget>[
         Scrollbar(
+          isAlwaysShown: true,
+          controller: controller,
           child: ListView.builder(
             controller: controller,
             padding: Attachment.padding,
@@ -68,7 +70,7 @@ class _QuestionViewState extends State<QuestionView> {
       duration: duration,
       child: Builder(
         builder: (context) => Padding(
-          padding: const EdgeInsets.only(bottom: 6.0),
+          padding: const EdgeInsets.only(bottom: 4.0),
           child: Material(
             color: AbiliaColors.white,
             borderRadius: borderRadius,
@@ -96,11 +98,12 @@ class _QuestionViewState extends State<QuestionView> {
                             imageFilePath: widget.question.image,
                             width: 40,
                             height: 40,
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 10.0, 0.0, 10.0),
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 10.0),
                       child: Text(
                         widget.question.name,
                         style: Theme.of(context).textTheme.body2,
