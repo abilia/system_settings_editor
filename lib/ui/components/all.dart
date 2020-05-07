@@ -20,3 +20,4 @@ export 'remove_button.dart';
 export 'cross_over.dart';
 export 'note_block.dart';
 export 'dots.dart';
+export 'arrows.dart';
