@@ -18,8 +18,6 @@ import '../../../mocks.dart';
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = startTime.onlyDays();
-  final locale = Locale('en');
-  final translator = Translated.dictionaries[locale];
   MockAuthenticationBloc mockedAuthenticationBloc;
   final String infoItemWithTestNote =
       'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19';
@@ -51,7 +49,6 @@ void main() {
       );
 
   setUp(() {
-    Locale.cachedLocale = locale;
     initializeDateFormatting();
     mockedAuthenticationBloc = MockAuthenticationBloc();
     GetItInitializer()
@@ -196,7 +193,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text(translator.fullDay), findsOneWidget);
+    expect(find.text(English().fullDay), findsOneWidget);
   });
 
   testWidgets('image and no attatchment', (WidgetTester tester) async {

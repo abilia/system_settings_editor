@@ -86,7 +86,8 @@ class DatePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = DateFormat.yMMMMd(Locale.cachedLocale.languageCode);
+    final timeFormat =
+        DateFormat.yMMMMd(Localizations.localeOf(context).toLanguageTag());
     final translator = Translator.of(context).translate;
 
     return PickField(
