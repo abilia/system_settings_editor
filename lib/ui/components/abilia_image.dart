@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
@@ -235,25 +234,29 @@ class FadeInNetworkImage extends StatelessWidget {
     );
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) => (state is Authenticated)
-          ? CachedNetworkImage(
-              fit: fit,
-              httpHeaders: authHeader(state.token),
-              height: height,
-              width: width,
-              imageUrl: imageFileId?.isNotEmpty ?? false
-                  ? imageThumbUrl(
-                      baseUrl: state.userRepository.baseUrl,
-                      userId: state.userId,
-                      imageFileId: imageFileId,
-                      size: ImageThumb.THUMB_SIZE,
-                    )
-                  : imagePathUrl(
-                      state.userRepository.baseUrl,
-                      state.userId,
-                      imageFilePath,
-                    ),
-              placeholder: (context, url) => emptyImage,
-              errorWidget: (context, url, error) => emptyImage,
+          ? FadeInImage(
+              placeholder: MemoryImage(kTransparentImage),
+              image: Image.network(
+                imageFileId != null
+                    ? imageThumbUrl(
+                        baseUrl: state.userRepository.baseUrl,
+                        userId: state.userId,
+                        imageFileId: imageFileId,
+                        size: ImageThumb.THUMB_SIZE,
+                      )
+                    : imageThumbPathUrl(
+                        baseUrl: state.userRepository.baseUrl,
+                        userId: state.userId,
+                        imagePath: imageFilePath,
+                        size: ImageThumb.THUMB_SIZE,
+                      ),
+                fit: fit,
+                headers: authHeader(state.token),
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace stackTrace) {
+                  return CircularProgressIndicator();
+                },
+              ).image,
             )
           : emptyImage,
     );

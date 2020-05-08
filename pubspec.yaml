@@ -37,7 +37,6 @@ dependencies:
   synchronized: ^2.2.0
   image_picker: ^0.6.3+4
   mime: ^0.9.6+3
-  cached_network_image: ^2.0.0
   exif: ^1.0.2
   devicelocale: ^0.2.3
   firebase_analytics: ^5.0.11

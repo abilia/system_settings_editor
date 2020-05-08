@@ -8,6 +8,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/sortable_repository.dart';
+import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
 part 'sortable_event.dart';
@@ -63,7 +64,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       final name = event.imagePath.split('/').last.split('.').first;
       final sortableData = SortableData(
         name: name,
-        file: event.imagePath,
+        file: '${FileStorage.folder}/${event.imageId}',
         fileId: event.imageId,
       ).toJson();
 
