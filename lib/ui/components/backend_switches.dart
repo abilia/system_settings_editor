@@ -65,7 +65,6 @@ class BackendSwitches extends StatelessWidget {
             FakeActivity.startsIn(10.minutes()).copyWith(
                 duration: 1.minutes(),
                 reminderBefore: [1.minutes().inMilliseconds],
-                infoItem: 'some info',
                 alarmType: NO_ALARM,
                 checkable: true,
                 title: 'NO_ALARM'),

@@ -21,22 +21,21 @@ class Activity extends DataModel {
   bool get hasImage =>
       (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
   bool get hasTitle => title?.isNotEmpty ?? false;
-  bool get hasAttachment => infoItem?.isNotEmpty ?? false;
-  InfoItem get attachment =>
-      hasAttachment ? InfoItem.fromBase64(infoItem) : null;
+  bool get hasAttachment => infoItem != null;
 
   Activity signOff(DateTime day) => copyWith(
       signedOffDates: signedOffDates.contains(day)
           ? (signedOffDates.toList()..remove(day))
           : signedOffDates.followedBy([day]));
 
-  final String seriesId, title, fileId, icon, infoItem, timezone;
+  final String seriesId, title, fileId, icon, timezone;
   final DateTime startTime, endTime;
   final Duration duration;
   final int category, alarmType, recurrentType, recurrentData;
   final bool deleted, fullDay, checkable, removeAfter, secret;
   final UnmodifiableListView<int> reminderBefore;
   final UnmodifiableListView<DateTime> signedOffDates;
+  final InfoItem infoItem;
   const Activity._({
     @required String id,
     @required this.seriesId,
@@ -90,7 +89,7 @@ class Activity extends DataModel {
     bool removeAfter = false,
     bool secret = false,
     int alarmType = ALARM_SOUND_AND_VIBRATION,
-    String infoItem,
+    InfoItem infoItem,
     String fileId,
     Iterable<int> reminderBefore = const [],
     Iterable<DateTime> signedOffDates = const [],
@@ -116,7 +115,7 @@ class Activity extends DataModel {
       recurrentData: recurrentData,
       reminderBefore: UnmodifiableListView(reminderBefore),
       alarmType: alarmType,
-      infoItem: _nullIfEmpty(infoItem),
+      infoItem: infoItem,
       signedOffDates: UnmodifiableListView(signedOffDates),
       timezone: timezone,
     );
@@ -148,7 +147,7 @@ class Activity extends DataModel {
     AlarmType alarm,
     int recurrentType,
     int recurrentData,
-    String infoItem,
+    InfoItem infoItem,
     Iterable<DateTime> signedOffDates,
     String timezone,
   }) =>
@@ -173,7 +172,7 @@ class Activity extends DataModel {
         fileId: fileId == null ? this.fileId : _nullIfEmpty(fileId),
         icon: icon == null ? this.icon : _nullIfEmpty(icon),
         alarmType: alarmType ?? alarm?.toInt ?? this.alarmType,
-        infoItem: infoItem == null ? this.infoItem : _nullIfEmpty(infoItem),
+        infoItem: infoItem ?? this.infoItem,
         signedOffDates: signedOffDates != null
             ? UnmodifiableListView(signedOffDates)
             : this.signedOffDates,
@@ -254,7 +253,7 @@ class DbActivity extends DbModel<Activity> {
           duration: Duration(milliseconds: json['duration']),
           fileId: _nullIfEmpty(json['fileId']),
           icon: _nullIfEmpty(json['icon']),
-          infoItem: _nullIfEmpty(json['infoItem']),
+          infoItem: InfoItem.fromBase64(json['infoItem']),
           category: json['category'],
           deleted: json['deleted'],
           checkable: json['checkable'],
@@ -282,7 +281,7 @@ class DbActivity extends DbModel<Activity> {
           duration: Duration(milliseconds: dbRow['duration']),
           fileId: _nullIfEmpty(dbRow['file_id']),
           icon: _nullIfEmpty(dbRow['icon']),
-          infoItem: _nullIfEmpty(dbRow['info_item']),
+          infoItem: InfoItem.fromBase64(dbRow['info_item']),
           category: dbRow['category'],
           deleted: dbRow['deleted'] == 1,
           checkable: dbRow['checkable'] == 1,
@@ -318,7 +317,7 @@ class DbActivity extends DbModel<Activity> {
         'recurrentData': activity.recurrentData,
         'reminderBefore': activity.reminderBefore.join(';'),
         'icon': activity.icon,
-        'infoItem': activity.infoItem,
+        'infoItem': activity.infoItem?.toBase64(),
         'alarmType': activity.alarmType,
         'signedOffDates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'revision': revision,
@@ -343,7 +342,7 @@ class DbActivity extends DbModel<Activity> {
         'recurrent_data': activity.recurrentData,
         'reminder_before': activity.reminderBefore.join(';'),
         'icon': activity.icon,
-        'info_item': activity.infoItem,
+        'info_item': activity.infoItem.toBase64(),
         'alarm_type': activity.alarmType,
         'signed_off_dates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'timezone': activity.timezone,

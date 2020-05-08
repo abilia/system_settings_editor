@@ -146,7 +146,7 @@ class ActivityContainer extends StatelessWidget {
                     height: 1,
                   ),
                   Expanded(
-                    child: Attachment(infoItem: activity.attachment),
+                    child: Attachment(infoItem: activity.infoItem),
                   ),
                 ],
               ),
@@ -189,7 +189,7 @@ class Attachment extends StatelessWidget {
     } else if (item is Checklist) {
       return CheckListView(item);
     }
-    return Text('Not supported...'); // TODO ignore none supported types?
+    return Container();
   }
 }
 
