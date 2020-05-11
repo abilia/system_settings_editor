@@ -14,7 +14,7 @@ class DeleteActivityDialog extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
     return ViewDialog(
-      heading: Text(translate.deleteActivity, style: theme.textTheme.title),
+      heading: Text(translate.deleteActivity, style: theme.textTheme.headline6),
       onOk: () => Navigator.of(context).maybePop(true),
       child: AbsorbPointer(
           child: ActivityCard(activityOccasion: activityOccasion)),

@@ -16,7 +16,6 @@ import 'package:seagull/alarm_listener.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/db/language_db.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/repository/all.dart';
@@ -38,7 +37,7 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   final currentLocale = await Devicelocale.currentLocale;
-  await LanguageDb().setLanguage(currentLocale.split(RegExp('-|_'))[0]);
+  await SettingsDb().setLanguage(currentLocale.split(RegExp('-|_'))[0]);
   final documentDirectory = await getApplicationDocumentsDirectory();
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
@@ -116,9 +115,15 @@ class SeagullApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      builder: (context, child) => MediaQuery(
+      builder: (context, child) {
+        final mediaQuery =
+            MediaQuery.of(context).copyWith(textScaleFactor: 1.0);
+        SettingsDb().setAlwaysUse24HourFormat(mediaQuery.alwaysUse24HourFormat);
+        return MediaQuery(
           child: child,
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0)),
+          data: mediaQuery,
+        );
+      },
       title: 'Seagull',
       theme: abiliaTheme,
       navigatorObservers: [AnalyticsService.observer],

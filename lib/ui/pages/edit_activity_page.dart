@@ -54,7 +54,10 @@ class EditActivityPage extends StatelessWidget {
                 newImage: state.newImage,
               )),
               separated(DateAndTimeWidget(activity, day: day)),
-              separated(CategoryWidget(activity)),
+              CollapsableWidget(
+                child: separated(CategoryWidget(activity)),
+                collapsed: activity.fullDay,
+              ),
               CollapsableWidget(
                 child: separated(AlarmWidget(activity)),
                 collapsed: activity.fullDay,

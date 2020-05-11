@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -18,7 +19,10 @@ class ActivityBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheduled = positionTimepillarCards(activities);
+    final style = Theme.of(context).textTheme.caption;
+    final scaleFactor = MediaQuery.of(context).textScaleFactor;
+
+    final scheduled = positionTimepillarCards(activities, style, scaleFactor);
     return Container(
       width: max(categoryMinWidth,
           scheduled.length * ActivityTimepillarCard.totalWith),
@@ -27,19 +31,37 @@ class ActivityBoard extends StatelessWidget {
   }
 
   static List<ActivityTimepillarCard> positionTimepillarCards(
-      List<ActivityOccasion> activities) {
+    List<ActivityOccasion> activities,
+    TextStyle textStyle,
+    double scaleFactor,
+  ) {
     activities.sort((a1, a2) => a1.activity
         .startClock(a1.day)
         .compareTo(a2.activity.startClock(a2.day)));
     List<List<ActivityTimepillarCard>> scheduled = [];
     ActivityLoop:
     for (final ao in activities) {
-      final int dots =
-          ao.activity.duration.inDots(minutesPerDot, roundingMinute);
-      final double height =
-          max(dots * dotDistance, ActivityTimepillarCard.minHeight);
+      final a = ao.activity;
+      final int dots = a.duration.inDots(minutesPerDot, roundingMinute);
+      final dotHeight = dots * dotDistance;
+
+      final textHeight = (a.hasTitle
+          ? a.title
+              .textSize(textStyle, ActivityTimepillarCard.width,
+                  scaleFactor: scaleFactor)
+              .height
+          : 0.0);
+      final imageHeight =
+          a.hasImage ? ActivityTimepillarCard.imageSize + 16.0 : 0.0;
+      final renderedHeight = textHeight + imageHeight;
+
+      final double height = max(
+        max(dotHeight, renderedHeight),
+        ActivityTimepillarCard.minHeight,
+      );
+
       final double topOffset = timeToPixelDistanceHour(
-        ao.activity.startTime.roundToMinute(
+        a.startTime.roundToMinute(
           minutesPerDot,
           roundingMinute,
         ),
@@ -51,6 +73,7 @@ class ActivityBoard extends StatelessWidget {
             top: topOffset,
             column: col,
             height: height,
+            textStyle: textStyle,
           );
 
       for (int i = 0; i < scheduled.length; i++) {

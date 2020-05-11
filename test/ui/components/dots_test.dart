@@ -13,8 +13,6 @@ import 'package:seagull/utils/all.dart';
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = startTime.onlyDays();
-  final locale = Locale('en');
-
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: [Translator.delegate],
@@ -30,7 +28,6 @@ void main() {
       ));
 
   setUp(() {
-    Locale.cachedLocale = locale;
     initializeDateFormatting();
   });
 
@@ -224,14 +221,13 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(AnimatedDot),
-          findsNWidgets(ActivityInfoSideDots.maxDots));
+      expect(
+          find.byType(AnimatedDot), findsNWidgets(ActivityInfoSideDots.dots));
     });
 
     testWidgets('Correct amount of dots', (WidgetTester tester) async {
       // Arrange
       final minutes = 90;
-      final exptectedDots = minutes ~/ minutesPerDot;
       final activity = Activity.createNew(
         title: 'null',
         duration: minutes.minutes(),
@@ -250,7 +246,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(AnimatedDot), findsNWidgets(exptectedDots));
+      expect(
+          find.byType(AnimatedDot), findsNWidgets(ActivityInfoSideDots.dots));
     });
 
     testWidgets('never more than max dots', (WidgetTester tester) async {
@@ -273,8 +270,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(AnimatedDot),
-          findsNWidgets(ActivityInfoSideDots.maxDots));
+      expect(
+          find.byType(AnimatedDot), findsNWidgets(ActivityInfoSideDots.dots));
     });
     testWidgets('future activity shows dots', (WidgetTester tester) async {
       // Arrange
@@ -296,8 +293,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(AnimatedDot),
-          findsNWidgets(ActivityInfoSideDots.maxDots));
+      expect(
+          find.byType(AnimatedDot), findsNWidgets(ActivityInfoSideDots.dots));
     });
 
     testWidgets('Correct type of dots', (WidgetTester tester) async {
@@ -322,42 +319,11 @@ void main() {
       final dots = tester.widgetList<AnimatedDot>(find.byType(AnimatedDot));
 
       // Assert
-      expect(dots, hasLength(6));
+      expect(dots, hasLength(ActivityInfoSideDots.dots));
       expect(dots.where((d) => d.decoration == currentDotShape), hasLength(0),
           reason: 'no current dots');
-      expect(dots.where((d) => d.decoration == pastDotShape), hasLength(2),
-          reason: 'two past dots');
-      expect(dots.where((d) => d.decoration == futureDotShape), hasLength(4),
-          reason: 'four future dots');
-    });
-
-    testWidgets('Correct type of dots', (WidgetTester tester) async {
-      // Arrange
-      final activity = Activity.createNew(
-        title: 'null',
-        startTime: startTime.subtract(30.minutes()),
-        duration: 88.minutes(),
-      );
-
-      // Act
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          ActivityInfoSideDots(
-            activity: activity,
-            day: day,
-          ),
-        ),
-      );
-
-      // Assert
-      await tester.pumpAndSettle();
-      final dots = tester.widgetList<AnimatedDot>(find.byType(AnimatedDot));
-
-      expect(dots, hasLength(6));
-      expect(dots.where((d) => d.decoration == currentDotShape), hasLength(0),
-          reason: 'no current dots');
-      expect(dots.where((d) => d.decoration == pastDotShape), hasLength(2),
-          reason: 'two past dots');
+      expect(dots.where((d) => d.decoration == pastDotShape), hasLength(4),
+          reason: 'four past dots');
       expect(dots.where((d) => d.decoration == futureDotShape), hasLength(4),
           reason: 'four future dots');
     });

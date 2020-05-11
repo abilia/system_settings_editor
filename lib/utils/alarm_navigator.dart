@@ -57,10 +57,10 @@ class AlarmNavigator {
     );
   }
 
-  bool pop<T extends Object>(BuildContext context) {
+  void pop<T extends Object>(BuildContext context) {
     if (_routes.keys.isNotEmpty) {
       _routes.remove(_routes.keys.last);
     }
-    return Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 }

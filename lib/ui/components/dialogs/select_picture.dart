@@ -58,7 +58,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
               text: translate.removePicture,
             )
           : null,
-      heading: Text(translate.selectPicture, style: theme.textTheme.title),
+      heading: Text(translate.selectPicture, style: theme.textTheme.headline6),
       onOk: onOk,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -68,7 +68,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
             leading: Icon(AbiliaIcons.folder),
             label: Text(
               translate.imageArchive,
-              style: abiliaTheme.textTheme.body2,
+              style: abiliaTheme.textTheme.bodyText1,
             ),
             onTap: () {
               setState(() {
@@ -81,7 +81,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
             leading: Icon(AbiliaIcons.my_photos),
             label: Text(
               translate.myPhotos,
-              style: abiliaTheme.textTheme.body2,
+              style: abiliaTheme.textTheme.bodyText1,
             ),
             onTap: () async =>
                 await _getExternalFile(source: ImageSource.gallery),
@@ -91,7 +91,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
             leading: Icon(AbiliaIcons.camera_photo),
             label: Text(
               translate.takeNewPhoto,
-              style: abiliaTheme.textTheme.body2,
+              style: abiliaTheme.textTheme.bodyText1,
             ),
             onTap: () async =>
                 await _getExternalFile(source: ImageSource.camera),
@@ -147,7 +147,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     final folderName =
         state.allById[state.currentFolderId]?.sortableData?.name ??
             Translator.of(context).translate.imageArchive;
-    return Text(folderName, style: abiliaTheme.textTheme.title);
+    return Text(folderName, style: abiliaTheme.textTheme.headline6);
   }
 }
 

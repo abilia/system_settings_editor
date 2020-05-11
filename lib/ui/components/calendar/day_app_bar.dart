@@ -25,7 +25,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final langCode = Locale.cachedLocale.languageCode;
+    final langCode = Localizations.localeOf(context).toLanguageTag();
     final themeData = weekDayTheme[day.weekday];
     return AppBar(
       elevation: 0.0,
@@ -51,7 +51,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
                         children: <Widget>[
                           Text(
                             DateFormat('EEEE, d MMM', langCode).format(day),
-                            style: themeData.textTheme.title,
+                            style: themeData.textTheme.headline6,
                           ),
                         ],
                       ),
@@ -60,7 +60,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
                       alignment: Alignment.bottomCenter,
                       child: Text(
                         '${Translator.of(context).translate.week} ${day.getWeekNumber()}',
-                        style: themeData.textTheme.subhead,
+                        style: themeData.textTheme.subtitle1,
                       ),
                     ),
                     if (day.isDayBefore(time))

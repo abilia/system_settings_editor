@@ -5,7 +5,7 @@ abstract class EditActivityState extends Equatable with Silent {
   final Activity activity;
   final File newImage;
   bool get canSave =>
-      activity.title?.isNotEmpty == true ||
+      activity.hasTitle ||
       activity.fileId?.isNotEmpty == true && activity.startTime != null;
   @override
   List<Object> get props => [activity, newImage];

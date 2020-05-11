@@ -86,7 +86,8 @@ class DatePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = DateFormat.yMMMMd(Locale.cachedLocale.languageCode);
+    final timeFormat =
+        DateFormat.yMMMMd(Localizations.localeOf(context).toLanguageTag());
     final translator = Translator.of(context).translate;
 
     return PickField(
@@ -242,7 +243,7 @@ class Reminders extends StatelessWidget {
             (r) => SelectableField(
               label: Text(
                 r.toReminderString(translator),
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               selected: activity.reminders.contains(r),
               onTap: () => BlocProvider.of<EditActivityBloc>(context)

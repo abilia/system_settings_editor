@@ -125,7 +125,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
 
     return ViewDialog(
       expanded: true,
-      heading: Text(widget.heading, style: theme.textTheme.title),
+      heading: Text(widget.heading, style: theme.textTheme.headline6),
       onOk: inputTime != null
           ? () => Navigator.of(context).maybePop<TimeOfDay>(inputTime)
           : null,
@@ -133,7 +133,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
       child: Theme(
         data: theme.copyWith(
             textSelectionColor: AbiliaColors.white,
-            textTheme: theme.textTheme.copyWith(subhead: textStyle)),
+            textTheme: theme.textTheme.copyWith(subtitle1: textStyle)),
         child: Padding(
           padding: twelveHourClock
               ? const EdgeInsets.only(top: 45.0, left: 16.0)
@@ -181,7 +181,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
                         key: TestKey.amRadioField,
                         child: Text(
                           Translator.of(context).translate.am,
-                          style: theme.textTheme.body2,
+                          style: theme.textTheme.bodyText1,
                           textAlign: TextAlign.center,
                         ),
                         value: DayPeriod.am,
@@ -195,7 +195,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
                         key: TestKey.pmRadioField,
                         child: Text(
                           Translator.of(context).translate.pm,
-                          style: theme.textTheme.body2,
+                          style: theme.textTheme.bodyText1,
                         ),
                         value: DayPeriod.pm,
                         groupValue: period,

@@ -37,13 +37,31 @@ InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
 
 const Radius radius = Radius.circular(12);
 const BorderRadius borderRadius = BorderRadius.all(radius);
-const borderColor = AbiliaColors.white120;
-const borderSide = BorderSide(color: AbiliaColors.white120);
-const border = Border.fromBorderSide(borderSide);
+const activiteBorder =
+    Border.fromBorderSide(BorderSide(color: AbiliaColors.red, width: 2.0));
+const border = Border.fromBorderSide(BorderSide(color: AbiliaColors.white120));
 const BoxDecoration borderDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: border,
 );
+const BoxDecoration currentBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white,
+  borderRadius: borderRadius,
+  border: activiteBorder,
+);
+const BoxDecoration futureBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white,
+  borderRadius: borderRadius,
+  border: border,
+);
+const BoxDecoration inactiveBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white110,
+  borderRadius: borderRadius,
+  border: border,
+);
+BoxDecoration getBoxDecoration(bool current, bool inactive) => inactive
+    ? inactiveBoxDecoration
+    : current ? currentBoxDecoration : futureBoxDecoration;
 
 OutlineInputBorder inputBorder = OutlineInputBorder(
   borderSide: BorderSide(color: AbiliaColors.transparentBlack[15]),
@@ -141,7 +159,7 @@ ThemeData redButtonTheme = abiliaTheme.copyWith(
   buttonTheme: redButtonThemeData,
   buttonColor: AbiliaColors.red,
   textTheme: abiliaTheme.textTheme.copyWith(
-    button: abiliaTheme.textTheme.subhead.copyWith(
+    button: abiliaTheme.textTheme.subtitle1.copyWith(
       color: AbiliaColors.white,
     ),
   ),
@@ -207,43 +225,48 @@ ThemeData addButtonTheme = abiliaTheme.copyWith(
 );
 
 TextTheme abiliaTextTheme = TextTheme(
-  display4: baseTextStyle.copyWith(
+  headline1: baseTextStyle.copyWith(
     fontSize: 96.0,
     fontWeight: light,
   ),
-  display3: baseTextStyle.copyWith(
+  headline2: baseTextStyle.copyWith(
     fontSize: 60.0,
     fontWeight: light,
     height: 72.0 / 60.0,
   ),
-  display2: baseTextStyle.copyWith(
+  headline3: baseTextStyle.copyWith(
     fontSize: 48.0,
     fontWeight: regular,
     height: 56.0 / 48.0,
   ),
-  display1: baseTextStyle.copyWith(
+  headline4: baseTextStyle.copyWith(
     fontSize: 34.0,
     fontWeight: regular,
   ),
-  headline: baseTextStyle.copyWith(
+  headline5: baseTextStyle.copyWith(
     fontSize: 24.0,
     fontWeight: regular,
   ),
-  title: baseTextStyle.copyWith(
+  headline6: baseTextStyle.copyWith(
     fontSize: 20.0,
     fontWeight: medium,
   ),
-  subhead: baseTextStyle.copyWith(
+  subtitle1: baseTextStyle.copyWith(
     fontSize: 16.0,
     fontWeight: medium,
     height: 24.0 / 16.0,
   ),
-  body2: baseTextStyle.copyWith(
+  subtitle2: baseTextStyle.copyWith(
+    fontSize: 14.0,
+    height: 20.0 / 14.0,
+    fontWeight: medium,
+  ),
+  bodyText1: baseTextStyle.copyWith(
     fontSize: 16.0,
     height: 28.0 / 16.0,
     fontWeight: regular,
   ),
-  body1: baseTextStyle.copyWith(
+  bodyText2: baseTextStyle.copyWith(
     fontSize: 14.0,
     height: 20.0 / 14.0,
     fontWeight: regular,
@@ -257,11 +280,6 @@ TextTheme abiliaTextTheme = TextTheme(
     fontSize: 14.0,
     fontWeight: medium,
     color: AbiliaColors.white,
-  ),
-  subtitle: baseTextStyle.copyWith(
-    fontSize: 14.0,
-    height: 20.0 / 14.0,
-    fontWeight: medium,
   ),
   overline: baseTextStyle.copyWith(
     fontSize: 10.0,
@@ -347,8 +365,8 @@ ThemeData _dayTheme(
       ),
       scaffoldBackgroundColor: AbiliaColors.white[110],
       textTheme: abiliaTextTheme.copyWith(
-        title: abiliaTextTheme.title.copyWith(color: textColor),
+        headline6: abiliaTextTheme.headline6.copyWith(color: textColor),
         button: abiliaTextTheme.button.copyWith(color: textColor),
-        subhead: abiliaTextTheme.subhead.copyWith(color: textColor),
+        subtitle1: abiliaTextTheme.subtitle1.copyWith(color: textColor),
       ),
     );
