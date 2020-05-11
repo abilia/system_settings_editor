@@ -214,7 +214,7 @@ class CheckButton extends StatelessWidget {
         icon: Icon(iconData),
         label: Text(
           text,
-          style: theme.textTheme.body2.copyWith(height: 1),
+          style: theme.textTheme.bodyText1.copyWith(height: 1),
         ),
         color: theme.buttonColor,
         onPressed: onPressed,
@@ -269,7 +269,7 @@ class TopInfo extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
                     activity.title,
-                    style: themeData.textTheme.headline,
+                    style: themeData.textTheme.headline5,
                     textAlign: TextAlign.center,
                   ),
                 ),

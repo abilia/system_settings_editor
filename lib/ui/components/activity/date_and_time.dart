@@ -243,7 +243,7 @@ class Reminders extends StatelessWidget {
             (r) => SelectableField(
               label: Text(
                 r.toReminderString(translator),
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               selected: activity.reminders.contains(r),
               onTap: () => BlocProvider.of<EditActivityBloc>(context)

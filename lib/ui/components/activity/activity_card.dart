@@ -36,9 +36,9 @@ class ActivityCard extends StatelessWidget {
     final themeData = inactive
         ? abiliaTheme.copyWith(
             textTheme: textTheme.copyWith(
-              subhead:
-                  textTheme.subhead.copyWith(color: AbiliaColors.white[140]),
-              body2: textTheme.body2.copyWith(color: AbiliaColors.white[140]),
+              subtitle1:
+                  textTheme.subtitle1.copyWith(color: AbiliaColors.white[140]),
+              bodyText1: textTheme.bodyText1.copyWith(color: AbiliaColors.white[140]),
             ),
             iconTheme:
                 abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white[140]))
@@ -85,7 +85,7 @@ class ActivityCard extends StatelessWidget {
                                 Text(
                                   activity.title,
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.subhead,
+                                  style: Theme.of(context).textTheme.subtitle1,
                                 ),
                               Align(
                                 alignment: Alignment.bottomLeft,
@@ -95,7 +95,7 @@ class ActivityCard extends StatelessWidget {
                                       : activity.hasEndTime
                                           ? '${timeFormat(activity.startTime)} - ${timeFormat(activity.end)}'
                                           : '${timeFormat(activity.startTime)}',
-                                  style: Theme.of(context).textTheme.body2,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
                             ]),

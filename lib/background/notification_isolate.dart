@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:seagull/i18n/translations.dart';

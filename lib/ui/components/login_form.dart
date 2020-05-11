@@ -33,10 +33,10 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     final i18n = Translator.of(context);
     final theme = Theme.of(context);
-    final body1Grey =
-        theme.textTheme.body1.copyWith(color: AbiliaColors.black[75]);
-    final body2Grey =
-        theme.textTheme.body2.copyWith(color: AbiliaColors.black[75]);
+    final bodyText2Grey =
+        theme.textTheme.bodyText2.copyWith(color: AbiliaColors.black[75]);
+    final bodyText12Grey =
+        theme.textTheme.bodyText1.copyWith(color: AbiliaColors.black[75]);
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       builder: (context, formState) => BlocBuilder<LoginBloc, LoginState>(
         builder: (context, loginState) {
@@ -60,14 +60,14 @@ class _LoginFormState extends State<LoginForm> {
                   padding32,
                   Text(
                     i18n.translate.userName,
-                    style: body1Grey,
+                    style: bodyText2Grey,
                   ),
                   padding8,
                   TextFormField(
                     key: TestKey.userNameInput,
                     controller: _usernameController,
                     keyboardType: TextInputType.emailAddress,
-                    style: theme.textTheme.body2,
+                    style: theme.textTheme.bodyText1,
                     autovalidate: true,
                     validator: (_) => errorState ? '' : null,
                     decoration: errorState
@@ -82,7 +82,7 @@ class _LoginFormState extends State<LoginForm> {
                   padding16,
                   Text(
                     i18n.translate.password,
-                    style: body1Grey,
+                    style: bodyText2Grey,
                     key: Key('passwordLabel'),
                   ),
                   padding8,
@@ -95,7 +95,7 @@ class _LoginFormState extends State<LoginForm> {
                           obscureText: formState.hidePassword,
                           controller: _passwordController,
                           keyboardType: TextInputType.visiblePassword,
-                          style: theme.textTheme.body2,
+                          style: theme.textTheme.bodyText1,
                           autovalidate: true,
                           validator: (_) => errorState ? '' : null,
                           decoration: errorState
@@ -127,7 +127,7 @@ class _LoginFormState extends State<LoginForm> {
                     children: <Widget>[
                       Text(
                         i18n.translate.infoText1,
-                        style: body2Grey,
+                        style: bodyText12Grey,
                       ),
                       WebLink(
                         text: 'myAbilia',
@@ -135,7 +135,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       Text(
                         i18n.translate.infoText2,
-                        style: body2Grey,
+                        style: bodyText12Grey,
                       )
                     ],
                   ),
@@ -145,7 +145,7 @@ class _LoginFormState extends State<LoginForm> {
                       key: TestKey.loginError,
                       child: Text(
                         i18n.translate.wrongCredentials,
-                        style: theme.textTheme.body1,
+                        style: theme.textTheme.bodyText2,
                       ),
                     ),
                   flexPadding(errorState),
@@ -159,7 +159,7 @@ class _LoginFormState extends State<LoginForm> {
                         key: TestKey.loggInButton,
                         child: Text(
                           i18n.translate.login,
-                          style: theme.textTheme.subhead
+                          style: theme.textTheme.subtitle1
                               .copyWith(color: AbiliaColors.white),
                         ),
                         onPressed: loginState is! LoginLoading &&
