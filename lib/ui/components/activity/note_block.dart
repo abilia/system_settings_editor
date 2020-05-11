@@ -26,7 +26,7 @@ class _NoteBlockState extends State<NoteBlock> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         final scaleFactor = MediaQuery.of(context).textScaleFactor;
-        final textStyle = abiliaTextTheme.body2;
+        final textStyle = abiliaTextTheme.bodyText1;
         final textSize = widget.text.textSize(textStyle, constraints.maxWidth);
         final scaledTextHeight = textSize.height * scaleFactor;
         final scaledLineHeight =

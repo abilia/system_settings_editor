@@ -14,7 +14,7 @@ class WebLink extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
       child: Text(
         text,
-        style: Theme.of(context).textTheme.body2.copyWith(
+        style: Theme.of(context).textTheme.bodyText1.copyWith(
               color: Theme.of(context).accentColor,
               decoration: TextDecoration.underline,
             ),

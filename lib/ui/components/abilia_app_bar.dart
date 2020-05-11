@@ -50,7 +50,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                       title,
                       style: Theme.of(context)
                           .textTheme
-                          .title
+                          .headline6
                           .copyWith(color: AbiliaColors.white),
                     ),
                   ),

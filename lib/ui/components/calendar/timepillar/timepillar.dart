@@ -40,7 +40,7 @@ class TimePillar extends StatelessWidget {
     final formatHour = onlyHourFormat(context);
     final theme = Theme.of(context);
     return DefaultTextStyle(
-      style: theme.textTheme.title.copyWith(color: AbiliaColors.black),
+      style: theme.textTheme.headline6.copyWith(color: AbiliaColors.black),
       child: Container(
         color: theme.scaffoldBackgroundColor,
         child: Stack(

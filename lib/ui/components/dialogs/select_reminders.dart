@@ -41,7 +41,7 @@ class SelectReminderDialog extends StatelessWidget {
                 }
               : null,
           heading: Text(Translator.of(context).translate.reminder,
-              style: theme.textTheme.title),
+              style: theme.textTheme.headline6),
           child: Column(
             children: <Widget>[
               ReminderSwitch(activity: state.activity),

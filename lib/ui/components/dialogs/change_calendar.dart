@@ -15,7 +15,7 @@ class ChangeCalendarDialog extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
     return ViewDialog(
-      heading: Text(translate.calendarView, style: theme.textTheme.title),
+      heading: Text(translate.calendarView, style: theme.textTheme.headline6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -24,7 +24,7 @@ class ChangeCalendarDialog extends StatelessWidget {
             leading: Icon(AbiliaIcons.timeline),
             label: Text(
               translate.timePillarView,
-              style: abiliaTheme.textTheme.body2,
+              style: abiliaTheme.textTheme.bodyText1,
             ),
             active: currentViewType == CalendarViewType.TIMEPILLAR,
             showTrailingArrow: currentViewType != CalendarViewType.TIMEPILLAR,
@@ -37,7 +37,7 @@ class ChangeCalendarDialog extends StatelessWidget {
             leading: Icon(AbiliaIcons.list_order),
             label: Text(
               translate.listView,
-              style: abiliaTheme.textTheme.body2,
+              style: abiliaTheme.textTheme.bodyText1,
             ),
             active: currentViewType == CalendarViewType.LIST,
             showTrailingArrow: currentViewType != CalendarViewType.LIST,

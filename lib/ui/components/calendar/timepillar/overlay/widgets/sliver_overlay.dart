@@ -89,8 +89,7 @@ class SliverOverlayBuilder extends StatelessWidget {
 
 class SliverOverlayRenderObjectElement extends RenderObjectElement {
   /// Creates an element that uses the given widget as its configuration.
-  SliverOverlayRenderObjectElement(SliverOverlay widget)
-      : super(widget);
+  SliverOverlayRenderObjectElement(SliverOverlay widget) : super(widget);
 
   @override
   SliverOverlay get widget => super.widget;
@@ -107,6 +106,7 @@ class SliverOverlayRenderObjectElement extends RenderObjectElement {
 
   @override
   void forgetChild(Element child) {
+    super.forgetChild(child);
     if (child == _overlay) _overlay = null;
     if (child == _sliver) _sliver = null;
   }
