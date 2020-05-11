@@ -13,6 +13,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../mocks.dart';
 
@@ -22,7 +23,7 @@ void main() {
 
   final locale = Locale('en');
   final translate = Translator(locale).translate;
-  final starTime = DateTime(2111, 11, 11, 11, 11);
+  final startTime = DateTime(2111, 11, 11, 11, 11);
   final tenDaysAgo = DateTime(2111, 11, 01, 11, 11);
 
   final activityBackButtonFinder = find.byKey(TestKey.activityBackButton);
@@ -64,7 +65,7 @@ void main() {
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
       ..ticker = (() => mockTicker.stream)
-      ..startTime = starTime
+      ..startTime = startTime
       ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
@@ -83,7 +84,7 @@ void main() {
     testWidgets('Navigate to activity page and back',
         (WidgetTester tester) async {
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
       expect(activityBackButtonFinder, findsOneWidget);
       await tester.tap(activityBackButtonFinder);
@@ -94,7 +95,7 @@ void main() {
     testWidgets('Full day activity page does not show edit alarm or reminders',
         (WidgetTester tester) async {
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.fullday(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.fullday(startTime)]));
       await navigateToActivityPage(tester);
       expect(alarmButtonFinder, findsNothing);
       expect(reminderButtonFinder, findsNothing);
@@ -107,7 +108,7 @@ void main() {
     testWidgets('Edit activity button shows', (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       // Act
       await navigateToActivityPage(tester);
       // Assert -- Find the edit activity button
@@ -117,7 +118,7 @@ void main() {
     testWidgets('Can open edit activity page', (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
       // Act -- tap the edit activity button
       await tester.tap(editActivityButtonFinder);
@@ -131,7 +132,7 @@ void main() {
       // Arrange
       final title = 'an interesting title';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
-          <Activity>[FakeActivity.starts(starTime).copyWith(title: title)]));
+          <Activity>[FakeActivity.starts(startTime).copyWith(title: title)]));
       await navigateToActivityPage(tester);
 
       // Act -- tap the edit activity button
@@ -150,7 +151,7 @@ void main() {
       final title = 'an interesting title';
       final newTitle = 'an new super interesting title';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
-          <Activity>[FakeActivity.starts(starTime).copyWith(title: title)]));
+          <Activity>[FakeActivity.starts(startTime).copyWith(title: title)]));
       await navigateToActivityPage(tester);
 
       // Assert -- original title
@@ -187,7 +188,7 @@ void main() {
     testWidgets('Alarm view dialog shows', (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
       // Act
       await tester.tap(alarmButtonFinder);
@@ -201,7 +202,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
-            FakeActivity.starts(starTime).copyWith(alarmType: ALARM_VIBRATION)
+            FakeActivity.starts(startTime).copyWith(alarmType: ALARM_VIBRATION)
           ]));
       // Act
       await navigateToActivityPage(tester);
@@ -213,7 +214,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(<Activity>[
-                FakeActivity.starts(starTime).copyWith(
+                FakeActivity.starts(startTime).copyWith(
                     alarmType: ALARM_SOUND_AND_VIBRATION_ONLY_ON_START)
               ]));
       // Act
@@ -226,7 +227,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
-            FakeActivity.starts(starTime).copyWith(alarmType: NO_ALARM)
+            FakeActivity.starts(startTime).copyWith(alarmType: NO_ALARM)
           ]));
       // Act
       await navigateToActivityPage(tester);
@@ -239,7 +240,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
-            FakeActivity.starts(starTime).copyWith(alarmType: NO_ALARM)
+            FakeActivity.starts(startTime).copyWith(alarmType: NO_ALARM)
           ]));
       // Act
       await navigateToActivityPage(tester);
@@ -260,7 +261,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
-            FakeActivity.starts(starTime).copyWith(alarmType: NO_ALARM)
+            FakeActivity.starts(startTime).copyWith(alarmType: NO_ALARM)
           ]));
 
       // Act
@@ -281,7 +282,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(<Activity>[
-                FakeActivity.starts(starTime).copyWith(
+                FakeActivity.starts(startTime).copyWith(
                     alarmType: ALARM_SOUND_AND_VIBRATION_ONLY_ON_START)
               ]));
 
@@ -308,7 +309,7 @@ void main() {
     testWidgets('Reminder button shows', (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       // Act
       await navigateToActivityPage(tester);
       // Assert
@@ -318,7 +319,7 @@ void main() {
     testWidgets('Reminder alarm shows', (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
 
       // Act -- tap reminder button
@@ -344,7 +345,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
       await tester.tap(reminderButtonFinder);
       await tester.pumpAndSettle();
@@ -365,7 +366,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
       await tester.tap(reminderButtonFinder);
       await tester.pumpAndSettle();
@@ -391,7 +392,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
       await tester.tap(reminderButtonFinder);
       await tester.pumpAndSettle();
@@ -410,7 +411,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
       await tester.tap(reminderButtonFinder);
       await tester.pumpAndSettle();
@@ -440,7 +441,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(<Activity>[
-                FakeActivity.starts(starTime).copyWith(reminderBefore: [
+                FakeActivity.starts(startTime).copyWith(reminderBefore: [
                   5.minutes().inMilliseconds,
                   15.minutes().inMilliseconds,
                   1.hours().inMilliseconds,
@@ -470,7 +471,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(<Activity>[
-                FakeActivity.starts(starTime).copyWith(reminderBefore: [
+                FakeActivity.starts(startTime).copyWith(reminderBefore: [
                   5.minutes().inMilliseconds,
                   15.minutes().inMilliseconds,
                   1.hours().inMilliseconds,
@@ -504,7 +505,7 @@ void main() {
     testWidgets('Reminders can be saved', (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
 
       await navigateToActivityPage(tester);
       await tester.tap(reminderButtonFinder);
@@ -535,7 +536,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       // Act
       await navigateToActivityPage(tester);
 
@@ -549,7 +550,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
 
       // Act
@@ -566,7 +567,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
 
       // Act
@@ -586,7 +587,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(starTime)]));
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
 
       // Act
@@ -616,7 +617,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
         // Act
@@ -634,7 +635,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
         // Act
@@ -654,7 +655,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
         // Act
@@ -673,7 +674,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
         // Act
@@ -701,7 +702,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
         // Act
@@ -727,7 +728,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
         // Act
@@ -754,7 +755,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
         // Act
@@ -819,7 +820,7 @@ void main() {
         final title = 'Unique title to search for';
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[
-              FakeActivity.reocurrsEveryDay(starTime).copyWith(title: title)
+              FakeActivity.reocurrsEveryDay(startTime).copyWith(title: title)
             ]));
         await navigateToActivityPage(tester);
 
@@ -899,7 +900,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
         // Act
@@ -920,7 +921,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
         // Act
@@ -942,7 +943,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
         // Act
@@ -959,7 +960,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(starTime)]));
+            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
         final newTitle = 'newTitle';
 
@@ -975,6 +976,47 @@ void main() {
         // Assert
         expect(find.text(newTitle), findsOneWidget);
       });
+    });
+  });
+
+  testWidgets('Checklist attachment can be signed off',
+      (WidgetTester tester) async {
+    final tag = 'tag';
+    final activity = Activity.createNew(
+        title: 'title',
+        startTime: startTime,
+        infoItem: Checklist(questions: [
+          Question(id: 0, name: tag),
+          Question(id: 1, fileId: Uuid().v4()),
+        ]));
+
+    // Arrange
+    when(mockActivityDb.getAllNonDeleted())
+        .thenAnswer((_) => Future.value(<Activity>[activity]));
+    await navigateToActivityPage(tester);
+
+    // Assert no checklist item is checked
+    tester.widgetList(find.byType(QuestionView)).forEach((element) {
+      if (element is QuestionView) {
+        expect(element.signedOff, isFalse);
+      }
+    });
+
+    // Act tap question "tag"
+    await tester.tap(find.text(tag));
+    await tester.pumpAndSettle();
+
+    // Assert "tag" is checked
+    final allQuestionViews = tester.widgetList(find.byType(QuestionView));
+    expect(allQuestionViews, hasLength(2));
+    allQuestionViews.forEach((element) {
+      if (element is QuestionView) {
+        if (element.question.name == tag) {
+          expect(element.signedOff, isTrue);
+        } else {
+          expect(element.signedOff, isFalse);
+        }
+      }
     });
   });
 }

@@ -147,7 +147,7 @@ class ActivityContainer extends StatelessWidget {
                   ),
                   Expanded(
                     child: Attachment(
-                      infoItem: activity.infoItem,
+                      activity: activity,
                       day: day,
                     ),
                   ),
@@ -178,21 +178,27 @@ class ActivityContainer extends StatelessWidget {
 
 class Attachment extends StatelessWidget {
   static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 14.0, 0.0);
-  final InfoItem infoItem;
+  final Activity activity;
   final DateTime day;
   const Attachment({
     Key key,
-    @required this.infoItem,
+    @required this.activity,
     @required this.day,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final item = infoItem;
+    final item = activity.infoItem;
     if (item is NoteInfoItem) {
       return NoteBlock(text: item.text);
     } else if (item is Checklist) {
-      return CheckListView(item, day: day);
+      return CheckListView(
+        item,
+        day: day,
+        onTap: (question, day) => BlocProvider.of<ActivitiesBloc>(context).add(
+            UpdateActivity(
+                activity.copyWith(infoItem: item.signOff(question, day)))),
+      );
     }
     return Container();
   }

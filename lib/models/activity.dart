@@ -342,7 +342,7 @@ class DbActivity extends DbModel<Activity> {
         'recurrent_data': activity.recurrentData,
         'reminder_before': activity.reminderBefore.join(';'),
         'icon': activity.icon,
-        'info_item': activity.infoItem.toBase64(),
+        'info_item': activity.infoItem?.toBase64(),
         'alarm_type': activity.alarmType,
         'signed_off_dates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'timezone': activity.timezone,

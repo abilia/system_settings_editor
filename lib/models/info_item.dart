@@ -95,24 +95,24 @@ class Checklist extends InfoItem {
         fileId: fileId ?? this.fileId,
       );
 
-  final yyyyMMdd = DateFormat('yyyyMMdd').format;
+  static final dayKey = DateFormat('yyyyMMdd').format;
 
   bool isSignedOff(Question question, DateTime day) {
-    final key = yyyyMMdd(day);
+    final key = dayKey(day);
     return checked[key]?.contains(question.id) ?? false;
   }
 
   Checklist signOff(Question question, DateTime day) {
-    final key = yyyyMMdd(day);
+    final key = dayKey(day);
     final id = question.id;
-    final modChecked = checked
-        .map((key, value) => MapEntry<String, Set<int>>(key, Set.from(value)));
-    final checkThisDay = modChecked[key] ?? <int>{};
+    final modifiableChecked =
+        checked.map((k, v) => MapEntry<String, Set<int>>(k, Set.from(v)));
+    final checkThisDay = modifiableChecked[key] ?? <int>{};
     if (!checkThisDay.remove(id)) {
       (checkThisDay.add(id));
     }
-    modChecked[key] = checkThisDay;
-    return copyWith(checked: modChecked);
+    modifiableChecked[key] = checkThisDay;
+    return copyWith(checked: modifiableChecked);
   }
 
   factory Checklist.fromJson(Map<String, dynamic> json) => Checklist(
@@ -127,8 +127,8 @@ class Checklist extends InfoItem {
       );
 
   Map<String, dynamic> toJson() => {
-        'checked': checked.map(
-            (key, value) => MapEntry<String, List<int>>(key, List.from(value))),
+        'checked':
+            checked.map((k, v) => MapEntry<String, List<int>>(k, List.from(v))),
         'questions': List.from(questions.map((x) => x.toJson())),
         'image': image,
         'name': name,
@@ -153,10 +153,10 @@ class Question extends Equatable {
   bool get hasTitle => name?.isNotEmpty ?? false;
 
   const Question({
-    this.image,
-    this.name,
     @required this.id,
+    this.name,
     this.fileId,
+    this.image,
     this.checked = false,
   })  : assert(id != null),
         assert(id >= 0),
