@@ -18,5 +18,5 @@ export 'dialogs/all.dart';
 export 'sortable/image_archive.dart';
 export 'remove_button.dart';
 export 'cross_over.dart';
-export 'note_block.dart';
 export 'dots.dart';
+export 'arrows.dart';

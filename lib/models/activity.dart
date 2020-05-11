@@ -21,6 +21,10 @@ class Activity extends DataModel {
   bool get hasImage =>
       (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
   bool get hasTitle => title?.isNotEmpty ?? false;
+  bool get hasAttachment => infoItem?.isNotEmpty ?? false;
+  InfoItem get attachment =>
+      hasAttachment ? InfoItem.fromBase64(infoItem) : null;
+
   Activity signOff(DateTime day) => copyWith(
       signedOffDates: signedOffDates.contains(day)
           ? (signedOffDates.toList()..remove(day))

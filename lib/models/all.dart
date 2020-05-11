@@ -12,3 +12,4 @@ export 'user_file.dart';
 export 'response_models.dart';
 export 'meta_models.dart';
 export 'image_thumb.dart';
+export 'info_item.dart';
