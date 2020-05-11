@@ -1,4 +1,6 @@
+import 'dart:collection';
 import 'dart:convert';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:intl/intl.dart';
@@ -61,25 +63,28 @@ class Checklist extends InfoItem {
   static const typeName = 'checklist';
   final String image;
   final String name;
-
-  final List<Question> questions;
-  final Map<String, Set<int>> checked;
+  final UnmodifiableListView<Question> questions;
+  final UnmodifiableMapView<String, UnmodifiableSetView<int>> checked;
   final String fileId;
 
   Checklist({
-    @required this.questions,
-    this.checked = const {},
+    @required List<Question> questions,
+    Map<String, Set<int>> checked = const {},
     this.image,
     this.name,
     this.fileId,
   })  : assert(questions != null),
-        assert(questions.isNotEmpty);
+        assert(questions.isNotEmpty),
+        questions = UnmodifiableListView(questions),
+        checked = UnmodifiableMapView(checked?.map(
+                (key, value) => MapEntry(key, UnmodifiableSetView(value))) ??
+            const {});
 
   Checklist copyWith({
     String image,
     String name,
     List<Question> questions,
-    Map<String, List<int>> checked,
+    Map<String, Set<int>> checked,
     String fileId,
   }) =>
       Checklist(
@@ -94,15 +99,20 @@ class Checklist extends InfoItem {
 
   bool isSignedOff(Question question, DateTime day) {
     final key = yyyyMMdd(day);
-    final checkThisDay = checked[key];
-    final result = checkThisDay?.contains(question.id) ?? false;
-    return result;
+    return checked[key]?.contains(question.id) ?? false;
   }
 
-  bool signOff(Question question, DateTime day) {
+  Checklist signOff(Question question, DateTime day) {
     final key = yyyyMMdd(day);
-    final checkThisDay = checked[key];
-    final result = checkThisDay?.contains(question.id) ?? false;
+    final id = question.id;
+    final modChecked = checked
+        .map((key, value) => MapEntry<String, Set<int>>(key, Set.from(value)));
+    final checkThisDay = modChecked[key] ?? <int>{};
+    if (!checkThisDay.remove(id)) {
+      (checkThisDay.add(id));
+    }
+    modChecked[key] = checkThisDay;
+    return copyWith(checked: modChecked);
   }
 
   factory Checklist.fromJson(Map<String, dynamic> json) => Checklist(
@@ -112,12 +122,13 @@ class Checklist extends InfoItem {
         questions: List<Question>.from(
           json['questions'].map((x) => Question.fromJson(x)),
         ),
-        checked: json['checked']
-            .map((k, v) => MapEntry<String, Set<int>>(k, Set<int>.from(v))),
+        checked: Map.from(json['checked']
+            .map((k, v) => MapEntry<String, Set<int>>(k, Set<int>.from(v)))),
       );
 
   Map<String, dynamic> toJson() => {
-        'checked': checked,
+        'checked': checked.map(
+            (key, value) => MapEntry<String, List<int>>(key, List.from(value))),
         'questions': List.from(questions.map((x) => x.toJson())),
         'image': image,
         'name': name,
@@ -141,7 +152,7 @@ class Question extends Equatable {
       (fileId?.isNotEmpty ?? false) || (image?.isNotEmpty ?? false);
   bool get hasTitle => name?.isNotEmpty ?? false;
 
-  Question({
+  const Question({
     this.image,
     this.name,
     @required this.id,
@@ -149,9 +160,7 @@ class Question extends Equatable {
     this.checked = false,
   })  : assert(id != null),
         assert(id >= 0),
-        assert((name?.isNotEmpty ?? false) ||
-            (fileId.isNotEmpty ?? false) ||
-            (image.isNotEmpty ?? false));
+        assert((name != null) || (fileId != null) || (image != null));
 
   Question copyWith({
     String image,

@@ -98,4 +98,41 @@ void main() {
     final infoItem = InfoItem.fromBase64(base64);
     expect(checkList, infoItem);
   });
+
+  test('Check item from checkist checklist', () {
+    final question = Question(id: 0, name: 'b');
+    final day = DateTime(2002, 02, 02);
+    final checkList = Checklist(questions: [question], checked: {});
+    final checkedList = checkList.signOff(question, day);
+    expect(checkList == checkedList, isFalse);
+    expect(checkList.isSignedOff(question, day), isFalse);
+    expect(checkedList.isSignedOff(question, day), isTrue);
+  });
+
+  test('Uncheck item from checklist', () {
+    final question = Question(id: 0, name: 'b');
+    final day = DateTime(2002, 02, 02);
+    final checkedList = Checklist(questions: [
+      question
+    ], checked: {
+      '20020202': {0}
+    });
+    final uncheckedList = checkedList.signOff(question, day);
+    expect(checkedList == uncheckedList, isFalse);
+    expect(uncheckedList.isSignedOff(question, day), isFalse);
+    expect(checkedList.isSignedOff(question, day), isTrue);
+  });
+
+  test('Not correct item from checklist checked', () {
+    final question = Question(id: 0, name: 'b');
+    final day = DateTime(2002, 02, 02);
+    final checkedList = Checklist(questions: [
+      question
+    ], checked: {
+      '20040202': {0},
+      '20020202': {1}
+    });
+
+    expect(checkedList.isSignedOff(question, day), isFalse);
+  });
 }
