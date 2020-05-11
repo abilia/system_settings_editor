@@ -1,6 +1,6 @@
-import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
 import 'package:seagull/models/activity.dart';
 
 class AnalyticsService {
@@ -30,7 +30,7 @@ class AnalyticsService {
       name: 'activity_created',
       parameters: params,
     );
-    await AppCenterAnalytics.trackEvent(
-        "activity_created", params.map((k, v) => MapEntry(k, v.toString())));
+    await AppCenter.trackEventAsync(
+        'activity_created', params.map((k, v) => MapEntry(k, v.toString())));
   }
 }

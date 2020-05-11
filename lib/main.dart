@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:appcenter_analytics/appcenter_analytics.dart';
-import 'package:appcenter/appcenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:devicelocale/devicelocale.dart';
@@ -42,12 +41,11 @@ Future<void> initServices() async {
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
     ..init();
-  final ios = defaultTargetPlatform == TargetPlatform.iOS;
-  var app_secret = ios
-      ? "ff45b5a3-ac02-4435-a389-6c7c60f0500a"
-      : "dc3c5c3a-d993-4ad9-860e-d8fce6aa5d97";
-
-  await AppCenter.start(app_secret, [AppCenterAnalytics.id]);
+  await AppCenter.startAsync(
+    appSecretAndroid: 'dc3c5c3a-d993-4ad9-860e-d8fce6aa5d97',
+    appSecretIOS: 'ff45b5a3-ac02-4435-a389-6c7c60f0500a',
+  );
+  await AppCenter.configureDistributeDebugAsync(enabled: false);
 }
 
 class App extends StatelessWidget {

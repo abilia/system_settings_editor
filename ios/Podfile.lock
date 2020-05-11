@@ -1,18 +1,14 @@
 PODS:
-  - appcenter (0.0.1):
-    - AppCenter
-    - Flutter
-  - AppCenter (1.2.0):
-    - AppCenter/Analytics (= 1.2.0)
-    - AppCenter/Crashes (= 1.2.0)
-  - AppCenter/Analytics (1.2.0):
+  - AppCenter (3.1.1):
+    - AppCenter/Analytics (= 3.1.1)
+    - AppCenter/Crashes (= 3.1.1)
+  - AppCenter/Analytics (3.1.1):
     - AppCenter/Core
-  - AppCenter/Core (1.2.0)
-  - AppCenter/Crashes (1.2.0):
+  - AppCenter/Core (3.1.1)
+  - AppCenter/Crashes (3.1.1):
     - AppCenter/Core
-  - appcenter_analytics (0.0.1):
-    - AppCenter/Analytics
-    - Flutter
+  - AppCenter/Distribute (3.1.1):
+    - AppCenter/Core
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
   - devicelocale (0.0.1):
@@ -77,6 +73,10 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 6.2)
     - Protobuf (>= 3.9.2, ~> 3.9)
   - Flutter (1.0.0)
+  - flutter_appcenter_bundle (0.0.1):
+    - AppCenter (~> 3.1.1)
+    - AppCenter/Distribute (~> 3.1.1)
+    - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
   - flutter_plugin_android_lifecycle (0.0.1):
@@ -143,13 +143,12 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - appcenter (from `.symlinks/plugins/appcenter/ios`)
-  - appcenter_analytics (from `.symlinks/plugins/appcenter_analytics/ios`)
   - devicelocale (from `.symlinks/plugins/devicelocale/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
+  - flutter_appcenter_bundle (from `.symlinks/plugins/flutter_appcenter_bundle/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
@@ -186,10 +185,6 @@ SPEC REPOS:
     - Protobuf
 
 EXTERNAL SOURCES:
-  appcenter:
-    :path: ".symlinks/plugins/appcenter/ios"
-  appcenter_analytics:
-    :path: ".symlinks/plugins/appcenter_analytics/ios"
   devicelocale:
     :path: ".symlinks/plugins/devicelocale/ios"
   firebase_analytics:
@@ -200,6 +195,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
+  flutter_appcenter_bundle:
+    :path: ".symlinks/plugins/flutter_appcenter_bundle/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_plugin_android_lifecycle:
@@ -228,9 +225,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_web/ios"
 
 SPEC CHECKSUMS:
-  AppCenter: d0b68b2a7a87ac0aed78e66f36d87fd321d0a29c
-  appcenter: ec63d9079174977ead44a0040ff083d6dd4c94c5
-  appcenter_analytics: 46cd35cb5fac57f7a4b2ae5d5040f984b4ad4b5a
+  AppCenter: 513d32888854d67d8cfbd3a8db16aeb5fb2e2a75
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   devicelocale: feebbe5e7a30adb8c4f83185de1b50ff19b44f00
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
@@ -246,6 +241,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: ebd2ea79ee38db0cb5f5167b17a0d387e1cc7b6e
   FirebaseMessaging: e8d71368a5c579083da02203146c953f3386d503
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_appcenter_bundle: 27ae496de175a0b4983331bf887c5dd0c58ab838
   flutter_local_notifications: 9e4738ce2471c5af910d961a6b7eadcf57c50186
   flutter_plugin_android_lifecycle: dc0b544e129eebb77a6bfb1239d4d1c673a60a35
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -267,6 +263,6 @@ SPEC CHECKSUMS:
   url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313
   url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
 
-PODFILE CHECKSUM: 3a3db558cc071068e6e0ab7593875974d2184d8b
+PODFILE CHECKSUM: 0ba44ad07df4ab62269dc769727cf0f12b1e453d
 
 COCOAPODS: 1.8.4
