@@ -131,7 +131,7 @@ class _ArrowState extends State<_Arrow> {
           height: widget.heigth != null ? condition ? widget.heigth : 1 : null,
           decoration: BoxDecoration(
             borderRadius: widget.borderRadius,
-            color: AbiliaColors.white.withAlpha(condition ? 245 : 0),
+            color: AbiliaColors.white135,
           ),
           child: Icon(widget.icon, size: 24),
           duration: const Duration(milliseconds: 200),

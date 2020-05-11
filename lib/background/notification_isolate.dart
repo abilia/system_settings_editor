@@ -8,6 +8,7 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
 // Stream is created so that app can respond to notification-selected events since the plugin is initialised in the main function
@@ -40,7 +41,7 @@ void ensureNotificationPluginInitialized() {
 }
 
 Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
-    {String language = 'en'}) async {
+    {String language = 'en', bool alwaysUse24HourFormat = true}) async {
   await notificationPlugin.cancelAll();
 
   final now = DateTime.now().add(1.minutes()).onlyMinutes();
@@ -48,17 +49,18 @@ Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
       allActivities.alarmsFrom(now, take: 50).toList();
 
   for (final newNotification in shouldBeScheduledNotifications) {
-    await scheduleNotification(newNotification, language: language);
+    await scheduleNotification(newNotification,
+        language: language, alwaysUse24HourFormat: alwaysUse24HourFormat);
   }
 }
 
 Future scheduleNotification(NotificationAlarm notificationAlarm,
-    {String language}) async {
+    {String language, bool alwaysUse24HourFormat}) async {
   final alarm = notificationAlarm.activity.alarm;
   final title = notificationAlarm.activity.title;
   final notificationTime = notificationAlarm.notificationTime;
-  final subtitle =
-      getSubtitle(notificationAlarm, notificationTime, language: language);
+  final subtitle = getSubtitle(notificationAlarm, notificationTime,
+      language: language, alwaysUse24HourFormat: alwaysUse24HourFormat);
   final hash = notificationAlarm.hashCode;
   final payload = json.encode(getPayload(notificationAlarm).toJson());
   final notificationChannel = getNotificationChannel(alarm);
@@ -120,16 +122,16 @@ class NotificationChannel {
 }
 
 String getSubtitle(NotificationAlarm notificationAlarm, DateTime day,
-    {String language}) {
+    {String language, bool alwaysUse24HourFormat}) {
   final givenLocale = Locale(language);
   final locale = Translated.dictionaries.containsKey(givenLocale)
       ? givenLocale
       : Translated.dictionaries.keys.first;
   initializeDateFormatting(locale.languageCode);
-  final tf = DateFormat('jm', locale.languageCode);
+  final tf = hourAndMinuteFromUse24(alwaysUse24HourFormat, language);
   final translater = Translated.dictionaries[locale];
   final a = notificationAlarm.activity;
-  String endTime = a.hasEndTime ? ' - ${tf.format(a.endClock(day))} ' : ' ';
+  String endTime = a.hasEndTime ? ' - ${tf(a.endClock(day))} ' : ' ';
   String extra = notificationAlarm is NewAlarm
       ? (notificationAlarm.alarmOnStart
           ? translater.startsNow
@@ -137,5 +139,5 @@ String getSubtitle(NotificationAlarm notificationAlarm, DateTime day,
       : (notificationAlarm is NewReminder
           ? translater.inMinutes(notificationAlarm.reminder.inMinutes)
           : '');
-  return tf.format(a.startClock(day)) + endTime + extra;
+  return tf(a.startClock(day)) + endTime + extra;
 }
