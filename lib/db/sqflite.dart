@@ -97,7 +97,7 @@ class DatabaseRepository {
         'select id, title, file_id, revision, dirty, deleted from $CALENDAR_TABLE_NAME order by revision desc');
     printTable(calendar);
     final userFile = await db.rawQuery(
-        'select id, revision, deleted, path, content_type from $USER_FILE_TABLE_NAME order by revision desc');
+        'select id, revision, deleted, path, content_type, file_loaded from $USER_FILE_TABLE_NAME order by revision desc');
     printTable(userFile);
     final sortables = await db.rawQuery(
         'select id, data, revision, dirty, deleted from $SORTABLE_TABLE_NAME order by revision desc');
