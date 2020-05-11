@@ -6,8 +6,13 @@ import 'package:seagull/ui/theme.dart';
 
 class CheckListView extends StatefulWidget {
   final Checklist checklist;
+  final DateTime day;
 
-  const CheckListView(this.checklist, {Key key}) : super(key: key);
+  const CheckListView(
+    this.checklist, {
+    @required this.day,
+    Key key,
+  }) : super(key: key);
 
   @override
   _CheckListViewState createState() => _CheckListViewState(ScrollController());
@@ -28,8 +33,13 @@ class _CheckListViewState extends State<CheckListView> {
             controller: controller,
             padding: Attachment.padding,
             itemCount: widget.checklist.questions.length,
-            itemBuilder: (context, i) =>
-                QuestionView(widget.checklist.questions[i]),
+            itemBuilder: (context, i) {
+              final question = widget.checklist.questions[i];
+              return QuestionView(
+                question,
+                signedOff: widget.checklist.isSignedOff(question, widget.day),
+              );
+            },
           ),
         ),
         ArrowUp(controller: controller),
@@ -41,16 +51,23 @@ class _CheckListViewState extends State<CheckListView> {
 
 class QuestionView extends StatefulWidget {
   final Question question;
+  final bool signedOff;
 
-  const QuestionView(this.question, {Key key}) : super(key: key);
+  const QuestionView(
+    this.question, {
+    this.signedOff = false,
+    key,
+  }) : super(key: key);
 
   @override
-  _QuestionViewState createState() => _QuestionViewState();
+  _QuestionViewState createState() => _QuestionViewState(signedOff);
 }
 
 class _QuestionViewState extends State<QuestionView> {
-  bool selected = false;
+  bool selected;
+  _QuestionViewState(this.selected);
   static const duration = Duration(milliseconds: 400);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

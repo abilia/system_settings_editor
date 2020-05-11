@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:intl/intl.dart';
 
 abstract class InfoItem extends Equatable {
   String get type;
@@ -62,7 +63,7 @@ class Checklist extends InfoItem {
   final String name;
 
   final List<Question> questions;
-  final Map<String, List<int>> checked;
+  final Map<String, Set<int>> checked;
   final String fileId;
 
   Checklist({
@@ -89,7 +90,20 @@ class Checklist extends InfoItem {
         fileId: fileId ?? this.fileId,
       );
 
-  String toRawJson() => json.encode(toJson());
+  final yyyyMMdd = DateFormat('yyyyMMdd').format;
+
+  bool isSignedOff(Question question, DateTime day) {
+    final key = yyyyMMdd(day);
+    final checkThisDay = checked[key];
+    final result = checkThisDay?.contains(question.id) ?? false;
+    return result;
+  }
+
+  bool signOff(Question question, DateTime day) {
+    final key = yyyyMMdd(day);
+    final checkThisDay = checked[key];
+    final result = checkThisDay?.contains(question.id) ?? false;
+  }
 
   factory Checklist.fromJson(Map<String, dynamic> json) => Checklist(
         image: json['image'],
@@ -98,8 +112,8 @@ class Checklist extends InfoItem {
         questions: List<Question>.from(
           json['questions'].map((x) => Question.fromJson(x)),
         ),
-        checked: Map.from(json['checked']).map((k, v) =>
-            MapEntry<String, List<int>>(k, List<int>.from(v.map((x) => x)))),
+        checked: json['checked']
+            .map((k, v) => MapEntry<String, Set<int>>(k, Set<int>.from(v))),
       );
 
   Map<String, dynamic> toJson() => {
