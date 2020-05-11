@@ -91,6 +91,26 @@ class DatabaseRepository {
     );
   }
 
+  Future printAll() async {
+    final db = await database;
+    final calendar = await db.rawQuery(
+        'select id, title, file_id, revision, dirty, deleted from $CALENDAR_TABLE_NAME order by revision desc');
+    printTable(calendar);
+    final userFile = await db.rawQuery(
+        'select id, revision, deleted, path, content_type from $USER_FILE_TABLE_NAME order by revision desc');
+    printTable(userFile);
+    final sortables = await db.rawQuery(
+        'select id, data, revision, dirty, deleted from $SORTABLE_TABLE_NAME order by revision desc');
+    printTable(sortables);
+  }
+
+  void printTable(List<Map<String, dynamic>> calendar) {
+    print(calendar.first.keys.join('\t'));
+    calendar.forEach((element) {
+      print(element.values.join('\t'));
+    });
+  }
+
   Future clearAll() async {
     final db = await database;
     final batch = db.batch();
