@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/activity.dart';
@@ -236,7 +237,7 @@ class FadeInNetworkImage extends StatelessWidget {
       builder: (context, state) => (state is Authenticated)
           ? FadeInImage(
               placeholder: MemoryImage(kTransparentImage),
-              image: Image.network(
+              image: AdvancedNetworkImage(
                 imageFileId != null
                     ? imageThumbUrl(
                         baseUrl: state.userRepository.baseUrl,
@@ -250,13 +251,10 @@ class FadeInNetworkImage extends StatelessWidget {
                         imagePath: imageFilePath,
                         size: ImageThumb.THUMB_SIZE,
                       ),
-                fit: fit,
-                headers: authHeader(state.token),
-                errorBuilder: (BuildContext context, Object exception,
-                    StackTrace stackTrace) {
-                  return CircularProgressIndicator();
-                },
-              ).image,
+                header: authHeader(state.token),
+                loadFailedCallback: () => print('Failed to load network image'),
+              ),
+              fit: BoxFit.cover,
             )
           : emptyImage,
     );
