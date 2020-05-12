@@ -168,33 +168,48 @@ class ActivityInfoSideDots extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ClockBloc, DateTime>(builder: (_, now) {
-      final endTime = activity.endClock(day);
-      final startTime = activity.startClock(day);
-      final bool onSameDay = day.isAtSameDay(now),
-          notStarted = startTime.isAfter(now),
-          isCurrent = activity.hasEndTime &&
-              now.isOnOrBetween(startDate: startTime, endDate: endTime);
-      final bool shouldHaveSideDots =
-          !activity.fullDay && onSameDay && (notStarted || isCurrent);
-      if (!shouldHaveSideDots) {
-        return SizedBox(width: ActivityInfo.margin);
-      }
-      if (now.isBefore(startTime)) {
-        return SideDotsLarge(
-          dots: dots,
-          startTime: startTime.subtract(hours.hours()),
-          endTime: startTime,
-          now: now,
+    final endTime = activity.endClock(day);
+    final startTime = activity.startClock(day);
+    return ConstrainedBox(
+      constraints: BoxConstraints(minWidth: ActivityInfo.margin),
+      child: BlocBuilder<ClockBloc, DateTime>(builder: (context, now) {
+        final bool onSameDay = day.isAtSameDay(now),
+            notStarted = startTime.isAfter(now),
+            isCurrent = activity.hasEndTime &&
+                now.isOnOrBetween(startDate: startTime, endDate: endTime);
+        final bool shouldHaveSideDots =
+            !activity.fullDay && onSameDay && (notStarted || isCurrent);
+        return AnimatedSwitcher(
+          duration: ActivityInfo.animationDuration,
+          child: !shouldHaveSideDots
+              ? const SizedBox()
+              : now.isBefore(startTime)
+                  ? SideDotsLarge(
+                      dots: dots,
+                      startTime: startTime.subtract(hours.hours()),
+                      endTime: startTime,
+                      now: now,
+                    )
+                  : SideDotsLarge(
+                      dots: dots,
+                      startTime: startTime,
+                      endTime: endTime,
+                      now: now,
+                    ),
+          transitionBuilder: (child, animation) {
+            return SizeTransition(
+              axis: Axis.horizontal,
+              axisAlignment: -1,
+              child: FadeTransition(
+                child: child,
+                opacity: animation,
+              ),
+              sizeFactor: animation,
+            );
+          },
         );
-      }
-      return SideDotsLarge(
-        dots: dots,
-        startTime: startTime,
-        endTime: endTime,
-        now: now,
-      );
-    });
+      }),
+    );
   }
 }
 
@@ -224,15 +239,16 @@ class SideDotsLarge extends StatelessWidget {
         Expanded(
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Text(
-                  endTime
-                      .difference(now)
-                      .toUntilString(Translator.of(context).translate),
-                  textAlign: TextAlign.center,
+              if (endTime.isAtSameMomentOrAfter(now))
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    endTime
+                        .difference(now)
+                        .toUntilString(Translator.of(context).translate),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
               Spacer(),
             ],
           ),
