@@ -236,6 +236,8 @@ class FadeInNetworkImage extends StatelessWidget {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) => (state is Authenticated)
           ? FadeInImage(
+              height: height,
+              width: width,
               placeholder: MemoryImage(kTransparentImage),
               image: AdvancedNetworkImage(
                 imageFileId != null
@@ -254,7 +256,7 @@ class FadeInNetworkImage extends StatelessWidget {
                 header: authHeader(state.token),
                 loadFailedCallback: () => print('Failed to load network image'),
               ),
-              fit: BoxFit.cover,
+              fit: fit,
             )
           : emptyImage,
     );
