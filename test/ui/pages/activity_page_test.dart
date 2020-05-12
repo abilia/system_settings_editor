@@ -13,7 +13,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../mocks.dart';
 
@@ -987,7 +986,7 @@ void main() {
         startTime: startTime,
         infoItem: Checklist(questions: [
           Question(id: 0, name: tag),
-          Question(id: 1, fileId: Uuid().v4()),
+          Question(id: 1, name: 'another'),
         ]));
 
     // Arrange
