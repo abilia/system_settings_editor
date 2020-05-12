@@ -62,7 +62,7 @@ class ActivityInfo extends StatelessWidget {
               ),
         child: Column(
           children: <Widget>[
-            ActivityTimeRange(activity: activity, day: day),
+            TimeRow(activity: activity, day: day),
             Expanded(
               child: Container(
                 decoration: borderDecoration,

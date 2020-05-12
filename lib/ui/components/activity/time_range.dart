@@ -9,11 +9,8 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
-class ActivityTimeRange extends StatelessWidget {
-  static const timeRangePadding = EdgeInsets.fromLTRB(21.0, 14.0, 20.0, 14.0);
-  static const minBoxConstraints =
-      BoxConstraints(minWidth: 92.0, minHeight: 52.0);
-  const ActivityTimeRange({
+class TimeRow extends StatelessWidget {
+  const TimeRow({
     Key key,
     @required this.activity,
     @required this.day,
@@ -24,106 +21,120 @@ class ActivityTimeRange extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return BlocBuilder<ClockBloc, DateTime>(
-      builder: (context, now) => Padding(
-        padding: const EdgeInsets.only(top: 4, bottom: 8),
-        child: activity.fullDay
-            ? Container(
-                padding: ActivityTimeRange.timeRangePadding,
-                constraints: ActivityTimeRange.minBoxConstraints,
-                decoration: borderDecoration,
-                child: Text(
-                  Translator.of(context).translate.fullDay,
-                  style: textTheme.headline6.copyWith(color: AbiliaColors.black),
+      builder: (context, now) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 4, bottom: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (activity.fullDay)
+                _TimeBox(
+                  occasion:
+                      day.isDayBefore(now) ? Occasion.past : Occasion.future,
+                  text: Translator.of(context).translate.fullDay,
+                )
+              else if (!activity.hasEndTime)
+                _timeText(context, date: activity.startClock(day), now: now)
+              else ...[
+                Expanded(
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      _timeText(context,
+                          date: activity.startClock(day), now: now),
+                    ],
+                  ),
                 ),
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: !activity.hasEndTime
-                    ? [
-                        _TimeText(
-                          date: activity.startClock(day),
-                          now: now,
-                        ),
-                      ]
-                    : [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Spacer(),
-                              _TimeText(
-                                date: activity.startClock(day),
-                                now: now,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text('-', style: textTheme.headline5),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              _TimeText(
-                                date: activity.endClock(day),
-                                now: now,
-                              ),
-                              Spacer(),
-                            ],
-                          ),
-                        ),
-                      ],
-              ),
-      ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child:
+                      Text('-', style: Theme.of(context).textTheme.headline5),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      _timeText(
+                        context,
+                        date: activity.endClock(day),
+                        now: now,
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+                ),
+              ],
+            ],
+          ),
+        );
+      },
     );
   }
+
+  Widget _timeText(
+    BuildContext context, {
+    @required DateTime date,
+    @required DateTime now,
+  }) =>
+      _TimeBox(
+          text: hourAndMinuteFormat(context)(date),
+          occasion: date.occasion(now));
 }
 
-class _TimeText extends StatelessWidget {
-  _TimeText({
+class _TimeBox extends StatelessWidget {
+  const _TimeBox({
     Key key,
-    @required this.date,
-    @required DateTime now,
-  })  : occasion = date.occasion(now),
+    @required this.text,
+    @required Occasion occasion,
+  })  : current = occasion == Occasion.current,
+        past = occasion == Occasion.past,
+        future = occasion == Occasion.future,
         super(key: key);
 
-  final DateTime date;
-  final Occasion occasion;
-  bool get past => occasion == Occasion.past;
-  bool get future => occasion == Occasion.future;
-  bool get current => occasion == Occasion.current;
+  final bool current, past, future;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = hourAndMinuteFormat(context);
-    final textStyle = Theme.of(context)
+    // var past = false, current = true;
+    final TextStyle textStyle = Theme.of(context)
         .textTheme
         .headline6
         .copyWith(color: past ? AbiliaColors.white[140] : AbiliaColors.black);
-    return AnimatedContainer(
-      duration: ActivityInfo.animationDuration,
-      padding: ActivityTimeRange.timeRangePadding,
-      constraints: ActivityTimeRange.minBoxConstraints,
-      decoration: _getBoxDecoration(current, past),
-      child: Center(
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Text(
-              timeFormat(date),
+    final boxDecoration = _decoration;
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        AnimatedContainer(
+          duration: ActivityInfo.animationDuration,
+          padding: _padding,
+          constraints: const BoxConstraints(minWidth: 92.0, minHeight: 52.0),
+          decoration: boxDecoration,
+          child: Center(
+            child: Text(
+              text,
               style: textStyle,
               textAlign: TextAlign.center,
             ),
-            if (past) CrossOver(fallbackHeight: 38, fallbackWidth: 64),
-          ],
+          ),
         ),
-      ),
+        AnimatedOpacity(
+            opacity: past ? 1.0 : 0.0,
+            duration: ActivityInfo.animationDuration,
+            child: const CrossOver(fallbackHeight: 38, fallbackWidth: 64)),
+      ],
     );
   }
 
-  BoxDecoration _getBoxDecoration(bool current, bool past) => current
-      ? currentBoxDecoration
-      : past ? const BoxDecoration() : borderDecoration;
+  BoxDecoration get _decoration =>
+      current ? currentBoxDecoration : past ? pastDecration : borderDecoration;
+  EdgeInsets get _padding => const EdgeInsets.fromLTRB(21.0, 14.0, 20.0, 14.0)
+      .add(future ? const EdgeInsets.all(1.0) : EdgeInsets.zero);
 }
+
+const pastDecration = BoxDecoration(
+  borderRadius: borderRadius,
+  border: Border.fromBorderSide(
+    BorderSide(style: BorderStyle.none, width: 2.0),
+  ),
+);
