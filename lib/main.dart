@@ -41,9 +41,10 @@ Future<void> initServices() async {
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
     ..init();
+  final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
   await AppCenter.startAsync(
-    appSecretAndroid: '7e4c6fd3-55b1-4f8a-8350-b069ed958ab8',
-    appSecretIOS: '7e4c6fd3-55b1-4f8a-8350-b069ed958ab8',
+    appSecretAndroid: appId,
+    appSecretIOS: appId,
   );
   await AppCenter.configureDistributeDebugAsync(enabled: false);
 }
