@@ -20,7 +20,7 @@ class _EditRecurrentDialogState extends State<EditRecurrentDialog> {
     final translate = Translator.of(context).translate;
     final theme = Theme.of(context);
     return ViewDialog(
-      heading: Text(translate.appyTo, style: theme.textTheme.title),
+      heading: Text(translate.appyTo, style: theme.textTheme.headline6),
       onOk: () => Navigator.of(context).pop(applyTo),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

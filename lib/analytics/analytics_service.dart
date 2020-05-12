@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
 import 'package:seagull/models/activity.dart';
 
 class AnalyticsService {
@@ -16,17 +17,20 @@ class AnalyticsService {
   }
 
   static Future<void> sendActivityCreatedEvent(Activity activity) async {
+    final params = <String, dynamic>{
+      'image': activity.hasImage,
+      'title': activity.hasTitle ?? false,
+      'fullDay': activity.fullDay,
+      'checkable': activity.checkable,
+      'removeAfter': activity.removeAfter,
+      'alarm': activity.alarm.toInt,
+      'recurring': activity.recurrance.toString(),
+    };
     await analytics.logEvent(
       name: 'activity_created',
-      parameters: <String, dynamic>{
-        'image': activity.hasImage,
-        'title': activity.hasTitle ?? false,
-        'fullDay': activity.fullDay,
-        'checkable': activity.checkable,
-        'removeAfter': activity.removeAfter,
-        'alarm': activity.alarm.toInt,
-        'recurring': activity.recurrance.toString(),
-      },
+      parameters: params,
     );
+    await AppCenter.trackEventAsync(
+        'activity_created', params.map((k, v) => MapEntry(k, v.toString())));
   }
 }

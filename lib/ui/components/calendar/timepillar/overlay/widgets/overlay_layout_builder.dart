@@ -53,6 +53,7 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
   @override
   void forgetChild(Element child) {
     assert(child == _child);
+    super.forgetChild(child);
     _child = null;
   }
 

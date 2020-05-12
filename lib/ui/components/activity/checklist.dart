@@ -70,10 +70,9 @@ class QuestionView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    final body2 = textTheme.body2;
     final selectedTheme = theme.copyWith(
       textTheme: textTheme.copyWith(
-        body2: body2.copyWith(
+        bodyText1: textTheme.bodyText1.copyWith(
           color: AbiliaColors.white140,
           decoration: TextDecoration.lineThrough,
         ),
@@ -122,7 +121,7 @@ class QuestionView extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 10.0),
                         child: Text(
                           question.name,
-                          style: Theme.of(context).textTheme.body2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                     Spacer(),

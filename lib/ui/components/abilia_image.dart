@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/activity.dart';
@@ -235,25 +235,28 @@ class FadeInNetworkImage extends StatelessWidget {
     );
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) => (state is Authenticated)
-          ? CachedNetworkImage(
-              fit: fit,
-              httpHeaders: authHeader(state.token),
+          ? FadeInImage(
               height: height,
               width: width,
-              imageUrl: imageFileId?.isNotEmpty ?? false
-                  ? imageThumbUrl(
-                      baseUrl: state.userRepository.baseUrl,
-                      userId: state.userId,
-                      imageFileId: imageFileId,
-                      size: ImageThumb.THUMB_SIZE,
-                    )
-                  : imagePathUrl(
-                      state.userRepository.baseUrl,
-                      state.userId,
-                      imageFilePath,
-                    ),
-              placeholder: (context, url) => emptyImage,
-              errorWidget: (context, url, error) => emptyImage,
+              placeholder: MemoryImage(kTransparentImage),
+              image: AdvancedNetworkImage(
+                imageFileId != null
+                    ? imageThumbUrl(
+                        baseUrl: state.userRepository.baseUrl,
+                        userId: state.userId,
+                        imageFileId: imageFileId,
+                        size: ImageThumb.THUMB_SIZE,
+                      )
+                    : imageThumbPathUrl(
+                        baseUrl: state.userRepository.baseUrl,
+                        userId: state.userId,
+                        imagePath: imageFilePath,
+                        size: ImageThumb.THUMB_SIZE,
+                      ),
+                header: authHeader(state.token),
+                loadFailedCallback: () => print('Failed to load network image'),
+              ),
+              fit: fit,
             )
           : emptyImage,
     );

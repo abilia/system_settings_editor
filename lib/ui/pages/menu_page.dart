@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
@@ -37,22 +39,25 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
             : null,
         builder: (context, AsyncSnapshot<User> userSnapshot) => Column(
           children: <Widget>[
-            ProfilePicture(
-                state is AuthenticationInitialized
-                    ? state.userRepository.baseUrl
-                    : null,
-                userSnapshot.data),
+            InkWell(
+              onDoubleTap: () => GetIt.I<DatabaseRepository>().printAll(),
+              child: ProfilePicture(
+                  state is AuthenticationInitialized
+                      ? state.userRepository.baseUrl
+                      : null,
+                  userSnapshot.data),
+            ),
             SizedBox(height: 24.0),
             Text(
               userSnapshot.data?.name ?? '',
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.headline6,
             ),
             SizedBox(height: 4.0),
             Text(
               userSnapshot.data?.username ?? '',
               style: Theme.of(context)
                   .textTheme
-                  .body2
+                  .bodyText1
                   .copyWith(color: AbiliaColors.black[75]),
             ),
           ],
@@ -73,7 +78,7 @@ class LogoutButton extends StatelessWidget {
         key: TestKey.loggInButton,
         child: Text(
           Translator.of(context).translate.logout,
-          style: theme.textTheme.subhead.copyWith(color: AbiliaColors.white),
+          style: theme.textTheme.subtitle1.copyWith(color: AbiliaColors.white),
         ),
         onPressed: () {
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
