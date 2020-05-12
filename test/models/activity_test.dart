@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/models/activity.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:uuid/uuid.dart';
 
@@ -172,18 +172,21 @@ void main() {
       Duration(minutes: 5).inMilliseconds,
       Duration(hours: 1).inMilliseconds
     };
+    final infoItem = NoteInfoItem('just a note');
 
     final activity = Activity.createNew(
-        title: "An interesting title",
-        category: 4,
-        duration: duration,
-        reminderBefore: reminders,
-        startTime: now,
-        recurrentData: 1,
-        recurrentType: 1,
-        fileId: fileId,
-        checkable: true,
-        signedOffDates: [DateTime(2000, 02, 20)]);
+      title: "An interesting title",
+      category: 4,
+      duration: duration,
+      reminderBefore: reminders,
+      startTime: now,
+      recurrentData: 1,
+      recurrentType: 1,
+      fileId: fileId,
+      checkable: true,
+      signedOffDates: [DateTime(2000, 02, 20)],
+      infoItem: infoItem,
+    );
     final dbActivity = activity.wrapWithDbModel();
     final asJson = dbActivity.toJson();
     final deserializedDbActivity = DbActivity.fromJson(asJson);
@@ -207,6 +210,7 @@ void main() {
     expect(deserializedActivity.removeAfter, activity.removeAfter);
     expect(deserializedActivity.secret, activity.secret);
     expect(deserializedActivity.signedOffDates, activity.signedOffDates);
+    expect(deserializedActivity.infoItem, activity.infoItem);
     expect(deserializedActivity, activity);
   });
 }

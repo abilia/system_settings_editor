@@ -6,8 +6,15 @@ import 'package:seagull/ui/theme.dart';
 
 class CheckListView extends StatefulWidget {
   final Checklist checklist;
+  final DateTime day;
+  final Function(Question, DateTime) onTap;
 
-  const CheckListView(this.checklist, {Key key}) : super(key: key);
+  const CheckListView(
+    this.checklist, {
+    @required this.day,
+    @required this.onTap,
+    Key key,
+  }) : super(key: key);
 
   @override
   _CheckListViewState createState() => _CheckListViewState(ScrollController());
@@ -28,8 +35,14 @@ class _CheckListViewState extends State<CheckListView> {
             controller: controller,
             padding: Attachment.padding,
             itemCount: widget.checklist.questions.length,
-            itemBuilder: (context, i) =>
-                QuestionView(widget.checklist.questions[i]),
+            itemBuilder: (context, i) {
+              final question = widget.checklist.questions[i];
+              return QuestionView(
+                question,
+                signedOff: widget.checklist.isSignedOff(question, widget.day),
+                onTap: () => widget.onTap(question, widget.day),
+              );
+            },
           ),
         ),
         ArrowUp(controller: controller),
@@ -39,18 +52,20 @@ class _CheckListViewState extends State<CheckListView> {
   }
 }
 
-class QuestionView extends StatefulWidget {
+class QuestionView extends StatelessWidget {
   final Question question;
+  final bool signedOff;
+  final GestureTapCallback onTap;
 
-  const QuestionView(this.question, {Key key}) : super(key: key);
+  const QuestionView(
+    this.question, {
+    @required this.onTap,
+    this.signedOff = false,
+    key,
+  }) : super(key: key);
 
-  @override
-  _QuestionViewState createState() => _QuestionViewState();
-}
-
-class _QuestionViewState extends State<QuestionView> {
-  bool selected = false;
   static const duration = Duration(milliseconds: 400);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -65,7 +80,7 @@ class _QuestionViewState extends State<QuestionView> {
     );
 
     return AnimatedTheme(
-      data: selected ? selectedTheme : theme,
+      data: signedOff ? selectedTheme : theme,
       duration: duration,
       child: Builder(
         builder: (context) => Padding(
@@ -75,10 +90,10 @@ class _QuestionViewState extends State<QuestionView> {
             borderRadius: borderRadius,
             child: InkWell(
               borderRadius: borderRadius,
-              onTap: () => setState(() => selected = !selected),
+              onTap: onTap,
               child: AnimatedContainer(
                 duration: duration,
-                decoration: selected
+                decoration: signedOff
                     ? borderDecoration.copyWith(
                         border: Border.all(style: BorderStyle.none))
                     : borderDecoration,
@@ -86,28 +101,29 @@ class _QuestionViewState extends State<QuestionView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   textBaseline: TextBaseline.ideographic,
                   children: <Widget>[
-                    if (widget.question.hasImage)
+                    if (question.hasImage)
                       Padding(
                         padding: const EdgeInsets.fromLTRB(6.0, 4.0, 0.0, 4.0),
                         child: AnimatedOpacity(
                           duration: duration,
-                          opacity: selected ? 0.5 : 1.0,
+                          opacity: signedOff ? 0.5 : 1.0,
                           child: FadeInAbiliaImage(
-                            imageFileId: widget.question.fileId,
-                            imageFilePath: widget.question.image,
+                            imageFileId: question.fileId,
+                            imageFilePath: question.image,
                             width: 40,
                             height: 40,
                             fit: BoxFit.contain,
                           ),
                         ),
                       ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 10.0),
-                      child: Text(
-                        widget.question.name,
-                        style: Theme.of(context).textTheme.bodyText1,
+                    if (question.hasTitle)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 10.0),
+                        child: Text(
+                          question.name,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
-                    ),
                     Spacer(),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 12.0, 12.0, 12.0),
@@ -117,7 +133,7 @@ class _QuestionViewState extends State<QuestionView> {
                           color: AbiliaColors.green,
                         ),
                         secondChild: Icon(AbiliaIcons.checkbox_unselected),
-                        crossFadeState: selected
+                        crossFadeState: signedOff
                             ? CrossFadeState.showFirst
                             : CrossFadeState.showSecond,
                         duration: duration,
