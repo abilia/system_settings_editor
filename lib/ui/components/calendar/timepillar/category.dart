@@ -141,7 +141,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                     widget.text.substring(0, intAnimation.value),
                     style: Theme.of(context)
                         .textTheme
-                        .subhead
+                        .subtitle1
                         .copyWith(color: AbiliaColors.white),
                     softWrap: false,
                     overflow: TextOverflow.fade,

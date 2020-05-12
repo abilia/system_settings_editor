@@ -57,7 +57,7 @@ class _AgendaState extends State<Agenda> {
                         child: Center(
                           child: Text(
                             Translator.of(context).translate.noActivities,
-                            style: Theme.of(context).textTheme.body2,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                       )

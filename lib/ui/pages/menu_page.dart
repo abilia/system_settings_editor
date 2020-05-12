@@ -50,14 +50,14 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
             SizedBox(height: 24.0),
             Text(
               userSnapshot.data?.name ?? '',
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.headline6,
             ),
             SizedBox(height: 4.0),
             Text(
               userSnapshot.data?.username ?? '',
               style: Theme.of(context)
                   .textTheme
-                  .body2
+                  .bodyText1
                   .copyWith(color: AbiliaColors.black[75]),
             ),
           ],
@@ -78,7 +78,7 @@ class LogoutButton extends StatelessWidget {
         key: TestKey.loggInButton,
         child: Text(
           Translator.of(context).translate.logout,
-          style: theme.textTheme.subhead.copyWith(color: AbiliaColors.white),
+          style: theme.textTheme.subtitle1.copyWith(color: AbiliaColors.white),
         ),
         onPressed: () {
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());

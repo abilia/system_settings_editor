@@ -35,7 +35,7 @@ class ActivityTimeRange extends StatelessWidget {
                 decoration: borderDecoration,
                 child: Text(
                   Translator.of(context).translate.fullDay,
-                  style: textTheme.title.copyWith(color: AbiliaColors.black),
+                  style: textTheme.headline6.copyWith(color: AbiliaColors.black),
                 ),
               )
             : Row(
@@ -61,7 +61,7 @@ class ActivityTimeRange extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text('-', style: textTheme.headline),
+                          child: Text('-', style: textTheme.headline5),
                         ),
                         Expanded(
                           child: Row(
@@ -100,7 +100,7 @@ class _TimeText extends StatelessWidget {
     final timeFormat = hourAndMinuteFormat(context);
     final textStyle = Theme.of(context)
         .textTheme
-        .title
+        .headline6
         .copyWith(color: past ? AbiliaColors.white[140] : AbiliaColors.black);
     return AnimatedContainer(
       duration: ActivityInfo.animationDuration,

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:devicelocale/devicelocale.dart';
@@ -21,6 +22,7 @@ import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/background/all.dart';
+import 'package:flutter/foundation.dart';
 
 void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -39,6 +41,11 @@ Future<void> initServices() async {
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
     ..init();
+  await AppCenter.startAsync(
+    appSecretAndroid: 'dc3c5c3a-d993-4ad9-860e-d8fce6aa5d97',
+    appSecretIOS: 'ff45b5a3-ac02-4435-a389-6c7c60f0500a',
+  );
+  await AppCenter.configureDistributeDebugAsync(enabled: false);
 }
 
 class App extends StatelessWidget {

@@ -34,7 +34,7 @@ class ReminderPage extends StatelessWidget {
                   translate.inMinutes(reminderTime),
                   style: Theme.of(context)
                       .textTheme
-                      .display1
+                      .headline4
                       .copyWith(color: AbiliaColors.red),
                 ),
               ),
