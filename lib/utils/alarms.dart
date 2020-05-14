@@ -41,7 +41,7 @@ extension IterableActivity on Iterable<Activity> {
   Iterable<NotificationAlarm> alarmsFrom(
     DateTime time, {
     int take = 50,
-    int maxDays = 365,
+    int maxDays = 60,
   }) {
     final nextDay = time.nextDay().onlyDays();
     final endTime = nextDay.subtract(1.minutes());

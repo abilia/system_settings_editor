@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -39,27 +40,72 @@ void ensureNotificationPluginInitialized() {
   }
 }
 
-Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
-    {String language = 'en', bool alwaysUse24HourFormat = true}) async {
-  await notificationPlugin.cancelAll();
-
+Future scheduleAlarmNotifications(
+  Iterable<Activity> allActivities,
+  String language,
+  bool alwaysUse24HourFormat,
+) async {
   final now = DateTime.now().add(1.minutes()).onlyMinutes();
   final shouldBeScheduledNotifications =
-      allActivities.alarmsFrom(now, take: 50).toList();
+      allActivities.alarmsFrom(now, take: 50);
+  return scheduleAllAlarmNotifications(
+    shouldBeScheduledNotifications,
+    language,
+    alwaysUse24HourFormat,
+  );
+}
 
+Future scheduleAllAlarmNotifications(
+  Iterable<NotificationAlarm> shouldBeScheduledNotifications,
+  String language,
+  bool alwaysUse24HourFormat,
+) async {
+  await notificationPlugin.cancelAll();
   for (final newNotification in shouldBeScheduledNotifications) {
-    await scheduleNotification(newNotification,
-        language: language, alwaysUse24HourFormat: alwaysUse24HourFormat);
+    await scheduleNotification(
+      newNotification,
+      language,
+      alwaysUse24HourFormat,
+    );
   }
 }
 
-Future scheduleNotification(NotificationAlarm notificationAlarm,
-    {String language, bool alwaysUse24HourFormat}) async {
+Iterable<NotificationAlarm> alarmsFromIsolate(List<dynamic> args) {
+  final serialized = args[0];
+  final allActivities =
+      serialized.map((e) => DbActivity.fromJson(e).activity).toList();
+  final now = args[1] as DateTime;
+  return allActivities.alarmsFrom(now);
+}
+
+Future scheduleAlarmNotificationsIsolated(
+  Iterable<Activity> allActivities,
+  String language,
+  bool alwaysUse24HourFormat,
+) async {
+  final now = DateTime.now().add(1.minutes()).onlyMinutes();
+  final serialized =
+      allActivities.map((e) => e.wrapWithDbModel().toJson()).toList();
+  final Iterable<NotificationAlarm> shouldBeScheduledNotifications =
+      await compute(alarmsFromIsolate, [serialized, now]);
+  return scheduleAllAlarmNotifications(
+      shouldBeScheduledNotifications, language, alwaysUse24HourFormat);
+}
+
+Future scheduleNotification(
+  NotificationAlarm notificationAlarm,
+  String language,
+  bool alwaysUse24HourFormat,
+) async {
   final alarm = notificationAlarm.activity.alarm;
   final title = notificationAlarm.activity.title;
   final notificationTime = notificationAlarm.notificationTime;
-  final subtitle = getSubtitle(notificationAlarm, notificationTime,
-      language: language, alwaysUse24HourFormat: alwaysUse24HourFormat);
+  final subtitle = getSubtitle(
+    notificationAlarm,
+    notificationTime,
+    language,
+    alwaysUse24HourFormat,
+  );
   final hash = notificationAlarm.hashCode;
   final payload = json.encode(getPayload(notificationAlarm).toJson());
   final notificationChannel = getNotificationChannel(alarm);
@@ -120,8 +166,12 @@ class NotificationChannel {
   NotificationChannel(this.id, this.name, this.description);
 }
 
-String getSubtitle(NotificationAlarm notificationAlarm, DateTime day,
-    {String language, bool alwaysUse24HourFormat}) {
+String getSubtitle(
+  NotificationAlarm notificationAlarm,
+  DateTime day,
+  String language,
+  bool alwaysUse24HourFormat,
+) {
   final givenLocale = Locale(language);
   final locale = Translated.dictionaries.containsKey(givenLocale)
       ? givenLocale
