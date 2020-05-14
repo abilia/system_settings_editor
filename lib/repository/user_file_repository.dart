@@ -46,9 +46,7 @@ class UserFileRepository extends DataRepository<UserFile> {
 
   @override
   Future<void> save(Iterable<UserFile> userFiles) async {
-    return synchronized(() async {
-      return userFileDb.insertAndAddDirty(userFiles);
-    });
+    return userFileDb.insertAndAddDirty(userFiles);
   }
 
   @override

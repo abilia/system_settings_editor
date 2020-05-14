@@ -22,9 +22,7 @@ class ActivityRepository extends DataRepository<Activity> {
   }) : super(client, baseUrl);
 
   Future<void> save(Iterable<Activity> activities) {
-    return synchronized(() async {
-      return activityDb.insertAndAddDirty(activities);
-    });
+    return activityDb.insertAndAddDirty(activities);
   }
 
   Future<Iterable<Activity>> load() async {

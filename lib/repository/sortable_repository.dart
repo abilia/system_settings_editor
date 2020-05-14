@@ -46,9 +46,7 @@ class SortableRepository extends DataRepository<Sortable> {
 
   @override
   Future<void> save(Iterable<Sortable> sortables) {
-    return synchronized(() async {
-      return sortableDb.insertAndAddDirty(sortables);
-    });
+    return sortableDb.insertAndAddDirty(sortables);
   }
 
   @override
