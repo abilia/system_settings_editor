@@ -280,7 +280,7 @@ void main() {
     test('reaccurs daily gives back all daily', () {
       final activity = FakeActivity.reocurrsEveryDay(now)
           .copyWith(alarmType: ALARM_SOUND_ONLY_ON_START);
-      final got = <Activity>[activity].alarmsFrom(now, take: 100);
+      final got = <Activity>[activity].alarmsFrom(now, take: 100, maxDays: 500);
       expect(got, hasLength(100));
     });
 
@@ -316,7 +316,7 @@ void main() {
           startTime: in50Days,
           alarmType: ALARM_SOUND_AND_VIBRATION);
       final got = <Activity>[reoccuringActivity, normalActivity]
-          .alarmsFrom(now, take: lenght);
+          .alarmsFrom(now, take: lenght, maxDays: 1000);
 
       expect(got, hasLength(100));
       expect(got, contains(NewAlarm(normalActivity, in50Days)));
