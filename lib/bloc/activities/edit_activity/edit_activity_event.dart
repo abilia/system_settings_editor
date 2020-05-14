@@ -30,6 +30,7 @@ class SaveRecurringActivity extends SaveActivity {
   const SaveRecurringActivity(this.applyTo, this.day);
   @override
   List<Object> get props => [applyTo];
+  @override
   String toString() => 'SaveRecurringActivity { $applyTo, $day }';
 }
 

@@ -7,10 +7,10 @@ const String SORT_ORDER_CHARACTERS =
 const START_CHAR = '!';
 const END_CHAR = '}';
 
-getStartSortOrder() =>
+String getStartSortOrder() =>
     SORT_ORDER_CHARACTERS[((SORT_ORDER_CHARACTERS.length / 2).floor())];
 
-calculateNextSortOrder(String sortOrder, int step) {
+String calculateNextSortOrder(String sortOrder, int step) {
   final i = sortOrder.length - 1;
   var arr = sortOrder.split('').toList();
   final next = sortOrder.codeUnitAt(i) + step;

@@ -11,13 +11,13 @@ void main() {
   DayActivitiesBloc dayActivitiesBloc;
   DayPickerBloc dayPickerBloc;
   ActivitiesBloc activitiesBloc;
-  DateTime today = DateTime(2020, 01, 01);
-  DateTime yesterday = today.subtract(Duration(days: 1));
-  DateTime tomorrow = today.add(Duration(days: 1));
+  final today = DateTime(2020, 01, 01);
+  final yesterday = today.subtract(Duration(days: 1));
+  final tomorrow = today.add(Duration(days: 1));
   MockActivityRepository mockActivityRepository;
   group('DayActivitiesBloc', () {
     setUp(() {
-      Stream<DateTime> stream = Stream.value(today);
+      final stream = Stream<DateTime>.value(today);
       dayPickerBloc = DayPickerBloc(
         clockBloc: ClockBloc(stream, initialTime: today),
       );
@@ -222,9 +222,9 @@ void main() {
   });
 
   group('Recurring tests activity', () {
-    DateTime firstDay = DateTime(2006, 06, 01); // 2006-06-01 was a thursday
+    final firstDay = DateTime(2006, 06, 01); // 2006-06-01 was a thursday
     setUp(() {
-      Stream<DateTime> stream = Stream.empty();
+      final stream = Stream<DateTime>.empty();
       dayPickerBloc =
           DayPickerBloc(clockBloc: ClockBloc(stream, initialTime: firstDay));
       mockActivityRepository = MockActivityRepository();
@@ -376,7 +376,7 @@ void main() {
     test('Split up activity shows on day it was split up on ( bug test )',
         () async {
       // Arrange
-      DateTime preSplitStartTime = 1573513200000.fromMillisecondsSinceEpoch(),
+      final preSplitStartTime = 1573513200000.fromMillisecondsSinceEpoch(),
           preSplitEndTime = 1574377199999.fromMillisecondsSinceEpoch(),
           splitStartTime = 1574380800000.fromMillisecondsSinceEpoch(),
           splitEndTime = 253402297199000.fromMillisecondsSinceEpoch();

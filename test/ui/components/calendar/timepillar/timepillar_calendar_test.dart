@@ -28,7 +28,7 @@ void main() {
   final leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
 
-  List<Activity> givenActivities = [];
+  var givenActivities = <Activity>[];
 
   ActivityResponse activityResponse = () => givenActivities;
 
@@ -64,7 +64,7 @@ void main() {
   tearDown(() {
     givenActivities = [];
   });
-  goToTimePillar(WidgetTester tester) async {
+  Future goToTimePillar(WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
     await tester.tap(changeViewButtonFinder);
@@ -202,7 +202,7 @@ void main() {
             await tester.getCenter(find.byWidget(currentDot));
 
         for (final element in find.byType(Timeline).evaluate()) {
-          final RenderBox box = element.renderObject as RenderBox;
+          final box = element.renderObject as RenderBox;
           final timeLinePostion =
               box.localToGlobal(box.size.center(Offset.zero));
           expect(timeLinePostion.dy, closeTo(currentDotPosition.dy, 0.0001));

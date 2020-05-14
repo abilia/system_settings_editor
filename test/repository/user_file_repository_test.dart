@@ -121,10 +121,10 @@ void main() {
       when(mockMultipartRequest.send())
           .thenAnswer((_) => Future.value(streamedResponse));
       when(mockMultiRequestBuilder.generateFileMultipartRequest(
-              uri: anyNamed("uri"),
-              bytes: anyNamed("bytes"),
-              authToken: anyNamed("authToken"),
-              sha1: anyNamed("sha1")))
+              uri: anyNamed('uri'),
+              bytes: anyNamed('bytes'),
+              authToken: anyNamed('authToken'),
+              sha1: anyNamed('sha1')))
           .thenReturn(mockMultipartRequest);
 
       final newRevision = 10000;

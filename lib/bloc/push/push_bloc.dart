@@ -8,7 +8,7 @@ class PushBloc extends Bloc<PushEvent, PushState> {
   }
 
   @override
-  get initialState => PushReady();
+  PushState get initialState => PushReady();
 
   @override
   Stream<PushState> mapEventToState(event) async* {
@@ -16,19 +16,19 @@ class PushBloc extends Bloc<PushEvent, PushState> {
   }
 
   void _initFirebaseListener() {
-    final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+    final firebaseMessaging = FirebaseMessaging();
     firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        this.add(PushEvent(message['collapse_key']));
-        print("onMessage push: $message");
+        add(PushEvent(message['collapse_key']));
+        print('onMessage push: $message');
       },
       onLaunch: (Map<String, dynamic> message) async {
-        this.add(PushEvent(message['collapse_key']));
-        print("onLaunch push: $message");
+        add(PushEvent(message['collapse_key']));
+        print('onLaunch push: $message');
       },
       onResume: (Map<String, dynamic> message) async {
-        this.add(PushEvent(message['collapse_key']));
-        print("onResume push: $message");
+        add(PushEvent(message['collapse_key']));
+        print('onResume push: $message');
       },
       onBackgroundMessage: myBackgroundMessageHandler,
     );

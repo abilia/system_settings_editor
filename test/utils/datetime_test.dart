@@ -78,11 +78,11 @@ void main() {
   group('onOrBetween', () {
     test('Should accept between start and endDay', () {
       // arrange
-      DateTime startDay = DateTime(1999, 01, 12);
-      DateTime endDay = DateTime(2020, 01, 12);
-      DateTime currentDay = DateTime(1999, 12, 12);
+      final startDay = DateTime(1999, 01, 12);
+      final endDay = DateTime(2020, 01, 12);
+      final currentDay = DateTime(1999, 12, 12);
       // act
-      bool result = currentDay.isOnOrBetween(
+      final result = currentDay.isOnOrBetween(
         startDate: startDay,
         endDate: endDay,
       );
@@ -92,11 +92,11 @@ void main() {
 
     test('Should accept same as startDay', () {
       // arrange
-      DateTime startDay = DateTime(1999, 12, 12);
-      DateTime endDay = DateTime(2020, 01, 12);
-      DateTime currentDay = DateTime(1999, 12, 12);
+      final startDay = DateTime(1999, 12, 12);
+      final endDay = DateTime(2020, 01, 12);
+      final currentDay = DateTime(1999, 12, 12);
       // act
-      bool result = currentDay.isOnOrBetween(
+      final result = currentDay.isOnOrBetween(
         startDate: startDay,
         endDate: endDay,
       );
@@ -106,11 +106,11 @@ void main() {
 
     test('Should accept same as endDay', () {
       // arrange
-      DateTime startDay = DateTime(1999, 12, 12);
-      DateTime endDay = DateTime(2020, 01, 12);
-      DateTime currentDay = DateTime(2020, 01, 12);
+      final startDay = DateTime(1999, 12, 12);
+      final endDay = DateTime(2020, 01, 12);
+      final currentDay = DateTime(2020, 01, 12);
       // act
-      bool result = currentDay.isOnOrBetween(
+      final result = currentDay.isOnOrBetween(
         startDate: startDay,
         endDate: endDay,
       );
@@ -120,11 +120,11 @@ void main() {
 
     test('Should not accept before startDay', () {
       // arrange
-      DateTime startDay = DateTime(199, 12, 12);
-      DateTime endDay = DateTime(2020, 01, 12);
-      DateTime currentDay = DateTime(1999, 12, 11);
+      final startDay = DateTime(199, 12, 12);
+      final endDay = DateTime(2020, 01, 12);
+      final currentDay = DateTime(1999, 12, 11);
       // act
-      bool result = currentDay.isOnOrBetween(
+      final result = currentDay.isOnOrBetween(
         startDate: startDay,
         endDate: endDay,
       );
@@ -134,11 +134,11 @@ void main() {
 
     test('Should not accept after endDay', () {
       // arrange
-      DateTime startDay = DateTime(1999, 12, 13);
-      DateTime endDay = DateTime(2020, 01, 12);
-      DateTime currentDay = DateTime(2020, 01, 13);
+      final startDay = DateTime(1999, 12, 13);
+      final endDay = DateTime(2020, 01, 12);
+      final currentDay = DateTime(2020, 01, 13);
       // act
-      bool result = currentDay.isOnOrBetween(
+      final result = currentDay.isOnOrBetween(
         startDate: startDay,
         endDate: endDay,
       );
@@ -148,11 +148,11 @@ void main() {
 
     test('Should not accept reveresed spans ( bug SGC-148 )', () {
       // arrange
-      DateTime startDay = DateTime(2020, 04, 01);
-      DateTime endDay = DateTime(2020, 04, 01).millisecondBefore();
-      DateTime day = DateTime(2020, 04, 01);
+      final startDay = DateTime(2020, 04, 01);
+      final endDay = DateTime(2020, 04, 01).millisecondBefore();
+      final day = DateTime(2020, 04, 01);
       // act
-      bool result = day.isOnOrBetween(
+      final result = day.isOnOrBetween(
         startDate: startDay,
         endDate: endDay,
       );

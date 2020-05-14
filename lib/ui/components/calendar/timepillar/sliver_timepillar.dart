@@ -38,12 +38,12 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
     }
     assert(childExtent != null);
 
-    final double paintedChildSize =
+    final paintedChildSize =
         calculatePaintOffset(constraints, from: 0.0, to: childExtent);
     assert(paintedChildSize.isFinite);
     assert(paintedChildSize >= 0.0);
 
-    double paintOrigin = constraints.remainingPaintExtent > childExtent
+    final paintOrigin = constraints.remainingPaintExtent > childExtent
         ? constraints.scrollOffset
         : -(childExtent - constraints.remainingPaintExtent);
 

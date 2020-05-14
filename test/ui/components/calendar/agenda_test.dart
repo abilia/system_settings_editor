@@ -15,7 +15,7 @@ import '../../../mocks.dart';
 
 void main() {
   MockActivityDb mockActivityDb;
-  DateTime now = DateTime.now();
+  final now = DateTime.now();
   ActivityResponse activityResponse = () => [];
 
   final firstFullDayTitle = 'first full day',

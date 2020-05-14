@@ -40,7 +40,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       builder: (context, formState) => BlocBuilder<LoginBloc, LoginState>(
         builder: (context, loginState) {
-          bool errorState =
+          final errorState =
               loginState is LoginFailure && formState.formSubmitted;
           return Form(
             child: Padding(
@@ -192,21 +192,21 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  get padding8 => const SizedBox(height: 8.0);
-  get padding16 => const Spacer(flex: 16);
-  get padding32 => const Spacer(flex: 32);
-  get padding56 => const Spacer(flex: 56);
-  flexPadding(bool errorState) =>
+  SizedBox get padding8 => const SizedBox(height: 8.0);
+  Spacer get padding16 => const Spacer(flex: 16);
+  Spacer get padding32 => const Spacer(flex: 32);
+  Spacer get padding56 => const Spacer(flex: 56);
+  Spacer flexPadding(bool errorState) =>
       errorState ? const Spacer(flex: 95) : const Spacer(flex: 191);
 
   @override
-  dispose() {
+  void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  _onLoginButtonPressed() {
+  void _onLoginButtonPressed() {
     BlocProvider.of<LoginBloc>(context).add(
       LoginButtonPressed(
         username: _usernameController.text,
@@ -217,15 +217,15 @@ class _LoginFormState extends State<LoginForm> {
     _loginFormBloc.add(FormSubmitted());
   }
 
-  _onEmailChanged() {
+  void _onEmailChanged() {
     _loginFormBloc.add(UsernameChanged(username: _usernameController.text));
   }
 
-  _onPasswordChanged() {
+  void _onPasswordChanged() {
     _loginFormBloc.add(PasswordChanged(password: _passwordController.text));
   }
 
-  _onHidePasswordChanged() {
+  void _onHidePasswordChanged() {
     _loginFormBloc.add(HidePasswordToggle());
   }
 }

@@ -99,7 +99,7 @@ class ActivitiesOccasionBloc
 
   int _indexOfFirstNoneCompletedOrLastCompletedActivity(
       List<ActivityOccasion> activities) {
-    int lastIndex = activities.indexWhere((a) => a.occasion != Occasion.past);
+    final lastIndex = activities.indexWhere((a) => a.occasion != Occasion.past);
     return lastIndex < 0 ? activities.length - 1 : lastIndex;
   }
 

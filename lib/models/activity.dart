@@ -181,7 +181,7 @@ class Activity extends DataModel {
 
   Activity copyActivity(Activity other) => copyWith(
         title: other.title,
-        startTime: this.startTime.copyWith(
+        startTime: startTime.copyWith(
             hour: other.startTime.hour, minute: other.startTime.minute),
         duration: other.duration,
         category: other.category,
@@ -233,12 +233,13 @@ class DbActivity extends DbModel<Activity> {
     int revision,
   }) : super(revision: revision, dirty: dirty, model: activity);
 
+  @override
   DbActivity copyWith({
     int revision,
     int dirty,
   }) =>
       DbActivity._(
-        activity: this.activity,
+        activity: activity,
         revision: revision ?? this.revision,
         dirty: dirty ?? this.dirty,
       );
@@ -299,6 +300,7 @@ class DbActivity extends DbModel<Activity> {
         dirty: dbRow['dirty'],
       );
 
+  @override
   Map<String, dynamic> toJson() => {
         'id': activity.id,
         'seriesId': activity.seriesId,
@@ -324,6 +326,7 @@ class DbActivity extends DbModel<Activity> {
         'timezone': activity.timezone,
       };
 
+  @override
   Map<String, dynamic> toMapForDb() => {
         'id': activity.id,
         'series_id': activity.seriesId,

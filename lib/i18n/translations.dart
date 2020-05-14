@@ -72,6 +72,7 @@ abstract class Translated {
 }
 
 class English extends Translated {
+  @override
   String userName = 'Username / Email',
       password = 'Password',
       infoText1 = 'Use your ',
@@ -137,10 +138,12 @@ class English extends Translated {
       allDays = 'All days',
       thisDayAndForward = 'This day and forward';
 
+  @override
   String inMinutes(int minutes) => 'in $minutes minutes';
 }
 
 class Swedish extends Translated {
+  @override
   String userName = 'Användarnamn',
       password = 'Lösenord',
       infoText1 = 'Använd ditt ',
@@ -204,5 +207,7 @@ class Swedish extends Translated {
       onlyThisDay = 'Endast denna dag',
       allDays = 'Alla dagar',
       thisDayAndForward = 'Denna dag och framåt';
+
+  @override
   String inMinutes(int minutes) => 'om $minutes minuter';
 }

@@ -91,7 +91,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
 
   Future<UserFile> handleImage(
       List<int> originalBytes, String id, String path) async {
-    final ImageResponse imageResult = await compute<List<int>, ImageResponse>(
+    final imageResult = await compute<List<int>, ImageResponse>(
         adjustRotationAndCreateThumbs, originalBytes);
 
     await fileStorage.storeFile(imageResult.originalImage, id);

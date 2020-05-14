@@ -190,13 +190,13 @@ void main() {
       // Assert
       expect(
         alarms,
-        [
+        {
           NewAlarm(after, day, alarmOnStart: true),
           NewAlarm(onTime, day, alarmOnStart: true),
           NewAlarm(after, day, alarmOnStart: false),
           NewAlarm(onTime, day, alarmOnStart: false),
           NewAlarm(before, day, alarmOnStart: false),
-        ].toSet(),
+        },
       );
     });
 
@@ -260,10 +260,10 @@ void main() {
       // Asserte
       expect(
           alarms,
-          [
+          {
             NewAlarm(overlapping, day, alarmOnStart: false),
             NewAlarm(later, day),
-          ].toSet());
+          });
     });
 
     test('empty list gives back no alarms or reminders', () {

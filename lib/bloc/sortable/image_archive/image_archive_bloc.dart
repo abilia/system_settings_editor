@@ -27,8 +27,7 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
   }
 
   @override
-  ImageArchiveState get initialState =>
-      ImageArchiveState(Map(), Map(), null, null);
+  ImageArchiveState get initialState => ImageArchiveState({}, {}, null, null);
 
   @override
   Stream<ImageArchiveState> mapEventToState(
@@ -39,11 +38,7 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
           event.sortables.where((s) => s.type == SortableType.imageArchive);
       final allByFolder =
           groupBy<Sortable, String>(imageArchive, (s) => s.groupId);
-      final allById = Map<String, Sortable>.fromIterable(
-        imageArchive,
-        key: (s) => s.id,
-        value: (s) => s,
-      );
+      final allById = {for (var s in imageArchive) s.id: s};
       final selectedImage = allById[state.selectedImageData?.fileId];
       final currentFolder = allById[state.currentFolderId];
       yield ImageArchiveState(

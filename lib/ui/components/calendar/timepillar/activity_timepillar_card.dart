@@ -33,7 +33,7 @@ class ActivityTimepillarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activity = activityOccasion.activity;
-    final bool right = activity.category == Category.right,
+    final right = activity.category == Category.right,
         hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
         signedOff = activity.isSignedOff(activityOccasion.day),

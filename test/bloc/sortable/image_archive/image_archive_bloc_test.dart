@@ -19,18 +19,18 @@ void main() {
     });
 
     test('Initial state is an empty ImageArchiveState', () {
-      expect(imageArchiveBloc.initialState,
-          ImageArchiveState(Map(), Map(), null, null));
+      expect(
+          imageArchiveBloc.initialState, ImageArchiveState({}, {}, null, null));
     });
 
     test('FolderChanged will set the folder in the state', () async {
-      String folderId = '123';
+      final folderId = '123';
       imageArchiveBloc.add(FolderChanged(folderId));
       await expectLater(
         imageArchiveBloc,
         emitsInOrder([
-          ImageArchiveState(Map(), Map(), null, null),
-          ImageArchiveState(Map(), Map(), folderId, null),
+          ImageArchiveState({}, {}, null, null),
+          ImageArchiveState({}, {}, folderId, null),
         ]),
       );
     });
@@ -42,23 +42,23 @@ void main() {
       await expectLater(
         imageArchiveBloc,
         emitsInOrder([
-          ImageArchiveState(Map(), Map(), null, null),
-          ImageArchiveState(Map(), Map(), null, imageData),
+          ImageArchiveState({}, {}, null, null),
+          ImageArchiveState({}, {}, null, imageData),
         ]),
       );
     });
 
     test('SortablesUpdated will set the sortables in the state', () async {
-      Sortable imageArchiveSortable =
+      final imageArchiveSortable =
           Sortable.createNew(type: SortableType.imageArchive);
-      Sortable checklistSortable =
+      final checklistSortable =
           Sortable.createNew(type: SortableType.checklist);
       imageArchiveBloc
           .add(SortablesUpdated([imageArchiveSortable, checklistSortable]));
       await expectLater(
         imageArchiveBloc,
         emitsInOrder([
-          ImageArchiveState(Map(), Map(), null, null),
+          ImageArchiveState({}, {}, null, null),
           stateFromSortables([imageArchiveSortable]),
         ]),
       );
@@ -67,11 +67,11 @@ void main() {
     test(
         'NavigateUp will set the parent of the current folder as current folder',
         () async {
-      Sortable imageArchiveFolder1 = Sortable.createNew(
+      final imageArchiveFolder1 = Sortable.createNew(
         type: SortableType.imageArchive,
         isGroup: true,
       );
-      Sortable imageArchiveFolder2 = Sortable.createNew(
+      final imageArchiveFolder2 = Sortable.createNew(
           type: SortableType.imageArchive,
           isGroup: true,
           groupId: imageArchiveFolder1.id);
@@ -82,7 +82,7 @@ void main() {
       await expectLater(
         imageArchiveBloc,
         emitsInOrder([
-          ImageArchiveState(Map(), Map(), null, null),
+          ImageArchiveState({}, {}, null, null),
           stateFromSortables([imageArchiveFolder1, imageArchiveFolder2]),
           stateFromSortables(
             [imageArchiveFolder1, imageArchiveFolder2],

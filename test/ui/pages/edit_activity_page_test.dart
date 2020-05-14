@@ -14,9 +14,9 @@ import 'package:intl/intl.dart';
 import '../../mocks.dart';
 
 void main() {
-  DateTime startTime = DateTime(2020, 02, 25, 15, 30);
-  DateTime today = startTime.onlyDays();
-  Activity startActivity = Activity.createNew(
+  final startTime = DateTime(2020, 02, 25, 15, 30);
+  final today = startTime.onlyDays();
+  final startActivity = Activity.createNew(
     title: '',
     startTime: startTime,
   );
@@ -69,8 +69,7 @@ void main() {
 
   group('edit activity test', () {
     Future scrollDown(WidgetTester tester, {double dy = -800.0}) async {
-      final Offset center =
-          tester.getCenter(find.byKey(TestKey.leftCategoryRadio));
+      final center = tester.getCenter(find.byKey(TestKey.leftCategoryRadio));
       await tester.dragFrom(center, Offset(0.0, dy));
       await tester.pump();
     }

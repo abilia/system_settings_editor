@@ -130,6 +130,7 @@ class DbSortable extends DbModel<Sortable> {
         dirty: dbRow['dirty'],
       );
 
+  @override
   Map<String, dynamic> toMapForDb() => {
         'id': sortable.id,
         'type': sortable.type,
@@ -162,7 +163,7 @@ class SortableData extends Equatable {
     this.upload,
   });
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'name': name,
       'fileId': fileId,

@@ -14,6 +14,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   })  : assert(authenticationBloc != null),
         assert(pushService != null);
 
+  @override
   LoginState get initialState => LoginInitial();
 
   @override

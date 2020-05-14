@@ -22,7 +22,7 @@ void main() {
       final mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
-      MockActivityDb mockActivityDb = MockActivityDb();
+      final mockActivityDb = MockActivityDb();
       when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value([]));

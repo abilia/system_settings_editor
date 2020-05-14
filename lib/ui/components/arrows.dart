@@ -105,6 +105,7 @@ class _Arrow extends StatefulWidget {
     @required this.conditionFunction,
   })  : translation = Matrix4.identity(),
         hiddenTranslation = Matrix4.translation(vectorTranslation);
+  @override
   _ArrowState createState() => _ArrowState();
 }
 

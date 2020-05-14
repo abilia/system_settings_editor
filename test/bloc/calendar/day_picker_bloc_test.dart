@@ -5,11 +5,11 @@ import 'package:seagull/bloc/all.dart';
 
 void main() {
   DayPickerBloc dayPickerBloc;
-  DateTime theTime = DateTime(1987, 10, 06, 04, 34, 55, 55, 55);
-  DateTime theDay = DateTime(1987, 10, 06);
-  DateTime thedayBefore = DateTime(1987, 10, 05);
-  DateTime theDayAfter = DateTime(1987, 10, 07);
-  DateTime theDayAfterTomorrow = DateTime(1987, 10, 08);
+  final theTime = DateTime(1987, 10, 06, 04, 34, 55, 55, 55);
+  final theDay = DateTime(1987, 10, 06);
+  final thedayBefore = DateTime(1987, 10, 05);
+  final theDayAfter = DateTime(1987, 10, 07);
+  final theDayAfterTomorrow = DateTime(1987, 10, 08);
   ClockBloc clockBloc;
   StreamController<DateTime> streamController;
 
@@ -165,7 +165,7 @@ void main() {
     });
 
     test('currentDay state should not change until next day', () async {
-      for (int i = 0; i < Duration.minutesPerDay; i++) {
+      for (var i = 0; i < Duration.minutesPerDay; i++) {
         streamController.add(theDay.add(Duration(minutes: i)));
       }
       await Future.delayed(Duration(milliseconds: 100));
@@ -206,7 +206,7 @@ void main() {
     });
 
     test('state should only be day granularity', () async {
-      for (int i = 0; i < 2 * Duration.secondsPerMinute; i++) {
+      for (var i = 0; i < 2 * Duration.secondsPerMinute; i++) {
         streamController
             .add(theDay.add(Duration(hours: 23, minutes: 59, seconds: i)));
       }

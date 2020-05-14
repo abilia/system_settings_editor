@@ -21,10 +21,12 @@ class ActivityRepository extends DataRepository<Activity> {
     @required this.authToken,
   }) : super(client, baseUrl);
 
+  @override
   Future<void> save(Iterable<Activity> activities) {
     return activityDb.insertAndAddDirty(activities);
   }
 
+  @override
   Future<Iterable<Activity>> load() async {
     return synchronized(() async {
       try {
@@ -39,6 +41,7 @@ class ActivityRepository extends DataRepository<Activity> {
     });
   }
 
+  @override
   Future<bool> synchronize() async {
     return synchronized(() async {
       final dirtyActivities = await activityDb.getAllDirty();

@@ -7,8 +7,8 @@ import 'package:url_launcher_platform_interface/url_launcher_platform_interface.
 class MockUrlLauncher extends Mock implements UrlLauncherPlatform {}
 
 void main() {
-  String text = 'text';
-  String url = 'https://myabilia.com/';
+  final text = 'text';
+  final url = 'https://myabilia.com/';
   group('web link test', () {
     testWidgets('show Weblink text', (WidgetTester tester) async {
       await tester.pumpWidget(Directionality(

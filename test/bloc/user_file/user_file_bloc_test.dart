@@ -20,11 +20,11 @@ void main() {
     MockFileStorage mockedFileStorage;
 
     final userFile = UserFile(
-      id: "",
-      sha1: "",
-      md5: "",
-      path: "",
-      contentType: "",
+      id: '',
+      sha1: '',
+      md5: '',
+      path: '',
+      contentType: '',
       fileSize: 1,
       deleted: false,
       fileLoaded: true,
@@ -68,7 +68,7 @@ void main() {
       final fileId = 'file1';
       final fileContent = base64.decode(
           'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==');
-      final String filePath = 'test.dart';
+      final filePath = 'test.dart';
       File file = MemoryFileSystem().file(filePath);
       await file.writeAsBytes(fileContent);
       final processedFile1 = await adjustImageSizeAndRotation(fileContent);

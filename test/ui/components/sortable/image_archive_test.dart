@@ -99,7 +99,6 @@ ImageArchiveState stateFromSortables(
   SortableData imageData,
 }) {
   final allByFolder = groupBy<Sortable, String>(sortables, (s) => s.groupId);
-  final allById = Map<String, Sortable>.fromIterable(sortables,
-      key: (s) => s.id, value: (s) => s);
+  final allById = {for (var s in sortables) s.id: s};
   return ImageArchiveState(allByFolder, allById, folderId, imageData);
 }

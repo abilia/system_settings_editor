@@ -9,60 +9,59 @@ import 'package:seagull/utils/all.dart';
 
 class GetItInitializer {
   ActivityDb _activityDb;
-  set activityDb(ActivityDb activityDb) => this._activityDb = activityDb;
+  set activityDb(ActivityDb activityDb) => _activityDb = activityDb;
 
   FirebasePushService _firebasePushService;
   set fireBasePushService(FirebasePushService firebasePushService) =>
-      this._firebasePushService = firebasePushService;
+      _firebasePushService = firebasePushService;
 
   UserDb _userDb;
-  set userDb(UserDb userDb) => this._userDb = userDb;
+  set userDb(UserDb userDb) => _userDb = userDb;
 
   TokenDb _tokenDb;
-  set tokenDb(TokenDb tokenDb) => this._tokenDb = tokenDb;
+  set tokenDb(TokenDb tokenDb) => _tokenDb = tokenDb;
 
   DatabaseRepository _databaseRepository;
   set databaseRepository(DatabaseRepository databaseRepository) =>
-      this._databaseRepository = databaseRepository;
+      _databaseRepository = databaseRepository;
 
   FactoryFunc<Stream<DateTime>> _tickerFactory;
-  set ticker(FactoryFunc<Stream<DateTime>> ticker) =>
-      this._tickerFactory = ticker;
+  set ticker(FactoryFunc<Stream<DateTime>> ticker) => _tickerFactory = ticker;
 
   NotificationStreamGetter _selectedNotificationStreamGetter;
   set notificationStreamGetter(
           NotificationStreamGetter selectedNotificationStreamGetterFunction) =>
-      this._selectedNotificationStreamGetter =
+      _selectedNotificationStreamGetter =
           selectedNotificationStreamGetterFunction;
 
   AlarmScheduler _alarmScheduler;
   set alarmScheduler(AlarmScheduler alarmScheduler) =>
-      this._alarmScheduler = alarmScheduler;
+      _alarmScheduler = alarmScheduler;
 
   BaseUrlDb _baseUrlDb;
-  set baseUrlDb(BaseUrlDb baseUrlDb) => this._baseUrlDb = baseUrlDb;
+  set baseUrlDb(BaseUrlDb baseUrlDb) => _baseUrlDb = baseUrlDb;
 
   BaseClient _baseClient;
-  set httpClient(BaseClient baseClient) => this._baseClient = baseClient;
+  set httpClient(BaseClient baseClient) => _baseClient = baseClient;
 
   SortableDb _sortableDb;
-  set sortableDb(SortableDb sortableDb) => this._sortableDb = sortableDb;
+  set sortableDb(SortableDb sortableDb) => _sortableDb = sortableDb;
 
   UserFileDb _userFileDb;
-  set userFileDb(UserFileDb userFileDb) => this._userFileDb = userFileDb;
+  set userFileDb(UserFileDb userFileDb) => _userFileDb = userFileDb;
 
   FileStorage _fileStorage;
-  set fileStorage(FileStorage fileStorage) => this._fileStorage = fileStorage;
+  set fileStorage(FileStorage fileStorage) => _fileStorage = fileStorage;
 
   MultipartRequestBuilder _multipartRequestBuilder;
   set multipartRequestBuilder(
           MultipartRequestBuilder multipartRequestBuilder) =>
-      this._multipartRequestBuilder = multipartRequestBuilder;
+      _multipartRequestBuilder = multipartRequestBuilder;
 
   FactoryFunc<DateTime> _startTime;
-  set startTime(DateTime startTime) => this._startTime = () => startTime;
+  set startTime(DateTime startTime) => _startTime = () => startTime;
 
-  init() {
+  void init() {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
     GetIt.I.registerSingleton<TokenDb>(_tokenDb ?? TokenDb());

@@ -105,7 +105,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
 
   int in24HourClock(int hour) {
     if (widget.is24HoursFormat) return hour;
-    final bool twelveOClock = hour == 12,
+    final twelveOClock = hour == 12,
         pm = period == DayPeriod.pm,
         am = period == DayPeriod.am;
     if (!twelveOClock && pm) return hour + 12;
@@ -235,11 +235,12 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
     setState(() {});
   }
 
-  _selectAllText(TextEditingController controller) => controller.selection =
-      TextSelection(baseOffset: 0, extentOffset: controller.text.length);
+  void _selectAllText(TextEditingController controller) =>
+      controller.selection =
+          TextSelection(baseOffset: 0, extentOffset: controller.text.length);
 
   void hourInputListener() {
-    final bool noTextSelected = hourInputController.selection.extentOffset ==
+    final noTextSelected = hourInputController.selection.extentOffset ==
         hourInputController.selection.baseOffset;
 
     if (noTextSelected) {
@@ -302,7 +303,8 @@ class _InputField extends StatelessWidget {
         inputFormatters: <TextInputFormatter>[
           WhitelistingTextInputFormatter.digitsOnly,
           LengthLimitingTextInputFormatter(2),
-        ]..addAll(extraFormatter),
+          ...extraFormatter,
+        ],
       ),
     );
   }
@@ -318,7 +320,7 @@ class HourInputFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     if (newValue.text.isEmpty) return newValue;
-    int parsed = int.tryParse(newValue.text);
+    final parsed = int.tryParse(newValue.text);
     if (parsed == null || parsed > maxValue) return oldValue;
     return newValue;
   }
@@ -332,7 +334,7 @@ class MinuteInputFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     if (newValue.text.isEmpty) return newValue;
-    int parsed = int.tryParse(newValue.text);
+    final parsed = int.tryParse(newValue.text);
     if (parsed == null) return oldValue;
     if (parsed > highestPossibleTenDigit) {
       return newValue.copyWith(

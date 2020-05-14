@@ -8,15 +8,15 @@ import 'package:seagull/utils/all.dart';
 /// copied from [showDialog]
 Future<T> showViewDialog<T>({
   @required BuildContext context,
+  @required WidgetBuilder builder,
   bool barrierDismissible = true,
-  WidgetBuilder builder,
   bool useRootNavigator = true,
 }) {
   assert(builder != null);
   assert(useRootNavigator != null);
   assert(debugCheckHasMaterialLocalizations(context));
 
-  final ThemeData theme = Theme.of(context, shadowThemeOnly: true);
+  final theme = Theme.of(context, shadowThemeOnly: true);
   return showGeneralDialog(
     context: context,
     pageBuilder: (BuildContext buildContext, Animation<double> animation,

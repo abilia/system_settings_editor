@@ -1,12 +1,13 @@
 import 'package:flutter/rendering.dart';
+import 'package:meta/meta.dart';
 
 import '../all.dart';
 
 /// Immutable layout constraints for overlay
 class OverlayConstraints extends BoxConstraints {
   OverlayConstraints({
-    this.state,
-    BoxConstraints boxConstraints,
+    @required this.state,
+    @required BoxConstraints boxConstraints,
   })  : assert(state != null),
         assert(boxConstraints != null),
         super(

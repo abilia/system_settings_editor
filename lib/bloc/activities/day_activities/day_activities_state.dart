@@ -26,7 +26,7 @@ class DayActivitiesLoaded extends DayActivitiesState {
   final DateTime day;
 
   DayActivitiesLoaded(Iterable<Activity> activities, this.day)
-      : this.activities =
+      : activities =
             activities.where((activity) => activity.shouldShowForDay(day));
 
   @override

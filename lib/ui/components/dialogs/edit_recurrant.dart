@@ -72,5 +72,5 @@ class _EditRecurrentDialogState extends State<EditRecurrentDialog> {
     );
   }
 
-  _radioChanged(v) => setState(() => {applyTo = v});
+  void _radioChanged(v) => setState(() => {applyTo = v});
 }

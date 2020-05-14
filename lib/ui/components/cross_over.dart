@@ -42,12 +42,12 @@ class _CrossOverPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
+    final paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
-    final Rect rect = Offset.zero & size;
-    final Path path = Path()
+    final rect = Offset.zero & size;
+    final path = Path()
       ..addPolygon(<Offset>[rect.topRight, rect.bottomLeft], false)
       ..addPolygon(<Offset>[rect.topLeft, rect.bottomRight], false);
     canvas.drawPath(path, paint);

@@ -44,7 +44,7 @@ Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
   await notificationPlugin.cancelAll();
 
   final now = DateTime.now().add(1.minutes()).onlyMinutes();
-  final List<NotificationAlarm> shouldBeScheduledNotifications =
+  final shouldBeScheduledNotifications =
       allActivities.alarmsFrom(now, take: 50).toList();
 
   for (final newNotification in shouldBeScheduledNotifications) {
@@ -130,8 +130,8 @@ String getSubtitle(NotificationAlarm notificationAlarm, DateTime day,
   final tf = hourAndMinuteFromUse24(alwaysUse24HourFormat, language);
   final translater = Translated.dictionaries[locale];
   final a = notificationAlarm.activity;
-  String endTime = a.hasEndTime ? ' - ${tf(a.endClock(day))} ' : ' ';
-  String extra = notificationAlarm is NewAlarm
+  final endTime = a.hasEndTime ? ' - ${tf(a.endClock(day))} ' : ' ';
+  final extra = notificationAlarm is NewAlarm
       ? (notificationAlarm.alarmOnStart
           ? translater.startsNow
           : translater.endsNow)

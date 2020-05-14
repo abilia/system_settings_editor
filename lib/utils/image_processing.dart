@@ -68,9 +68,9 @@ Future<img.Image> resizeImg(img.Image image, int size) async {
 }
 
 Future<img.Image> adjustRotationToExif(List<int> imageBytes) async {
-  final img.Image image = img.decodeImage(imageBytes);
-  img.Image bakedImage = img.Image.from(image);
-  Map<String, IfdTag> data = await readExifFromBytes(imageBytes);
+  final image = img.decodeImage(imageBytes);
+  final bakedImage = img.Image.from(image);
+  final data = await readExifFromBytes(imageBytes);
   final orientationData = data[IMAGE_ORIENTATION_FLAG];
   final int orientation =
       orientationData?.values?.firstWhere((_) => true, orElse: () => 1);

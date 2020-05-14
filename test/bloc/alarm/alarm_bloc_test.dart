@@ -20,7 +20,7 @@ void main() {
   MockActivityRepository mockActivityRepository;
   StreamController<DateTime> mockedTicker;
 
-  _tick() async {
+  Future _tick() async {
     final nextMin = clockBloc?.state?.add(Duration(minutes: 1));
     if (nextMin != null) {
       mockedTicker?.add(nextMin);

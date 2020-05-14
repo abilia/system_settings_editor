@@ -28,22 +28,22 @@ class Recurs {
 
   @visibleForTesting
   static bool onCorrectWeeklyDay(int recurrentData, DateTime date) {
-    bool isOddWeek = date.getWeekNumber().isOdd;
-    int leadingZeros = date.weekday - 1 + (isOddWeek ? 7 : 0);
-    int bitmask = 1 << leadingZeros;
+    final isOddWeek = date.getWeekNumber().isOdd;
+    final leadingZeros = date.weekday - 1 + (isOddWeek ? 7 : 0);
+    final bitmask = 1 << leadingZeros;
     return recurrentData & bitmask > 0;
   }
 
   @visibleForTesting
   static bool onCorrectMonthDay(int recurrentData, DateTime day) {
-    int bitmask = 1 << day.day - 1;
+    final bitmask = 1 << day.day - 1;
     return recurrentData & bitmask > 0;
   }
 
   @visibleForTesting
   static bool onCorrectYearsDay(int recurrentData, DateTime date) {
-    int recurringDay = recurrentData % 100;
-    int recurringMonth = recurrentData ~/ 100 + 1;
+    final recurringDay = recurrentData % 100;
+    final recurringMonth = recurrentData ~/ 100 + 1;
     return date.month == recurringMonth && date.day == recurringDay;
   }
 }

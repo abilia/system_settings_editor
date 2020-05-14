@@ -31,7 +31,7 @@ class TimePillar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget Function(DateTime) dots = today
+    final dots = today
         ? _todayDots
         : dayOccasion == Occasion.past
             ? (_) => const PastDots()
