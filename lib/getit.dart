@@ -76,7 +76,7 @@ class GetItInitializer {
     GetIt.I.registerSingleton<NotificationStreamGetter>(
         _selectedNotificationStreamGetter ?? () => selectNotificationSubject);
     GetIt.I.registerSingleton<AlarmScheduler>(
-        _alarmScheduler ?? scheduleAlarmNotifications);
+        _alarmScheduler ?? scheduleAlarmNotificationsIsolated);
     GetIt.I.registerFactory<Stream<DateTime>>(
         _tickerFactory ?? () => Ticker.minute());
     GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());

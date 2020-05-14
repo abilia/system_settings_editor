@@ -20,7 +20,11 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
       userId: user.id,
       authToken: token,
     ).load();
-    await scheduleAlarmNotifications(activities, language: language, alwaysUse24HourFormat: alwaysUse24HourFormat);
+    await scheduleAlarmNotifications(
+      activities,
+      language,
+      alwaysUse24HourFormat,
+    );
 
     final sortableDb = SortableDb();
     await SortableRepository(

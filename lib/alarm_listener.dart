@@ -22,9 +22,8 @@ class AlarmListener extends StatelessWidget {
               final scheduleAlarm = GetIt.I<AlarmScheduler>();
               await scheduleAlarm(
                 state.activities,
-                language: Localizations.localeOf(context).toLanguageTag(),
-                alwaysUse24HourFormat:
-                    MediaQuery.of(context).alwaysUse24HourFormat,
+                Localizations.localeOf(context).toLanguageTag(),
+                MediaQuery.of(context).alwaysUse24HourFormat,
               );
             }
           },
