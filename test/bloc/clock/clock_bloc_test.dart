@@ -7,8 +7,8 @@ void main() {
   group('ClockBloc', () {
     ClockBloc clockBloc;
     StreamController<DateTime> mockedTicker;
-    DateTime initTime = DateTime(2019, 12, 12, 12, 12, 12, 12, 12);
-    DateTime initTimeRounded = DateTime(2019, 12, 12, 12, 12);
+    final initTime = DateTime(2019, 12, 12, 12, 12, 12, 12, 12);
+    final initTimeRounded = DateTime(2019, 12, 12, 12, 12);
 
     setUp(() {
       mockedTicker = StreamController<DateTime>();

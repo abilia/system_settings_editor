@@ -217,7 +217,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       headers: authHeader(authToken),
     );
     final thumbResponse = getImageThumb(userFile.id, ImageThumb.THUMB_SIZE);
-    final List<Response> responses = await Future.wait([
+    final responses = await Future.wait([
       originalFileResponse,
       thumbResponse,
     ]);

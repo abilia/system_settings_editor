@@ -161,7 +161,7 @@ class CategoryWidget extends StatelessWidget {
     );
   }
 
-  circle() => Container(
+  Widget circle() => Container(
         width: 36,
         height: 36,
         decoration: BoxDecoration(
@@ -278,7 +278,7 @@ class AvailibleForWidget extends StatelessWidget {
   const AvailibleForWidget(this.activity, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final bool secret = activity.secret;
+    final secret = activity.secret;
     final translator = Translator.of(context).translate;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

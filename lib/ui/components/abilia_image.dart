@@ -57,7 +57,7 @@ class CheckedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool hasImage = activity.hasImage,
+    final hasImage = activity.hasImage,
         signedOff = activity.isSignedOff(day),
         inactive = past || signedOff;
     return Hero(

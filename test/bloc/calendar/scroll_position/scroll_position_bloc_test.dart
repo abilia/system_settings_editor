@@ -105,7 +105,7 @@ void main() {
         'Just InView top',
         () async {
           // Arrange
-          final double init = 200;
+          final init = 200.0;
           when(mockScrollController.offset)
               .thenReturn(init - scrollPositionBloc.fromBotton);
           when(mockScrollController.initialScrollOffset).thenReturn(init);
@@ -128,7 +128,7 @@ void main() {
         'Just InView bottom',
         () async {
           // Arrange
-          final double init = 200;
+          final init = 200.0;
           when(mockScrollController.offset)
               .thenReturn(init + scrollPositionBloc.fromTop);
           when(mockScrollController.initialScrollOffset).thenReturn(init);
@@ -151,7 +151,7 @@ void main() {
         'Just OutView top',
         () async {
           // Arrange
-          final double init = 200;
+          final init = 200.0;
           when(mockScrollController.offset)
               .thenReturn(init - scrollPositionBloc.fromBotton - 1);
           when(mockScrollController.initialScrollOffset).thenReturn(init);
@@ -174,7 +174,7 @@ void main() {
         'Just OutOfView bottom',
         () async {
           // Arrange
-          final double init = 200;
+          final init = 200.0;
           when(mockScrollController.offset)
               .thenReturn(init + scrollPositionBloc.fromTop + 1);
           when(mockScrollController.initialScrollOffset).thenReturn(init);
@@ -197,7 +197,7 @@ void main() {
         'InView then scroll down and then OutOfView',
         () async {
           // Arrange
-          double activityAt = 200, max = 800;
+          final activityAt = 200.0, max = 800.0;
           when(mockScrollController.offset).thenReturn(activityAt);
           when(mockScrollController.initialScrollOffset).thenReturn(activityAt);
           when(mockScrollPosition.maxScrollExtent).thenReturn(max);
@@ -234,7 +234,7 @@ void main() {
       test(
         'InView then scroll up and then OutOfView',
         () async {
-          double activityAt = 200, max = 800;
+          final activityAt = 200.0, max = 800.0;
           // Arrange
           when(mockScrollController.offset).thenReturn(activityAt);
           when(mockScrollController.initialScrollOffset).thenReturn(activityAt);

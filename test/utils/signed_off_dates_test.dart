@@ -78,7 +78,7 @@ void main() {
 
     test('empty return null', () {
       // Arrange
-      final List<DateTime> dates = [];
+      final dates = <DateTime>[];
       // Act
       final intermediet = dates.tryEncodeSignedOffDates();
       final result = intermediet.tryDecodeSignedOffDates();
@@ -88,7 +88,7 @@ void main() {
 
     test('date return date', () {
       // Arrange
-      final List<DateTime> dates = [
+      final dates = [
         DateTime(2020, 11, 11),
       ];
       // Act
@@ -99,7 +99,7 @@ void main() {
     });
     test('dates return dates', () {
       // Arrange
-      final List<DateTime> dates = [
+      final dates = [
         DateTime(2020, 11, 11),
         DateTime(2020, 12, 11),
         DateTime(2020, 12, 12),

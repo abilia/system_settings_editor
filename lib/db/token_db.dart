@@ -7,12 +7,12 @@ class TokenDb {
   final String _tokenKey = 'tokenKey';
 
   Future persistToken(String token) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_tokenKey, token);
   }
 
   Future<String> getToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     try {
       return prefs.getString(_tokenKey);
     } catch (_) {
@@ -20,8 +20,8 @@ class TokenDb {
     }
   }
 
-  delete() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future delete() async {
+    final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_tokenKey);
   }
 }

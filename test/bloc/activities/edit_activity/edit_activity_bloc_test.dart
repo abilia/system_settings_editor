@@ -10,13 +10,13 @@ import '../../../mocks.dart';
 
 void main() {
   ActivitiesBloc mockActivitiesBloc = MockActivitiesBloc();
-  DateTime aTime = DateTime(2022, 02, 22, 22, 30);
-  DateTime aDay = DateTime(2022, 02, 22);
+  final aTime = DateTime(2022, 02, 22, 22, 30);
+  final aDay = DateTime(2022, 02, 22);
 
   test('Initial state is the given activity', () {
     // Arrange
     final activity = Activity.createNew(title: '', startTime: aTime);
-    EditActivityBloc editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
     // Act // Assert
     expect(editActivityBloc.initialState, isA<StoredActivityState>());
@@ -30,7 +30,7 @@ void main() {
       startTime: aTime.nextHalfHour(),
       timezone: aTime.timeZoneName,
     );
-    EditActivityBloc editActivityBloc =
+    final editActivityBloc =
         EditActivityBloc(activitiesBloc: mockActivitiesBloc, now: aTime);
     // Act // Assert
     expect(editActivityBloc.initialState.activity,
@@ -39,9 +39,8 @@ void main() {
 
   test('Initial state with no title is not saveable', () {
     // Arrange
-    final activity =
-        Activity.createNew(title: '', startTime: aTime);
-    EditActivityBloc editActivityBloc = EditActivityBloc(
+    final activity = Activity.createNew(title: '', startTime: aTime);
+    final editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
     // Act // Assert
     expect(editActivityBloc.initialState.canSave, isFalse);
@@ -49,7 +48,7 @@ void main() {
 
   test('Changing activity changes activity', () async {
     // Arrange
-    EditActivityBloc editActivityBloc =
+    final editActivityBloc =
         EditActivityBloc(activitiesBloc: mockActivitiesBloc, now: aTime);
     final activity = editActivityBloc.initialState.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
@@ -70,7 +69,7 @@ void main() {
   test('Trying to save yields nothing and does not try to save', () async {
     // Arrange
 
-    EditActivityBloc editActivityBloc =
+    final editActivityBloc =
         EditActivityBloc(activitiesBloc: mockActivitiesBloc, now: aTime);
     final activity = editActivityBloc.initialState.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
@@ -111,7 +110,7 @@ void main() {
       reminderBefore: [],
     );
 
-    EditActivityBloc editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
     // Act
     editActivityBloc.add(ReplaceActivity(activityAsFullDay));
@@ -131,15 +130,14 @@ void main() {
 
   test('Changing date changes date but not time', () async {
     // Arrange
-    final DateTime aDate = DateTime(2022, 02, 22, 22, 00);
+    final aDate = DateTime(2022, 02, 22, 22, 00);
 
-    EditActivityBloc editActivityBloc =
+    final editActivityBloc =
         EditActivityBloc(activitiesBloc: mockActivitiesBloc, now: aDate);
     final activity = editActivityBloc.initialState.activity;
     final newDate = DateTime(2011, 11, 11, 11, 11, 11, 11, 11);
     final expetedNewDate = DateTime(2011, 11, 11, 22, 30);
-    final expetedNewActivity =
-        activity.copyWith(startTime: expetedNewDate);
+    final expetedNewActivity = activity.copyWith(startTime: expetedNewDate);
 
     // Act
     editActivityBloc.add(ChangeDate(newDate));
@@ -156,8 +154,8 @@ void main() {
 
   test('Changing start time changes start time but not duration', () async {
     // Arrange
-    final DateTime aDate = DateTime(2022, 02, 22, 22, 30);
-    final DateTime day = DateTime(2022, 02, 22);
+    final aDate = DateTime(2022, 02, 22, 22, 30);
+    final day = DateTime(2022, 02, 22);
 
     final activity = Activity.createNew(
       title: '',
@@ -167,10 +165,9 @@ void main() {
     final newStartTime = TimeOfDay(hour: 11, minute: 11);
     final expetedNewDate = DateTime(2022, 02, 22, 11, 11);
 
-    final expetedNewActivity =
-        activity.copyWith(startTime: expetedNewDate);
+    final expetedNewActivity = activity.copyWith(startTime: expetedNewDate);
 
-    EditActivityBloc editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: day);
 
     // Act
@@ -188,8 +185,8 @@ void main() {
   test('Changing end time changes duration but not start or end time',
       () async {
     // Arrange
-    final DateTime aDate = DateTime(2001, 01, 01, 01, 01);
-    final DateTime aDay = DateTime(2001, 01, 01);
+    final aDate = DateTime(2001, 01, 01, 01, 01);
+    final aDay = DateTime(2001, 01, 01);
 
     final activity = Activity.createNew(
       title: '',
@@ -199,10 +196,9 @@ void main() {
     final newEndTime = TimeOfDay(hour: 11, minute: 11);
     final expectedDuration = Duration(hours: 10, minutes: 10);
 
-    final expetedNewActivity =
-        activity.copyWith(duration: expectedDuration);
+    final expetedNewActivity = activity.copyWith(duration: expectedDuration);
 
-    EditActivityBloc editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
 
     // Act
@@ -221,8 +217,8 @@ void main() {
   test('Changing end time to before changes duration to more then 12 hours',
       () async {
     // Arrange
-    final DateTime aDate = DateTime(2001, 01, 01, 20, 30);
-    final DateTime aDay = DateTime(2001, 01, 01);
+    final aDate = DateTime(2001, 01, 01, 20, 30);
+    final aDay = DateTime(2001, 01, 01);
 
     final activity = Activity.createNew(
       title: '',
@@ -233,10 +229,9 @@ void main() {
 
     final expectedDuration = Duration(hours: 23, minutes: 30);
 
-    final expetedNewActivity =
-        activity.copyWith(duration: expectedDuration);
+    final expetedNewActivity = activity.copyWith(duration: expectedDuration);
 
-    EditActivityBloc editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
 
     // Act
@@ -254,8 +249,8 @@ void main() {
 
   test('Add or remove reminders', () async {
     // Arrange
-    final DateTime aDate = DateTime(2001, 01, 01, 20, 30);
-    final DateTime aDay = DateTime(2001, 01, 01);
+    final aDate = DateTime(2001, 01, 01, 20, 30);
+    final aDay = DateTime(2001, 01, 01);
 
     final activity = Activity.createNew(
       title: '',
@@ -271,7 +266,7 @@ void main() {
       hour1Reminder.inMilliseconds
     ]);
 
-    EditActivityBloc editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc(
         activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
 
     // Act

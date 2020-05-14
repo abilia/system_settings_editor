@@ -108,7 +108,7 @@ void main() {
 
     test('LoginButtonPressed event calls logges in and saves token', () async {
       // Arrange
-      String username = 'username',
+      final username = 'username',
           password = 'password',
           fakePushToken = 'fakePushToken';
       when(mockFirebasePushService.initPushToken())

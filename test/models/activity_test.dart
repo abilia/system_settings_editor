@@ -40,16 +40,16 @@ void main() {
         .toList();
     expect(resultList.length, 1);
     final result = resultList.first.activity;
-    expect(result.id, "33451ee6-cec6-4ce0-b515-f58767b13c8f");
+    expect(result.id, '33451ee6-cec6-4ce0-b515-f58767b13c8f');
     // expect(result.owner, 104);
     expect(resultList.first.revision, 100);
     // expect(result.revisionTime, 0);
     expect(result.deleted, false);
-    expect(result.seriesId, "33451ee6-cec6-4ce0-b515-f58767b13c8f");
+    expect(result.seriesId, '33451ee6-cec6-4ce0-b515-f58767b13c8f');
     // expect(result.groupActivityId, null);
-    expect(result.title, "Title");
+    expect(result.title, 'Title');
     // expect(result.timezone, "Europe/Stockholm");
-    expect(result.icon, "/images/play.png");
+    expect(result.icon, '/images/play.png');
     expect(result.signedOffDates, [
       DateTime(2020, 02, 12),
       DateTime(2020, 02, 13),
@@ -73,7 +73,7 @@ void main() {
     expect(result.checkable, true);
     expect(result.removeAfter, false);
     expect(result.secret, false);
-    expect(result.fileId, "1a1b1678-781e-4b6f-9518-b6858560433f");
+    expect(result.fileId, '1a1b1678-781e-4b6f-9518-b6858560433f');
   });
   test('parse json with nulls test', () {
     final response = '''[ {
@@ -175,7 +175,7 @@ void main() {
     final infoItem = NoteInfoItem('just a note');
 
     final activity = Activity.createNew(
-      title: "An interesting title",
+      title: 'An interesting title',
       category: 4,
       duration: duration,
       reminderBefore: reminders,

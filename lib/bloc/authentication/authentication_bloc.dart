@@ -29,7 +29,7 @@ class AuthenticationBloc
       final repo = event.repository;
       yield AuthenticationLoading(repo);
       await baseUrlDb.setBaseUrl(repo.baseUrl);
-      final String token = await repo.getToken();
+      final token = await repo.getToken();
       if (token != null) {
         yield* _tryGetUser(repo, token);
       } else {

@@ -38,11 +38,11 @@ class ActivityBoard extends StatelessWidget {
     activities.sort((a1, a2) => a1.activity
         .startClock(a1.day)
         .compareTo(a2.activity.startClock(a2.day)));
-    List<List<ActivityTimepillarCard>> scheduled = [];
+    final scheduled = <List<ActivityTimepillarCard>>[];
     ActivityLoop:
     for (final ao in activities) {
       final a = ao.activity;
-      final int dots = a.duration.inDots(minutesPerDot, roundingMinute);
+      final dots = a.duration.inDots(minutesPerDot, roundingMinute);
       final dotHeight = dots * dotDistance;
 
       final textHeight = (a.hasTitle
@@ -55,18 +55,18 @@ class ActivityBoard extends StatelessWidget {
           a.hasImage ? ActivityTimepillarCard.imageSize + 16.0 : 0.0;
       final renderedHeight = textHeight + imageHeight;
 
-      final double height = max(
+      final height = max(
         max(dotHeight, renderedHeight),
         ActivityTimepillarCard.minHeight,
       );
 
-      final double topOffset = timeToPixelDistanceHour(
+      final topOffset = timeToPixelDistanceHour(
         a.startTime.roundToMinute(
           minutesPerDot,
           roundingMinute,
         ),
       );
-      card(int col) => ActivityTimepillarCard(
+      Widget card(int col) => ActivityTimepillarCard(
             key: ObjectKey(ao),
             activityOccasion: ao,
             dots: dots,
@@ -76,7 +76,7 @@ class ActivityBoard extends StatelessWidget {
             textStyle: textStyle,
           );
 
-      for (int i = 0; i < scheduled.length; i++) {
+      for (var i = 0; i < scheduled.length; i++) {
         final row = scheduled[i];
         if (topOffset > row.last.endPos) {
           row.add(card(i));

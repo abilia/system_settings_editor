@@ -97,7 +97,7 @@ class _TimeBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // var past = false, current = true;
-    final TextStyle textStyle = Theme.of(context)
+    final textStyle = Theme.of(context)
         .textTheme
         .headline6
         .copyWith(color: past ? AbiliaColors.white[140] : AbiliaColors.black);

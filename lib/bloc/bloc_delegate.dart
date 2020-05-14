@@ -40,4 +40,4 @@ class SimpleBlocDelegate extends BlocDelegate {
   }
 }
 
-log(Object o) => print('${DateTime.now()}: $o');
+void log(Object o) => print('${DateTime.now()}: $o');

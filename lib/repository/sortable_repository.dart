@@ -23,6 +23,7 @@ class SortableRepository extends DataRepository<Sortable> {
     @required this.authToken,
   }) : super(client, baseUrl);
 
+  @override
   Future<Iterable<Sortable>> load() async {
     return synchronized(() async {
       try {

@@ -62,9 +62,9 @@ void main() {
       );
       when(mockSortableRepository.load())
           .thenAnswer((_) => Future.value([uploadFolder]));
-      final String imageId = 'id1';
-      final String imageName = 'nameOfImage';
-      final String imagePath = 'path/to/image/$imageName.jpg';
+      final imageId = 'id1';
+      final imageName = 'nameOfImage';
+      final imagePath = 'path/to/image/$imageName.jpg';
 
       // Act
       sortableBloc.add(LoadSortables());

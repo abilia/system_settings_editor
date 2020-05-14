@@ -78,7 +78,7 @@ class DbUserFile extends DbModel<UserFile> {
     int dirty,
   }) =>
       DbUserFile._(
-        userFile: this.userFile,
+        userFile: userFile,
         revision: revision ?? this.revision,
         dirty: dirty ?? this.dirty,
       );

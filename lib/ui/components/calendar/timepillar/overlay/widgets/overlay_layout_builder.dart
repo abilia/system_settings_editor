@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 import '../all.dart';
 
-typedef Widget OverlayLayoutWidgetBuilder(
+typedef OverlayLayoutWidgetBuilder = Widget Function(
     BuildContext context, OverlayConstraints constraints);
 
 /// Builds a widget tree that can depend on the [OverlayConstraints].
@@ -127,7 +127,7 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
 
   @override
   void removeChildRenderObject(RenderObject child) {
-    final RenderOverlayLayoutBuilder renderObject = this.renderObject;
+    final renderObject = this.renderObject;
     assert(renderObject.child == child);
     renderObject.child = null;
     assert(renderObject == this.renderObject);
@@ -139,7 +139,7 @@ FlutterErrorDetails _debugReportException(
   dynamic exception,
   StackTrace stack,
 ) {
-  final FlutterErrorDetails details = FlutterErrorDetails(
+  final details = FlutterErrorDetails(
     exception: exception,
     stack: stack,
     library: 'seagull overlay widgets library',

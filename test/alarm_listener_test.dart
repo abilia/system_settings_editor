@@ -20,12 +20,12 @@ void main() {
   StreamController<String> mockNotificationSelected;
   final mockActivityDb = MockActivityDb();
 
-  final DateTime activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
-  final DateTime activityWithAlarmday = activityWithAlarmTime.onlyDays();
-  final DateTime twoHoursAfter = activityWithAlarmTime.add(2.hours());
-  final Activity activity =
+  final activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
+  final activityWithAlarmday = activityWithAlarmTime.onlyDays();
+  final twoHoursAfter = activityWithAlarmTime.add(2.hours());
+  final activity =
       FakeActivity.starts(activityWithAlarmTime).copyWith(checkable: true);
-  final String payloadSerial = json.encode(NotificationPayload(
+  final payloadSerial = json.encode(NotificationPayload(
     activityId: activity.id,
     day: activityWithAlarmday,
     onStart: true,
@@ -163,19 +163,19 @@ void main() {
     });
   });
   group('Multiple alarms tests', () {
-    final DateTime activity1StartTime = DateTime(2011, 11, 11, 11, 11);
-    final DateTime day = DateTime(2011, 11, 11);
-    final Activity activity1 =
+    final activity1StartTime = DateTime(2011, 11, 11, 11, 11);
+    final day = DateTime(2011, 11, 11);
+    final activity1 =
         FakeActivity.starts(activity1StartTime, duration: 2.minutes());
-    final String startTimeActivity1NotificationPayload =
+    final startTimeActivity1NotificationPayload =
         json.encode(NotificationPayload(
       activityId: activity1.id,
       day: day,
       onStart: true,
     ).toJson());
 
-    final DateTime activity2StartTime = DateTime(2011, 11, 11, 11, 12);
-    final Activity activity2 =
+    final activity2StartTime = DateTime(2011, 11, 11, 11, 12);
+    final activity2 =
         FakeActivity.starts(activity2StartTime, duration: 2.minutes());
 
     testWidgets('Start and end time alarm for same activity',
@@ -185,7 +185,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final Finder alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
+      final alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
 
       // Act - time goes which should display two alarms (start and end time)
       mockTicker.add(activity1StartTime);
@@ -218,7 +218,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final Finder alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
+      final alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
 
       // Act - time goes which should display two alarms (start and end time)
       mockTicker.add(activity1StartTime);
@@ -254,7 +254,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1, activity2]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final Finder alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
+      final alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
 
       // Act - time goes which should display two alarms (start and end time)
       mockTicker.add(activity1StartTime);

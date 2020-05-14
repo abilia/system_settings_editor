@@ -15,11 +15,11 @@ void main() {
   ClockBloc clockBloc;
   ActivitiesBloc activitiesBloc;
   ActivitiesOccasionBloc activitiesOccasionBloc;
-  DateTime initialTime = DateTime(2006, 06, 06, 06, 06, 06, 06).onlyMinutes();
-  DateTime initialMinutes = initialTime.onlyMinutes();
-  DateTime initialDay = initialTime.onlyDays();
-  DateTime nextDay = initialDay.add(Duration(days: 1));
-  DateTime previusDay = initialDay.subtract(Duration(days: 1));
+  final initialTime = DateTime(2006, 06, 06, 06, 06, 06, 06).onlyMinutes();
+  final initialMinutes = initialTime.onlyMinutes();
+  final initialDay = initialTime.onlyDays();
+  final nextDay = initialDay.add(Duration(days: 1));
+  final previusDay = initialDay.subtract(Duration(days: 1));
   MockActivityRepository mockActivityRepository;
   StreamController<DateTime> mockedTicker;
 

@@ -17,5 +17,5 @@ class PushReceived extends PushState {
 }
 
 class PushType {
-  static final String calendar = 'calendar', sortable = "dataItem";
+  static final String calendar = 'calendar', sortable = 'dataItem';
 }

@@ -75,14 +75,14 @@ class Lines extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final line = Padding(
-        padding: EdgeInsets.only(top: this.lineHeight),
+        padding: EdgeInsets.only(top: lineHeight),
         child: Divider(
           color: AbiliaColors.white[120],
           height: 0,
         ));
 
     return Column(
-      children: List.generate(this.numberOfLines, (_) => line).toList(),
+      children: List.generate(numberOfLines, (_) => line).toList(),
     );
   }
 }

@@ -46,7 +46,7 @@ Future scheduleAlarmNotifications(
   bool alwaysUse24HourFormat,
 ) async {
   final now = DateTime.now().add(1.minutes()).onlyMinutes();
-  final Iterable<NotificationAlarm> shouldBeScheduledNotifications =
+  final shouldBeScheduledNotifications =
       allActivities.alarmsFrom(now, take: 50);
   return scheduleAllAlarmNotifications(
     shouldBeScheduledNotifications,
@@ -180,8 +180,8 @@ String getSubtitle(
   final tf = hourAndMinuteFromUse24(alwaysUse24HourFormat, language);
   final translater = Translated.dictionaries[locale];
   final a = notificationAlarm.activity;
-  String endTime = a.hasEndTime ? ' - ${tf(a.endClock(day))} ' : ' ';
-  String extra = notificationAlarm is NewAlarm
+  final endTime = a.hasEndTime ? ' - ${tf(a.endClock(day))} ' : ' ';
+  final extra = notificationAlarm is NewAlarm
       ? (notificationAlarm.alarmOnStart
           ? translater.startsNow
           : translater.endsNow)

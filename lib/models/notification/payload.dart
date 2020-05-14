@@ -12,8 +12,8 @@ class NotificationPayload extends Equatable {
     @required this.day,
     int reminder,
     bool onStart,
-  })  : this.reminder = reminder ?? -1,
-        this.onStart = onStart ?? false;
+  })  : reminder = reminder ?? -1,
+        onStart = onStart ?? false;
   factory NotificationPayload.fromJson(Map<String, dynamic> json) =>
       NotificationPayload(
         activityId: json['activityId'],

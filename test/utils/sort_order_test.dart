@@ -3,7 +3,7 @@ import 'package:seagull/utils/sort_order.dart';
 
 void main() {
   group('Test sort order algorithm', () {
-    expectNext(String start, int step, String expectedNext) =>
+    void expectNext(String start, int step, String expectedNext) =>
         expect(calculateNextSortOrder(start, step), expectedNext);
     test('Start is correct', () {
       final start = getStartSortOrder();

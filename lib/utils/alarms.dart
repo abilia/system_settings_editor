@@ -18,18 +18,18 @@ extension IterableActivity on Iterable<Activity> {
     final activitiesWithAlarm =
         activitiesThisDay.where((a) => a.alarm.shouldAlarm).toList();
 
-    final Iterable<NotificationAlarm> startTimeAlarms = activitiesWithAlarm
+    final startTimeAlarms = activitiesWithAlarm
         .where(startTimeTest)
-        .map((a) => NewAlarm(a, day, alarmOnStart: true));
+        .map<NotificationAlarm>((a) => NewAlarm(a, day, alarmOnStart: true));
 
     final endTimeAlarms = activitiesWithAlarm
         .where((a) => a.hasEndTime)
         .where((a) => a.alarm.atEnd)
         .where(endTimeTest)
-        .map((a) => NewAlarm(a, day, alarmOnStart: false));
+        .map<NotificationAlarm>((a) => NewAlarm(a, day, alarmOnStart: false));
 
     final reminders = activitiesThisDay.expand((a) => a.reminders
-        .map((r) => NewReminder(a, day, reminder: r))
+        .map<NotificationAlarm>((r) => NewReminder(a, day, reminder: r))
         .where(reminderTest));
 
     return startTimeAlarms
@@ -46,7 +46,7 @@ extension IterableActivity on Iterable<Activity> {
     final nextDay = time.nextDay().onlyDays();
     final endTime = nextDay.subtract(1.minutes());
     final alarms = _alarmsForRestOfDay(time, endTime);
-    final int amountOfAlarms = alarms.length;
+    final amountOfAlarms = alarms.length;
     if (amountOfAlarms < take) {
       return alarms.followedBy(
         _alarmsForDay(
@@ -80,7 +80,7 @@ extension IterableActivity on Iterable<Activity> {
         reminderTest: (rs) =>
             rs.notificationTime.isAtSameMomentOrAfter(notBefore));
 
-    final int amountOfAlarms = alarms.length;
+    final amountOfAlarms = alarms.length;
     if (amountOfAlarms < take) {
       return alarms.followedBy(
         _alarmsForDay(

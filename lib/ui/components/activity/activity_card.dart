@@ -18,7 +18,8 @@ class ActivityCard extends StatelessWidget {
       imageSize = 48.0;
   static const Duration duration = Duration(seconds: 1);
 
-  const ActivityCard({Key key, this.activityOccasion, this.margin = 0.0})
+  const ActivityCard(
+      {Key key, @required this.activityOccasion, this.margin = 0.0})
       : assert(activityOccasion != null),
         super(key: key);
 
@@ -38,7 +39,8 @@ class ActivityCard extends StatelessWidget {
             textTheme: textTheme.copyWith(
               subtitle1:
                   textTheme.subtitle1.copyWith(color: AbiliaColors.white[140]),
-              bodyText1: textTheme.bodyText1.copyWith(color: AbiliaColors.white[140]),
+              bodyText1:
+                  textTheme.bodyText1.copyWith(color: AbiliaColors.white[140]),
             ),
             iconTheme:
                 abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white[140]))

@@ -6,7 +6,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
-  DayPickerState _initialState;
+  final DayPickerState _initialState;
   static final int startIndex = 1000000;
   final ClockBloc clockBloc;
 
@@ -26,7 +26,7 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
       yield generateState(state.day.previousDay());
     }
     if (event is CurrentDay) {
-      yield generateState(this.clockBloc.state);
+      yield generateState(clockBloc.state);
     }
     if (event is GoTo) {
       yield generateState(event.day);

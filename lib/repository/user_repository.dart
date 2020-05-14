@@ -30,8 +30,8 @@ class UserRepository extends Repository {
       UserRepository(
           baseUrl: baseUrl ?? this.baseUrl,
           httpClient: httpClient ?? this.httpClient,
-          tokenDb: this.tokenDb,
-          userDb: this.userDb);
+          tokenDb: tokenDb,
+          userDb: userDb);
 
   Future<String> authenticate(
       {@required String username,
@@ -88,7 +88,7 @@ class UserRepository extends Repository {
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     } else {
-      throw Exception("Could not get user right now");
+      throw Exception('Could not get user right now');
     }
   }
 

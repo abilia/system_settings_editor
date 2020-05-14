@@ -87,7 +87,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
 
   @override
   List<DiagnosticsNode> debugDescribeChildren() {
-    List<DiagnosticsNode> result = <DiagnosticsNode>[];
+    final result = <DiagnosticsNode>[];
     if (overlay != null) {
       result.add(overlay.toDiagnosticsNode(name: 'overlay'));
     }
@@ -120,7 +120,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
     }
 
     // One of them is not null.
-    AxisDirection axisDirection = applyGrowthDirectionToAxisDirection(
+    final axisDirection = applyGrowthDirectionToAxisDirection(
         constraints.axisDirection, constraints.growthDirection);
 
     if (overlay != null) {
@@ -135,10 +135,10 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
     }
 
     // Compute the overlay extent only one time.
-    double overlayExtent = overlayLogicalExtent;
-    final double overlayPaintExtent =
+    final overlayExtent = overlayLogicalExtent;
+    final overlayPaintExtent =
         calculatePaintOffset(constraints, from: 0.0, to: overlayExtent);
-    final double overlayCacheExtent =
+    final overlayCacheExtent =
         calculateCacheOffset(constraints, from: 0.0, to: overlayExtent);
 
     if (child == null) {
@@ -163,7 +163,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
         ),
         parentUsesSize: true,
       );
-      final SliverGeometry childLayoutGeometry = child.geometry;
+      final childLayoutGeometry = child.geometry;
       if (childLayoutGeometry.scrollOffsetCorrection != null) {
         geometry = SliverGeometry(
           scrollOffsetCorrection: childLayoutGeometry.scrollOffsetCorrection,
@@ -171,7 +171,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
         return;
       }
 
-      final double paintExtent = math.min(
+      final paintExtent = math.min(
           overlayPaintExtent +
               math.max(childLayoutGeometry.paintExtent,
                   childLayoutGeometry.layoutExtent),
@@ -217,7 +217,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
     if (overlay != null) {
       final SliverPhysicalParentData overlayParentData = overlay.parentData;
       final childScrollExtent = child?.geometry?.scrollExtent ?? 0.0;
-      double overlayPosition = math.min(constraints.overlap,
+      final overlayPosition = math.min(constraints.overlap,
           childScrollExtent - constraints.scrollOffset - _overlayExtent);
 
       // second layout if scroll percentage changed and overlay is a RenderOverlayLayoutBuilder.
@@ -226,7 +226,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
             ((overlayPosition - constraints.overlap).abs() / _overlayExtent)
                 .clamp(0.0, 1.0);
 
-        SliverOverlayState state = SliverOverlayState(scrollPercentage);
+        final state = SliverOverlayState(scrollPercentage);
         if (_oldState != state) {
           _oldState = state;
           overlay.layout(
@@ -239,7 +239,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
         }
       }
 
-      final double crossAxisOffset = 0.0;
+      final crossAxisOffset = 0.0;
 
       switch (axisDirection) {
         case AxisDirection.up:

@@ -173,11 +173,11 @@ class ActivityInfoSideDots extends StatelessWidget {
     return ConstrainedBox(
       constraints: BoxConstraints(minWidth: ActivityInfo.margin),
       child: BlocBuilder<ClockBloc, DateTime>(builder: (context, now) {
-        final bool onSameDay = day.isAtSameDay(now),
+        final onSameDay = day.isAtSameDay(now),
             notStarted = startTime.isAfter(now),
             isCurrent = activity.hasEndTime &&
                 now.isOnOrBetween(startDate: startTime, endDate: endTime);
-        final bool shouldHaveSideDots =
+        final shouldHaveSideDots =
             !activity.fullDay && onSameDay && (notStarted || isCurrent);
         return AnimatedSwitcher(
           duration: ActivityInfo.animationDuration,

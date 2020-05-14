@@ -56,7 +56,7 @@ void main() {
     final title1 = 'fulldaytitle1';
     final title2 = 'fullday title 2';
     final title3 = 'full day title 3';
-    DateTime date = DateTime(1994, 04, 04, 04, 04);
+    final date = DateTime(1994, 04, 04, 04, 04);
 
     final day1Finder = find.text(title1);
     final day2Finder = find.text(title2);
@@ -89,7 +89,7 @@ void main() {
       final mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
-      MockActivityDb mockActivityDb = MockActivityDb();
+      final mockActivityDb = MockActivityDb();
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(fullDayActivities));
       when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));

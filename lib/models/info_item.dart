@@ -126,6 +126,7 @@ class Checklist extends InfoItem {
             .map((k, v) => MapEntry<String, Set<int>>(k, Set<int>.from(v)))),
       );
 
+  @override
   Map<String, dynamic> toJson() => {
         'checked':
             checked.map((k, v) => MapEntry<String, List<int>>(k, List.from(v))),

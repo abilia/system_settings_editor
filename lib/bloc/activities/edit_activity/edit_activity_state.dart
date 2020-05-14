@@ -30,6 +30,7 @@ class StoredActivityState extends EditActivityState {
   @override
   String toString() =>
       'StoredActivityState: {activity: $activity, day: $day, newImage: ${newImage?.path}';
+  @override
   List<Object> get props => super.props..add(day);
 
   @override

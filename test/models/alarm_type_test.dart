@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/alarm_type.dart';
 
 void main() {
-  fromIntSameAsToInt(int value) {
+  void fromIntSameAsToInt(int value) {
     final at = AlarmType.fromInt(value);
     expect(at.toInt, value);
   }

@@ -1,11 +1,9 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 
 class AlarmNavigator {
-  final Map<String, Route<dynamic>> _routes = LinkedHashMap();
+  final Map<String, Route<dynamic>> _routes = {};
 
   Future<T> _push<T extends Object>(
       BuildContext context, Route<T> route, String id) {

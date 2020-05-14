@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../all.dart';
 
-typedef Widget SliverOverlayWidgetBuilder(
+typedef SliverOverlayWidgetBuilder = Widget Function(
     BuildContext context, SliverOverlayState state);
 
 @immutable

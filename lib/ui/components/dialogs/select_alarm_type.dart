@@ -22,7 +22,8 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
     return ViewDialog(
-      heading: Text(translate.selectAlarmType, style: theme.textTheme.headline6),
+      heading:
+          Text(translate.selectAlarmType, style: theme.textTheme.headline6),
       onOk: onOk,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -111,7 +112,8 @@ class _SelectAlarmDialogState extends State<SelectAlarmDialog> {
     );
   }
 
-  _changeType(Alarm type) => setState(() => alarm = alarm.copyWith(type: type));
-  _changeStartTime(bool onStart) =>
+  void _changeType(Alarm type) =>
+      setState(() => alarm = alarm.copyWith(type: type));
+  void _changeStartTime(bool onStart) =>
       setState(() => alarm = alarm.copyWith(onlyStart: onStart));
 }
