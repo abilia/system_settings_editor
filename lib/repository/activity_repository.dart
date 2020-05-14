@@ -21,19 +21,29 @@ class ActivityRepository extends DataRepository<Activity> {
     @required this.authToken,
   }) : super(client, baseUrl);
 
-  Future<void> save(Iterable<Activity> activities) =>
-      activityDb.insertAndAddDirty(activities);
+  Future<void> save(Iterable<Activity> activities) {
+    return synchronized(() async {
+      return activityDb.insertAndAddDirty(activities);
+    });
+  }
 
   Future<Iterable<Activity>> load() async {
-    try {
-      final fetchedActivities =
-          await _fetchActivities(await activityDb.getLastRevision());
-      await activityDb.insert(fetchedActivities);
-    } catch (e) {
-      // Error when syncing activities. Probably offline.
-      print('Error when syncing activities $e');
-    }
-    return activityDb.getAllNonDeleted();
+    return synchronized(() async {
+      try {
+        final fetchedActivities =
+            await _fetchActivities(await activityDb.getLastRevision());
+        fetchedActivities.forEach((element) {
+          final ii = element.activity.infoItem;
+          if (ii is Checklist) {
+          }
+        });
+        await activityDb.insert(fetchedActivities);
+      } catch (e) {
+        // Error when syncing activities. Probably offline.
+        print('Error when syncing activities $e');
+      }
+      return activityDb.getAllNonDeleted();
+    });
   }
 
   Future<bool> synchronize() async {
