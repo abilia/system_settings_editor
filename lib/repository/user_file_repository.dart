@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/src/base_client.dart';
 import 'package:meta/meta.dart';
+import 'package:synchronized/extension.dart';
 import 'package:seagull/db/user_file_db.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -30,15 +31,17 @@ class UserFileRepository extends DataRepository<UserFile> {
 
   @override
   Future<Iterable<UserFile>> load() async {
-    try {
-      final fetchedUserFiles =
-          await _fetchUserFiles(await userFileDb.getLastRevision());
-      await userFileDb.insert(fetchedUserFiles);
-      await getAndStoreFileData();
-    } catch (e) {
-      print('Error when loading user files $e');
-    }
-    return userFileDb.getAllNonDeleted();
+    return synchronized(() async {
+      try {
+        final fetchedUserFiles =
+            await _fetchUserFiles(await userFileDb.getLastRevision());
+        await userFileDb.insert(fetchedUserFiles);
+        await getAndStoreFileData();
+      } catch (e) {
+        print('Error when loading user files $e');
+      }
+      return userFileDb.getAllNonDeleted();
+    });
   }
 
   @override
@@ -48,30 +51,32 @@ class UserFileRepository extends DataRepository<UserFile> {
 
   @override
   Future<bool> synchronize() async {
-    final dirtyFiles = await userFileDb.getAllDirty();
-    if (dirtyFiles.isEmpty) return true;
-    for (var dirtyFile in dirtyFiles.map((dirty) => dirty.model)) {
-      final file = fileStorage.getFile(dirtyFile.id);
-      final postFileSuccess = await postFileData(
-        file,
-        dirtyFile.sha1,
-        dirtyFile.contentType,
-      );
-      if (!postFileSuccess) return false;
-    }
+    return synchronized(() async {
+      final dirtyFiles = await userFileDb.getAllDirty();
+      if (dirtyFiles.isEmpty) return true;
+      for (var dirtyFile in dirtyFiles.map((dirty) => dirty.model)) {
+        final file = fileStorage.getFile(dirtyFile.id);
+        final postFileSuccess = await postFileData(
+          file,
+          dirtyFile.sha1,
+          dirtyFile.contentType,
+        );
+        if (!postFileSuccess) return false;
+      }
 
-    try {
-      final lastRevision = await userFileDb.getLastRevision();
-      final syncResponses = await postUserFiles(dirtyFiles, lastRevision);
-      await _handleSuccessfulSync(syncResponses, dirtyFiles);
-      return true;
-    } on WrongRevisionException catch (_) {
-      print('Wrong revision when posting user files');
-      await _handleFailedSync();
-    } catch (e) {
-      print('Cannot post user files to backend $e');
-    }
-    return false;
+      try {
+        final lastRevision = await userFileDb.getLastRevision();
+        final syncResponses = await _postUserFiles(dirtyFiles, lastRevision);
+        await _handleSuccessfulSync(syncResponses, dirtyFiles);
+        return true;
+      } on WrongRevisionException catch (_) {
+        print('Wrong revision when posting user files');
+        await _handleFailedSync();
+      } catch (e) {
+        print('Cannot post user files to backend $e');
+      }
+      return false;
+    });
   }
 
   Future<void> _handleSuccessfulSync(List<SyncResponse> syncResponses,
@@ -105,7 +110,7 @@ class UserFileRepository extends DataRepository<UserFile> {
         .map((e) => DbUserFile.fromJson(e));
   }
 
-  Future<Iterable<SyncResponse>> postUserFiles(
+  Future<Iterable<SyncResponse>> _postUserFiles(
     Iterable<DbModel<UserFile>> userFiles,
     int latestRevision,
   ) async {
