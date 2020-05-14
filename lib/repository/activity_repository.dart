@@ -32,11 +32,6 @@ class ActivityRepository extends DataRepository<Activity> {
       try {
         final fetchedActivities =
             await _fetchActivities(await activityDb.getLastRevision());
-        fetchedActivities.forEach((element) {
-          final ii = element.activity.infoItem;
-          if (ii is Checklist) {
-          }
-        });
         await activityDb.insert(fetchedActivities);
       } catch (e) {
         // Error when syncing activities. Probably offline.
