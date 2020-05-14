@@ -56,8 +56,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   Stream<ActivitiesState> _mapAddActivityToState(
       AddActivity event, ActivitiesState oldState) async* {
     if (oldState is ActivitiesLoaded) {
-      await _saveActivities([event.activity]);
       yield ActivitiesLoaded(oldState.activities.followedBy([event.activity]));
+      await _saveActivities([event.activity]);
     }
   }
 
@@ -69,8 +69,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
       if (event is DeleteRecurringActivity) {
         yield* _mapDeleteRecurringToState(event, activities);
       } else if (activities.remove(activity)) {
-        await _saveActivities([activity.copyWith(deleted: true)]);
         yield ActivitiesLoaded(activities);
+        await _saveActivities([activity.copyWith(deleted: true)]);
       }
     }
   }
@@ -83,11 +83,11 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
         yield* _mapUpdateRecurringToState(activities.toSet(), event);
       } else {
         final activity = event.updatedActivity;
-        await _saveActivities([activity]);
         final updatedActivities = activities.map<Activity>((a) {
           return a.id == activity.id ? activity : a;
         }).toList(growable: false);
         yield ActivitiesLoaded(updatedActivities);
+        await _saveActivities([activity]);
       }
     }
   }
@@ -101,8 +101,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
       case ApplyTo.allDays:
         final series =
             activities.where((a) => a.seriesId == activity.seriesId).toSet();
-        await _saveActivities(series.map((a) => a.copyWith(deleted: true)));
         yield ActivitiesLoaded(activities.difference(series));
+        await _saveActivities(series.map((a) => a.copyWith(deleted: true)));
         break;
       case ApplyTo.thisDayAndForward:
         yield* _handleResult(
@@ -151,8 +151,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   }
 
   Stream<ActivitiesState> _handleResult(ActivityMappingResult res) async* {
-    await _saveActivities(res.save);
     yield ActivitiesLoaded(res.state);
+    await _saveActivities(res.save);
   }
 
   Future<void> _saveActivities(Iterable<Activity> activities) async {
