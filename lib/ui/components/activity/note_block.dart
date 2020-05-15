@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -25,19 +26,20 @@ class _NoteBlockState extends State<NoteBlock> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
+        final width = constraints.maxWidth - Attachment.padding.vertical;
+        final height = constraints.maxHeight - Attachment.padding.horizontal;
         final scaleFactor = MediaQuery.of(context).textScaleFactor;
         final textStyle = abiliaTextTheme.bodyText1;
-        final textSize = widget.text.textSize(textStyle, constraints.maxWidth);
+        final textSize = widget.text.textSize(textStyle, width);
         final scaledTextHeight = textSize.height * scaleFactor;
         final scaledLineHeight =
             textStyle.fontSize * textStyle.height * scaleFactor;
-        final numberOfLines =
-            max(constraints.maxHeight, scaledTextHeight) / scaledLineHeight;
+        final numberOfLines = max(
+            height ~/ scaledLineHeight, scaledTextHeight ~/ scaledLineHeight);
         return Stack(
           children: <Widget>[
-            Scrollbar(
+            CupertinoScrollbar(
               controller: controller,
-              isAlwaysShown: true,
               child: SingleChildScrollView(
                 controller: controller,
                 child: Padding(
@@ -47,7 +49,7 @@ class _NoteBlockState extends State<NoteBlock> {
                       Text(widget.text, style: textStyle),
                       Lines(
                         lineHeight: scaledLineHeight,
-                        numberOfLines: numberOfLines.ceil(),
+                        numberOfLines: numberOfLines,
                       ),
                     ],
                   ),

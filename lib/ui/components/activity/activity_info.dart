@@ -177,7 +177,7 @@ class ActivityContainer extends StatelessWidget {
 }
 
 class Attachment extends StatelessWidget {
-  static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 14.0, 0.0);
+  static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 14.0, 24.0);
   final Activity activity;
   final DateTime day;
   const Attachment({
