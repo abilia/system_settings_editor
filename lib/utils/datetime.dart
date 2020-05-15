@@ -17,6 +17,7 @@ extension DateTimeExtensions on DateTime {
 
   DateTime nextHalfHour() => DateTime(
       year, month, day, minute >= 30 ? hour + 1 : hour, minute >= 30 ? 0 : 30);
+  DateTime nextMinute() => DateTime(year, month, day, hour, minute + 1);
 
   DateTime roundToMinute(int minutesPerDot, int rounding) => DateTime(
         year,

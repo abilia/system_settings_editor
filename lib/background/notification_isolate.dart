@@ -40,12 +40,11 @@ void ensureNotificationPluginInitialized() {
   }
 }
 
-Future scheduleAlarmNotifications(
-  Iterable<Activity> allActivities,
-  String language,
-  bool alwaysUse24HourFormat,
-) async {
-  final now = DateTime.now().add(1.minutes()).onlyMinutes();
+Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
+    String language, bool alwaysUse24HourFormat,
+    {DateTime now}) async {
+  now ??= DateTime.now();
+  now = now.nextMinute();
   final shouldBeScheduledNotifications =
       allActivities.alarmsFrom(now, take: 50);
   return scheduleAllAlarmNotifications(
@@ -53,6 +52,31 @@ Future scheduleAlarmNotifications(
     language,
     alwaysUse24HourFormat,
   );
+}
+
+Future scheduleAlarmNotificationsIsolated(Iterable<Activity> allActivities,
+    String language, bool alwaysUse24HourFormat,
+    {DateTime now}) async {
+  now ??= DateTime.now();
+  now = now.nextMinute();
+  final serialized =
+      allActivities.map((e) => e.wrapWithDbModel().toJson()).toList();
+  final shouldBeScheduledNotificationsSerialized =
+      await compute(alarmsFromIsolate, [serialized, now]);
+  final shouldBeScheduledNotifications =
+      shouldBeScheduledNotificationsSerialized
+          .map((e) => NotificationAlarm.fromJson(e));
+  return scheduleAllAlarmNotifications(
+      shouldBeScheduledNotifications, language, alwaysUse24HourFormat);
+}
+
+List<Map<String, dynamic>> alarmsFromIsolate(List<dynamic> args) {
+  final serialized = args[0];
+  final List<Activity> allActivities =
+      serialized.map<Activity>((e) => DbActivity.fromJson(e).activity).toList();
+  final now = args[1] as DateTime;
+  final notificationAlarms = allActivities.alarmsFrom(now);
+  return notificationAlarms.map((e) => e.toJson()).toList();
 }
 
 Future scheduleAllAlarmNotifications(
@@ -68,28 +92,6 @@ Future scheduleAllAlarmNotifications(
       alwaysUse24HourFormat,
     );
   }
-}
-
-Iterable<NotificationAlarm> alarmsFromIsolate(List<dynamic> args) {
-  final serialized = args[0];
-  final allActivities =
-      serialized.map((e) => DbActivity.fromJson(e).activity).toList();
-  final now = args[1] as DateTime;
-  return allActivities.alarmsFrom(now);
-}
-
-Future scheduleAlarmNotificationsIsolated(
-  Iterable<Activity> allActivities,
-  String language,
-  bool alwaysUse24HourFormat,
-) async {
-  final now = DateTime.now().add(1.minutes()).onlyMinutes();
-  final serialized =
-      allActivities.map((e) => e.wrapWithDbModel().toJson()).toList();
-  final Iterable<NotificationAlarm> shouldBeScheduledNotifications =
-      await compute(alarmsFromIsolate, [serialized, now]);
-  return scheduleAllAlarmNotifications(
-      shouldBeScheduledNotifications, language, alwaysUse24HourFormat);
 }
 
 Future scheduleNotification(
