@@ -26,11 +26,11 @@ class ActivityBoard extends StatelessWidget {
     return Container(
       width: max(categoryMinWidth,
           scheduled.length * ActivityTimepillarCard.totalWith),
-      child: Stack(children: scheduled),
+      child: Stack(children: scheduled.expand((c) => c).toList()),
     );
   }
 
-  static List<ActivityTimepillarCard> positionTimepillarCards(
+  static List<List<ActivityTimepillarCard>> positionTimepillarCards(
     List<ActivityOccasion> activities,
     TextStyle textStyle,
     double scaleFactor,
@@ -85,6 +85,6 @@ class ActivityBoard extends StatelessWidget {
       }
       scheduled.add([card(scheduled.length)]);
     }
-    return scheduled.expand((c) => c).toList();
+    return scheduled;
   }
 }
