@@ -9,6 +9,34 @@ abstract class NotificationAlarm extends Equatable {
       : assert(activity != null),
         assert(day != null);
   DateTime get notificationTime;
+
+  Map<String, dynamic> toJson() => {
+        'day': day,
+        'activity': activity.wrapWithDbModel().toJson(),
+        'type': runtimeType,
+        if (this is NewAlarm) 'alarmOnStart': (this as NewAlarm).alarmOnStart,
+        if (this is NewReminder) 'reminder': (this as NewReminder).reminder,
+      };
+  factory NotificationAlarm.fromJson(Map<String, dynamic> json) {
+    final activity = DbActivity.fromJson(json['activity']).activity;
+    switch (json['type']) {
+      case NewAlarm:
+        return NewAlarm(
+          activity,
+          json['day'],
+          alarmOnStart: json['alarmOnStart'],
+        );
+      case NewReminder:
+        return NewReminder(
+          activity,
+          json['day'],
+          reminder: json['reminder'],
+        );
+        break;
+      default:
+        return null;
+    }
+  }
 }
 
 class NewAlarm extends NotificationAlarm {
@@ -19,8 +47,7 @@ class NewAlarm extends NotificationAlarm {
   @override
   List<Object> get props => [activity, alarmOnStart, day];
   @override
-  String toString() =>
-      'NewAlarm { activity: $activity, day: $day, ${alarmOnStart ? 'START' : 'END'}-alarm }';
+  bool get stringify => true;
 
   @override
   DateTime get notificationTime =>
@@ -36,9 +63,7 @@ class NewReminder extends NotificationAlarm {
   @override
   List<Object> get props => [activity, reminder, day];
   @override
-  String toString() =>
-      'NewReminder { activity: $activity, reminder: $reminder, day: $day }';
-
+  bool get stringify => true;
   @override
   DateTime get notificationTime => activity.startClock(day).subtract(reminder);
 }
