@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:seagull/models/info_item.dart';
 import 'package:seagull/ui/colors.dart';
@@ -28,12 +29,11 @@ class _CheckListViewState extends State<CheckListView> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Scrollbar(
-          isAlwaysShown: true,
+        CupertinoScrollbar(
           controller: controller,
           child: ListView.builder(
             controller: controller,
-            padding: Attachment.padding,
+            padding: Attachment.padding.subtract(QuestionView.padding),
             itemCount: widget.checklist.questions.length,
             itemBuilder: (context, i) {
               final question = widget.checklist.questions[i];
@@ -65,6 +65,7 @@ class QuestionView extends StatelessWidget {
   }) : super(key: key);
 
   static const duration = Duration(milliseconds: 400);
+  static const padding = EdgeInsets.only(bottom: 4.0);
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +85,9 @@ class QuestionView extends StatelessWidget {
       duration: duration,
       child: Builder(
         builder: (context) => Padding(
-          padding: const EdgeInsets.only(bottom: 4.0),
+          padding: padding,
           child: Material(
-            color: AbiliaColors.white,
+            color: Colors.transparent,
             borderRadius: borderRadius,
             child: InkWell(
               borderRadius: borderRadius,
