@@ -70,6 +70,7 @@ void main() {
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
+      ..syncStallTime = Duration.zero
       ..init();
   });
   Future<void> navigateToActivityPage(WidgetTester tester) async {

@@ -59,6 +59,7 @@ void main() {
       ..startTime = time
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
+      ..syncStallTime = Duration.zero
       ..init();
   });
   tearDown(() {

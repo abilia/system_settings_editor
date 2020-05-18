@@ -50,6 +50,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             activityRepository: activityRepository,
             userFileRepository: userFileRepository,
             sortableRepository: sortableRepository,
+            syncStallTime: GetIt.I<Duration>(),
           ),
         ),
         BlocProvider<ActivitiesBloc>(

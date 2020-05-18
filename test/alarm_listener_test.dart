@@ -59,6 +59,7 @@ void main() {
       ..httpClient = Fakes.client(() => response)
       ..notificationStreamGetter = (() => mockNotificationSelected.stream)
       ..fileStorage = MockFileStorage()
+      ..syncStallTime = Duration.zero
       ..init();
   });
   group('alarms and reminder test', () {

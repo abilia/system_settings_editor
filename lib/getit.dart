@@ -61,6 +61,9 @@ class GetItInitializer {
   FactoryFunc<DateTime> _startTime;
   set startTime(DateTime startTime) => _startTime = () => startTime;
 
+  Duration _syncStallTime;
+  set syncStallTime(Duration syncStallTime) => _syncStallTime = syncStallTime;
+
   void init() {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
@@ -85,5 +88,7 @@ class GetItInitializer {
     GetIt.I.registerSingleton<MultipartRequestBuilder>(
         _multipartRequestBuilder ?? MultipartRequestBuilder());
     GetIt.I.registerFactory<DateTime>(_startTime ?? () => DateTime.now());
+    GetIt.I.registerSingleton<Duration>(
+        _syncStallTime ?? const Duration(seconds: 3));
   }
 }
