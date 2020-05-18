@@ -44,6 +44,7 @@ abstract class Translated {
   String get meAndSupportPersons;
   String get onlyMe;
   String get name;
+  String get picture;
   String get date;
   String get today;
   String get startTime;
@@ -112,6 +113,7 @@ class English extends Translated {
       meAndSupportPersons = 'Me and support persons',
       onlyMe = 'Only me',
       name = 'Name',
+      picture = 'Picture',
       date = 'Date',
       today = 'Today',
       startTime = 'Start time',
@@ -182,6 +184,7 @@ class Swedish extends Translated {
       meAndSupportPersons = 'Mig och stödpersoner',
       onlyMe = 'Bara mig',
       name = 'Namn',
+      picture = 'Bild',
       date = 'Datum',
       today = 'Idag',
       startTime = 'Starttid',

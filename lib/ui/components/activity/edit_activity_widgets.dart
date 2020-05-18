@@ -54,56 +54,61 @@ class NameAndPictureWidget extends StatelessWidget {
         }
       }
     };
-    return SizedBox(
-      height: 84,
-      child: Row(
-        children: <Widget>[
-          activity.hasImage
-              ? InkWell(
-                  onTap: imageClick,
-                  child: Hero(
-                    tag: activity.id,
-                    child: FadeInCalendarImage(
-                      height: 84,
-                      width: 84,
-                      imageFileId: activity.fileId,
-                      imageFilePath: activity.icon,
-                      activityId: activity.id,
-                      imageFile: newImage,
-                    ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SubHeading(translator.picture),
+            if (activity.hasImage)
+              InkWell(
+                onTap: imageClick,
+                child: Hero(
+                  tag: activity.id,
+                  child: FadeInCalendarImage(
+                    height: 84,
+                    width: 84,
+                    imageFileId: activity.fileId,
+                    imageFilePath: activity.icon,
+                    activityId: activity.id,
+                    imageFile: newImage,
                   ),
-                )
-              : LinedBorder(
-                  key: TestKey.addPicture,
-                  padding: const EdgeInsets.all(26),
-                  child: Icon(
-                    AbiliaIcons.add_photo,
-                    size: 32,
-                    color: AbiliaColors.black[75],
-                  ),
-                  onTap: imageClick,
                 ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SubHeading(translator.name),
-                TextFormField(
-                  initialValue: activity.title,
-                  textCapitalization: TextCapitalization.sentences,
-                  inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                  onChanged: (text) =>
-                      BlocProvider.of<EditActivityBloc>(context)
-                          .add(ReplaceActivity(activity.copyWith(title: text))),
-                  key: TestKey.editTitleTextFormField,
+              )
+            else
+              LinedBorder(
+                key: TestKey.addPicture,
+                padding: const EdgeInsets.all(26),
+                child: Icon(
+                  AbiliaIcons.add_photo,
+                  size: 32,
+                  color: AbiliaColors.black[75],
                 ),
-              ],
-            ),
+                onTap: imageClick,
+              ),
+          ],
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SubHeading(translator.name),
+              TextFormField(
+                initialValue: activity.title,
+                textCapitalization: TextCapitalization.sentences,
+                inputFormatters: [LengthLimitingTextInputFormatter(50)],
+                onChanged: (text) => BlocProvider.of<EditActivityBloc>(context)
+                    .add(ReplaceActivity(activity.copyWith(title: text))),
+                key: TestKey.editTitleTextFormField,
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
