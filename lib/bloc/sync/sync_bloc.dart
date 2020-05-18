@@ -28,7 +28,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
 
   @override
   void add(SyncEvent event) {
-    if (state is SyncUnavailible) {
+    if (state is SyncUnavailable) {
       if (!_syncQueue.contains(event)) {
         // queueing event
         _syncQueue.add(event);

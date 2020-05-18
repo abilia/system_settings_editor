@@ -127,7 +127,9 @@ void main() {
       syncBloc.add(SortableSaved());
       await Future.delayed(stallTime * 2);
       await untilCalled(userFileRepository.synchronize());
+      await Future.delayed(stallTime * 2);
       await untilCalled(sortableRepository.synchronize());
+      await Future.delayed(stallTime * 2);
       verify(activityRepository.synchronize()).called(2);
       verify(userFileRepository.synchronize()).called(1);
       verify(sortableRepository.synchronize()).called(1);

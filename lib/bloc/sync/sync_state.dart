@@ -10,8 +10,8 @@ class SyncInitial extends SyncState {}
 
 class SyncDone extends SyncState {}
 
-abstract class SyncUnavailible extends SyncState {}
+abstract class SyncUnavailable extends SyncState {}
 
-class SyncPending extends SyncUnavailible {}
+class SyncPending extends SyncUnavailable {}
 
-class SyncFailed extends SyncUnavailible {}
+class SyncFailed extends SyncUnavailable {}
