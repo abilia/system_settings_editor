@@ -91,7 +91,7 @@ void main() {
       userFileRepository: userFileRepository,
       sortableRepository: sortableRepository,
       syncStallTime: stallTime,
-      failedSyncRetryTime: Duration.zero,
+      failedSyncRetryTime: stallTime,
     );
     setUp(() {
       when(activityRepository.synchronize())
@@ -133,6 +133,29 @@ void main() {
       verify(activityRepository.synchronize()).called(2);
       verify(userFileRepository.synchronize()).called(1);
       verify(sortableRepository.synchronize()).called(1);
+    });
+
+    test(
+        'Failed syncs with other events in queue should dequeue other events before retrying (no starvation)',
+        () async {
+      when(activityRepository.synchronize())
+          .thenAnswer((_) => Future.value(false));
+      syncBloc.add(ActivitySaved());
+      await untilCalled(activityRepository.synchronize());
+      syncBloc.add(ActivitySaved());
+      syncBloc.add(ActivitySaved());
+      syncBloc.add(ActivitySaved());
+      syncBloc.add(ActivitySaved());
+      syncBloc.add(FileSaved());
+      syncBloc.add(FileSaved());
+      syncBloc.add(FileSaved());
+      syncBloc.add(FileSaved());
+      syncBloc.add(SortableSaved());
+      syncBloc.add(SortableSaved());
+      syncBloc.add(SortableSaved());
+      syncBloc.add(SortableSaved());
+      await untilCalled(userFileRepository.synchronize());
+      await untilCalled(sortableRepository.synchronize());
     });
   });
   tearDown(() {

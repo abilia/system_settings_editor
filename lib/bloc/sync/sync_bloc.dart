@@ -48,7 +48,11 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     yield SyncPending();
     if (!await _sync(event)) {
       yield SyncFailed();
-      Future.delayed(failedSyncRetryTime, () => super.add(event));
+      if (!_syncQueue.contains(event)) {
+        _syncQueue.add(event);
+      }
+      Future.delayed(
+          failedSyncRetryTime, () => super.add(_syncQueue.removeFirst()));
       return;
     }
     // Throttle sync to queue up potential fast incoming event
