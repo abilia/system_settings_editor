@@ -127,56 +127,41 @@ class CategoryWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Expanded(
-              child: RadioField(
-                key: TestKey.leftCategoryRadio,
-                onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-                    .add(ReplaceActivity(activity.copyWith(category: v))),
-                child: Row(
-                  children: <Widget>[
-                    circle(),
-                    const SizedBox(width: 12),
-                    Text(translator.left)
-                  ],
-                ),
-                groupValue: activity.category,
-                value: Category.left,
-              ),
-            ),
+            buildCategoryRadioField(context, Category.left),
             const SizedBox(width: 8),
-            Expanded(
-              child: RadioField(
-                key: TestKey.rightCategoryRadio,
-                onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-                    .add(ReplaceActivity(activity.copyWith(category: v))),
-                child: Row(
-                  children: <Widget>[
-                    circle(),
-                    const SizedBox(width: 12),
-                    Text(translator.right)
-                  ],
-                ),
-                groupValue: activity.category,
-                value: Category.right,
-              ),
-            ),
+            buildCategoryRadioField(context, Category.right),
           ],
         )
       ],
     );
   }
 
-  Widget circle() => Container(
-        width: 36,
-        height: 36,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: AbiliaColors.transparentBlack[15],
-          ),
-          color: AbiliaColors.white,
+  Expanded buildCategoryRadioField(BuildContext context, int category) {
+    final left = category == Category.left;
+    final key = left ? TestKey.leftCategoryRadio : TestKey.rightCategoryRadio;
+    final icon =
+        left ? AbiliaIcons.move_item_left : AbiliaIcons.move_item_right;
+    final text = left
+        ? Translator.of(context).translate.left
+        : Translator.of(context).translate.right;
+    return Expanded(
+      child: RadioField(
+        key: key,
+        onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
+            .add(ReplaceActivity(activity.copyWith(category: v))),
+        child: Row(
+          children: <Widget>[
+            const SizedBox(width: 6),
+            Icon(icon),
+            const SizedBox(width: 12),
+            Text(text)
+          ],
         ),
-      );
+        groupValue: activity.category,
+        value: category,
+      ),
+    );
+  }
 }
 
 class AlarmWidget extends StatelessWidget {
