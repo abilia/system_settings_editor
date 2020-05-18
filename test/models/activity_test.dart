@@ -213,4 +213,21 @@ void main() {
     expect(deserializedActivity.infoItem, activity.infoItem);
     expect(deserializedActivity, activity);
   });
+
+  test('Copy with null', () {
+    final now = DateTime(2020, 02, 02, 02, 02, 02, 02);
+    final toCopy = Activity.createNew(
+      title: 'Title',
+      startTime: now,
+      fileId: null,
+    );
+    final fileId = 'fileId';
+    final original = Activity.createNew(
+      title: 'Title',
+      startTime: now,
+      fileId: fileId,
+    );
+    final copy = original.copyActivity(toCopy);
+    expect(copy.fileId, null);
+  });
 }
