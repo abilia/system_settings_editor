@@ -23,7 +23,7 @@ class SimpleBlocDelegate extends BlocDelegate {
   @override
   void onError(Bloc bloc, Object error, StackTrace stacktrace) {
     super.onError(bloc, error, stacktrace);
-    log(error);
+    log('$bloc $error $stacktrace');
   }
 
   void logEventToAnalytics(Transition transition) async {
