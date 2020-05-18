@@ -81,10 +81,10 @@ class NameAndPictureWidget extends StatelessWidget {
               LinedBorder(
                 key: TestKey.addPicture,
                 padding: const EdgeInsets.all(26),
-                child: Icon(
+                child: const Icon(
                   AbiliaIcons.add_photo,
                   size: 32,
-                  color: AbiliaColors.black[75],
+                  color: AbiliaColors.black75,
                 ),
                 onTap: imageClick,
               ),

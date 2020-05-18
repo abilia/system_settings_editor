@@ -52,7 +52,7 @@ class ActivityInfo extends StatelessWidget {
         data: activity.endClock(day).occasion(now) == Occasion.past || signedOff
             ? Theme.of(context).copyWith(
                 buttonTheme: uncheckButtonThemeData,
-                buttonColor: AbiliaColors.transparentBlack[20],
+                buttonColor: AbiliaColors.transparentBlack20,
                 cardColor: AbiliaColors.white110,
               )
             : Theme.of(context).copyWith(
@@ -141,7 +141,7 @@ class ActivityContainer extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Divider(
-                    color: AbiliaColors.white[120],
+                    color: AbiliaColors.white120,
                     indent: ActivityInfo.margin,
                     height: 1,
                   ),

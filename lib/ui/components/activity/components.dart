@@ -88,10 +88,10 @@ class PickField extends StatelessWidget {
               if (showTrailingArrow)
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Icon(
+                  child: const Icon(
                     AbiliaIcons.navigation_next,
                     size: 32.0,
-                    color: AbiliaColors.black[60],
+                    color: AbiliaColors.black60,
                   ),
                 ),
             ],
@@ -190,9 +190,8 @@ class RadioField<T> extends StatelessWidget {
               Ink(
                 height: heigth,
                 width: width,
-                decoration: value == groupValue
-                    ? whiteBoxDecoration
-                    : borderDecoration,
+                decoration:
+                    value == groupValue ? whiteBoxDecoration : borderDecoration,
                 padding: const EdgeInsets.all(8.0),
                 child: child,
               ),

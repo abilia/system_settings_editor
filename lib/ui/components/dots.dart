@@ -29,13 +29,13 @@ const pastDotShape = ShapeDecoration(shape: CircleBorder(side: BorderSide())),
     transparantDotShape =
         ShapeDecoration(color: Colors.transparent, shape: CircleBorder()),
     currentDotShape =
-        ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder());
-final futureSideDotShape = ShapeDecoration(
-        color: AbiliaColors.transparentBlack[20], shape: CircleBorder()),
+        ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder()),
+    futureSideDotShape = ShapeDecoration(
+        color: AbiliaColors.transparentBlack20, shape: CircleBorder()),
     pastSideDotShape = ShapeDecoration(
   shape: CircleBorder(
     side: BorderSide(
-      color: AbiliaColors.transparentBlack[20],
+      color: AbiliaColors.transparentBlack20,
     ),
   ),
 );
@@ -143,11 +143,11 @@ class SideDots extends StatelessWidget {
                 ? flat.add(((dot + 1) * minutesPerDot).minutes())
                 : endTime.add(1.minutes());
             if (dotStartTime.isAfter(now)) {
-              return AnimatedDot(decoration: futureSideDotShape);
+              return const AnimatedDot(decoration: futureSideDotShape);
             } else if (now.isBefore(nextDotStart)) {
               return const AnimatedDot(decoration: currentDotShape);
             }
-            return AnimatedDot(decoration: pastSideDotShape);
+            return const AnimatedDot(decoration: pastSideDotShape);
           },
         ).expand((d) => [d, const SizedBox(height: dotPadding)]).toList()
           ..add(const SizedBox(width: dotSize)),

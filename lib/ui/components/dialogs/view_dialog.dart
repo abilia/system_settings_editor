@@ -33,7 +33,7 @@ Future<T> showViewDialog<T>({
     },
     barrierDismissible: barrierDismissible,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    barrierColor: AbiliaColors.transparentBlack[90],
+    barrierColor: AbiliaColors.transparentBlack90,
     transitionDuration: const Duration(milliseconds: 150),
     transitionBuilder: _buildMaterialDialogTransitions,
     useRootNavigator: useRootNavigator,
@@ -117,10 +117,9 @@ class ViewDialog extends StatelessWidget {
         Flexible(
           flex: expanded ? 1 : 0,
           child: Container(
-            decoration: BoxDecoration(
-              color: AbiliaColors.white[110],
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(12.0)),
+            decoration: const BoxDecoration(
+              color: AbiliaColors.white110,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,8 +139,8 @@ class ViewDialog extends StatelessWidget {
                       ),
                   ],
                 ),
-                Divider(
-                  color: AbiliaColors.transparentBlack[10],
+                const Divider(
+                  color: AbiliaColors.transparentBlack10,
                   endIndent: 12.0,
                   height: 0,
                 ),
@@ -162,8 +161,8 @@ class ViewDialog extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const SizedBox(height: 16.0),
-                      Divider(
-                        color: AbiliaColors.transparentBlack[10],
+                      const Divider(
+                        color: AbiliaColors.transparentBlack10,
                         endIndent: 12.0,
                         height: 0,
                       ),

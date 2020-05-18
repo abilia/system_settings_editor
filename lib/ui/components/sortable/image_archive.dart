@@ -197,7 +197,7 @@ class ArchiveRadio<T> extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: borderRadius,
                   border: Border.all(
-                    color: AbiliaColors.transparentBlack[15],
+                    color: AbiliaColors.transparentBlack15,
                   ),
                   color: value == groupValue
                       ? AbiliaColors.white
