@@ -21,7 +21,7 @@ ThemeData abiliaTheme = ThemeData(
   textSelectionColor: AbiliaColors.white[120],
   bottomAppBarTheme: BottomAppBarTheme(color: AbiliaColors.black[80]),
   cupertinoOverrideTheme: CupertinoThemeData(primaryColor: AbiliaColors.black),
-  toggleableActiveColor: AbiliaColors.black,
+  toggleableActiveColor: AbiliaColors.green,
 );
 
 InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
