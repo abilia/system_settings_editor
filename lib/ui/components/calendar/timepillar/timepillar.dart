@@ -80,6 +80,8 @@ class TimePillar extends StatelessWidget {
                               width: 25.0,
                               child: Text(
                                 formatHour(hour).removeLeadingZeros(),
+                                softWrap: false,
+                                overflow: TextOverflow.visible,
                                 textAlign: TextAlign.end,
                               ),
                             ),
