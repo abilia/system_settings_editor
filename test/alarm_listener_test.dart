@@ -23,6 +23,7 @@ void main() {
   final mockActivityDb = MockActivityDb();
 
   final activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
+  final initialTime = activityWithAlarmTime.subtract(1.minutes());
   final activityWithAlarmday = activityWithAlarmTime.onlyDays();
   final twoHoursAfter = activityWithAlarmTime.add(2.hours());
   final activity =
@@ -54,7 +55,7 @@ void main() {
     GetItInitializer()
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
-      ..ticker = Ticker(stream: mockTicker.stream)
+      ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialTime)
       ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
@@ -75,7 +76,26 @@ void main() {
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
+      expect(find.byType(AlarmPage), findsOneWidget);
+    });
+
+    testWidgets('Reminder shows', (WidgetTester tester) async {
+      // Arrange
+      final reminder = 15.minutes();
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
+            Activity.createNew(
+              title: 'Reminder',
+              startTime: activityWithAlarmTime.add(reminder),
+              reminderBefore: [reminder.inMilliseconds],
+            )
+          ]));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Act
+      mockTicker.add(activityWithAlarmTime);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(ReminderPage), findsOneWidget);
     });
 
     testWidgets('Alarms shows when notification selected',
@@ -85,13 +105,13 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byKey(TestKey.onScreenAlarm), findsNothing);
+      expect(find.byType(AlarmPage), findsNothing);
       // Act
       mockNotificationSelected.add(payloadSerial);
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
+      expect(find.byType(AlarmPage), findsOneWidget);
     });
 
     testWidgets('Alarms shows when notification selected before app start',
@@ -103,7 +123,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
+      expect(find.byType(AlarmPage), findsOneWidget);
     });
 
     testWidgets('Alarms can be checked when notification selected',
@@ -115,7 +135,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- Alarm is on screen and alarm is checkable
-      expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
+      expect(find.byType(AlarmPage), findsOneWidget);
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
       expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
 
@@ -146,7 +166,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- On screen alarm showing and check button showing
-      expect(find.byKey(TestKey.onScreenAlarm), findsOneWidget);
+      expect(find.byType(AlarmPage), findsOneWidget);
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
       expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
 
@@ -190,7 +210,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
+      final alarmScreenFinder = find.byType(AlarmPage);
 
       // Act - time goes which should display two alarms (start and end time)
       mockTicker.add(activity1StartTime);
@@ -223,7 +243,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
+      final alarmScreenFinder = find.byType(AlarmPage);
 
       // Act - time goes which should display two alarms (start and end time)
       mockTicker.add(activity1StartTime);
@@ -259,7 +279,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1, activity2]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final alarmScreenFinder = find.byKey(TestKey.onScreenAlarm);
+      final alarmScreenFinder = find.byType(AlarmPage);
 
       // Act - time goes which should display two alarms (start and end time)
       mockTicker.add(activity1StartTime);
@@ -273,9 +293,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should now be the start time alarm for activity1
-      expect(
-          (tester.widget(alarmScreenFinder) as AlarmPage).atStartTime, isTrue);
-      expect((tester.widget(alarmScreenFinder) as AlarmPage).activity.id,
+      expect(tester.widget<AlarmPage>(alarmScreenFinder).atStartTime, isTrue);
+      expect(tester.widget<AlarmPage>(alarmScreenFinder).activity.id,
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm

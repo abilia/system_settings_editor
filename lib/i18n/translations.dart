@@ -18,7 +18,6 @@ abstract class Translated {
   String get fullDay;
   String get week;
   String get reminder;
-  String inMinutes(int minutes);
   String get alarm;
   String get startsNow;
   String get endsNow;
@@ -72,6 +71,8 @@ abstract class Translated {
   String get thisDayAndForward;
   String get settings;
   String get showTimeDots;
+  String inMinutes(int minutes);
+  String minutesAgo(int minutes);
 }
 
 class English extends Translated {
@@ -146,6 +147,8 @@ class English extends Translated {
 
   @override
   String inMinutes(int minutes) => 'in $minutes minutes';
+  @override
+  String minutesAgo(int minutes) => '$minutes minutes ago';
 }
 
 class Swedish extends Translated {
@@ -219,4 +222,6 @@ class Swedish extends Translated {
 
   @override
   String inMinutes(int minutes) => 'om $minutes minuter';
+  @override
+  String minutesAgo(int minutes) => 'för $minutes minuter sen';
 }

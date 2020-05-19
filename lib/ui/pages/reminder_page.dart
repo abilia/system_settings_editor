@@ -20,8 +20,10 @@ class ReminderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final reminderText = reminderTime < 0
+        ? translate.minutesAgo(-reminderTime)
+        : translate.inMinutes(reminderTime);
     return Scaffold(
-      key: TestKey.onScreenReminder,
       appBar: AbiliaAppBar(title: translate.reminder),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -31,7 +33,7 @@ class ReminderPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 18, bottom: 30),
                 child: Text(
-                  translate.inMinutes(reminderTime),
+                  reminderText,
                   style: Theme.of(context)
                       .textTheme
                       .headline4

@@ -15,8 +15,7 @@ class AlarmPage extends StatelessWidget {
       @required this.activity,
       @required this.day,
       this.atStartTime = false,
-      this.atEndTime = false})
-      : super(key: TestKey.onScreenAlarm);
+      this.atEndTime = false});
 
   @override
   Widget build(BuildContext context) {
