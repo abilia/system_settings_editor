@@ -240,7 +240,8 @@ void main() {
         ),
       );
       final cards =
-          ActivityBoard.positionTimepillarCards(activities, TextStyle(), 1.0);
+          ActivityBoard.positionTimepillarCards(activities, TextStyle(), 1.0)
+              .expand((e) => e);
       final uniques = cards.map((f) => {f.top, f.column});
 
       expect(uniques.toSet().length, uniques.length);

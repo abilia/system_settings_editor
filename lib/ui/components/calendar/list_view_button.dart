@@ -22,7 +22,7 @@ class ListViewButton extends StatelessWidget {
           borderRadius: borderRadius,
           side: BorderSide(
             width: 1,
-            color: AbiliaColors.transparentWhite[10],
+            color: AbiliaColors.transparentWhite10,
           ),
         ),
         child: Row(

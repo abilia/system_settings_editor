@@ -192,11 +192,11 @@ packages:
     dependency: "direct main"
     description:
       path: "flutter_local_notifications/"
-      ref: "dev-1.4.0"
-      resolved-ref: "159e711e5bd36bfef7110eec7ecbf89ba723d76f"
+      ref: "dev-1.4.3"
+      resolved-ref: "5c8f181e299291416f0f17696600211fc2b9423c"
       url: "git://github.com/abilia/flutter_local_notifications.git"
     source: git
-    version: "1.4.2"
+    version: "1.4.3"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
@@ -244,7 +244,7 @@ packages:
       name: get_it
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "4.0.2"
   glob:
     dependency: transitive
     description:
@@ -384,14 +384,14 @@ packages:
       name: node_interop
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   node_io:
     dependency: transitive
     description:
       name: node_io
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   node_preamble:
     dependency: transitive
     description:
@@ -454,7 +454,7 @@ packages:
       name: path_provider_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   pedantic:
     dependency: transitive
     description:
@@ -503,7 +503,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.1"
+    version: "4.1.2"
   pub_semver:
     dependency: transitive
     description:
@@ -524,7 +524,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.23.1"
+    version: "0.24.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -753,7 +753,7 @@ packages:
       name: vm_service
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.3"
+    version: "4.0.4"
   vm_service_client:
     dependency: transitive
     description:
@@ -788,7 +788,7 @@ packages:
       name: webkit_inspection_protocol
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.3"
+    version: "0.5.4"
   xml:
     dependency: transitive
     description:
@@ -805,4 +805,4 @@ packages:
     version: "2.2.1"
 sdks:
   dart: ">=2.7.0 <3.0.0"
-  flutter: ">=1.17.0 <2.0.0"
+  flutter: ">=1.16.0 <2.0.0"

@@ -34,9 +34,9 @@ class _LoginFormState extends State<LoginForm> {
     final i18n = Translator.of(context);
     final theme = Theme.of(context);
     final bodyText2Grey =
-        theme.textTheme.bodyText2.copyWith(color: AbiliaColors.black[75]);
+        theme.textTheme.bodyText2.copyWith(color: AbiliaColors.black75);
     final bodyText12Grey =
-        theme.textTheme.bodyText1.copyWith(color: AbiliaColors.black[75]);
+        theme.textTheme.bodyText1.copyWith(color: AbiliaColors.black75);
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       builder: (context, formState) => BlocBuilder<LoginBloc, LoginState>(
         builder: (context, loginState) {
@@ -155,7 +155,7 @@ class _LoginFormState extends State<LoginForm> {
                       data: redButtonTheme,
                       child: FlatButton(
                         color: AbiliaColors.red,
-                        disabledColor: AbiliaColors.red[40],
+                        disabledColor: AbiliaColors.red40,
                         key: TestKey.loggInButton,
                         child: Text(
                           i18n.translate.login,

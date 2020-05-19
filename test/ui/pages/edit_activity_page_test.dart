@@ -69,7 +69,7 @@ void main() {
 
   group('edit activity test', () {
     Future scrollDown(WidgetTester tester, {double dy = -800.0}) async {
-      final center = tester.getCenter(find.byKey(TestKey.leftCategoryRadio));
+      final center = tester.getCenter(find.byIcon(AbiliaIcons.handi_reminder));
       await tester.dragFrom(center, Offset(0.0, dy));
       await tester.pump();
     }
@@ -276,6 +276,7 @@ void main() {
       expect(leftCategoryRadio1.groupValue, Category.right);
       expect(rightCategoryRadio1.groupValue, Category.right);
 
+      await scrollDown(tester, dy: -100);
       await tester.tap(find.byKey(TestKey.leftCategoryRadio));
       await tester.pumpAndSettle();
       final leftCategoryRadio2 = tester.widget<Radio>(find.byKey(leftRadioKey));
@@ -343,6 +344,7 @@ void main() {
       expect(remindersAllSelected, findsOneWidget);
 
       // Act -- tap on day reminder
+      await scrollDown(tester, dy: -100);
       await tester.tap(reminderDayFinder);
       await tester.pumpAndSettle();
       // Assert -- 15 min and 1 day reminder is selected, all reminders shows

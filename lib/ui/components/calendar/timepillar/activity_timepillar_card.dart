@@ -83,7 +83,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: textStyle.copyWith(
                               color: inactive
-                                  ? AbiliaColors.white[140]
+                                  ? AbiliaColors.white140
                                   : AbiliaColors.black),
                         ),
                       if (hasImage || signedOff)
