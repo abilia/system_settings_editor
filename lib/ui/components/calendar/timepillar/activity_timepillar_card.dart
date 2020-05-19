@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/settings/settings_bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -40,64 +41,85 @@ class ActivityTimepillarCard extends StatelessWidget {
         current = activityOccasion.occasion == Occasion.current,
         inactive = activityOccasion.occasion == Occasion.past || signedOff;
 
-    return Positioned(
-      right: right ? null : column * totalWith,
-      left: right ? column * totalWith : null,
-      top: top,
-      child: Row(
-        textDirection: right ? TextDirection.ltr : TextDirection.rtl,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SideDots(
-            startTime: activity.startClock(activityOccasion.day),
-            endTime: activity.endClock(activityOccasion.day),
-            dots: dots,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (innerContext) =>
-                      ActivityPage(occasion: activityOccasion),
-                ),
-              );
-            },
-            child: Container(
-              decoration: getBoxDecoration(current, inactive),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: width,
-                  minWidth: width,
-                  minHeight: minHeight,
-                  maxHeight: height,
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      if (hasTitle)
-                        Text(
-                          activity.title,
-                          overflow: TextOverflow.visible,
-                          textAlign: TextAlign.center,
-                          style: textStyle.copyWith(
-                              color: inactive
-                                  ? AbiliaColors.white140
-                                  : AbiliaColors.black),
-                        ),
-                      if (hasImage || signedOff)
-                        CheckedImage.fromActivityOccasion(
-                          activityOccasion: activityOccasion,
-                          size: imageSize,
-                        ),
-                    ],
+    final endTime = activity.endClock(activityOccasion.day);
+    final startTime = activity.startClock(activityOccasion.day);
+
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (context, settings) => Positioned(
+        right: right ? null : column * totalWith,
+        left: right ? column * totalWith : null,
+        top: top,
+        child: Row(
+          textDirection: right ? TextDirection.ltr : TextDirection.rtl,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            if (settings.dotsInTimepillar)
+              SideDots(
+                startTime: startTime,
+                endTime: endTime,
+                dots: dots,
+              ),
+            if (!settings.dotsInTimepillar)
+              SideTime(
+                startTime: startTime,
+                endTime: endTime,
+                occasion: activityOccasion.occasion,
+                category: activityOccasion.activity.category,
+                height: height,
+              ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (innerContext) =>
+                        ActivityPage(occasion: activityOccasion),
+                  ),
+                );
+              },
+              child: Container(
+                decoration: settings.dotsInTimepillar || endTime == startTime
+                    ? getBoxDecoration(current, inactive)
+                    : getBoxDecoration(current, inactive).copyWith(
+                        borderRadius:
+                            activityOccasion.activity.category == Category.right
+                                ? onlyRight
+                                : onlyLeft,
+                      ),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: width,
+                    minWidth: width,
+                    minHeight: minHeight,
+                    maxHeight: height,
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        if (hasTitle)
+                          Text(
+                            activity.title,
+                            overflow: TextOverflow.visible,
+                            textAlign: TextAlign.center,
+                            style: textStyle.copyWith(
+                                color: inactive
+                                    ? AbiliaColors.white140
+                                    : AbiliaColors.black),
+                          ),
+                        if (hasImage || signedOff)
+                          CheckedImage.fromActivityOccasion(
+                            activityOccasion: activityOccasion,
+                            size: imageSize,
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

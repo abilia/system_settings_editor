@@ -37,6 +37,13 @@ const InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
 
 const Radius radius = Radius.circular(12);
 const BorderRadius borderRadius = BorderRadius.all(radius);
+const BorderRadius notUpperLeft = BorderRadius.only(
+  topRight: radius,
+  bottomRight: radius,
+  bottomLeft: radius,
+);
+const BorderRadius onlyLeft = BorderRadius.horizontal(left: radius);
+const BorderRadius onlyRight = BorderRadius.horizontal(right: radius);
 const BorderSide borderSide = BorderSide(color: AbiliaColors.white120);
 const Border activiteBorder =
     Border.fromBorderSide(BorderSide(color: AbiliaColors.red, width: 2.0));

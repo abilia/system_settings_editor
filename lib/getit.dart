@@ -6,6 +6,7 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GetItInitializer {
   ActivityDb _activityDb;
@@ -53,6 +54,9 @@ class GetItInitializer {
   FileStorage _fileStorage;
   set fileStorage(FileStorage fileStorage) => _fileStorage = fileStorage;
 
+  SettingsDb _settingsDb;
+  set settingsDb(SettingsDb settingsDb) => _settingsDb = settingsDb;
+
   MultipartRequestBuilder _multipartRequestBuilder;
   set multipartRequestBuilder(
           MultipartRequestBuilder multipartRequestBuilder) =>
@@ -61,7 +65,7 @@ class GetItInitializer {
   FactoryFunc<DateTime> _startTime;
   set startTime(DateTime startTime) => _startTime = () => startTime;
 
-  void init() {
+  void init() async {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
     GetIt.I.registerSingleton<TokenDb>(_tokenDb ?? TokenDb());
@@ -81,6 +85,8 @@ class GetItInitializer {
     GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());
     GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb());
     GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb());
+    GetIt.I.registerSingleton<SettingsDb>(
+        _settingsDb ?? SettingsDb(await SharedPreferences.getInstance()));
     GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage(''));
     GetIt.I.registerSingleton<MultipartRequestBuilder>(
         _multipartRequestBuilder ?? MultipartRequestBuilder());

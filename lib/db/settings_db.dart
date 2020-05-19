@@ -3,32 +3,47 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsDb {
   static const String _LANGUAGE_RECORD = 'language';
   static const String _ALWAYS_USE_24_RECORD = 'ALWAYS_USE_24';
+  static const String _DOTS_IN_TIMEPILLAR_RECORD = 'DOTS_IN_TIMEPILLAR';
+
+  final SharedPreferences preferences;
+
+  SettingsDb(this.preferences);
 
   Future setLanguage(String language) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_LANGUAGE_RECORD, language);
+    await preferences.setString(_LANGUAGE_RECORD, language);
   }
 
-  Future<String> getLanguage() async {
-    final prefs = await SharedPreferences.getInstance();
+  String getLanguage() {
     try {
-      return prefs.getString(_LANGUAGE_RECORD);
+      return preferences.getString(_LANGUAGE_RECORD);
     } catch (_) {
       return null;
     }
   }
 
   Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_ALWAYS_USE_24_RECORD, alwaysUse24HourFormat);
+    await preferences.setBool(_ALWAYS_USE_24_RECORD, alwaysUse24HourFormat);
   }
 
-  Future<bool> getAlwaysUse24HourFormat() async {
-    final prefs = await SharedPreferences.getInstance();
+  bool getAlwaysUse24HourFormat() {
     try {
-      return prefs.getBool(_ALWAYS_USE_24_RECORD);
+      return preferences.getBool(_ALWAYS_USE_24_RECORD) ?? true;
     } catch (_) {
       print('Could not get 24 hour format');
+      return true;
+    }
+  }
+
+  Future setDotsInTimepillar(bool dotsInTimepillar) async {
+    await preferences.setBool(_DOTS_IN_TIMEPILLAR_RECORD, dotsInTimepillar);
+  }
+
+  bool getDotsInTimepillar() {
+    try {
+      final dots = preferences.getBool(_DOTS_IN_TIMEPILLAR_RECORD);
+      return dots ?? true;
+    } catch (_) {
+      print('Could not get dots in timepillar. Defaults to true');
       return true;
     }
   }

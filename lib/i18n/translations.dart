@@ -70,6 +70,8 @@ abstract class Translated {
   String get onlyThisDay;
   String get allDays;
   String get thisDayAndForward;
+  String get settings;
+  String get showTimeDots;
 }
 
 class English extends Translated {
@@ -138,7 +140,9 @@ class English extends Translated {
       appyTo = 'Apply to',
       onlyThisDay = 'Only this day',
       allDays = 'All days',
-      thisDayAndForward = 'This day and forward';
+      thisDayAndForward = 'This day and forward',
+      settings = 'Settings',
+      showTimeDots = 'Show time dots';
 
   @override
   String inMinutes(int minutes) => 'in $minutes minutes';
@@ -209,7 +213,9 @@ class Swedish extends Translated {
       appyTo = 'Ändra på',
       onlyThisDay = 'Endast denna dag',
       allDays = 'Alla dagar',
-      thisDayAndForward = 'Denna dag och framåt';
+      thisDayAndForward = 'Denna dag och framåt',
+      settings = 'Inställningar',
+      showTimeDots = 'Visa prickar för tid';
 
   @override
   String inMinutes(int minutes) => 'om $minutes minuter';

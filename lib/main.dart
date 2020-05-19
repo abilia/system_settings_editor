@@ -23,6 +23,7 @@ import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/background/all.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -36,7 +37,8 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   final currentLocale = await Devicelocale.currentLocale;
-  await SettingsDb().setLanguage(currentLocale.split(RegExp('-|_'))[0]);
+  final settingsDb = SettingsDb(await SharedPreferences.getInstance());
+  await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
   final documentDirectory = await getApplicationDocumentsDirectory();
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
@@ -117,7 +119,8 @@ class SeagullApp extends StatelessWidget {
       builder: (context, child) {
         final mediaQuery =
             MediaQuery.of(context).copyWith(textScaleFactor: 1.0);
-        SettingsDb().setAlwaysUse24HourFormat(mediaQuery.alwaysUse24HourFormat);
+        GetIt.I<SettingsDb>()
+            .setAlwaysUse24HourFormat(mediaQuery.alwaysUse24HourFormat);
         return MediaQuery(
           child: child,
           data: mediaQuery,

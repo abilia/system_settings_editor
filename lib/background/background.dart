@@ -1,6 +1,7 @@
 import 'package:http/http.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'all.dart';
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
@@ -8,8 +9,10 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
     print('Handling background message...');
     final baseUrl = await BaseUrlDb().getBaseUrl();
     final user = await UserDb().getUser();
-    final language = await SettingsDb().getLanguage();
-    final alwaysUse24HourFormat = await SettingsDb().getAlwaysUse24HourFormat();
+    final preferences = await SharedPreferences.getInstance();
+    final settingsDb = SettingsDb(preferences);
+    final language = settingsDb.getLanguage();
+    final alwaysUse24HourFormat = settingsDb.getAlwaysUse24HourFormat();
     final token = await TokenDb().getToken();
     final activityDb = ActivityDb();
     final httpClient = Client();
