@@ -62,11 +62,9 @@ class NotificationBloc extends Bloc<NotificationPayload, AlarmStateBase> {
         reminder: payload.reminder.minutes(),
       );
     }
-    return NewAlarm(
-      activity,
-      payload.day,
-      alarmOnStart: payload.onStart,
-    );
+    return payload.onStart
+        ? StartAlarm(activity, payload.day)
+        : EndAlarm(activity, payload.day);
   }
 
   List<NotificationPayload> _pendings(

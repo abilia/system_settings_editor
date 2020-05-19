@@ -56,7 +56,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          emits(AlarmState(NewAlarm(nowActivity, day))),
+          emits(AlarmState(StartAlarm(nowActivity, day))),
         );
       });
 
@@ -75,7 +75,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          neverEmits(AlarmState(NewAlarm(nowActivity, day))),
+          neverEmits(AlarmState(StartAlarm(nowActivity, day))),
         );
       });
 
@@ -92,7 +92,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          neverEmits(AlarmState(NewAlarm(soonActivity, day))),
+          neverEmits(AlarmState(StartAlarm(soonActivity, day))),
         );
       });
 
@@ -108,7 +108,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          neverEmits(AlarmState(NewAlarm(soonActivity, day))),
+          neverEmits(AlarmState(StartAlarm(soonActivity, day))),
         );
       });
 
@@ -124,7 +124,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          emits(AlarmState(NewAlarm(soonActivity, day))),
+          emits(AlarmState(StartAlarm(soonActivity, day))),
         );
       });
 
@@ -142,8 +142,8 @@ void main() {
           alarmBloc,
           emitsInAnyOrder([
             UnInitializedAlarmState(),
-            AlarmState(NewAlarm(soonActivity, day)),
-            AlarmState(NewAlarm(soonActivity2, day)),
+            AlarmState(StartAlarm(soonActivity, day)),
+            AlarmState(StartAlarm(soonActivity2, day)),
           ]),
         );
         await _tick();
@@ -166,7 +166,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          emits(AlarmState(NewAlarm(nextMinActivity, day))),
+          emits(AlarmState(StartAlarm(nextMinActivity, day))),
         );
 
         // Act
@@ -174,7 +174,7 @@ void main() {
         // Assert
         await expectLater(
           alarmBloc,
-          emits(AlarmState(NewAlarm(inTwoMinActivity, day))),
+          emits(AlarmState(StartAlarm(inTwoMinActivity, day))),
         );
       });
 
@@ -193,8 +193,8 @@ void main() {
         await _tick();
 
         // Assert
-        await expectLater(
-            alarmBloc, emits(AlarmState(NewAlarm(inTwoMinutesActivity, day))));
+        await expectLater(alarmBloc,
+            emits(AlarmState(StartAlarm(inTwoMinutesActivity, day))));
       });
 
       test('Recuring weekly alarms shows', () async {
@@ -208,7 +208,7 @@ void main() {
         await _tick();
         // Assert
         await expectLater(
-            alarmBloc, emits(AlarmState(NewAlarm(recursThursday, day))));
+            alarmBloc, emits(AlarmState(StartAlarm(recursThursday, day))));
       });
 
       test('Recuring monthly alarms shows', () async {
@@ -225,7 +225,7 @@ void main() {
         await _tick();
         // Assert
         await expectLater(alarmBloc,
-            emits(AlarmState(NewAlarm(recursTheThisDayOfMonth, day))));
+            emits(AlarmState(StartAlarm(recursTheThisDayOfMonth, day))));
       });
 
       test('Recuring yearly alarms shows', () async {
@@ -239,7 +239,7 @@ void main() {
         await _tick();
         // Assert
         await expectLater(alarmBloc,
-            emits(AlarmState(NewAlarm(recursTheThisDayOfYear, day))));
+            emits(AlarmState(StartAlarm(recursTheThisDayOfYear, day))));
       });
 
       test('Alarm on EndTime shows', () async {
@@ -255,7 +255,7 @@ void main() {
         await expectLater(
             alarmBloc,
             emits(
-              AlarmState(NewAlarm(activityEnding, day, alarmOnStart: false)),
+              AlarmState(EndAlarm(activityEnding, day)),
             ));
       });
 
@@ -275,15 +275,13 @@ void main() {
           await _tick();
 
           // Assert
-          await expectLater(alarmBloc,
-              emits(AlarmState(NewAlarm(nextAlarm, day, alarmOnStart: true))));
+          await expectLater(
+              alarmBloc, emits(AlarmState(StartAlarm(nextAlarm, day))));
 
           // Act
           await _tick();
           await expectLater(
-              alarmBloc,
-              emits(AlarmState(
-                  NewAlarm(afterThatAlarm, day, alarmOnStart: true))));
+              alarmBloc, emits(AlarmState(StartAlarm(afterThatAlarm, day))));
         },
       );
 

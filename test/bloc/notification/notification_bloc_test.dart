@@ -56,7 +56,7 @@ void main() {
             notificationBloc,
             emitsInOrder([
               UnInitializedAlarmState(),
-              AlarmState(NewAlarm(nowActivity, aDay)),
+              AlarmState(StartAlarm(nowActivity, aDay)),
             ]));
       });
 
@@ -116,7 +116,7 @@ void main() {
             emitsInOrder([
               UnInitializedAlarmState(),
               PendingAlarmState([payload]),
-              AlarmState(NewAlarm(nowActivity, aDay)),
+              AlarmState(StartAlarm(nowActivity, aDay)),
             ]));
       });
 
@@ -168,7 +168,7 @@ void main() {
               PendingAlarmState([alarmPayload, reminderPayload]),
               AlarmState(
                   NewReminder(reminderActivity, aDay, reminder: reminderTime)),
-              AlarmState(NewAlarm(alarmActivity, aDay)),
+              AlarmState(StartAlarm(alarmActivity, aDay)),
             ]));
       });
       tearDown(

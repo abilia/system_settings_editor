@@ -31,13 +31,13 @@ extension IterableActivity on Iterable<Activity> {
 
     final startTimeAlarms = activitiesWithAlarm
         .where(startTimeTest)
-        .map<NotificationAlarm>((a) => NewAlarm(a, day, alarmOnStart: true));
+        .map<NotificationAlarm>((a) => StartAlarm(a, day));
 
     final endTimeAlarms = activitiesWithAlarm
         .where((a) => a.hasEndTime)
         .where((a) => a.alarm.atEnd)
         .where(endTimeTest)
-        .map<NotificationAlarm>((a) => NewAlarm(a, day, alarmOnStart: false));
+        .map<NotificationAlarm>((a) => EndAlarm(a, day));
 
     final reminders = activitiesThisDay.expand(
       (a) => [

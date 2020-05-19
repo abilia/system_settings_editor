@@ -25,7 +25,7 @@ void main() {
       // Act
       final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
-      expect(alarms, [NewAlarm(activity, day)]);
+      expect(alarms, [StartAlarm(activity, day)]);
     });
 
     test('alarm one min before', () {
@@ -60,7 +60,7 @@ void main() {
       // Act
       final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
-      expect(alarms, [NewAlarm(onTime, day)]);
+      expect(alarms, [StartAlarm(onTime, day)]);
     });
 
     test('one on, and one reminder after', () {
@@ -76,7 +76,7 @@ void main() {
       // Assert
       expect(
           listEquals(alarms, [
-            NewAlarm(onTime, day),
+            StartAlarm(onTime, day),
             NewReminder(afterWithReminder, day, reminder: reminder)
           ]),
           isTrue);
@@ -216,8 +216,8 @@ void main() {
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [
-        NewAlarm(activity, day, alarmOnStart: true),
-        NewAlarm(activity, day, alarmOnStart: false)
+        StartAlarm(activity, day),
+        EndAlarm(activity, day),
       ]);
     });
 
@@ -229,7 +229,7 @@ void main() {
       // Act
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
-      expect(alarms, [NewAlarm(activity, day, alarmOnStart: false)]);
+      expect(alarms, [EndAlarm(activity, day)]);
     });
 
     test('alarm one min after with end', () {
@@ -241,8 +241,8 @@ void main() {
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [
-        NewAlarm(activity, day, alarmOnStart: true),
-        NewAlarm(activity, day, alarmOnStart: false)
+        StartAlarm(activity, day),
+        EndAlarm(activity, day),
       ]);
     });
 
@@ -259,11 +259,11 @@ void main() {
       expect(
         alarms,
         {
-          NewAlarm(after, day, alarmOnStart: true),
-          NewAlarm(onTime, day, alarmOnStart: true),
-          NewAlarm(after, day, alarmOnStart: false),
-          NewAlarm(onTime, day, alarmOnStart: false),
-          NewAlarm(before, day, alarmOnStart: false),
+          StartAlarm(after, day),
+          StartAlarm(onTime, day),
+          EndAlarm(after, day),
+          EndAlarm(onTime, day),
+          EndAlarm(before, day),
         },
       );
     });
@@ -281,10 +281,10 @@ void main() {
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [
-        NewAlarm(afterWithReminder, day, alarmOnStart: true),
-        NewAlarm(onTime, day, alarmOnStart: true),
-        NewAlarm(afterWithReminder, day, alarmOnStart: false),
-        NewAlarm(onTime, day, alarmOnStart: false),
+        StartAlarm(afterWithReminder, day),
+        StartAlarm(onTime, day),
+        EndAlarm(afterWithReminder, day),
+        EndAlarm(onTime, day),
         NewReminder(afterWithReminder, day, reminder: reminder)
       ]);
     });
@@ -327,8 +327,8 @@ void main() {
 
       // Assert
       expect(alarms, {
-        NewAlarm(overlapping, day, alarmOnStart: false),
-        NewAlarm(later, day),
+        EndAlarm(overlapping, day),
+        StartAlarm(later, day),
       });
     });
 
@@ -340,7 +340,7 @@ void main() {
     test('one activity gives back one ativity', () {
       final activity = Activity.createNew(title: '', startTime: now);
       final got = <Activity>[activity].alarmsFrom(now, take: 100);
-      expect(got, [NewAlarm(activity, now)]);
+      expect(got, [StartAlarm(activity, now)]);
     });
 
     test('reaccurs daily gives back all daily', () {
@@ -385,7 +385,7 @@ void main() {
           .alarmsFrom(now, take: lenght, maxDays: 1000);
 
       expect(got, hasLength(100));
-      expect(got, contains(NewAlarm(normalActivity, in50Days)));
+      expect(got, contains(StartAlarm(normalActivity, in50Days)));
     });
 
     test('returns reminders', () {
@@ -442,10 +442,10 @@ void main() {
       expect(
           got,
           containsAll([
-            NewAlarm(reoccuringActivity, now),
-            NewAlarm(reoccuringActivity, now, alarmOnStart: false),
-            NewAlarm(reoccuringActivity, tomorrow),
-            NewAlarm(reoccuringActivity, tomorrow, alarmOnStart: false)
+            StartAlarm(reoccuringActivity, now),
+            EndAlarm(reoccuringActivity, now),
+            StartAlarm(reoccuringActivity, tomorrow),
+            EndAlarm(reoccuringActivity, tomorrow)
           ]));
 
       expect(
@@ -577,8 +577,8 @@ void main() {
       expect(
           alarms,
           containsAll([
-            NewAlarm(maxed, nextDay, alarmOnStart: true),
-            NewAlarm(maxed, nextDay, alarmOnStart: false),
+            StartAlarm(maxed, nextDay),
+            EndAlarm(maxed, nextDay),
             ...reminders.map((r) => NewReminder(maxed, nextDay, reminder: r)),
             ...unSignedOffActivityReminders
                 .map((r) => NewReminder(maxed, nextDay, reminder: r))

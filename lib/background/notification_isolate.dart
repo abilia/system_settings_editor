@@ -145,7 +145,7 @@ NotificationPayload getPayload(NotificationAlarm notificationAlarm) {
     return NotificationPayload(
       activityId: id,
       day: day,
-      onStart: notificationAlarm.alarmOnStart,
+      onStart: notificationAlarm is StartAlarm,
     );
   } else if (notificationAlarm is NewReminder) {
     return NotificationPayload(
@@ -184,7 +184,7 @@ String getSubtitle(
   final a = notificationAlarm.activity;
   final endTime = a.hasEndTime ? ' - ${tf(a.endClock(day))} ' : ' ';
   final extra = notificationAlarm is NewAlarm
-      ? (notificationAlarm.alarmOnStart
+      ? (notificationAlarm is StartAlarm
           ? translater.startsNow
           : translater.endsNow)
       : (notificationAlarm is NewReminder
