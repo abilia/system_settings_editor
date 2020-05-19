@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/background/all.dart';
@@ -61,8 +62,8 @@ class GetItInitializer {
   FactoryFunc<DateTime> _startTime;
   set startTime(DateTime startTime) => _startTime = () => startTime;
 
-  Duration _syncStallTime;
-  set syncStallTime(Duration syncStallTime) => _syncStallTime = syncStallTime;
+  SyncDelays _syncDelay;
+  set syncDelay(SyncDelays syncDelay) => _syncDelay = syncDelay;
 
   void init() {
     GetIt.I.reset();
@@ -88,7 +89,6 @@ class GetItInitializer {
     GetIt.I.registerSingleton<MultipartRequestBuilder>(
         _multipartRequestBuilder ?? MultipartRequestBuilder());
     GetIt.I.registerFactory<DateTime>(_startTime ?? () => DateTime.now());
-    GetIt.I.registerSingleton<Duration>(
-        _syncStallTime ?? const Duration(seconds: 3));
+    GetIt.I.registerSingleton<SyncDelays>(_syncDelay ?? const SyncDelays());
   }
 }

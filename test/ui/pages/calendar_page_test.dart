@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:seagull/background/all.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
@@ -41,7 +42,7 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(activityResponse)
         ..fileStorage = MockFileStorage()
-        ..syncStallTime = Duration.zero
+        ..syncDelay = SyncDelays.zero
         ..init();
     });
     testWidgets('New activity', (WidgetTester tester) async {
@@ -104,7 +105,7 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => fullDayActivities)
         ..fileStorage = MockFileStorage()
-        ..syncStallTime = Duration.zero
+        ..syncDelay = SyncDelays.zero
         ..init();
     });
 

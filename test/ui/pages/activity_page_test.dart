@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
@@ -70,7 +71,7 @@ void main() {
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
-      ..syncStallTime = Duration.zero
+      ..syncDelay = SyncDelays.zero
       ..init();
   });
   Future<void> navigateToActivityPage(WidgetTester tester) async {

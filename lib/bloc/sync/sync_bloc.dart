@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/bloc/sync/sync_delays.dart';
 import 'package:seagull/repository/all.dart';
 
 part 'sync_event.dart';
@@ -13,15 +14,13 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final ActivityRepository activityRepository;
   final UserFileRepository userFileRepository;
   final SortableRepository sortableRepository;
-  final Duration syncStallTime;
-  final Duration failedSyncRetryTime;
+  final SyncDelays syncDelay;
 
   SyncBloc({
     @required this.activityRepository,
     @required this.userFileRepository,
     @required this.sortableRepository,
-    @required this.syncStallTime,
-    this.failedSyncRetryTime = const Duration(minutes: 1),
+    @required this.syncDelay,
   });
 
   final Queue<SyncEvent> _syncQueue = Queue<SyncEvent>();
@@ -51,12 +50,12 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       if (!_syncQueue.contains(event)) {
         _syncQueue.add(event);
       }
-      Future.delayed(
-          failedSyncRetryTime, () => super.add(_syncQueue.removeFirst()));
+      Future.delayed(syncDelay.retryDelay,
+          () => super.add(_syncQueue.removeFirst()));
       return;
     }
     // Throttle sync to queue up potential fast incoming event
-    await Future.delayed(syncStallTime);
+    await Future.delayed(syncDelay.betweenSync);
     if (_syncQueue.isNotEmpty) {
       // dequeuing
       super.add(_syncQueue.removeFirst());

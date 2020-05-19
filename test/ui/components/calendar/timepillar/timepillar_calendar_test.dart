@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:seagull/background/all.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/translations.dart';
@@ -59,7 +60,7 @@ void main() {
       ..startTime = time
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
-      ..syncStallTime = Duration.zero
+      ..syncDelay = SyncDelays.zero
       ..init();
   });
   tearDown(() {

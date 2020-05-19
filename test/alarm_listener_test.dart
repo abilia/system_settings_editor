@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:seagull/background/all.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
@@ -59,7 +60,7 @@ void main() {
       ..httpClient = Fakes.client(() => response)
       ..notificationStreamGetter = (() => mockNotificationSelected.stream)
       ..fileStorage = MockFileStorage()
-      ..syncStallTime = Duration.zero
+      ..syncDelay = SyncDelays.zero
       ..init();
   });
   group('alarms and reminder test', () {

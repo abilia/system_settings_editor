@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/utils/all.dart';
@@ -15,8 +16,7 @@ void main() {
       activityRepository: activityRepository,
       userFileRepository: userFileRepository,
       sortableRepository: sortableRepository,
-      syncStallTime: Duration.zero,
-      failedSyncRetryTime: Duration.zero,
+      syncDelay: SyncDelays.zero,
     );
     setUp(() {
       when(activityRepository.synchronize())
@@ -47,8 +47,8 @@ void main() {
       activityRepository: activityRepository,
       userFileRepository: userFileRepository,
       sortableRepository: sortableRepository,
-      syncStallTime: 10.milliseconds(),
-      failedSyncRetryTime: Duration.zero,
+      syncDelay:
+          SyncDelays(betweenSync: 10.milliseconds(), retryDelay: Duration.zero),
     );
     setUp(() {
       when(activityRepository.synchronize())
@@ -87,12 +87,13 @@ void main() {
   group('queuing', () {
     final stallTime = 50.milliseconds();
     final syncBloc = SyncBloc(
-      activityRepository: activityRepository,
-      userFileRepository: userFileRepository,
-      sortableRepository: sortableRepository,
-      syncStallTime: stallTime,
-      failedSyncRetryTime: stallTime,
-    );
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        syncDelay: SyncDelays(
+          betweenSync: stallTime,
+          retryDelay: stallTime,
+        ));
     setUp(() {
       when(activityRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
