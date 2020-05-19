@@ -13,6 +13,7 @@ import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -53,11 +54,10 @@ void main() {
     GetItInitializer()
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
-      ..ticker = (() => mockTicker.stream)
+      ..ticker = Ticker(stream: mockTicker.stream, initialTime: time)
       ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
-      ..startTime = time
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
       ..syncDelay = SyncDelays.zero

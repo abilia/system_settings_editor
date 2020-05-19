@@ -10,6 +10,7 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -53,7 +54,7 @@ void main() {
     GetItInitializer()
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
-      ..ticker = (() => mockTicker.stream)
+      ..ticker = Ticker(stream: mockTicker.stream)
       ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb

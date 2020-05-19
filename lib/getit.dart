@@ -26,8 +26,8 @@ class GetItInitializer {
   set databaseRepository(DatabaseRepository databaseRepository) =>
       _databaseRepository = databaseRepository;
 
-  FactoryFunc<Stream<DateTime>> _tickerFactory;
-  set ticker(FactoryFunc<Stream<DateTime>> ticker) => _tickerFactory = ticker;
+  Ticker _ticker;
+  set ticker(Ticker ticker) => _ticker = ticker;
 
   NotificationStreamGetter _selectedNotificationStreamGetter;
   set notificationStreamGetter(
@@ -59,9 +59,6 @@ class GetItInitializer {
           MultipartRequestBuilder multipartRequestBuilder) =>
       _multipartRequestBuilder = multipartRequestBuilder;
 
-  FactoryFunc<DateTime> _startTime;
-  set startTime(DateTime startTime) => _startTime = () => startTime;
-
   SyncDelays _syncDelay;
   set syncDelay(SyncDelays syncDelay) => _syncDelay = syncDelay;
 
@@ -80,15 +77,13 @@ class GetItInitializer {
         _selectedNotificationStreamGetter ?? () => selectNotificationSubject);
     GetIt.I.registerSingleton<AlarmScheduler>(
         _alarmScheduler ?? scheduleAlarmNotificationsIsolated);
-    GetIt.I.registerFactory<Stream<DateTime>>(
-        _tickerFactory ?? () => Ticker.minute());
+    GetIt.I.registerSingleton<Ticker>(_ticker ?? Ticker());
     GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());
     GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb());
     GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb());
     GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage(''));
     GetIt.I.registerSingleton<MultipartRequestBuilder>(
         _multipartRequestBuilder ?? MultipartRequestBuilder());
-    GetIt.I.registerFactory<DateTime>(_startTime ?? () => DateTime.now());
     GetIt.I.registerSingleton<SyncDelays>(_syncDelay ?? const SyncDelays());
   }
 }
