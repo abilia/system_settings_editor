@@ -77,7 +77,7 @@ void main() {
       expect(
           listEquals(alarms, [
             StartAlarm(onTime, day),
-            NewReminder(afterWithReminder, day, reminder: reminder)
+            ReminderBefore(afterWithReminder, day, reminder: reminder)
           ]),
           isTrue);
     });
@@ -96,7 +96,8 @@ void main() {
       // Act
       final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
-      expect(alarms, [NewReminder(afterWithReminder, day, reminder: reminder)]);
+      expect(
+          alarms, [ReminderBefore(afterWithReminder, day, reminder: reminder)]);
     });
 
     test('full day is no alarm', () {
@@ -126,10 +127,10 @@ void main() {
 
     test('reminders for unchecked activity 15 min', () {
       // Arrange
-      final reminder = -15.minutes();
+      final reminder = 15.minutes();
       final uncheckedReminder = Activity.createNew(
         title: 'null',
-        startTime: startDate.add(reminder),
+        startTime: startDate.subtract(reminder),
         checkable: true,
       );
       final activities = [uncheckedReminder];
@@ -137,15 +138,16 @@ void main() {
       // Act
       final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
-      expect(alarms, [NewReminder(uncheckedReminder, day, reminder: reminder)]);
+      expect(alarms,
+          [ReminderUnchecked(uncheckedReminder, day, reminder: reminder)]);
     });
 
     test('reminders for unchecked recurring activity 2h', () {
       // Arrange
-      final reminder = -2.hours();
+      final reminder = 2.hours();
       final uncheckedReminder = Activity.createNew(
         title: 'null',
-        startTime: startDate.add(reminder).subtract(50.days()),
+        startTime: startDate.subtract(reminder).subtract(50.days()),
         endTime: day.add(200.days()),
         recurrentType: RecurrentType.weekly.index,
         recurrentData: allWeek,
@@ -156,7 +158,8 @@ void main() {
       // Act
       final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
-      expect(alarms, [NewReminder(uncheckedReminder, day, reminder: reminder)]);
+      expect(alarms,
+          [ReminderUnchecked(uncheckedReminder, day, reminder: reminder)]);
     });
 
     test('no reminders for unchecked activity one min after', () {
@@ -285,7 +288,7 @@ void main() {
         StartAlarm(onTime, day),
         EndAlarm(afterWithReminder, day),
         EndAlarm(onTime, day),
-        NewReminder(afterWithReminder, day, reminder: reminder)
+        ReminderBefore(afterWithReminder, day, reminder: reminder)
       ]);
     });
 
@@ -303,7 +306,8 @@ void main() {
       // Act
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
-      expect(alarms, [NewReminder(afterWithReminder, day, reminder: reminder)]);
+      expect(
+          alarms, [ReminderBefore(afterWithReminder, day, reminder: reminder)]);
     });
 
     test('one start and end with start passed, one future without end time',
@@ -367,7 +371,7 @@ void main() {
           startTime: now.add(5.minutes()),
           reminderBefore: [5.minutes().inMilliseconds]);
       final got = <Activity>[activity].alarmsFrom(now);
-      expect(got, [NewReminder(activity, now, reminder: 5.minutes())]);
+      expect(got, [ReminderBefore(activity, now, reminder: 5.minutes())]);
     });
 
     test(
@@ -401,8 +405,8 @@ void main() {
         reminderActivity,
       ].alarmsFrom(now, take: 100);
 
-      expect(
-          got, [NewReminder(reminderActivity, tomorrow, reminder: reminder)]);
+      expect(got,
+          [ReminderBefore(reminderActivity, tomorrow, reminder: reminder)]);
     });
 
     test('returns only todays first 50', () {
@@ -452,7 +456,7 @@ void main() {
         got,
         containsAll(
           remindersDates.map(
-            (r) => NewReminder(
+            (r) => ReminderBefore(
               reoccuringActivity,
               tomorrow,
               reminder: Duration(milliseconds: r),
@@ -463,7 +467,7 @@ void main() {
 
       final shouldNotContainTheseReminders = remindersDates
           .map(
-            (r) => NewReminder(
+            (r) => ReminderBefore(
               reoccuringActivity,
               now,
               reminder: Duration(milliseconds: r),
@@ -510,7 +514,7 @@ void main() {
           alarms,
           containsAll([
             ...unSignedOffActivityReminders
-                .map((r) => NewReminder(checkable, day, reminder: r))
+                .map((r) => ReminderUnchecked(checkable, day, reminder: r))
           ]));
     });
     test('reminders for unchecked activity after 1 hour', () {
@@ -531,7 +535,7 @@ void main() {
           alarms,
           containsAll(unSignedOffActivityReminders
               .where((rt) => rt >= 1.hours())
-              .map((r) => NewReminder(checkable, day, reminder: r))));
+              .map((r) => ReminderUnchecked(checkable, day, reminder: r))));
     });
 
     test('no reminders for checked activity ', () {
@@ -579,9 +583,10 @@ void main() {
           containsAll([
             StartAlarm(maxed, nextDay),
             EndAlarm(maxed, nextDay),
-            ...reminders.map((r) => NewReminder(maxed, nextDay, reminder: r)),
+            ...reminders
+                .map((r) => ReminderBefore(maxed, nextDay, reminder: r)),
             ...unSignedOffActivityReminders
-                .map((r) => NewReminder(maxed, nextDay, reminder: r))
+                .map((r) => ReminderUnchecked(maxed, nextDay, reminder: r))
           ]));
     });
   });

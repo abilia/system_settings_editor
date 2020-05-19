@@ -3,14 +3,14 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 const List<Duration> unSignedOffActivityReminders = [
-  Duration(minutes: -15),
-  Duration(minutes: -30),
-  Duration(minutes: -45),
-  Duration(hours: -1),
-  Duration(hours: -1, minutes: -15),
-  Duration(hours: -1, minutes: -30),
-  Duration(hours: -1, minutes: -45),
-  Duration(hours: -2),
+  Duration(minutes: 15),
+  Duration(minutes: 30),
+  Duration(minutes: 45),
+  Duration(hours: 1),
+  Duration(hours: 1, minutes: 15),
+  Duration(hours: 1, minutes: 30),
+  Duration(hours: 1, minutes: 45),
+  Duration(hours: 2),
 ];
 
 extension IterableActivity on Iterable<Activity> {
@@ -41,10 +41,10 @@ extension IterableActivity on Iterable<Activity> {
 
     final reminders = activitiesThisDay.expand(
       (a) => [
-        ...a.reminders.map((r) => NewReminder(a, day, reminder: r)),
+        ...a.reminders.map((r) => ReminderBefore(a, day, reminder: r)),
         if (!a.isSignedOff(day) && a.checkable)
           ...unSignedOffActivityReminders
-              .map((r) => NewReminder(a, day, reminder: r)),
+              .map((r) => ReminderUnchecked(a, day, reminder: r)),
       ].where(reminderTest),
     );
 

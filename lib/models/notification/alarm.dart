@@ -24,12 +24,10 @@ abstract class NotificationAlarm extends Equatable {
         return StartAlarm(activity, day);
       case EndAlarm:
         return EndAlarm(activity, day);
-      case NewReminder:
-        return NewReminder(
-          activity,
-          day,
-          reminder: json['reminder'],
-        );
+      case ReminderBefore:
+        return ReminderBefore(activity, day, reminder: json['reminder']);
+      case ReminderUnchecked:
+        return ReminderUnchecked(activity, day, reminder: json['reminder']);
         break;
       default:
         return null;
@@ -57,13 +55,26 @@ class EndAlarm extends NewAlarm {
   DateTime get notificationTime => activity.endClock(day);
 }
 
-class NewReminder extends NotificationAlarm {
+abstract class NewReminder extends NotificationAlarm {
   final Duration reminder;
   NewReminder(Activity activity, DateTime day, {@required this.reminder})
       : assert(reminder != null),
         super(activity, day);
   @override
   List<Object> get props => [activity, reminder, day];
+}
+
+class ReminderBefore extends NewReminder {
+  ReminderBefore(Activity activity, DateTime day, {@required Duration reminder})
+      : super(activity, day, reminder: reminder);
   @override
   DateTime get notificationTime => activity.startClock(day).subtract(reminder);
+}
+
+class ReminderUnchecked extends NewReminder {
+  ReminderUnchecked(Activity activity, DateTime day,
+      {@required Duration reminder})
+      : super(activity, day, reminder: reminder);
+  @override
+  DateTime get notificationTime => activity.endClock(day).add(reminder);
 }

@@ -71,8 +71,11 @@ void main() {
             .thenAnswer((_) => Future.value([nowActivity]));
 
         final payload = json.encode(NotificationPayload(
-                activityId: nowActivity.id, day: aDay, reminder: reminderTime)
-            .toJson());
+          activityId: nowActivity.id,
+          day: aDay,
+          reminder: reminderTime,
+          onStart: true,
+        ).toJson());
         // Act
         activitiesBloc.add(LoadActivities());
         await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
@@ -83,7 +86,7 @@ void main() {
             notificationBloc,
             emitsInOrder([
               UnInitializedAlarmState(),
-              AlarmState(NewReminder(
+              AlarmState(ReminderBefore(
                 nowActivity,
                 aDay,
                 reminder: reminderTime.minutes(),
@@ -143,6 +146,7 @@ void main() {
           activityId: reminderActivity.id,
           day: aDay,
           reminder: reminderTime.inMinutes,
+          onStart: true,
         );
         final reminderSerializedPayload = json.encode(reminderPayload.toJson());
 
@@ -166,8 +170,8 @@ void main() {
             notificationBloc,
             emitsInAnyOrder([
               PendingAlarmState([alarmPayload, reminderPayload]),
-              AlarmState(
-                  NewReminder(reminderActivity, aDay, reminder: reminderTime)),
+              AlarmState(ReminderBefore(reminderActivity, aDay,
+                  reminder: reminderTime)),
               AlarmState(StartAlarm(alarmActivity, aDay)),
             ]));
       });

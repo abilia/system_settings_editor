@@ -18,8 +18,16 @@ void main() {
     final back = NotificationAlarm.fromJson(asJson);
     expect(back, original);
   });
-  test('NewReminder toJson and back', () {
-    final original = NewReminder(
+  test('ReminderBefore toJson and back', () {
+    final original = ReminderBefore(
+        Activity.createNew(title: 'null', startTime: time), day,
+        reminder: Duration(minutes: 5));
+    final asJson = original.toJson();
+    final back = NotificationAlarm.fromJson(asJson);
+    expect(back, original);
+  });
+  test('ReminderUnchecked toJson and back', () {
+    final original = ReminderUnchecked(
         Activity.createNew(title: 'null', startTime: time), day,
         reminder: Duration(minutes: 5));
     final asJson = original.toJson();

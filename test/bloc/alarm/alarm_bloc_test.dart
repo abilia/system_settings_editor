@@ -303,8 +303,8 @@ void main() {
           await expectLater(
             alarmBloc,
             emits(
-              AlarmState(
-                  NewReminder(remind1HourBefore, day, reminder: reminderTime)),
+              AlarmState(ReminderBefore(remind1HourBefore, day,
+                  reminder: reminderTime)),
             ),
           );
         },
