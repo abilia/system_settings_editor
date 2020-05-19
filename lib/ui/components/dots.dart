@@ -5,10 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/activity.dart';
-import 'package:seagull/models/category.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/calendar/timepillar/all.dart';
 
@@ -117,50 +115,6 @@ class AnimatedDot extends StatelessWidget {
         decoration: decoration,
         child: child,
       );
-}
-
-class SideTime extends StatelessWidget {
-  final DateTime startTime;
-  final DateTime endTime;
-  final Occasion occasion;
-  final int category;
-  final double height;
-  const SideTime({
-    Key key,
-    @required this.startTime,
-    @required this.endTime,
-    @required this.occasion,
-    @required this.category,
-    @required this.height,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final timeDiff = startTime.difference(endTime).abs();
-    final height = timeDiff.inMinutes * (hourHeigt / 60);
-    return SizedBox(
-      width: dotSize,
-      height: height,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-            color: colorFromOccastion(occasion),
-            borderRadius: category == Category.left ? onlyRight : onlyLeft),
-      ),
-    );
-  }
-
-  Color colorFromOccastion(Occasion occasion) {
-    switch (occasion) {
-      case Occasion.current:
-        return AbiliaColors.red;
-      case Occasion.past:
-        return AbiliaColors.white120;
-      case Occasion.future:
-        return AbiliaColors.green;
-      default:
-        return AbiliaColors.green;
-    }
-  }
 }
 
 class SideDots extends StatelessWidget {
