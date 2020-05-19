@@ -63,6 +63,7 @@ void main() {
       ..fileStorage = MockFileStorage()
       ..settingsDb = MockSettingsDb()
       ..syncDelay = SyncDelays.zero
+      ..alarmScheduler = noAlarmScheduler
       ..init();
   });
   group('alarms and reminder test', () {

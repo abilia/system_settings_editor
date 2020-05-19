@@ -53,6 +53,7 @@ void main() {
     mockedAuthenticationBloc = MockAuthenticationBloc();
     GetItInitializer()
       ..fileStorage = MockFileStorage()
+      ..alarmScheduler = noAlarmScheduler
       ..init();
   });
 
