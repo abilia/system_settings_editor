@@ -58,7 +58,7 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .bodyText1
-                  .copyWith(color: AbiliaColors.black[75]),
+                  .copyWith(color: AbiliaColors.black75),
             ),
           ],
         ),

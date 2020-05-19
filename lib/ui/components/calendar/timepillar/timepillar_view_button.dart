@@ -20,11 +20,11 @@ class TimePillarViewButton extends StatelessWidget {
         key: TestKey.timePillarButton,
         color: themeData.buttonColor,
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: borderRadius,
           side: BorderSide(
             width: 1,
-            color: AbiliaColors.transparentWhite[10],
+            color: AbiliaColors.transparentWhite10,
           ),
         ),
         child: Row(

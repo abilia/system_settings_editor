@@ -37,7 +37,7 @@ class LinedBorder extends StatelessWidget {
         child: DottedBorder(
           dashPattern: [4, 4],
           borderType: BorderType.RRect,
-          color: AbiliaColors.black[75],
+          color: AbiliaColors.white140,
           radius: radius,
           padding: padding,
           child: child,
@@ -72,13 +72,7 @@ class PickField extends StatelessWidget {
         borderRadius: borderRadius,
         child: Ink(
           height: heigth,
-          decoration: BoxDecoration(
-            borderRadius: borderRadius,
-            border: Border.all(
-              color: AbiliaColors.transparentBlack[15],
-            ),
-            color: active ? AbiliaColors.white : Colors.transparent,
-          ),
+          decoration: active ? whiteBoxDecoration : borderDecoration,
           padding: const EdgeInsets.all(12),
           child: Stack(
             children: <Widget>[
@@ -94,10 +88,10 @@ class PickField extends StatelessWidget {
               if (showTrailingArrow)
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Icon(
+                  child: const Icon(
                     AbiliaIcons.navigation_next,
                     size: 32.0,
-                    color: AbiliaColors.black[60],
+                    color: AbiliaColors.black60,
                   ),
                 ),
             ],
@@ -139,15 +133,9 @@ class SwitchField extends StatelessWidget {
         child: Ink(
           height: heigth,
           width: width,
-          decoration: BoxDecoration(
-            borderRadius: borderRadius,
-            border: Border.all(
-              color: AbiliaColors.transparentBlack[15],
-            ),
-            color: value && onChanged != null
-                ? AbiliaColors.white
-                : Colors.transparent,
-          ),
+          decoration: value && onChanged != null
+              ? whiteBoxDecoration
+              : borderDecoration,
           padding: const EdgeInsets.only(left: 12.0, right: 4.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,15 +190,8 @@ class RadioField<T> extends StatelessWidget {
               Ink(
                 height: heigth,
                 width: width,
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius,
-                  border: Border.all(
-                    color: AbiliaColors.transparentBlack[15],
-                  ),
-                  color: value == groupValue
-                      ? AbiliaColors.white
-                      : Colors.transparent,
-                ),
+                decoration:
+                    value == groupValue ? whiteBoxDecoration : borderDecoration,
                 padding: const EdgeInsets.all(8.0),
                 child: child,
               ),
@@ -314,13 +295,7 @@ class SelectableField extends StatelessWidget {
               Ink(
                 height: heigth,
                 width: width,
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius,
-                  border: Border.all(
-                    color: AbiliaColors.transparentBlack[15],
-                  ),
-                  color: selected ? AbiliaColors.white : Colors.transparent,
-                ),
+                decoration: selected ? whiteBoxDecoration : borderDecoration,
                 padding:
                     const EdgeInsets.only(left: 12.0, top: 6.0, right: 24.0),
                 child: label,
@@ -354,11 +329,9 @@ class SelectableField extends StatelessWidget {
                               color: AbiliaColors.green,
                             )
                           : Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: AbiliaColors.transparentBlack[15],
-                                ),
+                                border: border,
                               ),
                             ),
                     ),

@@ -38,12 +38,12 @@ class ActivityCard extends StatelessWidget {
         ? abiliaTheme.copyWith(
             textTheme: textTheme.copyWith(
               subtitle1:
-                  textTheme.subtitle1.copyWith(color: AbiliaColors.white[140]),
+                  textTheme.subtitle1.copyWith(color: AbiliaColors.white140),
               bodyText1:
-                  textTheme.bodyText1.copyWith(color: AbiliaColors.white[140]),
+                  textTheme.bodyText1.copyWith(color: AbiliaColors.white140),
             ),
             iconTheme:
-                abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white[140]))
+                abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white140))
         : abiliaTheme;
     return AnimatedTheme(
       duration: duration,

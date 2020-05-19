@@ -54,56 +54,61 @@ class NameAndPictureWidget extends StatelessWidget {
         }
       }
     };
-    return SizedBox(
-      height: 84,
-      child: Row(
-        children: <Widget>[
-          activity.hasImage
-              ? InkWell(
-                  onTap: imageClick,
-                  child: Hero(
-                    tag: activity.id,
-                    child: FadeInCalendarImage(
-                      height: 84,
-                      width: 84,
-                      imageFileId: activity.fileId,
-                      imageFilePath: activity.icon,
-                      activityId: activity.id,
-                      imageFile: newImage,
-                    ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SubHeading(translator.picture),
+            if (activity.hasImage)
+              InkWell(
+                onTap: imageClick,
+                child: Hero(
+                  tag: activity.id,
+                  child: FadeInCalendarImage(
+                    height: 84,
+                    width: 84,
+                    imageFileId: activity.fileId,
+                    imageFilePath: activity.icon,
+                    activityId: activity.id,
+                    imageFile: newImage,
                   ),
-                )
-              : LinedBorder(
-                  key: TestKey.addPicture,
-                  padding: const EdgeInsets.all(26),
-                  child: Icon(
-                    AbiliaIcons.add_photo,
-                    size: 32,
-                    color: AbiliaColors.black[75],
-                  ),
-                  onTap: imageClick,
                 ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SubHeading(translator.name),
-                TextFormField(
-                  initialValue: activity.title,
-                  textCapitalization: TextCapitalization.sentences,
-                  inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                  onChanged: (text) =>
-                      BlocProvider.of<EditActivityBloc>(context)
-                          .add(ReplaceActivity(activity.copyWith(title: text))),
-                  key: TestKey.editTitleTextFormField,
+              )
+            else
+              LinedBorder(
+                key: TestKey.addPicture,
+                padding: const EdgeInsets.all(26),
+                child: const Icon(
+                  AbiliaIcons.add_photo,
+                  size: 32,
+                  color: AbiliaColors.black75,
                 ),
-              ],
-            ),
+                onTap: imageClick,
+              ),
+          ],
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SubHeading(translator.name),
+              TextFormField(
+                initialValue: activity.title,
+                textCapitalization: TextCapitalization.sentences,
+                inputFormatters: [LengthLimitingTextInputFormatter(50)],
+                onChanged: (text) => BlocProvider.of<EditActivityBloc>(context)
+                    .add(ReplaceActivity(activity.copyWith(title: text))),
+                key: TestKey.editTitleTextFormField,
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -122,56 +127,41 @@ class CategoryWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Expanded(
-              child: RadioField(
-                key: TestKey.leftCategoryRadio,
-                onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-                    .add(ReplaceActivity(activity.copyWith(category: v))),
-                child: Row(
-                  children: <Widget>[
-                    circle(),
-                    const SizedBox(width: 12),
-                    Text(translator.left)
-                  ],
-                ),
-                groupValue: activity.category,
-                value: Category.left,
-              ),
-            ),
+            buildCategoryRadioField(context, Category.left),
             const SizedBox(width: 8),
-            Expanded(
-              child: RadioField(
-                key: TestKey.rightCategoryRadio,
-                onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-                    .add(ReplaceActivity(activity.copyWith(category: v))),
-                child: Row(
-                  children: <Widget>[
-                    circle(),
-                    const SizedBox(width: 12),
-                    Text(translator.right)
-                  ],
-                ),
-                groupValue: activity.category,
-                value: Category.right,
-              ),
-            ),
+            buildCategoryRadioField(context, Category.right),
           ],
         )
       ],
     );
   }
 
-  Widget circle() => Container(
-        width: 36,
-        height: 36,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: AbiliaColors.transparentBlack[15],
-          ),
-          color: AbiliaColors.white,
+  Expanded buildCategoryRadioField(BuildContext context, int category) {
+    final left = category == Category.left;
+    final key = left ? TestKey.leftCategoryRadio : TestKey.rightCategoryRadio;
+    final icon =
+        left ? AbiliaIcons.move_item_left : AbiliaIcons.move_item_right;
+    final text = left
+        ? Translator.of(context).translate.left
+        : Translator.of(context).translate.right;
+    return Expanded(
+      child: RadioField(
+        key: key,
+        onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
+            .add(ReplaceActivity(activity.copyWith(category: v))),
+        child: Row(
+          children: <Widget>[
+            const SizedBox(width: 6),
+            Icon(icon),
+            const SizedBox(width: 12),
+            Text(text)
+          ],
         ),
-      );
+        groupValue: activity.category,
+        value: category,
+      ),
+    );
+  }
 }
 
 class AlarmWidget extends StatelessWidget {

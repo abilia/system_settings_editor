@@ -116,7 +116,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
           padding: EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
             borderRadius: widget.borderRadius,
-            color: AbiliaColors.black[80],
+            color: AbiliaColors.black80,
           ),
           child: Stack(
             textDirection: widget.textDirection,
@@ -124,7 +124,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
             children: [
               AnimatedBuilder(
                 animation: matrixAnimation,
-                child: Icon(widget.icon, color: AbiliaColors.black[60]),
+                child: Icon(widget.icon, color: AbiliaColors.black60),
                 builder: (context, child) => Transform(
                   alignment: Alignment.center,
                   transform: matrixAnimation.value,

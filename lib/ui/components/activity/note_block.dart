@@ -79,7 +79,7 @@ class Lines extends StatelessWidget {
     final line = Padding(
         padding: EdgeInsets.only(top: lineHeight),
         child: Divider(
-          color: AbiliaColors.white[120],
+          color: AbiliaColors.white120,
           height: 0,
         ));
 

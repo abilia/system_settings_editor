@@ -19,9 +19,9 @@ class ProfilePicture extends StatelessWidget {
     return Container(
       width: widhtHeight,
       height: widhtHeight,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: AbiliaColors.white[120],
+        color: AbiliaColors.white120,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(radius),
@@ -31,7 +31,7 @@ class ProfilePicture extends StatelessWidget {
             children: <Widget>[
               Icon(
                 AbiliaIcons.contact,
-                color: AbiliaColors.black[75],
+                color: AbiliaColors.black75,
                 size: 96,
               ),
               if (user != null &&
