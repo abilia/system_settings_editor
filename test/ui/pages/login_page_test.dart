@@ -34,6 +34,7 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => [])
         ..fileStorage = MockFileStorage()
+        ..settingsDb = MockSettingsDb()
         ..init();
     });
 

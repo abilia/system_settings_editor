@@ -21,6 +21,7 @@ import '../../../../mocks.dart';
 
 void main() {
   MockActivityDb mockActivityDb;
+  MockSettingsDb mockSettingsDb;
   StreamController<DateTime> mockTicker;
   final changeViewButtonFinder = find.byKey(TestKey.changeView);
   final timePillarButtonFinder = find.byKey(TestKey.timePillarButton);
@@ -49,6 +50,8 @@ void main() {
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(givenActivities));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    mockSettingsDb = MockSettingsDb();
+    when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
     GetItInitializer()
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
@@ -59,6 +62,7 @@ void main() {
       ..startTime = time
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
+      ..settingsDb = mockSettingsDb
       ..init();
   });
   tearDown(() {
@@ -347,6 +351,17 @@ void main() {
 
         // Assert
         expect(find.byType(CheckMarkWithBorder), findsOneWidget);
+      });
+
+      testWidgets('setting no dots shows SideTime',
+          (WidgetTester tester) async {
+        // Arrange
+        when(mockSettingsDb.getDotsInTimepillar()).thenReturn(false);
+        await goToTimePillar(tester);
+        // Act
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(SideTime), findsNWidgets(2));
       });
     });
   });

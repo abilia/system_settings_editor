@@ -42,6 +42,7 @@ Future<void> initServices() async {
   final documentDirectory = await getApplicationDocumentsDirectory();
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
+    ..settingsDb = settingsDb
     ..init();
   final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
   await AppCenter.startAsync(
