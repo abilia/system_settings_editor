@@ -23,6 +23,8 @@ class DataUpdateResponse extends Equatable {
 
   @override
   List<Object> get props => [previousRevision, succeded, failed];
+  @override
+  bool get stringify => true;
 }
 
 class DataRevisionUpdates extends Equatable {
@@ -34,4 +36,6 @@ class DataRevisionUpdates extends Equatable {
 
   @override
   List<Object> get props => [id, revision];
+  @override
+  bool get stringify => true;
 }

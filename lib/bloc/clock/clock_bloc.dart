@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ClockBloc extends Bloc<DateTime, DateTime> {
@@ -9,6 +10,9 @@ class ClockBloc extends Bloc<DateTime, DateTime> {
   ClockBloc(Stream<DateTime> ticker, {this.initialTime}) {
     _tickerSubscription = ticker.listen((tick) => add(tick));
   }
+
+  ClockBloc.withTicker(Ticker ticker)
+      : this(ticker.stream, initialTime: ticker.initialTime);
 
   @override
   Stream<DateTime> mapEventToState(DateTime tick) async* {

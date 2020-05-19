@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/bloc/sync/sync_delays.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/utils/all.dart';
 
 part 'sync_event.dart';
 part 'sync_state.dart';
@@ -13,12 +14,28 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final ActivityRepository activityRepository;
   final UserFileRepository userFileRepository;
   final SortableRepository sortableRepository;
+  final SyncDelays syncDelay;
 
   SyncBloc({
     @required this.activityRepository,
     @required this.userFileRepository,
     @required this.sortableRepository,
+    @required this.syncDelay,
   });
+
+  final Queue<SyncEvent> _syncQueue = Queue<SyncEvent>();
+
+  @override
+  void add(SyncEvent event) {
+    if (state is SyncUnavailable) {
+      if (!_syncQueue.contains(event)) {
+        // queueing event
+        _syncQueue.add(event);
+      } // else dropping event
+    } else {
+      super.add(event);
+    }
+  }
 
   @override
   SyncState get initialState => SyncInitial();
@@ -27,47 +44,34 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   Stream<SyncState> mapEventToState(
     SyncEvent event,
   ) async* {
+    yield SyncPending();
+    if (!await _sync(event)) {
+      yield SyncFailed();
+      if (!_syncQueue.contains(event)) {
+        _syncQueue.add(event);
+      }
+      Future.delayed(syncDelay.retryDelay,
+          () => super.add(_syncQueue.removeFirst()));
+      return;
+    }
+    // Throttle sync to queue up potential fast incoming event
+    await Future.delayed(syncDelay.betweenSync);
+    if (_syncQueue.isNotEmpty) {
+      // dequeuing
+      super.add(_syncQueue.removeFirst());
+    } else {
+      yield SyncDone();
+    }
+  }
+
+  Future<bool> _sync(SyncEvent event) async {
     if (event is ActivitySaved) {
-      yield* await _mapActivitySavedToState();
+      return activityRepository.synchronize();
+    } else if (event is FileSaved) {
+      return userFileRepository.synchronize();
+    } else if (event is SortableSaved) {
+      return sortableRepository.synchronize();
     }
-    if (event is FileSaved) {
-      yield* _mapFileSavedToState();
-    }
-    if (event is SortableSaved) {
-      yield* _mapSortableSavedToState();
-    }
-  }
-
-  Stream<SyncState> _mapActivitySavedToState() async* {
-    yield SyncPending();
-    final syncResult = await activityRepository.synchronize();
-    if (syncResult) {
-      yield SyncDone();
-    } else {
-      yield SyncFailed();
-      Future.delayed(1.minutes(), () => add(ActivitySaved()));
-    }
-  }
-
-  Stream<SyncState> _mapFileSavedToState() async* {
-    yield SyncPending();
-    final syncResult = await userFileRepository.synchronize();
-    if (syncResult) {
-      yield SyncDone();
-    } else {
-      yield SyncFailed();
-      Future.delayed(1.minutes(), () => add(FileSaved()));
-    }
-  }
-
-  Stream<SyncState> _mapSortableSavedToState() async* {
-    yield SyncPending();
-    final syncResult = await sortableRepository.synchronize();
-    if (syncResult) {
-      yield SyncDone();
-    } else {
-      yield SyncFailed();
-      Future.delayed(1.minutes(), () => add(SortableSaved()));
-    }
+    return true;
   }
 }
