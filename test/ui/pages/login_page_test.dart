@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/fakes/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/pages/login_page.dart';
@@ -31,6 +34,7 @@ void main() {
         ..fireBasePushService = mockFirebasePushService
         ..userDb = MockUserDb()
         ..baseUrlDb = MockBaseUrlDb()
+        ..ticker = Ticker(stream: StreamController<DateTime>().stream)
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => [])
         ..fileStorage = MockFileStorage()
