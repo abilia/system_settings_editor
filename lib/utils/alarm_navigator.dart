@@ -40,7 +40,7 @@ class AlarmNavigator {
       page = ReminderPage(
         activity: alarm.activity,
         day: alarm.day,
-        reminderTime: alarm.reminder.inMinutes,
+        reminderTime: alarm.reminder,
       );
     } else {
       throw ArgumentError();

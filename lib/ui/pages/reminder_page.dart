@@ -9,7 +9,7 @@ import 'package:seagull/ui/components/all.dart';
 class ReminderPage extends StatelessWidget {
   final Activity activity;
   final DateTime day;
-  final int reminderTime;
+  final Duration reminderTime;
   const ReminderPage({
     Key key,
     @required this.activity,
@@ -20,9 +20,6 @@ class ReminderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final reminderText = reminderTime < 0
-        ? translate.minutesAgo(-reminderTime)
-        : translate.inMinutes(reminderTime);
     return Scaffold(
       appBar: AbiliaAppBar(title: translate.reminder),
       body: Padding(
@@ -33,7 +30,7 @@ class ReminderPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 18, bottom: 30),
                 child: Text(
-                  reminderText,
+                  reminderTime.toReminderHeading(translate),
                   style: Theme.of(context)
                       .textTheme
                       .headline4

@@ -13,7 +13,7 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmStateBase> {
     @required this.activitiesBloc,
     @required this.clockBloc,
   }) {
-    _clockSubscription = clockBloc.listen((now) => add(TimeAlarmEvent()));
+    _clockSubscription = clockBloc.listen((now) => add(AlarmEvent()));
   }
 
   @override

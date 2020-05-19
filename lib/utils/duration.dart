@@ -29,6 +29,13 @@ extension DurationExtensions on Duration {
     return sb.toString();
   }
 
+  String toReminderHeading(Translated translater) {
+    if (isNegative) {
+      return translater.minutesAgo(-inMinutes);
+    }
+    return translater.inMinutes(inMinutes);
+  }
+
   int inDots(int minutesPerDot, roundingMinute) =>
       (inMinutes ~/ minutesPerDot) +
       (inMinutes % minutesPerDot > roundingMinute ? 1 : 0);

@@ -98,6 +98,47 @@ void main() {
       expect(find.byType(ReminderPage), findsOneWidget);
     });
 
+    testWidgets('Reminder for unchecked activity shows',
+        (WidgetTester tester) async {
+      // Arrange
+      final reminder = 15.minutes();
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
+            Activity.createNew(
+              title: 'unchecked reminder',
+              startTime: activityWithAlarmTime.subtract(reminder),
+              checkable: true,
+            )
+          ]));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Act
+      mockTicker.add(activityWithAlarmTime);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(ReminderPage), findsOneWidget);
+    });
+
+    testWidgets('Reminder for checked activity does not shows',
+        (WidgetTester tester) async {
+      // Arrange
+      final reminder = 15.minutes();
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
+            Activity.createNew(
+              title: 'Reminder',
+              startTime: activityWithAlarmTime.subtract(reminder),
+              checkable: true,
+              signedOffDates: [activityWithAlarmTime.onlyDays()],
+            )
+          ]));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Act
+      mockTicker.add(activityWithAlarmTime);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(ReminderPage), findsNothing);
+    });
+
     testWidgets('Alarms shows when notification selected',
         (WidgetTester tester) async {
       // Arrange

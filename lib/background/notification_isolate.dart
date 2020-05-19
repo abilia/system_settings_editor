@@ -188,7 +188,7 @@ String getSubtitle(
           ? translater.startsNow
           : translater.endsNow)
       : (notificationAlarm is NewReminder
-          ? translater.inMinutes(notificationAlarm.reminder.inMinutes)
+          ? notificationAlarm.reminder.toReminderHeading(translater)
           : '');
   return tf(a.startClock(day)) + endTime + extra;
 }

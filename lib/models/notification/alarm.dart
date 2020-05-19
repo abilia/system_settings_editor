@@ -37,6 +37,8 @@ abstract class NotificationAlarm extends Equatable {
         return null;
     }
   }
+  @override
+  bool get stringify => true;
 }
 
 class NewAlarm extends NotificationAlarm {
@@ -46,8 +48,6 @@ class NewAlarm extends NotificationAlarm {
         super(activity, day);
   @override
   List<Object> get props => [activity, alarmOnStart, day];
-  @override
-  bool get stringify => true;
 
   @override
   DateTime get notificationTime =>
@@ -58,12 +58,9 @@ class NewReminder extends NotificationAlarm {
   final Duration reminder;
   NewReminder(Activity activity, DateTime day, {@required this.reminder})
       : assert(reminder != null),
-        assert(reminder > Duration.zero),
         super(activity, day);
   @override
   List<Object> get props => [activity, reminder, day];
-  @override
-  bool get stringify => true;
   @override
   DateTime get notificationTime => activity.startClock(day).subtract(reminder);
 }
