@@ -19,7 +19,7 @@ class ActivitiesLoaded extends ActivitiesState {
   List<Object> get props => [activities];
 
   @override
-  String toString() => 'ActivitiesLoaded { activities: $activities }';
+  String toString() => 'ActivitiesLoaded';
 }
 
 class ActivitiesNotLoaded extends ActivitiesState {}

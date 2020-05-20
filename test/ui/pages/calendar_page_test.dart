@@ -4,10 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:seagull/background/all.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 
@@ -35,13 +37,14 @@ void main() {
       GetItInitializer()
         ..activityDb = mockActivityDb
         ..userDb = MockUserDb()
-        ..ticker = (() => mockTicker.stream)
+        ..ticker = Ticker(stream: mockTicker.stream)
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(activityResponse)
         ..fileStorage = MockFileStorage()
         ..settingsDb = MockSettingsDb()
+        ..syncDelay = SyncDelays.zero
         ..init();
     });
     testWidgets('New activity', (WidgetTester tester) async {
@@ -97,14 +100,17 @@ void main() {
       GetItInitializer()
         ..activityDb = mockActivityDb
         ..userDb = MockUserDb()
-        ..ticker = (() => StreamController<DateTime>().stream)
-        ..startTime = date
+        ..ticker = Ticker(
+          initialTime: date,
+          stream: StreamController<DateTime>().stream,
+        )
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => fullDayActivities)
         ..fileStorage = MockFileStorage()
         ..settingsDb = MockSettingsDb()
+        ..syncDelay = SyncDelays.zero
         ..init();
     });
 

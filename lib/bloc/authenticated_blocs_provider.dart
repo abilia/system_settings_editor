@@ -51,6 +51,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             activityRepository: activityRepository,
             userFileRepository: userFileRepository,
             sortableRepository: sortableRepository,
+            syncDelay: GetIt.I<SyncDelays>(),
           ),
         ),
         BlocProvider<ActivitiesBloc>(
@@ -76,10 +77,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           )..add(LoadSortables()),
         ),
         BlocProvider<ClockBloc>(
-          create: (context) => ClockBloc(
-            GetIt.I<Stream<DateTime>>(),
-            initialTime: GetIt.I<DateTime>(),
-          ),
+          create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
         ),
         BlocProvider<DayPickerBloc>(
           create: (context) => DayPickerBloc(
