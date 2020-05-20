@@ -32,11 +32,7 @@ class AlarmNavigator {
       page = AlarmPage(activity: alarm.activity, day: alarm.day);
     } else if (alarm is NewReminder) {
       id = '${alarm.activity.id}${alarm.reminder.inMinutes}';
-      page = ReminderPage(
-        activity: alarm.activity,
-        day: alarm.day,
-        reminderTime: alarm.reminder,
-      );
+      page = ReminderPage(reminder: alarm);
     } else {
       throw ArgumentError();
     }

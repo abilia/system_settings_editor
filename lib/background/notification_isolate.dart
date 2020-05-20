@@ -183,12 +183,16 @@ String getSubtitle(
   final translater = Translated.dictionaries[locale];
   final a = notificationAlarm.activity;
   final endTime = a.hasEndTime ? ' - ${tf(a.endClock(day))} ' : ' ';
-  final extra = notificationAlarm is NewAlarm
-      ? (notificationAlarm is StartAlarm
-          ? translater.startsNow
-          : translater.endsNow)
-      : (notificationAlarm is NewReminder
-          ? notificationAlarm.reminder.toReminderHeading(translater)
-          : '');
+  final extra = getExtra(notificationAlarm, translater);
   return tf(a.startClock(day)) + endTime + extra;
+}
+
+String getExtra(NotificationAlarm notificationAlarm, Translated translater) {
+  if (notificationAlarm is StartAlarm) return translater.startsNow;
+  if (notificationAlarm is EndAlarm) return translater.endsNow;
+  if (notificationAlarm is NewReminder) {
+    return notificationAlarm.reminder
+        .toReminderHeading(translater, notificationAlarm is ReminderBefore);
+  }
+  return '';
 }

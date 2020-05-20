@@ -59,6 +59,8 @@ abstract class Translated {
   String get hours;
   String get hour;
   String get h;
+  String get minutes;
+  String get minute;
   String get min;
   String get am;
   String get pm;
@@ -71,8 +73,9 @@ abstract class Translated {
   String get thisDayAndForward;
   String get settings;
   String get showTimeDots;
-  String inMinutes(int minutes);
-  String minutesAgo(int minutes);
+
+  String inTime(String time);
+  String timeAgo(String time);
 }
 
 class English extends Translated {
@@ -132,6 +135,8 @@ class English extends Translated {
       hours = 'hours',
       hour = 'hour',
       h = 'h',
+      minutes = 'minutes',
+      minute = 'minute',
       min = 'min',
       am = 'AM',
       pm = 'PM',
@@ -146,9 +151,9 @@ class English extends Translated {
       showTimeDots = 'Show time dots';
 
   @override
-  String inMinutes(int minutes) => 'in $minutes minutes';
+  String inTime(String time) => 'in $time';
   @override
-  String minutesAgo(int minutes) => '$minutes minutes ago';
+  String timeAgo(String time) => '${time}ago';
 }
 
 class Swedish extends Translated {
@@ -207,6 +212,8 @@ class Swedish extends Translated {
       hours = 'timmar',
       hour = 'timme',
       h = 't',
+      minutes = 'minuter',
+      minute = 'minut',
       min = 'min',
       am = 'fm',
       pm = 'em',
@@ -221,7 +228,7 @@ class Swedish extends Translated {
       showTimeDots = 'Visa prickar för tid';
 
   @override
-  String inMinutes(int minutes) => 'om $minutes minuter';
+  String inTime(String time) => 'om $time';
   @override
-  String minutesAgo(int minutes) => 'för $minutes minuter sen';
+  String timeAgo(String time) => 'för ${time}sen';
 }

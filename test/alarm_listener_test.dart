@@ -8,6 +8,7 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
+import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -21,6 +22,7 @@ void main() {
   StreamController<DateTime> mockTicker;
   StreamController<String> mockNotificationSelected;
   final mockActivityDb = MockActivityDb();
+  final translater = English();
 
   final activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
   final initialTime = activityWithAlarmTime.subtract(1.minutes());
@@ -67,6 +69,7 @@ void main() {
       ..alarmScheduler = noAlarmScheduler
       ..init();
   });
+
   group('alarms and reminder test', () {
     testWidgets('Alarms shows', (WidgetTester tester) async {
       // Arrange
@@ -96,6 +99,8 @@ void main() {
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(ReminderPage), findsOneWidget);
+      expect(find.text(translater.inTime('15 ${translater.minutes}')),
+          findsOneWidget);
     });
 
     testWidgets('Reminder for unchecked activity shows',
@@ -116,9 +121,11 @@ void main() {
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(ReminderPage), findsOneWidget);
+      expect(find.text(translater.timeAgo('15 ${translater.minutes} ')),
+          findsOneWidget);
     });
 
-    testWidgets('Reminder for checked activity does not shows',
+    testWidgets('Reminder for checked activity does not show if signed off',
         (WidgetTester tester) async {
       // Arrange
       final reminder = 15.minutes();
@@ -137,6 +144,30 @@ void main() {
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(ReminderPage), findsNothing);
+    });
+
+    testWidgets('Reminder for checked activity show from endtime',
+        (WidgetTester tester) async {
+      // Arrange
+      final reminder = 15.minutes();
+      final duration = 1.hours();
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
+            Activity.createNew(
+              title: 'Reminder',
+              startTime: activityWithAlarmTime.subtract(reminder + duration),
+              duration: duration,
+              checkable: true,
+            )
+          ]));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Act
+      mockTicker.add(activityWithAlarmTime);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(ReminderPage), findsOneWidget);
+      expect(find.text(translater.timeAgo('15 ${translater.minutes} ')),
+          findsOneWidget);
     });
 
     testWidgets('Alarms shows when notification selected',
@@ -228,6 +259,7 @@ void main() {
       expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
     });
   });
+
   group('Multiple alarms tests', () {
     final activity1StartTime = DateTime(2011, 11, 11, 11, 11);
     final day = DateTime(2011, 11, 11);
