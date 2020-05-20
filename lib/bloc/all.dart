@@ -19,3 +19,4 @@ export 'sortable/bloc.dart';
 export 'user_file/bloc.dart';
 export 'sync/bloc.dart';
 export 'authenticated_blocs_provider.dart';
+export 'settings/settings_bloc.dart';

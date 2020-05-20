@@ -45,6 +45,7 @@ void main() {
         ..userDb = MockUserDb()
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = MockFirebasePushService()
+        ..settingsDb = MockSettingsDb()
         ..ticker = Ticker(stream: StreamController<DateTime>().stream)
         ..init();
     });

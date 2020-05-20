@@ -61,6 +61,7 @@ void main() {
       ..httpClient = Fakes.client(() => response)
       ..notificationStreamGetter = (() => mockNotificationSelected.stream)
       ..fileStorage = MockFileStorage()
+      ..settingsDb = MockSettingsDb()
       ..syncDelay = SyncDelays.zero
       ..init();
   });

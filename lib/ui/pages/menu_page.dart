@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/settings/settings_bloc.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/components/form/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class MenuPage extends StatelessWidget {
@@ -20,6 +22,8 @@ class MenuPage extends StatelessWidget {
           children: <Widget>[
             SizedBox(height: 32.0),
             ProfilePictureNameAndEmail(),
+            Spacer(),
+            Settings(),
             Spacer(),
             LogoutButton(),
           ],
@@ -63,6 +67,47 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class Settings extends StatelessWidget {
+  const Settings({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translator = Translator.of(context).translate;
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SubHeading(translator.settings),
+            DotSetting(
+              value: state.dotsInTimepillar,
+              onChanged: (v) => BlocProvider.of<SettingsBloc>(context)
+                  .add(DotsInTimepillarUpdated(v)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class DotSetting extends StatelessWidget {
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  const DotSetting({Key key, this.value, this.onChanged}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchField(
+      leading: Icon(AbiliaIcons.options),
+      label: Text(Translator.of(context).translate.showTimeDots),
+      value: value,
+      onChanged: onChanged,
     );
   }
 }

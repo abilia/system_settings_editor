@@ -43,6 +43,7 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(activityResponse)
         ..fileStorage = MockFileStorage()
+        ..settingsDb = MockSettingsDb()
         ..syncDelay = SyncDelays.zero
         ..init();
     });
@@ -108,6 +109,7 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => fullDayActivities)
         ..fileStorage = MockFileStorage()
+        ..settingsDb = MockSettingsDb()
         ..syncDelay = SyncDelays.zero
         ..init();
     });

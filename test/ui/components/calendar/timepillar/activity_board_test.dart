@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
+
+import '../../../../mocks.dart';
 
 void main() {
   final title = 'title';
@@ -13,10 +16,13 @@ void main() {
 
   StreamController<DateTime> streamController;
   Stream<DateTime> stream;
+  MockSettingsDb mockSettingsDb;
 
   setUp(() {
     streamController = StreamController<DateTime>();
     stream = streamController.stream;
+    mockSettingsDb = MockSettingsDb();
+    when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
   });
 
   Widget multiWrap(List<ActivityOccasion> activityOccasions,
@@ -25,9 +31,16 @@ void main() {
       data: MediaQueryData(),
       child: Directionality(
         textDirection: TextDirection.ltr,
-        child: BlocProvider(
-          create: (context) =>
-              ClockBloc(stream, initialTime: initialTime ?? startTime),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) =>
+                  ClockBloc(stream, initialTime: initialTime ?? startTime),
+            ),
+            BlocProvider<SettingsBloc>(
+              create: (context) => SettingsBloc(settingsDb: mockSettingsDb),
+            )
+          ],
           child: Stack(
             children: <Widget>[
               Timeline(width: 40),

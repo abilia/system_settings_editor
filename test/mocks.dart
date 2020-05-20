@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/settings/settings_bloc.dart';
 import 'package:seagull/bloc/sortable/image_archive/image_archive_bloc.dart';
 import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/db/all.dart';
@@ -45,6 +46,8 @@ class MockUserFileDb extends Mock implements UserFileDb {}
 
 class MockUserDb extends Mock implements UserDb {}
 
+class MockSettingsDb extends Mock implements SettingsDb {}
+
 class MockDatabaseRepository extends Mock implements DatabaseRepository {}
 
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
@@ -65,6 +68,9 @@ class MockFlutterLocalNotificationsPlugin extends Mock
 
 class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesState>
     implements ActivitiesBloc {}
+
+class MockSettingsBloc extends MockBloc<SettingsEvent, SettingsState>
+    implements SettingsBloc {}
 
 class MockAuthenticationBloc
     extends MockBloc<AuthenticationEvent, AuthenticationState>

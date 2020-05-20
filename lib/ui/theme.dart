@@ -37,8 +37,16 @@ const InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
 
 const Radius radius = Radius.circular(12);
 const BorderRadius borderRadius = BorderRadius.all(radius);
-const BorderSide borderSide = BorderSide(color: AbiliaColors.white120);
-const Border activiteBorder =
+const BorderRadius notUpperLeft = BorderRadius.only(
+  topRight: radius,
+  bottomRight: radius,
+  bottomLeft: radius,
+);
+const BorderRadius onlyLeft = BorderRadius.horizontal(left: radius);
+const BorderRadius onlyRight = BorderRadius.horizontal(right: radius);
+const BorderSide borderSide =
+    BorderSide(color: AbiliaColors.white120, width: 1.0);
+const Border currentActivityBorder =
     Border.fromBorderSide(BorderSide(color: AbiliaColors.red, width: 2.0));
 const border = Border.fromBorderSide(borderSide);
 const BoxDecoration borderDecoration = BoxDecoration(
@@ -48,7 +56,7 @@ const BoxDecoration borderDecoration = BoxDecoration(
 const BoxDecoration currentBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
-  border: activiteBorder,
+  border: currentActivityBorder,
 );
 const BoxDecoration whiteBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,

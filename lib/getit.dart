@@ -54,6 +54,9 @@ class GetItInitializer {
   FileStorage _fileStorage;
   set fileStorage(FileStorage fileStorage) => _fileStorage = fileStorage;
 
+  SettingsDb _settingsDb;
+  set settingsDb(SettingsDb settingsDb) => _settingsDb = settingsDb;
+
   MultipartRequestBuilder _multipartRequestBuilder;
   set multipartRequestBuilder(
           MultipartRequestBuilder multipartRequestBuilder) =>
@@ -81,6 +84,7 @@ class GetItInitializer {
     GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());
     GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb());
     GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb());
+    GetIt.I.registerSingleton<SettingsDb>(_settingsDb ?? SettingsDb(null));
     GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage(''));
     GetIt.I.registerSingleton<MultipartRequestBuilder>(
         _multipartRequestBuilder ?? MultipartRequestBuilder());

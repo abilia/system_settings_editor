@@ -71,6 +71,7 @@ void main() {
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
+      ..settingsDb = MockSettingsDb()
       ..syncDelay = SyncDelays.zero
       ..init();
   });
