@@ -108,7 +108,7 @@ class ActivityCard extends StatelessWidget {
                     Positioned(
                       right: 0,
                       bottom: 0,
-                      child: buildInfoIcons(activity),
+                      child: buildInfoIcons(activity, inactive),
                     ),
                   ],
                 ),
@@ -120,19 +120,61 @@ class ActivityCard extends StatelessWidget {
     );
   }
 
-  Widget buildInfoIcons(Activity activity) => Row(
-          children: [
-        if (activity.checkable) AbiliaIcons.handi_check,
-        if (!activity.fullDay) activity.alarm.iconData(),
-        if (!activity.fullDay && activity.reminderBefore.isNotEmpty)
-          AbiliaIcons.handi_reminder,
-        if (activity.infoItem != null) AbiliaIcons.handi_info,
-      ]
-              .map(
-                (icon) => Padding(
-                  padding: const EdgeInsets.only(right: 4.0),
-                  child: Icon(icon, size: 18),
-                ),
-              )
-              .toList());
+  Widget buildInfoIcons(Activity activity, bool inactive) => Row(
+        children: [
+          ...[
+            if (activity.checkable) AbiliaIcons.handi_check,
+            if (!activity.fullDay) activity.alarm.iconData(),
+            if (!activity.fullDay && activity.reminderBefore.isNotEmpty)
+              AbiliaIcons.handi_reminder,
+            if (activity.hasAttachment) AbiliaIcons.handi_info,
+          ].map((icon) => CardIcon(icon)),
+          if (activity.secret) PrivateIcon(inactive),
+        ],
+      );
+}
+
+class CardIcon extends StatelessWidget {
+  final IconData icon;
+  static const EdgeInsets padding = EdgeInsets.only(right: 4.0);
+  static const double iconSize = 18.0;
+  const CardIcon(
+    this.icon, {
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding,
+      child: Icon(icon, size: iconSize),
+    );
+  }
+}
+
+class PrivateIcon extends StatelessWidget {
+  final bool inactive;
+  const PrivateIcon(
+    this.inactive, {
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      margin: CardIcon.padding,
+      duration: ActivityCard.duration,
+      child: Icon(
+        AbiliaIcons.password_protection,
+        size: CardIcon.iconSize,
+        color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
+      ),
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        color: inactive ? AbiliaColors.white140 : AbiliaColors.black75,
+        borderRadius: borderRadius,
+      ),
+    );
+  }
 }
