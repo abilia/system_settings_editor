@@ -5,18 +5,18 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
-double timeToPixelDistance(DateTime now) =>
-    (now.hour * dotsPerHour + now.minute ~/ minutesPerDot) * dotDistance +
+double timeToPixelDistance(int hours, int minutes) =>
+    (hours * dotsPerHour + minutes ~/ minutesPerDot) * dotDistance +
     hourPadding;
 double timeToMidDotPixelDistance(DateTime now) =>
-    timeToPixelDistance(now) + dotSize / 2;
+    timeToPixelDistance(now.hour, now.minute) + dotSize / 2;
 double timeToPixelDistanceHour(DateTime now) =>
-    timeToPixelDistance(now) + hourPadding;
+    timeToPixelDistance(now.hour, now.minute) + hourPadding;
 
 const double timePillarPadding = 4.0,
     timePillarWidth = 42.0,
     timePillarTotalWidth = timePillarWidth + timePillarPadding * 2,
-    scrollHeight = hourHeigt * 24;
+    timePillarHeight = hourHeigt * 24;
 
 class TimePillar extends StatelessWidget {
   final DateTime day;

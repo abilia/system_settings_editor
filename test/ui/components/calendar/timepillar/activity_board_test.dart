@@ -45,7 +45,8 @@ void main() {
             children: <Widget>[
               Timeline(width: 40),
               ActivityBoard(
-                activities: activityOccasions,
+                ActivityBoard.positionTimepillarCards(
+                    activityOccasions, TextStyle(), 1.0),
                 categoryMinWidth: 400,
               ),
             ],
@@ -252,10 +253,9 @@ void main() {
           ),
         ),
       );
-      final cards =
-          ActivityBoard.positionTimepillarCards(activities, TextStyle(), 1.0)
-              .expand((e) => e);
-      final uniques = cards.map((f) => {f.top, f.column});
+      final boardData =
+          ActivityBoard.positionTimepillarCards(activities, TextStyle(), 1.0);
+      final uniques = boardData.cards.map((f) => {f.top, f.column});
 
       expect(uniques.toSet().length, uniques.length);
     });

@@ -175,4 +175,46 @@ void main() {
       );
     });
   });
+  group('roundToMinute', () {
+    test('rounds down on 7', () {
+      final minutesPerDot = 15;
+      expect(
+        DateTime(2000, 12, 12, 12, 07)
+            .roundToMinute(minutesPerDot, minutesPerDot ~/ 2),
+        DateTime(2000, 12, 12, 12, 00),
+      );
+    });
+    test('rounds up on 8', () {
+      final minutesPerDot = 15;
+      expect(
+        DateTime(2000, 12, 12, 12, 08)
+            .roundToMinute(minutesPerDot, minutesPerDot ~/ 2),
+        DateTime(2000, 12, 12, 12, 15),
+      );
+    });
+    test('rounds up on 53', () {
+      final minutesPerDot = 15;
+      expect(
+        DateTime(2000, 12, 12, 12, 53)
+            .roundToMinute(minutesPerDot, minutesPerDot ~/ 2),
+        DateTime(2000, 12, 12, 13, 00),
+      );
+    });
+    test('rounds down on 52', () {
+      final minutesPerDot = 15;
+      expect(
+        DateTime(2000, 12, 12, 12, 52)
+            .roundToMinute(minutesPerDot, minutesPerDot ~/ 2),
+        DateTime(2000, 12, 12, 12, 45),
+      );
+    });
+    test('rounds to next day', () {
+      final minutesPerDot = 15;
+      expect(
+        DateTime(2000, 12, 12, 23, 55)
+            .roundToMinute(minutesPerDot, minutesPerDot ~/ 2),
+        DateTime(2000, 12, 13, 00, 00),
+      );
+    });
+  });
 }

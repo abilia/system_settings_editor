@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,33 +9,37 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
 class ActivityBoard extends StatelessWidget {
-  const ActivityBoard({
-    Key key,
+  const ActivityBoard(
+    this.boardData, {
     @required this.categoryMinWidth,
-    @required this.activities,
+    Key key,
   }) : super(key: key);
 
+  final ActivityBoardData boardData;
   final double categoryMinWidth;
-  final List<ActivityOccasion> activities;
 
   @override
   Widget build(BuildContext context) {
-    final style = Theme.of(context).textTheme.caption;
-    final scaleFactor = MediaQuery.of(context).textScaleFactor;
-
-    final scheduled = positionTimepillarCards(activities, style, scaleFactor);
     return Container(
       width: max(categoryMinWidth,
-          scheduled.length * ActivityTimepillarCard.totalWith),
-      child: Stack(children: scheduled.expand((c) => c).toList()),
+          boardData.columns * ActivityTimepillarCard.totalWith),
+      child: Stack(children: boardData.cards),
     );
   }
 
-  static List<List<ActivityTimepillarCard>> positionTimepillarCards(
+  static ActivityBoardData positionTimepillarCards(
     List<ActivityOccasion> activities,
     TextStyle textStyle,
     double scaleFactor,
   ) {
+    final maxEndPos = timePillarHeight +
+        dotDistance +
+        ActivityTimepillarCard.imageHeigth +
+        ActivityTimepillarCard.padding * 2 +
+        textStyle.fontSize *
+            textStyle.height *
+            ActivityTimepillarCard.maxTitleLines;
+
     activities.sort((a1, a2) => a1.activity
         .startClock(a1.day)
         .compareTo(a2.activity.startClock(a2.day)));
@@ -52,21 +57,24 @@ class ActivityBoard extends StatelessWidget {
               .height
           : 0.0);
       final imageHeight = a.hasImage || a.isSignedOff(ao.day)
-          ? ActivityTimepillarCard.imageSize + 16.0
+          ? ActivityTimepillarCard.imageHeigth
           : 0.0;
-      final renderedHeight = textHeight + imageHeight;
+      final renderedHeight =
+          max(textHeight + imageHeight, ActivityTimepillarCard.minHeight);
 
-      final height = max(
-        max(dotHeight, renderedHeight),
-        ActivityTimepillarCard.minHeight,
-      );
+      final minutePosition =
+          a.startTime.roundToMinute(minutesPerDot, roundingMinute);
 
-      final topOffset = timeToPixelDistanceHour(
-        a.startTime.roundToMinute(
-          minutesPerDot,
-          roundingMinute,
-        ),
-      );
+      final topOffset = minutePosition.isDayAfter(a.startTime)
+          ? timeToPixelDistance(24, 0)
+          : timeToPixelDistanceHour(minutePosition);
+
+      var height = max(dotHeight, renderedHeight);
+
+      if (topOffset + height > maxEndPos) {
+        height = maxEndPos - topOffset;
+      }
+
       Widget card(int col) => ActivityTimepillarCard(
             key: ObjectKey(ao),
             activityOccasion: ao,
@@ -86,6 +94,22 @@ class ActivityBoard extends StatelessWidget {
       }
       scheduled.add([card(scheduled.length)]);
     }
-    return scheduled;
+
+    return ActivityBoardData(
+      UnmodifiableListView(scheduled.expand((c) => c)),
+      columns: scheduled.length,
+    );
   }
+}
+
+class ActivityBoardData {
+  final UnmodifiableListView<ActivityTimepillarCard> cards;
+  final double heigth;
+  final int columns;
+
+  ActivityBoardData(
+    this.cards, {
+    this.columns,
+  }) : heigth = cards.fold(
+            0.0, (previousValue, card) => max(card.endPos, previousValue));
 }
