@@ -56,17 +56,15 @@ class NotificationBloc extends Bloc<NotificationPayload, AlarmStateBase> {
 
   NotificationAlarm _getAlarm(Activity activity, NotificationPayload payload) {
     if (payload.reminder > 0) {
-      return NewReminder(
-        activity,
-        payload.day,
-        reminder: payload.reminder.minutes(),
-      );
+      return payload.onStart
+          ? ReminderBefore(activity, payload.day,
+              reminder: payload.reminder.minutes())
+          : ReminderUnchecked(activity, payload.day,
+              reminder: payload.reminder.minutes());
     }
-    return NewAlarm(
-      activity,
-      payload.day,
-      alarmOnStart: payload.onStart,
-    );
+    return payload.onStart
+        ? StartAlarm(activity, payload.day)
+        : EndAlarm(activity, payload.day);
   }
 
   List<NotificationPayload> _pendings(

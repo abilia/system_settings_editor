@@ -65,6 +65,7 @@ void main() {
       ..fileStorage = MockFileStorage()
       ..settingsDb = mockSettingsDb
       ..syncDelay = SyncDelays.zero
+      ..alarmScheduler = noAlarmScheduler
       ..init();
   });
   tearDown(() {

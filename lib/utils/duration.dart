@@ -29,6 +29,20 @@ extension DurationExtensions on Duration {
     return sb.toString();
   }
 
+  String toReminderHeading(Translated translater, bool before) {
+    final inOrAgo = before ? translater.inTime : translater.timeAgo;
+    final sb = StringBuffer();
+    if (inDays > 1) sb.write('$inDays ${translater.days} ');
+    if (inDays == 1) sb.write('$inDays ${translater.day} ');
+    final hours = inHours % Duration.hoursPerDay;
+    if (hours > 1) sb.write('$hours ${translater.hours} ');
+    if (hours == 1) sb.write('$hours ${translater.hour} ');
+    final minutes = inMinutes % Duration.minutesPerHour;
+    if (minutes > 1) sb.write('$minutes ${translater.minutes} ');
+    if (minutes == 1) sb.write('$minutes ${translater.minute} ');
+    return inOrAgo(sb.toString()).trim();
+  }
+
   int inDots(int minutesPerDot, roundingMinute) =>
       (inMinutes ~/ minutesPerDot) +
       (inMinutes % minutesPerDot > roundingMinute ? 1 : 0);

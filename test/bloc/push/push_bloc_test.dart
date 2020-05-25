@@ -47,6 +47,7 @@ void main() {
         ..fireBasePushService = MockFirebasePushService()
         ..settingsDb = MockSettingsDb()
         ..ticker = Ticker(stream: StreamController<DateTime>().stream)
+        ..alarmScheduler = noAlarmScheduler
         ..init();
     });
 

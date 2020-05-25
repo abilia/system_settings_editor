@@ -7,21 +7,15 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 
 class ReminderPage extends StatelessWidget {
-  final Activity activity;
-  final DateTime day;
-  final int reminderTime;
-  const ReminderPage({
-    Key key,
-    @required this.activity,
-    @required this.day,
-    @required this.reminderTime,
-  }) : super(key: key);
+  final NewReminder reminder;
+  const ReminderPage({Key key, @required this.reminder}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final text = reminder.reminder
+        .toReminderHeading(translate, reminder is ReminderBefore);
     return Scaffold(
-      key: TestKey.onScreenReminder,
       appBar: AbiliaAppBar(title: translate.reminder),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -31,7 +25,7 @@ class ReminderPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 18, bottom: 30),
                 child: Text(
-                  translate.inMinutes(reminderTime),
+                  text,
                   style: Theme.of(context)
                       .textTheme
                       .headline4
@@ -42,9 +36,9 @@ class ReminderPage extends StatelessWidget {
             Expanded(
               child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
                 builder: (context, activitiesState) => ActivityInfo(
-                  activity:
-                      activitiesState.newActivityFromLoadedOrGiven(activity),
-                  day: day,
+                  activity: activitiesState
+                      .newActivityFromLoadedOrGiven(reminder.activity),
+                  day: reminder.day,
                 ),
               ),
             ),

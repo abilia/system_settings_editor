@@ -16,6 +16,7 @@ void main() {
     setUp(() {
       GetItInitializer()
         ..fileStorage = MockFileStorage()
+        ..alarmScheduler = noAlarmScheduler
         ..init();
     });
 

@@ -45,21 +45,23 @@ class ActivityInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     final signedOff = activity.isSignedOff(day);
+    final theme = signedOff
+        ? Theme.of(context).copyWith(
+            buttonTheme: uncheckButtonThemeData,
+            buttonColor: AbiliaColors.transparentBlack20,
+          )
+        : Theme.of(context).copyWith(
+            buttonTheme: checkButtonThemeData,
+            buttonColor: AbiliaColors.green,
+          );
 
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) => AnimatedTheme(
         duration: animationDuration,
-        data: activity.endClock(day).occasion(now) == Occasion.past || signedOff
-            ? Theme.of(context).copyWith(
-                buttonTheme: uncheckButtonThemeData,
-                buttonColor: AbiliaColors.transparentBlack20,
-                cardColor: AbiliaColors.white110,
-              )
-            : Theme.of(context).copyWith(
-                buttonTheme: checkButtonThemeData,
-                buttonColor: AbiliaColors.green,
-                cardColor: AbiliaColors.white,
-              ),
+        data: theme.copyWith(
+            cardColor: activity.endClock(day).occasion(now) == Occasion.past
+                ? AbiliaColors.white110
+                : AbiliaColors.white),
         child: Column(
           children: <Widget>[
             TimeRow(activity: activity, day: day),

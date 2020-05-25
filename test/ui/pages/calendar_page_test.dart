@@ -45,6 +45,7 @@ void main() {
         ..fileStorage = MockFileStorage()
         ..settingsDb = MockSettingsDb()
         ..syncDelay = SyncDelays.zero
+        ..alarmScheduler = noAlarmScheduler
         ..init();
     });
     testWidgets('New activity', (WidgetTester tester) async {
@@ -111,6 +112,7 @@ void main() {
         ..fileStorage = MockFileStorage()
         ..settingsDb = MockSettingsDb()
         ..syncDelay = SyncDelays.zero
+        ..alarmScheduler = noAlarmScheduler
         ..init();
     });
 

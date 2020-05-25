@@ -23,9 +23,9 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsOnExactMinute(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
-      expect(alarms, [NewAlarm(activity, day)]);
+      expect(alarms, [StartAlarm(activity, day)]);
     });
 
     test('alarm one min before', () {
@@ -34,7 +34,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsOnExactMinute(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
       expect(alarms, isEmpty);
     });
@@ -45,7 +45,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsOnExactMinute(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
       expect(alarms, isEmpty);
     });
@@ -58,9 +58,9 @@ void main() {
       final activities = [before, after, onTime];
 
       // Act
-      final alarms = activities.alarmsOnExactMinute(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
-      expect(alarms, [NewAlarm(onTime, day)]);
+      expect(alarms, [StartAlarm(onTime, day)]);
     });
 
     test('one on, and one reminder after', () {
@@ -72,12 +72,12 @@ void main() {
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsOnExactMinute(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
       expect(
           listEquals(alarms, [
-            NewAlarm(onTime, day),
-            NewReminder(afterWithReminder, day, reminder: reminder)
+            StartAlarm(onTime, day),
+            ReminderBefore(afterWithReminder, day, reminder: reminder)
           ]),
           isTrue);
     });
@@ -94,9 +94,10 @@ void main() {
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsOnExactMinute(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
-      expect(alarms, [NewReminder(afterWithReminder, day, reminder: reminder)]);
+      expect(
+          alarms, [ReminderBefore(afterWithReminder, day, reminder: reminder)]);
     });
 
     test('full day is no alarm', () {
@@ -105,7 +106,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsOnExactMinute(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
       expect(alarms, isEmpty);
     });
@@ -119,7 +120,77 @@ void main() {
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsOnExactMinute(startDate).toList();
+      final alarms = activities.alarmsOnExactMinute(startDate);
+      // Assert
+      expect(alarms, isEmpty);
+    });
+
+    test('reminders for unchecked activity 15 min', () {
+      // Arrange
+      final reminder = 15.minutes();
+      final uncheckedReminder = Activity.createNew(
+        title: 'null',
+        startTime: startDate.subtract(reminder),
+        checkable: true,
+      );
+      final activities = [uncheckedReminder];
+
+      // Act
+      final alarms = activities.alarmsOnExactMinute(startDate);
+      // Assert
+      expect(alarms,
+          [ReminderUnchecked(uncheckedReminder, day, reminder: reminder)]);
+    });
+
+    test('reminders for unchecked recurring activity 2h', () {
+      // Arrange
+      final reminder = 2.hours();
+      final uncheckedReminder = Activity.createNew(
+        title: 'null',
+        startTime: startDate.subtract(reminder).subtract(50.days()),
+        endTime: day.add(200.days()),
+        recurrentType: RecurrentType.weekly.index,
+        recurrentData: allWeek,
+        checkable: true,
+      );
+      final activities = [uncheckedReminder];
+
+      // Act
+      final alarms = activities.alarmsOnExactMinute(startDate);
+      // Assert
+      expect(alarms,
+          [ReminderUnchecked(uncheckedReminder, day, reminder: reminder)]);
+    });
+
+    test('no reminders for unchecked activity one min after', () {
+      // Arrange
+      final reminder = 15.minutes();
+      final uncheckedReminder = Activity.createNew(
+        title: 'null',
+        startTime: startDate.subtract(reminder),
+        checkable: true,
+      );
+      final activities = [uncheckedReminder];
+
+      // Act
+      final alarms = activities.alarmsOnExactMinute(startDate.add(1.minutes()));
+      // Assert
+      expect(alarms, isEmpty);
+    });
+
+    test('no reminders for checked activity', () {
+      // Arrange
+      final reminder = 15.minutes();
+      final uncheckedReminder = Activity.createNew(
+        title: 'null',
+        startTime: startDate.subtract(reminder),
+        checkable: true,
+        signedOffDates: [day],
+      );
+      final activities = [uncheckedReminder];
+
+      // Act
+      final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
       expect(alarms, isEmpty);
     });
@@ -148,8 +219,8 @@ void main() {
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [
-        NewAlarm(activity, day, alarmOnStart: true),
-        NewAlarm(activity, day, alarmOnStart: false)
+        StartAlarm(activity, day),
+        EndAlarm(activity, day),
       ]);
     });
 
@@ -161,7 +232,7 @@ void main() {
       // Act
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
-      expect(alarms, [NewAlarm(activity, day, alarmOnStart: false)]);
+      expect(alarms, [EndAlarm(activity, day)]);
     });
 
     test('alarm one min after with end', () {
@@ -173,8 +244,8 @@ void main() {
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [
-        NewAlarm(activity, day, alarmOnStart: true),
-        NewAlarm(activity, day, alarmOnStart: false)
+        StartAlarm(activity, day),
+        EndAlarm(activity, day),
       ]);
     });
 
@@ -191,11 +262,11 @@ void main() {
       expect(
         alarms,
         {
-          NewAlarm(after, day, alarmOnStart: true),
-          NewAlarm(onTime, day, alarmOnStart: true),
-          NewAlarm(after, day, alarmOnStart: false),
-          NewAlarm(onTime, day, alarmOnStart: false),
-          NewAlarm(before, day, alarmOnStart: false),
+          StartAlarm(after, day),
+          StartAlarm(onTime, day),
+          EndAlarm(after, day),
+          EndAlarm(onTime, day),
+          EndAlarm(before, day),
         },
       );
     });
@@ -213,11 +284,11 @@ void main() {
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [
-        NewAlarm(afterWithReminder, day, alarmOnStart: true),
-        NewAlarm(onTime, day, alarmOnStart: true),
-        NewAlarm(afterWithReminder, day, alarmOnStart: false),
-        NewAlarm(onTime, day, alarmOnStart: false),
-        NewReminder(afterWithReminder, day, reminder: reminder)
+        StartAlarm(afterWithReminder, day),
+        StartAlarm(onTime, day),
+        EndAlarm(afterWithReminder, day),
+        EndAlarm(onTime, day),
+        ReminderBefore(afterWithReminder, day, reminder: reminder)
       ]);
     });
 
@@ -235,7 +306,8 @@ void main() {
       // Act
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
-      expect(alarms, [NewReminder(afterWithReminder, day, reminder: reminder)]);
+      expect(
+          alarms, [ReminderBefore(afterWithReminder, day, reminder: reminder)]);
     });
 
     test('one start and end with start passed, one future without end time',
@@ -257,13 +329,11 @@ void main() {
       // Act
       final alarms = activities.alarmsFrom(startDate).toSet();
 
-      // Asserte
-      expect(
-          alarms,
-          {
-            NewAlarm(overlapping, day, alarmOnStart: false),
-            NewAlarm(later, day),
-          });
+      // Assert
+      expect(alarms, {
+        EndAlarm(overlapping, day),
+        StartAlarm(later, day),
+      });
     });
 
     test('empty list gives back no alarms or reminders', () {
@@ -274,7 +344,7 @@ void main() {
     test('one activity gives back one ativity', () {
       final activity = Activity.createNew(title: '', startTime: now);
       final got = <Activity>[activity].alarmsFrom(now, take: 100);
-      expect(got, [NewAlarm(activity, now)]);
+      expect(got, [StartAlarm(activity, now)]);
     });
 
     test('reaccurs daily gives back all daily', () {
@@ -301,7 +371,7 @@ void main() {
           startTime: now.add(5.minutes()),
           reminderBefore: [5.minutes().inMilliseconds]);
       final got = <Activity>[activity].alarmsFrom(now);
-      expect(got, [NewReminder(activity, now, reminder: 5.minutes())]);
+      expect(got, [ReminderBefore(activity, now, reminder: 5.minutes())]);
     });
 
     test(
@@ -319,7 +389,7 @@ void main() {
           .alarmsFrom(now, take: lenght, maxDays: 1000);
 
       expect(got, hasLength(100));
-      expect(got, contains(NewAlarm(normalActivity, in50Days)));
+      expect(got, contains(StartAlarm(normalActivity, in50Days)));
     });
 
     test('returns reminders', () {
@@ -335,8 +405,8 @@ void main() {
         reminderActivity,
       ].alarmsFrom(now, take: 100);
 
-      expect(
-          got, [NewReminder(reminderActivity, tomorrow, reminder: reminder)]);
+      expect(got,
+          [ReminderBefore(reminderActivity, tomorrow, reminder: reminder)]);
     });
 
     test('returns only todays first 50', () {
@@ -376,17 +446,17 @@ void main() {
       expect(
           got,
           containsAll([
-            NewAlarm(reoccuringActivity, now),
-            NewAlarm(reoccuringActivity, now, alarmOnStart: false),
-            NewAlarm(reoccuringActivity, tomorrow),
-            NewAlarm(reoccuringActivity, tomorrow, alarmOnStart: false)
+            StartAlarm(reoccuringActivity, now),
+            EndAlarm(reoccuringActivity, now),
+            StartAlarm(reoccuringActivity, tomorrow),
+            EndAlarm(reoccuringActivity, tomorrow)
           ]));
 
       expect(
         got,
         containsAll(
           remindersDates.map(
-            (r) => NewReminder(
+            (r) => ReminderBefore(
               reoccuringActivity,
               tomorrow,
               reminder: Duration(milliseconds: r),
@@ -397,7 +467,7 @@ void main() {
 
       final shouldNotContainTheseReminders = remindersDates
           .map(
-            (r) => NewReminder(
+            (r) => ReminderBefore(
               reoccuringActivity,
               now,
               reminder: Duration(milliseconds: r),
@@ -424,6 +494,100 @@ void main() {
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, isEmpty);
+    });
+
+    test('reminders for unchecked activity ', () {
+      // Arrange
+      final checkable = Activity.createNew(
+        title: 'null',
+        startTime: startDate,
+        alarmType: NO_ALARM,
+        duration: 1.hours(),
+        checkable: true,
+      );
+      final activities = [checkable];
+
+      // Act
+      final alarms = activities.alarmsFrom(startDate).toList();
+      // Assert
+      expect(
+          alarms,
+          containsAll([
+            ...unSignedOffActivityReminders
+                .map((r) => ReminderUnchecked(checkable, day, reminder: r))
+          ]));
+    });
+    test('reminders for unchecked activity after 1 hour', () {
+      // Arrange
+      final checkable = Activity.createNew(
+        title: 'null',
+        startTime: startDate,
+        alarmType: NO_ALARM,
+        duration: 1.hours(),
+        checkable: true,
+      );
+      final activities = [checkable];
+
+      // Act
+      final alarms = activities.alarmsFrom(startDate.add(1.hours())).toList();
+      // Assert
+      expect(
+          alarms,
+          containsAll(unSignedOffActivityReminders
+              .where((rt) => rt >= 1.hours())
+              .map((r) => ReminderUnchecked(checkable, day, reminder: r))));
+    });
+
+    test('no reminders for checked activity ', () {
+      // Arrange
+      final checkable = Activity.createNew(
+        title: 'null',
+        startTime: startDate,
+        alarmType: NO_ALARM,
+        duration: 1.hours(),
+        checkable: true,
+        signedOffDates: [day],
+      );
+      final activities = [checkable];
+
+      // Act
+      final alarms = activities.alarmsFrom(startDate).toList();
+      // Assert
+      expect(alarms, isEmpty);
+    });
+
+    test('All alarms possible for activity ', () {
+      // Arrange
+      final nextDay = day.nextDay();
+      final start = startDate.nextDay().add(1.hours());
+      final reminders = [
+        5.minutes(),
+        15.minutes(),
+        1.hours(),
+        2.hours(),
+        1.days()
+      ];
+      final maxed = Activity.createNew(
+          title: 'null',
+          startTime: start,
+          duration: 1.hours(),
+          checkable: true,
+          reminderBefore: reminders.map((r) => r.inMilliseconds));
+      final activities = [maxed];
+
+      // Act
+      final alarms = activities.alarmsFrom(startDate).toList();
+      // Assert
+      expect(
+          alarms,
+          containsAll([
+            StartAlarm(maxed, nextDay),
+            EndAlarm(maxed, nextDay),
+            ...reminders
+                .map((r) => ReminderBefore(maxed, nextDay, reminder: r)),
+            ...unSignedOffActivityReminders
+                .map((r) => ReminderUnchecked(maxed, nextDay, reminder: r))
+          ]));
     });
   });
 }

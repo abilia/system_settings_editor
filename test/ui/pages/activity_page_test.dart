@@ -73,6 +73,7 @@ void main() {
       ..fileStorage = MockFileStorage()
       ..settingsDb = MockSettingsDb()
       ..syncDelay = SyncDelays.zero
+      ..alarmScheduler = noAlarmScheduler
       ..init();
   });
   Future<void> navigateToActivityPage(WidgetTester tester) async {

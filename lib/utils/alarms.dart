@@ -2,6 +2,17 @@ import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
+const List<Duration> unSignedOffActivityReminders = [
+  Duration(minutes: 15),
+  Duration(minutes: 30),
+  Duration(minutes: 45),
+  Duration(hours: 1),
+  Duration(hours: 1, minutes: 15),
+  Duration(hours: 1, minutes: 30),
+  Duration(hours: 1, minutes: 45),
+  Duration(hours: 2),
+];
+
 extension IterableActivity on Iterable<Activity> {
   List<NotificationAlarm> alarmsOnExactMinute(DateTime time) => _alarmsFor(time,
       startTimeTest: (a) => a.startClock(time).isAtSameMomentAs(time),
@@ -16,26 +27,28 @@ extension IterableActivity on Iterable<Activity> {
     final activitiesThisDay =
         where((a) => !a.fullDay).where((a) => a.shouldShowForDay(day)).toList();
     final activitiesWithAlarm =
-        activitiesThisDay.where((a) => a.alarm.shouldAlarm).toList();
+        activitiesThisDay.where((a) => a.alarm.shouldAlarm);
 
     final startTimeAlarms = activitiesWithAlarm
         .where(startTimeTest)
-        .map<NotificationAlarm>((a) => NewAlarm(a, day, alarmOnStart: true));
+        .map<NotificationAlarm>((a) => StartAlarm(a, day));
 
     final endTimeAlarms = activitiesWithAlarm
         .where((a) => a.hasEndTime)
         .where((a) => a.alarm.atEnd)
         .where(endTimeTest)
-        .map<NotificationAlarm>((a) => NewAlarm(a, day, alarmOnStart: false));
+        .map<NotificationAlarm>((a) => EndAlarm(a, day));
 
-    final reminders = activitiesThisDay.expand((a) => a.reminders
-        .map<NotificationAlarm>((r) => NewReminder(a, day, reminder: r))
-        .where(reminderTest));
+    final reminders = activitiesThisDay.expand(
+      (a) => [
+        ...a.reminders.map((r) => ReminderBefore(a, day, reminder: r)),
+        if (!a.isSignedOff(day) && a.checkable)
+          ...unSignedOffActivityReminders
+              .map((r) => ReminderUnchecked(a, day, reminder: r)),
+      ].where(reminderTest),
+    );
 
-    return startTimeAlarms
-        .followedBy(endTimeAlarms)
-        .followedBy(reminders)
-        .toList();
+    return [...startTimeAlarms, ...endTimeAlarms, ...reminders];
   }
 
   Iterable<NotificationAlarm> alarmsFrom(

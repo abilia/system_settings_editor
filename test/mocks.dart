@@ -8,9 +8,12 @@ import 'package:seagull/bloc/settings/settings_bloc.dart';
 import 'package:seagull/bloc/sortable/image_archive/image_archive_bloc.dart';
 import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/repository/sortable_repository.dart';
 import 'package:seagull/storage/all.dart';
+
+final AlarmScheduler noAlarmScheduler = ((a, b, c) async {});
 
 class MockUserRepository extends Mock implements UserRepository {}
 

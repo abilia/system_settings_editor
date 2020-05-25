@@ -7,8 +7,6 @@ class TestKey {
       loggInButton = Key('loggIn'),
       loginError = Key('loginError'),
       goToNowButton = Key('goToNow'),
-      onScreenAlarm = Key('onScreenAlarm'),
-      onScreenReminder = Key('onScreenReminder'),
       appBarCloseButton = Key('appBarCloseButton'),
       changeView = Key('changeView'),
       timePillarButton = Key('timePillarButton'),
