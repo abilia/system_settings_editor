@@ -6,6 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../../mocks.dart';
@@ -17,6 +18,7 @@ void main() {
   StreamController<DateTime> streamController;
   Stream<DateTime> stream;
   MockSettingsDb mockSettingsDb;
+  final textStyle = abiliaTextTheme.caption;
 
   setUp(() {
     streamController = StreamController<DateTime>();
@@ -45,7 +47,8 @@ void main() {
             children: <Widget>[
               Timeline(width: 40),
               ActivityBoard(
-                activities: activityOccasions,
+                ActivityBoard.positionTimepillarCards(
+                    activityOccasions, textStyle, 1.0),
                 categoryMinWidth: 400,
               ),
             ],
@@ -55,9 +58,8 @@ void main() {
     );
   }
 
-  Widget wrap(ActivityOccasion activityOccasion,
-          {occasion = Occasion.current}) =>
-      multiWrap([activityOccasion]);
+  Widget wrap(ActivityOccasion activityOccasion, {DateTime initialTime}) =>
+      multiWrap([activityOccasion], initialTime: initialTime);
 
   testWidgets('shows title', (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -191,7 +193,7 @@ void main() {
           greaterThanOrEqualTo(ActivityTimepillarCard.totalWith));
     });
     testWidgets(
-        'two activities to sufficient time distance but the fist with a long title does not has same vertical position',
+        'two activities to sufficient time distance but the first with a long title does not has same vertical position',
         (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);
       final activityA = ActivityOccasion.forTest(
@@ -252,10 +254,9 @@ void main() {
           ),
         ),
       );
-      final cards =
-          ActivityBoard.positionTimepillarCards(activities, TextStyle(), 1.0)
-              .expand((e) => e);
-      final uniques = cards.map((f) => {f.top, f.column});
+      final boardData =
+          ActivityBoard.positionTimepillarCards(activities, textStyle, 1.0);
+      final uniques = boardData.cards.map((f) => {f.top, f.column});
 
       expect(uniques.toSet().length, uniques.length);
     });

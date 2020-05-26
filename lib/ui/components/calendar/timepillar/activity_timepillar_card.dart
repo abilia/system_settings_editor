@@ -10,10 +10,13 @@ import 'package:seagull/utils/all.dart';
 
 class ActivityTimepillarCard extends StatelessWidget {
   static const double imageSize = 56.0,
+      imagePadding = 16.0,
+      imageHeigth = imageSize + imagePadding,
       width = 72.0,
       padding = 12.0,
       minHeight = 84.0,
       totalWith = dotSize + width + padding;
+  static const int maxTitleLines = 5;
 
   final ActivityOccasion activityOccasion;
   final TextStyle textStyle;
@@ -109,6 +112,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                               activity.title,
                               overflow: TextOverflow.visible,
                               textAlign: TextAlign.center,
+                              maxLines: maxTitleLines,
                               style: textStyle.copyWith(
                                   color: inactive
                                       ? AbiliaColors.white140
