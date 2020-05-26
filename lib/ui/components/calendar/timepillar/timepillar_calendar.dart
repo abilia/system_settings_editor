@@ -31,6 +31,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
 
   final Key center = Key('center');
   double categoryLeftMinWidth, categoryRightMinWidth;
+  double prevScroll = 0;
   @override
   void initState() {
     final scrollOffset = widget.state.isToday
@@ -39,7 +40,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
     verticalScrollController =
         ScrollController(initialScrollOffset: scrollOffset);
 
-    horizontalScrollController = ScrollController();
+    horizontalScrollController = SnapToCenterScrollController();
     if (widget.state.isToday) {
       WidgetsBinding.instance.addPostFrameCallback((_) =>
           BlocProvider.of<ScrollPositionBloc>(context)
@@ -150,6 +151,24 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
         ),
         sliver: sliver,
       );
+}
+
+class SnapToCenterScrollController extends ScrollController {
+  double prevScroll = 0;
+  SnapToCenterScrollController() {
+    addListener(() {
+      final currentScroll = position.pixels;
+      if (prevScroll == 0) {
+        prevScroll = currentScroll;
+        return;
+      }
+      if (currentScroll.isNegative ^ prevScroll.isNegative) {
+        animateTo(0,
+            duration: Duration(milliseconds: 200), curve: Curves.easeOut);
+      }
+      prevScroll = currentScroll;
+    });
+  }
 }
 
 class ScrollTranslated extends StatefulWidget {
