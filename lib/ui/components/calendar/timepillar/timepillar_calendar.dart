@@ -31,7 +31,6 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
 
   final Key center = Key('center');
   double categoryLeftMinWidth, categoryRightMinWidth;
-  double prevScroll = 0;
   @override
   void initState() {
     final scrollOffset = widget.state.isToday
@@ -59,8 +58,11 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    final anchor =
-        0.5 - timePillarTotalWidth / 2 / MediaQuery.of(context).size.width;
+    // Anchor is the starting point of the central sliver (timepillar).
+    // horizontalAnchor is where the left side of the timepillar needs to be in parts of the screen to make it centralized.
+    final timePillarPercentOfTotalScreen =
+        (timePillarTotalWidth / 2) / MediaQuery.of(context).size.width;
+    final horizontalAnchor = 0.5 - timePillarPercentOfTotalScreen;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         return Stack(
@@ -77,7 +79,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                           width: boxConstraints.maxWidth,
                         ),
                       CustomScrollView(
-                        anchor: anchor,
+                        anchor: horizontalAnchor,
                         center: center,
                         scrollDirection: Axis.horizontal,
                         controller: horizontalScrollController,
