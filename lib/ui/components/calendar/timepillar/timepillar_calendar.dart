@@ -51,92 +51,95 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
   @override
   void didChangeDependencies() {
     categoryRightMinWidth =
-        MediaQuery.of(context).size.width - timePillarTotalWidth;
-    categoryLeftMinWidth = categoryRightMinWidth / 2;
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => horizontalScrollController.jumpTo(-categoryLeftMinWidth));
+        (MediaQuery.of(context).size.width - timePillarTotalWidth) / 2;
+    categoryLeftMinWidth = categoryRightMinWidth;
     super.didChangeDependencies();
   }
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-        builder: (context, boxConstraints) {
-          return Stack(
-            children: <Widget>[
-              SingleChildScrollView(
-                controller: verticalScrollController,
-                child: LimitedBox(
-                  maxHeight: scrollHeight,
-                  child: BlocBuilder<ClockBloc, DateTime>(
-                    builder: (context, now) => Stack(
-                      children: <Widget>[
-                        if (widget.state.isToday)
-                          Timeline(
-                            width: boxConstraints.maxWidth,
-                          ),
-                        CustomScrollView(
-                          center: center,
-                          scrollDirection: Axis.horizontal,
-                          controller: horizontalScrollController,
-                          slivers: <Widget>[
-                            category(
-                              CategoryLeft(
-                                  expanded: widget
-                                      .calendarViewState.expandLeftCategory),
-                              height: boxConstraints.maxHeight,
-                              sliver: SliverToBoxAdapter(
-                                child: ActivityBoard(
-                                  activities: widget.state.activities
-                                      .where(
-                                        (ao) =>
-                                            ao.activity.category !=
-                                            Category.right,
-                                      )
-                                      .toList(),
-                                  categoryMinWidth: categoryLeftMinWidth,
-                                ),
-                              ),
-                            ),
-                            SliverTimePillar(
-                              key: center,
-                              child: TimePillar(
-                                day: widget.state.day,
-                                dayOccasion: widget.state.occasion,
-                              ),
-                            ),
-                            category(
-                              CategoryRight(
-                                  expanded: widget
-                                      .calendarViewState.expandRightCategory),
-                              height: boxConstraints.maxHeight,
-                              sliver: SliverToBoxAdapter(
-                                child: ActivityBoard(
-                                  activities: widget.state.activities
-                                      .where(
-                                        (ao) =>
-                                            ao.activity.category ==
-                                            Category.right,
-                                      )
-                                      .toList(),
-                                  categoryMinWidth: categoryRightMinWidth,
-                                ),
-                              ),
-                            ),
-                          ],
+  Widget build(BuildContext context) {
+    final anchor =
+        0.5 - timePillarTotalWidth / 2 / MediaQuery.of(context).size.width;
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        return Stack(
+          children: <Widget>[
+            SingleChildScrollView(
+              controller: verticalScrollController,
+              child: LimitedBox(
+                maxHeight: scrollHeight,
+                child: BlocBuilder<ClockBloc, DateTime>(
+                  builder: (context, now) => Stack(
+                    children: <Widget>[
+                      if (widget.state.isToday)
+                        Timeline(
+                          width: boxConstraints.maxWidth,
                         ),
-                      ],
-                    ),
+                      CustomScrollView(
+                        anchor: anchor,
+                        center: center,
+                        scrollDirection: Axis.horizontal,
+                        controller: horizontalScrollController,
+                        slivers: <Widget>[
+                          category(
+                            CategoryLeft(
+                                expanded: widget
+                                    .calendarViewState.expandLeftCategory),
+                            height: boxConstraints.maxHeight,
+                            sliver: SliverToBoxAdapter(
+                              child: ActivityBoard(
+                                activities: widget.state.activities
+                                    .where(
+                                      (ao) =>
+                                          ao.activity.category !=
+                                          Category.right,
+                                    )
+                                    .toList(),
+                                categoryMinWidth: categoryLeftMinWidth,
+                              ),
+                            ),
+                          ),
+                          SliverTimePillar(
+                            key: center,
+                            child: TimePillar(
+                              day: widget.state.day,
+                              dayOccasion: widget.state.occasion,
+                            ),
+                          ),
+                          category(
+                            CategoryRight(
+                                expanded: widget
+                                    .calendarViewState.expandRightCategory),
+                            height: boxConstraints.maxHeight,
+                            sliver: SliverToBoxAdapter(
+                              child: ActivityBoard(
+                                activities: widget.state.activities
+                                    .where(
+                                      (ao) =>
+                                          ao.activity.category ==
+                                          Category.right,
+                                    )
+                                    .toList(),
+                                categoryMinWidth: categoryRightMinWidth,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-              ArrowLeft(controller: horizontalScrollController),
-              ArrowUp(controller: verticalScrollController),
-              ArrowRight(controller: horizontalScrollController),
-              ArrowDown(controller: verticalScrollController),
-            ],
-          );
-        },
-      );
+            ),
+            ArrowLeft(controller: horizontalScrollController),
+            ArrowUp(controller: verticalScrollController),
+            ArrowRight(controller: horizontalScrollController),
+            ArrowDown(controller: verticalScrollController),
+          ],
+        );
+      },
+    );
+  }
 
   Widget category(Widget category, {Widget sliver, double height}) =>
       SliverOverlay(
