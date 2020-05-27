@@ -6,12 +6,17 @@ import 'package:vector_math/vector_math_64.dart';
 const Radius radius = Radius.circular(100);
 const double arrowSize = 48.0;
 const double translationPixels = arrowSize / 2;
-const double arrowCollapseMargin = 2;
+const double defaultCollapseMargin = 2;
 
 class ArrowLeft extends StatelessWidget {
   final ScrollController controller;
+  final double collapseMargin;
 
-  const ArrowLeft({Key key, this.controller}) : super(key: key);
+  const ArrowLeft({
+    Key key,
+    this.controller,
+    this.collapseMargin = defaultCollapseMargin,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.centerLeft,
@@ -23,16 +28,20 @@ class ArrowLeft extends StatelessWidget {
           heigth: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels - arrowCollapseMargin >
-              sc.position.minScrollExtent,
+              sc.position.pixels - collapseMargin > sc.position.minScrollExtent,
         ),
       );
 }
 
 class ArrowUp extends StatelessWidget {
   final ScrollController controller;
+  final double collapseMargin;
 
-  const ArrowUp({Key key, this.controller}) : super(key: key);
+  const ArrowUp({
+    Key key,
+    this.controller,
+    this.collapseMargin = defaultCollapseMargin,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.topCenter,
@@ -44,15 +53,19 @@ class ArrowUp extends StatelessWidget {
           width: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels - arrowCollapseMargin >
-              sc.position.minScrollExtent,
+              sc.position.pixels - collapseMargin > sc.position.minScrollExtent,
         ),
       );
 }
 
 class ArrowRight extends StatelessWidget {
   final ScrollController controller;
-  const ArrowRight({Key key, this.controller}) : super(key: key);
+  final double collapseMargin;
+  const ArrowRight({
+    Key key,
+    this.controller,
+    this.collapseMargin = defaultCollapseMargin,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.centerRight,
@@ -64,16 +77,20 @@ class ArrowRight extends StatelessWidget {
           heigth: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels + arrowCollapseMargin <
-              sc.position.maxScrollExtent,
+              sc.position.pixels + collapseMargin < sc.position.maxScrollExtent,
         ),
       );
 }
 
 class ArrowDown extends StatelessWidget {
   final ScrollController controller;
+  final double collapseMargin;
 
-  const ArrowDown({Key key, this.controller}) : super(key: key);
+  const ArrowDown({
+    Key key,
+    this.controller,
+    this.collapseMargin = defaultCollapseMargin,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Align(
@@ -86,8 +103,7 @@ class ArrowDown extends StatelessWidget {
           width: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels + arrowCollapseMargin <
-              sc.position.maxScrollExtent,
+              sc.position.pixels + collapseMargin < sc.position.maxScrollExtent,
         ),
       );
 }
