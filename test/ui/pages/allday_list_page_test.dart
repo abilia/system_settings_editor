@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/models/activity.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
