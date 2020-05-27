@@ -164,7 +164,7 @@ class SnapToCenterScrollController extends ScrollController {
         prevScroll = currentScroll;
         return;
       }
-      if (currentScroll.isNegative ^ prevScroll.isNegative) {
+      if (currentScroll.isNegative != prevScroll.isNegative) {
         animateTo(0,
             duration: Duration(milliseconds: 200), curve: Curves.easeOut);
       }

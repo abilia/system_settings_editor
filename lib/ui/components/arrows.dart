@@ -6,6 +6,7 @@ import 'package:vector_math/vector_math_64.dart';
 const Radius radius = Radius.circular(100);
 const double arrowSize = 48.0;
 const double translationPixels = arrowSize / 2;
+const double arrowCollapseMargin = 2;
 
 class ArrowLeft extends StatelessWidget {
   final ScrollController controller;
@@ -22,7 +23,8 @@ class ArrowLeft extends StatelessWidget {
           heigth: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels > sc.position.minScrollExtent,
+              sc.position.pixels - arrowCollapseMargin >
+              sc.position.minScrollExtent,
         ),
       );
 }
@@ -42,7 +44,8 @@ class ArrowUp extends StatelessWidget {
           width: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels > sc.position.minScrollExtent,
+              sc.position.pixels - arrowCollapseMargin >
+              sc.position.minScrollExtent,
         ),
       );
 }
@@ -61,7 +64,8 @@ class ArrowRight extends StatelessWidget {
           heigth: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels < sc.position.maxScrollExtent,
+              sc.position.pixels + arrowCollapseMargin <
+              sc.position.maxScrollExtent,
         ),
       );
 }
@@ -82,7 +86,8 @@ class ArrowDown extends StatelessWidget {
           width: arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels < sc.position.maxScrollExtent,
+              sc.position.pixels + arrowCollapseMargin <
+              sc.position.maxScrollExtent,
         ),
       );
 }
