@@ -45,12 +45,14 @@ abstract class NewAlarm extends NotificationAlarm {
 
 class StartAlarm extends NewAlarm {
   StartAlarm(Activity activity, DateTime day) : super(activity, day);
+  StartAlarm.ad(ActivityDay ad) : super(ad.activity, ad.day);
   @override
   DateTime get notificationTime => activity.startClock(day);
 }
 
 class EndAlarm extends NewAlarm {
   EndAlarm(Activity activity, DateTime day) : super(activity, day);
+  EndAlarm.ad(ActivityDay ad) : super(ad.activity, ad.day);
   @override
   DateTime get notificationTime => activity.endClock(day);
 }
@@ -67,6 +69,8 @@ abstract class NewReminder extends NotificationAlarm {
 class ReminderBefore extends NewReminder {
   ReminderBefore(Activity activity, DateTime day, {@required Duration reminder})
       : super(activity, day, reminder: reminder);
+  ReminderBefore.ad(ActivityDay ad, {@required Duration reminder})
+      : this(ad.activity, ad.day, reminder: reminder);
   @override
   DateTime get notificationTime => activity.startClock(day).subtract(reminder);
 }
@@ -75,6 +79,8 @@ class ReminderUnchecked extends NewReminder {
   ReminderUnchecked(Activity activity, DateTime day,
       {@required Duration reminder})
       : super(activity, day, reminder: reminder);
+  ReminderUnchecked.ad(ActivityDay ad, {@required Duration reminder})
+      : this(ad.activity, ad.day, reminder: reminder);
   @override
   DateTime get notificationTime => activity.endClock(day).add(reminder);
 }

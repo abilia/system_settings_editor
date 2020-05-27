@@ -56,24 +56,28 @@ class Recurs {
 }
 
 extension RecurringActivityExtension on Activity {
-  bool shouldShowForDay(DateTime day) {
+  ActivityDay shouldShowForDay(DateTime day) {
     if (!isRecurring) {
-      return day.isAtSameDay(startTime) ||
-          day.inExclusiveRange(startDate: startTime, endDate: end);
+      if (day.isAtSameDay(startTime) ||
+          day.inExclusiveRange(startDate: startTime, endDate: end)) {
+        return ActivityDay(this, day);
+      }
+      return null;
     }
 
     if (!day.inInclusiveRange(
         startDate: startTime.onlyDays(), endDate: endTime.onlyDays())) {
-      return false;
+      return null;
     }
-    if (onCorrectRecurrance(day)) return true;
+
+    if (onCorrectRecurrance(day)) return ActivityDay(this, day);
 
     var dayBefore = day.previousDay();
     while (endClock(dayBefore).isAfter(day)) {
-      if (onCorrectRecurrance(dayBefore)) return true;
+      if (onCorrectRecurrance(dayBefore)) return ActivityDay(this, dayBefore);
       dayBefore = dayBefore.previousDay();
     }
-    return false;
+    return null;
   }
 
   bool onCorrectRecurrance(DateTime day) {

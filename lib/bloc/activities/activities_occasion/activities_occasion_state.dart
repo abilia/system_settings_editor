@@ -33,9 +33,15 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
   }) : super();
 
   @override
-  List<Object> get props =>
-      [activities, fullDayActivities, day, indexOfCurrentActivity, isToday];
+  List<Object> get props => [
+        occasion,
+        activities,
+        fullDayActivities,
+        day,
+        indexOfCurrentActivity,
+        isToday,
+      ];
   @override
   String toString() =>
-      'ActivitiesOccasionLoaded { ${activities.length} activities, ${fullDayActivities.length} fullDay activities, day; ${yMd(day)}, ${isToday ? 'today, indexOfCurrentActivity; $indexOfCurrentActivity' : 'not today'}';
+      'ActivitiesOccasionLoaded { $occasion, ${activities.length} activities, ${fullDayActivities.length} fullDay activities, day; ${yMd(day)}, ${isToday ? 'today, indexOfCurrentActivity; $indexOfCurrentActivity' : 'not today'}';
 }

@@ -43,9 +43,7 @@ class ActivitiesOccasionBloc
       if (state is ActivitiesOccasionLoaded) {
         final loadedState = state as ActivitiesOccasionLoaded;
         yield _mapActivitiesToActivityOccasionsState(
-            loadedState.activities
-                .followedBy(loadedState.fullDayActivities)
-                .map((a) => a.activity),
+            loadedState.activities.followedBy(loadedState.fullDayActivities),
             now: event.now,
             day: dayPickerBloc.state.day);
       } else {
@@ -55,16 +53,17 @@ class ActivitiesOccasionBloc
   }
 
   ActivitiesOccasionLoaded _mapActivitiesToActivityOccasionsState(
-    Iterable<Activity> activities, {
+    Iterable<ActivityDay> activities, {
     @required DateTime now,
     @required DateTime day,
   }) {
-    final removeAfterFiltered = day.isBefore(now.onlyDays())
-        ? activities.where((a) => !a.removeAfter)
-        : activities;
+    final removeAfterFiltered = activities
+        .where((a) => !(a.activity.removeAfter && a.end.isDayBefore(now)))
+        .toList();
+
     final timedActivities = removeAfterFiltered
-        .where((a) => !a.fullDay)
-        .map((a) => ActivityOccasion(a, now: now, day: day))
+        .where((ad) => !ad.activity.fullDay)
+        .map((ad) => ActivityOccasion(ad, now: now))
         .toList()
           ..sort((a, b) {
             final occasionComparing =
@@ -77,8 +76,8 @@ class ActivitiesOccasionBloc
             return a.activity.endClock(now).compareTo(b.activity.endClock(now));
           });
     final fullDayActivities = removeAfterFiltered
-        .where((a) => a.fullDay)
-        .map((a) => ActivityOccasion.fullDay(a, now: now, day: day))
+        .where((ad) => ad.activity.fullDay)
+        .map((a) => ActivityOccasion.fullDay(a, now: now))
         .toList();
 
     final isToday = day.isAtSameDay(now);

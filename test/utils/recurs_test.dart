@@ -27,8 +27,9 @@ void main() {
       final result = splitRecurring.shouldShowForDay(dayOnSplit);
 
       // Assert
-      expect(result, true);
+      expect(result, ActivityDay(splitRecurring, dayOnSplit));
     });
+
     test('Should show when starts at 00:00 ', () {
       // Arrange
       final startTime = DateTime(2020, 04, 01, 00, 00);
@@ -42,8 +43,9 @@ void main() {
       final resultDay1 = overlapping.shouldShowForDay(day);
 
       // Assert
-      expect(resultDay1, isTrue, reason: 'shows on start day');
+      expect(resultDay1, ActivityDay(overlapping, day));
     });
+
     test(
         'Activity with endtime before start time does not shows ( bug SGC-148 )',
         () {
@@ -63,7 +65,7 @@ void main() {
       final result = splitRecurring.shouldShowForDay(day);
 
       // Assert
-      expect(result, isFalse);
+      expect(result, null);
     });
 
     test(
@@ -82,7 +84,7 @@ void main() {
       final result = overlapping.shouldShowForDay(day);
 
       // Assert
-      expect(result, isTrue);
+      expect(result, ActivityDay(overlapping, day));
     });
   });
 
@@ -104,9 +106,10 @@ void main() {
     final result2 = overlapping.shouldShowForDay(day2);
 
     // Assert
-    expect(result1, isTrue);
-    expect(result2, isFalse);
+    expect(result1, ActivityDay(overlapping, day));
+    expect(result2, null);
   });
+
   test('Should not show time that ends at 00:00 in that day', () {
     // Arrange
     final startTime = DateTime(2020, 05, 02, 00, 00);
@@ -125,9 +128,47 @@ void main() {
     final resultDay3 = overlapping.shouldShowForDay(day3);
 
     // Assert
-    expect(resultDay1, isTrue, reason: 'shows on start day');
-    expect(resultDay2, isTrue, reason: 'shows on start day');
-    expect(resultDay3, isFalse);
+    expect(resultDay1, ActivityDay(overlapping, day));
+    expect(resultDay2, ActivityDay(overlapping, day2));
+    expect(resultDay3, null);
+  });
+  test('Fullday', () {
+    // Arrange
+    final initialMinutes = DateTime(2006, 06, 06, 06, 06, 06, 06).onlyMinutes();
+    final fullDayActivity = FakeActivity.fullday(initialMinutes);
+    final tomorrowFullday = FakeActivity.fullday(initialMinutes.add(1.days()));
+    final yesterdayFullday =
+        FakeActivity.fullday(initialMinutes.subtract(1.days()));
+
+    final today = initialMinutes.onlyDays();
+    final tomorrow = initialMinutes.nextDay().onlyDays();
+    final yesterday = initialMinutes.previousDay().onlyDays();
+
+    // Act
+    final result1Day1 = fullDayActivity.shouldShowForDay(today);
+    final result2Day1 = tomorrowFullday.shouldShowForDay(today);
+    final result3Day1 = yesterdayFullday.shouldShowForDay(today);
+
+    final result1Day2 = fullDayActivity.shouldShowForDay(tomorrow);
+    final result2Day2 = tomorrowFullday.shouldShowForDay(tomorrow);
+    final result3Day2 = yesterdayFullday.shouldShowForDay(tomorrow);
+
+    final result1Day3 = fullDayActivity.shouldShowForDay(yesterday);
+    final result2Day3 = tomorrowFullday.shouldShowForDay(yesterday);
+    final result3Day3 = yesterdayFullday.shouldShowForDay(yesterday);
+
+    // Assert
+    expect(result1Day1, ActivityDay(fullDayActivity, today));
+    expect(result2Day1, null);
+    expect(result3Day1, null);
+
+    expect(result1Day2, null);
+    expect(result2Day2, ActivityDay(tomorrowFullday, tomorrow));
+    expect(result3Day2, null);
+
+    expect(result1Day3, null);
+    expect(result2Day3, null);
+    expect(result3Day3, ActivityDay(yesterdayFullday, yesterday));
   });
 
   group('Recurring tests', () {
@@ -513,7 +554,8 @@ void main() {
 
     test('weekly recurrance past midnight is true for next day', () {
       final startTime = DateTime(2010, 01, 01, 22, 00);
-      final aSaturday = DateTime(2020, 05, 30);
+      final saturday = DateTime(2020, 05, 30);
+      final friday = DateTime(2020, 05, 29);
 
       // arrange
       final overlappingFridayRecurring = Activity.createNew(
@@ -525,10 +567,10 @@ void main() {
           recurrentData: Recurs.FRIDAY);
 
       // act
-      final result = overlappingFridayRecurring.shouldShowForDay(aSaturday);
+      final result = overlappingFridayRecurring.shouldShowForDay(saturday);
 
       // assert
-      expect(result, true);
+      expect(result, ActivityDay(overlappingFridayRecurring, friday));
     });
 
     test('weekly recurrance with duration 36 hours is true for 3 day', () {
@@ -559,11 +601,11 @@ void main() {
       final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
 
       // assert
-      expect(thursdayResult, false);
-      expect(fridayResult, true);
-      expect(saturdayResult, true);
-      expect(sundayResult, true);
-      expect(mondayResult, false);
+      expect(thursdayResult, null);
+      expect(fridayResult, ActivityDay(overlappingFridayRecurring, friday));
+      expect(saturdayResult, ActivityDay(overlappingFridayRecurring, friday));
+      expect(sundayResult, ActivityDay(overlappingFridayRecurring, friday));
+      expect(mondayResult, null);
     });
 
     test('monthly recurrance with 36 hours duration is true for 3 day', () {
@@ -594,12 +636,13 @@ void main() {
       final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
 
       // assert
-      expect(thursdayResult, false);
-      expect(fridayResult, true);
-      expect(saturdayResult, true);
-      expect(sundayResult, true);
-      expect(mondayResult, false);
+      expect(thursdayResult, null);
+      expect(fridayResult, ActivityDay(overlappingFridayRecurring, friday));
+      expect(saturdayResult, ActivityDay(overlappingFridayRecurring, friday));
+      expect(sundayResult, ActivityDay(overlappingFridayRecurring, friday));
+      expect(mondayResult, null);
     });
+
     test('yearly recurrance with 36 hours duration is true for 3 day', () {
       final startTime = DateTime(2010, 01, 01, 22, 00);
       final thursday = DateTime(2020, 05, 28);
@@ -628,11 +671,11 @@ void main() {
       final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
 
       // assert
-      expect(thursdayResult, false);
-      expect(fridayResult, true);
-      expect(saturdayResult, true);
-      expect(sundayResult, true);
-      expect(mondayResult, false);
+      expect(thursdayResult, null);
+      expect(fridayResult, ActivityDay(overlappingFridayRecurring, friday));
+      expect(saturdayResult, ActivityDay(overlappingFridayRecurring, friday));
+      expect(sundayResult, ActivityDay(overlappingFridayRecurring, friday));
+      expect(mondayResult, null);
     });
   });
 }

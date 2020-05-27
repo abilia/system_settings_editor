@@ -5,18 +5,19 @@ import 'package:seagull/utils/all.dart';
 
 enum Occasion { past, current, future }
 
-class ActivityOccasion extends Equatable {
-  final DateTime day;
-  ActivityOccasion._(this.activity, this.occasion, this.day);
+class ActivityOccasion extends ActivityDay {
+  final Occasion occasion;
+  ActivityOccasion._(Activity activity, this.occasion, DateTime day)
+      : super(activity, day);
   ActivityOccasion(
-    this.activity, {
+    ActivityDay ad, {
     @required DateTime now,
-    @required this.day,
-  }) : occasion = activity.endClock(day).isBefore(now)
+  })  : occasion = ad.activity.endClock(ad.day).isBefore(now)
             ? Occasion.past
-            : activity.startClock(day).isAfter(now)
+            : ad.activity.startClock(ad.day).isAfter(now)
                 ? Occasion.future
-                : Occasion.current;
+                : Occasion.current,
+        super.copy(ad);
 
   @visibleForTesting
   factory ActivityOccasion.forTest(
@@ -28,24 +29,29 @@ class ActivityOccasion extends Equatable {
           activity, occasion, day ?? activity.startTime.onlyDays());
 
   factory ActivityOccasion.fullDay(
-    Activity activity, {
+    ActivityDay ad, {
     @required DateTime now,
-    @required DateTime day,
   }) =>
       ActivityOccasion._(
-          activity,
-          activity.startClock(day).isDayBefore(now)
+          ad.activity,
+          ad.activity.startClock(ad.day).isDayBefore(now)
               ? Occasion.past
               : Occasion.future,
-          day);
+          ad.day);
 
+  @override
+  List<Object> get props => [occasion, ...super.props];
+}
+
+class ActivityDay extends Equatable {
+  final DateTime day;
   final Activity activity;
-  final Occasion occasion;
-
+  DateTime get start => activity.startClock(day);
+  DateTime get end => activity.endClock(day);
+  ActivityDay(this.activity, this.day);
+  ActivityDay.copy(ActivityDay ad) : this(ad.activity, ad.day);
   @override
-  List<Object> get props => [activity, occasion, day];
-
+  List<Object> get props => [activity, day];
   @override
-  String toString() =>
-      '{ $occasion,  Activity: ( ${activity.title} ${activity.startTime}-${activity.end} ) day: $day }';
+  bool get stringify => true;
 }

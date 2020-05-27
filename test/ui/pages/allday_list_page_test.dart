@@ -57,7 +57,7 @@ void main() {
         title: title3,
         startTime: day,
       ),
-    ].map((a) => ActivityOccasion(a, now: day, day: day)).toList();
+    ].map((a) => ActivityOccasion(ActivityDay(a, day), now: day)).toList();
 
     await tester.pumpWidget(wrapWithMaterialApp(AllDayList(
       allDayActivities: allDayActivities,
