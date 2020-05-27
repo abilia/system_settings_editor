@@ -134,9 +134,15 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                 ),
               ),
             ),
-            ArrowLeft(controller: horizontalScrollController),
+            ArrowLeft(
+              controller: horizontalScrollController,
+              collapseMargin: ActivityTimepillarCard.padding,
+            ),
             ArrowUp(controller: verticalScrollController),
-            ArrowRight(controller: horizontalScrollController),
+            ArrowRight(
+              controller: horizontalScrollController,
+              collapseMargin: ActivityTimepillarCard.padding,
+            ),
             ArrowDown(controller: verticalScrollController),
           ],
         );
