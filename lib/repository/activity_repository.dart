@@ -101,7 +101,7 @@ class ActivityRepository extends DataRepository<Activity> {
     Iterable<DbModel<Activity>> activities,
   ) async {
     final response = await httpClient.post(
-      '$baseUrl/api/v1/data/$userId/activities',
+      '$baseUrl/api/v2/data/$userId/activities',
       headers: jsonAuthHeader(authToken),
       body: jsonEncode(activities.toList()),
     );
