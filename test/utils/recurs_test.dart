@@ -29,7 +29,21 @@ void main() {
       // Assert
       expect(result, true);
     });
+    test('Should show when starts at 00:00 ', () {
+      // Arrange
+      final startTime = DateTime(2020, 04, 01, 00, 00);
+      final day = DateTime(2020, 04, 01);
 
+      final overlapping = Activity.createNew(
+        title: 'test',
+        startTime: startTime,
+      );
+      // Act
+      final resultDay1 = overlapping.shouldShowForDay(day);
+
+      // Assert
+      expect(resultDay1, isTrue, reason: 'shows on start day');
+    });
     test(
         'Activity with endtime before start time does not shows ( bug SGC-148 )',
         () {
@@ -51,6 +65,69 @@ void main() {
       // Assert
       expect(result, isFalse);
     });
+
+    test(
+        'Activity with end on day after start should show for next day ( bug SGC-16 )',
+        () {
+      // Arrange
+      final startTime = DateTime(2020, 04, 01, 23, 30);
+      final day = DateTime(2020, 04, 02);
+
+      final overlapping = Activity.createNew(
+        title: 'test',
+        startTime: startTime,
+        duration: 2.hours(),
+      );
+      // Act
+      final result = overlapping.shouldShowForDay(day);
+
+      // Assert
+      expect(result, isTrue);
+    });
+  });
+
+  test(
+      'Activity with end two days after start should show for two days after, but not 3 ( bug SGC-16 )',
+      () {
+    // Arrange
+    final startTime = DateTime(2020, 04, 01, 23, 30);
+    final day = DateTime(2020, 04, 03);
+    final day2 = DateTime(2020, 04, 04);
+
+    final overlapping = Activity.createNew(
+      title: 'test',
+      startTime: startTime,
+      duration: 26.hours(),
+    );
+    // Act
+    final result1 = overlapping.shouldShowForDay(day);
+    final result2 = overlapping.shouldShowForDay(day2);
+
+    // Assert
+    expect(result1, isTrue);
+    expect(result2, isFalse);
+  });
+  test('Should not show time that ends at 00:00 in that day', () {
+    // Arrange
+    final startTime = DateTime(2020, 05, 02, 00, 00);
+    final day = DateTime(2020, 05, 02);
+    final day2 = DateTime(2020, 05, 03);
+    final day3 = DateTime(2020, 05, 04);
+
+    final overlapping = Activity.createNew(
+      title: 'test',
+      startTime: startTime,
+      duration: 48.hours(),
+    );
+    // Act
+    final resultDay1 = overlapping.shouldShowForDay(day);
+    final resultDay2 = overlapping.shouldShowForDay(day2);
+    final resultDay3 = overlapping.shouldShowForDay(day3);
+
+    // Assert
+    expect(resultDay1, isTrue, reason: 'shows on start day');
+    expect(resultDay2, isTrue, reason: 'shows on start day');
+    expect(resultDay3, isFalse);
   });
 
   group('Recurring tests', () {
@@ -432,6 +509,130 @@ void main() {
           loadsOfDays.every((d) => Recurs.onCorrectWeeklyDay(recurrentData, d));
       // assert
       expect(allCorrect, true);
+    });
+
+    test('weekly recurrance past midnight is true for next day', () {
+      final startTime = DateTime(2010, 01, 01, 22, 00);
+      final aSaturday = DateTime(2020, 05, 30);
+
+      // arrange
+      final overlappingFridayRecurring = Activity.createNew(
+          title: 'title',
+          startTime: startTime,
+          endTime: Recurs.NO_END,
+          duration: Duration(hours: 4),
+          recurrentType: RecurrentType.weekly.index,
+          recurrentData: Recurs.FRIDAY);
+
+      // act
+      final result = overlappingFridayRecurring.shouldShowForDay(aSaturday);
+
+      // assert
+      expect(result, true);
+    });
+
+    test('weekly recurrance with duration 36 hours is true for 3 day', () {
+      final startTime = DateTime(2010, 01, 01, 22, 00);
+      final thursday = DateTime(2020, 05, 28);
+      final friday = DateTime(2020, 05, 29);
+      final saturday = DateTime(2020, 05, 30);
+      final sunday = DateTime(2020, 05, 31);
+      final monday = DateTime(2020, 06, 01);
+
+      // arrange
+      final overlappingFridayRecurring = Activity.createNew(
+          title: 'title',
+          startTime: startTime,
+          endTime: Recurs.NO_END,
+          duration: Duration(hours: 36),
+          recurrentType: RecurrentType.weekly.index,
+          recurrentData: Recurs.FRIDAY);
+
+      // act
+      final thursdayResult =
+          overlappingFridayRecurring.shouldShowForDay(thursday);
+      final fridayResult = overlappingFridayRecurring.shouldShowForDay(friday);
+      final saturdayResult =
+          overlappingFridayRecurring.shouldShowForDay(sunday);
+      final sundayResult =
+          overlappingFridayRecurring.shouldShowForDay(saturday);
+      final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
+
+      // assert
+      expect(thursdayResult, false);
+      expect(fridayResult, true);
+      expect(saturdayResult, true);
+      expect(sundayResult, true);
+      expect(mondayResult, false);
+    });
+
+    test('monthly recurrance with 36 hours duration is true for 3 day', () {
+      final startTime = DateTime(2010, 01, 01, 22, 00);
+      final thursday = DateTime(2020, 05, 28);
+      final friday = DateTime(2020, 05, 29);
+      final saturday = DateTime(2020, 05, 30);
+      final sunday = DateTime(2020, 05, 31);
+      final monday = DateTime(2020, 06, 01);
+
+      // arrange
+      final overlappingFridayRecurring = Activity.createNew(
+          title: 'title',
+          startTime: startTime,
+          endTime: Recurs.NO_END,
+          duration: Duration(hours: 36),
+          recurrentType: RecurrentType.monthly.index,
+          recurrentData: Recurs.onDayOfMonth(29));
+
+      // act
+      final thursdayResult =
+          overlappingFridayRecurring.shouldShowForDay(thursday);
+      final fridayResult = overlappingFridayRecurring.shouldShowForDay(friday);
+      final saturdayResult =
+          overlappingFridayRecurring.shouldShowForDay(sunday);
+      final sundayResult =
+          overlappingFridayRecurring.shouldShowForDay(saturday);
+      final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
+
+      // assert
+      expect(thursdayResult, false);
+      expect(fridayResult, true);
+      expect(saturdayResult, true);
+      expect(sundayResult, true);
+      expect(mondayResult, false);
+    });
+    test('yearly recurrance with 36 hours duration is true for 3 day', () {
+      final startTime = DateTime(2010, 01, 01, 22, 00);
+      final thursday = DateTime(2020, 05, 28);
+      final friday = DateTime(2020, 05, 29);
+      final saturday = DateTime(2020, 05, 30);
+      final sunday = DateTime(2020, 05, 31);
+      final monday = DateTime(2020, 06, 01);
+
+      // arrange
+      final overlappingFridayRecurring = Activity.createNew(
+          title: 'title',
+          startTime: startTime,
+          endTime: Recurs.NO_END,
+          duration: Duration(hours: 36),
+          recurrentType: RecurrentType.yearly.index,
+          recurrentData: Recurs.dayOfYearData(friday));
+
+      // act
+      final thursdayResult =
+          overlappingFridayRecurring.shouldShowForDay(thursday);
+      final fridayResult = overlappingFridayRecurring.shouldShowForDay(friday);
+      final saturdayResult =
+          overlappingFridayRecurring.shouldShowForDay(sunday);
+      final sundayResult =
+          overlappingFridayRecurring.shouldShowForDay(saturday);
+      final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
+
+      // assert
+      expect(thursdayResult, false);
+      expect(fridayResult, true);
+      expect(saturdayResult, true);
+      expect(sundayResult, true);
+      expect(mondayResult, false);
     });
   });
 }

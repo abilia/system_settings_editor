@@ -76,7 +76,7 @@ extension IterableActivity on Iterable<Activity> {
   List<NotificationAlarm> _alarmsForRestOfDay(DateTime start, DateTime end) =>
       _alarmsFor(start,
           startTimeTest: (a) =>
-              a.startClock(start).isOnOrBetween(startDate: start, endDate: end),
+              a.startClock(start).inInclusiveRange(startDate: start, endDate: end),
           endTimeTest: (a) =>
               a.startClock(start).isAtSameDay(start) &&
               a.endClock(start).isAtSameMomentOrAfter(start),

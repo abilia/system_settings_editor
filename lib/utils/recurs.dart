@@ -16,7 +16,14 @@ class Recurs {
       ODD_THURSDAY = 0x400,
       ODD_FRIDAY = 0x800,
       ODD_SATURDAY = 0x1000,
-      ODD_SUNDAY = 0x2000;
+      ODD_SUNDAY = 0x2000,
+      MONDAY = EVEN_MONDAY | ODD_MONDAY,
+      TUESDAY = EVEN_TUESDAY | ODD_TUESDAY,
+      WEDNESDAY = EVEN_WEDNESDAY | ODD_WEDNESDAY,
+      THURSDAY = EVEN_THURSDAY | ODD_THURSDAY,
+      FRIDAY = EVEN_FRIDAY | ODD_FRIDAY,
+      SATURDAY = EVEN_SATURDAY | ODD_SATURDAY,
+      SUNDAY = EVEN_SUNDAY | ODD_SUNDAY;
 
   static final DateTime NO_END =
       DateTime.fromMillisecondsSinceEpoch(253402297199000);
@@ -51,14 +58,25 @@ class Recurs {
 extension RecurringActivityExtension on Activity {
   bool shouldShowForDay(DateTime day) {
     if (!isRecurring) {
-      return day.isAtSameDay(startTime);
+      return day.isAtSameDay(startTime) ||
+          day.inExclusiveRange(startDate: startTime, endDate: end);
     }
 
-    if (!day.isOnOrBetween(
+    if (!day.inInclusiveRange(
         startDate: startTime.onlyDays(), endDate: endTime.onlyDays())) {
       return false;
     }
+    if (onCorrectRecurrance(day)) return true;
 
+    var dayBefore = day.previousDay();
+    while (endClock(dayBefore).isAfter(day)) {
+      if (onCorrectRecurrance(dayBefore)) return true;
+      dayBefore = dayBefore.previousDay();
+    }
+    return false;
+  }
+
+  bool onCorrectRecurrance(DateTime day) {
     switch (recurrance) {
       case RecurrentType.weekly:
         return Recurs.onCorrectWeeklyDay(recurrentData, day);

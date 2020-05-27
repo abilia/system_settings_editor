@@ -176,7 +176,7 @@ class ActivityInfoSideDots extends StatelessWidget {
         final onSameDay = day.isAtSameDay(now),
             notStarted = startTime.isAfter(now),
             isCurrent = activity.hasEndTime &&
-                now.isOnOrBetween(startDate: startTime, endDate: endTime);
+                now.inInclusiveRange(startDate: startTime, endDate: endTime);
         final shouldHaveSideDots =
             !activity.fullDay && onSameDay && (notStarted || isCurrent);
         return AnimatedSwitcher(

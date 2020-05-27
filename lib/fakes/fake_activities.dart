@@ -115,12 +115,6 @@ class FakeActivity {
   static Activity reocurrsFridays([DateTime startDate]) => reoccurs(
       startDate, RecurrentType.weekly, Recurs.EVEN_FRIDAY | Recurs.ODD_FRIDAY,
       title: 'recurs friday');
-  static Activity reocurrsSaturdays([DateTime startDate]) => reoccurs(startDate,
-      RecurrentType.weekly, Recurs.EVEN_SATURDAY | Recurs.ODD_SATURDAY,
-      title: 'recurs saturday');
-  static Activity reocurrsSunday([DateTime startDate]) => reoccurs(
-      startDate, RecurrentType.weekly, Recurs.EVEN_SUNDAY | Recurs.ODD_SUNDAY,
-      title: 'recurs sunday');
   static Activity reocurrsOnDay(int day,
           [DateTime startDate, DateTime endDate]) =>
       reoccurs(startDate, RecurrentType.monthly, Recurs.onDayOfMonth(day),
