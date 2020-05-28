@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/models/activity.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -159,17 +159,17 @@ class SideDots extends StatelessWidget {
 class ActivityInfoSideDots extends StatelessWidget {
   static const int dots = 8, hours = (dots ~/ dotsPerHour);
 
-  final Activity activity;
-  final DateTime day;
-  const ActivityInfoSideDots({
-    Key key,
-    @required this.activity,
-    @required this.day,
-  }) : super(key: key);
+  final ActivityDay activityDay;
+  DateTime get day => activityDay.day;
+  Activity get activity => activityDay.activity;
+  const ActivityInfoSideDots(this.activityDay, {Key key}) : super(key: key);
+  factory ActivityInfoSideDots.from(
+          {Activity activity, DateTime day, Key key}) =>
+      ActivityInfoSideDots(ActivityDay(activity, day), key: key);
   @override
   Widget build(BuildContext context) {
-    final endTime = activity.endClock(day);
-    final startTime = activity.startClock(day);
+    final endTime = activityDay.end;
+    final startTime = activityDay.start;
     return ConstrainedBox(
       constraints: BoxConstraints(minWidth: ActivityInfo.margin),
       child: BlocBuilder<ClockBloc, DateTime>(builder: (context, now) {

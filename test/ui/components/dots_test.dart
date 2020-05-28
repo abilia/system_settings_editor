@@ -44,7 +44,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -71,7 +71,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -94,7 +94,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -120,7 +120,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -143,7 +143,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day.previousDay(),
           ),
@@ -166,7 +166,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -189,7 +189,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -212,7 +212,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -237,7 +237,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -261,7 +261,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -284,7 +284,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -307,7 +307,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -340,7 +340,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),
@@ -368,7 +368,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ActivityInfoSideDots(
+          ActivityInfoSideDots.from(
             activity: activity,
             day: day,
           ),

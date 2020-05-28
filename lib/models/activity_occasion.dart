@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -46,10 +47,12 @@ class ActivityDay extends Equatable {
   final Activity activity;
   DateTime get start => activity.startClock(day);
   DateTime get end => activity.endClock(day);
-  ActivityDay(this.activity, this.day)
+  const ActivityDay(this.activity, this.day)
       : assert(activity != null),
         assert(day != null);
   ActivityDay.copy(ActivityDay ad) : this(ad.activity, ad.day);
+  ActivityDay fromActivitiesState(ActivitiesState activitiesState) =>
+      ActivityDay(activitiesState.newActivityFromLoadedOrGiven(activity), day);
   @override
   List<Object> get props => [activity, day];
   @override

@@ -10,17 +10,15 @@ import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityInfoWithDots extends StatelessWidget {
-  final Activity activity;
-  final DateTime day;
+  final ActivityDay activityDay;
 
-  const ActivityInfoWithDots({Key key, this.activity, this.day})
-      : super(key: key);
+  const ActivityInfoWithDots(this.activityDay, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        ActivityInfoSideDots(activity: activity, day: day),
-        Expanded(child: ActivityInfo(activity: activity, day: day)),
+        ActivityInfoSideDots(activityDay),
+        Expanded(child: ActivityInfo(activityDay)),
       ],
     );
   }
@@ -28,14 +26,12 @@ class ActivityInfoWithDots extends StatelessWidget {
 
 class ActivityInfo extends StatelessWidget {
   static const margin = 12.0;
-  //TODO make this AD
-  final Activity activity;
-  final DateTime day;
-  const ActivityInfo({
-    Key key,
-    @required this.activity,
-    @required this.day,
-  }) : super(key: key);
+  final ActivityDay activityDay;
+  Activity get activity => activityDay.activity;
+  DateTime get day => activityDay.day;
+  const ActivityInfo(this.activityDay, {Key key}) : super(key: key);
+  factory ActivityInfo.from({Activity activity, DateTime day, Key key}) =>
+      ActivityInfo(ActivityDay(activity, day), key: key);
 
   static const animationDuration = Duration(milliseconds: 500);
 
