@@ -92,9 +92,11 @@ class ActivityPage extends StatelessWidget {
                         if (applyTo == null) return;
                         BlocProvider.of<ActivitiesBloc>(context).add(
                           UpdateRecurringActivity(
-                            changedActivity,
+                            ActivityDay(
+                              changedActivity,
+                              day,
+                            ),
                             applyTo,
-                            day,
                           ),
                         );
                       } else {
@@ -117,9 +119,7 @@ class ActivityPage extends StatelessWidget {
                   onPressed: () => showViewDialog<bool>(
                     context: context,
                     builder: (_) => BlocProvider<EditActivityBloc>.value(
-                      value: EditActivityBloc(
-                          activity: activity,
-                          day: day,
+                      value: EditActivityBloc(activityDay,
                           activitiesBloc:
                               BlocProvider.of<ActivitiesBloc>(context)),
                       child: SelectReminderDialog(
@@ -141,10 +141,9 @@ class ActivityPage extends StatelessWidget {
                       builder: (_) {
                         return BlocProvider<EditActivityBloc>(
                           create: (_) => EditActivityBloc(
+                            activityDay,
                             activitiesBloc:
                                 BlocProvider.of<ActivitiesBloc>(context),
-                            activity: activity,
-                            day: day,
                           ),
                           child: EditActivityPage(
                             day: day,
@@ -181,9 +180,8 @@ class ActivityPage extends StatelessWidget {
                       if (applyTo == null) return;
                       BlocProvider.of<ActivitiesBloc>(context).add(
                         DeleteRecurringActivity(
-                          activity,
+                          activityDay,
                           applyTo,
-                          occasion.day,
                         ),
                       );
                     } else {
