@@ -25,7 +25,7 @@ extension IterableActivity on Iterable<Activity> {
       bool Function(NotificationAlarm) reminderTest}) {
     final day = time.onlyDays();
     final activitiesThisDay = where((a) => !a.fullDay)
-        .map((a) => a.shouldShowForDay(day))
+        .expand((a) => a.shouldShowForDay(day))
         .where((e) => e != null)
         .toList();
     final activitiesWithAlarm =

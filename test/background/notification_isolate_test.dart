@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
-import 'package:seagull/fakes/fake_activities.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/models/all.dart';
 
@@ -35,7 +34,7 @@ void main() {
       endTime: now.add(5.days()),
       alarmType: ALARM_SOUND_ONLY_ON_START,
       recurrentType: RecurrentType.weekly.index,
-      recurrentData: allWeek,
+      recurrentData: Recurs.everyday,
     ),
   ];
   setUp(() {

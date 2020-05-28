@@ -150,7 +150,7 @@ void main() {
         startTime: startDate.subtract(reminder).subtract(50.days()),
         endTime: day.add(200.days()),
         recurrentType: RecurrentType.weekly.index,
-        recurrentData: allWeek,
+        recurrentData: Recurs.everyday,
         checkable: true,
       );
       final activities = [uncheckedReminder];

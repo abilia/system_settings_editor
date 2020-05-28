@@ -628,7 +628,7 @@ void main() {
         endTime: DateTime.fromMillisecondsSinceEpoch(253402297199000),
         removeAfter: true,
         recurrentType: RecurrentType.weekly.index,
-        recurrentData: allWeekdays,
+        recurrentData: Recurs.allWeekdays,
       );
 
       final activities = Iterable<Activity>.empty().followedBy([

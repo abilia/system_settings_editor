@@ -23,7 +23,22 @@ class Recurs {
       THURSDAY = EVEN_THURSDAY | ODD_THURSDAY,
       FRIDAY = EVEN_FRIDAY | ODD_FRIDAY,
       SATURDAY = EVEN_SATURDAY | ODD_SATURDAY,
-      SUNDAY = EVEN_SUNDAY | ODD_SUNDAY;
+      SUNDAY = EVEN_SUNDAY | ODD_SUNDAY,
+      oddWeekdays = Recurs.ODD_MONDAY |
+          Recurs.ODD_TUESDAY |
+          Recurs.ODD_WEDNESDAY |
+          Recurs.ODD_THURSDAY |
+          Recurs.ODD_FRIDAY,
+      evenWeekdays = Recurs.EVEN_MONDAY |
+          Recurs.EVEN_TUESDAY |
+          Recurs.EVEN_WEDNESDAY |
+          Recurs.EVEN_THURSDAY |
+          Recurs.EVEN_FRIDAY,
+      allWeekdays = oddWeekdays | evenWeekdays,
+      oddWeekends = Recurs.ODD_SATURDAY | Recurs.ODD_SUNDAY,
+      evenWeekends = Recurs.EVEN_SATURDAY | Recurs.EVEN_SUNDAY,
+      allWeekends = evenWeekends | oddWeekends,
+      everyday = allWeekdays | allWeekends;
 
   static final DateTime NO_END =
       DateTime.fromMillisecondsSinceEpoch(253402297199000);
@@ -56,31 +71,30 @@ class Recurs {
 }
 
 extension RecurringActivityExtension on Activity {
-  ActivityDay shouldShowForDay(DateTime day) {
+  List<ActivityDay> shouldShowForDay(DateTime day) {
     if (!isRecurring) {
       if (day.isAtSameDay(startTime) ||
           day.inExclusiveRange(
               startDate: startTime, endDate: noneRecurringEnd)) {
-        return ActivityDay(this, startTime.onlyDays());
+        return [ActivityDay(this, startTime.onlyDays())];
       }
-      return null;
+      return [];
     }
 
     if (!day.inInclusiveRange(
         startDate: startTime.onlyDays(), endDate: endTime.onlyDays())) {
-      return null;
+      return [];
     }
 
-    if (onCorrectRecurrance(day))
-      return ActivityDay(this,
-          day); // TODO if since last everyday spans over midnight, we need the activity twice
-
-    var dayBefore = day.previousDay();
-    while (endClock(dayBefore).isAfter(day)) {
-      if (onCorrectRecurrance(dayBefore)) return ActivityDay(this, dayBefore);
-      dayBefore = dayBefore.previousDay();
+    final result = <ActivityDay>[];
+    for (var dayIterator = day;
+        endClock(dayIterator).isAfter(day);
+        dayIterator = dayIterator.previousDay()) {
+      if (onCorrectRecurrance(dayIterator)) {
+        result.add(ActivityDay(this, dayIterator));
+      }
     }
-    return null;
+    return result;
   }
 
   bool onCorrectRecurrance(DateTime day) {

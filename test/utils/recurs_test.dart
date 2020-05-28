@@ -27,7 +27,10 @@ void main() {
       final result = splitRecurring.shouldShowForDay(dayOnSplit);
 
       // Assert
-      expect(result, ActivityDay(splitRecurring, dayOnSplit));
+      expect(result, [
+        ActivityDay(splitRecurring, dayOnSplit),
+        ActivityDay(splitRecurring, dayOnSplit.previousDay()),
+      ]);
     });
 
     test('Should show when starts at 00:00 ', () {
@@ -43,7 +46,7 @@ void main() {
       final resultDay1 = overlapping.shouldShowForDay(day);
 
       // Assert
-      expect(resultDay1, ActivityDay(overlapping, day));
+      expect(resultDay1, [ActivityDay(overlapping, day)]);
     });
 
     test(
@@ -65,7 +68,7 @@ void main() {
       final result = splitRecurring.shouldShowForDay(day);
 
       // Assert
-      expect(result, null);
+      expect(result, isEmpty);
     });
 
     test(
@@ -85,7 +88,7 @@ void main() {
       final result = overlapping.shouldShowForDay(day);
 
       // Assert
-      expect(result, ActivityDay(overlapping, startDay));
+      expect(result, [ActivityDay(overlapping, startDay)]);
     });
   });
 
@@ -108,8 +111,8 @@ void main() {
     final result2 = overlapping.shouldShowForDay(day2);
 
     // Assert
-    expect(result1, ActivityDay(overlapping, startDay));
-    expect(result2, null);
+    expect(result1, [ActivityDay(overlapping, startDay)]);
+    expect(result2, isEmpty);
   });
 
   test('Should not show time that ends at 00:00 in that day', () {
@@ -130,9 +133,9 @@ void main() {
     final resultDay3 = overlapping.shouldShowForDay(day3);
 
     // Assert
-    expect(resultDay1, ActivityDay(overlapping, day));
-    expect(resultDay2, ActivityDay(overlapping, day));
-    expect(resultDay3, null);
+    expect(resultDay1, [ActivityDay(overlapping, day)]);
+    expect(resultDay2, [ActivityDay(overlapping, day)]);
+    expect(resultDay3, isEmpty);
   });
   test('Fullday', () {
     // Arrange
@@ -160,17 +163,17 @@ void main() {
     final result3Day3 = yesterdayFullday.shouldShowForDay(yesterday);
 
     // Assert
-    expect(result1Day1, ActivityDay(fullDayActivity, today));
-    expect(result2Day1, null);
-    expect(result3Day1, null);
+    expect(result1Day1, [ActivityDay(fullDayActivity, today)]);
+    expect(result2Day1, isEmpty);
+    expect(result3Day1, isEmpty);
 
-    expect(result1Day2, null);
-    expect(result2Day2, ActivityDay(tomorrowFullday, tomorrow));
-    expect(result3Day2, null);
+    expect(result1Day2, isEmpty);
+    expect(result2Day2, [ActivityDay(tomorrowFullday, tomorrow)]);
+    expect(result3Day2, isEmpty);
 
-    expect(result1Day3, null);
-    expect(result2Day3, null);
-    expect(result3Day3, ActivityDay(yesterdayFullday, yesterday));
+    expect(result1Day3, isEmpty);
+    expect(result2Day3, isEmpty);
+    expect(result3Day3, [ActivityDay(yesterdayFullday, yesterday)]);
   });
 
   group('Recurring tests', () {
@@ -362,7 +365,7 @@ void main() {
 
     test('All weekdays, monday is true', () {
       // arrange
-      final recurrentData = allWeekdays;
+      final recurrentData = Recurs.allWeekdays;
       final evenWeekMonday = DateTime(2019, 11, 25);
 
       // act
@@ -374,7 +377,7 @@ void main() {
 
     test('All weekdays, sunday is false', () {
       // arrange
-      final recurrentData = allWeekdays;
+      final recurrentData = Recurs.allWeekdays;
       final evenWeekMonday = DateTime(2019, 11, 24);
       // act
       final correctDays =
@@ -385,7 +388,7 @@ void main() {
 
     test('All weekdays, correct for whole month', () {
       // arrange
-      final recurrentData = allWeekdays;
+      final recurrentData = Recurs.allWeekdays;
       final dates = List.generate(31, (i) => DateTime(2020, 10, i + 1));
       // act
       final correctDays = dates.every((d) =>
@@ -544,7 +547,7 @@ void main() {
 
     test('everyDay is always true', () {
       // arrange
-      final recurrentData = allWeek;
+      final recurrentData = Recurs.everyday;
       final loadsOfDays =
           List.generate(3333, (i) => DateTime(2019, 01, 01 + i));
       // act
@@ -572,7 +575,7 @@ void main() {
       final result = overlappingFridayRecurring.shouldShowForDay(saturday);
 
       // assert
-      expect(result, ActivityDay(overlappingFridayRecurring, friday));
+      expect(result, [ActivityDay(overlappingFridayRecurring, friday)]);
     });
 
     test('weekly recurrance with duration 36 hours is true for 3 day', () {
@@ -597,17 +600,16 @@ void main() {
           overlappingFridayRecurring.shouldShowForDay(thursday);
       final fridayResult = overlappingFridayRecurring.shouldShowForDay(friday);
       final saturdayResult =
-          overlappingFridayRecurring.shouldShowForDay(sunday);
-      final sundayResult =
           overlappingFridayRecurring.shouldShowForDay(saturday);
+      final sundayResult = overlappingFridayRecurring.shouldShowForDay(sunday);
       final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
 
       // assert
-      expect(thursdayResult, null);
-      expect(fridayResult, ActivityDay(overlappingFridayRecurring, friday));
-      expect(saturdayResult, ActivityDay(overlappingFridayRecurring, friday));
-      expect(sundayResult, ActivityDay(overlappingFridayRecurring, friday));
-      expect(mondayResult, null);
+      expect(thursdayResult, isEmpty);
+      expect(fridayResult, [ActivityDay(overlappingFridayRecurring, friday)]);
+      expect(saturdayResult, [ActivityDay(overlappingFridayRecurring, friday)]);
+      expect(sundayResult, [ActivityDay(overlappingFridayRecurring, friday)]);
+      expect(mondayResult, isEmpty);
     });
 
     test('monthly recurrance with 36 hours duration is true for 3 day', () {
@@ -632,17 +634,16 @@ void main() {
           overlappingFridayRecurring.shouldShowForDay(thursday);
       final fridayResult = overlappingFridayRecurring.shouldShowForDay(friday);
       final saturdayResult =
-          overlappingFridayRecurring.shouldShowForDay(sunday);
-      final sundayResult =
           overlappingFridayRecurring.shouldShowForDay(saturday);
+      final sundayResult = overlappingFridayRecurring.shouldShowForDay(sunday);
       final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
 
       // assert
-      expect(thursdayResult, null);
-      expect(fridayResult, ActivityDay(overlappingFridayRecurring, friday));
-      expect(saturdayResult, ActivityDay(overlappingFridayRecurring, friday));
-      expect(sundayResult, ActivityDay(overlappingFridayRecurring, friday));
-      expect(mondayResult, null);
+      expect(thursdayResult, isEmpty);
+      expect(fridayResult, [ActivityDay(overlappingFridayRecurring, friday)]);
+      expect(saturdayResult, [ActivityDay(overlappingFridayRecurring, friday)]);
+      expect(sundayResult, [ActivityDay(overlappingFridayRecurring, friday)]);
+      expect(mondayResult, isEmpty);
     });
 
     test('yearly recurrance with 36 hours duration is true for 3 day', () {
@@ -667,17 +668,103 @@ void main() {
           overlappingFridayRecurring.shouldShowForDay(thursday);
       final fridayResult = overlappingFridayRecurring.shouldShowForDay(friday);
       final saturdayResult =
-          overlappingFridayRecurring.shouldShowForDay(sunday);
-      final sundayResult =
           overlappingFridayRecurring.shouldShowForDay(saturday);
+      final sundayResult = overlappingFridayRecurring.shouldShowForDay(sunday);
       final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
 
       // assert
-      expect(thursdayResult, null);
-      expect(fridayResult, ActivityDay(overlappingFridayRecurring, friday));
-      expect(saturdayResult, ActivityDay(overlappingFridayRecurring, friday));
-      expect(sundayResult, ActivityDay(overlappingFridayRecurring, friday));
-      expect(mondayResult, null);
+      expect(thursdayResult, isEmpty);
+      expect(fridayResult, [ActivityDay(overlappingFridayRecurring, friday)]);
+      expect(saturdayResult, [ActivityDay(overlappingFridayRecurring, friday)]);
+      expect(sundayResult, [ActivityDay(overlappingFridayRecurring, friday)]);
+      expect(mondayResult, isEmpty);
+    });
+
+    test(
+        'recurrance spanning over midnight two days in a row should show up twice',
+        () {
+      final startTime = DateTime(2010, 01, 01, 21, 00);
+      final wednesday = DateTime(2020, 05, 27);
+      final thursday = DateTime(2020, 05, 28);
+
+      // arrange
+      final overlappingFridayRecurring = Activity.createNew(
+          title: 'title',
+          startTime: startTime,
+          endTime: Recurs.NO_END,
+          duration: Duration(hours: 12),
+          recurrentType: RecurrentType.weekly.index,
+          recurrentData: Recurs.everyday);
+
+      // act
+      final thursdayResult =
+          overlappingFridayRecurring.shouldShowForDay(thursday);
+
+      // assert
+      expect(
+          thursdayResult,
+          containsAll([
+            ActivityDay(overlappingFridayRecurring, wednesday),
+            ActivityDay(overlappingFridayRecurring, thursday),
+          ]));
+    });
+
+    test(
+        'recurrance spanning over midnight two days in a row should show up twice',
+        () {
+      final startTime = DateTime(2010, 01, 01, 21, 00);
+      final wednesday = DateTime(2020, 05, 27);
+      final thursday = DateTime(2020, 05, 28);
+      final friday = DateTime(2020, 05, 29);
+      final saturday = DateTime(2020, 05, 30);
+      final sunday = DateTime(2020, 05, 31);
+      final monday = DateTime(2020, 06, 01);
+
+      // arrange
+      final overlappingFridayRecurring = Activity.createNew(
+          title: 'title',
+          startTime: startTime,
+          endTime: Recurs.NO_END,
+          duration: Duration(hours: 36),
+          recurrentType: RecurrentType.weekly.index,
+          recurrentData: Recurs.everyday);
+
+      // act
+      final fridayResult = overlappingFridayRecurring.shouldShowForDay(friday);
+      final saturdayResult =
+          overlappingFridayRecurring.shouldShowForDay(saturday);
+      final sundayResult = overlappingFridayRecurring.shouldShowForDay(sunday);
+      final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
+
+      // assert
+      expect(
+          fridayResult,
+          containsAll([
+            ActivityDay(overlappingFridayRecurring, wednesday),
+            ActivityDay(overlappingFridayRecurring, thursday),
+            ActivityDay(overlappingFridayRecurring, friday),
+          ]));
+      expect(
+          saturdayResult,
+          containsAll([
+            ActivityDay(overlappingFridayRecurring, thursday),
+            ActivityDay(overlappingFridayRecurring, friday),
+            ActivityDay(overlappingFridayRecurring, saturday),
+          ]));
+      expect(
+          sundayResult,
+          containsAll([
+            ActivityDay(overlappingFridayRecurring, friday),
+            ActivityDay(overlappingFridayRecurring, saturday),
+            ActivityDay(overlappingFridayRecurring, sunday),
+          ]));
+      expect(
+          mondayResult,
+          containsAll([
+            ActivityDay(overlappingFridayRecurring, saturday),
+            ActivityDay(overlappingFridayRecurring, sunday),
+            ActivityDay(overlappingFridayRecurring, monday),
+          ]));
     });
   });
 }

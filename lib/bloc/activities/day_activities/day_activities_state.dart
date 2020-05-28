@@ -27,7 +27,7 @@ class DayActivitiesLoaded extends DayActivitiesState {
 
   DayActivitiesLoaded(Iterable<Activity> activities, this.day)
       : activities = activities
-            .map((activity) => activity.shouldShowForDay(day))
+            .expand((activity) => activity.shouldShowForDay(day))
             .where((activityDay) => activityDay != null);
 
   @override
