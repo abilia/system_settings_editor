@@ -146,19 +146,26 @@ class _ArrowState extends State<_Arrow> {
   }
 
   @override
-  Widget build(BuildContext context) => ClipRect(
-        child: AnimatedContainer(
-          transform: condition ? widget.translation : widget.hiddenTranslation,
-          width: widget.width != null ? condition ? widget.width : 1 : null,
-          height: widget.heigth != null ? condition ? widget.heigth : 1 : null,
-          decoration: BoxDecoration(
-            borderRadius: widget.borderRadius,
-            color: AbiliaColors.white135,
-          ),
-          child: Icon(widget.icon, size: 24),
-          duration: const Duration(milliseconds: 200),
+  Widget build(BuildContext context) {
+    if (widget.controller.hasClients &&
+        widget.controller.position.haveDimensions &&
+        condition != widget.conditionFunction(widget.controller)) {
+      condition = widget.conditionFunction(widget.controller);
+    }
+    return ClipRect(
+      child: AnimatedContainer(
+        transform: condition ? widget.translation : widget.hiddenTranslation,
+        width: widget.width != null ? condition ? widget.width : 1 : null,
+        height: widget.heigth != null ? condition ? widget.heigth : 1 : null,
+        decoration: BoxDecoration(
+          borderRadius: widget.borderRadius,
+          color: AbiliaColors.white135,
         ),
-      );
+        child: Icon(widget.icon, size: 24),
+        duration: const Duration(milliseconds: 200),
+      ),
+    );
+  }
 
   void listener() {
     if (widget.conditionFunction(widget.controller) != condition) {
