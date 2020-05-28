@@ -43,5 +43,5 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
       ];
   @override
   String toString() =>
-      'ActivitiesOccasionLoaded { $occasion, ${activities.length} activities, ${fullDayActivities.length} fullDay activities, day; ${yMd(day)}, ${isToday ? 'today, indexOfCurrentActivity; $indexOfCurrentActivity' : 'not today'}';
+      'ActivitiesOccasionLoaded { $occasion, [${activities.map((e) => '(${e.occasion} ${e.activity.title ?? e.activity.id} ${e.day} )')}], FullDay: $fullDayActivities, day; ${yMd(day)}, ${isToday ? 'today' : 'not today'} indexOfCurrentActivity; $indexOfCurrentActivity';
 }

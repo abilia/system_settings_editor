@@ -15,33 +15,31 @@ void main() {
   ClockBloc clockBloc;
   ActivitiesBloc activitiesBloc;
   ActivitiesOccasionBloc activitiesOccasionBloc;
-  final initialTime = DateTime(2006, 06, 06, 06, 06, 06, 06).onlyMinutes();
-  final initialMinutes = initialTime.onlyMinutes();
-  final initialDay = initialTime.onlyDays();
-  final nextDay = initialDay.add(Duration(days: 1));
-  final previusDay = initialDay.subtract(Duration(days: 1));
+  final initialMinutes = DateTime(2006, 06, 06, 06, 06);
+  final initialDay = initialMinutes.onlyDays();
+  final nextDay = initialDay.nextDay();
+  final previusDay = initialDay.previousDay();
   MockActivityRepository mockActivityRepository;
   StreamController<DateTime> mockedTicker;
 
+  setUp(() {
+    mockedTicker = StreamController<DateTime>();
+    clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
+    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+    mockActivityRepository = MockActivityRepository();
+    activitiesBloc = ActivitiesBloc(
+      activityRepository: mockActivityRepository,
+      syncBloc: MockSyncBloc(),
+      pushBloc: MockPushBloc(),
+    );
+    dayActivitiesBloc = DayActivitiesBloc(
+        dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
+    activitiesOccasionBloc = ActivitiesOccasionBloc(
+        clockBloc: clockBloc,
+        dayActivitiesBloc: dayActivitiesBloc,
+        dayPickerBloc: dayPickerBloc);
+  });
   group('ActivitiesOccasionBloc', () {
-    setUp(() {
-      mockedTicker = StreamController<DateTime>();
-      clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
-      dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
-      mockActivityRepository = MockActivityRepository();
-      activitiesBloc = ActivitiesBloc(
-        activityRepository: mockActivityRepository,
-        syncBloc: MockSyncBloc(),
-        pushBloc: MockPushBloc(),
-      );
-      dayActivitiesBloc = DayActivitiesBloc(
-          dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
-      activitiesOccasionBloc = ActivitiesOccasionBloc(
-          clockBloc: clockBloc,
-          dayActivitiesBloc: dayActivitiesBloc,
-          dayPickerBloc: dayPickerBloc);
-    });
-
     test('initial state is ActivitiesOccasionLoading', () {
       expect(activitiesOccasionBloc.initialState, ActivitiesOccasionLoading());
       expect(activitiesOccasionBloc.state, ActivitiesOccasionLoading());
@@ -452,36 +450,9 @@ void main() {
         ]),
       );
     });
-
-    tearDown(() {
-      dayPickerBloc.close();
-      activitiesBloc.close();
-      activitiesOccasionBloc.close();
-      dayActivitiesBloc.close();
-      clockBloc.close();
-      mockedTicker.close();
-    });
   });
 
   group('ActivitiesOccasionBloc recurring', () {
-    setUp(() {
-      mockedTicker = StreamController<DateTime>();
-      clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
-      dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
-      mockActivityRepository = MockActivityRepository();
-      activitiesBloc = ActivitiesBloc(
-        activityRepository: mockActivityRepository,
-        syncBloc: MockSyncBloc(),
-        pushBloc: MockPushBloc(),
-      );
-      dayActivitiesBloc = DayActivitiesBloc(
-          dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
-      activitiesOccasionBloc = ActivitiesOccasionBloc(
-          clockBloc: clockBloc,
-          dayActivitiesBloc: dayActivitiesBloc,
-          dayPickerBloc: dayPickerBloc);
-    });
-
     test('Shows recurring past, present and future', () async {
       // Arrange
       final longAgo = initialMinutes.subtract(Duration(days: 1111));
@@ -578,35 +549,8 @@ void main() {
             ),
           ]));
     });
-
-    tearDown(() {
-      dayPickerBloc.close();
-      activitiesBloc.close();
-      activitiesOccasionBloc.close();
-      dayActivitiesBloc.close();
-      clockBloc.close();
-      mockedTicker.close();
-    });
   });
   group('Remove after', () {
-    setUp(() {
-      mockedTicker = StreamController<DateTime>();
-      clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
-      dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
-      mockActivityRepository = MockActivityRepository();
-      activitiesBloc = ActivitiesBloc(
-        activityRepository: mockActivityRepository,
-        syncBloc: MockSyncBloc(),
-        pushBloc: MockPushBloc(),
-      );
-      dayActivitiesBloc = DayActivitiesBloc(
-          dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
-      activitiesOccasionBloc = ActivitiesOccasionBloc(
-          clockBloc: clockBloc,
-          dayActivitiesBloc: dayActivitiesBloc,
-          dayPickerBloc: dayPickerBloc);
-    });
-
     test(
         'Dont show past days remove after activities, but show present and future',
         () async {
@@ -614,7 +558,7 @@ void main() {
       final longAgo = initialMinutes.subtract(1111.days());
       final yesterday = initialDay.subtract(1.days());
       final tomorrow = initialDay.add(1.days());
-      final in1Hour = initialTime.add(1.hours());
+      final in1Hour = initialMinutes.add(1.hours());
 
       final everyDayRecurring =
           FakeActivity.reocurrsEveryDay(longAgo).copyWith(removeAfter: true);
@@ -711,14 +655,136 @@ void main() {
             ),
           ]));
     });
+  });
+  group('activities spanning multiple days', () {
+    test('Shows into this day', () async {
+      // Arrange
+      final longAgo = initialMinutes.subtract(1111.days());
+      final yesterday = initialDay.previousDay();
+      final dayBeforeyesterday = yesterday.previousDay();
+      final tomorrow = initialDay.nextDay();
 
-    tearDown(() {
-      dayPickerBloc.close();
-      activitiesBloc.close();
-      activitiesOccasionBloc.close();
-      dayActivitiesBloc.close();
-      clockBloc.close();
-      mockedTicker.close();
+      final everyDayRecurring = Activity.createNew(
+          title: 'title',
+          startTime: longAgo,
+          endTime: Recurs.NO_END,
+          duration: 48.hours(),
+          recurrentType: RecurrentType.weekly.index,
+          recurrentData: Recurs.everyday);
+
+      final activities = Iterable<Activity>.empty().followedBy([
+        everyDayRecurring,
+      ]);
+      when(mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(activities));
+
+      // Act
+      activitiesBloc.add(LoadActivities());
+      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      dayPickerBloc.add(NextDay());
+
+      // Assert
+      await expectLater(
+          activitiesOccasionBloc,
+          emitsInOrder([
+            ActivitiesOccasionLoading(),
+            // Tuesday
+            ActivitiesOccasionLoaded(
+              activities: <ActivityOccasion>[
+                ActivityOccasion.forTest(everyDayRecurring,
+                    occasion: Occasion.current, day: dayBeforeyesterday),
+                ActivityOccasion.forTest(everyDayRecurring,
+                    occasion: Occasion.current, day: yesterday),
+                ActivityOccasion.forTest(everyDayRecurring,
+                    occasion: Occasion.current, day: initialDay),
+              ],
+              fullDayActivities: [],
+              indexOfCurrentActivity: 0,
+              day: initialDay,
+              occasion: Occasion.current,
+            ),
+            // Monday
+            ActivitiesOccasionLoaded(
+              activities: [
+                ActivityOccasion.forTest(everyDayRecurring,
+                    occasion: Occasion.current, day: yesterday),
+                ActivityOccasion.forTest(everyDayRecurring,
+                    occasion: Occasion.current, day: initialDay),
+                ActivityOccasion.forTest(everyDayRecurring,
+                    occasion: Occasion.future, day: tomorrow),
+              ],
+              fullDayActivities: [],
+              indexOfCurrentActivity: -1,
+              day: tomorrow,
+              occasion: Occasion.future,
+            ),
+          ]));
     });
+
+    test(' overlapping into this day before starting early today', () async {
+      // Arrange
+
+      final longAgo = initialMinutes.copyWith(hour: 23).subtract(1111.days());
+      final monday = initialDay.previousDay();
+
+      final mondayRecurring = Activity.createNew(
+          title: 'Recurs.MONDAY',
+          startTime: longAgo,
+          endTime: Recurs.NO_END,
+          duration: 10.hours(),
+          recurrentType: RecurrentType.weekly.index,
+          recurrentData: Recurs.MONDAY);
+      final earlyActivity = Activity.createNew(
+        title: 'earlyActivity',
+        startTime: initialMinutes.copyWith(hour: 00, minute: 00),
+      );
+      final earlyCurrent = Activity.createNew(
+        title: 'earlyCurrent',
+        startTime: initialMinutes.copyWith(hour: 00, minute: 00),
+        duration: 9.hours(),
+      );
+
+      final activities = Iterable<Activity>.empty().followedBy([
+        mondayRecurring,
+        earlyActivity,
+        earlyCurrent,
+      ]);
+      when(mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(activities));
+
+      // Act
+      activitiesBloc.add(LoadActivities());
+      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+
+      // Assert
+      await expectLater(
+          activitiesOccasionBloc,
+          emitsInOrder([
+            ActivitiesOccasionLoading(),
+            // Tuesday
+            ActivitiesOccasionLoaded(
+              activities: [
+                ActivityOccasion.forTest(earlyActivity,
+                    occasion: Occasion.past, day: initialDay),
+                ActivityOccasion.forTest(mondayRecurring,
+                    occasion: Occasion.current, day: monday),
+                ActivityOccasion.forTest(earlyCurrent,
+                    occasion: Occasion.current, day: initialDay),
+              ],
+              fullDayActivities: [],
+              indexOfCurrentActivity: 1,
+              day: initialDay,
+              occasion: Occasion.current,
+            ),
+          ]));
+    });
+  });
+  tearDown(() {
+    dayPickerBloc.close();
+    activitiesBloc.close();
+    activitiesOccasionBloc.close();
+    dayActivitiesBloc.close();
+    clockBloc.close();
+    mockedTicker.close();
   });
 }

@@ -69,7 +69,6 @@ class ActivitiesOccasionBloc
             final occasionComparing =
                 a.occasion.index.compareTo(b.occasion.index);
             if (occasionComparing != 0) return occasionComparing;
-            // TODO Write test for activities starting day before is sorted
             final starTimeComparing = a.start.compareTo(b.start);
             if (starTimeComparing != 0) return starTimeComparing;
             return a.end.compareTo(b.end);
