@@ -28,10 +28,10 @@ class AlarmNavigator {
     Widget page;
 
     if (alarm is NewAlarm) {
-      id = '${alarm.activity.id}${alarm.runtimeType}}';
-      page = AlarmPage(activity: alarm.activity, day: alarm.day);
+      id = '${alarm.activityDay.activity.id}${alarm.runtimeType}}';
+      page = AlarmPage(activityDay: alarm.activityDay);
     } else if (alarm is NewReminder) {
-      id = '${alarm.activity.id}${alarm.reminder.inMinutes}';
+      id = '${alarm.activityDay.activity.id}${alarm.reminder.inMinutes}';
       page = ReminderPage(reminder: alarm);
     } else {
       throw ArgumentError();

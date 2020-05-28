@@ -7,9 +7,8 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
 class AlarmPage extends StatelessWidget {
-  final Activity activity;
-  final DateTime day;
-  const AlarmPage({Key key, @required this.activity, @required this.day});
+  final ActivityDay activityDay;
+  const AlarmPage({Key key, @required this.activityDay});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +18,9 @@ class AlarmPage extends StatelessWidget {
         padding: const EdgeInsets.all(ActivityInfo.margin),
         child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
           builder: (context, activitiesState) => ActivityInfo(
-            activity: activitiesState.newActivityFromLoadedOrGiven(activity),
-            day: day,
+            activity: activitiesState
+                .newActivityFromLoadedOrGiven(activityDay.activity),
+            day: activityDay.day,
           ),
         ),
       ),

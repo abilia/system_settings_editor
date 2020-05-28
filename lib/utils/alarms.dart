@@ -33,7 +33,7 @@ extension IterableActivity on Iterable<Activity> {
 
     final startTimeAlarms = activitiesWithAlarm
         .where(startTimeTest)
-        .map<NotificationAlarm>((ad) => StartAlarm.ad(ad));
+        .map<NotificationAlarm>((ad) => StartAlarm.from(ad));
 
     final endTimeAlarms = activitiesWithAlarm
         .where((a) => a.activity.hasEndTime)
@@ -43,10 +43,11 @@ extension IterableActivity on Iterable<Activity> {
 
     final reminders = activitiesThisDay.expand(
       (ad) => [
-        ...ad.activity.reminders.map((r) => ReminderBefore.ad(ad, reminder: r)),
+        ...ad.activity.reminders
+            .map((r) => ReminderBefore.from(ad, reminder: r)),
         if (!ad.activity.isSignedOff(day) && ad.activity.checkable)
           ...unSignedOffActivityReminders
-              .map((r) => ReminderUnchecked.ad(ad, reminder: r)),
+              .map((r) => ReminderUnchecked.from(ad, reminder: r)),
       ].where(reminderTest),
     );
 

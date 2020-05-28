@@ -94,7 +94,7 @@ class ActivityCard extends StatelessWidget {
                                   activity.fullDay
                                       ? Translator.of(context).translate.fullDay
                                       : activity.hasEndTime
-                                          ? '${timeFormat(activity.startTime)} - ${timeFormat(activity.end)}'
+                                          ? '${timeFormat(activity.startTime)} - ${timeFormat(activity.noneRecurringEnd)}'
                                           : '${timeFormat(activity.startTime)}',
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),

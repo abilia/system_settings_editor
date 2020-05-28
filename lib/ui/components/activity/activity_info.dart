@@ -19,10 +19,7 @@ class ActivityInfoWithDots extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        ActivityInfoSideDots(
-          activity: activity,
-          day: day,
-        ),
+        ActivityInfoSideDots(activity: activity, day: day),
         Expanded(child: ActivityInfo(activity: activity, day: day)),
       ],
     );
@@ -31,6 +28,7 @@ class ActivityInfoWithDots extends StatelessWidget {
 
 class ActivityInfo extends StatelessWidget {
   static const margin = 12.0;
+  //TODO make this AD
   final Activity activity;
   final DateTime day;
   const ActivityInfo({
@@ -54,17 +52,17 @@ class ActivityInfo extends StatelessWidget {
             buttonTheme: checkButtonThemeData,
             buttonColor: AbiliaColors.green,
           );
-
+    final ad = ActivityDay(activity, day);
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) => AnimatedTheme(
         duration: animationDuration,
         data: theme.copyWith(
-            cardColor: activity.endClock(day).occasion(now) == Occasion.past
+            cardColor: ad.end.occasion(now) == Occasion.past
                 ? AbiliaColors.white110
                 : AbiliaColors.white),
         child: Column(
           children: <Widget>[
-            TimeRow(activity: activity, day: day),
+            TimeRow(ad),
             Expanded(
               child: Container(
                 decoration: borderDecoration,

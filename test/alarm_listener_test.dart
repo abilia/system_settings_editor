@@ -361,7 +361,7 @@ void main() {
 
       // Expect - the top/latest alarm should now be the start time alarm for activity1
       expect(alarmScreenFinder, findsOneWidget);
-      expect(tester.widget<AlarmPage>(alarmScreenFinder).activity.id,
+      expect(tester.widget<AlarmPage>(alarmScreenFinder).activityDay.activity.id,
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm
@@ -371,7 +371,7 @@ void main() {
       // Expect - the top/latest alarm should be the end time alarm for activity 2
       expect(alarmScreenFinder, findsOneWidget);
 
-      expect((tester.widget(alarmScreenFinder) as AlarmPage).activity.id,
+      expect((tester.widget(alarmScreenFinder) as AlarmPage).activityDay.activity.id,
           equals(activity2.id));
 
       // Act - tap the alarm ok button
@@ -381,7 +381,7 @@ void main() {
       // Expect - the top/latest alarm should be the end time alarm for activity 1
       expect(alarmScreenFinder, findsOneWidget);
 
-      expect((tester.widget(alarmScreenFinder) as AlarmPage).activity.id,
+      expect((tester.widget(alarmScreenFinder) as AlarmPage).activityDay.activity.id,
           equals(activity1.id));
 
       // Act - tap the alarm ok button
@@ -391,7 +391,7 @@ void main() {
       // Expect - the top/latest alarm should be the start time alarm for activity 2
       expect(alarmScreenFinder, findsOneWidget);
 
-      expect((tester.widget(alarmScreenFinder) as AlarmPage).activity.id,
+      expect((tester.widget(alarmScreenFinder) as AlarmPage).activityDay.activity.id,
           equals(activity2.id));
 
       // Act - tap the alarm ok button

@@ -73,6 +73,7 @@ void main() {
         () {
       // Arrange
       final startTime = DateTime(2020, 04, 01, 23, 30);
+      final startDay = startTime.onlyDays();
       final day = DateTime(2020, 04, 02);
 
       final overlapping = Activity.createNew(
@@ -84,7 +85,7 @@ void main() {
       final result = overlapping.shouldShowForDay(day);
 
       // Assert
-      expect(result, ActivityDay(overlapping, day));
+      expect(result, ActivityDay(overlapping, startDay));
     });
   });
 
@@ -93,6 +94,7 @@ void main() {
       () {
     // Arrange
     final startTime = DateTime(2020, 04, 01, 23, 30);
+    final startDay = DateTime(2020, 04, 01);
     final day = DateTime(2020, 04, 03);
     final day2 = DateTime(2020, 04, 04);
 
@@ -106,7 +108,7 @@ void main() {
     final result2 = overlapping.shouldShowForDay(day2);
 
     // Assert
-    expect(result1, ActivityDay(overlapping, day));
+    expect(result1, ActivityDay(overlapping, startDay));
     expect(result2, null);
   });
 
@@ -129,7 +131,7 @@ void main() {
 
     // Assert
     expect(resultDay1, ActivityDay(overlapping, day));
-    expect(resultDay2, ActivityDay(overlapping, day2));
+    expect(resultDay2, ActivityDay(overlapping, day));
     expect(resultDay3, null);
   });
   test('Fullday', () {

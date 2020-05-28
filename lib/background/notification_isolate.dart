@@ -104,7 +104,6 @@ Future scheduleNotification(
   final notificationTime = notificationAlarm.notificationTime;
   final subtitle = getSubtitle(
     notificationAlarm,
-    notificationTime,
     language,
     alwaysUse24HourFormat,
   );
@@ -170,7 +169,6 @@ class NotificationChannel {
 
 String getSubtitle(
   NotificationAlarm notificationAlarm,
-  DateTime day,
   String language,
   bool alwaysUse24HourFormat,
 ) {
@@ -181,10 +179,10 @@ String getSubtitle(
   initializeDateFormatting(locale.languageCode);
   final tf = hourAndMinuteFromUse24(alwaysUse24HourFormat, language);
   final translater = Translated.dictionaries[locale];
-  final a = notificationAlarm.activity;
-  final endTime = a.hasEndTime ? ' - ${tf(a.endClock(day))} ' : ' ';
+  final ad = notificationAlarm.activityDay;
+  final endTime = ad.activity.hasEndTime ? ' - ${tf(ad.end)} ' : ' ';
   final extra = getExtra(notificationAlarm, translater);
-  return tf(a.startClock(day)) + endTime + extra;
+  return tf(ad.start) + endTime + extra;
 }
 
 String getExtra(NotificationAlarm notificationAlarm, Translated translater) {

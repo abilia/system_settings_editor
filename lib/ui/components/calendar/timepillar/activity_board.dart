@@ -31,6 +31,7 @@ class ActivityBoard extends StatelessWidget {
     List<ActivityOccasion> activities,
     TextStyle textStyle,
     double scaleFactor,
+    DateTime day,
   ) {
     final maxEndPos = timePillarHeight +
         dotDistance +
@@ -40,13 +41,12 @@ class ActivityBoard extends StatelessWidget {
             textStyle.height *
             ActivityTimepillarCard.maxTitleLines;
 
-    activities.sort((a1, a2) => a1.activity
-        .startClock(a1.day)
-        .compareTo(a2.activity.startClock(a2.day)));
+    activities.sort((a1, a2) => a1.start.compareTo(a2.start));
     final scheduled = <List<ActivityTimepillarCard>>[];
     ActivityLoop:
     for (final ao in activities) {
       final a = ao.activity;
+      //TODO dont count dots before 00:00
       final dots = a.duration.inDots(minutesPerDot, roundingMinute);
       final dotHeight = dots * dotDistance;
 
@@ -63,11 +63,13 @@ class ActivityBoard extends StatelessWidget {
           max(textHeight + imageHeight, ActivityTimepillarCard.minHeight);
 
       final minutePosition =
-          a.startTime.roundToMinute(minutesPerDot, roundingMinute);
+          ao.start.roundToMinute(minutesPerDot, roundingMinute);
 
-      final topOffset = minutePosition.isDayAfter(a.startTime)
+      final topOffset = minutePosition.isDayAfter(day)
           ? timeToPixelDistance(24, 0)
-          : timeToPixelDistanceHour(minutePosition);
+          : minutePosition.isDayBefore(day)
+              ? dotPadding
+              : timeToPixelDistanceHour(minutePosition);
 
       var height = max(dotHeight, renderedHeight);
 

@@ -59,8 +59,9 @@ extension RecurringActivityExtension on Activity {
   ActivityDay shouldShowForDay(DateTime day) {
     if (!isRecurring) {
       if (day.isAtSameDay(startTime) ||
-          day.inExclusiveRange(startDate: startTime, endDate: end)) {
-        return ActivityDay(this, day);
+          day.inExclusiveRange(
+              startDate: startTime, endDate: noneRecurringEnd)) {
+        return ActivityDay(this, startTime.onlyDays());
       }
       return null;
     }
@@ -70,7 +71,9 @@ extension RecurringActivityExtension on Activity {
       return null;
     }
 
-    if (onCorrectRecurrance(day)) return ActivityDay(this, day);
+    if (onCorrectRecurrance(day))
+      return ActivityDay(this,
+          day); // TODO if since last everyday spans over midnight, we need the activity twice
 
     var dayBefore = day.previousDay();
     while (endClock(dayBefore).isAfter(day)) {

@@ -10,14 +10,14 @@ class ActivityOccasion extends ActivityDay {
   ActivityOccasion._(Activity activity, this.occasion, DateTime day)
       : super(activity, day);
   ActivityOccasion(
-    ActivityDay ad, {
+    ActivityDay activityDay, {
     @required DateTime now,
-  })  : occasion = ad.activity.endClock(ad.day).isBefore(now)
+  })  : occasion = activityDay.end.isBefore(now)
             ? Occasion.past
-            : ad.activity.startClock(ad.day).isAfter(now)
+            : activityDay.start.isAfter(now)
                 ? Occasion.future
                 : Occasion.current,
-        super.copy(ad);
+        super.copy(activityDay);
 
   @visibleForTesting
   factory ActivityOccasion.forTest(
@@ -29,15 +29,13 @@ class ActivityOccasion extends ActivityDay {
           activity, occasion, day ?? activity.startTime.onlyDays());
 
   factory ActivityOccasion.fullDay(
-    ActivityDay ad, {
+    ActivityDay activityDay, {
     @required DateTime now,
   }) =>
       ActivityOccasion._(
-          ad.activity,
-          ad.activity.startClock(ad.day).isDayBefore(now)
-              ? Occasion.past
-              : Occasion.future,
-          ad.day);
+          activityDay.activity,
+          activityDay.start.isDayBefore(now) ? Occasion.past : Occasion.future,
+          activityDay.day);
 
   @override
   List<Object> get props => [occasion, ...super.props];
@@ -48,7 +46,9 @@ class ActivityDay extends Equatable {
   final Activity activity;
   DateTime get start => activity.startClock(day);
   DateTime get end => activity.endClock(day);
-  ActivityDay(this.activity, this.day);
+  ActivityDay(this.activity, this.day)
+      : assert(activity != null),
+        assert(day != null);
   ActivityDay.copy(ActivityDay ad) : this(ad.activity, ad.day);
   @override
   List<Object> get props => [activity, day];
