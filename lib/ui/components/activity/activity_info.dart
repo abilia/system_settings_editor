@@ -48,17 +48,16 @@ class ActivityInfo extends StatelessWidget {
             buttonTheme: checkButtonThemeData,
             buttonColor: AbiliaColors.green,
           );
-    final ad = ActivityDay(activity, day);
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) => AnimatedTheme(
         duration: animationDuration,
         data: theme.copyWith(
-            cardColor: ad.end.occasion(now) == Occasion.past
+            cardColor: activityDay.end.occasion(now) == Occasion.past
                 ? AbiliaColors.white110
                 : AbiliaColors.white),
         child: Column(
           children: <Widget>[
-            TimeRow(ad),
+            TimeRow(activityDay),
             Expanded(
               child: Container(
                 decoration: borderDecoration,

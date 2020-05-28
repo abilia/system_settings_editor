@@ -64,7 +64,6 @@ void main() {
 
   Widget wrap(ActivityOccasion activityOccasion, {DateTime initialTime}) =>
       multiWrap([activityOccasion], initialTime: initialTime);
-// TODO Write test so that activity starting day before is at top of board
   testWidgets('shows title', (WidgetTester tester) async {
     await tester.pumpWidget(
       wrap(

@@ -46,7 +46,6 @@ class ActivityBoard extends StatelessWidget {
     ActivityLoop:
     for (final ao in activities) {
       final a = ao.activity;
-      //TODO dont count dots before 00:00
       final dots = a.duration.inDots(minutesPerDot, roundingMinute);
       final dotHeight = dots * dotDistance;
 
@@ -68,7 +67,11 @@ class ActivityBoard extends StatelessWidget {
       final topOffset = minutePosition.isDayAfter(day)
           ? timeToPixelDistance(24, 0)
           : minutePosition.isDayBefore(day)
-              ? dotPadding
+              ? minutePosition
+                          .difference(day)
+                          .inDots(minutesPerDot, roundingMinute) *
+                      dotDistance +
+                  dotPadding
               : timeToPixelDistanceHour(minutePosition);
 
       var height = max(dotHeight, renderedHeight);
