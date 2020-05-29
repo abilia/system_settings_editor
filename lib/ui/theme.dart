@@ -63,8 +63,9 @@ const BoxDecoration whiteBoxDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: border,
 );
+const inactiveGrey = AbiliaColors.white110;
 const BoxDecoration inactiveBoxDecoration = BoxDecoration(
-  color: AbiliaColors.white110,
+  color: inactiveGrey,
   borderRadius: borderRadius,
   border: border,
 );
