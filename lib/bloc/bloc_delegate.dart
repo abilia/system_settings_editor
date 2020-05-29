@@ -1,13 +1,15 @@
 import 'package:bloc/bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'all.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
+  static final _log = Logger((SimpleBlocDelegate).toString());
   @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
     if (event is! Silent) {
-      log(event);
+      _log.fine(event);
     }
   }
 
@@ -16,14 +18,14 @@ class SimpleBlocDelegate extends BlocDelegate {
     super.onTransition(bloc, transition);
     await logEventToAnalytics(transition);
     if (transition.event is! Silent) {
-      log(transition);
+      _log.fine(transition);
     }
   }
 
   @override
   void onError(Bloc bloc, Object error, StackTrace stacktrace) {
     super.onError(bloc, error, stacktrace);
-    log('$bloc $error $stacktrace');
+    _log.fine('$bloc $error $stacktrace');
   }
 
   void logEventToAnalytics(Transition transition) async {
@@ -39,5 +41,3 @@ class SimpleBlocDelegate extends BlocDelegate {
     }
   }
 }
-
-void log(Object o) => print('${DateTime.now()}: $o');
