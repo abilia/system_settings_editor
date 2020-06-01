@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class NotificationPayload extends Equatable {
   final String activityId;
@@ -10,10 +12,9 @@ class NotificationPayload extends Equatable {
   NotificationPayload({
     @required this.activityId,
     @required this.day,
+    @required this.onStart,
     int reminder,
-    bool onStart,
-  })  : reminder = reminder ?? -1,
-        onStart = onStart ?? false;
+  }) : reminder = reminder ?? -1;
   factory NotificationPayload.fromJson(Map<String, dynamic> json) =>
       NotificationPayload(
         activityId: json['activityId'],
@@ -32,4 +33,34 @@ class NotificationPayload extends Equatable {
       'Payload: { $activityId, reminder: $reminder, onStart: $onStart, day: $day}';
   @override
   List<Object> get props => [activityId, reminder, onStart, day];
+
+  factory NotificationPayload.fromNotificationAlarm(
+      NotificationAlarm notificationAlarm) {
+    final id = notificationAlarm.activity.id;
+    final day = notificationAlarm.day;
+    if (notificationAlarm is NewAlarm) {
+      return NotificationPayload(
+        activityId: id,
+        day: day,
+        onStart: notificationAlarm is StartAlarm,
+      );
+    }
+    if (notificationAlarm is NewReminder) {
+      return NotificationPayload(
+          activityId: id,
+          day: day,
+          reminder: notificationAlarm.reminder.inMinutes,
+          onStart: notificationAlarm is ReminderBefore);
+    }
+    return NotificationPayload(activityId: id, day: day, onStart: false);
+  }
+
+  NotificationAlarm getAlarm(Activity activity) {
+    if (reminder > 0) {
+      return onStart
+          ? ReminderBefore(activity, day, reminder: reminder.minutes())
+          : ReminderUnchecked(activity, day, reminder: reminder.minutes());
+    }
+    return onStart ? StartAlarm(activity, day) : EndAlarm(activity, day);
+  }
 }

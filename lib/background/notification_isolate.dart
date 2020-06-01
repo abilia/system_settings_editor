@@ -109,7 +109,8 @@ Future scheduleNotification(
     alwaysUse24HourFormat,
   );
   final hash = notificationAlarm.hashCode;
-  final payload = json.encode(getPayload(notificationAlarm).toJson());
+  final payload =
+      json.encode(NotificationPayload.fromNotificationAlarm(notificationAlarm).toJson());
   final notificationChannel = getNotificationChannel(alarm);
 
   final and = AndroidNotificationDetails(
@@ -136,25 +137,6 @@ Future scheduleNotification(
     androidAllowWhileIdle: true,
     androidWakeScreen: true,
   );
-}
-
-NotificationPayload getPayload(NotificationAlarm notificationAlarm) {
-  final id = notificationAlarm.activity.id;
-  final day = notificationAlarm.day;
-  if (notificationAlarm is NewAlarm) {
-    return NotificationPayload(
-      activityId: id,
-      day: day,
-      onStart: notificationAlarm is StartAlarm,
-    );
-  } else if (notificationAlarm is NewReminder) {
-    return NotificationPayload(
-      activityId: id,
-      day: day,
-      reminder: notificationAlarm.reminder.inMinutes,
-    );
-  }
-  return NotificationPayload(activityId: id, day: day);
 }
 
 NotificationChannel getNotificationChannel(AlarmType alarm) => alarm.sound
