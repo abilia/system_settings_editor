@@ -47,6 +47,9 @@ class ActivityDay extends Equatable {
   final Activity activity;
   DateTime get start => activity.startClock(day);
   DateTime get end => activity.endClock(day);
+  bool get isSignedOff =>
+      activity.checkable && activity.signedOffDates.contains(day);
+
   const ActivityDay(this.activity, this.day)
       : assert(activity != null),
         assert(day != null);

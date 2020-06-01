@@ -41,7 +41,7 @@ class ActivityTimepillarCard extends StatelessWidget {
     final right = activity.category == Category.right,
         hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
-        signedOff = activity.isSignedOff(activityOccasion.day),
+        signedOff = activityOccasion.isSignedOff,
         current = activityOccasion.occasion == Occasion.current,
         inactive = activityOccasion.occasion == Occasion.past || signedOff;
 

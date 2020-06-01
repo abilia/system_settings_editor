@@ -45,7 +45,7 @@ extension IterableActivity on Iterable<Activity> {
       (ad) => [
         ...ad.activity.reminders
             .map((r) => ReminderBefore.from(ad, reminder: r)),
-        if (!ad.activity.isSignedOff(day) && ad.activity.checkable)
+        if (!ad.isSignedOff && ad.activity.checkable)
           ...unSignedOffActivityReminders
               .map((r) => ReminderUnchecked.from(ad, reminder: r)),
       ].where(reminderTest),

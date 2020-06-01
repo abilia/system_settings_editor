@@ -55,7 +55,7 @@ class ActivityBoard extends StatelessWidget {
                   scaleFactor: scaleFactor)
               .height
           : 0.0);
-      final imageHeight = a.hasImage || a.isSignedOff(ao.day)
+      final imageHeight = a.hasImage || ao.isSignedOff
           ? ActivityTimepillarCard.imageHeigth
           : 0.0;
       final renderedHeight =

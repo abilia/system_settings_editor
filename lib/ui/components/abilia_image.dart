@@ -13,8 +13,7 @@ import 'package:seagull/ui/theme.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class CheckedImage extends StatelessWidget {
-  final Activity activity;
-  final DateTime day;
+  final ActivityDay activityDay;
   final bool past;
   final ImageSize imageSize;
   final File imageFile;
@@ -26,8 +25,7 @@ class CheckedImage extends StatelessWidget {
 
   const CheckedImage({
     Key key,
-    @required this.activity,
-    @required this.day,
+    @required this.activityDay,
     this.size,
     bool small = true,
     this.past = false,
@@ -47,8 +45,7 @@ class CheckedImage extends StatelessWidget {
   }) =>
       CheckedImage(
         key: key,
-        activity: activityOccasion.activity,
-        day: activityOccasion.day,
+        activityDay: activityOccasion,
         size: size,
         past: activityOccasion.occasion == Occasion.past,
         imageSize: imageSize,
@@ -57,11 +54,12 @@ class CheckedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final activity = activityDay.activity;
     final hasImage = activity.hasImage,
-        signedOff = activity.isSignedOff(day),
+        signedOff = activityDay.isSignedOff,
         inactive = past || signedOff;
     return Hero(
-      tag: activity.id,
+      tag: '${activity.id}${activityDay.day.millisecondsSinceEpoch}',
       child: Stack(
         alignment: Alignment.center,
         children: [

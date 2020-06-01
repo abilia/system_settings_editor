@@ -30,7 +30,7 @@ class ActivityCard extends StatelessWidget {
     final timeFormat = hourAndMinuteFormat(context);
     final hasImage = activity.hasImage;
     final hasTitle = activity.hasTitle;
-    final signedOff = activity.isSignedOff(activityOccasion.day);
+    final signedOff = activityOccasion.isSignedOff;
     final current = occasion == Occasion.current;
     final inactive = occasion == Occasion.past || signedOff;
     final themeData = inactive
