@@ -1,6 +1,8 @@
+import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsDb {
+  static final _log = Logger((SettingsDb).toString());
   static const String _LANGUAGE_RECORD = 'language';
   static const String _ALWAYS_USE_24_RECORD = 'ALWAYS_USE_24';
   static const String _DOTS_IN_TIMEPILLAR_RECORD = 'DOTS_IN_TIMEPILLAR';
@@ -29,7 +31,7 @@ class SettingsDb {
     try {
       return preferences.getBool(_ALWAYS_USE_24_RECORD) ?? true;
     } catch (_) {
-      print('Could not get 24 hour format');
+      _log.warning('Could not get 24 hour format. Defaults to true.');
       return true;
     }
   }
@@ -43,7 +45,7 @@ class SettingsDb {
       final dots = preferences.getBool(_DOTS_IN_TIMEPILLAR_RECORD);
       return dots ?? true;
     } catch (_) {
-      print('Could not get dots in timepillar. Defaults to true');
+      _log.warning('Could not get dots in timepillar. Defaults to true.');
       return true;
     }
   }

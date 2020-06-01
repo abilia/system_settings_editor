@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/src/base_client.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
 import 'package:seagull/db/user_file_db.dart';
@@ -13,6 +14,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
+  static final _log = Logger((UserFileRepository).toString());
   final UserFileDb userFileDb;
   final int userId;
   final String authToken;
@@ -38,7 +40,7 @@ class UserFileRepository extends DataRepository<UserFile> {
         await userFileDb.insert(fetchedUserFiles);
         await getAndStoreFileData();
       } catch (e) {
-        print('Error when loading user files $e');
+        _log.severe('Error when loading user files', e);
       }
       return userFileDb.getAllNonDeleted();
     });
@@ -70,10 +72,10 @@ class UserFileRepository extends DataRepository<UserFile> {
         await _handleSuccessfulSync(syncResponses, dirtyFiles);
         return true;
       } on WrongRevisionException catch (_) {
-        print('Wrong revision when posting user files');
+        _log.info('Wrong revision when posting user files');
         await _handleFailedSync();
       } catch (e) {
-        print('Cannot post user files to backend $e');
+        _log.warning('Cannot post user files to backend', e);
       }
       return false;
     });
@@ -131,7 +133,7 @@ class UserFileRepository extends DataRepository<UserFile> {
         if (error.code == ErrorCodes.WRONG_REVISION) {
           throw WrongRevisionException();
         } else {
-          print('Unhandled error code: $error');
+          _log.warning('Unhandled error code: $error');
         }
       });
     } else if (response.statusCode == 401) {
@@ -160,12 +162,12 @@ class UserFileRepository extends DataRepository<UserFile> {
         return true;
       } else {
         final response = await Response.fromStream(streamedResponse);
-        print(
+        _log.warning(
             'Could not save file to backend ${streamedResponse.statusCode}, ${response.body}');
         return false;
       }
     } catch (e) {
-      print('Could not save file to backend $e');
+      _log.severe('Could not save file to backend', e);
       return false;
     }
   }
@@ -180,8 +182,9 @@ class UserFileRepository extends DataRepository<UserFile> {
           await handleNonImage(userFile);
         }
       }
-    } catch (e) {
-      print('Exception when getting and storing file data $e');
+    } catch (e, stackTrace) {
+      _log.severe(
+          'Exception when getting and storing file data', e, stackTrace);
     }
     return true;
   }

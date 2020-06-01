@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logging/logging.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/activity.dart';
 import 'package:seagull/models/image_thumb.dart';
@@ -217,6 +218,7 @@ class FadeInAbiliaImage extends StatelessWidget {
 }
 
 class FadeInNetworkImage extends StatelessWidget {
+  static final _log = Logger((FadeInNetworkImage).toString());
   final String imageFileId, imageFilePath;
   final double width, height;
   final BoxFit fit;
@@ -254,7 +256,8 @@ class FadeInNetworkImage extends StatelessWidget {
                         size: ImageThumb.THUMB_SIZE,
                       ),
                 header: authHeader(state.token),
-                loadFailedCallback: () => print('Failed to load network image'),
+                loadFailedCallback: () =>
+                    _log.info('Failed to load network image'),
               ),
               fit: fit,
             )

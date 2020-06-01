@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/bloc.dart';
@@ -15,6 +16,7 @@ part 'sortable_event.dart';
 part 'sortable_state.dart';
 
 class SortableBloc extends Bloc<SortableEvent, SortableState> {
+  static final _log = Logger((SortableBloc).toString());
   final SortableRepository sortableRepository;
   StreamSubscription pushSubscription;
   final SyncBloc syncBloc;
@@ -97,7 +99,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
         (s) => json.decode(s.data)['upload'] ?? false,
       );
     } catch (e) {
-      print('No upload folder. Create one');
+      _log.info('No upload folder. Create one');
       return sortableRepository.generateUploadFolder();
     }
   }

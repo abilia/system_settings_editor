@@ -2,10 +2,12 @@ import 'dart:collection';
 import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:intl/intl.dart';
 
 abstract class InfoItem extends Equatable {
+  static final _log = Logger((InfoItem).toString());
   String get type;
   Map<String, dynamic> toJson();
   static InfoItem fromBase64(String base64) {
@@ -23,7 +25,7 @@ abstract class InfoItem extends Equatable {
         default:
       }
     } catch (e) {
-      print('Exception when trying to create info item $e');
+      _log.severe('Exception when trying to create info item', e);
     }
     return null;
   }

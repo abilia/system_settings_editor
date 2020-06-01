@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class NotificationBloc extends Bloc<NotificationPayload, AlarmStateBase> {
+  static final _log = Logger((NotificationBloc).toString());
   final ActivitiesBloc activitiesBloc;
   StreamSubscription _selectedNotificationSubscription;
   StreamSubscription _canSoundAlarmSubscription;
@@ -21,7 +23,8 @@ class NotificationBloc extends Bloc<NotificationPayload, AlarmStateBase> {
           try {
             sink.add(NotificationPayload.fromJson(json.decode(data)));
           } catch (e) {
-            print('failed to parse selected notification payload: $data $e');
+            _log.severe(
+                'Failed to parse selected notification payload: $data', e);
           }
         },
       ),
