@@ -86,6 +86,13 @@ extension RecurringActivityExtension on Activity {
       return [];
     }
 
+    if (fullDay) {
+      if (onCorrectRecurrance(day)) {
+        return [ActivityDay(this, day)];
+      }
+      return [];
+    }
+
     final result = <ActivityDay>[];
     for (var dayIterator = day;
         endClock(dayIterator).isAfter(day);
