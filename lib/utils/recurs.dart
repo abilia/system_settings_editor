@@ -71,7 +71,7 @@ class Recurs {
 }
 
 extension RecurringActivityExtension on Activity {
-  List<ActivityDay> shouldShowForDay(DateTime day) {
+  List<ActivityDay> dayActivitiesForDay(DateTime day) {
     if (!isRecurring) {
       if (day.isAtSameDay(startTime) ||
           day.inExclusiveRange(

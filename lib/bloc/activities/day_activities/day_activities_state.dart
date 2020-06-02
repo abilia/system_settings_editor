@@ -27,7 +27,7 @@ class DayActivitiesLoaded extends DayActivitiesState {
 
   DayActivitiesLoaded(Iterable<Activity> activities, this.day)
       : activities =
-            activities.expand((activity) => activity.shouldShowForDay(day));
+            activities.expand((activity) => activity.dayActivitiesForDay(day));
 
   @override
   List<Object> get props => [activities, day];

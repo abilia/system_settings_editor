@@ -24,7 +24,7 @@ void main() {
         fullDay: true,
       );
       // Act
-      final result = splitRecurring.shouldShowForDay(dayOnSplit);
+      final result = splitRecurring.dayActivitiesForDay(dayOnSplit);
 
       // Assert
       expect(result, [
@@ -43,7 +43,7 @@ void main() {
         startTime: startTime,
       );
       // Act
-      final resultDay1 = overlapping.shouldShowForDay(day);
+      final resultDay1 = overlapping.dayActivitiesForDay(day);
 
       // Assert
       expect(resultDay1, [ActivityDay(overlapping, day)]);
@@ -65,7 +65,7 @@ void main() {
         endTime: splitEndTime.fromMillisecondsSinceEpoch(),
       );
       // Act
-      final result = splitRecurring.shouldShowForDay(day);
+      final result = splitRecurring.dayActivitiesForDay(day);
 
       // Assert
       expect(result, isEmpty);
@@ -85,7 +85,7 @@ void main() {
         duration: 2.hours(),
       );
       // Act
-      final result = overlapping.shouldShowForDay(day);
+      final result = overlapping.dayActivitiesForDay(day);
 
       // Assert
       expect(result, [ActivityDay(overlapping, startDay)]);
@@ -107,8 +107,8 @@ void main() {
       duration: 26.hours(),
     );
     // Act
-    final result1 = overlapping.shouldShowForDay(day);
-    final result2 = overlapping.shouldShowForDay(day2);
+    final result1 = overlapping.dayActivitiesForDay(day);
+    final result2 = overlapping.dayActivitiesForDay(day2);
 
     // Assert
     expect(result1, [ActivityDay(overlapping, startDay)]);
@@ -128,9 +128,9 @@ void main() {
       duration: 48.hours(),
     );
     // Act
-    final resultDay1 = overlapping.shouldShowForDay(day);
-    final resultDay2 = overlapping.shouldShowForDay(day2);
-    final resultDay3 = overlapping.shouldShowForDay(day3);
+    final resultDay1 = overlapping.dayActivitiesForDay(day);
+    final resultDay2 = overlapping.dayActivitiesForDay(day2);
+    final resultDay3 = overlapping.dayActivitiesForDay(day3);
 
     // Assert
     expect(resultDay1, [ActivityDay(overlapping, day)]);
@@ -150,17 +150,17 @@ void main() {
     final yesterday = initialMinutes.previousDay().onlyDays();
 
     // Act
-    final result1Day1 = fullDayActivity.shouldShowForDay(today);
-    final result2Day1 = tomorrowFullday.shouldShowForDay(today);
-    final result3Day1 = yesterdayFullday.shouldShowForDay(today);
+    final result1Day1 = fullDayActivity.dayActivitiesForDay(today);
+    final result2Day1 = tomorrowFullday.dayActivitiesForDay(today);
+    final result3Day1 = yesterdayFullday.dayActivitiesForDay(today);
 
-    final result1Day2 = fullDayActivity.shouldShowForDay(tomorrow);
-    final result2Day2 = tomorrowFullday.shouldShowForDay(tomorrow);
-    final result3Day2 = yesterdayFullday.shouldShowForDay(tomorrow);
+    final result1Day2 = fullDayActivity.dayActivitiesForDay(tomorrow);
+    final result2Day2 = tomorrowFullday.dayActivitiesForDay(tomorrow);
+    final result3Day2 = yesterdayFullday.dayActivitiesForDay(tomorrow);
 
-    final result1Day3 = fullDayActivity.shouldShowForDay(yesterday);
-    final result2Day3 = tomorrowFullday.shouldShowForDay(yesterday);
-    final result3Day3 = yesterdayFullday.shouldShowForDay(yesterday);
+    final result1Day3 = fullDayActivity.dayActivitiesForDay(yesterday);
+    final result2Day3 = tomorrowFullday.dayActivitiesForDay(yesterday);
+    final result3Day3 = yesterdayFullday.dayActivitiesForDay(yesterday);
 
     // Assert
     expect(result1Day1, [ActivityDay(fullDayActivity, today)]);
@@ -572,7 +572,7 @@ void main() {
           recurrentData: Recurs.FRIDAY);
 
       // act
-      final result = overlappingFridayRecurring.shouldShowForDay(saturday);
+      final result = overlappingFridayRecurring.dayActivitiesForDay(saturday);
 
       // assert
       expect(result, [ActivityDay(overlappingFridayRecurring, friday)]);
@@ -597,12 +597,12 @@ void main() {
 
       // act
       final thursdayResult =
-          overlappingFridayRecurring.shouldShowForDay(thursday);
-      final fridayResult = overlappingFridayRecurring.shouldShowForDay(friday);
+          overlappingFridayRecurring.dayActivitiesForDay(thursday);
+      final fridayResult = overlappingFridayRecurring.dayActivitiesForDay(friday);
       final saturdayResult =
-          overlappingFridayRecurring.shouldShowForDay(saturday);
-      final sundayResult = overlappingFridayRecurring.shouldShowForDay(sunday);
-      final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
+          overlappingFridayRecurring.dayActivitiesForDay(saturday);
+      final sundayResult = overlappingFridayRecurring.dayActivitiesForDay(sunday);
+      final mondayResult = overlappingFridayRecurring.dayActivitiesForDay(monday);
 
       // assert
       expect(thursdayResult, isEmpty);
@@ -631,12 +631,12 @@ void main() {
 
       // act
       final thursdayResult =
-          overlappingFridayRecurring.shouldShowForDay(thursday);
-      final fridayResult = overlappingFridayRecurring.shouldShowForDay(friday);
+          overlappingFridayRecurring.dayActivitiesForDay(thursday);
+      final fridayResult = overlappingFridayRecurring.dayActivitiesForDay(friday);
       final saturdayResult =
-          overlappingFridayRecurring.shouldShowForDay(saturday);
-      final sundayResult = overlappingFridayRecurring.shouldShowForDay(sunday);
-      final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
+          overlappingFridayRecurring.dayActivitiesForDay(saturday);
+      final sundayResult = overlappingFridayRecurring.dayActivitiesForDay(sunday);
+      final mondayResult = overlappingFridayRecurring.dayActivitiesForDay(monday);
 
       // assert
       expect(thursdayResult, isEmpty);
@@ -665,12 +665,12 @@ void main() {
 
       // act
       final thursdayResult =
-          overlappingFridayRecurring.shouldShowForDay(thursday);
-      final fridayResult = overlappingFridayRecurring.shouldShowForDay(friday);
+          overlappingFridayRecurring.dayActivitiesForDay(thursday);
+      final fridayResult = overlappingFridayRecurring.dayActivitiesForDay(friday);
       final saturdayResult =
-          overlappingFridayRecurring.shouldShowForDay(saturday);
-      final sundayResult = overlappingFridayRecurring.shouldShowForDay(sunday);
-      final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
+          overlappingFridayRecurring.dayActivitiesForDay(saturday);
+      final sundayResult = overlappingFridayRecurring.dayActivitiesForDay(sunday);
+      final mondayResult = overlappingFridayRecurring.dayActivitiesForDay(monday);
 
       // assert
       expect(thursdayResult, isEmpty);
@@ -698,7 +698,7 @@ void main() {
 
       // act
       final thursdayResult =
-          overlappingFridayRecurring.shouldShowForDay(thursday);
+          overlappingFridayRecurring.dayActivitiesForDay(thursday);
 
       // assert
       expect(
@@ -730,11 +730,11 @@ void main() {
           recurrentData: Recurs.everyday);
 
       // act
-      final fridayResult = overlappingFridayRecurring.shouldShowForDay(friday);
+      final fridayResult = overlappingFridayRecurring.dayActivitiesForDay(friday);
       final saturdayResult =
-          overlappingFridayRecurring.shouldShowForDay(saturday);
-      final sundayResult = overlappingFridayRecurring.shouldShowForDay(sunday);
-      final mondayResult = overlappingFridayRecurring.shouldShowForDay(monday);
+          overlappingFridayRecurring.dayActivitiesForDay(saturday);
+      final sundayResult = overlappingFridayRecurring.dayActivitiesForDay(sunday);
+      final mondayResult = overlappingFridayRecurring.dayActivitiesForDay(monday);
 
       // assert
       expect(
