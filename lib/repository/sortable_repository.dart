@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:http/src/base_client.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
 import 'package:seagull/db/all.dart';
@@ -11,6 +12,7 @@ import 'package:seagull/utils/all.dart';
 import 'all.dart';
 
 class SortableRepository extends DataRepository<Sortable> {
+  static final _log = Logger((SortableRepository).toString());
   final int userId;
   final SortableDb sortableDb;
   final String authToken;
@@ -31,7 +33,7 @@ class SortableRepository extends DataRepository<Sortable> {
             await _fetchSortables(await sortableDb.getLastRevision());
         await sortableDb.insert(fetchedSortables);
       } catch (e) {
-        print('Error when loading sortables $e');
+        _log.severe('Error when loading sortables', e);
       }
       return sortableDb.getAllNonDeleted();
     });
@@ -64,7 +66,7 @@ class SortableRepository extends DataRepository<Sortable> {
           await _handleFailedSync(res.failed);
         }
       } catch (e) {
-        print('Failed to synchronize sortables with backend $e');
+        _log.warning('Failed to synchronize sortables with backend', e);
         return false;
       }
       return true;

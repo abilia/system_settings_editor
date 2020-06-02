@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
@@ -9,6 +10,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:synchronized/extension.dart';
 
 class ActivityRepository extends DataRepository<Activity> {
+  static final _log = Logger((ActivityRepository).toString());
   final int userId;
   final ActivityDb activityDb;
   final String authToken;
@@ -35,7 +37,7 @@ class ActivityRepository extends DataRepository<Activity> {
         await activityDb.insert(fetchedActivities);
       } catch (e) {
         // Error when syncing activities. Probably offline.
-        print('Error when syncing activities $e');
+        _log.warning('Error when syncing activities', e);
       }
       return activityDb.getAllNonDeleted();
     });
@@ -57,7 +59,7 @@ class ActivityRepository extends DataRepository<Activity> {
           await _handleFailedSync(res.failed);
         }
       } catch (e) {
-        print('Failed to synchronize with backend $e');
+        _log.warning('Failed to synchronize with backend', e);
         return false;
       }
       return true;
