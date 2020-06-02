@@ -104,7 +104,9 @@ class ActivityContainer extends StatelessWidget {
     final hasTopInfo = !(hasImage && !hasAttachment && activity.title.isEmpty);
     return Container(
       decoration: BoxDecoration(
-        color: signedOff ? inactiveGrey : Theme.of(context).cardColor,
+        color: activityDay.isSignedOff
+            ? inactiveGrey
+            : Theme.of(context).cardColor,
         borderRadius: borderRadius,
       ),
       constraints: BoxConstraints.expand(),
