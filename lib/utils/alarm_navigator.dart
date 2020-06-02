@@ -7,16 +7,17 @@ class AlarmNavigator {
 
   Future<T> _push<T extends Object>(
       BuildContext context, Route<T> route, String id) {
+    final nav = Navigator.of(context);
     if (_routes.keys.isNotEmpty && _routes.keys.last == id) {
-      return Future(() => null);
+      return nav.pushReplacement(route);
     } else if (_routes.keys.contains(id)) {
       final removedRoute = _routes.remove(id);
       _routes.putIfAbsent(id, () => route);
-      Navigator.of(context).removeRoute(removedRoute);
-      return Navigator.of(context).push(route);
+      nav.removeRoute(removedRoute);
+      return nav.push(route);
     } else {
       _routes.putIfAbsent(id, () => route);
-      return Navigator.of(context).push(route);
+      return nav.push(route);
     }
   }
 
@@ -24,14 +25,11 @@ class AlarmNavigator {
     BuildContext outerContext,
     NotificationAlarm alarm,
   ) async {
-    String id;
     Widget page;
 
     if (alarm is NewAlarm) {
-      id = '${alarm.activityDay.activity.id}${alarm.runtimeType}}';
       page = AlarmPage(activityDay: alarm.activityDay);
     } else if (alarm is NewReminder) {
-      id = '${alarm.activityDay.activity.id}${alarm.reminder.inMinutes}';
       page = ReminderPage(reminder: alarm);
     } else {
       throw ArgumentError();
@@ -42,14 +40,7 @@ class AlarmNavigator {
         builder: (context) => page,
         fullscreenDialog: true,
       ),
-      id,
+      alarm.activityDay.activity.id,
     );
-  }
-
-  void pop<T extends Object>(BuildContext context) {
-    if (_routes.keys.isNotEmpty) {
-      _routes.remove(_routes.keys.last);
-    }
-    Navigator.of(context).pop();
   }
 }
