@@ -22,6 +22,15 @@ void main() {
 
       final mockTokenDb = MockTokenDb();
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(null));
+      when(mockTokenDb.delete()).thenAnswer((_) => Future.value(null));
+
+      final mockDatabaseRepository = MockDatabaseRepository();
+      when(mockDatabaseRepository.clearAll())
+          .thenAnswer((realInvocation) => Future.value(null));
+
+      final mockSettingsDb = MockSettingsDb();
+      when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
+
       final mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
@@ -38,7 +47,8 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => [])
         ..fileStorage = MockFileStorage()
-        ..settingsDb = MockSettingsDb()
+        ..settingsDb = mockSettingsDb
+        ..databaseRepository = mockDatabaseRepository
         ..init();
     });
 
@@ -106,6 +116,34 @@ void main() {
 
       await tester.pumpAndSettle();
 
+      await tester.enterText(find.byKey(TestKey.passwordInput), secretPassword);
+      await tester.enterText(find.byKey(TestKey.userNameInput), Fakes.username);
+      await tester.pump();
+      await tester.tap(find.byKey(TestKey.loggInButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(CalendarPage), findsOneWidget);
+    });
+
+    testWidgets('Can login, log out, then login', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Login
+      await tester.enterText(find.byKey(TestKey.passwordInput), secretPassword);
+      await tester.enterText(find.byKey(TestKey.userNameInput), Fakes.username);
+      await tester.pump();
+      await tester.tap(find.byKey(TestKey.loggInButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(CalendarPage), findsOneWidget);
+
+      // Logout
+      await tester.tap(find.byIcon(AbiliaIcons.menu));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsOneWidget);
+      await tester.tap(find.byType(LogoutButton));
+      await await tester.pumpAndSettle();
+      expect(find.byType(LoginPage), findsOneWidget);
+
+      // Login
       await tester.enterText(find.byKey(TestKey.passwordInput), secretPassword);
       await tester.enterText(find.byKey(TestKey.userNameInput), Fakes.username);
       await tester.pump();
