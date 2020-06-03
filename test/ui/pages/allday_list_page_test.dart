@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/models/activity.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -57,7 +57,7 @@ void main() {
         title: title3,
         startTime: day,
       ),
-    ].map((a) => ActivityOccasion(a, now: day, day: day)).toList();
+    ].map((a) => ActivityOccasion(ActivityDay(a, day), now: day)).toList();
 
     await tester.pumpWidget(wrapWithMaterialApp(AllDayList(
       allDayActivities: allDayActivities,

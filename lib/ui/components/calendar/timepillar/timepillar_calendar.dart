@@ -56,17 +56,21 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
     final textStyle = Theme.of(context).textTheme.caption;
     final textScaleFactor = mediaData.textScaleFactor;
     final leftBoardData = ActivityBoard.positionTimepillarCards(
-        widget.state.activities
-            .where((ao) => ao.activity.category != Category.right)
-            .toList(),
-        textStyle,
-        textScaleFactor);
+      widget.state.activities
+          .where((ao) => ao.activity.category != Category.right)
+          .toList(),
+      textStyle,
+      textScaleFactor,
+      widget.state.day,
+    );
     final rightBoardData = ActivityBoard.positionTimepillarCards(
-        widget.state.activities
-            .where((ao) => ao.activity.category == Category.right)
-            .toList(),
-        textStyle,
-        textScaleFactor);
+      widget.state.activities
+          .where((ao) => ao.activity.category == Category.right)
+          .toList(),
+      textStyle,
+      textScaleFactor,
+      widget.state.day,
+    );
     final calendarHeight =
         max(timePillarHeight, max(leftBoardData.heigth, rightBoardData.heigth));
 

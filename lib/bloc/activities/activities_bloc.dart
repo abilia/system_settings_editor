@@ -5,7 +5,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/utils/all.dart';
 
 import 'bloc.dart';
 import 'edit_recurring_mixin.dart';
@@ -35,12 +34,22 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   Stream<ActivitiesState> mapEventToState(ActivitiesEvent event) async* {
     if (event is LoadActivities) {
       yield* _mapLoadActivitiesToState();
-    } else if (event is AddActivity) {
-      yield* _mapAddActivityToState(event, state);
-    } else if (event is UpdateActivity) {
-      yield* _mapUpdateActivityToState(event, state);
-    } else if (event is DeleteActivity) {
-      yield* _mapDeleteActivityToState(event, state);
+    } else if (event is ManipulateActivitiesEvent) {
+      final oldState = state;
+      if (oldState is ActivitiesLoaded) {
+        final activities = oldState.activities;
+        if (event is AddActivity) {
+          yield* _mapAddActivityToState(event, activities);
+        } else if (event is UpdateActivity) {
+          yield* _mapUpdateActivityToState(event, activities);
+        } else if (event is DeleteActivity) {
+          yield* _mapDeleteActivityToState(event, activities.toSet());
+        } else if (event is UpdateRecurringActivity) {
+          yield* _mapUpdateRecurringToState(event, activities.toSet());
+        } else if (event is DeleteRecurringActivity) {
+          yield* _mapDeleteRecurringToState(event, activities.toSet());
+        }
+      }
     }
   }
 
@@ -54,42 +63,29 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   }
 
   Stream<ActivitiesState> _mapAddActivityToState(
-      AddActivity event, ActivitiesState oldState) async* {
-    if (oldState is ActivitiesLoaded) {
-      yield ActivitiesLoaded(oldState.activities.followedBy([event.activity]));
-      await _saveActivities([event.activity]);
-    }
+    AddActivity event,
+    Iterable<Activity> activities,
+  ) async* {
+    yield ActivitiesLoaded(activities.followedBy([event.activity]));
+    await _saveActivities([event.activity]);
   }
 
   Stream<ActivitiesState> _mapDeleteActivityToState(
-      DeleteActivity event, ActivitiesState oldState) async* {
-    if (oldState is ActivitiesLoaded) {
-      final activity = event.activity;
-      final activities = oldState.activities.toSet();
-      if (event is DeleteRecurringActivity) {
-        yield* _mapDeleteRecurringToState(event, activities);
-      } else if (activities.remove(activity)) {
-        yield ActivitiesLoaded(activities);
-        await _saveActivities([activity.copyWith(deleted: true)]);
-      }
+      DeleteActivity event, Set<Activity> activities) async* {
+    if (activities.remove(event.activity)) {
+      yield ActivitiesLoaded(activities);
+      await _saveActivities([event.activity.copyWith(deleted: true)]);
     }
   }
 
   Stream<ActivitiesState> _mapUpdateActivityToState(
-      UpdateActivity event, ActivitiesState oldState) async* {
-    if (oldState is ActivitiesLoaded) {
-      final activities = oldState.activities;
-      if (event is UpdateRecurringActivity) {
-        yield* _mapUpdateRecurringToState(activities.toSet(), event);
-      } else {
-        final activity = event.updatedActivity;
-        final updatedActivities = activities.map<Activity>((a) {
-          return a.id == activity.id ? activity : a;
-        }).toList(growable: false);
-        yield ActivitiesLoaded(updatedActivities);
-        await _saveActivities([activity]);
-      }
-    }
+      UpdateActivity event, Iterable<Activity> activities) async* {
+    final activity = event.activity;
+    final updatedActivities = activities.map<Activity>((a) {
+      return a.id == activity.id ? activity : a;
+    }).toList(growable: false);
+    yield ActivitiesLoaded(updatedActivities);
+    await _saveActivities([activity]);
   }
 
   Stream<ActivitiesState> _mapDeleteRecurringToState(
@@ -126,8 +122,10 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   }
 
   Stream<ActivitiesState> _mapUpdateRecurringToState(
-      Set<Activity> activities, UpdateRecurringActivity event) async* {
-    final activity = event.updatedActivity;
+    UpdateRecurringActivity event,
+    Set<Activity> activities,
+  ) async* {
+    final activity = event.activity;
     switch (event.applyTo) {
       case ApplyTo.thisDayAndForward:
         yield* _handleResult(
@@ -142,7 +140,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
           updateOnlyThisDay(
             activities: activities,
             activity: activity,
-            day: event.day.onlyDays(),
+            day: event.day,
           ),
         );
         break;

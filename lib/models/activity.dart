@@ -10,14 +10,13 @@ class Activity extends DataModel {
   DateTime endClock(DateTime day) => startClock(day).add(duration);
   DateTime startClock(DateTime day) =>
       DateTime(day.year, day.month, day.day, startTime.hour, startTime.minute);
-  DateTime get end => startTime.add(duration);
+  DateTime get noneRecurringEnd => startTime.add(duration);
   bool get hasEndTime => duration.inMinutes > 0;
   RecurrentType get recurrance =>
       RecurrentType.values[recurrentType] ?? RecurrentType.none;
   bool get isRecurring => recurrance != RecurrentType.none;
   Iterable<Duration> get reminders =>
       reminderBefore.map((r) => r.milliseconds()).toSet();
-  bool isSignedOff(DateTime day) => checkable && signedOffDates.contains(day);
   bool get hasImage =>
       (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
   bool get hasTitle => title?.isNotEmpty ?? false;

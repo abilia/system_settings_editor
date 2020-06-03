@@ -82,7 +82,7 @@ void main() {
       final endDay = DateTime(2020, 01, 12);
       final currentDay = DateTime(1999, 12, 12);
       // act
-      final result = currentDay.isOnOrBetween(
+      final result = currentDay.inInclusiveRange(
         startDate: startDay,
         endDate: endDay,
       );
@@ -96,7 +96,7 @@ void main() {
       final endDay = DateTime(2020, 01, 12);
       final currentDay = DateTime(1999, 12, 12);
       // act
-      final result = currentDay.isOnOrBetween(
+      final result = currentDay.inInclusiveRange(
         startDate: startDay,
         endDate: endDay,
       );
@@ -110,7 +110,7 @@ void main() {
       final endDay = DateTime(2020, 01, 12);
       final currentDay = DateTime(2020, 01, 12);
       // act
-      final result = currentDay.isOnOrBetween(
+      final result = currentDay.inInclusiveRange(
         startDate: startDay,
         endDate: endDay,
       );
@@ -124,7 +124,7 @@ void main() {
       final endDay = DateTime(2020, 01, 12);
       final currentDay = DateTime(1999, 12, 11);
       // act
-      final result = currentDay.isOnOrBetween(
+      final result = currentDay.inInclusiveRange(
         startDate: startDay,
         endDate: endDay,
       );
@@ -138,7 +138,7 @@ void main() {
       final endDay = DateTime(2020, 01, 12);
       final currentDay = DateTime(2020, 01, 13);
       // act
-      final result = currentDay.isOnOrBetween(
+      final result = currentDay.inInclusiveRange(
         startDate: startDay,
         endDate: endDay,
       );
@@ -152,7 +152,7 @@ void main() {
       final endDay = DateTime(2020, 04, 01).millisecondBefore();
       final day = DateTime(2020, 04, 01);
       // act
-      final result = day.isOnOrBetween(
+      final result = day.inInclusiveRange(
         startDate: startDay,
         endDate: endDay,
       );

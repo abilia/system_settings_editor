@@ -36,9 +36,7 @@ class ReminderPage extends StatelessWidget {
             Expanded(
               child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
                 builder: (context, activitiesState) => ActivityInfo(
-                  activity: activitiesState
-                      .newActivityFromLoadedOrGiven(reminder.activity),
-                  day: reminder.day,
+                  reminder.activityDay.fromActivitiesState(activitiesState),
                 ),
               ),
             ),
