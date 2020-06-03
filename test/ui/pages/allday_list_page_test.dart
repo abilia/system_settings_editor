@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
@@ -15,11 +16,7 @@ void main() {
   final day = DateTime(2111, 11, 11);
   final clocBloc =
       ClockBloc(StreamController<DateTime>().stream, initialTime: day);
-  final activitiesOccasionBloc = ActivitiesOccasionBloc(
-    clockBloc: clocBloc,
-    dayActivitiesBloc: MockDayActivitiesBloc(),
-    dayPickerBloc: MockDayPickerBloc(),
-  );
+  final activitiesOccasionBlocMock = MockActivitiesOccasionBloc();
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -31,7 +28,7 @@ void main() {
           BlocProvider<AuthenticationBloc>(
               create: (context) => mockAuthenticationBloc),
           BlocProvider<ActivitiesOccasionBloc>(
-            create: (context) => activitiesOccasionBloc,
+            create: (context) => activitiesOccasionBlocMock,
           ),
           BlocProvider<ActivitiesBloc>(
             create: (context) => MockActivitiesBloc(),
@@ -67,18 +64,22 @@ void main() {
         title: title3,
         startTime: day,
       ),
-    ];
+    ].map((a) => ActivityOccasion(ActivityDay(a, day), now: day)).toList();
 
-    activitiesOccasionBloc.add(ActivitiesChanged(allDayActivities, day));
-    activitiesOccasionBloc.listen((state) {
-      print(state);
-      print('Got ya');
-    });
-    await Future.delayed(Duration(seconds: 2));
+    final expected = ActivitiesOccasionLoaded(
+      activities: [],
+      fullDayActivities: allDayActivities,
+      day: day,
+      occasion: Occasion.current,
+      indexOfCurrentActivity: 0,
+    );
+
+    when(activitiesOccasionBlocMock.state).thenReturn(expected);
+    when(activitiesOccasionBlocMock.skip(1))
+        .thenAnswer((_) => StreamController<ActivitiesOccasionState>().stream);
 
     await tester.pumpWidget(wrapWithMaterialApp(AllDayList()));
     await tester.pumpAndSettle();
-    print('Starting to expect');
     expect(find.text(title0), findsOneWidget);
     expect(find.text(title1), findsOneWidget);
     expect(find.text(title2), findsOneWidget);
