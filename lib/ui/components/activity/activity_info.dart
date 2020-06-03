@@ -10,20 +10,15 @@ import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityInfoWithDots extends StatelessWidget {
-  final Activity activity;
-  final DateTime day;
+  final ActivityDay activityDay;
 
-  const ActivityInfoWithDots({Key key, this.activity, this.day})
-      : super(key: key);
+  const ActivityInfoWithDots(this.activityDay, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        ActivityInfoSideDots(
-          activity: activity,
-          day: day,
-        ),
-        Expanded(child: ActivityInfo(activity: activity, day: day)),
+        ActivityInfoSideDots(activityDay),
+        Expanded(child: ActivityInfo(activityDay)),
       ],
     );
   }
@@ -31,20 +26,19 @@ class ActivityInfoWithDots extends StatelessWidget {
 
 class ActivityInfo extends StatelessWidget {
   static const margin = 12.0;
-  final Activity activity;
-  final DateTime day;
-  const ActivityInfo({
-    Key key,
-    @required this.activity,
-    @required this.day,
-  }) : super(key: key);
+  final ActivityDay activityDay;
+  Activity get activity => activityDay.activity;
+  DateTime get day => activityDay.day;
+  const ActivityInfo(this.activityDay, {Key key}) : super(key: key);
+  factory ActivityInfo.from({Activity activity, DateTime day, Key key}) =>
+      ActivityInfo(ActivityDay(activity, day), key: key);
 
   static const animationDuration = Duration(milliseconds: 500);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final signedOff = activity.isSignedOff(day);
+    final signedOff = activityDay.isSignedOff;
     final theme = signedOff
         ? Theme.of(context).copyWith(
             buttonTheme: uncheckButtonThemeData,
@@ -54,22 +48,20 @@ class ActivityInfo extends StatelessWidget {
             buttonTheme: checkButtonThemeData,
             buttonColor: AbiliaColors.green,
           );
-
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) => AnimatedTheme(
         duration: animationDuration,
         data: theme.copyWith(
-            cardColor: activity.endClock(day).occasion(now) == Occasion.past
+            cardColor: activityDay.end.occasion(now) == Occasion.past
                 ? AbiliaColors.white110
                 : AbiliaColors.white),
         child: Column(
           children: <Widget>[
-            TimeRow(activity: activity, day: day),
+            TimeRow(activityDay),
             Expanded(
               child: Container(
                 decoration: borderDecoration,
-                child: ActivityContainer(
-                    activity: activity, day: day, signedOff: signedOff),
+                child: ActivityContainer(activityDay: activityDay),
               ),
             ),
             if (activity.checkable)
@@ -99,23 +91,22 @@ class ActivityInfo extends StatelessWidget {
 class ActivityContainer extends StatelessWidget {
   const ActivityContainer({
     Key key,
-    @required this.activity,
-    @required this.day,
-    @required this.signedOff,
+    @required this.activityDay,
   }) : super(key: key);
 
-  final Activity activity;
-  final DateTime day;
-  final bool signedOff;
+  final ActivityDay activityDay;
 
   @override
   Widget build(BuildContext context) {
+    final activity = activityDay.activity;
     final hasImage = activity.hasImage;
     final hasAttachment = activity.hasAttachment;
     final hasTopInfo = !(hasImage && !hasAttachment && activity.title.isEmpty);
     return Container(
       decoration: BoxDecoration(
-        color: signedOff ? inactiveGrey : Theme.of(context).cardColor,
+        color: activityDay.isSignedOff
+            ? inactiveGrey
+            : Theme.of(context).cardColor,
         borderRadius: borderRadius,
       ),
       constraints: BoxConstraints.expand(),
@@ -130,10 +121,7 @@ class ActivityContainer extends StatelessWidget {
                     bottom: hasAttachment || hasImage ? 0 : ActivityInfo.margin,
                   ),
                 ),
-                child: TopInfo(
-                  activity: activity,
-                  day: day,
-                ),
+                child: TopInfo(activityDay: activityDay),
               ),
             ),
           if (hasAttachment)
@@ -148,23 +136,19 @@ class ActivityContainer extends StatelessWidget {
                     height: 1,
                   ),
                   Expanded(
-                    child: Attachment(
-                      activity: activity,
-                      day: day,
-                    ),
+                    child: Attachment(activityDay: activityDay),
                   ),
                 ],
               ),
             ),
-          if ((hasImage || signedOff) && !hasAttachment)
+          if ((hasImage || activityDay.isSignedOff) && !hasAttachment)
             Flexible(
               flex: activity.checkable ? 236 : 298,
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                   child: CheckedImage(
-                    activity: activity,
-                    day: day,
+                    activityDay: activityDay,
                     imageSize: ImageSize.ORIGINAL,
                     fit: BoxFit.contain,
                     small: false,
@@ -180,23 +164,22 @@ class ActivityContainer extends StatelessWidget {
 
 class Attachment extends StatelessWidget {
   static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 14.0, 24.0);
-  final Activity activity;
-  final DateTime day;
+  final ActivityDay activityDay;
   const Attachment({
     Key key,
-    @required this.activity,
-    @required this.day,
+    @required this.activityDay,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final activity = activityDay.activity;
     final item = activity.infoItem;
     if (item is NoteInfoItem) {
       return NoteBlock(text: item.text);
     } else if (item is Checklist) {
       return CheckListView(
         item,
-        day: day,
+        day: activityDay.day,
         onTap: (question, day) => BlocProvider.of<ActivitiesBloc>(context).add(
             UpdateActivity(
                 activity.copyWith(infoItem: item.signOff(question, day)))),
@@ -239,27 +222,25 @@ class CheckButton extends StatelessWidget {
 class TopInfo extends StatelessWidget {
   const TopInfo({
     Key key,
-    @required this.activity,
-    @required this.day,
+    @required this.activityDay,
   }) : super(key: key);
 
-  final Activity activity;
-  final DateTime day;
+  final ActivityDay activityDay;
 
   @override
   Widget build(BuildContext context) {
+    final activity = activityDay.activity;
     final hasImage = activity.hasImage;
     final hasTitle = activity.hasTitle;
     final hasAttachment = activity.hasAttachment;
     final imageBelow = hasImage && hasAttachment && !hasTitle;
-    final signedOff = activity.isSignedOff(day);
+    final signedOff = activityDay.isSignedOff;
     final themeData = Theme.of(context);
     final imageToTheLeft = (hasImage || signedOff) && hasAttachment && hasTitle;
 
     final checkableImage = CheckedImage(
-      activity: activity,
+      activityDay: activityDay,
       size: 96,
-      day: day,
     );
 
     return Row(

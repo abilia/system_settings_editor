@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/models/activity.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
@@ -21,8 +20,7 @@ class ActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ActivitiesBloc, ActivitiesState>(
       builder: (context, state) {
-        final activity = state.newActivityFromLoadedOrGiven(occasion.activity);
-        final day = occasion.day;
+        final activityDay = occasion.fromActivitiesState(state);
         return AnimatedTheme(
           data: dayThemeData,
           child: Scaffold(
@@ -31,7 +29,7 @@ class ActivityPage extends StatelessWidget {
                 child: AnimatedSwitcher(
                   duration: 200.milliseconds(),
                   child: DayAppBar(
-                    day: day,
+                    day: activityDay.day,
                     leftAction: ActionButton(
                       key: TestKey.activityBackButton,
                       child: Icon(
@@ -46,19 +44,18 @@ class ActivityPage extends StatelessWidget {
               body: Padding(
                 padding: const EdgeInsets.all(ActivityInfo.margin)
                     .subtract(const EdgeInsets.only(left: ActivityInfo.margin)),
-                child: ActivityInfoWithDots(
-                  activity: activity,
-                  day: day,
-                ),
+                child: ActivityInfoWithDots(activityDay),
               ),
-              bottomNavigationBar: buildBottomAppBar(activity, day, context)),
+              bottomNavigationBar: buildBottomAppBar(activityDay, context)),
         );
       },
     );
   }
 
   BottomAppBar buildBottomAppBar(
-      Activity activity, DateTime day, BuildContext context) {
+      ActivityDay activityDay, BuildContext context) {
+    final activity = activityDay.activity;
+    final day = activityDay.day;
     return BottomAppBar(
       child: SizedBox(
         height: 64,
@@ -95,9 +92,11 @@ class ActivityPage extends StatelessWidget {
                         if (applyTo == null) return;
                         BlocProvider.of<ActivitiesBloc>(context).add(
                           UpdateRecurringActivity(
-                            changedActivity,
+                            ActivityDay(
+                              changedActivity,
+                              day,
+                            ),
                             applyTo,
-                            day,
                           ),
                         );
                       } else {
@@ -120,9 +119,7 @@ class ActivityPage extends StatelessWidget {
                   onPressed: () => showViewDialog<bool>(
                     context: context,
                     builder: (_) => BlocProvider<EditActivityBloc>.value(
-                      value: EditActivityBloc(
-                          activity: activity,
-                          day: day,
+                      value: EditActivityBloc(activityDay,
                           activitiesBloc:
                               BlocProvider.of<ActivitiesBloc>(context)),
                       child: SelectReminderDialog(
@@ -144,10 +141,9 @@ class ActivityPage extends StatelessWidget {
                       builder: (_) {
                         return BlocProvider<EditActivityBloc>(
                           create: (_) => EditActivityBloc(
+                            activityDay,
                             activitiesBloc:
                                 BlocProvider.of<ActivitiesBloc>(context),
-                            activity: activity,
-                            day: day,
                           ),
                           child: EditActivityPage(
                             day: day,
@@ -184,9 +180,8 @@ class ActivityPage extends StatelessWidget {
                       if (applyTo == null) return;
                       BlocProvider.of<ActivitiesBloc>(context).add(
                         DeleteRecurringActivity(
-                          activity,
+                          activityDay,
                           applyTo,
-                          occasion.day,
                         ),
                       );
                     } else {

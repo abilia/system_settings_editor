@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
@@ -31,6 +31,7 @@ class ActivityBoard extends StatelessWidget {
     List<ActivityOccasion> activities,
     TextStyle textStyle,
     double scaleFactor,
+    DateTime day,
   ) {
     final maxEndPos = timePillarHeight +
         dotDistance +
@@ -40,9 +41,7 @@ class ActivityBoard extends StatelessWidget {
             textStyle.height *
             ActivityTimepillarCard.maxTitleLines;
 
-    activities.sort((a1, a2) => a1.activity
-        .startClock(a1.day)
-        .compareTo(a2.activity.startClock(a2.day)));
+    activities.sort((a1, a2) => a1.start.compareTo(a2.start));
     final scheduled = <List<ActivityTimepillarCard>>[];
     ActivityLoop:
     for (final ao in activities) {
@@ -56,18 +55,24 @@ class ActivityBoard extends StatelessWidget {
                   scaleFactor: scaleFactor)
               .height
           : 0.0);
-      final imageHeight = a.hasImage || a.isSignedOff(ao.day)
+      final imageHeight = a.hasImage || ao.isSignedOff
           ? ActivityTimepillarCard.imageHeigth
           : 0.0;
       final renderedHeight =
           max(textHeight + imageHeight, ActivityTimepillarCard.minHeight);
 
       final minutePosition =
-          a.startTime.roundToMinute(minutesPerDot, roundingMinute);
+          ao.start.roundToMinute(minutesPerDot, roundingMinute);
 
-      final topOffset = minutePosition.isDayAfter(a.startTime)
+      final topOffset = minutePosition.isDayAfter(day)
           ? timeToPixelDistance(24, 0)
-          : timeToPixelDistanceHour(minutePosition);
+          : minutePosition.isDayBefore(day)
+              ? minutePosition
+                          .difference(day)
+                          .inDots(minutesPerDot, roundingMinute) *
+                      dotDistance +
+                  dotPadding
+              : timeToPixelDistanceHour(minutePosition);
 
       var height = max(dotHeight, renderedHeight);
 

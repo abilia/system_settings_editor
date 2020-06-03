@@ -44,9 +44,8 @@ void main() {
         BlocProvider<ActivitiesBloc>(create: (context) => MockActivitiesBloc()),
         BlocProvider<EditActivityBloc>(
           create: (context) => EditActivityBloc(
+            ActivityDay(activity, today),
             activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-            day: today,
-            activity: activity,
           ),
         ),
         BlocProvider<SortableBloc>(

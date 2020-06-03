@@ -223,8 +223,8 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      activitiesBloc.add(
-          DeleteRecurringActivity(recurrringActivity, ApplyTo.allDays, anyDay));
+      activitiesBloc.add(DeleteRecurringActivity(
+          ActivityDay(recurrringActivity, anyDay), ApplyTo.allDays));
 
       // Assert
       await expectLater(
@@ -276,7 +276,7 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-            recurrringActivity, ApplyTo.onlyThisDay, anyDay));
+            ActivityDay(recurrringActivity, anyDay), ApplyTo.onlyThisDay));
 
         // Assert
         await expectLater(
@@ -328,7 +328,9 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-            recurrringActivity, ApplyTo.onlyThisDay, in6Days));
+          ActivityDay(recurrringActivity, in6Days),
+          ApplyTo.onlyThisDay,
+        ));
 
         // Assert
         await expectLater(
@@ -357,8 +359,8 @@ void main() {
         when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value(activityList));
 
-        final expextedRecurring1 =
-            recurrringActivity.copyWith(endTime: inAWeekDays.millisecondBefore());
+        final expextedRecurring1 = recurrringActivity.copyWith(
+            endTime: inAWeekDays.millisecondBefore());
         final expextedRecurring2 = recurrringActivity.copyWith(
           newId: true,
           startTime: inAWeek.nextDay(),
@@ -372,7 +374,9 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-            recurrringActivity, ApplyTo.onlyThisDay, inAWeek.onlyDays()));
+          ActivityDay(recurrringActivity, inAWeek.onlyDays()),
+          ApplyTo.onlyThisDay,
+        ));
 
         // Assert
         await expectLater(
@@ -415,7 +419,9 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-            recurrringActivity, ApplyTo.thisDayAndForward, anyDay));
+          ActivityDay(recurrringActivity, anyDay),
+          ApplyTo.thisDayAndForward,
+        ));
 
         // Assert
         await expectLater(
@@ -449,7 +455,8 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-            recurrringActivity, ApplyTo.thisDayAndForward, inAWeek));
+            ActivityDay(recurrringActivity, inAWeek),
+            ApplyTo.thisDayAndForward));
 
         // Assert
         await expectLater(
@@ -492,7 +499,9 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-            recurrringActivity1, ApplyTo.thisDayAndForward, inAWeek));
+          ActivityDay(recurrringActivity1, inAWeek),
+          ApplyTo.thisDayAndForward,
+        ));
 
         // Assert
         await expectLater(
@@ -531,8 +540,10 @@ void main() {
         final expected = updated.copyWith(recurrentData: 0, recurrentType: 0);
         // Act
         activitiesBloc.add(LoadActivities());
-        activitiesBloc
-            .add(UpdateRecurringActivity(updated, ApplyTo.onlyThisDay, anyDay));
+        activitiesBloc.add(UpdateRecurringActivity(
+          ActivityDay(updated, anyDay),
+          ApplyTo.onlyThisDay,
+        ));
 
         // Assert
         await expectLater(
@@ -572,8 +583,10 @@ void main() {
 
         // Act
         activitiesBloc.add(LoadActivities());
-        activitiesBloc
-            .add(UpdateRecurringActivity(updated, ApplyTo.onlyThisDay, anyDay));
+        activitiesBloc.add(UpdateRecurringActivity(
+          ActivityDay(updated, anyDay),
+          ApplyTo.onlyThisDay,
+        ));
 
         // Assert
         await expectLater(
@@ -620,8 +633,10 @@ void main() {
 
         // Act
         activitiesBloc.add(LoadActivities());
-        activitiesBloc.add(
-            UpdateRecurringActivity(updated, ApplyTo.onlyThisDay, lastDay));
+        activitiesBloc.add(UpdateRecurringActivity(
+          ActivityDay(updated, lastDay),
+          ApplyTo.onlyThisDay,
+        ));
 
         // Assert
         await expectLater(
@@ -657,19 +672,23 @@ void main() {
           recurrentType: 0,
           recurrentData: 0,
         );
-        final preModDaySeries = recurring.copyWith(endTime: aDay.millisecondBefore());
+        final preModDaySeries =
+            recurring.copyWith(endTime: aDay.millisecondBefore());
         final postModDaySeries = recurring.copyWith(
             newId: true,
             startTime: aDay.nextDay().copyWith(
-                hour: recurring.startTime.hour, minute: recurring.startTime.minute));
+                hour: recurring.startTime.hour,
+                minute: recurring.startTime.minute));
 
         final expected = MatchActivitiesWithoutId(
             [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
 
         // Act
         activitiesBloc.add(LoadActivities());
-        activitiesBloc
-            .add(UpdateRecurringActivity(updated, ApplyTo.onlyThisDay, aDay));
+        activitiesBloc.add(UpdateRecurringActivity(
+          ActivityDay(updated, aDay),
+          ApplyTo.onlyThisDay,
+        ));
 
         // Assert
         await expectLater(
@@ -708,19 +727,23 @@ void main() {
           recurrentData: 0,
         );
 
-        final preModDaySeries = recurring.copyWith(endTime: aDay.millisecondBefore());
+        final preModDaySeries =
+            recurring.copyWith(endTime: aDay.millisecondBefore());
         final postModDaySeries = recurring.copyWith(
             newId: true,
             startTime: aDay.nextDay().copyWith(
-                hour: recurring.startTime.hour, minute: recurring.startTime.minute));
+                hour: recurring.startTime.hour,
+                minute: recurring.startTime.minute));
 
         final expected = MatchActivitiesWithoutId(
             [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
 
         // Act
         activitiesBloc.add(LoadActivities());
-        activitiesBloc
-            .add(UpdateRecurringActivity(fullday, ApplyTo.onlyThisDay, aDay));
+        activitiesBloc.add(UpdateRecurringActivity(
+          ActivityDay(fullday, aDay),
+          ApplyTo.onlyThisDay,
+        ));
 
         // Assert
         await expectLater(
@@ -751,7 +774,9 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
-            updatedRecurrringActivity, ApplyTo.thisDayAndForward, anyDay));
+          ActivityDay(updatedRecurrringActivity, anyDay),
+          ApplyTo.thisDayAndForward,
+        ));
 
         // Assert
         await expectLater(
@@ -789,9 +814,11 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
-          updatedRecurrringActivity,
+          ActivityDay(
+            updatedRecurrringActivity,
+            aDay,
+          ),
           ApplyTo.thisDayAndForward,
-          aDay,
         ));
 
         // Assert
@@ -827,9 +854,11 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
-          updatedRecurrringActivity,
+          ActivityDay(
+            updatedRecurrringActivity,
+            inTwoWeek.onlyDays(),
+          ),
           ApplyTo.thisDayAndForward,
-          inTwoWeek.onlyDays(),
         ));
 
         // Assert
@@ -869,9 +898,11 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
-          updatedRecurrringActivity,
+          ActivityDay(
+            updatedRecurrringActivity,
+            inAWeek.onlyDays(),
+          ),
           ApplyTo.thisDayAndForward,
-          inAWeek.onlyDays(),
         ));
 
         // Assert
@@ -898,7 +929,8 @@ void main() {
 
         final og = FakeActivity.reocurrsEveryDay(anyTime);
         final before = og.copyWith(
-            endTime: inSevenDays.onlyDays().millisecondBefore(), title: 'original');
+            endTime: inSevenDays.onlyDays().millisecondBefore(),
+            title: 'original');
 
         final after = og.copyWith(
             newId: true,
@@ -950,16 +982,16 @@ void main() {
 
         final afterPostMod = after.copyWith(
           title: newTitle,
-          startTime:
-              after.startTime.copyWith(hour: newTime.hour, minute: newTime.minute),
+          startTime: after.startTime
+              .copyWith(hour: newTime.hour, minute: newTime.minute),
           duration: newDuration,
           fullDay: false,
           removeAfter: true,
         );
         final strayPostMod = stray.copyWith(
           title: newTitle,
-          startTime:
-              stray.startTime.copyWith(hour: newTime.hour, minute: newTime.minute),
+          startTime: stray.startTime
+              .copyWith(hour: newTime.hour, minute: newTime.minute),
           duration: newDuration,
           removeAfter: true,
         );
@@ -975,9 +1007,11 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
-          updatedRecurrringActivity,
+          ActivityDay(
+            updatedRecurrringActivity,
+            inFiveDays.onlyDays(),
+          ),
           ApplyTo.thisDayAndForward,
-          inFiveDays.onlyDays(),
         ));
 
         // Assert
@@ -1032,16 +1066,19 @@ void main() {
         final newTime = DateTime(2020, 04, 08, 13, 00);
         final updatedA2 = a2.copyWith(title: 'updated', startTime: newTime);
 
-        final a2Part1 = a2.copyWith(endTime: newTime.onlyDays().millisecondBefore());
+        final a2Part1 =
+            a2.copyWith(endTime: newTime.onlyDays().millisecondBefore());
 
         final expectedA3 = a3.copyWith(title: newTitle);
 
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
-          updatedA2,
+          ActivityDay(
+            updatedA2,
+            newTime.onlyDays(),
+          ),
           ApplyTo.thisDayAndForward,
-          newTime.onlyDays(),
         ));
 
         // Assert

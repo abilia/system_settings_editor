@@ -66,16 +66,13 @@ class NameAndPictureWidget extends StatelessWidget {
             if (activity.hasImage)
               InkWell(
                 onTap: imageClick,
-                child: Hero(
-                  tag: activity.id,
-                  child: FadeInCalendarImage(
-                    height: 84,
-                    width: 84,
-                    imageFileId: activity.fileId,
-                    imageFilePath: activity.icon,
-                    activityId: activity.id,
-                    imageFile: newImage,
-                  ),
+                child: FadeInCalendarImage(
+                  height: 84,
+                  width: 84,
+                  imageFileId: activity.fileId,
+                  imageFilePath: activity.icon,
+                  activityId: activity.id,
+                  imageFile: newImage,
                 ),
               )
             else

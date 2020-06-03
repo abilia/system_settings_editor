@@ -12,66 +12,61 @@ abstract class ActivitiesEvent extends Equatable {
 
 class LoadActivities extends ActivitiesEvent {}
 
-class AddActivity extends ActivitiesEvent {
-  final Activity activity;
-
-  const AddActivity(this.activity);
-
+abstract class ManipulateActivitiesEvent extends ActivitiesEvent {
+  const ManipulateActivitiesEvent();
+  Activity get activity;
   @override
   List<Object> get props => [activity];
+}
 
+class AddActivity extends ManipulateActivitiesEvent {
+  @override
+  final Activity activity;
+  const AddActivity(this.activity);
   @override
   String toString() => 'AddActivity { $activity }';
 }
 
-class UpdateActivity extends ActivitiesEvent {
-  final Activity updatedActivity;
-
-  const UpdateActivity(this.updatedActivity);
-
+class UpdateActivity extends ManipulateActivitiesEvent {
   @override
-  List<Object> get props => [updatedActivity];
-
-  @override
-  String toString() => 'UpdateActivity { $updatedActivity }';
-}
-
-class UpdateRecurringActivity extends UpdateActivity {
-  final ApplyTo applyTo;
-  final DateTime day;
-  const UpdateRecurringActivity(Activity activity, this.applyTo, this.day)
-      : assert(applyTo != ApplyTo.allDays),
-        super(activity);
-
-  @override
-  List<Object> get props => [updatedActivity, applyTo, day];
-
-  @override
-  String toString() =>
-      'UpdateRecurringActivity { $updatedActivity, $applyTo, $day }';
-}
-
-class DeleteActivity extends ActivitiesEvent {
   final Activity activity;
-
-  const DeleteActivity(this.activity);
-
+  const UpdateActivity(this.activity);
   @override
-  List<Object> get props => [activity];
+  String toString() => 'UpdateActivity { $activity }';
+}
 
+class DeleteActivity extends ManipulateActivitiesEvent {
+  @override
+  final Activity activity;
+  const DeleteActivity(this.activity);
   @override
   String toString() => 'DeleteActivity { $activity }';
 }
 
-class DeleteRecurringActivity extends DeleteActivity {
+abstract class RecurringActivityEvent extends ManipulateActivitiesEvent {
+  final ActivityDay activityDay;
   final ApplyTo applyTo;
-  final DateTime day;
-  const DeleteRecurringActivity(Activity activity, this.applyTo, this.day)
-      : super(activity);
+  DateTime get day => activityDay.day;
+  @override
+  Activity get activity => activityDay.activity;
+  const RecurringActivityEvent(this.activityDay, this.applyTo);
+  @override
+  List<Object> get props => [activityDay];
+}
+
+class UpdateRecurringActivity extends RecurringActivityEvent {
+  UpdateRecurringActivity(ActivityDay activityDay, ApplyTo applyTo)
+      : assert(applyTo != ApplyTo.allDays),
+        super(activityDay, applyTo);
 
   @override
-  List<Object> get props => [activity, applyTo, day];
+  String toString() => 'UpdateRecurringActivity { $activityDay, $applyTo, }';
+}
+
+class DeleteRecurringActivity extends RecurringActivityEvent {
+  DeleteRecurringActivity(ActivityDay activityDay, ApplyTo applyTo)
+      : super(activityDay, applyTo);
 
   @override
-  String toString() => 'DeleteRecurringActivity { $activity, $applyTo, $day }';
+  String toString() => 'DeleteRecurringActivity { $activityDay, $applyTo }';
 }

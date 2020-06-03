@@ -41,12 +41,12 @@ class ActivityTimepillarCard extends StatelessWidget {
     final right = activity.category == Category.right,
         hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
-        signedOff = activity.isSignedOff(activityOccasion.day),
+        signedOff = activityOccasion.isSignedOff,
         current = activityOccasion.occasion == Occasion.current,
         inactive = activityOccasion.occasion == Occasion.past || signedOff;
 
-    final endTime = activity.endClock(activityOccasion.day);
-    final startTime = activity.startClock(activityOccasion.day);
+    final endTime = activityOccasion.end;
+    final startTime = activityOccasion.start;
     final dots = activityOccasion.activity.duration
         .inDots(minutesPerDot, roundingMinute);
     final dotHeight = dots * dotDistance;

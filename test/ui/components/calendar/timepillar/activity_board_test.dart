@@ -48,7 +48,11 @@ void main() {
               Timeline(width: 40),
               ActivityBoard(
                 ActivityBoard.positionTimepillarCards(
-                    activityOccasions, textStyle, 1.0),
+                  activityOccasions,
+                  textStyle,
+                  1.0,
+                  (initialTime ?? startTime).onlyDays(),
+                ),
                 categoryMinWidth: 400,
               ),
             ],
@@ -60,7 +64,6 @@ void main() {
 
   Widget wrap(ActivityOccasion activityOccasion, {DateTime initialTime}) =>
       multiWrap([activityOccasion], initialTime: initialTime);
-
   testWidgets('shows title', (WidgetTester tester) async {
     await tester.pumpWidget(
       wrap(
@@ -154,7 +157,8 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(multiWrap([activityA, activityB]));
+      await tester
+          .pumpWidget(multiWrap([activityA, activityB], initialTime: time));
       expect(find.byType(Timeline), findsOneWidget);
 
       final activityAXPos =
@@ -245,17 +249,22 @@ void main() {
     });
 
     test('all position are unique', () async {
+      final time = DateTime(2020, 04, 23);
       final activities = List.generate(
         12 * 60,
         (i) => ActivityOccasion.forTest(
           Activity.createNew(
             title: 'activity $i',
-            startTime: DateTime(2020, 04, 23).add(i.minutes()),
+            startTime: time.add(i.minutes()),
           ),
         ),
       );
-      final boardData =
-          ActivityBoard.positionTimepillarCards(activities, textStyle, 1.0);
+      final boardData = ActivityBoard.positionTimepillarCards(
+        activities,
+        textStyle,
+        1.0,
+        time,
+      );
       final uniques = boardData.cards.map((f) => {f.top, f.column});
 
       expect(uniques.toSet().length, uniques.length);

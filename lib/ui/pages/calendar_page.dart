@@ -157,7 +157,7 @@ class _CalendarPageState extends State<CalendarPage>
                     MaterialPageRoute(
                       builder: (_) {
                         return BlocProvider<EditActivityBloc>(
-                          create: (_) => EditActivityBloc(
+                          create: (_) => EditActivityBloc.newActivity(
                             activitiesBloc:
                                 BlocProvider.of<ActivitiesBloc>(context),
                             now: now,

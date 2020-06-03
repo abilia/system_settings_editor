@@ -285,8 +285,13 @@ void main() {
       await tester.pumpAndSettle();
       final alarmScreenFinder = find.byType(AlarmPage);
 
-      // Act - time goes which should display two alarms (start and end time)
+      // Act - time goes which should display start alarm
       mockTicker.add(activity1StartTime);
+      await tester.pumpAndSettle();
+
+      expect(alarmScreenFinder, findsOneWidget);
+
+      // Act - time goes which should display end alarm
       mockTicker.add(activity1StartTime.add(Duration(minutes: 2)));
       await tester.pumpAndSettle();
 
@@ -296,13 +301,6 @@ void main() {
       await tester.tap(find.byKey(TestKey.appBarCloseButton));
       await tester.pumpAndSettle();
 
-      expect(alarmScreenFinder, findsOneWidget);
-
-      // Act - tap the alarm ok button
-      await tester.tap(find.byKey(TestKey.appBarCloseButton));
-      await tester.pumpAndSettle();
-
-      // Expect - no more alarms is displayed
       expect(alarmScreenFinder, findsNothing);
     });
 
@@ -315,7 +313,7 @@ void main() {
       await tester.pumpAndSettle();
       final alarmScreenFinder = find.byType(AlarmPage);
 
-      // Act - time goes which should display two alarms (start and end time)
+      // Act - time goes which should display alarm
       mockTicker.add(activity1StartTime);
       mockTicker.add(activity1StartTime.add(Duration(minutes: 2)));
       await tester.pumpAndSettle();
@@ -327,12 +325,6 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byKey(TestKey.appBarCloseButton));
-      await tester.pumpAndSettle();
-
-      expect(alarmScreenFinder, findsOneWidget);
-
-      // Act - tap the alarm ok button
       await tester.tap(find.byKey(TestKey.appBarCloseButton));
       await tester.pumpAndSettle();
 
@@ -348,7 +340,7 @@ void main() {
       await tester.pumpAndSettle();
       final alarmScreenFinder = find.byType(AlarmPage);
 
-      // Act - time goes which should display two alarms (start and end time)
+      // Act - time goes which should display alarms (start and end time)
       mockTicker.add(activity1StartTime);
       mockTicker.add(activity1StartTime.add(Duration(minutes: 1)));
       mockTicker.add(activity1StartTime.add(Duration(minutes: 2)));
@@ -361,7 +353,8 @@ void main() {
 
       // Expect - the top/latest alarm should now be the start time alarm for activity1
       expect(alarmScreenFinder, findsOneWidget);
-      expect(tester.widget<AlarmPage>(alarmScreenFinder).activity.id,
+      expect(
+          tester.widget<AlarmPage>(alarmScreenFinder).activityDay.activity.id,
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm
@@ -371,27 +364,11 @@ void main() {
       // Expect - the top/latest alarm should be the end time alarm for activity 2
       expect(alarmScreenFinder, findsOneWidget);
 
-      expect((tester.widget(alarmScreenFinder) as AlarmPage).activity.id,
-          equals(activity2.id));
-
-      // Act - tap the alarm ok button
-      await tester.tap(find.byKey(TestKey.appBarCloseButton));
-      await tester.pumpAndSettle();
-
-      // Expect - the top/latest alarm should be the end time alarm for activity 1
-      expect(alarmScreenFinder, findsOneWidget);
-
-      expect((tester.widget(alarmScreenFinder) as AlarmPage).activity.id,
-          equals(activity1.id));
-
-      // Act - tap the alarm ok button
-      await tester.tap(find.byKey(TestKey.appBarCloseButton));
-      await tester.pumpAndSettle();
-
-      // Expect - the top/latest alarm should be the start time alarm for activity 2
-      expect(alarmScreenFinder, findsOneWidget);
-
-      expect((tester.widget(alarmScreenFinder) as AlarmPage).activity.id,
+      expect(
+          (tester.widget(alarmScreenFinder) as AlarmPage)
+              .activityDay
+              .activity
+              .id,
           equals(activity2.id));
 
       // Act - tap the alarm ok button

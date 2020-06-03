@@ -1,4 +1,5 @@
 export 'activity.dart';
+export 'activity_occasion.dart';
 export 'data_update_response.dart';
 export 'alarm_type.dart';
 export 'category.dart';

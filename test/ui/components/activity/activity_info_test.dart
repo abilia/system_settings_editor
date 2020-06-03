@@ -69,7 +69,7 @@ void main() {
     // Act
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -94,7 +94,7 @@ void main() {
 
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -119,7 +119,7 @@ void main() {
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -142,7 +142,7 @@ void main() {
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -163,7 +163,7 @@ void main() {
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -186,7 +186,7 @@ void main() {
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -210,7 +210,7 @@ void main() {
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -235,7 +235,7 @@ void main() {
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -260,7 +260,7 @@ void main() {
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -284,7 +284,7 @@ void main() {
 
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -310,7 +310,7 @@ void main() {
 
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -337,7 +337,7 @@ void main() {
 
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),
@@ -373,7 +373,7 @@ void main() {
 
     await tester.pumpWidget(
       wrapWithMaterialApp(
-        ActivityInfo(
+        ActivityInfo.from(
           activity: activity,
           day: day,
         ),

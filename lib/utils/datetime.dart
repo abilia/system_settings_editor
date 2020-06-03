@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 
 final yMd = DateFormat('y-MM-dd').format;
 final hm = DateFormat.Hm().format;
@@ -56,12 +56,19 @@ extension DateTimeExtensions on DateTime {
   bool isDayAfter(DateTime otherDate) =>
       onlyDays().isAfter(otherDate.onlyDays());
 
-  bool isOnOrBetween(
+  bool inInclusiveRange(
       {@required DateTime startDate, @required DateTime endDate}) {
     if (endDate.isBefore(startDate)) return false;
     if (isBefore(endDate) && isAfter(startDate)) return true;
     if (isAtSameMomentAs(startDate)) return true;
     if (isAtSameMomentAs(endDate)) return true;
+    return false;
+  }
+
+  bool inExclusiveRange(
+      {@required DateTime startDate, @required DateTime endDate}) {
+    if (endDate.isBefore(startDate)) return false;
+    if (isBefore(endDate) && isAfter(startDate)) return true;
     return false;
   }
 

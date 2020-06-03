@@ -11,28 +11,30 @@ part 'edit_activity_event.dart';
 part 'edit_activity_state.dart';
 
 class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
-  final Activity activity;
+  final ActivityDay activityDay;
+  Activity get activity => activityDay.activity;
+  DateTime get day => activityDay.day;
   final ActivitiesBloc activitiesBloc;
-  final DateTime day;
+  final bool created;
 
-  EditActivityBloc({
+  EditActivityBloc(this.activityDay, {@required this.activitiesBloc})
+      : created = false,
+        assert(activityDay != null);
+
+  EditActivityBloc.newActivity({
     @required this.activitiesBloc,
-    this.day,
-    Activity activity,
-    DateTime now,
-  })  : assert(
-            activity == null && now != null || activity != null && day != null),
-        activity = activity == null
-            ? Activity.createNew(
-                title: '',
-                startTime: now.nextHalfHour(),
-                timezone: now.timeZoneName,
-              )
-            : activity.isRecurring
-                ? activity.copyWith(startTime: activity.startClock(day))
-                : activity;
+    @required DateTime now,
+  })  : created = true,
+        assert(now != null),
+        activityDay = ActivityDay(
+            Activity.createNew(
+              title: '',
+              startTime: now.nextHalfHour(),
+              timezone: now.timeZoneName,
+            ),
+            now.onlyDays());
   @override
-  EditActivityState get initialState => day == null
+  EditActivityState get initialState => created
       ? UnstoredActivityState(activity)
       : StoredActivityState(activity, day);
 
@@ -96,8 +98,10 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     if (state is UnstoredActivityState) {
       activitiesBloc.add(AddActivity(activity));
     } else if (event is SaveRecurringActivity) {
-      activitiesBloc
-          .add(UpdateRecurringActivity(activity, event.applyTo, event.day));
+      activitiesBloc.add(UpdateRecurringActivity(
+        ActivityDay(activity, event.day),
+        event.applyTo,
+      ));
     } else {
       activitiesBloc.add(UpdateActivity(activity));
     }

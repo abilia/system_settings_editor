@@ -10,17 +10,14 @@ import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
 class TimeRow extends StatelessWidget {
-  const TimeRow({
-    Key key,
-    @required this.activity,
-    @required this.day,
-  }) : super(key: key);
+  const TimeRow(this.activityDay, {Key key}) : super(key: key);
 
-  final Activity activity;
-  final DateTime day;
+  final ActivityDay activityDay;
 
   @override
   Widget build(BuildContext context) {
+    final activity = activityDay.activity;
+    final day = activityDay.day;
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) {
         return Padding(
@@ -35,14 +32,13 @@ class TimeRow extends StatelessWidget {
                   text: Translator.of(context).translate.fullDay,
                 )
               else if (!activity.hasEndTime)
-                _timeText(context, date: activity.startClock(day), now: now)
+                _timeText(context, date: activityDay.start, now: now)
               else ...[
                 Expanded(
                   child: Row(
                     children: [
                       Spacer(),
-                      _timeText(context,
-                          date: activity.startClock(day), now: now),
+                      _timeText(context, date: activityDay.start, now: now),
                     ],
                   ),
                 ),
@@ -56,7 +52,7 @@ class TimeRow extends StatelessWidget {
                     children: [
                       _timeText(
                         context,
-                        date: activity.endClock(day),
+                        date: activityDay.end,
                         now: now,
                       ),
                       Spacer(),

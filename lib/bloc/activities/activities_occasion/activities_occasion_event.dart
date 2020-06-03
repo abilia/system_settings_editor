@@ -18,12 +18,11 @@ class NowChanged extends ActivitiesOccasionEvent {
 }
 
 class ActivitiesChanged extends ActivitiesOccasionEvent {
-  final Iterable<Activity> activities;
+  final Iterable<ActivityDay> activities;
   final DateTime day;
   ActivitiesChanged(this.activities, this.day);
   @override
   List<Object> get props => [activities];
   @override
-  String toString() =>
-      'ActivitiesChanged { activities: ${activities.map((a) => a.title ?? a.id)} }';
+  bool get stringify => true;
 }

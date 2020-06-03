@@ -17,7 +17,9 @@ void main() {
     // Arrange
     final activity = Activity.createNew(title: '', startTime: aTime);
     final editActivityBloc = EditActivityBloc(
-        activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
+      ActivityDay(activity, aDay),
+      activitiesBloc: mockActivitiesBloc,
+    );
     // Act // Assert
     expect(editActivityBloc.initialState, isA<StoredActivityState>());
     expect(editActivityBloc.initialState.activity, activity);
@@ -30,8 +32,10 @@ void main() {
       startTime: aTime.nextHalfHour(),
       timezone: aTime.timeZoneName,
     );
-    final editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, now: aTime);
+    final editActivityBloc = EditActivityBloc.newActivity(
+      activitiesBloc: mockActivitiesBloc,
+      now: aTime,
+    );
     // Act // Assert
     expect(editActivityBloc.initialState.activity,
         MatchActivityWithoutId(activity));
@@ -41,15 +45,19 @@ void main() {
     // Arrange
     final activity = Activity.createNew(title: '', startTime: aTime);
     final editActivityBloc = EditActivityBloc(
-        activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
+      ActivityDay(activity, aDay),
+      activitiesBloc: mockActivitiesBloc,
+    );
     // Act // Assert
     expect(editActivityBloc.initialState.canSave, isFalse);
   });
 
   test('Changing activity changes activity', () async {
     // Arrange
-    final editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, now: aTime);
+    final editActivityBloc = EditActivityBloc.newActivity(
+      activitiesBloc: mockActivitiesBloc,
+      now: aTime,
+    );
     final activity = editActivityBloc.initialState.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
 
@@ -69,8 +77,8 @@ void main() {
   test('Trying to save yields nothing and does not try to save', () async {
     // Arrange
 
-    final editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, now: aTime);
+    final editActivityBloc = EditActivityBloc.newActivity(
+        activitiesBloc: mockActivitiesBloc, now: aTime);
     final activity = editActivityBloc.initialState.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
     // Act
@@ -111,7 +119,9 @@ void main() {
     );
 
     final editActivityBloc = EditActivityBloc(
-        activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
+      ActivityDay(activity, aDay),
+      activitiesBloc: mockActivitiesBloc,
+    );
     // Act
     editActivityBloc.add(ReplaceActivity(activityAsFullDay));
     editActivityBloc.add(SaveActivity());
@@ -132,8 +142,8 @@ void main() {
     // Arrange
     final aDate = DateTime(2022, 02, 22, 22, 00);
 
-    final editActivityBloc =
-        EditActivityBloc(activitiesBloc: mockActivitiesBloc, now: aDate);
+    final editActivityBloc = EditActivityBloc.newActivity(
+        activitiesBloc: mockActivitiesBloc, now: aDate);
     final activity = editActivityBloc.initialState.activity;
     final newDate = DateTime(2011, 11, 11, 11, 11, 11, 11, 11);
     final expetedNewDate = DateTime(2011, 11, 11, 22, 30);
@@ -168,7 +178,9 @@ void main() {
     final expetedNewActivity = activity.copyWith(startTime: expetedNewDate);
 
     final editActivityBloc = EditActivityBloc(
-        activitiesBloc: mockActivitiesBloc, activity: activity, day: day);
+      ActivityDay(activity, day),
+      activitiesBloc: mockActivitiesBloc,
+    );
 
     // Act
     editActivityBloc.add(ChangeStartTime(newStartTime));
@@ -199,7 +211,9 @@ void main() {
     final expetedNewActivity = activity.copyWith(duration: expectedDuration);
 
     final editActivityBloc = EditActivityBloc(
-        activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
+      ActivityDay(activity, aDay),
+      activitiesBloc: mockActivitiesBloc,
+    );
 
     // Act
     editActivityBloc.add(ChangeEndTime(newEndTime));
@@ -232,7 +246,9 @@ void main() {
     final expetedNewActivity = activity.copyWith(duration: expectedDuration);
 
     final editActivityBloc = EditActivityBloc(
-        activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
+      ActivityDay(activity, aDay),
+      activitiesBloc: mockActivitiesBloc,
+    );
 
     // Act
     editActivityBloc.add(ChangeEndTime(newEndTime));
@@ -267,7 +283,9 @@ void main() {
     ]);
 
     final editActivityBloc = EditActivityBloc(
-        activitiesBloc: mockActivitiesBloc, activity: activity, day: aDay);
+      ActivityDay(activity, aDay),
+      activitiesBloc: mockActivitiesBloc,
+    );
 
     // Act
     editActivityBloc.add(AddOrRemoveReminder(min15Reminder));

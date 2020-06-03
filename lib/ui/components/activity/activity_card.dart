@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/activity/timeformat.dart';
@@ -31,7 +30,7 @@ class ActivityCard extends StatelessWidget {
     final timeFormat = hourAndMinuteFormat(context);
     final hasImage = activity.hasImage;
     final hasTitle = activity.hasTitle;
-    final signedOff = activity.isSignedOff(activityOccasion.day);
+    final signedOff = activityOccasion.isSignedOff;
     final current = occasion == Occasion.current;
     final inactive = occasion == Occasion.past || signedOff;
     final themeData = inactive
@@ -95,7 +94,7 @@ class ActivityCard extends StatelessWidget {
                                   activity.fullDay
                                       ? Translator.of(context).translate.fullDay
                                       : activity.hasEndTime
-                                          ? '${timeFormat(activity.startTime)} - ${timeFormat(activity.end)}'
+                                          ? '${timeFormat(activity.startTime)} - ${timeFormat(activity.noneRecurringEnd)}'
                                           : '${timeFormat(activity.startTime)}',
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),

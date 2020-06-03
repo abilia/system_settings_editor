@@ -93,10 +93,10 @@ class FakeActivity {
           alarmType: ALARM_SILENT);
 
   static Activity reocurrsEveryDay([DateTime startDate]) =>
-      reoccurs(startDate, RecurrentType.weekly, allWeek,
+      reoccurs(startDate, RecurrentType.weekly, Recurs.everyday,
           title: 'recurs everyday');
   static Activity reocurrsWeekends([DateTime startDate]) =>
-      reoccurs(startDate, RecurrentType.weekly, allWeekends,
+      reoccurs(startDate, RecurrentType.weekly, Recurs.allWeekends,
           title: 'recurs weekend');
   static Activity reocurrsMondays([DateTime startDate]) => reoccurs(
       startDate, RecurrentType.weekly, Recurs.EVEN_MONDAY | Recurs.ODD_MONDAY,
@@ -115,12 +115,6 @@ class FakeActivity {
   static Activity reocurrsFridays([DateTime startDate]) => reoccurs(
       startDate, RecurrentType.weekly, Recurs.EVEN_FRIDAY | Recurs.ODD_FRIDAY,
       title: 'recurs friday');
-  static Activity reocurrsSaturdays([DateTime startDate]) => reoccurs(startDate,
-      RecurrentType.weekly, Recurs.EVEN_SATURDAY | Recurs.ODD_SATURDAY,
-      title: 'recurs saturday');
-  static Activity reocurrsSunday([DateTime startDate]) => reoccurs(
-      startDate, RecurrentType.weekly, Recurs.EVEN_SUNDAY | Recurs.ODD_SUNDAY,
-      title: 'recurs sunday');
   static Activity reocurrsOnDay(int day,
           [DateTime startDate, DateTime endDate]) =>
       reoccurs(startDate, RecurrentType.monthly, Recurs.onDayOfMonth(day),
@@ -155,19 +149,3 @@ class FakeActivity {
           reminderBefore: [60 * 60 * 1000],
           alarmType: NO_ALARM);
 }
-
-const int oddWeekdays = Recurs.ODD_MONDAY |
-    Recurs.ODD_TUESDAY |
-    Recurs.ODD_WEDNESDAY |
-    Recurs.ODD_THURSDAY |
-    Recurs.ODD_FRIDAY;
-const int evenWeekdays = Recurs.EVEN_MONDAY |
-    Recurs.EVEN_TUESDAY |
-    Recurs.EVEN_WEDNESDAY |
-    Recurs.EVEN_THURSDAY |
-    Recurs.EVEN_FRIDAY;
-const int allWeekdays = oddWeekdays | evenWeekdays;
-const int oddWeekends = Recurs.ODD_SATURDAY | Recurs.ODD_SUNDAY;
-const int evenWeekends = Recurs.EVEN_SATURDAY | Recurs.EVEN_SUNDAY;
-const int allWeekends = evenWeekends | oddWeekends;
-const int allWeek = allWeekdays | allWeekends;

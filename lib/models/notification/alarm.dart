@@ -3,11 +3,10 @@ import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 
 abstract class NotificationAlarm extends Equatable {
-  final Activity activity;
-  final DateTime day;
-  NotificationAlarm(this.activity, this.day)
-      : assert(activity != null),
-        assert(day != null);
+  final ActivityDay activityDay;
+  DateTime get day => activityDay.day;
+  Activity get activity => activityDay.activity;
+  NotificationAlarm(this.activityDay) : assert(activityDay != null);
   DateTime get notificationTime;
 
   Map<String, dynamic> toJson() => {
@@ -34,47 +33,54 @@ abstract class NotificationAlarm extends Equatable {
     }
   }
   @override
+  List<Object> get props => [activityDay];
+  @override
   bool get stringify => true;
 }
 
 abstract class NewAlarm extends NotificationAlarm {
-  NewAlarm(Activity activity, DateTime day) : super(activity, day);
-  @override
-  List<Object> get props => [activity, day];
+  NewAlarm(ActivityDay activityDay) : super(activityDay);
 }
 
 class StartAlarm extends NewAlarm {
-  StartAlarm(Activity activity, DateTime day) : super(activity, day);
+  StartAlarm(Activity activity, DateTime day)
+      : super(ActivityDay(activity, day));
+  StartAlarm.from(ActivityDay activityDay) : super(activityDay);
   @override
-  DateTime get notificationTime => activity.startClock(day);
+  DateTime get notificationTime => activityDay.start;
 }
 
 class EndAlarm extends NewAlarm {
-  EndAlarm(Activity activity, DateTime day) : super(activity, day);
+  EndAlarm(Activity activity, DateTime day) : super(ActivityDay(activity, day));
+  EndAlarm.from(ActivityDay activityDay) : super(activityDay);
   @override
-  DateTime get notificationTime => activity.endClock(day);
+  DateTime get notificationTime => activityDay.end;
 }
 
 abstract class NewReminder extends NotificationAlarm {
   final Duration reminder;
-  NewReminder(Activity activity, DateTime day, {@required this.reminder})
+  NewReminder(ActivityDay activityDay, this.reminder)
       : assert(reminder != null),
-        super(activity, day);
+        super(activityDay);
   @override
-  List<Object> get props => [activity, reminder, day];
+  List<Object> get props => [reminder, ...super.props];
 }
 
 class ReminderBefore extends NewReminder {
   ReminderBefore(Activity activity, DateTime day, {@required Duration reminder})
-      : super(activity, day, reminder: reminder);
+      : super(ActivityDay(activity, day), reminder);
+  ReminderBefore.from(ActivityDay activityDay, {@required Duration reminder})
+      : super(activityDay, reminder);
   @override
-  DateTime get notificationTime => activity.startClock(day).subtract(reminder);
+  DateTime get notificationTime => activityDay.start.subtract(reminder);
 }
 
 class ReminderUnchecked extends NewReminder {
   ReminderUnchecked(Activity activity, DateTime day,
       {@required Duration reminder})
-      : super(activity, day, reminder: reminder);
+      : super(ActivityDay(activity, day), reminder);
+  ReminderUnchecked.from(ActivityDay activityDay, {@required Duration reminder})
+      : super(activityDay, reminder);
   @override
-  DateTime get notificationTime => activity.endClock(day).add(reminder);
+  DateTime get notificationTime => activityDay.end.add(reminder);
 }

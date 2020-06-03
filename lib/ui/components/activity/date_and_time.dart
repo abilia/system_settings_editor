@@ -158,13 +158,13 @@ class TimeIntervallPicker extends StatelessWidget {
           flex: 148,
           child: TimePicker(
             translator.endTime,
-            activity.hasEndTime ? activity.end : null,
+            activity.hasEndTime ? activity.noneRecurringEnd : null,
             key: TestKey.endTimePicker,
             onTap: () async {
               final newEndTime = await showViewDialog<TimeOfDay>(
                 context: context,
                 builder: (context) => EndTimeInputDialog(
-                  time: activity.end,
+                  time: activity.noneRecurringEnd,
                   startTime: activity.startTime,
                 ),
               );
