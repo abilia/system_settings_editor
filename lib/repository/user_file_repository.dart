@@ -139,7 +139,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     }
-    throw UnavailableException();
+    throw UnavailableException([response.statusCode]);
   }
 
   Future<bool> postFileData(
@@ -210,7 +210,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       await fileStorage.storeFile(originalFileResponse.bodyBytes, userFile.id);
       await userFileDb.setFileLoadedForId(userFile.id);
     } else {
-      throw UnavailableException();
+      throw UnavailableException([originalFileResponse.statusCode]);
     }
   }
 
@@ -232,7 +232,8 @@ class UserFileRepository extends DataRepository<UserFile> {
       ]);
       await userFileDb.setFileLoadedForId(userFile.id);
     } else {
-      throw UnavailableException();
+      _log.severe('Could not get image files for userFile: $userFile');
+      throw UnavailableException(responses.map((e) => e.statusCode).toList());
     }
   }
 }

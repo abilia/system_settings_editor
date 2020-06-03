@@ -33,7 +33,7 @@ class FullDayContainer extends StatelessWidget {
             if (fullDayActivities.length >= 3)
               ShowAllFullDayActivitiesButton(
                 fullDayActivities: fullDayActivities,
-                day: day
+                day: day,
               )
           ]).toList(),
         ),
@@ -66,10 +66,7 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
                   parent: animation,
                   curve: Curves.easeOut,
                 ),
-                child: AllDayList(
-                  pickedDay: day,
-                  allDayActivities: fullDayActivities,
-                ),
+                child: AllDayList(),
               ),
             ),
           );

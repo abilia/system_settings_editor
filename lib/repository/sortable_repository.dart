@@ -110,7 +110,7 @@ class SortableRepository extends DataRepository<Sortable> {
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     }
-    throw UnavailableException();
+    throw UnavailableException([response.statusCode]);
   }
 
   Future<Sortable> generateUploadFolder() async {
