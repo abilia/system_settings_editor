@@ -6,7 +6,6 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
-import 'package:seagull/utils/all.dart';
 
 class ActivityTimepillarCard extends StatelessWidget {
   static const double imageSize = 56.0,
@@ -47,8 +46,6 @@ class ActivityTimepillarCard extends StatelessWidget {
 
     final endTime = activityOccasion.end;
     final startTime = activityOccasion.start;
-    final dots = activityOccasion.activity.duration
-        .inDots(minutesPerDot, roundingMinute);
     final dotHeight = dots * dotDistance;
 
     return BlocBuilder<SettingsBloc, SettingsState>(

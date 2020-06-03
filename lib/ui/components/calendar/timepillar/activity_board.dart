@@ -46,7 +46,17 @@ class ActivityBoard extends StatelessWidget {
     ActivityLoop:
     for (final ao in activities) {
       final a = ao.activity;
-      final dots = a.duration.inDots(minutesPerDot, roundingMinute);
+
+      final minutePosition =
+          ao.start.roundToMinute(minutesPerDot, roundingMinute);
+
+      final startsBefore00 = minutePosition.isDayBefore(day);
+      final startsAfter00 = minutePosition.isDayAfter(day);
+
+      final dots =
+          (startsBefore00 ? a.duration - day.difference(ao.start) : a.duration)
+              .inDots(minutesPerDot, roundingMinute);
+
       final dotHeight = dots * dotDistance;
 
       final textHeight = (a.hasTitle
@@ -61,17 +71,10 @@ class ActivityBoard extends StatelessWidget {
       final renderedHeight =
           max(textHeight + imageHeight, ActivityTimepillarCard.minHeight);
 
-      final minutePosition =
-          ao.start.roundToMinute(minutesPerDot, roundingMinute);
-
-      final topOffset = minutePosition.isDayAfter(day)
+      final topOffset = startsAfter00
           ? timeToPixelDistance(24, 0)
-          : minutePosition.isDayBefore(day)
-              ? minutePosition
-                          .difference(day)
-                          .inDots(minutesPerDot, roundingMinute) *
-                      dotDistance +
-                  dotPadding
+          : startsBefore00
+              ? dotPadding
               : timeToPixelDistanceHour(minutePosition);
 
       var height = max(dotHeight, renderedHeight);
