@@ -115,6 +115,6 @@ class ActivityRepository extends DataRepository<Activity> {
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     }
-    throw UnavailableException();
+    throw UnavailableException([response.statusCode]);
   }
 }

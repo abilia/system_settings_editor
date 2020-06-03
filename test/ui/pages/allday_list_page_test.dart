@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
@@ -11,8 +12,11 @@ import 'package:intl/date_symbol_data_local.dart';
 import '../../mocks.dart';
 
 void main() {
-  AuthenticationBloc mockedActivitiesBloc = MockAuthenticationBloc();
+  AuthenticationBloc mockAuthenticationBloc = MockAuthenticationBloc();
   final day = DateTime(2111, 11, 11);
+  final clocBloc =
+      ClockBloc(StreamController<DateTime>().stream, initialTime: day);
+  final activitiesOccasionBlocMock = MockActivitiesOccasionBloc();
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -22,12 +26,15 @@ void main() {
                 orElse: () => supportedLocales.first),
         home: MultiBlocProvider(providers: [
           BlocProvider<AuthenticationBloc>(
-              create: (context) => mockedActivitiesBloc),
+              create: (context) => mockAuthenticationBloc),
+          BlocProvider<ActivitiesOccasionBloc>(
+            create: (context) => activitiesOccasionBlocMock,
+          ),
           BlocProvider<ActivitiesBloc>(
-              create: (context) => MockActivitiesBloc()),
+            create: (context) => MockActivitiesBloc(),
+          ),
           BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc(StreamController<DateTime>().stream,
-                initialTime: day),
+            create: (context) => clocBloc,
           )
         ], child: widget),
       );
@@ -59,10 +66,19 @@ void main() {
       ),
     ].map((a) => ActivityOccasion(ActivityDay(a, day), now: day)).toList();
 
-    await tester.pumpWidget(wrapWithMaterialApp(AllDayList(
-      allDayActivities: allDayActivities,
-      pickedDay: day,
-    )));
+    final expected = ActivitiesOccasionLoaded(
+      activities: [],
+      fullDayActivities: allDayActivities,
+      day: day,
+      occasion: Occasion.current,
+      indexOfCurrentActivity: 0,
+    );
+
+    when(activitiesOccasionBlocMock.state).thenReturn(expected);
+    when(activitiesOccasionBlocMock.skip(1))
+        .thenAnswer((_) => StreamController<ActivitiesOccasionState>().stream);
+
+    await tester.pumpWidget(wrapWithMaterialApp(AllDayList()));
     await tester.pumpAndSettle();
     expect(find.text(title0), findsOneWidget);
     expect(find.text(title1), findsOneWidget);

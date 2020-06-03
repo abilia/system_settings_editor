@@ -66,10 +66,7 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
                   parent: animation,
                   curve: Curves.easeOut,
                 ),
-                child: AllDayList(
-                  pickedDay: day,
-                  allDayActivities: fullDayActivities,
-                ),
+                child: AllDayList(),
               ),
             ),
           );
