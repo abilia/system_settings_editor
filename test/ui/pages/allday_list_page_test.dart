@@ -64,14 +64,13 @@ void main() {
         title: title3,
         startTime: day,
       ),
-    ].map((a) => ActivityOccasion(ActivityDay(a, day), now: day)).toList();
+    ].map((a) => ActivityDay(a, day).toOccasion(day)).toList();
 
     final expected = ActivitiesOccasionLoaded(
       activities: [],
       fullDayActivities: allDayActivities,
       day: day,
       occasion: Occasion.current,
-      indexOfCurrentActivity: 0,
     );
 
     when(activitiesOccasionBlocMock.state).thenReturn(expected);

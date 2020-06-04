@@ -1,9 +1,9 @@
-import 'dart:math';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
 class Agenda extends StatefulWidget {
@@ -18,64 +18,60 @@ class Agenda extends StatefulWidget {
 class _AgendaState extends State<Agenda> {
   ActivitiesBloc _activitiesBloc;
   ScrollPositionBloc _scrollPositionBloc;
+  final center = GlobalKey();
+  final scrollController = ScrollController(
+    initialScrollOffset: 0,
+    keepScrollOffset: false,
+  );
 
   @override
   void initState() {
     _activitiesBloc = BlocProvider.of<ActivitiesBloc>(context);
     _scrollPositionBloc = BlocProvider.of<ScrollPositionBloc>(context);
+
+    if (widget.state.isToday) {
+      WidgetsBinding.instance.addPostFrameCallback((_) =>
+          BlocProvider.of<ScrollPositionBloc>(context)
+              .add(ListViewRenderComplete(scrollController)));
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final state = widget.state;
-    final scrollController = ScrollController(
-        initialScrollOffset: max(
-            state.indexOfCurrentActivity *
-                (ActivityCard.cardHeight + ActivityCard.cardMargin),
-            0),
-        keepScrollOffset: false);
-    if (state.isToday) {
-      WidgetsBinding.instance.addPostFrameCallback((_) =>
-          BlocProvider.of<ScrollPositionBloc>(context)
-              .add(ListViewRenderComplete(scrollController)));
-    }
-    final activities = state.activities;
-    final fullDayActivities = state.fullDayActivities;
     return RefreshIndicator(
       onRefresh: _refresh,
-      child: Padding(
-        padding: const EdgeInsets.only(right: 4),
-        child: NotificationListener<ScrollNotification>(
-          onNotification: state.isToday ? _onScrollNotification : null,
-          child: Scrollbar(
-            child: activities.isEmpty && fullDayActivities.isEmpty
-                ? ListView(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 24.0),
+      child: NotificationListener<ScrollNotification>(
+        onNotification: state.isToday ? _onScrollNotification : null,
+        child: CupertinoScrollbar(
+          controller: scrollController,
+          child: CustomScrollView(
+            center: state.isToday ? center : null,
+            controller: scrollController,
+            physics: AlwaysScrollableScrollPhysics(),
+            slivers: (state.activities.isEmpty &&
+                    state.fullDayActivities.isEmpty)
+                ? <Widget>[
+                    SliverPadding(
+                      key: center,
+                      padding: const EdgeInsets.only(top: 24.0),
+                      sliver: SliverToBoxAdapter(
                         child: Center(
                           child: Text(
                             Translator.of(context).translate.noActivities,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
-                      )
-                    ],
-                  )
-                : ListView.builder(
-                    itemExtent:
-                        ActivityCard.cardHeight + ActivityCard.cardMargin,
-                    controller: state.isToday ? scrollController : null,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    itemCount: activities.length,
-                    itemBuilder: (context, index) => ActivityCard(
-                      activityOccasion: activities[index],
-                      margin: ActivityCard.cardMargin / 2,
-                    ),
-                  ),
+                      ),
+                    )
+                  ]
+                : [
+                    SliverPadding(padding: const EdgeInsets.only(top: 8)),
+                    SliverActivityList(state.pastActivities),
+                    SliverActivityList(state.notPastActivities, key: center),
+                    SliverPadding(padding: const EdgeInsets.only(top: 8)),
+                  ],
           ),
         ),
       ),
@@ -91,5 +87,29 @@ class _AgendaState extends State<Agenda> {
     _scrollPositionBloc
         .add(ScrollPositionUpdated(scrollNotification.metrics.pixels));
     return false;
+  }
+}
+
+class SliverActivityList extends StatelessWidget {
+  final List<ActivityOccasion> activities;
+  const SliverActivityList(
+    this.activities, {
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) => ActivityCard(
+            activityOccasion: activities[index],
+            margin: ActivityCard.cardMargin / 2,
+          ),
+          childCount: activities.length,
+        ),
+      ),
+    );
   }
 }

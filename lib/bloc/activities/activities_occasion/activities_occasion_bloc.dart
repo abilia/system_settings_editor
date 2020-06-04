@@ -63,7 +63,7 @@ class ActivitiesOccasionBloc
 
     final timedActivities = removeAfterFiltered
         .where((ad) => !ad.activity.fullDay)
-        .map((ad) => ActivityOccasion(ad, now: now))
+        .map((ad) => ad.toOccasion(now))
         .toList()
           ..sort((a, b) {
             final occasionComparing =
@@ -79,9 +79,6 @@ class ActivitiesOccasionBloc
         .toList();
 
     final isToday = day.isAtSameDay(now);
-    final firstActiveIndex = isToday
-        ? _indexOfFirstNoneCompletedOrLastCompletedActivity(timedActivities)
-        : -1;
 
     return ActivitiesOccasionLoaded(
       activities: timedActivities,
@@ -90,14 +87,7 @@ class ActivitiesOccasionBloc
       occasion: isToday
           ? Occasion.current
           : day.isAfter(now) ? Occasion.future : Occasion.past,
-      indexOfCurrentActivity: firstActiveIndex,
     );
-  }
-
-  int _indexOfFirstNoneCompletedOrLastCompletedActivity(
-      List<ActivityOccasion> activities) {
-    final lastIndex = activities.indexWhere((a) => a.occasion != Occasion.past);
-    return lastIndex < 0 ? activities.length - 1 : lastIndex;
   }
 
   @override

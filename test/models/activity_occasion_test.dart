@@ -12,7 +12,7 @@ void main() {
     final activity = Activity.createNew(
         title: '*', startTime: startTime, duration: duration);
     // Act
-    final ao = ActivityOccasion(ActivityDay(activity, startDay), now: now);
+    final ao = ActivityDay(activity, startDay).toOccasion(now);
     // Assert
     expect(ao.occasion, Occasion.past);
   });

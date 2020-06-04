@@ -18,8 +18,9 @@ class ActivitiesOccasionLoading extends ActivitiesOccasionState {
 
 class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
   final List<ActivityOccasion> activities;
+  final List<ActivityOccasion> pastActivities;
+  final List<ActivityOccasion> notPastActivities;
   final List<ActivityOccasion> fullDayActivities;
-  final int indexOfCurrentActivity;
   final Occasion occasion;
   final DateTime day;
   bool get isToday => occasion == Occasion.current;
@@ -27,10 +28,11 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
   ActivitiesOccasionLoaded({
     @required this.activities,
     @required this.fullDayActivities,
-    @required this.indexOfCurrentActivity,
     @required this.day,
     @required this.occasion,
-  }) : super();
+  })  : pastActivities = activities.where((ao) => ao.isPast).toList(),
+        notPastActivities = activities.where((ao) => !ao.isPast).toList(),
+        super();
 
   @override
   List<Object> get props => [
@@ -38,10 +40,9 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
         activities,
         fullDayActivities,
         day,
-        indexOfCurrentActivity,
         isToday,
       ];
   @override
   String toString() =>
-      'ActivitiesOccasionLoaded { $occasion, [${activities.map((e) => '(${e.occasion} ${e.activity.title ?? e.activity.id} ${e.day} )')}], FullDay: $fullDayActivities, day; ${yMd(day)}, ${isToday ? 'today' : 'not today'} indexOfCurrentActivity; $indexOfCurrentActivity';
+      'ActivitiesOccasionLoaded { $occasion, [${activities.map((e) => '(${e.occasion} ${e.activity.title ?? e.activity.id} ${e.day} )')}], FullDay: $fullDayActivities, day; ${yMd(day)}, ${isToday ? 'today' : 'not today'}';
 }
