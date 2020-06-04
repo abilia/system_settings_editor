@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:devicelocale/devicelocale.dart';
@@ -10,7 +9,6 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import 'package:seagull/alarm_listener.dart';
 import 'package:seagull/analytics/analytics_service.dart';
@@ -18,6 +16,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/pages/all.dart';
@@ -29,27 +28,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 final _log = Logger('main');
 
 void main() async {
-  initLogging();
-  BlocSupervisor.delegate = SimpleBlocDelegate();
   await initServices();
   final baseUrl = await BaseUrlDb().initialize(PROD);
-
-  FlutterError.onError = Crashlytics.instance.recordFlutterError;
   runApp(App(baseUrl: baseUrl));
 }
 
-void initLogging() {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((record) {
-    print('${record.level.name}: ${record.time}: ${record.message}');
-    if (record.level == Level.SEVERE) {
-      print(record.error);
-      print(record.stackTrace);
-    }
-  });
-}
-
 Future<void> initServices() async {
+  await initLogging();
   _log.fine('Initializing services');
   WidgetsFlutterBinding.ensureInitialized();
   final currentLocale = await Devicelocale.currentLocale;
@@ -60,12 +45,6 @@ Future<void> initServices() async {
     ..fileStorage = FileStorage(documentDirectory.path)
     ..settingsDb = settingsDb
     ..init();
-  final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
-  await AppCenter.startAsync(
-    appSecretAndroid: appId,
-    appSecretIOS: appId,
-  );
-  await AppCenter.configureDistributeDebugAsync(enabled: false);
 }
 
 class App extends StatelessWidget {
