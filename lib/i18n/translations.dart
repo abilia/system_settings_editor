@@ -16,7 +16,6 @@ abstract class Translated {
   String get wrongCredentials;
   String get now;
   String get fullDay;
-  String get week;
   String get reminder;
   String get alarm;
   String get startsNow;
@@ -92,7 +91,6 @@ class English extends Translated {
           'Your username/email or password is not correct. Please, try another one.',
       now = 'now',
       fullDay = 'All day',
-      week = 'week',
       reminder = 'Reminder',
       alarm = 'Alarm',
       endsNow = 'Ends now',
@@ -169,7 +167,6 @@ class Swedish extends Translated {
       wrongCredentials = 'Fel användarnamn eller lösenord',
       now = 'nu',
       fullDay = 'Heldag',
-      week = 'vecka',
       reminder = 'Påminnelse',
       alarm = 'Larm',
       endsNow = 'Slutar nu',
