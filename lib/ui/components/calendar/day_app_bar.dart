@@ -46,7 +46,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
                   alignment: Alignment.center,
                   children: <Widget>[
                     Align(
-                      alignment: Alignment.topCenter,
+                      alignment: Alignment.center,
                       child: Row(
                         children: <Widget>[
                           Text(
@@ -54,13 +54,6 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
                             style: themeData.textTheme.headline6,
                           ),
                         ],
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text(
-                        '${Translator.of(context).translate.week} ${day.getWeekNumber()}',
-                        style: themeData.textTheme.subtitle1,
                       ),
                     ),
                     if (day.isDayBefore(time))
