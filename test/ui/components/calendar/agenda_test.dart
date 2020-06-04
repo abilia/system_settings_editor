@@ -16,7 +16,7 @@ import '../../../mocks.dart';
 
 void main() {
   MockActivityDb mockActivityDb;
-  final now = DateTime.now();
+  final now = DateTime(2020, 06, 04, 11, 24);
   ActivityResponse activityResponse = () => [];
 
   final firstFullDayTitle = 'first full day',
@@ -46,7 +46,8 @@ void main() {
     GetItInitializer()
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
-      ..ticker = Ticker(stream: StreamController<DateTime>().stream)
+      ..ticker =
+          Ticker(stream: StreamController<DateTime>().stream, initialTime: now)
       ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
@@ -107,8 +108,8 @@ void main() {
       'Agenda with one activity and a lot of passed activities should show the activity',
       (WidgetTester tester) async {
     final key = 'KEYKEYKEYKEYKEY';
-    final activities = FakeActivities.allPast
-      ..add(FakeActivity.startsNow().copyWith(title: key));
+    final activities = FakeActivities.allPastWhen(now)
+      ..add(FakeActivity.starts(now).copyWith(title: key));
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activities));
 
@@ -147,6 +148,44 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(firstFullDayTitle), findsOneWidget);
+  });
+
+  testWidgets('past activities are hidden by scroll',
+      (WidgetTester tester) async {
+    final pastTitle = 'past', currentTitle = 'current', futureTitle = 'future';
+    final activites = [
+      Activity.createNew(
+        title: pastTitle,
+        startTime: now.subtract(1.hours()),
+        duration: 30.minutes(),
+      ),
+      Activity.createNew(
+        title: currentTitle,
+        startTime: now.subtract(5.minutes()),
+        duration: 30.minutes(),
+      ),
+      Activity.createNew(
+        title: futureTitle,
+        startTime: now.add(5.minutes()),
+        duration: 30.minutes(),
+      )
+    ];
+
+    when(mockActivityDb.getAllNonDeleted())
+        .thenAnswer((_) => Future.value(activites));
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+
+    expect(find.text(pastTitle), findsNothing);
+    expect(find.text(currentTitle), findsOneWidget);
+    expect(find.text(futureTitle), findsOneWidget);
+
+    await tester.drag(find.byType(Agenda), Offset(0.0, 300));
+    await tester.pumpAndSettle();
+
+    expect(find.text(pastTitle), findsOneWidget);
+    expect(find.text(currentTitle), findsOneWidget);
+    expect(find.text(futureTitle), findsOneWidget);
   });
 
   testWidgets('two full day shows, but no show all full days button',

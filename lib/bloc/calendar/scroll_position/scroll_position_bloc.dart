@@ -21,15 +21,15 @@ class ScrollPositionBloc
     if (event is WrongDaySelected) {
       yield WrongDay();
     } else if (event is ListViewRenderComplete) {
-      yield* _isActivityInView(scrollController: event.scrollController);
+      yield* _isActivityInView(event.scrollController);
     } else if (event is ScrollPositionUpdated &&
         s is ScrollPositionReadyState) {
-      yield* _isActivityInView(scrollController: s.scrollController);
+      yield* _isActivityInView(s.scrollController);
     }
   }
 
   Stream<ScrollPositionState> _isActivityInView(
-      {@required ScrollController scrollController}) async* {
+      ScrollController scrollController) async* {
     if (!scrollController.hasClients) {
       yield Unready();
       return;

@@ -7,18 +7,15 @@ import 'package:seagull/utils/all.dart';
 enum Occasion { past, current, future }
 
 class ActivityOccasion extends ActivityDay {
+  bool get isPast => occasion == Occasion.past;
+
   final Occasion occasion;
-  ActivityOccasion._(Activity activity, this.occasion, DateTime day)
-      : super(activity, day);
   ActivityOccasion(
-    ActivityDay activityDay, {
-    @required DateTime now,
-  })  : occasion = activityDay.end.isBefore(now)
-            ? Occasion.past
-            : activityDay.start.isAfter(now)
-                ? Occasion.future
-                : Occasion.current,
-        super.copy(activityDay);
+    Activity activity,
+    DateTime day,
+    this.occasion,
+  )   : assert(occasion != null),
+        super(activity, day);
 
   @visibleForTesting
   factory ActivityOccasion.forTest(
@@ -26,17 +23,18 @@ class ActivityOccasion extends ActivityDay {
     Occasion occasion = Occasion.current,
     DateTime day,
   }) =>
-      ActivityOccasion._(
-          activity, occasion, day ?? activity.startTime.onlyDays());
+      ActivityOccasion(
+          activity, day ?? activity.startTime.onlyDays(), occasion);
 
   factory ActivityOccasion.fullDay(
     ActivityDay activityDay, {
     @required DateTime now,
   }) =>
-      ActivityOccasion._(
-          activityDay.activity,
-          activityDay.start.isDayBefore(now) ? Occasion.past : Occasion.future,
-          activityDay.day);
+      ActivityOccasion(
+        activityDay.activity,
+        activityDay.day,
+        activityDay.start.isDayBefore(now) ? Occasion.past : Occasion.future,
+      );
 
   @override
   List<Object> get props => [occasion, ...super.props];
@@ -56,6 +54,13 @@ class ActivityDay extends Equatable {
   ActivityDay.copy(ActivityDay ad) : this(ad.activity, ad.day);
   ActivityDay fromActivitiesState(ActivitiesState activitiesState) =>
       ActivityDay(activitiesState.newActivityFromLoadedOrGiven(activity), day);
+  ActivityOccasion toOccasion(DateTime now) => ActivityOccasion(
+      activity,
+      day,
+      end.isBefore(now)
+          ? Occasion.past
+          : start.isAfter(now) ? Occasion.future : Occasion.current);
+
   @override
   List<Object> get props => [activity, day];
   @override
