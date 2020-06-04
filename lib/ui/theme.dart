@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 ThemeData abiliaTheme = ThemeData(
+  primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: AbiliaColors.white110,
   primaryColor: AbiliaColors.black,
   accentColor: AbiliaColors.black,
