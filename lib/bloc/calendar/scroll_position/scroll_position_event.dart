@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/bloc/mixin/silent.dart';
+import 'package:seagull/logging.dart';
 
 @immutable
 abstract class ScrollPositionEvent extends Equatable with Silent {}
@@ -11,7 +11,7 @@ class WrongDaySelected extends ScrollPositionEvent {
   List<Object> get props => [];
 }
 
-class ScrollPositionUpdated extends ScrollPositionEvent with Silent {
+class ScrollPositionUpdated extends ScrollPositionEvent {
   final double scrollPosition;
   ScrollPositionUpdated(this.scrollPosition);
   @override

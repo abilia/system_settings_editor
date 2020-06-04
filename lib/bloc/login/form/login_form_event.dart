@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/bloc/mixin/mixin.dart';
+import 'package:seagull/logging.dart';
 
 @immutable
 abstract class LoginFormEvent extends Equatable with Silent {
