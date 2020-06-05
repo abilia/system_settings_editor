@@ -113,17 +113,19 @@ class SeagullApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       builder: (context, child) {
-        final mediaQuery =
-            MediaQuery.of(context).copyWith(textScaleFactor: 1.0);
+        final deviceData = MediaQuery.of(context);
         GetIt.I<SettingsDb>()
-            .setAlwaysUse24HourFormat(mediaQuery.alwaysUse24HourFormat);
+            .setAlwaysUse24HourFormat(deviceData.alwaysUse24HourFormat);
         return MediaQuery(
+          data: deviceData.copyWith(textScaleFactor: 1.0),
           child: child,
-          data: mediaQuery,
         );
       },
       title: 'Seagull',
       theme: abiliaTheme,
+      darkTheme: abiliaTheme.copyWith(
+        primaryColorBrightness: Brightness.dark,
+      ),
       navigatorObservers: [AnalyticsService.observer],
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: [
