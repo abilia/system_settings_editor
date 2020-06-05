@@ -1,5 +1,9 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+import 'dart:ui' show lerpDouble;
+
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/ui/theme.dart';
@@ -107,6 +111,9 @@ class RadioField<T> extends StatelessWidget {
   final double heigth, width;
   final T value, groupValue;
   final ValueChanged<T> onChanged;
+  final BoxDecoration activeDecoration;
+  final BoxDecoration inactiveDecoration;
+  final EdgeInsetsGeometry margin;
 
   const RadioField({
     Key key,
@@ -116,53 +123,52 @@ class RadioField<T> extends StatelessWidget {
     this.child,
     this.heigth = 56,
     this.width,
+    this.activeDecoration = whiteBoxDecoration,
+    this.inactiveDecoration = borderDecoration,
+    this.margin = const EdgeInsets.all(8.0),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).copyWith(
-      toggleableActiveColor: AbiliaColors.green,
-    );
+    final decoration =
+        value == groupValue ? activeDecoration : inactiveDecoration;
     return Material(
       color: Colors.transparent,
-      child: Theme(
-        data: theme,
-        child: InkWell(
-          onTap: () => onChanged(value),
-          borderRadius: borderRadius,
-          child: Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Ink(
-                height: heigth,
-                width: width,
-                decoration:
-                    value == groupValue ? whiteBoxDecoration : borderDecoration,
-                padding: const EdgeInsets.all(8.0),
-                child: child,
-              ),
-              Positioned(
-                top: -8,
-                right: -8,
-                child: Container(
-                  padding: const EdgeInsets.all(1.0),
-                  decoration: BoxDecoration(
-                      color: theme.scaffoldBackgroundColor,
-                      shape: BoxShape.circle),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: Radio(
-                      key: ObjectKey(key),
-                      value: value,
-                      groupValue: groupValue,
-                      onChanged: onChanged,
-                    ),
+      child: InkWell(
+        onTap: () => onChanged(value),
+        borderRadius: borderRadius,
+        child: Stack(
+          overflow: Overflow.visible,
+          children: <Widget>[
+            Ink(
+              height: heigth,
+              width: width,
+              decoration: decoration,
+              padding: margin.subtract(decoration.border.dimensions),
+              child: child,
+            ),
+            Positioned(
+              top: -6,
+              right: -6,
+              child: Container(
+                padding: const EdgeInsets.all(4.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  shape: BoxShape.circle,
+                ),
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: AbiliaRadio(
+                    key: ObjectKey(key),
+                    value: value,
+                    groupValue: groupValue,
+                    onChanged: onChanged,
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -225,69 +231,346 @@ class SelectableField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).copyWith(
-      toggleableActiveColor: AbiliaColors.green,
-    );
     return Material(
       color: Colors.transparent,
-      child: Theme(
-        data: theme,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: borderRadius,
-          child: Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Ink(
-                height: heigth,
-                width: width,
-                decoration: selected ? whiteBoxDecoration : borderDecoration,
-                padding:
-                    const EdgeInsets.only(left: 12.0, top: 6.0, right: 24.0),
-                child: label,
-              ),
-              Positioned(
-                top: -6,
-                right: -6,
-                child: Container(
-                  padding: const EdgeInsets.all(4.0),
-                  decoration: BoxDecoration(
-                      color: theme.scaffoldBackgroundColor,
-                      shape: BoxShape.circle),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: AnimatedSwitcher(
-                      duration: 300.milliseconds(),
-                      transitionBuilder: (child, animation) =>
-                          child is Container
-                              ? child
-                              : RotationTransition(
-                                  turns: animation,
-                                  child: ScaleTransition(
-                                    child: child,
-                                    scale: animation,
-                                  ),
-                                ),
-                      child: selected
-                          ? Icon(
-                              AbiliaIcons.radiocheckbox_selected,
-                              color: AbiliaColors.green,
-                            )
-                          : Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: border,
-                              ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: borderRadius,
+        child: Stack(
+          overflow: Overflow.visible,
+          children: <Widget>[
+            Ink(
+              height: heigth,
+              width: width,
+              decoration: selected ? whiteBoxDecoration : borderDecoration,
+              padding: const EdgeInsets.only(left: 12.0, top: 6.0, right: 24.0),
+              child: label,
+            ),
+            Positioned(
+              top: -6,
+              right: -6,
+              child: Container(
+                padding: const EdgeInsets.all(1.0),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    shape: BoxShape.circle),
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: AnimatedSwitcher(
+                    duration: 300.milliseconds(),
+                    transitionBuilder: (child, animation) => child is Container
+                        ? child
+                        : RotationTransition(
+                            turns: animation,
+                            child: ScaleTransition(
+                              child: child,
+                              scale: animation,
                             ),
-                    ),
+                          ),
+                    child: selected
+                        ? Icon(
+                            AbiliaIcons.radiocheckbox_selected,
+                            color: AbiliaColors.green,
+                          )
+                        : Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: border,
+                            ),
+                          ),
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
+  }
+}
+
+class AbiliaRadio<T> extends StatefulWidget {
+  const AbiliaRadio({
+    Key key,
+    @required this.value,
+    @required this.groupValue,
+    @required this.onChanged,
+    this.activeColor,
+    this.focusColor,
+    this.hoverColor,
+    this.materialTapTargetSize,
+    this.visualDensity,
+    this.focusNode,
+    this.autofocus = false,
+    this.outerRadius = 11.5,
+    this.innerRadius = 8.5,
+  })  : assert(autofocus != null),
+        super(key: key);
+
+  final T value;
+  final T groupValue;
+  final ValueChanged<T> onChanged;
+  final Color activeColor;
+  final MaterialTapTargetSize materialTapTargetSize;
+  final VisualDensity visualDensity;
+  final Color focusColor;
+  final Color hoverColor;
+  final FocusNode focusNode;
+  final bool autofocus;
+  final double outerRadius;
+  final double innerRadius;
+
+  @override
+  _AbiliaRadioState<T> createState() => _AbiliaRadioState<T>();
+}
+
+class _AbiliaRadioState<T> extends State<AbiliaRadio<T>>
+    with TickerProviderStateMixin {
+  bool get enabled => widget.onChanged != null;
+  Map<LocalKey, ActionFactory> _actionMap;
+
+  @override
+  void initState() {
+    super.initState();
+    _actionMap = <LocalKey, ActionFactory>{
+      ActivateAction.key: _createAction,
+    };
+  }
+
+  void _actionHandler(FocusNode node, Intent intent) {
+    if (widget.onChanged != null) {
+      widget.onChanged(widget.value);
+    }
+    final renderObject = node.context.findRenderObject();
+    renderObject.sendSemanticsEvent(const TapSemanticEvent());
+  }
+
+  Action _createAction() {
+    return CallbackAction(
+      ActivateAction.key,
+      onInvoke: _actionHandler,
+    );
+  }
+
+  bool _focused = false;
+  void _handleHighlightChanged(bool focused) {
+    if (_focused != focused) {
+      setState(() {
+        _focused = focused;
+      });
+    }
+  }
+
+  bool _hovering = false;
+  void _handleHoverChanged(bool hovering) {
+    if (_hovering != hovering) {
+      setState(() {
+        _hovering = hovering;
+      });
+    }
+  }
+
+  Color _getInactiveColor(ThemeData themeData) {
+    return enabled ? themeData.unselectedWidgetColor : themeData.disabledColor;
+  }
+
+  void _handleChanged(bool selected) {
+    if (selected) widget.onChanged(widget.value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    assert(debugCheckHasMaterial(context));
+    final themeData = Theme.of(context);
+    Size size;
+    switch (widget.materialTapTargetSize ?? themeData.materialTapTargetSize) {
+      case MaterialTapTargetSize.padded:
+        size = const Size(
+            2 * kRadialReactionRadius + 8.0, 2 * kRadialReactionRadius + 8.0);
+        break;
+      case MaterialTapTargetSize.shrinkWrap:
+        size = const Size(2 * kRadialReactionRadius, 2 * kRadialReactionRadius);
+        break;
+    }
+    size +=
+        (widget.visualDensity ?? themeData.visualDensity).baseSizeAdjustment;
+    final additionalConstraints = BoxConstraints.tight(size);
+    return FocusableActionDetector(
+      actions: _actionMap,
+      focusNode: widget.focusNode,
+      autofocus: widget.autofocus,
+      enabled: enabled,
+      onShowFocusHighlight: _handleHighlightChanged,
+      onShowHoverHighlight: _handleHoverChanged,
+      child: Builder(
+        builder: (BuildContext context) {
+          return _RadioRenderObjectWidget(
+            selected: widget.value == widget.groupValue,
+            activeColor: widget.activeColor ?? themeData.toggleableActiveColor,
+            inactiveColor: _getInactiveColor(themeData),
+            focusColor: widget.focusColor ?? themeData.focusColor,
+            hoverColor: widget.hoverColor ?? themeData.hoverColor,
+            onChanged: enabled ? _handleChanged : null,
+            additionalConstraints: additionalConstraints,
+            vsync: this,
+            hasFocus: _focused,
+            hovering: _hovering,
+            innerRadius: widget.innerRadius,
+            outerRadius: widget.outerRadius,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _RadioRenderObjectWidget extends LeafRenderObjectWidget {
+  const _RadioRenderObjectWidget({
+    Key key,
+    @required this.selected,
+    @required this.activeColor,
+    @required this.inactiveColor,
+    @required this.focusColor,
+    @required this.hoverColor,
+    @required this.additionalConstraints,
+    this.onChanged,
+    @required this.vsync,
+    @required this.hasFocus,
+    @required this.hovering,
+    @required this.outerRadius,
+    @required this.innerRadius,
+  })  : assert(selected != null),
+        assert(activeColor != null),
+        assert(inactiveColor != null),
+        assert(vsync != null),
+        assert(innerRadius != null),
+        assert(outerRadius != null),
+        super(key: key);
+
+  final bool selected;
+  final bool hasFocus;
+  final bool hovering;
+  final Color inactiveColor;
+  final Color activeColor;
+  final Color focusColor;
+  final Color hoverColor;
+  final ValueChanged<bool> onChanged;
+  final TickerProvider vsync;
+  final BoxConstraints additionalConstraints;
+  final double outerRadius;
+  final double innerRadius;
+
+  @override
+  _RenderRadio createRenderObject(BuildContext context) => _RenderRadio(
+        value: selected,
+        activeColor: activeColor,
+        inactiveColor: inactiveColor,
+        focusColor: focusColor,
+        hoverColor: hoverColor,
+        onChanged: onChanged,
+        vsync: vsync,
+        additionalConstraints: additionalConstraints,
+        hasFocus: hasFocus,
+        hovering: hovering,
+        innerRadius: innerRadius,
+        outerRadius: outerRadius,
+      );
+
+  @override
+  void updateRenderObject(BuildContext context, _RenderRadio renderObject) {
+    renderObject
+      ..value = selected
+      ..activeColor = activeColor
+      ..inactiveColor = inactiveColor
+      ..focusColor = focusColor
+      ..hoverColor = hoverColor
+      ..onChanged = onChanged
+      ..additionalConstraints = additionalConstraints
+      ..vsync = vsync
+      ..hasFocus = hasFocus
+      ..hovering = hovering
+      ..innerRadius = innerRadius
+      ..outerRadius = outerRadius;
+  }
+}
+
+class _RenderRadio extends RenderToggleable {
+  _RenderRadio({
+    bool value,
+    Color activeColor,
+    Color inactiveColor,
+    Color focusColor,
+    Color hoverColor,
+    ValueChanged<bool> onChanged,
+    BoxConstraints additionalConstraints,
+    @required TickerProvider vsync,
+    bool hasFocus,
+    bool hovering,
+    @required double outerRadius,
+    @required double innerRadius,
+  })  : _innerRadius = innerRadius,
+        _outerRadius = outerRadius,
+        super(
+          value: value,
+          tristate: false,
+          activeColor: activeColor,
+          inactiveColor: inactiveColor,
+          focusColor: focusColor,
+          hoverColor: hoverColor,
+          onChanged: onChanged,
+          additionalConstraints: additionalConstraints,
+          vsync: vsync,
+          hasFocus: hasFocus,
+          hovering: hovering,
+        );
+
+  double _innerRadius;
+  double get innerRadius => _innerRadius;
+  set innerRadius(double value) {
+    assert(value != null);
+    if (value == _innerRadius) return;
+    _innerRadius = value;
+    markNeedsPaint();
+  }
+
+  double _outerRadius;
+  double get outerRadius => _outerRadius;
+  set outerRadius(double value) {
+    assert(value != null);
+    if (value == _outerRadius) return;
+    _outerRadius = value;
+    markNeedsPaint();
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    final canvas = context.canvas;
+
+    paintRadialReaction(canvas, offset, size.center(Offset.zero));
+
+    final center = (offset & size).center;
+    final radioColor = onChanged != null ? activeColor : inactiveColor;
+
+    // Outer circle
+    final paint = Paint()
+      ..color = Color.lerp(inactiveColor, radioColor, position.value)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = lerpDouble(1.0, 2.0, position.value);
+    canvas.drawCircle(center, outerRadius, paint);
+
+    // Inner circle
+    if (!position.isDismissed) {
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(center, innerRadius * position.value, paint);
+    }
+  }
+
+  @override
+  void describeSemanticsConfiguration(SemanticsConfiguration config) {
+    super.describeSemanticsConfiguration(config);
+    config
+      ..isInMutuallyExclusiveGroup = true
+      ..isChecked = value == true;
   }
 }

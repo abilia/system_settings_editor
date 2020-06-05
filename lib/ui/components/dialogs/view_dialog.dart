@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
 /// copied from [showDialog]
@@ -62,6 +63,8 @@ class ViewDialog extends StatelessWidget {
   final Widget deleteButton;
   final Widget backButton;
   final bool expanded;
+  final double _verticalPadding;
+  static const double verticalPadding = 24.0;
 
   const ViewDialog({
     Key key,
@@ -72,7 +75,9 @@ class ViewDialog extends StatelessWidget {
     this.backButton,
     this.expanded = false,
     this.trailing,
-  }) : super(key: key);
+    double verticalPadding = verticalPadding,
+  })  : _verticalPadding = verticalPadding,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +124,7 @@ class ViewDialog extends StatelessWidget {
           child: Container(
             decoration: const BoxDecoration(
               color: AbiliaColors.white110,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+              borderRadius: BorderRadius.vertical(top: radius),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,16 +152,15 @@ class ViewDialog extends StatelessWidget {
                 Flexible(
                   flex: expanded ? 1 : 0,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 24.0, 16.0, 0.0),
+                    padding:
+                        EdgeInsets.fromLTRB(12.0, _verticalPadding, 16.0, 0.0),
                     child: Material(
                       color: Colors.transparent,
                       child: child,
                     ),
                   ),
                 ),
-                if (trailing == null)
-                  const SizedBox(height: 24.0)
-                else
+                if (trailing != null)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -170,7 +174,7 @@ class ViewDialog extends StatelessWidget {
                         flex: expanded ? 1 : 0,
                         child: Padding(
                           padding:
-                              const EdgeInsets.fromLTRB(12.0, 16.0, 16.0, 24.0),
+                              const EdgeInsets.fromLTRB(12.0, 16.0, 16.0, 0.0),
                           child: Material(
                             child: trailing,
                             color: Colors.transparent,
@@ -178,7 +182,8 @@ class ViewDialog extends StatelessWidget {
                         ),
                       ),
                     ],
-                  )
+                  ),
+                SizedBox(height: _verticalPadding),
               ],
             ),
           ),
