@@ -94,7 +94,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           create: (context) => ActivitiesOccasionBloc(
             clockBloc: BlocProvider.of<ClockBloc>(context),
             dayActivitiesBloc: BlocProvider.of<DayActivitiesBloc>(context),
-            dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
           ),
         ),
         BlocProvider<AlarmBloc>(

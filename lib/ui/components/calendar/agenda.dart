@@ -68,7 +68,9 @@ class _AgendaState extends State<Agenda> {
                   ]
                 : [
                     SliverPadding(padding: const EdgeInsets.only(top: 8)),
-                    SliverActivityList(state.pastActivities),
+                    SliverActivityList(state.pastActivities
+                        .reversed // Reversed because slivers before center are called in reverse order
+                        .toList()),
                     SliverActivityList(state.notPastActivities, key: center),
                     SliverPadding(padding: const EdgeInsets.only(top: 8)),
                   ],
@@ -101,7 +103,8 @@ class SliverActivityList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      sliver: SliverList(
+      sliver: SliverFixedExtentList(
+        itemExtent: ActivityCard.cardHeight + ActivityCard.cardMargin,
         delegate: SliverChildBuilderDelegate(
           (context, index) => ActivityCard(
             activityOccasion: activities[index],
