@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -368,3 +369,18 @@ class DbActivity extends DbModel<Activity> {
 }
 
 String _nullIfEmpty(String value) => value?.isNotEmpty == true ? value : null;
+
+class TimeInterval extends Equatable {
+  final DateTime startTime;
+  final DateTime endTime;
+
+  bool get sameTime => startTime == endTime;
+
+  TimeInterval(this.startTime, this.endTime);
+
+  @override
+  List<Object> get props => [startTime, endTime];
+
+  @override
+  String toString() => 'TimeInterval: $startTime - $endTime';
+}

@@ -12,8 +12,10 @@ import 'package:intl/intl.dart';
 class DateAndTimeWidget extends StatelessWidget {
   final Activity activity;
   final DateTime day;
+  final TimeInterval timeInterval;
 
-  const DateAndTimeWidget(this.activity, {@required this.day, Key key})
+  const DateAndTimeWidget(this.activity, this.timeInterval,
+      {@required this.day, Key key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class DateAndTimeWidget extends StatelessWidget {
           CollapsableWidget(
             collapsed: activity.fullDay,
             padding: const EdgeInsets.only(bottom: 12.0),
-            child: TimeIntervallPicker(activity),
+            child: TimeIntervallPicker(timeInterval),
           ),
           SwitchField(
             key: TestKey.fullDaySwitch,
@@ -116,8 +118,8 @@ class DatePicker extends StatelessWidget {
 }
 
 class TimeIntervallPicker extends StatelessWidget {
-  final Activity activity;
-  const TimeIntervallPicker(this.activity, {Key key}) : super(key: key);
+  final TimeInterval timeInterval;
+  const TimeIntervallPicker(this.timeInterval, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -128,13 +130,13 @@ class TimeIntervallPicker extends StatelessWidget {
           flex: 148,
           child: TimePicker(
             translator.startTime,
-            activity.startTime,
+            timeInterval.startTime,
             key: TestKey.startTimePicker,
             onTap: () async {
               final newStartTime = await showViewDialog<TimeOfDay>(
                 context: context,
                 builder: (context) =>
-                    StartTimeInputDialog(time: activity.startTime),
+                    StartTimeInputDialog(time: timeInterval.startTime),
               );
               if (newStartTime != null) {
                 BlocProvider.of<EditActivityBloc>(context)
@@ -158,19 +160,18 @@ class TimeIntervallPicker extends StatelessWidget {
           flex: 148,
           child: TimePicker(
             translator.endTime,
-            activity.hasEndTime ? activity.noneRecurringEnd : null,
+            timeInterval.endTime,
             key: TestKey.endTimePicker,
             onTap: () async {
-              final newEndTime = await showViewDialog<TimeOfDay>(
+              final newEndTime = await showViewDialog<TimeInputResult>(
                 context: context,
                 builder: (context) => EndTimeInputDialog(
-                  time: activity.noneRecurringEnd,
-                  startTime: activity.startTime,
+                  timeInterval: timeInterval,
                 ),
               );
               if (newEndTime != null) {
                 BlocProvider.of<EditActivityBloc>(context)
-                    .add(ChangeEndTime(newEndTime));
+                    .add(ChangeEndTime(newEndTime.time));
               }
             },
           ),
