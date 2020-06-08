@@ -49,21 +49,26 @@ class NotificationBloc extends Bloc<NotificationPayload, AlarmStateBase> {
     final activitiesState = activitiesBloc.state;
     if (activitiesState is ActivitiesLoaded) {
       final activity = activitiesState.activities
-          .firstWhere((a) => a.id == payload.activityId);
-      yield AlarmState(payload.getAlarm(activity));
-    } else {
-      yield PendingAlarmState(_pendings(state, payload));
+          .firstWhere((a) => a.id == payload.activityId, orElse: () => null);
+      if (activity != null) {
+        yield AlarmState(payload.getAlarm(activity));
+        return;
+      }
     }
+    yield PendingAlarmState(_pendings(state, payload));
   }
 
-  List<NotificationPayload> _pendings(
+  Iterable<NotificationPayload> _pendings(
     AlarmStateBase currentState,
     NotificationPayload payload,
   ) {
     if (currentState is PendingAlarmState) {
-      return currentState.pedingAlarms..add(payload);
+      if (currentState.pedingAlarms.contains(payload)) {
+        return currentState.pedingAlarms;
+      }
+      return [...currentState.pedingAlarms, payload];
     }
-    return [payload];
+    return {payload};
   }
 
   @override
