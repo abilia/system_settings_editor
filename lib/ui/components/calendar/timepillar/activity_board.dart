@@ -91,6 +91,7 @@ class ActivityBoard extends StatelessWidget {
             column: col,
             height: height,
             textStyle: textStyle,
+            currentDay: day,
           );
 
       for (var i = 0; i < scheduled.length; i++) {

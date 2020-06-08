@@ -8,7 +8,7 @@ class ScrollPositionBloc
   final double fromTop;
   final double fromBotton;
 
-  ScrollPositionBloc({this.fromTop = 10, this.fromBotton = 100});
+  ScrollPositionBloc({this.fromTop = 8, this.fromBotton = 8});
 
   @override
   ScrollPositionState get initialState => Unready();

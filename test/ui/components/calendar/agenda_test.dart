@@ -76,9 +76,9 @@ void main() {
 
   testWidgets('Should show one activity', (WidgetTester tester) async {
     when(mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+        .thenAnswer((_) => Future.value(<Activity>[FakeActivity.starts(now)]));
 
-    activityResponse = () => [FakeActivity.startsIn(1.hours())];
+    activityResponse = () => [FakeActivity.starts(now.add(1.hours()))];
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
