@@ -21,32 +21,29 @@ class ImageArchive extends StatelessWidget {
             archiveState.allByFolder[archiveState.currentFolderId] ?? [];
         currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
         return GridView.count(
+          padding: EdgeInsets.symmetric(vertical: ViewDialog.verticalPadding),
           crossAxisCount: 3,
           childAspectRatio: 0.96,
           children: currentFolderContent.map((sortable) {
-            return Column(
-              children: <Widget>[
-                sortable.isGroup
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Folder(
-                          sortable: sortable,
-                          onTap: () {
-                            BlocProvider.of<ImageArchiveBloc>(context)
-                                .add(FolderChanged(sortable.id));
-                          },
-                        ),
-                      )
-                    : ArchiveImage(
-                        sortable: sortable,
-                        onChanged: (val) {
-                          BlocProvider.of<ImageArchiveBloc>(context)
-                              .add(ArchiveImageSelected(val));
-                          onChanged(val);
-                        },
-                      )
-              ],
-            );
+            return sortable.isGroup
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Folder(
+                      sortable: sortable,
+                      onTap: () {
+                        BlocProvider.of<ImageArchiveBloc>(context)
+                            .add(FolderChanged(sortable.id));
+                      },
+                    ),
+                  )
+                : ArchiveImage(
+                    sortable: sortable,
+                    onChanged: (val) {
+                      BlocProvider.of<ImageArchiveBloc>(context)
+                          .add(ArchiveImageSelected(val));
+                      onChanged(val);
+                    },
+                  );
           }).toList(),
         );
       },
@@ -128,12 +125,20 @@ class ArchiveImage extends StatelessWidget {
         final imageId = sortable.sortableData.fileId;
         final name = sortable.sortableData.name;
         final iconPath = sortable.sortableData.file;
-        return ArchiveRadio<SortableData>(
+        return RadioField<SortableData>(
           width: 110,
           heigth: 112,
           value: sortable.sortableData,
           onChanged: onChanged,
           groupValue: archiveState.selectedImageData,
+          margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 13),
+          activeDecoration: BoxDecoration(
+            borderRadius: borderRadius,
+            border: Border.all(
+              width: 2,
+              color: Theme.of(context).toggleableActiveColor,
+            ),
+          ),
           child: Column(
             children: <Widget>[
               if (name != null)
@@ -142,94 +147,17 @@ class ArchiveImage extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: abiliaTextTheme.caption,
                 ),
-              Container(
+              const SizedBox(height: 2),
+              FadeInAbiliaImage(
                 height: imageHeight,
                 width: imageWidth,
-                child: Center(
-                  child: FadeInAbiliaImage(
-                    imageFileId: imageId,
-                    imageFilePath: iconPath,
-                  ),
-                ),
+                imageFileId: imageId,
+                imageFilePath: iconPath,
               )
             ],
           ),
         );
       }),
-    );
-  }
-}
-
-class ArchiveRadio<T> extends StatelessWidget {
-  final Widget child;
-  final double heigth, width;
-  final T value, groupValue;
-  final ValueChanged<T> onChanged;
-
-  const ArchiveRadio({
-    Key key,
-    @required this.value,
-    @required this.groupValue,
-    @required this.onChanged,
-    this.child,
-    this.heigth,
-    this.width,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context).copyWith(
-      toggleableActiveColor: AbiliaColors.green,
-    );
-    return Theme(
-      data: theme,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => onChanged(value),
-          borderRadius: borderRadius,
-          child: Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Ink(
-                height: heigth,
-                width: width,
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius,
-                  border: Border.all(
-                    color: AbiliaColors.transparentBlack15,
-                  ),
-                  color: value == groupValue
-                      ? AbiliaColors.white
-                      : Colors.transparent,
-                ),
-                padding: const EdgeInsets.fromLTRB(13, 2, 13, 4),
-                child: child,
-              ),
-              Positioned(
-                top: -8,
-                right: -8,
-                child: Container(
-                  padding: const EdgeInsets.all(1.0),
-                  decoration: BoxDecoration(
-                      color: theme.scaffoldBackgroundColor,
-                      shape: BoxShape.circle),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: Radio(
-                      key: ObjectKey(key),
-                      value: value,
-                      groupValue: groupValue,
-                      onChanged: onChanged,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

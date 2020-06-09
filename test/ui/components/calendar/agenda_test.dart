@@ -95,9 +95,9 @@ void main() {
   testWidgets('Agenda with one activity should not show Go to now-button',
       (WidgetTester tester) async {
     when(mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(<Activity>[FakeActivity.startsNow()]));
+        .thenAnswer((_) => Future.value(<Activity>[FakeActivity.starts(now)]));
 
-    activityResponse = () => [FakeActivity.startsNow()];
+    activityResponse = () => [FakeActivity.starts(now)];
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();

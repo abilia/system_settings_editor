@@ -23,14 +23,15 @@ void main() {
 
       final mockTokenDb = MockTokenDb();
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
+      final time = DateTime(2020, 06, 05, 13, 23);
 
       final dbActivityAnswers = [
         <Activity>[],
-        [FakeActivity.startsNow(1.hours())]
+        [FakeActivity.starts(time, duration: 1.hours())]
       ];
       final serverActivityAnswers = [
         <Activity>[],
-        [FakeActivity.startsNow(1.hours())]
+        [FakeActivity.starts(time, duration: 1.hours())]
       ];
 
       final mockActivityDb = MockActivityDb();
@@ -46,7 +47,8 @@ void main() {
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = MockFirebasePushService()
         ..settingsDb = MockSettingsDb()
-        ..ticker = Ticker(stream: StreamController<DateTime>().stream)
+        ..ticker = Ticker(
+            stream: StreamController<DateTime>().stream, initialTime: time)
         ..alarmScheduler = noAlarmScheduler
         ..init();
     });

@@ -8,6 +8,7 @@ ThemeData abiliaTheme = ThemeData(
   scaffoldBackgroundColor: AbiliaColors.white110,
   primaryColor: AbiliaColors.black,
   accentColor: AbiliaColors.black,
+  unselectedWidgetColor: AbiliaColors.white120,
   fontFamily: 'Roboto',
   inputDecorationTheme: inputDecorationTheme,
   textTheme: abiliaTextTheme,

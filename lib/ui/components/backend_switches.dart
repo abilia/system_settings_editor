@@ -26,7 +26,7 @@ class BackendSwitches extends StatelessWidget {
             ),
           )
                   .followedBy([
-            _alarms(state.userRepository),
+            _alarms(state.userRepository, DateTime.now()),
           ]).toList()),
         );
       }
@@ -34,41 +34,42 @@ class BackendSwitches extends StatelessWidget {
     });
   }
 
-  BackEndButton _alarms(UserRepository repository) => BackEndButton(
+  BackEndButton _alarms(UserRepository repository, DateTime when) =>
+      BackEndButton(
         'Mock',
         userRepository: repository,
         backEndUrl: 'https://via.placeholder.com/190/09CDDA/FFFFFF&',
         client: Fakes.client(
           () => [
-            FakeActivity.startsIn(2.minutes()).copyWith(
+            FakeActivity.starts(when.add(2.minutes())).copyWith(
                 fileId: Uuid().v4(),
                 alarmType: ALARM_SILENT,
                 checkable: true,
                 duration: 1.minutes(),
                 title: 'ALARM_SILENT'),
-            FakeActivity.startsIn(4.minutes()).copyWith(
+            FakeActivity.starts(when.add(4.minutes())).copyWith(
                 duration: 1.minutes(),
                 checkable: true,
                 alarmType: ALARM_VIBRATION,
                 title: 'ALARM_VIBRATION'),
-            FakeActivity.startsIn(6.minutes()).copyWith(
+            FakeActivity.starts(when.add(6.minutes())).copyWith(
                 fileId: Uuid().v4(),
                 checkable: true,
                 duration: 1.minutes(),
                 alarmType: ALARM_SOUND_ONLY_ON_START,
                 title: 'ALARM_SOUND_ONLY_ON_START'),
-            FakeActivity.startsIn(8.minutes()).copyWith(
+            FakeActivity.starts(when.add(8.minutes())).copyWith(
                 duration: 1.minutes(),
                 checkable: true,
                 alarmType: ALARM_SOUND_AND_VIBRATION,
                 title: 'ALARM_SOUND_AND_VIBRATION'),
-            FakeActivity.startsIn(10.minutes()).copyWith(
+            FakeActivity.starts(when.add(10.minutes())).copyWith(
                 duration: 1.minutes(),
                 reminderBefore: [1.minutes().inMilliseconds],
                 alarmType: NO_ALARM,
                 checkable: true,
                 title: 'NO_ALARM'),
-            FakeActivity.startsIn(11.minutes()).copyWith(
+            FakeActivity.starts(when.add(11.minutes())).copyWith(
                 reminderBefore: [10.minutes().inMilliseconds],
                 checkable: true,
                 alarmType: ALARM_SILENT,
