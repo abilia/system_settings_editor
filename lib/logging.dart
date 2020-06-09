@@ -20,10 +20,8 @@ void initLogging() async {
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
     print('${record.level.name}: ${record.time}: ${record.message}');
-    if (record.level == Level.SEVERE) {
-      print(record.error);
-      print(record.stackTrace);
-    }
+    if (record?.error != null) print(record.error);
+    if (record?.stackTrace != null) print(record.stackTrace);
   });
 }
 

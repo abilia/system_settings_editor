@@ -34,9 +34,9 @@ void main() async {
 }
 
 Future<void> initServices() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initLogging();
   _log.fine('Initializing services');
-  WidgetsFlutterBinding.ensureInitialized();
   final currentLocale = await Devicelocale.currentLocale;
   final settingsDb = SettingsDb(await SharedPreferences.getInstance());
   await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
