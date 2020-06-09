@@ -13,6 +13,7 @@ part 'edit_activity_state.dart';
 
 class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   final ActivityDay activityDay;
+  final TimeInterval timeInterval;
   Activity get activity => activityDay.activity;
   DateTime get day => activityDay.day;
   final ActivitiesBloc activitiesBloc;
@@ -20,24 +21,30 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
 
   EditActivityBloc(this.activityDay, {@required this.activitiesBloc})
       : created = false,
+        timeInterval = TimeInterval(
+            activityDay.activity.startClock(activityDay.day),
+            activityDay.activity.hasEndTime
+                ? activityDay.activity.endClock(activityDay.day)
+                : null),
         assert(activityDay != null);
 
   EditActivityBloc.newActivity({
     @required this.activitiesBloc,
-    @required DateTime now,
+    @required DateTime day,
   })  : created = true,
-        assert(now != null),
+        timeInterval = TimeInterval(null, null),
+        assert(day != null),
         activityDay = ActivityDay(
             Activity.createNew(
               title: '',
-              startTime: now.nextHalfHour(),
-              timezone: now.timeZoneName,
+              startTime: day.nextHalfHour(),
+              timezone: day.timeZoneName,
             ),
-            now.onlyDays());
+            day.onlyDays());
   @override
   EditActivityState get initialState => created
-      ? UnstoredActivityState(activity)
-      : StoredActivityState(activity, day);
+      ? UnstoredActivityState(activity, timeInterval)
+      : StoredActivityState(activity, timeInterval, day);
 
   @override
   Stream<EditActivityState> mapEventToState(
@@ -52,7 +59,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     if (event is ChangeStartTime) {
       yield* _mapChangeStartTimeToState(event);
     }
-    if (event is ChangeEndTime && event.time != null) {
+    if (event is ChangeEndTime) {
       yield* _mapChangeEndTimeToState(event);
     }
     if (event is AddOrRemoveReminder) {
@@ -67,7 +74,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
             fileId: event.imageId,
             icon: event.path,
           ),
-          event.newImage);
+          newImage: event.newImage);
     }
   }
 
@@ -108,6 +115,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     }
     yield StoredActivityState(
         activity,
+        state.timeInterval,
         state is StoredActivityState
             ? state.day
             : activity.startTime.onlyDays());
@@ -130,9 +138,19 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       hour: event.time.hour,
       minute: event.time.minute,
     );
-    yield state.copyWith(a.copyWith(
-      startTime: newStartTime,
-    ));
+
+    final duration = state.timeInterval.onlyEndTime
+        ? _getDuration(
+            newStartTime, TimeOfDay.fromDateTime(state.timeInterval.endTime))
+        : a.duration;
+
+    yield state.copyWith(
+        a.copyWith(
+          startTime: newStartTime,
+          duration: duration,
+        ),
+        timeInterval: TimeInterval(newStartTime,
+            state.timeInterval.endTimeSet ? newStartTime.add(duration) : null));
   }
 
   Stream<EditActivityState> _mapChangeEndTimeToState(
@@ -141,25 +159,45 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     final startTime = activity.startTime;
     final newEndTime = event.time;
 
-    final pickedEndTimeBeforeStartTime = newEndTime.hour < startTime.hour ||
-        newEndTime.hour == startTime.hour &&
-            newEndTime.minute < startTime.minute;
+    if (newEndTime == null) {
+      yield state.copyWith(activity.copyWith(duration: Duration.zero),
+          timeInterval: TimeInterval(state.timeInterval.startTime, null));
+    } else if (!state.timeInterval.startTimeSet) {
+      yield state.copyWith(activity,
+          timeInterval: TimeInterval(
+            state.timeInterval.startTime,
+            startTime.copyWith(
+              hour: newEndTime.hour,
+              minute: newEndTime.minute,
+            ),
+          ));
+    } else {
+      final newDuration = _getDuration(startTime, newEndTime);
+      yield state.copyWith(
+        activity.copyWith(duration: newDuration),
+        timeInterval: TimeInterval(
+            state.timeInterval.startTime,
+            !state.timeInterval.startTimeSet
+                ? state.timeInterval.startTime.add(newDuration)
+                : startTime.add(newDuration)),
+      );
+    }
+  }
 
-    final newDuration = pickedEndTimeBeforeStartTime
+  Duration _getDuration(DateTime startTime, TimeOfDay endTime) {
+    final pickedEndTimeBeforeStartTime = endTime.hour < startTime.hour ||
+        endTime.hour == startTime.hour && endTime.minute < startTime.minute;
+
+    return pickedEndTimeBeforeStartTime
         ? startTime
             .copyWith(
                 day: startTime.day + 1,
-                hour: newEndTime.hour,
-                minute: newEndTime.minute)
+                hour: endTime.hour,
+                minute: endTime.minute)
             .difference(startTime)
         : Duration(
-            hours: event.time.hour - startTime.hour,
-            minutes: event.time.minute - startTime.minute,
+            hours: endTime.hour - startTime.hour,
+            minutes: endTime.minute - startTime.minute,
           );
-
-    yield state.copyWith(
-      activity.copyWith(duration: newDuration),
-      state.newImage,
-    );
   }
 }

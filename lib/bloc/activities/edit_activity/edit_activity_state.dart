@@ -1,39 +1,48 @@
 part of 'edit_activity_bloc.dart';
 
 abstract class EditActivityState extends Equatable with Silent {
-  const EditActivityState(this.activity, [this.newImage]);
+  const EditActivityState(this.activity, this.timeInterval, [this.newImage]);
   final Activity activity;
+  final TimeInterval timeInterval;
   final File newImage;
   bool get canSave =>
-      activity.hasTitle ||
-      activity.fileId?.isNotEmpty == true && activity.startTime != null;
+      (activity.hasTitle || activity.fileId?.isNotEmpty == true) &&
+      timeInterval.startTime != null;
   @override
-  List<Object> get props => [activity, newImage];
-  EditActivityState copyWith(Activity activity, [File newImage]);
+  List<Object> get props => [activity, timeInterval, newImage];
+  EditActivityState copyWith(Activity activity,
+      {TimeInterval timeInterval, File newImage});
 }
 
 class UnstoredActivityState extends EditActivityState {
-  const UnstoredActivityState(Activity activity, [File newImage])
-      : super(activity, newImage);
+  const UnstoredActivityState(Activity activity, TimeInterval timeInterval,
+      [File newImage])
+      : super(activity, timeInterval, newImage);
   @override
   String toString() =>
-      'UnstoredActivityState: {activity: $activity, newImage: ${newImage?.path}';
+      'UnstoredActivityState: {activity: $activity, timeInterval: $timeInterval, newImage: ${newImage?.path}';
   @override
-  UnstoredActivityState copyWith(Activity activity, [File newImage]) =>
-      UnstoredActivityState(activity, newImage ?? this.newImage);
+  UnstoredActivityState copyWith(Activity activity,
+          {TimeInterval timeInterval, File newImage}) =>
+      UnstoredActivityState(activity, timeInterval ?? this.timeInterval,
+          newImage ?? this.newImage);
 }
 
 class StoredActivityState extends EditActivityState {
   final DateTime day;
-  const StoredActivityState(Activity activity, this.day, [File newImage])
-      : super(activity);
+  const StoredActivityState(
+      Activity activity, TimeInterval timeInterval, this.day,
+      [File newImage])
+      : super(activity, timeInterval);
   @override
   String toString() =>
-      'StoredActivityState: {activity: $activity, day: $day, newImage: ${newImage?.path}';
+      'StoredActivityState: {activity: $activity, timeInterval: $timeInterval, day: $day, newImage: ${newImage?.path}';
   @override
   List<Object> get props => super.props..add(day);
 
   @override
-  StoredActivityState copyWith(Activity activity, [File newImage]) =>
-      StoredActivityState(activity, day, newImage ?? this.newImage);
+  StoredActivityState copyWith(Activity activity,
+          {TimeInterval timeInterval, File newImage}) =>
+      StoredActivityState(activity, timeInterval ?? this.timeInterval, day,
+          newImage ?? this.newImage);
 }

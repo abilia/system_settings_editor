@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -12,7 +13,7 @@ class StartTimeInputDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _TimeInputDialog(
-      time: TimeOfDay.fromDateTime(time),
+      time: time != null ? TimeOfDay.fromDateTime(time) : null,
       heading: Translator.of(context).translate.startTime,
       is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
     );
@@ -20,26 +21,26 @@ class StartTimeInputDialog extends StatelessWidget {
 }
 
 class EndTimeInputDialog extends StatelessWidget {
-  final DateTime time;
-  final DateTime startTime;
+  final TimeInterval timeInterval;
 
-  const EndTimeInputDialog({Key key, this.time, this.startTime})
-      : super(key: key);
+  const EndTimeInputDialog({Key key, this.timeInterval}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return _TimeInputDialog(
-      time: TimeOfDay.fromDateTime(time),
+      time: timeInterval.endTime != null
+          ? TimeOfDay.fromDateTime(timeInterval.endTime)
+          : null,
       heading: Translator.of(context).translate.endTime,
       is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-      deleteButton: time != startTime
+      deleteButton: !timeInterval.sameTime
           ? RemoveButton(
               icon: Icon(
                 AbiliaIcons.delete_all_clear,
                 color: AbiliaColors.white,
                 size: 24,
               ),
-              onTap: () => Navigator.of(context)
-                  .maybePop(TimeOfDay.fromDateTime(startTime)),
+              onTap: () =>
+                  Navigator.of(context).maybePop(TimeInputResult(null)),
               text: Translator.of(context).translate.noEndTime,
             )
           : null,
@@ -80,7 +81,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
 
   @override
   void initState() {
-    period = widget.time.period;
+    period = widget.time != null ? widget.time.period : DayPeriod.pm;
 
     hourFocusNode = FocusNode()..addListener(onHourFocusChanged);
     minuteFocusNode = FocusNode()..addListener(onMinFocusChanged);
@@ -91,10 +92,13 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
     super.initState();
   }
 
-  String get oldHour => twelveHourClock
-      ? '${widget.time.hourOfPeriod == 0 ? TimeOfDay.hoursPerPeriod : widget.time.hourOfPeriod}'
-      : pad0('${widget.time.hour}');
-  String get oldMinute => pad0('${widget.time.minute}');
+  String get oldHour => widget.time != null
+      ? twelveHourClock
+          ? '${widget.time.hourOfPeriod == 0 ? TimeOfDay.hoursPerPeriod : widget.time.hourOfPeriod}'
+          : pad0('${widget.time.hour}')
+      : null;
+  String get oldMinute =>
+      widget.time != null ? pad0('${widget.time.minute}') : null;
 
   TimeOfDay get inputTime {
     final hour = int.tryParse(hourInputController.text);
@@ -127,7 +131,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
       expanded: true,
       heading: Text(widget.heading, style: theme.textTheme.headline6),
       onOk: inputTime != null
-          ? () => Navigator.of(context).maybePop<TimeOfDay>(inputTime)
+          ? () => Navigator.of(context).maybePop(TimeInputResult(inputTime))
           : null,
       deleteButton: widget.deleteButton,
       child: Theme(
@@ -353,4 +357,10 @@ class NoZeroInputFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) =>
       int.tryParse(newValue.text) == 0 ? oldValue : newValue;
+}
+
+class TimeInputResult {
+  final TimeOfDay time;
+
+  TimeInputResult(this.time);
 }

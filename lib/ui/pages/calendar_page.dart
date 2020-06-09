@@ -118,8 +118,11 @@ class _CalendarPageState extends State<CalendarPage>
                     },
                   ),
                 ),
-                bottomNavigationBar:
-                    buildBottomAppBar(calendarViewState.currentView, context),
+                bottomNavigationBar: buildBottomAppBar(
+                  calendarViewState.currentView,
+                  context,
+                  pickedDay.day,
+                ),
               ),
             );
           },
@@ -128,7 +131,8 @@ class _CalendarPageState extends State<CalendarPage>
     );
   }
 
-  Widget buildBottomAppBar(CalendarViewType currentView, BuildContext context) {
+  Widget buildBottomAppBar(
+      CalendarViewType currentView, BuildContext context, DateTime day) {
     return BottomAppBar(
       child: Container(
         height: 64,
@@ -152,7 +156,6 @@ class _CalendarPageState extends State<CalendarPage>
                   size: 32,
                 ),
                 onPressed: () async {
-                  final now = BlocProvider.of<ClockBloc>(context).state;
                   await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) {
@@ -160,10 +163,10 @@ class _CalendarPageState extends State<CalendarPage>
                           create: (_) => EditActivityBloc.newActivity(
                             activitiesBloc:
                                 BlocProvider.of<ActivitiesBloc>(context),
-                            now: now,
+                            day: day,
                           ),
                           child: EditActivityPage(
-                            day: now.onlyDays(),
+                            day: day,
                             title: Translator.of(context).translate.newActivity,
                           ),
                         );
