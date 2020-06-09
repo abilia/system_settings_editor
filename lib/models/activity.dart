@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -371,8 +372,8 @@ class DbActivity extends DbModel<Activity> {
 String _nullIfEmpty(String value) => value?.isNotEmpty == true ? value : null;
 
 class TimeInterval extends Equatable {
-  final DateTime startTime;
-  final DateTime endTime;
+  final TimeOfDay startTime;
+  final TimeOfDay endTime;
 
   bool get sameTime => startTime == endTime;
   bool get startTimeSet => startTime != null;
@@ -381,6 +382,11 @@ class TimeInterval extends Equatable {
   bool get onlyEndTime => endTimeSet && !startTimeSet;
 
   TimeInterval(this.startTime, this.endTime);
+
+  TimeInterval.fromDateTime(DateTime startDate, DateTime endDate)
+      : startTime =
+            startDate != null ? TimeOfDay.fromDateTime(startDate) : null,
+        endTime = endDate != null ? TimeOfDay.fromDateTime(endDate) : null;
 
   TimeInterval.empty()
       : startTime = null,

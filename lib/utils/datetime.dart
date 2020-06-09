@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
@@ -96,6 +97,9 @@ extension DateTimeExtensions on DateTime {
   Occasion occasion(DateTime now) => isAfter(now)
       ? Occasion.future
       : isBefore(now) ? Occasion.past : Occasion.current;
+
+  DateTime withTime(TimeOfDay timeOfDay) =>
+      copyWith(hour: timeOfDay.hour, minute: timeOfDay.minute);
 }
 
 extension IntDateTimeExtensions on int {
