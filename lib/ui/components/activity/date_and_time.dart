@@ -133,14 +133,14 @@ class TimeIntervallPicker extends StatelessWidget {
             timeInterval.startTime,
             key: TestKey.startTimePicker,
             onTap: () async {
-              final newStartTime = await showViewDialog<TimeOfDay>(
+              final newStartTime = await showViewDialog<TimeInputResult>(
                 context: context,
                 builder: (context) =>
                     StartTimeInputDialog(time: timeInterval.startTime),
               );
               if (newStartTime != null) {
                 BlocProvider.of<EditActivityBloc>(context)
-                    .add(ChangeStartTime(newStartTime));
+                    .add(ChangeStartTime(newStartTime.time));
               }
             },
           ),

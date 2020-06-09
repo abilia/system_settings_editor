@@ -131,7 +131,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
       expanded: true,
       heading: Text(widget.heading, style: theme.textTheme.headline6),
       onOk: inputTime != null
-          ? () => Navigator.of(context).maybePop(inputTime)
+          ? () => Navigator.of(context).maybePop(TimeInputResult(inputTime))
           : null,
       deleteButton: widget.deleteButton,
       child: Theme(

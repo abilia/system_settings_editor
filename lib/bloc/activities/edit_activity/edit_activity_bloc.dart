@@ -139,8 +139,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       minute: event.time.minute,
     );
 
-    final duration = state.timeInterval.startTime == null &&
-            state.timeInterval.endTime != null
+    final duration = state.timeInterval.onlyEndTime
         ? _getDuration(
             newStartTime, TimeOfDay.fromDateTime(state.timeInterval.endTime))
         : a.duration;
@@ -150,11 +149,8 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
           startTime: newStartTime,
           duration: duration,
         ),
-        timeInterval: TimeInterval(
-            newStartTime,
-            state.timeInterval.endTime != null
-                ? newStartTime.add(duration)
-                : null));
+        timeInterval: TimeInterval(newStartTime,
+            state.timeInterval.endTimeSet ? newStartTime.add(duration) : null));
   }
 
   Stream<EditActivityState> _mapChangeEndTimeToState(
@@ -163,7 +159,10 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     final startTime = activity.startTime;
     final newEndTime = event.time;
 
-    if (state.timeInterval.startTime == null) {
+    if (newEndTime == null) {
+      yield state.copyWith(activity.copyWith(duration: Duration.zero),
+          timeInterval: TimeInterval(state.timeInterval.startTime, null));
+    } else if (!state.timeInterval.startTimeSet) {
       yield state.copyWith(activity,
           timeInterval: TimeInterval(
             state.timeInterval.startTime,
@@ -172,28 +171,17 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
               minute: newEndTime.minute,
             ),
           ));
-      return;
+    } else {
+      final newDuration = _getDuration(startTime, newEndTime);
+      yield state.copyWith(
+        activity.copyWith(duration: newDuration),
+        timeInterval: TimeInterval(
+            state.timeInterval.startTime,
+            !state.timeInterval.startTimeSet
+                ? state.timeInterval.startTime.add(newDuration)
+                : startTime.add(newDuration)),
+      );
     }
-
-    if (newEndTime == null) {
-      yield state.copyWith(activity.copyWith(duration: Duration.zero),
-          timeInterval: TimeInterval(state.timeInterval.startTime, null));
-      return;
-    }
-
-    final newDuration = _getDuration(startTime, newEndTime);
-
-    yield state.copyWith(
-      activity.copyWith(duration: newDuration),
-      timeInterval: TimeInterval(
-          state.timeInterval.startTime,
-          state.timeInterval.startTime != null
-              ? state.timeInterval.startTime.add(newDuration)
-              : startTime.copyWith(
-                  hour: newEndTime.hour,
-                  minute: newEndTime.minute,
-                )),
-    );
   }
 
   Duration _getDuration(DateTime startTime, TimeOfDay endTime) {

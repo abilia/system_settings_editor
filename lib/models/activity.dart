@@ -375,8 +375,16 @@ class TimeInterval extends Equatable {
   final DateTime endTime;
 
   bool get sameTime => startTime == endTime;
+  bool get startTimeSet => startTime != null;
+  bool get endTimeSet => endTime != null;
+  bool get onlyStartTime => startTimeSet && !endTimeSet;
+  bool get onlyEndTime => endTimeSet && !startTimeSet;
 
   TimeInterval(this.startTime, this.endTime);
+
+  TimeInterval.empty()
+      : startTime = null,
+        endTime = null;
 
   @override
   List<Object> get props => [startTime, endTime];

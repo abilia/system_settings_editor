@@ -333,4 +333,100 @@ void main() {
       ]),
     );
   });
+
+  test('set empty end time sets duration to 0 and end time to empty', () async {
+    // Arrange
+    final aDate = DateTime(2001, 01, 01, 01, 01);
+    final aDay = DateTime(2001, 01, 01);
+
+    final activity = Activity.createNew(
+      title: '',
+      startTime: aDate,
+      duration: 30.minutes(),
+    );
+    final expectedDuration = Duration.zero;
+    final expectedTimeInterval =
+        TimeInterval(activity.startTime, activity.startTime.add(30.minutes()));
+
+    final expetedNewActivity = activity.copyWith(duration: expectedDuration);
+    final expectedNewTimeInterval = TimeInterval(activity.startTime, null);
+
+    final editActivityBloc = EditActivityBloc(
+      ActivityDay(activity, aDay),
+      activitiesBloc: mockActivitiesBloc,
+    );
+
+    // Act
+    editActivityBloc.add(ChangeEndTime(null));
+
+    // Assert
+    await expectLater(
+      editActivityBloc,
+      emitsInOrder([
+        StoredActivityState(activity, expectedTimeInterval, aDay),
+        StoredActivityState(expetedNewActivity, expectedNewTimeInterval, aDay),
+      ]),
+    );
+  });
+
+  test('first set end time and then start time should give correct duration',
+      () async {
+    // Arrange
+    final aDay = DateTime(2001, 01, 01);
+
+    final editActivityBloc = EditActivityBloc.newActivity(
+        activitiesBloc: mockActivitiesBloc, day: aDay);
+    final activity = editActivityBloc.initialState.activity;
+
+    final expectedActivity = activity.copyWith(
+        startTime: aDay.copyWith(hour: 8, minute: 0), duration: 2.hours());
+    final expectedTimeInterval = TimeInterval(
+        aDay.copyWith(hour: 8, minute: 0), aDay.copyWith(hour: 10, minute: 0));
+
+    // Act
+    editActivityBloc.add(ChangeEndTime(TimeOfDay(hour: 10, minute: 0)));
+    editActivityBloc.add(ChangeStartTime(TimeOfDay(hour: 8, minute: 0)));
+
+    // Assert
+    await expectLater(
+      editActivityBloc,
+      emitsInOrder([
+        UnstoredActivityState(activity, TimeInterval.empty()),
+        UnstoredActivityState(
+            activity, TimeInterval(null, aDay.copyWith(hour: 10, minute: 0))),
+        UnstoredActivityState(expectedActivity, expectedTimeInterval)
+      ]),
+    );
+  });
+
+  test('Setting start time after end time', () async {
+    // Arrange
+    final aDay = DateTime(2001, 01, 01);
+
+    final editActivityBloc = EditActivityBloc.newActivity(
+        activitiesBloc: mockActivitiesBloc, day: aDay);
+    final activity = editActivityBloc.initialState.activity;
+
+    final expectedActivity = activity.copyWith(
+        startTime: aDay.copyWith(hour: 12, minute: 0), duration: 22.hours());
+
+    final expectedStartTime = aDay.copyWith(hour: 12, minute: 0);
+    final expectedTimeInterval =
+        TimeInterval(expectedStartTime, expectedStartTime.add(22.hours()));
+
+    // Act
+    editActivityBloc.add(ChangeEndTime(TimeOfDay(hour: 10, minute: 0)));
+    editActivityBloc.add(ChangeStartTime(TimeOfDay(hour: 12, minute: 0)));
+
+    // Assert
+    await expectLater(
+      editActivityBloc,
+      emitsInOrder([
+        UnstoredActivityState(activity, TimeInterval.empty()),
+        UnstoredActivityState(
+            activity, TimeInterval(null, aDay.copyWith(hour: 10, minute: 0))),
+        UnstoredActivityState(expectedActivity, expectedTimeInterval)
+      ]),
+    );
+  });
 }
