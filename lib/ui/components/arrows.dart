@@ -3,11 +3,6 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:vector_math/vector_math_64.dart';
 
-const Radius radius = Radius.circular(100);
-const double arrowSize = 48.0;
-const double translationPixels = arrowSize / 2;
-const double defaultCollapseMargin = 2;
-
 class ArrowLeft extends StatelessWidget {
   final ScrollController controller;
   final double collapseMargin;
@@ -15,17 +10,17 @@ class ArrowLeft extends StatelessWidget {
   const ArrowLeft({
     Key key,
     this.controller,
-    this.collapseMargin = defaultCollapseMargin,
+    this.collapseMargin = _Arrow.defaultCollapseMargin,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.centerLeft,
         child: _Arrow(
           icon: AbiliaIcons.navigation_previous,
-          borderRadius:
-              const BorderRadius.only(topRight: radius, bottomRight: radius),
-          vectorTranslation: Vector3(-translationPixels, 0, 0),
-          heigth: arrowSize,
+          borderRadius: const BorderRadius.only(
+              topRight: _Arrow.radius, bottomRight: _Arrow.radius),
+          vectorTranslation: Vector3(-_Arrow.translationPixels, 0, 0),
+          heigth: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
               sc.position.pixels - collapseMargin > sc.position.minScrollExtent,
@@ -40,17 +35,17 @@ class ArrowUp extends StatelessWidget {
   const ArrowUp({
     Key key,
     this.controller,
-    this.collapseMargin = defaultCollapseMargin,
+    this.collapseMargin = _Arrow.defaultCollapseMargin,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.topCenter,
         child: _Arrow(
           icon: AbiliaIcons.navigation_up,
-          borderRadius:
-              const BorderRadius.only(bottomLeft: radius, bottomRight: radius),
-          vectorTranslation: Vector3(0, -translationPixels, 0),
-          width: arrowSize,
+          borderRadius: const BorderRadius.only(
+              bottomLeft: _Arrow.radius, bottomRight: _Arrow.radius),
+          vectorTranslation: Vector3(0, -_Arrow.translationPixels, 0),
+          width: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
               sc.position.pixels - collapseMargin > sc.position.minScrollExtent,
@@ -64,17 +59,17 @@ class ArrowRight extends StatelessWidget {
   const ArrowRight({
     Key key,
     this.controller,
-    this.collapseMargin = defaultCollapseMargin,
+    this.collapseMargin = _Arrow.defaultCollapseMargin,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.centerRight,
         child: _Arrow(
           icon: AbiliaIcons.navigation_next,
-          borderRadius:
-              const BorderRadius.only(topLeft: radius, bottomLeft: radius),
-          vectorTranslation: Vector3(translationPixels, 0, 0),
-          heigth: arrowSize,
+          borderRadius: const BorderRadius.only(
+              topLeft: _Arrow.radius, bottomLeft: _Arrow.radius),
+          vectorTranslation: Vector3(_Arrow.translationPixels, 0, 0),
+          heigth: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
               sc.position.pixels + collapseMargin < sc.position.maxScrollExtent,
@@ -89,7 +84,7 @@ class ArrowDown extends StatelessWidget {
   const ArrowDown({
     Key key,
     this.controller,
-    this.collapseMargin = defaultCollapseMargin,
+    this.collapseMargin = _Arrow.defaultCollapseMargin,
   }) : super(key: key);
 
   @override
@@ -97,10 +92,10 @@ class ArrowDown extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: _Arrow(
           icon: AbiliaIcons.navigation_down,
-          borderRadius:
-              const BorderRadius.only(topLeft: radius, topRight: radius),
-          vectorTranslation: Vector3(0, translationPixels, 0),
-          width: arrowSize,
+          borderRadius: const BorderRadius.only(
+              topLeft: _Arrow.radius, topRight: _Arrow.radius),
+          vectorTranslation: Vector3(0, _Arrow.translationPixels, 0),
+          width: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
               sc.position.pixels + collapseMargin < sc.position.maxScrollExtent,
@@ -109,6 +104,10 @@ class ArrowDown extends StatelessWidget {
 }
 
 class _Arrow extends StatefulWidget {
+  static const Radius radius = Radius.circular(100);
+  static const double arrowSize = 48.0;
+  static const double translationPixels = arrowSize / 2;
+  static const double defaultCollapseMargin = 2;
   final IconData icon;
   final BorderRadiusGeometry borderRadius;
   final double width, heigth;

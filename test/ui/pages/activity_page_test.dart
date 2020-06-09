@@ -686,10 +686,11 @@ void main() {
         await tester.tap(okInkWellFinder);
         await tester.pumpAndSettle();
 
-        final onlyThisDayRadio1 = tester.widget<Radio>(onlyThisDayRadioFinder);
-        final allDaysRadio1 = tester.widget<Radio>(allDaysRadioFinder);
+        final onlyThisDayRadio1 =
+            tester.widget<AbiliaRadio>(onlyThisDayRadioFinder);
+        final allDaysRadio1 = tester.widget<AbiliaRadio>(allDaysRadioFinder);
         final thisDayAndForwardRadio1 =
-            tester.widget<Radio>(thisDayAndForwardRadioFinder);
+            tester.widget<AbiliaRadio>(thisDayAndForwardRadioFinder);
 
         // Assert
         expect(onlyThisDayRadio1.value, ApplyTo.onlyThisDay);
@@ -716,10 +717,11 @@ void main() {
         await tester.tap(allDaysRadioFinder);
         await tester.pumpAndSettle();
 
-        final onlyThisDayRadio1 = tester.widget<Radio>(onlyThisDayRadioFinder);
-        final allDaysRadio1 = tester.widget<Radio>(allDaysRadioFinder);
+        final onlyThisDayRadio1 =
+            tester.widget<AbiliaRadio>(onlyThisDayRadioFinder);
+        final allDaysRadio1 = tester.widget<AbiliaRadio>(allDaysRadioFinder);
         final thisDayAndForwardRadio1 =
-            tester.widget<Radio>(thisDayAndForwardRadioFinder);
+            tester.widget<AbiliaRadio>(thisDayAndForwardRadioFinder);
 
         // Assert
         expect(onlyThisDayRadio1.groupValue, ApplyTo.allDays);
@@ -742,10 +744,10 @@ void main() {
         await tester.tap(thisDayAndForwardRadioFinder);
         await tester.pumpAndSettle();
 
-        final onlyThisDayRadio1 = tester.widget<Radio>(onlyThisDayRadioFinder);
-        final allDaysRadio1 = tester.widget<Radio>(allDaysRadioFinder);
+        final onlyThisDayRadio1 = tester.widget<AbiliaRadio>(onlyThisDayRadioFinder);
+        final allDaysRadio1 = tester.widget<AbiliaRadio>(allDaysRadioFinder);
         final thisDayAndForwardRadio1 =
-            tester.widget<Radio>(thisDayAndForwardRadioFinder);
+            tester.widget<AbiliaRadio>(thisDayAndForwardRadioFinder);
 
         // Assert
         expect(onlyThisDayRadio1.groupValue, ApplyTo.thisDayAndForward);

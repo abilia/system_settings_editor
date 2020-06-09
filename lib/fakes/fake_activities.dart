@@ -64,12 +64,6 @@ class FakeActivities {
 }
 
 class FakeActivity {
-  static Activity startsNow([Duration duration = const Duration(hours: 1)]) =>
-      starts(_now, title: 'now', duration: duration);
-
-  static Activity startsIn(Duration duration) =>
-      starts(_now.add(duration), title: 'start in $duration');
-
   static Activity starts(
     DateTime when, {
     String title = 'starts at',

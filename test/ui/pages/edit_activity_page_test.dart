@@ -266,9 +266,10 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      final leftCategoryRadio1 = tester.widget<Radio>(find.byKey(leftRadioKey));
+      final leftCategoryRadio1 =
+          tester.widget<AbiliaRadio>(find.byKey(leftRadioKey));
       final rightCategoryRadio1 =
-          tester.widget<Radio>(find.byKey(rightRadioKey));
+          tester.widget<AbiliaRadio>(find.byKey(rightRadioKey));
 
       expect(leftCategoryRadio1.value, Category.left);
       expect(rightCategoryRadio1.value, Category.right);
@@ -278,18 +279,20 @@ void main() {
       await scrollDown(tester, dy: -100);
       await tester.tap(find.byKey(TestKey.leftCategoryRadio));
       await tester.pumpAndSettle();
-      final leftCategoryRadio2 = tester.widget<Radio>(find.byKey(leftRadioKey));
+      final leftCategoryRadio2 =
+          tester.widget<AbiliaRadio>(find.byKey(leftRadioKey));
       final rightCategoryRadio2 =
-          tester.widget<Radio>(find.byKey(rightRadioKey));
+          tester.widget<AbiliaRadio>(find.byKey(rightRadioKey));
 
       expect(leftCategoryRadio2.groupValue, Category.left);
       expect(rightCategoryRadio2.groupValue, Category.left);
 
       await tester.tap(find.byKey(TestKey.rightCategoryRadio));
       await tester.pumpAndSettle();
-      final leftCategoryRadio3 = tester.widget<Radio>(find.byKey(leftRadioKey));
+      final leftCategoryRadio3 =
+          tester.widget<AbiliaRadio>(find.byKey(leftRadioKey));
       final rightCategoryRadio3 =
-          tester.widget<Radio>(find.byKey(rightRadioKey));
+          tester.widget<AbiliaRadio>(find.byKey(rightRadioKey));
 
       expect(leftCategoryRadio3.groupValue, Category.right);
       expect(rightCategoryRadio3.groupValue, Category.right);
@@ -498,8 +501,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- Am is selected
-      final pmRadio = tester.widget<Radio>(pmRadioFinder);
-      final amRadio = tester.widget<Radio>(amRadioFinder);
+      final pmRadio = tester.widget<AbiliaRadio>(pmRadioFinder);
+      final amRadio = tester.widget<AbiliaRadio>(amRadioFinder);
       expect(amRadio.groupValue, DayPeriod.am);
       expect(amRadio.value, DayPeriod.am);
       expect(pmRadio.groupValue, DayPeriod.am);
