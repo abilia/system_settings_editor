@@ -122,6 +122,15 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(SliverTimePillar), findsOneWidget);
     });
+
+    testWidgets('Shows go to now button when scrolling',
+        (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      expect(find.byKey(TestKey.goToNowButton), findsNothing);
+      await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+    });
   });
 
   group('timepillar dots', () {

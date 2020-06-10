@@ -26,12 +26,14 @@ class TimePillarCalendar extends StatefulWidget {
 }
 
 class _TimePillarCalendarState extends State<TimePillarCalendar> {
+  ScrollPositionBloc _scrollPositionBloc;
   ScrollController verticalScrollController;
   ScrollController horizontalScrollController;
   final Key center = Key('center');
 
   @override
   void initState() {
+    _scrollPositionBloc = BlocProvider.of<ScrollPositionBloc>(context);
     final scrollOffset = widget.state.isToday
         ? timeToPixelDistanceHour(widget.now) - hourHeigt * 2
         : hourHeigt * 8; // 8th hour
@@ -42,7 +44,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
     if (widget.state.isToday) {
       WidgetsBinding.instance.addPostFrameCallback((_) =>
           BlocProvider.of<ScrollPositionBloc>(context)
-              .add(ListViewRenderComplete(verticalScrollController)));
+              .add(ScrollViewRenderComplete(verticalScrollController)));
     }
     super.initState();
   }
@@ -83,57 +85,61 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
       builder: (context, boxConstraints) {
         return Stack(
           children: <Widget>[
-            SingleChildScrollView(
-              controller: verticalScrollController,
-              child: LimitedBox(
-                maxHeight: calendarHeight,
-                child: BlocBuilder<ClockBloc, DateTime>(
-                  builder: (context, now) => Stack(
-                    children: <Widget>[
-                      if (widget.state.isToday)
-                        Timeline(
-                          width: boxConstraints.maxWidth,
+            NotificationListener<ScrollNotification>(
+              onNotification:
+                  widget.state.isToday ? _onScrollNotification : null,
+              child: SingleChildScrollView(
+                controller: verticalScrollController,
+                child: LimitedBox(
+                  maxHeight: calendarHeight,
+                  child: BlocBuilder<ClockBloc, DateTime>(
+                    builder: (context, now) => Stack(
+                      children: <Widget>[
+                        if (widget.state.isToday)
+                          Timeline(
+                            width: boxConstraints.maxWidth,
+                          ),
+                        CustomScrollView(
+                          anchor: horizontalAnchor,
+                          center: center,
+                          scrollDirection: Axis.horizontal,
+                          controller: horizontalScrollController,
+                          slivers: <Widget>[
+                            category(
+                              CategoryLeft(
+                                  expanded: widget
+                                      .calendarViewState.expandLeftCategory),
+                              height: boxConstraints.maxHeight,
+                              sliver: SliverToBoxAdapter(
+                                child: ActivityBoard(
+                                  leftBoardData,
+                                  categoryMinWidth: categoryMinWidth,
+                                ),
+                              ),
+                            ),
+                            SliverTimePillar(
+                              key: center,
+                              child: TimePillar(
+                                day: widget.state.day,
+                                dayOccasion: widget.state.occasion,
+                              ),
+                            ),
+                            category(
+                              CategoryRight(
+                                  expanded: widget
+                                      .calendarViewState.expandRightCategory),
+                              height: boxConstraints.maxHeight,
+                              sliver: SliverToBoxAdapter(
+                                child: ActivityBoard(
+                                  rightBoardData,
+                                  categoryMinWidth: categoryMinWidth,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      CustomScrollView(
-                        anchor: horizontalAnchor,
-                        center: center,
-                        scrollDirection: Axis.horizontal,
-                        controller: horizontalScrollController,
-                        slivers: <Widget>[
-                          category(
-                            CategoryLeft(
-                                expanded: widget
-                                    .calendarViewState.expandLeftCategory),
-                            height: boxConstraints.maxHeight,
-                            sliver: SliverToBoxAdapter(
-                              child: ActivityBoard(
-                                leftBoardData,
-                                categoryMinWidth: categoryMinWidth,
-                              ),
-                            ),
-                          ),
-                          SliverTimePillar(
-                            key: center,
-                            child: TimePillar(
-                              day: widget.state.day,
-                              dayOccasion: widget.state.occasion,
-                            ),
-                          ),
-                          category(
-                            CategoryRight(
-                                expanded: widget
-                                    .calendarViewState.expandRightCategory),
-                            height: boxConstraints.maxHeight,
-                            sliver: SliverToBoxAdapter(
-                              child: ActivityBoard(
-                                rightBoardData,
-                                categoryMinWidth: categoryMinWidth,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -152,6 +158,12 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
         );
       },
     );
+  }
+
+  bool _onScrollNotification(ScrollNotification scrollNotification) {
+    _scrollPositionBloc
+        .add(ScrollPositionUpdated(scrollNotification.metrics.pixels));
+    return false;
   }
 
   Widget category(Widget category, {Widget sliver, double height}) =>

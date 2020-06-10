@@ -5,10 +5,10 @@ import 'package:seagull/bloc/all.dart';
 
 class ScrollPositionBloc
     extends Bloc<ScrollPositionEvent, ScrollPositionState> {
-  final double fromTop;
-  final double fromBotton;
+  final double nowMarginTop;
+  final double nowMarginBottom;
 
-  ScrollPositionBloc({this.fromTop = 8, this.fromBotton = 8});
+  ScrollPositionBloc({this.nowMarginTop = 8, this.nowMarginBottom = 8});
 
   @override
   ScrollPositionState get initialState => Unready();
@@ -20,7 +20,7 @@ class ScrollPositionBloc
     final s = state;
     if (event is WrongDaySelected) {
       yield WrongDay();
-    } else if (event is ListViewRenderComplete) {
+    } else if (event is ScrollViewRenderComplete) {
       yield* _isActivityInView(event.scrollController);
     } else if (event is ScrollPositionUpdated &&
         s is ScrollPositionReadyState) {
@@ -36,14 +36,14 @@ class ScrollPositionBloc
     }
     final scrollPosition = scrollController.offset;
     final maxScrollExtent = scrollController.position.maxScrollExtent;
-    final offsetToActivity = scrollController.initialScrollOffset;
+    final nowPosition = scrollController.initialScrollOffset;
     if (_atBottomOfList(
         scrollPosition: scrollPosition,
         maxScrollExtent: maxScrollExtent,
-        offsetToActivity: offsetToActivity)) {
+        nowPosition: nowPosition)) {
       yield InView(scrollController);
     } else if (_inView(
-        scrollPosition: scrollPosition, offsetToActivity: offsetToActivity)) {
+        scrollPosition: scrollPosition, nowPosition: nowPosition)) {
       yield InView(scrollController);
     } else {
       yield OutOfView(scrollController);
@@ -53,14 +53,14 @@ class ScrollPositionBloc
   bool _atBottomOfList({
     @required double scrollPosition,
     @required double maxScrollExtent,
-    @required double offsetToActivity,
+    @required double nowPosition,
   }) =>
-      scrollPosition >= maxScrollExtent && offsetToActivity > maxScrollExtent;
+      scrollPosition >= maxScrollExtent && nowPosition > maxScrollExtent;
 
   bool _inView({
     @required double scrollPosition,
-    @required double offsetToActivity,
+    @required double nowPosition,
   }) =>
-      offsetToActivity - scrollPosition <= fromBotton &&
-      scrollPosition - offsetToActivity <= fromTop;
+      nowPosition - scrollPosition <= nowMarginBottom &&
+      scrollPosition - nowPosition <= nowMarginTop;
 }

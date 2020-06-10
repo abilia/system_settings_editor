@@ -20,12 +20,12 @@ class ScrollPositionUpdated extends ScrollPositionEvent {
   String toString() => 'ScrollPosition: $scrollPosition';
 }
 
-class ListViewRenderComplete extends ScrollPositionEvent {
+class ScrollViewRenderComplete extends ScrollPositionEvent {
   final ScrollController scrollController;
 
-  ListViewRenderComplete(this.scrollController);
+  ScrollViewRenderComplete(this.scrollController);
   @override
   List<Object> get props => [scrollController];
   @override
-  String toString() => 'ListViewRenderComplete: { $scrollController }';
+  String toString() => 'ScrollViewRenderComplete: { $scrollController }';
 }
