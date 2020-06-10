@@ -3,7 +3,6 @@ package com.abilia.seagull
 import io.flutter.app.FlutterApplication
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.common.PluginRegistry.PluginRegistrantCallback
-import io.flutter.plugins.GeneratedPluginRegistrant
 import io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService
 
 class Application : FlutterApplication(), PluginRegistrantCallback {
@@ -14,7 +13,14 @@ class Application : FlutterApplication(), PluginRegistrantCallback {
     }
 
     @Override
-    override fun registerWith(registry: PluginRegistry) {
-        GeneratedPluginRegistrant.registerWith(registry)
+    override fun registerWith(registry: PluginRegistry?) {
+        if (registry != null) {
+            // Need to register every plugin that is going to be used in Firebase background callback in this awkward way
+            // because Flutter-Firebase do not support new plugin registration with flutters new Android plugins APIs
+            io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin.registerWith(registry?.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"))
+            io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin.registerWith(registry?.registrarFor("io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin"))
+            com.tekartik.sqflite.SqflitePlugin.registerWith(registry?.registrarFor("com.tekartik.sqflite.SqflitePlugin"))
+            com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin.registerWith(registry?.registrarFor("com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin"))
+        }
     }
 }
