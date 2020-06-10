@@ -32,7 +32,7 @@ class _AgendaState extends State<Agenda> {
     if (widget.state.isToday) {
       WidgetsBinding.instance.addPostFrameCallback((_) =>
           BlocProvider.of<ScrollPositionBloc>(context)
-              .add(ListViewRenderComplete(scrollController)));
+              .add(ScrollViewRenderComplete(scrollController)));
     }
     super.initState();
   }

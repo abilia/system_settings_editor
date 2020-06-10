@@ -45,7 +45,7 @@ void main() {
           // Arrange
           when(mockScrollController.hasClients).thenReturn(false);
           // Act
-          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
+          scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
           // Assert
           await expectLater(
@@ -66,7 +66,7 @@ void main() {
           when(mockScrollPosition.maxScrollExtent).thenReturn(800);
 
           // Act
-          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
+          scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
           // Assert
           await expectLater(
@@ -88,7 +88,7 @@ void main() {
           when(mockScrollPosition.maxScrollExtent).thenReturn(800);
 
           // Act
-          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
+          scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
           // Assert
           await expectLater(
@@ -107,11 +107,11 @@ void main() {
           // Arrange
           final init = 200.0;
           when(mockScrollController.offset)
-              .thenReturn(init - scrollPositionBloc.fromBotton);
+              .thenReturn(init - scrollPositionBloc.nowMarginBottom);
           when(mockScrollController.initialScrollOffset).thenReturn(init);
           when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
           // Act
-          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
+          scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
           // Assert
           await expectLater(
@@ -130,11 +130,11 @@ void main() {
           // Arrange
           final init = 200.0;
           when(mockScrollController.offset)
-              .thenReturn(init + scrollPositionBloc.fromTop);
+              .thenReturn(init + scrollPositionBloc.nowMarginTop);
           when(mockScrollController.initialScrollOffset).thenReturn(init);
           when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
           // Act
-          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
+          scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
           // Assert
           await expectLater(
@@ -153,11 +153,11 @@ void main() {
           // Arrange
           final init = 200.0;
           when(mockScrollController.offset)
-              .thenReturn(init - scrollPositionBloc.fromBotton - 1);
+              .thenReturn(init - scrollPositionBloc.nowMarginBottom - 1);
           when(mockScrollController.initialScrollOffset).thenReturn(init);
           when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
           // Act
-          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
+          scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
           // Assert
           await expectLater(
@@ -176,11 +176,11 @@ void main() {
           // Arrange
           final init = 200.0;
           when(mockScrollController.offset)
-              .thenReturn(init + scrollPositionBloc.fromTop + 1);
+              .thenReturn(init + scrollPositionBloc.nowMarginTop + 1);
           when(mockScrollController.initialScrollOffset).thenReturn(init);
           when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
           // Act
-          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
+          scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
           // Assert
           await expectLater(
@@ -203,7 +203,7 @@ void main() {
           when(mockScrollPosition.maxScrollExtent).thenReturn(max);
 
           // Act
-          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
+          scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
           // Assert
           await expectLater(
@@ -241,7 +241,7 @@ void main() {
           when(mockScrollPosition.maxScrollExtent).thenReturn(max);
 
           // Act
-          scrollPositionBloc.add(ListViewRenderComplete(mockScrollController));
+          scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
           // Assert
           await expectLater(
