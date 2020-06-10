@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
@@ -22,8 +23,10 @@ class AlarmState extends AlarmStateBase {
 }
 
 class PendingAlarmState extends AlarmStateBase {
-  final List<NotificationPayload> pedingAlarms;
-  PendingAlarmState(this.pedingAlarms);
+  final UnmodifiableSetView<NotificationPayload> pedingAlarms;
+  PendingAlarmState._(this.pedingAlarms);
+  PendingAlarmState(Iterable<NotificationPayload> pedingAlarms)
+      : this._(UnmodifiableSetView(pedingAlarms.toSet()));
   @override
   List<Object> get props => [pedingAlarms];
   @override
