@@ -468,4 +468,41 @@ void main() {
       ]),
     );
   });
+
+  test('Changing start time changes end time equally', () async {
+    // Arrange
+    final editActivityBloc = EditActivityBloc.newActivity(
+      activitiesBloc: mockActivitiesBloc,
+      day: aDay,
+    );
+
+    final activity = editActivityBloc.initialState.activity;
+    
+    final startTime1 = TimeOfDay(hour: 10, minute: 0);
+    final endTime1 = TimeOfDay(hour: 11, minute: 0);
+
+    final endTime2 = TimeOfDay(hour: 16, minute: 15);
+    final startTime2 = TimeOfDay(hour: 15, minute: 15);
+
+    final startTime3 = TimeOfDay(hour: 23, minute: 30);
+    final endTime3 = TimeOfDay(hour: 0, minute: 30);
+
+    // Act
+    editActivityBloc.add(ChangeStartTime(startTime1));
+    editActivityBloc.add(ChangeEndTime(endTime1));
+    editActivityBloc.add(ChangeStartTime(startTime2));
+    editActivityBloc.add(ChangeStartTime(startTime3));
+
+    // Assert
+    await expectLater(
+      editActivityBloc,
+      emitsInOrder([
+        UnstoredActivityState(activity, TimeInterval.empty()),
+        UnstoredActivityState(activity, TimeInterval(startTime1, null)),
+        UnstoredActivityState(activity, TimeInterval(startTime1, endTime1)),
+        UnstoredActivityState(activity, TimeInterval(startTime2, endTime2)),
+        UnstoredActivityState(activity, TimeInterval(startTime3, endTime3)),
+      ]),
+    );
+  });
 }

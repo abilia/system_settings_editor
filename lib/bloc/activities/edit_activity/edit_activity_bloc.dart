@@ -156,11 +156,9 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     final activityStartTime = state.activity.startTime;
     final oldStart = activityStartTime.withTime(state.timeInterval.startTime);
     final newStart = activityStartTime.withTime(event.time);
-    final diff = oldStart.difference(newStart);
+    final diff = newStart.difference(oldStart);
     final endDate = activityStartTime.withTime(state.timeInterval.endTime);
-    final end =
-        newStart.isAfter(oldStart) ? endDate.add(diff) : endDate.subtract(diff);
-    return end;
+    return endDate.add(diff);
   }
 
   Stream<EditActivityState> _mapChangeEndTimeToState(
