@@ -7,7 +7,7 @@ abstract class EditActivityState extends Equatable with Silent {
   final File newImage;
   bool get canSave =>
       (activity.hasTitle || activity.fileId?.isNotEmpty == true) &&
-      timeInterval.startTime != null;
+      (timeInterval.startTime != null || activity.fullDay);
   @override
   List<Object> get props => [activity, timeInterval, newImage];
   EditActivityState copyWith(Activity activity,

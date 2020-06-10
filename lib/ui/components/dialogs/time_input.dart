@@ -7,13 +7,13 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class StartTimeInputDialog extends StatelessWidget {
-  final DateTime time;
+  final TimeOfDay time;
 
   const StartTimeInputDialog({Key key, this.time}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return _TimeInputDialog(
-      time: time != null ? TimeOfDay.fromDateTime(time) : null,
+      time: time,
       heading: Translator.of(context).translate.startTime,
       is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
     );
@@ -27,9 +27,7 @@ class EndTimeInputDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _TimeInputDialog(
-      time: timeInterval.endTime != null
-          ? TimeOfDay.fromDateTime(timeInterval.endTime)
-          : null,
+      time: timeInterval.endTime,
       heading: Translator.of(context).translate.endTime,
       is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
       deleteButton: !timeInterval.sameTime
