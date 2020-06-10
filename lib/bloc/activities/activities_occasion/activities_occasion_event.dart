@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/models/all.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/utils/all.dart';
 
 @immutable
@@ -18,11 +18,10 @@ class NowChanged extends ActivitiesOccasionEvent {
 }
 
 class ActivitiesChanged extends ActivitiesOccasionEvent {
-  final Iterable<ActivityDay> activities;
-  final DateTime day;
-  ActivitiesChanged(this.activities, this.day);
+  final DayActivitiesLoaded dayActivitiesLoadedState;
+  ActivitiesChanged(this.dayActivitiesLoadedState);
   @override
-  List<Object> get props => [activities];
+  List<Object> get props => [dayActivitiesLoadedState];
   @override
   bool get stringify => true;
 }

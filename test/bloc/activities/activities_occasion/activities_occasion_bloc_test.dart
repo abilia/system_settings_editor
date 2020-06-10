@@ -35,9 +35,9 @@ void main() {
     dayActivitiesBloc = DayActivitiesBloc(
         dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
     activitiesOccasionBloc = ActivitiesOccasionBloc(
-        clockBloc: clockBloc,
-        dayActivitiesBloc: dayActivitiesBloc,
-        dayPickerBloc: dayPickerBloc);
+      clockBloc: clockBloc,
+      dayActivitiesBloc: dayActivitiesBloc,
+    );
   });
   group('ActivitiesOccasionBloc', () {
     test('initial state is ActivitiesOccasionLoading', () {

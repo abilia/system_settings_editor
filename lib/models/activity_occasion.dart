@@ -26,21 +26,18 @@ class ActivityOccasion extends ActivityDay {
       ActivityOccasion(
           activity, day ?? activity.startTime.onlyDays(), occasion);
 
-  factory ActivityOccasion.fullDay(
-    ActivityDay activityDay, {
-    @required DateTime now,
-  }) =>
-      ActivityOccasion(
-        activityDay.activity,
-        activityDay.day,
-        activityDay.start.isDayBefore(now) ? Occasion.past : Occasion.future,
-      );
-
   @override
   List<Object> get props => [occasion, ...super.props];
+
+  @override
+  int compareTo(other) {
+    final occasionComparing = occasion.index.compareTo(other.occasion.index);
+    if (occasionComparing != 0) return occasionComparing;
+    return super.compareTo(other);
+  }
 }
 
-class ActivityDay extends Equatable {
+class ActivityDay extends Equatable implements Comparable {
   final DateTime day;
   final Activity activity;
   DateTime get start => activity.startClock(day);
@@ -60,9 +57,19 @@ class ActivityDay extends Equatable {
       end.isBefore(now)
           ? Occasion.past
           : start.isAfter(now) ? Occasion.future : Occasion.current);
+  ActivityOccasion toPast() => ActivityOccasion(activity, day, Occasion.past);
+  ActivityOccasion toFuture() =>
+      ActivityOccasion(activity, day, Occasion.future);
 
   @override
   List<Object> get props => [activity, day];
   @override
   bool get stringify => true;
+
+  @override
+  int compareTo(other) {
+    final starTimeComparing = start.compareTo(other.start);
+    if (starTimeComparing != 0) return starTimeComparing;
+    return end.compareTo(other.end);
+  }
 }

@@ -7,27 +7,25 @@ import 'package:seagull/utils/all.dart';
 
 class ActivitiesOccasionBloc
     extends Bloc<ActivitiesOccasionEvent, ActivitiesOccasionState> {
-  DayPickerBloc dayPickerBloc;
-  ClockBloc clockBloc;
+  final DayActivitiesBloc dayActivitiesBloc;
+  final ClockBloc clockBloc;
   StreamSubscription activitiesSubscription;
   StreamSubscription clockSubscription;
 
   ActivitiesOccasionBloc({
     @required this.clockBloc,
-    @required DayActivitiesBloc dayActivitiesBloc,
-    @required this.dayPickerBloc,
-  }) : _initialState = ActivitiesOccasionLoading() {
+    @required this.dayActivitiesBloc,
+  }) {
     activitiesSubscription = dayActivitiesBloc.listen((activitiesState) {
       if (activitiesState is DayActivitiesLoaded) {
-        add(ActivitiesChanged(activitiesState.activities, activitiesState.day));
+        add(ActivitiesChanged(activitiesState));
       }
     });
     clockSubscription = clockBloc.listen((now) => add(NowChanged(now)));
   }
-  final ActivitiesOccasionLoading _initialState;
 
   @override
-  ActivitiesOccasionState get initialState => _initialState;
+  ActivitiesOccasionState get initialState => ActivitiesOccasionLoading();
 
   @override
   Stream<ActivitiesOccasionState> mapEventToState(
@@ -35,17 +33,16 @@ class ActivitiesOccasionBloc
   ) async* {
     if (event is ActivitiesChanged) {
       yield _mapActivitiesToActivityOccasionsState(
-        event.activities,
+        event.dayActivitiesLoadedState,
         now: clockBloc.state,
-        day: event.day,
       );
     } else if (event is NowChanged) {
-      if (state is ActivitiesOccasionLoaded) {
-        final loadedState = state as ActivitiesOccasionLoaded;
+      final dayActivitiesState = dayActivitiesBloc.state;
+      if (dayActivitiesState is DayActivitiesLoaded) {
         yield _mapActivitiesToActivityOccasionsState(
-            loadedState.activities.followedBy(loadedState.fullDayActivities),
-            now: event.now,
-            day: dayPickerBloc.state.day);
+          dayActivitiesState,
+          now: event.now,
+        );
       } else {
         yield ActivitiesOccasionLoading();
       }
@@ -53,42 +50,66 @@ class ActivitiesOccasionBloc
   }
 
   ActivitiesOccasionLoaded _mapActivitiesToActivityOccasionsState(
-    Iterable<ActivityDay> activities, {
-    @required DateTime now,
-    @required DateTime day,
-  }) {
-    final removeAfterFiltered = activities
-        .where((a) => !(a.activity.removeAfter && a.end.isDayBefore(now)))
-        .toList();
+      DayActivitiesLoaded dayActivitiesLoadedState,
+      {@required DateTime now}) {
+    final day = dayActivitiesLoadedState.day;
+    final activities = dayActivitiesLoadedState.activities;
 
-    final timedActivities = removeAfterFiltered
-        .where((ad) => !ad.activity.fullDay)
-        .map((ad) => ad.toOccasion(now))
-        .toList()
-          ..sort((a, b) {
-            final occasionComparing =
-                a.occasion.index.compareTo(b.occasion.index);
-            if (occasionComparing != 0) return occasionComparing;
-            final starTimeComparing = a.start.compareTo(b.start);
-            if (starTimeComparing != 0) return starTimeComparing;
-            return a.end.compareTo(b.end);
-          });
-    final fullDayActivities = removeAfterFiltered
-        .where((ad) => ad.activity.fullDay)
-        .map((a) => ActivityOccasion.fullDay(a, now: now))
-        .toList();
+    final occasion = day.isAtSameDay(now)
+        ? Occasion.current
+        : day.isAfter(now) ? Occasion.future : Occasion.past;
 
-    final isToday = day.isAtSameDay(now);
-
-    return ActivitiesOccasionLoaded(
-      activities: timedActivities,
-      fullDayActivities: fullDayActivities,
-      day: day,
-      occasion: isToday
-          ? Occasion.current
-          : day.isAfter(now) ? Occasion.future : Occasion.past,
-    );
+    switch (occasion) {
+      case Occasion.past:
+        return createState(
+          activities: activities.where(
+            (a) => !a.activity.removeAfter || !a.end.isDayBefore(now),
+          ),
+          asActivityOccasion: (ad) => ad.toOccasion(now),
+          asFulldayOccasion: (ad) => ad.toPast(),
+          day: day,
+          occasion: occasion,
+        );
+      case Occasion.future:
+        return createState(
+          activities: activities,
+          asActivityOccasion: (ad) => ad.toOccasion(now),
+          asFulldayOccasion: (ad) => ad.toFuture(),
+          day: day,
+          occasion: occasion,
+        );
+      case Occasion.current:
+      default:
+        return createState(
+          activities: activities,
+          asActivityOccasion: (ad) => ad.toOccasion(now),
+          asFulldayOccasion: (ad) => ad.toFuture(),
+          day: day,
+          occasion: occasion,
+        );
+    }
   }
+
+  ActivitiesOccasionLoaded createState({
+    @required Iterable<ActivityDay> activities,
+    @required DateTime day,
+    @required Occasion occasion,
+    @required ActivityOccasion Function(ActivityDay) asActivityOccasion,
+    ActivityOccasion Function(ActivityDay) asFulldayOccasion,
+  }) =>
+      ActivitiesOccasionLoaded(
+        activities: activities
+            .where((ad) => !ad.activity.fullDay)
+            .map(asActivityOccasion)
+            .toList()
+              ..sort(),
+        fullDayActivities: activities
+            .where((ad) => ad.activity.fullDay)
+            .map(asFulldayOccasion ?? asActivityOccasion)
+            .toList(),
+        day: day,
+        occasion: occasion,
+      );
 
   @override
   Future<void> close() async {
