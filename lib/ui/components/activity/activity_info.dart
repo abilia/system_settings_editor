@@ -78,14 +78,11 @@ class ActivityInfo extends StatelessWidget {
                   onPressed: () async {
                     final shouldCheck = await showViewDialog<bool>(
                       context: context,
-                      builder: (_) => BlocProvider<UserFileBloc>.value(
-                        value: BlocProvider.of<UserFileBloc>(context),
-                        child: ConfirmActivityActionDialog(
-                          activityOccasion: activityDay.toOccasion(now),
-                          title: signedOff
-                              ? translate.unCheckActivityQuestion
-                              : translate.checkActivityQuestion,
-                        ),
+                      builder: (_) => ConfirmActivityActionDialog(
+                        activityOccasion: activityDay.toOccasion(now),
+                        title: signedOff
+                            ? translate.unCheckActivityQuestion
+                            : translate.checkActivityQuestion,
                       ),
                     );
                     if (shouldCheck == true) {
