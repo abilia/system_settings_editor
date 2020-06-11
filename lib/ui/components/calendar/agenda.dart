@@ -19,7 +19,8 @@ class _AgendaState extends State<Agenda> {
   ActivitiesBloc _activitiesBloc;
   ScrollPositionBloc _scrollPositionBloc;
   final center = GlobalKey();
-  final scrollController = ScrollController(
+  final todayScrollOffset = 10.0;
+  var scrollController = ScrollController(
     initialScrollOffset: 0,
     keepScrollOffset: false,
   );
@@ -30,6 +31,12 @@ class _AgendaState extends State<Agenda> {
     _scrollPositionBloc = BlocProvider.of<ScrollPositionBloc>(context);
 
     if (widget.state.isToday) {
+      if (widget.state.pastActivities.isNotEmpty) {
+        scrollController = ScrollController(
+          initialScrollOffset: -todayScrollOffset,
+          keepScrollOffset: false,
+        );
+      }
       WidgetsBinding.instance.addPostFrameCallback((_) =>
           BlocProvider.of<ScrollPositionBloc>(context)
               .add(ScrollViewRenderComplete(scrollController)));
@@ -40,42 +47,56 @@ class _AgendaState extends State<Agenda> {
   @override
   Widget build(BuildContext context) {
     final state = widget.state;
+    final topMargin = 8.0;
     return RefreshIndicator(
       onRefresh: _refresh,
-      child: NotificationListener<ScrollNotification>(
-        onNotification: state.isToday ? _onScrollNotification : null,
-        child: CupertinoScrollbar(
-          controller: scrollController,
-          child: CustomScrollView(
-            center: state.isToday ? center : null,
-            controller: scrollController,
-            physics: AlwaysScrollableScrollPhysics(),
-            slivers: (state.activities.isEmpty &&
-                    state.fullDayActivities.isEmpty)
-                ? <Widget>[
-                    SliverPadding(
-                      key: center,
-                      padding: const EdgeInsets.only(top: 24.0),
-                      sliver: SliverToBoxAdapter(
-                        child: Center(
-                          child: Text(
-                            Translator.of(context).translate.noActivities,
-                            style: Theme.of(context).textTheme.bodyText1,
+      child: Stack(
+        children: <Widget>[
+          NotificationListener<ScrollNotification>(
+            onNotification: state.isToday ? _onScrollNotification : null,
+            child: CupertinoScrollbar(
+              controller: scrollController,
+              child: CustomScrollView(
+                center: state.isToday ? center : null,
+                controller: scrollController,
+                physics: AlwaysScrollableScrollPhysics(),
+                slivers: (state.activities.isEmpty &&
+                        state.fullDayActivities.isEmpty)
+                    ? <Widget>[
+                        SliverPadding(
+                          key: center,
+                          padding: const EdgeInsets.only(top: 24.0),
+                          sliver: SliverToBoxAdapter(
+                            child: Center(
+                              child: Text(
+                                Translator.of(context).translate.noActivities,
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                  ]
-                : [
-                    SliverPadding(padding: const EdgeInsets.only(top: 8)),
-                    SliverActivityList(state.pastActivities
-                        .reversed // Reversed because slivers before center are called in reverse order
-                        .toList()),
-                    SliverActivityList(state.notPastActivities, key: center),
-                    SliverPadding(padding: const EdgeInsets.only(top: 8)),
-                  ],
+                        )
+                      ]
+                    : [
+                        SliverPadding(padding: EdgeInsets.only(top: topMargin)),
+                        SliverActivityList(state.pastActivities
+                            .reversed // Reversed because slivers before center are called in reverse order
+                            .toList()),
+                        SliverActivityList(state.notPastActivities,
+                            key: center),
+                        SliverPadding(padding: EdgeInsets.only(top: topMargin)),
+                      ],
+              ),
+            ),
           ),
-        ),
+          ArrowUp(
+            controller: scrollController,
+            collapseMargin: topMargin,
+          ),
+          ArrowDown(
+            controller: scrollController,
+            collapseMargin: topMargin + todayScrollOffset,
+          ),
+        ],
       ),
     );
   }
