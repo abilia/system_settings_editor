@@ -165,9 +165,9 @@ class ActivityPage extends StatelessWidget {
                 onPressed: () async {
                   final shouldDelete = await showViewDialog<bool>(
                     context: context,
-                    builder: (_) => BlocProvider<UserFileBloc>.value(
-                      value: BlocProvider.of<UserFileBloc>(context),
-                      child: DeleteActivityDialog(activityOccasion: occasion),
+                    builder: (_) => ConfirmActivityActionDialog(
+                      activityOccasion: occasion,
+                      title: Translator.of(context).translate.deleteActivity,
                     ),
                   );
                   if (shouldDelete == true) {

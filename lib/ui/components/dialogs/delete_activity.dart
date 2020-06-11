@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
-class DeleteActivityDialog extends StatelessWidget {
+class ConfirmActivityActionDialog extends StatelessWidget {
   final ActivityOccasion activityOccasion;
+  final String title;
 
-  const DeleteActivityDialog({Key key, @required this.activityOccasion})
-      : super(key: key);
+  const ConfirmActivityActionDialog({
+    Key key,
+    @required this.activityOccasion,
+    @required this.title,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
     return ViewDialog(
-      heading: Text(translate.deleteActivity, style: theme.textTheme.headline6),
+      heading: Text(title, style: theme.textTheme.headline6),
       onOk: () => Navigator.of(context).maybePop(true),
       child: AbsorbPointer(
           child: ActivityCard(activityOccasion: activityOccasion)),

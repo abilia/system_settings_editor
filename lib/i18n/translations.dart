@@ -72,6 +72,8 @@ abstract class Translated {
   String get thisDayAndForward;
   String get settings;
   String get showTimeDots;
+  String get checkActivityQuestion;
+  String get unCheckActivityQuestion;
 
   String inTime(String time);
   String timeAgo(String time);
@@ -146,7 +148,9 @@ class English extends Translated {
       allDays = 'All days',
       thisDayAndForward = 'This day and forward',
       settings = 'Settings',
-      showTimeDots = 'Show time dots';
+      showTimeDots = 'Show time dots',
+      checkActivityQuestion = 'Completed?',
+      unCheckActivityQuestion = 'Du you want to uncheck?';
 
   @override
   String inTime(String time) => 'in $time';
@@ -222,7 +226,9 @@ class Swedish extends Translated {
       allDays = 'Alla dagar',
       thisDayAndForward = 'Denna dag och framåt',
       settings = 'Inställningar',
-      showTimeDots = 'Visa prickar för tid';
+      showTimeDots = 'Visa prickar för tid',
+      checkActivityQuestion = 'Klar?',
+      unCheckActivityQuestion = 'Ta bort klarmarkering?';
 
   @override
   String inTime(String time) => 'om $time';
