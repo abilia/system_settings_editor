@@ -152,10 +152,18 @@ void main() {
 
   testWidgets('past activities are hidden by scroll',
       (WidgetTester tester) async {
-    final pastTitle = 'past', currentTitle = 'current', futureTitle = 'future';
+    final pastTitle = 'past',
+        pastTitle2 = 'past2',
+        currentTitle = 'current',
+        futureTitle = 'future';
     final activites = [
       Activity.createNew(
         title: pastTitle,
+        startTime: now.subtract(2.hours()),
+        duration: 30.minutes(),
+      ),
+      Activity.createNew(
+        title: pastTitle2,
         startTime: now.subtract(1.hours()),
         duration: 30.minutes(),
       ),
@@ -177,6 +185,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(pastTitle), findsNothing);
+    expect(find.text(pastTitle2),
+        findsOneWidget); // Default scroll is showingn part of the closest past activity
     expect(find.text(currentTitle), findsOneWidget);
     expect(find.text(futureTitle), findsOneWidget);
 
@@ -184,6 +194,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(pastTitle), findsOneWidget);
+    expect(find.text(pastTitle2), findsOneWidget);
     expect(find.text(currentTitle), findsOneWidget);
     expect(find.text(futureTitle), findsOneWidget);
   });
