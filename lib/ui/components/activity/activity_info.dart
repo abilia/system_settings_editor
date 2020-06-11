@@ -75,9 +75,23 @@ class ActivityInfo extends StatelessWidget {
                       ? AbiliaIcons.close_program
                       : AbiliaIcons.handi_check,
                   text: signedOff ? translate.uncheck : translate.check,
-                  onPressed: () {
-                    BlocProvider.of<ActivitiesBloc>(context)
-                        .add(UpdateActivity(activity.signOff(day)));
+                  onPressed: () async {
+                    final shouldCheck = await showViewDialog<bool>(
+                      context: context,
+                      builder: (_) => BlocProvider<UserFileBloc>.value(
+                        value: BlocProvider.of<UserFileBloc>(context),
+                        child: ConfirmActivityActionDialog(
+                          activityOccasion: activityDay.toOccasion(now),
+                          title: signedOff
+                              ? translate.unCheckActivityQuestion
+                              : translate.checkActivityQuestion,
+                        ),
+                      ),
+                    );
+                    if (shouldCheck == true) {
+                      BlocProvider.of<ActivitiesBloc>(context)
+                          .add(UpdateActivity(activity.signOff(day)));
+                    }
                   },
                 ),
               ),

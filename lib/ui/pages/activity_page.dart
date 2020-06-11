@@ -167,7 +167,10 @@ class ActivityPage extends StatelessWidget {
                     context: context,
                     builder: (_) => BlocProvider<UserFileBloc>.value(
                       value: BlocProvider.of<UserFileBloc>(context),
-                      child: DeleteActivityDialog(activityOccasion: occasion),
+                      child: ConfirmActivityActionDialog(
+                        activityOccasion: occasion,
+                        title: Translator.of(context).translate.deleteActivity,
+                      ),
                     ),
                   );
                   if (shouldDelete == true) {

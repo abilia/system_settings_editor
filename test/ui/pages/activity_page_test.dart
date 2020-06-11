@@ -45,7 +45,10 @@ void main() {
   final closeButtonFinder = find.byKey(TestKey.closeDialog);
 
   final deleteButtonFinder = find.byIcon(AbiliaIcons.delete_all_clear);
-  final deleteViewDialogFinder = find.byType(DeleteActivityDialog);
+  final deleteViewDialogFinder = find.byType(ConfirmActivityActionDialog);
+
+  final checkButtonFinder = find.byKey(TestKey.activityCheckButton);
+  final unCheckButtonFinder = find.byKey(TestKey.activityUncheckButton);
 
   ActivityResponse activityResponse = () => [];
 
@@ -744,7 +747,8 @@ void main() {
         await tester.tap(thisDayAndForwardRadioFinder);
         await tester.pumpAndSettle();
 
-        final onlyThisDayRadio1 = tester.widget<AbiliaRadio>(onlyThisDayRadioFinder);
+        final onlyThisDayRadio1 =
+            tester.widget<AbiliaRadio>(onlyThisDayRadioFinder);
         final allDaysRadio1 = tester.widget<AbiliaRadio>(allDaysRadioFinder);
         final thisDayAndForwardRadio1 =
             tester.widget<AbiliaRadio>(thisDayAndForwardRadioFinder);
@@ -1023,5 +1027,39 @@ void main() {
         }
       }
     });
+  });
+
+  testWidgets('Check and uncheck activity with confirmation',
+      (WidgetTester tester) async {
+    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
+        <Activity>[FakeActivity.starts(startTime).copyWith(checkable: true)]));
+    await navigateToActivityPage(tester);
+    expect(checkButtonFinder, findsOneWidget);
+    expect(unCheckButtonFinder, findsNothing);
+    await tester.tap(checkButtonFinder);
+    await tester.pumpAndSettle();
+
+    expect(closeButtonFinder, findsOneWidget);
+    await tester.tap(closeButtonFinder);
+    await tester.pumpAndSettle();
+
+    expect(checkButtonFinder, findsOneWidget);
+    expect(unCheckButtonFinder, findsNothing);
+
+    await tester.tap(checkButtonFinder);
+    await tester.pumpAndSettle();
+    await tester.tap(okInkWellFinder);
+    await tester.pumpAndSettle();
+
+    expect(checkButtonFinder, findsNothing);
+    expect(unCheckButtonFinder, findsOneWidget);
+
+    await tester.tap(unCheckButtonFinder);
+    await tester.pumpAndSettle();
+    await tester.tap(okInkWellFinder);
+    await tester.pumpAndSettle();
+
+    expect(checkButtonFinder, findsOneWidget);
+    expect(unCheckButtonFinder, findsNothing);
   });
 }

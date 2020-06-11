@@ -214,6 +214,8 @@ void main() {
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.okDialog));
+      await tester.pumpAndSettle();
 
       // Assert -- Alarm is checked
       expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
@@ -221,6 +223,8 @@ void main() {
 
       // Act -- Tap the uncheck button
       await tester.tap(find.byKey(TestKey.activityUncheckButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.okDialog));
       await tester.pumpAndSettle();
 
       // Assert -- Alarm is unchecked again
@@ -245,6 +249,8 @@ void main() {
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.okDialog));
+      await tester.pumpAndSettle();
 
       // Assert -- Check button not showing and uncheck button showing
       expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
@@ -252,6 +258,8 @@ void main() {
 
       // Act -- Tap the uncheck button
       await tester.tap(find.byKey(TestKey.activityUncheckButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.okDialog));
       await tester.pumpAndSettle();
 
       // Assert -- Check button showing and uncheck not showing
