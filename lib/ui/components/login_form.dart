@@ -114,8 +114,8 @@ class _LoginFormState extends State<LoginForm> {
                             child: ActionButton(
                               key: TestKey.hidePasswordToggle,
                               child: Icon(formState.hidePassword
-                                  ? Icons.visibility
-                                  : Icons.visibility_off),
+                                  ? AbiliaIcons.show
+                                  : AbiliaIcons.hide, size: 32, color: AbiliaColors.black,),
                               onPressed: _onHidePasswordChanged,
                               themeData: darkButtonTheme,
                             )),
