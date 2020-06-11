@@ -19,7 +19,8 @@ void initLogging() async {
 
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
-    print('${record.level.name}: ${record.time}: ${record.message}');
+    print(
+        '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
     if (record?.error != null) print(record.error);
     if (record?.stackTrace != null) print(record.stackTrace);
   });
@@ -33,23 +34,26 @@ mixin Warning implements Info {}
 mixin Shout implements Warning {}
 
 class BlocLoggingDelegate extends BlocDelegate {
-  static final _log = Logger((BlocLoggingDelegate).toString());
+  final _loggers = <Bloc, Logger>{};
+  Logger _log(Bloc bloc) =>
+      _loggers[bloc] ??= Logger(bloc.runtimeType.toString());
   @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
-    if (event is! Silent) {
+    if (event is! Silent && bloc is! Silent) {
+      final log = _log(bloc);
       if (event is Shout) {
-        _log.shout(event);
+        log.shout(event);
       } else if (event is Warning) {
-        _log.warning(event);
+        log.warning(event);
       } else if (event is Info) {
-        _log.info(event);
+        log.info(event);
       } else if (event is Fine) {
-        _log.fine(event);
+        log.fine(event);
       } else if (event is Finer) {
-        _log.finer(event);
+        log.finer(event);
       } else {
-        _log.finest(event);
+        log.finest(event);
       }
     }
   }
@@ -59,20 +63,21 @@ class BlocLoggingDelegate extends BlocDelegate {
     super.onTransition(bloc, transition);
     await logEventToAnalytics(transition);
     final event = transition.event;
-    if (transition.event is! Silent) {
+    if (event is! Silent && bloc is! Silent) {
+      final log = _log(bloc);
       if (event is! Silent) {
         if (event is Shout) {
-          _log.shout(transition);
+          log.shout(transition);
         } else if (event is Warning) {
-          _log.warning(transition);
+          log.warning(transition);
         } else if (event is Info) {
-          _log.info(transition);
+          log.info(transition);
         } else if (event is Fine) {
-          _log.fine(transition);
+          log.fine(transition);
         } else if (event is Finer) {
-          _log.finer(transition);
+          log.finer(transition);
         } else {
-          _log.finest(transition);
+          log.finest(transition);
         }
       }
     }
@@ -81,7 +86,7 @@ class BlocLoggingDelegate extends BlocDelegate {
   @override
   void onError(Bloc bloc, Object error, StackTrace stacktrace) {
     super.onError(bloc, error, stacktrace);
-    _log.severe('error in bloc $bloc', error, stacktrace);
+    _log(bloc).severe('error in bloc $bloc', error, stacktrace);
   }
 
   void logEventToAnalytics(Transition transition) async {

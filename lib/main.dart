@@ -23,6 +23,7 @@ import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/background/all.dart';
 import 'package:flutter/foundation.dart';
+import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _log = Logger('main');
@@ -126,7 +127,10 @@ class SeagullApp extends StatelessWidget {
       darkTheme: abiliaTheme.copyWith(
         primaryColorBrightness: Brightness.dark,
       ),
-      navigatorObservers: [AnalyticsService.observer],
+      navigatorObservers: [
+        AnalyticsService.observer,
+        GetIt.I<AlarmNavigator>().alarmRouteObserver,
+      ],
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: [
         Translator.delegate,
