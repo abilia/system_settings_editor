@@ -30,7 +30,7 @@ void main() {
           CalendarViewState(CalendarViewType.LIST),
           CalendarViewState(
             CalendarViewType.LIST,
-            expandLeftCategory: true,
+            expandLeftCategory: false,
           )
         ]),
       );
@@ -43,7 +43,7 @@ void main() {
           CalendarViewState(CalendarViewType.LIST),
           CalendarViewState(
             CalendarViewType.LIST,
-            expandRightCategory: true,
+            expandRightCategory: false,
           )
         ]),
       );

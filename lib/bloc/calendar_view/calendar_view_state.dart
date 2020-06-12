@@ -5,8 +5,8 @@ class CalendarViewState extends Equatable {
   final bool expandRightCategory, expandLeftCategory;
   const CalendarViewState(
     this.currentView, {
-    this.expandRightCategory = false,
-    this.expandLeftCategory = false,
+    this.expandRightCategory = true,
+    this.expandLeftCategory = true,
   });
 
   @override
