@@ -62,8 +62,8 @@ void main() {
         [1.days().inMilliseconds, 5.minutes().inMilliseconds]);
     expect(result.reminders, [1.days(), 5.minutes()]);
     // expect(result.extras, null);
-    expect(result.recurrentType, 0);
-    expect(result.recurrentData, 0);
+    expect(result.recurs.type, 0);
+    expect(result.recurs.data, 0);
     expect(result.alarmType, 0);
     expect(result.duration, 3600000.milliseconds());
     expect(result.category, 0);
@@ -180,8 +180,10 @@ void main() {
       duration: duration,
       reminderBefore: reminders,
       startTime: now,
-      recurrentData: 1,
-      recurrentType: 1,
+      recurs: Recurs.weeklyOnDays([
+        Recurs.EVEN_MONDAY,
+        Recurs.EVEN_SATURDAY,
+      ]),
       fileId: fileId,
       checkable: true,
       signedOffDates: [DateTime(2000, 02, 20)],
@@ -201,8 +203,8 @@ void main() {
     expect(deserializedActivity.endTime, activity.endTime);
     expect(deserializedActivity.fileId, activity.fileId);
     expect(deserializedActivity.icon, activity.icon);
-    expect(deserializedActivity.recurrentType, activity.recurrentType);
-    expect(deserializedActivity.recurrentData, activity.recurrentData);
+    expect(deserializedActivity.recurs.type, activity.recurs.type);
+    expect(deserializedActivity.recurs.data, activity.recurs.data);
     expect(deserializedActivity.deleted, activity.deleted);
     expect(deserializedDbActivity.revision, dbActivity.revision);
     expect(deserializedActivity.alarmType, activity.alarmType);

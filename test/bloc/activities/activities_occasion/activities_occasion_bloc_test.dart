@@ -551,8 +551,7 @@ void main() {
       final everyDayFullDayRecurring = FakeActivity.fullday(longAgo).copyWith(
         endTime: DateTime.fromMillisecondsSinceEpoch(253402297199000),
         removeAfter: true,
-        recurrentType: RecurrentType.weekly.index,
-        recurrentData: Recurs.allWeekdays,
+        recurs: Recurs.weekly(Recurs.allWeekdays),
       );
 
       final activities = Iterable<Activity>.empty().followedBy([
@@ -641,12 +640,12 @@ void main() {
       final tomorrow = initialDay.nextDay();
 
       final everyDayRecurring = Activity.createNew(
-          title: 'title',
-          startTime: longAgo,
-          endTime: Recurs.NO_END,
-          duration: 48.hours(),
-          recurrentType: RecurrentType.weekly.index,
-          recurrentData: Recurs.everyday);
+        title: 'title',
+        startTime: longAgo,
+        endTime: Recurs.NO_END,
+        duration: 48.hours(),
+        recurs: Recurs.everyDay,
+      );
 
       final activities = Iterable<Activity>.empty().followedBy([
         everyDayRecurring,
@@ -702,12 +701,12 @@ void main() {
       final monday = initialDay.previousDay();
 
       final mondayRecurring = Activity.createNew(
-          title: 'Recurs.MONDAY',
-          startTime: longAgo,
-          endTime: Recurs.NO_END,
-          duration: 10.hours(),
-          recurrentType: RecurrentType.weekly.index,
-          recurrentData: Recurs.MONDAY);
+        title: 'Recurs.MONDAY',
+        startTime: longAgo,
+        endTime: Recurs.NO_END,
+        duration: 10.hours(),
+        recurs: Recurs.weekly(Recurs.MONDAY),
+      );
       final earlyActivity = Activity.createNew(
         title: 'earlyActivity',
         startTime: initialMinutes.copyWith(hour: 00, minute: 00),

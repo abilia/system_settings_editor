@@ -3,6 +3,7 @@ import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/alarm_type.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/utils/all.dart';
@@ -41,35 +42,41 @@ class BackendSwitches extends StatelessWidget {
         backEndUrl: 'https://via.placeholder.com/190/09CDDA/FFFFFF&',
         client: Fakes.client(
           () => [
-            FakeActivity.starts(when.add(2.minutes())).copyWith(
+            Activity.createNew(
+                startTime: when.add(2.minutes()),
                 fileId: Uuid().v4(),
                 alarmType: ALARM_SILENT,
                 checkable: true,
                 duration: 1.minutes(),
                 title: 'ALARM_SILENT'),
-            FakeActivity.starts(when.add(4.minutes())).copyWith(
+            Activity.createNew(
+                startTime: when.add(4.minutes()),
                 duration: 1.minutes(),
                 checkable: true,
                 alarmType: ALARM_VIBRATION,
                 title: 'ALARM_VIBRATION'),
-            FakeActivity.starts(when.add(6.minutes())).copyWith(
+            Activity.createNew(
+                startTime: when.add(6.minutes()),
                 fileId: Uuid().v4(),
                 checkable: true,
                 duration: 1.minutes(),
                 alarmType: ALARM_SOUND_ONLY_ON_START,
                 title: 'ALARM_SOUND_ONLY_ON_START'),
-            FakeActivity.starts(when.add(8.minutes())).copyWith(
+            Activity.createNew(
+                startTime: when.add(8.minutes()),
                 duration: 1.minutes(),
                 checkable: true,
                 alarmType: ALARM_SOUND_AND_VIBRATION,
                 title: 'ALARM_SOUND_AND_VIBRATION'),
-            FakeActivity.starts(when.add(10.minutes())).copyWith(
+            Activity.createNew(
+                startTime: when.add(10.minutes()),
                 duration: 1.minutes(),
                 reminderBefore: [1.minutes().inMilliseconds],
                 alarmType: NO_ALARM,
                 checkable: true,
                 title: 'NO_ALARM'),
-            FakeActivity.starts(when.add(11.minutes())).copyWith(
+            Activity.createNew(
+                startTime: when.add(11.minutes()),
                 reminderBefore: [10.minutes().inMilliseconds],
                 checkable: true,
                 alarmType: ALARM_SILENT,

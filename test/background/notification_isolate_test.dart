@@ -33,8 +33,7 @@ void main() {
       startTime: now.add(2.hours()),
       endTime: now.add(5.days()),
       alarmType: ALARM_SOUND_ONLY_ON_START,
-      recurrentType: RecurrentType.weekly.index,
-      recurrentData: Recurs.everyday,
+      recurs: Recurs.weekly(Recurs.everyday),
     ),
   ];
   setUp(() {
