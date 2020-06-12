@@ -3,44 +3,50 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 
 class AlarmNavigator {
-  final Map<String, Route<dynamic>> _routes = {};
+  final alarmRouteObserver = RouteObserver<MaterialPageRoute>();
+  final _alarmRoutesOnStack = <String, AlarmPageRoute>{};
 
-  Future<T> _push<T extends Object>(
-      BuildContext context, Route<T> route, String id) {
-    final nav = Navigator.of(context);
-    if (_routes.keys.isNotEmpty && _routes.keys.last == id) {
-      return nav.pushReplacement(route);
-    } else if (_routes.keys.contains(id)) {
-      final removedRoute = _routes.remove(id);
-      _routes.putIfAbsent(id, () => route);
-      nav.removeRoute(removedRoute);
-      return nav.push(route);
-    } else {
-      _routes.putIfAbsent(id, () => route);
-      return nav.push(route);
-    }
-  }
-
-  Future<T> pushAlarm<T extends Object>(
-    BuildContext outerContext,
+  Future pushAlarm(
+    BuildContext context,
     NotificationAlarm alarm,
   ) async {
-    Widget page;
-
-    if (alarm is NewAlarm) {
-      page = AlarmPage(activityDay: alarm.activityDay);
-    } else if (alarm is NewReminder) {
-      page = ReminderPage(reminder: alarm);
-    } else {
-      throw ArgumentError();
-    }
-    return await _push(
-      outerContext,
-      MaterialPageRoute(
-        builder: (context) => page,
-        fullscreenDialog: true,
-      ),
-      alarm.activityDay.activity.id,
+    final route = AlarmPageRoute(
+      alarm,
+      builder: (context) => (alarm is NewAlarm)
+          ? AlarmPage(alarm: alarm, alarmNavigator: this)
+          : ReminderPage(reminder: alarm, alarmNavigator: this),
+      fullscreenDialog: true,
     );
+
+    final id = alarm.activity.id;
+    final routeOnStack = _alarmRoutesOnStack[id];
+    final navigator = Navigator.of(context);
+    if (routeOnStack != null) {
+      navigator.removeRoute(routeOnStack);
+    }
+    _alarmRoutesOnStack[id] = route;
+    return navigator.push(route);
   }
+
+  AlarmPageRoute removedFromRoutes(NotificationAlarm alarm) {
+    return _alarmRoutesOnStack.remove(alarm.activity.id);
+  }
+}
+
+class AlarmPageRoute<T> extends MaterialPageRoute<T> {
+  final NotificationAlarm alarm;
+  AlarmPageRoute(
+    this.alarm, {
+    @required WidgetBuilder builder,
+    RouteSettings settings,
+    bool maintainState = true,
+    bool fullscreenDialog = false,
+  }) : super(
+          builder: builder,
+          settings: settings,
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+        );
+  @override
+  String get debugLabel => '${super.debugLabel}($alarm)';
 }

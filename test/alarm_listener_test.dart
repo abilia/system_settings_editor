@@ -28,8 +28,11 @@ void main() {
   final initialTime = activityWithAlarmTime.subtract(1.minutes());
   final activityWithAlarmday = activityWithAlarmTime.onlyDays();
   final twoHoursAfter = activityWithAlarmTime.add(2.hours());
-  final activity =
-      FakeActivity.starts(activityWithAlarmTime).copyWith(checkable: true);
+  final activity = Activity.createNew(
+    startTime: activityWithAlarmTime,
+    title: 'actity',
+    checkable: true,
+  );
   final payloadSerial = json.encode(NotificationPayload(
     activityId: activity.id,
     day: activityWithAlarmday,
@@ -270,9 +273,9 @@ void main() {
 
   group('Multiple alarms tests', () {
     final activity1StartTime = DateTime(2011, 11, 11, 11, 11);
-    final day = DateTime(2011, 11, 11);
-    final activity1 =
-        FakeActivity.starts(activity1StartTime, duration: 2.minutes());
+    final day = activity1StartTime.onlyDays();
+    final activity1 = Activity.createNew(
+        title: '111111', startTime: activity1StartTime, duration: 2.minutes());
     final startTimeActivity1NotificationPayload =
         json.encode(NotificationPayload(
       activityId: activity1.id,
@@ -280,9 +283,9 @@ void main() {
       onStart: true,
     ).toJson());
 
-    final activity2StartTime = DateTime(2011, 11, 11, 11, 12);
-    final activity2 =
-        FakeActivity.starts(activity2StartTime, duration: 2.minutes());
+    final activity2StartTime = activity1StartTime.add(1.minutes());
+    final activity2 = Activity.createNew(
+        title: '2222222', startTime: activity2StartTime, duration: 2.minutes());
 
     testWidgets('Start and end time alarm for same activity',
         (WidgetTester tester) async {
@@ -362,7 +365,12 @@ void main() {
       // Expect - the top/latest alarm should now be the start time alarm for activity1
       expect(alarmScreenFinder, findsOneWidget);
       expect(
-          tester.widget<AlarmPage>(alarmScreenFinder).activityDay.activity.id,
+          tester
+              .widget<AlarmPage>(alarmScreenFinder)
+              .alarm
+              .activityDay
+              .activity
+              .id,
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm
@@ -373,7 +381,9 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
 
       expect(
-          (tester.widget(alarmScreenFinder) as AlarmPage)
+          tester
+              .widget<AlarmPage>(alarmScreenFinder)
+              .alarm
               .activityDay
               .activity
               .id,
@@ -384,6 +394,129 @@ void main() {
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown
+      expect(alarmScreenFinder, findsNothing);
+    });
+
+    testWidgets('Start alarm can show twice after close (BUG SGC-244)',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value([activity1]));
+      final pushBloc = PushBloc();
+      await tester.pumpWidget(App(pushBloc: pushBloc));
+      await tester.pumpAndSettle();
+      final alarmScreenFinder = find.byType(AlarmPage);
+
+      // Act - time goes which should display alarm
+      mockTicker.add(activity1StartTime);
+      await tester.pumpAndSettle();
+
+      // Expect - the alarm should now be the start time alarm for activity1
+      expect(alarmScreenFinder, findsOneWidget);
+      expect(
+          tester
+              .widget<AlarmPage>(alarmScreenFinder)
+              .alarm
+              .activityDay
+              .activity
+              .id,
+          equals(activity1.id));
+
+      // Act - tap the ok button of the alarm, no more alarm
+      await tester.tap(find.byKey(TestKey.appBarCloseButton));
+      await tester.pumpAndSettle();
+      expect(alarmScreenFinder, findsNothing);
+
+      // Activity change forward one minute from backend and is pushed
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
+            activity1.copyWith(startTime: activity1StartTime.add(1.minutes()))
+          ]));
+      pushBloc.add(PushEvent('calendar'));
+      await tester.pumpAndSettle();
+
+      // Act - the user taps notification of start time alarm
+      mockNotificationSelected.add(startTimeActivity1NotificationPayload);
+      await tester.pumpAndSettle();
+
+      // Expect - the alarm should be the start time alarm for activity 1
+      expect(alarmScreenFinder, findsOneWidget);
+
+      expect(
+          (tester.widget(alarmScreenFinder) as AlarmPage)
+              .alarm
+              .activityDay
+              .activity
+              .id,
+          equals(activity1.id));
+
+      // Act - tap the alarm ok button
+      await tester.tap(find.byKey(TestKey.appBarCloseButton));
+      await tester.pumpAndSettle();
+
+      // Expect - no more alarms should be shown
+      expect(alarmScreenFinder, findsNothing);
+    });
+
+    testWidgets('Alarm only shows latest', (WidgetTester tester) async {
+      // Arrange
+      final start = activity1StartTime;
+
+      final activities = [
+        Activity.createNew(
+            startTime: start.add(2.minutes()),
+            alarmType: ALARM_SILENT,
+            checkable: true,
+            duration: 1.minutes(),
+            title: 'ALARM_SILENT'),
+        Activity.createNew(
+            startTime: start.add(4.minutes()),
+            duration: 1.minutes(),
+            checkable: true,
+            alarmType: ALARM_VIBRATION,
+            title: 'ALARM_VIBRATION'),
+        Activity.createNew(
+            startTime: start.add(6.minutes()),
+            checkable: true,
+            duration: 1.minutes(),
+            alarmType: ALARM_SOUND_ONLY_ON_START,
+            title: 'ALARM_SOUND_ONLY_ON_START'),
+        Activity.createNew(
+            startTime: start.add(8.minutes()),
+            duration: 1.minutes(),
+            checkable: true,
+            alarmType: ALARM_SOUND_AND_VIBRATION,
+            title: 'ALARM_SOUND_AND_VIBRATION'),
+        Activity.createNew(
+            startTime: start.add(10.minutes()),
+            duration: 1.minutes(),
+            reminderBefore: [1.minutes().inMilliseconds],
+            alarmType: NO_ALARM,
+            checkable: true,
+            title: 'NO_ALARM'),
+        Activity.createNew(
+            startTime: start.add(11.minutes()),
+            reminderBefore: [10.minutes().inMilliseconds],
+            checkable: true,
+            alarmType: ALARM_SILENT,
+            title: 'ALARM_SILENT reminder 10 min before'),
+      ];
+
+      when(mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activities));
+
+      final reminderFinder = find.byType(ReminderPage, skipOffstage: false);
+      final alarmScreenFinder = find.byType(AlarmPage, skipOffstage: false);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      // Act - time goes for two hours
+      for (var i = 0; i < 60 * 2; i++) {
+        mockTicker.add(activity1StartTime.add(i.minutes()));
+      }
+      await tester.pumpAndSettle();
+
+      // Expect - the alarm screens should be removed and only the latest reminders shoudl show
+      expect(reminderFinder, findsNWidgets(activities.length));
       expect(alarmScreenFinder, findsNothing);
     });
   });
