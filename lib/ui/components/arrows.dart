@@ -130,7 +130,7 @@ class _Arrow extends StatefulWidget {
 }
 
 class _ArrowState extends State<_Arrow> {
-  bool condition = true;
+  bool condition = false;
   @override
   void initState() {
     widget.controller.addListener(listener);
