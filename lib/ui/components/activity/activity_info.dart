@@ -147,11 +147,8 @@ class ActivityContainer extends StatelessWidget {
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                  child: CheckedImage(
+                  child: CheckedImageWithImagePopup(
                     activityDay: activityDay,
-                    imageSize: ImageSize.ORIGINAL,
-                    fit: BoxFit.contain,
-                    small: false,
                   ),
                 ),
               ),
@@ -238,7 +235,7 @@ class TopInfo extends StatelessWidget {
     final themeData = Theme.of(context);
     final imageToTheLeft = (hasImage || signedOff) && hasAttachment && hasTitle;
 
-    final checkableImage = CheckedImage(
+    final checkableImage = CheckedImageWithImagePopup(
       activityDay: activityDay,
       size: 96,
     );
