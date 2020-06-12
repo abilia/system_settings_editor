@@ -19,7 +19,6 @@ class CheckedImage extends StatelessWidget {
   final File imageFile;
   final BoxFit fit;
   final Widget checkmark;
-
   final double size;
   static const duration = Duration(milliseconds: 400);
 
@@ -27,12 +26,13 @@ class CheckedImage extends StatelessWidget {
     Key key,
     @required this.activityDay,
     this.size,
-    bool small = true,
     this.past = false,
     this.imageSize = ImageSize.THUMB,
     this.imageFile,
     this.fit = BoxFit.cover,
-  })  : checkmark = small ? const CheckMarkWithBorder() : const CheckMark(),
+  })  : checkmark = size != null && size < 100
+            ? const CheckMarkWithBorder()
+            : const CheckMark(),
         super(key: key);
 
   static CheckedImage fromActivityOccasion({
@@ -86,6 +86,51 @@ class CheckedImage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CheckedImageWithImagePopup extends StatelessWidget {
+  final ActivityDay activityDay;
+  final double size;
+
+  const CheckedImageWithImagePopup({
+    Key key,
+    this.activityDay,
+    this.size,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      key: TestKey.viewImage,
+      onTap: () => activityDay.activity.hasImage
+          ? _showImage(activityDay.activity, context)
+          : null,
+      child: CheckedImage(
+        activityDay: activityDay,
+        imageSize: ImageSize.ORIGINAL,
+        size: size,
+      ),
+    );
+  }
+
+  void _showImage(Activity activity, BuildContext context) async {
+    await showViewDialog<bool>(
+      context: context,
+      builder: (_) {
+        return ViewDialog(
+          closeIcon: AbiliaIcons.browser_zoom_out,
+          expanded: true,
+          child: Center(
+            child: FadeInAbiliaImage(
+              imageFileId: activity.fileId,
+              imageFilePath: activity.icon,
+              imageSize: ImageSize.ORIGINAL,
+            ),
+          ),
+        );
+      },
     );
   }
 }

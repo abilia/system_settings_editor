@@ -44,5 +44,6 @@ class TestKey {
       imageArchiveButton = Key('imageArchiveButton'),
       onlyThisDay = Key('onlyThisDay'),
       allDays = Key('allDays'),
-      thisDayAndForward = Key('thisDayAndForward');
+      thisDayAndForward = Key('thisDayAndForward'),
+      viewImage = Key('viewImage');
 }

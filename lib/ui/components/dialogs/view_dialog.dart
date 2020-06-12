@@ -63,6 +63,7 @@ class ViewDialog extends StatelessWidget {
   final Widget deleteButton;
   final Widget backButton;
   final bool expanded;
+  final IconData closeIcon;
   final double _verticalPadding;
   static const double verticalPadding = 24.0;
 
@@ -75,6 +76,7 @@ class ViewDialog extends StatelessWidget {
     this.backButton,
     this.expanded = false,
     this.trailing,
+    this.closeIcon = AbiliaIcons.close_program,
     double verticalPadding = verticalPadding,
   })  : _verticalPadding = verticalPadding,
         super(key: key);
@@ -110,7 +112,7 @@ class ViewDialog extends StatelessWidget {
                   alignment:
                       hasOk ? Alignment(0.6, 1.0) : Alignment.centerRight,
                   child: RoundFloatingButton(
-                    AbiliaIcons.close_program,
+                    closeIcon,
                     key: TestKey.closeDialog,
                     onTap: Navigator.of(context).maybePop,
                   ),

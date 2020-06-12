@@ -22,13 +22,8 @@ void main() {
   final infoItemWithTestNote = InfoItem.fromBase64(
       'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19');
 
-  Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: [Translator.delegate],
-        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
-            .firstWhere((l) => l.languageCode == locale?.languageCode,
-                orElse: () => supportedLocales.first),
-        home: MultiBlocProvider(providers: [
+  Widget wrapWithMaterialApp(Widget widget) => MultiBlocProvider(
+        providers: [
           BlocProvider<AuthenticationBloc>(
               create: (context) => mockedAuthenticationBloc),
           BlocProvider<ActivitiesBloc>(
@@ -45,7 +40,16 @@ void main() {
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc(StreamController<DateTime>().stream),
           )
-        ], child: widget),
+        ],
+        child: MaterialApp(
+          supportedLocales: Translator.supportedLocals,
+          localizationsDelegates: [Translator.delegate],
+          localeResolutionCallback: (locale, supportedLocales) =>
+              supportedLocales.firstWhere(
+                  (l) => l.languageCode == locale?.languageCode,
+                  orElse: () => supportedLocales.first),
+          home: Material(child: widget),
+        ),
       );
 
   setUp(() {
@@ -389,5 +393,32 @@ void main() {
         expect(element.signedOff, isTrue);
       }
     });
+  });
+
+  testWidgets('Show image in fullscreen', (WidgetTester tester) async {
+    // Arrange
+    final activity = Activity.createNew(
+      title: 'title',
+      startTime: startTime,
+      category: 0,
+      reminderBefore: [],
+      infoItem: infoItemWithTestNote,
+      fileId: Uuid().v4(),
+    );
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        ActivityInfo.from(
+          activity: activity,
+          day: day,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(TestKey.viewImage), findsOneWidget);
+    await tester.tap(find.byKey(TestKey.viewImage));
+    await tester.pumpAndSettle();
+    expect(find.byType(ViewDialog), findsOneWidget);
+    expect(find.byType(FadeInAbiliaImage), findsOneWidget);
   });
 }
