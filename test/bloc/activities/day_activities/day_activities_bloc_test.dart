@@ -387,24 +387,22 @@ void main() {
       final preSplitRecurring = Activity.createNew(
         title: 'Pre Split Recurring',
         reminderBefore: [],
-        recurs: Recurs.weekly(16383),
+        recurs: Recurs.weekly(16383, ends: preSplitEndTime),
         alarmType: 104,
         duration: 86399999.milliseconds(),
         category: 0,
         startTime: preSplitStartTime,
-        endTime: preSplitEndTime,
         fullDay: true,
       );
 
       final splitRecurring = Activity.createNew(
         title: 'Split recurring ',
         reminderBefore: [],
-        recurs: Recurs.weekly(16383),
+        recurs: Recurs.weekly(16383, ends: splitEndTime),
         alarmType: 104,
         duration: 86399999.milliseconds(),
         category: 0,
         startTime: splitStartTime,
-        endTime: splitEndTime,
         fullDay: true,
       );
 

@@ -31,9 +31,8 @@ void main() {
     Activity.createNew(
       title: 'recurring',
       startTime: now.add(2.hours()),
-      endTime: now.add(5.days()),
       alarmType: ALARM_SOUND_ONLY_ON_START,
-      recurs: Recurs.weekly(Recurs.everyday),
+      recurs: Recurs.weekly(Recurs.everyday, ends: now.add(5.days())),
     ),
   ];
   setUp(() {

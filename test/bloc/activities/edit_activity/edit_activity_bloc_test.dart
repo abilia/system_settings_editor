@@ -135,7 +135,7 @@ void main() {
     );
     final timeInterval = TimeInterval(
         TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.endTime));
+        TimeOfDay.fromDateTime(activity.noneRecurringEnd));
     // Act
     editActivityBloc.add(ReplaceActivity(activityAsFullDay));
     editActivityBloc.add(SaveActivity());
@@ -191,7 +191,7 @@ void main() {
     final expectedNewDate = DateTime(2022, 02, 22, 11, 00);
     final expectedTimeInterval = TimeInterval(
         TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.endTime));
+        TimeOfDay.fromDateTime(activity.noneRecurringEnd));
 
     final expetedNewActivity = activity.copyWith(startTime: expectedNewDate);
     final expectedNewTimeInterval = TimeInterval(
@@ -232,7 +232,7 @@ void main() {
     final expectedDuration = Duration(hours: 10, minutes: 10);
     final expectedTimeInterval = TimeInterval(
         TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.endTime));
+        TimeOfDay.fromDateTime(activity.noneRecurringEnd));
 
     final expetedNewActivity = activity.copyWith(duration: expectedDuration);
     final expectedNewTimeInterval = TimeInterval(
@@ -275,7 +275,7 @@ void main() {
     final expectedDuration = Duration(hours: 23, minutes: 30);
     final expectedTimeInterval = TimeInterval(
         TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.endTime));
+        TimeOfDay.fromDateTime(activity.noneRecurringEnd));
 
     final expetedNewActivity = activity.copyWith(duration: expectedDuration);
     final expectedNewTimeInterval = TimeInterval(
@@ -314,7 +314,7 @@ void main() {
     );
     final timeInterval = TimeInterval(
         TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.endTime));
+        TimeOfDay.fromDateTime(activity.noneRecurringEnd));
     final min15Reminder = 15.minutes();
     final hour1Reminder = 1.hours();
     final with15MinReminder =
@@ -477,7 +477,7 @@ void main() {
     );
 
     final activity = editActivityBloc.initialState.activity;
-    
+
     final startTime1 = TimeOfDay(hour: 10, minute: 0);
     final endTime1 = TimeOfDay(hour: 11, minute: 0);
 

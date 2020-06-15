@@ -31,7 +31,7 @@ class Activity extends DataModel {
           : signedOffDates.followedBy([day]));
 
   final String seriesId, title, fileId, icon, timezone;
-  final DateTime startTime, endTime;
+  final DateTime startTime;
   final Duration duration;
   final int category, alarmType;
   final bool deleted, fullDay, checkable, removeAfter, secret;
@@ -44,7 +44,6 @@ class Activity extends DataModel {
     @required this.seriesId,
     @required this.title,
     @required this.startTime,
-    @required this.endTime,
     @required this.duration,
     @required this.category,
     @required this.deleted,
@@ -64,7 +63,6 @@ class Activity extends DataModel {
         assert(seriesId != null),
         assert(alarmType >= 0),
         assert(startTime != null),
-        assert(endTime != null),
         assert(duration != null),
         assert(category >= 0),
         assert(deleted != null),
@@ -82,7 +80,6 @@ class Activity extends DataModel {
     @required DateTime startTime,
     Duration duration = Duration.zero,
     int category = Category.right,
-    DateTime endTime,
     Recurs recurs = Recurs.not,
     bool fullDay = false,
     bool checkable = false,
@@ -101,7 +98,6 @@ class Activity extends DataModel {
       seriesId: id,
       title: title,
       startTime: startTime,
-      endTime: endTime ?? startTime.add(duration),
       duration: duration,
       fileId: _nullIfEmpty(fileId),
       icon: _nullIfEmpty(fileId),
@@ -127,11 +123,16 @@ class Activity extends DataModel {
         revision: revision,
       );
 
+  Activity copyWithRecurringEnd(DateTime endTime, {bool newId = false}) =>
+      copyWith(
+        newId: newId,
+        recurs: recurs.changeEnd(endTime),
+      );
+
   Activity copyWith({
     bool newId = false,
     String title,
     DateTime startTime,
-    DateTime endTime,
     Duration duration,
     int category,
     Iterable<int> reminderBefore,
@@ -154,7 +155,6 @@ class Activity extends DataModel {
         seriesId: seriesId,
         title: title ?? this.title,
         startTime: startTime ?? this.startTime,
-        endTime: endTime ?? this.endTime,
         duration: duration ?? this.duration,
         category: category ?? this.category,
         deleted: deleted ?? this.deleted,
@@ -200,7 +200,6 @@ class Activity extends DataModel {
         seriesId,
         title,
         startTime,
-        endTime,
         duration,
         category,
         deleted,
