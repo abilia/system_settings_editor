@@ -108,8 +108,15 @@ void main() {
       'Agenda with one activity and a lot of passed activities should show the activity',
       (WidgetTester tester) async {
     final key = 'KEYKEYKEYKEYKEY';
-    final activities = FakeActivities.allPastWhen(now)
-      ..add(FakeActivity.starts(now).copyWith(title: key));
+    final activities = [
+      for (int i = 0; i < 10; i++)
+        Activity.createNew(
+            title: 'past $i',
+            startTime: now.subtract(Duration(minutes: i * 2)),
+            alarmType: ALARM_SILENT),
+      Activity.createNew(title: key, startTime: now),
+    ];
+
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activities));
 

@@ -24,7 +24,7 @@ class AnalyticsService {
       'checkable': activity.checkable,
       'removeAfter': activity.removeAfter,
       'alarm': activity.alarm.toInt,
-      'recurring': activity.recurrance.toString(),
+      'recurring': activity.recurs.recurrance.toString(),
     };
     await analytics.logEvent(
       name: 'activity_created',

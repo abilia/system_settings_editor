@@ -1,68 +1,6 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-DateTime get _now => DateTime.now().onlyMinutes();
-
-class FakeActivities {
-  static List<Activity> get activities => activitiesWhen(_now);
-  static List<Activity> activitiesWhen(DateTime when) => [
-        FakeActivity.starts(when.add(1.days())),
-        FakeActivity.ends(when.subtract(2.hours())),
-        FakeActivity.ends(when.subtract(1.minutes())),
-        FakeActivity.ends(when),
-        FakeActivity.starts(when),
-        FakeActivity.starts(when.add(1.minutes())),
-        FakeActivity.starts(when.add(1.hours())),
-        FakeActivity.starts(when.subtract(1.days())),
-        FakeActivity.starts(when.add(2.days())),
-        FakeActivity.fullday(when),
-        FakeActivity.fullday(when.subtract(1.days())),
-        FakeActivity.fullday(when.add(1.days())),
-      ];
-
-  static List<Activity> get oneEveryMinute => oneEveryMinuteWhen(_now);
-  static List<Activity> oneEveryMinuteWhen(DateTime when, {int minutes = 40}) {
-    when = when.subtract(Duration(minutes: minutes ~/ 2));
-    return [
-      for (int i = 0; i < minutes; i++)
-        Activity.createNew(
-            title: 'Minute $i',
-            startTime: when.add(Duration(minutes: i)),
-            duration: Duration(minutes: 1),
-            fileId: i % 3 == 0 ? 'fileId' : null,
-            alarmType: ALARM_SILENT),
-    ];
-  }
-
-  static List<Activity> get oneFullDayEveryDay => oneFullDayEveryDayWhen(_now);
-  static List<Activity> oneFullDayEveryDayWhen(DateTime when, {int days = 6}) {
-    when = when.subtract(Duration(minutes: days ~/ 2));
-    return [
-      for (int i = 0; i < days; i++)
-        Activity.createNew(
-            title: 'fullDay $i',
-            fullDay: true,
-            startTime: when.add(Duration(days: i)),
-            duration: Duration(minutes: 5),
-            fileId: i % 3 == 0 ? 'fileId' : null,
-            alarmType: ALARM_SILENT),
-    ];
-  }
-
-  static List<Activity> get allPast => allPastWhen(_now);
-  static List<Activity> allPastWhen(DateTime when, {int minutes = 10}) {
-    when = when.subtract(Duration(minutes: 20));
-    return [
-      for (int i = 0; i < minutes; i++)
-        Activity.createNew(
-            title: 'past $i',
-            startTime: when.subtract(Duration(minutes: i)),
-            duration: Duration(minutes: 15),
-            alarmType: ALARM_SILENT),
-    ];
-  }
-}
-
 class FakeActivity {
   static Activity starts(
     DateTime when, {
@@ -87,51 +25,47 @@ class FakeActivity {
           alarmType: ALARM_SILENT);
 
   static Activity reocurrsEveryDay([DateTime startDate]) =>
-      reoccurs(startDate, RecurrentType.weekly, Recurs.everyday,
+      _reoccurs(startDate, Recurs.weekly(Recurs.everyday),
           title: 'recurs everyday');
   static Activity reocurrsWeekends([DateTime startDate]) =>
-      reoccurs(startDate, RecurrentType.weekly, Recurs.allWeekends,
+      _reoccurs(startDate, Recurs.weekly(Recurs.allWeekends),
           title: 'recurs weekend');
-  static Activity reocurrsMondays([DateTime startDate]) => reoccurs(
-      startDate, RecurrentType.weekly, Recurs.EVEN_MONDAY | Recurs.ODD_MONDAY,
-      title: 'recurs monday');
-  static Activity reocurrsTuedays([DateTime startDate]) => reoccurs(
-      startDate, RecurrentType.weekly, Recurs.EVEN_TUESDAY | Recurs.ODD_TUESDAY,
-      title: 'recurs tuesday');
-  static Activity reocurrsWednesdays([DateTime startDate]) => reoccurs(
-      startDate,
-      RecurrentType.weekly,
-      Recurs.EVEN_WEDNESDAY | Recurs.ODD_WEDNESDAY,
-      title: 'recurs wednesday');
-  static Activity reocurrsThursdays([DateTime startDate]) => reoccurs(startDate,
-      RecurrentType.weekly, Recurs.EVEN_THURSDAY | Recurs.ODD_THURSDAY,
-      title: 'recurs thursday');
-  static Activity reocurrsFridays([DateTime startDate]) => reoccurs(
-      startDate, RecurrentType.weekly, Recurs.EVEN_FRIDAY | Recurs.ODD_FRIDAY,
-      title: 'recurs friday');
+  static Activity reocurrsMondays([DateTime startDate]) =>
+      _reoccurs(startDate, Recurs.weekly(Recurs.MONDAY),
+          title: 'recurs monday');
+  static Activity reocurrsTuedays([DateTime startDate]) =>
+      _reoccurs(startDate, Recurs.weekly(Recurs.TUESDAY),
+          title: 'recurs tuesday');
+  static Activity reocurrsWednesdays([DateTime startDate]) =>
+      _reoccurs(startDate, Recurs.weekly(Recurs.WEDNESDAY),
+          title: 'recurs wednesday');
+  static Activity reocurrsThursdays([DateTime startDate]) =>
+      _reoccurs(startDate, Recurs.weekly(Recurs.THURSDAY),
+          title: 'recurs thursday');
+  static Activity reocurrsFridays([DateTime startDate]) =>
+      _reoccurs(startDate, Recurs.weekly(Recurs.FRIDAY),
+          title: 'recurs friday');
   static Activity reocurrsOnDay(int day,
           [DateTime startDate, DateTime endDate]) =>
-      reoccurs(startDate, RecurrentType.monthly, Recurs.onDayOfMonth(day),
+      _reoccurs(startDate, Recurs.monthly(day),
           endTime: endDate, title: 'recurs on month day $day');
   static Activity reocurrsOnDate(DateTime day,
           [DateTime startTime, DateTime endTime]) =>
-      reoccurs(
-          startTime ?? day, RecurrentType.yearly, Recurs.dayOfYearData(day),
+      _reoccurs(startTime ?? day, Recurs.yearly(day),
           endTime: endTime, title: 'recurs on date $day');
-  static Activity reoccurs(
+
+  static Activity _reoccurs(
     DateTime startTime,
-    RecurrentType recurrentType,
-    int recurrrentData, {
+    Recurs recurs, {
     DateTime endTime,
     String title,
   }) =>
       Activity.createNew(
           title: title,
-          startTime: (startTime ?? _now.subtract(366.days())),
+          startTime: (startTime ?? DateTime(1970, 01, 01)),
           endTime: endTime ?? Recurs.NO_END,
           duration: Duration(hours: 1),
-          recurrentType: recurrentType.index,
-          recurrentData: recurrrentData,
+          recurs: recurs,
           alarmType: ALARM_SILENT);
 
   static Activity fullday(DateTime when, [String title = 'fullday']) =>

@@ -110,8 +110,7 @@ mixin EditRecurringMixin {
     @required DateTime day,
   }) {
     final onlyDayActivity = activity.copyWith(
-      recurrentType: 0,
-      recurrentData: 0,
+      recurs: Recurs.not,
       endTime: activity.startTime.add(activity.duration),
     );
 

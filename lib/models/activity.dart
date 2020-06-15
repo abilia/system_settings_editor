@@ -1,11 +1,14 @@
 import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
+
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:uuid/uuid.dart';
+
+part 'recurs.dart';
+part 'db_activity.dart';
 
 class Activity extends DataModel {
   AlarmType get alarm => AlarmType.fromInt(alarmType);
@@ -14,9 +17,7 @@ class Activity extends DataModel {
       DateTime(day.year, day.month, day.day, startTime.hour, startTime.minute);
   DateTime get noneRecurringEnd => startTime.add(duration);
   bool get hasEndTime => duration.inMinutes > 0;
-  RecurrentType get recurrance =>
-      RecurrentType.values[recurrentType] ?? RecurrentType.none;
-  bool get isRecurring => recurrance != RecurrentType.none;
+  bool get isRecurring => recurs.recurrance != RecurrentType.none;
   Iterable<Duration> get reminders =>
       reminderBefore.map((r) => r.milliseconds()).toSet();
   bool get hasImage =>
@@ -32,11 +33,12 @@ class Activity extends DataModel {
   final String seriesId, title, fileId, icon, timezone;
   final DateTime startTime, endTime;
   final Duration duration;
-  final int category, alarmType, recurrentType, recurrentData;
+  final int category, alarmType;
   final bool deleted, fullDay, checkable, removeAfter, secret;
   final UnmodifiableListView<int> reminderBefore;
   final UnmodifiableListView<DateTime> signedOffDates;
   final InfoItem infoItem;
+  final Recurs recurs;
   const Activity._({
     @required String id,
     @required this.seriesId,
@@ -51,8 +53,7 @@ class Activity extends DataModel {
     @required this.secret,
     @required this.alarmType,
     @required this.fullDay,
-    @required this.recurrentType,
-    @required this.recurrentData,
+    @required this.recurs,
     @required this.reminderBefore,
     @required this.infoItem,
     @required this.icon,
@@ -61,7 +62,6 @@ class Activity extends DataModel {
     @required this.timezone,
   })  : assert(title != null || fileId != null),
         assert(seriesId != null),
-        assert(recurrentType >= 0 && recurrentType < 4),
         assert(alarmType >= 0),
         assert(startTime != null),
         assert(endTime != null),
@@ -72,7 +72,7 @@ class Activity extends DataModel {
         assert(removeAfter != null),
         assert(secret != null),
         assert(fullDay != null),
-        assert(recurrentData != null),
+        assert(recurs != null),
         assert(reminderBefore != null),
         assert(signedOffDates != null),
         super(id);
@@ -83,8 +83,7 @@ class Activity extends DataModel {
     Duration duration = Duration.zero,
     int category = Category.right,
     DateTime endTime,
-    int recurrentType = 0,
-    int recurrentData = 0,
+    Recurs recurs = Recurs.not,
     bool fullDay = false,
     bool checkable = false,
     bool removeAfter = false,
@@ -112,8 +111,7 @@ class Activity extends DataModel {
       removeAfter: removeAfter,
       secret: secret,
       fullDay: fullDay,
-      recurrentType: recurrentType,
-      recurrentData: recurrentData,
+      recurs: recurs,
       reminderBefore: UnmodifiableListView(reminderBefore),
       alarmType: alarmType,
       infoItem: infoItem,
@@ -146,8 +144,7 @@ class Activity extends DataModel {
     bool fullDay,
     int alarmType,
     AlarmType alarm,
-    int recurrentType,
-    int recurrentData,
+    Recurs recurs,
     InfoItem infoItem,
     Iterable<DateTime> signedOffDates,
     String timezone,
@@ -165,8 +162,7 @@ class Activity extends DataModel {
         removeAfter: removeAfter ?? this.removeAfter,
         secret: secret ?? this.secret,
         fullDay: fullDay ?? this.fullDay,
-        recurrentType: recurrentType ?? this.recurrentType,
-        recurrentData: recurrentData ?? this.recurrentData,
+        recurs: recurs ?? this.recurs,
         reminderBefore: reminderBefore != null
             ? UnmodifiableListView(reminderBefore)
             : this.reminderBefore,
@@ -212,8 +208,7 @@ class Activity extends DataModel {
         removeAfter,
         secret,
         fullDay,
-        recurrentType,
-        recurrentData,
+        recurs,
         alarmType,
         reminderBefore,
         fileId,
@@ -226,175 +221,4 @@ class Activity extends DataModel {
   String toString() => 'Activity: { ${props.join(', ')} }';
 }
 
-class DbActivity extends DbModel<Activity> {
-  Activity get activity => model;
-  const DbActivity._({
-    Activity activity,
-    int dirty,
-    int revision,
-  }) : super(revision: revision, dirty: dirty, model: activity);
-
-  @override
-  DbActivity copyWith({
-    int revision,
-    int dirty,
-  }) =>
-      DbActivity._(
-        activity: activity,
-        revision: revision ?? this.revision,
-        dirty: dirty ?? this.dirty,
-      );
-
-  static DbActivity fromJson(Map<String, dynamic> json) => DbActivity._(
-        activity: Activity._(
-          id: json['id'],
-          seriesId: json['seriesId'],
-          title: json['title'],
-          startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime']),
-          endTime: DateTime.fromMillisecondsSinceEpoch(json['endTime']),
-          duration: Duration(milliseconds: json['duration']),
-          fileId: _nullIfEmpty(json['fileId']),
-          icon: _nullIfEmpty(json['icon']),
-          infoItem: InfoItem.fromBase64(json['infoItem']),
-          category: json['category'],
-          deleted: json['deleted'],
-          checkable: json['checkable'],
-          removeAfter: json['removeAfter'],
-          secret: json['secret'],
-          fullDay: json['fullDay'],
-          recurrentType: json['recurrentType'],
-          recurrentData: json['recurrentData'],
-          reminderBefore: _parseReminders(json['reminderBefore']),
-          alarmType: json['alarmType'],
-          signedOffDates: _parseSignedOffDates(json['signedOffDates']),
-          timezone: json['timezone'],
-        ),
-        revision: json['revision'],
-        dirty: 0,
-      );
-
-  static DbActivity fromDbMap(Map<String, dynamic> dbRow) => DbActivity._(
-        activity: Activity._(
-          id: dbRow['id'],
-          seriesId: dbRow['series_id'],
-          title: dbRow['title'],
-          startTime: DateTime.fromMillisecondsSinceEpoch(dbRow['start_time']),
-          endTime: DateTime.fromMillisecondsSinceEpoch(dbRow['end_time']),
-          duration: Duration(milliseconds: dbRow['duration']),
-          fileId: _nullIfEmpty(dbRow['file_id']),
-          icon: _nullIfEmpty(dbRow['icon']),
-          infoItem: InfoItem.fromBase64(dbRow['info_item']),
-          category: dbRow['category'],
-          deleted: dbRow['deleted'] == 1,
-          checkable: dbRow['checkable'] == 1,
-          removeAfter: dbRow['remove_after'] == 1,
-          secret: dbRow['secret'] == 1,
-          fullDay: dbRow['full_day'] == 1,
-          recurrentType: dbRow['recurrent_type'],
-          recurrentData: dbRow['recurrent_data'],
-          reminderBefore: _parseReminders(dbRow['reminder_before']),
-          alarmType: dbRow['alarm_type'],
-          signedOffDates: _parseSignedOffDates(dbRow['signed_off_dates']),
-          timezone: dbRow['timezone'],
-        ),
-        revision: dbRow['revision'],
-        dirty: dbRow['dirty'],
-      );
-
-  @override
-  Map<String, dynamic> toJson() => {
-        'id': activity.id,
-        'seriesId': activity.seriesId,
-        'title': activity.title,
-        'startTime': activity.startTime.millisecondsSinceEpoch,
-        'endTime': activity.endTime.millisecondsSinceEpoch,
-        'duration': activity.duration.inMilliseconds,
-        'fileId': activity.fileId,
-        'category': activity.category,
-        'deleted': activity.deleted,
-        'checkable': activity.checkable,
-        'removeAfter': activity.removeAfter,
-        'secret': activity.secret,
-        'fullDay': activity.fullDay,
-        'recurrentType': activity.recurrentType,
-        'recurrentData': activity.recurrentData,
-        'reminderBefore': activity.reminderBefore.join(';'),
-        'icon': activity.icon,
-        'infoItem': activity.infoItem?.toBase64(),
-        'alarmType': activity.alarmType,
-        'signedOffDates': activity.signedOffDates.tryEncodeSignedOffDates(),
-        'revision': revision,
-        'timezone': activity.timezone,
-      };
-
-  @override
-  Map<String, dynamic> toMapForDb() => {
-        'id': activity.id,
-        'series_id': activity.seriesId,
-        'title': activity.title,
-        'start_time': activity.startTime.millisecondsSinceEpoch,
-        'end_time': activity.endTime.millisecondsSinceEpoch,
-        'duration': activity.duration.inMilliseconds,
-        'file_id': activity.fileId,
-        'category': activity.category,
-        'deleted': activity.deleted ? 1 : 0,
-        'checkable': activity.checkable ? 1 : 0,
-        'remove_after': activity.removeAfter ? 1 : 0,
-        'secret': activity.secret ? 1 : 0,
-        'full_day': activity.fullDay ? 1 : 0,
-        'recurrent_type': activity.recurrentType,
-        'recurrent_data': activity.recurrentData,
-        'reminder_before': activity.reminderBefore.join(';'),
-        'icon': activity.icon,
-        'info_item': activity.infoItem?.toBase64(),
-        'alarm_type': activity.alarmType,
-        'signed_off_dates': activity.signedOffDates.tryEncodeSignedOffDates(),
-        'timezone': activity.timezone,
-        'revision': revision,
-        'dirty': dirty,
-      };
-  static UnmodifiableListView<DateTime> _parseSignedOffDates(signedOffDates) =>
-      UnmodifiableListView(
-          (signedOffDates as String)?.tryDecodeSignedOffDates() ?? []);
-
-  static UnmodifiableListView<int> _parseReminders(String reminders) =>
-      UnmodifiableListView(
-          reminders?.split(';')?.map(int.tryParse)?.where((v) => v != null) ??
-              []);
-  @override
-  List<Object> get props => [activity, revision, dirty];
-
-  @override
-  String toString() =>
-      'DbActivity: { revision: $revision, dirty: $dirty $activity }';
-}
-
 String _nullIfEmpty(String value) => value?.isNotEmpty == true ? value : null;
-
-class TimeInterval extends Equatable {
-  final TimeOfDay startTime;
-  final TimeOfDay endTime;
-
-  bool get sameTime => startTime == endTime;
-  bool get startTimeSet => startTime != null;
-  bool get endTimeSet => endTime != null;
-  bool get onlyStartTime => startTimeSet && !endTimeSet;
-  bool get onlyEndTime => endTimeSet && !startTimeSet;
-
-  TimeInterval(this.startTime, this.endTime);
-
-  TimeInterval.fromDateTime(DateTime startDate, DateTime endDate)
-      : startTime =
-            startDate != null ? TimeOfDay.fromDateTime(startDate) : null,
-        endTime = endDate != null ? TimeOfDay.fromDateTime(endDate) : null;
-
-  TimeInterval.empty()
-      : startTime = null,
-        endTime = null;
-
-  @override
-  List<Object> get props => [startTime, endTime];
-
-  @override
-  String toString() => 'TimeInterval: $startTime - $endTime';
-}

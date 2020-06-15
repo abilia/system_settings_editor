@@ -62,10 +62,6 @@ class Fakes {
     FakeActivity.reocurrsOnDate(DateTime(2000, 01, 01)),
     FakeActivity.reocurrsOnDate(DateTime(2000, 06, 21)),
     FakeActivity.reocurrsOnDate(DateTime(2000, 10, 06)),
-    ...FakeActivities.allPast,
-    ...FakeActivities.oneFullDayEveryDay,
-    ...FakeActivities.oneEveryMinute,
-    ...FakeActivities.activities,
   ];
 
   static final Response clientMeSuccessResponse = Response('''

@@ -99,8 +99,8 @@ void main() {
 
         final activitySet = {recurrringActivity};
 
-        final expextedRecurring1 =
-            recurrringActivity.copyWith(endTime: inAWeekDays.millisecondBefore());
+        final expextedRecurring1 = recurrringActivity.copyWith(
+            endTime: inAWeekDays.millisecondBefore());
         final expextedRecurring2 = recurrringActivity.copyWith(
           newId: true,
           startTime: inAWeek.nextDay(),
@@ -231,7 +231,7 @@ void main() {
             startTime: starttime,
             endTime: starttime.add(recurring.duration));
 
-        final expected = updated.copyWith(recurrentData: 0, recurrentType: 0);
+        final expected = updated.copyWith(recurs: Recurs.not);
 
         // Act
         final res = editRecurringMixin.updateOnlyThisDay(
@@ -259,8 +259,7 @@ void main() {
       final expcetedUpdatedActivity = updated.copyWith(
         newId: true,
         endTime: starttime.add(recurring.duration),
-        recurrentData: 0,
-        recurrentType: 0,
+        recurs: Recurs.not,
       );
       final updatedOldActivity =
           recurring.copyWith(startTime: recurring.startTime.nextDay());
@@ -299,8 +298,7 @@ void main() {
       final expectedUpdatedActivity = updated.copyWith(
         newId: true,
         endTime: newStartTime.add(recurring.duration),
-        recurrentData: 0,
-        recurrentType: 0,
+        recurs: Recurs.not,
       );
       final exptectedUpdatedOldActivity =
           recurring.copyWith(endTime: lastDay.millisecondBefore());
@@ -330,14 +328,15 @@ void main() {
       final expectedUpdatedActivity = updated.copyWith(
         newId: true,
         endTime: updated.startTime.add(updated.duration),
-        recurrentType: 0,
-        recurrentData: 0,
+        recurs: Recurs.not,
       );
-      final preModDaySeries = recurring.copyWith(endTime: aDay.millisecondBefore());
+      final preModDaySeries =
+          recurring.copyWith(endTime: aDay.millisecondBefore());
       final postModDaySeries = recurring.copyWith(
           newId: true,
           startTime: aDay.nextDay().copyWith(
-              hour: recurring.startTime.hour, minute: recurring.startTime.minute));
+              hour: recurring.startTime.hour,
+              minute: recurring.startTime.minute));
 
       // Act
       final res = editRecurringMixin.updateOnlyThisDay(
@@ -368,15 +367,17 @@ void main() {
       final expectedUpdatedActivity = fullday.copyWith(
         newId: true,
         endTime: aDay.nextDay().millisecondBefore(),
-        recurrentType: 0,
-        recurrentData: 0,
+        recurs: Recurs.not,
       );
 
-      final preModDaySeries = recurring.copyWith(endTime: aDay.millisecondBefore());
+      final preModDaySeries =
+          recurring.copyWith(endTime: aDay.millisecondBefore());
       final postModDaySeries = recurring.copyWith(
           newId: true,
           startTime: aDay.nextDay().copyWith(
-              hour: recurring.startTime.hour, minute: recurring.startTime.minute));
+                hour: recurring.startTime.hour,
+                minute: recurring.startTime.minute,
+              ));
 
       final expected = MatchActivitiesWithoutId(
           [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
@@ -521,7 +522,9 @@ void main() {
 
       final og = FakeActivity.reocurrsEveryDay(anyTime);
       final before = og.copyWith(
-          endTime: inSevenDays.onlyDays().millisecondBefore(), title: 'original');
+        endTime: inSevenDays.onlyDays().millisecondBefore(),
+        title: 'original',
+      );
 
       final after = og.copyWith(
           newId: true,
@@ -534,8 +537,7 @@ void main() {
           startTime: in12Days,
           duration: 10.minutes(),
           endTime: in12Days.add(10.minutes()),
-          recurrentData: 0,
-          recurrentType: 0,
+          recurs: Recurs.not,
           title: 'a stray');
 
       final stray2 = og.copyWith(
@@ -571,16 +573,20 @@ void main() {
 
       final afterPostMod = after.copyWith(
         title: newTitle,
-        startTime:
-            after.startTime.copyWith(hour: newTime.hour, minute: newTime.minute),
+        startTime: after.startTime.copyWith(
+          hour: newTime.hour,
+          minute: newTime.minute,
+        ),
         duration: newDuration,
         fullDay: false,
         removeAfter: true,
       );
       final strayPostMod = stray.copyWith(
         title: newTitle,
-        startTime:
-            stray.startTime.copyWith(hour: newTime.hour, minute: newTime.minute),
+        startTime: stray.startTime.copyWith(
+          hour: newTime.hour,
+          minute: newTime.minute,
+        ),
         duration: newDuration,
         removeAfter: true,
       );
@@ -612,32 +618,32 @@ void main() {
 
       // Arrange
       final a1 = Activity.createNew(
-          title: 'asdf',
-          startTime: a1Start,
-          endTime: a1End,
-          recurrentType: 1,
-          recurrentData: 16383);
+        title: 'asdf',
+        startTime: a1Start,
+        endTime: a1End,
+        recurs: Recurs.weekly(16383),
+      );
       final a2 = a1.copyWith(
-          newId: true,
-          title: 'asdf',
-          startTime: a2Start,
-          endTime: a2End,
-          recurrentType: 1,
-          recurrentData: 16383);
+        newId: true,
+        title: 'asdf',
+        startTime: a2Start,
+        endTime: a2End,
+        recurs: Recurs.weekly(16383),
+      );
       final a3 = a2.copyWith(
         newId: true,
         title: 'Moved',
         startTime: a3Time,
         endTime: a3Time,
-        recurrentData: 0,
-        recurrentType: 0,
+        recurs: Recurs.not,
       );
 
       final newTitle = 'updated';
       final newTime = DateTime(2020, 04, 08, 13, 00);
       final updatedA2 = a2.copyWith(title: 'updated', startTime: newTime);
 
-      final a2Part1 = a2.copyWith(endTime: newTime.onlyDays().millisecondBefore());
+      final a2Part1 =
+          a2.copyWith(endTime: newTime.onlyDays().millisecondBefore());
 
       final expectedA3 = a3.copyWith(title: newTitle);
 
