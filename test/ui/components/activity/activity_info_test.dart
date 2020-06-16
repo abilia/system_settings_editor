@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 
@@ -418,7 +419,6 @@ void main() {
     expect(find.byKey(TestKey.viewImage), findsOneWidget);
     await tester.tap(find.byKey(TestKey.viewImage));
     await tester.pumpAndSettle();
-    expect(find.byType(ViewDialog), findsOneWidget);
-    expect(find.byType(FadeInAbiliaImage), findsOneWidget);
+    expect(find.byType(PhotoView), findsOneWidget);
   });
 }
