@@ -103,17 +103,22 @@ class QuestionView extends StatelessWidget {
                   textBaseline: TextBaseline.ideographic,
                   children: <Widget>[
                     if (question.hasImage)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(6.0, 4.0, 0.0, 4.0),
-                        child: AnimatedOpacity(
-                          duration: duration,
-                          opacity: signedOff ? 0.5 : 1.0,
-                          child: FadeInAbiliaImage(
-                            imageFileId: question.fileId,
-                            imageFilePath: question.image,
-                            width: 40,
-                            height: 40,
-                            fit: BoxFit.contain,
+                      InkWell(
+                        borderRadius: borderRadius,
+                        onTap: () => _showImage(question.fileId, context),
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(6.0, 4.0, 0.0, 4.0),
+                          child: AnimatedOpacity(
+                            duration: duration,
+                            opacity: signedOff ? 0.5 : 1.0,
+                            child: FadeInAbiliaImage(
+                              imageFileId: question.fileId,
+                              imageFilePath: question.image,
+                              width: 40,
+                              height: 40,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
@@ -147,6 +152,17 @@ class QuestionView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showImage(String fileId, BuildContext context) async {
+    await showViewDialog<bool>(
+      context: context,
+      builder: (_) {
+        return FullScreenImage(
+          fileId: fileId,
+        );
+      },
     );
   }
 }
