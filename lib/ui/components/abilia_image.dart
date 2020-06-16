@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -119,15 +120,33 @@ class CheckedImageWithImagePopup extends StatelessWidget {
     await showViewDialog<bool>(
       context: context,
       builder: (_) {
-        return ViewDialog(
-          closeIcon: AbiliaIcons.browser_zoom_out,
-          expanded: true,
-          child: Center(
-            child: FadeInAbiliaImage(
-              imageFileId: activity.fileId,
-              imageFilePath: activity.icon,
-              imageSize: ImageSize.ORIGINAL,
-            ),
+        final fileStorage = GetIt.I<FileStorage>();
+        return Material(
+          child: InkWell(
+            onTap: Navigator.of(context).maybePop,
+            child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                builder: (context, state) {
+              return BlocBuilder<UserFileBloc, UserFileState>(
+                  builder: (context, userFileState) {
+                final userFileLoaded = userFileState is UserFilesLoaded &&
+                    userFileState.userFiles.any((f) => f.id == activity.fileId);
+                return PhotoView(
+                  imageProvider: userFileLoaded
+                      ? Image.file(fileStorage.getFile(activity.fileId)).image
+                      : (state is Authenticated)
+                          ? AdvancedNetworkImage(
+                              imageThumbUrl(
+                                baseUrl: state.userRepository.baseUrl,
+                                userId: state.userId,
+                                imageFileId: activity.fileId,
+                                size: ImageThumb.THUMB_SIZE,
+                              ),
+                              header: authHeader(state.token),
+                            )
+                          : MemoryImage(kTransparentImage),
+                );
+              });
+            }),
           ),
         );
       },
@@ -205,7 +224,6 @@ class FadeInCalendarImage extends StatelessWidget {
 class FadeInAbiliaImage extends StatelessWidget {
   final String imageFileId, imageFilePath;
   final double width, height;
-  final ImageSize imageSize;
   final BoxFit fit;
 
   FadeInAbiliaImage({
@@ -213,7 +231,6 @@ class FadeInAbiliaImage extends StatelessWidget {
     @required this.imageFilePath,
     this.height,
     this.width,
-    this.imageSize = ImageSize.THUMB,
     this.fit = BoxFit.cover,
   });
 
