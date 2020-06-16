@@ -21,11 +21,11 @@ mixin EditRecurringMixin {
         .toSet(); // Should be deleted
     final startBeforeEndsNotBefore = series
         .where((a) => a.startTime.isDayBefore(day))
-        .where((a) => !a.endTime.isDayBefore(day))
+        .where((a) => !a.recurs.end.isDayBefore(day))
         .toSet(); // Should change endDate
     final deleted = startsOnOrAfter.map((a) => a.copyWith(deleted: true));
     final newEndTime = startBeforeEndsNotBefore
-        .map((a) => a.copyWith(endTime: day.millisecondBefore()));
+        .map((a) => a.copyWithRecurringEnd(day.millisecondBefore()));
 
     final shouldSave = deleted.followedBy(newEndTime);
     final allShouldChanged = startsOnOrAfter.union(startBeforeEndsNotBefore);
@@ -40,7 +40,7 @@ mixin EditRecurringMixin {
     @required DateTime day,
   }) {
     final isFirstDay = activity.startTime.isAtSameDay(day);
-    final isLastDay = activity.endTime.isAtSameDay(day);
+    final isLastDay = activity.recurs.end.isAtSameDay(day);
     if (isFirstDay && isLastDay && activities.remove(activity)) {
       final save = [activity.copyWith(deleted: true)];
       return ActivityMappingResult(save, activities);
@@ -51,10 +51,10 @@ mixin EditRecurringMixin {
               minute: activity.startTime.minute));
       return _updateActivityToResult(newActivityStartTime, activities);
     } else if (isLastDay) {
-      final newEndTime = activity.copyWith(endTime: day.millisecondBefore());
+      final newEndTime = activity.copyWithRecurringEnd(day.millisecondBefore());
       return _updateActivityToResult(newEndTime, activities);
     } else {
-      final newEndTime = activity.copyWith(endTime: day.millisecondBefore());
+      final newEndTime = activity.copyWithRecurringEnd(day.millisecondBefore());
       final newActivityStartTime = activity.copyWith(
           newId: true,
           startTime: day.nextDay().copyWith(
@@ -75,12 +75,13 @@ mixin EditRecurringMixin {
     final overlappingInSeries = series
         .where((a) => a.startTime.isDayBefore(newStart))
         .where((a) =>
-            a.endTime.isDayAfter(newStart) || a.endTime.isAtSameDay(newStart))
+            a.recurs.end.isDayAfter(newStart) ||
+            a.recurs.end.isAtSameDay(newStart))
         .toSet(); // Should be split
 
     final activityBeforeSplit = overlappingInSeries
-        .map(
-            (a) => a.copyWith(endTime: newStart.onlyDays().millisecondBefore()))
+        .map((a) =>
+            a.copyWithRecurringEnd(newStart.onlyDays().millisecondBefore()))
         .toSet();
 
     final activityAfterDateSplit = overlappingInSeries
@@ -110,14 +111,11 @@ mixin EditRecurringMixin {
     @required DateTime day,
   }) {
     final onlyDayActivity = activity.copyWith(
-      recurs: Recurs.not,
-      endTime: activity.startTime.add(activity.duration),
-    );
-
+        recurs: Recurs.not.changeEnd(activity.noneRecurringEnd));
     final oldActivity = activities.firstWhere((a) => a.id == activity.id);
 
     final atFirstDay = oldActivity.startTime.isAtSameDay(day);
-    final atLastDay = oldActivity.endTime.isAtSameDay(day);
+    final atLastDay = oldActivity.recurs.end.isAtSameDay(day);
 
     final newActivities = <Activity>[];
     if (atFirstDay && !atLastDay) {
@@ -129,17 +127,17 @@ mixin EditRecurringMixin {
       );
     } else if (atLastDay && !atFirstDay) {
       newActivities.add(
-        oldActivity.copyWith(
+        oldActivity.copyWithRecurringEnd(
+          day.millisecondBefore(),
           newId: true,
-          endTime: day.millisecondBefore(),
         ),
       );
     } else if (!atFirstDay && !atLastDay) {
       newActivities.addAll(
         [
-          oldActivity.copyWith(
+          oldActivity.copyWithRecurringEnd(
+            day.millisecondBefore(),
             newId: true,
-            endTime: day.millisecondBefore(),
           ),
           oldActivity.copyWith(
             newId: true,

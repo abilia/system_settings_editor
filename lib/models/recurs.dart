@@ -7,29 +7,49 @@ enum ApplyTo { onlyThisDay, allDays, thisDayAndForward }
 @immutable
 class Recurs extends Equatable {
   final int type, data;
-  const Recurs._(this.type, this.data)
+  DateTime get end => DateTime.fromMillisecondsSinceEpoch(endTime);
+  final int endTime;
+  const Recurs._(this.type, this.data, this.endTime)
       : assert(data != null),
         assert(type != null),
-        assert(type >= 0 && type <= 3);
+        assert(type >= 0 && type <= 3),
+        assert(endTime != null);
 
-  static const Recurs not = Recurs._(0, 0),
-      everyDay = Recurs._(TYPE_WEEKLY, everyday);
+  static const Recurs not = Recurs._(0, 0, NO_END),
+      everyDay = Recurs._(TYPE_WEEKLY, everyday, NO_END);
 
-  factory Recurs.yearly(DateTime dayOfYear) =>
-      Recurs._(TYPE_YEARLY, dayOfYearData(dayOfYear));
-  factory Recurs.monthly(int dayOfMonth) =>
-      Recurs._(TYPE_MONTHLT, onDayOfMonth(dayOfMonth));
-  factory Recurs.monthlyOnDays(List<int> daysOfMonth) =>
-      Recurs._(TYPE_MONTHLT, onDaysOfMonth(daysOfMonth));
-  factory Recurs.weekly(int dayOfWeek) => Recurs._(TYPE_WEEKLY, dayOfWeek);
-  factory Recurs.weeklyOnDays(List<int> daysOfWeek) =>
-      Recurs._(TYPE_WEEKLY, onDaysOfWeek(daysOfWeek));
+  factory Recurs.yearly(DateTime dayOfYear, {DateTime ends}) => Recurs._(
+        TYPE_YEARLY,
+        dayOfYearData(dayOfYear),
+        ends?.millisecondsSinceEpoch ?? NO_END,
+      );
+  factory Recurs.monthly(int dayOfMonth, {DateTime ends}) => Recurs._(
+        TYPE_MONTHLT,
+        onDayOfMonth(dayOfMonth),
+        ends?.millisecondsSinceEpoch ?? NO_END,
+      );
+  factory Recurs.monthlyOnDays(List<int> daysOfMonth, {DateTime ends}) =>
+      Recurs.monthly(onDaysOfMonth(daysOfMonth), ends: ends);
+
+  factory Recurs.weekly(int dayOfWeek, {DateTime ends}) => Recurs._(
+        TYPE_WEEKLY,
+        dayOfWeek,
+        ends?.millisecondsSinceEpoch ?? NO_END,
+      );
+  factory Recurs.weeklyOnDays(List<int> daysOfWeek, {DateTime ends}) =>
+      Recurs.weekly(onDaysOfWeek(daysOfWeek), ends: ends);
+
+  Recurs changeEnd(DateTime endTime) =>
+      Recurs._(type, data, endTime.millisecondsSinceEpoch);
 
   RecurrentType get recurrance =>
       RecurrentType.values[type] ?? RecurrentType.none;
 
   @override
-  List<Object> get props => [data, type];
+  List<Object> get props => [data, type, endTime];
+
+  @override
+  bool get stringify => true;
 
   static const int TYPE_NONE = 0,
       TYPE_WEEKLY = 1,
@@ -72,8 +92,7 @@ class Recurs extends Equatable {
       allWeekends = evenWeekends | oddWeekends,
       everyday = allWeekdays | allWeekends;
 
-  static final DateTime NO_END =
-      DateTime.fromMillisecondsSinceEpoch(253402297199000);
+  static const NO_END = 253402297199000;
   static int onDayOfMonth(int dayOfMonth) => 1 << (dayOfMonth - 1);
   static int onDaysOfMonth(List<int> daysOfMonth) =>
       daysOfMonth.fold(0, (ds, d) => ds | onDayOfMonth(d));

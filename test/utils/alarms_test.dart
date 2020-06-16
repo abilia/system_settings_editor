@@ -148,7 +148,6 @@ void main() {
       final uncheckedReminder = Activity.createNew(
         title: 'null',
         startTime: startDate.subtract(reminder).subtract(50.days()),
-        endTime: day.add(200.days()),
         recurs: Recurs.everyDay,
         checkable: true,
       );

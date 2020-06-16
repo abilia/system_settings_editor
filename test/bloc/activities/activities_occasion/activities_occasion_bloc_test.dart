@@ -549,9 +549,11 @@ void main() {
       final tomorrowActivity = FakeActivity.starts(in1Hour.add(1.days()))
           .copyWith(removeAfter: true);
       final everyDayFullDayRecurring = FakeActivity.fullday(longAgo).copyWith(
-        endTime: DateTime.fromMillisecondsSinceEpoch(253402297199000),
         removeAfter: true,
-        recurs: Recurs.weekly(Recurs.allWeekdays),
+        recurs: Recurs.weekly(
+          Recurs.allWeekdays,
+          ends: DateTime.fromMillisecondsSinceEpoch(253402297199000),
+        ),
       );
 
       final activities = Iterable<Activity>.empty().followedBy([
@@ -642,7 +644,6 @@ void main() {
       final everyDayRecurring = Activity.createNew(
         title: 'title',
         startTime: longAgo,
-        endTime: Recurs.NO_END,
         duration: 48.hours(),
         recurs: Recurs.everyDay,
       );
@@ -703,7 +704,6 @@ void main() {
       final mondayRecurring = Activity.createNew(
         title: 'Recurs.MONDAY',
         startTime: longAgo,
-        endTime: Recurs.NO_END,
         duration: 10.hours(),
         recurs: Recurs.weekly(Recurs.MONDAY),
       );

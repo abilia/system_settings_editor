@@ -47,23 +47,21 @@ class FakeActivity {
           title: 'recurs friday');
   static Activity reocurrsOnDay(int day,
           [DateTime startDate, DateTime endDate]) =>
-      _reoccurs(startDate, Recurs.monthly(day),
-          endTime: endDate, title: 'recurs on month day $day');
+      _reoccurs(startDate, Recurs.monthly(day, ends: endDate),
+          title: 'recurs on month day $day');
   static Activity reocurrsOnDate(DateTime day,
           [DateTime startTime, DateTime endTime]) =>
-      _reoccurs(startTime ?? day, Recurs.yearly(day),
-          endTime: endTime, title: 'recurs on date $day');
+      _reoccurs(startTime ?? day, Recurs.yearly(day, ends: endTime),
+          title: 'recurs on date $day');
 
   static Activity _reoccurs(
     DateTime startTime,
     Recurs recurs, {
-    DateTime endTime,
     String title,
   }) =>
       Activity.createNew(
           title: title,
           startTime: (startTime ?? DateTime(1970, 01, 01)),
-          endTime: endTime ?? Recurs.NO_END,
           duration: Duration(hours: 1),
           recurs: recurs,
           alarmType: ALARM_SILENT);
