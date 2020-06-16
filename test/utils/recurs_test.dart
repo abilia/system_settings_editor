@@ -16,12 +16,14 @@ void main() {
       final splitRecurring = Activity.createNew(
         title: 'Split recurring ',
         reminderBefore: [],
-        recurs: Recurs.weekly(16383), // Weekly every day odd and even week
+        recurs: Recurs.weekly(
+          16383,
+          ends: splitEndTime,
+        ), // Weekly every day odd and even week
         alarmType: 104, // NO_ALARM
         duration: 86399999.milliseconds(), // 23:59:59.999000
         category: 0,
         startTime: splitStartTime,
-        endTime: splitEndTime,
         fullDay: true,
       );
       // Act
@@ -45,7 +47,6 @@ void main() {
         duration: 86399999.milliseconds(), // 23:59:59.999000
         category: 0,
         startTime: DateTime(1970, 01, 01, 12, 00),
-        endTime: Recurs.NO_END,
         fullDay: true,
       );
 
@@ -84,9 +85,11 @@ void main() {
 
       final splitRecurring = Activity.createNew(
         title: 'test',
-        recurs: Recurs.weekly(16383),
+        recurs: Recurs.weekly(
+          16383,
+          ends: splitEndTime.fromMillisecondsSinceEpoch(),
+        ),
         startTime: splitStartTime.fromMillisecondsSinceEpoch(),
-        endTime: splitEndTime.fromMillisecondsSinceEpoch(),
       );
       // Act
       final result = splitRecurring.dayActivitiesForDay(day);
@@ -581,7 +584,6 @@ void main() {
       final overlappingFridayRecurring = Activity.createNew(
         title: 'title',
         startTime: startTime,
-        endTime: Recurs.NO_END,
         duration: Duration(hours: 4),
         recurs: Recurs.weekly(Recurs.FRIDAY),
       );
@@ -605,7 +607,6 @@ void main() {
       final overlappingFridayRecurring = Activity.createNew(
         title: 'title',
         startTime: startTime,
-        endTime: Recurs.NO_END,
         duration: Duration(hours: 36),
         recurs: Recurs.weekly(Recurs.FRIDAY),
       );
@@ -642,7 +643,6 @@ void main() {
       final overlappingFridayRecurring = Activity.createNew(
         title: 'title',
         startTime: startTime,
-        endTime: Recurs.NO_END,
         duration: Duration(hours: 36),
         recurs: Recurs.monthly(29),
       );
@@ -679,7 +679,6 @@ void main() {
       final overlappingFridayRecurring = Activity.createNew(
         title: 'title',
         startTime: startTime,
-        endTime: Recurs.NO_END,
         duration: Duration(hours: 36),
         recurs: Recurs.yearly(friday),
       );
@@ -715,7 +714,6 @@ void main() {
       final overlappingFridayRecurring = Activity.createNew(
         title: 'title',
         startTime: startTime,
-        endTime: Recurs.NO_END,
         duration: Duration(hours: 12),
         recurs: Recurs.everyDay,
       );
@@ -748,7 +746,6 @@ void main() {
       final overlappingFridayRecurring = Activity.createNew(
         title: 'title',
         startTime: startTime,
-        endTime: Recurs.NO_END,
         duration: Duration(hours: 36),
         recurs: Recurs.everyDay,
       );

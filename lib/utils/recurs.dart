@@ -35,7 +35,7 @@ extension RecurringActivityExtension on Activity {
     }
 
     if (!day.inInclusiveRange(
-        startDate: startTime.onlyDays(), endDate: endTime.onlyDays())) {
+        startDate: startTime.onlyDays(), endDate: recurs.end.onlyDays())) {
       return [];
     }
 

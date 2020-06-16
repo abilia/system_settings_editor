@@ -68,7 +68,7 @@ void main() {
     expect(result.duration, 3600000.milliseconds());
     expect(result.category, 0);
     expect(result.startTime, 1570105439424.fromMillisecondsSinceEpoch());
-    expect(result.endTime, 1570109039424.fromMillisecondsSinceEpoch());
+    expect(result.recurs.endTime, 1570109039424);
     expect(result.fullDay, false);
     expect(result.checkable, true);
     expect(result.removeAfter, false);
@@ -200,7 +200,7 @@ void main() {
     expect(deserializedActivity.duration, activity.duration);
     expect(deserializedActivity.reminderBefore, activity.reminderBefore);
     expect(deserializedActivity.startTime, activity.startTime);
-    expect(deserializedActivity.endTime, activity.endTime);
+    expect(deserializedActivity.recurs.endTime, activity.recurs.endTime);
     expect(deserializedActivity.fileId, activity.fileId);
     expect(deserializedActivity.icon, activity.icon);
     expect(deserializedActivity.recurs.type, activity.recurs.type);
