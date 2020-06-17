@@ -327,6 +327,41 @@ void main() {
     expect(find.text('shorts'), findsOneWidget);
   });
 
+  testWidgets('Test open checklist image in fullscreen',
+      (WidgetTester tester) async {
+    final infoItem = Checklist(questions: [
+      Question(
+        id: 1,
+        fileId: 'dummyId',
+      )
+    ]);
+
+    final activity = Activity.createNew(
+      title: null,
+      startTime: startTime,
+      category: 0,
+      checkable: true,
+      reminderBefore: [],
+      fileId: Uuid().v4(),
+      infoItem: infoItem,
+    );
+
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        ActivityInfo.from(
+          activity: activity,
+          day: day,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(CheckListView), findsOneWidget);
+    expect(find.byType(FadeInAbiliaImage), findsOneWidget);
+    await tester.tap(find.byType(FadeInAbiliaImage));
+    await tester.pumpAndSettle();
+    expect(find.byType(FullScreenImage), findsOneWidget);
+  });
+
   testWidgets('Checklist attachment is present and not signed off',
       (WidgetTester tester) async {
     final activity = Activity.createNew(

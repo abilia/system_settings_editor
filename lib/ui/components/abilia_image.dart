@@ -106,7 +106,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
     return InkWell(
       key: TestKey.viewImage,
       onTap: () => activityDay.activity.hasImage
-          ? _showImage(activityDay.activity, context)
+          ? _showImage(activityDay.activity.fileId, context)
           : null,
       child: CheckedImage(
         activityDay: activityDay,
@@ -116,40 +116,53 @@ class CheckedImageWithImagePopup extends StatelessWidget {
     );
   }
 
-  void _showImage(Activity activity, BuildContext context) async {
+  void _showImage(String fileId, BuildContext context) async {
     await showViewDialog<bool>(
       context: context,
       builder: (_) {
-        final fileStorage = GetIt.I<FileStorage>();
-        return Material(
-          child: InkWell(
-            onTap: Navigator.of(context).maybePop,
-            child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                builder: (context, state) {
-              return BlocBuilder<UserFileBloc, UserFileState>(
-                  builder: (context, userFileState) {
-                final userFileLoaded = userFileState is UserFilesLoaded &&
-                    userFileState.userFiles.any((f) => f.id == activity.fileId);
-                return PhotoView(
-                  imageProvider: userFileLoaded
-                      ? Image.file(fileStorage.getFile(activity.fileId)).image
-                      : (state is Authenticated)
-                          ? AdvancedNetworkImage(
-                              imageThumbUrl(
-                                baseUrl: state.userRepository.baseUrl,
-                                userId: state.userId,
-                                imageFileId: activity.fileId,
-                                size: ImageThumb.THUMB_SIZE,
-                              ),
-                              header: authHeader(state.token),
-                            )
-                          : MemoryImage(kTransparentImage),
-                );
-              });
-            }),
-          ),
-        );
+        return FullScreenImage(fileId: fileId,);
       },
+    );
+  }
+}
+
+class FullScreenImage extends StatelessWidget {
+  final String fileId;
+  const FullScreenImage({
+    Key key,
+    this.fileId,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final fileStorage = GetIt.I<FileStorage>();
+    return Material(
+      child: InkWell(
+        onTap: Navigator.of(context).maybePop,
+        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            builder: (context, state) {
+          return BlocBuilder<UserFileBloc, UserFileState>(
+              builder: (context, userFileState) {
+            final userFileLoaded = userFileState is UserFilesLoaded &&
+                userFileState.userFiles.any((f) => f.id == fileId);
+            return PhotoView(
+              imageProvider: userFileLoaded
+                  ? Image.file(fileStorage.getFile(fileId)).image
+                  : (state is Authenticated)
+                      ? AdvancedNetworkImage(
+                          imageThumbUrl(
+                            baseUrl: state.userRepository.baseUrl,
+                            userId: state.userId,
+                            imageFileId: fileId,
+                            size: ImageThumb.THUMB_SIZE,
+                          ),
+                          header: authHeader(state.token),
+                        )
+                      : MemoryImage(kTransparentImage),
+            );
+          });
+        }),
+      ),
     );
   }
 }
