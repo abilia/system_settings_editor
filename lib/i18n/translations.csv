@@ -1,0 +1,73 @@
+_id_;en;sv
+userName;Username / Email;Användarnamn
+password;Password;Lösenord
+infoText1;Use your ;Använd ditt 
+infoText2; account to Log in;-konto för att logga in
+login;Log in;Logga in
+logout;Log out;Logga ut
+menu;Menu;Meny
+close;Close;Stäng
+wrongCredentials;Your username/email or password is not correct. Please, try another one.;Fel användarnamn eller lösenord
+now;now;nu
+fullDay;All day;Heldag
+reminder;Reminder;Påminnelse
+alarm;Alarm;Larm
+endsNow;Ends now;Slutar nu
+startsNow;Starts now;Börjar nu
+noActivities;No activities for today;Inga aktiviteter idag
+timePillarView;Timepillar view;Tidspelare
+listView;List view;Listvy
+left;Left;Vänster
+right;Right;Höger
+check;Check;Kvittera
+uncheck;Uncheck;Ångra
+newActivity;New activity;Ny aktivitet
+editActivity;Edit activity;Ändra aktivitet
+category;Category;Kategori
+noColor;No color;Ingen färg
+selectAlarmType;Select alarm type;Välj typ av larm
+alarmAndVibration;Alarm + vibration;Larm + vibration
+vibration;Vibration;Vibration
+noAlarm;No alarm;Inget larm
+alarmOnlyAtStartTime;Alarm only at Start time;Larm endast vid starttid
+checkable;Checkable;Kvittera
+deleteAfter;Delete after;Ta bort efteråt
+availableFor;Available for;Tillgänglig för
+meAndSupportPersons;Me and support persons;Mig och stödpersoner
+onlyMe;Only me;Bara mig
+name;Name;Namn
+picture;Picture;Bild
+date;Date;Datum
+today;Today;Idag
+startTime;Start time;Starttid
+endTime;End time;Sluttid
+noEndTime;No end time;Ingen sluttid
+calendarView;Calendar view;Kalendervy
+selectPicture;Select picture;Välj bild
+imageArchive;Image archive;Bildarkiv
+myPhotos;My photos;Mina bilder
+takeNewPhoto;Take new photo;Ta bild
+days;days;dagar
+day;day;dag
+hours;hours;timmar
+hour;hour;timme
+h;h;t
+minutes;minutes;minuter
+minute;minute;minut
+min;min;min
+am;AM;fm
+pm;PM;em
+remove;Remove;Ta bort
+deleteActivity;Delete activity?;Ta bort aktivitet?
+removePicture;Remove picture;Ta bort bild
+appyTo;Apply to;Ändra på
+onlyThisDay;Only this day;Endast denna dag
+allDays;All days;Alla dagar
+thisDayAndForward;This day and forward;Denna dag och framåt
+settings;Settings;Inställningar
+showTimeDots;Show time dots;Visa prickar för tid
+checkActivityQuestion;Completed?;Klar?
+unCheckActivityQuestion;Du you want to uncheck?;Ta bort klarmarkering?
+inTimePre;in;om
+timeAgoPre;&empty&;för
+timeAgoPost;ago;sen

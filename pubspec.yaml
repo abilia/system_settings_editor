@@ -3,7 +3,7 @@ description: The seagull app.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -56,11 +56,12 @@ dev_dependencies:
     sdk: flutter
   test: any
   file: ^5.1.0
+  build_runner: ^1.10.0
 
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/ic_launcher.png"
+  image_path: 'assets/ic_launcher.png'
 
 flutter:
   uses-material-design: true

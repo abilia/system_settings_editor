@@ -30,6 +30,7 @@
 .pub/
 /build/
 /coverage
+**/*.csv.missing
 
 # Android related
 **/android/.gradle

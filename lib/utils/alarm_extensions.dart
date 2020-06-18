@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:seagull/i18n/translations.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 

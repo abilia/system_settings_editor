@@ -1,0 +1,18 @@
+targets:
+  $default:
+    builders:
+      seagull:translatorBuilder:
+        generate_for:
+            - lib/i18n/translations.csv
+        enabled: True
+
+builders:
+  translatorBuilder:
+    import: 'package:seagull/i18n/src/code_generators.dart'
+    builder_factories: ['translatoionBuilder']
+    build_extensions: 
+      .csv:
+        - .dart
+        - .missing.csv
+    build_to: source
+    auto_apply: root_package
