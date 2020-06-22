@@ -13,149 +13,149 @@ class Locales {
 }
 
 abstract class Translated {
-  final String userName = 'N/A';
+  final String userName = 'n/a';
 
-  final String password = 'N/A';
+  final String password = 'n/a';
 
-  final String infoText1 = 'N/A';
+  final String infoText1 = 'n/a';
 
-  final String infoText2 = 'N/A';
+  final String infoText2 = 'n/a';
 
-  final String login = 'N/A';
+  final String login = 'n/a';
 
-  final String logout = 'N/A';
+  final String logout = 'n/a';
 
-  final String menu = 'N/A';
+  final String menu = 'n/a';
 
-  final String close = 'N/A';
+  final String close = 'n/a';
 
-  final String wrongCredentials = 'N/A';
+  final String wrongCredentials = 'n/a';
 
-  final String now = 'N/A';
+  final String now = 'n/a';
 
-  final String fullDay = 'N/A';
+  final String fullDay = 'n/a';
 
-  final String reminder = 'N/A';
+  final String reminder = 'n/a';
 
-  final String alarm = 'N/A';
+  final String alarm = 'n/a';
 
-  final String endsNow = 'N/A';
+  final String endsNow = 'n/a';
 
-  final String startsNow = 'N/A';
+  final String startsNow = 'n/a';
 
-  final String noActivities = 'N/A';
+  final String noActivities = 'n/a';
 
-  final String timePillarView = 'N/A';
+  final String timePillarView = 'n/a';
 
-  final String listView = 'N/A';
+  final String listView = 'n/a';
 
-  final String left = 'N/A';
+  final String left = 'n/a';
 
-  final String right = 'N/A';
+  final String right = 'n/a';
 
-  final String check = 'N/A';
+  final String check = 'n/a';
 
-  final String uncheck = 'N/A';
+  final String uncheck = 'n/a';
 
-  final String newActivity = 'N/A';
+  final String newActivity = 'n/a';
 
-  final String editActivity = 'N/A';
+  final String editActivity = 'n/a';
 
-  final String category = 'N/A';
+  final String category = 'n/a';
 
-  final String noColor = 'N/A';
+  final String noColor = 'n/a';
 
-  final String selectAlarmType = 'N/A';
+  final String selectAlarmType = 'n/a';
 
-  final String alarmAndVibration = 'N/A';
+  final String alarmAndVibration = 'n/a';
 
-  final String vibration = 'N/A';
+  final String vibration = 'n/a';
 
-  final String noAlarm = 'N/A';
+  final String noAlarm = 'n/a';
 
-  final String alarmOnlyAtStartTime = 'N/A';
+  final String alarmOnlyAtStartTime = 'n/a';
 
-  final String checkable = 'N/A';
+  final String checkable = 'n/a';
 
-  final String deleteAfter = 'N/A';
+  final String deleteAfter = 'n/a';
 
-  final String availableFor = 'N/A';
+  final String availableFor = 'n/a';
 
-  final String meAndSupportPersons = 'N/A';
+  final String meAndSupportPersons = 'n/a';
 
-  final String onlyMe = 'N/A';
+  final String onlyMe = 'n/a';
 
-  final String name = 'N/A';
+  final String name = 'n/a';
 
-  final String picture = 'N/A';
+  final String picture = 'n/a';
 
-  final String date = 'N/A';
+  final String date = 'n/a';
 
-  final String today = 'N/A';
+  final String today = 'n/a';
 
-  final String startTime = 'N/A';
+  final String startTime = 'n/a';
 
-  final String endTime = 'N/A';
+  final String endTime = 'n/a';
 
-  final String noEndTime = 'N/A';
+  final String noEndTime = 'n/a';
 
-  final String calendarView = 'N/A';
+  final String calendarView = 'n/a';
 
-  final String selectPicture = 'N/A';
+  final String selectPicture = 'n/a';
 
-  final String imageArchive = 'N/A';
+  final String imageArchive = 'n/a';
 
-  final String myPhotos = 'N/A';
+  final String myPhotos = 'n/a';
 
-  final String takeNewPhoto = 'N/A';
+  final String takeNewPhoto = 'n/a';
 
-  final String days = 'N/A';
+  final String days = 'n/a';
 
-  final String day = 'N/A';
+  final String day = 'n/a';
 
-  final String hours = 'N/A';
+  final String hours = 'n/a';
 
-  final String hour = 'N/A';
+  final String hour = 'n/a';
 
-  final String h = 'N/A';
+  final String h = 'n/a';
 
-  final String minutes = 'N/A';
+  final String minutes = 'n/a';
 
-  final String minute = 'N/A';
+  final String minute = 'n/a';
 
-  final String min = 'N/A';
+  final String min = 'n/a';
 
-  final String am = 'N/A';
+  final String am = 'n/a';
 
-  final String pm = 'N/A';
+  final String pm = 'n/a';
 
-  final String remove = 'N/A';
+  final String remove = 'n/a';
 
-  final String deleteActivity = 'N/A';
+  final String deleteActivity = 'n/a';
 
-  final String removePicture = 'N/A';
+  final String removePicture = 'n/a';
 
-  final String appyTo = 'N/A';
+  final String appyTo = 'n/a';
 
-  final String onlyThisDay = 'N/A';
+  final String onlyThisDay = 'n/a';
 
-  final String allDays = 'N/A';
+  final String allDays = 'n/a';
 
-  final String thisDayAndForward = 'N/A';
+  final String thisDayAndForward = 'n/a';
 
-  final String settings = 'N/A';
+  final String settings = 'n/a';
 
-  final String showTimeDots = 'N/A';
+  final String showTimeDots = 'n/a';
 
-  final String checkActivityQuestion = 'N/A';
+  final String checkActivityQuestion = 'n/a';
 
-  final String unCheckActivityQuestion = 'N/A';
+  final String unCheckActivityQuestion = 'n/a';
 
-  final String inTimePre = 'N/A';
+  final String inTimePre = 'n/a';
 
-  final String timeAgoPre = 'N/A';
+  final String timeAgoPre = 'n/a';
 
-  final String timeAgoPost = 'N/A';
+  final String timeAgoPost = 'n/a';
 }
 
 class EN extends Translated {

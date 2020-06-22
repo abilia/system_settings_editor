@@ -38,46 +38,36 @@ class TranslationBuilder extends Builder {
     buffer.writeln(_generateLocalesMap(languages, emitter));
 
     // generate abstract class
-    final fields =
-        translations.values.first.keys.map((field) => Field((fb) => fb
-          ..modifier = FieldModifier.final$
-          ..type = refer('String')
-          ..name = field
-          ..assignment = Code("'N/A'")));
+    final fields = translations.values.first.keys.map((id) => Field((fb) => fb
+      ..modifier = FieldModifier.final$
+      ..type = refer('String')
+      ..name = id
+      ..assignment = Code("'n/a'")));
 
-    final langClass = Class((b) => b
+    buffer.writeln(Class((b) => b
       ..name = className
       ..abstract = true
-      ..fields.addAll(fields));
-
-    final a = langClass.accept(emitter);
-    buffer.writeln(a);
+      ..fields.addAll(fields)).accept(emitter));
 
     // generate translations
     for (var lang in languages) {
       final dictionary = translations[lang];
-      final fields = translations.values.first.keys.map((field) => Field((fb) =>
-          fb
+      final overrideFields = fields
+          .where((f) => dictionary.containsKey(f.name))
+          .map((f) => f.rebuild((fb) => fb
             ..annotations =
                 ListBuilder<Expression>([CodeExpression(Code('override'))])
-            ..modifier = FieldModifier.final$
-            ..type = refer('String')
-            ..name = field
-            ..assignment = Code(
-                "'${dictionary.containsKey(field) ? dictionary[field] : 'N/A($lang)'}'")));
+            ..assignment = Code("'${dictionary[f.name]}'")));
 
-      final langClass = Class((b) => b
+      buffer.writeln(Class((b) => b
         ..name = lang.toUpperCase()
         ..extend = refer(className)
-        ..fields.addAll(fields));
-
-      final a = langClass.accept(emitter);
-      buffer.writeln(a);
+        ..fields.addAll(overrideFields)).accept(emitter));
     }
-    final id = buildStep.inputId.changeExtension(dartExtension);
 
     await buildStep.writeAsString(
-        id, DartFormatter().format(buffer.toString()));
+        buildStep.inputId.changeExtension(dartExtension),
+        DartFormatter().format(buffer.toString()));
   }
 
   Map<String, Map<String, String>> _parseTranslationsAndWriteMissing(
@@ -88,7 +78,7 @@ class TranslationBuilder extends Builder {
     final lines = LineSplitter().convert(content);
     final lineSplitted = lines.map((row) => row.split(deliminator)).toList();
 
-    final dictionarise = lineSplitted.first // Fist heading row
+    final dictionarise = lineSplitted.first // First heading row
         .sublist(1) // drop id heading
         .map((e) => MapEntry(e, <String, String>{}))
         .toList();
@@ -98,16 +88,16 @@ class TranslationBuilder extends Builder {
       // every row except heading row
       if (entry.isEmpty) continue;
       final valueId = entry[0]; // first column is id
+
       if (entry.length < dictionarise.length + 1 ||
           entry.any((value) => value.isEmpty)) {
         missing.add(entry.join(deliminator));
       }
 
-      final roof = min(entry.length, dictionarise.length + 1);
-      for (var i = 1; i < roof; i++) {
+      for (var i = 1; i < min(entry.length, dictionarise.length + 1); i++) {
         final dictionary = dictionarise[i - 1].value;
         if (dictionary.containsKey(valueId)) {
-          throw Exception('$valueId not a unique id!');
+          throw Exception('$valueId not an unique id!');
         }
         final value = entry[i];
         if (value.isEmpty) continue;
@@ -125,7 +115,7 @@ class TranslationBuilder extends Builder {
 
   StringSink _generateLocalesMap(
       Iterable<String> languages, DartEmitter emitter) {
-    final def =
+    final translationEntry =
         languages.map((l) => "Locale('$l'): ${l.toUpperCase()}()").join(',\n');
     final locales = Class((b) => b
       ..name = 'Locales'
@@ -135,7 +125,7 @@ class TranslationBuilder extends Builder {
             ..static = true
             ..modifier = FieldModifier.final$
             ..name = 'language'
-            ..assignment = Code('<Locale, Translated>{$def}'),
+            ..assignment = Code('<Locale, Translated>{$translationEntry}'),
         )
       ]));
     return locales.accept(emitter);
