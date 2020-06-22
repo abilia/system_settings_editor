@@ -1,4 +1,4 @@
-import 'package:seagull/i18n/translations.dart';
+import 'package:seagull/i18n/all.dart';
 
 extension TranslatedExtensions on Translated {
   String inTime(String time) => '$inTimePre $time';

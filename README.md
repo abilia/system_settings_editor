@@ -22,5 +22,5 @@ All missing translations will be written to the file lib/i18n/translation.missin
 To add a new language, add the language code to the header row in lib/i18n/translations.csv
 
 You can also run 
-> flutter packages pub run build_runner watch 
+> flutter packages pub run build_runner watch --delete-conflicting-outputs
 to auto generate the lib/i18n/translations.dart when changing lib/i18n/translations.csv

@@ -10,7 +10,7 @@ import 'package:dart_style/dart_style.dart';
 class TranslationBuilder extends Builder {
   final BuilderOptions options;
   final deliminator = ';',
-      dartExtension = '.dart',
+      dartExtension = '.g.dart',
       missingExtension = '.missing.csv',
       className = 'Translated',
       emptyToken = '&empty&';
@@ -29,6 +29,7 @@ class TranslationBuilder extends Builder {
     final emitter = DartEmitter();
 
     buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
+    buffer.writeln();
     buffer.writeln('// instead, modify ${buildStep.inputId.path} and run');
     buffer.writeln('// > flutter packages pub run build_runner build');
     buffer.writeln();

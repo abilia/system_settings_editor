@@ -12,7 +12,7 @@ builders:
     builder_factories: ['translatoionBuilder']
     build_extensions: 
       .csv:
-        - .dart
+        - .g.dart
         - .missing.csv
     build_to: source
     auto_apply: root_package

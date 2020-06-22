@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+
 // instead, modify lib/i18n/translations.csv and run
 // > flutter packages pub run build_runner build
 
