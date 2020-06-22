@@ -57,7 +57,9 @@ class TranslationBuilder extends Builder {
           .map((f) => f.rebuild((fb) => fb
             ..annotations =
                 ListBuilder<Expression>([CodeExpression(Code('override'))])
-            ..assignment = Code("'${dictionary[f.name]}'")));
+            ..assignment = Code(dictionary[f.name].contains("'")
+                ? '''"${dictionary[f.name]}"'''
+                : "'${dictionary[f.name]}'")));
 
       buffer.writeln(Class((b) => b
         ..name = lang.toUpperCase()

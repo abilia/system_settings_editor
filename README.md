@@ -6,21 +6,24 @@ A new calendar app.
 
 The project is built with flutter.
 
-
 ## Working with translations strings
+The translations are written in `lib/i18n/translations.csv` as semicolon (**;**) seperated values
+The first column is the id and need to be unique, then each column is each languauge as define by the first line in that column (the first row).
 
-To add new strings for translation, in lib/i18n/translations.csv:
+The translations are automaticly generated as the file `lib/i18n/translations.g.dart` when running the command  `$ flutter packages pub run build_runner build --delete-conflicting-outputs` or when changing `lib/i18n/translations.csv` if running `$ flutter packages pub run build_runner watch --delete-conflicting-outputs`
+
+To add new strings for translation:
  - add a unique id to a new row
- - seperate with a ;
- - write english translation 
-- run > flutter packages pub run build_runner build
-without a id and an english translation, nothing will be generated in lib/i18n/translations.dart
+ - seperate with a _`;`_
+ - write the english translation 
+- run `$ flutter packages pub run build_runner build --delete-conflicting-outputs`
 
-Missing strings will be replaced with N/A(language code) for that language
-If you want an empty string, put &empty& as placeholder
-All missing translations will be written to the file lib/i18n/translation.missing.csv
-To add a new language, add the language code to the header row in lib/i18n/translations.csv
+To add a new language, add the language code to the header row
 
-You can also run 
-> flutter packages pub run build_runner watch --delete-conflicting-outputs
-to auto generate the lib/i18n/translations.dart when changing lib/i18n/translations.csv
+Missing translations will be shown as **n/a**
+All missing translations will be written to the file `lib/i18n/translation.missing.csv`
+
+##### Special cases
+- If you want an empty string, put **&empty&** as placeholder
+- **\\** needs to be escaped with another **\\** as such: **\\\\**
+- The character **;** is not supported
