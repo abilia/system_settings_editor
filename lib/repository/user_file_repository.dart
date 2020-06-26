@@ -33,10 +33,12 @@ class UserFileRepository extends DataRepository<UserFile> {
 
   @override
   Future<Iterable<UserFile>> load() async {
+    _log.fine('loadning User Files...');
     return synchronized(() async {
       try {
         final fetchedUserFiles =
             await _fetchUserFiles(await userFileDb.getLastRevision());
+        _log.fine('${fetchedUserFiles.length}  User Files fetched.');
         await userFileDb.insert(fetchedUserFiles);
         await getAndStoreFileData();
       } catch (e) {

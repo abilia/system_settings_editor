@@ -17,10 +17,11 @@ class Application : FlutterApplication(), PluginRegistrantCallback {
         if (registry != null) {
             // Need to register every plugin that is going to be used in Firebase background callback in this awkward way
             // because Flutter-Firebase do not support new plugin registration with flutters new Android plugins APIs
-            io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin.registerWith(registry?.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"))
-            io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin.registerWith(registry?.registrarFor("io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin"))
-            com.tekartik.sqflite.SqflitePlugin.registerWith(registry?.registrarFor("com.tekartik.sqflite.SqflitePlugin"))
-            com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin.registerWith(registry?.registrarFor("com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin"))
+            io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"))
+            io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin.registerWith(registry.registrarFor("io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin"))
+            com.tekartik.sqflite.SqflitePlugin.registerWith(registry.registrarFor("com.tekartik.sqflite.SqflitePlugin"))
+            com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin.registerWith(registry.registrarFor("com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin"))
+            io.flutter.plugins.pathprovider.PathProviderPlugin.registerWith(registry.registrarFor("io.flutter.plugins.pathprovider.PathProviderPlugin"))
         }
     }
 }

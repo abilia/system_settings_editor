@@ -27,10 +27,12 @@ class SortableRepository extends DataRepository<Sortable> {
 
   @override
   Future<Iterable<Sortable>> load() async {
+    _log.fine('loadning sortables...');
     return synchronized(() async {
       try {
         final fetchedSortables =
             await _fetchSortables(await sortableDb.getLastRevision());
+        _log.fine('sortables ${fetchedSortables.length} loaded');
         await sortableDb.insert(fetchedSortables);
       } catch (e) {
         _log.severe('Error when loading sortables', e);
@@ -43,6 +45,7 @@ class SortableRepository extends DataRepository<Sortable> {
     final response = await httpClient.get(
         '$baseUrl/api/v1/data/$userId/sortableitems?revision=$revision',
         headers: authHeader(authToken));
+    _log.finest(response.body);
     return (json.decode(response.body) as List)
         .map((e) => DbSortable.fromJson(e));
   }

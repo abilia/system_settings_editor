@@ -1,19 +1,24 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
 // Stream is created so that app can respond to notification-selected events since the plugin is initialised in the main function
 final BehaviorSubject<String> selectNotificationSubject =
     BehaviorSubject<String>();
+
+final _log = Logger('NotificationIsolate');
 
 @visibleForTesting
 FlutterLocalNotificationsPlugin notificationsPluginInstance;
@@ -32,7 +37,7 @@ void ensureNotificationPluginInitialized() {
       ),
       onSelectNotification: (String payload) async {
         if (payload != null) {
-          print('notification payload: ' + payload);
+          _log.fine('notification payload: ' + payload);
           selectNotificationSubject.add(payload);
         }
       },
@@ -40,9 +45,13 @@ void ensureNotificationPluginInitialized() {
   }
 }
 
-Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
-    String language, bool alwaysUse24HourFormat,
-    {DateTime now}) async {
+Future scheduleAlarmNotifications(
+  Iterable<Activity> allActivities,
+  String language,
+  bool alwaysUse24HourFormat,
+  FileStorage fileStorage, {
+  DateTime now,
+}) async {
   now ??= DateTime.now();
   now = now.nextMinute();
   final shouldBeScheduledNotifications =
@@ -51,12 +60,17 @@ Future scheduleAlarmNotifications(Iterable<Activity> allActivities,
     shouldBeScheduledNotifications,
     language,
     alwaysUse24HourFormat,
+    fileStorage,
   );
 }
 
-Future scheduleAlarmNotificationsIsolated(Iterable<Activity> allActivities,
-    String language, bool alwaysUse24HourFormat,
-    {DateTime now}) async {
+Future scheduleAlarmNotificationsIsolated(
+  Iterable<Activity> allActivities,
+  String language,
+  bool alwaysUse24HourFormat,
+  FileStorage fileStorage, {
+  DateTime now,
+}) async {
   now ??= DateTime.now();
   now = now.nextMinute();
   final serialized =
@@ -67,7 +81,11 @@ Future scheduleAlarmNotificationsIsolated(Iterable<Activity> allActivities,
       shouldBeScheduledNotificationsSerialized
           .map((e) => NotificationAlarm.fromJson(e));
   return scheduleAllAlarmNotifications(
-      shouldBeScheduledNotifications, language, alwaysUse24HourFormat);
+    shouldBeScheduledNotifications,
+    language,
+    alwaysUse24HourFormat,
+    fileStorage,
+  );
 }
 
 List<Map<String, dynamic>> alarmsFromIsolate(List<dynamic> args) {
@@ -83,13 +101,17 @@ Future scheduleAllAlarmNotifications(
   Iterable<NotificationAlarm> shouldBeScheduledNotifications,
   String language,
   bool alwaysUse24HourFormat,
+  FileStorage fileStorage,
 ) async {
   await notificationPlugin.cancelAll();
+  _log.fine(
+      'schedualing ${shouldBeScheduledNotifications.length} notifications...');
   for (final newNotification in shouldBeScheduledNotifications) {
     await scheduleNotification(
       newNotification,
       language,
       alwaysUse24HourFormat,
+      fileStorage,
     );
   }
 }
@@ -98,9 +120,11 @@ Future scheduleNotification(
   NotificationAlarm notificationAlarm,
   String language,
   bool alwaysUse24HourFormat,
+  FileStorage fileStorage,
 ) async {
-  final alarm = notificationAlarm.activity.alarm;
-  final title = notificationAlarm.activity.title;
+  final activity = notificationAlarm.activity;
+  final alarm = activity.alarm;
+  final title = activity.title;
   final notificationTime = notificationAlarm.notificationTime;
   final subtitle = getSubtitle(
     notificationAlarm,
@@ -108,8 +132,8 @@ Future scheduleNotification(
     alwaysUse24HourFormat,
   );
   final hash = notificationAlarm.hashCode;
-  final payload =
-      json.encode(NotificationPayload.fromNotificationAlarm(notificationAlarm).toJson());
+  final payload = json.encode(
+      NotificationPayload.fromNotificationAlarm(notificationAlarm).toJson());
   final notificationChannel = getNotificationChannel(alarm);
 
   final and = AndroidNotificationDetails(
@@ -120,11 +144,19 @@ Future scheduleNotification(
     importance: Importance.Max,
     priority: Priority.High,
   );
+
+  final iOSAttachment = Platform.isAndroid
+      ? null
+      : await getIOSNotificationAttachment(activity, fileStorage);
   final ios = IOSNotificationDetails(
     presentAlert: true,
     presentBadge: true,
     presentSound: alarm.sound,
+    attachments: iOSAttachment,
   );
+
+  _log.finest(
+      'schedualing notification: $title - $subtitle at $notificationTime');
 
   await notificationPlugin.schedule(
     hash,
@@ -175,4 +207,22 @@ String getExtra(NotificationAlarm notificationAlarm, Translated translater) {
         .toReminderHeading(translater, notificationAlarm is ReminderBefore);
   }
   return '';
+}
+
+Future<List<IOSNotificationAttachment>> getIOSNotificationAttachment(
+    Activity activity, FileStorage fileStorage) async {
+  final iOSAttachment = <IOSNotificationAttachment>[];
+  if (activity.hasImage) {
+    final thumbCopy =
+        await fileStorage.copyImageThumbForNotification(activity.fileId);
+    if (thumbCopy != null) {
+      iOSAttachment.add(
+        IOSNotificationAttachment(
+          thumbCopy.path,
+          identifier: activity.fileId,
+        ),
+      );
+    }
+  }
+  return iOSAttachment;
 }
