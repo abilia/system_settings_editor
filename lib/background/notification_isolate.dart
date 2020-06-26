@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:synchronized/synchronized.dart';
+
 import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
@@ -56,7 +58,7 @@ Future scheduleAlarmNotifications(
   now = now.nextMinute();
   final shouldBeScheduledNotifications =
       allActivities.alarmsFrom(now, take: 50);
-  return scheduleAllAlarmNotifications(
+  return _scheduleAllAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
     alwaysUse24HourFormat,
@@ -80,7 +82,7 @@ Future scheduleAlarmNotificationsIsolated(
   final shouldBeScheduledNotifications =
       shouldBeScheduledNotificationsSerialized
           .map((e) => NotificationAlarm.fromJson(e));
-  return scheduleAllAlarmNotifications(
+  return _scheduleAllAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
     alwaysUse24HourFormat,
@@ -88,6 +90,7 @@ Future scheduleAlarmNotificationsIsolated(
   );
 }
 
+@visibleForTesting
 List<Map<String, dynamic>> alarmsFromIsolate(List<dynamic> args) {
   final serialized = args[0];
   final List<Activity> allActivities =
@@ -97,26 +100,34 @@ List<Map<String, dynamic>> alarmsFromIsolate(List<dynamic> args) {
   return notificationAlarms.map((e) => e.toJson()).toList();
 }
 
-Future scheduleAllAlarmNotifications(
-  Iterable<NotificationAlarm> shouldBeScheduledNotifications,
+final _lock = Lock();
+
+Future _scheduleAllAlarmNotifications(
+  Iterable<NotificationAlarm> notifications,
   String language,
   bool alwaysUse24HourFormat,
   FileStorage fileStorage,
-) async {
-  await notificationPlugin.cancelAll();
-  _log.fine(
-      'schedualing ${shouldBeScheduledNotifications.length} notifications...');
-  for (final newNotification in shouldBeScheduledNotifications) {
-    await scheduleNotification(
-      newNotification,
-      language,
-      alwaysUse24HourFormat,
-      fileStorage,
+) =>
+    // We need the lock because if two pushes comes simultaniusly
+    // (that happens when file is uploaded on myAbilia)
+    // there is a race condition when adding pictures to notifications.
+    // The image being are moved into the attachment data store is gone for the next thread
+    _lock.synchronized(
+      () async {
+        await notificationPlugin.cancelAll();
+        _log.fine('schedualing ${notifications.length} notifications...');
+        for (final newNotification in notifications) {
+          await _scheduleNotification(
+            newNotification,
+            language,
+            alwaysUse24HourFormat,
+            fileStorage,
+          );
+        }
+      },
     );
-  }
-}
 
-Future scheduleNotification(
+Future _scheduleNotification(
   NotificationAlarm notificationAlarm,
   String language,
   bool alwaysUse24HourFormat,
@@ -126,7 +137,7 @@ Future scheduleNotification(
   final alarm = activity.alarm;
   final title = activity.title;
   final notificationTime = notificationAlarm.notificationTime;
-  final subtitle = getSubtitle(
+  final subtitle = _getSubtitle(
     notificationAlarm,
     language,
     alwaysUse24HourFormat,
@@ -134,7 +145,7 @@ Future scheduleNotification(
   final hash = notificationAlarm.hashCode;
   final payload = json.encode(
       NotificationPayload.fromNotificationAlarm(notificationAlarm).toJson());
-  final notificationChannel = getNotificationChannel(alarm);
+  final notificationChannel = _getNotificationChannel(alarm);
 
   final and = AndroidNotificationDetails(
     notificationChannel.id,
@@ -147,7 +158,7 @@ Future scheduleNotification(
 
   final iOSAttachment = Platform.isAndroid
       ? null
-      : await getIOSNotificationAttachment(activity, fileStorage);
+      : await _getIOSNotificationAttachment(activity, fileStorage);
   final ios = IOSNotificationDetails(
     presentAlert: true,
     presentBadge: true,
@@ -155,9 +166,7 @@ Future scheduleNotification(
     attachments: iOSAttachment,
   );
 
-  _log.finest(
-      'schedualing notification: $title - $subtitle at $notificationTime');
-
+  _log.finest('schedualing: $title - $subtitle at $notificationTime');
   await notificationPlugin.schedule(
     hash,
     title,
@@ -170,7 +179,7 @@ Future scheduleNotification(
   );
 }
 
-NotificationChannel getNotificationChannel(AlarmType alarm) => alarm.sound
+NotificationChannel _getNotificationChannel(AlarmType alarm) => alarm.sound
     ? NotificationChannel('Sound + Vibration', 'Sound + Vibration',
         'Activities with Alarm + Vibration or Only Alarm')
     : NotificationChannel('Vibration', 'Vibration',
@@ -181,7 +190,7 @@ class NotificationChannel {
   NotificationChannel(this.id, this.name, this.description);
 }
 
-String getSubtitle(
+String _getSubtitle(
   NotificationAlarm notificationAlarm,
   String language,
   bool alwaysUse24HourFormat,
@@ -195,11 +204,11 @@ String getSubtitle(
   final translater = Translated.dictionaries[locale];
   final ad = notificationAlarm.activityDay;
   final endTime = ad.activity.hasEndTime ? ' - ${tf(ad.end)} ' : ' ';
-  final extra = getExtra(notificationAlarm, translater);
+  final extra = _getExtra(notificationAlarm, translater);
   return tf(ad.start) + endTime + extra;
 }
 
-String getExtra(NotificationAlarm notificationAlarm, Translated translater) {
+String _getExtra(NotificationAlarm notificationAlarm, Translated translater) {
   if (notificationAlarm is StartAlarm) return translater.startsNow;
   if (notificationAlarm is EndAlarm) return translater.endsNow;
   if (notificationAlarm is NewReminder) {
@@ -209,7 +218,7 @@ String getExtra(NotificationAlarm notificationAlarm, Translated translater) {
   return '';
 }
 
-Future<List<IOSNotificationAttachment>> getIOSNotificationAttachment(
+Future<List<IOSNotificationAttachment>> _getIOSNotificationAttachment(
     Activity activity, FileStorage fileStorage) async {
   final iOSAttachment = <IOSNotificationAttachment>[];
   if (activity.hasImage) {

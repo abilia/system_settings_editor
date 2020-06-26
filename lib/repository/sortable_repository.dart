@@ -45,7 +45,6 @@ class SortableRepository extends DataRepository<Sortable> {
     final response = await httpClient.get(
         '$baseUrl/api/v1/data/$userId/sortableitems?revision=$revision',
         headers: authHeader(authToken));
-    _log.finest(response.body);
     return (json.decode(response.body) as List)
         .map((e) => DbSortable.fromJson(e));
   }
