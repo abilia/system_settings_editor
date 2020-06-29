@@ -269,10 +269,14 @@ class TopInfo extends StatelessWidget {
               if (hasTitle)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    activity.title,
-                    style: themeData.textTheme.headline5,
-                    textAlign: TextAlign.center,
+                  child: HeroTitle(
+                    activityDay: activityDay,
+                    child: DefaultTextStyle(
+                      style: themeData.textTheme.headline4,
+                      overflow: TextOverflow.visible,
+                      textAlign: TextAlign.center,
+                      child: Text(activity.title),
+                    ),
                   ),
                 ),
               if (imageBelow) checkableImage,

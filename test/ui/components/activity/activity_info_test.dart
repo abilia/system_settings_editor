@@ -223,7 +223,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(Hero), findsOneWidget);
+    expect(find.byType(HeroImage), findsOneWidget);
+    expect(find.byType(HeroTitle), findsOneWidget);
+    expect(find.byType(Attachment), findsNothing);
   });
 
   testWidgets('image to the left -> (hasImage && hasAttachment && hasTitle)',
@@ -248,7 +250,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(Hero), findsOneWidget);
+    expect(find.byType(HeroImage), findsOneWidget);
+    expect(find.byType(HeroTitle), findsOneWidget);
+    expect(find.byType(Attachment), findsOneWidget);
   });
 
   testWidgets('image below -> (hasImage && hasAttachment && !hasTitle)',

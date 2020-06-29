@@ -240,6 +240,7 @@ TextTheme abiliaTextTheme = TextTheme(
   headline1: baseTextStyle.copyWith(
     fontSize: 96.0,
     fontWeight: light,
+    height: 1.0,
   ),
   headline2: baseTextStyle.copyWith(
     fontSize: 60.0,
@@ -254,14 +255,17 @@ TextTheme abiliaTextTheme = TextTheme(
   headline4: baseTextStyle.copyWith(
     fontSize: 34.0,
     fontWeight: regular,
+    height: 1.0,
   ),
   headline5: baseTextStyle.copyWith(
     fontSize: 24.0,
     fontWeight: regular,
+    height: 1.0,
   ),
   headline6: baseTextStyle.copyWith(
     fontSize: 20.0,
     fontWeight: medium,
+    height: 1.0,
   ),
   subtitle1: baseTextStyle.copyWith(
     fontSize: 16.0,
@@ -270,33 +274,34 @@ TextTheme abiliaTextTheme = TextTheme(
   ),
   subtitle2: baseTextStyle.copyWith(
     fontSize: 14.0,
-    height: 20.0 / 14.0,
     fontWeight: medium,
+    height: 20.0 / 14.0,
   ),
   bodyText1: baseTextStyle.copyWith(
     fontSize: 16.0,
-    height: 28.0 / 16.0,
     fontWeight: regular,
+    height: 28.0 / 16.0,
   ),
   bodyText2: baseTextStyle.copyWith(
     fontSize: 14.0,
-    height: 20.0 / 14.0,
     fontWeight: regular,
+    height: 20.0 / 14.0,
   ),
   caption: baseTextStyle.copyWith(
     fontSize: 12.0,
-    height: 16.0 / 12.0,
     fontWeight: regular,
+    height: 16.0 / 12.0,
   ),
   button: baseTextStyle.copyWith(
+    color: AbiliaColors.white,
     fontSize: 14.0,
     fontWeight: medium,
-    color: AbiliaColors.white,
+    height: 1.0,
   ),
   overline: baseTextStyle.copyWith(
     fontSize: 10.0,
-    height: 16.0 / 10.0,
     fontWeight: medium,
+    height: 16.0 / 10.0,
   ),
 );
 

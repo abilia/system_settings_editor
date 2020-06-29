@@ -12,10 +12,13 @@ import 'package:seagull/ui/components/all.dart';
 
 class NameAndPictureWidget extends StatelessWidget {
   final Activity activity;
+  final DateTime day;
+
   final File newImage;
 
   const NameAndPictureWidget(
     this.activity, {
+    @required this.day,
     Key key,
     this.newImage,
   }) : super(key: key);
@@ -66,13 +69,16 @@ class NameAndPictureWidget extends StatelessWidget {
             if (activity.hasImage)
               InkWell(
                 onTap: imageClick,
-                child: FadeInCalendarImage(
-                  height: 84,
-                  width: 84,
-                  imageFileId: activity.fileId,
-                  imageFilePath: activity.icon,
-                  activityId: activity.id,
-                  imageFile: newImage,
+                child: HeroImage(
+                  activityDay: ActivityDay(activity, day),
+                  child: FadeInCalendarImage(
+                    height: 84,
+                    width: 84,
+                    imageFileId: activity.fileId,
+                    imageFilePath: activity.icon,
+                    activityId: activity.id,
+                    imageFile: newImage,
+                  ),
                 ),
               )
             else
@@ -95,13 +101,21 @@ class NameAndPictureWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SubHeading(translator.name),
-              TextFormField(
-                initialValue: activity.title,
-                textCapitalization: TextCapitalization.sentences,
-                inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                onChanged: (text) => BlocProvider.of<EditActivityBloc>(context)
-                    .add(ReplaceActivity(activity.copyWith(title: text))),
-                key: TestKey.editTitleTextFormField,
+              HeroTitle(
+                activityDay: ActivityDay(activity, day),
+                child: DefaultTextStyle(
+                  style: Theme.of(context).textTheme.bodyText2,
+                  child: TextFormField(
+                    initialValue: activity.title,
+                    textCapitalization: TextCapitalization.sentences,
+                    inputFormatters: [LengthLimitingTextInputFormatter(50)],
+                    style: Theme.of(context).textTheme.bodyText2,
+                    onChanged: (text) =>
+                        BlocProvider.of<EditActivityBloc>(context).add(
+                            ReplaceActivity(activity.copyWith(title: text))),
+                    key: TestKey.editTitleTextFormField,
+                  ),
+                ),
               ),
             ],
           ),

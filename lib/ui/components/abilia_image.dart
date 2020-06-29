@@ -59,8 +59,8 @@ class CheckedImage extends StatelessWidget {
     final hasImage = activity.hasImage,
         signedOff = activityDay.isSignedOff,
         inactive = past || signedOff;
-    return Hero(
-      tag: '${activity.id}${activityDay.day.millisecondsSinceEpoch}',
+    return HeroImage(
+      activityDay: activityDay,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -120,7 +120,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
     await showViewDialog<bool>(
       context: context,
       builder: (_) {
-        return FullScreenImage(fileId: fileId,);
+        return FullScreenImage(fileId: fileId);
       },
     );
   }
