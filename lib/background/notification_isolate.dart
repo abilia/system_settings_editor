@@ -134,10 +134,9 @@ Future _scheduleNotification(
   FileStorage fileStorage,
 ) async {
   final activity = notificationAlarm.activity;
-  final alarm = activity.alarm;
   final title = activity.title;
   final notificationTime = notificationAlarm.notificationTime;
-  final subtitle = _getSubtitle(
+  final subtitle = _subtitle(
     notificationAlarm,
     language,
     alwaysUse24HourFormat,
@@ -145,28 +144,18 @@ Future _scheduleNotification(
   final hash = notificationAlarm.hashCode;
   final payload = json.encode(
       NotificationPayload.fromNotificationAlarm(notificationAlarm).toJson());
-  final notificationChannel = _getNotificationChannel(alarm);
 
-  final and = AndroidNotificationDetails(
-    notificationChannel.id,
-    notificationChannel.name,
-    notificationChannel.description,
-    playSound: alarm.sound,
-    importance: Importance.Max,
-    priority: Priority.High,
-  );
-
-  final iOSAttachment = Platform.isAndroid
+  final and = Platform.isIOS
       ? null
-      : await _getIOSNotificationAttachment(activity, fileStorage);
-  final ios = IOSNotificationDetails(
-    presentAlert: true,
-    presentBadge: true,
-    presentSound: alarm.sound,
-    attachments: iOSAttachment,
-  );
+      : await _androidNotificationDetails(
+          notificationAlarm, fileStorage, title, subtitle);
 
-  _log.finest('schedualing: $title - $subtitle at $notificationTime');
+  final ios = Platform.isAndroid
+      ? null
+      : await _iosNotificationDetails(notificationAlarm, fileStorage);
+
+  _log.finest(
+      'schedualing: $title - $subtitle at $notificationTime ${activity.hasImage ? ' with image' : ''}');
   await notificationPlugin.schedule(
     hash,
     title,
@@ -179,7 +168,45 @@ Future _scheduleNotification(
   );
 }
 
-NotificationChannel _getNotificationChannel(AlarmType alarm) => alarm.sound
+Future<IOSNotificationDetails> _iosNotificationDetails(
+    NotificationAlarm notificationAlarm, FileStorage fileStorage) async {
+  final activity = notificationAlarm.activity;
+  final alarm = activity.alarm;
+  return IOSNotificationDetails(
+    presentAlert: true,
+    presentBadge: true,
+    presentSound: alarm.sound,
+    attachments: await _iOSNotificationAttachment(activity, fileStorage),
+  );
+}
+
+Future<AndroidNotificationDetails> _androidNotificationDetails(
+    NotificationAlarm notificationAlarm,
+    FileStorage fileStorage,
+    String title,
+    String subtitle) async {
+  final activity = notificationAlarm.activity;
+  final alarm = activity.alarm;
+  final notificationChannel = _notificationChannel(alarm);
+
+  return AndroidNotificationDetails(
+    notificationChannel.id,
+    notificationChannel.name,
+    notificationChannel.description,
+    groupKey: activity.id,
+    playSound: alarm.sound,
+    importance: Importance.Max,
+    priority: Priority.High,
+    styleInformation: await _androidStyleInformation(
+      activity,
+      fileStorage,
+      title,
+      subtitle,
+    ),
+  );
+}
+
+NotificationChannel _notificationChannel(AlarmType alarm) => alarm.sound
     ? NotificationChannel('Sound + Vibration', 'Sound + Vibration',
         'Activities with Alarm + Vibration or Only Alarm')
     : NotificationChannel('Vibration', 'Vibration',
@@ -190,7 +217,7 @@ class NotificationChannel {
   NotificationChannel(this.id, this.name, this.description);
 }
 
-String _getSubtitle(
+String _subtitle(
   NotificationAlarm notificationAlarm,
   String language,
   bool alwaysUse24HourFormat,
@@ -204,11 +231,11 @@ String _getSubtitle(
   final translater = Translated.dictionaries[locale];
   final ad = notificationAlarm.activityDay;
   final endTime = ad.activity.hasEndTime ? ' - ${tf(ad.end)} ' : ' ';
-  final extra = _getExtra(notificationAlarm, translater);
+  final extra = _extra(notificationAlarm, translater);
   return tf(ad.start) + endTime + extra;
 }
 
-String _getExtra(NotificationAlarm notificationAlarm, Translated translater) {
+String _extra(NotificationAlarm notificationAlarm, Translated translater) {
   if (notificationAlarm is StartAlarm) return translater.startsNow;
   if (notificationAlarm is EndAlarm) return translater.endsNow;
   if (notificationAlarm is NewReminder) {
@@ -218,7 +245,7 @@ String _getExtra(NotificationAlarm notificationAlarm, Translated translater) {
   return '';
 }
 
-Future<List<IOSNotificationAttachment>> _getIOSNotificationAttachment(
+Future<List<IOSNotificationAttachment>> _iOSNotificationAttachment(
     Activity activity, FileStorage fileStorage) async {
   final iOSAttachment = <IOSNotificationAttachment>[];
   if (activity.hasImage) {
@@ -234,4 +261,27 @@ Future<List<IOSNotificationAttachment>> _getIOSNotificationAttachment(
     }
   }
   return iOSAttachment;
+}
+
+Future<StyleInformation> _androidStyleInformation(
+  Activity activity,
+  FileStorage fileStorage,
+  String title,
+  String subtitle,
+) async {
+  if (activity.hasImage) {
+    final bigPicture = fileStorage.getFile(activity.fileId);
+    final largeIcon =
+        fileStorage.getImageThumb(ImageThumb(id: activity.fileId));
+    if (await fileStorage.exists(bigPicture) &&
+        await fileStorage.exists(largeIcon)) {
+      return BigPictureStyleInformation(
+        FilePathAndroidBitmap(bigPicture.path),
+        largeIcon: FilePathAndroidBitmap(largeIcon.path),
+        contentTitle: title,
+        summaryText: subtitle,
+      );
+    }
+  }
+  return null;
 }

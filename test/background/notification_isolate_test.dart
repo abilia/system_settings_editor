@@ -94,6 +94,12 @@ void main() {
   test('scheduleAlarmNotifications with image', () async {
     when(mockedFileStorage.copyImageThumbForNotification(fileId))
         .thenAnswer((_) => Future.value(File(fileId)));
+    when(mockedFileStorage.getFile(fileId)).thenReturn(File(fileId));
+    when(mockedFileStorage.getImageThumb(ImageThumb(id: fileId)))
+        .thenReturn(File(fileId));
+    when(mockedFileStorage.exists(any))
+        .thenAnswer((_) => Future.value(true));
+
     await scheduleAlarmNotifications(
       allActivities.take(2),
       'en',
@@ -103,6 +109,8 @@ void main() {
     );
     verify(notificationsPluginInstance.cancelAll());
     verify(mockedFileStorage.copyImageThumbForNotification(fileId));
+    verify(mockedFileStorage.getFile(fileId));
+    verify(mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
 
     final details = verify(notificationsPluginInstance.schedule(
             any, any, any, any, captureAny,
@@ -111,9 +119,17 @@ void main() {
             androidWakeScreen: anyNamed('androidWakeScreen')))
         .captured
         .single as NotificationDetails;
+
+    // iOS
     expect(details.iOS.attachments.length, 1);
     final attachment = details.iOS.attachments.first;
     expect(attachment.filePath, fileId);
     expect(attachment.identifier, fileId);
+    // Android
+    expect(
+        details.android.styleInformation is BigPictureStyleInformation, isTrue);
+    final bpd = details.android.styleInformation as BigPictureStyleInformation;
+    expect(bpd.bigPicture.bitmap, fileId);
+    expect(bpd.largeIcon.bitmap, fileId);
   });
 }

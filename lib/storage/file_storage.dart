@@ -32,6 +32,9 @@ class FileStorage {
     return getFile(imageThumb.thumbId);
   }
 
+  // For mocking purpose
+  Future<bool> exists(File file) => file.exists();
+
   /// iOS attachments files are moved into the attachment data store so that they can be accessed by all of the appropriate processes. (https://developer.apple.com/documentation/usernotifications/unnotificationattachment)
   /// So the file needs to be copied so the original won't get deleted
   /// the file ending .jpg is added to hint to iOS what file type the attachment is
