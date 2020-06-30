@@ -78,9 +78,13 @@ class _AgendaState extends State<Agenda> {
                       ]
                     : [
                         SliverPadding(padding: EdgeInsets.only(top: topMargin)),
-                        SliverActivityList(state.pastActivities
-                            .reversed // Reversed because slivers before center are called in reverse order
-                            .toList()),
+                        SliverActivityList(
+                          state.isToday
+                              ? state.pastActivities
+                                  .reversed // Reversed because slivers before center are called in reverse order
+                                  .toList()
+                              : state.pastActivities,
+                        ),
                         SliverActivityList(state.notPastActivities,
                             key: center),
                         SliverPadding(padding: EdgeInsets.only(top: topMargin)),

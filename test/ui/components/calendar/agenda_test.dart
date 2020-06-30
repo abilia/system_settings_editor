@@ -94,9 +94,6 @@ void main() {
 
   testWidgets('Agenda with one activity should not show Go to now-button',
       (WidgetTester tester) async {
-    when(mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(<Activity>[FakeActivity.starts(now)]));
-
     activityResponse = () => [FakeActivity.starts(now)];
 
     await tester.pumpWidget(App());
@@ -108,19 +105,14 @@ void main() {
       'Agenda with one activity and a lot of passed activities should show the activity',
       (WidgetTester tester) async {
     final key = 'KEYKEYKEYKEYKEY';
-    final activities = [
-      for (int i = 0; i < 10; i++)
-        Activity.createNew(
-            title: 'past $i',
-            startTime: now.subtract(Duration(minutes: i * 2)),
-            alarmType: ALARM_SILENT),
-      Activity.createNew(title: key, startTime: now),
-    ];
-
-    when(mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(activities));
-
-    activityResponse = () => activities;
+    activityResponse = () => [
+          for (int i = 0; i < 10; i++)
+            Activity.createNew(
+                title: 'past $i',
+                startTime: now.subtract(Duration(minutes: i * 2)),
+                alarmType: ALARM_SILENT),
+          Activity.createNew(title: key, startTime: now),
+        ];
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -134,7 +126,7 @@ void main() {
     final previousDayButtonFinder =
         find.byIcon(AbiliaIcons.return_to_previous_page);
     final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
-    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([]));
+    activityResponse = () => [];
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -149,8 +141,7 @@ void main() {
   });
 
   testWidgets('full day shows', (WidgetTester tester) async {
-    when(mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value([firstFullDay]));
+    activityResponse = () => [firstFullDay];
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -163,31 +154,29 @@ void main() {
         pastTitle2 = 'past2',
         currentTitle = 'current',
         futureTitle = 'future';
-    final activites = [
-      Activity.createNew(
-        title: pastTitle,
-        startTime: now.subtract(2.hours()),
-        duration: 30.minutes(),
-      ),
-      Activity.createNew(
-        title: pastTitle2,
-        startTime: now.subtract(1.hours()),
-        duration: 30.minutes(),
-      ),
-      Activity.createNew(
-        title: currentTitle,
-        startTime: now.subtract(5.minutes()),
-        duration: 30.minutes(),
-      ),
-      Activity.createNew(
-        title: futureTitle,
-        startTime: now.add(5.minutes()),
-        duration: 30.minutes(),
-      )
-    ];
+    activityResponse = () => [
+          Activity.createNew(
+            title: pastTitle,
+            startTime: now.subtract(2.hours()),
+            duration: 30.minutes(),
+          ),
+          Activity.createNew(
+            title: pastTitle2,
+            startTime: now.subtract(1.hours()),
+            duration: 30.minutes(),
+          ),
+          Activity.createNew(
+            title: currentTitle,
+            startTime: now.subtract(5.minutes()),
+            duration: 30.minutes(),
+          ),
+          Activity.createNew(
+            title: futureTitle,
+            startTime: now.add(5.minutes()),
+            duration: 30.minutes(),
+          )
+        ];
 
-    when(mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(activites));
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -208,8 +197,7 @@ void main() {
 
   testWidgets('two full day shows, but no show all full days button',
       (WidgetTester tester) async {
-    when(mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value([firstFullDay, secondFullDay]));
+    activityResponse = () => [firstFullDay, secondFullDay];
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -221,8 +209,7 @@ void main() {
   testWidgets(
       'two full day and show-all-full-day-button shows, but not third full day',
       (WidgetTester tester) async {
-    when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value([firstFullDay, secondFullDay, thirdFullDay]));
+    activityResponse = () => [firstFullDay, secondFullDay, thirdFullDay];
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -234,12 +221,12 @@ void main() {
 
   testWidgets('tapping show-all-full-day-button shows all full days',
       (WidgetTester tester) async {
-    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
+    activityResponse = () => [
           firstFullDay,
           secondFullDay,
           thirdFullDay,
           forthFullDay,
-        ]));
+        ];
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -260,8 +247,7 @@ void main() {
 
   testWidgets('tapping on a full day shows the full day',
       (WidgetTester tester) async {
-    when(mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value([firstFullDay]));
+    activityResponse = () => [firstFullDay];
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -274,12 +260,12 @@ void main() {
   testWidgets(
       'tapping show-all-full-day-button then on a full day shows all the tapped full day',
       (WidgetTester tester) async {
-    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
+    activityResponse = () => [
           firstFullDay,
           secondFullDay,
           thirdFullDay,
           forthFullDay,
-        ]));
+        ];
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -290,5 +276,33 @@ void main() {
 
     expect(find.byType(ActivityPage), findsOneWidget);
     expect(find.text(forthFullDayTitle), findsOneWidget);
+  });
+
+  testWidgets('past day activities are correctly sorted',
+      (WidgetTester tester) async {
+    final yesterdayMorningTitle = 'yeterdayMorningTitle',
+        yesterdayEveningTitle = 'yeterdayEveningTitle';
+    activityResponse = () => [
+          Activity.createNew(
+            title: yesterdayMorningTitle,
+            startTime: now.subtract(1.days()),
+          ),
+          Activity.createNew(
+            title: yesterdayEveningTitle,
+            startTime: now.subtract(1.days()).copyWith(hour: 22),
+          ),
+        ];
+
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    expect(find.byType(ActivityCard), findsNothing);
+
+    await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ActivityCard), findsNWidgets(2));
+    final morningPos = tester.getTopLeft(find.text(yesterdayMorningTitle));
+    final eveningPos = tester.getTopLeft(find.text(yesterdayEveningTitle));
+    expect(morningPos.dy, lessThan(eveningPos.dy));
   });
 }
