@@ -136,11 +136,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
         ),
         heading: getImageArchiveHeading(imageArchiveState),
         onOk: onOk,
-        child: ImageArchive(
-          onChanged: (imageId) {
-            setState(() => selectedImageData = imageId);
-          },
-        ),
+        child: ImageArchive(),
       ),
     );
   }

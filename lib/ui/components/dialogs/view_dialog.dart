@@ -64,8 +64,10 @@ class ViewDialog extends StatelessWidget {
   final Widget backButton;
   final bool expanded;
   final IconData closeIcon;
-  final double _verticalPadding;
-  static const double verticalPadding = 24.0;
+  final double _verticalPadding, _leftPadding, _rightPadding;
+  static const double verticalPadding = 24.0,
+      leftPadding = 12.0,
+      rightPadding = 16.0;
 
   const ViewDialog({
     Key key,
@@ -78,7 +80,11 @@ class ViewDialog extends StatelessWidget {
     this.trailing,
     this.closeIcon = AbiliaIcons.close_program,
     double verticalPadding = verticalPadding,
+    double leftPadding = leftPadding,
+    double rightPadding = rightPadding,
   })  : _verticalPadding = verticalPadding,
+        _leftPadding = leftPadding,
+        _rightPadding = rightPadding,
         super(key: key);
 
   @override
@@ -128,65 +134,74 @@ class ViewDialog extends StatelessWidget {
               color: AbiliaColors.white110,
               borderRadius: BorderRadius.vertical(top: radius),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    if (backButton != null)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
-                        child: backButton,
+            child: Material(
+              type: MaterialType.transparency,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      if (backButton != null)
+                        Padding(
+                          padding: EdgeInsets.only(left: _leftPadding),
+                          child: backButton,
+                        ),
+                      if (heading != null)
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            _leftPadding,
+                            20.0,
+                            _rightPadding,
+                            16.0,
+                          ),
+                          child: heading,
+                        ),
+                    ],
+                  ),
+                  const Divider(
+                    color: AbiliaColors.transparentBlack10,
+                    endIndent: 12.0,
+                    height: 0,
+                  ),
+                  Flexible(
+                    flex: expanded ? 1 : 0,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        _leftPadding,
+                        _verticalPadding,
+                        _rightPadding,
+                        0.0,
                       ),
-                    if (heading != null)
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 16.0),
-                        child: heading,
-                      ),
-                  ],
-                ),
-                const Divider(
-                  color: AbiliaColors.transparentBlack10,
-                  endIndent: 12.0,
-                  height: 0,
-                ),
-                Flexible(
-                  flex: expanded ? 1 : 0,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.fromLTRB(12.0, _verticalPadding, 16.0, 0.0),
-                    child: Material(
-                      color: Colors.transparent,
                       child: child,
                     ),
                   ),
-                ),
-                if (trailing != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const SizedBox(height: 16.0),
-                      const Divider(
-                        color: AbiliaColors.transparentBlack10,
-                        endIndent: 12.0,
-                        height: 0,
-                      ),
-                      Flexible(
-                        flex: expanded ? 1 : 0,
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(12.0, 16.0, 16.0, 0.0),
-                          child: Material(
+                  if (trailing != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const SizedBox(height: 16.0),
+                        const Divider(
+                          color: AbiliaColors.transparentBlack10,
+                          endIndent: 12.0,
+                          height: 0,
+                        ),
+                        Flexible(
+                          flex: expanded ? 1 : 0,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              _leftPadding,
+                              16.0,
+                              _rightPadding,
+                              0.0,
+                            ),
                             child: trailing,
-                            color: Colors.transparent,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                SizedBox(height: _verticalPadding),
-              ],
+                      ],
+                    ),
+                  SizedBox(height: _verticalPadding),
+                ],
+              ),
             ),
           ),
         ),

@@ -59,9 +59,7 @@ void main() {
     testWidgets('Image archive smoke test', (WidgetTester tester) async {
       when(imageArchiveBlocMock.state)
           .thenAnswer((_) => stateFromSortables([]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchive(
-        onChanged: (val) {},
-      )));
+      await tester.pumpWidget(wrapWithMaterialApp(ImageArchive()));
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchive), findsOneWidget);
       expect(find.byType(ArchiveImage), findsNothing);
@@ -71,9 +69,7 @@ void main() {
         (WidgetTester tester) async {
       when(imageArchiveBlocMock.state)
           .thenAnswer((_) => stateFromSortables([image]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchive(
-        onChanged: (val) {},
-      )));
+      await tester.pumpWidget(wrapWithMaterialApp(ImageArchive()));
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchive), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
@@ -83,9 +79,7 @@ void main() {
         (WidgetTester tester) async {
       when(imageArchiveBlocMock.state)
           .thenAnswer((_) => stateFromSortables([image, folder]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchive(
-        onChanged: (val) {},
-      )));
+      await tester.pumpWidget(wrapWithMaterialApp(ImageArchive()));
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchive), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
@@ -97,9 +91,8 @@ void main() {
 ImageArchiveState stateFromSortables(
   List<Sortable> sortables, {
   String folderId,
-  SortableData imageData,
 }) {
   final allByFolder = groupBy<Sortable, String>(sortables, (s) => s.groupId);
   final allById = {for (var s in sortables) s.id: s};
-  return ImageArchiveState(allByFolder, allById, folderId, imageData);
+  return ImageArchiveState(allByFolder, allById, folderId);
 }
