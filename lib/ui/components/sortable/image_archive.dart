@@ -112,14 +112,15 @@ class ArchiveImage extends StatelessWidget {
           type: MaterialType.transparency,
           child: InkWell(
             onTap: () async {
-              final shouldPick = await showViewDialog<bool>(
+              final selectedImage = await showViewDialog<SelectedImage>(
                 context: context,
                 builder: (_) => ViewDialog(
                   expanded: true,
                   leftPadding: 0.0,
                   rightPadding: 0.0,
                   verticalPadding: 0.0,
-                  onOk: () => Navigator.of(context).maybePop(true),
+                  onOk: () => Navigator.of(context)
+                      .maybePop(SelectedImage(id: imageId, path: iconPath)),
                   child: FullScreenImage(
                     backgroundDecoration: BoxDecoration(
                       borderRadius: BorderRadius.vertical(top: radius),
@@ -128,9 +129,8 @@ class ArchiveImage extends StatelessWidget {
                   ),
                 ),
               );
-              if (shouldPick == true) {
-                await Navigator.of(context).maybePop<SelectedImage>(
-                    SelectedImage(id: imageId, path: iconPath));
+              if (selectedImage != null) {
+                await Navigator.of(context).maybePop<SelectedImage>(selectedImage);
               }
             },
             borderRadius: borderRadius,

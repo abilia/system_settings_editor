@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
@@ -149,7 +150,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   }
 }
 
-class SelectedImage {
+class SelectedImage extends Equatable {
   final String id;
   final String path;
   final File newImage;
@@ -159,4 +160,7 @@ class SelectedImage {
     @required this.path,
     this.newImage,
   });
+
+  @override
+  List<Object> get props => [id, path, newImage];
 }
