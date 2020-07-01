@@ -53,21 +53,13 @@ class ActivityTimepillarCard extends StatelessWidget {
 
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, settings) {
-        final decoration = settings.dotsInTimepillar || endTime == startTime
-            ? getBoxDecoration(current, inactive)
-            : getBoxDecoration(current, inactive).copyWith(
-                borderRadius:
-                    activityOccasion.activity.category == Category.right
-                        ? onlyRight
-                        : onlyLeft,
-              );
+        final decoration = getBoxDecoration(current, inactive);
         return Positioned(
           right: right ? null : column * totalWith,
           left: right ? column * totalWith : null,
           top: top,
-          child: Row(
+          child: Stack(
             textDirection: right ? TextDirection.ltr : TextDirection.rtl,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               if (settings.dotsInTimepillar)
                 SideDots(
@@ -98,6 +90,9 @@ class ActivityTimepillarCard extends StatelessWidget {
                   );
                 },
                 child: Container(
+                  margin: right
+                      ? const EdgeInsets.only(left: dotSize + hourPadding)
+                      : const EdgeInsets.only(right: dotSize + hourPadding),
                   decoration: decoration,
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
@@ -154,26 +149,24 @@ class SideTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: dotSize,
+      width: ActivityTimepillarCard.width,
       height: height,
       child: DecoratedBox(
         decoration: BoxDecoration(
-            color: colorFromOccastion(occasion),
-            borderRadius: category == Category.left ? onlyRight : onlyLeft),
+            color: colorFromOccasion(occasion),
+            borderRadius: const BorderRadius.all(Radius.circular(8.0))),
       ),
     );
   }
 
-  Color colorFromOccastion(Occasion occasion) {
+  Color colorFromOccasion(Occasion occasion) {
     switch (occasion) {
       case Occasion.current:
         return AbiliaColors.red;
       case Occasion.past:
-        return AbiliaColors.white120;
-      case Occasion.future:
-        return AbiliaColors.green;
+        return AbiliaColors.transparentBlack20;
       default:
-        return AbiliaColors.green;
+        return AbiliaColors.black;
     }
   }
 }

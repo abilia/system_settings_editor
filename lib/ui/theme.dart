@@ -44,8 +44,7 @@ const BorderRadius notUpperLeft = BorderRadius.only(
   bottomRight: radius,
   bottomLeft: radius,
 );
-const BorderRadius onlyLeft = BorderRadius.horizontal(left: radius);
-const BorderRadius onlyRight = BorderRadius.horizontal(right: radius);
+
 const BorderSide borderSide =
     BorderSide(color: AbiliaColors.white120, width: 1.0);
 const Border currentActivityBorder =
