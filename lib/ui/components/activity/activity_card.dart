@@ -34,7 +34,8 @@ class ActivityCard extends StatelessWidget {
     final hasTitle = activity.hasTitle;
     final signedOff = activityOccasion.isSignedOff;
     final current = occasion == Occasion.current;
-    final inactive = occasion == Occasion.past || signedOff;
+    final past = occasion == Occasion.past;
+    final inactive = past || signedOff;
     final right = activity.category == Category.right;
     final fullday = activity.fullDay;
     final themeData = inactive
@@ -84,8 +85,8 @@ class ActivityCard extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          if (hasImage || signedOff)
-                            CheckedImage.fromActivityOccasion(
+                          if (hasImage || signedOff || past)
+                            ActivityImage.fromActivityOccasion(
                               activityOccasion: activityOccasion,
                               size: imageSize,
                               fit: BoxFit.cover,

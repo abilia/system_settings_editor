@@ -377,6 +377,81 @@ void main() {
         // Assert
         expect(find.byType(SideTime), findsNWidgets(2));
       });
+
+      testWidgets('current activity shows no CrossOver',
+          (WidgetTester tester) async {
+        // Arrange
+        givenActivities = [Activity.createNew(title: 'title', startTime: time)];
+        await goToTimePillar(tester);
+        // Act
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(CrossOver), findsNothing);
+      });
+
+      testWidgets('past activity shows CrossOver', (WidgetTester tester) async {
+        // Arrange
+        givenActivities = [
+          Activity.createNew(
+              title: 'title', startTime: time.subtract(10.minutes()))
+        ];
+        await goToTimePillar(tester);
+        // Act
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(CrossOver), findsWidgets);
+      });
+
+      testWidgets('past activity with endtime shows CrossOver',
+          (WidgetTester tester) async {
+        // Arrange
+        givenActivities = [
+          Activity.createNew(
+            title: 'title',
+            startTime: time.subtract(9.hours()),
+            duration: 8.hours(),
+          )
+        ];
+        await goToTimePillar(tester);
+        // Act
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(CrossOver), findsWidgets);
+      });
+
+      testWidgets('past activity with endtime shows CrossOver',
+          (WidgetTester tester) async {
+        // Arrange
+        givenActivities = [
+          Activity.createNew(
+            title: 'title',
+            startTime: time.subtract(2.hours()),
+            duration: 1.hours(),
+          )
+        ];
+        await goToTimePillar(tester);
+        // Act
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(CrossOver), findsWidgets);
+      });
+
+      testWidgets('sigend off past activity shows no CrossOver',
+          (WidgetTester tester) async {
+        // Arrange
+        givenActivities = [
+          Activity.createNew(
+              title: 'title',
+              startTime: time.subtract(40.minutes()),
+              checkable: true,
+              signedOffDates: [time.onlyDays()])
+        ];
+        await goToTimePillar(tester);
+        // Act
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(CrossOver), findsNothing);
+      });
     });
   });
 }

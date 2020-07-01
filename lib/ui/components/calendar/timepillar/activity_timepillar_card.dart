@@ -12,6 +12,8 @@ class ActivityTimepillarCard extends StatelessWidget {
   static const double imageSize = 56.0,
       imagePadding = 16.0,
       imageHeigth = imageSize + imagePadding,
+      crossWidth = 48.0,
+      crossVerticalPadding = 36.0,
       width = 72.0,
       padding = 12.0,
       minHeight = 84.0,
@@ -45,7 +47,8 @@ class ActivityTimepillarCard extends StatelessWidget {
         hasTitle = activity.hasTitle,
         signedOff = activityOccasion.isSignedOff,
         current = activityOccasion.occasion == Occasion.current,
-        inactive = activityOccasion.occasion == Occasion.past || signedOff;
+        past = activityOccasion.occasion == Occasion.past,
+        inactive = past || signedOff;
 
     final endTime = activityOccasion.end;
     final startTime = activityOccasion.start;
@@ -103,7 +106,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                     ),
                     child: Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           if (hasTitle)
                             Text(
@@ -117,10 +120,16 @@ class ActivityTimepillarCard extends StatelessWidget {
                                       : AbiliaColors.black),
                             ),
                           if (hasImage || signedOff)
-                            CheckedImage.fromActivityOccasion(
+                            ActivityImage.fromActivityOccasion(
                               activityOccasion: activityOccasion,
                               size: imageSize,
-                            ),
+                            )
+                          else if (past)
+                            SizedBox(
+                              width: crossWidth,
+                              height: height - crossVerticalPadding,
+                              child: const CrossOver(),
+                            )
                         ],
                       ),
                     ),
