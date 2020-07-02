@@ -17,6 +17,11 @@ class ActivityOccasion extends ActivityDay {
   )   : assert(occasion != null),
         super(activity, day);
 
+  @override
+  ActivityOccasion fromActivitiesState(ActivitiesState activitiesState) =>
+      ActivityOccasion(activitiesState.newActivityFromLoadedOrGiven(activity),
+          day, occasion);
+
   @visibleForTesting
   factory ActivityOccasion.forTest(
     Activity activity, {
