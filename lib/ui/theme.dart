@@ -207,7 +207,7 @@ ThemeData availableToSelectButtonTheme = abiliaTheme.copyWith(
     textTheme: abiliaTextTheme.copyWith(
         button: abiliaTextTheme.button.copyWith(color: AbiliaColors.black)));
 
-ThemeData menuButtonTheme = abiliaTheme.copyWith(
+ThemeData bottomNavigationBarTheme = abiliaTheme.copyWith(
   buttonTheme: lightActionButtonThemeData.copyWith(
     shape: RoundedRectangleBorder(
       borderRadius: borderRadius,
@@ -218,22 +218,7 @@ ThemeData menuButtonTheme = abiliaTheme.copyWith(
     ),
   ),
   buttonColor: AbiliaColors.transparentWhite20,
-);
-
-ThemeData addButtonTheme = abiliaTheme.copyWith(
-  buttonTheme: lightActionButtonThemeData.copyWith(
-    shape: const RoundedRectangleBorder(
-      borderRadius: borderRadius,
-      side: BorderSide(
-        width: 1,
-        color: AbiliaColors.transparentBlack15,
-      ),
-    ),
-  ),
-  buttonColor: AbiliaColors.white,
-  textTheme: abiliaTextTheme.copyWith(
-    button: abiliaTextTheme.button.copyWith(color: AbiliaColors.black),
-  ),
+  iconTheme: IconThemeData(size: 32.0),
 );
 
 TextTheme abiliaTextTheme = TextTheme(
