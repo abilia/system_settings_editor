@@ -118,78 +118,14 @@ class _CalendarPageState extends State<CalendarPage>
                     },
                   ),
                 ),
-                bottomNavigationBar: buildBottomAppBar(
-                  calendarViewState.currentView,
-                  context,
-                  pickedDay.day,
+                bottomNavigationBar: CalendarBottomBar(
+                  currentView: calendarViewState.currentView,
+                  day: pickedDay.day,
+                  goToNow: _jumpToActivity,
                 ),
               ),
             );
           },
-        ),
-      ),
-    );
-  }
-
-  Widget buildBottomAppBar(
-      CalendarViewType currentView, BuildContext context, DateTime day) {
-    return BottomAppBar(
-      child: Container(
-        height: 64,
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: Stack(
-          children: <Widget>[
-            CalendarViewSwitchButton(currentView, key: TestKey.changeView),
-            Align(
-              alignment: Alignment(-0.42, 0.0),
-              child: GoToNowButton(
-                onPressed: () => _jumpToActivity(),
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: ActionButton(
-                key: TestKey.addActivity,
-                themeData: addButtonTheme,
-                child: Icon(
-                  AbiliaIcons.plus,
-                  size: 32,
-                ),
-                onPressed: () async {
-                  await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) {
-                        return BlocProvider<EditActivityBloc>(
-                          create: (_) => EditActivityBloc.newActivity(
-                            activitiesBloc:
-                                BlocProvider.of<ActivitiesBloc>(context),
-                            day: day,
-                          ),
-                          child: EditActivityPage(
-                            day: day,
-                            title: Translator.of(context).translate.newActivity,
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: ActionButton(
-                child: Icon(
-                  AbiliaIcons.menu,
-                  size: 32,
-                ),
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => MenuPage()),
-                ),
-                themeData: menuButtonTheme,
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -224,47 +160,95 @@ class _CalendarPageState extends State<CalendarPage>
   }
 }
 
-class CalendarViewSwitchButton extends StatelessWidget {
-  const CalendarViewSwitchButton(this.currentView, {Key key}) : super(key: key);
+class CalendarBottomBar extends StatelessWidget {
   final CalendarViewType currentView;
+  final DateTime day;
+  final Function goToNow;
+  final barHeigt = 64.0, calendarSwitchButtonWidth = 72.0;
+
+  const CalendarBottomBar({
+    Key key,
+    @required this.currentView,
+    @required this.day,
+    @required this.goToNow,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: menuButtonTheme,
-      child: SizedBox(
-        width: 72,
-        height: 48,
-        child: FlatButton(
-          color: menuButtonTheme.buttonColor,
-          highlightColor: menuButtonTheme.highlightColor,
-          padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
-          textColor: menuButtonTheme.textTheme.button.color,
-          child: Row(
+      data: bottomNavigationBarTheme,
+      child: BottomAppBar(
+        child: Container(
+          height: barHeigt,
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          child: Stack(
             children: <Widget>[
-              Icon(
-                currentView == CalendarViewType.LIST
-                    ? AbiliaIcons.list_order
-                    : AbiliaIcons.timeline,
-                size: 32,
+              ActionButton(
+                width: calendarSwitchButtonWidth,
+                padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+                child: Row(children: <Widget>[
+                  Icon(
+                    currentView == CalendarViewType.LIST
+                        ? AbiliaIcons.list_order
+                        : AbiliaIcons.timeline,
+                  ),
+                  Icon(AbiliaIcons.navigation_down),
+                ]),
+                onPressed: () async {
+                  final result = await showViewDialog<CalendarViewType>(
+                    context: context,
+                    builder: (context) => ChangeCalendarDialog(
+                      currentViewType: currentView,
+                    ),
+                  );
+                  if (result != null) {
+                    BlocProvider.of<CalendarViewBloc>(context)
+                        .add(CalendarViewChanged(result));
+                  }
+                },
               ),
-              Icon(
-                AbiliaIcons.navigation_down,
-                size: 32,
+              Positioned(
+                left: calendarSwitchButtonWidth + 14.0,
+                child: GoToNowButton(onPressed: goToNow),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: ActionButton(
+                  key: TestKey.addActivity,
+                  child: Icon(AbiliaIcons.plus),
+                  onPressed: () async {
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) {
+                          return BlocProvider<EditActivityBloc>(
+                            create: (_) => EditActivityBloc.newActivity(
+                              activitiesBloc:
+                                  BlocProvider.of<ActivitiesBloc>(context),
+                              day: day,
+                            ),
+                            child: EditActivityPage(
+                              day: day,
+                              title:
+                                  Translator.of(context).translate.newActivity,
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: ActionButton(
+                  child: Icon(AbiliaIcons.menu),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => MenuPage()),
+                  ),
+                ),
               ),
             ],
           ),
-          onPressed: () async {
-            final result = await showViewDialog<CalendarViewType>(
-              context: context,
-              builder: (context) => ChangeCalendarDialog(
-                currentViewType: currentView,
-              ),
-            );
-            if (result != null) {
-              BlocProvider.of<CalendarViewBloc>(context)
-                  .add(CalendarViewChanged(result));
-            }
-          },
         ),
       ),
     );
