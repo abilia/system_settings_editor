@@ -184,6 +184,7 @@ class CalendarBottomBar extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               ActionButton(
+                key: TestKey.changeView,
                 width: calendarSwitchButtonWidth,
                 padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                 child: Row(children: <Widget>[
