@@ -20,41 +20,52 @@ class ActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ActivitiesBloc, ActivitiesState>(
       builder: (context, state) {
-        final activityDay = occasion.fromActivitiesState(state);
+        final activityOccasion = occasion.fromActivitiesState(state);
         return AnimatedTheme(
           data: dayThemeData,
           child: Scaffold(
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(68),
-                child: AnimatedSwitcher(
-                  duration: 200.milliseconds(),
-                  child: DayAppBar(
-                    day: activityDay.day,
-                    leftAction: ActionButton(
-                      key: TestKey.activityBackButton,
-                      child: Icon(
-                        AbiliaIcons.navigation_previous,
-                        size: 32,
-                      ),
-                      onPressed: () => Navigator.of(context).maybePop(),
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(68),
+              child: AnimatedSwitcher(
+                duration: 200.milliseconds(),
+                child: DayAppBar(
+                  day: activityOccasion.day,
+                  leftAction: ActionButton(
+                    key: TestKey.activityBackButton,
+                    child: Icon(
+                      AbiliaIcons.navigation_previous,
+                      size: 32,
                     ),
+                    onPressed: () => Navigator.of(context).maybePop(),
                   ),
                 ),
               ),
-              body: Padding(
-                padding: const EdgeInsets.all(ActivityInfo.margin)
-                    .subtract(const EdgeInsets.only(left: ActivityInfo.margin)),
-                child: ActivityInfoWithDots(activityDay),
-              ),
-              bottomNavigationBar: buildBottomAppBar(activityDay, context)),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(ActivityInfo.margin)
+                  .subtract(const EdgeInsets.only(left: ActivityInfo.margin)),
+              child: ActivityInfoWithDots(activityOccasion),
+            ),
+            bottomNavigationBar:
+                ActivityBottomAppBar(activityOccasion: occasion),
+          ),
         );
       },
     );
   }
+}
 
-  Widget buildBottomAppBar(ActivityDay activityDay, BuildContext context) {
-    final activity = activityDay.activity;
-    final day = activityDay.day;
+class ActivityBottomAppBar extends StatelessWidget {
+  const ActivityBottomAppBar({
+    Key key,
+    @required this.activityOccasion,
+  }) : super(key: key);
+
+  final ActivityOccasion activityOccasion;
+
+  @override
+  Widget build(BuildContext context) {
+    final activity = activityOccasion.activity;
     return Theme(
       data: bottomNavigationBarTheme,
       child: BottomAppBar(
@@ -92,7 +103,7 @@ class ActivityPage extends StatelessWidget {
                             UpdateRecurringActivity(
                               ActivityDay(
                                 changedActivity,
-                                day,
+                                activityOccasion.day,
                               ),
                               applyTo,
                             ),
@@ -113,13 +124,11 @@ class ActivityPage extends StatelessWidget {
                     onPressed: () => showViewDialog<bool>(
                       context: context,
                       builder: (_) => BlocProvider<EditActivityBloc>.value(
-                        value: EditActivityBloc(activityDay,
+                        value: EditActivityBloc(activityOccasion,
                             activitiesBloc:
                                 BlocProvider.of<ActivitiesBloc>(context)),
-                        child: SelectReminderDialog(
-                          activity: activity,
-                          day: day,
-                        ),
+                        child:
+                            SelectReminderDialog(activityDay: activityOccasion),
                       ),
                     ),
                   ),
@@ -131,12 +140,12 @@ class ActivityPage extends StatelessWidget {
                         builder: (_) {
                           return BlocProvider<EditActivityBloc>(
                             create: (_) => EditActivityBloc(
-                              activityDay,
+                              activityOccasion,
                               activitiesBloc:
                                   BlocProvider.of<ActivitiesBloc>(context),
                             ),
                             child: EditActivityPage(
-                              day: day,
+                              day: activityOccasion.day,
                               title:
                                   Translator.of(context).translate.editActivity,
                             ),
@@ -152,7 +161,7 @@ class ActivityPage extends StatelessWidget {
                     final shouldDelete = await showViewDialog<bool>(
                       context: context,
                       builder: (_) => ConfirmActivityActionDialog(
-                        activityOccasion: occasion,
+                        activityOccasion: activityOccasion,
                         title: Translator.of(context).translate.deleteActivity,
                       ),
                     );
@@ -166,7 +175,7 @@ class ActivityPage extends StatelessWidget {
                         if (applyTo == null) return;
                         BlocProvider.of<ActivitiesBloc>(context).add(
                           DeleteRecurringActivity(
-                            activityDay,
+                            activityOccasion,
                             applyTo,
                           ),
                         );
