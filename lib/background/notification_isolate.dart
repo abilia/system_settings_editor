@@ -6,7 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:seagull/i18n/translations.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -108,8 +108,8 @@ Future scheduleNotification(
     alwaysUse24HourFormat,
   );
   final hash = notificationAlarm.hashCode;
-  final payload =
-      json.encode(NotificationPayload.fromNotificationAlarm(notificationAlarm).toJson());
+  final payload = json.encode(
+      NotificationPayload.fromNotificationAlarm(notificationAlarm).toJson());
   final notificationChannel = getNotificationChannel(alarm);
 
   final and = AndroidNotificationDetails(
@@ -155,12 +155,12 @@ String getSubtitle(
   bool alwaysUse24HourFormat,
 ) {
   final givenLocale = Locale(language);
-  final locale = Translated.dictionaries.containsKey(givenLocale)
+  final locale = Locales.language.containsKey(givenLocale)
       ? givenLocale
-      : Translated.dictionaries.keys.first;
+      : Locales.language.keys.first;
   initializeDateFormatting(locale.languageCode);
   final tf = hourAndMinuteFromUse24(alwaysUse24HourFormat, language);
-  final translater = Translated.dictionaries[locale];
+  final translater = Locales.language[locale];
   final ad = notificationAlarm.activityDay;
   final endTime = ad.activity.hasEndTime ? ' - ${tf(ad.end)} ' : ' ';
   final extra = getExtra(notificationAlarm, translater);
