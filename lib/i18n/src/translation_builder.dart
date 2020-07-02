@@ -80,24 +80,24 @@ class TranslationBuilder extends Builder {
     final lines = LineSplitter().convert(content);
     final lineSplitted = lines.map((row) => row.split(deliminator)).toList();
 
-    final dictionarise = lineSplitted.first // First heading row
+    final dictionaries = lineSplitted.first // First heading row
         .sublist(1) // drop id heading
         .map((e) => MapEntry(e, <String, String>{}))
         .toList();
-    if (dictionarise.isEmpty) return {};
+    if (dictionaries.isEmpty) return {};
 
     for (var entry in lineSplitted.sublist(1)) {
       // every row except heading row
       if (entry.isEmpty) continue;
       final valueId = entry[0]; // first column is id
 
-      if (entry.length < dictionarise.length + 1 ||
+      if (entry.length < dictionaries.length + 1 ||
           entry.any((value) => value.isEmpty)) {
         missing.add(entry.join(deliminator));
       }
 
-      for (var i = 1; i < min(entry.length, dictionarise.length + 1); i++) {
-        final dictionary = dictionarise[i - 1].value;
+      for (var i = 1; i < min(entry.length, dictionaries.length + 1); i++) {
+        final dictionary = dictionaries[i - 1].value;
         if (dictionary.containsKey(valueId)) {
           throw Exception('$valueId not an unique id!');
         }
@@ -112,7 +112,7 @@ class TranslationBuilder extends Builder {
       buildStep.writeAsString(missingId, [lines.first, ...missing].join('\n'));
     }
 
-    return Map.fromEntries(dictionarise);
+    return Map.fromEntries(dictionaries);
   }
 
   StringSink _generateLocalesMap(
