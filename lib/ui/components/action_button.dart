@@ -9,12 +9,14 @@ class ActionButton extends StatelessWidget {
     this.width = 48,
     this.height = 48,
     this.themeData,
+    this.padding = const EdgeInsets.all(8),
   }) : super(key: key);
 
   final ThemeData themeData;
   final Widget child;
   final Function onPressed;
   final double width, height;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class ActionButton extends StatelessWidget {
                 : transparentOutlineInputBorder,
             disabledTextColor: theme.disabledColor,
             highlightColor: theme.highlightColor,
-            padding: const EdgeInsets.all(8),
+            padding: padding,
             textColor: theme.textTheme.button.color,
             child: child,
             onPressed: onPressed,

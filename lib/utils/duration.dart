@@ -1,4 +1,4 @@
-import 'package:seagull/i18n/translations.dart';
+import 'package:seagull/i18n/all.dart';
 
 extension IntToDuration on int {
   Duration days() => Duration(days: this);
@@ -40,7 +40,7 @@ extension DurationExtensions on Duration {
     final minutes = inMinutes % Duration.minutesPerHour;
     if (minutes > 1) sb.write('$minutes ${translater.minutes} ');
     if (minutes == 1) sb.write('$minutes ${translater.minute} ');
-    return inOrAgo(sb.toString()).trim();
+    return inOrAgo(sb.toString().trim());
   }
 
   int inDots(int minutesPerDot, roundingMinute) =>
