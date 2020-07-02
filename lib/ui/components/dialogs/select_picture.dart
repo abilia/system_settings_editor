@@ -21,6 +21,7 @@ class SelectPictureDialog extends StatefulWidget {
 
 class _SelectPictureDialogState extends State<SelectPictureDialog> {
   bool imageArchiveView = false;
+  final _picker = ImagePicker();
   SortableData selectedImageData;
   Function get onOk => selectedImageData != null
       ? () => Navigator.of(context).maybePop(SelectedImage(
@@ -102,14 +103,14 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   }
 
   Future _getExternalFile({ImageSource source}) async {
-    final image = await ImagePicker.pickImage(source: source);
+    final image = await _picker.getImage(source: source);
     if (image != null) {
       final id = Uuid().v4();
       final path = '${FileStorage.folder}/$id';
       await Navigator.of(context).maybePop(SelectedImage(
         id: id,
         path: path,
-        newImage: image,
+        newImage: File(image.path),
       ));
     }
   }

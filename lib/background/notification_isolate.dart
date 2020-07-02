@@ -10,7 +10,7 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:synchronized/synchronized.dart';
 
-import 'package:seagull/i18n/translations.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -196,12 +196,12 @@ String _getSubtitle(
   bool alwaysUse24HourFormat,
 ) {
   final givenLocale = Locale(language);
-  final locale = Translated.dictionaries.containsKey(givenLocale)
+  final locale = Locales.language.containsKey(givenLocale)
       ? givenLocale
-      : Translated.dictionaries.keys.first;
+      : Locales.language.keys.first;
   initializeDateFormatting(locale.languageCode);
   final tf = hourAndMinuteFromUse24(alwaysUse24HourFormat, language);
-  final translater = Translated.dictionaries[locale];
+  final translater = Locales.language[locale];
   final ad = notificationAlarm.activityDay;
   final endTime = ad.activity.hasEndTime ? ' - ${tf(ad.end)} ' : ' ';
   final extra = _getExtra(notificationAlarm, translater);
