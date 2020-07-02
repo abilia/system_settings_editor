@@ -47,7 +47,7 @@ class ActivityPage extends StatelessWidget {
               child: ActivityInfoWithDots(activityOccasion),
             ),
             bottomNavigationBar:
-                ActivityBottomAppBar(activityOccasion: occasion),
+                ActivityBottomAppBar(activityOccasion: activityOccasion),
           ),
         );
       },
