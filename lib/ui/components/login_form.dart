@@ -33,10 +33,6 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     final i18n = Translator.of(context);
     final theme = Theme.of(context);
-    final bodyText2Grey =
-        theme.textTheme.bodyText2.copyWith(color: AbiliaColors.black75);
-    final bodyText12Grey =
-        theme.textTheme.bodyText1.copyWith(color: AbiliaColors.black75);
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       builder: (context, formState) => BlocBuilder<LoginBloc, LoginState>(
         builder: (context, loginState) {
@@ -58,87 +54,41 @@ class _LoginFormState extends State<LoginForm> {
                                   () => _showBackends = !_showBackends),
                             )),
                   padding32,
-                  Text(
-                    i18n.translate.userName,
-                    style: bodyText2Grey,
-                  ),
-                  padding8,
-                  TextFormField(
-                    key: TestKey.userNameInput,
+                  TextFormInput(
+                    formKey: TestKey.userNameInput,
                     controller: _usernameController,
                     keyboardType: TextInputType.emailAddress,
-                    style: theme.textTheme.bodyText1,
-                    autovalidate: true,
-                    validator: (_) => errorState ? '' : null,
-                    decoration: errorState
-                        ? InputDecoration(
-                            suffixIcon: Icon(
-                              AbiliaIcons.ir_error,
-                              color: theme.errorColor,
+                    heading: i18n.translate.userName,
+                    errorState: errorState,
+                  ),
+                  padding16,
+                  TextFormInput(
+                    formKey: TestKey.passwordInput,
+                    controller: _passwordController,
+                    heading: i18n.translate.password,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: formState.hidePassword,
+                    errorState: errorState,
+                    trailing: formState.password.isNotEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 12),
+                            child: ActionButton(
+                              key: TestKey.hidePasswordToggle,
+                              child: Icon(
+                                formState.hidePassword
+                                    ? AbiliaIcons.show
+                                    : AbiliaIcons.hide,
+                                size: 32,
+                                color: AbiliaColors.black,
+                              ),
+                              onPressed: _onHidePasswordChanged,
+                              themeData: darkButtonTheme,
                             ),
                           )
                         : null,
                   ),
-                  padding16,
-                  Text(
-                    i18n.translate.password,
-                    style: bodyText2Grey,
-                    key: Key('passwordLabel'),
-                  ),
-                  padding8,
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
-                          key: TestKey.passwordInput,
-                          obscureText: formState.hidePassword,
-                          controller: _passwordController,
-                          keyboardType: TextInputType.visiblePassword,
-                          style: theme.textTheme.bodyText1,
-                          autovalidate: true,
-                          validator: (_) => errorState ? '' : null,
-                          decoration: errorState
-                              ? InputDecoration(
-                                  suffixIcon: Icon(
-                                    AbiliaIcons.ir_error,
-                                    color: theme.errorColor,
-                                  ),
-                                )
-                              : null,
-                        ),
-                      ),
-                      if (formState.password.isNotEmpty)
-                        Padding(
-                            padding: const EdgeInsets.only(left: 12),
-                            child: ActionButton(
-                              key: TestKey.hidePasswordToggle,
-                              child: Icon(formState.hidePassword
-                                  ? AbiliaIcons.show
-                                  : AbiliaIcons.hide, size: 32, color: AbiliaColors.black,),
-                              onPressed: _onHidePasswordChanged,
-                              themeData: darkButtonTheme,
-                            )),
-                    ],
-                  ),
                   padding32,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        i18n.translate.infoText1,
-                        style: bodyText12Grey,
-                      ),
-                      WebLink(
-                        text: 'myAbilia',
-                        urlString: 'https://myabilia.com/user-create',
-                      ),
-                      Text(
-                        i18n.translate.infoText2,
-                        style: bodyText12Grey,
-                      )
-                    ],
-                  ),
+                  _LoginHint(),
                   padding16,
                   if (errorState)
                     ErrorMessage(
@@ -227,5 +177,38 @@ class _LoginFormState extends State<LoginForm> {
 
   void _onHidePasswordChanged() {
     _loginFormBloc.add(HidePasswordToggle());
+  }
+}
+
+class _LoginHint extends StatelessWidget {
+  const _LoginHint({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final bodyText12Grey = Theme.of(context)
+        .textTheme
+        .bodyText1
+        .copyWith(color: AbiliaColors.black75);
+    final translate = Translator.of(context).translate;
+    ;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          translate.infoText1,
+          style: bodyText12Grey,
+        ),
+        WebLink(
+          text: 'myAbilia',
+          urlString: 'https://myabilia.com/user-create',
+        ),
+        Text(
+          translate.infoText2,
+          style: bodyText12Grey,
+        )
+      ],
+    );
   }
 }

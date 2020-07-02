@@ -90,20 +90,14 @@ class NameAndPictureWidget extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SubHeading(translator.name),
-              TextFormField(
-                initialValue: activity.title,
-                textCapitalization: TextCapitalization.sentences,
-                inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                onChanged: (text) => BlocProvider.of<EditActivityBloc>(context)
-                    .add(ReplaceActivity(activity.copyWith(title: text))),
-                key: TestKey.editTitleTextFormField,
-              ),
-            ],
+          child: TextFormInput(
+            formKey: TestKey.editTitleTextFormField,
+            heading: translator.name,
+            initialValue: activity.title,
+            onChanged: (text) => BlocProvider.of<EditActivityBloc>(context)
+                .add(ReplaceActivity(activity.copyWith(title: text))),
+            textCapitalization: TextCapitalization.sentences,
+            inputFormatters: [LengthLimitingTextInputFormatter(50)],
           ),
         ),
       ],
