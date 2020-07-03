@@ -3,6 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:package_info/package_info.dart';
 
@@ -69,23 +70,9 @@ class _LoginFormState extends State<LoginForm> {
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: formState.hidePassword,
                     errorState: errorState,
-                    trailing: formState.password.isNotEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 12),
-                            child: ActionButton(
-                              key: TestKey.hidePasswordToggle,
-                              child: Icon(
-                                formState.hidePassword
-                                    ? AbiliaIcons.show
-                                    : AbiliaIcons.hide,
-                                size: 32,
-                                color: AbiliaColors.black,
-                              ),
-                              onPressed: _onHidePasswordChanged,
-                              themeData: darkButtonTheme,
-                            ),
-                          )
-                        : null,
+                    trailing: _HidePasswordButton(
+                      loginFormBloc: _loginFormBloc,
+                    ),
                   ),
                   padding32,
                   _LoginHint(),
@@ -174,9 +161,41 @@ class _LoginFormState extends State<LoginForm> {
   void _onPasswordChanged() {
     _loginFormBloc.add(PasswordChanged(password: _passwordController.text));
   }
+}
+
+class _HidePasswordButton extends StatelessWidget {
+  const _HidePasswordButton({
+    Key key,
+    @required this.loginFormBloc,
+  }) : super(key: key);
+  final LoginFormBloc loginFormBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginFormBloc, LoginFormState>(
+      bloc: loginFormBloc,
+      builder: (context, state) => Padding(
+        padding: const EdgeInsets.only(left: 12),
+        child: AnimatedContainer(
+          duration: 150.milliseconds(),
+          width: state.password.isNotEmpty ? ActionButton.size : 0.0,
+          child: ActionButton(
+            key: TestKey.hidePasswordToggle,
+            child: Icon(
+              state.hidePassword ? AbiliaIcons.show : AbiliaIcons.hide,
+              size: 32,
+              color: AbiliaColors.black,
+            ),
+            onPressed: _onHidePasswordChanged,
+            themeData: darkButtonTheme,
+          ),
+        ),
+      ),
+    );
+  }
 
   void _onHidePasswordChanged() {
-    _loginFormBloc.add(HidePasswordToggle());
+    loginFormBloc.add(HidePasswordToggle());
   }
 }
 

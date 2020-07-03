@@ -89,18 +89,43 @@ class NameAndPictureWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(width: 12),
-        Expanded(
-          child: TextFormInput(
-            formKey: TestKey.editTitleTextFormField,
-            heading: translator.name,
-            initialValue: activity.title,
-            onChanged: (text) => BlocProvider.of<EditActivityBloc>(context)
-                .add(ReplaceActivity(activity.copyWith(title: text))),
-            textCapitalization: TextCapitalization.sentences,
-            inputFormatters: [LengthLimitingTextInputFormatter(50)],
-          ),
-        ),
+        Expanded(child: NameInput(activity: activity)),
       ],
+    );
+  }
+}
+
+class NameInput extends StatefulWidget {
+  const NameInput({
+    Key key,
+    @required this.activity,
+  }) : super(key: key);
+
+  final Activity activity;
+  @override
+  _NameInputState createState() => _NameInputState();
+}
+
+class _NameInputState extends State<NameInput> {
+  TextEditingController _nameController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.activity.title);
+    _nameController.addListener(() => BlocProvider.of<EditActivityBloc>(context)
+        .add(ReplaceActivity(
+            widget.activity.copyWith(title: _nameController.text))));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormInput(
+      formKey: TestKey.editTitleTextFormField,
+      controller: _nameController,
+      heading: Translator.of(context).translate.name,
+      textCapitalization: TextCapitalization.sentences,
+      inputFormatters: [LengthLimitingTextInputFormatter(50)],
     );
   }
 }
