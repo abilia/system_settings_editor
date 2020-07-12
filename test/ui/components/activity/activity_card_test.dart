@@ -182,4 +182,49 @@ void main() {
     expect(find.byType(PrivateIcon), findsOneWidget);
     expect(find.byIcon(AbiliaIcons.password_protection), findsOneWidget);
   });
+
+  testWidgets('full day that ha category has no category offset',
+      (WidgetTester tester) async {
+    await pumpActivityCard(
+      tester,
+      Activity.createNew(
+        title: 'title',
+        startTime: startTime,
+        fullDay: true,
+        category: Category.right,
+      ),
+    );
+    final animatedcontainer =
+        tester.widget<AnimatedContainer>(find.byType(AnimatedContainer));
+    expect(animatedcontainer.margin, EdgeInsets.zero);
+  });
+
+  testWidgets('category right has category offset',
+      (WidgetTester tester) async {
+    await pumpActivityCard(
+      tester,
+      Activity.createNew(
+        title: 'title',
+        startTime: startTime,
+        category: Category.right,
+      ),
+    );
+    final animatedcontainer =
+        tester.widget<AnimatedContainer>(find.byType(AnimatedContainer));
+    expect(animatedcontainer.margin.horizontal, greaterThan(0.0));
+  });
+
+  testWidgets('category left has category offset', (WidgetTester tester) async {
+    await pumpActivityCard(
+      tester,
+      Activity.createNew(
+        title: 'title',
+        startTime: startTime,
+        category: Category.left,
+      ),
+    );
+    final animatedcontainer =
+        tester.widget<AnimatedContainer>(find.byType(AnimatedContainer));
+    expect(animatedcontainer.margin.horizontal, greaterThan(0.0));
+  });
 }
