@@ -13,15 +13,6 @@ class FolderChanged extends ImageArchiveEvent {
   List<Object> get props => [folderId];
 }
 
-class ArchiveImageSelected extends ImageArchiveEvent {
-  final SortableData imageData;
-
-  ArchiveImageSelected(this.imageData);
-
-  @override
-  List<Object> get props => [imageData];
-}
-
 class SortablesUpdated extends ImageArchiveEvent {
   final Iterable<Sortable> sortables;
 

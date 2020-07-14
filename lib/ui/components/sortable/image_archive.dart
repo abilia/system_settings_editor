@@ -6,13 +6,6 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class ImageArchive extends StatelessWidget {
-  final ValueChanged<SortableData> onChanged;
-
-  const ImageArchive({
-    Key key,
-    @required this.onChanged,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
@@ -36,14 +29,7 @@ class ImageArchive extends StatelessWidget {
                       },
                     ),
                   )
-                : ArchiveImage(
-                    sortable: sortable,
-                    onChanged: (val) {
-                      BlocProvider.of<ImageArchiveBloc>(context)
-                          .add(ArchiveImageSelected(val));
-                      onChanged(val);
-                    },
-                  );
+                : ArchiveImage(sortable: sortable);
           }).toList(),
         );
       },
@@ -108,11 +94,8 @@ class Folder extends StatelessWidget {
 }
 
 class ArchiveImage extends StatelessWidget {
-  final ValueChanged<SortableData> onChanged;
   final Sortable sortable;
-  const ArchiveImage(
-      {Key key, @required this.onChanged, @required this.sortable})
-      : super(key: key);
+  const ArchiveImage({Key key, @required this.sortable}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -125,36 +108,54 @@ class ArchiveImage extends StatelessWidget {
         final imageId = sortable.sortableData.fileId;
         final name = sortable.sortableData.name;
         final iconPath = sortable.sortableData.file;
-        return RadioField<SortableData>(
-          width: 110,
-          heigth: 112,
-          value: sortable.sortableData,
-          onChanged: onChanged,
-          groupValue: archiveState.selectedImageData,
-          margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 13),
-          activeDecoration: BoxDecoration(
-            borderRadius: borderRadius,
-            border: Border.all(
-              width: 2,
-              color: Theme.of(context).toggleableActiveColor,
-            ),
-          ),
-          child: Column(
-            children: <Widget>[
-              if (name != null)
-                Text(
-                  name,
-                  overflow: TextOverflow.ellipsis,
-                  style: abiliaTextTheme.caption,
+        return Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            onTap: () async {
+              final selectedImage = await showViewDialog<SelectedImage>(
+                context: context,
+                builder: (_) => ViewDialog(
+                  expanded: true,
+                  leftPadding: 0.0,
+                  rightPadding: 0.0,
+                  verticalPadding: 0.0,
+                  onOk: () => Navigator.of(context)
+                      .maybePop(SelectedImage(id: imageId, path: iconPath)),
+                  child: FullScreenImage(
+                    backgroundDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(top: radius),
+                    ),
+                    fileId: imageId,
+                  ),
                 ),
-              const SizedBox(height: 2),
-              FadeInAbiliaImage(
-                height: imageHeight,
-                width: imageWidth,
-                imageFileId: imageId,
-                imageFilePath: iconPath,
-              )
-            ],
+              );
+              if (selectedImage != null) {
+                await Navigator.of(context).maybePop<SelectedImage>(selectedImage);
+              }
+            },
+            borderRadius: borderRadius,
+            child: Container(
+              decoration: borderDecoration,
+              padding: const EdgeInsets.all(4.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  if (name != null)
+                    Text(
+                      name,
+                      overflow: TextOverflow.ellipsis,
+                      style: abiliaTextTheme.caption,
+                    ),
+                  const SizedBox(height: 2),
+                  FadeInAbiliaImage(
+                    height: imageHeight,
+                    width: imageWidth,
+                    imageFileId: imageId,
+                    imageFilePath: iconPath,
+                  )
+                ],
+              ),
+            ),
           ),
         );
       }),

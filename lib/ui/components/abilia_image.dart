@@ -120,7 +120,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
     await showViewDialog<bool>(
       context: context,
       builder: (_) {
-        return FullScreenImage(fileId: fileId,);
+        return FullScreenImage(fileId: fileId);
       },
     );
   }
@@ -128,41 +128,41 @@ class CheckedImageWithImagePopup extends StatelessWidget {
 
 class FullScreenImage extends StatelessWidget {
   final String fileId;
+  final Decoration backgroundDecoration;
   const FullScreenImage({
     Key key,
     this.fileId,
+    this.backgroundDecoration,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final fileStorage = GetIt.I<FileStorage>();
-    return Material(
-      child: InkWell(
-        onTap: Navigator.of(context).maybePop,
-        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-            builder: (context, state) {
-          return BlocBuilder<UserFileBloc, UserFileState>(
-              builder: (context, userFileState) {
-            final userFileLoaded = userFileState is UserFilesLoaded &&
-                userFileState.userFiles.any((f) => f.id == fileId);
-            return PhotoView(
-              imageProvider: userFileLoaded
-                  ? Image.file(fileStorage.getFile(fileId)).image
-                  : (state is Authenticated)
-                      ? AdvancedNetworkImage(
-                          imageThumbUrl(
-                            baseUrl: state.userRepository.baseUrl,
-                            userId: state.userId,
-                            imageFileId: fileId,
-                            size: ImageThumb.THUMB_SIZE,
-                          ),
-                          header: authHeader(state.token),
-                        )
-                      : MemoryImage(kTransparentImage),
-            );
-          });
-        }),
-      ),
+    return GestureDetector(
+      onTap: Navigator.of(context).maybePop,
+      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+        return BlocBuilder<UserFileBloc, UserFileState>(
+            builder: (context, userFileState) {
+          final userFileLoaded = userFileState is UserFilesLoaded &&
+              userFileState.userFiles.any((f) => f.id == fileId);
+          return PhotoView(
+            backgroundDecoration: backgroundDecoration,
+            imageProvider: userFileLoaded
+                ? Image.file(GetIt.I<FileStorage>().getFile(fileId)).image
+                : (state is Authenticated)
+                    ? AdvancedNetworkImage(
+                        imageThumbUrl(
+                          baseUrl: state.userRepository.baseUrl,
+                          userId: state.userId,
+                          imageFileId: fileId,
+                          size: ImageThumb.THUMB_SIZE,
+                        ),
+                        header: authHeader(state.token),
+                      )
+                    : MemoryImage(kTransparentImage),
+          );
+        });
+      }),
     );
   }
 }
