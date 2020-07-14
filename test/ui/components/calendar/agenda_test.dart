@@ -330,4 +330,22 @@ void main() {
     final rightRight = tester.getTopRight(rightFinder);
     expect(rightRight.dx, greaterThan(leftRight.dx));
   });
+
+  testWidgets('CrossOver for past activities', (WidgetTester tester) async {
+    when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      (_) => Future.value(
+        [
+          Activity.createNew(
+            title: 'test',
+            startTime: now.subtract(1.hours()),
+            duration: 30.minutes(),
+          ),
+        ],
+      ),
+    );
+
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    expect(find.byType(CrossOver), findsOneWidget);
+  });
 }
