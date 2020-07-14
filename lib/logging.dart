@@ -6,14 +6,16 @@ import 'package:bloc/bloc.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 
-void initLogging() async {
-  FlutterError.onError = Crashlytics.instance.recordFlutterError;
-  final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
-  await AppCenter.startAsync(
-    appSecretAndroid: appId,
-    appSecretIOS: appId,
-  );
-  await AppCenter.configureDistributeDebugAsync(enabled: false);
+void initLogging({bool initAppcenter = false}) async {
+  if (initAppcenter) {
+    FlutterError.onError = Crashlytics.instance.recordFlutterError;
+    final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
+    await AppCenter.startAsync(
+      appSecretAndroid: appId,
+      appSecretIOS: appId,
+    );
+    await AppCenter.configureDistributeDebugAsync(enabled: false);
+  }
 
   BlocSupervisor.delegate = BlocLoggingDelegate();
 
