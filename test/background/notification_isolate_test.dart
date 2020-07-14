@@ -1,18 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:uuid/uuid.dart';
 
 import '../mocks.dart';
 
 void main() {
   final now = DateTime(2020, 05, 14, 18, 53);
+  final mockedFileStorage = MockFileStorage();
+  final fileId = Uuid().v4();
   final allActivities = [
     Activity.createNew(title: 'passed', startTime: now.subtract(1.minutes())),
     // 1 alarm
-    Activity.createNew(title: 'start', startTime: now.add(5.minutes())),
+    Activity.createNew(
+      title: 'start',
+      startTime: now.add(5.minutes()),
+      fileId: fileId,
+    ),
     // 2 alarms
     Activity.createNew(
       title: 'start and end',
@@ -51,8 +61,13 @@ void main() {
   });
 
   test('scheduleAlarmNotificationsIsolated', () async {
-    await scheduleAlarmNotificationsIsolated(allActivities, 'en', true,
-        now: now);
+    await scheduleAlarmNotificationsIsolated(
+      allActivities,
+      'en',
+      true,
+      mockedFileStorage,
+      now: now,
+    );
     verify(notificationsPluginInstance.cancelAll());
     verify(notificationsPluginInstance.schedule(any, any, any, any, any,
             payload: anyNamed('payload'),
@@ -61,12 +76,60 @@ void main() {
         .called(11);
   });
   test('scheduleAlarmNotifications', () async {
-    await scheduleAlarmNotifications(allActivities, 'en', true, now: now);
+    await scheduleAlarmNotifications(
+      allActivities,
+      'en',
+      true,
+      mockedFileStorage,
+      now: now,
+    );
     verify(notificationsPluginInstance.cancelAll());
     verify(notificationsPluginInstance.schedule(any, any, any, any, any,
             payload: anyNamed('payload'),
             androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
             androidWakeScreen: anyNamed('androidWakeScreen')))
         .called(11);
+  });
+
+  test('scheduleAlarmNotifications with image', () async {
+    when(mockedFileStorage.copyImageThumbForNotification(fileId))
+        .thenAnswer((_) => Future.value(File(fileId)));
+    when(mockedFileStorage.getFile(fileId)).thenReturn(File(fileId));
+    when(mockedFileStorage.getImageThumb(ImageThumb(id: fileId)))
+        .thenReturn(File(fileId));
+    when(mockedFileStorage.exists(any))
+        .thenAnswer((_) => Future.value(true));
+
+    await scheduleAlarmNotifications(
+      allActivities.take(2),
+      'en',
+      true,
+      mockedFileStorage,
+      now: now,
+    );
+    verify(notificationsPluginInstance.cancelAll());
+    verify(mockedFileStorage.copyImageThumbForNotification(fileId));
+    verify(mockedFileStorage.getFile(fileId));
+    verify(mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
+
+    final details = verify(notificationsPluginInstance.schedule(
+            any, any, any, any, captureAny,
+            payload: anyNamed('payload'),
+            androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
+            androidWakeScreen: anyNamed('androidWakeScreen')))
+        .captured
+        .single as NotificationDetails;
+
+    // iOS
+    expect(details.iOS.attachments.length, 1);
+    final attachment = details.iOS.attachments.first;
+    expect(attachment.filePath, fileId);
+    expect(attachment.identifier, fileId);
+    // Android
+    expect(
+        details.android.styleInformation is BigPictureStyleInformation, isTrue);
+    final bpd = details.android.styleInformation as BigPictureStyleInformation;
+    expect(bpd.bigPicture.bitmap, fileId);
+    expect(bpd.largeIcon.bitmap, fileId);
   });
 }

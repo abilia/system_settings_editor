@@ -13,7 +13,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/repository/sortable_repository.dart';
 import 'package:seagull/storage/all.dart';
 
-final AlarmScheduler noAlarmScheduler = ((a, b, c) async {});
+final AlarmScheduler noAlarmScheduler = ((a, b, c, d) async {});
 
 class MockUserRepository extends Mock implements UserRepository {}
 
