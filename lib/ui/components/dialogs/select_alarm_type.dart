@@ -7,14 +7,14 @@ import 'package:seagull/ui/theme.dart';
 class _SelectAlarmTypeDialog extends StatelessWidget {
   final Alarm alarm;
   final ValueChanged<Alarm> onChanged;
-  final Widget trailing;
+  final List<Widget> trailing;
   final GestureTapCallback onOk;
 
   const _SelectAlarmTypeDialog(
       {Key key,
       @required this.alarm,
       @required this.onChanged,
-      this.trailing,
+      this.trailing = const <Widget>[],
       this.onOk})
       : super(key: key);
   @override
@@ -25,6 +25,8 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
       heading:
           Text(translate.selectAlarmType, style: theme.textTheme.headline6),
       onOk: onOk,
+      leftPadding: 0.0,
+      rightPadding: 0.0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -67,9 +69,19 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
               ],
             ),
           ),
-        ],
+          ...trailing
+        ]
+            .map((widget) => widget is Divider
+                ? widget
+                : Padding(
+                    padding: const EdgeInsets.only(
+                      left: ViewDialog.leftPadding,
+                      right: ViewDialog.rightPadding,
+                    ),
+                    child: widget,
+                  ))
+            .toList(),
       ),
-      trailing: trailing,
     );
   }
 }
@@ -105,10 +117,15 @@ class _SelectAlarmDialogState extends State<SelectAlarmDialog> {
           ? () => Navigator.of(context).maybePop(alarm)
           : null,
       onChanged: _changeType,
-      trailing: AlarmOnlyAtStartSwitch(
-        alarm: alarm,
-        onChanged: _changeStartTime,
-      ),
+      trailing: [
+        const SizedBox(height: ViewDialog.seperatorPadding),
+        ViewDialog.divider,
+        const SizedBox(height: ViewDialog.seperatorPadding),
+        AlarmOnlyAtStartSwitch(
+          alarm: alarm,
+          onChanged: _changeStartTime,
+        )
+      ],
     );
   }
 

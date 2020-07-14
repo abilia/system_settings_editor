@@ -126,7 +126,6 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
     final theme = Theme.of(context);
 
     return ViewDialog(
-      expanded: true,
       heading: Text(widget.heading, style: theme.textTheme.headline6),
       onOk: inputTime != null
           ? () => Navigator.of(context).maybePop(TimeInputResult(inputTime))

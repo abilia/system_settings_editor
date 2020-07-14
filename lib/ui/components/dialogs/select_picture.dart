@@ -119,7 +119,6 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   Widget buildImageArchiveDialog() {
     return BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
       builder: (innerContext, imageArchiveState) => ViewDialog(
-        expanded: true,
         verticalPadding: 0.0,
         backButton: ActionButton(
           onPressed: () {
