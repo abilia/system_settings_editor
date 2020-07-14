@@ -9,16 +9,16 @@ import 'package:collection/collection.dart';
 
 class SelectReminderDialog extends StatelessWidget {
   static Function eq = const DeepCollectionEquality().equals;
-  final Activity activity;
-  final DateTime day;
+  final ActivityDay activityDay;
   const SelectReminderDialog({
     Key key,
-    @required this.activity,
-    @required this.day,
+    @required this.activityDay,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final theme = abiliaTheme;
+    final activity = activityDay.activity;
+    final day = activityDay.day;
     return BlocBuilder<EditActivityBloc, EditActivityState>(
       builder: (context, state) {
         final sameReminders = eq(activity.reminders, state.activity.reminders);
@@ -43,6 +43,7 @@ class SelectReminderDialog extends StatelessWidget {
           heading: Text(Translator.of(context).translate.reminder,
               style: theme.textTheme.headline6),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ReminderSwitch(activity: state.activity),
               SizedBox(height: 8.0),

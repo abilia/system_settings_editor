@@ -14,7 +14,9 @@ class ActivityCard extends StatelessWidget {
   static const double cardHeight = 56.0,
       cardPadding = 4.0,
       cardMargin = 4.0,
-      imageSize = 48.0;
+      imageSize = 48.0,
+      categorySideOffset = 56.0;
+
   static const Duration duration = Duration(seconds: 1);
 
   const ActivityCard(
@@ -32,7 +34,10 @@ class ActivityCard extends StatelessWidget {
     final hasTitle = activity.hasTitle;
     final signedOff = activityOccasion.isSignedOff;
     final current = occasion == Occasion.current;
-    final inactive = occasion == Occasion.past || signedOff;
+    final past = occasion == Occasion.past;
+    final inactive = past || signedOff;
+    final right = activity.category == Category.right;
+    final fullday = activity.fullDay;
     final themeData = inactive
         ? abiliaTheme.copyWith(
             textTheme: textTheme.copyWith(
@@ -44,72 +49,85 @@ class ActivityCard extends StatelessWidget {
             iconTheme:
                 abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white140))
         : abiliaTheme;
+
     return AnimatedTheme(
       duration: duration,
       data: themeData,
       child: Builder(
         builder: (context) => Padding(
           padding: EdgeInsets.symmetric(vertical: margin),
-          child: InkWell(
-            borderRadius: borderRadius,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (innerContext) =>
-                      ActivityPage(occasion: activityOccasion),
-                ),
-              );
-            },
-            child: AnimatedContainer(
-              duration: duration,
-              height: cardHeight,
-              decoration: getBoxDecoration(current, inactive),
-              child: Padding(
-                padding: const EdgeInsets.all(cardPadding),
-                child: Stack(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        if (hasImage || signedOff)
-                          CheckedImage.fromActivityOccasion(
-                            activityOccasion: activityOccasion,
-                            size: imageSize,
-                            fit: BoxFit.cover,
-                          ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: cardPadding),
-                            child: Stack(children: <Widget>[
-                              if (hasTitle)
-                                Text(
-                                  activity.title,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                ),
-                              Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Text(
-                                  activity.fullDay
-                                      ? Translator.of(context).translate.fullDay
-                                      : activity.hasEndTime
-                                          ? '${timeFormat(activity.startTime)} - ${timeFormat(activity.noneRecurringEnd)}'
-                                          : '${timeFormat(activity.startTime)}',
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                              ),
-                            ]),
-                          ),
-                        ),
-                      ],
+          child: AnimatedContainer(
+            duration: duration,
+            height: cardHeight,
+            decoration: getBoxDecoration(current, inactive),
+            margin: fullday
+                ? EdgeInsets.zero
+                : right
+                    ? const EdgeInsets.only(left: categorySideOffset)
+                    : const EdgeInsets.only(right: categorySideOffset),
+            child: Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                borderRadius: borderRadius,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (innerContext) =>
+                          ActivityPage(occasion: activityOccasion),
                     ),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: buildInfoIcons(activity, inactive),
-                    ),
-                  ],
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(cardPadding),
+                  child: Stack(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          if (hasImage || signedOff || past)
+                            ActivityImage.fromActivityOccasion(
+                              activityOccasion: activityOccasion,
+                              size: imageSize,
+                              fit: BoxFit.cover,
+                            ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: cardPadding),
+                              child: Stack(children: <Widget>[
+                                if (hasTitle)
+                                  Text(
+                                    activity.title,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Text(
+                                    activity.fullDay
+                                        ? Translator.of(context)
+                                            .translate
+                                            .fullDay
+                                        : activity.hasEndTime
+                                            ? '${timeFormat(activity.startTime)} - ${timeFormat(activity.noneRecurringEnd)}'
+                                            : '${timeFormat(activity.startTime)}',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ),
+                              ]),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: buildInfoIcons(activity, inactive),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -305,4 +305,61 @@ void main() {
     final eveningPos = tester.getTopLeft(find.text(yesterdayEveningTitle));
     expect(morningPos.dy, lessThan(eveningPos.dy));
   });
+
+  testWidgets('category left is left of category right, and vice versa',
+      (WidgetTester tester) async {
+    final leftTitle =
+            'leftTitleleftTitleleftTitleleftTitleleftTitleleftTitleleftTitleleftTitle',
+        rightTitle =
+            'rightTitlerightTitlerightTitlerightTitlerightTitlerightTitlerightTitle';
+    when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      (_) => Future.value(
+        [
+          Activity.createNew(
+            title: leftTitle,
+            startTime: now,
+            category: Category.left,
+          ),
+          Activity.createNew(
+            title: rightTitle,
+            startTime: now,
+            category: Category.right,
+          ),
+        ],
+      ),
+    );
+
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+
+    final leftFinder = find.text(leftTitle),
+        rightFinder = find.text(rightTitle);
+
+    expect(leftFinder, findsOneWidget);
+    expect(rightFinder, findsOneWidget);
+    final leftLeft = tester.getBottomLeft(leftFinder);
+    final rightLeft = tester.getBottomLeft(rightFinder);
+    expect(rightLeft.dx, greaterThan(leftLeft.dx));
+    final leftRight = tester.getTopRight(leftFinder);
+    final rightRight = tester.getTopRight(rightFinder);
+    expect(rightRight.dx, greaterThan(leftRight.dx));
+  });
+
+  testWidgets('CrossOver for past activities', (WidgetTester tester) async {
+    when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      (_) => Future.value(
+        [
+          Activity.createNew(
+            title: 'test',
+            startTime: now.subtract(1.hours()),
+            duration: 30.minutes(),
+          ),
+        ],
+      ),
+    );
+
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    expect(find.byType(CrossOver), findsOneWidget);
+  });
 }

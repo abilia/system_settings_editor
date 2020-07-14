@@ -12,6 +12,8 @@ class ActivityTimepillarCard extends StatelessWidget {
   static const double imageSize = 56.0,
       imagePadding = 16.0,
       imageHeigth = imageSize + imagePadding,
+      crossWidth = 48.0,
+      crossVerticalPadding = 36.0,
       width = 72.0,
       padding = 12.0,
       minHeight = 84.0,
@@ -45,7 +47,8 @@ class ActivityTimepillarCard extends StatelessWidget {
         hasTitle = activity.hasTitle,
         signedOff = activityOccasion.isSignedOff,
         current = activityOccasion.occasion == Occasion.current,
-        inactive = activityOccasion.occasion == Occasion.past || signedOff;
+        past = activityOccasion.occasion == Occasion.past,
+        inactive = past || signedOff;
 
     final endTime = activityOccasion.end;
     final startTime = activityOccasion.start;
@@ -53,21 +56,13 @@ class ActivityTimepillarCard extends StatelessWidget {
 
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, settings) {
-        final decoration = settings.dotsInTimepillar || endTime == startTime
-            ? getBoxDecoration(current, inactive)
-            : getBoxDecoration(current, inactive).copyWith(
-                borderRadius:
-                    activityOccasion.activity.category == Category.right
-                        ? onlyRight
-                        : onlyLeft,
-              );
+        final decoration = getBoxDecoration(current, inactive);
         return Positioned(
           right: right ? null : column * totalWith,
           left: right ? column * totalWith : null,
           top: top,
-          child: Row(
+          child: Stack(
             textDirection: right ? TextDirection.ltr : TextDirection.rtl,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               if (settings.dotsInTimepillar)
                 SideDots(
@@ -98,6 +93,9 @@ class ActivityTimepillarCard extends StatelessWidget {
                   );
                 },
                 child: Container(
+                  margin: right
+                      ? const EdgeInsets.only(left: dotSize + hourPadding)
+                      : const EdgeInsets.only(right: dotSize + hourPadding),
                   decoration: decoration,
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
@@ -108,7 +106,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                     ),
                     child: Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           if (hasTitle)
                             Text(
@@ -122,10 +120,16 @@ class ActivityTimepillarCard extends StatelessWidget {
                                       : AbiliaColors.black),
                             ),
                           if (hasImage || signedOff)
-                            CheckedImage.fromActivityOccasion(
+                            ActivityImage.fromActivityOccasion(
                               activityOccasion: activityOccasion,
                               size: imageSize,
-                            ),
+                            )
+                          else if (past)
+                            SizedBox(
+                              width: crossWidth,
+                              height: height - crossVerticalPadding,
+                              child: const CrossOver(),
+                            )
                         ],
                       ),
                     ),
@@ -154,26 +158,24 @@ class SideTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: dotSize,
+      width: ActivityTimepillarCard.width,
       height: height,
       child: DecoratedBox(
         decoration: BoxDecoration(
-            color: colorFromOccastion(occasion),
-            borderRadius: category == Category.left ? onlyRight : onlyLeft),
+            color: colorFromOccasion(occasion),
+            borderRadius: const BorderRadius.all(Radius.circular(8.0))),
       ),
     );
   }
 
-  Color colorFromOccastion(Occasion occasion) {
+  Color colorFromOccasion(Occasion occasion) {
     switch (occasion) {
       case Occasion.current:
         return AbiliaColors.red;
       case Occasion.past:
-        return AbiliaColors.white120;
-      case Occasion.future:
-        return AbiliaColors.green;
+        return AbiliaColors.transparentBlack20;
       default:
-        return AbiliaColors.green;
+        return AbiliaColors.black;
     }
   }
 }

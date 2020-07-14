@@ -30,10 +30,12 @@ class ActivityRepository extends DataRepository<Activity> {
 
   @override
   Future<Iterable<Activity>> load() async {
+    _log.fine('loadning acitivities...');
     return synchronized(() async {
       try {
         final fetchedActivities =
             await _fetchActivities(await activityDb.getLastRevision());
+        _log.fine('${fetchedActivities.length} acitivities fetched');
         await activityDb.insert(fetchedActivities);
       } catch (e) {
         // Error when syncing activities. Probably offline.
