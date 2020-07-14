@@ -13,7 +13,7 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class CheckedImage extends StatelessWidget {
+class ActivityImage extends StatelessWidget {
   final ActivityDay activityDay;
   final bool past;
   final ImageSize imageSize;
@@ -22,8 +22,9 @@ class CheckedImage extends StatelessWidget {
   final Widget checkmark;
   final double size;
   static const duration = Duration(milliseconds: 400);
+  static const crossPadding = 8.0;
 
-  const CheckedImage({
+  const ActivityImage({
     Key key,
     @required this.activityDay,
     this.size,
@@ -36,7 +37,7 @@ class CheckedImage extends StatelessWidget {
             : const CheckMark(),
         super(key: key);
 
-  static CheckedImage fromActivityOccasion({
+  static ActivityImage fromActivityOccasion({
     Key key,
     ActivityOccasion activityOccasion,
     double size,
@@ -44,7 +45,7 @@ class CheckedImage extends StatelessWidget {
     File imageFile,
     BoxFit fit = BoxFit.cover,
   }) =>
-      CheckedImage(
+      ActivityImage(
         key: key,
         activityDay: activityOccasion,
         size: size,
@@ -78,13 +79,22 @@ class CheckedImage extends StatelessWidget {
                 imageFile: imageFile,
               ),
             ),
-          Center(
-            child: AnimatedOpacity(
-              opacity: signedOff ? 1.0 : 0,
-              duration: duration,
-              child: checkmark,
+          if (past && !signedOff)
+            Center(
+              child: SizedBox(
+                height: size - crossPadding,
+                width: size - crossPadding,
+                child: CrossOver(),
+              ),
+            )
+          else
+            Center(
+              child: AnimatedOpacity(
+                opacity: signedOff ? 1.0 : 0.0,
+                duration: duration,
+                child: checkmark,
+              ),
             ),
-          ),
         ],
       ),
     );
@@ -108,7 +118,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
       onTap: () => activityDay.activity.hasImage
           ? _showImage(activityDay.activity.fileId, context)
           : null,
-      child: CheckedImage(
+      child: ActivityImage(
         activityDay: activityDay,
         imageSize: ImageSize.ORIGINAL,
         size: size,
