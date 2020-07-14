@@ -139,6 +139,8 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.menu));
       await tester.pumpAndSettle();
       expect(find.byType(MenuPage), findsOneWidget);
+      await tester.tap(find.byType(LogoutPickField));
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(LogoutButton));
       await await tester.pumpAndSettle();
       expect(find.byType(LoginPage), findsOneWidget);
