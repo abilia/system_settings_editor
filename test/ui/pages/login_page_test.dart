@@ -106,11 +106,6 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
-      // No button shows at all
-      expect(find.byIcon(AbiliaIcons.show), findsNothing);
-      expect(find.byIcon(AbiliaIcons.hide), findsNothing);
-      expect(find.byKey(TestKey.passwordInput), findsOneWidget);
-
       // Enter field password dialog
       await tester.tap(find.byKey(TestKey.passwordInput));
       await tester.pump();
@@ -118,7 +113,7 @@ void main() {
       // No button shows at all
       expect(find.byIcon(AbiliaIcons.show), findsNothing);
       expect(find.byIcon(AbiliaIcons.hide), findsNothing);
-      expect(find.byKey(TestKey.passwordInput), findsOneWidget);
+      expect(find.byKey(TestKey.input), findsOneWidget);
 
       await tester.enterText(find.byKey(TestKey.input), secretPassword);
       await tester.pumpAndSettle();
@@ -126,22 +121,25 @@ void main() {
       // Text hidden but hide button shows
       expect(textHidden(), isTrue);
       expect(find.byIcon(AbiliaIcons.hide), findsNothing);
-      expect(find.byIcon(AbiliaIcons.show), findsNWidgets(2));
+      expect(find.byIcon(AbiliaIcons.show), findsWidgets);
 
       // Tap show/hide-button
-      await tester.tap(find.byIcon(AbiliaIcons.show).first);
+      await tester.tap(find.byKey(TestKey.hidePassword));
       await tester.pumpAndSettle();
 
       // Text shows and show/hide-button visible with show icon
-      expect(textHidden(), isFalse, skip: 'TODO Fix'); // TODO Fix
-      expect(find.byIcon(AbiliaIcons.show), findsNothing,
-          skip: 'TODO Fix'); // TODO Fix
-      expect(find.byIcon(AbiliaIcons.hide), findsNWidgets(2),
-          skip: 'TODO Fix'); // TODO Fix
+      expect(textHidden(), isFalse);
+      expect(find.byIcon(AbiliaIcons.show), findsNothing);
+      expect(find.byIcon(AbiliaIcons.hide), findsWidgets);
 
       // Go back
       await tester.tap(find.byKey(TestKey.okDialog));
       await tester.pumpAndSettle();
+
+      // Password still hidden
+      expect(textHidden(), isFalse);
+      expect(find.byIcon(AbiliaIcons.show), findsNothing);
+      expect(find.byIcon(AbiliaIcons.hide), findsOneWidget);
     });
 
     testWidgets('Cant login when no password or username',
