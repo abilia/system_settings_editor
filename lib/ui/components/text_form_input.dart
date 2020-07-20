@@ -82,7 +82,7 @@ class TextFormInput extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: TextFormField(
-                  key: formKey,
+                  key: TestKey.input,
                   controller: controller,
                   obscureText: obscureText,
                   keyboardType: keyboardType,

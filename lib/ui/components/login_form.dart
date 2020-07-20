@@ -175,17 +175,20 @@ class _HidePasswordButton extends StatelessWidget {
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       bloc: loginFormBloc,
       builder: (context, state) => Padding(
-        padding: const EdgeInsets.only(left: 12),
+        padding: state.password.isNotEmpty
+            ? const EdgeInsets.only(left: 12)
+            : EdgeInsets.zero,
         child: AnimatedContainer(
           duration: 150.milliseconds(),
           width: state.password.isNotEmpty ? ActionButton.size : 0.0,
           child: ActionButton(
-            key: TestKey.hidePasswordToggle,
-            child: Icon(
-              state.hidePassword ? AbiliaIcons.show : AbiliaIcons.hide,
-              size: 32,
-              color: AbiliaColors.black,
-            ),
+            child: state.password.isNotEmpty
+                ? Icon(
+                    state.hidePassword ? AbiliaIcons.show : AbiliaIcons.hide,
+                    size: 32,
+                    color: AbiliaColors.black,
+                  )
+                : null,
             onPressed: _onHidePasswordChanged,
             themeData: darkButtonTheme,
           ),

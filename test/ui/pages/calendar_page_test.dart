@@ -178,7 +178,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(editTitleFieldFinder, newTitle);
+      await tester.enterText_(editTitleFieldFinder, newTitle);
       await tester.tap(saveEditActivityButtonFinder);
       await tester.pumpAndSettle();
 
@@ -196,7 +196,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(editTitleFieldFinder, newTitle);
+      await tester.enterText_(editTitleFieldFinder, newTitle);
       await tester.tap(saveEditActivityButtonFinder);
       await tester.pumpAndSettle();
       await tester.tap(activityBackButtonFinder);
