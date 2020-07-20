@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
@@ -21,6 +22,7 @@ class SelectPictureDialog extends StatefulWidget {
 
 class _SelectPictureDialogState extends State<SelectPictureDialog> {
   bool imageArchiveView = false;
+  final _picker = ImagePicker();
   SortableData selectedImageData;
   Function get onOk => selectedImageData != null
       ? () => Navigator.of(context).maybePop(SelectedImage(
@@ -102,14 +104,14 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   }
 
   Future _getExternalFile({ImageSource source}) async {
-    final image = await ImagePicker.pickImage(source: source);
+    final image = await _picker.getImage(source: source);
     if (image != null) {
       final id = Uuid().v4();
       final path = '${FileStorage.folder}/$id';
       await Navigator.of(context).maybePop(SelectedImage(
         id: id,
         path: path,
-        newImage: image,
+        newImage: File(image.path),
       ));
     }
   }
@@ -117,7 +119,6 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   Widget buildImageArchiveDialog() {
     return BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
       builder: (innerContext, imageArchiveState) => ViewDialog(
-        expanded: true,
         verticalPadding: 0.0,
         backButton: ActionButton(
           onPressed: () {
@@ -135,11 +136,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
         ),
         heading: getImageArchiveHeading(imageArchiveState),
         onOk: onOk,
-        child: ImageArchive(
-          onChanged: (imageId) {
-            setState(() => selectedImageData = imageId);
-          },
-        ),
+        child: ImageArchive(),
       ),
     );
   }
@@ -152,7 +149,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   }
 }
 
-class SelectedImage {
+class SelectedImage extends Equatable {
   final String id;
   final String path;
   final File newImage;
@@ -162,4 +159,7 @@ class SelectedImage {
     @required this.path,
     this.newImage,
   });
+
+  @override
+  List<Object> get props => [id, path, newImage];
 }

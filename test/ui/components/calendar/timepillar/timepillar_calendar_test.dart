@@ -10,7 +10,7 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/translations.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -231,7 +231,7 @@ void main() {
       Finder leftFinder;
       Finder rightFinder;
       setUp(() {
-        final translator = Translated.dictionaries[Locale('en')];
+        final translator = Locales.language.values.first;
         final right = translator.right;
         final left = translator.left;
         leftFinder = find.text(left);
@@ -376,6 +376,81 @@ void main() {
         await tester.pumpAndSettle();
         // Assert
         expect(find.byType(SideTime), findsNWidgets(2));
+      });
+
+      testWidgets('current activity shows no CrossOver',
+          (WidgetTester tester) async {
+        // Arrange
+        givenActivities = [Activity.createNew(title: 'title', startTime: time)];
+        await goToTimePillar(tester);
+        // Act
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(CrossOver), findsNothing);
+      });
+
+      testWidgets('past activity shows CrossOver', (WidgetTester tester) async {
+        // Arrange
+        givenActivities = [
+          Activity.createNew(
+              title: 'title', startTime: time.subtract(10.minutes()))
+        ];
+        await goToTimePillar(tester);
+        // Act
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(CrossOver), findsWidgets);
+      });
+
+      testWidgets('past activity with endtime shows CrossOver',
+          (WidgetTester tester) async {
+        // Arrange
+        givenActivities = [
+          Activity.createNew(
+            title: 'title',
+            startTime: time.subtract(9.hours()),
+            duration: 8.hours(),
+          )
+        ];
+        await goToTimePillar(tester);
+        // Act
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(CrossOver), findsWidgets);
+      });
+
+      testWidgets('past activity with endtime shows CrossOver',
+          (WidgetTester tester) async {
+        // Arrange
+        givenActivities = [
+          Activity.createNew(
+            title: 'title',
+            startTime: time.subtract(2.hours()),
+            duration: 1.hours(),
+          )
+        ];
+        await goToTimePillar(tester);
+        // Act
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(CrossOver), findsWidgets);
+      });
+
+      testWidgets('sigend off past activity shows no CrossOver',
+          (WidgetTester tester) async {
+        // Arrange
+        givenActivities = [
+          Activity.createNew(
+              title: 'title',
+              startTime: time.subtract(40.minutes()),
+              checkable: true,
+              signedOffDates: [time.onlyDays()])
+        ];
+        await goToTimePillar(tester);
+        // Act
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(CrossOver), findsNothing);
       });
     });
   });

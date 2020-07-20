@@ -58,14 +58,20 @@ Widget _buildMaterialDialogTransitions(
 class ViewDialog extends StatelessWidget {
   final Widget heading;
   final Widget child;
-  final Widget trailing;
   final GestureTapCallback onOk;
+  static const divider = Divider(
+    color: AbiliaColors.white120,
+    endIndent: leftPadding,
+    height: 0,
+  );
+  static const double verticalPadding = 24.0,
+      leftPadding = 12.0,
+      rightPadding = 16.0,
+      seperatorPadding = 16.0;
   final Widget deleteButton;
   final Widget backButton;
   final bool expanded;
-  final IconData closeIcon;
-  final double _verticalPadding;
-  static const double verticalPadding = 24.0;
+  final double _verticalPadding, _leftPadding, _rightPadding;
 
   const ViewDialog({
     Key key,
@@ -74,123 +80,125 @@ class ViewDialog extends StatelessWidget {
     this.onOk,
     this.deleteButton,
     this.backButton,
-    this.expanded = false,
-    this.trailing,
-    this.closeIcon = AbiliaIcons.close_program,
+    this.expanded = true,
     double verticalPadding = verticalPadding,
+    double leftPadding = leftPadding,
+    double rightPadding = rightPadding,
   })  : _verticalPadding = verticalPadding,
+        _leftPadding = leftPadding,
+        _rightPadding = rightPadding,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final hasOk = onOk != null;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        const SizedBox(height: 8),
-        Container(
-          // This container is only to prevent closing of the dialog when clicking just outside the buttons.
-          decoration: BoxDecoration(
-            color: Colors.transparent,
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          const SizedBox(height: 8),
+          _TopFloatingButtons(
+            deleteButton: deleteButton,
+            onOk: onOk,
           ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 8.0),
-            child: Stack(
-              children: <Widget>[
-                if (deleteButton != null) deleteButton,
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: RoundFloatingButton(
-                    AbiliaIcons.ok,
-                    key: TestKey.okDialog,
-                    color: AbiliaColors.green,
-                    onTap: onOk,
-                  ),
-                ),
-                AnimatedAlign(
-                  duration: 200.milliseconds(),
-                  alignment:
-                      hasOk ? Alignment(0.6, 1.0) : Alignment.centerRight,
-                  child: RoundFloatingButton(
-                    closeIcon,
-                    key: TestKey.closeDialog,
-                    onTap: Navigator.of(context).maybePop,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Flexible(
-          flex: expanded ? 1 : 0,
-          child: Container(
-            decoration: const BoxDecoration(
-              color: AbiliaColors.white110,
-              borderRadius: BorderRadius.vertical(top: radius),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    if (backButton != null)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
-                        child: backButton,
+          Flexible(
+            flex: expanded ? 1 : 0,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: AbiliaColors.white110,
+                borderRadius: BorderRadius.vertical(top: radius),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  if (backButton != null || heading != null)
+                    Row(
+                      children: <Widget>[
+                        if (backButton != null)
+                          Padding(
+                            padding: EdgeInsets.only(left: leftPadding),
+                            child: backButton,
+                          ),
+                        if (heading != null)
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              leftPadding,
+                              20.0,
+                              rightPadding,
+                              seperatorPadding,
+                            ),
+                            child: heading,
+                          ),
+                      ],
+                    ),
+                  if (backButton != null || heading != null) divider,
+                  Flexible(
+                    flex: expanded ? 1 : 0,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        _leftPadding,
+                        _verticalPadding,
+                        _rightPadding,
+                        _verticalPadding,
                       ),
-                    if (heading != null)
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 16.0),
-                        child: heading,
-                      ),
-                  ],
-                ),
-                const Divider(
-                  color: AbiliaColors.transparentBlack10,
-                  endIndent: 12.0,
-                  height: 0,
-                ),
-                Flexible(
-                  flex: expanded ? 1 : 0,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.fromLTRB(12.0, _verticalPadding, 16.0, 0.0),
-                    child: Material(
-                      color: Colors.transparent,
                       child: child,
                     ),
                   ),
-                ),
-                if (trailing != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const SizedBox(height: 16.0),
-                      const Divider(
-                        color: AbiliaColors.transparentBlack10,
-                        endIndent: 12.0,
-                        height: 0,
-                      ),
-                      Flexible(
-                        flex: expanded ? 1 : 0,
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(12.0, 16.0, 16.0, 0.0),
-                          child: Material(
-                            child: trailing,
-                            color: Colors.transparent,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                SizedBox(height: _verticalPadding),
-              ],
+                ],
+              ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TopFloatingButtons extends StatelessWidget {
+  const _TopFloatingButtons({
+    Key key,
+    @required this.deleteButton,
+    @required this.onOk,
+  }) : super(key: key);
+
+  final Widget deleteButton;
+  final GestureTapCallback onOk;
+
+  @override
+  Widget build(BuildContext context) {
+    final hasOk = onOk != null;
+
+    return Container(
+      // This container is only to prevent closing of the dialog when clicking just outside the buttons.
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 8.0),
+        child: Stack(
+          children: <Widget>[
+            if (deleteButton != null) deleteButton,
+            Align(
+              alignment: Alignment.centerRight,
+              child: RoundFloatingButton(
+                AbiliaIcons.ok,
+                key: TestKey.okDialog,
+                color: AbiliaColors.green,
+                onTap: onOk,
+              ),
+            ),
+            AnimatedAlign(
+              duration: 200.milliseconds(),
+              alignment: hasOk ? Alignment(0.6, 1.0) : Alignment.centerRight,
+              child: RoundFloatingButton(
+                AbiliaIcons.close_program,
+                key: TestKey.closeDialog,
+                onTap: Navigator.of(context).maybePop,
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
@@ -209,7 +217,9 @@ class RoundFloatingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.transparent,
+      type: MaterialType.button,
+      color: color,
+      borderRadius: BorderRadius.all(Radius.circular(28.0)),
       child: InkWell(
         key: ObjectKey(key),
         borderRadius: BorderRadius.all(Radius.circular(28.0)),
@@ -218,10 +228,9 @@ class RoundFloatingButton extends StatelessWidget {
           width: 40.0,
           height: 40.0,
           decoration: BoxDecoration(
-            color: color,
             shape: BoxShape.circle,
             border: Border.all(
-              color: color[120],
+              color: color[140],
             ),
           ),
           child: Icon(

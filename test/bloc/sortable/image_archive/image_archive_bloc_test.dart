@@ -19,8 +19,7 @@ void main() {
     });
 
     test('Initial state is an empty ImageArchiveState', () {
-      expect(
-          imageArchiveBloc.initialState, ImageArchiveState({}, {}, null, null));
+      expect(imageArchiveBloc.initialState, ImageArchiveState({}, {}, null));
     });
 
     test('FolderChanged will set the folder in the state', () async {
@@ -29,21 +28,8 @@ void main() {
       await expectLater(
         imageArchiveBloc,
         emitsInOrder([
-          ImageArchiveState({}, {}, null, null),
-          ImageArchiveState({}, {}, folderId, null),
-        ]),
-      );
-    });
-
-    test('ArchiveImageSelected will set the selected image in the state',
-        () async {
-      final imageData = SortableData(fileId: '123');
-      imageArchiveBloc.add(ArchiveImageSelected(imageData));
-      await expectLater(
-        imageArchiveBloc,
-        emitsInOrder([
-          ImageArchiveState({}, {}, null, null),
-          ImageArchiveState({}, {}, null, imageData),
+          ImageArchiveState({}, {}, null),
+          ImageArchiveState({}, {}, folderId),
         ]),
       );
     });
@@ -58,7 +44,7 @@ void main() {
       await expectLater(
         imageArchiveBloc,
         emitsInOrder([
-          ImageArchiveState({}, {}, null, null),
+          ImageArchiveState({}, {}, null),
           stateFromSortables([imageArchiveSortable]),
         ]),
       );
@@ -82,7 +68,7 @@ void main() {
       await expectLater(
         imageArchiveBloc,
         emitsInOrder([
-          ImageArchiveState({}, {}, null, null),
+          ImageArchiveState({}, {}, null),
           stateFromSortables([imageArchiveFolder1, imageArchiveFolder2]),
           stateFromSortables(
             [imageArchiveFolder1, imageArchiveFolder2],

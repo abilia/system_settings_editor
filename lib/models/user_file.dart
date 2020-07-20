@@ -95,7 +95,7 @@ class DbUserFile extends DbModel<UserFile> {
         'content_type': userFile.contentType,
         'file_size': userFile.fileSize,
         'deleted': userFile.deleted ? 1 : 0,
-        'file_loaded': userFile.fileLoaded,
+        'file_loaded': userFile.fileLoaded ? 1 : 0,
         'revision': revision,
         'dirty': dirty,
       };
@@ -108,7 +108,7 @@ class DbUserFile extends DbModel<UserFile> {
         'path': userFile.path,
         'contentType': userFile.contentType,
         'size': userFile.fileSize,
-        'deleted': userFile.deleted ? 1 : 0,
+        'deleted': userFile.deleted,
         'fileLoaded': userFile.fileLoaded,
         'revision': revision,
       };

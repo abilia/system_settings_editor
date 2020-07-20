@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:uuid/uuid.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
-
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/i18n/translations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../mocks.dart';
 
@@ -199,7 +199,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text(English().fullDay), findsOneWidget);
+    expect(find.text(Locales.language.values.first.fullDay), findsOneWidget);
   });
 
   testWidgets('image and no attatchment', (WidgetTester tester) async {

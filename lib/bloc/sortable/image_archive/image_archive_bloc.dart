@@ -27,7 +27,7 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
   }
 
   @override
-  ImageArchiveState get initialState => ImageArchiveState({}, {}, null, null);
+  ImageArchiveState get initialState => ImageArchiveState({}, {}, null);
 
   @override
   Stream<ImageArchiveState> mapEventToState(
@@ -39,27 +39,17 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
       final allByFolder =
           groupBy<Sortable, String>(imageArchive, (s) => s.groupId);
       final allById = {for (var s in imageArchive) s.id: s};
-      final selectedImage = allById[state.selectedImageData?.fileId];
       final currentFolder = allById[state.currentFolderId];
       yield ImageArchiveState(
         allByFolder,
         allById,
         currentFolder?.id,
-        selectedImage?.sortableData,
       );
     } else if (event is FolderChanged) {
       yield ImageArchiveState(
         state.allByFolder,
         state.allById,
         event.folderId,
-        state.selectedImageData,
-      );
-    } else if (event is ArchiveImageSelected) {
-      yield ImageArchiveState(
-        state.allByFolder,
-        state.allById,
-        state.currentFolderId,
-        event.imageData,
       );
     } else if (event is NavigateUp) {
       final currentFolder = state.allById[state.currentFolderId];
@@ -67,7 +57,6 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
         state.allByFolder,
         state.allById,
         currentFolder.groupId,
-        state.selectedImageData,
       );
     }
   }

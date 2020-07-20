@@ -36,7 +36,7 @@ void main() async {
 
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initLogging();
+  await initLogging(initAppcenter: true);
   _log.fine('Initializing services');
   final currentLocale = await Devicelocale.currentLocale;
   final settingsDb = SettingsDb(await SharedPreferences.getInstance());

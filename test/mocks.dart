@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
@@ -13,7 +14,9 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/repository/sortable_repository.dart';
 import 'package:seagull/storage/all.dart';
 
-final AlarmScheduler noAlarmScheduler = ((a, b, c) async {});
+final AlarmScheduler noAlarmScheduler = ((a, b, c, d) async {});
+
+class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 class MockUserRepository extends Mock implements UserRepository {}
 

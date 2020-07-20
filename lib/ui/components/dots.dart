@@ -30,15 +30,10 @@ const pastDotShape = ShapeDecoration(shape: CircleBorder(side: BorderSide())),
         ShapeDecoration(color: Colors.transparent, shape: CircleBorder()),
     currentDotShape =
         ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder()),
-    futureSideDotShape = ShapeDecoration(
-        color: AbiliaColors.transparentBlack20, shape: CircleBorder()),
+    futureSideDotShape =
+        ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder()),
     pastSideDotShape = ShapeDecoration(
-  shape: CircleBorder(
-    side: BorderSide(
-      color: AbiliaColors.transparentBlack20,
-    ),
-  ),
-);
+        shape: CircleBorder(side: BorderSide(color: AbiliaColors.black)));
 
 class PastDots extends StatelessWidget {
   const PastDots({
