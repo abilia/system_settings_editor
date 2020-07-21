@@ -45,11 +45,18 @@ const BorderRadius notUpperLeft = BorderRadius.only(
   bottomLeft: radius,
 );
 
-const BorderSide borderSide =
-    BorderSide(color: AbiliaColors.white120, width: 1.0);
+const BorderSide borderSide = BorderSide(color: AbiliaColors.white140);
 const Border currentActivityBorder =
     Border.fromBorderSide(BorderSide(color: AbiliaColors.red, width: 2.0));
 const border = Border.fromBorderSide(borderSide);
+const ligthShapeBorder = RoundedRectangleBorder(
+  borderRadius: borderRadius,
+  side: BorderSide(color: AbiliaColors.transparentWhite30),
+);
+const darkShapeBorder = RoundedRectangleBorder(
+  borderRadius: borderRadius,
+  side: BorderSide(color: AbiliaColors.transparentBlack30),
+);
 const BoxDecoration borderDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: border,
@@ -92,7 +99,7 @@ const OutlineInputBorder transparentOutlineInputBorder = OutlineInputBorder(
 const ButtonThemeData baseButtonTheme = ButtonThemeData(
   height: 64,
   minWidth: 48,
-  shape: RoundedRectangleBorder(borderRadius: borderRadius),
+  shape: ligthShapeBorder,
 );
 
 ButtonThemeData redButtonThemeData = baseButtonTheme.copyWith(
@@ -105,13 +112,7 @@ ButtonThemeData redButtonThemeData = baseButtonTheme.copyWith(
 const ButtonThemeData checkButtonThemeData = ButtonThemeData(
   height: 48,
   minWidth: 111,
-  shape: OutlineInputBorder(
-    borderSide: BorderSide(
-      color: AbiliaColors.transparentBlack15,
-      width: 1,
-    ),
-    borderRadius: borderRadius,
-  ),
+  shape: darkShapeBorder,
   buttonColor: AbiliaColors.green,
   disabledColor: AbiliaColors.green40,
   highlightColor: AbiliaColors.green120,
@@ -131,25 +132,13 @@ ButtonThemeData lightActionButtonThemeData = actionButtonThemeData.copyWith(
   buttonColor: AbiliaColors.transparentWhite20,
   highlightColor: AbiliaColors.transparentWhite40,
   disabledColor: Colors.transparent,
-  shape: OutlineInputBorder(
-    borderSide: BorderSide(
-      color: AbiliaColors.transparentWhite15,
-      width: 1,
-    ),
-    borderRadius: borderRadius,
-  ),
+  shape: ligthShapeBorder,
 );
 
 ButtonThemeData darkActionButtonThemeData = baseButtonTheme.copyWith(
   buttonColor: AbiliaColors.transparentBlack20,
   highlightColor: AbiliaColors.transparentBlack40,
-  shape: OutlineInputBorder(
-    borderSide: BorderSide(
-      color: AbiliaColors.transparentBlack15,
-      width: 1,
-    ),
-    borderRadius: borderRadius,
-  ),
+  shape: darkShapeBorder,
 );
 
 ThemeData darkButtonTheme = abiliaTheme.copyWith(
@@ -178,11 +167,8 @@ ThemeData redButtonTheme = abiliaTheme.copyWith(
 
 ThemeData nowButtonTheme = redButtonTheme.copyWith(
   buttonTheme: redButtonThemeData.copyWith(
-    shape: OutlineInputBorder(
-      borderSide: BorderSide(
-        color: AbiliaColors.red120,
-        width: 1,
-      ),
+    shape: const RoundedRectangleBorder(
+      side: BorderSide(color: AbiliaColors.red120),
       borderRadius: borderRadius,
     ),
   ),
@@ -207,15 +193,7 @@ ThemeData availableToSelectButtonTheme = abiliaTheme.copyWith(
         button: abiliaTextTheme.button.copyWith(color: AbiliaColors.black)));
 
 ThemeData bottomNavigationBarTheme = abiliaTheme.copyWith(
-  buttonTheme: lightActionButtonThemeData.copyWith(
-    shape: RoundedRectangleBorder(
-      borderRadius: borderRadius,
-      side: BorderSide(
-        width: 1,
-        color: AbiliaColors.transparentWhite15,
-      ),
-    ),
-  ),
+  buttonTheme: lightActionButtonThemeData.copyWith(shape: ligthShapeBorder),
   buttonColor: AbiliaColors.transparentWhite20,
   iconTheme: IconThemeData(size: 32.0),
 );
