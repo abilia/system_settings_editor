@@ -3,8 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:seagull/bloc/all.dart';
 
 class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
-  @override
-  LoginFormState get initialState => LoginFormState.initial();
+  LoginFormBloc() : super(LoginFormState.initial());
 
   @override
   Stream<LoginFormState> mapEventToState(

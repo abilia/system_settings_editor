@@ -77,7 +77,7 @@ class _CalendarPageState extends State<CalendarPage>
                     itemBuilder: (context, index) {
                       return BlocBuilder<ActivitiesOccasionBloc,
                           ActivitiesOccasionState>(
-                        condition: (oldState, newState) {
+                        buildWhen: (oldState, newState) {
                           return (oldState is ActivitiesOccasionLoaded &&
                                   newState is ActivitiesOccasionLoaded &&
                                   oldState.day == newState.day) ||

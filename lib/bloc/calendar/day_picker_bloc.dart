@@ -11,12 +11,10 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
   final ClockBloc clockBloc;
 
   DayPickerBloc({@required this.clockBloc})
-      : _initialState =
-            DayPickerState(clockBloc.initialState.onlyDays(), startIndex);
+      : _initialState = DayPickerState(clockBloc.state.onlyDays(), startIndex),
+        super(DayPickerState(clockBloc.state.onlyDays(), startIndex));
 
   @override
-  DayPickerState get initialState => _initialState;
-
   @override
   Stream<DayPickerState> mapEventToState(DayPickerEvent event) async* {
     if (event is NextDay) {

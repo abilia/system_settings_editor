@@ -21,8 +21,8 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
     );
     // Act // Assert
-    expect(editActivityBloc.initialState, isA<StoredActivityState>());
-    expect(editActivityBloc.initialState.activity, activity);
+    expect(editActivityBloc.state, isA<StoredActivityState>());
+    expect(editActivityBloc.state.activity, activity);
   });
 
   test('Initial state is a new activity', () {
@@ -37,8 +37,7 @@ void main() {
       day: aTime,
     );
     // Act // Assert
-    expect(editActivityBloc.initialState.activity,
-        MatchActivityWithoutId(activity));
+    expect(editActivityBloc.state.activity, MatchActivityWithoutId(activity));
   });
 
   test('Initial state with no title is not saveable', () {
@@ -49,7 +48,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
     );
     // Act // Assert
-    expect(editActivityBloc.initialState.canSave, isFalse);
+    expect(editActivityBloc.state.canSave, isFalse);
   });
 
   test('Changing activity changes activity', () async {
@@ -58,7 +57,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       day: aTime,
     );
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
     final timeInterval = TimeInterval(null, null);
 
@@ -80,7 +79,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
         activitiesBloc: mockActivitiesBloc, day: aTime);
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
     final timeInterval = TimeInterval(null, null);
     final newStartTime = TimeOfDay(hour: 10, minute: 0);
@@ -158,7 +157,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
         activitiesBloc: mockActivitiesBloc, day: aDate);
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
     final newDate = DateTime(2011, 11, 11, 11, 11);
     final expetedNewDate = DateTime(2011, 11, 11, 11, 11);
     final expetedNewActivity = activity.copyWith(startTime: expetedNewDate);
@@ -394,7 +393,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
         activitiesBloc: mockActivitiesBloc, day: aDay);
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'title');
 
     final expectedActivity = activityWithTitle.copyWith(
@@ -431,7 +430,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
         activitiesBloc: mockActivitiesBloc, day: aDay);
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'title');
 
     final expectedActivity = activityWithTitle.copyWith(
@@ -476,7 +475,7 @@ void main() {
       day: aDay,
     );
 
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
 
     final startTime1 = TimeOfDay(hour: 10, minute: 0);
     final endTime1 = TimeOfDay(hour: 11, minute: 0);

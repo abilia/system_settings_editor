@@ -23,7 +23,7 @@ void main() {
     });
 
     test('Initial state is SortablesNotLoaded', () {
-      expect(sortableBloc.initialState, SortablesNotLoaded());
+      expect(sortableBloc.state, SortablesNotLoaded());
     });
 
     test('Sortables loaded after successful loading of sortables', () async {

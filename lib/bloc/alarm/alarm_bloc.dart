@@ -12,12 +12,9 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmStateBase> {
   AlarmBloc({
     @required this.activitiesBloc,
     @required this.clockBloc,
-  }) {
+  }) : super(UnInitializedAlarmState()) {
     _clockSubscription = clockBloc.listen((now) => add(AlarmEvent()));
   }
-
-  @override
-  AlarmStateBase get initialState => UnInitializedAlarmState();
 
   @override
   Stream<AlarmStateBase> mapEventToState(

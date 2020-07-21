@@ -21,7 +21,7 @@ void main() {
     });
 
     test('initial state', () {
-      expect(dayPickerBloc.initialState,
+      expect(dayPickerBloc.state,
           DayPickerState(theDay, DayPickerBloc.startIndex));
       expect(dayPickerBloc.state,
           DayPickerState(theDay, DayPickerBloc.startIndex));

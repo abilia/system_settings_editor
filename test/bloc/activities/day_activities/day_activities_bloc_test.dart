@@ -32,7 +32,6 @@ void main() {
     });
 
     test('initial state is DayActivitiesUninitialized', () {
-      expect(dayActivitiesBloc.initialState, DayActivitiesUninitialized());
       expect(dayActivitiesBloc.state, DayActivitiesUninitialized());
       expectLater(
         dayActivitiesBloc,
@@ -50,8 +49,6 @@ void main() {
       await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
 
       // Assert
-      expect(dayActivitiesBloc.initialState,
-          DayActivitiesLoaded(Iterable<Activity>.empty(), today));
       expect(dayActivitiesBloc.state,
           DayActivitiesLoaded(Iterable<Activity>.empty(), today));
     });

@@ -33,7 +33,7 @@ void main() {
     });
 
     test('initial state is LoginInitial', () {
-      expect(loginBloc.initialState, LoginInitial());
+      expect(loginBloc.state, LoginInitial());
     });
 
     test('LoginState and AuthenticationState in correct order', () async {

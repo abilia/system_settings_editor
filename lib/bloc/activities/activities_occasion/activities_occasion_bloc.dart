@@ -15,7 +15,7 @@ class ActivitiesOccasionBloc
   ActivitiesOccasionBloc({
     @required this.clockBloc,
     @required this.dayActivitiesBloc,
-  }) {
+  }) : super(ActivitiesOccasionLoading()) {
     activitiesSubscription = dayActivitiesBloc.listen((activitiesState) {
       if (activitiesState is DayActivitiesLoaded) {
         add(ActivitiesChanged(activitiesState));
@@ -23,9 +23,6 @@ class ActivitiesOccasionBloc
     });
     clockSubscription = clockBloc.listen((now) => add(NowChanged(now)));
   }
-
-  @override
-  ActivitiesOccasionState get initialState => ActivitiesOccasionLoading();
 
   @override
   Stream<ActivitiesOccasionState> mapEventToState(

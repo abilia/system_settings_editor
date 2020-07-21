@@ -16,9 +16,9 @@ void main() {
     });
 
     test('initial state is a flat minute', () {
-      expect(clockBloc.initialState.second, 0);
-      expect(clockBloc.initialState.millisecond, 0);
-      expect(clockBloc.initialState.microsecond, 0);
+      expect(clockBloc.state.second, 0);
+      expect(clockBloc.state.millisecond, 0);
+      expect(clockBloc.state.microsecond, 0);
     });
 
     test('tick returns tick', () {

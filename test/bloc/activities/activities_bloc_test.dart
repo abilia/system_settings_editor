@@ -31,7 +31,7 @@ void main() {
 
   group('ActivitiesBloc', () {
     test('initial state is ActivitiesNotLoaded', () {
-      expect(activitiesBloc.initialState, ActivitiesNotLoaded());
+      expect(activitiesBloc.state, ActivitiesNotLoaded());
     });
 
     test('load activities calls load activities on mockActivityRepostitory',

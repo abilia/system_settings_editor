@@ -8,8 +8,7 @@ void main() {
       calendarViewBloc = CalendarViewBloc();
     });
     test('initial state', () {
-      expect(calendarViewBloc.initialState,
-          CalendarViewState(CalendarViewType.LIST));
+      expect(calendarViewBloc.state, CalendarViewState(CalendarViewType.LIST));
     });
 
     test('Change calendar view', () async {

@@ -19,7 +19,7 @@ void main() {
     });
 
     test('Initial state is an empty ImageArchiveState', () {
-      expect(imageArchiveBloc.initialState, ImageArchiveState({}, {}, null));
+      expect(imageArchiveBloc.state, ImageArchiveState({}, {}, null));
     });
 
     test('FolderChanged will set the folder in the state', () async {

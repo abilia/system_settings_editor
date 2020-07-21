@@ -45,7 +45,7 @@ void main() {
     });
 
     test('Initial state is UserFilesNotLoaded', () {
-      expect(userFileBloc.initialState, UserFilesNotLoaded());
+      expect(userFileBloc.state, UserFilesNotLoaded());
     });
 
     test('User files loaded after successful loading of user files', () async {

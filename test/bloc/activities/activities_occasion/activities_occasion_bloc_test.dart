@@ -41,7 +41,6 @@ void main() {
   });
   group('ActivitiesOccasionBloc', () {
     test('initial state is ActivitiesOccasionLoading', () {
-      expect(activitiesOccasionBloc.initialState, ActivitiesOccasionLoading());
       expect(activitiesOccasionBloc.state, ActivitiesOccasionLoading());
       expectLater(
         activitiesOccasionBloc,
