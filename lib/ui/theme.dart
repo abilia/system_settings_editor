@@ -15,6 +15,7 @@ ThemeData abiliaTheme = ThemeData(
   buttonTheme: baseButtonTheme,
   buttonColor: AbiliaColors.transparentBlack20,
   highlightColor: AbiliaColors.transparentBlack40,
+  iconTheme: IconThemeData(size: 32, color: AbiliaColors.black),
   cursorColor: AbiliaColors.black,
   textSelectionHandleColor: AbiliaColors.black,
   appBarTheme: AppBarTheme(color: AbiliaColors.black80),
@@ -128,7 +129,7 @@ ButtonThemeData actionButtonThemeData = baseButtonTheme.copyWith(
 );
 
 ButtonThemeData lightActionButtonThemeData = actionButtonThemeData.copyWith(
-  buttonColor: AbiliaColors.transparentWhite20,
+  buttonColor: AbiliaColors.white,
   highlightColor: AbiliaColors.transparentWhite40,
   disabledColor: Colors.transparent,
   shape: OutlineInputBorder(
@@ -141,7 +142,7 @@ ButtonThemeData lightActionButtonThemeData = actionButtonThemeData.copyWith(
 );
 
 ButtonThemeData darkActionButtonThemeData = baseButtonTheme.copyWith(
-  buttonColor: AbiliaColors.transparentBlack20,
+  buttonColor: AbiliaColors.black,
   highlightColor: AbiliaColors.transparentBlack40,
   shape: OutlineInputBorder(
     borderSide: BorderSide(
@@ -155,8 +156,7 @@ ButtonThemeData darkActionButtonThemeData = baseButtonTheme.copyWith(
 ThemeData darkButtonTheme = abiliaTheme.copyWith(
   buttonTheme: darkActionButtonThemeData,
   textTheme: abiliaTheme.textTheme.copyWith(
-      button:
-          abiliaTheme.textTheme.button.copyWith(color: AbiliaColors.black75)),
+      button: abiliaTheme.textTheme.button.copyWith(color: AbiliaColors.black)),
   buttonColor: AbiliaColors.transparentBlack20,
 );
 

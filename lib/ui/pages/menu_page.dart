@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -8,7 +7,6 @@ import 'package:seagull/ui/pages/all.dart';
 class MenuPage extends StatelessWidget {
   const MenuPage({Key key}) : super(key: key);
   final widgets = const <Widget>[
-    DotSetting(),
     LogoutPickField(),
   ];
   @override
@@ -35,22 +33,6 @@ class LogoutPickField extends StatelessWidget {
       label: Text(Translator.of(context).translate.logout),
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => LogoutPage()),
-      ),
-    );
-  }
-}
-
-class DotSetting extends StatelessWidget {
-  const DotSetting({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SettingsBloc, SettingsState>(
-      builder: (context, state) => SwitchField(
-        leading: Icon(AbiliaIcons.options),
-        label: Text(Translator.of(context).translate.showTimeDots),
-        value: state.dotsInTimepillar,
-        onChanged: (v) => BlocProvider.of<SettingsBloc>(context)
-            .add(DotsInTimepillarUpdated(v)),
       ),
     );
   }
