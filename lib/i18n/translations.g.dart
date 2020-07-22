@@ -162,6 +162,8 @@ abstract class Translated {
   final String dots = 'n/a';
 
   final String edge = 'n/a';
+
+  final String preview = 'n/a';
 }
 
 class EN extends Translated {
@@ -390,6 +392,9 @@ class EN extends Translated {
 
   @override
   final String edge = 'Edge';
+
+  @override
+  final String preview = 'Preview';
 }
 
 class SV extends Translated {
@@ -617,4 +622,7 @@ class SV extends Translated {
 
   @override
   final String edge = 'Flärp';
+
+  @override
+  final String preview = 'Förhandsgranskning';
 }

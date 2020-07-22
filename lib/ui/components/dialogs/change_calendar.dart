@@ -39,6 +39,7 @@ class ChangeCalendarDialog extends StatelessWidget {
                   ),
                 ),
                 Padding(
+                  key: TestKey.timePillarSettingsButton,
                   padding: const EdgeInsets.only(left: 8),
                   child: ActionButton(
                     child: Icon(AbiliaIcons.settings),
