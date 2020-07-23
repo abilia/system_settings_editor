@@ -136,6 +136,25 @@ void main() {
     expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
   });
 
+  testWidgets('activity with null title', (WidgetTester tester) async {
+    // Arrange
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        ActivityInfo.from(
+          activity: Activity.createNew(
+            title: null,
+            fileId: Uuid().v4(),
+            startTime: startTime,
+          ),
+          day: day,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CheckedImageWithImagePopup), findsOneWidget);
+  });
+
   testWidgets('pressing signed off ', (WidgetTester tester) async {
     // Arrange
     final activity = Activity.createNew(
