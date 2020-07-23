@@ -16,59 +16,106 @@ class EditActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EditActivityBloc, EditActivityState>(
       builder: (context, state) {
-        final activity = state.activity;
-        return Scaffold(
-          appBar: AbiliaAppBar(
-            title: title,
-            trailing: ActionButton(
-              key: TestKey.finishEditActivityButton,
-              child: Icon(
-                AbiliaIcons.ok,
-                size: 32,
+        return DefaultTabController(
+          initialIndex: 0,
+          length: 4,
+          child: Scaffold(
+            appBar: AbiliaAppBar(
+              bottom: AbiliaTabBar(
+                tabs: <Widget>[
+                  Icon(AbiliaIcons.my_photos),
+                  Icon(AbiliaIcons.attention),
+                  Icon(AbiliaIcons.repeat),
+                  Icon(AbiliaIcons.attachment),
+                ],
               ),
-              onPressed: state.canSave
-                  ? () async {
-                      if (state is StoredActivityState &&
-                          state.activity.isRecurring) {
-                        final applyTo = await showViewDialog<ApplyTo>(
-                          context: context,
-                          builder: (context) => EditRecurrentDialog(),
-                        );
-                        if (applyTo == null) return;
-                        BlocProvider.of<EditActivityBloc>(context)
-                            .add(SaveRecurringActivity(applyTo, state.day));
-                      } else {
-                        BlocProvider.of<EditActivityBloc>(context)
-                            .add(SaveActivity());
+              title: title,
+              trailing: ActionButton(
+                key: TestKey.finishEditActivityButton,
+                child: Icon(
+                  AbiliaIcons.ok,
+                  size: 32,
+                ),
+                onPressed: state.canSave
+                    ? () async {
+                        if (state is StoredActivityState &&
+                            state.activity.isRecurring) {
+                          final applyTo = await showViewDialog<ApplyTo>(
+                            context: context,
+                            builder: (context) => EditRecurrentDialog(),
+                          );
+                          if (applyTo == null) return;
+                          BlocProvider.of<EditActivityBloc>(context)
+                              .add(SaveRecurringActivity(applyTo, state.day));
+                        } else {
+                          BlocProvider.of<EditActivityBloc>(context)
+                              .add(SaveActivity());
+                        }
+                        await Navigator.of(context).maybePop();
                       }
-                      await Navigator.of(context).maybePop();
-                    }
-                  : null,
+                    : null,
+              ),
             ),
-          ),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(0, 4.0, 12, 52.0),
-            children: <Widget>[
-              separated(NameAndPictureWidget(
-                activity,
-                newImage: state.newImage,
-              )),
-              separated(
-                  DateAndTimeWidget(activity, state.timeInterval, day: day)),
-              CollapsableWidget(
-                child: separated(CategoryWidget(activity)),
-                collapsed: activity.fullDay,
-              ),
-              CollapsableWidget(
-                child: separated(AlarmWidget(activity)),
-                collapsed: activity.fullDay,
-              ),
-              separated(CheckableAndDeleteAfterWidget(activity)),
-              padded(AvailibleForWidget(activity)),
-            ],
+            body: TabBarView(children: [
+              MainEdit(state: state, day: day),
+              UnderConstruction(),
+              UnderConstruction(),
+              UnderConstruction(),
+            ]),
           ),
         );
       },
+    );
+  }
+}
+
+class UnderConstruction extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Transform.scale(
+      alignment: Alignment.topRight,
+      scale: 3,
+      child: Banner(
+        location: BannerLocation.topEnd,
+        color: AbiliaColors.red,
+        message: 'Under construction',
+      ),
+    );
+  }
+}
+
+class MainEdit extends StatelessWidget {
+  const MainEdit({
+    Key key,
+    @required this.state,
+    @required this.day,
+  }) : super(key: key);
+
+  final EditActivityState state;
+  final DateTime day;
+
+  @override
+  Widget build(BuildContext context) {
+    final activity = state.activity;
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(0, 4.0, 12.0, 52.0),
+      children: <Widget>[
+        separated(NameAndPictureWidget(
+          activity,
+          newImage: state.newImage,
+        )),
+        separated(DateAndTimeWidget(activity, state.timeInterval, day: day)),
+        CollapsableWidget(
+          child: separated(CategoryWidget(activity)),
+          collapsed: activity.fullDay,
+        ),
+        CollapsableWidget(
+          child: separated(AlarmWidget(activity)),
+          collapsed: activity.fullDay,
+        ),
+        separated(CheckableAndDeleteAfterWidget(activity)),
+        padded(AvailibleForWidget(activity)),
+      ],
     );
   }
 

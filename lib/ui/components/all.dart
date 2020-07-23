@@ -10,6 +10,7 @@ export 'backend_switches.dart';
 export 'go_to_now_button.dart';
 export 'profile_picture.dart';
 export 'abilia_app_bar.dart';
+export 'abilia_tab_bar.dart';
 export 'full_day_container.dart';
 export 'calendar/all.dart';
 export 'activity/all.dart';
