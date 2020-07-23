@@ -9,83 +9,73 @@ import 'package:seagull/repository/sortable_repository.dart';
 import '../../mocks.dart';
 
 void main() {
-  group('Sortable bloc event order', () {
-    SortableBloc sortableBloc;
-    SortableRepository mockSortableRepository;
+  SortableBloc sortableBloc;
+  SortableRepository mockSortableRepository;
 
-    setUp(() {
-      mockSortableRepository = MockSortableRepository();
-      sortableBloc = SortableBloc(
-        sortableRepository: mockSortableRepository,
-        pushBloc: MockPushBloc(),
-        syncBloc: MockSyncBloc(),
-      );
-    });
+  setUp(() {
+    mockSortableRepository = MockSortableRepository();
+    sortableBloc = SortableBloc(
+      sortableRepository: mockSortableRepository,
+      pushBloc: MockPushBloc(),
+      syncBloc: MockSyncBloc(),
+    );
+  });
 
-    test('Initial state is SortablesNotLoaded', () {
-      expect(sortableBloc.state, SortablesNotLoaded());
-    });
+  test('Initial state is SortablesNotLoaded', () {
+    expect(sortableBloc.state, SortablesNotLoaded());
+  });
 
-    test('Sortables loaded after successful loading of sortables', () async {
-      when(mockSortableRepository.load()).thenAnswer((_) => Future.value([]));
-      sortableBloc.add(LoadSortables());
-      await expectLater(
-        sortableBloc,
-        emitsInOrder([
-          SortablesNotLoaded(),
-          SortablesLoaded(sortables: []),
-        ]),
-      );
-    });
+  test('Sortables loaded after successful loading of sortables', () async {
+    when(mockSortableRepository.load()).thenAnswer((_) => Future.value([]));
+    sortableBloc.add(LoadSortables());
+    await expectLater(
+      sortableBloc,
+      emits(SortablesLoaded(sortables: [])),
+    );
+  });
 
-    test('State is SortablesLoadedFailed if repository fails to load',
-        () async {
-      when(mockSortableRepository.load()).thenThrow(Exception());
-      sortableBloc.add(LoadSortables());
-      await expectLater(
-        sortableBloc,
-        emitsInOrder([
-          SortablesNotLoaded(),
-          SortablesLoadedFailed(),
-        ]),
-      );
-    });
+  test('State is SortablesLoadedFailed if repository fails to load', () async {
+    when(mockSortableRepository.load()).thenThrow(Exception());
+    sortableBloc.add(LoadSortables());
+    await expectLater(
+      sortableBloc,
+      emits(SortablesLoadedFailed()),
+    );
+  });
 
-    test('Generates new imagearchive sortable with existing upload folder',
-        () async {
-      // Arrange
-      final uploadFolder = Sortable.createNew(
-        type: SortableType.imageArchive,
-        isGroup: true,
-        sortOrder: 'A',
-        data: '{"upload": true}',
-      );
-      when(mockSortableRepository.load())
-          .thenAnswer((_) => Future.value([uploadFolder]));
-      final imageId = 'id1';
-      final imageName = 'nameOfImage';
-      final imagePath = 'path/to/image/$imageName.jpg';
+  test('Generates new imagearchive sortable with existing upload folder',
+      () async {
+    // Arrange
+    final uploadFolder = Sortable.createNew(
+      type: SortableType.imageArchive,
+      isGroup: true,
+      sortOrder: 'A',
+      data: '{"upload": true}',
+    );
+    when(mockSortableRepository.load())
+        .thenAnswer((_) => Future.value([uploadFolder]));
+    final imageId = 'id1';
+    final imageName = 'nameOfImage';
+    final imagePath = 'path/to/image/$imageName.jpg';
 
-      // Act
-      sortableBloc.add(LoadSortables());
-      sortableBloc.add(ImageArchiveImageAdded('id1', imagePath));
+    // Act
+    sortableBloc.add(LoadSortables());
+    sortableBloc.add(ImageArchiveImageAdded('id1', imagePath));
 
-      // Assert
-      await expectLater(
-        sortableBloc,
-        emitsInOrder([
-          SortablesNotLoaded(),
-          SortablesLoaded(sortables: [uploadFolder]),
-          isA<SortablesLoaded>(),
-        ]),
-      );
-      final capture =
-          verify(mockSortableRepository.save(captureAny)).captured.single;
-      final savedSortable = (capture as List<Sortable>).first;
-      expect(savedSortable.groupId, uploadFolder.id);
-      final jsonData = jsonDecode(savedSortable.data);
-      expect(jsonData['name'], imageName);
-      expect(jsonData['fileId'], imageId);
-    });
+    // Assert
+    await expectLater(
+      sortableBloc,
+      emitsInOrder([
+        SortablesLoaded(sortables: [uploadFolder]),
+        isA<SortablesLoaded>(),
+      ]),
+    );
+    final capture =
+        verify(mockSortableRepository.save(captureAny)).captured.single;
+    final savedSortable = (capture as List<Sortable>).first;
+    expect(savedSortable.groupId, uploadFolder.id);
+    final jsonData = jsonDecode(savedSortable.data);
+    expect(jsonData['name'], imageName);
+    expect(jsonData['fileId'], imageId);
   });
 }

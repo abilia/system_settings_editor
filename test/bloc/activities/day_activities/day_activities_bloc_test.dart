@@ -33,10 +33,6 @@ void main() {
 
     test('initial state is DayActivitiesUninitialized', () {
       expect(dayActivitiesBloc.state, DayActivitiesUninitialized());
-      expectLater(
-        dayActivitiesBloc,
-        emitsInOrder([DayActivitiesUninitialized()]),
-      );
     });
 
     test('initial state is DayActivitiesLoaded if started with loaded activity',
@@ -64,10 +60,7 @@ void main() {
       // Assert
       expectLater(
         dayActivitiesBloc,
-        emitsInOrder([
-          DayActivitiesUninitialized(),
-          DayActivitiesLoaded(activities, today),
-        ]),
+        emits(DayActivitiesLoaded(activities, today)),
       );
     });
 
@@ -87,10 +80,7 @@ void main() {
       // Assert
       expectLater(
         dayActivitiesBloc,
-        emitsInOrder([
-          DayActivitiesUninitialized(),
-          DayActivitiesLoaded(activitiesNow, today),
-        ]),
+        emits(DayActivitiesLoaded(activitiesNow, today)),
       );
     });
 
@@ -191,7 +181,7 @@ void main() {
       // Assert
       await expectLater(
         dayActivitiesBloc,
-        emits(DayActivitiesUninitialized()),
+        emits(DayActivitiesLoaded(Iterable.empty(), today)),
       );
 
       // Arrange
@@ -204,11 +194,7 @@ void main() {
       // Assert
       await expectLater(
         dayActivitiesBloc,
-        emitsInOrder([
-          DayActivitiesUninitialized(),
-          DayActivitiesLoaded(Iterable.empty(), today),
-          DayActivitiesLoaded(todayActivity, today),
-        ]),
+        emits(DayActivitiesLoaded(todayActivity, today)),
       );
     });
 
@@ -251,7 +237,6 @@ void main() {
       await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
-            DayActivitiesLoaded(Iterable.empty(), firstDay), // thursday
             DayActivitiesLoaded(
                 Iterable.empty(), firstDay.add(Duration(days: 1))), // friday
             DayActivitiesLoaded(
@@ -282,7 +267,6 @@ void main() {
       await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
-            DayActivitiesLoaded(Iterable.empty(), firstDay),
             DayActivitiesLoaded(Iterable.empty(), boxingDay),
             DayActivitiesLoaded(christmas, chrismasEve),
             DayActivitiesLoaded(Iterable.empty(), chrismasDay),
@@ -310,7 +294,6 @@ void main() {
       await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
-            DayActivitiesLoaded(Iterable.empty(), firstDay),
             DayActivitiesLoaded(Iterable.empty(), boxingDay),
             DayActivitiesLoaded(Iterable.empty(), chrismasEve),
             DayActivitiesLoaded(Iterable.empty(), chrismasDay),
@@ -338,7 +321,6 @@ void main() {
       await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
-            DayActivitiesLoaded(Iterable.empty(), firstDay),
             DayActivitiesLoaded(Iterable.empty(), boxingDay),
             DayActivitiesLoaded(Iterable.empty(), chrismasEve),
             DayActivitiesLoaded(Iterable.empty(), chrismasDay),
@@ -364,10 +346,14 @@ void main() {
 
       // Assert
       await expectLater(
-          dayActivitiesBloc,
-          emitsInOrder([DayActivitiesLoaded(Iterable.empty(), firstDay)]
-              .followedBy(allOtherDays.map((day) => DayActivitiesLoaded(
-                  day.day == 1 ? weekendActivity : Iterable.empty(), day)))));
+        dayActivitiesBloc,
+        emitsInOrder(
+          allOtherDays.map(
+            (day) => DayActivitiesLoaded(
+                day.day == 1 ? weekendActivity : Iterable.empty(), day),
+          ),
+        ),
+      );
     });
 
     test('Split up activity shows on day it was split up on ( bug test )',

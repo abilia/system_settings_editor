@@ -44,7 +44,6 @@ void main() {
       await expectLater(
         authenticationBloc,
         emitsInOrder([
-          AuthenticationUninitialized(),
           AuthenticationLoading(userRepository),
           Unauthenticated(userRepository),
         ]),
@@ -60,20 +59,19 @@ void main() {
       await expectLater(
         loginBloc,
         emitsInOrder([
-          LoginInitial(),
           LoginLoading(),
           LoginInitial(),
         ]),
       );
       await expectLater(
         authenticationBloc,
-        emitsInOrder([
-          AuthenticationLoading(userRepository),
+        emits(
           Authenticated(
-              token: Fakes.token,
-              userId: Fakes.userId,
-              userRepository: userRepository),
-        ]),
+            token: Fakes.token,
+            userId: Fakes.userId,
+            userRepository: userRepository,
+          ),
+        ),
       );
     });
 

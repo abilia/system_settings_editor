@@ -41,16 +41,15 @@ void main() {
       verify(mockActivityRepository.load());
     });
 
-    test('LoadActivities event returns ActivitiesLoaded state', () {
-      final expected = [ActivitiesNotLoaded(), ActivitiesLoaded([])];
+    test('LoadActivities event returns ActivitiesLoaded state', () async {
       when(mockActivityRepository.load())
           .thenAnswer((_) => Future.value(<Activity>[]));
 
-      expectLater(
-        activitiesBloc,
-        emitsInOrder(expected),
-      );
       activitiesBloc.add(LoadActivities());
+      await expectLater(
+        activitiesBloc,
+        emits(ActivitiesLoaded([])),
+      );
     });
 
     test('LoadActivities event returns ActivitiesLoaded state with Activity',
@@ -62,16 +61,13 @@ void main() {
           reminderBefore: [],
           alarmType: ALARM_SILENT_ONLY_ON_START,
           category: 0);
-      final expectedStates = [
-        ActivitiesNotLoaded(),
-        ActivitiesLoaded([exptectedActivity])
-      ];
+
       when(mockActivityRepository.load())
           .thenAnswer((_) => Future.value(<Activity>[exptectedActivity]));
 
       expectLater(
         activitiesBloc,
-        emitsInOrder(expectedStates),
+        emits(ActivitiesLoaded([exptectedActivity])),
       );
       activitiesBloc.add(LoadActivities());
     });
@@ -161,15 +157,12 @@ void main() {
       activitiesBloc.add(DeleteActivity(activity3));
 
       // Assert
-      final expectedResponse = [
-        ActivitiesNotLoaded(),
-        ActivitiesLoaded(fullActivityList),
-        ActivitiesLoaded(activityListDeleted),
-      ];
-
       await expectLater(
         activitiesBloc,
-        emitsInOrder(expectedResponse),
+        emitsInOrder([
+          ActivitiesLoaded(fullActivityList),
+          ActivitiesLoaded(activityListDeleted),
+        ]),
       );
       verify(mockSyncBloc.add(ActivitySaved()));
     });
@@ -191,15 +184,12 @@ void main() {
       activitiesBloc.add(UpdateActivity(updatedActivity));
 
       // Assert
-      final expectedResponse = [
-        ActivitiesNotLoaded(),
-        ActivitiesLoaded(activityList),
-        ActivitiesLoaded(updatedActivityList.followedBy([])),
-      ];
-
       await expectLater(
         activitiesBloc,
-        emitsInOrder(expectedResponse),
+        emitsInOrder([
+          ActivitiesLoaded(activityList),
+          ActivitiesLoaded(updatedActivityList.followedBy([])),
+        ]),
       );
       verify(mockSyncBloc.add(ActivitySaved()));
     });
@@ -230,7 +220,6 @@ void main() {
       await expectLater(
         activitiesBloc,
         emitsInOrder([
-          ActivitiesNotLoaded(),
           ActivitiesLoaded(activityList),
           ActivitiesLoaded([anActivity].followedBy([])),
         ]),
@@ -282,7 +271,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             ActivitiesLoaded(activityList2.followedBy({})),
           ]),
@@ -336,7 +324,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             ActivitiesLoaded(activityList2.followedBy({})),
           ]),
@@ -382,7 +369,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             MatchActivitiesWithoutId(expectedActivityList),
           ]),
@@ -427,7 +413,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             ActivitiesLoaded([anActivity].followedBy({})),
           ]),
@@ -462,7 +447,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             ActivitiesLoaded([recurrringActivityWithEndTime].followedBy({})),
           ]),
@@ -507,7 +491,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             ActivitiesLoaded([recurrringActivity1AfterDelete].followedBy({})),
           ]),
@@ -550,7 +533,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurring]),
             ActivitiesLoaded([expected].followedBy([])),
           ]),
@@ -591,7 +573,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurring]),
             MatchActivitiesWithoutId(
                 [expcetedUpdatedActivity, updatedOldActivity]),
@@ -639,7 +620,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurring]),
             exptected,
           ]),
@@ -689,7 +669,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurring]),
             expected,
           ]),
@@ -742,7 +721,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurring]),
             expected,
           ]),
@@ -775,7 +753,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurrringActivity]),
             ActivitiesLoaded([updatedRecurrringActivity].followedBy([])),
           ]),
@@ -818,7 +795,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurrringActivity]),
             MatchActivitiesWithoutId(exptected),
           ]),
@@ -860,7 +836,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurrringActivity]),
             MatchActivitiesWithoutId(exptectedList),
           ]),
@@ -906,7 +881,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurrringActivity]),
             MatchActivitiesWithoutId(exptectedList),
           ]),
@@ -1016,7 +990,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(currentActivities),
             MatchActivitiesWithoutId(exptectedList),
           ]),
@@ -1078,7 +1051,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([a1, a2, a3]),
             MatchActivitiesWithoutId([a1, a2Part1, updatedA2, expectedA3]),
           ]),
