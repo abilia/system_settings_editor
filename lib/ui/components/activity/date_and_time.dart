@@ -71,7 +71,7 @@ class ReminderSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     return SwitchField(
       leading: Icon(AbiliaIcons.handi_reminder),
-      label: Text(Translator.of(context).translate.reminder),
+      label: Text(Translator.of(context).translate.reminders),
       value: activity.reminders.isNotEmpty,
       onChanged: (switchOn) {
         final reminders = switchOn ? [15.minutes().inMilliseconds] : <int>[];

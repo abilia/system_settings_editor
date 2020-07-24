@@ -40,7 +40,7 @@ class SelectReminderDialog extends StatelessWidget {
                   }
                 }
               : null,
-          heading: Text(Translator.of(context).translate.reminder,
+          heading: Text(Translator.of(context).translate.reminders,
               style: theme.textTheme.headline6),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
