@@ -27,6 +27,51 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
       Size.fromHeight(height + (bottom?.preferredSize?.height ?? 0.0));
   @override
   Widget build(BuildContext context) {
+    Widget wrappedWidget = Flexible(
+      child: Stack(
+        children: <Widget>[
+          Align(
+            alignment: Alignment.centerLeft,
+            child: ActionButton(
+              key: TestKey.appBarCloseButton,
+              child: Icon(
+                closeIcon,
+                size: 32,
+              ),
+              onPressed:
+                  onClosedPressed ?? () => Navigator.of(context).maybePop(),
+            ),
+          ),
+          Center(
+            child: Text(
+              title,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6
+                  .copyWith(color: AbiliaColors.white),
+            ),
+          ),
+          if (trailing != null)
+            Align(
+              alignment: Alignment.centerRight,
+              child: trailing,
+            ),
+        ],
+      ),
+    );
+
+    if (bottom != null) {
+      wrappedWidget = Column(
+        children: <Widget>[
+          wrappedWidget,
+          SizedBox(
+            height: 14.0,
+          ),
+          bottom,
+        ],
+      );
+    }
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Theme(
@@ -36,44 +81,8 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: SafeArea(
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-              child: Column(
-                children: <Widget>[
-                  Flexible(
-                    child: Stack(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: ActionButton(
-                            key: TestKey.appBarCloseButton,
-                            child: Icon(
-                              closeIcon,
-                              size: 32,
-                            ),
-                            onPressed: onClosedPressed ??
-                                () => Navigator.of(context).maybePop(),
-                          ),
-                        ),
-                        Center(
-                          child: Text(
-                            title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                .copyWith(color: AbiliaColors.white),
-                          ),
-                        ),
-                        if (trailing != null)
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: trailing,
-                          ),
-                      ],
-                    ),
-                  ),
-                  if (bottom != null) bottom,
-                ],
-              ),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: wrappedWidget,
             ),
           ),
         ),

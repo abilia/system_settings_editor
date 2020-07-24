@@ -22,7 +22,7 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
     for (var i = 0; i < tabs.length; i++) {
       wrappedTabs[i] = _Tab(
         index: i,
-        tabs: tabs.length,
+        last: (tabs.length - 1) == i,
         child: tabs[i],
         controller: DefaultTabController.of(context),
       );
@@ -40,13 +40,12 @@ class _Tab extends StatelessWidget {
   const _Tab({
     Key key,
     @required this.index,
-    @required this.tabs,
+    @required this.last,
     @required this.child,
     @required this.controller,
-  })  : last = index == tabs - 1,
-        super(key: key);
+  }) : super(key: key);
 
-  final int index, tabs;
+  final int index;
   final bool last;
   final Widget child;
   final TabController controller;
@@ -58,13 +57,11 @@ class _Tab extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Padding(
-            padding:
-                !last ? const EdgeInsets.only(right: 2.0) : EdgeInsets.zero,
+            padding: last ? EdgeInsets.zero : const EdgeInsets.only(right: 2.0),
             child: _AnimatedTab(
               child: child,
               animation: controller.animation,
               index: index,
-              first: index == 0,
               last: last,
             ),
           )
@@ -80,9 +77,8 @@ class _AnimatedTab extends AnimatedWidget {
     @required this.child,
     @required this.animation,
     @required this.index,
-    @required bool first,
     @required bool last,
-  })  : beginDecoration = first
+  })  : beginDecoration = index == 0
             ? const BoxDecoration(
                 borderRadius: BorderRadius.horizontal(left: radius),
                 color: AbiliaColors.white,
@@ -101,7 +97,7 @@ class _AnimatedTab extends AnimatedWidget {
                     border: Border.fromBorderSide(
                         BorderSide(color: AbiliaColors.white)),
                   ),
-        endDecoration = first
+        endDecoration = index == 0
             ? const BoxDecoration(
                 borderRadius: BorderRadius.horizontal(left: radius),
                 color: AbiliaColors.transparentWhite20,
@@ -130,7 +126,8 @@ class _AnimatedTab extends AnimatedWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+      width: 64.0,
+      height: 48.0,
       child: child,
       decoration: DecorationTween(begin: beginDecoration, end: endDecoration)
           .lerp((animation.value - index).abs().clamp(0.0, 1.0)),

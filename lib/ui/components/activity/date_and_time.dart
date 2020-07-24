@@ -43,16 +43,6 @@ class DateAndTimeWidget extends StatelessWidget {
             onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
                 .add(ReplaceActivity(activity.copyWith(fullDay: v))),
           ),
-          CollapsableWidget(
-            collapsed: activity.fullDay,
-            padding: const EdgeInsets.only(top: 8.0),
-            child: ReminderSwitch(activity: activity),
-          ),
-          CollapsableWidget(
-            padding: const EdgeInsets.only(top: 8.0),
-            collapsed: activity.fullDay || activity.reminderBefore.isEmpty,
-            child: Reminders(activity: activity),
-          ),
         ],
       ),
     );

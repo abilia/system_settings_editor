@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -57,8 +58,8 @@ class EditActivityPage extends StatelessWidget {
               ),
             ),
             body: TabBarView(children: [
-              MainEdit(state: state, day: day),
-              UnderConstruction(),
+              MainTab(state: state, day: day),
+              AlarmAndReminderTab(activity: state.activity),
               UnderConstruction(),
               UnderConstruction(),
             ]),
@@ -84,8 +85,8 @@ class UnderConstruction extends StatelessWidget {
   }
 }
 
-class MainEdit extends StatelessWidget {
-  const MainEdit({
+class MainTab extends EditActivityTab {
+  const MainTab({
     Key key,
     @required this.state,
     @required this.day,
@@ -95,27 +96,72 @@ class MainEdit extends StatelessWidget {
   final DateTime day;
 
   @override
-  Widget build(BuildContext context) {
+  List<Widget> buildChildren(BuildContext context) {
     final activity = state.activity;
+    return <Widget>[
+      separated(NameAndPictureWidget(
+        activity,
+        newImage: state.newImage,
+      )),
+      separated(DateAndTimeWidget(activity, state.timeInterval, day: day)),
+      CollapsableWidget(
+        child: separated(CategoryWidget(activity)),
+        collapsed: activity.fullDay,
+      ),
+      separated(CheckableAndDeleteAfterWidget(activity)),
+      padded(AvailibleForWidget(activity)),
+    ];
+  }
+}
+
+class AlarmAndReminderTab extends EditActivityTab {
+  const AlarmAndReminderTab({
+    Key key,
+    @required this.activity,
+  }) : super(key: key);
+
+  final Activity activity;
+
+  @override
+  List<Widget> buildChildren(BuildContext context) {
+    return <Widget>[
+      CollapsableWidget(
+        collapsed: activity.fullDay,
+        child: separated(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SubHeading(Translator.of(context).translate.reminders),
+              ReminderSwitch(activity: activity),
+              CollapsableWidget(
+                padding: const EdgeInsets.only(top: 8.0),
+                collapsed: activity.fullDay || activity.reminderBefore.isEmpty,
+                child: Reminders(activity: activity),
+              ),
+            ],
+          ),
+        ),
+      ),
+      padded(
+        CollapsableWidget(
+          child: AlarmWidget(activity),
+          collapsed: activity.fullDay,
+        ),
+      ),
+    ];
+  }
+}
+
+abstract class EditActivityTab extends StatelessWidget {
+  const EditActivityTab({Key key}) : super(key: key);
+
+  List<Widget> buildChildren(BuildContext context);
+
+  @override
+  Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.fromLTRB(0, 4.0, 12.0, 52.0),
-      children: <Widget>[
-        separated(NameAndPictureWidget(
-          activity,
-          newImage: state.newImage,
-        )),
-        separated(DateAndTimeWidget(activity, state.timeInterval, day: day)),
-        CollapsableWidget(
-          child: separated(CategoryWidget(activity)),
-          collapsed: activity.fullDay,
-        ),
-        CollapsableWidget(
-          child: separated(AlarmWidget(activity)),
-          collapsed: activity.fullDay,
-        ),
-        separated(CheckableAndDeleteAfterWidget(activity)),
-        padded(AvailibleForWidget(activity)),
-      ],
+      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 52.0),
+      children: buildChildren(context),
     );
   }
 
@@ -132,7 +178,7 @@ class MainEdit extends StatelessWidget {
 
   Widget padded(Widget child) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12.0, 16.0, 4.0, 16.0),
+      padding: const EdgeInsets.fromLTRB(12.0, 24.0, 4.0, 16.0),
       child: child,
     );
   }

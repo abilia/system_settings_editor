@@ -67,12 +67,6 @@ void main() {
   });
 
   group('edit activity test', () {
-    Future scrollDown(WidgetTester tester, {double dy = -800.0}) async {
-      final center = tester.getCenter(find.byIcon(AbiliaIcons.handi_reminder));
-      await tester.dragFrom(center, Offset(0.0, dy));
-      await tester.pump();
-    }
-
     testWidgets('New activity shows', (WidgetTester tester) async {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
@@ -80,12 +74,34 @@ void main() {
       expect(find.byType(EditActivityPage), findsOneWidget);
     });
 
+    testWidgets('TabBar shows', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      expect(find.byType(AbiliaTabBar), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.my_photos), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.attention), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.repeat), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.attachment), findsOneWidget);
+    });
+
+    testWidgets('Can switch tabs', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      expect(find.byType(MainTab), findsOneWidget);
+      await tester.goToAlarmTab();
+      expect(find.byType(AlarmAndReminderTab), findsOneWidget);
+      await tester.goToMainTab();
+      expect(find.byType(MainTab), findsOneWidget);
+    });
+
     testWidgets('Scroll to end of page', (WidgetTester tester) async {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
       expect(find.byType(AvailibleForWidget), findsNothing);
-      await scrollDown(tester);
+      await tester.scrollDown();
       expect(find.byType(AvailibleForWidget), findsOneWidget);
     });
 
@@ -149,7 +165,10 @@ void main() {
               .value,
           isFalse);
       expect(startTimeFieldFinder, findsOneWidget);
+      await tester.goToAlarmTab();
       expect(find.byIcon(AbiliaIcons.handi_reminder), findsOneWidget);
+      await tester.goToMainTab();
+
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
       expect(
@@ -167,7 +186,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await scrollDown(tester);
+      await tester.goToAlarmTab();
       expect(
           tester
               .widget<Switch>(find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
@@ -188,8 +207,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await scrollDown(tester);
-      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
       expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
       expect(find.text(translate.vibration), findsNothing);
       expect(find.byIcon(AbiliaIcons.handi_vibration), findsNothing);
@@ -206,7 +224,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await scrollDown(tester);
+      await tester.scrollDown();
       expect(
           tester
               .widget<Switch>(find.byKey(ObjectKey(TestKey.checkableSwitch)))
@@ -227,7 +245,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await scrollDown(tester);
+      await tester.scrollDown();
       expect(
           tester
               .widget<Switch>(find.byKey(ObjectKey(TestKey.deleteAfterSwitch)))
@@ -276,7 +294,7 @@ void main() {
       expect(leftCategoryRadio1.groupValue, Category.right);
       expect(rightCategoryRadio1.groupValue, Category.right);
 
-      await scrollDown(tester, dy: -100);
+      await tester.scrollDown(dy: -100);
       await tester.tap(find.byKey(TestKey.leftCategoryRadio));
       await tester.pumpAndSettle();
       final leftCategoryRadio2 =
@@ -302,7 +320,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await scrollDown(tester);
+      await tester.scrollDown();
       await tester.pumpAndSettle();
 
       expect(find.byKey(TestKey.availibleFor), findsOneWidget);
@@ -331,6 +349,9 @@ void main() {
       final remindersAll = find.byType(SelectableField);
       final reminderField = find.byType(Reminders);
 
+      // Act -- Go to alarm tab
+      await tester.goToAlarmTab();
+
       // Assert -- reminder switch is visible but reminders field is collapsed
       expect(reminderSwitchFinder, findsOneWidget);
       expect(remindersAll, findsNothing);
@@ -346,7 +367,7 @@ void main() {
       expect(remindersAllSelected, findsOneWidget);
 
       // Act -- tap on day reminder
-      await scrollDown(tester, dy: -100);
+      await tester.scrollDown(dy: -100);
       await tester.tap(reminderDayFinder);
       await tester.pumpAndSettle();
       // Assert -- 15 min and 1 day reminder is selected, all reminders shows
@@ -629,4 +650,20 @@ void main() {
       expect(find.text('00:01'), findsOneWidget);
     });
   });
+}
+
+extension on WidgetTester {
+  Future scrollDown({double dy = -800.0}) async {
+    final center = getCenter(find.byType(EditActivityPage));
+    await dragFrom(center, Offset(0.0, dy));
+    await pump();
+  }
+
+  Future goToMainTab() async => goToTab(AbiliaIcons.my_photos);
+  Future goToAlarmTab() async => goToTab(AbiliaIcons.attention);
+
+  Future goToTab(IconData icon) async {
+    await tap(find.byIcon(icon));
+    await pumpAndSettle();
+  }
 }
