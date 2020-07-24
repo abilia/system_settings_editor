@@ -27,37 +27,35 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
       Size.fromHeight(height + (bottom?.preferredSize?.height ?? 0.0));
   @override
   Widget build(BuildContext context) {
-    Widget wrappedWidget = Flexible(
-      child: Stack(
-        children: <Widget>[
+    Widget wrappedWidget = Stack(
+      children: <Widget>[
+        Align(
+          alignment: Alignment.centerLeft,
+          child: ActionButton(
+            key: TestKey.appBarCloseButton,
+            child: Icon(
+              closeIcon,
+              size: 32,
+            ),
+            onPressed:
+                onClosedPressed ?? () => Navigator.of(context).maybePop(),
+          ),
+        ),
+        Center(
+          child: Text(
+            title,
+            style: Theme.of(context)
+                .textTheme
+                .headline6
+                .copyWith(color: AbiliaColors.white),
+          ),
+        ),
+        if (trailing != null)
           Align(
-            alignment: Alignment.centerLeft,
-            child: ActionButton(
-              key: TestKey.appBarCloseButton,
-              child: Icon(
-                closeIcon,
-                size: 32,
-              ),
-              onPressed:
-                  onClosedPressed ?? () => Navigator.of(context).maybePop(),
-            ),
+            alignment: Alignment.centerRight,
+            child: trailing,
           ),
-          Center(
-            child: Text(
-              title,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline6
-                  .copyWith(color: AbiliaColors.white),
-            ),
-          ),
-          if (trailing != null)
-            Align(
-              alignment: Alignment.centerRight,
-              child: trailing,
-            ),
-        ],
-      ),
+      ],
     );
 
     if (bottom != null) {

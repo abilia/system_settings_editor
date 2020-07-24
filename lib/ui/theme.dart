@@ -57,8 +57,13 @@ const darkShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
   side: BorderSide(color: AbiliaColors.transparentBlack30),
 );
-const BoxDecoration borderDecoration = BoxDecoration(
+const BoxDecoration boxDecoration = BoxDecoration(
   borderRadius: borderRadius,
+  border: border,
+);
+const BoxDecoration offBoxDecoration = BoxDecoration(
+  borderRadius: borderRadius,
+  color: AbiliaColors.transparentWhite40,
   border: border,
 );
 const BoxDecoration currentBoxDecoration = BoxDecoration(

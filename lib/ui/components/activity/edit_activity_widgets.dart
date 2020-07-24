@@ -6,6 +6,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/form/all.dart';
+import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -67,8 +68,8 @@ class NameAndPictureWidget extends StatelessWidget {
               InkWell(
                 onTap: imageClick,
                 child: FadeInCalendarImage(
-                  height: 84,
-                  width: 84,
+                  height: 84.0,
+                  width: 84.0,
                   imageFileId: activity.fileId,
                   imageFilePath: activity.icon,
                   activityId: activity.id,
@@ -78,11 +79,19 @@ class NameAndPictureWidget extends StatelessWidget {
             else
               LinedBorder(
                 key: TestKey.addPicture,
-                padding: const EdgeInsets.all(26),
-                child: const Icon(
-                  AbiliaIcons.add_photo,
-                  size: 32,
-                  color: AbiliaColors.black75,
+                padding: const EdgeInsets.all(4),
+                child: Ink(
+                  decoration: const BoxDecoration(
+                    borderRadius: borderRadius,
+                    color: AbiliaColors.white,
+                  ),
+                  width: 76.0,
+                  height: 76.0,
+                  child: const Icon(
+                    AbiliaIcons.add_photo,
+                    size: 32,
+                    color: AbiliaColors.black75,
+                  ),
                 ),
                 onTap: imageClick,
               ),

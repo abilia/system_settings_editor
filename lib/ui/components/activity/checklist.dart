@@ -95,9 +95,9 @@ class QuestionView extends StatelessWidget {
               child: AnimatedContainer(
                 duration: duration,
                 decoration: signedOff
-                    ? borderDecoration.copyWith(
+                    ? boxDecoration.copyWith(
                         border: Border.all(style: BorderStyle.none))
-                    : borderDecoration,
+                    : boxDecoration,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   textBaseline: TextBaseline.ideographic,

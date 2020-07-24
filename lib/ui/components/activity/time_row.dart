@@ -123,7 +123,7 @@ class _TimeBox extends StatelessWidget {
   }
 
   BoxDecoration get _decoration =>
-      current ? currentBoxDecoration : past ? pastDecration : borderDecoration;
+      current ? currentBoxDecoration : past ? pastDecration : boxDecoration;
   EdgeInsets get _padding => const EdgeInsets.fromLTRB(21.0, 14.0, 20.0, 14.0)
       .add(future ? const EdgeInsets.all(1.0) : EdgeInsets.zero);
 }

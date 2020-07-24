@@ -488,7 +488,6 @@ void main() {
       // Assert -- that correct start and end time shows
       expect(find.text('11:55 AM'), findsOneWidget);
       expect(find.text('2:55 PM'), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.plus), findsNothing);
 
       // Act -- remove end time
       await tester.tap(endTimeFieldFinder);
@@ -499,8 +498,6 @@ void main() {
       // Assert -- old end time does not show
       expect(find.text('2:55 PM'), findsNothing);
       expect(find.text('11:55 AM'), findsOneWidget);
-
-      expect(find.byIcon(AbiliaIcons.plus), findsOneWidget);
     });
 
     testWidgets('can change am to pm', (WidgetTester tester) async {

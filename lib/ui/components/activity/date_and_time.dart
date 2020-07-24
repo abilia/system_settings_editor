@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/components/form/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -29,7 +30,7 @@ class DateAndTimeWidget extends StatelessWidget {
           DatePicker(
             activity.startTime,
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 24.0),
           CollapsableWidget(
             collapsed: activity.fullDay,
             padding: const EdgeInsets.only(bottom: 12.0),
@@ -81,6 +82,8 @@ class DatePicker extends StatelessWidget {
     final timeFormat =
         DateFormat.yMMMMd(Localizations.localeOf(context).toLanguageTag());
     final translator = Translator.of(context).translate;
+    final dayColor = weekDayColor[date.weekday];
+    final color = dayColor == AbiliaColors.white ? dayColor[120] : dayColor;
 
     return PickField(
       key: TestKey.datePicker,
@@ -90,7 +93,14 @@ class DatePicker extends StatelessWidget {
             initialDate: date,
             firstDate: DateTime(date.year - 20),
             lastDate: DateTime(date.year + 20),
-            builder: (BuildContext context, Widget child) => child);
+            builder: (context, child) => Theme(
+                data: abiliaTheme.copyWith(
+                  colorScheme: abiliaTheme.colorScheme.copyWith(
+                    primary: color,
+                    surface: color,
+                  ),
+                ),
+                child: child));
         if (newDate != null) {
           BlocProvider.of<EditActivityBloc>(context).add(ChangeDate(newDate));
         }
@@ -184,28 +194,12 @@ class TimePicker extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SubHeading(text),
-        if (time != null)
-          PickField(
-            onTap: onTap,
-            heigth: heigth,
-            leading: Icon(AbiliaIcons.clock),
-            label: Text(time.format(context)),
-          )
-        else
-          InkWell(
-            onTap: onTap,
-            borderRadius: borderRadius,
-            child: LinedBorder(
-              padding: EdgeInsets.zero,
-              child: Container(
-                height: heigth,
-                width: double.infinity,
-                child: Icon(
-                  AbiliaIcons.plus,
-                ),
-              ),
-            ),
-          ),
+        PickField(
+          onTap: onTap,
+          heigth: heigth,
+          leading: Icon(AbiliaIcons.clock),
+          label: Text(time != null ? time.format(context) : ''),
+        )
       ],
     );
   }
@@ -233,7 +227,8 @@ class Reminders extends StatelessWidget {
             (r) => SelectableField(
               label: Text(
                 r.toReminderString(translator),
-                style: Theme.of(context).textTheme.bodyText1,
+                style:
+                    Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
               ),
               selected: activity.reminders.contains(r),
               onTap: () => BlocProvider.of<EditActivityBloc>(context)

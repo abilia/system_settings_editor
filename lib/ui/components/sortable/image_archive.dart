@@ -135,7 +135,7 @@ class ArchiveImage extends StatelessWidget {
             },
             borderRadius: borderRadius,
             child: Container(
-              decoration: borderDecoration,
+              decoration: boxDecoration,
               padding: const EdgeInsets.all(4.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,

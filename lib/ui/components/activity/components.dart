@@ -82,7 +82,7 @@ class PickField extends StatelessWidget {
         borderRadius: borderRadius,
         child: Ink(
           height: heigth,
-          decoration: active ? whiteBoxDecoration : borderDecoration,
+          decoration: active ? whiteBoxDecoration : offBoxDecoration,
           padding: const EdgeInsets.all(12),
           child: Stack(
             children: <Widget>[
@@ -117,8 +117,6 @@ class RadioField<T> extends StatelessWidget {
   final double heigth, width;
   final T value, groupValue;
   final ValueChanged<T> onChanged;
-  final BoxDecoration activeDecoration;
-  final BoxDecoration inactiveDecoration;
   final EdgeInsetsGeometry margin;
 
   const RadioField({
@@ -129,15 +127,13 @@ class RadioField<T> extends StatelessWidget {
     this.child,
     this.heigth = 56,
     this.width,
-    this.activeDecoration = whiteBoxDecoration,
-    this.inactiveDecoration = borderDecoration,
     this.margin = const EdgeInsets.all(8.0),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final decoration =
-        value == groupValue ? activeDecoration : inactiveDecoration;
+        value == groupValue ? whiteBoxDecoration : offBoxDecoration;
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -248,15 +244,16 @@ class SelectableField extends StatelessWidget {
             Ink(
               height: heigth,
               width: width,
-              decoration: selected ? whiteBoxDecoration : borderDecoration,
-              padding: const EdgeInsets.only(left: 12.0, top: 6.0, right: 24.0),
+              decoration: selected ? whiteBoxDecoration : offBoxDecoration,
+              padding:
+                  const EdgeInsets.only(left: 12.0, top: 10.0, right: 22.0),
               child: label,
             ),
             Positioned(
               top: -6,
               right: -6,
               child: Container(
-                padding: const EdgeInsets.all(1.0),
+                padding: const EdgeInsets.all(4.0),
                 decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     shape: BoxShape.circle),

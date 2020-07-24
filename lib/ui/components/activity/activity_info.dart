@@ -60,7 +60,7 @@ class ActivityInfo extends StatelessWidget {
             TimeRow(activityDay),
             Expanded(
               child: Container(
-                decoration: borderDecoration,
+                decoration: boxDecoration,
                 child: ActivityContainer(activityDay: activityDay),
               ),
             ),

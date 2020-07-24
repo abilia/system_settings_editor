@@ -160,7 +160,7 @@ abstract class EditActivityTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 52.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 56.0),
       children: buildChildren(context),
     );
   }
