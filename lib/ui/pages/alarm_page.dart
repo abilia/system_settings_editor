@@ -58,7 +58,7 @@ class _ReminderPageState extends AlarmAwareWidgetState<ReminderPage> {
     final text = widget.reminder.reminder
         .toReminderHeading(translate, widget.reminder is ReminderBefore);
     return Scaffold(
-      appBar: AbiliaAppBar(title: translate.reminder),
+      appBar: AbiliaAppBar(title: translate.reminders),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(

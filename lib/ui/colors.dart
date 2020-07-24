@@ -254,6 +254,7 @@ class AbiliaColors {
       transparentBlack15 = Color(0x26000000),
       transparentBlack20 = Color(0x33000000),
       transparentBlack25 = Color(0x40000000),
+      transparentBlack30 = Color(0x4D000000),
       transparentBlack40 = Color(0x66000000),
       transparentBlack50 = Color(0x80000000),
       transparentBlack90 = Color(0xE6000000);
@@ -293,6 +294,7 @@ class AbiliaColors {
       transparentWhite15 = Color(0x26FFFFFF),
       transparentWhite20 = Color(0x33FFFFFF),
       transparentWhite25 = Color(0x40FFFFFF),
+      transparentWhite30 = Color(0x4DFFFFFF),
       transparentWhite40 = Color(0x66FFFFFF),
       transparentWhite50 = Color(0x80FFFFFF),
       transparentWhite90 = Color(0xE6FFFFFF);

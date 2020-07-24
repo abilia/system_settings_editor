@@ -68,7 +68,7 @@ class ActivityCard extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: InkWell(
-                borderRadius: borderRadius,
+                borderRadius: borderRadius.subtract(BorderRadius.circular(1.0)),
                 onTap: () {
                   Navigator.push(
                     context,

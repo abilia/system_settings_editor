@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seagull/ui/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WebLink extends StatelessWidget {
@@ -15,7 +16,7 @@ class WebLink extends StatelessWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.bodyText1.copyWith(
-              color: Theme.of(context).accentColor,
+              color: AbiliaColors.red,
               decoration: TextDecoration.underline,
             ),
       ),

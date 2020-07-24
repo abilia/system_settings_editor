@@ -35,7 +35,7 @@ abstract class Translated {
 
   final String fullDay = 'n/a';
 
-  final String reminder = 'n/a';
+  final String reminders = 'n/a';
 
   final String alarm = 'n/a';
 
@@ -194,7 +194,7 @@ class EN extends Translated {
   final String fullDay = 'All day';
 
   @override
-  final String reminder = 'Reminder';
+  final String reminders = 'Reminders';
 
   @override
   final String alarm = 'Alarm';
@@ -412,7 +412,7 @@ class SV extends Translated {
   final String fullDay = 'Heldag';
 
   @override
-  final String reminder = 'Påminnelse';
+  final String reminders = 'Påminnelser';
 
   @override
   final String alarm = 'Larm';
