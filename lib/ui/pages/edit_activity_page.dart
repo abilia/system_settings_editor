@@ -17,12 +17,21 @@ class EditActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EditActivityBloc, EditActivityState>(
       builder: (context, state) {
+        final fullDay = state.activity.fullDay;
         return DefaultTabController(
           initialIndex: 0,
-          length: 4,
+          length: 3 + (fullDay ? 0 : 1),
           child: Scaffold(
             appBar: AbiliaAppBar(
               bottom: AbiliaTabBar(
+                collapsedCondition: (i) {
+                  switch (i) {
+                    case 1:
+                      return fullDay;
+                    default:
+                      return false;
+                  }
+                },
                 tabs: <Widget>[
                   Icon(AbiliaIcons.my_photos),
                   Icon(AbiliaIcons.attention),
@@ -59,7 +68,7 @@ class EditActivityPage extends StatelessWidget {
             ),
             body: TabBarView(children: [
               MainTab(state: state, day: day),
-              AlarmAndReminderTab(activity: state.activity),
+              if (!fullDay) AlarmAndReminderTab(activity: state.activity),
               UnderConstruction(),
               UnderConstruction(),
             ]),
@@ -125,28 +134,22 @@ class AlarmAndReminderTab extends EditActivityTab {
   @override
   List<Widget> buildChildren(BuildContext context) {
     return <Widget>[
-      CollapsableWidget(
-        collapsed: activity.fullDay,
-        child: separated(
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SubHeading(Translator.of(context).translate.reminders),
-              ReminderSwitch(activity: activity),
-              CollapsableWidget(
-                padding: const EdgeInsets.only(top: 8.0),
-                collapsed: activity.fullDay || activity.reminderBefore.isEmpty,
-                child: Reminders(activity: activity),
-              ),
-            ],
-          ),
+      separated(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SubHeading(Translator.of(context).translate.reminders),
+            ReminderSwitch(activity: activity),
+            CollapsableWidget(
+              padding: const EdgeInsets.only(top: 8.0),
+              collapsed: activity.fullDay || activity.reminderBefore.isEmpty,
+              child: Reminders(activity: activity),
+            ),
+          ],
         ),
       ),
       padded(
-        CollapsableWidget(
-          child: AlarmWidget(activity),
-          collapsed: activity.fullDay,
-        ),
+        AlarmWidget(activity),
       ),
     ];
   }

@@ -159,27 +159,40 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
+      // Assert -- Fullday switch is off
       expect(
           tester
               .widget<Switch>(find.byKey(ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isFalse);
+      // Assert -- Start time, left and rigth category visible
       expect(startTimeFieldFinder, findsOneWidget);
+      expect(find.byKey(TestKey.leftCategoryRadio), findsOneWidget);
+      expect(find.byKey(TestKey.rightCategoryRadio), findsOneWidget);
+
+      // Assert -- can see Alarm tab
+      expect(find.byIcon(AbiliaIcons.attention), findsOneWidget);
       await tester.goToAlarmTab();
+      // Assert -- alarm tab contains reminders
       expect(find.byIcon(AbiliaIcons.handi_reminder), findsOneWidget);
       await tester.goToMainTab();
 
+      // Act -- set to full day
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
+
+      // Assert -- Fullday switch is on,
       expect(
           tester
               .widget<Switch>(find.byKey(ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isTrue);
+      // Assert -- Start time, left and rigth category not visible
       expect(startTimeFieldFinder, findsNothing);
-      expect(find.byIcon(AbiliaIcons.handi_reminder), findsNothing);
       expect(find.byKey(TestKey.leftCategoryRadio), findsNothing);
       expect(find.byKey(TestKey.rightCategoryRadio), findsNothing);
+      // Assert -- Alarm tab not visible
+      expect(find.byIcon(AbiliaIcons.attention), findsNothing);
     });
 
     testWidgets('alarm at start switch', (WidgetTester tester) async {
