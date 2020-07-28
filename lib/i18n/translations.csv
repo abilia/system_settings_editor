@@ -71,3 +71,6 @@ unCheckActivityQuestion;Du you want to uncheck?;Ta bort klarmarkering?
 inTimePre;in;om
 timeAgoPre;&empty&;för
 timeAgoPost;ago;sen
+missingTitleOrImageAndStartTime;Your activity should contain an image or name and start time.;Aktiviteten måste ha ett namn eller en bild och en starttid.
+missingTitleOrImage;Your activity should contain an image or name.;Aktiviteten måste ha ett namn eller en bild.
+missingStartTime;Your activity should contain a start time.;Aktiviteten måste ha en starttid.

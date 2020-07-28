@@ -10,16 +10,13 @@ import 'package:seagull/utils/all.dart';
 import 'package:intl/intl.dart';
 
 class DateAndTimeWidget extends StatelessWidget {
-  final Activity activity;
-  final DateTime day;
-  final TimeInterval timeInterval;
+  final EditActivityState state;
 
-  const DateAndTimeWidget(this.activity, this.timeInterval,
-      {@required this.day, Key key})
-      : super(key: key);
+  const DateAndTimeWidget(this.state, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
+    final activity = state.activity;
 
     return SizedBox(
       width: double.infinity,
@@ -34,7 +31,10 @@ class DateAndTimeWidget extends StatelessWidget {
           CollapsableWidget(
             collapsed: activity.fullDay,
             padding: const EdgeInsets.only(bottom: 12.0),
-            child: TimeIntervallPicker(timeInterval),
+            child: TimeIntervallPicker(
+              state.timeInterval,
+              startTimeError: state.failedSave && !state.hasStartTime,
+            ),
           ),
           SwitchField(
             key: TestKey.fullDaySwitch,
@@ -118,7 +118,10 @@ class DatePicker extends StatelessWidget {
 
 class TimeIntervallPicker extends StatelessWidget {
   final TimeInterval timeInterval;
-  const TimeIntervallPicker(this.timeInterval, {Key key}) : super(key: key);
+  final bool startTimeError;
+  const TimeIntervallPicker(this.timeInterval,
+      {this.startTimeError = false, Key key})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -131,6 +134,7 @@ class TimeIntervallPicker extends StatelessWidget {
             translator.startTime,
             timeInterval.startTime,
             key: TestKey.startTimePicker,
+            errorState: startTimeError,
             onTap: () async {
               final newStartTime = await showViewDialog<TimeInputResult>(
                 context: context,
@@ -185,8 +189,14 @@ class TimePicker extends StatelessWidget {
   final TimeOfDay time;
   final GestureTapCallback onTap;
   final double heigth = 56;
-  const TimePicker(this.text, this.time, {Key key, @required this.onTap})
-      : super(key: key);
+  final bool errorState;
+  const TimePicker(
+    this.text,
+    this.time, {
+    Key key,
+    @required this.onTap,
+    this.errorState = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -197,8 +207,15 @@ class TimePicker extends StatelessWidget {
         PickField(
           onTap: onTap,
           heigth: heigth,
+          errorState: errorState,
           leading: Icon(AbiliaIcons.clock),
           label: Text(time != null ? time.format(context) : ''),
+          trailing: errorState
+              ? const Icon(
+                  AbiliaIcons.ir_error,
+                  color: AbiliaColors.red,
+                )
+              : PickField.trailingArrow,
         )
       ],
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/activities/activities_bloc.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -75,7 +76,7 @@ void main() {
     );
   });
 
-  test('Trying to save yields nothing and does not try to save', () async {
+  test('Trying to save yields failed save and does not try to save', () async {
     // Arrange
 
     final editActivityBloc = EditActivityBloc.newActivity(
@@ -89,6 +90,8 @@ void main() {
       minute: newStartTime.minute,
     );
     final newTimeInterval = TimeInterval(newStartTime, null);
+
+    final expectedSaved = activityWithTitle.copyWith(startTime: newTime);
     // Act
     editActivityBloc.add(SaveActivity());
     editActivityBloc.add(ReplaceActivity(activityWithTitle));
@@ -101,12 +104,14 @@ void main() {
       editActivityBloc,
       emitsInOrder([
         UnstoredActivityState(activity, timeInterval),
+        UnstoredActivityState(activity, timeInterval, null, true),
         UnstoredActivityState(activityWithTitle, timeInterval),
+        UnstoredActivityState(activityWithTitle, timeInterval, null, true),
         UnstoredActivityState(activityWithTitle, newTimeInterval),
-        StoredActivityState(activityWithTitle.copyWith(startTime: newTime),
-            newTimeInterval, aTime.onlyDays()),
+        StoredActivityState(expectedSaved, newTimeInterval, aTime.onlyDays()),
       ]),
     );
+    verify(mockActivitiesBloc.add(AddActivity(expectedSaved)));
   });
 
   test('Saving full day activity sets correct time and alarms', () async {

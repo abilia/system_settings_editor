@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
@@ -12,16 +10,14 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 
 class NameAndPictureWidget extends StatelessWidget {
-  final Activity activity;
-  final File newImage;
+  static const imageSize = 84.0, padding = 4.0;
+  final EditActivityState state;
 
-  const NameAndPictureWidget(
-    this.activity, {
-    Key key,
-    this.newImage,
-  }) : super(key: key);
+  const NameAndPictureWidget(this.state, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final activity = state.activity;
+    final newImage = state.newImage;
     final translator = Translator.of(context).translate;
     final imageClick = () async {
       final selectedImage = await showViewDialog<SelectedImage>(
@@ -56,50 +52,55 @@ class NameAndPictureWidget extends StatelessWidget {
         }
       }
     };
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SubHeading(translator.picture),
-            if (activity.hasImage)
-              InkWell(
-                onTap: imageClick,
-                child: FadeInCalendarImage(
-                  height: 84.0,
-                  width: 84.0,
-                  imageFileId: activity.fileId,
-                  imageFilePath: activity.icon,
-                  activityId: activity.id,
-                  imageFile: newImage,
-                ),
-              )
-            else
-              LinedBorder(
-                key: TestKey.addPicture,
-                padding: const EdgeInsets.all(4),
-                child: Ink(
-                  decoration: const BoxDecoration(
-                    borderRadius: borderRadius,
-                    color: AbiliaColors.white,
+    return Material(
+      type: MaterialType.transparency,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SubHeading(translator.picture),
+              if (activity.hasImage)
+                InkWell(
+                  onTap: imageClick,
+                  child: FadeInCalendarImage(
+                    height: imageSize,
+                    width: imageSize,
+                    imageFileId: activity.fileId,
+                    imageFilePath: activity.icon,
+                    activityId: activity.id,
+                    imageFile: newImage,
                   ),
-                  width: 76.0,
-                  height: 76.0,
-                  child: const Icon(
-                    AbiliaIcons.add_photo,
-                    size: 32,
-                    color: AbiliaColors.black75,
+                )
+              else
+                SizedBox(
+                  width: imageSize,
+                  height: imageSize,
+                  child: LinedBorder(
+                    key: TestKey.addPicture,
+                    padding: const EdgeInsets.all(padding),
+                    errorState: state.failedSave && !state.hasTitleOrImage,
+                    child: Container(
+                      decoration: whiteNoBorderBoxDecoration,
+                      width: imageSize - padding,
+                      height: imageSize - padding,
+                      child: const Icon(
+                        AbiliaIcons.add_photo,
+                        size: 32,
+                        color: AbiliaColors.black75,
+                      ),
+                    ),
+                    onTap: imageClick,
                   ),
                 ),
-                onTap: imageClick,
-              ),
-          ],
-        ),
-        const SizedBox(width: 12),
-        Expanded(child: NameInput(activity: activity)),
-      ],
+            ],
+          ),
+          const SizedBox(width: 12),
+          Expanded(child: NameInput(state: state)),
+        ],
+      ),
     );
   }
 }
@@ -107,10 +108,10 @@ class NameAndPictureWidget extends StatelessWidget {
 class NameInput extends StatefulWidget {
   const NameInput({
     Key key,
-    @required this.activity,
+    @required this.state,
   }) : super(key: key);
 
-  final Activity activity;
+  final EditActivityState state;
   @override
   _NameInputState createState() => _NameInputState();
 }
@@ -121,10 +122,22 @@ class _NameInputState extends State<NameInput> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.activity.title);
-    _nameController.addListener(() => BlocProvider.of<EditActivityBloc>(context)
-        .add(ReplaceActivity(
-            widget.activity.copyWith(title: _nameController.text))));
+    _nameController = TextEditingController(text: widget.state.activity.title);
+    _nameController.addListener(_onEdit);
+  }
+
+  void _onEdit() {
+    if (widget.state.activity.title != _nameController.text) {
+      BlocProvider.of<EditActivityBloc>(context).add(ReplaceActivity(
+          widget.state.activity.copyWith(title: _nameController.text)));
+    }
+  }
+
+  @override
+  void dispose() {
+    _nameController.removeListener(_onEdit);
+    _nameController.dispose();
+    super.dispose();
   }
 
   @override
@@ -132,6 +145,7 @@ class _NameInputState extends State<NameInput> {
     return TextFormInput(
       formKey: TestKey.editTitleTextFormField,
       controller: _nameController,
+      errorState: widget.state.failedSave && !widget.state.hasTitleOrImage,
       heading: Translator.of(context).translate.name,
       textCapitalization: TextCapitalization.sentences,
       inputFormatters: [LengthLimitingTextInputFormatter(50)],

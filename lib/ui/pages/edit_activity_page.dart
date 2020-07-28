@@ -40,31 +40,11 @@ class EditActivityPage extends StatelessWidget {
                 ],
               ),
               title: title,
-              trailing: ActionButton(
-                key: TestKey.finishEditActivityButton,
-                child: Icon(
-                  AbiliaIcons.ok,
-                  size: 32,
-                ),
-                onPressed: state.canSave
-                    ? () async {
-                        if (state is StoredActivityState &&
-                            state.activity.isRecurring) {
-                          final applyTo = await showViewDialog<ApplyTo>(
-                            context: context,
-                            builder: (context) => EditRecurrentDialog(),
-                          );
-                          if (applyTo == null) return;
-                          BlocProvider.of<EditActivityBloc>(context)
-                              .add(SaveRecurringActivity(applyTo, state.day));
-                        } else {
-                          BlocProvider.of<EditActivityBloc>(context)
-                              .add(SaveActivity());
-                        }
-                        await Navigator.of(context).maybePop();
-                      }
-                    : null,
-              ),
+              trailing: Builder(
+                  builder: (context) => ActionButton(
+                      key: TestKey.finishEditActivityButton,
+                      child: Icon(AbiliaIcons.ok, size: 32),
+                      onPressed: () => _finishedPressed(context, state))),
             ),
             body: TabBarView(children: [
               MainTab(state: state, day: day),
@@ -76,6 +56,57 @@ class EditActivityPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future _finishedPressed(BuildContext context, EditActivityState state) async {
+    if (state.canSave) {
+      if (state is StoredActivityState && state.activity.isRecurring) {
+        final applyTo = await showViewDialog<ApplyTo>(
+          context: context,
+          builder: (context) => EditRecurrentDialog(),
+        );
+        if (applyTo == null) return;
+        BlocProvider.of<EditActivityBloc>(context)
+            .add(SaveRecurringActivity(applyTo, state.day));
+      } else {
+        BlocProvider.of<EditActivityBloc>(context).add(SaveActivity());
+      }
+      await Navigator.of(context).maybePop();
+    } else {
+      _scrollToStart(context);
+      final translate = Translator.of(context).translate;
+
+      BlocProvider.of<EditActivityBloc>(context).add(SaveActivity());
+      if (!state.hasTitleOrImage && !state.hasStartTime) {
+        await showErrorViewDialog(
+          translate.missingTitleOrImageAndStartTime,
+          context: context,
+        );
+      } else if (!state.hasTitleOrImage) {
+        await showErrorViewDialog(
+          translate.missingTitleOrImage,
+          context: context,
+        );
+      } else {
+        await showErrorViewDialog(
+          translate.missingStartTime,
+          context: context,
+        );
+      }
+    }
+  }
+
+  void _scrollToStart(BuildContext context) {
+    final tabController = DefaultTabController.of(context);
+    if (tabController.index != 0) {
+      tabController.animateTo(0);
+    } else {
+      final scrollController = PrimaryScrollController.of(context);
+      if (scrollController != null) {
+        scrollController.animateTo(0.0,
+            duration: kTabScrollDuration, curve: Curves.ease);
+      }
+    }
   }
 }
 
@@ -108,11 +139,8 @@ class MainTab extends EditActivityTab {
   List<Widget> buildChildren(BuildContext context) {
     final activity = state.activity;
     return <Widget>[
-      separated(NameAndPictureWidget(
-        activity,
-        newImage: state.newImage,
-      )),
-      separated(DateAndTimeWidget(activity, state.timeInterval, day: day)),
+      separated(NameAndPictureWidget(state)),
+      separated(DateAndTimeWidget(state)),
       CollapsableWidget(
         child: separated(CategoryWidget(activity)),
         collapsed: activity.fullDay,

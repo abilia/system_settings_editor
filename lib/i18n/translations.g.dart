@@ -156,6 +156,12 @@ abstract class Translated {
   final String timeAgoPre = 'n/a';
 
   final String timeAgoPost = 'n/a';
+
+  final String missingTitleOrImageAndStartTime = 'n/a';
+
+  final String missingTitleOrImage = 'n/a';
+
+  final String missingStartTime = 'n/a';
 }
 
 class EN extends Translated {
@@ -375,6 +381,17 @@ class EN extends Translated {
 
   @override
   final String timeAgoPost = 'ago';
+
+  @override
+  final String missingTitleOrImageAndStartTime =
+      'Your activity should contain an image or name and start time.';
+
+  @override
+  final String missingTitleOrImage =
+      'Your activity should contain an image or name.';
+
+  @override
+  final String missingStartTime = 'Your activity should contain a start time.';
 }
 
 class SV extends Translated {
@@ -593,4 +610,15 @@ class SV extends Translated {
 
   @override
   final String timeAgoPost = 'sen';
+
+  @override
+  final String missingTitleOrImageAndStartTime =
+      'Aktiviteten måste ha ett namn eller en bild och en starttid.';
+
+  @override
+  final String missingTitleOrImage =
+      'Aktiviteten måste ha ett namn eller en bild.';
+
+  @override
+  final String missingStartTime = 'Aktiviteten måste ha en starttid.';
 }

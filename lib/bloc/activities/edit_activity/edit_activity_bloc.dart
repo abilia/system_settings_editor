@@ -67,8 +67,12 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     if (event is AddOrRemoveReminder) {
       yield* _mapAddOrRemoveReminderToState(event.reminder.inMilliseconds);
     }
-    if (event is SaveActivity && state.canSave) {
-      yield* _mapSaveActivityToState(state, event);
+    if (event is SaveActivity) {
+      if (state.canSave) {
+        yield* _mapSaveActivityToState(state, event);
+      } else {
+        yield state._failSave();
+      }
     }
     if (event is ImageSelected) {
       yield state.copyWith(

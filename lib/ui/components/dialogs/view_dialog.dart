@@ -12,6 +12,8 @@ Future<T> showViewDialog<T>({
   @required WidgetBuilder builder,
   bool barrierDismissible = true,
   bool useRootNavigator = true,
+  Color barrierColor = AbiliaColors.transparentBlack90,
+  RouteTransitionsBuilder transitionBuilder = buildMaterialDialogTransitions,
 }) {
   assert(builder != null);
   assert(useRootNavigator != null);
@@ -34,14 +36,46 @@ Future<T> showViewDialog<T>({
     },
     barrierDismissible: barrierDismissible,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    barrierColor: AbiliaColors.transparentBlack90,
+    barrierColor: barrierColor,
     transitionDuration: const Duration(milliseconds: 150),
-    transitionBuilder: _buildMaterialDialogTransitions,
+    transitionBuilder: transitionBuilder,
     useRootNavigator: useRootNavigator,
   );
 }
 
-Widget _buildMaterialDialogTransitions(
+Future showErrorViewDialog(String text, {@required BuildContext context}) {
+  print(text);
+  return showViewDialog(
+    context: context,
+    builder: (context) => GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTapDown: Navigator.of(context).pop,
+      child: Container(
+        height: double.infinity,
+        width: double.infinity,
+        color: Colors.transparent,
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            ErrorMessage(
+              key: TestKey.loginError,
+              child: Text(
+                text,
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+    barrierColor: const Color(0x01000000),
+    transitionBuilder: buildSlideDialogTransitions,
+  );
+}
+
+Widget buildMaterialDialogTransitions(
     BuildContext context,
     Animation<double> animation,
     Animation<double> secondaryAnimation,
@@ -52,6 +86,27 @@ Widget _buildMaterialDialogTransitions(
       curve: Curves.easeOut,
     ),
     child: child,
+  );
+}
+
+Widget buildSlideDialogTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child) {
+  return SlideTransition(
+    position: Tween<Offset>(begin: const Offset(0.0, 0.5), end: Offset.zero)
+        .animate(CurvedAnimation(
+      parent: animation,
+      curve: Curves.easeOutQuad,
+    )),
+    child: FadeTransition(
+      opacity: CurvedAnimation(
+        parent: animation,
+        curve: Curves.easeOut,
+      ),
+      child: child,
+    ),
   );
 }
 

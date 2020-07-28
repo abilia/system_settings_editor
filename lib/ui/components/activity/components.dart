@@ -31,11 +31,13 @@ class LinedBorder extends StatelessWidget {
   final Widget child;
   final GestureTapCallback onTap;
   final EdgeInsets padding;
+  final bool errorState;
   const LinedBorder({
     Key key,
     @required this.child,
     this.padding = const EdgeInsets.all(8),
     this.onTap,
+    this.errorState = false,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -44,34 +46,46 @@ class LinedBorder extends StatelessWidget {
       onTap: onTap,
       child: ClipRRect(
         borderRadius: borderRadius,
-        child: DottedBorder(
-          dashPattern: [4, 4],
-          borderType: BorderType.RRect,
-          color: AbiliaColors.white140,
-          radius: radius,
-          padding: padding,
-          child: child,
-        ),
+        child: errorState
+            ? Container(
+                decoration: errorBoxDecoration,
+                padding: padding,
+                child: child,
+              )
+            : DottedBorder(
+                dashPattern: [4, 4],
+                borderType: BorderType.RRect,
+                color: AbiliaColors.white140,
+                radius: radius,
+                padding: padding,
+                child: child,
+              ),
       ),
     );
   }
 }
 
 class PickField extends StatelessWidget {
+  static const trailingArrow = Icon(
+    AbiliaIcons.navigation_next,
+    size: 32.0,
+    color: AbiliaColors.black60,
+  );
   final GestureTapCallback onTap;
-  final Widget leading, label;
+  final Widget leading, label, trailing;
   final double heigth;
   final bool active;
-  final bool showTrailingArrow;
+  final bool errorState;
 
   const PickField({
     Key key,
     this.leading,
     this.label,
+    this.trailing = trailingArrow,
     this.onTap,
     this.heigth = 56,
     this.active = true,
-    this.showTrailingArrow = true,
+    this.errorState = false,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -82,7 +96,9 @@ class PickField extends StatelessWidget {
         borderRadius: borderRadius,
         child: Ink(
           height: heigth,
-          decoration: active ? whiteBoxDecoration : offBoxDecoration,
+          decoration: errorState
+              ? whiteErrorBoxDecoration
+              : active ? whiteBoxDecoration : offBoxDecoration,
           padding: const EdgeInsets.all(12),
           child: Stack(
             children: <Widget>[
@@ -95,14 +111,10 @@ class PickField extends StatelessWidget {
                   ],
                 ),
               ),
-              if (showTrailingArrow)
+              if (trailing != null)
                 Align(
                   alignment: Alignment.centerRight,
-                  child: const Icon(
-                    AbiliaIcons.navigation_next,
-                    size: 32.0,
-                    color: AbiliaColors.black60,
-                  ),
+                  child: trailing,
                 ),
             ],
           ),

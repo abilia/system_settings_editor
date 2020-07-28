@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -20,14 +20,14 @@ void main() {
     title: '',
     startTime: startTime,
   );
-  final translate = Translator(Locale('en')).translate;
+  final translate = Locales.language.values.first;
 
   final startTimeFieldFinder = find.byKey(TestKey.startTimePicker);
   final endTimeFieldFinder = find.byKey(TestKey.endTimePicker);
   final okFinder = find.byKey(TestKey.okDialog);
 
   Widget wrapWithMaterialApp(Widget widget,
-      {Activity givenActivity, bool use24H = false}) {
+      {Activity givenActivity, bool use24H = false, bool newActivity = false}) {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
@@ -43,10 +43,14 @@ void main() {
             create: (context) => MockAuthenticationBloc()),
         BlocProvider<ActivitiesBloc>(create: (context) => MockActivitiesBloc()),
         BlocProvider<EditActivityBloc>(
-          create: (context) => EditActivityBloc(
-            ActivityDay(activity, today),
-            activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-          ),
+          create: (context) => newActivity
+              ? EditActivityBloc.newActivity(
+                  activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+                  day: today)
+              : EditActivityBloc(
+                  ActivityDay(activity, today),
+                  activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+                ),
         ),
         BlocProvider<SortableBloc>(
           create: (context) => MockSortableBloc(),
@@ -129,30 +133,109 @@ void main() {
     });
 
     testWidgets(
-        'Add activity button is disabled when no title and enabled when titled entered',
+        'pressing add activity button with no title nor time shows error',
+        (WidgetTester tester) async {
+      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
+
+      // Act press submit
+      await tester.pumpWidget(
+          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+      await tester.pumpAndSettle();
+
+      await tester.tap(submitButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert error message
+      expect(
+          find.text(translate.missingTitleOrImageAndStartTime), findsOneWidget);
+      // Act dissmiss
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+      // Assert no error message
+      expect(
+          find.text(translate.missingTitleOrImageAndStartTime), findsNothing);
+    });
+
+    testWidgets('pressing add activity button with time shows error',
         (WidgetTester tester) async {
       final newActivtyName = 'new activity name';
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
+
+      // Act press submit
+      await tester.pumpWidget(
+          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
       await tester.pumpAndSettle();
-      expect(
-          tester
-              .widget<ActionButton>(
-                  find.byKey(TestKey.finishEditActivityButton))
-              .onPressed,
-          isNull);
+
+      // Act enter title
       await tester.enterText_(
           find.byKey(TestKey.editTitleTextFormField), newActivtyName);
       await tester.pumpAndSettle();
 
-      expect(
-        tester
-            .widget<ActionButton>(find.byKey(TestKey.finishEditActivityButton))
-            .onPressed,
-        isNotNull,
-      );
-      await tester.tap(find.byKey(TestKey.finishEditActivityButton));
+      // Act press submit
+      await tester.tap(submitButtonFinder);
       await tester.pumpAndSettle();
+
+      // Assert error message
+      expect(find.text(translate.missingStartTime), findsOneWidget);
+      // Act dissmiss
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+      // Assert no error message
+      expect(find.text(translate.missingStartTime), findsNothing);
+    });
+
+    testWidgets('pressing add activity button with no title shows error',
+        (WidgetTester tester) async {
+      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
+
+      await tester.pumpWidget(
+          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+      await tester.pumpAndSettle();
+      // Act press fullday
+      await tester.tap(find.byKey(TestKey.fullDaySwitch));
+      await tester.pumpAndSettle();
+
+      // Act press submit
+      await tester.tap(submitButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert error message
+      expect(find.text(translate.missingTitleOrImage), findsOneWidget);
+      // Act dissmiss
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+      // Assert no error message
+      expect(find.text(translate.missingTitleOrImage), findsNothing);
+    });
+
+    testWidgets('pressing add activity on other tab scrolls back to main page',
+        (WidgetTester tester) async {
+      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
+
+      await tester.pumpWidget(
+          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+      await tester.pumpAndSettle();
+
+      // Act go to tab
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+      // Assert not at main tab
+      expect(find.byType(MainTab), findsNothing);
+
+      // Act press submit
+      await tester.tap(submitButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert error message
+      expect(
+          find.text(translate.missingTitleOrImageAndStartTime), findsOneWidget);
+
+      // Act dissmiss
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+
+      // Assert at main tab
+      expect(find.byType(MainTab), findsOneWidget);
     });
 
     testWidgets('full day switch', (WidgetTester tester) async {
