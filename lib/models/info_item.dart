@@ -7,12 +7,18 @@ import 'package:meta/meta.dart';
 import 'package:intl/intl.dart';
 
 abstract class InfoItem extends Equatable {
+  const InfoItem();
   static final _log = Logger((InfoItem).toString());
-  String get type;
+  String get typeId;
+
+  static InfoItem get none => const NoInfoItem();
+
+  bool get isEmpty;
+
   Map<String, dynamic> toJson();
   static InfoItem fromBase64(String base64) {
     try {
-      if (base64?.isEmpty ?? true) return null;
+      if (base64?.isEmpty ?? true) return NoInfoItem();
       final jsonString = utf8.decode(base64Decode(base64));
       final json = jsonDecode(jsonString);
       final infoItem = json['info-item'][0];
@@ -27,7 +33,7 @@ abstract class InfoItem extends Equatable {
     } catch (e) {
       _log.severe('Exception when trying to create info item', e);
     }
-    return null;
+    return NoInfoItem();
   }
 
   String toBase64() => base64Encode(
@@ -36,7 +42,7 @@ abstract class InfoItem extends Equatable {
             {
               'info-item': [
                 {
-                  'type': type,
+                  'type': typeId,
                   'data': toJson(),
                 }
               ],
@@ -46,10 +52,22 @@ abstract class InfoItem extends Equatable {
       );
 }
 
+class NoInfoItem extends InfoItem {
+  const NoInfoItem();
+  @override
+  List<Object> get props => [];
+  @override
+  Map<String, dynamic> toJson() => null;
+  @override
+  String get typeId => 'none';
+  @override
+  bool get isEmpty => true;
+}
+
 class NoteInfoItem extends InfoItem {
   static const typeName = 'note';
   final String text;
-  NoteInfoItem(this.text);
+  const NoteInfoItem([this.text = '']);
 
   @override
   List<Object> get props => [text];
@@ -58,7 +76,9 @@ class NoteInfoItem extends InfoItem {
   Map<String, dynamic> toJson() => {'text': text};
 
   @override
-  String get type => typeName;
+  String get typeId => typeName;
+  @override
+  bool get isEmpty => text.isEmpty;
 }
 
 class Checklist extends InfoItem {
@@ -70,13 +90,12 @@ class Checklist extends InfoItem {
   final String fileId;
 
   Checklist({
-    @required List<Question> questions,
+    List<Question> questions = const <Question>[],
     Map<String, Set<int>> checked = const {},
     this.image,
     this.name,
     this.fileId,
   })  : assert(questions != null),
-        assert(questions.isNotEmpty),
         questions = UnmodifiableListView(questions),
         checked = UnmodifiableMapView(checked?.map(
                 (key, value) => MapEntry(key, UnmodifiableSetView(value))) ??
@@ -142,7 +161,9 @@ class Checklist extends InfoItem {
   List<Object> get props => [image, name, fileId, questions, checked];
 
   @override
-  String get type => typeName;
+  String get typeId => typeName;
+  @override
+  bool get isEmpty => questions.isEmpty;
 }
 
 class Question extends Equatable {

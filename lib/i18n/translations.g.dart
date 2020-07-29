@@ -81,6 +81,8 @@ abstract class Translated {
 
   final String availableFor = 'n/a';
 
+  final String activityAvailableFor = 'n/a';
+
   final String meAndSupportPersons = 'n/a';
 
   final String onlyMe = 'n/a';
@@ -162,6 +164,20 @@ abstract class Translated {
   final String missingTitleOrImage = 'n/a';
 
   final String missingStartTime = 'n/a';
+
+  final String infoType = 'n/a';
+
+  final String selectInfoType = 'n/a';
+
+  final String infoTypeNone = 'n/a';
+
+  final String infoTypeChecklist = 'n/a';
+
+  final String infoTypeNote = 'n/a';
+
+  final String typeSomething = 'n/a';
+
+  final String clear = 'n/a';
 }
 
 class EN extends Translated {
@@ -267,6 +283,9 @@ class EN extends Translated {
 
   @override
   final String availableFor = 'Available for';
+
+  @override
+  final String activityAvailableFor = 'Activity available for';
 
   @override
   final String meAndSupportPersons = 'Me and support persons';
@@ -392,6 +411,27 @@ class EN extends Translated {
 
   @override
   final String missingStartTime = 'Your activity should contain a start time.';
+
+  @override
+  final String infoType = 'Info type';
+
+  @override
+  final String selectInfoType = 'Select info type';
+
+  @override
+  final String infoTypeNone = '- None -';
+
+  @override
+  final String infoTypeChecklist = 'Checklist';
+
+  @override
+  final String infoTypeNote = 'Note';
+
+  @override
+  final String typeSomething = 'Type something…';
+
+  @override
+  final String clear = 'Clear';
 }
 
 class SV extends Translated {
@@ -496,6 +536,9 @@ class SV extends Translated {
 
   @override
   final String availableFor = 'Tillgänglig för';
+
+  @override
+  final String activityAvailableFor = 'Aktivitet tillgänglig för';
 
   @override
   final String meAndSupportPersons = 'Mig och stödpersoner';
@@ -621,4 +664,25 @@ class SV extends Translated {
 
   @override
   final String missingStartTime = 'Aktiviteten måste ha en starttid.';
+
+  @override
+  final String infoType = 'Kopplade funktioner';
+
+  @override
+  final String selectInfoType = 'Välj typ av Info';
+
+  @override
+  final String infoTypeNone = '- Ingen -';
+
+  @override
+  final String infoTypeChecklist = 'Checklista';
+
+  @override
+  final String infoTypeNote = 'Anteckning';
+
+  @override
+  final String typeSomething = 'Skriv något…';
+
+  @override
+  final String clear = 'Rensa';
 }

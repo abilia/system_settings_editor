@@ -75,6 +75,9 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
           ),
           newImage: event.newImage);
     }
+    if (event is ChangeInfoItemType) {
+      yield* _mapChangeInfoItemTypeToState(event);
+    }
   }
 
   Stream<EditActivityState> _mapAddOrRemoveReminderToState(
@@ -93,6 +96,11 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   ) async* {
     if (state.unchanged) return;
     var activity = state.activity;
+
+    if (activity.hasAttachment && activity.infoItem.isEmpty) {
+      activity = activity.copyWith(infoItem: InfoItem.none);
+    }
+
     if (activity.fullDay) {
       activity = activity.copyWith(
         startTime: activity.startTime.onlyDays(),
@@ -146,6 +154,24 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     } else {
       yield state.copyWith(state.activity,
           timeInterval: TimeInterval(event.time, state.timeInterval.endTime));
+    }
+  }
+
+  Stream<EditActivityState> _mapChangeInfoItemTypeToState(
+      ChangeInfoItemType event) async* {
+    if (event.infoItem == state.activity.infoItem.runtimeType) return;
+
+    switch (event.infoItem) {
+      case NoInfoItem:
+        yield state.copyWith(state.activity.copyWith(infoItem: InfoItem.none));
+        break;
+      case NoteInfoItem:
+        yield state.copyWith(state.activity.copyWith(infoItem: NoteInfoItem()));
+        break;
+      case Checklist:
+        yield state.copyWith(state.activity.copyWith(infoItem: Checklist()));
+        break;
+      default:
     }
   }
 

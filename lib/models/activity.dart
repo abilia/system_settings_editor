@@ -23,7 +23,7 @@ class Activity extends DataModel {
   bool get hasImage =>
       (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
   bool get hasTitle => title?.isNotEmpty ?? false;
-  bool get hasAttachment => infoItem != null;
+  bool get hasAttachment => infoItem is! NoInfoItem;
 
   Activity signOff(DateTime day) => copyWith(
       signedOffDates: signedOffDates.contains(day)
@@ -71,6 +71,7 @@ class Activity extends DataModel {
         assert(secret != null),
         assert(fullDay != null),
         assert(recurs != null),
+        assert(infoItem != null),
         assert(reminderBefore != null),
         assert(signedOffDates != null),
         super(id);
@@ -86,7 +87,7 @@ class Activity extends DataModel {
     bool removeAfter = false,
     bool secret = false,
     int alarmType = ALARM_SOUND_AND_VIBRATION,
-    InfoItem infoItem,
+    InfoItem infoItem = const NoInfoItem(),
     String fileId,
     Iterable<int> reminderBefore = const [],
     Iterable<DateTime> signedOffDates = const [],

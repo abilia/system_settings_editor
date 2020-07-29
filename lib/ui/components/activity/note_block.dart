@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -46,7 +47,12 @@ class _NoteBlockState extends State<NoteBlock> {
                   padding: Attachment.padding,
                   child: Stack(
                     children: [
-                      Text(widget.text, style: textStyle),
+                      if (widget.text.isEmpty)
+                        Text(Translator.of(context).translate.typeSomething,
+                            style: textStyle.copyWith(
+                                color: const Color(0xff747474)))
+                      else
+                        Text(widget.text, style: textStyle),
                       Lines(
                         lineHeight: scaledLineHeight,
                         numberOfLines: numberOfLines,

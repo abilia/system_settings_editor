@@ -46,5 +46,8 @@ class TestKey {
       onlyThisDay = Key('onlyThisDay'),
       allDays = Key('allDays'),
       thisDayAndForward = Key('thisDayAndForward'),
-      viewImage = Key('viewImage');
+      viewImage = Key('viewImage'),
+      infoItemNoneRadio = Key('infoItemNoneRadio'),
+      infoItemChecklistRadio = Key('infoItemChecklistRadio'),
+      infoItemNoteRadio = Key('infoItemNoteRadio');
 }

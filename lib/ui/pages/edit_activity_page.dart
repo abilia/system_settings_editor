@@ -4,6 +4,7 @@ import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/theme.dart';
 
 class EditActivityPage extends StatelessWidget {
   final DateTime day;
@@ -50,7 +51,7 @@ class EditActivityPage extends StatelessWidget {
               MainTab(state: state, day: day),
               if (!fullDay) AlarmAndReminderTab(activity: state.activity),
               UnderConstruction(),
-              UnderConstruction(),
+              InfoItemTab(state: state),
             ]),
           ),
         );
@@ -111,21 +112,38 @@ class EditActivityPage extends StatelessWidget {
 }
 
 class UnderConstruction extends StatelessWidget {
+  final BannerLocation bannerLocation;
+  const UnderConstruction({this.bannerLocation = BannerLocation.topStart});
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
-      alignment: Alignment.topRight,
+      alignment: _alignment,
       scale: 3,
       child: Banner(
-        location: BannerLocation.topEnd,
+        location: bannerLocation,
         color: AbiliaColors.red,
         message: 'Under construction',
       ),
     );
   }
+
+  Alignment get _alignment {
+    switch (bannerLocation) {
+      case BannerLocation.topStart:
+        return Alignment.topLeft;
+      case BannerLocation.topEnd:
+        return Alignment.topRight;
+      case BannerLocation.bottomStart:
+        return Alignment.bottomLeft;
+      case BannerLocation.bottomEnd:
+        return Alignment.bottomRight;
+      default:
+        return Alignment.center;
+    }
+  }
 }
 
-class MainTab extends EditActivityTab {
+class MainTab extends StatelessWidget with EditActivityTab {
   const MainTab({
     Key key,
     @required this.state,
@@ -136,22 +154,25 @@ class MainTab extends EditActivityTab {
   final DateTime day;
 
   @override
-  List<Widget> buildChildren(BuildContext context) {
+  Widget build(BuildContext context) {
     final activity = state.activity;
-    return <Widget>[
-      separated(NameAndPictureWidget(state)),
-      separated(DateAndTimeWidget(state)),
-      CollapsableWidget(
-        child: separated(CategoryWidget(activity)),
-        collapsed: activity.fullDay,
-      ),
-      separated(CheckableAndDeleteAfterWidget(activity)),
-      padded(AvailibleForWidget(activity)),
-    ];
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 56.0),
+      children: <Widget>[
+        separated(NameAndPictureWidget(state)),
+        separated(DateAndTimeWidget(state)),
+        CollapsableWidget(
+          child: separated(CategoryWidget(activity)),
+          collapsed: activity.fullDay,
+        ),
+        separated(CheckableAndDeleteAfterWidget(activity)),
+        padded(AvailibleForWidget(activity)),
+      ],
+    );
   }
 }
 
-class AlarmAndReminderTab extends EditActivityTab {
+class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
   const AlarmAndReminderTab({
     Key key,
     @required this.activity,
@@ -160,42 +181,105 @@ class AlarmAndReminderTab extends EditActivityTab {
   final Activity activity;
 
   @override
-  List<Widget> buildChildren(BuildContext context) {
-    return <Widget>[
-      separated(
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SubHeading(Translator.of(context).translate.reminders),
-            ReminderSwitch(activity: activity),
-            CollapsableWidget(
-              padding: const EdgeInsets.only(top: 8.0),
-              collapsed: activity.fullDay || activity.reminderBefore.isEmpty,
-              child: Reminders(activity: activity),
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12.0),
+      child: Column(
+        children: <Widget>[
+          separated(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SubHeading(Translator.of(context).translate.reminders),
+                ReminderSwitch(activity: activity),
+                CollapsableWidget(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  collapsed:
+                      activity.fullDay || activity.reminderBefore.isEmpty,
+                  child: Reminders(activity: activity),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          padded(
+            AlarmWidget(activity),
+          ),
+        ],
       ),
-      padded(
-        AlarmWidget(activity),
-      ),
-    ];
+    );
   }
 }
 
-abstract class EditActivityTab extends StatelessWidget {
-  const EditActivityTab({Key key}) : super(key: key);
+class InfoItemTab extends StatelessWidget with EditActivityTab {
+  InfoItemTab({
+    Key key,
+    @required this.state,
+  }) : super(key: key);
 
-  List<Widget> buildChildren(BuildContext context);
+  final EditActivityState state;
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 56.0),
-      children: buildChildren(context),
+    final translate = Translator.of(context).translate;
+    final activity = state.activity;
+    final infoItem = activity.infoItem;
+
+    Future onTap() async {
+      final result = await showViewDialog<Type>(
+        context: context,
+        builder: (context) => SelectInfoTypeDialog(
+          infoItemType: activity.infoItem.runtimeType,
+        ),
+      );
+      if (result != null) {
+        BlocProvider.of<EditActivityBloc>(context)
+            .add(ChangeInfoItemType(result));
+      }
+    }
+
+    return padded(
+      Padding(
+        padding: const EdgeInsets.only(right: 12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SubHeading(translate.infoType),
+            if (infoItem is NoteInfoItem) ...[
+              PickField(
+                leading: Icon(AbiliaIcons.edit),
+                label: Text(translate.infoTypeNote),
+                onTap: onTap,
+              ),
+              const SizedBox(height: 16.0),
+              Container(
+                constraints: BoxConstraints.loose(Size.fromHeight(318.0)),
+                decoration: whiteBoxDecoration,
+                child: NoteBlock(
+                  text: infoItem.text,
+                ),
+              ),
+            ] else if (infoItem is Checklist) ...[
+              PickField(
+                leading: Icon(AbiliaIcons.ok),
+                label: Text(translate.infoTypeChecklist),
+                onTap: onTap,
+              ),
+              UnderConstruction(),
+            ] else
+              PickField(
+                leading: Icon(AbiliaIcons.information),
+                label: Text(translate.infoTypeNone),
+                onTap: onTap,
+              ),
+          ],
+        ),
+      ),
     );
   }
+}
 
+mixin EditActivityTab {
   Widget separated(Widget child) {
     return Container(
       decoration: const BoxDecoration(

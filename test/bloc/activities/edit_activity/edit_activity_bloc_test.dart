@@ -10,9 +10,13 @@ import '../../../matchers.dart';
 import '../../../mocks.dart';
 
 void main() {
-  ActivitiesBloc mockActivitiesBloc = MockActivitiesBloc();
+  ActivitiesBloc mockActivitiesBloc;
   final aTime = DateTime(2022, 02, 22, 22, 30);
   final aDay = DateTime(2022, 02, 22);
+
+  setUp(() {
+    mockActivitiesBloc = MockActivitiesBloc();
+  });
 
   test('Initial state is the given activity', () {
     // Arrange
@@ -510,5 +514,113 @@ void main() {
         UnstoredActivityState(activity, TimeInterval(startTime3, endTime3)),
       ]),
     );
+  });
+
+  test('Changing InfoItem', () async {
+    // Arrange
+    final activity = Activity.createNew(
+        title: 'null', startTime: aTime, infoItem: NoteInfoItem('anote'));
+    final activityDay = ActivityDay(activity, aDay);
+    final timeInterval = TimeInterval(TimeOfDay.fromDateTime(aTime), null);
+    final editActivityBloc = EditActivityBloc(
+      activityDay,
+      activitiesBloc: mockActivitiesBloc,
+    );
+
+    // Act
+    editActivityBloc.add(ChangeInfoItemType(Checklist));
+    editActivityBloc.add(ChangeInfoItemType(NoteInfoItem));
+    editActivityBloc.add(ChangeInfoItemType(NoInfoItem));
+
+    // Assert
+    await expectLater(
+      editActivityBloc,
+      emitsInOrder([
+        StoredActivityState(
+          activity.copyWith(infoItem: Checklist()),
+          timeInterval,
+          aDay,
+        ),
+        StoredActivityState(
+          activity.copyWith(infoItem: NoteInfoItem()),
+          timeInterval,
+          aDay,
+        ),
+        StoredActivityState(
+          activity.copyWith(infoItem: InfoItem.none),
+          timeInterval,
+          aDay,
+        ),
+      ]),
+    );
+  });
+
+  test('Trying to save an empty checklist saves noInfoItem', () async {
+    // Arrange
+    final activity = Activity.createNew(
+        title: 'null', startTime: aTime, infoItem: NoteInfoItem('anote'));
+    final expectedActivity = activity.copyWith(infoItem: InfoItem.none);
+    final activityDay = ActivityDay(activity, aDay);
+    final timeInterval = TimeInterval(TimeOfDay.fromDateTime(aTime), null);
+    final editActivityBloc = EditActivityBloc(
+      activityDay,
+      activitiesBloc: mockActivitiesBloc,
+    );
+
+    // Act
+    editActivityBloc.add(ChangeInfoItemType(Checklist));
+    editActivityBloc.add(SaveActivity());
+
+    // Assert
+    await expectLater(
+      editActivityBloc,
+      emits(
+        StoredActivityState(
+          activity.copyWith(infoItem: Checklist()),
+          timeInterval,
+          aDay,
+        ),
+      ),
+    );
+
+    await untilCalled(mockActivitiesBloc.add(any));
+    expect(verify(mockActivitiesBloc.add(captureAny)).captured.single,
+        UpdateActivity(expectedActivity));
+  });
+
+  test('Trying to save an empty note saves noInfoItem', () async {
+    // Arrange
+
+    final activity = Activity.createNew(
+        title: 'null',
+        startTime: aTime,
+        infoItem: Checklist(questions: [Question(id: 0, name: 'name')]));
+    final expectedActivity = activity.copyWith(infoItem: InfoItem.none);
+    final activityDay = ActivityDay(activity, aDay);
+    final timeInterval = TimeInterval(TimeOfDay.fromDateTime(aTime), null);
+    final editActivityBloc = EditActivityBloc(
+      activityDay,
+      activitiesBloc: mockActivitiesBloc,
+    );
+
+    // Act
+    editActivityBloc.add(ChangeInfoItemType(NoteInfoItem));
+    editActivityBloc.add(SaveActivity());
+
+    // Assert
+    await expectLater(
+      editActivityBloc,
+      emits(
+        StoredActivityState(
+          activity.copyWith(infoItem: NoteInfoItem()),
+          timeInterval,
+          aDay,
+        ),
+      ),
+    );
+
+    await untilCalled(mockActivitiesBloc.add(any));
+    expect(verify(mockActivitiesBloc.add(captureAny)).captured.single,
+        UpdateActivity(expectedActivity));
   });
 }

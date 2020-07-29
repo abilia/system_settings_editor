@@ -69,3 +69,12 @@ class ImageSelected extends ActivityChangedEvent {
   @override
   List<Object> get props => [imageId];
 }
+
+class ChangeInfoItemType extends ActivityChangedEvent {
+  final Type infoItem;
+  ChangeInfoItemType(this.infoItem);
+  @override
+  List<Object> get props => [infoItem];
+  @override
+  String toString() => 'InfoItemChanged { $infoItem }';
+}
