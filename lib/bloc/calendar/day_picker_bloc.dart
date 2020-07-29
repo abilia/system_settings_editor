@@ -5,6 +5,8 @@ import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/utils/all.dart';
 
+part 'day_picker_event.dart';
+
 class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
   final DayPickerState _initialState;
   static final int startIndex = 1000000;

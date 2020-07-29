@@ -1,6 +1,6 @@
 part of 'edit_activity_bloc.dart';
 
-abstract class EditActivityState extends Equatable with Silent {
+abstract class EditActivityState extends Equatable with Finest {
   final Activity activity, ogActivity;
   final TimeInterval timeInterval, ogTimeInterval;
   final File newImage;
@@ -28,6 +28,9 @@ abstract class EditActivityState extends Equatable with Silent {
         timeInterval,
         newImage,
       ];
+
+  @override
+  bool get stringify => true;
 
   EditActivityState copyWith(
     Activity activity, {
@@ -58,10 +61,6 @@ class UnstoredActivityState extends EditActivityState {
           ogTimeInterval,
           newImage,
         );
-
-  @override
-  String toString() =>
-      'UnstoredActivityState: {activity: $activity, timeInterval: $timeInterval, newImage: ${newImage?.path}';
 
   @override
   UnstoredActivityState copyWith(
@@ -106,10 +105,6 @@ class StoredActivityState extends EditActivityState {
           ogTimeInterval,
           newImage,
         );
-
-  @override
-  String toString() =>
-      'StoredActivityState: {activity: $activity, timeInterval: $timeInterval, day: $day, newImage: ${newImage?.path}';
 
   @override
   List<Object> get props => [...super.props, day];

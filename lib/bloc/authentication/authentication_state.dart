@@ -1,8 +1,5 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:seagull/repository/user_repository.dart';
+part of 'authentication_bloc.dart';
 
-@immutable
 abstract class AuthenticationState extends Equatable {
   @override
   List<Object> get props => [];

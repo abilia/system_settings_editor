@@ -1,9 +1,5 @@
-import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-import 'package:seagull/models/all.dart';
+part of 'alarm_bloc.dart';
 
-@immutable
 abstract class AlarmStateBase extends Equatable {}
 
 class UnInitializedAlarmState extends AlarmStateBase {

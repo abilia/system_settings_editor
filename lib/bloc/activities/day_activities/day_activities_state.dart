@@ -1,25 +1,16 @@
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
-import 'package:seagull/utils/recurs.dart';
+part of 'day_activities_bloc.dart';
 
-@immutable
-abstract class DayActivitiesState extends Equatable {}
-
-class DayActivitiesUninitialized extends DayActivitiesState {
-  @override
-  String toString() => 'DayActivitiesUninitialized';
+abstract class DayActivitiesState extends Equatable {
   @override
   List<Object> get props => [];
+
+  @override
+  bool get stringify => true;
 }
 
-class DayActivitiesLoading extends DayActivitiesState {
-  @override
-  String toString() => 'DayActivitiesLoading';
-  @override
-  List<Object> get props => [];
-}
+class DayActivitiesUninitialized extends DayActivitiesState {}
+
+class DayActivitiesLoading extends DayActivitiesState {}
 
 class DayActivitiesLoaded extends DayActivitiesState {
   final Iterable<ActivityDay> activities;

@@ -1,19 +1,15 @@
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
+part of 'activities_occasion_bloc.dart';
 
-@immutable
 abstract class ActivitiesOccasionState extends Equatable {
   const ActivitiesOccasionState();
   @override
   List<Object> get props => [];
+  @override
+  bool get stringify => true;
 }
 
 class ActivitiesOccasionLoading extends ActivitiesOccasionState {
   ActivitiesOccasionLoading() : super();
-  @override
-  String toString() => 'ActivitiesOccasionLoading';
 }
 
 class ActivitiesOccasionLoaded extends ActivitiesOccasionState {

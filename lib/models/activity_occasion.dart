@@ -40,6 +40,9 @@ class ActivityOccasion extends ActivityDay {
     if (occasionComparing != 0) return occasionComparing;
     return super.compareTo(other);
   }
+
+  @override
+  String toString() => 'ActivityOccasion { $activity ${yMd(day)} $occasion }';
 }
 
 class ActivityDay extends Equatable implements Comparable {
@@ -68,8 +71,9 @@ class ActivityDay extends Equatable implements Comparable {
 
   @override
   List<Object> get props => [activity, day];
+
   @override
-  bool get stringify => true;
+  String toString() => 'ActivityDay { $activity ${yMd(day)} }';
 
   @override
   int compareTo(other) {

@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/sortable_repository.dart';
 import 'package:seagull/storage/all.dart';

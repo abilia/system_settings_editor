@@ -1,9 +1,6 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/widgets.dart';
-import 'package:meta/meta.dart';
+part of 'scroll_position_bloc.dart';
 
-@immutable
-abstract class ScrollPositionState extends Equatable {
+abstract class ScrollPositionState extends Equatable with Finest {
   @override
   List<Object> get props => [];
 }

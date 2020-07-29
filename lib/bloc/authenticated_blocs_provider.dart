@@ -21,103 +21,113 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    final activityRepository = ActivityRepository(
-      client: authenticatedState.userRepository.httpClient,
-      baseUrl: authenticatedState.userRepository.baseUrl,
-      activityDb: GetIt.I<ActivityDb>(),
-      userId: authenticatedState.userId,
-      authToken: authenticatedState.token,
-    );
-    final userFileRepository = UserFileRepository(
-      httpClient: authenticatedState.userRepository.httpClient,
-      baseUrl: authenticatedState.userRepository.baseUrl,
-      userFileDb: GetIt.I<UserFileDb>(),
-      fileStorage: GetIt.I<FileStorage>(),
-      userId: authenticatedState.userId,
-      authToken: authenticatedState.token,
-      multipartRequestBuilder: GetIt.I<MultipartRequestBuilder>(),
-    );
-    final sortableRepository = SortableRepository(
-      baseUrl: authenticatedState.userRepository.baseUrl,
-      client: authenticatedState.userRepository.httpClient,
-      sortableDb: GetIt.I<SortableDb>(),
-      userId: authenticatedState.userId,
-      authToken: authenticatedState.token,
-    );
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider<SyncBloc>(
-          create: (context) => SyncBloc(
-            activityRepository: activityRepository,
-            userFileRepository: userFileRepository,
-            sortableRepository: sortableRepository,
-            syncDelay: GetIt.I<SyncDelays>(),
+        RepositoryProvider<ActivityRepository>(
+          create: (context) => ActivityRepository(
+            client: authenticatedState.userRepository.httpClient,
+            baseUrl: authenticatedState.userRepository.baseUrl,
+            activityDb: GetIt.I<ActivityDb>(),
+            userId: authenticatedState.userId,
+            authToken: authenticatedState.token,
           ),
         ),
-        BlocProvider<ActivitiesBloc>(
-          create: (context) => ActivitiesBloc(
-            activityRepository: activityRepository,
-            syncBloc: BlocProvider.of<SyncBloc>(context),
-            pushBloc: BlocProvider.of<PushBloc>(context),
-          )..add(LoadActivities()),
-        ),
-        BlocProvider<UserFileBloc>(
-          create: (context) => UserFileBloc(
-            userFileRepository: userFileRepository,
-            syncBloc: BlocProvider.of<SyncBloc>(context),
+        RepositoryProvider<UserFileRepository>(
+          create: (context) => UserFileRepository(
+            httpClient: authenticatedState.userRepository.httpClient,
+            baseUrl: authenticatedState.userRepository.baseUrl,
+            userFileDb: GetIt.I<UserFileDb>(),
             fileStorage: GetIt.I<FileStorage>(),
-            pushBloc: BlocProvider.of<PushBloc>(context),
+            userId: authenticatedState.userId,
+            authToken: authenticatedState.token,
+            multipartRequestBuilder: GetIt.I<MultipartRequestBuilder>(),
           ),
         ),
-        BlocProvider<SortableBloc>(
-          create: (context) => SortableBloc(
-            sortableRepository: sortableRepository,
-            syncBloc: BlocProvider.of<SyncBloc>(context),
-            pushBloc: BlocProvider.of<PushBloc>(context),
-          )..add(LoadSortables()),
-        ),
-        BlocProvider<ClockBloc>(
-          create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
-        ),
-        BlocProvider<DayPickerBloc>(
-          create: (context) => DayPickerBloc(
-            clockBloc: BlocProvider.of<ClockBloc>(context),
+        RepositoryProvider<SortableRepository>(
+          create: (context) => SortableRepository(
+            baseUrl: authenticatedState.userRepository.baseUrl,
+            client: authenticatedState.userRepository.httpClient,
+            sortableDb: GetIt.I<SortableDb>(),
+            userId: authenticatedState.userId,
+            authToken: authenticatedState.token,
           ),
         ),
-        BlocProvider<DayActivitiesBloc>(
-          create: (context) => DayActivitiesBloc(
-            activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-            dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
-          ),
-        ),
-        BlocProvider<ActivitiesOccasionBloc>(
-          create: (context) => ActivitiesOccasionBloc(
-            clockBloc: BlocProvider.of<ClockBloc>(context),
-            dayActivitiesBloc: BlocProvider.of<DayActivitiesBloc>(context),
-          ),
-        ),
-        BlocProvider<AlarmBloc>(
-          create: (context) => AlarmBloc(
-            clockBloc: BlocProvider.of<ClockBloc>(context),
-            activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-          ),
-        ),
-        BlocProvider<NotificationBloc>(
-          create: (context) => NotificationBloc(
-            selectedNotificationStream: GetIt.I<NotificationStreamGetter>()(),
-            activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-          ),
-        ),
-        BlocProvider<CalendarViewBloc>(
-          create: (context) => CalendarViewBloc(),
-        ),
-        BlocProvider<SettingsBloc>(
-          create: (context) => SettingsBloc(
-            settingsDb: GetIt.I<SettingsDb>(),
-          ),
-        )
       ],
-      child: child,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<SyncBloc>(
+            create: (context) => SyncBloc(
+              activityRepository: context.repository<ActivityRepository>(),
+              userFileRepository: context.repository<UserFileRepository>(),
+              sortableRepository: context.repository<SortableRepository>(),
+              syncDelay: GetIt.I<SyncDelays>(),
+            ),
+          ),
+          BlocProvider<ActivitiesBloc>(
+            create: (context) => ActivitiesBloc(
+              activityRepository: context.repository<ActivityRepository>(),
+              syncBloc: context.bloc<SyncBloc>(),
+              pushBloc: context.bloc<PushBloc>(),
+            )..add(LoadActivities()),
+          ),
+          BlocProvider<UserFileBloc>(
+            create: (context) => UserFileBloc(
+              userFileRepository: context.repository<UserFileRepository>(),
+              syncBloc: context.bloc<SyncBloc>(),
+              fileStorage: GetIt.I<FileStorage>(),
+              pushBloc: context.bloc<PushBloc>(),
+            ),
+          ),
+          BlocProvider<SortableBloc>(
+            create: (context) => SortableBloc(
+              sortableRepository: context.repository<SortableRepository>(),
+              syncBloc: context.bloc<SyncBloc>(),
+              pushBloc: context.bloc<PushBloc>(),
+            )..add(LoadSortables()),
+          ),
+          BlocProvider<ClockBloc>(
+            create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
+          ),
+          BlocProvider<DayPickerBloc>(
+            create: (context) => DayPickerBloc(
+              clockBloc: context.bloc<ClockBloc>(),
+            ),
+          ),
+          BlocProvider<DayActivitiesBloc>(
+            create: (context) => DayActivitiesBloc(
+              activitiesBloc: context.bloc<ActivitiesBloc>(),
+              dayPickerBloc: context.bloc<DayPickerBloc>(),
+            ),
+          ),
+          BlocProvider<ActivitiesOccasionBloc>(
+            create: (context) => ActivitiesOccasionBloc(
+              clockBloc: context.bloc<ClockBloc>(),
+              dayActivitiesBloc: context.bloc<DayActivitiesBloc>(),
+            ),
+          ),
+          BlocProvider<AlarmBloc>(
+            create: (context) => AlarmBloc(
+              clockBloc: context.bloc<ClockBloc>(),
+              activitiesBloc: context.bloc<ActivitiesBloc>(),
+            ),
+          ),
+          BlocProvider<NotificationBloc>(
+            create: (context) => NotificationBloc(
+              selectedNotificationStream: GetIt.I<NotificationStreamGetter>()(),
+              activitiesBloc: context.bloc<ActivitiesBloc>(),
+            ),
+          ),
+          BlocProvider<CalendarViewBloc>(
+            create: (context) => CalendarViewBloc(),
+          ),
+          BlocProvider<SettingsBloc>(
+            create: (context) => SettingsBloc(
+              settingsDb: GetIt.I<SettingsDb>(),
+            ),
+          )
+        ],
+        child: child,
+      ),
     );
   }
 }
