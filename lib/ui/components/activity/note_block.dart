@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -10,61 +7,62 @@ import 'package:seagull/utils/all.dart';
 
 class NoteBlock extends StatefulWidget {
   final String text;
+  final TextStyle textStyle;
+  final Widget child;
+  final ScrollController scrollController;
   const NoteBlock({
     Key key,
-    @required this.text,
+    this.text = '',
+    this.textStyle,
+    this.child,
+    this.scrollController,
   }) : super(key: key);
 
   @override
-  _NoteBlockState createState() => _NoteBlockState(ScrollController());
+  _NoteBlockState createState() => _NoteBlockState(
+      scrollController ?? ScrollController(),
+      textStyle ?? abiliaTextTheme.bodyText1);
 }
 
 class _NoteBlockState extends State<NoteBlock> {
+  _NoteBlockState(this.controller, this.textStyle);
   final ScrollController controller;
+  final TextStyle textStyle;
 
-  _NoteBlockState(this.controller);
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final width = constraints.maxWidth - Attachment.padding.vertical;
-        final height = constraints.maxHeight - Attachment.padding.horizontal;
-        final scaleFactor = MediaQuery.of(context).textScaleFactor;
-        final textStyle = abiliaTextTheme.bodyText1;
-        final textSize = widget.text.textSize(textStyle, width);
-        final scaledTextHeight = textSize.height * scaleFactor;
-        final scaledLineHeight =
-            textStyle.fontSize * textStyle.height * scaleFactor;
-        final numberOfLines = max(
-            height ~/ scaledLineHeight, scaledTextHeight ~/ scaledLineHeight);
-        return Stack(
-          children: <Widget>[
-            CupertinoScrollbar(
-              controller: controller,
-              child: SingleChildScrollView(
+        final textRenderingSize = widget.text.calulcateTextRenderSize(
+          constraints: constraints,
+          textStyle: textStyle,
+          padding: Attachment.padding,
+          textScaleFactor: MediaQuery.of(context).textScaleFactor,
+        );
+        return DefaultTextStyle(
+          style: textStyle,
+          child: Stack(
+            children: <Widget>[
+              CupertinoScrollbar(
                 controller: controller,
-                child: Padding(
+                child: SingleChildScrollView(
                   padding: Attachment.padding,
+                  controller: controller,
                   child: Stack(
                     children: [
-                      if (widget.text.isEmpty)
-                        Text(Translator.of(context).translate.typeSomething,
-                            style: textStyle.copyWith(
-                                color: const Color(0xff747474)))
-                      else
-                        Text(widget.text, style: textStyle),
+                      if (widget.child != null) widget.child,
                       Lines(
-                        lineHeight: scaledLineHeight,
-                        numberOfLines: numberOfLines,
+                        lineHeight: textRenderingSize.scaledLineHeight,
+                        numberOfLines: textRenderingSize.numberOfLines,
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-            ArrowUp(controller: controller),
-            ArrowDown(controller: controller),
-          ],
+              ArrowUp(controller: controller),
+              ArrowDown(controller: controller),
+            ],
+          ),
         );
       },
     );

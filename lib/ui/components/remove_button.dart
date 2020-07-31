@@ -19,16 +19,18 @@ class RemoveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      child: InkWell(
-        child: Container(
-          decoration: BoxDecoration(
-            color: AbiliaColors.transparentRed[80],
-            borderRadius: borderRadius,
-            border: Border.all(
-              color: AbiliaColors.red,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 12.0),
+        child: InkWell(
+          borderRadius: borderRadius,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AbiliaColors.transparentRed[80],
+              borderRadius: borderRadius,
+              border: Border.all(
+                color: AbiliaColors.red,
+              ),
             ),
-          ),
-          child: Padding(
             padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -45,8 +47,8 @@ class RemoveButton extends StatelessWidget {
               ],
             ),
           ),
+          onTap: onTap,
         ),
-        onTap: onTap,
       ),
     );
   }

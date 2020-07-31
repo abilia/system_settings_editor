@@ -252,11 +252,31 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
                 onTap: onTap,
               ),
               const SizedBox(height: 16.0),
-              Container(
-                constraints: BoxConstraints.loose(Size.fromHeight(318.0)),
-                decoration: whiteBoxDecoration,
-                child: NoteBlock(
-                  text: infoItem.text,
+              GestureDetector(
+                onTap: () async {
+                  final result = await showViewDialog<String>(
+                    context: context,
+                    builder: (context) => EditNoteDialog(text: infoItem.text),
+                  );
+                  if (result != null && result != infoItem.text) {
+                    BlocProvider.of<EditActivityBloc>(context).add(
+                        ReplaceActivity(
+                            activity.copyWith(infoItem: NoteInfoItem(result))));
+                  }
+                },
+                child: Container(
+                  constraints: BoxConstraints.loose(Size.fromHeight(318.0)),
+                  decoration: whiteBoxDecoration,
+                  child: NoteBlock(
+                    text: infoItem.text,
+                    child: infoItem.text.isEmpty
+                        ? Text(
+                            Translator.of(context).translate.typeSomething,
+                            style: abiliaTextTheme.bodyText1
+                                .copyWith(color: const Color(0xff747474)),
+                          )
+                        : Text(infoItem.text),
+                  ),
                 ),
               ),
             ] else if (infoItem is Checklist) ...[

@@ -113,6 +113,7 @@ Widget buildSlideDialogTransitions(
 class ViewDialog extends StatelessWidget {
   final Widget heading;
   final Widget child;
+  final Color backgroundColor;
   final GestureTapCallback onOk;
   final GestureTapCallback onCancle;
 
@@ -139,6 +140,7 @@ class ViewDialog extends StatelessWidget {
     this.deleteButton,
     this.backButton,
     this.expanded = true,
+    this.backgroundColor = AbiliaColors.white110,
     double verticalPadding = verticalPadding,
     double leftPadding = leftPadding,
     double rightPadding = rightPadding,
@@ -149,65 +151,69 @@ class ViewDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          const SizedBox(height: 8),
-          _TopFloatingButtons(
-            deleteButton: deleteButton,
-            onOk: onOk,
-            onCancle: onCancle,
-          ),
-          Flexible(
-            flex: expanded ? 1 : 0,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: AbiliaColors.white110,
-                borderRadius: BorderRadius.vertical(top: radius),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  if (backButton != null || heading != null)
-                    Row(
-                      children: <Widget>[
-                        if (backButton != null)
-                          Padding(
-                            padding: EdgeInsets.only(left: leftPadding),
-                            child: backButton,
-                          ),
-                        if (heading != null)
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              leftPadding,
-                              20.0,
-                              rightPadding,
-                              seperatorPadding,
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      margin: MediaQuery.of(context).viewInsets,
+      child: Material(
+        type: MaterialType.transparency,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            const SizedBox(height: 8),
+            _TopFloatingButtons(
+              deleteButton: deleteButton,
+              onOk: onOk,
+              onCancle: onCancle,
+            ),
+            Flexible(
+              flex: expanded ? 1 : 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.vertical(top: radius),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    if (backButton != null || heading != null)
+                      Row(
+                        children: <Widget>[
+                          if (backButton != null)
+                            Padding(
+                              padding: EdgeInsets.only(left: leftPadding),
+                              child: backButton,
                             ),
-                            child: heading,
-                          ),
-                      ],
-                    ),
-                  if (backButton != null || heading != null) divider,
-                  Flexible(
-                    flex: expanded ? 1 : 0,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        _leftPadding,
-                        _verticalPadding,
-                        _rightPadding,
-                        _verticalPadding,
+                          if (heading != null)
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                leftPadding,
+                                20.0,
+                                rightPadding,
+                                seperatorPadding,
+                              ),
+                              child: heading,
+                            ),
+                        ],
                       ),
-                      child: child,
+                    if (backButton != null || heading != null) divider,
+                    Flexible(
+                      flex: expanded ? 1 : 0,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          _leftPadding,
+                          _verticalPadding,
+                          _rightPadding,
+                          _verticalPadding,
+                        ),
+                        child: child,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -234,31 +240,29 @@ class _TopFloatingButtons extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.transparent,
       ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 8.0),
-        child: Stack(
-          children: <Widget>[
-            if (deleteButton != null) deleteButton,
-            Align(
-              alignment: Alignment.centerRight,
-              child: RoundFloatingButton(
-                AbiliaIcons.ok,
-                key: TestKey.okDialog,
-                color: AbiliaColors.green,
-                onTap: onOk,
-              ),
+      padding: const EdgeInsets.fromLTRB(0.0, 0, 12.0, 8.0),
+      child: Stack(
+        children: <Widget>[
+          if (deleteButton != null) deleteButton,
+          Align(
+            alignment: Alignment.centerRight,
+            child: RoundFloatingButton(
+              AbiliaIcons.ok,
+              key: TestKey.okDialog,
+              color: AbiliaColors.green,
+              onTap: onOk,
             ),
-            AnimatedAlign(
-              duration: 200.milliseconds(),
-              alignment: hasOk ? Alignment(0.6, 1.0) : Alignment.centerRight,
-              child: RoundFloatingButton(
-                AbiliaIcons.close_program,
-                key: TestKey.closeDialog,
-                onTap: onCancle ?? Navigator.of(context).maybePop,
-              ),
+          ),
+          AnimatedAlign(
+            duration: 200.milliseconds(),
+            alignment: hasOk ? Alignment(0.6, 1.0) : Alignment.centerRight,
+            child: RoundFloatingButton(
+              AbiliaIcons.close_program,
+              key: TestKey.closeDialog,
+              onTap: onCancle ?? Navigator.of(context).maybePop,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

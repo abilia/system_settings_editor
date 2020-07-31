@@ -142,7 +142,7 @@ class _NameInputState extends State<NameInput> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormInput(
+    return AbiliaTextInput(
       formKey: TestKey.editTitleTextFormField,
       controller: _nameController,
       errorState: widget.state.failedSave && !widget.state.hasTitleOrImage,

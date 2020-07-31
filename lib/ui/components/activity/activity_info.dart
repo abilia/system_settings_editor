@@ -183,7 +183,10 @@ class Attachment extends StatelessWidget {
     final activity = activityDay.activity;
     final item = activity.infoItem;
     if (item is NoteInfoItem) {
-      return NoteBlock(text: item.text);
+      return NoteBlock(
+        text: item.text,
+        child: Text(item.text),
+      );
     } else if (item is Checklist) {
       return CheckListView(
         item,
