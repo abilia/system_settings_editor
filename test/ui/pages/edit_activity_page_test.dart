@@ -316,75 +316,6 @@ void main() {
       expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
     });
 
-    testWidgets('Info item shows', (WidgetTester tester) async {
-      final aLongNote = '''
-This is a note
-I am typing for testing
-that it is visible in the info item tab
-''';
-      final activity = Activity.createNew(
-          title: 'null',
-          startTime: startTime,
-          infoItem: NoteInfoItem(aLongNote));
-      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
-          givenActivity: activity));
-      await tester.pumpAndSettle();
-      await tester.goToInfoItemTab();
-
-      expect(find.text(aLongNote), findsOneWidget);
-    });
-
-    testWidgets('Info item note not deleted when to info item note',
-        (WidgetTester tester) async {
-      final aLongNote = '''
-This is a note
-I am typing for testing
-that it is visible in the info item tab
-''';
-      final activity = Activity.createNew(
-          title: 'null',
-          startTime: startTime,
-          infoItem: NoteInfoItem(aLongNote));
-      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
-          givenActivity: activity));
-      await tester.pumpAndSettle();
-      await tester.goToInfoItemTab();
-
-      expect(find.text(aLongNote), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.edit));
-      await tester.pumpAndSettle();
-      expect(find.byType(SelectInfoTypeDialog), findsOneWidget);
-      expect(find.byKey(TestKey.infoItemNoneRadio), findsOneWidget);
-      expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
-      expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
-
-      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-      await tester.pumpAndSettle();
-      expect(find.byType(SelectInfoTypeDialog), findsNothing);
-      expect(find.text(aLongNote), findsOneWidget);
-    });
-
-    testWidgets('Info item note can be selected', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
-      await tester.pumpAndSettle();
-      await tester.goToInfoItemTab();
-
-      await tester.tap(find.byIcon(AbiliaIcons.information));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(SelectInfoTypeDialog), findsOneWidget);
-
-      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-
-      await tester.pumpAndSettle();
-      expect(find.byType(SelectInfoTypeDialog), findsNothing);
-      expect(find.text(translate.infoType), findsOneWidget);
-      expect(find.text(translate.infoTypeNote), findsOneWidget);
-      expect(find.text(translate.typeSomething), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.edit), findsOneWidget);
-    });
-
     testWidgets('checkable switch', (WidgetTester tester) async {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
@@ -574,6 +505,128 @@ that it is visible in the info item tab
       expect(reminder15MinFinder, findsNothing);
       expect(reminderDayFinder, findsNothing);
       expect(remindersAllSelected, findsNothing);
+    });
+  });
+
+  group('edit info item', () {
+    testWidgets('Info item shows', (WidgetTester tester) async {
+      final aLongNote = '''
+This is a note
+I am typing for testing
+that it is visible in the info item tab
+''';
+      final activity = Activity.createNew(
+          title: 'null',
+          startTime: startTime,
+          infoItem: NoteInfoItem(aLongNote));
+      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
+          givenActivity: activity));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+
+      expect(find.text(aLongNote), findsOneWidget);
+    });
+
+    testWidgets('Info item note not deleted when to info item note',
+        (WidgetTester tester) async {
+      final aLongNote = '''
+This is a note
+I am typing for testing
+that it is visible in the info item tab
+''';
+      final activity = Activity.createNew(
+          title: 'null',
+          startTime: startTime,
+          infoItem: NoteInfoItem(aLongNote));
+      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
+          givenActivity: activity));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+
+      expect(find.text(aLongNote), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.edit));
+      await tester.pumpAndSettle();
+      expect(find.byType(SelectInfoTypeDialog), findsOneWidget);
+      expect(find.byKey(TestKey.infoItemNoneRadio), findsOneWidget);
+      expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
+      expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
+
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.pumpAndSettle();
+      expect(find.byType(SelectInfoTypeDialog), findsNothing);
+      expect(find.text(aLongNote), findsOneWidget);
+    });
+
+    testWidgets('Info item note can be selected', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+
+      await tester.tap(find.byIcon(AbiliaIcons.information));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SelectInfoTypeDialog), findsOneWidget);
+
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+
+      await tester.pumpAndSettle();
+      expect(find.byType(SelectInfoTypeDialog), findsNothing);
+      expect(find.text(translate.infoType), findsOneWidget);
+      expect(find.text(translate.infoTypeNote), findsOneWidget);
+      expect(find.text(translate.typeSomething), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.edit), findsOneWidget);
+    });
+
+    testWidgets('Info item note opens EditNoteDialog',
+        (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+      await tester.tap(find.byIcon(AbiliaIcons.information));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NoteBlock));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EditNoteDialog), findsOneWidget);
+    });
+
+    testWidgets('Info item note can be edited', (WidgetTester tester) async {
+      final noteText = '''4.1.1 
+Mark the unexported and accidentally public setDefaultResponse as deprecated.
+Mark the not useful, and not generally used, named function as deprecated.
+Produce a meaningful error message if an argument matcher is used outside of stubbing (when) or verification (verify and untilCalled).
+4.1.0 
+Add a Fake class for implementing a subset of a class API as overrides without misusing the Mock class.
+4.0.0 
+Replace the dependency on the test package with a dependency on the new test_api package. This dramatically reduces mockito's transitive dependencies.
+
+This bump can result in runtime errors when coupled with a version of the test package older than 1.4.0.
+
+3.0.2 
+Rollback the test_api part of the 3.0.1 release. This was breaking tests that use Flutter's current test tools, and will instead be released as part of Mockito 4.0.0.
+3.0.1 
+Replace the dependency on the test package with a dependency on the new test_api package. This dramatically reduces mockito's transitive dependencies.
+Internal improvements to tests and examples.''';
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+
+      await tester.tap(find.byIcon(AbiliaIcons.information));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+
+      await tester.pumpAndSettle();
+
+      await tester.enterText_(find.byType(NoteBlock), noteText);
+      await tester.pumpAndSettle();
+
+      expect(find.text(noteText), findsOneWidget);
     });
   });
 

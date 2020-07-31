@@ -159,9 +159,9 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
 
   Stream<EditActivityState> _mapChangeInfoItemTypeToState(
       ChangeInfoItemType event) async* {
-    if (event.infoItem == state.activity.infoItem.runtimeType) return;
+    if (event.infoItemType == state.activity.infoItem.runtimeType) return;
 
-    switch (event.infoItem) {
+    switch (event.infoItemType) {
       case NoInfoItem:
         yield state.copyWith(state.activity.copyWith(infoItem: InfoItem.none));
         break;

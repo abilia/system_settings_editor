@@ -98,6 +98,7 @@ class _EditNoteDialogState extends State<EditNoteDialog> {
                         constraints: constraints.copyWith(
                             maxHeight: textRenderSize.scaledTextHeight),
                         child: TextField(
+                          key: TestKey.input,
                           style: abiliaTextTheme.bodyText1,
                           controller: _textEditingController,
                           autofocus: true,
