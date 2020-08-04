@@ -2,9 +2,11 @@ part of 'edit_activity_bloc.dart';
 
 abstract class EditActivityEvent extends Equatable {
   const EditActivityEvent();
+  @override
+  bool get stringify => true;
 }
 
-abstract class ActivityChangedEvent extends EditActivityEvent with Silent {
+abstract class ActivityChangedEvent extends EditActivityEvent with Finest {
   const ActivityChangedEvent();
 }
 
@@ -14,24 +16,20 @@ class ReplaceActivity extends ActivityChangedEvent {
 
   @override
   List<Object> get props => [activity];
-  @override
-  String toString() => 'ChangeActivity { $activity }';
 }
 
-class SaveActivity extends EditActivityEvent {
+class SaveActivity extends EditActivityEvent with Fine {
   const SaveActivity();
   @override
   List<Object> get props => [];
 }
 
-class SaveRecurringActivity extends SaveActivity {
+class SaveRecurringActivity extends SaveActivity with Fine {
   final ApplyTo applyTo;
   final DateTime day;
   const SaveRecurringActivity(this.applyTo, this.day);
   @override
   List<Object> get props => [applyTo];
-  @override
-  String toString() => 'SaveRecurringActivity { $applyTo, $day }';
 }
 
 class ChangeDate extends ActivityChangedEvent {
@@ -39,8 +37,6 @@ class ChangeDate extends ActivityChangedEvent {
   ChangeDate(this.date);
   @override
   List<Object> get props => [date];
-  @override
-  String toString() => 'ChangeDate { $date }';
 }
 
 abstract class ChangeTime extends ActivityChangedEvent {
@@ -52,21 +48,15 @@ abstract class ChangeTime extends ActivityChangedEvent {
 
 class ChangeStartTime extends ChangeTime {
   const ChangeStartTime(TimeOfDay time) : super(time);
-  @override
-  String toString() => 'ChangeStartTime { $time }';
 }
 
 class ChangeEndTime extends ChangeTime {
   const ChangeEndTime(TimeOfDay time) : super(time);
-  @override
-  String toString() => 'ChangeEndTime { $time }';
 }
 
 class AddOrRemoveReminder extends ActivityChangedEvent {
   final Duration reminder;
   const AddOrRemoveReminder(this.reminder);
-  @override
-  String toString() => 'AddOrRemoveReminder { $reminder }';
   @override
   List<Object> get props => [reminder];
 }
@@ -78,6 +68,4 @@ class ImageSelected extends ActivityChangedEvent {
   ImageSelected(this.imageId, this.path, this.newImage);
   @override
   List<Object> get props => [imageId];
-  @override
-  String toString() => 'ImageSelected { $imageId }';
 }

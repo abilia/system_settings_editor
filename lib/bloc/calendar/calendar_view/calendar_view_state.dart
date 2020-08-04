@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of 'calendar_view_bloc.dart';
 
 class CalendarViewState extends Equatable {
   final CalendarViewType currentView;

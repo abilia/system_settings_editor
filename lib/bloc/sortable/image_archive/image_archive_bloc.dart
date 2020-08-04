@@ -14,7 +14,8 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
   final SortableBloc sortableBloc;
   StreamSubscription sortableSubscription;
 
-  ImageArchiveBloc({@required this.sortableBloc}) {
+  ImageArchiveBloc({@required this.sortableBloc})
+      : super(ImageArchiveState({}, {}, null)) {
     sortableSubscription = sortableBloc.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         add(SortablesUpdated(sortableState.sortables));
@@ -25,9 +26,6 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
       add(SortablesUpdated(sortableState.sortables));
     }
   }
-
-  @override
-  ImageArchiveState get initialState => ImageArchiveState({}, {}, null);
 
   @override
   Stream<ImageArchiveState> mapEventToState(

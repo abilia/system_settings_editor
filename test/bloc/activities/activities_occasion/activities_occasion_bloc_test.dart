@@ -41,12 +41,7 @@ void main() {
   });
   group('ActivitiesOccasionBloc', () {
     test('initial state is ActivitiesOccasionLoading', () {
-      expect(activitiesOccasionBloc.initialState, ActivitiesOccasionLoading());
       expect(activitiesOccasionBloc.state, ActivitiesOccasionLoading());
-      expectLater(
-        activitiesOccasionBloc,
-        emitsInOrder([ActivitiesOccasionLoading()]),
-      );
     });
 
     test(
@@ -60,15 +55,14 @@ void main() {
       // Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder([
-          ActivitiesOccasionLoading(),
+        emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
             fullDayActivities: <ActivityOccasion>[],
             day: initialDay,
             occasion: Occasion.current,
           ),
-        ]),
+        ),
       );
     });
 
@@ -90,8 +84,7 @@ void main() {
       // Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder([
-          ActivitiesOccasionLoading(),
+        emits(
           ActivitiesOccasionLoaded(
             activities: [
               ActivityOccasion.forTest(pastActivity,
@@ -105,7 +98,7 @@ void main() {
             day: initialDay,
             occasion: Occasion.current,
           ),
-        ]),
+        ),
       );
     });
 
@@ -128,8 +121,7 @@ void main() {
       // Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder([
-          ActivitiesOccasionLoading(),
+        emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
             fullDayActivities: [
@@ -139,7 +131,7 @@ void main() {
             day: initialDay,
             occasion: Occasion.current,
           ),
-        ]),
+        ),
       );
     });
 
@@ -169,8 +161,7 @@ void main() {
       // Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder([
-          ActivitiesOccasionLoading(),
+        emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
               ActivityOccasion.forTest(pastActivity,
@@ -187,7 +178,7 @@ void main() {
             day: initialDay,
             occasion: Occasion.current,
           ),
-        ]),
+        ),
       );
     });
 
@@ -215,7 +206,6 @@ void main() {
       await expectLater(
         activitiesOccasionBloc,
         emitsInOrder([
-          ActivitiesOccasionLoading(),
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
             fullDayActivities: [
@@ -273,8 +263,7 @@ void main() {
       //Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder([
-          ActivitiesOccasionLoading(),
+        emits(
           ActivitiesOccasionLoaded(
             activities: [
               ActivityOccasion.forTest(pastActivity,
@@ -291,7 +280,7 @@ void main() {
             day: nextDay,
             occasion: Occasion.future,
           ),
-        ]),
+        ),
       );
     });
 
@@ -312,8 +301,7 @@ void main() {
       //Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder([
-          ActivitiesOccasionLoading(),
+        emits(
           ActivitiesOccasionLoaded(
             activities: [
               ActivityOccasion.forTest(pastActivity,
@@ -330,7 +318,7 @@ void main() {
             day: previusDay,
             occasion: Occasion.past,
           ),
-        ]),
+        ),
       );
     });
 
@@ -345,8 +333,7 @@ void main() {
 
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder([
-          ActivitiesOccasionLoading(),
+        emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
               ActivityOccasion.forTest(endsSoon,
@@ -356,7 +343,7 @@ void main() {
             day: initialDay,
             occasion: Occasion.current,
           ),
-        ]),
+        ),
       );
     });
 
@@ -372,8 +359,7 @@ void main() {
       // Assert
       expectLater(
         activitiesOccasionBloc,
-        emitsInOrder([
-          ActivitiesOccasionLoading(),
+        emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
               ActivityOccasion.forTest(startsNow,
@@ -383,7 +369,7 @@ void main() {
             day: initialDay,
             occasion: Occasion.current,
           ),
-        ]),
+        ),
       );
     });
 
@@ -400,13 +386,11 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesOccasionBloc.any((s) => s is ActivitiesOccasionLoaded);
-      mockedTicker.add(nextMinute);
 
       // Assert
       await expectLater(
         activitiesOccasionBloc,
-        emitsInOrder([
+        emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
               ActivityOccasion.forTest(nowActivity,
@@ -420,6 +404,16 @@ void main() {
             day: initialDay,
             occasion: Occasion.current,
           ),
+        ),
+      );
+
+      // Act
+      mockedTicker.add(nextMinute);
+
+      // Assert
+      await expectLater(
+        activitiesOccasionBloc,
+        emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
               ActivityOccasion.forTest(endsSoonActivity,
@@ -433,7 +427,7 @@ void main() {
             day: initialDay,
             occasion: Occasion.current,
           ),
-        ]),
+        ),
       );
     });
   });
@@ -468,7 +462,6 @@ void main() {
       await expectLater(
           activitiesOccasionBloc,
           emitsInOrder([
-            ActivitiesOccasionLoading(),
             // Tuesday
             ActivitiesOccasionLoaded(
               activities: <ActivityOccasion>[
@@ -577,7 +570,6 @@ void main() {
       await expectLater(
           activitiesOccasionBloc,
           emitsInOrder([
-            ActivitiesOccasionLoading(),
             // Tuesday
             ActivitiesOccasionLoaded(
               activities: <ActivityOccasion>[
@@ -663,7 +655,6 @@ void main() {
       await expectLater(
           activitiesOccasionBloc,
           emitsInOrder([
-            ActivitiesOccasionLoading(),
             // Tuesday
             ActivitiesOccasionLoaded(
               activities: <ActivityOccasion>[
@@ -733,7 +724,6 @@ void main() {
       await expectLater(
           activitiesOccasionBloc,
           emitsInOrder([
-            ActivitiesOccasionLoading(),
             // Tuesday
             ActivitiesOccasionLoaded(
               activities: [

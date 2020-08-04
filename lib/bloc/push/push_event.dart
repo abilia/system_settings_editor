@@ -1,6 +1,5 @@
-import 'package:meta/meta.dart';
+part of 'push_bloc.dart';
 
-@immutable
 class PushEvent {
   final String collapseKey;
   const PushEvent(this.collapseKey);

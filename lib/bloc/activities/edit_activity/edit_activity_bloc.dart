@@ -12,41 +12,34 @@ part 'edit_activity_event.dart';
 part 'edit_activity_state.dart';
 
 class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
-  final ActivityDay activityDay;
-  final TimeInterval timeInterval;
-  Activity get activity => activityDay.activity;
-  DateTime get day => activityDay.day;
   final ActivitiesBloc activitiesBloc;
-  final bool created;
 
-  EditActivityBloc(this.activityDay, {@required this.activitiesBloc})
-      : created = false,
-        timeInterval = activityDay.activity.fullDay
-            ? TimeInterval.empty()
-            : TimeInterval.fromDateTime(
-                activityDay.activity.startClock(activityDay.day),
-                activityDay.activity.hasEndTime
-                    ? activityDay.activity.endClock(activityDay.day)
-                    : null),
-        assert(activityDay != null);
+  EditActivityBloc(ActivityDay activityDay, {@required this.activitiesBloc})
+      : assert(activityDay != null),
+        assert(activitiesBloc != null),
+        super(StoredActivityState(
+            activityDay.activity,
+            activityDay.activity.fullDay
+                ? TimeInterval.empty()
+                : TimeInterval.fromDateTime(
+                    activityDay.activity.startClock(activityDay.day),
+                    activityDay.activity.hasEndTime
+                        ? activityDay.activity.endClock(activityDay.day)
+                        : null),
+            activityDay.day));
 
   EditActivityBloc.newActivity({
     @required this.activitiesBloc,
     @required DateTime day,
-  })  : created = true,
-        timeInterval = TimeInterval(null, null),
-        assert(day != null),
-        activityDay = ActivityDay(
+  })  : assert(day != null),
+        assert(activitiesBloc != null),
+        super(UnstoredActivityState(
             Activity.createNew(
               title: '',
               startTime: day.nextHalfHour(),
               timezone: day.timeZoneName,
             ),
-            day.onlyDays());
-  @override
-  EditActivityState get initialState => created
-      ? UnstoredActivityState(activity, timeInterval)
-      : StoredActivityState(activity, timeInterval, day);
+            TimeInterval(null, null)));
 
   @override
   Stream<EditActivityState> mapEventToState(
@@ -98,8 +91,8 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     EditActivityState state,
     SaveActivity event,
   ) async* {
+    if (state.unchanged) return;
     var activity = state.activity;
-    if (this.activity == activity && timeInterval == state.timeInterval) return;
     if (activity.fullDay) {
       activity = activity.copyWith(
         startTime: activity.startTime.onlyDays(),

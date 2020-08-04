@@ -1,13 +1,13 @@
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-import 'package:seagull/models/all.dart';
+part of 'activities_bloc.dart';
 
-@immutable
 abstract class ActivitiesState extends Equatable {
   const ActivitiesState();
 
   @override
   List<Object> get props => [];
+
+  @override
+  bool get stringify => true;
 }
 
 class ActivitiesLoaded extends ActivitiesState {
@@ -17,9 +17,6 @@ class ActivitiesLoaded extends ActivitiesState {
 
   @override
   List<Object> get props => [activities];
-
-  @override
-  bool get stringify => true;
 }
 
 class ActivitiesNotLoaded extends ActivitiesState {}

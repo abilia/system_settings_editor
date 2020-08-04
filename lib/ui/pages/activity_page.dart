@@ -151,6 +151,8 @@ class ActivityBottomAppBar extends StatelessWidget {
                             ),
                           );
                         },
+                        settings: RouteSettings(
+                            name: 'EditActivityPage ${activityOccasion}'),
                       ),
                     );
                   },

@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
-import 'bloc.dart';
 import 'edit_recurring_mixin.dart';
+
+part 'activities_event.dart';
+part 'activities_state.dart';
 
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     with EditRecurringMixin {
@@ -19,16 +21,13 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     @required this.activityRepository,
     @required this.syncBloc,
     @required PushBloc pushBloc,
-  }) {
+  }) : super(ActivitiesNotLoaded()) {
     pushSubscription = pushBloc.listen((state) {
       if (state is PushReceived) {
         add(LoadActivities());
       }
     });
   }
-
-  @override
-  ActivitiesState get initialState => ActivitiesNotLoaded();
 
   @override
   Stream<ActivitiesState> mapEventToState(ActivitiesEvent event) async* {

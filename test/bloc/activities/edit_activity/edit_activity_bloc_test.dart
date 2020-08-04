@@ -22,8 +22,8 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
     );
     // Act // Assert
-    expect(editActivityBloc.initialState, isA<StoredActivityState>());
-    expect(editActivityBloc.initialState.activity, activity);
+    expect(editActivityBloc.state, isA<StoredActivityState>());
+    expect(editActivityBloc.state.activity, activity);
   });
 
   test('Initial state is a new activity', () {
@@ -38,8 +38,7 @@ void main() {
       day: aTime,
     );
     // Act // Assert
-    expect(editActivityBloc.initialState.activity,
-        MatchActivityWithoutId(activity));
+    expect(editActivityBloc.state.activity, MatchActivityWithoutId(activity));
   });
 
   test('Initial state with no title is not saveable', () {
@@ -50,7 +49,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
     );
     // Act // Assert
-    expect(editActivityBloc.initialState.canSave, isFalse);
+    expect(editActivityBloc.state.canSave, isFalse);
   });
 
   test('Changing activity changes activity', () async {
@@ -59,7 +58,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       day: aTime,
     );
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
     final timeInterval = TimeInterval(null, null);
 
@@ -69,10 +68,7 @@ void main() {
     // Assert
     await expectLater(
       editActivityBloc,
-      emitsInOrder([
-        UnstoredActivityState(activity, timeInterval),
-        UnstoredActivityState(activityWithTitle, timeInterval),
-      ]),
+      emits(UnstoredActivityState(activityWithTitle, timeInterval)),
     );
   });
 
@@ -81,7 +77,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
         activitiesBloc: mockActivitiesBloc, day: aTime);
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
     final timeInterval = TimeInterval(null, null);
     final newStartTime = TimeOfDay(hour: 10, minute: 0);
@@ -103,7 +99,6 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnstoredActivityState(activity, timeInterval),
         UnstoredActivityState(activity, timeInterval, null, true),
         UnstoredActivityState(activityWithTitle, timeInterval),
         UnstoredActivityState(activityWithTitle, timeInterval, null, true),
@@ -149,7 +144,6 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        StoredActivityState(activity, timeInterval, aDay),
         StoredActivityState(activityAsFullDay, timeInterval, aDay),
         StoredActivityState(activityExpectedToBeSaved, timeInterval,
             activityExpectedToBeSaved.startTime.onlyDays()),
@@ -163,7 +157,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
         activitiesBloc: mockActivitiesBloc, day: aDate);
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
     final newDate = DateTime(2011, 11, 11, 11, 11);
     final expetedNewDate = DateTime(2011, 11, 11, 11, 11);
     final expetedNewActivity = activity.copyWith(startTime: expetedNewDate);
@@ -175,10 +169,7 @@ void main() {
     // Assert
     await expectLater(
       editActivityBloc,
-      emitsInOrder([
-        UnstoredActivityState(activity, expectedTimeInterval),
-        UnstoredActivityState(expetedNewActivity, expectedTimeInterval),
-      ]),
+      emits(UnstoredActivityState(expetedNewActivity, expectedTimeInterval)),
     );
   });
 
@@ -208,6 +199,10 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
     );
 
+    // Assert
+    expect(editActivityBloc.state,
+        StoredActivityState(activity, expectedTimeInterval, day));
+
     // Act
     editActivityBloc.add(ChangeStartTime(newStartTime));
     editActivityBloc.add(SaveActivity());
@@ -216,7 +211,6 @@ void main() {
     await expectLater(
         editActivityBloc,
         emitsInOrder([
-          StoredActivityState(activity, expectedTimeInterval, day),
           StoredActivityState(activity, expectedNewTimeInterval, day),
           StoredActivityState(expetedNewActivity, expectedNewTimeInterval, day),
         ]));
@@ -249,6 +243,10 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
     );
 
+    // Assert
+    expect(editActivityBloc.state,
+        StoredActivityState(activity, expectedTimeInterval, aDay));
+
     // Act
     editActivityBloc.add(ChangeEndTime(newEndTime));
     editActivityBloc.add(SaveActivity());
@@ -257,7 +255,6 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        StoredActivityState(activity, expectedTimeInterval, aDay),
         StoredActivityState(activity, expectedNewTimeInterval, aDay),
         StoredActivityState(expetedNewActivity, expectedNewTimeInterval, aDay),
       ]),
@@ -292,6 +289,10 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
     );
 
+    // Assert
+    expect(editActivityBloc.state,
+        StoredActivityState(activity, expectedTimeInterval, aDay));
+
     // Act
     editActivityBloc.add(ChangeEndTime(newEndTime));
     editActivityBloc.add(SaveActivity());
@@ -300,7 +301,6 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        StoredActivityState(activity, expectedTimeInterval, aDay),
         StoredActivityState(activity, expectedNewTimeInterval, aDay),
         StoredActivityState(expetedNewActivity, expectedNewTimeInterval, aDay),
       ]),
@@ -344,7 +344,6 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        StoredActivityState(activity, timeInterval, aDay),
         StoredActivityState(with15MinReminder, timeInterval, aDay),
         StoredActivityState(with15MinAnd1HourReminder, timeInterval, aDay),
         StoredActivityState(with15MinReminder, timeInterval, aDay),
@@ -377,6 +376,10 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
     );
 
+    // Assert
+    expect(editActivityBloc.state,
+        StoredActivityState(activity, expectedTimeInterval, aDay));
+
     // Act
     editActivityBloc.add(ChangeEndTime(null));
     editActivityBloc.add(SaveActivity());
@@ -385,7 +388,6 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        StoredActivityState(activity, expectedTimeInterval, aDay),
         StoredActivityState(activity, expectedNewTimeInterval, aDay),
         StoredActivityState(expectedNewActivity, expectedNewTimeInterval, aDay)
       ]),
@@ -399,7 +401,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
         activitiesBloc: mockActivitiesBloc, day: aDay);
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'title');
 
     final expectedActivity = activityWithTitle.copyWith(
@@ -418,7 +420,6 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnstoredActivityState(activity, TimeInterval.empty()),
         UnstoredActivityState(
             activity,
             TimeInterval(null,
@@ -436,7 +437,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
         activitiesBloc: mockActivitiesBloc, day: aDay);
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'title');
 
     final expectedActivity = activityWithTitle.copyWith(
@@ -454,9 +455,10 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnstoredActivityState(activity, TimeInterval.empty()),
         UnstoredActivityState(
-            activity, TimeInterval(null, TimeOfDay(hour: 10, minute: 0))),
+          activity,
+          TimeInterval(null, TimeOfDay(hour: 10, minute: 0)),
+        ),
         UnstoredActivityState(
           activity,
           expectedTimeInterval,
@@ -481,7 +483,7 @@ void main() {
       day: aDay,
     );
 
-    final activity = editActivityBloc.initialState.activity;
+    final activity = editActivityBloc.state.activity;
 
     final startTime1 = TimeOfDay(hour: 10, minute: 0);
     final endTime1 = TimeOfDay(hour: 11, minute: 0);
@@ -502,7 +504,6 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnstoredActivityState(activity, TimeInterval.empty()),
         UnstoredActivityState(activity, TimeInterval(startTime1, null)),
         UnstoredActivityState(activity, TimeInterval(startTime1, endTime1)),
         UnstoredActivityState(activity, TimeInterval(startTime2, endTime2)),

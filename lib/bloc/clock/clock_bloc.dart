@@ -8,7 +8,8 @@ class ClockBloc extends Bloc<DateTime, DateTime> with Silent {
   StreamSubscription<DateTime> _tickerSubscription;
 
   final DateTime initialTime;
-  ClockBloc(Stream<DateTime> ticker, {this.initialTime}) {
+  ClockBloc(Stream<DateTime> ticker, {this.initialTime})
+      : super((initialTime ?? DateTime.now()).onlyMinutes()) {
     _tickerSubscription = ticker.listen((tick) => add(tick));
   }
 
@@ -19,9 +20,6 @@ class ClockBloc extends Bloc<DateTime, DateTime> with Silent {
   Stream<DateTime> mapEventToState(DateTime tick) async* {
     yield tick;
   }
-
-  @override
-  DateTime get initialState => (initialTime ?? DateTime.now()).onlyMinutes();
 
   @override
   Future<void> close() async {

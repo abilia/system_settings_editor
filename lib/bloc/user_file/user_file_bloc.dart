@@ -8,7 +8,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:mime/mime.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
@@ -28,16 +27,13 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     @required this.syncBloc,
     @required this.fileStorage,
     @required PushBloc pushBloc,
-  }) {
+  }) : super(UserFilesNotLoaded()) {
     pushSubscription = pushBloc.listen((state) {
       if (state is PushReceived) {
         add(LoadUserFiles());
       }
     });
   }
-
-  @override
-  UserFileState get initialState => UserFilesNotLoaded();
 
   @override
   Stream<UserFileState> mapEventToState(

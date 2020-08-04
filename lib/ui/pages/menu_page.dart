@@ -34,7 +34,10 @@ class LogoutPickField extends StatelessWidget {
       leading: Icon(AbiliaIcons.power_off_on),
       label: Text(Translator.of(context).translate.logout),
       onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => LogoutPage()),
+        MaterialPageRoute(
+          builder: (context) => LogoutPage(),
+          settings: RouteSettings(name: 'LogoutPage'),
+        ),
       ),
     );
   }

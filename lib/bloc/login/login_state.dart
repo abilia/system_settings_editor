@@ -1,12 +1,12 @@
-import 'package:meta/meta.dart';
-import 'package:equatable/equatable.dart';
+part of 'login_bloc.dart';
 
-@immutable
 abstract class LoginState extends Equatable {
   const LoginState();
 
   @override
   List<Object> get props => [];
+  @override
+  bool get stringify => true;
 }
 
 class LoginInitial extends LoginState {}
@@ -20,7 +20,4 @@ class LoginFailure extends LoginState {
 
   @override
   List<Object> get props => [error];
-
-  @override
-  String toString() => 'LoginFailure { error: $error }';
 }

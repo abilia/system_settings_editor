@@ -75,6 +75,8 @@ class ActivityCard extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (innerContext) =>
                           ActivityPage(occasion: activityOccasion),
+                      settings:
+                          RouteSettings(name: 'ActivityPage $activityOccasion'),
                     ),
                   );
                 },

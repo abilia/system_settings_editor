@@ -1,9 +1,5 @@
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
+part of 'day_activities_bloc.dart';
 
-@immutable
 abstract class DayActivitiesEvent extends Equatable {
   const DayActivitiesEvent();
 }

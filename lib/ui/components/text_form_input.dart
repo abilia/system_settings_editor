@@ -153,7 +153,7 @@ class PasswordInput extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               BlocBuilder<LoginFormBloc, LoginFormState>(
-                bloc: loginFormBloc,
+                cubit: loginFormBloc,
                 builder: (context, state) => Expanded(
                   child: TextFormField(
                     key: TestKey.input,
@@ -188,7 +188,7 @@ class HidePasswordButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginFormBloc, LoginFormState>(
-      bloc: loginFormBloc,
+      cubit: loginFormBloc,
       builder: (context, state) => Padding(
         padding: state.password.isNotEmpty
             ? const EdgeInsets.only(left: 12)
