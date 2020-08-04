@@ -21,7 +21,7 @@ extension SizeOfText on String {
   TextRenderingSize calulcateTextRenderSize({
     @required BoxConstraints constraints,
     @required TextStyle textStyle,
-    @required EdgeInsets padding,
+    EdgeInsets padding = EdgeInsets.zero,
     double textScaleFactor = 1.0,
   }) {
     final width = constraints.maxWidth - padding.vertical;

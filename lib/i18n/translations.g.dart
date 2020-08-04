@@ -178,6 +178,8 @@ abstract class Translated {
   final String typeSomething = 'n/a';
 
   final String clear = 'n/a';
+
+  final String selectFromLibrary = 'n/a';
 }
 
 class EN extends Translated {
@@ -432,6 +434,9 @@ class EN extends Translated {
 
   @override
   final String clear = 'Clear';
+
+  @override
+  final String selectFromLibrary = 'Select from library';
 }
 
 class SV extends Translated {
@@ -685,4 +690,7 @@ class SV extends Translated {
 
   @override
   final String clear = 'Rensa';
+
+  @override
+  final String selectFromLibrary = 'Välj från biblotek';
 }

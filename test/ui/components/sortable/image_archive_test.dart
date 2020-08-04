@@ -21,17 +21,16 @@ void main() {
     final fileId = '351d5e7d-0d87-4037-9829-538a14936128',
         path = '/images/Basic/Basic/bingo.gif';
 
-    final imageData = '''
+    final imageData = ImageArchiveData.fromJson('''
           {"name":"bingo","fileId":"$fileId","file":"$path"}
-          ''';
-    final image =
-        Sortable.createNew(type: SortableType.imageArchive, data: imageData);
+          ''');
+    final image = Sortable.createNew<ImageArchiveData>(data: imageData);
 
-    final folderData = '''
+    final folderData = ImageArchiveData.fromJson('''
           {"name":"Basic","fileId":"19da3060-be12-42f9-922e-7e1635293126","icon":"/images/Basic/Basic.png"}
-          ''';
-    final folder = Sortable.createNew(
-        type: SortableType.imageArchive, data: folderData, isGroup: true);
+          ''');
+    final folder =
+        Sortable.createNew<ImageArchiveData>(data: folderData, isGroup: true);
 
     final imageArchiveBlocMock = MockImageArchiveBloc();
 
@@ -116,10 +115,11 @@ void main() {
 }
 
 ImageArchiveState stateFromSortables(
-  List<Sortable> sortables, {
+  List<Sortable<ImageArchiveData>> sortables, {
   String folderId,
 }) {
-  final allByFolder = groupBy<Sortable, String>(sortables, (s) => s.groupId);
+  final allByFolder =
+      groupBy<Sortable<ImageArchiveData>, String>(sortables, (s) => s.groupId);
   final allById = {for (var s in sortables) s.id: s};
   return ImageArchiveState(allByFolder, allById, folderId);
 }

@@ -1,7 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
-import 'package:seagull/models/activity.dart';
+import 'package:seagull/models/all.dart';
 
 class AnalyticsService {
   static FirebaseAnalytics analytics = FirebaseAnalytics();

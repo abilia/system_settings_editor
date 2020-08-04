@@ -16,6 +16,7 @@ export 'calendar/all.dart';
 export 'activity/all.dart';
 export 'dialogs/all.dart';
 export 'sortable/image_archive.dart';
+export 'sortable/note_libraray.dart';
 export 'remove_button.dart';
 export 'cross_over.dart';
 export 'dots.dart';

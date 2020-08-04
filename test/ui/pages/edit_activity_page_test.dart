@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
@@ -26,6 +27,12 @@ void main() {
   final endTimeFieldFinder = find.byKey(TestKey.endTimePicker);
   final okFinder = find.byKey(TestKey.okDialog);
 
+  MockSortableBloc mockSortableBloc;
+  setUp(() async {
+    await initializeDateFormatting();
+    mockSortableBloc = MockSortableBloc();
+  });
+
   Widget wrapWithMaterialApp(Widget widget,
       {Activity givenActivity, bool use24H = false, bool newActivity = false}) {
     final activity = givenActivity ?? startActivity;
@@ -37,38 +44,36 @@ void main() {
               orElse: () => supportedLocales.first),
       builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24H),
-          child: child),
-      home: MultiBlocProvider(providers: [
-        BlocProvider<AuthenticationBloc>(
-            create: (context) => MockAuthenticationBloc()),
-        BlocProvider<ActivitiesBloc>(create: (context) => MockActivitiesBloc()),
-        BlocProvider<EditActivityBloc>(
-          create: (context) => newActivity
-              ? EditActivityBloc.newActivity(
-                  activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-                  day: today)
-              : EditActivityBloc(
-                  ActivityDay(activity, today),
-                  activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-                ),
-        ),
-        BlocProvider<SortableBloc>(
-          create: (context) => MockSortableBloc(),
-        ),
-        BlocProvider<UserFileBloc>(
-          create: (context) => MockUserFileBloc(),
-        ),
-        BlocProvider<ClockBloc>(
-          create: (context) => ClockBloc(StreamController<DateTime>().stream,
-              initialTime: startTime),
-        ),
-      ], child: widget),
+          child: MultiBlocProvider(providers: [
+            BlocProvider<AuthenticationBloc>(
+                create: (context) => MockAuthenticationBloc()),
+            BlocProvider<ActivitiesBloc>(
+                create: (context) => MockActivitiesBloc()),
+            BlocProvider<EditActivityBloc>(
+              create: (context) => newActivity
+                  ? EditActivityBloc.newActivity(
+                      activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+                      day: today)
+                  : EditActivityBloc(
+                      ActivityDay(activity, today),
+                      activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+                    ),
+            ),
+            BlocProvider<SortableBloc>(
+              create: (context) => mockSortableBloc,
+            ),
+            BlocProvider<UserFileBloc>(
+              create: (context) => MockUserFileBloc(),
+            ),
+            BlocProvider<ClockBloc>(
+              create: (context) => ClockBloc(
+                  StreamController<DateTime>().stream,
+                  initialTime: startTime),
+            ),
+          ], child: child)),
+      home: widget,
     );
   }
-
-  setUp(() async {
-    await initializeDateFormatting();
-  });
 
   group('edit activity test', () {
     testWidgets('New activity shows', (WidgetTester tester) async {
@@ -509,6 +514,15 @@ void main() {
   });
 
   group('edit info item', () {
+    Future goToNote(WidgetTester tester) async {
+      await tester.goToInfoItemTab();
+
+      await tester.tap(find.byIcon(AbiliaIcons.information));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.pumpAndSettle();
+    }
+
     testWidgets('Info item shows', (WidgetTester tester) async {
       final aLongNote = '''
 This is a note
@@ -583,11 +597,8 @@ that it is visible in the info item tab
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await tester.goToInfoItemTab();
-      await tester.tap(find.byIcon(AbiliaIcons.information));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-      await tester.pumpAndSettle();
+      await goToNote(tester);
+
       await tester.tap(find.byType(NoteBlock));
       await tester.pumpAndSettle();
 
@@ -614,19 +625,90 @@ Internal improvements to tests and examples.''';
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await tester.goToInfoItemTab();
-
-      await tester.tap(find.byIcon(AbiliaIcons.information));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-
-      await tester.pumpAndSettle();
+      await goToNote(tester);
 
       await tester.enterText_(find.byType(NoteBlock), noteText);
       await tester.pumpAndSettle();
 
       expect(find.text(noteText), findsOneWidget);
+    });
+
+    testWidgets('note button library shows', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await goToNote(tester);
+      expect(find.byIcon(AbiliaIcons.show_text), findsOneWidget);
+    });
+
+    testWidgets('note library shows', (WidgetTester tester) async {
+      final content =
+          'Etappen har sin början vid Bjursjöns strand, ett mycket populärt friluftsområde med närhet till Uddevalla tätort.';
+
+      when(mockSortableBloc.state).thenReturn(
+        SortablesLoaded(
+          sortables: [
+            Sortable.createNew<NoteData>(
+              data: NoteData(
+                name: 'NAAAMAE',
+                text: content,
+              ),
+            ),
+            ...List.generate(
+              30,
+              (index) => Sortable.createNew<NoteData>(
+                sortOrder: '$index',
+                data: NoteData(
+                  name: 'data $index',
+                  text: [for (var i = 0; i < index; i++) '$i$i$i$i$i$i\n'].fold(
+                      'text:',
+                      (previousValue, element) => previousValue + element),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await goToNote(tester);
+      await tester.tap(find.byIcon(AbiliaIcons.show_text));
+      await tester.pumpAndSettle();
+      expect(find.byType(NoteLibrary), findsOneWidget);
+      expect(find.byType(LibraryNote), findsWidgets);
+      expect(find.text(content), findsOneWidget);
+    });
+
+    testWidgets('notes from library is selectable',
+        (WidgetTester tester) async {
+      final content =
+          'Etappen har sin början vid Bjursjöns strand, ett mycket populärt friluftsområde med närhet till Uddevalla tätort.';
+
+      when(mockSortableBloc.state).thenReturn(
+        SortablesLoaded(
+          sortables: [
+            Sortable.createNew<NoteData>(
+              data: NoteData(
+                name: 'NAAAMAE',
+                text: content,
+              ),
+            ),
+          ],
+        ),
+      );
+
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await goToNote(tester);
+      await tester.tap(find.byIcon(AbiliaIcons.show_text));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(content));
+      await tester.pumpAndSettle();
+      expect(find.text(content), findsOneWidget);
+      expect(find.byType(NoteBlock), findsOneWidget);
     });
   });
 
