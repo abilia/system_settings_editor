@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logging/logging.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -160,14 +158,14 @@ class FullScreenImage extends StatelessWidget {
             imageProvider: userFileLoaded
                 ? Image.file(GetIt.I<FileStorage>().getFile(fileId)).image
                 : (state is Authenticated)
-                    ? AdvancedNetworkImage(
+                    ? Image.network(
                         imageThumbUrl(
                           baseUrl: state.userRepository.baseUrl,
                           userId: state.userId,
                           imageFileId: fileId,
                           size: ImageThumb.THUMB_SIZE,
                         ),
-                        header: authHeader(state.token),
+                        headers: authHeader(state.token),
                       )
                     : MemoryImage(kTransparentImage),
           );
@@ -300,7 +298,6 @@ class FadeInAbiliaImage extends StatelessWidget {
 }
 
 class FadeInNetworkImage extends StatelessWidget {
-  static final _log = Logger((FadeInNetworkImage).toString());
   final String imageFileId, imageFilePath;
   final double width, height;
   final BoxFit fit;
@@ -323,7 +320,7 @@ class FadeInNetworkImage extends StatelessWidget {
               height: height,
               width: width,
               placeholder: MemoryImage(kTransparentImage),
-              image: AdvancedNetworkImage(
+              image: NetworkImage(
                 imageFileId != null
                     ? imageThumbUrl(
                         baseUrl: state.userRepository.baseUrl,
@@ -337,9 +334,7 @@ class FadeInNetworkImage extends StatelessWidget {
                         imagePath: imageFilePath,
                         size: ImageThumb.THUMB_SIZE,
                       ),
-                header: authHeader(state.token),
-                loadFailedCallback: () =>
-                    _log.info('Failed to load network image'),
+                headers: authHeader(state.token),
               ),
               fit: fit,
             )
