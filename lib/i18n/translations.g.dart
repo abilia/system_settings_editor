@@ -180,6 +180,10 @@ abstract class Translated {
   final String clear = 'n/a';
 
   final String selectFromLibrary = 'n/a';
+
+  final String addNew = 'n/a';
+
+  final String task = 'n/a';
 }
 
 class EN extends Translated {
@@ -437,6 +441,12 @@ class EN extends Translated {
 
   @override
   final String selectFromLibrary = 'Select from library';
+
+  @override
+  final String addNew = 'Add new';
+
+  @override
+  final String task = 'Task';
 }
 
 class SV extends Translated {
@@ -693,4 +703,10 @@ class SV extends Translated {
 
   @override
   final String selectFromLibrary = 'Välj från biblotek';
+
+  @override
+  final String addNew = 'Lägg till ny';
+
+  @override
+  final String task = 'Fråga';
 }

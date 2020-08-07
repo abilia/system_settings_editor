@@ -191,9 +191,14 @@ class Attachment extends StatelessWidget {
       return CheckListView(
         item,
         day: activityDay.day,
-        onTap: (question, day) => BlocProvider.of<ActivitiesBloc>(context).add(
-            UpdateActivity(
-                activity.copyWith(infoItem: item.signOff(question, day)))),
+        padding: Attachment.padding.subtract(QuestionView.padding),
+        onTap: (question) => BlocProvider.of<ActivitiesBloc>(context).add(
+          UpdateActivity(
+            activity.copyWith(
+              infoItem: item.signOff(question, activityDay.day),
+            ),
+          ),
+        ),
       );
     }
     return Container();

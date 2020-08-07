@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
@@ -9,15 +11,89 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 
-class NameAndPictureWidget extends StatelessWidget {
-  static const imageSize = 84.0, padding = 4.0;
-  final EditActivityState state;
-
-  const NameAndPictureWidget(this.state, {Key key}) : super(key: key);
+class UnderConstruction extends StatelessWidget {
+  final BannerLocation bannerLocation;
+  const UnderConstruction({this.bannerLocation = BannerLocation.topStart});
   @override
   Widget build(BuildContext context) {
-    final activity = state.activity;
-    final newImage = state.newImage;
+    return Transform.scale(
+      alignment: _alignment,
+      scale: 3,
+      child: Banner(
+        location: bannerLocation,
+        color: AbiliaColors.red,
+        message: 'Under construction',
+      ),
+    );
+  }
+
+  Alignment get _alignment {
+    switch (bannerLocation) {
+      case BannerLocation.topStart:
+        return Alignment.topLeft;
+      case BannerLocation.topEnd:
+        return Alignment.topRight;
+      case BannerLocation.bottomStart:
+        return Alignment.bottomLeft;
+      case BannerLocation.bottomEnd:
+        return Alignment.bottomRight;
+      default:
+        return Alignment.center;
+    }
+  }
+}
+
+class ActivityNameAndPictureWidget extends StatelessWidget {
+  final EditActivityState state;
+  const ActivityNameAndPictureWidget(this.state, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return NameAndPictureWidget(
+      imageFileId: state.activity.fileId,
+      imageFilePath: state.activity.icon,
+      errorState: state.failedSave && !state.hasTitleOrImage,
+      text: state.activity.title,
+      newImage: state.newImage,
+      onImageSelected: (selectedImage) {
+        BlocProvider.of<EditActivityBloc>(context).add(ImageSelected(
+          selectedImage.id,
+          selectedImage.path,
+          selectedImage.newImage,
+        ));
+      },
+      onTextEdit: (text) {
+        if (state.activity.title != text) {
+          BlocProvider.of<EditActivityBloc>(context)
+              .add(ReplaceActivity(state.activity.copyWith(title: text)));
+        }
+      },
+    );
+  }
+}
+
+class NameAndPictureWidget extends StatelessWidget {
+  static const imageSize = 84.0, padding = 4.0;
+  final String imageFileId;
+  final String imageFilePath;
+  final File newImage;
+  final void Function(SelectedImage) onImageSelected;
+  final void Function(String) onTextEdit;
+  final bool errorState;
+  final String text;
+
+  const NameAndPictureWidget({
+    Key key,
+    this.imageFileId,
+    this.imageFilePath,
+    this.newImage,
+    this.onImageSelected,
+    this.onTextEdit,
+    this.errorState = false,
+    this.text,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
     final imageClick = () async {
       final selectedImage = await showViewDialog<SelectedImage>(
@@ -33,23 +109,26 @@ class NameAndPictureWidget extends StatelessWidget {
               value: BlocProvider.of<UserFileBloc>(context),
             ),
           ],
-          child: SelectPictureDialog(previousImage: activity.fileId),
+          child: SelectPictureDialog(previousImage: imageFileId),
         ),
       );
-      if (selectedImage != null) {
-        BlocProvider.of<EditActivityBloc>(context).add(ImageSelected(
-          selectedImage.id,
-          selectedImage.path,
-          selectedImage.newImage,
-        ));
+      if (selectedImage != null && onImageSelected != null) {
         if (selectedImage.newImage != null) {
-          BlocProvider.of<UserFileBloc>(context).add(ImageAdded(
-              selectedImage.id, selectedImage.path, selectedImage.newImage));
-          BlocProvider.of<SortableBloc>(context).add(ImageArchiveImageAdded(
-            selectedImage.id,
-            selectedImage.newImage.path,
-          ));
+          BlocProvider.of<UserFileBloc>(context).add(
+            ImageAdded(
+              selectedImage.id,
+              selectedImage.path,
+              selectedImage.newImage,
+            ),
+          );
+          BlocProvider.of<SortableBloc>(context).add(
+            ImageArchiveImageAdded(
+              selectedImage.id,
+              selectedImage.newImage.path,
+            ),
+          );
         }
+        onImageSelected(selectedImage);
       }
     };
     return Material(
@@ -62,15 +141,15 @@ class NameAndPictureWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SubHeading(translator.picture),
-              if (activity.hasImage)
+              if ((imageFileId?.isNotEmpty ?? false) ||
+                  (imageFilePath?.isNotEmpty ?? false))
                 InkWell(
                   onTap: imageClick,
                   child: FadeInCalendarImage(
                     height: imageSize,
                     width: imageSize,
-                    imageFileId: activity.fileId,
-                    imageFilePath: activity.icon,
-                    activityId: activity.id,
+                    imageFileId: imageFileId,
+                    imageFilePath: imageFilePath,
                     imageFile: newImage,
                   ),
                 )
@@ -81,7 +160,7 @@ class NameAndPictureWidget extends StatelessWidget {
                   child: LinedBorder(
                     key: TestKey.addPicture,
                     padding: const EdgeInsets.all(padding),
-                    errorState: state.failedSave && !state.hasTitleOrImage,
+                    errorState: errorState,
                     child: Container(
                       decoration: whiteNoBorderBoxDecoration,
                       width: imageSize - padding,
@@ -98,7 +177,13 @@ class NameAndPictureWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(width: 12),
-          Expanded(child: NameInput(state: state)),
+          Expanded(
+            child: NameInput(
+              text: text,
+              onEdit: onTextEdit,
+              errorState: errorState,
+            ),
+          ),
         ],
       ),
     );
@@ -108,10 +193,14 @@ class NameAndPictureWidget extends StatelessWidget {
 class NameInput extends StatefulWidget {
   const NameInput({
     Key key,
-    @required this.state,
+    @required this.text,
+    this.onEdit,
+    this.errorState = false,
   }) : super(key: key);
 
-  final EditActivityState state;
+  final String text;
+  final Function(String) onEdit;
+  final bool errorState;
   @override
   _NameInputState createState() => _NameInputState();
 }
@@ -122,15 +211,12 @@ class _NameInputState extends State<NameInput> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.state.activity.title);
+    _nameController = TextEditingController(text: widget.text);
     _nameController.addListener(_onEdit);
   }
 
   void _onEdit() {
-    if (widget.state.activity.title != _nameController.text) {
-      BlocProvider.of<EditActivityBloc>(context).add(ReplaceActivity(
-          widget.state.activity.copyWith(title: _nameController.text)));
-    }
+    widget.onEdit(_nameController.text);
   }
 
   @override
@@ -145,7 +231,7 @@ class _NameInputState extends State<NameInput> {
     return AbiliaTextInput(
       formKey: TestKey.editTitleTextFormField,
       controller: _nameController,
-      errorState: widget.state.failedSave && !widget.state.hasTitleOrImage,
+      errorState: widget.errorState,
       heading: Translator.of(context).translate.name,
       textCapitalization: TextCapitalization.sentences,
       inputFormatters: [LengthLimitingTextInputFormatter(50)],

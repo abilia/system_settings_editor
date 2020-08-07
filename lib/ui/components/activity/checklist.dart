@@ -1,3 +1,6 @@
+import 'dart:collection';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:seagull/models/info_item.dart';
@@ -5,26 +8,25 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
-class CheckListView extends StatefulWidget {
+class CheckListView extends StatelessWidget {
   final Checklist checklist;
   final DateTime day;
-  final Function(Question, DateTime) onTap;
+  final Function(Question) onTap;
+  final EdgeInsetsGeometry padding;
+  final UnmodifiableMapView<int, File> tempImageFiles;
 
-  const CheckListView(
+  CheckListView(
     this.checklist, {
-    @required this.day,
-    @required this.onTap,
+    this.day,
+    this.onTap,
     Key key,
-  }) : super(key: key);
+    this.padding = EdgeInsets.zero,
+    Map<int, File> tempImageFiles = const {},
+  })  : tempImageFiles = UnmodifiableMapView(tempImageFiles),
+        super(key: key);
 
-  @override
-  _CheckListViewState createState() => _CheckListViewState(ScrollController());
-}
+  final ScrollController controller = ScrollController();
 
-class _CheckListViewState extends State<CheckListView> {
-  final ScrollController controller;
-
-  _CheckListViewState(this.controller);
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -33,14 +35,15 @@ class _CheckListViewState extends State<CheckListView> {
           controller: controller,
           child: ListView.builder(
             controller: controller,
-            padding: Attachment.padding.subtract(QuestionView.padding),
-            itemCount: widget.checklist.questions.length,
+            padding: padding,
+            itemCount: checklist.questions.length,
             itemBuilder: (context, i) {
-              final question = widget.checklist.questions[i];
+              final question = checklist.questions[i];
               return QuestionView(
                 question,
-                signedOff: widget.checklist.isSignedOff(question, widget.day),
-                onTap: () => widget.onTap(question, widget.day),
+                signedOff: day != null && checklist.isSignedOff(question, day),
+                onTap: onTap != null ? () => onTap(question) : null,
+                tempImageFile: tempImageFiles[question.id],
               );
             },
           ),
@@ -56,12 +59,14 @@ class QuestionView extends StatelessWidget {
   final Question question;
   final bool signedOff;
   final GestureTapCallback onTap;
+  final File tempImageFile;
 
   const QuestionView(
     this.question, {
     @required this.onTap,
     this.signedOff = false,
     key,
+    this.tempImageFile,
   }) : super(key: key);
 
   static const duration = Duration(milliseconds: 400);
@@ -112,9 +117,11 @@ class QuestionView extends StatelessWidget {
                           child: AnimatedOpacity(
                             duration: duration,
                             opacity: signedOff ? 0.5 : 1.0,
-                            child: FadeInAbiliaImage(
+                            child: FadeInCalendarImage(
+                              key: TestKey.checklistQuestionImageKey,
                               imageFileId: question.fileId,
                               imageFilePath: question.image,
+                              imageFile: tempImageFile,
                               width: 40,
                               height: 40,
                               fit: BoxFit.contain,

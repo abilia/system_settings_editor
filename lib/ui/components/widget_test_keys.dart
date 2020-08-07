@@ -49,5 +49,6 @@ class TestKey {
       viewImage = Key('viewImage'),
       infoItemNoneRadio = Key('infoItemNoneRadio'),
       infoItemChecklistRadio = Key('infoItemChecklistRadio'),
-      infoItemNoteRadio = Key('infoItemNoteRadio');
+      infoItemNoteRadio = Key('infoItemNoteRadio'),
+      checklistQuestionImageKey = Key('checklistQuestionImageKey');
 }

@@ -70,7 +70,6 @@ class ActivityImage extends StatelessWidget {
               child: FadeInCalendarImage(
                 imageFileId: activity.fileId,
                 imageFilePath: activity.icon,
-                activityId: activity.id,
                 width: size,
                 height: size,
                 imageSize: imageSize,
@@ -176,7 +175,7 @@ class FullScreenImage extends StatelessWidget {
 }
 
 class FadeInCalendarImage extends StatelessWidget {
-  final String imageFileId, imageFilePath, activityId;
+  final String imageFileId, imageFilePath;
   final File imageFile;
   final double width, height;
   final ImageSize imageSize;
@@ -184,13 +183,13 @@ class FadeInCalendarImage extends StatelessWidget {
   FadeInCalendarImage({
     @required this.imageFileId,
     @required this.imageFilePath,
-    @required this.activityId,
     this.width,
     this.height,
     this.imageFile,
     this.imageSize = ImageSize.THUMB,
     this.fit = BoxFit.cover,
-  });
+    Key key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final fileStorage = GetIt.I<FileStorage>();
