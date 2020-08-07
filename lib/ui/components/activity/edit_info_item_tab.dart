@@ -120,7 +120,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                       Translator.of(context).translate.selectFromLibrary,
                       style: abiliaTheme.textTheme.headline6,
                     ),
-                    child: UnderConstruction(),
+                    child: ChecklistLibrary(),
                   ),
                 );
                 if (selectedChecklist != null &&

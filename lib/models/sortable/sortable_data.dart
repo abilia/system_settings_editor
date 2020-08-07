@@ -77,3 +77,35 @@ class NoteData extends SortableData {
     );
   }
 }
+
+class ChecklistData extends SortableData {
+  final Checklist checklist;
+
+  ChecklistData(this.checklist);
+
+  @override
+  List<Object> get props => [checklist];
+
+  @override
+  String toRaw() => json.encode({
+        'checkItems': List.from(checklist.questions.map((x) => x.toJson())),
+        'image': checklist.image,
+        'name': checklist.name,
+        'fileId': checklist.fileId,
+      });
+
+  factory ChecklistData.fromJson(String data) {
+    final sortableData = json.decode(data);
+    final checklist = Checklist(
+      image: sortableData['image'],
+      fileId: sortableData['fileId'],
+      name: sortableData['name'],
+      questions: List<Question>.from(
+        sortableData['checkItems'].map(
+          (x) => Question.fromJson(x),
+        ),
+      ),
+    );
+    return ChecklistData(checklist);
+  }
+}

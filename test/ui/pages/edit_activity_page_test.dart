@@ -922,6 +922,95 @@ Internal improvements to tests and examples.''';
         expect(find.text(questions[0]), findsNothing);
         expect(find.text(newQuestionName), findsOneWidget);
       });
+
+      testWidgets('checklist button library shows',
+          (WidgetTester tester) async {
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await goToChecklist(tester);
+        expect(find.byIcon(AbiliaIcons.show_text), findsOneWidget);
+      });
+
+      testWidgets('checklist library shows', (WidgetTester tester) async {
+        final title1 = 'listtitle1';
+        when(mockSortableBloc.state).thenReturn(
+          SortablesLoaded(
+            sortables: [
+              Sortable.createNew<ChecklistData>(
+                  data: ChecklistData(Checklist(
+                      name: title1,
+                      fileId: 'fileid1',
+                      questions: [
+                    Question(id: 0, name: '1'),
+                    Question(id: 1, name: '2', fileId: '2222')
+                  ]))),
+              ...List.generate(
+                30,
+                (index) => Sortable.createNew<ChecklistData>(
+                  sortOrder: '$index',
+                  data: ChecklistData(
+                    Checklist(
+                      name: 'data $index',
+                      questions: [
+                        for (var i = 0; i < index; i++)
+                          Question(id: i, name: '$i$i$i$i$i$i\n')
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await goToChecklist(tester);
+        await tester.tap(find.byIcon(AbiliaIcons.show_text));
+        await tester.pumpAndSettle();
+        expect(find.byType(ChecklistLibrary), findsOneWidget);
+        expect(find.byType(LibraryChecklist), findsWidgets);
+        expect(find.text(title1), findsOneWidget);
+      });
+
+      testWidgets('checklist from library is selectable',
+          (WidgetTester tester) async {
+        final title1 = 'listtitle1';
+        final checklisttitle1 = 'checklisttitle1',
+            checklisttitle2 = 'checklisttitle2';
+        when(mockSortableBloc.state).thenReturn(
+          SortablesLoaded(
+            sortables: [
+              Sortable.createNew<ChecklistData>(
+                data: ChecklistData(
+                  Checklist(
+                    name: title1,
+                    fileId: 'fileid1',
+                    questions: [
+                      Question(id: 0, name: checklisttitle1),
+                      Question(id: 1, name: checklisttitle2, fileId: '2222')
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await goToChecklist(tester);
+        await tester.tap(find.byIcon(AbiliaIcons.show_text));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(title1));
+        await tester.pumpAndSettle();
+        expect(find.text(checklisttitle1), findsOneWidget);
+        expect(find.text(checklisttitle2), findsOneWidget);
+        expect(find.byType(CheckListView), findsOneWidget);
+      });
     });
   });
 
