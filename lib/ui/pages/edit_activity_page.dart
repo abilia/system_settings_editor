@@ -51,6 +51,7 @@ class EditActivityPage extends StatelessWidget {
             children: <Widget>[
               separated(NameAndPictureWidget(
                 activity,
+                day: day,
                 newImage: state.newImage,
               )),
               separated(

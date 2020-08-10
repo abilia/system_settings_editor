@@ -58,8 +58,8 @@ class ActivityImage extends StatelessWidget {
     final hasImage = activity.hasImage,
         signedOff = activityDay.isSignedOff,
         inactive = past || signedOff;
-    return Hero(
-      tag: '${activity.id}${activityDay.day.millisecondsSinceEpoch}',
+    return HeroImage(
+      activityDay: activityDay,
       child: Stack(
         alignment: Alignment.center,
         children: [
