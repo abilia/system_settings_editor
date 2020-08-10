@@ -234,6 +234,8 @@ class CalendarBottomBar extends StatelessWidget {
                             ),
                           );
                         },
+                        settings: RouteSettings(
+                            name: 'EditActivityPage new activity'),
                       ),
                     );
                   },
@@ -244,7 +246,10 @@ class CalendarBottomBar extends StatelessWidget {
                 child: ActionButton(
                   child: Icon(AbiliaIcons.menu),
                   onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MenuPage()),
+                    MaterialPageRoute(
+                      builder: (context) => MenuPage(),
+                      settings: RouteSettings(name: 'MenuPage'),
+                    ),
                   ),
                 ),
               ),

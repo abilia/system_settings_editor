@@ -1,7 +1,5 @@
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+part of 'login_form_bloc.dart';
 
-@immutable
 class LoginFormState extends Equatable {
   final String username;
   final bool isUsernameValid;

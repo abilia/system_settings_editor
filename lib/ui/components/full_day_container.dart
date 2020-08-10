@@ -68,6 +68,7 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
                 ),
                 child: AllDayList(),
               ),
+              settings: RouteSettings(name: 'AllDayList $day'),
             ),
           );
         },

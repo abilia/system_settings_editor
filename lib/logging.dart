@@ -1,5 +1,6 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
 import 'package:logging/logging.dart';
 import 'package:bloc/bloc.dart';
@@ -19,7 +20,7 @@ void initLogging({bool initAppcenter = false}) async {
 
   Bloc.observer = BlocLoggingObserver();
 
-  Logger.root.level = Level.ALL;
+  Logger.root.level = Level.FINER;
   Logger.root.onRecord.listen((record) {
     print(
         '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
@@ -29,7 +30,8 @@ void initLogging({bool initAppcenter = false}) async {
 }
 
 mixin Silent {}
-mixin Finer {}
+mixin Finest {}
+mixin Finer implements Finest {}
 mixin Fine implements Finer {}
 mixin Info implements Fine {}
 mixin Warning implements Info {}
@@ -42,21 +44,20 @@ class BlocLoggingObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
-    if (event is! Silent && bloc is! Silent) {
-      final log = _log(bloc);
-      if (event is Shout) {
-        log.shout(event);
-      } else if (event is Warning) {
-        log.warning(event);
-      } else if (event is Info) {
-        log.info(event);
-      } else if (event is Fine) {
-        log.fine(event);
-      } else if (event is Finer) {
-        log.finer(event);
-      } else {
-        log.finest(event);
-      }
+    if (event is Silent || bloc is Silent) return;
+    final log = _log(bloc);
+    if (event is Shout) {
+      log.shout(event);
+    } else if (event is Warning) {
+      log.warning(event);
+    } else if (event is Info) {
+      log.info(event);
+    } else if (event is Fine) {
+      log.fine(event);
+    } else if (event is Finest) {
+      log.finest(event);
+    } else {
+      log.finer(event);
     }
   }
 
@@ -65,22 +66,21 @@ class BlocLoggingObserver extends BlocObserver {
     super.onTransition(bloc, transition);
     await logEventToAnalytics(transition);
     final event = transition.event;
-    if (event is! Silent && bloc is! Silent) {
-      final log = _log(bloc);
-      if (event is! Silent) {
-        if (event is Shout) {
-          log.shout(transition);
-        } else if (event is Warning) {
-          log.warning(transition);
-        } else if (event is Info) {
-          log.info(transition);
-        } else if (event is Fine) {
-          log.fine(transition);
-        } else if (event is Finer) {
-          log.finer(transition);
-        } else {
-          log.finest(transition);
-        }
+    if (event is Silent || bloc is Silent) return;
+    final log = _log(bloc);
+    if (event is! Silent) {
+      if (event is Shout) {
+        log.shout(transition);
+      } else if (event is Warning) {
+        log.warning(transition);
+      } else if (event is Info) {
+        log.info(transition);
+      } else if (event is Fine) {
+        log.fine(transition);
+      } else if (event is Finer) {
+        log.finer(transition);
+      } else {
+        log.finest(transition);
       }
     }
   }
@@ -102,6 +102,34 @@ class BlocLoggingObserver extends BlocObserver {
     }
     if (nextState is Authenticated) {
       await AnalyticsService.setUserId(nextState.userId);
+    }
+  }
+}
+
+class RouteLoggingObserver extends RouteObserver<PageRoute<dynamic>> {
+  final _log = Logger('RouteLogger');
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+    super.didPush(route, previousRoute);
+    if (route is PageRoute) {
+      _log.fine('didPush $route');
+    }
+  }
+
+  @override
+  void didReplace({Route<dynamic> newRoute, Route<dynamic> oldRoute}) {
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    if (newRoute is PageRoute) {
+      _log.fine('didReplace newRoute');
+    }
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
+    super.didPop(route, previousRoute);
+    if (previousRoute is PageRoute && route is PageRoute) {
+      _log.fine('didPop $route');
     }
   }
 }

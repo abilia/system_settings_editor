@@ -4,11 +4,11 @@ import 'dart:collection';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/bloc/sync/sync_delays.dart';
 import 'package:seagull/repository/all.dart';
 
 part 'sync_event.dart';
 part 'sync_state.dart';
+part 'sync_delays.dart';
 
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final ActivityRepository activityRepository;

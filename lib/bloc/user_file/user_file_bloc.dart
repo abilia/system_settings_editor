@@ -8,7 +8,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:mime/mime.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';

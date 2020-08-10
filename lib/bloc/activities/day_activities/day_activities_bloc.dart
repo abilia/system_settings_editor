@@ -1,7 +1,13 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
+
+part 'day_activities_event.dart';
+part 'day_activities_state.dart';
 
 class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
   final ActivitiesBloc activitiesBloc;

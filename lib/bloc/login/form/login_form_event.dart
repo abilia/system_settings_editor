@@ -1,13 +1,12 @@
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-import 'package:seagull/logging.dart';
+part of 'login_form_bloc.dart';
 
-@immutable
-abstract class LoginFormEvent extends Equatable with Silent {
+abstract class LoginFormEvent extends Equatable with Finest {
   const LoginFormEvent();
 
   @override
   List<Object> get props => [];
+  @override
+  bool get stringify => true;
 }
 
 class UsernameChanged extends LoginFormEvent {
@@ -17,9 +16,6 @@ class UsernameChanged extends LoginFormEvent {
 
   @override
   List<Object> get props => [username];
-
-  @override
-  String toString() => 'UsernameChanged { username: $username }';
 }
 
 class PasswordChanged extends LoginFormEvent {
@@ -29,9 +25,6 @@ class PasswordChanged extends LoginFormEvent {
 
   @override
   List<Object> get props => [password];
-
-  @override
-  String toString() => 'PasswordChanged { password: $password }';
 }
 
 class HidePasswordToggle extends LoginFormEvent {}

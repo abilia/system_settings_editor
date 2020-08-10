@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import './bloc.dart';
+import 'package:equatable/equatable.dart';
+
+part 'calendar_view_event.dart';
+part 'calendar_view_state.dart';
 
 class CalendarViewBloc extends Bloc<CalendarViewEvent, CalendarViewState> {
   CalendarViewBloc() : super(CalendarViewState(CalendarViewType.LIST));

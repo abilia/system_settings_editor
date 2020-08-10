@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
-import 'bloc.dart';
 import 'edit_recurring_mixin.dart';
+
+part 'activities_event.dart';
+part 'activities_state.dart';
 
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     with EditRecurringMixin {
