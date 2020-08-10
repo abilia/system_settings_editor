@@ -19,16 +19,13 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     @required this.activityRepository,
     @required this.syncBloc,
     @required PushBloc pushBloc,
-  }) {
+  }) : super(ActivitiesNotLoaded()) {
     pushSubscription = pushBloc.listen((state) {
       if (state is PushReceived) {
         add(LoadActivities());
       }
     });
   }
-
-  @override
-  ActivitiesState get initialState => ActivitiesNotLoaded();
 
   @override
   Stream<ActivitiesState> mapEventToState(ActivitiesEvent event) async* {

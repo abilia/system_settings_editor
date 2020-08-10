@@ -25,16 +25,13 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     @required this.sortableRepository,
     @required PushBloc pushBloc,
     @required this.syncBloc,
-  }) {
+  }) : super(SortablesNotLoaded()) {
     pushSubscription = pushBloc.listen((state) {
       if (state is PushReceived) {
         add(LoadSortables());
       }
     });
   }
-
-  @override
-  SortableState get initialState => SortablesNotLoaded();
 
   @override
   Stream<SortableState> mapEventToState(

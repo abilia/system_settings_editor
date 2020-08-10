@@ -28,16 +28,13 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     @required this.syncBloc,
     @required this.fileStorage,
     @required PushBloc pushBloc,
-  }) {
+  }) : super(UserFilesNotLoaded()) {
     pushSubscription = pushBloc.listen((state) {
       if (state is PushReceived) {
         add(LoadUserFiles());
       }
     });
   }
-
-  @override
-  UserFileState get initialState => UserFilesNotLoaded();
 
   @override
   Stream<UserFileState> mapEventToState(

@@ -21,7 +21,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     @required this.userFileRepository,
     @required this.sortableRepository,
     @required this.syncDelay,
-  });
+  }) : super(SyncInitial());
 
   final Queue<SyncEvent> _syncQueue = Queue<SyncEvent>();
 
@@ -38,9 +38,6 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   @override
-  SyncState get initialState => SyncInitial();
-
-  @override
   Stream<SyncState> mapEventToState(
     SyncEvent event,
   ) async* {
@@ -50,8 +47,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       if (!_syncQueue.contains(event)) {
         _syncQueue.add(event);
       }
-      Future.delayed(syncDelay.retryDelay,
-          () => super.add(_syncQueue.removeFirst()));
+      Future.delayed(
+          syncDelay.retryDelay, () => super.add(_syncQueue.removeFirst()));
       return;
     }
     // Throttle sync to queue up potential fast incoming event

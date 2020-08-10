@@ -12,14 +12,16 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
 
 void main() {
-  group('calendar page add new activity widget test', () {
+  group('calendar page', () {
     MockActivityDb mockActivityDb;
     StreamController<DateTime> mockTicker;
     ActivityResponse activityResponse = () => [];
+    final initialDay = DateTime(2020, 08, 05);
 
     setUp(() {
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
@@ -37,7 +39,7 @@ void main() {
       GetItInitializer()
         ..activityDb = mockActivityDb
         ..userDb = MockUserDb()
-        ..ticker = Ticker(stream: mockTicker.stream)
+        ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialDay)
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
@@ -54,6 +56,24 @@ void main() {
       await tester.tap(find.byKey(TestKey.addActivity));
       await tester.pumpAndSettle();
       expect(find.byType(EditActivityPage), findsOneWidget);
+    });
+
+    testWidgets('navigation', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+
+      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
+          initialDay.add(3.days()));
+      await tester.tap(find.byType(GoToNowButton));
+      await tester.pumpAndSettle();
+
+      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
     });
   });
 

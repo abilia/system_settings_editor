@@ -16,10 +16,8 @@ class AuthenticationBloc
   AuthenticationBloc(
       {@required this.databaseRepository,
       @required this.baseUrlDb,
-      @required this.cancleAllNotificationsFunction});
-
-  @override
-  AuthenticationState get initialState => AuthenticationUninitialized();
+      @required this.cancleAllNotificationsFunction})
+      : super(AuthenticationUninitialized());
 
   @override
   Stream<AuthenticationState> mapEventToState(

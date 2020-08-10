@@ -77,7 +77,7 @@ class _CalendarPageState extends State<CalendarPage>
                     itemBuilder: (context, index) {
                       return BlocBuilder<ActivitiesOccasionBloc,
                           ActivitiesOccasionState>(
-                        condition: (oldState, newState) {
+                        buildWhen: (oldState, newState) {
                           return (oldState is ActivitiesOccasionLoaded &&
                                   newState is ActivitiesOccasionLoaded &&
                                   oldState.day == newState.day) ||
@@ -149,8 +149,8 @@ class _CalendarPageState extends State<CalendarPage>
         ),
       );
 
-  void _jumpToActivity() async {
-    final scrollState = await _scrollPositionBloc.first;
+  void _jumpToActivity() {
+    final scrollState = _scrollPositionBloc.state;
     if (scrollState is OutOfView) {
       final sc = scrollState.scrollController;
       sc.jumpTo(min(sc.initialScrollOffset, sc.position.maxScrollExtent));

@@ -25,7 +25,7 @@ void main() {
     });
 
     test('initial state is AuthenticationUninitialized', () {
-      expect(authenticationBloc.initialState, AuthenticationUninitialized());
+      expect(authenticationBloc.state, AuthenticationUninitialized());
     });
 
     test('state change to Unauthenticated when app starts', () {
@@ -36,7 +36,6 @@ void main() {
       expectLater(
         authenticationBloc,
         emitsInOrder([
-          AuthenticationUninitialized(),
           AuthenticationLoading(userRepository),
           Unauthenticated(userRepository)
         ]),
@@ -53,7 +52,6 @@ void main() {
       await expectLater(
         authenticationBloc,
         emitsInOrder([
-          AuthenticationUninitialized(),
           AuthenticationLoading(userRepository),
           Unauthenticated(userRepository),
           AuthenticationLoading(userRepository),
@@ -76,7 +74,6 @@ void main() {
       await expectLater(
         authenticationBloc,
         emitsInOrder([
-          AuthenticationUninitialized(),
           AuthenticationLoading(userRepository),
           Unauthenticated(userRepository),
           AuthenticationLoading(userRepository),
@@ -162,7 +159,6 @@ void main() {
       await expectLater(
         authenticationBloc,
         emitsInOrder([
-          AuthenticationUninitialized(),
           AuthenticationLoading(mockedUserRepository),
           Unauthenticated(mockedUserRepository),
         ]),

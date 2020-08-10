@@ -3,9 +3,7 @@ import 'package:bloc/bloc.dart';
 import './bloc.dart';
 
 class CalendarViewBloc extends Bloc<CalendarViewEvent, CalendarViewState> {
-  @override
-  CalendarViewState get initialState =>
-      CalendarViewState(CalendarViewType.LIST);
+  CalendarViewBloc() : super(CalendarViewState(CalendarViewType.LIST));
 
   @override
   Stream<CalendarViewState> mapEventToState(

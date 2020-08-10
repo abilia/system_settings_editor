@@ -8,10 +8,8 @@ class ScrollPositionBloc
   final double nowMarginTop;
   final double nowMarginBottom;
 
-  ScrollPositionBloc({this.nowMarginTop = 8, this.nowMarginBottom = 8});
-
-  @override
-  ScrollPositionState get initialState => Unready();
+  ScrollPositionBloc({this.nowMarginTop = 8, this.nowMarginBottom = 8})
+      : super(Unready());
 
   @override
   Stream<ScrollPositionState> mapEventToState(

@@ -17,7 +17,7 @@ void initLogging({bool initAppcenter = false}) async {
     await AppCenter.configureDistributeDebugAsync(enabled: false);
   }
 
-  BlocSupervisor.delegate = BlocLoggingDelegate();
+  Bloc.observer = BlocLoggingObserver();
 
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
@@ -35,7 +35,7 @@ mixin Info implements Fine {}
 mixin Warning implements Info {}
 mixin Shout implements Warning {}
 
-class BlocLoggingDelegate extends BlocDelegate {
+class BlocLoggingObserver extends BlocObserver {
   final _loggers = <Bloc, Logger>{};
   Logger _log(Bloc bloc) =>
       _loggers[bloc] ??= Logger(bloc.runtimeType.toString());
@@ -86,9 +86,9 @@ class BlocLoggingDelegate extends BlocDelegate {
   }
 
   @override
-  void onError(Bloc bloc, Object error, StackTrace stacktrace) {
-    super.onError(bloc, error, stacktrace);
-    _log(bloc).severe('error in bloc $bloc', error, stacktrace);
+  void onError(Cubit cubit, Object error, StackTrace stacktrace) {
+    super.onError(cubit, error, stacktrace);
+    _log(cubit).severe('error in $cubit', error, stacktrace);
   }
 
   void logEventToAnalytics(Transition transition) async {
