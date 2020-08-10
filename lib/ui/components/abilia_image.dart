@@ -42,15 +42,29 @@ class ActivityImage extends StatelessWidget {
     ImageSize imageSize = ImageSize.THUMB,
     File imageFile,
     BoxFit fit = BoxFit.cover,
+    bool preview = false,
   }) =>
-      ActivityImage(
-        key: key,
-        activityDay: activityOccasion,
-        size: size,
-        past: activityOccasion.occasion == Occasion.past,
-        imageSize: imageSize,
-        imageFile: imageFile,
-      );
+      preview
+          ? FadeInCalendarImage(
+              key: key,
+              imageFileId: activityOccasion.activity.fileId,
+              imageFilePath: activityOccasion.activity.icon,
+              activityId: activityOccasion.activity.id,
+              width: size,
+              height: size,
+              imageSize: imageSize,
+              imageFile: imageFile,
+              fit: fit,
+            )
+          : ActivityImage(
+              key: key,
+              activityDay: activityOccasion,
+              size: size,
+              past: activityOccasion.occasion == Occasion.past,
+              imageSize: imageSize,
+              imageFile: imageFile,
+              fit: fit,
+            );
 
   @override
   Widget build(BuildContext context) {
@@ -182,6 +196,7 @@ class FadeInCalendarImage extends StatelessWidget {
   final ImageSize imageSize;
   final BoxFit fit;
   FadeInCalendarImage({
+    Key key,
     @required this.imageFileId,
     @required this.imageFilePath,
     @required this.activityId,
@@ -190,7 +205,7 @@ class FadeInCalendarImage extends StatelessWidget {
     this.imageFile,
     this.imageSize = ImageSize.THUMB,
     this.fit = BoxFit.cover,
-  });
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final fileStorage = GetIt.I<FileStorage>();
