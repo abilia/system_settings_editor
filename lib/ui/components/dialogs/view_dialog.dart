@@ -12,6 +12,8 @@ Future<T> showViewDialog<T>({
   @required WidgetBuilder builder,
   bool barrierDismissible = true,
   bool useRootNavigator = true,
+  Color barrierColor = AbiliaColors.transparentBlack90,
+  RouteTransitionsBuilder transitionBuilder = buildMaterialDialogTransitions,
 }) {
   assert(builder != null);
   assert(useRootNavigator != null);
@@ -34,14 +36,46 @@ Future<T> showViewDialog<T>({
     },
     barrierDismissible: barrierDismissible,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    barrierColor: AbiliaColors.transparentBlack90,
+    barrierColor: barrierColor,
     transitionDuration: const Duration(milliseconds: 150),
-    transitionBuilder: _buildMaterialDialogTransitions,
+    transitionBuilder: transitionBuilder,
     useRootNavigator: useRootNavigator,
   );
 }
 
-Widget _buildMaterialDialogTransitions(
+Future showErrorViewDialog(String text, {@required BuildContext context}) {
+  print(text);
+  return showViewDialog(
+    context: context,
+    builder: (context) => GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTapDown: Navigator.of(context).pop,
+      child: Container(
+        height: double.infinity,
+        width: double.infinity,
+        color: Colors.transparent,
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            ErrorMessage(
+              key: TestKey.loginError,
+              child: Text(
+                text,
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+    barrierColor: const Color(0x01000000),
+    transitionBuilder: buildSlideDialogTransitions,
+  );
+}
+
+Widget buildMaterialDialogTransitions(
     BuildContext context,
     Animation<double> animation,
     Animation<double> secondaryAnimation,
@@ -55,9 +89,31 @@ Widget _buildMaterialDialogTransitions(
   );
 }
 
+Widget buildSlideDialogTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child) {
+  return SlideTransition(
+    position: Tween<Offset>(begin: const Offset(0.0, 0.5), end: Offset.zero)
+        .animate(CurvedAnimation(
+      parent: animation,
+      curve: Curves.easeOutQuad,
+    )),
+    child: FadeTransition(
+      opacity: CurvedAnimation(
+        parent: animation,
+        curve: Curves.easeOut,
+      ),
+      child: child,
+    ),
+  );
+}
+
 class ViewDialog extends StatelessWidget {
   final Widget heading;
   final Widget child;
+  final Color backgroundColor;
   final GestureTapCallback onOk;
   final GestureTapCallback onCancle;
 
@@ -85,6 +141,7 @@ class ViewDialog extends StatelessWidget {
     this.deleteButton,
     this.backButton,
     this.expanded = true,
+    this.backgroundColor = AbiliaColors.white110,
     double verticalPadding = verticalPadding,
     double leftPadding = leftPadding,
     double rightPadding = rightPadding,
@@ -96,66 +153,70 @@ class ViewDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          const SizedBox(height: 8),
-          _TopFloatingButtons(
-            deleteButton: deleteButton,
-            onOk: onOk,
-            onCancle: onCancle,
-          ),
-          if (preview != null) preview,
-          Flexible(
-            flex: expanded ? 1 : 0,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: AbiliaColors.white110,
-                borderRadius: BorderRadius.vertical(top: radius),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  if (backButton != null || heading != null)
-                    Row(
-                      children: <Widget>[
-                        if (backButton != null)
-                          Padding(
-                            padding: EdgeInsets.only(left: leftPadding),
-                            child: backButton,
-                          ),
-                        if (heading != null)
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              leftPadding,
-                              20.0,
-                              rightPadding,
-                              seperatorPadding,
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      margin: MediaQuery.of(context).viewInsets,
+      child: Material(
+        type: MaterialType.transparency,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            const SizedBox(height: 8),
+            _TopFloatingButtons(
+              deleteButton: deleteButton,
+              onOk: onOk,
+              onCancle: onCancle,
+            ),
+            if (preview != null) preview,
+            Flexible(
+              flex: expanded ? 1 : 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.vertical(top: radius),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    if (backButton != null || heading != null)
+                      Row(
+                        children: <Widget>[
+                          if (backButton != null)
+                            Padding(
+                              padding: EdgeInsets.only(left: leftPadding),
+                              child: backButton,
                             ),
-                            child: heading,
-                          ),
-                      ],
-                    ),
-                  if (backButton != null || heading != null) divider,
-                  Flexible(
-                    flex: expanded ? 1 : 0,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        _leftPadding,
-                        _verticalPadding,
-                        _rightPadding,
-                        _verticalPadding,
+                          if (heading != null)
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                leftPadding,
+                                20.0,
+                                rightPadding,
+                                seperatorPadding,
+                              ),
+                              child: heading,
+                            ),
+                        ],
                       ),
-                      child: child,
+                    if (backButton != null || heading != null) divider,
+                    Flexible(
+                      flex: expanded ? 1 : 0,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          _leftPadding,
+                          _verticalPadding,
+                          _rightPadding,
+                          _verticalPadding,
+                        ),
+                        child: child,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -182,31 +243,29 @@ class _TopFloatingButtons extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.transparent,
       ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 8.0),
-        child: Stack(
-          children: <Widget>[
-            if (deleteButton != null) deleteButton,
-            Align(
-              alignment: Alignment.centerRight,
-              child: RoundFloatingButton(
-                AbiliaIcons.ok,
-                key: TestKey.okDialog,
-                color: AbiliaColors.green,
-                onTap: onOk,
-              ),
+      padding: const EdgeInsets.fromLTRB(0.0, 0, 12.0, 8.0),
+      child: Stack(
+        children: <Widget>[
+          if (deleteButton != null) deleteButton,
+          Align(
+            alignment: Alignment.centerRight,
+            child: RoundFloatingButton(
+              AbiliaIcons.ok,
+              key: TestKey.okDialog,
+              color: AbiliaColors.green,
+              onTap: onOk,
             ),
-            AnimatedAlign(
-              duration: 200.milliseconds(),
-              alignment: hasOk ? Alignment(0.6, 1.0) : Alignment.centerRight,
-              child: RoundFloatingButton(
-                AbiliaIcons.close_program,
-                key: TestKey.closeDialog,
-                onTap: onCancle ?? Navigator.of(context).maybePop,
-              ),
+          ),
+          AnimatedAlign(
+            duration: 200.milliseconds(),
+            alignment: hasOk ? Alignment(0.6, 1.0) : Alignment.centerRight,
+            child: RoundFloatingButton(
+              AbiliaIcons.close_program,
+              key: TestKey.closeDialog,
+              onTap: onCancle ?? Navigator.of(context).maybePop,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

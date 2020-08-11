@@ -488,6 +488,7 @@ class AbiliaIcons {
       checkbox_partially_selected = IconData(0xeada, fontFamily: fontFamily),
       radiocheckbox_unselected = IconData(0xeadb, fontFamily: fontFamily),
       radiocheckbox_selected = IconData(0xeadc, fontFamily: fontFamily),
+      repeat = IconData(0xeafa, fontFamily: fontFamily),
       show = IconData(0xeafe, fontFamily: fontFamily),
       hide = IconData(0xeaff, fontFamily: fontFamily),
       flarp = IconData(0xeb12, fontFamily: fontFamily);

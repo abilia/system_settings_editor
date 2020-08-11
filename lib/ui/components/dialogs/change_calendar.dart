@@ -32,8 +32,9 @@ class ChangeCalendarDialog extends StatelessWidget {
                       style: abiliaTheme.textTheme.bodyText1,
                     ),
                     active: currentViewType == CalendarViewType.TIMEPILLAR,
-                    showTrailingArrow:
-                        currentViewType != CalendarViewType.TIMEPILLAR,
+                    trailing: currentViewType != CalendarViewType.TIMEPILLAR
+                        ? PickField.trailingArrow
+                        : null,
                     onTap: () => Navigator.of(context)
                         .maybePop(CalendarViewType.TIMEPILLAR),
                   ),
@@ -62,7 +63,9 @@ class ChangeCalendarDialog extends StatelessWidget {
                 style: abiliaTheme.textTheme.bodyText1,
               ),
               active: currentViewType == CalendarViewType.LIST,
-              showTrailingArrow: currentViewType != CalendarViewType.LIST,
+              trailing: currentViewType != CalendarViewType.LIST
+                  ? PickField.trailingArrow
+                  : null,
               onTap: () =>
                   Navigator.of(context).maybePop(CalendarViewType.LIST),
             ),

@@ -54,7 +54,7 @@ class _LoginFormState extends State<LoginForm> {
                                   () => _showBackends = !_showBackends),
                             )),
                   padding32,
-                  TextFormInput(
+                  AbiliaTextInput(
                     formKey: TestKey.userNameInput,
                     controller: _usernameController,
                     keyboardType: TextInputType.emailAddress,

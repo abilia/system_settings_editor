@@ -1,21 +1,25 @@
 part of 'edit_activity_bloc.dart';
 
-abstract class EditActivityState extends Equatable with Finest {
+abstract class EditActivityState extends Equatable with Silent {
+  const EditActivityState(
+    this.activity,
+    this.timeInterval, {
+    this.ogActivity,
+    this.ogTimeInterval,
+    this.newImage,
+    this.failedSave = false,
+  });
   final Activity activity, ogActivity;
   final TimeInterval timeInterval, ogTimeInterval;
   final File newImage;
+  final bool failedSave;
 
-  const EditActivityState(
-    this.activity,
-    this.timeInterval,
-    this.ogActivity,
-    this.ogTimeInterval, [
-    this.newImage,
-  ]);
+  bool get canSave => hasTitleOrImage && hasStartTime;
 
-  bool get canSave =>
-      (activity.hasTitle || activity.fileId?.isNotEmpty == true) &&
-      (timeInterval.startTime != null || activity.fullDay);
+  bool get hasTitleOrImage =>
+      activity.hasTitle || activity.fileId?.isNotEmpty == true;
+
+  bool get hasStartTime => timeInterval.startTime != null || activity.fullDay;
 
   bool get unchanged =>
       activity == ogActivity &&
@@ -27,6 +31,7 @@ abstract class EditActivityState extends Equatable with Finest {
         activity,
         timeInterval,
         newImage,
+        failedSave,
       ];
 
   @override
@@ -37,15 +42,23 @@ abstract class EditActivityState extends Equatable with Finest {
     TimeInterval timeInterval,
     File newImage,
   });
+
+  EditActivityState _failSave();
 }
 
 class UnstoredActivityState extends EditActivityState {
-  const UnstoredActivityState(Activity activity, TimeInterval timeInterval)
-      : super(
+  const UnstoredActivityState(
+    Activity activity,
+    TimeInterval timeInterval, [
+    File newImage,
+    bool failedSave = false,
+  ]) : super(
           activity,
           timeInterval,
-          activity,
-          timeInterval,
+          ogActivity: activity,
+          ogTimeInterval: timeInterval,
+          newImage: newImage,
+          failedSave: failedSave,
         );
 
   const UnstoredActivityState._(
@@ -54,26 +67,35 @@ class UnstoredActivityState extends EditActivityState {
     Activity ogActivity,
     TimeInterval ogTimeInterval, [
     File newImage,
+    bool failedSave = false,
   ]) : super(
           activity,
           timeInterval,
-          ogActivity,
-          ogTimeInterval,
-          newImage,
+          ogActivity: ogActivity,
+          ogTimeInterval: ogTimeInterval,
+          newImage: newImage,
+          failedSave: failedSave,
         );
 
   @override
-  UnstoredActivityState copyWith(
-    Activity activity, {
-    TimeInterval timeInterval,
-    File newImage,
-  }) =>
+  UnstoredActivityState copyWith(Activity activity,
+          {TimeInterval timeInterval, File newImage}) =>
       UnstoredActivityState._(
         activity,
         timeInterval ?? this.timeInterval,
         ogActivity,
         ogTimeInterval,
         newImage ?? this.newImage,
+      );
+
+  @override
+  EditActivityState _failSave() => UnstoredActivityState._(
+        activity,
+        timeInterval,
+        ogActivity,
+        ogTimeInterval,
+        newImage,
+        true,
       );
 }
 
@@ -87,8 +109,9 @@ class StoredActivityState extends EditActivityState {
   ) : super(
           activity,
           timeInterval,
-          activity,
-          timeInterval,
+          ogActivity: activity,
+          ogTimeInterval: timeInterval,
+          failedSave: false,
         );
 
   const StoredActivityState._(
@@ -98,12 +121,14 @@ class StoredActivityState extends EditActivityState {
     TimeInterval ogTimeInterval,
     this.day, [
     File newImage,
+    bool failedSave,
   ]) : super(
           activity,
           timeInterval,
-          ogActivity,
-          ogTimeInterval,
-          newImage,
+          ogActivity: ogActivity,
+          ogTimeInterval: ogTimeInterval,
+          newImage: newImage,
+          failedSave: false,
         );
 
   @override
@@ -115,9 +140,20 @@ class StoredActivityState extends EditActivityState {
       StoredActivityState._(
         activity,
         timeInterval ?? this.timeInterval,
-        ogActivity,
-        ogTimeInterval,
+        this.activity,
+        this.timeInterval,
         day,
         newImage ?? this.newImage,
+      );
+
+  @override
+  EditActivityState _failSave() => StoredActivityState._(
+        activity,
+        timeInterval,
+        activity,
+        timeInterval,
+        day,
+        newImage,
+        true,
       );
 }

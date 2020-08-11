@@ -33,6 +33,7 @@ alarmOnlyAtStartTime;Alarm only at Start time;Larm endast vid starttid
 checkable;Checkable;Kvittera
 deleteAfter;Delete after;Ta bort efteråt
 availableFor;Available for;Tillgänglig för
+activityAvailableFor;Activity available for;Aktivitet tillgänglig för
 meAndSupportPersons;Me and support persons;Mig och stödpersoner
 onlyMe;Only me;Bara mig
 name;Name;Namn
@@ -70,6 +71,16 @@ unCheckActivityQuestion;Du you want to uncheck?;Ta bort klarmarkering?
 inTimePre;in;om
 timeAgoPre;&empty&;för
 timeAgoPost;ago;sen
+missingTitleOrImageAndStartTime;Your activity should contain an image or name and start time.;Aktiviteten måste ha ett namn eller en bild och en starttid.
+missingTitleOrImage;Your activity should contain an image or name.;Aktiviteten måste ha ett namn eller en bild.
+missingStartTime;Your activity should contain a start time.;Aktiviteten måste ha en starttid.
+infoType;Info type;Kopplade funktioner
+selectInfoType;Select info type;Välj typ av Info
+infoTypeNone;- None -;- Ingen -
+infoTypeChecklist;Checklist;Checklista
+infoTypeNote;Note;Anteckning
+typeSomething;Type something…;Skriv något…
+clear;Clear;Rensa
 timepillarSettings;Timepillar settings;Inställningar för tidspelare
 activityDuration;Activity duration;Visa tid som
 dots;Dots;Prickar

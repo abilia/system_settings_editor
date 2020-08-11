@@ -7,7 +7,7 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
-class TextFormInput extends StatelessWidget {
+class AbiliaTextInput extends StatelessWidget {
   final TextEditingController controller;
   final bool errorState;
   final TextInputType keyboardType;
@@ -16,7 +16,7 @@ class TextFormInput extends StatelessWidget {
   final TextCapitalization textCapitalization;
   final List<TextInputFormatter> inputFormatters;
 
-  const TextFormInput({
+  const AbiliaTextInput({
     Key key,
     this.formKey,
     this.heading,
@@ -68,7 +68,7 @@ class TextFormInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (heading != null) SubHeading(heading),
-          TextFormField(
+          TextField(
             key: TestKey.input,
             controller: controller,
             keyboardType: keyboardType,

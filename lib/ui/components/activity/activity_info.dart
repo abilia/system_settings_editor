@@ -60,7 +60,7 @@ class ActivityInfo extends StatelessWidget {
             TimeRow(activityDay),
             Expanded(
               child: Container(
-                decoration: borderDecoration,
+                decoration: boxDecoration,
                 child: ActivityContainer(activityDay: activityDay),
               ),
             ),
@@ -183,7 +183,10 @@ class Attachment extends StatelessWidget {
     final activity = activityDay.activity;
     final item = activity.infoItem;
     if (item is NoteInfoItem) {
-      return NoteBlock(text: item.text);
+      return NoteBlock(
+        text: item.text,
+        child: Text(item.text),
+      );
     } else if (item is Checklist) {
       return CheckListView(
         item,

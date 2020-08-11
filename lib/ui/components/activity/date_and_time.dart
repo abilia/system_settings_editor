@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/components/form/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -9,16 +10,13 @@ import 'package:seagull/utils/all.dart';
 import 'package:intl/intl.dart';
 
 class DateAndTimeWidget extends StatelessWidget {
-  final Activity activity;
-  final DateTime day;
-  final TimeInterval timeInterval;
+  final EditActivityState state;
 
-  const DateAndTimeWidget(this.activity, this.timeInterval,
-      {@required this.day, Key key})
-      : super(key: key);
+  const DateAndTimeWidget(this.state, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
+    final activity = state.activity;
 
     return SizedBox(
       width: double.infinity,
@@ -29,11 +27,14 @@ class DateAndTimeWidget extends StatelessWidget {
           DatePicker(
             activity.startTime,
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 24.0),
           CollapsableWidget(
             collapsed: activity.fullDay,
             padding: const EdgeInsets.only(bottom: 12.0),
-            child: TimeIntervallPicker(timeInterval),
+            child: TimeIntervallPicker(
+              state.timeInterval,
+              startTimeError: state.failedSave && !state.hasStartTime,
+            ),
           ),
           SwitchField(
             key: TestKey.fullDaySwitch,
@@ -42,16 +43,6 @@ class DateAndTimeWidget extends StatelessWidget {
             value: activity.fullDay,
             onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
                 .add(ReplaceActivity(activity.copyWith(fullDay: v))),
-          ),
-          CollapsableWidget(
-            collapsed: activity.fullDay,
-            padding: const EdgeInsets.only(top: 8.0),
-            child: ReminderSwitch(activity: activity),
-          ),
-          CollapsableWidget(
-            padding: const EdgeInsets.only(top: 8.0),
-            collapsed: activity.fullDay || activity.reminderBefore.isEmpty,
-            child: Reminders(activity: activity),
           ),
         ],
       ),
@@ -91,6 +82,8 @@ class DatePicker extends StatelessWidget {
     final timeFormat =
         DateFormat.yMMMMd(Localizations.localeOf(context).toLanguageTag());
     final translator = Translator.of(context).translate;
+    final dayColor = weekDayColor[date.weekday];
+    final color = dayColor == AbiliaColors.white ? dayColor[120] : dayColor;
 
     return PickField(
       key: TestKey.datePicker,
@@ -100,7 +93,14 @@ class DatePicker extends StatelessWidget {
             initialDate: date,
             firstDate: DateTime(date.year - 20),
             lastDate: DateTime(date.year + 20),
-            builder: (BuildContext context, Widget child) => child);
+            builder: (context, child) => Theme(
+                data: abiliaTheme.copyWith(
+                  colorScheme: abiliaTheme.colorScheme.copyWith(
+                    primary: color,
+                    surface: color,
+                  ),
+                ),
+                child: child));
         if (newDate != null) {
           BlocProvider.of<EditActivityBloc>(context).add(ChangeDate(newDate));
         }
@@ -118,7 +118,10 @@ class DatePicker extends StatelessWidget {
 
 class TimeIntervallPicker extends StatelessWidget {
   final TimeInterval timeInterval;
-  const TimeIntervallPicker(this.timeInterval, {Key key}) : super(key: key);
+  final bool startTimeError;
+  const TimeIntervallPicker(this.timeInterval,
+      {this.startTimeError = false, Key key})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -131,6 +134,7 @@ class TimeIntervallPicker extends StatelessWidget {
             translator.startTime,
             timeInterval.startTime,
             key: TestKey.startTimePicker,
+            errorState: startTimeError,
             onTap: () async {
               final newStartTime = await showViewDialog<TimeInputResult>(
                 context: context,
@@ -185,8 +189,14 @@ class TimePicker extends StatelessWidget {
   final TimeOfDay time;
   final GestureTapCallback onTap;
   final double heigth = 56;
-  const TimePicker(this.text, this.time, {Key key, @required this.onTap})
-      : super(key: key);
+  final bool errorState;
+  const TimePicker(
+    this.text,
+    this.time, {
+    Key key,
+    @required this.onTap,
+    this.errorState = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -194,28 +204,19 @@ class TimePicker extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SubHeading(text),
-        if (time != null)
-          PickField(
-            onTap: onTap,
-            heigth: heigth,
-            leading: Icon(AbiliaIcons.clock),
-            label: Text(time.format(context)),
-          )
-        else
-          InkWell(
-            onTap: onTap,
-            borderRadius: borderRadius,
-            child: LinedBorder(
-              padding: EdgeInsets.zero,
-              child: Container(
-                height: heigth,
-                width: double.infinity,
-                child: Icon(
-                  AbiliaIcons.plus,
-                ),
-              ),
-            ),
-          ),
+        PickField(
+          onTap: onTap,
+          heigth: heigth,
+          errorState: errorState,
+          leading: Icon(AbiliaIcons.clock),
+          label: Text(time != null ? time.format(context) : ''),
+          trailing: errorState
+              ? const Icon(
+                  AbiliaIcons.ir_error,
+                  color: AbiliaColors.red,
+                )
+              : PickField.trailingArrow,
+        )
       ],
     );
   }
@@ -243,7 +244,8 @@ class Reminders extends StatelessWidget {
             (r) => SelectableField(
               label: Text(
                 r.toReminderString(translator),
-                style: Theme.of(context).textTheme.bodyText1,
+                style:
+                    Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
               ),
               selected: activity.reminders.contains(r),
               onTap: () => BlocProvider.of<EditActivityBloc>(context)

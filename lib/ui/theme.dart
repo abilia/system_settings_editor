@@ -8,7 +8,7 @@ ThemeData abiliaTheme = ThemeData(
   scaffoldBackgroundColor: AbiliaColors.white110,
   primaryColor: AbiliaColors.black,
   accentColor: AbiliaColors.black,
-  unselectedWidgetColor: AbiliaColors.white120,
+  unselectedWidgetColor: AbiliaColors.white140,
   fontFamily: 'Roboto',
   inputDecorationTheme: inputDecorationTheme,
   textTheme: abiliaTextTheme,
@@ -49,6 +49,8 @@ const BorderRadius notUpperLeft = BorderRadius.only(
 const BorderSide borderSide = BorderSide(color: AbiliaColors.white140);
 const Border currentActivityBorder =
     Border.fromBorderSide(BorderSide(color: AbiliaColors.red, width: 2.0));
+const Border errorBorder =
+    Border.fromBorderSide(BorderSide(color: AbiliaColors.red));
 const border = Border.fromBorderSide(borderSide);
 const ligthShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
@@ -58,8 +60,13 @@ const darkShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
   side: BorderSide(color: AbiliaColors.transparentBlack30),
 );
-const BoxDecoration borderDecoration = BoxDecoration(
+const BoxDecoration boxDecoration = BoxDecoration(
   borderRadius: borderRadius,
+  border: border,
+);
+const BoxDecoration offBoxDecoration = BoxDecoration(
+  borderRadius: borderRadius,
+  color: AbiliaColors.transparentWhite40,
   border: border,
 );
 const BoxDecoration currentBoxDecoration = BoxDecoration(
@@ -72,12 +79,26 @@ const BoxDecoration whiteBoxDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: border,
 );
+const BoxDecoration whiteNoBorderBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white,
+  borderRadius: borderRadius,
+);
 const inactiveGrey = AbiliaColors.white110;
 const BoxDecoration inactiveBoxDecoration = BoxDecoration(
   color: inactiveGrey,
   borderRadius: borderRadius,
   border: border,
 );
+const BoxDecoration errorBoxDecoration = BoxDecoration(
+  borderRadius: borderRadius,
+  border: errorBorder,
+);
+const BoxDecoration whiteErrorBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white,
+  borderRadius: borderRadius,
+  border: errorBorder,
+);
+
 BoxDecoration getBoxDecoration(bool current, bool inactive) => inactive
     ? inactiveBoxDecoration
     : current ? currentBoxDecoration : whiteBoxDecoration;

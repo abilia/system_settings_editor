@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -20,14 +20,14 @@ void main() {
     title: '',
     startTime: startTime,
   );
-  final translate = Translator(Locale('en')).translate;
+  final translate = Locales.language.values.first;
 
   final startTimeFieldFinder = find.byKey(TestKey.startTimePicker);
   final endTimeFieldFinder = find.byKey(TestKey.endTimePicker);
   final okFinder = find.byKey(TestKey.okDialog);
 
   Widget wrapWithMaterialApp(Widget widget,
-      {Activity givenActivity, bool use24H = false}) {
+      {Activity givenActivity, bool use24H = false, bool newActivity = false}) {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
@@ -43,10 +43,14 @@ void main() {
             create: (context) => MockAuthenticationBloc()),
         BlocProvider<ActivitiesBloc>(create: (context) => MockActivitiesBloc()),
         BlocProvider<EditActivityBloc>(
-          create: (context) => EditActivityBloc(
-            ActivityDay(activity, today),
-            activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-          ),
+          create: (context) => newActivity
+              ? EditActivityBloc.newActivity(
+                  activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+                  day: today)
+              : EditActivityBloc(
+                  ActivityDay(activity, today),
+                  activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+                ),
         ),
         BlocProvider<SortableBloc>(
           create: (context) => MockSortableBloc(),
@@ -67,12 +71,6 @@ void main() {
   });
 
   group('edit activity test', () {
-    Future scrollDown(WidgetTester tester, {double dy = -800.0}) async {
-      final center = tester.getCenter(find.byIcon(AbiliaIcons.handi_reminder));
-      await tester.dragFrom(center, Offset(0.0, dy));
-      await tester.pump();
-    }
-
     testWidgets('New activity shows', (WidgetTester tester) async {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
@@ -80,12 +78,34 @@ void main() {
       expect(find.byType(EditActivityPage), findsOneWidget);
     });
 
+    testWidgets('TabBar shows', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      expect(find.byType(AbiliaTabBar), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.my_photos), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.attention), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.repeat), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.attachment), findsOneWidget);
+    });
+
+    testWidgets('Can switch tabs', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      expect(find.byType(MainTab), findsOneWidget);
+      await tester.goToAlarmTab();
+      expect(find.byType(AlarmAndReminderTab), findsOneWidget);
+      await tester.goToMainTab();
+      expect(find.byType(MainTab), findsOneWidget);
+    });
+
     testWidgets('Scroll to end of page', (WidgetTester tester) async {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
       expect(find.byType(AvailibleForWidget), findsNothing);
-      await scrollDown(tester);
+      await tester.scrollDown();
       expect(find.byType(AvailibleForWidget), findsOneWidget);
     });
 
@@ -113,61 +133,156 @@ void main() {
     });
 
     testWidgets(
-        'Add activity button is disabled when no title and enabled when titled entered',
+        'pressing add activity button with no title nor time shows error',
+        (WidgetTester tester) async {
+      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
+
+      // Act press submit
+      await tester.pumpWidget(
+          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+      await tester.pumpAndSettle();
+
+      await tester.tap(submitButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert error message
+      expect(
+          find.text(translate.missingTitleOrImageAndStartTime), findsOneWidget);
+      // Act dissmiss
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+      // Assert no error message
+      expect(
+          find.text(translate.missingTitleOrImageAndStartTime), findsNothing);
+    });
+
+    testWidgets('pressing add activity button with time shows error',
         (WidgetTester tester) async {
       final newActivtyName = 'new activity name';
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
+
+      // Act press submit
+      await tester.pumpWidget(
+          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
       await tester.pumpAndSettle();
-      expect(
-          tester
-              .widget<ActionButton>(
-                  find.byKey(TestKey.finishEditActivityButton))
-              .onPressed,
-          isNull);
+
+      // Act enter title
       await tester.enterText_(
           find.byKey(TestKey.editTitleTextFormField), newActivtyName);
       await tester.pumpAndSettle();
 
-      expect(
-        tester
-            .widget<ActionButton>(find.byKey(TestKey.finishEditActivityButton))
-            .onPressed,
-        isNotNull,
-      );
-      await tester.tap(find.byKey(TestKey.finishEditActivityButton));
+      // Act press submit
+      await tester.tap(submitButtonFinder);
       await tester.pumpAndSettle();
+
+      // Assert error message
+      expect(find.text(translate.missingStartTime), findsOneWidget);
+      // Act dissmiss
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+      // Assert no error message
+      expect(find.text(translate.missingStartTime), findsNothing);
+    });
+
+    testWidgets('pressing add activity button with no title shows error',
+        (WidgetTester tester) async {
+      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
+
+      await tester.pumpWidget(
+          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+      await tester.pumpAndSettle();
+      // Act press fullday
+      await tester.tap(find.byKey(TestKey.fullDaySwitch));
+      await tester.pumpAndSettle();
+
+      // Act press submit
+      await tester.tap(submitButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert error message
+      expect(find.text(translate.missingTitleOrImage), findsOneWidget);
+      // Act dissmiss
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+      // Assert no error message
+      expect(find.text(translate.missingTitleOrImage), findsNothing);
+    });
+
+    testWidgets('pressing add activity on other tab scrolls back to main page',
+        (WidgetTester tester) async {
+      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
+
+      await tester.pumpWidget(
+          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+      await tester.pumpAndSettle();
+
+      // Act go to tab
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+      // Assert not at main tab
+      expect(find.byType(MainTab), findsNothing);
+
+      // Act press submit
+      await tester.tap(submitButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert error message
+      expect(
+          find.text(translate.missingTitleOrImageAndStartTime), findsOneWidget);
+
+      // Act dissmiss
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+
+      // Assert at main tab
+      expect(find.byType(MainTab), findsOneWidget);
     });
 
     testWidgets('full day switch', (WidgetTester tester) async {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
+      // Assert -- Fullday switch is off
       expect(
           tester
               .widget<Switch>(find.byKey(ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isFalse);
+      // Assert -- Start time, left and rigth category visible
       expect(startTimeFieldFinder, findsOneWidget);
+      expect(find.byKey(TestKey.leftCategoryRadio), findsOneWidget);
+      expect(find.byKey(TestKey.rightCategoryRadio), findsOneWidget);
+
+      // Assert -- can see Alarm tab
+      expect(find.byIcon(AbiliaIcons.attention), findsOneWidget);
+      await tester.goToAlarmTab();
+      // Assert -- alarm tab contains reminders
       expect(find.byIcon(AbiliaIcons.handi_reminder), findsOneWidget);
+      await tester.goToMainTab();
+
+      // Act -- set to full day
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
+
+      // Assert -- Fullday switch is on,
       expect(
           tester
               .widget<Switch>(find.byKey(ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isTrue);
+      // Assert -- Start time, left and rigth category not visible
       expect(startTimeFieldFinder, findsNothing);
-      expect(find.byIcon(AbiliaIcons.handi_reminder), findsNothing);
       expect(find.byKey(TestKey.leftCategoryRadio), findsNothing);
       expect(find.byKey(TestKey.rightCategoryRadio), findsNothing);
+      // Assert -- Alarm tab not visible
+      expect(find.byIcon(AbiliaIcons.attention), findsNothing);
     });
 
     testWidgets('alarm at start switch', (WidgetTester tester) async {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await scrollDown(tester);
+      await tester.goToAlarmTab();
       expect(
           tester
               .widget<Switch>(find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
@@ -188,8 +303,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await scrollDown(tester);
-      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
       expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
       expect(find.text(translate.vibration), findsNothing);
       expect(find.byIcon(AbiliaIcons.handi_vibration), findsNothing);
@@ -206,7 +320,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await scrollDown(tester);
+      await tester.scrollDown();
       expect(
           tester
               .widget<Switch>(find.byKey(ObjectKey(TestKey.checkableSwitch)))
@@ -227,7 +341,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await scrollDown(tester);
+      await tester.scrollDown();
       expect(
           tester
               .widget<Switch>(find.byKey(ObjectKey(TestKey.deleteAfterSwitch)))
@@ -276,7 +390,7 @@ void main() {
       expect(leftCategoryRadio1.groupValue, Category.right);
       expect(rightCategoryRadio1.groupValue, Category.right);
 
-      await scrollDown(tester, dy: -100);
+      await tester.scrollDown(dy: -100);
       await tester.tap(find.byKey(TestKey.leftCategoryRadio));
       await tester.pumpAndSettle();
       final leftCategoryRadio2 =
@@ -302,7 +416,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      await scrollDown(tester);
+      await tester.scrollDown();
       await tester.pumpAndSettle();
 
       expect(find.byKey(TestKey.availibleFor), findsOneWidget);
@@ -331,6 +445,9 @@ void main() {
       final remindersAll = find.byType(SelectableField);
       final reminderField = find.byType(Reminders);
 
+      // Act -- Go to alarm tab
+      await tester.goToAlarmTab();
+
       // Assert -- reminder switch is visible but reminders field is collapsed
       expect(reminderSwitchFinder, findsOneWidget);
       expect(remindersAll, findsNothing);
@@ -346,7 +463,7 @@ void main() {
       expect(remindersAllSelected, findsOneWidget);
 
       // Act -- tap on day reminder
-      await scrollDown(tester, dy: -100);
+      await tester.scrollDown(dy: -100);
       await tester.tap(reminderDayFinder);
       await tester.pumpAndSettle();
       // Assert -- 15 min and 1 day reminder is selected, all reminders shows
@@ -388,6 +505,128 @@ void main() {
       expect(reminder15MinFinder, findsNothing);
       expect(reminderDayFinder, findsNothing);
       expect(remindersAllSelected, findsNothing);
+    });
+  });
+
+  group('edit info item', () {
+    testWidgets('Info item shows', (WidgetTester tester) async {
+      final aLongNote = '''
+This is a note
+I am typing for testing
+that it is visible in the info item tab
+''';
+      final activity = Activity.createNew(
+          title: 'null',
+          startTime: startTime,
+          infoItem: NoteInfoItem(aLongNote));
+      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
+          givenActivity: activity));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+
+      expect(find.text(aLongNote), findsOneWidget);
+    });
+
+    testWidgets('Info item note not deleted when to info item note',
+        (WidgetTester tester) async {
+      final aLongNote = '''
+This is a note
+I am typing for testing
+that it is visible in the info item tab
+''';
+      final activity = Activity.createNew(
+          title: 'null',
+          startTime: startTime,
+          infoItem: NoteInfoItem(aLongNote));
+      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
+          givenActivity: activity));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+
+      expect(find.text(aLongNote), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.edit));
+      await tester.pumpAndSettle();
+      expect(find.byType(SelectInfoTypeDialog), findsOneWidget);
+      expect(find.byKey(TestKey.infoItemNoneRadio), findsOneWidget);
+      expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
+      expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
+
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.pumpAndSettle();
+      expect(find.byType(SelectInfoTypeDialog), findsNothing);
+      expect(find.text(aLongNote), findsOneWidget);
+    });
+
+    testWidgets('Info item note can be selected', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+
+      await tester.tap(find.byIcon(AbiliaIcons.information));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SelectInfoTypeDialog), findsOneWidget);
+
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+
+      await tester.pumpAndSettle();
+      expect(find.byType(SelectInfoTypeDialog), findsNothing);
+      expect(find.text(translate.infoType), findsOneWidget);
+      expect(find.text(translate.infoTypeNote), findsOneWidget);
+      expect(find.text(translate.typeSomething), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.edit), findsOneWidget);
+    });
+
+    testWidgets('Info item note opens EditNoteDialog',
+        (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+      await tester.tap(find.byIcon(AbiliaIcons.information));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NoteBlock));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EditNoteDialog), findsOneWidget);
+    });
+
+    testWidgets('Info item note can be edited', (WidgetTester tester) async {
+      final noteText = '''4.1.1 
+Mark the unexported and accidentally public setDefaultResponse as deprecated.
+Mark the not useful, and not generally used, named function as deprecated.
+Produce a meaningful error message if an argument matcher is used outside of stubbing (when) or verification (verify and untilCalled).
+4.1.0 
+Add a Fake class for implementing a subset of a class API as overrides without misusing the Mock class.
+4.0.0 
+Replace the dependency on the test package with a dependency on the new test_api package. This dramatically reduces mockito's transitive dependencies.
+
+This bump can result in runtime errors when coupled with a version of the test package older than 1.4.0.
+
+3.0.2 
+Rollback the test_api part of the 3.0.1 release. This was breaking tests that use Flutter's current test tools, and will instead be released as part of Mockito 4.0.0.
+3.0.1 
+Replace the dependency on the test package with a dependency on the new test_api package. This dramatically reduces mockito's transitive dependencies.
+Internal improvements to tests and examples.''';
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+
+      await tester.tap(find.byIcon(AbiliaIcons.information));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+
+      await tester.pumpAndSettle();
+
+      await tester.enterText_(find.byType(NoteBlock), noteText);
+      await tester.pumpAndSettle();
+
+      expect(find.text(noteText), findsOneWidget);
     });
   });
 
@@ -467,7 +706,6 @@ void main() {
       // Assert -- that correct start and end time shows
       expect(find.text('11:55 AM'), findsOneWidget);
       expect(find.text('2:55 PM'), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.plus), findsNothing);
 
       // Act -- remove end time
       await tester.tap(endTimeFieldFinder);
@@ -478,8 +716,6 @@ void main() {
       // Assert -- old end time does not show
       expect(find.text('2:55 PM'), findsNothing);
       expect(find.text('11:55 AM'), findsOneWidget);
-
-      expect(find.byIcon(AbiliaIcons.plus), findsOneWidget);
     });
 
     testWidgets('can change am to pm', (WidgetTester tester) async {
@@ -629,4 +865,21 @@ void main() {
       expect(find.text('00:01'), findsOneWidget);
     });
   });
+}
+
+extension on WidgetTester {
+  Future scrollDown({double dy = -800.0}) async {
+    final center = getCenter(find.byType(EditActivityPage));
+    await dragFrom(center, Offset(0.0, dy));
+    await pump();
+  }
+
+  Future goToMainTab() async => goToTab(AbiliaIcons.my_photos);
+  Future goToAlarmTab() async => goToTab(AbiliaIcons.attention);
+  Future goToInfoItemTab() async => goToTab(AbiliaIcons.attachment);
+
+  Future goToTab(IconData icon) async {
+    await tap(find.byIcon(icon));
+    await pumpAndSettle();
+  }
 }

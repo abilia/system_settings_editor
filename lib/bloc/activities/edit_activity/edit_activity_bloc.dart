@@ -60,8 +60,12 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     if (event is AddOrRemoveReminder) {
       yield* _mapAddOrRemoveReminderToState(event.reminder.inMilliseconds);
     }
-    if (event is SaveActivity && state.canSave) {
-      yield* _mapSaveActivityToState(state, event);
+    if (event is SaveActivity) {
+      if (state.canSave) {
+        yield* _mapSaveActivityToState(state, event);
+      } else {
+        yield state._failSave();
+      }
     }
     if (event is ImageSelected) {
       yield state.copyWith(
@@ -70,6 +74,9 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
             icon: event.path,
           ),
           newImage: event.newImage);
+    }
+    if (event is ChangeInfoItemType) {
+      yield* _mapChangeInfoItemTypeToState(event);
     }
   }
 
@@ -89,6 +96,11 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   ) async* {
     if (state.unchanged) return;
     var activity = state.activity;
+
+    if (activity.hasAttachment && activity.infoItem.isEmpty) {
+      activity = activity.copyWith(infoItem: InfoItem.none);
+    }
+
     if (activity.fullDay) {
       activity = activity.copyWith(
         startTime: activity.startTime.onlyDays(),
@@ -142,6 +154,24 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     } else {
       yield state.copyWith(state.activity,
           timeInterval: TimeInterval(event.time, state.timeInterval.endTime));
+    }
+  }
+
+  Stream<EditActivityState> _mapChangeInfoItemTypeToState(
+      ChangeInfoItemType event) async* {
+    if (event.infoItemType == state.activity.infoItem.runtimeType) return;
+
+    switch (event.infoItemType) {
+      case NoInfoItem:
+        yield state.copyWith(state.activity.copyWith(infoItem: InfoItem.none));
+        break;
+      case NoteInfoItem:
+        yield state.copyWith(state.activity.copyWith(infoItem: NoteInfoItem()));
+        break;
+      case Checklist:
+        yield state.copyWith(state.activity.copyWith(infoItem: Checklist()));
+        break;
+      default:
     }
   }
 

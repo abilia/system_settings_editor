@@ -81,6 +81,8 @@ abstract class Translated {
 
   final String availableFor = 'n/a';
 
+  final String activityAvailableFor = 'n/a';
+
   final String meAndSupportPersons = 'n/a';
 
   final String onlyMe = 'n/a';
@@ -154,6 +156,26 @@ abstract class Translated {
   final String timeAgoPre = 'n/a';
 
   final String timeAgoPost = 'n/a';
+
+  final String missingTitleOrImageAndStartTime = 'n/a';
+
+  final String missingTitleOrImage = 'n/a';
+
+  final String missingStartTime = 'n/a';
+
+  final String infoType = 'n/a';
+
+  final String selectInfoType = 'n/a';
+
+  final String infoTypeNone = 'n/a';
+
+  final String infoTypeChecklist = 'n/a';
+
+  final String infoTypeNote = 'n/a';
+
+  final String typeSomething = 'n/a';
+
+  final String clear = 'n/a';
 
   final String timepillarSettings = 'n/a';
 
@@ -271,6 +293,9 @@ class EN extends Translated {
   final String availableFor = 'Available for';
 
   @override
+  final String activityAvailableFor = 'Activity available for';
+
+  @override
   final String meAndSupportPersons = 'Me and support persons';
 
   @override
@@ -380,6 +405,38 @@ class EN extends Translated {
 
   @override
   final String timeAgoPost = 'ago';
+
+  @override
+  final String missingTitleOrImageAndStartTime =
+      'Your activity should contain an image or name and start time.';
+
+  @override
+  final String missingTitleOrImage =
+      'Your activity should contain an image or name.';
+
+  @override
+  final String missingStartTime = 'Your activity should contain a start time.';
+
+  @override
+  final String infoType = 'Info type';
+
+  @override
+  final String selectInfoType = 'Select info type';
+
+  @override
+  final String infoTypeNone = '- None -';
+
+  @override
+  final String infoTypeChecklist = 'Checklist';
+
+  @override
+  final String infoTypeNote = 'Note';
+
+  @override
+  final String typeSomething = 'Type something…';
+
+  @override
+  final String clear = 'Clear';
 
   @override
   final String timepillarSettings = 'Timepillar settings';
@@ -501,6 +558,9 @@ class SV extends Translated {
   final String availableFor = 'Tillgänglig för';
 
   @override
+  final String activityAvailableFor = 'Aktivitet tillgänglig för';
+
+  @override
   final String meAndSupportPersons = 'Mig och stödpersoner';
 
   @override
@@ -610,6 +670,38 @@ class SV extends Translated {
 
   @override
   final String timeAgoPost = 'sen';
+
+  @override
+  final String missingTitleOrImageAndStartTime =
+      'Aktiviteten måste ha ett namn eller en bild och en starttid.';
+
+  @override
+  final String missingTitleOrImage =
+      'Aktiviteten måste ha ett namn eller en bild.';
+
+  @override
+  final String missingStartTime = 'Aktiviteten måste ha en starttid.';
+
+  @override
+  final String infoType = 'Kopplade funktioner';
+
+  @override
+  final String selectInfoType = 'Välj typ av Info';
+
+  @override
+  final String infoTypeNone = '- Ingen -';
+
+  @override
+  final String infoTypeChecklist = 'Checklista';
+
+  @override
+  final String infoTypeNote = 'Anteckning';
+
+  @override
+  final String typeSomething = 'Skriv något…';
+
+  @override
+  final String clear = 'Rensa';
 
   @override
   final String timepillarSettings = 'Inställningar för tidspelare';

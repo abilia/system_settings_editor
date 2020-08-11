@@ -29,12 +29,12 @@ class SwitchField extends StatelessWidget {
       child: InkWell(
         onTap: onChanged != null ? () => onChanged(!switchToggle.value) : null,
         borderRadius: borderRadius,
-        child: Ink(
+        child: Container(
           height: heigth,
           width: width,
-          decoration: value && onChanged != null
-              ? whiteBoxDecoration
-              : borderDecoration,
+          decoration: onChanged == null
+              ? boxDecoration
+              : value ? whiteBoxDecoration : offBoxDecoration,
           padding: const EdgeInsets.only(left: 12.0, right: 4.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

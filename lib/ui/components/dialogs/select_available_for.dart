@@ -13,7 +13,10 @@ class SelectAvailableForDialog extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
     return ViewDialog(
-      heading: Text(translate.selectAlarmType, style: theme.textTheme.headline6),
+      heading: Text(
+        translate.activityAvailableFor,
+        style: theme.textTheme.headline6,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[

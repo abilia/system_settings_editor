@@ -57,7 +57,7 @@ void main() {
       DateTime(2020, 02, 20),
       DateTime(2020, 02, 27),
     ]);
-    expect(result.infoItem, null);
+    expect(result.infoItem, InfoItem.none);
     expect(result.reminderBefore,
         [1.days().inMilliseconds, 5.minutes().inMilliseconds]);
     expect(result.reminders, [1.days(), 5.minutes()]);
@@ -113,7 +113,7 @@ void main() {
     // expect(result.groupActivityId, null);
     expect(result.icon, null);
     expect(result.signedOffDates, []);
-    expect(result.infoItem, null);
+    expect(result.infoItem, InfoItem.none);
     expect(result.reminderBefore, []);
     expect(result.reminders, []);
     // expect(result.extras, null);
@@ -157,7 +157,7 @@ void main() {
     // expect(result.groupActivityId, null);
     expect(result.icon, null);
     expect(result.signedOffDates, []);
-    expect(result.infoItem, null);
+    expect(result.infoItem, InfoItem.none);
     expect(result.reminderBefore, []);
     expect(result.reminders, []);
     // expect(result.extras, null);
