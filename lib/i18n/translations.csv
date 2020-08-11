@@ -65,7 +65,6 @@ onlyThisDay;Only this day;Endast denna dag
 allDays;All days;Alla dagar
 thisDayAndForward;This day and forward;Denna dag och framåt
 settings;Settings;Inställningar
-showTimeDots;Show time dots;Visa prickar för tid
 checkActivityQuestion;Completed?;Klar?
 unCheckActivityQuestion;Du you want to uncheck?;Ta bort klarmarkering?
 inTimePre;in;om
@@ -74,3 +73,8 @@ timeAgoPost;ago;sen
 missingTitleOrImageAndStartTime;Your activity should contain an image or name and start time.;Aktiviteten måste ha ett namn eller en bild och en starttid.
 missingTitleOrImage;Your activity should contain an image or name.;Aktiviteten måste ha ett namn eller en bild.
 missingStartTime;Your activity should contain a start time.;Aktiviteten måste ha en starttid.
+timepillarSettings;Timepillar settings;Inställningar för tidspelare
+activityDuration;Activity duration;Visa tid som
+dots;Dots;Prickar
+edge;Edge;Flärp
+preview;Preview;Förhandsgranskning

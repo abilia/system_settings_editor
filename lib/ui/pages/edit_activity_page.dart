@@ -139,7 +139,13 @@ class MainTab extends EditActivityTab {
   List<Widget> buildChildren(BuildContext context) {
     final activity = state.activity;
     return <Widget>[
-      separated(NameAndPictureWidget(state)),
+      separated(
+        NameAndPictureWidget(
+          activity,
+          day: day,
+          newImage: state.newImage,
+        ),
+      ),
       separated(DateAndTimeWidget(state)),
       CollapsableWidget(
         child: separated(CategoryWidget(activity)),

@@ -19,7 +19,10 @@ class ConfirmActivityActionDialog extends StatelessWidget {
       heading: Text(title, style: theme.textTheme.headline6),
       onOk: () => Navigator.of(context).maybePop(true),
       child: AbsorbPointer(
-          child: ActivityCard(activityOccasion: activityOccasion)),
+          child: ActivityCard(
+        activityOccasion: activityOccasion,
+        preview: true,
+      )),
     );
   }
 }

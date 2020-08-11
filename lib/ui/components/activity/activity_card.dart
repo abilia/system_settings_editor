@@ -11,6 +11,7 @@ import 'package:seagull/ui/theme.dart';
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
   final double margin;
+  final bool preview;
   static const double cardHeight = 56.0,
       cardPadding = 4.0,
       cardMargin = 4.0,
@@ -19,9 +20,12 @@ class ActivityCard extends StatelessWidget {
 
   static const Duration duration = Duration(seconds: 1);
 
-  const ActivityCard(
-      {Key key, @required this.activityOccasion, this.margin = 0.0})
-      : assert(activityOccasion != null),
+  const ActivityCard({
+    Key key,
+    @required this.activityOccasion,
+    this.margin = 0.0,
+    this.preview = false,
+  })  : assert(activityOccasion != null),
         super(key: key);
 
   @override
@@ -32,12 +36,10 @@ class ActivityCard extends StatelessWidget {
     final timeFormat = hourAndMinuteFormat(context);
     final hasImage = activity.hasImage;
     final hasTitle = activity.hasTitle;
-    final signedOff = activityOccasion.isSignedOff;
-    final current = occasion == Occasion.current;
-    final past = occasion == Occasion.past;
+    final signedOff = activityOccasion.isSignedOff && !preview;
+    final current = occasion == Occasion.current && !preview;
+    final past = occasion == Occasion.past && !preview;
     final inactive = past || signedOff;
-    final right = activity.category == Category.right;
-    final fullday = activity.fullDay;
     final themeData = inactive
         ? abiliaTheme.copyWith(
             textTheme: textTheme.copyWith(
@@ -60,9 +62,9 @@ class ActivityCard extends StatelessWidget {
             duration: duration,
             height: cardHeight,
             decoration: getBoxDecoration(current, inactive),
-            margin: fullday
+            margin: preview || activity.fullDay
                 ? EdgeInsets.zero
-                : right
+                : activity.category == Category.right
                     ? const EdgeInsets.only(left: categorySideOffset)
                     : const EdgeInsets.only(right: categorySideOffset),
             child: Material(
@@ -98,11 +100,14 @@ class ActivityCard extends StatelessWidget {
                               padding: const EdgeInsets.only(left: cardPadding),
                               child: Stack(children: <Widget>[
                                 if (hasTitle)
-                                  Text(
-                                    activity.title,
-                                    overflow: TextOverflow.ellipsis,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                  HeroTitle(
+                                    activityDay: activityOccasion,
+                                    child: DefaultTextStyle(
+                                      style:
+                                          Theme.of(context).textTheme.subtitle1,
+                                      overflow: TextOverflow.ellipsis,
+                                      child: Text(activity.title),
+                                    ),
                                   ),
                                 Align(
                                   alignment: Alignment.bottomLeft,

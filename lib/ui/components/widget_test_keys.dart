@@ -11,6 +11,7 @@ class TestKey {
       appBarCloseButton = Key('appBarCloseButton'),
       changeView = Key('changeView'),
       timePillarButton = Key('timePillarButton'),
+      timePillarSettingsButton = Key('timePillarSettingsButton'),
       agendaListButton = Key('agendaListButton  '),
       activityBackButton = Key('activityBackButton'),
       activityUncheckButton = Key('activityUncheckButton'),
@@ -46,5 +47,8 @@ class TestKey {
       onlyThisDay = Key('onlyThisDay'),
       allDays = Key('allDays'),
       thisDayAndForward = Key('thisDayAndForward'),
-      viewImage = Key('viewImage');
+      viewImage = Key('viewImage'),
+      preview = Key('preview'),
+      edgePreview = Key('edgePreview'),
+      dotsPreview = Key('dotsPreview');
 }
