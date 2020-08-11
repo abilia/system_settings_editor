@@ -101,26 +101,49 @@ class NameAndPictureWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SubHeading(translator.name),
-              HeroTitle(
-                activityDay: ActivityDay(activity, day),
-                child: DefaultTextStyle(
-                  style: Theme.of(context).textTheme.bodyText2,
-                  child: TextFormField(
-                    initialValue: activity.title,
-                    textCapitalization: TextCapitalization.sentences,
-                    inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                    style: Theme.of(context).textTheme.bodyText2,
-                    onChanged: (text) =>
-                        BlocProvider.of<EditActivityBloc>(context).add(
-                            ReplaceActivity(activity.copyWith(title: text))),
-                    key: TestKey.editTitleTextFormField,
-                  ),
-                ),
+              DefaultTextStyle(
+                style: Theme.of(context).textTheme.bodyText2,
+                child: NameInput(activity: activity),
               ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class NameInput extends StatefulWidget {
+  const NameInput({
+    Key key,
+    @required this.activity,
+  }) : super(key: key);
+
+  final Activity activity;
+  @override
+  _NameInputState createState() => _NameInputState();
+}
+
+class _NameInputState extends State<NameInput> {
+  TextEditingController _nameController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.activity.title);
+    _nameController.addListener(() => BlocProvider.of<EditActivityBloc>(context)
+        .add(ReplaceActivity(
+            widget.activity.copyWith(title: _nameController.text))));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormInput(
+      formKey: TestKey.editTitleTextFormField,
+      controller: _nameController,
+      heading: Translator.of(context).translate.name,
+      textCapitalization: TextCapitalization.sentences,
+      inputFormatters: [LengthLimitingTextInputFormatter(50)],
     );
   }
 }

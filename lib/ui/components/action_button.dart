@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:seagull/ui/theme.dart';
 
 class ActionButton extends StatelessWidget {
+  static const size = 48.0;
   const ActionButton({
     Key key,
     @required this.child,
     @required this.onPressed,
-    this.width = 48,
-    this.height = 48,
+    this.width = size,
+    this.height = size,
     this.themeData,
     this.padding = const EdgeInsets.all(8),
   }) : super(key: key);

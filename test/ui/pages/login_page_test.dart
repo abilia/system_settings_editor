@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
@@ -59,22 +60,86 @@ void main() {
     });
 
     testWidgets('Hide password button', (WidgetTester tester) async {
+      // Arrange
+      bool textHidden() =>
+          tester.widget<EditableText>(find.text(secretPassword)).obscureText;
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
-      expect(find.byKey(TestKey.hidePasswordToggle), findsNothing);
+      // No show/hide-button visible at all
+      expect(find.byIcon(AbiliaIcons.show), findsNothing);
+      expect(find.byIcon(AbiliaIcons.hide), findsNothing);
       expect(find.byKey(TestKey.passwordInput), findsOneWidget);
 
-      await tester.enterText(find.byKey(TestKey.passwordInput), secretPassword);
+      // Type password
+      await tester.enterText_(
+          find.byKey(TestKey.passwordInput), secretPassword);
+      await tester.pumpAndSettle();
+
+      // Text hidden but show/hide-button visible
+      expect(textHidden(), isTrue);
+      expect(find.byIcon(AbiliaIcons.hide), findsNothing);
+      expect(find.byIcon(AbiliaIcons.show), findsOneWidget);
+
+      // Tap show/hide-button
+      await tester.tap(find.byIcon(AbiliaIcons.show));
+      await tester.pumpAndSettle();
+
+      // Text shows and show/hide-button visible with show icon
+      expect(textHidden(), isFalse);
+      expect(find.byIcon(AbiliaIcons.show), findsNothing);
+      expect(find.byIcon(AbiliaIcons.hide), findsOneWidget);
+
+      // Remove text then show/hide-button is not visible
+      await tester.enterText_(find.byKey(TestKey.passwordInput), '');
+      await tester.pump();
+      expect(find.byIcon(AbiliaIcons.hide), findsNothing);
+      expect(find.byIcon(AbiliaIcons.show), findsNothing);
+    });
+
+    testWidgets('Hide password button works in password edit dialog',
+        (WidgetTester tester) async {
+      // Arrange
+      bool textHidden() => tester
+          .firstWidget<EditableText>(find.text(secretPassword))
+          .obscureText;
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      // Enter field password dialog
+      await tester.tap(find.byKey(TestKey.passwordInput));
       await tester.pump();
 
-      expect(find.byKey(TestKey.hidePasswordToggle), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.hidePasswordToggle));
-      expect(find.text(secretPassword), findsOneWidget);
+      // No button shows at all
+      expect(find.byIcon(AbiliaIcons.show), findsNothing);
+      expect(find.byIcon(AbiliaIcons.hide), findsNothing);
+      expect(find.byKey(TestKey.input), findsOneWidget);
 
-      await tester.enterText(find.byKey(TestKey.passwordInput), '');
-      await tester.pump();
-      expect(find.byKey(TestKey.hidePasswordToggle), findsNothing);
+      await tester.enterText(find.byKey(TestKey.input), secretPassword);
+      await tester.pumpAndSettle();
+
+      // Text hidden but hide button shows
+      expect(textHidden(), isTrue);
+      expect(find.byIcon(AbiliaIcons.hide), findsNothing);
+      expect(find.byIcon(AbiliaIcons.show), findsWidgets);
+
+      // Tap show/hide-button
+      await tester.tap(find.byKey(TestKey.hidePassword));
+      await tester.pumpAndSettle();
+
+      // Text shows and show/hide-button visible with show icon
+      expect(textHidden(), isFalse);
+      expect(find.byIcon(AbiliaIcons.show), findsNothing);
+      expect(find.byIcon(AbiliaIcons.hide), findsWidgets);
+
+      // Go back
+      await tester.tap(find.byKey(TestKey.okDialog));
+      await tester.pumpAndSettle();
+
+      // Password still hidden
+      expect(textHidden(), isFalse);
+      expect(find.byIcon(AbiliaIcons.show), findsNothing);
+      expect(find.byIcon(AbiliaIcons.hide), findsOneWidget);
     });
 
     testWidgets('Cant login when no password or username',
@@ -82,14 +147,15 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
-      await tester.enterText(find.byKey(TestKey.passwordInput), secretPassword);
-      await tester.pump();
+      await tester.enterText_(
+          find.byKey(TestKey.passwordInput), secretPassword);
       await tester.tap(find.byKey(TestKey.loggInButton));
       await tester.pumpAndSettle();
       expect(find.byType(CalendarPage), findsNothing);
 
-      await tester.enterText(find.byKey(TestKey.passwordInput), '');
-      await tester.enterText(find.byKey(TestKey.userNameInput), Fakes.username);
+      await tester.enterText_(find.byKey(TestKey.passwordInput), '');
+      await tester.enterText_(
+          find.byKey(TestKey.userNameInput), Fakes.username);
       await tester.pump();
       await tester.tap(find.byKey(TestKey.loggInButton));
       await tester.pumpAndSettle();
@@ -101,8 +167,9 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
-      await tester.enterText(find.byKey(TestKey.userNameInput), Fakes.username);
-      await tester.enterText(
+      await tester.enterText_(
+          find.byKey(TestKey.userNameInput), Fakes.username);
+      await tester.enterText_(
           find.byKey(TestKey.passwordInput), Fakes.incorrectPassword);
       await tester.pump();
       await tester.tap(find.byKey(TestKey.loggInButton));
@@ -116,8 +183,10 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      await tester.enterText(find.byKey(TestKey.passwordInput), secretPassword);
-      await tester.enterText(find.byKey(TestKey.userNameInput), Fakes.username);
+      await tester.enterText_(
+          find.byKey(TestKey.passwordInput), secretPassword);
+      await tester.enterText_(
+          find.byKey(TestKey.userNameInput), Fakes.username);
       await tester.pump();
       await tester.tap(find.byKey(TestKey.loggInButton));
       await tester.pumpAndSettle();
@@ -128,8 +197,10 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Login
-      await tester.enterText(find.byKey(TestKey.passwordInput), secretPassword);
-      await tester.enterText(find.byKey(TestKey.userNameInput), Fakes.username);
+      await tester.enterText_(
+          find.byKey(TestKey.passwordInput), secretPassword);
+      await tester.enterText_(
+          find.byKey(TestKey.userNameInput), Fakes.username);
       await tester.pump();
       await tester.tap(find.byKey(TestKey.loggInButton));
       await tester.pumpAndSettle();
@@ -146,8 +217,10 @@ void main() {
       expect(find.byType(LoginPage), findsOneWidget);
 
       // Login
-      await tester.enterText(find.byKey(TestKey.passwordInput), secretPassword);
-      await tester.enterText(find.byKey(TestKey.userNameInput), Fakes.username);
+      await tester.enterText_(
+          find.byKey(TestKey.passwordInput), secretPassword);
+      await tester.enterText_(
+          find.byKey(TestKey.userNameInput), Fakes.username);
       await tester.pump();
       await tester.tap(find.byKey(TestKey.loggInButton));
       await tester.pumpAndSettle();

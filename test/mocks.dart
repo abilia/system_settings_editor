@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/analytics/analytics_service.dart';
@@ -9,6 +10,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:seagull/ui/components/widget_test_keys.dart';
 
 final AlarmScheduler noAlarmScheduler = ((a, b, c, d) async {});
 
@@ -96,5 +98,16 @@ class MockBloc<E, S> extends Mock {
     return (memberName == 'skip' && result == null)
         ? Stream<S>.empty()
         : result;
+  }
+}
+
+extension OurEnterText on WidgetTester {
+  Future<void> enterText_(Finder finder, String text) async {
+    await tap(finder);
+    await pump();
+    await enterText(find.byKey(TestKey.input), text);
+    await pump();
+    await tap(find.byKey(TestKey.okDialog));
+    await pump();
   }
 }

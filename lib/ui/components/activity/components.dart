@@ -16,7 +16,13 @@ class SubHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(data),
+      child: Text(
+        data,
+        style: Theme.of(context)
+            .textTheme
+            .bodyText2
+            .copyWith(color: AbiliaColors.black75),
+      ),
     );
   }
 }

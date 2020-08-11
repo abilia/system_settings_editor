@@ -95,7 +95,7 @@ void main() {
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
       expect(find.text(newActivtyTitle), findsNothing);
-      await tester.enterText(
+      await tester.enterText_(
           find.byKey(TestKey.editTitleTextFormField), newActivtyTitle);
       expect(find.text(newActivtyTitle), findsOneWidget);
     });
@@ -125,7 +125,7 @@ void main() {
                   find.byKey(TestKey.finishEditActivityButton))
               .onPressed,
           isNull);
-      await tester.enterText(
+      await tester.enterText_(
           find.byKey(TestKey.editTitleTextFormField), newActivtyName);
       await tester.pumpAndSettle();
 

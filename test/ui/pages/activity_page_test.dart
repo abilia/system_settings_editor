@@ -172,7 +172,7 @@ void main() {
       expect(find.text(title), findsOneWidget);
 
       // Act -- Enter new title and save
-      await tester.enterText(titleTextFormFieldFinder, newTitle);
+      await tester.enterText_(titleTextFormFieldFinder, newTitle);
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
 
@@ -976,7 +976,7 @@ void main() {
         // Act
         await tester.tap(editActivityButtonFinder);
         await tester.pumpAndSettle();
-        await tester.enterText(titleTextFormFieldFinder, newTitle);
+        await tester.enterText_(titleTextFormFieldFinder, newTitle);
         await tester.tap(finishActivityFinder);
         await tester.pumpAndSettle();
         await tester.tap(okInkWellFinder);
