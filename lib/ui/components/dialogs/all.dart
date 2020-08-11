@@ -7,3 +7,4 @@ export 'select_reminders.dart';
 export 'confirm_activity_action.dart';
 export 'time_input.dart';
 export 'edit_recurrant.dart';
+export 'settings/all.dart';
