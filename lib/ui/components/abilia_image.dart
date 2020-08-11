@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logging/logging.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -44,15 +42,29 @@ class ActivityImage extends StatelessWidget {
     ImageSize imageSize = ImageSize.THUMB,
     File imageFile,
     BoxFit fit = BoxFit.cover,
+    bool preview = false,
   }) =>
-      ActivityImage(
-        key: key,
-        activityDay: activityOccasion,
-        size: size,
-        past: activityOccasion.occasion == Occasion.past,
-        imageSize: imageSize,
-        imageFile: imageFile,
-      );
+      preview
+          ? FadeInCalendarImage(
+              key: key,
+              imageFileId: activityOccasion.activity.fileId,
+              imageFilePath: activityOccasion.activity.icon,
+              activityId: activityOccasion.activity.id,
+              width: size,
+              height: size,
+              imageSize: imageSize,
+              imageFile: imageFile,
+              fit: fit,
+            )
+          : ActivityImage(
+              key: key,
+              activityDay: activityOccasion,
+              size: size,
+              past: activityOccasion.occasion == Occasion.past,
+              imageSize: imageSize,
+              imageFile: imageFile,
+              fit: fit,
+            );
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +72,8 @@ class ActivityImage extends StatelessWidget {
     final hasImage = activity.hasImage,
         signedOff = activityDay.isSignedOff,
         inactive = past || signedOff;
-    return Hero(
-      tag: '${activity.id}${activityDay.day.millisecondsSinceEpoch}',
+    return HeroImage(
+      activityDay: activityDay,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -160,14 +172,14 @@ class FullScreenImage extends StatelessWidget {
             imageProvider: userFileLoaded
                 ? Image.file(GetIt.I<FileStorage>().getFile(fileId)).image
                 : (state is Authenticated)
-                    ? AdvancedNetworkImage(
+                    ? Image.network(
                         imageThumbUrl(
                           baseUrl: state.userRepository.baseUrl,
                           userId: state.userId,
                           imageFileId: fileId,
                           size: ImageThumb.THUMB_SIZE,
                         ),
-                        header: authHeader(state.token),
+                        headers: authHeader(state.token),
                       )
                     : MemoryImage(kTransparentImage),
           );
@@ -184,6 +196,7 @@ class FadeInCalendarImage extends StatelessWidget {
   final ImageSize imageSize;
   final BoxFit fit;
   FadeInCalendarImage({
+    Key key,
     @required this.imageFileId,
     @required this.imageFilePath,
     @required this.activityId,
@@ -192,7 +205,7 @@ class FadeInCalendarImage extends StatelessWidget {
     this.imageFile,
     this.imageSize = ImageSize.THUMB,
     this.fit = BoxFit.cover,
-  });
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final fileStorage = GetIt.I<FileStorage>();
@@ -300,7 +313,6 @@ class FadeInAbiliaImage extends StatelessWidget {
 }
 
 class FadeInNetworkImage extends StatelessWidget {
-  static final _log = Logger((FadeInNetworkImage).toString());
   final String imageFileId, imageFilePath;
   final double width, height;
   final BoxFit fit;
@@ -323,7 +335,7 @@ class FadeInNetworkImage extends StatelessWidget {
               height: height,
               width: width,
               placeholder: MemoryImage(kTransparentImage),
-              image: AdvancedNetworkImage(
+              image: NetworkImage(
                 imageFileId != null
                     ? imageThumbUrl(
                         baseUrl: state.userRepository.baseUrl,
@@ -337,9 +349,7 @@ class FadeInNetworkImage extends StatelessWidget {
                         imagePath: imageFilePath,
                         size: ImageThumb.THUMB_SIZE,
                       ),
-                header: authHeader(state.token),
-                loadFailedCallback: () =>
-                    _log.info('Failed to load network image'),
+                headers: authHeader(state.token),
               ),
               fit: fit,
             )

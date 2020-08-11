@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
+
+part 'activities_occasion_event.dart';
+part 'activities_occasion_state.dart';
 
 class ActivitiesOccasionBloc
     extends Bloc<ActivitiesOccasionEvent, ActivitiesOccasionState> {
@@ -15,7 +19,7 @@ class ActivitiesOccasionBloc
   ActivitiesOccasionBloc({
     @required this.clockBloc,
     @required this.dayActivitiesBloc,
-  }) {
+  }) : super(ActivitiesOccasionLoading()) {
     activitiesSubscription = dayActivitiesBloc.listen((activitiesState) {
       if (activitiesState is DayActivitiesLoaded) {
         add(ActivitiesChanged(activitiesState));
@@ -23,9 +27,6 @@ class ActivitiesOccasionBloc
     });
     clockSubscription = clockBloc.listen((now) => add(NowChanged(now)));
   }
-
-  @override
-  ActivitiesOccasionState get initialState => ActivitiesOccasionLoading();
 
   @override
   Stream<ActivitiesOccasionState> mapEventToState(

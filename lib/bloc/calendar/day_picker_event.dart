@@ -1,6 +1,5 @@
-import 'package:meta/meta.dart';
+part of 'day_picker_bloc.dart';
 
-@immutable
 abstract class DayPickerEvent {
   const DayPickerEvent();
 }

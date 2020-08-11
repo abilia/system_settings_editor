@@ -87,9 +87,10 @@ class ActivityTimepillarCard extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (innerContext) =>
-                          ActivityPage(occasion: activityOccasion),
-                    ),
+                        builder: (innerContext) =>
+                            ActivityPage(occasion: activityOccasion),
+                        settings: RouteSettings(
+                            name: 'ActivityPage $activityOccasion')),
                   );
                 },
                 child: Container(
@@ -109,15 +110,20 @@ class ActivityTimepillarCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           if (hasTitle)
-                            Text(
-                              activity.title,
-                              overflow: TextOverflow.visible,
-                              textAlign: TextAlign.center,
-                              maxLines: maxTitleLines,
-                              style: textStyle.copyWith(
-                                  color: inactive
-                                      ? AbiliaColors.white140
-                                      : AbiliaColors.black),
+                            HeroTitle(
+                              activityDay: activityOccasion,
+                              child: DefaultTextStyle(
+                                overflow: TextOverflow.visible,
+                                textAlign: TextAlign.center,
+                                maxLines: maxTitleLines,
+                                style: textStyle.copyWith(
+                                    color: inactive
+                                        ? AbiliaColors.white140
+                                        : AbiliaColors.black),
+                                child: Text(
+                                  activity.title,
+                                ),
+                              ),
                             ),
                           if (hasImage || signedOff)
                             ActivityImage.fromActivityOccasion(

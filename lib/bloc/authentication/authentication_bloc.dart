@@ -1,11 +1,15 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+
+part 'authentication_event.dart';
+part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
@@ -16,10 +20,8 @@ class AuthenticationBloc
   AuthenticationBloc(
       {@required this.databaseRepository,
       @required this.baseUrlDb,
-      @required this.cancleAllNotificationsFunction});
-
-  @override
-  AuthenticationState get initialState => AuthenticationUninitialized();
+      @required this.cancleAllNotificationsFunction})
+      : super(AuthenticationUninitialized());
 
   @override
   Stream<AuthenticationState> mapEventToState(

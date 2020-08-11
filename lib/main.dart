@@ -49,54 +49,56 @@ Future<void> initServices() async {
 }
 
 class App extends StatelessWidget {
-  final UserRepository userRepository;
   final PushBloc pushBloc;
+  final String baseUrl;
 
   App({
-    String baseUrl,
     Key key,
+    this.baseUrl,
     this.pushBloc,
-  })  : userRepository = UserRepository(
-            baseUrl: baseUrl,
-            httpClient: GetIt.I<BaseClient>(),
-            tokenDb: GetIt.I<TokenDb>(),
-            userDb: GetIt.I<UserDb>()),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthenticationBloc>(
-            create: (context) => AuthenticationBloc(
-                  databaseRepository: GetIt.I<DatabaseRepository>(),
-                  baseUrlDb: GetIt.I<BaseUrlDb>(),
-                  cancleAllNotificationsFunction: () =>
-                      notificationPlugin.cancelAll(),
-                )..add(AppStarted(userRepository))),
-        BlocProvider<PushBloc>(
-          create: (context) => pushBloc ?? PushBloc(),
-        ),
-      ],
-      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        builder: (context, state) {
-          if (state is Authenticated) {
-            return AuthenticatedBlocsProvider(
-              authenticatedState: state,
-              child: SeagullApp(
-                home: AlarmListener(child: CalendarPage()),
-              ),
+    return RepositoryProvider<UserRepository>(
+      create: (context) => UserRepository(
+          baseUrl: baseUrl,
+          httpClient: GetIt.I<BaseClient>(),
+          tokenDb: GetIt.I<TokenDb>(),
+          userDb: GetIt.I<UserDb>()),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthenticationBloc>(
+              create: (context) => AuthenticationBloc(
+                    databaseRepository: GetIt.I<DatabaseRepository>(),
+                    baseUrlDb: GetIt.I<BaseUrlDb>(),
+                    cancleAllNotificationsFunction: () =>
+                        notificationPlugin.cancelAll(),
+                  )..add(AppStarted(context.repository<UserRepository>()))),
+          BlocProvider<PushBloc>(
+            create: (context) => pushBloc ?? PushBloc(),
+          ),
+        ],
+        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+            if (state is Authenticated) {
+              return AuthenticatedBlocsProvider(
+                authenticatedState: state,
+                child: SeagullApp(
+                  home: AlarmListener(child: CalendarPage()),
+                ),
+              );
+            }
+            return SeagullApp(
+              home: (state is Unauthenticated)
+                  ? LoginPage(
+                      userRepository: context.repository<UserRepository>(),
+                      push: GetIt.I<FirebasePushService>(),
+                    )
+                  : SplashPage(),
             );
-          }
-          return SeagullApp(
-            home: (state is Unauthenticated)
-                ? LoginPage(
-                    userRepository: userRepository,
-                    push: GetIt.I<FirebasePushService>(),
-                  )
-                : SplashPage(),
-          );
-        },
+          },
+        ),
       ),
     );
   }
@@ -130,6 +132,7 @@ class SeagullApp extends StatelessWidget {
       navigatorObservers: [
         AnalyticsService.observer,
         GetIt.I<AlarmNavigator>().alarmRouteObserver,
+        RouteLoggingObserver(),
       ],
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: [

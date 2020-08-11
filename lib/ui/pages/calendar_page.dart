@@ -77,7 +77,7 @@ class _CalendarPageState extends State<CalendarPage>
                     itemBuilder: (context, index) {
                       return BlocBuilder<ActivitiesOccasionBloc,
                           ActivitiesOccasionState>(
-                        condition: (oldState, newState) {
+                        buildWhen: (oldState, newState) {
                           return (oldState is ActivitiesOccasionLoaded &&
                                   newState is ActivitiesOccasionLoaded &&
                                   oldState.day == newState.day) ||
@@ -149,8 +149,8 @@ class _CalendarPageState extends State<CalendarPage>
         ),
       );
 
-  void _jumpToActivity() async {
-    final scrollState = await _scrollPositionBloc.first;
+  void _jumpToActivity() {
+    final scrollState = _scrollPositionBloc.state;
     if (scrollState is OutOfView) {
       final sc = scrollState.scrollController;
       sc.jumpTo(min(sc.initialScrollOffset, sc.position.maxScrollExtent));
@@ -234,6 +234,8 @@ class CalendarBottomBar extends StatelessWidget {
                             ),
                           );
                         },
+                        settings: RouteSettings(
+                            name: 'EditActivityPage new activity'),
                       ),
                     );
                   },
@@ -244,7 +246,10 @@ class CalendarBottomBar extends StatelessWidget {
                 child: ActionButton(
                   child: Icon(AbiliaIcons.menu),
                   onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MenuPage()),
+                    MaterialPageRoute(
+                      builder: (context) => MenuPage(),
+                      settings: RouteSettings(name: 'MenuPage'),
+                    ),
                   ),
                 ),
               ),

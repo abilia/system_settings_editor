@@ -1,6 +1,5 @@
-import 'package:meta/meta.dart';
+part of 'push_bloc.dart';
 
-@immutable
 abstract class PushState {
   const PushState();
 }

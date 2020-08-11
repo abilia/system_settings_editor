@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
+
+part 'login_event.dart';
+part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthenticationBloc authenticationBloc;
@@ -12,10 +16,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     @required this.authenticationBloc,
     @required this.pushService,
   })  : assert(authenticationBloc != null),
-        assert(pushService != null);
-
-  @override
-  LoginState get initialState => LoginInitial();
+        assert(pushService != null),
+        super(LoginInitial());
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {

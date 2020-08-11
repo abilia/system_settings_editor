@@ -1,17 +1,20 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/logging.dart';
+
+part 'scroll_position_event.dart';
+part 'scroll_position_state.dart';
 
 class ScrollPositionBloc
     extends Bloc<ScrollPositionEvent, ScrollPositionState> {
   final double nowMarginTop;
   final double nowMarginBottom;
 
-  ScrollPositionBloc({this.nowMarginTop = 8, this.nowMarginBottom = 8});
-
-  @override
-  ScrollPositionState get initialState => Unready();
+  ScrollPositionBloc({this.nowMarginTop = 8, this.nowMarginBottom = 8})
+      : super(Unready());
 
   @override
   Stream<ScrollPositionState> mapEventToState(

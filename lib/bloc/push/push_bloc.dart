@@ -3,14 +3,14 @@ import 'package:logging/logging.dart';
 import 'package:seagull/background/background.dart';
 import 'package:seagull/bloc/all.dart';
 
+part 'push_event.dart';
+part 'push_state.dart';
+
 class PushBloc extends Bloc<PushEvent, PushState> {
   static final _log = Logger((PushBloc).toString());
-  PushBloc() {
+  PushBloc() : super(PushReady()) {
     _initFirebaseListener();
   }
-
-  @override
-  PushState get initialState => PushReady();
 
   @override
   Stream<PushState> mapEventToState(event) async* {
