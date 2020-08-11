@@ -11,6 +11,7 @@ class TestKey {
       appBarCloseButton = Key('appBarCloseButton'),
       changeView = Key('changeView'),
       timePillarButton = Key('timePillarButton'),
+      timePillarSettingsButton = Key('timePillarSettingsButton'),
       agendaListButton = Key('agendaListButton  '),
       activityBackButton = Key('activityBackButton'),
       activityUncheckButton = Key('activityUncheckButton'),
@@ -49,5 +50,8 @@ class TestKey {
       viewImage = Key('viewImage'),
       infoItemNoneRadio = Key('infoItemNoneRadio'),
       infoItemChecklistRadio = Key('infoItemChecklistRadio'),
-      infoItemNoteRadio = Key('infoItemNoteRadio');
+      infoItemNoteRadio = Key('infoItemNoteRadio'),
+      preview = Key('preview'),
+      edgePreview = Key('edgePreview'),
+      dotsPreview = Key('dotsPreview');
 }

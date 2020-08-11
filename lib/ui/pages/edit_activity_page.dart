@@ -159,7 +159,13 @@ class MainTab extends StatelessWidget with EditActivityTab {
     return ListView(
       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 56.0),
       children: <Widget>[
-        separated(NameAndPictureWidget(state)),
+        separated(
+          NameAndPictureWidget(
+            activity,
+            day: day,
+            newImage: state.newImage,
+          ),
+        ),
         separated(DateAndTimeWidget(state)),
         CollapsableWidget(
           child: separated(CategoryWidget(activity)),

@@ -8,3 +8,4 @@ export 'check_mark.dart';
 export 'timeformat.dart';
 export 'note_block.dart';
 export 'checklist.dart';
+export 'activity_heroes.dart';
