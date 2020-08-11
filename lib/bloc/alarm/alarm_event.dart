@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-import 'package:seagull/logging.dart';
+part of 'alarm_bloc.dart';
 
-@immutable
-class AlarmEvent with Silent {}
+class AlarmEvent with Finest {}

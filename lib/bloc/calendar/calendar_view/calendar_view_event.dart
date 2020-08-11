@@ -1,8 +1,9 @@
-import 'package:equatable/equatable.dart';
-import 'package:seagull/bloc/calendar_view/calendar_view_state.dart';
+part of 'calendar_view_bloc.dart';
 
 abstract class CalendarViewEvent extends Equatable {
   const CalendarViewEvent();
+  @override
+  bool get stringify => true;
 }
 
 class CalendarViewChanged extends CalendarViewEvent {

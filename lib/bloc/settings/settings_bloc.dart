@@ -13,11 +13,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   SettingsBloc({
     @required this.settingsDb,
-  });
-
-  @override
-  SettingsState get initialState =>
-      SettingsState(settingsDb.getDotsInTimepillar());
+  }) : super(SettingsState(settingsDb.getDotsInTimepillar()));
 
   @override
   Stream<SettingsState> mapEventToState(

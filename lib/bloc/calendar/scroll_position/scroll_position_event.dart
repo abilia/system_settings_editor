@@ -1,10 +1,9 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/widgets.dart';
-import 'package:meta/meta.dart';
-import 'package:seagull/logging.dart';
+part of 'scroll_position_bloc.dart';
 
-@immutable
-abstract class ScrollPositionEvent extends Equatable with Silent {}
+abstract class ScrollPositionEvent extends Equatable with Silent {
+  @override
+  bool get stringify => true;
+}
 
 class WrongDaySelected extends ScrollPositionEvent {
   @override
@@ -16,8 +15,6 @@ class ScrollPositionUpdated extends ScrollPositionEvent {
   ScrollPositionUpdated(this.scrollPosition);
   @override
   List<Object> get props => [scrollPosition];
-  @override
-  String toString() => 'ScrollPosition: $scrollPosition';
 }
 
 class ScrollViewRenderComplete extends ScrollPositionEvent {
@@ -26,6 +23,4 @@ class ScrollViewRenderComplete extends ScrollPositionEvent {
   ScrollViewRenderComplete(this.scrollController);
   @override
   List<Object> get props => [scrollController];
-  @override
-  String toString() => 'ScrollViewRenderComplete: { $scrollController }';
 }

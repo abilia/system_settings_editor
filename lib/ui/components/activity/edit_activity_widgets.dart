@@ -12,10 +12,13 @@ import 'package:seagull/ui/components/all.dart';
 
 class NameAndPictureWidget extends StatelessWidget {
   final Activity activity;
+  final DateTime day;
+
   final File newImage;
 
   const NameAndPictureWidget(
     this.activity, {
+    @required this.day,
     Key key,
     this.newImage,
   }) : super(key: key);
@@ -66,13 +69,16 @@ class NameAndPictureWidget extends StatelessWidget {
             if (activity.hasImage)
               InkWell(
                 onTap: imageClick,
-                child: FadeInCalendarImage(
-                  height: 84,
-                  width: 84,
-                  imageFileId: activity.fileId,
-                  imageFilePath: activity.icon,
-                  activityId: activity.id,
-                  imageFile: newImage,
+                child: HeroImage(
+                  activityDay: ActivityDay(activity, day),
+                  child: FadeInCalendarImage(
+                    height: 84,
+                    width: 84,
+                    imageFileId: activity.fileId,
+                    imageFilePath: activity.icon,
+                    activityId: activity.id,
+                    imageFile: newImage,
+                  ),
                 ),
               )
             else
@@ -89,7 +95,19 @@ class NameAndPictureWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(width: 12),
-        Expanded(child: NameInput(activity: activity)),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SubHeading(translator.name),
+              DefaultTextStyle(
+                style: Theme.of(context).textTheme.bodyText2,
+                child: NameInput(activity: activity),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

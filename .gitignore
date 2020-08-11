@@ -69,6 +69,7 @@
 **/ios/Flutter/flutter_assets/
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/Flutter/Flutter.podspec
+**/ios/Flutter/.last_build_id
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 

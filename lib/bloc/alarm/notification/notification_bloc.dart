@@ -15,7 +15,7 @@ class NotificationBloc extends Bloc<NotificationPayload, AlarmStateBase> {
   NotificationBloc({
     @required this.activitiesBloc,
     @required Stream<String> selectedNotificationStream,
-  }) {
+  }) : super(UnInitializedAlarmState()) {
     _selectedNotificationSubscription = selectedNotificationStream.transform(
       StreamTransformer.fromHandlers(
         handleData: (String data, EventSink<NotificationPayload> sink) {
@@ -38,9 +38,6 @@ class NotificationBloc extends Bloc<NotificationPayload, AlarmStateBase> {
       },
     );
   }
-
-  @override
-  AlarmStateBase get initialState => UnInitializedAlarmState();
 
   @override
   Stream<AlarmStateBase> mapEventToState(

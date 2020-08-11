@@ -72,6 +72,7 @@ class ViewDialog extends StatelessWidget {
       seperatorPadding = 16.0;
   final Widget deleteButton;
   final Widget backButton;
+  final Widget preview;
   final bool expanded;
   final double _verticalPadding, _leftPadding, _rightPadding;
 
@@ -87,6 +88,7 @@ class ViewDialog extends StatelessWidget {
     double verticalPadding = verticalPadding,
     double leftPadding = leftPadding,
     double rightPadding = rightPadding,
+    this.preview,
   })  : _verticalPadding = verticalPadding,
         _leftPadding = leftPadding,
         _rightPadding = rightPadding,
@@ -105,6 +107,7 @@ class ViewDialog extends StatelessWidget {
             onOk: onOk,
             onCancle: onCancle,
           ),
+          if (preview != null) preview,
           Flexible(
             flex: expanded ? 1 : 0,
             child: Container(

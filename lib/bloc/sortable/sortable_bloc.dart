@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sync/bloc.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/sortable_repository.dart';
 import 'package:seagull/storage/all.dart';
@@ -25,16 +24,13 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     @required this.sortableRepository,
     @required PushBloc pushBloc,
     @required this.syncBloc,
-  }) {
+  }) : super(SortablesNotLoaded()) {
     pushSubscription = pushBloc.listen((state) {
       if (state is PushReceived) {
         add(LoadSortables());
       }
     });
   }
-
-  @override
-  SortableState get initialState => SortablesNotLoaded();
 
   @override
   Stream<SortableState> mapEventToState(

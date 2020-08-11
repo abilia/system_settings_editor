@@ -4,11 +4,11 @@ import 'dart:collection';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/bloc/sync/sync_delays.dart';
 import 'package:seagull/repository/all.dart';
 
 part 'sync_event.dart';
 part 'sync_state.dart';
+part 'sync_delays.dart';
 
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final ActivityRepository activityRepository;
@@ -21,7 +21,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     @required this.userFileRepository,
     @required this.sortableRepository,
     @required this.syncDelay,
-  });
+  }) : super(SyncInitial());
 
   final Queue<SyncEvent> _syncQueue = Queue<SyncEvent>();
 
@@ -38,9 +38,6 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   @override
-  SyncState get initialState => SyncInitial();
-
-  @override
   Stream<SyncState> mapEventToState(
     SyncEvent event,
   ) async* {
@@ -50,8 +47,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       if (!_syncQueue.contains(event)) {
         _syncQueue.add(event);
       }
-      Future.delayed(syncDelay.retryDelay,
-          () => super.add(_syncQueue.removeFirst()));
+      Future.delayed(
+          syncDelay.retryDelay, () => super.add(_syncQueue.removeFirst()));
       return;
     }
     // Throttle sync to queue up potential fast incoming event

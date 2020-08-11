@@ -32,6 +32,11 @@ void main() {
       selectedNotificationStream: notificationSelected.stream,
     );
   });
+
+  test('initial state', () {
+    expect(notificationBloc.state, UnInitializedAlarmState());
+  });
+
   test('Notification selected after Activities loaded emits new alarm state',
       () async {
     // Arrange
@@ -49,11 +54,7 @@ void main() {
 
     // Assert
     await expectLater(
-        notificationBloc,
-        emitsInOrder([
-          UnInitializedAlarmState(),
-          AlarmState(StartAlarm(nowActivity, aDay)),
-        ]));
+        notificationBloc, emits(AlarmState(StartAlarm(nowActivity, aDay))));
   });
 
   test('Notification selected after Activities loaded emits new reminder state',
@@ -79,14 +80,13 @@ void main() {
     // Assert
     await expectLater(
         notificationBloc,
-        emitsInOrder([
-          UnInitializedAlarmState(),
+        emits(
           AlarmState(ReminderBefore(
             nowActivity,
             aDay,
             reminder: reminderTime.minutes(),
           )),
-        ]));
+        ));
   });
 
   test(
@@ -112,7 +112,6 @@ void main() {
     await expectLater(
         notificationBloc,
         emitsInOrder([
-          UnInitializedAlarmState(),
           PendingAlarmState({payload}),
           AlarmState(StartAlarm(nowActivity, aDay)),
         ]));
@@ -153,7 +152,6 @@ void main() {
     await expectLater(
         notificationBloc,
         emitsInAnyOrder([
-          UnInitializedAlarmState(),
           PendingAlarmState({alarmPayload}),
           PendingAlarmState({alarmPayload, reminderPayload}),
         ]));
@@ -165,7 +163,6 @@ void main() {
     await expectLater(
         notificationBloc,
         emitsInAnyOrder([
-          PendingAlarmState({alarmPayload, reminderPayload}),
           AlarmState(
               ReminderBefore(reminderActivity, aDay, reminder: reminderTime)),
           AlarmState(StartAlarm(alarmActivity, aDay)),
@@ -202,11 +199,7 @@ void main() {
 
     // Assert
     await expectLater(
-        notificationBloc,
-        emitsInAnyOrder([
-          UnInitializedAlarmState(),
-          PendingAlarmState({alarmPayload}),
-        ]));
+        notificationBloc, emits(PendingAlarmState({alarmPayload})));
   });
 
   test(
@@ -243,7 +236,6 @@ void main() {
     await expectLater(
         notificationBloc,
         emitsInAnyOrder([
-          UnInitializedAlarmState(),
           PendingAlarmState({alarmPayload}),
           AlarmState(startAlarm),
         ]));
