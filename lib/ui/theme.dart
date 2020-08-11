@@ -15,6 +15,7 @@ ThemeData abiliaTheme = ThemeData(
   buttonTheme: baseButtonTheme,
   buttonColor: AbiliaColors.transparentBlack20,
   highlightColor: AbiliaColors.transparentBlack40,
+  iconTheme: IconThemeData(size: 32, color: AbiliaColors.black),
   cursorColor: AbiliaColors.black,
   textSelectionHandleColor: AbiliaColors.black,
   appBarTheme: AppBarTheme(color: AbiliaColors.black80),
@@ -150,14 +151,14 @@ ButtonThemeData actionButtonThemeData = baseButtonTheme.copyWith(
 );
 
 ButtonThemeData lightActionButtonThemeData = actionButtonThemeData.copyWith(
-  buttonColor: AbiliaColors.transparentWhite20,
+  buttonColor: AbiliaColors.white,
   highlightColor: AbiliaColors.transparentWhite40,
   disabledColor: Colors.transparent,
   shape: ligthShapeBorder,
 );
 
 ButtonThemeData darkActionButtonThemeData = baseButtonTheme.copyWith(
-  buttonColor: AbiliaColors.transparentBlack20,
+  buttonColor: AbiliaColors.black,
   highlightColor: AbiliaColors.transparentBlack40,
   shape: darkShapeBorder,
 );
@@ -165,8 +166,7 @@ ButtonThemeData darkActionButtonThemeData = baseButtonTheme.copyWith(
 ThemeData darkButtonTheme = abiliaTheme.copyWith(
   buttonTheme: darkActionButtonThemeData,
   textTheme: abiliaTheme.textTheme.copyWith(
-      button:
-          abiliaTheme.textTheme.button.copyWith(color: AbiliaColors.black75)),
+      button: abiliaTheme.textTheme.button.copyWith(color: AbiliaColors.black)),
   buttonColor: AbiliaColors.transparentBlack20,
 );
 
@@ -223,6 +223,7 @@ TextTheme abiliaTextTheme = TextTheme(
   headline1: baseTextStyle.copyWith(
     fontSize: 96.0,
     fontWeight: light,
+    height: 1.0,
   ),
   headline2: baseTextStyle.copyWith(
     fontSize: 60.0,
@@ -237,14 +238,17 @@ TextTheme abiliaTextTheme = TextTheme(
   headline4: baseTextStyle.copyWith(
     fontSize: 34.0,
     fontWeight: regular,
+    height: 1.0,
   ),
   headline5: baseTextStyle.copyWith(
     fontSize: 24.0,
     fontWeight: regular,
+    height: 1.0,
   ),
   headline6: baseTextStyle.copyWith(
     fontSize: 20.0,
     fontWeight: medium,
+    height: 1.0,
   ),
   subtitle1: baseTextStyle.copyWith(
     fontSize: 16.0,
@@ -253,33 +257,34 @@ TextTheme abiliaTextTheme = TextTheme(
   ),
   subtitle2: baseTextStyle.copyWith(
     fontSize: 14.0,
-    height: 20.0 / 14.0,
     fontWeight: medium,
+    height: 20.0 / 14.0,
   ),
   bodyText1: baseTextStyle.copyWith(
     fontSize: 16.0,
-    height: 28.0 / 16.0,
     fontWeight: regular,
+    height: 28.0 / 16.0,
   ),
   bodyText2: baseTextStyle.copyWith(
     fontSize: 14.0,
-    height: 20.0 / 14.0,
     fontWeight: regular,
+    height: 20.0 / 14.0,
   ),
   caption: baseTextStyle.copyWith(
     fontSize: 12.0,
-    height: 16.0 / 12.0,
     fontWeight: regular,
+    height: 16.0 / 12.0,
   ),
   button: baseTextStyle.copyWith(
+    color: AbiliaColors.white,
     fontSize: 14.0,
     fontWeight: medium,
-    color: AbiliaColors.white,
+    height: 1.0,
   ),
   overline: baseTextStyle.copyWith(
     fontSize: 10.0,
-    height: 16.0 / 10.0,
     fontWeight: medium,
+    height: 16.0 / 10.0,
   ),
 );
 

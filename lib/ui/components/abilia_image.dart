@@ -42,15 +42,28 @@ class ActivityImage extends StatelessWidget {
     ImageSize imageSize = ImageSize.THUMB,
     File imageFile,
     BoxFit fit = BoxFit.cover,
+    bool preview = false,
   }) =>
-      ActivityImage(
-        key: key,
-        activityDay: activityOccasion,
-        size: size,
-        past: activityOccasion.occasion == Occasion.past,
-        imageSize: imageSize,
-        imageFile: imageFile,
-      );
+      preview
+          ? FadeInCalendarImage(
+              key: key,
+              imageFileId: activityOccasion.activity.fileId,
+              imageFilePath: activityOccasion.activity.icon,
+              width: size,
+              height: size,
+              imageSize: imageSize,
+              imageFile: imageFile,
+              fit: fit,
+            )
+          : ActivityImage(
+              key: key,
+              activityDay: activityOccasion,
+              size: size,
+              past: activityOccasion.occasion == Occasion.past,
+              imageSize: imageSize,
+              imageFile: imageFile,
+              fit: fit,
+            );
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +71,8 @@ class ActivityImage extends StatelessWidget {
     final hasImage = activity.hasImage,
         signedOff = activityDay.isSignedOff,
         inactive = past || signedOff;
-    return Hero(
-      tag: '${activity.id}${activityDay.day.millisecondsSinceEpoch}',
+    return HeroImage(
+      activityDay: activityDay,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -181,6 +194,7 @@ class FadeInCalendarImage extends StatelessWidget {
   final ImageSize imageSize;
   final BoxFit fit;
   FadeInCalendarImage({
+    Key key,
     @required this.imageFileId,
     @required this.imageFilePath,
     this.width,
@@ -188,7 +202,6 @@ class FadeInCalendarImage extends StatelessWidget {
     this.imageFile,
     this.imageSize = ImageSize.THUMB,
     this.fit = BoxFit.cover,
-    Key key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {

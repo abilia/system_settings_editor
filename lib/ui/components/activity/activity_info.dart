@@ -112,7 +112,7 @@ class ActivityContainer extends StatelessWidget {
     final activity = activityDay.activity;
     final hasImage = activity.hasImage;
     final hasAttachment = activity.hasAttachment;
-    final hasTopInfo = !(hasImage && !hasAttachment && activity.title.isEmpty);
+    final hasTopInfo = !(hasImage && !hasAttachment && !activity.hasTitle);
     return Container(
       decoration: BoxDecoration(
         color: activityDay.isSignedOff
@@ -277,10 +277,14 @@ class TopInfo extends StatelessWidget {
               if (hasTitle)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    activity.title,
-                    style: themeData.textTheme.headline5,
-                    textAlign: TextAlign.center,
+                  child: HeroTitle(
+                    activityDay: activityDay,
+                    child: DefaultTextStyle(
+                      style: themeData.textTheme.headline4,
+                      overflow: TextOverflow.visible,
+                      textAlign: TextAlign.center,
+                      child: Text(activity.title),
+                    ),
                   ),
                 ),
               if (imageBelow) checkableImage,
