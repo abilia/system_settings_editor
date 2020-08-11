@@ -66,7 +66,6 @@ onlyThisDay;Only this day;Endast denna dag
 allDays;All days;Alla dagar
 thisDayAndForward;This day and forward;Denna dag och framåt
 settings;Settings;Inställningar
-showTimeDots;Show time dots;Visa prickar för tid
 checkActivityQuestion;Completed?;Klar?
 unCheckActivityQuestion;Du you want to uncheck?;Ta bort klarmarkering?
 inTimePre;in;om
@@ -85,3 +84,8 @@ clear;Clear;Rensa
 selectFromLibrary;Select from library;Välj från biblotek
 addNew;Add new;Lägg till ny
 task;Task;Fråga
+timepillarSettings;Timepillar settings;Inställningar för tidspelare
+activityDuration;Activity duration;Visa tid som
+dots;Dots;Prickar
+edge;Edge;Flärp
+preview;Preview;Förhandsgranskning

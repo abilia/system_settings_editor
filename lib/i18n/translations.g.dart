@@ -147,8 +147,6 @@ abstract class Translated {
 
   final String settings = 'n/a';
 
-  final String showTimeDots = 'n/a';
-
   final String checkActivityQuestion = 'n/a';
 
   final String unCheckActivityQuestion = 'n/a';
@@ -184,6 +182,16 @@ abstract class Translated {
   final String addNew = 'n/a';
 
   final String task = 'n/a';
+
+  final String timepillarSettings = 'n/a';
+
+  final String activityDuration = 'n/a';
+
+  final String dots = 'n/a';
+
+  final String edge = 'n/a';
+
+  final String preview = 'n/a';
 }
 
 class EN extends Translated {
@@ -390,9 +398,6 @@ class EN extends Translated {
   final String settings = 'Settings';
 
   @override
-  final String showTimeDots = 'Show time dots';
-
-  @override
   final String checkActivityQuestion = 'Completed?';
 
   @override
@@ -447,6 +452,21 @@ class EN extends Translated {
 
   @override
   final String task = 'Task';
+
+  @override
+  final String timepillarSettings = 'Timepillar settings';
+
+  @override
+  final String activityDuration = 'Activity duration';
+
+  @override
+  final String dots = 'Dots';
+
+  @override
+  final String edge = 'Edge';
+
+  @override
+  final String preview = 'Preview';
 }
 
 class SV extends Translated {
@@ -652,9 +672,6 @@ class SV extends Translated {
   final String settings = 'Inställningar';
 
   @override
-  final String showTimeDots = 'Visa prickar för tid';
-
-  @override
   final String checkActivityQuestion = 'Klar?';
 
   @override
@@ -709,4 +726,19 @@ class SV extends Translated {
 
   @override
   final String task = 'Fråga';
+
+  @override
+  final String timepillarSettings = 'Inställningar för tidspelare';
+
+  @override
+  final String activityDuration = 'Visa tid som';
+
+  @override
+  final String dots = 'Prickar';
+
+  @override
+  final String edge = 'Flärp';
+
+  @override
+  final String preview = 'Förhandsgranskning';
 }

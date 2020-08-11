@@ -10,3 +10,4 @@ export 'note_block.dart';
 export 'checklist.dart';
 export 'edit_info_item_tab.dart';
 export 'edit_activity_tabs.dart';
+export 'activity_heroes.dart';
