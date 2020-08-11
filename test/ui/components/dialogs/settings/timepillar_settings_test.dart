@@ -74,7 +74,7 @@ void main() {
 
   testWidgets('Activity duration shows', (WidgetTester tester) async {
     await tester.goToTimeIllustation();
-    expect(find.byType(TimeIllustation), findsOneWidget);
+    expect(find.byType(TimeIllustration), findsOneWidget);
   });
 
   testWidgets('Dots preview shows', (WidgetTester tester) async {

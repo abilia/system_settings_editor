@@ -6,7 +6,7 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
-class TimeIllustation extends StatelessWidget {
+class TimeIllustration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -17,7 +17,7 @@ class TimeIllustation extends StatelessWidget {
         heading:
             Text(translate.activityDuration, style: theme.textTheme.headline6),
         preview:
-            TimeIllustationPreview(dotsInTimepillar: state.dotsInTimepillar),
+            TimeIllustrationPreview(dotsInTimepillar: state.dotsInTimepillar),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -55,8 +55,8 @@ class TimeIllustation extends StatelessWidget {
   }
 }
 
-class TimeIllustationPreview extends StatelessWidget {
-  const TimeIllustationPreview({
+class TimeIllustrationPreview extends StatelessWidget {
+  const TimeIllustrationPreview({
     Key key,
     @required this.dotsInTimepillar,
   }) : super(key: key);

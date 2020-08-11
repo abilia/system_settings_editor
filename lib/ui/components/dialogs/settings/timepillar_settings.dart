@@ -27,7 +27,7 @@ class TimePillarSettings extends StatelessWidget {
               onTap: () async {
                 await Navigator.of(context).maybePop();
                 await showViewDialog(
-                    context: context, builder: (context) => TimeIllustation());
+                    context: context, builder: (context) => TimeIllustration());
               },
             ),
           ],
