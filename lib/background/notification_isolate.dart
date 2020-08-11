@@ -197,6 +197,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     playSound: alarm.sound,
     importance: Importance.Max,
     priority: Priority.High,
+    largeIcon: await _androidLargeIcon(activity, fileStorage),
     styleInformation: await _androidStyleInformation(
       activity,
       fileStorage,
@@ -271,16 +272,26 @@ Future<StyleInformation> _androidStyleInformation(
 ) async {
   if (activity.hasImage) {
     final bigPicture = fileStorage.getFile(activity.fileId);
-    final largeIcon =
-        fileStorage.getImageThumb(ImageThumb(id: activity.fileId));
-    if (await fileStorage.exists(bigPicture) &&
-        await fileStorage.exists(largeIcon)) {
+    if (await fileStorage.exists(bigPicture)) {
       return BigPictureStyleInformation(
         FilePathAndroidBitmap(bigPicture.path),
-        largeIcon: FilePathAndroidBitmap(largeIcon.path),
         contentTitle: title,
         summaryText: subtitle,
       );
+    }
+  }
+  return null;
+}
+
+Future<AndroidBitmap> _androidLargeIcon(
+  Activity activity,
+  FileStorage fileStorage,
+) async {
+  if (activity.hasImage) {
+    final largeIcon =
+        fileStorage.getImageThumb(ImageThumb(id: activity.fileId));
+    if (await fileStorage.exists(largeIcon)) {
+      return FilePathAndroidBitmap(largeIcon.path);
     }
   }
   return null;
