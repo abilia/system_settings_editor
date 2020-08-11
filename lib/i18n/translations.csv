@@ -1,88 +1,88 @@
-_id_;en;sv
-userName;Username / Email;Användarnamn
-password;Password;Lösenord
-infoText1;Use your ;Använd ditt 
-infoText2; account to Log in;-konto för att logga in
-login;Log in;Logga in
-logout;Log out;Logga ut
-menu;Menu;Meny
-close;Close;Stäng
-wrongCredentials;Your username/email or password is not correct. Please, try another one.;Fel användarnamn eller lösenord
-now;now;nu
-fullDay;All day;Heldag
-reminders;Reminders;Påminnelser
-alarm;Alarm;Larm
-endsNow;Ends now;Slutar nu
-startsNow;Starts now;Börjar nu
-noActivities;No activities for today;Inga aktiviteter idag
-timePillarView;Timepillar view;Tidspelare
-listView;List view;Listvy
-left;Left;Vänster
-right;Right;Höger
-check;Check;Kvittera
-uncheck;Uncheck;Ångra
-newActivity;New activity;Ny aktivitet
-editActivity;Edit activity;Ändra aktivitet
-category;Category;Kategori
-noColor;No color;Ingen färg
-selectAlarmType;Select alarm type;Välj typ av larm
-alarmAndVibration;Alarm + vibration;Larm + vibration
-vibration;Vibration;Vibration
-noAlarm;No alarm;Inget larm
-alarmOnlyAtStartTime;Alarm only at Start time;Larm endast vid starttid
-checkable;Checkable;Kvittera
-deleteAfter;Delete after;Ta bort efteråt
-availableFor;Available for;Tillgänglig för
-activityAvailableFor;Activity available for;Aktivitet tillgänglig för
-meAndSupportPersons;Me and support persons;Mig och stödpersoner
-onlyMe;Only me;Bara mig
-name;Name;Namn
-picture;Picture;Bild
-date;Date;Datum
-today;Today;Idag
-startTime;Start time;Starttid
-endTime;End time;Sluttid
-noEndTime;No end time;Ingen sluttid
-calendarView;Calendar view;Kalendervy
-selectPicture;Select picture;Välj bild
-imageArchive;Image archive;Bildarkiv
-myPhotos;My photos;Mina bilder
-takeNewPhoto;Take new photo;Ta bild
-days;days;dagar
-day;day;dag
-hours;hours;timmar
-hour;hour;timme
-h;h;t
-minutes;minutes;minuter
-minute;minute;minut
-min;min;min
-am;AM;fm
-pm;PM;em
-remove;Remove;Ta bort
-deleteActivity;Delete activity?;Ta bort aktivitet?
-removePicture;Remove picture;Ta bort bild
-appyTo;Apply to;Ändra på
-onlyThisDay;Only this day;Endast denna dag
-allDays;All days;Alla dagar
-thisDayAndForward;This day and forward;Denna dag och framåt
-settings;Settings;Inställningar
-checkActivityQuestion;Completed?;Klar?
-unCheckActivityQuestion;Du you want to uncheck?;Ta bort klarmarkering?
-inTimePre;in;om
-timeAgoPre;&empty&;för
-timeAgoPost;ago;sen
-missingTitleOrImageAndStartTime;Your activity should contain an image or name and start time.;Aktiviteten måste ha ett namn eller en bild och en starttid.
-missingTitleOrImage;Your activity should contain an image or name.;Aktiviteten måste ha ett namn eller en bild.
-missingStartTime;Your activity should contain a start time.;Aktiviteten måste ha en starttid.
-infoType;Info type;Kopplade funktioner
-selectInfoType;Select info type;Välj typ av Info
-infoTypeNone;- None -;- Ingen -
-infoTypeChecklist;Checklist;Checklista
-infoTypeNote;Note;Anteckning
-typeSomething;Type something…;Skriv något…
-clear;Clear;Rensa
-timepillarSettings;Timepillar settings;Inställningar för tidspelare
-activityDuration;Activity duration;Visa tid som
-dots;Dots;Prickar
-edge;Edge;Flärp
-preview;Preview;Förhandsgranskning
+_id_;en;sv;fi
+userName;Username / Email;Användarnamn;Namni
+password;Password;Lösenord;Pekkari
+infoText1;Use your ;Använd ditt ;Tietoja laitteesta
+infoText2; account to Log in;-konto för att logga in;Tietoja Loikki inni
+login;Log in;Logga in;Aktiviteettia ei ole
+logout;Log out;Logga ut;"Haluatko peruuttaa ohjatun toiminnon \""Lisää aktiviteetti\""?"
+menu;Menu;Meny;Valitse tyyppi
+close;Close;Stäng;Aktiviteettinäkymä
+wrongCredentials;Your username/email or password is not correct. Please, try another one.;Fel användarnamn eller lösenord;Poista painike
+now;now;nu;Digitaalinen aikalaskuri
+fullDay;All day;Heldag;Muokkaa-painike (avaa muokkausnäkymän)
+reminders;Reminders;Påminnelser;Näytä viimeiset 15 minuuttia viitenä pisteenä
+alarm;Alarm;Larm;Varttikellon palkki
+endsNow;Ends now;Slutar nu;Lisää aktiviteetti
+startsNow;Starts now;Börjar nu;Perusaktiviteetin painike
+noActivities;No activities for today;Inga aktiviteter idag;Valitse tyyppi
+timePillarView;Timepillar view;Tidspelare;Lisää aktiviteetti muokkausnäkymässä
+listView;List view;Listvy;Valitse tarkistettavuus ja hälytys
+left;Left;Vänster;Tietovalikko
+right;Right;Höger;Lisää aktiviteetti vaiheittain
+check;Check;Kvittera;Lisää aktiviteetti
+uncheck;Uncheck;Ångra;Koko päivä
+newActivity;New activity;Ny aktivitet;Ristiriita:
+editActivity;Edit activity;Ändra aktivitet;Jaksottainen
+category;Category;Kategori;Yksittäinen
+noColor;No color;Ingen färg;Nippi Koller
+selectAlarmType;Select alarm type;Välj typ av larm;Osoite
+alarmAndVibration;Alarm + vibration;Larm + vibration;Anna osoite
+vibration;Vibration;Vibration;Käynnistä ajastin
+noAlarm;No alarm;Inget larm;Hälytys
+alarmOnlyAtStartTime;Alarm only at Start time;Larm endast vid starttid;Valitse tyyppi
+checkable;Checkable;Kvittera;Valitse kaikki
+deleteAfter;Delete after;Ta bort efteråt;Valitse sana
+availableFor;Available for;Tillgänglig för;Anna kesto
+activityAvailableFor;Activity available for;Aktivitet tillgänglig för;
+meAndSupportPersons;Me and support persons;Mig och stödpersoner;Määritä päättymisaika
+onlyMe;Only me;Bara mig;Valitse hälytys
+name;Name;Namn;Valitse hälytys -painike
+picture;Picture;Bild;Vain hälytys alkamisaikaan
+date;Date;Datum;Signaali
+today;Today;Idag;Hälytysnäkymä
+startTime;Start time;Starttid;Hälytysaika
+endTime;End time;Sluttid;Hälytys + värinä
+noEndTime;No end time;Ingen sluttid;Koko näyttö
+calendarView;Calendar view;Kalendervy;Ilmoitus
+selectPicture;Select picture;Välj bild;Hälytyksen tyyppi
+imageArchive;Image archive;Bildarkiv;Ei-tarkistettavat aktiviteetit
+myPhotos;My photos;Mina bilder;Tarkistettavat aktiviteetit
+takeNewPhoto;Take new photo;Ta bild;Ajastimet
+days;days;dagar;Hälytysääni
+day;day;dag;Ääni nauhoitettu. Nauhoita uusi painamalla nauhoituspainiketta.
+hours;hours;timmar;Pyhäinpäivä
+hour;hour;timme;Koko päivä
+h;h;t;ap
+minutes;minutes;minuter;Analoginen
+minute;minute;minut;Sekä analoginen että digitaalinen
+min;min;min;Analoginen päivän ja yön jako
+am;AM;fm;Analoginen (kellotaululla)
+pm;PM;em;Analoginen digitaalipainikkeella
+remove;Remove;Ta bort;Analoginen kello
+deleteActivity;Delete activity?;Ta bort aktivitet?;Päivämääräkentän painike
+removePicture;Remove picture;Ta bort bild;Ja
+appyTo;Apply to;Ändra på;Android-versio:
+onlyThisDay;Only this day;Endast denna dag;Helatorstai
+allDays;All days;Alla dagar;Jatketaanko?
+thisDayAndForward;This day and forward;Denna dag och framåt;Haluatko peruuttaa ohjatun toiminnon
+settings;Settings;Inställningar;Perusaktiviteetit
+checkActivityQuestion;Completed?;Klar?;Perusajastimet
+unCheckActivityQuestion;Du you want to uncheck?;Ta bort klarmarkering?;Tapaninpäivä
+inTimePre;in;om;Kalenteri
+timeAgoPre;&empty&;för;EEEE KKK p
+timeAgoPost;ago;sen;Kalenterivalikko
+missingTitleOrImageAndStartTime;Your activity should contain an image or name and start time.;Aktiviteten måste ha ett namn eller en bild och en starttid.;
+missingTitleOrImage;Your activity should contain an image or name.;Aktiviteten måste ha ett namn eller en bild.;
+missingStartTime;Your activity should contain a start time.;Aktiviteten måste ha en starttid.;
+infoType;Info type;Kopplade funktioner;
+selectInfoType;Select info type;Välj typ av Info;
+infoTypeNone;- None -;- Ingen -;
+infoTypeChecklist;Checklist;Checklista;
+infoTypeNote;Note;Anteckning;
+typeSomething;Type something…;Skriv något…;
+clear;Clear;Rensa;
+timepillarSettings;Timepillar settings;Inställningar för tidspelare;
+activityDuration;Activity duration;Visa tid som;
+dots;Dots;Prickar;
+edge;Edge;Flärp;
+preview;Preview;Förhandsgranskning;
