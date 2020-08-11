@@ -112,7 +112,7 @@ class ActivityContainer extends StatelessWidget {
     final activity = activityDay.activity;
     final hasImage = activity.hasImage;
     final hasAttachment = activity.hasAttachment;
-    final hasTopInfo = !(hasImage && !hasAttachment && activity.hasTitle);
+    final hasTopInfo = !(hasImage && !hasAttachment && !activity.hasTitle);
     return Container(
       decoration: BoxDecoration(
         color: activityDay.isSignedOff
