@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
@@ -10,14 +12,19 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 
 class NameAndPictureWidget extends StatelessWidget {
-  static const imageSize = 84.0, padding = 4.0;
-  final EditActivityState state;
+  final Activity activity;
+  final DateTime day;
 
-  const NameAndPictureWidget(this.state, {Key key}) : super(key: key);
+  final File newImage;
+
+  const NameAndPictureWidget(
+    this.activity, {
+    @required this.day,
+    Key key,
+    this.newImage,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final activity = state.activity;
-    final newImage = state.newImage;
     final translator = Translator.of(context).translate;
     final imageClick = () async {
       final selectedImage = await showViewDialog<SelectedImage>(
@@ -52,55 +59,65 @@ class NameAndPictureWidget extends StatelessWidget {
         }
       }
     };
-    return Material(
-      type: MaterialType.transparency,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SubHeading(translator.picture),
-              if (activity.hasImage)
-                InkWell(
-                  onTap: imageClick,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SubHeading(translator.picture),
+            if (activity.hasImage)
+              InkWell(
+                onTap: imageClick,
+                child: HeroImage(
+                  activityDay: ActivityDay(activity, day),
                   child: FadeInCalendarImage(
-                    height: imageSize,
-                    width: imageSize,
+                    height: 84,
+                    width: 84,
                     imageFileId: activity.fileId,
                     imageFilePath: activity.icon,
                     activityId: activity.id,
                     imageFile: newImage,
                   ),
-                )
-              else
-                SizedBox(
-                  width: imageSize,
-                  height: imageSize,
-                  child: LinedBorder(
-                    key: TestKey.addPicture,
-                    padding: const EdgeInsets.all(padding),
-                    errorState: state.failedSave && !state.hasTitleOrImage,
-                    child: Container(
-                      decoration: whiteNoBorderBoxDecoration,
-                      width: imageSize - padding,
-                      height: imageSize - padding,
-                      child: const Icon(
-                        AbiliaIcons.add_photo,
-                        size: 32,
-                        color: AbiliaColors.black75,
-                      ),
-                    ),
-                    onTap: imageClick,
+                ),
+              )
+            else
+              LinedBorder(
+                key: TestKey.addPicture,
+                padding: const EdgeInsets.all(4),
+                child: Ink(
+                  decoration: const BoxDecoration(
+                    borderRadius: borderRadius,
+                    color: AbiliaColors.white,
+                  ),
+                  width: 76.0,
+                  height: 76.0,
+                  child: const Icon(
+                    AbiliaIcons.add_photo,
+                    size: 32,
+                    color: AbiliaColors.black75,
                   ),
                 ),
+                onTap: imageClick,
+              ),
+          ],
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SubHeading(translator.name),
+              DefaultTextStyle(
+                style: Theme.of(context).textTheme.bodyText2,
+                child: NameInput(activity: activity),
+              ),
             ],
           ),
-          const SizedBox(width: 12),
-          Expanded(child: NameInput(state: state)),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -108,10 +125,10 @@ class NameAndPictureWidget extends StatelessWidget {
 class NameInput extends StatefulWidget {
   const NameInput({
     Key key,
-    @required this.state,
+    @required this.activity,
   }) : super(key: key);
 
-  final EditActivityState state;
+  final Activity activity;
   @override
   _NameInputState createState() => _NameInputState();
 }
@@ -122,22 +139,10 @@ class _NameInputState extends State<NameInput> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.state.activity.title);
-    _nameController.addListener(_onEdit);
-  }
-
-  void _onEdit() {
-    if (widget.state.activity.title != _nameController.text) {
-      BlocProvider.of<EditActivityBloc>(context).add(ReplaceActivity(
-          widget.state.activity.copyWith(title: _nameController.text)));
-    }
-  }
-
-  @override
-  void dispose() {
-    _nameController.removeListener(_onEdit);
-    _nameController.dispose();
-    super.dispose();
+    _nameController = TextEditingController(text: widget.activity.title);
+    _nameController.addListener(() => BlocProvider.of<EditActivityBloc>(context)
+        .add(ReplaceActivity(
+            widget.activity.copyWith(title: _nameController.text))));
   }
 
   @override
@@ -145,7 +150,6 @@ class _NameInputState extends State<NameInput> {
     return AbiliaTextInput(
       formKey: TestKey.editTitleTextFormField,
       controller: _nameController,
-      errorState: widget.state.failedSave && !widget.state.hasTitleOrImage,
       heading: Translator.of(context).translate.name,
       textCapitalization: TextCapitalization.sentences,
       inputFormatters: [LengthLimitingTextInputFormatter(50)],

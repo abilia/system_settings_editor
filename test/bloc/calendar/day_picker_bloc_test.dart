@@ -36,8 +36,7 @@ void main() {
     dayPickerBloc.add(PreviousDay());
     await expectLater(
       dayPickerBloc,
-      emits(
-          DayPickerState(thedayBefore, DayPickerBloc.startIndex - 1)),
+      emits(DayPickerState(thedayBefore, DayPickerBloc.startIndex - 1)),
     );
   });
 
@@ -48,6 +47,20 @@ void main() {
       dayPickerBloc,
       emitsInOrder([
         DayPickerState(theDayAfter, DayPickerBloc.startIndex + 1),
+        DayPickerState(theDay, DayPickerBloc.startIndex)
+      ]),
+    );
+  });
+
+  test('Current day returns to start day', () async {
+    dayPickerBloc.add(NextDay());
+    dayPickerBloc.add(NextDay());
+    dayPickerBloc.add(CurrentDay());
+    await expectLater(
+      dayPickerBloc,
+      emitsInOrder([
+        DayPickerState(theDayAfter, DayPickerBloc.startIndex + 1),
+        DayPickerState(theDayAfterTomorrow, DayPickerBloc.startIndex + 2),
         DayPickerState(theDay, DayPickerBloc.startIndex)
       ]),
     );
