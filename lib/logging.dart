@@ -7,7 +7,7 @@ import 'package:bloc/bloc.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 
-void initLogging({bool initAppcenter = false}) async {
+void initLogging({bool initAppcenter = false, Level level = Level.ALL}) async {
   if (initAppcenter) {
     FlutterError.onError = Crashlytics.instance.recordFlutterError;
     final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
@@ -20,7 +20,7 @@ void initLogging({bool initAppcenter = false}) async {
 
   Bloc.observer = BlocLoggingObserver();
 
-  Logger.root.level = Level.FINER;
+  Logger.root.level = level;
   Logger.root.onRecord.listen((record) {
     print(
         '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');

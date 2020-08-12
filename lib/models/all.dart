@@ -1,4 +1,5 @@
-export 'activity.dart';
+export 'activity/activity.dart';
+export 'sortable/sortable.dart';
 export 'activity_occasion.dart';
 export 'data_update_response.dart';
 export 'alarm_type.dart';
@@ -7,7 +8,6 @@ export 'login.dart';
 export 'user.dart';
 export 'exceptions.dart';
 export 'notification/all.dart';
-export 'sortable.dart';
 export 'user_file.dart';
 export 'response_models.dart';
 export 'meta_models.dart';

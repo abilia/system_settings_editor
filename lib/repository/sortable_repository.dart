@@ -124,15 +124,14 @@ class SortableRepository extends DataRepository<Sortable> {
           ? getStartSortOrder()
           : calculateNextSortOrder(root.first.sortOrder, -1);
 
-      final sortableData = SortableData(
+      final sortableData = ImageArchiveData(
         name: 'myAbilia',
         icon: '',
         upload: true,
-      ).toJson();
+      );
 
-      final upload = Sortable.createNew(
-        type: SortableType.imageArchive,
-        data: json.encode(sortableData),
+      final upload = Sortable.createNew<ImageArchiveData>(
+        data: sortableData,
         groupId: null,
         isGroup: true,
         sortOrder: sortOrder,

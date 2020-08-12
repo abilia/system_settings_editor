@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -46,11 +44,10 @@ void main() {
   test('Generates new imagearchive sortable with existing upload folder',
       () async {
     // Arrange
-    final uploadFolder = Sortable.createNew(
-      type: SortableType.imageArchive,
+    final uploadFolder = Sortable.createNew<ImageArchiveData>(
       isGroup: true,
       sortOrder: 'A',
-      data: '{"upload": true}',
+      data: ImageArchiveData.fromJson('{"upload": true}'),
     );
     when(mockSortableRepository.load())
         .thenAnswer((_) => Future.value([uploadFolder]));
@@ -74,8 +71,9 @@ void main() {
         verify(mockSortableRepository.save(captureAny)).captured.single;
     final savedSortable = (capture as List<Sortable>).first;
     expect(savedSortable.groupId, uploadFolder.id);
-    final jsonData = jsonDecode(savedSortable.data);
-    expect(jsonData['name'], imageName);
-    expect(jsonData['fileId'], imageId);
+    expect(savedSortable, isA<Sortable<ImageArchiveData>>());
+    final savedImageArchiveData = savedSortable as Sortable<ImageArchiveData>;
+    expect(savedImageArchiveData.data.name, imageName);
+    expect(savedImageArchiveData.data.fileId, imageId);
   });
 }

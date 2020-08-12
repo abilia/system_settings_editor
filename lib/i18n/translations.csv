@@ -81,6 +81,7 @@ infoTypeChecklist;Checklist;Checklista
 infoTypeNote;Note;Anteckning
 typeSomething;Type something…;Skriv något…
 clear;Clear;Rensa
+selectFromLibrary;Select from library;Välj från biblotek
 timepillarSettings;Timepillar settings;Inställningar för tidspelare
 activityDuration;Activity duration;Visa tid som
 dots;Dots;Prickar

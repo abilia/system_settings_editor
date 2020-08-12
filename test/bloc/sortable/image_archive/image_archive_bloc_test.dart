@@ -31,8 +31,9 @@ void main() {
 
   test('SortablesUpdated will set the sortables in the state', () async {
     final imageArchiveSortable =
-        Sortable.createNew(type: SortableType.imageArchive);
-    final checklistSortable = Sortable.createNew(type: SortableType.checklist);
+        Sortable.createNew<ImageArchiveData>(data: ImageArchiveData());
+    final checklistSortable =
+        Sortable.createNew<RawSortableData>(data: RawSortableData(''));
     imageArchiveBloc
         .add(SortablesUpdated([imageArchiveSortable, checklistSortable]));
     await expectLater(
@@ -43,14 +44,15 @@ void main() {
 
   test('NavigateUp will set the parent of the current folder as current folder',
       () async {
-    final imageArchiveFolder1 = Sortable.createNew(
-      type: SortableType.imageArchive,
+    final imageArchiveFolder1 = Sortable.createNew<ImageArchiveData>(
+      data: ImageArchiveData(),
       isGroup: true,
     );
-    final imageArchiveFolder2 = Sortable.createNew(
-        type: SortableType.imageArchive,
-        isGroup: true,
-        groupId: imageArchiveFolder1.id);
+    final imageArchiveFolder2 = Sortable.createNew<ImageArchiveData>(
+      data: ImageArchiveData(),
+      isGroup: true,
+      groupId: imageArchiveFolder1.id,
+    );
     imageArchiveBloc
         .add(SortablesUpdated([imageArchiveFolder1, imageArchiveFolder2]));
     imageArchiveBloc.add(FolderChanged(imageArchiveFolder2.id));

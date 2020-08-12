@@ -1,8 +1,8 @@
 part of 'image_archive_bloc.dart';
 
 class ImageArchiveState extends Equatable {
-  final Map<String, Iterable<Sortable>> allByFolder;
-  final Map<String, Sortable> allById;
+  final Map<String, Iterable<Sortable<ImageArchiveData>>> allByFolder;
+  final Map<String, Sortable<ImageArchiveData>> allById;
   final String currentFolderId;
 
   ImageArchiveState(

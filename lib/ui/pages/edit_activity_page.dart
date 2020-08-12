@@ -252,10 +252,43 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
           children: <Widget>[
             SubHeading(translate.infoType),
             if (infoItem is NoteInfoItem) ...[
-              PickField(
-                leading: Icon(AbiliaIcons.edit),
-                label: Text(translate.infoTypeNote),
-                onTap: onTap,
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: PickField(
+                      leading: Icon(AbiliaIcons.edit),
+                      label: Text(translate.infoTypeNote),
+                      onTap: onTap,
+                    ),
+                  ),
+                  const SizedBox(width: 12.0),
+                  ActionButton(
+                    child: Icon(
+                      AbiliaIcons.show_text,
+                      size: 32.0,
+                      color: AbiliaColors.black,
+                    ),
+                    onPressed: () async {
+                      final result = await showViewDialog<String>(
+                        context: context,
+                        builder: (context) => ViewDialog(
+                          verticalPadding: 0.0,
+                          heading: Text(
+                            Translator.of(context).translate.selectFromLibrary,
+                            style: abiliaTheme.textTheme.headline6,
+                          ),
+                          child: NoteLibrary(),
+                        ),
+                      );
+                      if (result != null && result != infoItem.text) {
+                        BlocProvider.of<EditActivityBloc>(context).add(
+                            ReplaceActivity(activity.copyWith(
+                                infoItem: NoteInfoItem(result))));
+                      }
+                    },
+                    themeData: darkButtonTheme,
+                  )
+                ],
               ),
               const SizedBox(height: 16.0),
               GestureDetector(
