@@ -38,11 +38,16 @@ class TranslationBuilder extends Builder {
     buffer.writeln(_generateLocalesMap(languages, emitter));
 
     // generate abstract class
-    final fields = translations.values.first.keys.map((id) => Field((fb) => fb
-      ..modifier = FieldModifier.final$
-      ..type = refer('String')
-      ..name = id
-      ..assignment = Code("'n/a'")));
+    final fallbackLang = translations.values.first;
+    final fields = fallbackLang.keys.map(
+      (id) => Field(
+        (fb) => fb
+          ..modifier = FieldModifier.final$
+          ..type = refer('String')
+          ..name = id
+          ..assignment = _getTranslation(fallbackLang, id),
+      ),
+    );
 
     buffer.writeln(Class((b) => b
       ..name = className
@@ -52,14 +57,16 @@ class TranslationBuilder extends Builder {
     // generate translations
     for (var lang in languages) {
       final dictionary = translations[lang];
-      final overrideFields = fields
-          .where((f) => dictionary.containsKey(f.name))
-          .map((f) => f.rebuild((fb) => fb
-            ..annotations =
-                ListBuilder<Expression>([CodeExpression(Code('override'))])
-            ..assignment = Code(dictionary[f.name].contains("'")
-                ? '''"${dictionary[f.name]}"'''
-                : "'${dictionary[f.name]}'")));
+      final overrideFields = lang == languages.first
+          ? <Field>[]
+          : fields.where((f) => dictionary.containsKey(f.name)).map(
+                (f) => f.rebuild(
+                  (fb) => fb
+                    ..annotations = ListBuilder<Expression>(
+                        [CodeExpression(Code('override'))])
+                    ..assignment = _getTranslation(dictionary, f.name),
+                ),
+              );
 
       buffer.writeln(Class((b) => b
         ..name = lang.toUpperCase()
@@ -70,6 +77,13 @@ class TranslationBuilder extends Builder {
     await buildStep.writeAsString(
         buildStep.inputId.changeExtension(dartExtension),
         DartFormatter().format(buffer.toString()));
+  }
+
+  Code _getTranslation(Map<String, String> translations, String key) {
+    final translation = translations[key];
+    return Code(translation.contains("'")
+        ? '''"${translation}"'''
+        : "'${translation}'");
   }
 
   Map<String, Map<String, String>> _parseTranslationsAndWriteMissing(

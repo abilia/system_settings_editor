@@ -22,7 +22,7 @@ To add a new language:
  - Add the language code to the header row
  - Add the supported langauge to `ios/Runner/Info.plist` - see https://flutter.dev/docs/development/accessibility-and-localization/internationalization#appendix-updating-the-ios-app-bundle
 
-Missing translations will be shown as **n/a**
+Missing translations will fallback to the english translation
 All missing translations will be written to the file `lib/i18n/translation.missing.csv`
 
 ##### Special cases
