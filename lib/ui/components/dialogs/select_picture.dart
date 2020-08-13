@@ -23,7 +23,7 @@ class SelectPictureDialog extends StatefulWidget {
 class _SelectPictureDialogState extends State<SelectPictureDialog> {
   bool imageArchiveView = false;
   final _picker = ImagePicker();
-  SortableData selectedImageData;
+  ImageArchiveData selectedImageData;
   Function get onOk => selectedImageData != null
       ? () => Navigator.of(context).maybePop(SelectedImage(
             id: selectedImageData.fileId,
@@ -142,9 +142,8 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   }
 
   Text getImageArchiveHeading(ImageArchiveState state) {
-    final folderName =
-        state.allById[state.currentFolderId]?.sortableData?.name ??
-            Translator.of(context).translate.imageArchive;
+    final folderName = state.allById[state.currentFolderId]?.data?.name ??
+        Translator.of(context).translate.imageArchive;
     return Text(folderName, style: abiliaTheme.textTheme.headline6);
   }
 }

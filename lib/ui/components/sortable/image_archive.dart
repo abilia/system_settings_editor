@@ -29,7 +29,7 @@ class ImageArchive extends StatelessWidget {
                       },
                     ),
                   )
-                : ArchiveImage(sortable: sortable);
+                : ArchiveImage(imageArchiveData: sortable.data);
           }).toList(),
         );
       },
@@ -39,7 +39,7 @@ class ImageArchive extends StatelessWidget {
 
 class Folder extends StatelessWidget {
   final GestureTapCallback onTap;
-  final Sortable sortable;
+  final Sortable<ImageArchiveData> sortable;
 
   const Folder({
     Key key,
@@ -56,7 +56,7 @@ class Folder extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(
-              sortable.sortableData.name,
+              sortable.data.name,
               style: abiliaTextTheme.caption,
               overflow: TextOverflow.ellipsis,
             ),
@@ -76,8 +76,8 @@ class Folder extends StatelessWidget {
                       alignment: Alignment.center,
                       heightFactor: 42 / 66,
                       child: FadeInAbiliaImage(
-                        imageFileId: sortable.sortableData.fileId,
-                        imageFilePath: sortable.sortableData.icon,
+                        imageFileId: sortable.data.fileId,
+                        imageFilePath: sortable.data.icon,
                         width: 66,
                         height: 66,
                       ),
@@ -94,20 +94,21 @@ class Folder extends StatelessWidget {
 }
 
 class ArchiveImage extends StatelessWidget {
-  final Sortable sortable;
-  const ArchiveImage({Key key, @required this.sortable}) : super(key: key);
+  final ImageArchiveData imageArchiveData;
+  const ArchiveImage({Key key, @required this.imageArchiveData})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final imageHeight = 86.0;
+    final imageHeight = 84.0;
     final imageWidth = 84.0;
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
           builder: (context, archiveState) {
-        final imageId = sortable.sortableData.fileId;
-        final name = sortable.sortableData.name;
-        final iconPath = sortable.sortableData.file;
+        final imageId = imageArchiveData.fileId;
+        final name = imageArchiveData.name;
+        final iconPath = imageArchiveData.file;
         return Material(
           type: MaterialType.transparency,
           child: InkWell(

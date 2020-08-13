@@ -11,17 +11,86 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 
+class UnderConstruction extends StatelessWidget {
+  final BannerLocation bannerLocation;
+  const UnderConstruction({this.bannerLocation = BannerLocation.topStart});
+  @override
+  Widget build(BuildContext context) {
+    return Transform.scale(
+      alignment: _alignment,
+      scale: 3,
+      child: Banner(
+        location: bannerLocation,
+        color: AbiliaColors.red,
+        message: 'Under construction',
+      ),
+    );
+  }
+
+  Alignment get _alignment {
+    switch (bannerLocation) {
+      case BannerLocation.topStart:
+        return Alignment.topLeft;
+      case BannerLocation.topEnd:
+        return Alignment.topRight;
+      case BannerLocation.bottomStart:
+        return Alignment.bottomLeft;
+      case BannerLocation.bottomEnd:
+        return Alignment.bottomRight;
+      default:
+        return Alignment.center;
+    }
+  }
+}
+
+class ActivityNameAndPictureWidget extends StatelessWidget {
+  final EditActivityState state;
+  const ActivityNameAndPictureWidget(this.state, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return NameAndPictureWidget(
+      imageFileId: state.activity.fileId,
+      imageFilePath: state.activity.icon,
+      errorState: state.failedSave && !state.hasTitleOrImage,
+      text: state.activity.title,
+      newImage: state.newImage,
+      onImageSelected: (selectedImage) {
+        BlocProvider.of<EditActivityBloc>(context).add(ImageSelected(
+          selectedImage.id,
+          selectedImage.path,
+          selectedImage.newImage,
+        ));
+      },
+      onTextEdit: (text) {
+        if (state.activity.title != text) {
+          BlocProvider.of<EditActivityBloc>(context)
+              .add(ReplaceActivity(state.activity.copyWith(title: text)));
+        }
+      },
+    );
+  }
+}
+
 class NameAndPictureWidget extends StatelessWidget {
-  final Activity activity;
-  final DateTime day;
-
+  static const imageSize = 84.0, padding = 4.0;
+  final String imageFileId;
+  final String imageFilePath;
   final File newImage;
+  final void Function(SelectedImage) onImageSelected;
+  final void Function(String) onTextEdit;
+  final bool errorState;
+  final String text;
 
-  const NameAndPictureWidget(
-    this.activity, {
-    @required this.day,
+  const NameAndPictureWidget({
     Key key,
+    this.imageFileId,
+    this.imageFilePath,
     this.newImage,
+    this.onImageSelected,
+    this.onTextEdit,
+    this.errorState = false,
+    this.text,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -40,84 +109,83 @@ class NameAndPictureWidget extends StatelessWidget {
               value: BlocProvider.of<UserFileBloc>(context),
             ),
           ],
-          child: SelectPictureDialog(previousImage: activity.fileId),
+          child: SelectPictureDialog(previousImage: imageFileId),
         ),
       );
-      if (selectedImage != null) {
-        BlocProvider.of<EditActivityBloc>(context).add(ImageSelected(
-          selectedImage.id,
-          selectedImage.path,
-          selectedImage.newImage,
-        ));
+      if (selectedImage != null && onImageSelected != null) {
         if (selectedImage.newImage != null) {
-          BlocProvider.of<UserFileBloc>(context).add(ImageAdded(
-              selectedImage.id, selectedImage.path, selectedImage.newImage));
-          BlocProvider.of<SortableBloc>(context).add(ImageArchiveImageAdded(
-            selectedImage.id,
-            selectedImage.newImage.path,
-          ));
+          BlocProvider.of<UserFileBloc>(context).add(
+            ImageAdded(
+              selectedImage.id,
+              selectedImage.path,
+              selectedImage.newImage,
+            ),
+          );
+          BlocProvider.of<SortableBloc>(context).add(
+            ImageArchiveImageAdded(
+              selectedImage.id,
+              selectedImage.newImage.path,
+            ),
+          );
         }
+        onImageSelected(selectedImage);
       }
     };
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SubHeading(translator.picture),
-            if (activity.hasImage)
-              InkWell(
-                onTap: imageClick,
-                child: HeroImage(
-                  activityDay: ActivityDay(activity, day),
-                  child: FadeInCalendarImage(
-                    height: 84,
-                    width: 84,
-                    imageFileId: activity.fileId,
-                    imageFilePath: activity.icon,
-                    activityId: activity.id,
-                    imageFile: newImage,
-                  ),
-                ),
-              )
-            else
-              LinedBorder(
-                key: TestKey.addPicture,
-                padding: const EdgeInsets.all(4),
-                child: Ink(
-                  decoration: const BoxDecoration(
-                    borderRadius: borderRadius,
-                    color: AbiliaColors.white,
-                  ),
-                  width: 76.0,
-                  height: 76.0,
-                  child: const Icon(
-                    AbiliaIcons.add_photo,
-                    size: 32,
-                    color: AbiliaColors.black75,
-                  ),
-                ),
-                onTap: imageClick,
-              ),
-          ],
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
+    return Material(
+      type: MaterialType.transparency,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SubHeading(translator.name),
-              DefaultTextStyle(
-                style: Theme.of(context).textTheme.bodyText2,
-                child: NameInput(activity: activity),
-              ),
+              SubHeading(translator.picture),
+              if ((imageFileId?.isNotEmpty ?? false) ||
+                  (imageFilePath?.isNotEmpty ?? false))
+                InkWell(
+                  onTap: imageClick,
+                  child: FadeInCalendarImage(
+                    height: imageSize,
+                    width: imageSize,
+                    imageFileId: imageFileId,
+                    imageFilePath: imageFilePath,
+                    imageFile: newImage,
+                  ),
+                )
+              else
+                SizedBox(
+                  width: imageSize,
+                  height: imageSize,
+                  child: LinedBorder(
+                    key: TestKey.addPicture,
+                    padding: const EdgeInsets.all(padding),
+                    errorState: errorState,
+                    child: Container(
+                      decoration: whiteNoBorderBoxDecoration,
+                      width: imageSize - padding,
+                      height: imageSize - padding,
+                      child: const Icon(
+                        AbiliaIcons.add_photo,
+                        size: 32,
+                        color: AbiliaColors.black75,
+                      ),
+                    ),
+                    onTap: imageClick,
+                  ),
+                ),
             ],
           ),
-        ),
-      ],
+          const SizedBox(width: 12),
+          Expanded(
+            child: NameInput(
+              text: text,
+              onEdit: onTextEdit,
+              errorState: errorState,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -125,10 +193,14 @@ class NameAndPictureWidget extends StatelessWidget {
 class NameInput extends StatefulWidget {
   const NameInput({
     Key key,
-    @required this.activity,
+    @required this.text,
+    this.onEdit,
+    this.errorState = false,
   }) : super(key: key);
 
-  final Activity activity;
+  final String text;
+  final Function(String) onEdit;
+  final bool errorState;
   @override
   _NameInputState createState() => _NameInputState();
 }
@@ -139,10 +211,19 @@ class _NameInputState extends State<NameInput> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.activity.title);
-    _nameController.addListener(() => BlocProvider.of<EditActivityBloc>(context)
-        .add(ReplaceActivity(
-            widget.activity.copyWith(title: _nameController.text))));
+    _nameController = TextEditingController(text: widget.text);
+    _nameController.addListener(_onEdit);
+  }
+
+  void _onEdit() {
+    widget.onEdit(_nameController.text);
+  }
+
+  @override
+  void dispose() {
+    _nameController.removeListener(_onEdit);
+    _nameController.dispose();
+    super.dispose();
   }
 
   @override
@@ -150,6 +231,7 @@ class _NameInputState extends State<NameInput> {
     return AbiliaTextInput(
       formKey: TestKey.editTitleTextFormField,
       controller: _nameController,
+      errorState: widget.errorState,
       heading: Translator.of(context).translate.name,
       textCapitalization: TextCapitalization.sentences,
       inputFormatters: [LengthLimitingTextInputFormatter(50)],

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 import 'package:intl/intl.dart';
 
 abstract class InfoItem extends Equatable {
@@ -90,7 +89,7 @@ class Checklist extends InfoItem {
   final String fileId;
 
   Checklist({
-    List<Question> questions = const <Question>[],
+    Iterable<Question> questions = const <Question>[],
     Map<String, Set<int>> checked = const {},
     this.image,
     this.name,
@@ -104,7 +103,7 @@ class Checklist extends InfoItem {
   Checklist copyWith({
     String image,
     String name,
-    List<Question> questions,
+    Iterable<Question> questions,
     Map<String, Set<int>> checked,
     String fileId,
   }) =>
@@ -177,14 +176,12 @@ class Question extends Equatable {
   bool get hasTitle => name?.isNotEmpty ?? false;
 
   const Question({
-    @required this.id,
+    this.id,
     this.name,
     this.fileId,
     this.image,
     this.checked = false,
-  })  : assert(id != null),
-        assert(id >= 0),
-        assert((name != null) || (fileId != null) || (image != null));
+  }) : assert((name != null) || (fileId != null) || (image != null));
 
   Question copyWith({
     String image,

@@ -49,7 +49,6 @@ class ActivityImage extends StatelessWidget {
               key: key,
               imageFileId: activityOccasion.activity.fileId,
               imageFilePath: activityOccasion.activity.icon,
-              activityId: activityOccasion.activity.id,
               width: size,
               height: size,
               imageSize: imageSize,
@@ -84,7 +83,6 @@ class ActivityImage extends StatelessWidget {
               child: FadeInCalendarImage(
                 imageFileId: activity.fileId,
                 imageFilePath: activity.icon,
-                activityId: activity.id,
                 width: size,
                 height: size,
                 imageSize: imageSize,
@@ -190,7 +188,7 @@ class FullScreenImage extends StatelessWidget {
 }
 
 class FadeInCalendarImage extends StatelessWidget {
-  final String imageFileId, imageFilePath, activityId;
+  final String imageFileId, imageFilePath;
   final File imageFile;
   final double width, height;
   final ImageSize imageSize;
@@ -199,7 +197,6 @@ class FadeInCalendarImage extends StatelessWidget {
     Key key,
     @required this.imageFileId,
     @required this.imageFilePath,
-    @required this.activityId,
     this.width,
     this.height,
     this.imageFile,

@@ -33,9 +33,9 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
   ) async* {
     if (event is SortablesUpdated) {
       final imageArchive =
-          event.sortables.where((s) => s.type == SortableType.imageArchive);
-      final allByFolder =
-          groupBy<Sortable, String>(imageArchive, (s) => s.groupId);
+          event.sortables.whereType<Sortable<ImageArchiveData>>();
+      final allByFolder = groupBy<Sortable<ImageArchiveData>, String>(
+          imageArchive, (s) => s.groupId);
       final allById = {for (var s in imageArchive) s.id: s};
       final currentFolder = allById[state.currentFolderId];
       yield ImageArchiveState(

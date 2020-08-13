@@ -4,6 +4,9 @@ abstract class SortableState extends Equatable {
   const SortableState();
   @override
   List<Object> get props => [];
+
+  @override
+  bool get stringify => true;
 }
 
 class SortablesNotLoaded extends SortableState {}
@@ -17,9 +20,6 @@ class SortablesLoaded extends SortableState {
 
   @override
   List<Object> get props => [sortables];
-
-  @override
-  String toString() => 'SortablesLoaded { sortables: $sortables }';
 }
 
 class SortablesLoadedFailed extends SortableState {}

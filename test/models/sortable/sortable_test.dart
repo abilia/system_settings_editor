@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/models/sortable.dart';
+import 'package:seagull/models/all.dart';
 
 void main() {
   test('parse json test', () {
@@ -9,9 +9,14 @@ void main() {
     final revision = 12345;
     final type = 'imagearchive';
     final data =
-        '{\\\"name\\\":\\\"DVD\\\",\\\"file\\\":\\\"/images/Handi/Handi/DVD_2.gif\\\"}\\\"';
-    final expectedData =
-        '{\"name\":\"DVD\",\"file\":\"/images/Handi/Handi/DVD_2.gif\"}\"';
+        '{\\\"name\\\":\\\"DVD\\\",\\\"file\\\":\\\"/images/Handi/Handi/DVD_2.gif\\\"}';
+    final expectedRawData =
+        '{\"name\":\"DVD\",\"file\":\"/images/Handi/Handi/DVD_2.gif\"}';
+    final expectedData = ImageArchiveData(
+      file: '/images/Handi/Handi/DVD_2.gif',
+      name: 'DVD',
+    );
+
     final groupId = 'a82c92c0-bee2-4689-9f5d-954de468d5ed';
     final sortOrder = '12309{}';
     final sortableJson = '''
@@ -40,6 +45,7 @@ void main() {
     expect(s.id, id);
     expect(s.deleted, false);
     expect(s.type, type);
+    expect(s.data.toRaw(), expectedRawData);
     expect(s.data, expectedData);
     expect(s.isGroup, false);
     expect(s.groupId, groupId);
@@ -47,6 +53,7 @@ void main() {
     expect(s.visible, true);
     expect(dbS.dirty, 0);
     expect(dbS.revision, revision);
+    expect(s, isA<Sortable<ImageArchiveData>>());
   });
 
   test('To dbMap and back', () {
@@ -67,7 +74,7 @@ void main() {
     expect(dbSortable.revision, 999);
     final s = dbSortable.sortable;
     expect(s.id, 'id-111');
-    expect(s.data, 'dbdata');
+    expect(s.data, RawSortableData('dbdata'));
     expect(s.type, 'type');
     expect(s.groupId, 'group_id');
     expect(s.sortOrder, 'sort_order');
@@ -77,5 +84,19 @@ void main() {
 
     final mapAgain = dbSortable.toMapForDb();
     expect(mapAgain, dbMap);
+  });
+
+  test('Get correct type when ImageArchiveData', () {
+    final s = Sortable.createNew<ImageArchiveData>(
+      data: ImageArchiveData(),
+    );
+    expect(s.type, SortableType.imageArchive);
+  });
+
+  test('Get correct type when NoteData', () {
+    final s = Sortable.createNew<NoteData>(
+      data: NoteData(),
+    );
+    expect(s.type, SortableType.note);
   });
 }

@@ -44,7 +44,6 @@ Future<T> showViewDialog<T>({
 }
 
 Future showErrorViewDialog(String text, {@required BuildContext context}) {
-  print(text);
   return showViewDialog(
     context: context,
     builder: (context) => GestureDetector(

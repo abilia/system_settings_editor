@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -7,7 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/sortable_repository.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -60,11 +59,11 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       final uploadFolder =
           await getOrGenerateUploadFolder(currentState.sortables);
       final name = event.imagePath.split('/').last.split('.').first;
-      final sortableData = SortableData(
+      final sortableData = ImageArchiveData(
         name: name,
         file: '${FileStorage.folder}/${event.imageId}',
         fileId: event.imageId,
-      ).toJson();
+      );
 
       final uploadFolderContent = currentState.sortables
           .where((s) => s.groupId == uploadFolder.id)
@@ -74,9 +73,8 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           ? getStartSortOrder()
           : calculateNextSortOrder(uploadFolderContent.last.sortOrder, 1);
 
-      final newSortable = Sortable.createNew(
-        type: SortableType.imageArchive,
-        data: json.encode(sortableData),
+      final newSortable = Sortable.createNew<ImageArchiveData>(
+        data: sortableData,
         groupId: uploadFolder.id,
         sortOrder: sortOrder,
       );
@@ -91,9 +89,9 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   Future<Sortable> getOrGenerateUploadFolder(
       Iterable<Sortable> sortables) async {
     try {
-      return sortables.firstWhere(
-        (s) => json.decode(s.data)['upload'] ?? false,
-      );
+      return sortables
+          .whereType<Sortable<ImageArchiveData>>()
+          .firstWhere((s) => s.data.upload ?? false);
     } catch (e) {
       _log.info('No upload folder. Create one');
       return sortableRepository.generateUploadFolder();
