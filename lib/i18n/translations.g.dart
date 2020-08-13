@@ -14,12 +14,6 @@ class Locales {
 }
 
 abstract class Translated {
-  final String selectFromLibrary = 'n/a';
-
-  final String addNew = 'n/a';
-
-  final String task = 'n/a';
-
   final String userName = 'Username / Email';
 
   final String password = 'Password';
@@ -187,20 +181,17 @@ abstract class Translated {
 
   final String clear = 'Clear';
 
-  final String selectFromLibrary = 'Select from library';
-
-  @override
-  final String addNew = 'Add new';
-
-  @override
-  final String task = 'Task';
-
-  @override
   final String timepillarSettings = 'Timepillar settings';
 
   final String activityDuration = 'Activity duration';
 
   final String dots = 'Dots';
+
+  final String selectFromLibrary = 'Select from library';
+
+  final String addNew = 'Add new';
+
+  final String task = 'Task';
 
   final String edge = 'Edge';
 
@@ -459,15 +450,6 @@ class SV extends Translated {
   final String clear = 'Rensa';
 
   @override
-  final String selectFromLibrary = 'Välj från biblotek';
-
-  @override
-  final String addNew = 'Lägg till ny';
-
-  @override
-  final String task = 'Fråga';
-
-  @override
   final String timepillarSettings = 'Inställningar för tidspelare';
 
   @override
@@ -475,6 +457,15 @@ class SV extends Translated {
 
   @override
   final String dots = 'Prickar';
+
+  @override
+  final String selectFromLibrary = 'Välj från biblotek';
+
+  @override
+  final String addNew = 'Lägg till ny';
+
+  @override
+  final String task = 'Fråga';
 
   @override
   final String edge = 'Flärp';
