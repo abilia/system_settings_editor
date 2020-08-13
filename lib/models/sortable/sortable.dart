@@ -54,8 +54,8 @@ class Sortable<T extends SortableData> extends DataModel {
   }
 
   static String _getTypeString<T extends SortableData>() {
-    if (T is ImageArchiveData) return SortableType.imageArchive;
-    if (T is NoteData) return SortableType.note;
+    if (T == ImageArchiveData) return SortableType.imageArchive;
+    if (T == NoteData) return SortableType.note;
     return '';
   }
 

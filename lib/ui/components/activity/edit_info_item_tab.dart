@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
@@ -120,7 +119,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                       Translator.of(context).translate.selectFromLibrary,
                       style: abiliaTheme.textTheme.headline6,
                     ),
-                    child: UnderConstruction(),
+                    child: ChecklistLibrary(),
                   ),
                 );
                 if (selectedChecklist != null &&
@@ -228,8 +227,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
     );
 
     if (result != null && result.isNotEmpty) {
-      final uniqueId =
-          widget.checklist.questions.map((q) => q.id).fold(0, max) + 1;
+      final uniqueId = DateTime.now().millisecondsSinceEpoch;
 
       if (result.hasNewImage) {
         newFileAdded(result.newImage, uniqueId);

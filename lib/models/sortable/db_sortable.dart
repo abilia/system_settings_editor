@@ -31,7 +31,7 @@ class DbSortable extends DbModel<Sortable> {
       case SortableType.imageArchive:
         return Sortable<ImageArchiveData>._(
           id: id,
-          type: SortableType.imageArchive,
+          type: type,
           data: ImageArchiveData.fromJson(data),
           groupId: groupId,
           sortOrder: sortOrder,
@@ -44,6 +44,17 @@ class DbSortable extends DbModel<Sortable> {
           id: id,
           type: SortableType.note,
           data: NoteData.fromJson(data),
+          groupId: groupId,
+          sortOrder: sortOrder,
+          deleted: deleted,
+          isGroup: isGroup,
+          visible: visible,
+        );
+      case SortableType.checklist:
+        return Sortable<ChecklistData>._(
+          id: id,
+          type: type,
+          data: ChecklistData.fromJson(data),
           groupId: groupId,
           sortOrder: sortOrder,
           deleted: deleted,
