@@ -85,4 +85,18 @@ void main() {
     final mapAgain = dbSortable.toMapForDb();
     expect(mapAgain, dbMap);
   });
+
+  test('Get correct type when ImageArchiveData', () {
+    final s = Sortable.createNew<ImageArchiveData>(
+      data: ImageArchiveData(),
+    );
+    expect(s.type, SortableType.imageArchive);
+  });
+
+  test('Get correct type when NoteData', () {
+    final s = Sortable.createNew<NoteData>(
+      data: NoteData(),
+    );
+    expect(s.type, SortableType.note);
+  });
 }

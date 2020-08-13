@@ -36,7 +36,7 @@ class LibraryChecklist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageHeight = 86.0;
+    final imageHeight = 84.0;
     final imageWidth = 84.0;
     final imageId = checklist.fileId;
     final name = checklist.name;

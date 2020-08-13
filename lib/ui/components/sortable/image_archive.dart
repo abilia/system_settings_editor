@@ -100,7 +100,7 @@ class ArchiveImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageHeight = 86.0;
+    final imageHeight = 84.0;
     final imageWidth = 84.0;
     return Padding(
       padding: const EdgeInsets.all(4.0),
