@@ -51,6 +51,7 @@ class TestKey {
       infoItemNoneRadio = Key('infoItemNoneRadio'),
       infoItemChecklistRadio = Key('infoItemChecklistRadio'),
       infoItemNoteRadio = Key('infoItemNoteRadio'),
+      checklistQuestionImageKey = Key('checklistQuestionImageKey'),
       preview = Key('preview'),
       edgePreview = Key('edgePreview'),
       dotsPreview = Key('dotsPreview');

@@ -107,7 +107,7 @@ extension OurEnterText on WidgetTester {
     await pump();
     await enterText(find.byKey(TestKey.input), text);
     await pump();
-    await tap(find.byKey(TestKey.okDialog));
+    await tap(find.byKey(TestKey.okDialog).first);
     await pump();
   }
 }

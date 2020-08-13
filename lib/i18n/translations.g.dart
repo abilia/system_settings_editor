@@ -179,6 +179,10 @@ abstract class Translated {
 
   final String selectFromLibrary = 'n/a';
 
+  final String addNew = 'n/a';
+
+  final String task = 'n/a';
+
   final String timepillarSettings = 'n/a';
 
   final String activityDuration = 'n/a';
@@ -442,6 +446,12 @@ class EN extends Translated {
 
   @override
   final String selectFromLibrary = 'Select from library';
+
+  @override
+  final String addNew = 'Add new';
+
+  @override
+  final String task = 'Task';
 
   @override
   final String timepillarSettings = 'Timepillar settings';
@@ -710,6 +720,12 @@ class SV extends Translated {
 
   @override
   final String selectFromLibrary = 'Välj från biblotek';
+
+  @override
+  final String addNew = 'Lägg till ny';
+
+  @override
+  final String task = 'Fråga';
 
   @override
   final String timepillarSettings = 'Inställningar för tidspelare';

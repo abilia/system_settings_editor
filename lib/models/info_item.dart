@@ -90,7 +90,7 @@ class Checklist extends InfoItem {
   final String fileId;
 
   Checklist({
-    List<Question> questions = const <Question>[],
+    Iterable<Question> questions = const <Question>[],
     Map<String, Set<int>> checked = const {},
     this.image,
     this.name,
@@ -104,7 +104,7 @@ class Checklist extends InfoItem {
   Checklist copyWith({
     String image,
     String name,
-    List<Question> questions,
+    Iterable<Question> questions,
     Map<String, Set<int>> checked,
     String fileId,
   }) =>

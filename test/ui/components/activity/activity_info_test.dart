@@ -355,7 +355,7 @@ void main() {
     final infoItem = Checklist(questions: [
       Question(
         id: 1,
-        fileId: 'dummyId',
+        fileId: Uuid().v4(),
       )
     ]);
 
@@ -379,8 +379,9 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byType(CheckListView), findsOneWidget);
-    expect(find.byType(FadeInAbiliaImage), findsOneWidget);
-    await tester.tap(find.byType(FadeInAbiliaImage));
+    expect(find.byType(QuestionView), findsOneWidget);
+    expect(find.byKey(TestKey.checklistQuestionImageKey), findsOneWidget);
+    await tester.tap(find.byKey(TestKey.checklistQuestionImageKey));
     await tester.pumpAndSettle();
     expect(find.byType(FullScreenImage), findsOneWidget);
   });
