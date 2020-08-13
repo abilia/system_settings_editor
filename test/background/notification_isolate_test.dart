@@ -47,6 +47,12 @@ void main() {
   ];
   setUp(() {
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    when(mockedFileStorage.copyImageThumbForNotification(fileId))
+        .thenAnswer((_) => Future.value(File(fileId)));
+    when(mockedFileStorage.getFile(fileId)).thenReturn(File(fileId));
+    when(mockedFileStorage.getImageThumb(ImageThumb(id: fileId)))
+        .thenReturn(File(fileId));
+    when(mockedFileStorage.exists(any)).thenAnswer((_) => Future.value(true));
   });
 
   test('isolate', () async {
@@ -92,14 +98,6 @@ void main() {
   });
 
   test('scheduleAlarmNotifications with image', () async {
-    when(mockedFileStorage.copyImageThumbForNotification(fileId))
-        .thenAnswer((_) => Future.value(File(fileId)));
-    when(mockedFileStorage.getFile(fileId)).thenReturn(File(fileId));
-    when(mockedFileStorage.getImageThumb(ImageThumb(id: fileId)))
-        .thenReturn(File(fileId));
-    when(mockedFileStorage.exists(any))
-        .thenAnswer((_) => Future.value(true));
-
     await scheduleAlarmNotifications(
       allActivities.take(2),
       'en',
@@ -130,6 +128,9 @@ void main() {
         details.android.styleInformation is BigPictureStyleInformation, isTrue);
     final bpd = details.android.styleInformation as BigPictureStyleInformation;
     expect(bpd.bigPicture.bitmap, fileId);
-    expect(bpd.largeIcon.bitmap, fileId);
+
+    expect(details.android.largeIcon is FilePathAndroidBitmap, isTrue);
+    final largeIcon = details.android.largeIcon as FilePathAndroidBitmap;
+    expect(largeIcon.bitmap, fileId);
   });
 }
