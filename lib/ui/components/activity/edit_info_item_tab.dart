@@ -57,7 +57,10 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
               )
             else
               PickField(
-                leading: const Icon(AbiliaIcons.information),
+                leading: const Icon(
+                  AbiliaIcons.information,
+                  size: smallIconSize,
+                ),
                 label: Text(translate.infoTypeNone),
                 onTap: onTap,
               ),
@@ -98,7 +101,10 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
           children: <Widget>[
             Expanded(
               child: PickField(
-                leading: const Icon(AbiliaIcons.ok),
+                leading: const Icon(
+                  AbiliaIcons.ok,
+                  size: smallIconSize,
+                ),
                 label: Text(Translator.of(context).translate.infoTypeChecklist),
                 onTap: widget.onTap,
               ),
@@ -269,7 +275,10 @@ class EditNoteWidget extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: PickField(
-                leading: const Icon(AbiliaIcons.edit),
+                leading: const Icon(
+                  AbiliaIcons.edit,
+                  size: smallIconSize,
+                ),
                 label: Text(Translator.of(context).translate.infoTypeNote),
                 onTap: onTap,
               ),

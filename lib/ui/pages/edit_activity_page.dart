@@ -3,6 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/theme.dart';
 
 class EditActivityPage extends StatelessWidget {
   final DateTime day;
@@ -32,10 +33,22 @@ class EditActivityPage extends StatelessWidget {
                   }
                 },
                 tabs: <Widget>[
-                  Icon(AbiliaIcons.my_photos),
-                  Icon(AbiliaIcons.attention),
-                  Icon(AbiliaIcons.repeat),
-                  Icon(AbiliaIcons.attachment),
+                  Icon(
+                    AbiliaIcons.my_photos,
+                    size: smallIconSize,
+                  ),
+                  Icon(
+                    AbiliaIcons.attention,
+                    size: smallIconSize,
+                  ),
+                  Icon(
+                    AbiliaIcons.repeat,
+                    size: smallIconSize,
+                  ),
+                  Icon(
+                    AbiliaIcons.attachment,
+                    size: smallIconSize,
+                  ),
                 ],
               ),
               title: title,
@@ -108,4 +121,3 @@ class EditActivityPage extends StatelessWidget {
     }
   }
 }
-    

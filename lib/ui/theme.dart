@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
+const double defaultIconSize = 32;
+const double smallIconSize = 24;
+
 ThemeData abiliaTheme = ThemeData(
   primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: AbiliaColors.white110,
@@ -15,7 +18,7 @@ ThemeData abiliaTheme = ThemeData(
   buttonTheme: baseButtonTheme,
   buttonColor: AbiliaColors.transparentBlack20,
   highlightColor: AbiliaColors.transparentBlack40,
-  iconTheme: IconThemeData(size: 32, color: AbiliaColors.black),
+  iconTheme: IconThemeData(size: defaultIconSize, color: AbiliaColors.black),
   cursorColor: AbiliaColors.black,
   textSelectionHandleColor: AbiliaColors.black,
   appBarTheme: AppBarTheme(color: AbiliaColors.black80),

@@ -35,7 +35,7 @@ class EndTimeInputDialog extends StatelessWidget {
               icon: Icon(
                 AbiliaIcons.delete_all_clear,
                 color: AbiliaColors.white,
-                size: 24,
+                size: smallIconSize,
               ),
               onTap: () =>
                   Navigator.of(context).maybePop(TimeInputResult(null)),

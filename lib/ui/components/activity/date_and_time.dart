@@ -38,7 +38,10 @@ class DateAndTimeWidget extends StatelessWidget {
           ),
           SwitchField(
             key: TestKey.fullDaySwitch,
-            leading: Icon(AbiliaIcons.restore),
+            leading: Icon(
+              AbiliaIcons.restore,
+              size: smallIconSize,
+            ),
             label: Text(translator.fullDay),
             value: activity.fullDay,
             onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
@@ -61,7 +64,10 @@ class ReminderSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwitchField(
-      leading: Icon(AbiliaIcons.handi_reminder),
+      leading: Icon(
+        AbiliaIcons.handi_reminder,
+        size: smallIconSize,
+      ),
       label: Text(Translator.of(context).translate.reminders),
       value: activity.reminders.isNotEmpty,
       onChanged: (switchOn) {
@@ -105,7 +111,10 @@ class DatePicker extends StatelessWidget {
           BlocProvider.of<EditActivityBloc>(context).add(ChangeDate(newDate));
         }
       },
-      leading: Icon(AbiliaIcons.calendar),
+      leading: Icon(
+        AbiliaIcons.calendar,
+        size: smallIconSize,
+      ),
       label: BlocBuilder<ClockBloc, DateTime>(
         builder: (context, time) => Text(
           (time.isAtSameDay(date) ? '(${translator.today}) ' : '') +
@@ -208,7 +217,10 @@ class TimePicker extends StatelessWidget {
           onTap: onTap,
           heigth: heigth,
           errorState: errorState,
-          leading: Icon(AbiliaIcons.clock),
+          leading: Icon(
+            AbiliaIcons.clock,
+            size: smallIconSize,
+          ),
           label: Text(time != null ? time.format(context) : ''),
           trailing: errorState
               ? const Icon(
