@@ -45,19 +45,23 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     final theme = abiliaTheme;
     return ViewDialog(
       deleteButton: widget.previousImage != null || selectedImageData != null
-          ? RemoveButton(
-              key: TestKey.removePicture,
-              onTap: () {
-                Navigator.of(context).maybePop(SelectedImage(
-                  id: '',
-                  path: '',
-                ));
-              },
-              icon: Icon(
-                AbiliaIcons.delete_all_clear,
-                color: AbiliaColors.white,
+          ? Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: RemoveButton(
+                key: TestKey.removePicture,
+                onTap: () {
+                  Navigator.of(context).maybePop(SelectedImage(
+                    id: '',
+                    path: '',
+                  ));
+                },
+                icon: Icon(
+                  AbiliaIcons.delete_all_clear,
+                  color: AbiliaColors.white,
+                  size: smallIconSize,
+                ),
+                text: translate.removePicture,
               ),
-              text: translate.removePicture,
             )
           : null,
       heading: Text(translate.selectPicture, style: theme.textTheme.headline6),
