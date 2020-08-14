@@ -303,7 +303,7 @@ class RoundFloatingButton extends StatelessWidget {
           child: Icon(
             iconData,
             color: AbiliaColors.black,
-            size: 24,
+            size: smallIconSize,
           ),
         ),
       ),

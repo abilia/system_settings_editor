@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -22,8 +21,6 @@ class EditNoteDialog extends StatefulWidget {
 class _EditNoteDialogState extends State<EditNoteDialog> {
   TextEditingController _textEditingController;
   ScrollController _scrollController;
-  final BehaviorSubject<String> selectNotificationSubject =
-      BehaviorSubject<String>();
 
   @override
   void initState() {
@@ -61,12 +58,13 @@ class _EditNoteDialogState extends State<EditNoteDialog> {
         onOk: () => Navigator.of(context).maybePop(_textEditingController.text),
         deleteButton: AnimatedPositioned(
           duration: 200.milliseconds(),
-          left: _textEditingController.text.isEmpty ? -100.0 : 0.0,
+          left: _textEditingController.text.isEmpty ? -100.0 : 12.0,
           child: RemoveButton(
             onTap: () => _textEditingController.text = '',
             icon: Icon(
               AbiliaIcons.delete,
               color: AbiliaColors.white,
+              size: smallIconSize,
             ),
             text: Translator.of(context).translate.clear,
           ),

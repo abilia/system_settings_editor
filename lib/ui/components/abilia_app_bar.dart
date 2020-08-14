@@ -33,10 +33,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
           alignment: Alignment.centerLeft,
           child: ActionButton(
             key: TestKey.appBarCloseButton,
-            child: Icon(
-              closeIcon,
-              size: 32,
-            ),
+            child: Icon(closeIcon),
             onPressed:
                 onClosedPressed ?? () => Navigator.of(context).maybePop(),
           ),

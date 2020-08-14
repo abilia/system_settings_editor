@@ -278,7 +278,10 @@ class CategoryWidget extends StatelessWidget {
         child: Row(
           children: <Widget>[
             const SizedBox(width: 6),
-            Icon(icon),
+            Icon(
+              icon,
+              size: smallIconSize,
+            ),
             const SizedBox(width: 12),
             Text(text)
           ],
@@ -304,7 +307,10 @@ class AlarmWidget extends StatelessWidget {
         SubHeading(translator.alarm),
         PickField(
           key: TestKey.selectAlarm,
-          leading: Icon(alarm.iconData()),
+          leading: Icon(
+            alarm.iconData(),
+            size: smallIconSize,
+          ),
           label: Text(alarm.text(translator)),
           onTap: () async {
             final result = await showViewDialog<Alarm>(
@@ -347,7 +353,10 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SwitchField(
         key: TestKey.alarmAtStartSwitch,
-        leading: Icon(AbiliaIcons.handi_alarm),
+        leading: Icon(
+          AbiliaIcons.handi_alarm,
+          size: smallIconSize,
+        ),
         label: Text(Translator.of(context).translate.alarmOnlyAtStartTime),
         value: alarm.onlyStart,
         onChanged: alarm.shouldAlarm ? onChanged : null,
@@ -368,7 +377,10 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
       children: <Widget>[
         SwitchField(
           key: TestKey.checkableSwitch,
-          leading: Icon(AbiliaIcons.handi_check),
+          leading: Icon(
+            AbiliaIcons.handi_check,
+            size: smallIconSize,
+          ),
           label: Text(translator.checkable),
           value: activity.checkable,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
@@ -377,7 +389,10 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
         const SizedBox(height: 8.0),
         SwitchField(
           key: TestKey.deleteAfterSwitch,
-          leading: Icon(AbiliaIcons.delete_all_clear),
+          leading: Icon(
+            AbiliaIcons.delete_all_clear,
+            size: smallIconSize,
+          ),
           label: Text(translator.deleteAfter),
           value: activity.removeAfter,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
@@ -402,9 +417,10 @@ class AvailibleForWidget extends StatelessWidget {
         SubHeading(translator.availableFor),
         PickField(
           key: TestKey.availibleFor,
-          leading: Icon(secret
-              ? AbiliaIcons.password_protection
-              : AbiliaIcons.user_group),
+          leading: Icon(
+            secret ? AbiliaIcons.password_protection : AbiliaIcons.user_group,
+            size: smallIconSize,
+          ),
           label:
               Text(secret ? translator.onlyMe : translator.meAndSupportPersons),
           onTap: () async {

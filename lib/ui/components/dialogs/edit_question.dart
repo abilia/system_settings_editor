@@ -44,13 +44,18 @@ class _EditQuestionDialogState extends State<EditQuestionDialog> {
               Navigator.of(context).maybePop(QuestionResult(question, newImage))
           : null,
       deleteButton: widget.question != null
-          ? RemoveButton(
-              onTap: () => Navigator.of(context).maybePop(QuestionResult.empty),
-              icon: Icon(
-                AbiliaIcons.delete_all_clear,
-                color: AbiliaColors.white,
+          ? Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: RemoveButton(
+                onTap: () =>
+                    Navigator.of(context).maybePop(QuestionResult.empty),
+                icon: Icon(
+                  AbiliaIcons.delete_all_clear,
+                  color: AbiliaColors.white,
+                  size: 24,
+                ),
+                text: translate.remove,
               ),
-              text: translate.remove,
             )
           : null,
       child: Column(

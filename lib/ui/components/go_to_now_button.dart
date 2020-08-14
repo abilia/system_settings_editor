@@ -17,7 +17,6 @@ class GoToNowButton extends StatelessWidget {
                     key: TestKey.goToNowButton,
                     child: Icon(
                       AbiliaIcons.reset,
-                      size: 32,
                     ),
                     onPressed: onPressed,
                     themeData: nowButtonTheme,

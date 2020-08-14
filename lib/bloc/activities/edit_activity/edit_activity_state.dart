@@ -86,6 +86,7 @@ class UnstoredActivityState extends EditActivityState {
         ogActivity,
         ogTimeInterval,
         newImage ?? this.newImage,
+        failedSave,
       );
 
   @override
@@ -144,6 +145,7 @@ class StoredActivityState extends EditActivityState {
         this.timeInterval,
         day,
         newImage ?? this.newImage,
+        failedSave,
       );
 
   @override

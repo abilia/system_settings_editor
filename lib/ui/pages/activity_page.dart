@@ -34,7 +34,6 @@ class ActivityPage extends StatelessWidget {
                     key: TestKey.activityBackButton,
                     child: Icon(
                       AbiliaIcons.navigation_previous,
-                      size: 32,
                     ),
                     onPressed: () => Navigator.of(context).maybePop(),
                   ),

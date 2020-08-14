@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/abilia_icons.dart';
+import 'package:seagull/ui/theme.dart';
 import 'package:vector_math/vector_math_64.dart';
 
 class ArrowLeft extends StatelessWidget {
@@ -160,7 +161,7 @@ class _ArrowState extends State<_Arrow> {
           borderRadius: widget.borderRadius,
           color: AbiliaColors.white135,
         ),
-        child: Icon(widget.icon, size: 24),
+        child: Icon(widget.icon, size: smallIconSize),
         duration: const Duration(milliseconds: 200),
       ),
     );

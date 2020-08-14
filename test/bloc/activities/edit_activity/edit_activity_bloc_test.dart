@@ -104,9 +104,8 @@ void main() {
       editActivityBloc,
       emitsInOrder([
         UnstoredActivityState(activity, timeInterval, null, true),
-        UnstoredActivityState(activityWithTitle, timeInterval),
         UnstoredActivityState(activityWithTitle, timeInterval, null, true),
-        UnstoredActivityState(activityWithTitle, newTimeInterval),
+        UnstoredActivityState(activityWithTitle, newTimeInterval, null, true),
         StoredActivityState(expectedSaved, newTimeInterval, aTime.onlyDays()),
       ]),
     );

@@ -25,7 +25,10 @@ class SelectInfoTypeDialog extends StatelessWidget {
             value: NoInfoItem,
             child: Row(
               children: <Widget>[
-                const Icon(AbiliaIcons.information),
+                const Icon(
+                  AbiliaIcons.information,
+                  size: smallIconSize,
+                ),
                 const SizedBox(width: 12),
                 Text(translate.infoTypeNone),
               ],
@@ -39,7 +42,10 @@ class SelectInfoTypeDialog extends StatelessWidget {
             value: Checklist,
             child: Row(
               children: <Widget>[
-                const Icon(AbiliaIcons.ok),
+                const Icon(
+                  AbiliaIcons.ok,
+                  size: smallIconSize,
+                ),
                 const SizedBox(width: 12),
                 Text(translate.infoTypeChecklist),
               ],
@@ -53,7 +59,10 @@ class SelectInfoTypeDialog extends StatelessWidget {
             value: NoteInfoItem,
             child: Row(
               children: <Widget>[
-                const Icon(AbiliaIcons.edit),
+                const Icon(
+                  AbiliaIcons.edit,
+                  size: smallIconSize,
+                ),
                 const SizedBox(width: 12),
                 Text(translate.infoTypeNote),
               ],
