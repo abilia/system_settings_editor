@@ -54,6 +54,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
 
   Stream<ActivitiesState> _mapLoadActivitiesToState() async* {
     try {
+      yield ActivitiesNotLoaded();
       final activities = await activityRepository.load();
       yield ActivitiesLoaded(activities);
     } catch (_) {
