@@ -29,7 +29,7 @@ dependencies:
   flutter_local_notifications:
     git:
       url: git://github.com/abilia/flutter_local_notifications.git
-      ref: dev-1.4.4+1
+      ref: wake_lock
       path: flutter_local_notifications/
   transparent_image: ^1.0.0
   rxdart: ^0.24.1
