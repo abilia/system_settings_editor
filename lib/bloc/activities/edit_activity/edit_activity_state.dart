@@ -40,7 +40,7 @@ abstract class EditActivityState extends Equatable with Silent {
   EditActivityState copyWith(
     Activity activity, {
     TimeInterval timeInterval,
-    File newImage,
+    ImageUpdate imageUpdate,
   });
 
   EditActivityState _failSave();
@@ -78,14 +78,17 @@ class UnstoredActivityState extends EditActivityState {
         );
 
   @override
-  UnstoredActivityState copyWith(Activity activity,
-          {TimeInterval timeInterval, File newImage}) =>
+  UnstoredActivityState copyWith(
+    Activity activity, {
+    TimeInterval timeInterval,
+    ImageUpdate imageUpdate,
+  }) =>
       UnstoredActivityState._(
         activity,
         timeInterval ?? this.timeInterval,
         ogActivity,
         ogTimeInterval,
-        newImage ?? this.newImage,
+        imageUpdate == null ? newImage : imageUpdate.updatedImage,
         failedSave,
       );
 
@@ -136,15 +139,18 @@ class StoredActivityState extends EditActivityState {
   List<Object> get props => [...super.props, day];
 
   @override
-  StoredActivityState copyWith(Activity activity,
-          {TimeInterval timeInterval, File newImage}) =>
+  StoredActivityState copyWith(
+    Activity activity, {
+    TimeInterval timeInterval,
+    ImageUpdate imageUpdate,
+  }) =>
       StoredActivityState._(
         activity,
         timeInterval ?? this.timeInterval,
         this.activity,
         this.timeInterval,
         day,
-        newImage ?? this.newImage,
+        imageUpdate == null ? newImage : imageUpdate.updatedImage,
         failedSave,
       );
 
@@ -158,4 +164,10 @@ class StoredActivityState extends EditActivityState {
         newImage,
         true,
       );
+}
+
+class ImageUpdate {
+  final File updatedImage;
+
+  ImageUpdate(this.updatedImage);
 }

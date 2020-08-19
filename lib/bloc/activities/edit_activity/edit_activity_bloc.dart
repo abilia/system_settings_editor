@@ -73,7 +73,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
             fileId: event.imageId,
             icon: event.path,
           ),
-          newImage: event.newImage);
+          imageUpdate: ImageUpdate(event.newImage));
     }
     if (event is ChangeInfoItemType) {
       yield* _mapChangeInfoItemTypeToState(event);
