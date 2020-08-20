@@ -110,7 +110,11 @@ class QuestionView extends StatelessWidget {
                     if (question.hasImage)
                       InkWell(
                         borderRadius: borderRadius,
-                        onTap: () => _showImage(question.fileId, context),
+                        onTap: () => _showImage(
+                          question.fileId,
+                          question.image,
+                          context,
+                        ),
                         child: Padding(
                           padding:
                               const EdgeInsets.fromLTRB(6.0, 4.0, 0.0, 4.0),
@@ -162,12 +166,13 @@ class QuestionView extends StatelessWidget {
     );
   }
 
-  void _showImage(String fileId, BuildContext context) async {
+  void _showImage(String fileId, String filePath, BuildContext context) async {
     await showViewDialog<bool>(
       context: context,
       builder: (_) {
         return FullScreenImage(
           fileId: fileId,
+          filePath: filePath,
         );
       },
     );

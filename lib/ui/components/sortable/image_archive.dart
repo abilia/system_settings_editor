@@ -126,6 +126,7 @@ class ArchiveImage extends StatelessWidget {
                       borderRadius: BorderRadius.vertical(top: radius),
                     ),
                     fileId: imageId,
+                    filePath: iconPath,
                   ),
                 ),
               );

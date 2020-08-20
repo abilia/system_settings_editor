@@ -19,6 +19,27 @@ String imageThumbUrl({
   @required String baseUrl,
   @required int userId,
   @required String imageFileId,
+  @required String imagePath,
+  int size = ImageThumb.THUMB_SIZE,
+}) =>
+    imageFileId != null
+        ? imageThumbIdUrl(
+            baseUrl: baseUrl,
+            userId: userId,
+            imageFileId: imageFileId,
+            size: size,
+          )
+        : imageThumbPathUrl(
+            baseUrl: baseUrl,
+            userId: userId,
+            imagePath: imagePath,
+            size: size,
+          );
+
+String imageThumbIdUrl({
+  @required String baseUrl,
+  @required int userId,
+  @required String imageFileId,
   int size = ImageThumb.THUMB_SIZE,
 }) =>
     '$baseUrl/api/v1/data/$userId/storage/image/thumb/$imageFileId?height=$size&width=$size';

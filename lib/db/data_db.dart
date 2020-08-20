@@ -12,7 +12,9 @@ abstract class DataDb<M extends DataModel> {
 
   String get GET_ALL_DIRTY => 'SELECT * FROM $tableName WHERE dirty > 0';
   String get GET_BY_ID_SQL => 'SELECT * FROM $tableName WHERE id == ?';
-  String get GET_ALL_SQL => 'SELECT * FROM $tableName WHERE deleted == 0';
+  String get GET_ALL_SQL_NON_DELETED =>
+      'SELECT * FROM $tableName WHERE deleted == 0';
+  String get GET_ALL_SQL => 'SELECT * FROM $tableName';
   String get MAX_REVISION_SQL =>
       'SELECT max(revision) as max_revision FROM $tableName';
 
@@ -49,9 +51,15 @@ abstract class DataDb<M extends DataModel> {
     }
   }
 
-  Future<Iterable<M>> getAllNonDeleted() async {
+  Future<Iterable<M>> getAll() async {
     final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ALL_SQL);
+    return result.map(convertToDataModel).map((data) => data.model);
+  }
+
+  Future<Iterable<M>> getAllNonDeleted() async {
+    final db = await DatabaseRepository().database;
+    final result = await db.rawQuery(GET_ALL_SQL_NON_DELETED);
     return result.map(convertToDataModel).map((data) => data.model);
   }
 
