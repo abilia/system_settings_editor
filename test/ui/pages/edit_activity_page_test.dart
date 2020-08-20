@@ -29,9 +29,11 @@ void main() {
   final okFinder = find.byKey(TestKey.okDialog);
 
   MockSortableBloc mockSortableBloc;
+  MockUserFileBloc mockUserFileBloc;
   setUp(() async {
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
+    mockUserFileBloc = MockUserFileBloc();
   });
 
   Widget wrapWithMaterialApp(Widget widget,
@@ -64,7 +66,7 @@ void main() {
               create: (context) => mockSortableBloc,
             ),
             BlocProvider<UserFileBloc>(
-              create: (context) => MockUserFileBloc(),
+              create: (context) => mockUserFileBloc,
             ),
             BlocProvider<ClockBloc>(
               create: (context) => ClockBloc(
@@ -784,6 +786,7 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Checklist with images shows', (WidgetTester tester) async {
+        when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
         await tester.pumpWidget(
           wrapWithMaterialApp(
             EditActivityPage(day: today),
@@ -933,6 +936,7 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('checklist library shows', (WidgetTester tester) async {
+        when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
         final title1 = 'listtitle1';
         when(mockSortableBloc.state).thenReturn(
           SortablesLoaded(
@@ -977,6 +981,7 @@ Internal improvements to tests and examples.''';
 
       testWidgets('checklist from library is selectable',
           (WidgetTester tester) async {
+        when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
         final title1 = 'listtitle1';
         final checklisttitle1 = 'checklisttitle1',
             checklisttitle2 = 'checklisttitle2';
