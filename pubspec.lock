@@ -290,11 +290,11 @@ packages:
     dependency: "direct main"
     description:
       path: "flutter_local_notifications/"
-      ref: wake_lock
-      resolved-ref: "28db30b0412300935b9a85762399adadcfa15c0a"
+      ref: start_activity_android
+      resolved-ref: d8dbc3731d0024cd691b226616c81b02b739719e
       url: "git://github.com/abilia/flutter_local_notifications.git"
     source: git
-    version: "1.4.4+3"
+    version: "1.5.0-beta.7"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
