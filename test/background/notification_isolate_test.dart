@@ -4,11 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:uuid/uuid.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
 import 'package:seagull/background/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:uuid/uuid.dart';
-
 import '../mocks.dart';
 
 void main() {
@@ -46,6 +48,9 @@ void main() {
     ),
   ];
   setUp(() {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.UTC);
+
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     when(mockedFileStorage.copyImageThumbForNotification(fileId))
         .thenAnswer((_) => Future.value(File(fileId)));
@@ -75,10 +80,11 @@ void main() {
       now: now,
     );
     verify(notificationsPluginInstance.cancelAll());
-    verify(notificationsPluginInstance.schedule(any, any, any, any, any,
+    verify(notificationsPluginInstance.zonedSchedule(any, any, any, any, any,
             payload: anyNamed('payload'),
             androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
-            androidWakeScreen: anyNamed('androidWakeScreen')))
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime))
         .called(11);
   });
   test('scheduleAlarmNotifications', () async {
@@ -90,10 +96,11 @@ void main() {
       now: now,
     );
     verify(notificationsPluginInstance.cancelAll());
-    verify(notificationsPluginInstance.schedule(any, any, any, any, any,
+    verify(notificationsPluginInstance.zonedSchedule(any, any, any, any, any,
             payload: anyNamed('payload'),
             androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
-            androidWakeScreen: anyNamed('androidWakeScreen')))
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime))
         .called(11);
   });
 
@@ -110,11 +117,12 @@ void main() {
     verify(mockedFileStorage.getFile(fileId));
     verify(mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
 
-    final details = verify(notificationsPluginInstance.schedule(
+    final details = verify(notificationsPluginInstance.zonedSchedule(
             any, any, any, any, captureAny,
             payload: anyNamed('payload'),
             androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
-            androidWakeScreen: anyNamed('androidWakeScreen')))
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime))
         .captured
         .single as NotificationDetails;
 
@@ -132,5 +140,8 @@ void main() {
     expect(details.android.largeIcon is FilePathAndroidBitmap, isTrue);
     final largeIcon = details.android.largeIcon as FilePathAndroidBitmap;
     expect(largeIcon.bitmap, fileId);
+
+    expect(details.android.fullScreenIntent, isTrue);
+    expect(details.android.wakeScreenForMs, greaterThan(0));
   });
 }

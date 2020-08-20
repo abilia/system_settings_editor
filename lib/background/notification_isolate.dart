@@ -9,6 +9,8 @@ import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
@@ -31,11 +33,12 @@ FlutterLocalNotificationsPlugin get notificationPlugin {
 
 void ensureNotificationPluginInitialized() {
   if (notificationsPluginInstance == null) {
+    tz.initializeTimeZones();
     notificationsPluginInstance = FlutterLocalNotificationsPlugin();
     notificationsPluginInstance.initialize(
       InitializationSettings(
-        AndroidInitializationSettings('@mipmap/ic_launcher'),
-        IOSInitializationSettings(),
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        iOS: IOSInitializationSettings(),
       ),
       onSelectNotification: (String payload) async {
         if (payload != null) {
@@ -156,15 +159,16 @@ Future _scheduleNotification(
 
   _log.finest(
       'schedualing: $title - $subtitle at $notificationTime ${activity.hasImage ? ' with image' : ''}');
-  await notificationPlugin.schedule(
+  await notificationPlugin.zonedSchedule(
     hash,
     title,
     subtitle,
-    notificationTime,
-    NotificationDetails(and, ios),
+    tz.TZDateTime.from(notificationTime, tz.local),
+    NotificationDetails(android: and, iOS: ios),
     payload: payload,
     androidAllowWhileIdle: true,
-    androidWakeScreen: true,
+    uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.wallClockTime,
   );
 }
 
@@ -195,8 +199,10 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     notificationChannel.description,
     groupKey: activity.id,
     playSound: alarm.sound,
-    importance: Importance.Max,
-    priority: Priority.High,
+    importance: Importance.max,
+    priority: Priority.high,
+    fullScreenIntent: true,
+    wakeScreenForMs: 4000,
     largeIcon: await _androidLargeIcon(activity, fileStorage),
     styleInformation: await _androidStyleInformation(
       activity,
