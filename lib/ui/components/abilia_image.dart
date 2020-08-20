@@ -156,8 +156,8 @@ class FullScreenImage extends StatelessWidget {
   final Decoration backgroundDecoration;
   const FullScreenImage({
     Key key,
-    this.fileId,
-    this.filePath,
+    @required this.fileId,
+    @required this.filePath,
     this.backgroundDecoration,
   }) : super(key: key);
 
@@ -169,12 +169,7 @@ class FullScreenImage extends StatelessWidget {
           builder: (context, state) {
         return BlocBuilder<UserFileBloc, UserFileState>(
             builder: (context, userFileState) {
-          UserFile userFile;
-          if (userFileState is UserFilesLoaded) {
-            userFile = userFileState.userFiles.firstWhere(
-                (f) => (f.id == fileId || f.path == filePath) && f.fileLoaded,
-                orElse: () => null);
-          }
+          final userFile = userFileState.getLoadedByIdOrPath(fileId, filePath);
           return PhotoView(
             backgroundDecoration: backgroundDecoration,
             imageProvider: userFile != null
@@ -229,8 +224,8 @@ class FadeInCalendarImage extends StatelessWidget {
 
     return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
-      final userFileLoaded = userFileState is UserFilesLoaded &&
-          userFileState.userFiles.any((f) => f.id == imageFileId);
+      final userFile =
+          userFileState.getLoadedByIdOrPath(imageFileId, imageFilePath);
       return SizedBox(
         height: height,
         width: width,
@@ -242,14 +237,14 @@ class FadeInCalendarImage extends StatelessWidget {
                   image: Image.file(imageFile).image,
                   placeholder: MemoryImage(kTransparentImage),
                 )
-              : userFileLoaded
+              : userFile != null
                   ? FadeInImage(
                       fit: fit,
                       image: imageSize == ImageSize.ORIGINAL
-                          ? Image.file(fileStorage.getFile(imageFileId)).image
+                          ? Image.file(fileStorage.getFile(userFile.id)).image
                           : Image.file(
                               fileStorage.getImageThumb(
-                                ImageThumb(id: imageFileId),
+                                ImageThumb(id: userFile.id),
                               ),
                             ).image,
                       placeholder: MemoryImage(kTransparentImage),
@@ -293,14 +288,10 @@ class FadeInAbiliaImage extends StatelessWidget {
 
     return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
-      UserFile userFile;
-      if (userFileState is UserFilesLoaded) {
-        userFile = userFileState.userFiles.firstWhere(
-            (f) =>
-                (f.id == imageFileId || f.path == imageFilePath) &&
-                f.fileLoaded,
-            orElse: () => null);
-      }
+      final userFile = userFileState.getLoadedByIdOrPath(
+        imageFileId,
+        imageFilePath,
+      );
 
       return ClipRRect(
         borderRadius: BorderRadius.circular(12),
