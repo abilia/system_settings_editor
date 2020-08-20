@@ -44,7 +44,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       } catch (e) {
         _log.severe('Error when loading user files', e);
       }
-      return userFileDb.getAllNonDeleted();
+      return userFileDb.getAll();
     });
   }
 
@@ -176,6 +176,7 @@ class UserFileRepository extends DataRepository<UserFile> {
 
   Future<bool> getAndStoreFileData() async {
     final missingFiles = await userFileDb.getAllWithMissingFiles();
+    _log.fine('${missingFiles.length} missing files to fetch');
     try {
       for (final userFile in missingFiles) {
         if (userFile.isImage) {
@@ -193,7 +194,7 @@ class UserFileRepository extends DataRepository<UserFile> {
 
   Future<Response> getImageThumb(String id, int size) {
     return httpClient.get(
-      imageThumbUrl(
+      imageThumbIdUrl(
         baseUrl: baseUrl,
         userId: userId,
         imageFileId: id,
@@ -227,6 +228,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       thumbResponse,
     ]);
     if (responses[0].statusCode == 200 && responses[1].statusCode == 200) {
+      _log.fine('Got file with id: ${userFile.id} successfully');
       await Future.wait([
         fileStorage.storeFile(responses[0].bodyBytes, userFile.id),
         fileStorage.storeImageThumb(

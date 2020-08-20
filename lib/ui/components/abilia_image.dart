@@ -126,7 +126,8 @@ class CheckedImageWithImagePopup extends StatelessWidget {
     return InkWell(
       key: TestKey.viewImage,
       onTap: () => activityDay.activity.hasImage
-          ? _showImage(activityDay.activity.fileId, context)
+          ? _showImage(
+              activityDay.activity.fileId, activityDay.activity.icon, context)
           : null,
       child: ActivityImage(
         activityDay: activityDay,
@@ -136,11 +137,14 @@ class CheckedImageWithImagePopup extends StatelessWidget {
     );
   }
 
-  void _showImage(String fileId, BuildContext context) async {
+  void _showImage(String fileId, String filePath, BuildContext context) async {
     await showViewDialog<bool>(
       context: context,
       builder: (_) {
-        return FullScreenImage(fileId: fileId);
+        return FullScreenImage(
+          fileId: fileId,
+          filePath: filePath,
+        );
       },
     );
   }
@@ -148,10 +152,12 @@ class CheckedImageWithImagePopup extends StatelessWidget {
 
 class FullScreenImage extends StatelessWidget {
   final String fileId;
+  final String filePath;
   final Decoration backgroundDecoration;
   const FullScreenImage({
     Key key,
     this.fileId,
+    this.filePath,
     this.backgroundDecoration,
   }) : super(key: key);
 
@@ -163,22 +169,27 @@ class FullScreenImage extends StatelessWidget {
           builder: (context, state) {
         return BlocBuilder<UserFileBloc, UserFileState>(
             builder: (context, userFileState) {
-          final userFileLoaded = userFileState is UserFilesLoaded &&
-              userFileState.userFiles.any((f) => f.id == fileId);
+          UserFile userFile;
+          if (userFileState is UserFilesLoaded) {
+            userFile = userFileState.userFiles.firstWhere(
+                (f) => (f.id == fileId || f.path == filePath) && f.fileLoaded,
+                orElse: () => null);
+          }
           return PhotoView(
             backgroundDecoration: backgroundDecoration,
-            imageProvider: userFileLoaded
-                ? Image.file(GetIt.I<FileStorage>().getFile(fileId)).image
+            imageProvider: userFile != null
+                ? Image.file(GetIt.I<FileStorage>().getFile(userFile.id)).image
                 : (state is Authenticated)
                     ? Image.network(
                         imageThumbUrl(
                           baseUrl: state.userRepository.baseUrl,
                           userId: state.userId,
                           imageFileId: fileId,
+                          imagePath: filePath,
                           size: ImageThumb.THUMB_SIZE,
                         ),
                         headers: authHeader(state.token),
-                      )
+                      ).image
                     : MemoryImage(kTransparentImage),
           );
         });
@@ -282,18 +293,24 @@ class FadeInAbiliaImage extends StatelessWidget {
 
     return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
-      final userFileLoaded = userFileState is UserFilesLoaded &&
-          userFileState.userFiles
-              .any((f) => f.id == imageFileId && f.fileLoaded);
+      UserFile userFile;
+      if (userFileState is UserFilesLoaded) {
+        userFile = userFileState.userFiles.firstWhere(
+            (f) =>
+                (f.id == imageFileId || f.path == imageFilePath) &&
+                f.fileLoaded,
+            orElse: () => null);
+      }
+
       return ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: userFileLoaded
+        child: userFile != null
             ? FadeInImage(
                 height: height,
                 width: width,
                 fit: fit,
                 image: Image.file(
-                  fileStorage.getImageThumb(ImageThumb(id: imageFileId)),
+                  fileStorage.getImageThumb(ImageThumb(id: userFile.id)),
                 ).image,
                 placeholder: MemoryImage(kTransparentImage),
               )
@@ -334,7 +351,7 @@ class FadeInNetworkImage extends StatelessWidget {
               placeholder: MemoryImage(kTransparentImage),
               image: NetworkImage(
                 imageFileId != null
-                    ? imageThumbUrl(
+                    ? imageThumbIdUrl(
                         baseUrl: state.userRepository.baseUrl,
                         userId: state.userId,
                         imageFileId: imageFileId,
