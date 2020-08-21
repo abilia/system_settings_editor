@@ -67,11 +67,14 @@ class _EditQuestionDialogState extends State<EditQuestionDialog> {
             text: question.name,
             onTextEdit: (text) =>
                 setState(() => question = question.copyWith(name: text)),
-            onImageSelected: (selectedImage) => setState(() {
-              newImage = selectedImage.newImage;
-              question = question.copyWith(
-                  fileId: selectedImage.id, image: selectedImage.path);
-            }),
+            onImageSelected: (selectedImage) => setState(
+              () {
+                newImage = selectedImage.newImage;
+                question = question.copyWith(
+                    fileId: selectedImage.id, image: selectedImage.path);
+              },
+            ),
+            maxLines: 12,
           ),
         ],
       ),

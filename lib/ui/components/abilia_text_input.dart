@@ -15,6 +15,7 @@ class AbiliaTextInput extends StatelessWidget {
   final String heading;
   final TextCapitalization textCapitalization;
   final List<TextInputFormatter> inputFormatters;
+  final int maxLines;
 
   const AbiliaTextInput({
     Key key,
@@ -25,6 +26,7 @@ class AbiliaTextInput extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
     this.inputFormatters = const <TextInputFormatter>[],
     this.errorState = false,
+    this.maxLines = 1,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,8 @@ class AbiliaTextInput extends StatelessWidget {
       children: <Widget>[
         if (heading != null) SubHeading(heading),
         TextFormField(
+          maxLines: maxLines,
+          minLines: 1,
           readOnly: true,
           onTap: () =>
               showViewDialog(context: context, builder: buildViewDialog),
@@ -77,6 +81,8 @@ class AbiliaTextInput extends StatelessWidget {
             style: theme.textTheme.bodyText1,
             autofocus: true,
             onEditingComplete: Navigator.of(context).maybePop,
+            maxLines: maxLines,
+            minLines: 1,
           ),
         ],
       ),
