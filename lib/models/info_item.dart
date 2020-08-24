@@ -87,6 +87,7 @@ class Checklist extends InfoItem {
   final UnmodifiableListView<Question> questions;
   final UnmodifiableMapView<String, UnmodifiableSetView<int>> checked;
   final String fileId;
+  final String icon;
 
   Checklist({
     Iterable<Question> questions = const <Question>[],
@@ -94,6 +95,7 @@ class Checklist extends InfoItem {
     this.image,
     this.name,
     this.fileId,
+    this.icon,
   })  : assert(questions != null),
         questions = UnmodifiableListView(questions),
         checked = UnmodifiableMapView(checked?.map(
@@ -201,7 +203,7 @@ class Question extends Equatable {
   factory Question.fromJson(Map<String, dynamic> json) => Question(
         id: json['id'],
         name: json['name'],
-        image: json['image'],
+        image: json['imageName'],
         fileId: json['fileId'],
         checked: json['checked'],
       );
@@ -209,7 +211,7 @@ class Question extends Equatable {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'image': image,
+        'imageName': image,
         'fileId': fileId,
         'checked': checked,
       };

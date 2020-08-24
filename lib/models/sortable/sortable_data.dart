@@ -88,7 +88,9 @@ class ChecklistData extends SortableData {
 
   @override
   String toRaw() => json.encode({
-        'checkItems': List.from(checklist.questions.map((x) => x.toJson())),
+        'checkItems': checklist.questions != null
+            ? List.from(checklist.questions.map((x) => x.toJson()))
+            : List.empty(),
         'image': checklist.image,
         'name': checklist.name,
         'fileId': checklist.fileId,
@@ -99,12 +101,15 @@ class ChecklistData extends SortableData {
     final checklist = Checklist(
       image: sortableData['image'],
       fileId: sortableData['fileId'],
+      icon: sortableData['icon'],
       name: sortableData['name'],
-      questions: List<Question>.from(
-        sortableData['checkItems'].map(
-          (x) => Question.fromJson(x),
-        ),
-      ),
+      questions: sortableData['checkItems'] != null
+          ? List<Question>.from(
+              sortableData['checkItems'].map(
+                (x) => Question.fromJson(x),
+              ),
+            )
+          : List<Question>.empty(),
     );
     return ChecklistData(checklist);
   }
