@@ -55,6 +55,7 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
       errorState: state.failedSave && !state.hasTitleOrImage,
       text: state.activity.title,
       newImage: state.newImage,
+      inputFormatters: [LengthLimitingTextInputFormatter(50)],
       onImageSelected: (selectedImage) {
         BlocProvider.of<EditActivityBloc>(context).add(ImageSelected(
           selectedImage.id,
@@ -81,6 +82,8 @@ class NameAndPictureWidget extends StatelessWidget {
   final void Function(String) onTextEdit;
   final bool errorState;
   final String text;
+  final int maxLines;
+  final List<TextInputFormatter> inputFormatters;
 
   const NameAndPictureWidget({
     Key key,
@@ -90,6 +93,8 @@ class NameAndPictureWidget extends StatelessWidget {
     this.onImageSelected,
     this.onTextEdit,
     this.errorState = false,
+    this.maxLines = 1,
+    this.inputFormatters = const <TextInputFormatter>[],
     this.text,
   }) : super(key: key);
   @override
@@ -182,6 +187,8 @@ class NameAndPictureWidget extends StatelessWidget {
               text: text,
               onEdit: onTextEdit,
               errorState: errorState,
+              maxLines: maxLines,
+              inputFormatters: inputFormatters,
             ),
           ),
         ],
@@ -196,11 +203,16 @@ class NameInput extends StatefulWidget {
     @required this.text,
     this.onEdit,
     this.errorState = false,
+    this.maxLines = 1,
+    this.inputFormatters = const <TextInputFormatter>[],
   }) : super(key: key);
 
   final String text;
   final Function(String) onEdit;
   final bool errorState;
+  final int maxLines;
+  final List<TextInputFormatter> inputFormatters;
+
   @override
   _NameInputState createState() => _NameInputState();
 }
@@ -234,7 +246,8 @@ class _NameInputState extends State<NameInput> {
       errorState: widget.errorState,
       heading: Translator.of(context).translate.name,
       textCapitalization: TextCapitalization.sentences,
-      inputFormatters: [LengthLimitingTextInputFormatter(50)],
+      inputFormatters: widget.inputFormatters,
+      maxLines: widget.maxLines,
     );
   }
 }
