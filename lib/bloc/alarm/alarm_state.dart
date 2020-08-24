@@ -19,9 +19,9 @@ class AlarmState extends AlarmStateBase {
 }
 
 class PendingAlarmState extends AlarmStateBase {
-  final UnmodifiableSetView<NotificationPayload> pedingAlarms;
+  final UnmodifiableSetView<NotificationAlarm> pedingAlarms;
   PendingAlarmState._(this.pedingAlarms);
-  PendingAlarmState(Iterable<NotificationPayload> pedingAlarms)
+  PendingAlarmState(Iterable<NotificationAlarm> pedingAlarms)
       : this._(UnmodifiableSetView(pedingAlarms.toSet()));
   @override
   List<Object> get props => [pedingAlarms];

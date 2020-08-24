@@ -33,10 +33,9 @@ void main() {
     title: 'actity',
     checkable: true,
   );
-  final payloadSerial = json.encode(NotificationPayload(
-    activityId: activity.id,
-    day: activityWithAlarmday,
-    onStart: true,
+  final payloadSerial = json.encode(StartAlarm(
+    activity,
+    activityWithAlarmday,
   ).toJson());
 
   setUp(() {
@@ -276,11 +275,9 @@ void main() {
     final day = activity1StartTime.onlyDays();
     final activity1 = Activity.createNew(
         title: '111111', startTime: activity1StartTime, duration: 2.minutes());
-    final startTimeActivity1NotificationPayload =
-        json.encode(NotificationPayload(
-      activityId: activity1.id,
-      day: day,
-      onStart: true,
+    final startTimeActivity1NotificationPayload = json.encode(StartAlarm(
+      activity1,
+      day,
     ).toJson());
 
     final activity2StartTime = activity1StartTime.add(1.minutes());

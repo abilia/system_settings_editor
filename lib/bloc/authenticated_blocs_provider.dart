@@ -114,7 +114,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           BlocProvider<NotificationBloc>(
             create: (context) => NotificationBloc(
               selectedNotificationStream: GetIt.I<NotificationStreamGetter>()(),
-              activitiesBloc: context.bloc<ActivitiesBloc>(),
             ),
           ),
           BlocProvider<CalendarViewBloc>(

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
@@ -146,8 +145,7 @@ Future _scheduleNotification(
     alwaysUse24HourFormat,
   );
   final hash = notificationAlarm.hashCode;
-  final payload = json.encode(
-      NotificationPayload.fromNotificationAlarm(notificationAlarm).toJson());
+  final payload = notificationAlarm.encode();
 
   final and = Platform.isIOS
       ? null

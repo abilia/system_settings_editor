@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
@@ -8,30 +10,40 @@ abstract class NotificationAlarm extends Equatable {
   Activity get activity => activityDay.activity;
   NotificationAlarm(this.activityDay) : assert(activityDay != null);
   DateTime get notificationTime;
+  String get type;
 
   Map<String, dynamic> toJson() => {
-        'day': day,
+        'day': day.millisecondsSinceEpoch,
         'activity': activity.wrapWithDbModel().toJson(),
-        'type': runtimeType,
-        if (this is NewReminder) 'reminder': (this as NewReminder).reminder,
+        'type': type,
+        if (this is NewReminder)
+          'reminder': (this as NewReminder).reminder.inMilliseconds,
       };
   factory NotificationAlarm.fromJson(Map<String, dynamic> json) {
     final activity = DbActivity.fromJson(json['activity']).activity;
-    final day = json['day'];
+    final day = DateTime.fromMillisecondsSinceEpoch(json['day']);
     switch (json['type']) {
-      case StartAlarm:
+      case StartAlarm.typeName:
         return StartAlarm(activity, day);
-      case EndAlarm:
+      case EndAlarm.typeName:
         return EndAlarm(activity, day);
-      case ReminderBefore:
-        return ReminderBefore(activity, day, reminder: json['reminder']);
-      case ReminderUnchecked:
-        return ReminderUnchecked(activity, day, reminder: json['reminder']);
+      case ReminderBefore.typeName:
+        return ReminderBefore(activity, day,
+            reminder: Duration(milliseconds: json['reminder']));
+      case ReminderUnchecked.typeName:
+        return ReminderUnchecked(activity, day,
+            reminder: Duration(milliseconds: json['reminder']));
         break;
       default:
         return null;
     }
   }
+
+  String encode() => json.encode(toJson());
+
+  factory NotificationAlarm.decode(String data) =>
+      NotificationAlarm.fromJson(json.decode(data));
+
   @override
   List<Object> get props => [activityDay];
   @override
@@ -48,6 +60,10 @@ class StartAlarm extends NewAlarm {
   StartAlarm.from(ActivityDay activityDay) : super(activityDay);
   @override
   DateTime get notificationTime => activityDay.start;
+
+  @override
+  String get type => typeName;
+  static const String typeName = 'StartAlarm';
 }
 
 class EndAlarm extends NewAlarm {
@@ -55,6 +71,10 @@ class EndAlarm extends NewAlarm {
   EndAlarm.from(ActivityDay activityDay) : super(activityDay);
   @override
   DateTime get notificationTime => activityDay.end;
+
+  @override
+  String get type => typeName;
+  static const String typeName = 'EndAlarm';
 }
 
 abstract class NewReminder extends NotificationAlarm {
@@ -73,6 +93,10 @@ class ReminderBefore extends NewReminder {
       : super(activityDay, reminder);
   @override
   DateTime get notificationTime => activityDay.start.subtract(reminder);
+
+  @override
+  String get type => typeName;
+  static const String typeName = 'ReminderBefore';
 }
 
 class ReminderUnchecked extends NewReminder {
@@ -83,4 +107,8 @@ class ReminderUnchecked extends NewReminder {
       : super(activityDay, reminder);
   @override
   DateTime get notificationTime => activityDay.end.add(reminder);
+
+  @override
+  String get type => typeName;
+  static const String typeName = 'ReminderUnchecked';
 }
