@@ -290,8 +290,8 @@ packages:
     dependency: "direct main"
     description:
       path: "flutter_local_notifications/"
-      ref: start_activity_android
-      resolved-ref: d8dbc3731d0024cd691b226616c81b02b739719e
+      ref: "flutter_local_notifications-v1.5.0-beta.7-fork-1.0"
+      resolved-ref: "5c27b96b7c9d74a0c4f426a8667b53df9c8aac1b"
       url: "git://github.com/abilia/flutter_local_notifications.git"
     source: git
     version: "1.5.0-beta.7"

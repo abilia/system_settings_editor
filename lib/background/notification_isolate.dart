@@ -127,6 +127,7 @@ Future _scheduleAllAlarmNotifications(
             fileStorage,
           );
         }
+        _log.info('${notifications.length} notifications scheduled');
       },
     );
 

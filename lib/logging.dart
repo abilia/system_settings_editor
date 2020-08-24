@@ -24,8 +24,12 @@ void initLogging({bool initAppcenter = false, Level level = Level.ALL}) async {
   Logger.root.onRecord.listen((record) {
     print(
         '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
-    if (record?.error != null) print(record.error);
-    if (record?.stackTrace != null) print(record.stackTrace);
+    if (record?.error != null) {
+      print(record.error);
+    }
+    if (record?.stackTrace != null) {
+      print(record.stackTrace);
+    }
   });
 }
 
@@ -121,7 +125,7 @@ class RouteLoggingObserver extends RouteObserver<PageRoute<dynamic>> {
   void didReplace({Route<dynamic> newRoute, Route<dynamic> oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     if (newRoute is PageRoute) {
-      _log.fine('didReplace newRoute');
+      _log.fine('didReplace $newRoute');
     }
   }
 
