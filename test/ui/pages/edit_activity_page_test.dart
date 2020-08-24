@@ -926,6 +926,52 @@ Internal improvements to tests and examples.''';
         expect(find.text(newQuestionName), findsOneWidget);
       });
 
+      testWidgets('Can edit multiline question', (WidgetTester tester) async {
+        final questions = {
+          0: '''Question
+is
+a
+multi
+line
+question''',
+          1: 'another q',
+        };
+
+        final activityWithChecklist = Activity.createNew(
+            title: 'null',
+            startTime: startTime,
+            infoItem: Checklist(
+                name: 'a checklist',
+                questions: questions.keys
+                    .map((k) => Question(id: k, name: questions[k]))));
+        final newQuestionName = '''
+yet
+more
+lines
+for
+the
+text''';
+        await tester.pumpWidget(wrapWithMaterialApp(
+            EditActivityPage(day: today),
+            givenActivity: activityWithChecklist));
+        await tester.pumpAndSettle();
+        await tester.goToInfoItemTab();
+
+        expect(find.text(questions[0]), findsOneWidget);
+        await tester.tap(find.text(questions[1]));
+
+        await tester.pumpAndSettle();
+
+        await tester.enterText_(
+            find.byKey(TestKey.editTitleTextFormField), newQuestionName);
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.okDialog));
+        await tester.pumpAndSettle();
+
+        expect(find.text(questions[1]), findsNothing);
+        expect(find.text(newQuestionName), findsOneWidget);
+      });
+
       testWidgets('checklist button library shows',
           (WidgetTester tester) async {
         await tester

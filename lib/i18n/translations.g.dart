@@ -459,13 +459,13 @@ class SV extends Translated {
   final String dots = 'Prickar';
 
   @override
-  final String selectFromLibrary = 'Välj från biblotek';
+  final String selectFromLibrary = 'Välj från bibliotek';
 
   @override
   final String addNew = 'Lägg till ny';
 
   @override
-  final String task = 'Fråga';
+  final String task = 'Uppgift';
 
   @override
   final String edge = 'Flärp';
