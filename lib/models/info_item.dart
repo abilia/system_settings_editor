@@ -89,6 +89,9 @@ class Checklist extends InfoItem {
   final String fileId;
   final String icon;
 
+  bool get hasImage =>
+      (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
+
   Checklist({
     Iterable<Question> questions = const <Question>[],
     Map<String, Set<int>> checked = const {},

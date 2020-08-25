@@ -119,13 +119,40 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
               onPressed: () async {
                 final selectedChecklist = await showViewDialog<Checklist>(
                   context: context,
-                  builder: (context) => ViewDialog(
-                    verticalPadding: 0.0,
-                    heading: Text(
-                      Translator.of(context).translate.selectFromLibrary,
-                      style: abiliaTheme.textTheme.headline6,
+                  builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider<SortableArchiveBloc<ChecklistData>>(
+                        create: (_) => SortableArchiveBloc<ChecklistData>(
+                          sortableBloc: BlocProvider.of<SortableBloc>(context),
+                        ),
+                      ),
+                      BlocProvider<UserFileBloc>.value(
+                        value: BlocProvider.of<UserFileBloc>(context),
+                      ),
+                    ],
+                    child: BlocBuilder<SortableArchiveBloc<ChecklistData>,
+                        SortableArchiveState<ChecklistData>>(
+                      builder: (innerContext, checklistState) => ViewDialog(
+                        verticalPadding: 0.0,
+                        backButton: checklistState.currentFolderId == null
+                            ? null
+                            : ActionButton(
+                                onPressed: () {
+                                  BlocProvider.of<
+                                          SortableArchiveBloc<
+                                              ChecklistData>>(innerContext)
+                                      .add(NavigateUp());
+                                },
+                                themeData: darkButtonTheme,
+                                child: Icon(
+                                  AbiliaIcons.navigation_previous,
+                                  size: 32,
+                                ),
+                              ),
+                        heading: _getArchiveHeading(checklistState),
+                        child: ChecklistLibrary(),
+                      ),
                     ),
-                    child: ChecklistLibrary(),
                   ),
                 );
                 if (selectedChecklist != null &&
@@ -224,6 +251,12 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
         ),
       );
     }
+  }
+
+  Text _getArchiveHeading(SortableArchiveState state) {
+    final folderName = state.allById[state.currentFolderId]?.data?.title() ??
+        Translator.of(context).translate.selectFromLibrary;
+    return Text(folderName, style: abiliaTheme.textTheme.headline6);
   }
 
   void _handleNewQuestion() async {
