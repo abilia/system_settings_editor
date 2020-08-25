@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,7 @@ class App extends StatelessWidget {
   final PushBloc pushBloc;
   final String baseUrl;
   final NotificationAlarm notificationPayload;
+  bool get wasAlarmStart => notificationPayload != null && Platform.isAndroid;
 
   App({
     Key key,
@@ -108,7 +110,9 @@ class App extends StatelessWidget {
               return AuthenticatedBlocsProvider(
                 authenticatedState: state,
                 child: SeagullApp(
-                  home: AlarmListener(child: CalendarPage()),
+                  home: wasAlarmStart
+                      ? FullScreenAlarm(alarm: notificationPayload)
+                      : AlarmListener(child: CalendarPage()),
                 ),
               );
             }

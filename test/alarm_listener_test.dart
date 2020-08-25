@@ -81,7 +81,7 @@ void main() {
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(AlarmPage), findsOneWidget);
+      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
     });
 
     testWidgets('Reminder shows', (WidgetTester tester) async {
@@ -100,7 +100,7 @@ void main() {
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(ReminderPage), findsOneWidget);
+      expect(find.byType(NavigatableReminderPage), findsOneWidget);
       expect(find.text(translater.inTime('15 ${translater.minutes}')),
           findsOneWidget);
     });
@@ -122,7 +122,7 @@ void main() {
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(ReminderPage), findsOneWidget);
+      expect(find.byType(NavigatableReminderPage), findsOneWidget);
       expect(find.text(translater.timeAgo('15 ${translater.minutes}')),
           findsOneWidget);
     });
@@ -145,7 +145,7 @@ void main() {
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(ReminderPage), findsNothing);
+      expect(find.byType(NavigatableReminderPage), findsNothing);
     });
 
     testWidgets('Reminder for checked activity show from endtime',
@@ -167,7 +167,7 @@ void main() {
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(ReminderPage), findsOneWidget);
+      expect(find.byType(NavigatableReminderPage), findsOneWidget);
       expect(find.text(translater.timeAgo('15 ${translater.minutes}')),
           findsOneWidget);
     });
@@ -179,13 +179,13 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(AlarmPage), findsNothing);
+      expect(find.byType(NavigatableAlarmPage), findsNothing);
       // Act
       mockNotificationSelected.add(payloadSerial);
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(AlarmPage), findsOneWidget);
+      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
     });
 
     testWidgets('Alarms shows when notification selected before app start',
@@ -197,7 +197,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(AlarmPage), findsOneWidget);
+      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
     });
 
     testWidgets('Alarms can be checked when notification selected',
@@ -209,7 +209,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- Alarm is on screen and alarm is checkable
-      expect(find.byType(AlarmPage), findsOneWidget);
+      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
       expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
 
@@ -244,7 +244,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- On screen alarm showing and check button showing
-      expect(find.byType(AlarmPage), findsOneWidget);
+      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
       expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
 
@@ -291,7 +291,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final alarmScreenFinder = find.byType(AlarmPage);
+      final alarmScreenFinder = find.byType(NavigatableAlarmPage);
 
       // Act - time goes which should display start alarm
       mockTicker.add(activity1StartTime);
@@ -319,7 +319,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final alarmScreenFinder = find.byType(AlarmPage);
+      final alarmScreenFinder = find.byType(NavigatableAlarmPage);
 
       // Act - time goes which should display alarm
       mockTicker.add(activity1StartTime);
@@ -346,7 +346,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1, activity2]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final alarmScreenFinder = find.byType(AlarmPage);
+      final alarmScreenFinder = find.byType(NavigatableAlarmPage);
 
       // Act - time goes which should display alarms (start and end time)
       mockTicker.add(activity1StartTime);
@@ -363,7 +363,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
       expect(
           tester
-              .widget<AlarmPage>(alarmScreenFinder)
+              .widget<NavigatableAlarmPage>(alarmScreenFinder)
               .alarm
               .activityDay
               .activity
@@ -379,7 +379,7 @@ void main() {
 
       expect(
           tester
-              .widget<AlarmPage>(alarmScreenFinder)
+              .widget<NavigatableAlarmPage>(alarmScreenFinder)
               .alarm
               .activityDay
               .activity
@@ -402,7 +402,7 @@ void main() {
       final pushBloc = PushBloc();
       await tester.pumpWidget(App(pushBloc: pushBloc));
       await tester.pumpAndSettle();
-      final alarmScreenFinder = find.byType(AlarmPage);
+      final alarmScreenFinder = find.byType(NavigatableAlarmPage);
 
       // Act - time goes which should display alarm
       mockTicker.add(activity1StartTime);
@@ -412,7 +412,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
       expect(
           tester
-              .widget<AlarmPage>(alarmScreenFinder)
+              .widget<NavigatableAlarmPage>(alarmScreenFinder)
               .alarm
               .activityDay
               .activity
@@ -439,7 +439,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
 
       expect(
-          (tester.widget(alarmScreenFinder) as AlarmPage)
+          (tester.widget(alarmScreenFinder) as NavigatableAlarmPage)
               .alarm
               .activityDay
               .activity
@@ -501,8 +501,8 @@ void main() {
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activities));
 
-      final reminderFinder = find.byType(ReminderPage, skipOffstage: false);
-      final alarmScreenFinder = find.byType(AlarmPage, skipOffstage: false);
+      final reminderFinder = find.byType(NavigatableReminderPage, skipOffstage: false);
+      final alarmScreenFinder = find.byType(NavigatableAlarmPage, skipOffstage: false);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
