@@ -8,7 +8,8 @@ import 'package:seagull/ui/theme.dart';
 class ImageArchive extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
+    return BlocBuilder<SortableArchiveBloc<ImageArchiveData>,
+        SortableArchiveState<ImageArchiveData>>(
       builder: (context, archiveState) {
         final List<Sortable> currentFolderContent =
             archiveState.allByFolder[archiveState.currentFolderId] ?? [];
@@ -24,7 +25,8 @@ class ImageArchive extends StatelessWidget {
                     child: Folder(
                       sortable: sortable,
                       onTap: () {
-                        BlocProvider.of<ImageArchiveBloc>(context)
+                        BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(
+                                context)
                             .add(FolderChanged(sortable.id));
                       },
                     ),
@@ -104,7 +106,8 @@ class ArchiveImage extends StatelessWidget {
     final imageWidth = 84.0;
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
+      child: BlocBuilder<SortableArchiveBloc<ImageArchiveData>,
+              SortableArchiveState<ImageArchiveData>>(
           builder: (context, archiveState) {
         final imageId = imageArchiveData.fileId;
         final name = imageArchiveData.name;

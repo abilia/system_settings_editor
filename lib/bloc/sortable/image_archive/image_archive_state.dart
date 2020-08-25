@@ -1,11 +1,11 @@
 part of 'image_archive_bloc.dart';
 
-class ImageArchiveState extends Equatable {
-  final Map<String, Iterable<Sortable<ImageArchiveData>>> allByFolder;
-  final Map<String, Sortable<ImageArchiveData>> allById;
+class SortableArchiveState<T extends SortableData> extends Equatable {
+  final Map<String, Iterable<Sortable<T>>> allByFolder;
+  final Map<String, Sortable<T>> allById;
   final String currentFolderId;
 
-  ImageArchiveState(
+  SortableArchiveState(
     this.allByFolder,
     this.allById,
     this.currentFolderId,

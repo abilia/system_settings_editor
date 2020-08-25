@@ -6,18 +6,19 @@ import '../../../mocks.dart';
 import '../../../ui/components/sortable/image_archive_test.dart';
 
 void main() {
-  ImageArchiveBloc imageArchiveBloc;
+  SortableArchiveBloc<ImageArchiveData> imageArchiveBloc;
   SortableBloc sortableBlocMock;
 
   setUp(() {
     sortableBlocMock = MockSortableBloc();
-    imageArchiveBloc = ImageArchiveBloc(
+    imageArchiveBloc = SortableArchiveBloc<ImageArchiveData>(
       sortableBloc: sortableBlocMock,
     );
   });
 
   test('Initial state is an empty ImageArchiveState', () {
-    expect(imageArchiveBloc.state, ImageArchiveState({}, {}, null));
+    expect(imageArchiveBloc.state,
+        SortableArchiveState<ImageArchiveData>({}, {}, null));
   });
 
   test('FolderChanged will set the folder in the state', () async {
@@ -25,7 +26,7 @@ void main() {
     imageArchiveBloc.add(FolderChanged(folderId));
     await expectLater(
       imageArchiveBloc,
-      emits(ImageArchiveState({}, {}, folderId)),
+      emits(SortableArchiveState<ImageArchiveData>({}, {}, folderId)),
     );
   });
 

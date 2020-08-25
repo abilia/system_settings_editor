@@ -203,7 +203,7 @@ class Question extends Equatable {
   factory Question.fromJson(Map<String, dynamic> json) => Question(
         id: json['id'],
         name: json['name'],
-        image: json['imageName'],
+        image: json['image'],
         fileId: json['fileId'],
         checked: json['checked'],
       );
@@ -211,11 +211,14 @@ class Question extends Equatable {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'imageName': image,
+        'image': image,
         'fileId': fileId,
         'checked': checked,
       };
 
   @override
   List<Object> get props => [id, name, fileId, image, checked];
+
+  @override
+  bool get stringify => true;
 }

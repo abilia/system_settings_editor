@@ -121,7 +121,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   }
 
   Widget buildImageArchiveDialog() {
-    return BlocBuilder<ImageArchiveBloc, ImageArchiveState>(
+    return BlocBuilder<SortableArchiveBloc<ImageArchiveData>, SortableArchiveState<ImageArchiveData>>(
       builder: (innerContext, imageArchiveState) => ViewDialog(
         verticalPadding: 0.0,
         backButton: ActionButton(
@@ -129,7 +129,8 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
             if (imageArchiveState.currentFolderId == null) {
               setState(() => imageArchiveView = false);
             } else {
-              BlocProvider.of<ImageArchiveBloc>(innerContext).add(NavigateUp());
+              BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(innerContext)
+                  .add(NavigateUp());
             }
           },
           themeData: darkButtonTheme,
@@ -145,8 +146,8 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     );
   }
 
-  Text getImageArchiveHeading(ImageArchiveState state) {
-    final folderName = state.allById[state.currentFolderId]?.data?.name ??
+  Text getImageArchiveHeading(SortableArchiveState state) {
+    final folderName = state.allById[state.currentFolderId]?.data?.title() ??
         Translator.of(context).translate.imageArchive;
     return Text(folderName, style: abiliaTheme.textTheme.headline6);
   }

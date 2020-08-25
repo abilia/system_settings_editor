@@ -3,6 +3,7 @@ part of 'sortable.dart';
 abstract class SortableData extends Equatable {
   const SortableData();
   String toRaw();
+  String title();
 }
 
 class RawSortableData extends SortableData {
@@ -17,6 +18,11 @@ class RawSortableData extends SortableData {
   List<Object> get props => [data];
 
   static RawSortableData fromJson(String data) => RawSortableData(data);
+
+  @override
+  String title() {
+    return '';
+  }
 }
 
 class ImageArchiveData extends SortableData {
@@ -52,6 +58,11 @@ class ImageArchiveData extends SortableData {
         file: sortableData['file'],
         upload: sortableData['upload']);
   }
+
+  @override
+  String title() {
+    return name;
+  }
 }
 
 class NoteData extends SortableData {
@@ -75,6 +86,11 @@ class NoteData extends SortableData {
       name: sortableData['name'],
       text: sortableData['text'],
     );
+  }
+
+  @override
+  String title() {
+    return name;
   }
 }
 
@@ -112,5 +128,10 @@ class ChecklistData extends SortableData {
           : List<Question>.empty(),
     );
     return ChecklistData(checklist);
+  }
+
+  @override
+  String title() {
+    return checklist.name;
   }
 }
