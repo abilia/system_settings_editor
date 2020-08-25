@@ -66,25 +66,29 @@ class ImageArchiveData extends SortableData {
 }
 
 class NoteData extends SortableData {
-  final String name, text;
+  final String name, text, icon, fileId;
 
-  NoteData({this.name, this.text});
+  NoteData({this.name, this.text, this.icon, this.fileId});
 
   @override
   @override
   String toRaw() => json.encode({
         'name': name,
         'text': text,
+        'icon': icon,
+        'fileId': fileId,
       });
 
   @override
-  List<Object> get props => [name, text];
+  List<Object> get props => [name, text, icon, fileId];
 
   factory NoteData.fromJson(String data) {
     final sortableData = json.decode(data);
     return NoteData(
       name: sortableData['name'],
       text: sortableData['text'],
+      icon: sortableData['icon'],
+      fileId: sortableData['fileId'],
     );
   }
 

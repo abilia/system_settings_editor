@@ -326,13 +326,40 @@ class EditNoteWidget extends StatelessWidget {
               onPressed: () async {
                 final result = await showViewDialog<String>(
                   context: context,
-                  builder: (context) => ViewDialog(
-                    verticalPadding: 0.0,
-                    heading: Text(
-                      Translator.of(context).translate.selectFromLibrary,
-                      style: abiliaTheme.textTheme.headline6,
+                  builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider<SortableArchiveBloc<NoteData>>(
+                        create: (_) => SortableArchiveBloc<NoteData>(
+                          sortableBloc: BlocProvider.of<SortableBloc>(context),
+                        ),
+                      ),
+                      BlocProvider<UserFileBloc>.value(
+                        value: BlocProvider.of<UserFileBloc>(context),
+                      ),
+                    ],
+                    child: BlocBuilder<SortableArchiveBloc<NoteData>,
+                        SortableArchiveState<NoteData>>(
+                      builder: (innerContext, noteState) => ViewDialog(
+                        verticalPadding: 0.0,
+                        backButton: noteState.currentFolderId == null
+                            ? null
+                            : ActionButton(
+                                onPressed: () {
+                                  BlocProvider.of<
+                                              SortableArchiveBloc<NoteData>>(
+                                          innerContext)
+                                      .add(NavigateUp());
+                                },
+                                themeData: darkButtonTheme,
+                                child: Icon(
+                                  AbiliaIcons.navigation_previous,
+                                  size: 32,
+                                ),
+                              ),
+                        heading: _getArchiveHeading(noteState, context),
+                        child: NoteLibrary(),
+                      ),
                     ),
-                    child: NoteLibrary(),
                   ),
                 );
                 if (result != null && result != infoItem.text) {
@@ -376,5 +403,11 @@ class EditNoteWidget extends StatelessWidget {
         const SizedBox(height: 56.0),
       ]),
     );
+  }
+
+  Text _getArchiveHeading(SortableArchiveState state, BuildContext context) {
+    final folderName = state.allById[state.currentFolderId]?.data?.title() ??
+        Translator.of(context).translate.selectFromLibrary;
+    return Text(folderName, style: abiliaTheme.textTheme.headline6);
   }
 }
