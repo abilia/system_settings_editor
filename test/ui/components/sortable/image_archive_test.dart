@@ -87,7 +87,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchive), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
-      expect(find.byType(Folder), findsOneWidget);
+      expect(find.byType(LibraryFolder), findsOneWidget);
     });
 
     testWidgets('Selected Image is poped', (WidgetTester tester) async {

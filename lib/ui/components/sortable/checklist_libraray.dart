@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
@@ -21,8 +20,10 @@ class ChecklistLibrary extends StatelessWidget {
           children: currentFolderContent
               .map(
                 (sortable) => sortable.isGroup
-                    ? ChecklistFolder(
-                        sortable: sortable,
+                    ? LibraryFolder(
+                        title: sortable.data.checklist.name,
+                        fileId: sortable.data.checklist.fileId,
+                        filePath: sortable.data.checklist.icon,
                         onTap: () {
                           BlocProvider.of<SortableArchiveBloc<ChecklistData>>(
                                   context)
@@ -36,62 +37,6 @@ class ChecklistLibrary extends StatelessWidget {
               .toList(),
         );
       },
-    );
-  }
-}
-
-class ChecklistFolder extends StatelessWidget {
-  final GestureTapCallback onTap;
-  final Sortable<ChecklistData> sortable;
-
-  const ChecklistFolder({
-    Key key,
-    @required this.onTap,
-    @required this.sortable,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          children: <Widget>[
-            Text(
-              sortable.data.checklist.name,
-              style: abiliaTextTheme.caption,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Stack(
-              children: [
-                Icon(
-                  AbiliaIcons.folder,
-                  size: 86,
-                  color: AbiliaColors.orange,
-                ),
-                Positioned(
-                  bottom: 16,
-                  left: 10,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: Align(
-                      alignment: Alignment.center,
-                      heightFactor: 42 / 66,
-                      child: FadeInAbiliaImage(
-                        imageFileId: sortable.data.checklist.fileId,
-                        imageFilePath: sortable.data.checklist.icon,
-                        width: 66,
-                        height: 66,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
