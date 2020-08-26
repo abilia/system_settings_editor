@@ -4,6 +4,8 @@ abstract class SortableData extends Equatable {
   const SortableData();
   String toRaw();
   String title();
+  String folderFileId();
+  String folderFilePath();
 }
 
 class RawSortableData extends SortableData {
@@ -20,9 +22,13 @@ class RawSortableData extends SortableData {
   static RawSortableData fromJson(String data) => RawSortableData(data);
 
   @override
-  String title() {
-    return '';
-  }
+  String title() => '';
+
+  @override
+  String folderFileId() => '';
+
+  @override
+  String folderFilePath() => '';
 }
 
 class ImageArchiveData extends SortableData {
@@ -60,9 +66,13 @@ class ImageArchiveData extends SortableData {
   }
 
   @override
-  String title() {
-    return name;
-  }
+  String title() => name;
+
+  @override
+  String folderFileId() => fileId;
+
+  @override
+  String folderFilePath() => icon;
 }
 
 class NoteData extends SortableData {
@@ -93,9 +103,13 @@ class NoteData extends SortableData {
   }
 
   @override
-  String title() {
-    return name;
-  }
+  String title() => name;
+
+  @override
+  String folderFileId() => fileId;
+
+  @override
+  String folderFilePath() => icon;
 }
 
 class ChecklistData extends SortableData {
@@ -135,7 +149,11 @@ class ChecklistData extends SortableData {
   }
 
   @override
-  String title() {
-    return checklist.name;
-  }
+  String title() => checklist.name;
+
+  @override
+  String folderFileId() => checklist.fileId;
+
+  @override
+  String folderFilePath() => checklist.icon;
 }

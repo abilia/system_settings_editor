@@ -1,41 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
-
-class NoteLibrary extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SortableArchiveBloc<NoteData>,
-        SortableArchiveState<NoteData>>(
-      builder: (context, archiveState) {
-        final List<Sortable<NoteData>> currentFolderContent =
-            archiveState.allByFolder[archiveState.currentFolderId] ?? [];
-        currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-        return GridView.count(
-          padding: EdgeInsets.symmetric(vertical: ViewDialog.verticalPadding),
-          crossAxisCount: 3,
-          childAspectRatio: 0.96,
-          children: currentFolderContent
-              .map((sortable) => sortable.isGroup
-                  ? LibraryFolder(
-                      title: sortable.data.name,
-                      fileId: sortable.data.fileId,
-                      filePath: sortable.data.icon,
-                      onTap: () {
-                        BlocProvider.of<SortableArchiveBloc<NoteData>>(context)
-                            .add(FolderChanged(sortable.id));
-                      },
-                    )
-                  : LibraryNote(content: sortable.data.text))
-              .toList(),
-        );
-      },
-    );
-  }
-}
 
 class LibraryNote extends StatelessWidget {
   final String content;

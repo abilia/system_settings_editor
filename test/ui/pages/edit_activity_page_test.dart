@@ -78,6 +78,8 @@ void main() {
     );
   }
 
+  Type typeOf<T>() => T;
+
   group('edit activity test', () {
     testWidgets('New activity shows', (WidgetTester tester) async {
       await tester
@@ -700,7 +702,8 @@ Internal improvements to tests and examples.''';
         await goToNote(tester);
         await tester.tap(find.byIcon(AbiliaIcons.show_text));
         await tester.pumpAndSettle();
-        expect(find.byType(NoteLibrary), findsOneWidget);
+        expect(
+            find.byType(typeOf<SortableLibrary<NoteData>>()), findsOneWidget);
         expect(find.byType(LibraryNote), findsWidgets);
         expect(find.text(content), findsOneWidget);
       });
@@ -1020,7 +1023,8 @@ text''';
         await goToChecklist(tester);
         await tester.tap(find.byIcon(AbiliaIcons.show_text));
         await tester.pumpAndSettle();
-        expect(find.byType(ChecklistLibrary), findsOneWidget);
+        expect(find.byType(typeOf<SortableLibrary<ChecklistData>>()),
+            findsOneWidget);
         expect(find.byType(LibraryChecklist), findsWidgets);
         expect(find.text(title1), findsOneWidget);
       });

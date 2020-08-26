@@ -150,7 +150,11 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                                 ),
                               ),
                         heading: _getArchiveHeading(checklistState),
-                        child: ChecklistLibrary(),
+                        child: SortableLibrary<ChecklistData>(
+                          (Sortable<ChecklistData> s) => LibraryChecklist(
+                            checklist: s.data.checklist,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -357,7 +361,10 @@ class EditNoteWidget extends StatelessWidget {
                                 ),
                               ),
                         heading: _getArchiveHeading(noteState, context),
-                        child: NoteLibrary(),
+                        child: SortableLibrary<NoteData>(
+                            (Sortable<NoteData> s) => LibraryNote(
+                                  content: s.data.text,
+                                )),
                       ),
                     ),
                   ),

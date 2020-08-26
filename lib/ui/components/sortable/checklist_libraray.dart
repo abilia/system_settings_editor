@@ -1,45 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
-
-class ChecklistLibrary extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SortableArchiveBloc<ChecklistData>,
-        SortableArchiveState<ChecklistData>>(
-      builder: (context, archiveState) {
-        final List<Sortable<ChecklistData>> currentFolderContent =
-            archiveState.allByFolder[archiveState.currentFolderId] ?? [];
-        currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-        return GridView.count(
-          padding: EdgeInsets.symmetric(vertical: ViewDialog.verticalPadding),
-          crossAxisCount: 3,
-          childAspectRatio: 0.96,
-          children: currentFolderContent
-              .map(
-                (sortable) => sortable.isGroup
-                    ? LibraryFolder(
-                        title: sortable.data.checklist.name,
-                        fileId: sortable.data.checklist.fileId,
-                        filePath: sortable.data.checklist.icon,
-                        onTap: () {
-                          BlocProvider.of<SortableArchiveBloc<ChecklistData>>(
-                                  context)
-                              .add(FolderChanged(sortable.id));
-                        },
-                      )
-                    : LibraryChecklist(
-                        checklist: sortable.data.checklist,
-                      ),
-              )
-              .toList(),
-        );
-      },
-    );
-  }
-}
 
 class LibraryChecklist extends StatelessWidget {
   final Checklist checklist;
