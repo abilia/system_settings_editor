@@ -72,20 +72,18 @@ class BlocLoggingObserver extends BlocObserver {
     final event = transition.event;
     if (event is Silent || bloc is Silent) return;
     final log = _log(bloc);
-    if (event is! Silent) {
-      if (event is Shout) {
-        log.shout(transition);
-      } else if (event is Warning) {
-        log.warning(transition);
-      } else if (event is Info) {
-        log.info(transition);
-      } else if (event is Fine) {
-        log.fine(transition);
-      } else if (event is Finer) {
-        log.finer(transition);
-      } else {
-        log.finest(transition);
-      }
+    if (event is Shout) {
+      log.shout(transition);
+    } else if (event is Warning) {
+      log.warning(transition);
+    } else if (event is Info) {
+      log.info(transition);
+    } else if (event is Fine) {
+      log.fine(transition);
+    } else if (event is Finest) {
+      log.finest(transition);
+    } else {
+      log.finer(transition);
     }
   }
 
@@ -118,6 +116,7 @@ class RouteLoggingObserver extends RouteObserver<PageRoute<dynamic>> {
     super.didPush(route, previousRoute);
     if (route is PageRoute) {
       _log.fine('didPush $route');
+      _log.finest('didPush previousRoute $previousRoute');
     }
   }
 
@@ -126,6 +125,7 @@ class RouteLoggingObserver extends RouteObserver<PageRoute<dynamic>> {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     if (newRoute is PageRoute) {
       _log.fine('didReplace $newRoute');
+      _log.finest('didReplace oldRoute $oldRoute');
     }
   }
 
@@ -134,6 +134,7 @@ class RouteLoggingObserver extends RouteObserver<PageRoute<dynamic>> {
     super.didPop(route, previousRoute);
     if (previousRoute is PageRoute && route is PageRoute) {
       _log.fine('didPop $route');
+      _log.finest('didPop previousRoute $previousRoute');
     }
   }
 }

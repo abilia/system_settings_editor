@@ -202,6 +202,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     priority: Priority.high,
     fullScreenIntent: true,
     wakeScreenForMs: 4000,
+    startActivityClassName: 'com.abilia.seagull.AlarmActivity',
     largeIcon: await _androidLargeIcon(activity, fileStorage),
     styleInformation: await _androidStyleInformation(
       activity,
