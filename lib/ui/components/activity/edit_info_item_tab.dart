@@ -119,43 +119,10 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
               onPressed: () async {
                 final selectedChecklist = await showViewDialog<Checklist>(
                   context: context,
-                  builder: (context) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider<SortableArchiveBloc<ChecklistData>>(
-                        create: (_) => SortableArchiveBloc<ChecklistData>(
-                          sortableBloc: BlocProvider.of<SortableBloc>(context),
-                        ),
-                      ),
-                      BlocProvider<UserFileBloc>.value(
-                        value: BlocProvider.of<UserFileBloc>(context),
-                      ),
-                    ],
-                    child: BlocBuilder<SortableArchiveBloc<ChecklistData>,
-                        SortableArchiveState<ChecklistData>>(
-                      builder: (innerContext, checklistState) => ViewDialog(
-                        verticalPadding: 0.0,
-                        backButton: checklistState.currentFolderId == null
-                            ? null
-                            : ActionButton(
-                                onPressed: () {
-                                  BlocProvider.of<
-                                          SortableArchiveBloc<
-                                              ChecklistData>>(innerContext)
-                                      .add(NavigateUp());
-                                },
-                                themeData: darkButtonTheme,
-                                child: Icon(
-                                  AbiliaIcons.navigation_previous,
-                                  size: 32,
-                                ),
-                              ),
-                        heading: _getArchiveHeading(checklistState),
-                        child: SortableLibrary<ChecklistData>(
-                          (Sortable<ChecklistData> s) => LibraryChecklist(
-                            checklist: s.data.checklist,
-                          ),
-                        ),
-                      ),
+                  builder: (context) => SortableLibraryDialog<ChecklistData>(
+                    libraryItemGenerator: (Sortable<ChecklistData> s) =>
+                        LibraryChecklist(
+                      checklist: s.data.checklist,
                     ),
                   ),
                 );
@@ -257,12 +224,6 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
     }
   }
 
-  Text _getArchiveHeading(SortableArchiveState state) {
-    final folderName = state.allById[state.currentFolderId]?.data?.title() ??
-        Translator.of(context).translate.selectFromLibrary;
-    return Text(folderName, style: abiliaTheme.textTheme.headline6);
-  }
-
   void _handleNewQuestion() async {
     final result = await showViewDialog<QuestionResult>(
       context: context,
@@ -330,49 +291,18 @@ class EditNoteWidget extends StatelessWidget {
               onPressed: () async {
                 final result = await showViewDialog<String>(
                   context: context,
-                  builder: (context) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider<SortableArchiveBloc<NoteData>>(
-                        create: (_) => SortableArchiveBloc<NoteData>(
-                          sortableBloc: BlocProvider.of<SortableBloc>(context),
-                        ),
-                      ),
-                      BlocProvider<UserFileBloc>.value(
-                        value: BlocProvider.of<UserFileBloc>(context),
-                      ),
-                    ],
-                    child: BlocBuilder<SortableArchiveBloc<NoteData>,
-                        SortableArchiveState<NoteData>>(
-                      builder: (innerContext, noteState) => ViewDialog(
-                        verticalPadding: 0.0,
-                        backButton: noteState.currentFolderId == null
-                            ? null
-                            : ActionButton(
-                                onPressed: () {
-                                  BlocProvider.of<
-                                              SortableArchiveBloc<NoteData>>(
-                                          innerContext)
-                                      .add(NavigateUp());
-                                },
-                                themeData: darkButtonTheme,
-                                child: Icon(
-                                  AbiliaIcons.navigation_previous,
-                                  size: 32,
-                                ),
-                              ),
-                        heading: _getArchiveHeading(noteState, context),
-                        child: SortableLibrary<NoteData>(
-                            (Sortable<NoteData> s) => LibraryNote(
-                                  content: s.data.text,
-                                )),
-                      ),
+                  builder: (context) => SortableLibraryDialog<NoteData>(
+                    libraryItemGenerator: (Sortable<NoteData> s) => LibraryNote(
+                      content: s.data.text,
                     ),
                   ),
                 );
                 if (result != null && result != infoItem.text) {
                   BlocProvider.of<EditActivityBloc>(context).add(
-                      ReplaceActivity(
-                          activity.copyWith(infoItem: NoteInfoItem(result))));
+                    ReplaceActivity(activity.copyWith(
+                      infoItem: NoteInfoItem(result),
+                    )),
+                  );
                 }
               },
               themeData: darkButtonTheme,
@@ -410,11 +340,5 @@ class EditNoteWidget extends StatelessWidget {
         const SizedBox(height: 56.0),
       ]),
     );
-  }
-
-  Text _getArchiveHeading(SortableArchiveState state, BuildContext context) {
-    final folderName = state.allById[state.currentFolderId]?.data?.title() ??
-        Translator.of(context).translate.selectFromLibrary;
-    return Text(folderName, style: abiliaTheme.textTheme.headline6);
   }
 }
