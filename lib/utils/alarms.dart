@@ -67,7 +67,7 @@ extension IterableActivity on Iterable<Activity> {
       notBefore: time,
       depth: maxDays,
     );
-    return _sortAndTake([...alarmsToday, ...alarmsTomorrowAndF  orward], take);
+    return _sortAndTake([...alarmsToday, ...alarmsTomorrowAndForward], take);
   }
 
   List<NotificationAlarm> _alarmsForRestOfDay(DateTime start, DateTime end) =>
