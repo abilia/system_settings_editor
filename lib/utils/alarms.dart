@@ -57,7 +57,7 @@ extension IterableActivity on Iterable<Activity> {
   Iterable<NotificationAlarm> alarmsFrom(
     DateTime time, {
     int take = 50,
-    int maxDays = 30,
+    int maxDays = 60,
   }) {
     final nextDay = time.nextDay().onlyDays();
     final endTime = nextDay.subtract(1.minutes());
@@ -65,6 +65,7 @@ extension IterableActivity on Iterable<Activity> {
     final alarmsTomorrowAndForward = _alarmsForDay(
       nextDay,
       notBefore: time,
+      take: take - alarmsToday.length,
       depth: maxDays,
     );
     return _sortAndTake([...alarmsToday, ...alarmsTomorrowAndForward], take);
@@ -82,23 +83,27 @@ extension IterableActivity on Iterable<Activity> {
   Iterable<NotificationAlarm> _alarmsForDay(
     DateTime day, {
     @required DateTime notBefore,
+    @required int take,
     @required int depth,
   }) {
     if (depth < 0) return <NotificationAlarm>[];
 
-    return _alarmsFor(
+    final alarms = _alarmsFor(
       day,
       startTimeTest: (a) => a.start.isAtSameDay(day),
       endTimeTest: (a) => a.start.isAtSameDay(day),
       reminderTest: (rs) =>
           rs.notificationTime.isAtSameMomentOrAfter(notBefore),
-    ).followedBy(
-      _alarmsForDay(
+    );
+    return [
+      ...alarms,
+      ..._alarmsForDay(
         day.nextDay(),
         notBefore: notBefore,
-        depth: --depth,
-      ),
-    );
+        take: take - alarms.length,
+        depth: take < 0 ? -1 : --depth,
+      )
+    ];
   }
 
   Iterable<NotificationAlarm> _sortAndTake(
