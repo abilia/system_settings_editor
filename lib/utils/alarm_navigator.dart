@@ -13,8 +13,8 @@ class AlarmNavigator {
     final route = AlarmPageRoute(
       alarm,
       builder: (context) => (alarm is NewAlarm)
-          ? AlarmPage(alarm: alarm, alarmNavigator: this)
-          : ReminderPage(reminder: alarm, alarmNavigator: this),
+          ? NavigatableAlarmPage(alarm: alarm, alarmNavigator: this)
+          : NavigatableReminderPage(reminder: alarm, alarmNavigator: this),
       fullscreenDialog: true,
     );
 

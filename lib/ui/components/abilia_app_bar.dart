@@ -34,12 +34,11 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: ActionButton(
             key: TestKey.appBarCloseButton,
             child: Icon(closeIcon),
-            onPressed:
-                onClosedPressed ?? () => Navigator.of(context).maybePop(),
+            onPressed: onClosedPressed ?? () => _pop(context),
           ),
         ),
         Center(
-          child: Text(
+          child: Text(  
             title,
             style: Theme.of(context)
                 .textTheme
@@ -83,5 +82,13 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
     );
+  }
+
+  Future _pop(BuildContext context) async {
+    if (Navigator.canPop(context)) {
+      await Navigator.pop(context);
+    } else {
+      return SystemNavigator.pop();
+    }
   }
 }

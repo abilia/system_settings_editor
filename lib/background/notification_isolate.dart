@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
@@ -146,8 +145,7 @@ Future _scheduleNotification(
     alwaysUse24HourFormat,
   );
   final hash = notificationAlarm.hashCode;
-  final payload = json.encode(
-      NotificationPayload.fromNotificationAlarm(notificationAlarm).toJson());
+  final payload = notificationAlarm.encode();
 
   final and = Platform.isIOS
       ? null
@@ -204,6 +202,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     priority: Priority.high,
     fullScreenIntent: true,
     wakeScreenForMs: 4000,
+    startActivityClassName: 'com.abilia.seagull.AlarmActivity',
     largeIcon: await _androidLargeIcon(activity, fileStorage),
     styleInformation: await _androidStyleInformation(
       activity,

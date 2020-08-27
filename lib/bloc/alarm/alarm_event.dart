@@ -1,3 +1,3 @@
 part of 'alarm_bloc.dart';
 
-class AlarmEvent with Finest {}
+class AlarmEvent with Silent {}

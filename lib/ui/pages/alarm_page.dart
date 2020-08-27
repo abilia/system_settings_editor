@@ -7,19 +7,19 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/colors.dart';
 
-class AlarmPage extends StatefulWidget {
-  final NewAlarm alarm;
-  final AlarmNavigator alarmNavigator;
-  const AlarmPage(
-      {Key key, @required this.alarm, @required this.alarmNavigator});
+class FullScreenAlarm extends StatelessWidget {
+  final NotificationAlarm alarm;
 
+  const FullScreenAlarm({Key key, this.alarm}) : super(key: key);
   @override
-  _AlarmPageState createState() => _AlarmPageState(alarm, alarmNavigator);
+  Widget build(BuildContext context) => (alarm is NewAlarm)
+      ? AlarmPage(alarm: alarm)
+      : ReminderPage(reminder: alarm);
 }
 
-class _AlarmPageState extends AlarmAwareWidgetState<AlarmPage> {
-  _AlarmPageState(NotificationAlarm alarm, AlarmNavigator alarmNavigator)
-      : super(alarm, alarmNavigator);
+class AlarmPage extends StatelessWidget {
+  final NewAlarm alarm;
+  const AlarmPage({Key key, @required this.alarm});
 
   @override
   Widget build(BuildContext context) {
@@ -29,34 +29,46 @@ class _AlarmPageState extends AlarmAwareWidgetState<AlarmPage> {
         padding: const EdgeInsets.all(ActivityInfo.margin),
         child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
           builder: (context, activitiesState) => ActivityInfo(
-              widget.alarm.activityDay.fromActivitiesState(activitiesState)),
+            alarm.activityDay.fromActivitiesState(activitiesState),
+          ),
         ),
       ),
     );
   }
 }
 
-class ReminderPage extends StatefulWidget {
-  final NewReminder reminder;
+class NavigatableAlarmPage extends StatefulWidget {
+  final NewAlarm alarm;
   final AlarmNavigator alarmNavigator;
-  const ReminderPage(
-      {Key key, @required this.reminder, @required this.alarmNavigator})
-      : super(key: key);
+  const NavigatableAlarmPage(
+      {Key key, @required this.alarm, @required this.alarmNavigator});
 
   @override
-  _ReminderPageState createState() =>
-      _ReminderPageState(reminder, alarmNavigator);
+  _NavigatableAlarmPageState createState() =>
+      _NavigatableAlarmPageState(alarm, alarmNavigator);
 }
 
-class _ReminderPageState extends AlarmAwareWidgetState<ReminderPage> {
-  _ReminderPageState(NotificationAlarm reminder, AlarmNavigator alarmNavigator)
-      : super(reminder, alarmNavigator);
+class _NavigatableAlarmPageState
+    extends AlarmAwareWidgetState<NavigatableAlarmPage> {
+  _NavigatableAlarmPageState(
+      NotificationAlarm alarm, AlarmNavigator alarmNavigator)
+      : super(alarm, alarmNavigator);
+
+  @override
+  Widget build(BuildContext context) => AlarmPage(alarm: widget.alarm);
+}
+
+class ReminderPage extends StatelessWidget {
+  final NewReminder reminder;
+  final ActivityDay activityDay;
+  const ReminderPage({Key key, @required this.reminder, this.activityDay})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final text = widget.reminder.reminder
-        .toReminderHeading(translate, widget.reminder is ReminderBefore);
+    final text = reminder.reminder
+        .toReminderHeading(translate, reminder is ReminderBefore);
     return Scaffold(
       appBar: AbiliaAppBar(title: translate.reminders),
       body: Padding(
@@ -78,8 +90,7 @@ class _ReminderPageState extends AlarmAwareWidgetState<ReminderPage> {
             Expanded(
               child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
                 builder: (context, activitiesState) => ActivityInfo(
-                  widget.reminder.activityDay
-                      .fromActivitiesState(activitiesState),
+                  reminder.activityDay.fromActivitiesState(activitiesState),
                 ),
               ),
             ),
@@ -88,6 +99,28 @@ class _ReminderPageState extends AlarmAwareWidgetState<ReminderPage> {
       ),
     );
   }
+}
+
+class NavigatableReminderPage extends StatefulWidget {
+  final NewReminder reminder;
+  final AlarmNavigator alarmNavigator;
+  const NavigatableReminderPage(
+      {Key key, @required this.reminder, @required this.alarmNavigator})
+      : super(key: key);
+
+  @override
+  _NavigatableReminderPageState createState() =>
+      _NavigatableReminderPageState(reminder, alarmNavigator);
+}
+
+class _NavigatableReminderPageState
+    extends AlarmAwareWidgetState<NavigatableReminderPage> {
+  _NavigatableReminderPageState(
+      NotificationAlarm reminder, AlarmNavigator alarmNavigator)
+      : super(reminder, alarmNavigator);
+
+  @override
+  Widget build(BuildContext context) => ReminderPage(reminder: widget.reminder);
 }
 
 abstract class AlarmAwareWidgetState<T extends StatefulWidget> extends State<T>

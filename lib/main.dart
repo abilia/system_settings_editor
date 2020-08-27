@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,17 +27,22 @@ import 'package:flutter/foundation.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'models/all.dart';
+
 final _log = Logger('main');
 
 void main() async {
   await initServices();
-  final baseUrl = await BaseUrlDb().initialize(PROD);
-  runApp(App(baseUrl: baseUrl));
+  final baseUrl = await BaseUrlDb().initialize(kReleaseMode ? PROD : WHALE);
+  final payload = await _payload;
+  runApp(App(baseUrl: baseUrl, notificationPayload: payload));
 }
 
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initLogging(initAppcenter: true, level: Level.FINER);
+  await initLogging(
+      initAppcenter: kReleaseMode,
+      level: kReleaseMode ? Level.INFO : Level.FINE);
   _log.fine('Initializing services');
   final currentLocale = await Devicelocale.currentLocale;
   final settingsDb = SettingsDb(await SharedPreferences.getInstance());
@@ -48,14 +54,34 @@ Future<void> initServices() async {
     ..init();
 }
 
+Future<NotificationAlarm> get _payload async {
+  final notificationAppLaunchDetails =
+      await notificationPlugin.getNotificationAppLaunchDetails();
+  try {
+    if (notificationAppLaunchDetails.didNotificationLaunchApp) {
+      final payload =
+          NotificationAlarm.decode(notificationAppLaunchDetails.payload);
+      _log.fine('Notification Launched App with payload: $payload');
+      return payload;
+    }
+  } catch (e) {
+    _log.severe(
+        'Could not parse payload: ${notificationAppLaunchDetails.payload}', e);
+  }
+  return null;
+}
+
 class App extends StatelessWidget {
   final PushBloc pushBloc;
   final String baseUrl;
+  final NotificationAlarm notificationPayload;
+  bool get wasAlarmStart => notificationPayload != null && Platform.isAndroid;
 
   App({
     Key key,
     this.baseUrl,
     this.pushBloc,
+    this.notificationPayload,
   }) : super(key: key);
 
   @override
@@ -85,7 +111,9 @@ class App extends StatelessWidget {
               return AuthenticatedBlocsProvider(
                 authenticatedState: state,
                 child: SeagullApp(
-                  home: AlarmListener(child: CalendarPage()),
+                  home: wasAlarmStart
+                      ? FullScreenAlarm(alarm: notificationPayload)
+                      : AlarmListener(child: CalendarPage()),
                 ),
               );
             }

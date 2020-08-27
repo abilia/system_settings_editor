@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 void main() {
   final time = DateTime(2020, 05, 14, 18, 39, 30);
@@ -33,5 +34,40 @@ void main() {
     final asJson = original.toJson();
     final back = NotificationAlarm.fromJson(asJson);
     expect(back, original);
+  });
+
+  group('payload', () {
+    final day = DateTime(2020, 05, 14);
+    final activity = Activity.createNew(
+        title: 'null', startTime: DateTime(2020, 06, 01, 17, 57));
+
+    test('StartAlarm toPayload and back', () {
+      final alarm = StartAlarm(activity, day);
+      final asJson = alarm.encode();
+
+      final alarmAgain = NotificationAlarm.decode(asJson);
+      expect(alarmAgain, alarm);
+    });
+    test('EndAlarm toPayload and back', () {
+      final alarm = EndAlarm(activity, day);
+      final asJson = alarm.encode();
+
+      final alarmAgain = NotificationAlarm.decode(asJson);
+      expect(alarmAgain, alarm);
+    });
+    test('ReminderBefore toPayload and back', () {
+      final alarm = ReminderBefore(activity, day, reminder: 15.minutes());
+      final asJson = alarm.encode();
+
+      final reminderAgain = NotificationAlarm.decode(asJson);
+      ;
+      expect(reminderAgain, alarm);
+    });
+    test('ReminderUnchecked toPayload and back', () {
+      final alarm = ReminderUnchecked(activity, day, reminder: 15.minutes());
+      final asJson = alarm.encode();
+      final reminderAgain = NotificationAlarm.decode(asJson);
+      expect(reminderAgain, alarm);
+    });
   });
 }
