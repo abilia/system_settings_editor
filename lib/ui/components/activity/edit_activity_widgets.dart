@@ -105,8 +105,8 @@ class NameAndPictureWidget extends StatelessWidget {
         context: context,
         builder: (_) => MultiBlocProvider(
           providers: [
-            BlocProvider<ImageArchiveBloc>(
-              create: (_) => ImageArchiveBloc(
+            BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
+              create: (_) => SortableArchiveBloc<ImageArchiveData>(
                 sortableBloc: BlocProvider.of<SortableBloc>(context),
               ),
             ),

@@ -119,13 +119,11 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
               onPressed: () async {
                 final selectedChecklist = await showViewDialog<Checklist>(
                   context: context,
-                  builder: (context) => ViewDialog(
-                    verticalPadding: 0.0,
-                    heading: Text(
-                      Translator.of(context).translate.selectFromLibrary,
-                      style: abiliaTheme.textTheme.headline6,
+                  builder: (context) => SortableLibraryDialog<ChecklistData>(
+                    libraryItemGenerator: (Sortable<ChecklistData> s) =>
+                        LibraryChecklist(
+                      checklist: s.data.checklist,
                     ),
-                    child: ChecklistLibrary(),
                   ),
                 );
                 if (selectedChecklist != null &&
@@ -293,19 +291,18 @@ class EditNoteWidget extends StatelessWidget {
               onPressed: () async {
                 final result = await showViewDialog<String>(
                   context: context,
-                  builder: (context) => ViewDialog(
-                    verticalPadding: 0.0,
-                    heading: Text(
-                      Translator.of(context).translate.selectFromLibrary,
-                      style: abiliaTheme.textTheme.headline6,
+                  builder: (context) => SortableLibraryDialog<NoteData>(
+                    libraryItemGenerator: (Sortable<NoteData> s) => LibraryNote(
+                      content: s.data.text,
                     ),
-                    child: NoteLibrary(),
                   ),
                 );
                 if (result != null && result != infoItem.text) {
                   BlocProvider.of<EditActivityBloc>(context).add(
-                      ReplaceActivity(
-                          activity.copyWith(infoItem: NoteInfoItem(result))));
+                    ReplaceActivity(activity.copyWith(
+                      infoItem: NoteInfoItem(result),
+                    )),
+                  );
                 }
               },
               themeData: darkButtonTheme,

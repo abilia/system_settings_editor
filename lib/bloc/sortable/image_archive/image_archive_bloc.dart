@@ -10,12 +10,13 @@ import 'package:seagull/models/all.dart';
 part 'image_archive_event.dart';
 part 'image_archive_state.dart';
 
-class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
+class SortableArchiveBloc<T extends SortableData>
+    extends Bloc<SortableArchiveEvent, SortableArchiveState<T>> {
   final SortableBloc sortableBloc;
   StreamSubscription sortableSubscription;
 
-  ImageArchiveBloc({@required this.sortableBloc})
-      : super(ImageArchiveState({}, {}, null)) {
+  SortableArchiveBloc({@required this.sortableBloc})
+      : super(SortableArchiveState({}, {}, null)) {
     sortableSubscription = sortableBloc.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         add(SortablesUpdated(sortableState.sortables));
@@ -28,30 +29,30 @@ class ImageArchiveBloc extends Bloc<ImageArchiveEvent, ImageArchiveState> {
   }
 
   @override
-  Stream<ImageArchiveState> mapEventToState(
-    ImageArchiveEvent event,
+  Stream<SortableArchiveState<T>> mapEventToState(
+    SortableArchiveEvent event,
   ) async* {
     if (event is SortablesUpdated) {
-      final imageArchive =
-          event.sortables.whereType<Sortable<ImageArchiveData>>();
-      final allByFolder = groupBy<Sortable<ImageArchiveData>, String>(
-          imageArchive, (s) => s.groupId);
-      final allById = {for (var s in imageArchive) s.id: s};
+      final sortableArchive =
+          event.sortables.whereType<Sortable<T>>();
+      final allByFolder = groupBy<Sortable<T>, String>(
+          sortableArchive, (s) => s.groupId);
+      final allById = {for (var s in sortableArchive) s.id: s};
       final currentFolder = allById[state.currentFolderId];
-      yield ImageArchiveState(
+      yield SortableArchiveState<T>(
         allByFolder,
         allById,
         currentFolder?.id,
       );
     } else if (event is FolderChanged) {
-      yield ImageArchiveState(
+      yield SortableArchiveState<T>(
         state.allByFolder,
         state.allById,
         event.folderId,
       );
     } else if (event is NavigateUp) {
       final currentFolder = state.allById[state.currentFolderId];
-      yield ImageArchiveState(
+      yield SortableArchiveState<T>(
         state.allByFolder,
         state.allById,
         currentFolder.groupId,

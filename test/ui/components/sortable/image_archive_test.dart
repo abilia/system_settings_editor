@@ -47,7 +47,7 @@ void main() {
           builder: (context, child) => MultiBlocProvider(providers: [
             BlocProvider<AuthenticationBloc>(
                 create: (context) => MockAuthenticationBloc()),
-            BlocProvider<ImageArchiveBloc>(
+            BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
                 create: (context) => imageArchiveBlocMock),
             BlocProvider<UserFileBloc>(
                 create: (context) => UserFileBloc(
@@ -87,7 +87,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchive), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
-      expect(find.byType(Folder), findsOneWidget);
+      expect(find.byType(LibraryFolder), findsOneWidget);
     });
 
     testWidgets('Selected Image is poped', (WidgetTester tester) async {
@@ -114,12 +114,12 @@ void main() {
   });
 }
 
-ImageArchiveState stateFromSortables(
+SortableArchiveState stateFromSortables(
   List<Sortable<ImageArchiveData>> sortables, {
   String folderId,
 }) {
   final allByFolder =
       groupBy<Sortable<ImageArchiveData>, String>(sortables, (s) => s.groupId);
   final allById = {for (var s in sortables) s.id: s};
-  return ImageArchiveState(allByFolder, allById, folderId);
+  return SortableArchiveState<ImageArchiveData>(allByFolder, allById, folderId);
 }

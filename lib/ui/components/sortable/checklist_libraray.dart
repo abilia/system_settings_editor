@@ -1,34 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
-
-class ChecklistLibrary extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SortableBloc, SortableState>(
-      builder: (context, state) {
-        final sortableChecklist = state is SortablesLoaded
-            ? state.sortables.whereType<Sortable<ChecklistData>>().toList()
-            : <Sortable<ChecklistData>>[];
-        sortableChecklist.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-        return GridView.count(
-          padding: EdgeInsets.symmetric(vertical: ViewDialog.verticalPadding),
-          crossAxisCount: 3,
-          childAspectRatio: 0.96,
-          children: sortableChecklist
-              .map(
-                (sortable) => LibraryChecklist(
-                  checklist: sortable.data.checklist,
-                ),
-              )
-              .toList(),
-        );
-      },
-    );
-  }
-}
 
 class LibraryChecklist extends StatelessWidget {
   final Checklist checklist;
@@ -61,12 +34,17 @@ class LibraryChecklist extends StatelessWidget {
                     style: abiliaTextTheme.caption,
                   ),
                 const SizedBox(height: 2),
-                FadeInAbiliaImage(
-                  height: imageHeight,
-                  width: imageWidth,
-                  imageFileId: imageId,
-                  imageFilePath: iconPath,
-                )
+                checklist.hasImage
+                    ? FadeInAbiliaImage(
+                        height: imageHeight,
+                        width: imageWidth,
+                        imageFileId: imageId,
+                        imageFilePath: iconPath,
+                      )
+                    : Icon(
+                        AbiliaIcons.check_button,
+                        size: 84,
+                      ),
               ],
             ),
           ),

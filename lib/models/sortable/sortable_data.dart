@@ -3,6 +3,9 @@ part of 'sortable.dart';
 abstract class SortableData extends Equatable {
   const SortableData();
   String toRaw();
+  String title();
+  String folderFileId();
+  String folderFilePath();
 }
 
 class RawSortableData extends SortableData {
@@ -17,6 +20,15 @@ class RawSortableData extends SortableData {
   List<Object> get props => [data];
 
   static RawSortableData fromJson(String data) => RawSortableData(data);
+
+  @override
+  String title() => '';
+
+  @override
+  String folderFileId() => '';
+
+  @override
+  String folderFilePath() => '';
 }
 
 class ImageArchiveData extends SortableData {
@@ -52,30 +64,52 @@ class ImageArchiveData extends SortableData {
         file: sortableData['file'],
         upload: sortableData['upload']);
   }
+
+  @override
+  String title() => name;
+
+  @override
+  String folderFileId() => fileId;
+
+  @override
+  String folderFilePath() => icon;
 }
 
 class NoteData extends SortableData {
-  final String name, text;
+  final String name, text, icon, fileId;
 
-  NoteData({this.name, this.text});
+  NoteData({this.name, this.text, this.icon, this.fileId});
 
   @override
   @override
   String toRaw() => json.encode({
         'name': name,
         'text': text,
+        'icon': icon,
+        'fileId': fileId,
       });
 
   @override
-  List<Object> get props => [name, text];
+  List<Object> get props => [name, text, icon, fileId];
 
   factory NoteData.fromJson(String data) {
     final sortableData = json.decode(data);
     return NoteData(
       name: sortableData['name'],
       text: sortableData['text'],
+      icon: sortableData['icon'],
+      fileId: sortableData['fileId'],
     );
   }
+
+  @override
+  String title() => name;
+
+  @override
+  String folderFileId() => fileId;
+
+  @override
+  String folderFilePath() => icon;
 }
 
 class ChecklistData extends SortableData {
@@ -88,7 +122,9 @@ class ChecklistData extends SortableData {
 
   @override
   String toRaw() => json.encode({
-        'checkItems': List.from(checklist.questions.map((x) => x.toJson())),
+        'checkItems': checklist.questions != null
+            ? List.from(checklist.questions.map((x) => x.toJson()))
+            : List.empty(),
         'image': checklist.image,
         'name': checklist.name,
         'fileId': checklist.fileId,
@@ -99,13 +135,25 @@ class ChecklistData extends SortableData {
     final checklist = Checklist(
       image: sortableData['image'],
       fileId: sortableData['fileId'],
+      icon: sortableData['icon'],
       name: sortableData['name'],
-      questions: List<Question>.from(
-        sortableData['checkItems'].map(
-          (x) => Question.fromJson(x),
-        ),
-      ),
+      questions: sortableData['checkItems'] != null
+          ? List<Question>.from(
+              sortableData['checkItems'].map(
+                (x) => Question.fromJson(x),
+              ),
+            )
+          : List<Question>.empty(),
     );
     return ChecklistData(checklist);
   }
+
+  @override
+  String title() => checklist.name;
+
+  @override
+  String folderFileId() => checklist.fileId;
+
+  @override
+  String folderFilePath() => checklist.icon;
 }

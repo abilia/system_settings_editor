@@ -36,9 +36,9 @@ class MockSortableBloc extends Mock implements SortableBloc {}
 
 class MockUserFileBloc extends Mock implements UserFileBloc {}
 
-class MockImageArchiveBloc
-    extends MockBloc<ImageArchiveEvent, ImageArchiveState>
-    implements ImageArchiveBloc {}
+class MockImageArchiveBloc extends MockBloc<SortableArchiveEvent,
+        SortableArchiveState<ImageArchiveData>>
+    implements SortableArchiveBloc<ImageArchiveData> {}
 
 class MockFirebasePushService extends Mock implements FirebasePushService {}
 
