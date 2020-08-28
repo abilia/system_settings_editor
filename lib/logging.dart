@@ -1,11 +1,19 @@
+import 'dart:io';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:bloc/bloc.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/utils/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:synchronized/synchronized.dart';
+
+import 'db/all.dart';
 
 void initLogging({bool initAppcenter = false, Level level = Level.ALL}) async {
   if (initAppcenter) {
@@ -20,6 +28,14 @@ void initLogging({bool initAppcenter = false, Level level = Level.ALL}) async {
 
   Bloc.observer = BlocLoggingObserver();
 
+  if (kReleaseMode) {
+    await initFileLogging(level);
+  } else {
+    initPrintLogging(level);
+  }
+}
+
+void initPrintLogging(Level level) {
   Logger.root.level = level;
   Logger.root.onRecord.listen((record) {
     print(
@@ -31,6 +47,81 @@ void initLogging({bool initAppcenter = false, Level level = Level.ALL}) async {
       print(record.stackTrace);
     }
   });
+}
+
+final _writeLock = Lock();
+void initFileLogging(Level level) async {
+  await checkUploadLogs();
+  final stringBuffer = StringBuffer();
+  var lines = 0;
+  Logger.root.onRecord.listen((record) {
+    _writeLock.synchronized(() async {
+      stringBuffer.writeln(
+          '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
+      if (record?.error != null) {
+        stringBuffer.writeln(record.error);
+      }
+      if (record?.stackTrace != null) {
+        stringBuffer.writeln(record.stackTrace);
+      }
+      lines++;
+      if (lines > 100) {}
+    });
+  });
+}
+
+Future checkUploadLogs() async {
+  final latestKey = 'LATEST-LOG-UPLOAD-MILLIS';
+  // Get when file was uploaded to server latest
+  final preferences = await SharedPreferences.getInstance();
+  final now = DateTime.now();
+  final lastUploadMillis = preferences.getInt(latestKey);
+  final lastUploadDate = lastUploadMillis == null
+      ? DateTime.now()
+      : DateTime.fromMillisecondsSinceEpoch(lastUploadMillis);
+  // If more than 24 hours upload to server and reset file
+  if (now.subtract(24.hours()).isAfter(lastUploadDate)) {
+    // Save file to backend
+
+    // Reset file
+
+    // Set last upload date
+
+  }
+}
+
+Future<bool> postLogFile(
+  File file,
+) async {
+  final _log = Logger('postLogFile');
+  try {
+    final bytes = await file.readAsBytes();
+    final baseUrl = await BaseUrlDb().getBaseUrl();
+
+    final uri = Uri.parse('$baseUrl/open/v1/logs/');
+    final request = MultipartRequest('POST', uri)
+      ..files.add(MultipartFile.fromBytes(
+        'file',
+        bytes,
+      ))
+      ..fields.addAll({
+        'owner': 'unknown',
+        'app': 'seagull',
+      });
+
+    final streamedResponse = await request.send();
+    if (streamedResponse.statusCode == 200) {
+      return true;
+    } else {
+      final response = await Response.fromStream(streamedResponse);
+      _log.warning(
+          'Could not save file to backend ${streamedResponse.statusCode}, ${response.body}');
+      return false;
+    }
+  } catch (e) {
+    _log.severe('Could not save file to backend', e);
+    return false;
+  }
 }
 
 mixin Silent {}
