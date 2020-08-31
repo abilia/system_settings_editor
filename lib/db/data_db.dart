@@ -1,14 +1,15 @@
 import 'package:seagull/models/all.dart';
-import 'package:sqflite/sqflite.dart';
-
-import 'all.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 typedef DbMapTo<M extends DataModel> = DbModel<M> Function(
     Map<String, dynamic> map);
 
 abstract class DataDb<M extends DataModel> {
+  final Database db;
   String get tableName;
   DbMapTo<M> get convertToDataModel;
+
+  DataDb(this.db);
 
   String get GET_ALL_DIRTY => 'SELECT * FROM $tableName WHERE dirty > 0';
   String get GET_BY_ID_SQL => 'SELECT * FROM $tableName WHERE id == ?';
@@ -19,7 +20,6 @@ abstract class DataDb<M extends DataModel> {
       'SELECT max(revision) as max_revision FROM $tableName';
 
   Future insert(Iterable<DbModel<M>> dataModels) async {
-    final db = await DatabaseRepository().database;
     final batch = db.batch();
 
     await dataModels
@@ -35,13 +35,11 @@ abstract class DataDb<M extends DataModel> {
   }
 
   Future<Iterable<DbModel<M>>> getAllDirty() async {
-    final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ALL_DIRTY);
     return result.map(convertToDataModel);
   }
 
   Future<DbModel<M>> getById(String id) async {
-    final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_BY_ID_SQL, [id]);
     final userFiles = result.map(convertToDataModel);
     if (userFiles.length == 1) {
@@ -52,19 +50,16 @@ abstract class DataDb<M extends DataModel> {
   }
 
   Future<Iterable<M>> getAll() async {
-    final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ALL_SQL);
     return result.map(convertToDataModel).map((data) => data.model);
   }
 
   Future<Iterable<M>> getAllNonDeleted() async {
-    final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ALL_SQL_NON_DELETED);
     return result.map(convertToDataModel).map((data) => data.model);
   }
 
   Future<int> getLastRevision() async {
-    final db = await DatabaseRepository().database;
     final result = await db.rawQuery(MAX_REVISION_SQL);
     final revision = result.first['max_revision'];
     if (revision == null) {
@@ -74,7 +69,6 @@ abstract class DataDb<M extends DataModel> {
   }
 
   Future insertAndAddDirty(Iterable<M> data) async {
-    final db = await DatabaseRepository().database;
     final insertResult = await data.map((model) async {
       List<Map> existingDirtyAndRevision = await db.query(tableName,
           columns: ['dirty', 'revision'],

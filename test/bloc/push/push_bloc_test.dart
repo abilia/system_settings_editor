@@ -47,9 +47,11 @@ void main() {
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = MockFirebasePushService()
         ..settingsDb = MockSettingsDb()
+        ..userFileDb = MockUserFileDb()
         ..ticker = Ticker(
             stream: StreamController<DateTime>().stream, initialTime: time)
         ..alarmScheduler = noAlarmScheduler
+        ..database = MockDatabase()
         ..init();
     });
 

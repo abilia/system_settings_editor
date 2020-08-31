@@ -59,6 +59,7 @@ void main() {
     GetItInitializer()
       ..fileStorage = MockFileStorage()
       ..alarmScheduler = noAlarmScheduler
+      ..database = MockDatabase()
       ..init();
   });
 

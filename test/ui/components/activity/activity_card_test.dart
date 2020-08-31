@@ -64,6 +64,7 @@ void main() {
     initializeDateFormatting();
     GetItInitializer()
       ..fileStorage = MockFileStorage()
+      ..database = MockDatabase()
       ..init();
   });
 

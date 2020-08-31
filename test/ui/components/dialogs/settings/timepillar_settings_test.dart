@@ -49,9 +49,11 @@ void main() {
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
+      ..userFileDb = MockUserFileDb()
       ..settingsDb = mockSettingsDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
+      ..database = MockDatabase()
       ..init();
   });
 
