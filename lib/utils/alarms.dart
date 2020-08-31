@@ -61,19 +61,14 @@ extension IterableActivity on Iterable<Activity> {
   }) {
     final nextDay = time.nextDay().onlyDays();
     final endTime = nextDay.subtract(1.minutes());
-    final alarms = _alarmsForRestOfDay(time, endTime);
-    final amountOfAlarms = alarms.length;
-    if (amountOfAlarms < take) {
-      return alarms.followedBy(
-        _alarmsForDay(
-          nextDay,
-          notBefore: time,
-          take: take - amountOfAlarms,
-          depth: maxDays,
-        ),
-      );
-    }
-    return _sortAndTake(alarms, take);
+    final alarmsToday = _alarmsForRestOfDay(time, endTime);
+    final alarmsTomorrowAndForward = _alarmsForDay(
+      nextDay,
+      notBefore: time,
+      take: take - alarmsToday.length,
+      depth: maxDays,
+    );
+    return _sortAndTake([...alarmsToday, ...alarmsTomorrowAndForward], take);
   }
 
   List<NotificationAlarm> _alarmsForRestOfDay(DateTime start, DateTime end) =>
@@ -85,32 +80,34 @@ extension IterableActivity on Iterable<Activity> {
           reminderTest: (rs) =>
               rs.notificationTime.isAtSameMomentOrAfter(start));
 
-  Iterable<NotificationAlarm> _alarmsForDay(DateTime day,
-      {@required DateTime notBefore, @required int take, @required int depth}) {
+  Iterable<NotificationAlarm> _alarmsForDay(
+    DateTime day, {
+    @required DateTime notBefore,
+    @required int take,
+    @required int depth,
+  }) {
     if (depth < 0) return <NotificationAlarm>[];
 
-    final alarms = _alarmsFor(day,
-        startTimeTest: (a) => a.start.isAtSameDay(day),
-        endTimeTest: (a) => a.start.isAtSameDay(day),
-        reminderTest: (rs) =>
-            rs.notificationTime.isAtSameMomentOrAfter(notBefore));
-
-    final amountOfAlarms = alarms.length;
-    if (amountOfAlarms < take) {
-      return alarms.followedBy(
-        _alarmsForDay(
-          day.nextDay(),
-          notBefore: notBefore,
-          take: take - amountOfAlarms,
-          depth: --depth,
-        ),
-      );
-    }
-    return _sortAndTake(alarms, take);
+    final alarms = _alarmsFor(
+      day,
+      startTimeTest: (a) => a.start.isAtSameDay(day),
+      endTimeTest: (a) => a.start.isAtSameDay(day),
+      reminderTest: (rs) =>
+          rs.notificationTime.isAtSameMomentOrAfter(notBefore),
+    );
+    return [
+      ...alarms,
+      ..._alarmsForDay(
+        day.nextDay(),
+        notBefore: notBefore,
+        take: take - alarms.length,
+        depth: take < 0 ? -1 : --depth,
+      )
+    ];
   }
 
   Iterable<NotificationAlarm> _sortAndTake(
           List<NotificationAlarm> alarms, int take) =>
-      (alarms..sort((a, b) => a.notificationTime.compareTo(a.notificationTime)))
+      (alarms..sort((a, b) => a.notificationTime.compareTo(b.notificationTime)))
           .take(take);
 }

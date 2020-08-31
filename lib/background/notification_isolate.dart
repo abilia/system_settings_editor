@@ -58,8 +58,7 @@ Future scheduleAlarmNotifications(
 }) async {
   now ??= DateTime.now();
   now = now.nextMinute();
-  final shouldBeScheduledNotifications =
-      allActivities.alarmsFrom(now, take: 50);
+  final shouldBeScheduledNotifications = allActivities.alarmsFrom(now);
   return _scheduleAllAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
