@@ -9,7 +9,7 @@ void main() {
   test('executeInitialization calls all scripts', () {
     final mockDb = MockDatabase();
 
-    DatabaseRepository().executeInitialization(mockDb, 1);
+    DatabaseRepository.executeInitialization(mockDb, 1);
     DatabaseRepository.initialScript.forEach((s) => verify(mockDb.execute(s)));
     DatabaseRepository.migrations.forEach((m) => verify(mockDb.execute(m)));
   });
@@ -19,7 +19,7 @@ void main() {
     final migrationScript2 = 'script2';
     final migrations = <String>[migrationScript1, migrationScript2];
     final mockDb = MockDatabase();
-    DatabaseRepository().internalMigration(mockDb, 2, 3, migrations);
+    DatabaseRepository.internalMigration(mockDb, 2, 3, migrations);
     verifyNever(mockDb.execute(migrationScript1));
     verify(mockDb.execute(migrationScript2));
   });

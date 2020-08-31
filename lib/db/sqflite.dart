@@ -78,10 +78,10 @@ class DatabaseRepository {
     ''',
   ];
 
-  static Database _database;
-  Future<Database> get database async => _database ??= await _open();
+  static Database dataBaseSource;
+  static Future<Database> get database async => dataBaseSource ??= await _open();
 
-  Future<Database> _open() async {
+  static Future<Database> _open() async {
     final databasesPath = await getDatabasesPath();
     return await openDatabase(
       join(databasesPath, 'seagull.db'),
@@ -124,20 +124,20 @@ class DatabaseRepository {
   }
 
   @visibleForTesting
-  Future<void> executeInitialization(Database db, int version) async {
+  static Future<void> executeInitialization(Database db, int version) async {
     initialScript.forEach((script) async => await db.execute(script));
     migrations.forEach((script) async => await db.execute(script));
   }
 
   @visibleForTesting
-  Future<void> executeMigration(
+  static Future<void> executeMigration(
       Database db, int oldVersion, int newVersion) async {
     await internalMigration(db, oldVersion, newVersion, migrations);
   }
 
   @visibleForTesting
-  Future<void> internalMigration(Database db, int oldVersion, int newVersion,
-      List<String> migrationScripts) async {
+  static Future<void> internalMigration(Database db, int oldVersion,
+      int newVersion, List<String> migrationScripts) async {
     migrationScripts
         .skip(oldVersion - 1)
         .forEach((script) async => await db.execute(script));

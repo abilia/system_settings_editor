@@ -51,6 +51,7 @@ Future<void> initServices() async {
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
     ..settingsDb = settingsDb
+    ..database = await DatabaseRepository.database
     ..init();
 }
 

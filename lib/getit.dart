@@ -7,6 +7,7 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:sqflite/sqflite.dart';
 
 class GetItInitializer {
   ActivityDb _activityDb;
@@ -65,13 +66,16 @@ class GetItInitializer {
   SyncDelays _syncDelay;
   set syncDelay(SyncDelays syncDelay) => _syncDelay = syncDelay;
 
+  Database _database;
+  set database(Database database) => _database = database;
+
   void init() {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
     GetIt.I.registerSingleton<TokenDb>(_tokenDb ?? TokenDb());
     GetIt.I.registerSingleton<FirebasePushService>(
         _firebasePushService ?? FirebasePushService());
-    GetIt.I.registerSingleton<ActivityDb>(_activityDb ?? ActivityDb());
+    GetIt.I.registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database));
     GetIt.I.registerSingleton<UserDb>(_userDb ?? UserDb());
     GetIt.I.registerSingleton<DatabaseRepository>(
         _databaseRepository ?? DatabaseRepository());
@@ -82,8 +86,8 @@ class GetItInitializer {
         _alarmScheduler ?? scheduleAlarmNotificationsIsolated);
     GetIt.I.registerSingleton<Ticker>(_ticker ?? Ticker());
     GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());
-    GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb());
-    GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb());
+    GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database));
+    GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database));
     GetIt.I.registerSingleton<SettingsDb>(_settingsDb ?? SettingsDb(null));
     GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage(''));
     GetIt.I.registerSingleton<MultipartRequestBuilder>(

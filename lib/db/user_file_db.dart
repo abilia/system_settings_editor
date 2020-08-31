@@ -1,8 +1,11 @@
 import 'package:seagull/models/all.dart';
+import 'package:sqflite_common/sqlite_api.dart';
 
 import 'all.dart';
 
 class UserFileDb extends DataDb<UserFile> {
+  UserFileDb(Database database) : super(database);
+
   @override
   String get tableName => 'user_file';
 
@@ -16,13 +19,11 @@ class UserFileDb extends DataDb<UserFile> {
   DbMapTo<UserFile> get convertToDataModel => DbUserFile.fromDbMap;
 
   Future<Iterable<UserFile>> getAllWithMissingFiles() async {
-    final db = await DatabaseRepository().database;
     final result = await db.rawQuery(GET_ALL_WITH_MISSING_FILES);
     return result.map(convertToDataModel).map((data) => data.model);
   }
 
   void setFileLoadedForId(String id) async {
-    final db = await DatabaseRepository().database;
     await db.rawQuery(SET_FILE_LOADED, [id]);
   }
 }

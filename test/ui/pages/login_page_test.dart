@@ -48,6 +48,7 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => [])
         ..fileStorage = MockFileStorage()
+        ..userFileDb = MockUserFileDb()
         ..settingsDb = mockSettingsDb
         ..databaseRepository = mockDatabaseRepository
         ..init();
