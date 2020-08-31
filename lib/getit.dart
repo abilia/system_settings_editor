@@ -7,7 +7,6 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:sqflite/sqflite.dart';
 
 class GetItInitializer {
   ActivityDb _activityDb;

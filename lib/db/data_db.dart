@@ -1,5 +1,5 @@
 import 'package:seagull/models/all.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 typedef DbMapTo<M extends DataModel> = DbModel<M> Function(
     Map<String, dynamic> map);
