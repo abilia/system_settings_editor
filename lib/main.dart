@@ -51,7 +51,7 @@ Future<void> initServices() async {
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
     ..settingsDb = settingsDb
-    ..database = await DatabaseRepository.database
+    ..database = await DatabaseRepository.createSqfliteDb()
     ..init();
 }
 
@@ -97,7 +97,7 @@ class App extends StatelessWidget {
         providers: [
           BlocProvider<AuthenticationBloc>(
               create: (context) => AuthenticationBloc(
-                    databaseRepository: GetIt.I<DatabaseRepository>(),
+                    database: GetIt.I<Database>(),
                     baseUrlDb: GetIt.I<BaseUrlDb>(),
                     cancleAllNotificationsFunction: () =>
                         notificationPlugin.cancelAll(),

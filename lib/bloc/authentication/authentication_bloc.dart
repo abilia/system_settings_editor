@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
@@ -13,12 +14,12 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final DatabaseRepository databaseRepository;
+  final Database database;
   final BaseUrlDb baseUrlDb;
   final CancelNotificationsFunction cancleAllNotificationsFunction;
 
   AuthenticationBloc(
-      {@required this.databaseRepository,
+      {@required this.database,
       @required this.baseUrlDb,
       @required this.cancleAllNotificationsFunction})
       : super(AuthenticationUninitialized());
@@ -70,7 +71,7 @@ class AuthenticationBloc
   Stream<AuthenticationState> _logout(UserRepository repo,
       [String token]) async* {
     await repo.logout(token);
-    await databaseRepository.clearAll();
+    await DatabaseRepository.clearAll(database);
     await cancleAllNotificationsFunction();
     yield Unauthenticated.fromInitilized(state);
   }

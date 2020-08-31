@@ -1,5 +1,5 @@
 import 'package:seagull/models/all.dart';
-import 'package:sqflite_common/sqlite_api.dart';
+import 'package:seagull/db/all.dart';
 
 import 'all.dart';
 

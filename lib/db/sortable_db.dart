@@ -1,6 +1,5 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:sqflite_common/sqlite_api.dart';
 
 class SortableDb extends DataDb<Sortable> {
   SortableDb(Database database) : super(database);

@@ -27,7 +27,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
     final httpClient = Client();
     final user = await UserDb().getUser();
     final token = await TokenDb().getToken();
-    final database = await DatabaseRepository.database;
+    final database = await DatabaseRepository.createSqfliteDb();
 
     final activities = await ActivityRepository(
       baseUrl: baseUrl,

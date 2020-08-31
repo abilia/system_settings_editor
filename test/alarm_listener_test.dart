@@ -70,6 +70,7 @@ void main() {
       ..settingsDb = MockSettingsDb()
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
+      ..database = MockDatabase()
       ..init();
   });
 
@@ -502,8 +503,10 @@ void main() {
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activities));
 
-      final reminderFinder = find.byType(NavigatableReminderPage, skipOffstage: false);
-      final alarmScreenFinder = find.byType(NavigatableAlarmPage, skipOffstage: false);
+      final reminderFinder =
+          find.byType(NavigatableReminderPage, skipOffstage: false);
+      final alarmScreenFinder =
+          find.byType(NavigatableAlarmPage, skipOffstage: false);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 

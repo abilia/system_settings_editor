@@ -51,6 +51,7 @@ void main() {
         ..ticker = Ticker(
             stream: StreamController<DateTime>().stream, initialTime: time)
         ..alarmScheduler = noAlarmScheduler
+        ..database = MockDatabase()
         ..init();
     });
 

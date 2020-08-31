@@ -43,7 +43,8 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
         builder: (context, AsyncSnapshot<User> userSnapshot) => Column(
           children: <Widget>[
             InkWell(
-              onDoubleTap: () => GetIt.I<DatabaseRepository>().printAll(),
+              onDoubleTap: () =>
+                  DatabaseRepository.printAll(GetIt.I<Database>()),
               child: ProfilePicture(
                   state is AuthenticationInitialized
                       ? state.userRepository.baseUrl
