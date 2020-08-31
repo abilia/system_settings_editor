@@ -9,21 +9,32 @@ import 'package:seagull/repository/user_repository.dart';
 import '../../mocks.dart';
 
 void main() {
-  group('AuthenticationBloc event order', () {
-    AuthenticationBloc authenticationBloc;
-    UserRepository userRepository;
-    setUp(() {
-      userRepository = UserRepository(
-          httpClient: Fakes.client(),
-          tokenDb: MockTokenDb(),
-          userDb: MockUserDb());
-      authenticationBloc = AuthenticationBloc(
-        databaseRepository: MockDatabaseRepository(),
-        baseUrlDb: MockBaseUrlDb(),
-        cancleAllNotificationsFunction: () => Future.value(),
-      );
-    });
+  AuthenticationBloc authenticationBloc;
+  UserRepository mockedUserRepository;
+  NotificationMock notificationMock;
+  UserRepository userRepository;
 
+  setUp(() {
+    userRepository = UserRepository(
+        httpClient: Fakes.client(),
+        tokenDb: MockTokenDb(),
+        userDb: MockUserDb());
+    final mockDb = MockDatabase();
+    when(mockDb.batch()).thenReturn(MockBatch());
+    mockedUserRepository = MockUserRepository();
+    notificationMock = NotificationMock();
+    when(mockedUserRepository.getToken())
+        .thenAnswer((_) => Future.value(Fakes.token));
+    when(mockedUserRepository.me(any))
+        .thenAnswer((_) => Future.value(User(id: 0, type: '', name: '')));
+    authenticationBloc = AuthenticationBloc(
+      database: mockDb,
+      baseUrlDb: MockBaseUrlDb(),
+      cancleAllNotificationsFunction: notificationMock.mockCancleAll,
+    );
+  });
+
+  group('AuthenticationBloc event order', () {
     test('initial state is AuthenticationUninitialized', () {
       expect(authenticationBloc.state, AuthenticationUninitialized());
     });
@@ -93,24 +104,6 @@ void main() {
   });
 
   group('AuthenticationBloc token side effect', () {
-    AuthenticationBloc authenticationBloc;
-    UserRepository mockedUserRepository;
-    NotificationMock notificationMock;
-
-    setUp(() {
-      mockedUserRepository = MockUserRepository();
-      notificationMock = NotificationMock();
-      authenticationBloc = AuthenticationBloc(
-        databaseRepository: MockDatabaseRepository(),
-        baseUrlDb: MockBaseUrlDb(),
-        cancleAllNotificationsFunction: notificationMock.mockCancleAll,
-      );
-      when(mockedUserRepository.getToken())
-          .thenAnswer((_) => Future.value(Fakes.token));
-      when(mockedUserRepository.me(any))
-          .thenAnswer((_) => Future.value(User(id: 0, type: '', name: '')));
-    });
-
     test('loggedIn event saves token', () async {
       // Act
       authenticationBloc.add(AppStarted(mockedUserRepository));

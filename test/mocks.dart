@@ -52,7 +52,9 @@ class MockUserDb extends Mock implements UserDb {}
 
 class MockSettingsDb extends Mock implements SettingsDb {}
 
-class MockDatabaseRepository extends Mock implements DatabaseRepository {}
+class MockDatabase extends Mock implements Database {}
+
+class MockBatch extends Mock implements Batch {}
 
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 

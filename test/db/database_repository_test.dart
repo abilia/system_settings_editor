@@ -1,9 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:seagull/db/sqflite.dart';
-import 'package:sqflite/sqlite_api.dart';
+import 'package:seagull/db/database_repository.dart';
 
-class MockDatabase extends Mock implements Database {}
+import '../mocks.dart';
 
 void main() {
   test('executeInitialization calls all scripts', () {

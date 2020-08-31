@@ -53,6 +53,7 @@ void main() {
       ..settingsDb = mockSettingsDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
+      ..database = MockDatabase()
       ..init();
   });
 

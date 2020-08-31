@@ -13,12 +13,12 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final DatabaseRepository databaseRepository;
+  final Database database;
   final BaseUrlDb baseUrlDb;
   final CancelNotificationsFunction cancleAllNotificationsFunction;
 
   AuthenticationBloc(
-      {@required this.databaseRepository,
+      {@required this.database,
       @required this.baseUrlDb,
       @required this.cancleAllNotificationsFunction})
       : super(AuthenticationUninitialized());
@@ -70,7 +70,7 @@ class AuthenticationBloc
   Stream<AuthenticationState> _logout(UserRepository repo,
       [String token]) async* {
     await repo.logout(token);
-    await databaseRepository.clearAll();
+    await DatabaseRepository.clearAll(database);
     await cancleAllNotificationsFunction();
     yield Unauthenticated.fromInitilized(state);
   }

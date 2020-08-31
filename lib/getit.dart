@@ -7,7 +7,6 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:sqflite/sqflite.dart';
 
 class GetItInitializer {
   ActivityDb _activityDb;
@@ -22,10 +21,6 @@ class GetItInitializer {
 
   TokenDb _tokenDb;
   set tokenDb(TokenDb tokenDb) => _tokenDb = tokenDb;
-
-  DatabaseRepository _databaseRepository;
-  set databaseRepository(DatabaseRepository databaseRepository) =>
-      _databaseRepository = databaseRepository;
 
   Ticker _ticker;
   set ticker(Ticker ticker) => _ticker = ticker;
@@ -77,8 +72,7 @@ class GetItInitializer {
         _firebasePushService ?? FirebasePushService());
     GetIt.I.registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database));
     GetIt.I.registerSingleton<UserDb>(_userDb ?? UserDb());
-    GetIt.I.registerSingleton<DatabaseRepository>(
-        _databaseRepository ?? DatabaseRepository());
+    GetIt.I.registerSingleton<Database>(_database);
     GetIt.I.registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb());
     GetIt.I.registerSingleton<NotificationStreamGetter>(
         _selectedNotificationStreamGetter ?? () => selectNotificationSubject);

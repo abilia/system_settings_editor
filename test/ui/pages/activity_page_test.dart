@@ -78,6 +78,7 @@ void main() {
       ..settingsDb = MockSettingsDb()
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
+      ..database = MockDatabase()
       ..init();
   });
   Future<void> navigateToActivityPage(WidgetTester tester) async {

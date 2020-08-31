@@ -49,6 +49,7 @@ void main() {
         ..settingsDb = MockSettingsDb()
         ..syncDelay = SyncDelays.zero
         ..alarmScheduler = noAlarmScheduler
+        ..database = MockDatabase()
         ..init();
     });
     testWidgets('New activity', (WidgetTester tester) async {
@@ -135,6 +136,7 @@ void main() {
         ..settingsDb = MockSettingsDb()
         ..syncDelay = SyncDelays.zero
         ..alarmScheduler = noAlarmScheduler
+        ..database = MockDatabase()
         ..init();
     });
 

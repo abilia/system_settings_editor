@@ -25,9 +25,8 @@ void main() {
       when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(null));
       when(mockTokenDb.delete()).thenAnswer((_) => Future.value(null));
 
-      final mockDatabaseRepository = MockDatabaseRepository();
-      when(mockDatabaseRepository.clearAll())
-          .thenAnswer((realInvocation) => Future.value(null));
+      final mockDatabase = MockDatabase();
+      when(mockDatabase.batch()).thenReturn(MockBatch());
 
       final mockSettingsDb = MockSettingsDb();
       when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
@@ -50,7 +49,7 @@ void main() {
         ..fileStorage = MockFileStorage()
         ..userFileDb = MockUserFileDb()
         ..settingsDb = mockSettingsDb
-        ..databaseRepository = mockDatabaseRepository
+        ..database = mockDatabase
         ..init();
     });
 
