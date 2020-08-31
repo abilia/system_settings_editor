@@ -57,6 +57,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
               )
             else
               PickField(
+                key: TestKey.changeInfoItem,
                 leading: const Icon(
                   AbiliaIcons.information,
                   size: smallIconSize,
@@ -101,6 +102,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
           children: <Widget>[
             Expanded(
               child: PickField(
+                key: TestKey.changeInfoItem,
                 leading: const Icon(
                   AbiliaIcons.ok,
                   size: smallIconSize,
@@ -273,6 +275,7 @@ class EditNoteWidget extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: PickField(
+                key: TestKey.changeInfoItem,
                 leading: const Icon(
                   AbiliaIcons.edit,
                   size: smallIconSize,

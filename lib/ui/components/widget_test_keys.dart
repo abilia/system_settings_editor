@@ -54,5 +54,6 @@ class TestKey {
       checklistQuestionImageKey = Key('checklistQuestionImageKey'),
       preview = Key('preview'),
       edgePreview = Key('edgePreview'),
-      dotsPreview = Key('dotsPreview');
+      dotsPreview = Key('dotsPreview'),
+      changeInfoItem = Key('changeInfoItem');
 }

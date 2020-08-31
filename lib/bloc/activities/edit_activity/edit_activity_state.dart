@@ -3,14 +3,16 @@ part of 'edit_activity_bloc.dart';
 abstract class EditActivityState extends Equatable with Silent {
   const EditActivityState(
     this.activity,
-    this.timeInterval, {
-    this.ogActivity,
-    this.ogTimeInterval,
+    this.timeInterval,
+    this.infoItems, {
+    this.originalActivity,
+    this.originalTimeInterval,
     this.newImage,
     this.failedSave = false,
   });
-  final Activity activity, ogActivity;
-  final TimeInterval timeInterval, ogTimeInterval;
+  final Activity activity, originalActivity;
+  final TimeInterval timeInterval, originalTimeInterval;
+  final MapView<Type, InfoItem> infoItems;
   final File newImage;
   final bool failedSave;
 
@@ -22,8 +24,8 @@ abstract class EditActivityState extends Equatable with Silent {
   bool get hasStartTime => timeInterval.startTime != null || activity.fullDay;
 
   bool get unchanged =>
-      activity == ogActivity &&
-      timeInterval == ogTimeInterval &&
+      activity == originalActivity &&
+      timeInterval == originalTimeInterval &&
       newImage == newImage;
 
   @override
@@ -32,6 +34,7 @@ abstract class EditActivityState extends Equatable with Silent {
         timeInterval,
         newImage,
         failedSave,
+        infoItems,
       ];
 
   @override
@@ -41,6 +44,7 @@ abstract class EditActivityState extends Equatable with Silent {
     Activity activity, {
     TimeInterval timeInterval,
     ImageUpdate imageUpdate,
+    Map<Type, InfoItem> infoItems,
   });
 
   EditActivityState _failSave();
@@ -55,8 +59,9 @@ class UnstoredActivityState extends EditActivityState {
   ]) : super(
           activity,
           timeInterval,
-          ogActivity: activity,
-          ogTimeInterval: timeInterval,
+          const MapView(<Type, InfoItem>{}),
+          originalActivity: activity,
+          originalTimeInterval: timeInterval,
           newImage: newImage,
           failedSave: failedSave,
         );
@@ -64,15 +69,17 @@ class UnstoredActivityState extends EditActivityState {
   const UnstoredActivityState._(
     Activity activity,
     TimeInterval timeInterval,
-    Activity ogActivity,
-    TimeInterval ogTimeInterval, [
+    MapView<Type, InfoItem> infoItems,
+    Activity originalActivity,
+    TimeInterval originalTimeInterval, [
     File newImage,
     bool failedSave = false,
   ]) : super(
           activity,
           timeInterval,
-          ogActivity: ogActivity,
-          ogTimeInterval: ogTimeInterval,
+          infoItems,
+          originalActivity: originalActivity,
+          originalTimeInterval: originalTimeInterval,
           newImage: newImage,
           failedSave: failedSave,
         );
@@ -81,13 +88,15 @@ class UnstoredActivityState extends EditActivityState {
   UnstoredActivityState copyWith(
     Activity activity, {
     TimeInterval timeInterval,
+    Map<Type, InfoItem> infoItems,
     ImageUpdate imageUpdate,
   }) =>
       UnstoredActivityState._(
         activity,
         timeInterval ?? this.timeInterval,
-        ogActivity,
-        ogTimeInterval,
+        MapView(infoItems ?? this.infoItems),
+        originalActivity,
+        originalTimeInterval,
         imageUpdate == null ? newImage : imageUpdate.updatedImage,
         failedSave,
       );
@@ -96,8 +105,9 @@ class UnstoredActivityState extends EditActivityState {
   EditActivityState _failSave() => UnstoredActivityState._(
         activity,
         timeInterval,
-        ogActivity,
-        ogTimeInterval,
+        infoItems,
+        originalActivity,
+        originalTimeInterval,
         newImage,
         true,
       );
@@ -113,26 +123,29 @@ class StoredActivityState extends EditActivityState {
   ) : super(
           activity,
           timeInterval,
-          ogActivity: activity,
-          ogTimeInterval: timeInterval,
+          const MapView(<Type, InfoItem>{}),
+          originalActivity: activity,
+          originalTimeInterval: timeInterval,
           failedSave: false,
         );
 
   const StoredActivityState._(
     Activity activity,
     TimeInterval timeInterval,
-    Activity ogActivity,
-    TimeInterval ogTimeInterval,
+    Activity originalgActivity,
+    TimeInterval originalTimeInterval,
+    MapView<Type, InfoItem> infoItems,
     this.day, [
     File newImage,
     bool failedSave,
   ]) : super(
           activity,
           timeInterval,
-          ogActivity: ogActivity,
-          ogTimeInterval: ogTimeInterval,
+          infoItems,
+          originalActivity: originalgActivity,
+          originalTimeInterval: originalTimeInterval,
           newImage: newImage,
-          failedSave: false,
+          failedSave: failedSave,
         );
 
   @override
@@ -141,14 +154,16 @@ class StoredActivityState extends EditActivityState {
   @override
   StoredActivityState copyWith(
     Activity activity, {
+    Map<Type, InfoItem> infoItems,
     TimeInterval timeInterval,
     ImageUpdate imageUpdate,
   }) =>
       StoredActivityState._(
         activity,
         timeInterval ?? this.timeInterval,
-        this.activity,
-        this.timeInterval,
+        originalActivity,
+        originalTimeInterval,
+        MapView(infoItems ?? this.infoItems),
         day,
         imageUpdate == null ? newImage : imageUpdate.updatedImage,
         failedSave,
@@ -160,6 +175,7 @@ class StoredActivityState extends EditActivityState {
         timeInterval,
         activity,
         timeInterval,
+        infoItems,
         day,
         newImage,
         true,

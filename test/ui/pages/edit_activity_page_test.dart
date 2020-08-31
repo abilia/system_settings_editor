@@ -527,7 +527,7 @@ void main() {
       await tester.goToInfoItemTab();
 
       expect(find.byType(InfoItemTab), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.information));
+      await tester.tap(find.byKey(TestKey.changeInfoItem));
       await tester.pumpAndSettle();
       expect(find.byType(SelectInfoTypeDialog), findsOneWidget);
       expect(find.byKey(TestKey.infoItemNoneRadio), findsOneWidget);
@@ -535,11 +535,59 @@ void main() {
       expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
     });
 
+    testWidgets('Change beweeen info items preserves old info item state',
+        (WidgetTester tester) async {
+      final q1 = 'q1', q2 = 'q2', q3 = 'q3', noteText = 'noteText';
+      final activity = Activity.createNew(
+          title: 'null',
+          startTime: startTime,
+          infoItem: Checklist(questions: [
+            Question(name: q1),
+            Question(name: q3),
+            Question(name: q2)
+          ]));
+      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
+          givenActivity: activity));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+
+      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.pumpAndSettle();
+
+      await tester.enterText_(find.byType(NoteBlock), noteText);
+      await tester.pumpAndSettle();
+
+      expect(find.text(noteText), findsOneWidget);
+
+      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
+      await tester.pumpAndSettle();
+
+      expect(find.text(q1), findsOneWidget);
+      expect(find.text(q2), findsOneWidget);
+      expect(find.text(q3), findsOneWidget);
+
+      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.infoItemNoneRadio));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.pumpAndSettle();
+
+      expect(find.text(noteText), findsOneWidget);
+    });
+
     group('note', () {
       Future goToNote(WidgetTester tester) async {
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.byIcon(AbiliaIcons.information));
+        await tester.tap(find.byKey(TestKey.changeInfoItem));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
         await tester.pumpAndSettle();
@@ -602,7 +650,7 @@ that it is visible in the info item tab
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.byIcon(AbiliaIcons.information));
+        await tester.tap(find.byKey(TestKey.changeInfoItem));
         await tester.pumpAndSettle();
 
         expect(find.byType(SelectInfoTypeDialog), findsOneWidget);
@@ -761,7 +809,7 @@ Internal improvements to tests and examples.''';
       Future goToChecklist(WidgetTester tester) async {
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.byIcon(AbiliaIcons.information));
+        await tester.tap(find.byKey(TestKey.changeInfoItem));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
         await tester.pumpAndSettle();
