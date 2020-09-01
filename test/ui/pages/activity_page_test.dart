@@ -74,9 +74,11 @@ void main() {
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
+      ..userFileDb = MockUserFileDb()
       ..settingsDb = MockSettingsDb()
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
+      ..database = MockDatabase()
       ..init();
   });
   Future<void> navigateToActivityPage(WidgetTester tester) async {

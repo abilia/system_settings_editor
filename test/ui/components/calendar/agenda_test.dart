@@ -53,8 +53,10 @@ void main() {
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
+      ..userFileDb = MockUserFileDb()
       ..settingsDb = MockSettingsDb()
       ..alarmScheduler = noAlarmScheduler
+      ..database = MockDatabase()
       ..init();
   });
 

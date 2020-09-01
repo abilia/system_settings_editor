@@ -45,9 +45,11 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(activityResponse)
         ..fileStorage = MockFileStorage()
+        ..userFileDb = MockUserFileDb()
         ..settingsDb = MockSettingsDb()
         ..syncDelay = SyncDelays.zero
         ..alarmScheduler = noAlarmScheduler
+        ..database = MockDatabase()
         ..init();
     });
     testWidgets('New activity', (WidgetTester tester) async {
@@ -130,9 +132,11 @@ void main() {
         ..tokenDb = mockTokenDb
         ..httpClient = Fakes.client(() => fullDayActivities)
         ..fileStorage = MockFileStorage()
+        ..userFileDb = MockUserFileDb()
         ..settingsDb = MockSettingsDb()
         ..syncDelay = SyncDelays.zero
         ..alarmScheduler = noAlarmScheduler
+        ..database = MockDatabase()
         ..init();
     });
 

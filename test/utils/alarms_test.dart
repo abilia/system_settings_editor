@@ -272,21 +272,30 @@ void main() {
     test('one on, and one reminder after', () {
       // Arrange
       final reminder = 5.minutes();
-      final afterWithReminder = FakeActivity.starts(startDate.add(reminder),
-              title: 'after with reminder')
-          .copyWith(reminderBefore: [reminder.inMilliseconds]);
-      final onTime = FakeActivity.starts(startDate, title: 'onTime');
+      final afterWithReminder = Activity.createNew(
+        title: 'after with reminder',
+        startTime: startDate.add(reminder),
+        duration: 1.hours(),
+        reminderBefore: [reminder.inMilliseconds],
+      );
+
+      final onTime = Activity.createNew(
+        title: 'onTime',
+        startTime: startDate,
+        duration: 1.hours(),
+      );
+
       final activities = [afterWithReminder, onTime];
 
       // Act
       final alarms = activities.alarmsFrom(startDate).toList();
       // Assert
       expect(alarms, [
-        StartAlarm(afterWithReminder, day),
         StartAlarm(onTime, day),
-        EndAlarm(afterWithReminder, day),
+        ReminderBefore(afterWithReminder, day, reminder: reminder),
+        StartAlarm(afterWithReminder, day),
         EndAlarm(onTime, day),
-        ReminderBefore(afterWithReminder, day, reminder: reminder)
+        EndAlarm(afterWithReminder, day),
       ]);
     });
 
@@ -586,6 +595,73 @@ void main() {
             ...unSignedOffActivityReminders
                 .map((r) => ReminderUnchecked(maxed, nextDay, reminder: r))
           ]));
+    });
+
+    test('Should schedual the closest alarms only', () {
+      // Arrange
+      final start = startDate.nextDay().nextDay();
+      final reminders = [
+        15.minutes(),
+        30.minutes(), // had to change change reminders time to 30, 15 because if 5 we would get 5 start and end alarms
+        1.hours(),
+        2.hours(),
+        1.days()
+      ];
+      final maxed = Activity.createNew(
+          title: 'null',
+          startTime: start,
+          duration: 1.minutes(),
+          checkable: true,
+          reminderBefore: reminders.map((r) => r.inMilliseconds));
+
+      final activities = List.generate(
+          10,
+          (index) => maxed.copyWith(
+              title: '$index',
+              newId: true,
+              startTime: start.add(index.minutes())));
+
+      // Act
+      final alarms = activities.alarmsFrom(startDate, take: 50).toList();
+      // Assert -- 10 activities * 5 reminders = 50, so all schedualed alarms should be reminders
+      expect(
+        alarms,
+        everyElement(isA<ReminderBefore>()),
+      );
+    });
+
+    test('Should schedual the closest alarms, even if the alarm is next day',
+        () {
+      // Arrange
+      final start = day.nextDay().nextDay().subtract(25.minutes());
+      final reminders = [
+        5.minutes(),
+        15.minutes(),
+        1.hours(),
+        2.hours(),
+        1.days(),
+      ];
+      final maxed = Activity.createNew(
+          title: 'null',
+          startTime: start,
+          duration: 1.minutes(),
+          checkable: true,
+          reminderBefore: reminders.map((r) => r.inMilliseconds));
+
+      final activities = List.generate(
+          100,
+          (index) => maxed.copyWith(
+              title: '$index',
+              newId: true,
+              startTime: start.add(index.minutes())));
+
+      // Act
+      final alarms = activities.alarmsFrom(startDate, take: 50).toList();
+      // Assert -- Should contain 25 '1 day reminders' from day 2 and 25 from day 3
+      expect(
+        alarms,
+        everyElement((a) => a is ReminderBefore && a.reminder == 1.days()),
+      );
     });
   });
 }

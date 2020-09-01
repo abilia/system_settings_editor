@@ -22,10 +22,6 @@ class GetItInitializer {
   TokenDb _tokenDb;
   set tokenDb(TokenDb tokenDb) => _tokenDb = tokenDb;
 
-  DatabaseRepository _databaseRepository;
-  set databaseRepository(DatabaseRepository databaseRepository) =>
-      _databaseRepository = databaseRepository;
-
   Ticker _ticker;
   set ticker(Ticker ticker) => _ticker = ticker;
 
@@ -65,16 +61,18 @@ class GetItInitializer {
   SyncDelays _syncDelay;
   set syncDelay(SyncDelays syncDelay) => _syncDelay = syncDelay;
 
+  Database _database;
+  set database(Database database) => _database = database;
+
   void init() {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
     GetIt.I.registerSingleton<TokenDb>(_tokenDb ?? TokenDb());
     GetIt.I.registerSingleton<FirebasePushService>(
         _firebasePushService ?? FirebasePushService());
-    GetIt.I.registerSingleton<ActivityDb>(_activityDb ?? ActivityDb());
+    GetIt.I.registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database));
     GetIt.I.registerSingleton<UserDb>(_userDb ?? UserDb());
-    GetIt.I.registerSingleton<DatabaseRepository>(
-        _databaseRepository ?? DatabaseRepository());
+    GetIt.I.registerSingleton<Database>(_database);
     GetIt.I.registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb());
     GetIt.I.registerSingleton<NotificationStreamGetter>(
         _selectedNotificationStreamGetter ?? () => selectNotificationSubject);
@@ -82,8 +80,8 @@ class GetItInitializer {
         _alarmScheduler ?? scheduleAlarmNotificationsIsolated);
     GetIt.I.registerSingleton<Ticker>(_ticker ?? Ticker());
     GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());
-    GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb());
-    GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb());
+    GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database));
+    GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database));
     GetIt.I.registerSingleton<SettingsDb>(_settingsDb ?? SettingsDb(null));
     GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage(''));
     GetIt.I.registerSingleton<MultipartRequestBuilder>(

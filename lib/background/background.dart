@@ -27,11 +27,12 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
     final httpClient = Client();
     final user = await UserDb().getUser();
     final token = await TokenDb().getToken();
+    final database = await DatabaseRepository.createSqfliteDb();
 
     final activities = await ActivityRepository(
       baseUrl: baseUrl,
       client: httpClient,
-      activityDb: ActivityDb(),
+      activityDb: ActivityDb(database),
       userId: user.id,
       authToken: token,
     ).load();
@@ -42,7 +43,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
     await UserFileRepository(
       baseUrl: baseUrl,
       httpClient: httpClient,
-      userFileDb: UserFileDb(),
+      userFileDb: UserFileDb(database),
       fileStorage: fileStorage,
       userId: user.id,
       authToken: token,
@@ -64,7 +65,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
     await SortableRepository(
       baseUrl: baseUrl,
       client: httpClient,
-      sortableDb: SortableDb(),
+      sortableDb: SortableDb(database),
       userId: user.id,
       authToken: token,
     ).load();

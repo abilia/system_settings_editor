@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DatabaseRepository {
+  DatabaseRepository._();
   static const CALENDAR_TABLE_NAME = 'calendar_activity';
   static const SORTABLE_TABLE_NAME = 'sortable';
   static const USER_FILE_TABLE_NAME = 'user_file';
@@ -78,10 +80,7 @@ class DatabaseRepository {
     ''',
   ];
 
-  static Database _database;
-  Future<Database> get database async => _database ??= await _open();
-
-  Future<Database> _open() async {
+  static Future<Database> createSqfliteDb() async {
     final databasesPath = await getDatabasesPath();
     return await openDatabase(
       join(databasesPath, 'seagull.db'),
@@ -91,8 +90,27 @@ class DatabaseRepository {
     );
   }
 
-  Future printAll() async {
-    final db = await database;
+  @visibleForTesting
+  static Future<Database> createInMemoryFfiDb() async {
+    sqfliteFfiInit();
+    return await databaseFactoryFfi.openDatabase(
+      inMemoryDatabasePath,
+      options: OpenDatabaseOptions(
+        version: migrations.length + 1,
+        onCreate: executeInitialization,
+        onUpgrade: executeMigration,
+      ),
+    );
+  }
+
+  static Future printAll(Database db) async {
+    void printTable(List<Map<String, dynamic>> calendar) {
+      print(calendar.first.keys.join('\t'));
+      calendar.forEach((element) {
+        print(element.values.join('\t'));
+      });
+    }
+
     final calendar = await db.rawQuery(
         'select id, title, file_id, revision, dirty, deleted from $CALENDAR_TABLE_NAME order by revision desc');
     print('------------------- CALENDAR ---------------------');
@@ -107,15 +125,7 @@ class DatabaseRepository {
     printTable(sortables);
   }
 
-  void printTable(List<Map<String, dynamic>> calendar) {
-    print(calendar.first.keys.join('\t'));
-    calendar.forEach((element) {
-      print(element.values.join('\t'));
-    });
-  }
-
-  Future clearAll() async {
-    final db = await database;
+  static Future clearAll(Database db) async {
     final batch = db.batch();
     batch.delete(CALENDAR_TABLE_NAME);
     batch.delete(SORTABLE_TABLE_NAME);
@@ -124,20 +134,20 @@ class DatabaseRepository {
   }
 
   @visibleForTesting
-  Future<void> executeInitialization(Database db, int version) async {
+  static Future<void> executeInitialization(Database db, int version) async {
     initialScript.forEach((script) async => await db.execute(script));
     migrations.forEach((script) async => await db.execute(script));
   }
 
   @visibleForTesting
-  Future<void> executeMigration(
+  static Future<void> executeMigration(
       Database db, int oldVersion, int newVersion) async {
     await internalMigration(db, oldVersion, newVersion, migrations);
   }
 
   @visibleForTesting
-  Future<void> internalMigration(Database db, int oldVersion, int newVersion,
-      List<String> migrationScripts) async {
+  static Future<void> internalMigration(Database db, int oldVersion,
+      int newVersion, List<String> migrationScripts) async {
     migrationScripts
         .skip(oldVersion - 1)
         .forEach((script) async => await db.execute(script));

@@ -16,6 +16,7 @@ void main() {
     setUp(() {
       GetItInitializer()
         ..fileStorage = MockFileStorage()
+        ..database = MockDatabase()
         ..init();
     });
     final fileId = '351d5e7d-0d87-4037-9829-538a14936128',
