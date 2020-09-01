@@ -100,14 +100,11 @@ class ActivityCard extends StatelessWidget {
                               padding: const EdgeInsets.only(left: cardPadding),
                               child: Stack(children: <Widget>[
                                 if (hasTitle)
-                                  HeroTitle(
-                                    activityDay: activityOccasion,
-                                    child: DefaultTextStyle(
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1,
-                                      overflow: TextOverflow.ellipsis,
-                                      child: Text(activity.title),
-                                    ),
+                                  Text(
+                                    activity.title,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 Align(
                                   alignment: Alignment.bottomLeft,

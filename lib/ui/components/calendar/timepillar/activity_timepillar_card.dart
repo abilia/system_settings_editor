@@ -110,20 +110,15 @@ class ActivityTimepillarCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           if (hasTitle)
-                            HeroTitle(
-                              activityDay: activityOccasion,
-                              child: DefaultTextStyle(
-                                overflow: TextOverflow.visible,
-                                textAlign: TextAlign.center,
-                                maxLines: maxTitleLines,
-                                style: textStyle.copyWith(
-                                    color: inactive
-                                        ? AbiliaColors.white140
-                                        : AbiliaColors.black),
-                                child: Text(
-                                  activity.title,
-                                ),
-                              ),
+                            Text(
+                              activity.title,
+                              overflow: TextOverflow.visible,
+                              textAlign: TextAlign.center,
+                              maxLines: maxTitleLines,
+                              style: textStyle.copyWith(
+                                  color: inactive
+                                      ? AbiliaColors.white140
+                                      : AbiliaColors.black),
                             ),
                           if (hasImage || signedOff)
                             ActivityImage.fromActivityOccasion(
