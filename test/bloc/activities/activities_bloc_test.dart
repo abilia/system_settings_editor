@@ -48,8 +48,22 @@ void main() {
       activitiesBloc.add(LoadActivities());
       await expectLater(
         activitiesBloc,
-        emitsInAnyOrder([
-          ActivitiesNotLoaded(),
+        emits(ActivitiesLoaded([])),
+      );
+    });
+
+    test('LoadActivities on ActivitiesLoaded state yields ActivitiesReloadning',
+        () async {
+      when(mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(<Activity>[]));
+      activitiesBloc.add(LoadActivities());
+      activitiesBloc.add(LoadActivities());
+
+      await expectLater(
+        activitiesBloc,
+        emitsInOrder([
+          ActivitiesLoaded([]),
+          ActivitiesReloadning([]),
           ActivitiesLoaded([]),
         ]),
       );
@@ -71,10 +85,7 @@ void main() {
       activitiesBloc.add(LoadActivities());
       expectLater(
         activitiesBloc,
-        emitsInOrder([
-          ActivitiesNotLoaded(),
-          ActivitiesLoaded([exptectedActivity]),
-        ]),
+        emits(ActivitiesLoaded([exptectedActivity])),
       );
     });
 
@@ -166,7 +177,6 @@ void main() {
       await expectLater(
         activitiesBloc,
         emitsInOrder([
-          ActivitiesNotLoaded(),
           ActivitiesLoaded(fullActivityList),
           ActivitiesLoaded(activityListDeleted),
         ]),
@@ -194,7 +204,6 @@ void main() {
       await expectLater(
         activitiesBloc,
         emitsInOrder([
-          ActivitiesNotLoaded(),
           ActivitiesLoaded(activityList),
           ActivitiesLoaded(updatedActivityList.followedBy([])),
         ]),
@@ -228,7 +237,6 @@ void main() {
       await expectLater(
         activitiesBloc,
         emitsInOrder([
-          ActivitiesNotLoaded(),
           ActivitiesLoaded(activityList),
           ActivitiesLoaded([anActivity].followedBy([])),
         ]),
@@ -280,7 +288,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             ActivitiesLoaded(activityList2.followedBy({})),
           ]),
@@ -334,7 +341,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             ActivitiesLoaded(activityList2.followedBy({})),
           ]),
@@ -380,7 +386,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             MatchActivitiesWithoutId(expectedActivityList),
           ]),
@@ -425,7 +430,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             ActivitiesLoaded([anActivity].followedBy({})),
           ]),
@@ -460,7 +464,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             ActivitiesLoaded([recurrringActivityWithEndTime].followedBy({})),
           ]),
@@ -505,7 +508,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(activityList),
             ActivitiesLoaded([recurrringActivity1AfterDelete].followedBy({})),
           ]),
@@ -548,7 +550,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurring]),
             ActivitiesLoaded([expected].followedBy([])),
           ]),
@@ -589,7 +590,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurring]),
             MatchActivitiesWithoutId(
                 [expcetedUpdatedActivity, updatedOldActivity]),
@@ -637,7 +637,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurring]),
             exptected,
           ]),
@@ -687,7 +686,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurring]),
             expected,
           ]),
@@ -740,7 +738,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurring]),
             expected,
           ]),
@@ -773,7 +770,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurrringActivity]),
             ActivitiesLoaded([updatedRecurrringActivity].followedBy([])),
           ]),
@@ -816,7 +812,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurrringActivity]),
             MatchActivitiesWithoutId(exptected),
           ]),
@@ -858,7 +853,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurrringActivity]),
             MatchActivitiesWithoutId(exptectedList),
           ]),
@@ -904,7 +898,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([recurrringActivity]),
             MatchActivitiesWithoutId(exptectedList),
           ]),
@@ -1014,7 +1007,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded(currentActivities),
             MatchActivitiesWithoutId(exptectedList),
           ]),
@@ -1076,7 +1068,6 @@ void main() {
         await expectLater(
           activitiesBloc,
           emitsInOrder([
-            ActivitiesNotLoaded(),
             ActivitiesLoaded([a1, a2, a3]),
             MatchActivitiesWithoutId([a1, a2Part1, updatedA2, expectedA3]),
           ]),
