@@ -115,10 +115,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                               overflow: TextOverflow.visible,
                               textAlign: TextAlign.center,
                               maxLines: maxTitleLines,
-                              style: textStyle.copyWith(
-                                  color: inactive
-                                      ? AbiliaColors.white140
-                                      : AbiliaColors.black),
+                              style: textStyle,
                             ),
                           if (hasImage || signedOff)
                             ActivityImage.fromActivityOccasion(

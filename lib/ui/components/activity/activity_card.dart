@@ -43,8 +43,6 @@ class ActivityCard extends StatelessWidget {
     final themeData = inactive
         ? abiliaTheme.copyWith(
             textTheme: textTheme.copyWith(
-              subtitle1:
-                  textTheme.subtitle1.copyWith(color: AbiliaColors.white140),
               bodyText1:
                   textTheme.bodyText1.copyWith(color: AbiliaColors.white140),
             ),
