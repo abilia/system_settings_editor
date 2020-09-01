@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,20 +13,17 @@ import 'all.dart';
 // Don't forgett to register new plugin used in background
 // in android/app/src/main/kotlin/com/abilia/seagull/Application.kt
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  final userDb = UserDb();
+  final logger = SeagullLogger(userDb);
+  logger.initLogging();
   final log = Logger('BackgroundMessageHandler');
-  final logSubscription = Logger.root.onRecord.listen((record) {
-    print(
-        'Background: ${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
-    if (record?.error != null) print(record.error);
-    if (record?.stackTrace != null) print(record.stackTrace);
-  });
 
   try {
     log.info('Handling background message...');
     message.forEach((key, value) => log.fine('$key: $value'));
     final baseUrl = await BaseUrlDb().getBaseUrl();
     final httpClient = Client();
-    final user = await UserDb().getUser();
+    final user = await userDb.getUser();
     final token = await TokenDb().getToken();
     final database = await DatabaseRepository.createSqfliteDb();
 
@@ -72,6 +70,6 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
   } catch (e) {
     log.severe('Exception when running background handler', e);
   } finally {
-    await logSubscription.cancel();
+    await logger.cancelLogging();
   }
 }

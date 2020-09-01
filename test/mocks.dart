@@ -7,6 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
@@ -57,6 +58,8 @@ class MockDatabase extends Mock implements Database {}
 class MockBatch extends Mock implements Batch {}
 
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
+
+class MockSeagullLogger extends Mock implements SeagullLogger {}
 
 class MockFileStorage extends Mock implements FileStorage {}
 

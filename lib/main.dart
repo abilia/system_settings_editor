@@ -40,7 +40,9 @@ void main() async {
 
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initLogging(
+  final userDb = UserDb();
+  final seagullLogger = SeagullLogger(userDb);
+  await seagullLogger.initLogging(
       initAppcenter: kReleaseMode,
       level: kReleaseMode ? Level.INFO : Level.FINE);
   _log.fine('Initializing services');
@@ -51,6 +53,8 @@ Future<void> initServices() async {
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
     ..settingsDb = settingsDb
+    ..userDb = userDb
+    ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
     ..init();
 }
@@ -99,6 +103,7 @@ class App extends StatelessWidget {
               create: (context) => AuthenticationBloc(
                     database: GetIt.I<Database>(),
                     baseUrlDb: GetIt.I<BaseUrlDb>(),
+                    seagullLogger: GetIt.I<SeagullLogger>(),
                     cancleAllNotificationsFunction: () =>
                         notificationPlugin.cancelAll(),
                   )..add(AppStarted(context.repository<UserRepository>()))),

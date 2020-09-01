@@ -22,6 +22,7 @@ void main() {
       authenticationBloc = AuthenticationBloc(
           database: MockDatabase(),
           baseUrlDb: MockBaseUrlDb(),
+          seagullLogger: MockSeagullLogger(),
           cancleAllNotificationsFunction: () => Future.value());
       mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
@@ -92,6 +93,7 @@ void main() {
       authenticationBloc = AuthenticationBloc(
         database: MockDatabase(),
         baseUrlDb: MockBaseUrlDb(),
+        seagullLogger: MockSeagullLogger(),
         cancleAllNotificationsFunction: () => Future.value(),
       )..add(AppStarted(mockedUserRepository));
       mockFirebasePushService = MockFirebasePushService();
