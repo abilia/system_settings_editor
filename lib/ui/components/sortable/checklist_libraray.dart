@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
@@ -34,17 +35,21 @@ class LibraryChecklist extends StatelessWidget {
                     style: abiliaTextTheme.caption,
                   ),
                 const SizedBox(height: 2),
-                checklist.hasImage
-                    ? FadeInAbiliaImage(
-                        height: imageHeight,
-                        width: imageWidth,
-                        imageFileId: imageId,
-                        imageFilePath: iconPath,
-                      )
-                    : Icon(
-                        AbiliaIcons.check_button,
-                        size: 84,
-                      ),
+                SizedBox(
+                  height: imageHeight,
+                  child: checklist.hasImage
+                      ? FadeInAbiliaImage(
+                          height: imageHeight,
+                          width: imageWidth,
+                          imageFileId: imageId,
+                          imageFilePath: iconPath,
+                        )
+                      : Icon(
+                          AbiliaIcons.check_button,
+                          size: 48,
+                          color: AbiliaColors.white140,
+                        ),
+                ),
               ],
             ),
           ),

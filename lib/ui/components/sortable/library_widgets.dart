@@ -113,40 +113,44 @@ class LibraryFolder extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        child: Column(
-          children: <Widget>[
-            Text(
-              title,
-              style: abiliaTextTheme.caption,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Stack(
-              children: [
-                Icon(
-                  AbiliaIcons.folder,
-                  size: 86,
-                  color: AbiliaColors.orange,
-                ),
-                Positioned(
-                  bottom: 16,
-                  left: 10,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: Align(
-                      alignment: Alignment.center,
-                      heightFactor: 42 / 66,
-                      child: FadeInAbiliaImage(
-                        imageFileId: fileId,
-                        imageFilePath: filePath,
-                        width: 66,
-                        height: 66,
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 4),
+              Text(
+                title,
+                style: abiliaTextTheme.caption,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Stack(
+                children: [
+                  Icon(
+                    AbiliaIcons.folder,
+                    size: 86,
+                    color: AbiliaColors.orange,
+                  ),
+                  Positioned(
+                    bottom: 16,
+                    left: 10,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Align(
+                        alignment: Alignment.center,
+                        heightFactor: 42 / 66,
+                        child: FadeInAbiliaImage(
+                          imageFileId: fileId,
+                          imageFilePath: filePath,
+                          width: 66,
+                          height: 66,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
