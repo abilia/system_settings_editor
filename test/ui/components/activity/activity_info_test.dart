@@ -243,8 +243,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(HeroImage), findsOneWidget);
-    expect(find.byType(HeroTitle), findsOneWidget);
+    expect(find.byType(ActivityImage), findsOneWidget);
+    expect(find.text(activity.title), findsOneWidget);
     expect(find.byType(Attachment), findsNothing);
   });
 
@@ -270,8 +270,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(HeroImage), findsOneWidget);
-    expect(find.byType(HeroTitle), findsOneWidget);
+    expect(find.byType(ActivityImage), findsOneWidget);
+    expect(find.text(activity.title), findsOneWidget);
     expect(find.byType(Attachment), findsOneWidget);
   });
 

@@ -71,8 +71,8 @@ class ActivityImage extends StatelessWidget {
     final hasImage = activity.hasImage,
         signedOff = activityDay.isSignedOff,
         inactive = past || signedOff;
-    return HeroImage(
-      activityDay: activityDay,
+    return Hero(
+      tag: activityDay,
       child: Stack(
         alignment: Alignment.center,
         children: [
