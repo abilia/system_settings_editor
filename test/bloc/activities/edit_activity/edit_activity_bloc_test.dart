@@ -517,9 +517,12 @@ void main() {
 
   test('Changing InfoItem', () async {
     // Arrange
-    final activity = Activity.createNew(
-        title: 'null', startTime: aTime, infoItem: NoteInfoItem('anote'));
-    final activityDay = ActivityDay(activity, aDay);
+    final note = NoteInfoItem('anote');
+    final withNote =
+        Activity.createNew(title: 'null', startTime: aTime, infoItem: note);
+    final withChecklist = withNote.copyWith(infoItem: Checklist());
+    final withNoInfoItem = withNote.copyWith(infoItem: NoInfoItem());
+    final activityDay = ActivityDay(withNote, aDay);
     final timeInterval = TimeInterval(TimeOfDay.fromDateTime(aTime), null);
     final editActivityBloc = EditActivityBloc(
       activityDay,
@@ -536,20 +539,34 @@ void main() {
       editActivityBloc,
       emitsInOrder([
         StoredActivityState(
-          activity.copyWith(infoItem: Checklist()),
+          withChecklist,
           timeInterval,
           aDay,
+        ).copyWith(
+          withChecklist,
+          infoItems: {
+            NoteInfoItem: note,
+          },
         ),
         StoredActivityState(
-          activity.copyWith(infoItem: NoteInfoItem()),
+          withNote,
           timeInterval,
           aDay,
+        ).copyWith(
+          withNote,
+          infoItems: {
+            NoteInfoItem: note,
+            Checklist: Checklist(),
+          },
         ),
         StoredActivityState(
-          activity.copyWith(infoItem: InfoItem.none),
+          withNoInfoItem,
           timeInterval,
           aDay,
-        ),
+        ).copyWith(withNoInfoItem, infoItems: {
+          NoteInfoItem: note,
+          Checklist: Checklist(),
+        }),
       ]),
     );
   });
@@ -558,6 +575,7 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
         title: 'null', startTime: aTime, infoItem: NoteInfoItem('anote'));
+    final activityWithEmptyChecklist = activity.copyWith(infoItem: Checklist());
     final expectedActivity = activity.copyWith(infoItem: InfoItem.none);
     final activityDay = ActivityDay(activity, aDay);
     final timeInterval = TimeInterval(TimeOfDay.fromDateTime(aTime), null);
@@ -575,10 +593,11 @@ void main() {
       editActivityBloc,
       emits(
         StoredActivityState(
-          activity.copyWith(infoItem: Checklist()),
+          activityWithEmptyChecklist,
           timeInterval,
           aDay,
-        ),
+        ).copyWith(activityWithEmptyChecklist,
+            infoItems: {NoteInfoItem: activity.infoItem}),
       ),
     );
 
@@ -595,6 +614,7 @@ void main() {
         startTime: aTime,
         infoItem: Checklist(questions: [Question(id: 0, name: 'name')]));
     final expectedActivity = activity.copyWith(infoItem: InfoItem.none);
+    final activityWithEmptyNote = activity.copyWith(infoItem: NoteInfoItem());
     final activityDay = ActivityDay(activity, aDay);
     final timeInterval = TimeInterval(TimeOfDay.fromDateTime(aTime), null);
     final editActivityBloc = EditActivityBloc(
@@ -611,10 +631,11 @@ void main() {
       editActivityBloc,
       emits(
         StoredActivityState(
-          activity.copyWith(infoItem: NoteInfoItem()),
+          activityWithEmptyNote,
           timeInterval,
           aDay,
-        ),
+        ).copyWith(activityWithEmptyNote,
+            infoItems: {Checklist: activity.infoItem}),
       ),
     );
 

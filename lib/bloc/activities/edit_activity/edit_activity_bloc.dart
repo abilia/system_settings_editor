@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
@@ -159,19 +160,29 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
 
   Stream<EditActivityState> _mapChangeInfoItemTypeToState(
       ChangeInfoItemType event) async* {
-    if (event.infoItemType == state.activity.infoItem.runtimeType) return;
+    final oldInfoItem = state.activity.infoItem;
+    final oldInfoItemType = oldInfoItem.runtimeType;
+    final newInfoType = event.infoItemType;
+    if (newInfoType == oldInfoItemType) return;
+    final infoItems = Map.fromEntries(state.infoItems.entries);
+    infoItems[oldInfoItemType] = oldInfoItem;
 
-    switch (event.infoItemType) {
-      case NoInfoItem:
-        yield state.copyWith(state.activity.copyWith(infoItem: InfoItem.none));
-        break;
+    yield state.copyWith(
+      state.activity.copyWith(
+        infoItem: infoItems[newInfoType] ?? _newInfoItem(newInfoType),
+      ),
+      infoItems: infoItems, 
+    );
+  }
+
+  InfoItem _newInfoItem(Type infoItemType) {
+    switch (infoItemType) {
       case NoteInfoItem:
-        yield state.copyWith(state.activity.copyWith(infoItem: NoteInfoItem()));
-        break;
+        return NoteInfoItem();
       case Checklist:
-        yield state.copyWith(state.activity.copyWith(infoItem: Checklist()));
-        break;
+        return Checklist();
       default:
+        return InfoItem.none;
     }
   }
 
