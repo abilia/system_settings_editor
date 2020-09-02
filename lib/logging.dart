@@ -26,8 +26,10 @@ class SeagullLogger {
   static const UPLOAD_INTERVAL = Duration(hours: 24);
   static const LOG_FILE_NAME = 'seagull.log';
 
-  void initLogging(
-      {bool initAppcenter = false, Level level = Level.ALL}) async {
+  void initLogging({
+    bool initAppcenter = false,
+    Level level = Level.ALL,
+  }) async {
     if (initAppcenter) {
       FlutterError.onError = Crashlytics.instance.recordFlutterError;
       final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';

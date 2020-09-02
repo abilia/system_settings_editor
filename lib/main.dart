@@ -43,8 +43,9 @@ Future<void> initServices() async {
   final userDb = UserDb();
   final seagullLogger = SeagullLogger(userDb);
   await seagullLogger.initLogging(
-      initAppcenter: kReleaseMode,
-      level: kReleaseMode ? Level.INFO : Level.FINE);
+    initAppcenter: kReleaseMode,
+    level: kReleaseMode ? Level.INFO : Level.FINE,
+  );
   _log.fine('Initializing services');
   final currentLocale = await Devicelocale.currentLocale;
   final settingsDb = SettingsDb(await SharedPreferences.getInstance());
