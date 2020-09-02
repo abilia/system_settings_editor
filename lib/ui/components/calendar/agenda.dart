@@ -107,7 +107,8 @@ class _AgendaState extends State<Agenda> {
 
   Future<void> _refresh() {
     _activitiesBloc.add(LoadActivities());
-    return _activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
+    return _activitiesBloc
+        .firstWhere((s) => s is! ActivitiesReloadning && s is ActivitiesLoaded);
   }
 
   bool _onScrollNotification(ScrollNotification scrollNotification) {

@@ -19,6 +19,10 @@ class ActivitiesLoaded extends ActivitiesState {
   List<Object> get props => [activities];
 }
 
+class ActivitiesReloadning extends ActivitiesLoaded {
+  const ActivitiesReloadning(Iterable<Activity> activities) : super(activities);
+}
+
 class ActivitiesNotLoaded extends ActivitiesState {}
 
 class ActivitiesLoadedFailed extends ActivitiesState {}
