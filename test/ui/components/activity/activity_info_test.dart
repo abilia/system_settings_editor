@@ -481,4 +481,38 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(PhotoView), findsOneWidget);
   });
+
+  testWidgets(
+      'ConfirmActivityActionDialog is shown when last question in checked',
+      (WidgetTester tester) async {
+    final activity = Activity.createNew(
+        title: null,
+        startTime: startTime,
+        category: 0,
+        checkable: true,
+        reminderBefore: [],
+        fileId: Uuid().v4(),
+        infoItem: Checklist(questions: [
+          Question(id: 0, name: 'checked'),
+          Question(id: 1, name: 'unchecked'),
+        ], checked: {
+          Checklist.dayKey(day): {0}
+        }));
+
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        ActivityInfo.from(
+          activity: activity,
+          day: day,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CheckListView), findsOneWidget);
+    expect(find.byType(QuestionView), findsNWidgets(2));
+    await tester.tap(find.text('unchecked'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ConfirmActivityActionDialog), findsOneWidget);
+  });
 }

@@ -196,6 +196,9 @@ abstract class Translated {
   final String edge = 'Edge';
 
   final String preview = 'Preview';
+
+  final String checklistDoneInfo =
+      'All checklist tasks in your activity are completed. Do you want to complete the activity?';
 }
 
 class EN extends Translated {}
@@ -472,6 +475,10 @@ class SV extends Translated {
 
   @override
   final String preview = 'Förhandsgranskning';
+
+  @override
+  final String checklistDoneInfo =
+      'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
 }
 
 class FI extends Translated {
