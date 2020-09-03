@@ -42,10 +42,7 @@ Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   final userDb = UserDb();
   final seagullLogger = SeagullLogger(userDb);
-  await seagullLogger.initLogging(
-    initAppcenter: kReleaseMode,
-    level: kReleaseMode ? Level.INFO : Level.FINE,
-  );
+  await seagullLogger.initLogging();
   _log.fine('Initializing services');
   final currentLocale = await Devicelocale.currentLocale;
   final settingsDb = SettingsDb(await SharedPreferences.getInstance());

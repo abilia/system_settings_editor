@@ -26,9 +26,9 @@ class SeagullLogger {
   static const UPLOAD_INTERVAL = Duration(hours: 24);
   static const LOG_FILE_NAME = 'seagull.log';
 
-  void initLogging({
-    bool initAppcenter = false,
-    Level level = Level.ALL,
+  Future<void> initLogging({
+    bool initAppcenter = kReleaseMode,
+    Level level = kReleaseMode ? Level.INFO : Level.FINE,
   }) async {
     if (initAppcenter) {
       FlutterError.onError = Crashlytics.instance.recordFlutterError;
@@ -41,11 +41,11 @@ class SeagullLogger {
     }
 
     Bloc.observer = BlocLoggingObserver();
-
+    Logger.root.level = level;
     if (kReleaseMode) {
-      await _initFileLogging(level);
+      await _initFileLogging();
     } else {
-      _initPrintLogging(level);
+      _initPrintLogging();
     }
   }
 
@@ -63,8 +63,7 @@ class SeagullLogger {
     }
   }
 
-  void _initPrintLogging(Level level) {
-    Logger.root.level = level;
+  void _initPrintLogging() {
     loggingSubscription = Logger.root.onRecord.listen((record) {
       print(
           '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
@@ -77,10 +76,9 @@ class SeagullLogger {
     });
   }
 
-  void _initFileLogging(Level level) async {
+  void _initFileLogging() async {
     final path = await _documentsDir;
     _logFile = File('$path/$LOG_FILE_NAME');
-    Logger.root.level = level;
 
     if (DateTime.now()
         .subtract(UPLOAD_INTERVAL)
