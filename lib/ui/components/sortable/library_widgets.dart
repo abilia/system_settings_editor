@@ -125,10 +125,13 @@ class LibraryFolder extends StatelessWidget {
               ),
               Stack(
                 children: [
-                  Icon(
-                    AbiliaIcons.folder,
-                    size: 86,
-                    color: AbiliaColors.orange,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2.0),
+                    child: Icon(
+                      AbiliaIcons.folder,
+                      size: 86,
+                      color: AbiliaColors.orange,
+                    ),
                   ),
                   Positioned(
                     bottom: 16,
