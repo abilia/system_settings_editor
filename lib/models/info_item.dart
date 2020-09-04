@@ -127,6 +127,15 @@ class Checklist extends InfoItem {
     return checked[key]?.contains(question.id) ?? false;
   }
 
+  bool allSignedOff(DateTime day) {
+    final key = dayKey(day);
+    final containsAnyUnchecked = questions.any((question) {
+      final checkedOnDay = checked[key]?.contains(question.id) ?? false;
+      return !checkedOnDay;
+    });
+    return !containsAnyUnchecked;
+  }
+
   Checklist signOff(Question question, DateTime day) {
     final key = dayKey(day);
     final id = question.id;

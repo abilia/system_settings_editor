@@ -89,3 +89,4 @@ addNew;Add new;Lägg till ny;
 task;Task;Uppgift;
 edge;Edge;Flärp;
 preview;Preview;Förhandsgranskning;
+checklistDoneInfo;All checklist tasks in your activity are completed. Do you want to complete the activity?;Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?;

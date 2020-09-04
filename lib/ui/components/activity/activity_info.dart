@@ -24,7 +24,7 @@ class ActivityInfoWithDots extends StatelessWidget {
   }
 }
 
-class ActivityInfo extends StatelessWidget {
+class ActivityInfo extends StatelessWidget with Checker {
   static const margin = 12.0;
   final ActivityDay activityDay;
   Activity get activity => activityDay.activity;
@@ -76,19 +76,11 @@ class ActivityInfo extends StatelessWidget {
                       : AbiliaIcons.handi_check,
                   text: signedOff ? translate.uncheck : translate.check,
                   onPressed: () async {
-                    final shouldCheck = await showViewDialog<bool>(
-                      context: context,
-                      builder: (_) => ConfirmActivityActionDialog(
-                        activityOccasion: activityDay.toOccasion(now),
-                        title: signedOff
-                            ? translate.unCheckActivityQuestion
-                            : translate.checkActivityQuestion,
-                      ),
+                    await checkConfirmation(
+                      context,
+                      now,
+                      activityDay,
                     );
-                    if (shouldCheck == true) {
-                      BlocProvider.of<ActivitiesBloc>(context)
-                          .add(UpdateActivity(activity.signOff(day)));
-                    }
                   },
                 ),
               ),
@@ -96,6 +88,31 @@ class ActivityInfo extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+abstract class Checker {
+  Future checkConfirmation(
+    BuildContext context,
+    DateTime now,
+    ActivityDay activityDay, [
+    String extraMessage,
+  ]) async {
+    final translate = Translator.of(context).translate;
+    final shouldCheck = await showViewDialog<bool>(
+      context: context,
+      builder: (_) => ConfirmActivityActionDialog(
+        activityOccasion: activityDay.toOccasion(now),
+        title: activityDay.isSignedOff
+            ? translate.unCheckActivityQuestion
+            : translate.checkActivityQuestion,
+        extraMessage: extraMessage,
+      ),
+    );
+    if (shouldCheck == true) {
+      BlocProvider.of<ActivitiesBloc>(context)
+          .add(UpdateActivity(activityDay.activity.signOff(activityDay.day)));
+    }
   }
 }
 
@@ -170,7 +187,7 @@ class ActivityContainer extends StatelessWidget {
   }
 }
 
-class Attachment extends StatelessWidget {
+class Attachment extends StatelessWidget with Checker {
   static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 14.0, 24.0);
   final ActivityDay activityDay;
   const Attachment({
@@ -180,6 +197,7 @@ class Attachment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     final activity = activityDay.activity;
     final item = activity.infoItem;
     if (item is NoteInfoItem) {
@@ -192,13 +210,26 @@ class Attachment extends StatelessWidget {
         item,
         day: activityDay.day,
         padding: Attachment.padding.subtract(QuestionView.padding),
-        onTap: (question) => BlocProvider.of<ActivitiesBloc>(context).add(
-          UpdateActivity(
-            activity.copyWith(
-              infoItem: item.signOff(question, activityDay.day),
-            ),
-          ),
-        ),
+        onTap: (question) async {
+          final signedOff = item.signOff(question, activityDay.day);
+          final updatedActivity = activity.copyWith(
+            infoItem: signedOff,
+          );
+          BlocProvider.of<ActivitiesBloc>(context).add(
+            UpdateActivity(updatedActivity),
+          );
+
+          if (signedOff.allSignedOff(activityDay.day) &&
+              updatedActivity.checkable &&
+              !activityDay.isSignedOff) {
+            await checkConfirmation(
+              context,
+              DateTime.now(),
+              ActivityDay(updatedActivity, activityDay.day),
+              translate.checklistDoneInfo,
+            );
+          }
+        },
       );
     }
     return Container();
