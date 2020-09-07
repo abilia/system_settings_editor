@@ -85,9 +85,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               pushBloc: context.bloc<PushBloc>(),
             )..add(LoadSortables()),
           ),
-          BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
-          ),
           BlocProvider<DayPickerBloc>(
             create: (context) => DayPickerBloc(
               clockBloc: context.bloc<ClockBloc>(),

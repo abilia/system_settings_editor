@@ -108,28 +108,36 @@ class App extends StatelessWidget {
           BlocProvider<PushBloc>(
             create: (context) => pushBloc ?? PushBloc(),
           ),
+          BlocProvider<ClockBloc>(
+            create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
+          ),
         ],
-        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, state) {
-            if (state is Authenticated) {
-              return AuthenticatedBlocsProvider(
-                authenticatedState: state,
-                child: SeagullApp(
-                  home: wasAlarmStart
-                      ? FullScreenAlarm(alarm: notificationPayload)
-                      : AlarmListener(child: CalendarPage()),
-                ),
-              );
-            }
-            return SeagullApp(
-              home: (state is Unauthenticated)
-                  ? LoginPage(
-                      userRepository: context.repository<UserRepository>(),
-                      push: GetIt.I<FirebasePushService>(),
-                    )
-                  : SplashPage(),
-            );
+        child: BlocListener<ClockBloc, DateTime>(
+          listener: (context, state) async {
+            await GetIt.I<SeagullLogger>().maybeUploadLogs();
           },
+          child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            builder: (context, state) {
+              if (state is Authenticated) {
+                return AuthenticatedBlocsProvider(
+                  authenticatedState: state,
+                  child: SeagullApp(
+                    home: wasAlarmStart
+                        ? FullScreenAlarm(alarm: notificationPayload)
+                        : AlarmListener(child: CalendarPage()),
+                  ),
+                );
+              }
+              return SeagullApp(
+                home: (state is Unauthenticated)
+                    ? LoginPage(
+                        userRepository: context.repository<UserRepository>(),
+                        push: GetIt.I<FirebasePushService>(),
+                      )
+                    : SplashPage(),
+              );
+            },
+          ),
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:uuid/uuid.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   test('parse json test', () {
@@ -231,5 +232,11 @@ void main() {
     );
     final copy = original.copyActivity(toCopy);
     expect(copy.fileId, null);
+  });
+
+  test('df', () {
+    final a = DateFormat('yyyyMMddHHmm').format(DateTime.now());
+    print(a);
+    final b = '';
   });
 }

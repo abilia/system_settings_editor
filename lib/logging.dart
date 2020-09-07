@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
+import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:bloc/bloc.dart';
@@ -12,19 +13,29 @@ import 'package:path_provider/path_provider.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:synchronized/synchronized.dart';
+import 'package:intl/intl.dart';
 
 import 'db/all.dart';
+
+enum LoggingType { File, Print }
 
 class SeagullLogger {
   final UserDb userDb;
   File _logFile;
+  final _uploadLock = Lock();
+  final _logFileLock = Lock();
+  final LoggingType loggingType;
   StreamSubscription loggingSubscription;
+  final _log = Logger('NotificationIsolate');
 
-  SeagullLogger(this.userDb);
+  SeagullLogger(this.userDb,
+      {this.loggingType = kReleaseMode ? LoggingType.File : LoggingType.Print});
 
   static const LATEST_UPLOAD_KEY = 'LATEST-LOG-UPLOAD-MILLIS';
   static const UPLOAD_INTERVAL = Duration(hours: 24);
   static const LOG_FILE_NAME = 'seagull.log';
+  static const LOG_ARCHIVE_PATH = 'logarchive';
 
   Future<void> initLogging({
     bool initAppcenter = kReleaseMode,
@@ -42,24 +53,51 @@ class SeagullLogger {
 
     Bloc.observer = BlocLoggingObserver();
     Logger.root.level = level;
-    if (kReleaseMode) {
+    if (loggingType == LoggingType.File) {
       await _initFileLogging();
     } else {
       _initPrintLogging();
     }
   }
 
-  void cancelLogging() {
+  Future<void> cancelLogging() async {
     if (loggingSubscription != null) {
-      loggingSubscription.cancel();
+      await loggingSubscription.cancel();
     }
   }
 
-  Future sendLogsToBackend() async {
-    final uploadSuccess = await _postLogFile(_logFile);
-    if (uploadSuccess) {
-      await _resetLogFile();
-      await _setLastUploadDateToNow();
+  Future<void> maybeUploadLogs() async {
+    await _uploadLock.synchronized(() async {
+      if (loggingType == LoggingType.File &&
+          DateTime.now()
+              .subtract(UPLOAD_INTERVAL)
+              .isAfter(await _getLastUploadDate())) {
+        _log.info('Time to upload logs to backend');
+        await sendLogsToBackend();
+      }
+    });
+  }
+
+  Future<void> sendLogsToBackend() async {
+    if (loggingType == LoggingType.File) {
+      final time = DateFormat('yyyyMMddHHmm').format(DateTime.now());
+      final logArchiveDir = Directory(await _logArchivePath);
+      await logArchiveDir.create(recursive: true);
+      final archiveFilePath = '${await _logArchivePath}/seagull_log_$time.log';
+      await _logFileLock.synchronized(() async {
+        await _logFile.copy(archiveFilePath);
+        await _logFile.writeAsString('');
+      });
+
+      final zipFile = File('${await _documentsDir}/tmp_log_zip.zip');
+      await ZipFile.createFromDirectory(
+          sourceDir: logArchiveDir, zipFile: zipFile, recurseSubDirs: true);
+      final uploadSuccess = await _postLogFile(zipFile);
+      if (uploadSuccess) {
+        await _setLastUploadDateToNow();
+        await logArchiveDir.delete(recursive: true);
+      }
+      await zipFile.delete();
     }
   }
 
@@ -76,15 +114,9 @@ class SeagullLogger {
     });
   }
 
-  void _initFileLogging() async {
+  Future<void> _initFileLogging() async {
     final path = await _documentsDir;
     _logFile = File('$path/$LOG_FILE_NAME');
-
-    if (DateTime.now()
-        .subtract(UPLOAD_INTERVAL)
-        .isAfter(await _getLastUploadDate())) {
-      await sendLogsToBackend();
-    }
 
     loggingSubscription = Logger.root.onRecord.listen((record) async {
       final stringBuffer = StringBuffer();
@@ -118,17 +150,19 @@ class SeagullLogger {
         LATEST_UPLOAD_KEY, DateTime.now().millisecondsSinceEpoch);
   }
 
-  Future<File> _resetLogFile() async {
-    return _logFile.writeAsString('');
-  }
-
   Future<String> get _documentsDir async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
   }
 
+  Future<String> get _logArchivePath async {
+    return '${await _documentsDir}/$LOG_ARCHIVE_PATH';
+  }
+
   Future<File> _writeToLogFile(String log) async {
-    return _logFile.writeAsString('$log', mode: FileMode.append);
+    return await _logFileLock.synchronized(() async {
+      return _logFile.writeAsString('$log', mode: FileMode.append);
+    });
   }
 
   Future<bool> _postLogFile(
