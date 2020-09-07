@@ -13,7 +13,8 @@ class UserDb {
 
   Future<User> getUser() async {
     final prefs = await SharedPreferences.getInstance();
-    return User.fromJson(json.decode(prefs.getString(_USER_RECORD)));
+    final userString = prefs.getString(_USER_RECORD);
+    return userString == null ? null : User.fromJson(json.decode(userString));
   }
 
   Future deleteUser() async {

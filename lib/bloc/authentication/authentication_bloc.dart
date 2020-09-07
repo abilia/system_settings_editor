@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
@@ -16,12 +17,14 @@ class AuthenticationBloc
   final Database database;
   final BaseUrlDb baseUrlDb;
   final CancelNotificationsFunction cancleAllNotificationsFunction;
+  final SeagullLogger seagullLogger;
 
-  AuthenticationBloc(
-      {@required this.database,
-      @required this.baseUrlDb,
-      @required this.cancleAllNotificationsFunction})
-      : super(AuthenticationUninitialized());
+  AuthenticationBloc({
+    @required this.database,
+    @required this.baseUrlDb,
+    @required this.cancleAllNotificationsFunction,
+    @required this.seagullLogger,
+  }) : super(AuthenticationUninitialized());
 
   @override
   Stream<AuthenticationState> mapEventToState(
@@ -69,6 +72,7 @@ class AuthenticationBloc
 
   Stream<AuthenticationState> _logout(UserRepository repo,
       [String token]) async* {
+    await seagullLogger.sendLogsToBackend();
     await repo.logout(token);
     await DatabaseRepository.clearAll(database);
     await cancleAllNotificationsFunction();

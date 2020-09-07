@@ -30,6 +30,7 @@ void main() {
     authenticationBloc = AuthenticationBloc(
       database: mockDb,
       baseUrlDb: MockBaseUrlDb(),
+      seagullLogger: MockSeagullLogger(),
       cancleAllNotificationsFunction: notificationMock.mockCancleAll,
     );
   });

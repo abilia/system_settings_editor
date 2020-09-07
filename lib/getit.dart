@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -64,6 +65,10 @@ class GetItInitializer {
   Database _database;
   set database(Database database) => _database = database;
 
+  SeagullLogger _seagullLogger;
+  set seagullLogger(SeagullLogger seagullLogger) =>
+      _seagullLogger = seagullLogger;
+
   void init() {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
@@ -71,8 +76,11 @@ class GetItInitializer {
     GetIt.I.registerSingleton<FirebasePushService>(
         _firebasePushService ?? FirebasePushService());
     GetIt.I.registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database));
-    GetIt.I.registerSingleton<UserDb>(_userDb ?? UserDb());
+    final userDb = _userDb ?? UserDb();
+    GetIt.I.registerSingleton<UserDb>(userDb);
     GetIt.I.registerSingleton<Database>(_database);
+    GetIt.I.registerSingleton<SeagullLogger>(
+        _seagullLogger ?? SeagullLogger(userDb));
     GetIt.I.registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb());
     GetIt.I.registerSingleton<NotificationStreamGetter>(
         _selectedNotificationStreamGetter ?? () => selectNotificationSubject);

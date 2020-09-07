@@ -40,9 +40,9 @@ void main() async {
 
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initLogging(
-      initAppcenter: kReleaseMode,
-      level: kReleaseMode ? Level.INFO : Level.FINE);
+  final userDb = UserDb();
+  final seagullLogger = SeagullLogger(userDb);
+  await seagullLogger.initLogging();
   _log.fine('Initializing services');
   final currentLocale = await Devicelocale.currentLocale;
   final settingsDb = SettingsDb(await SharedPreferences.getInstance());
@@ -51,6 +51,8 @@ Future<void> initServices() async {
   GetItInitializer()
     ..fileStorage = FileStorage(documentDirectory.path)
     ..settingsDb = settingsDb
+    ..userDb = userDb
+    ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
     ..init();
 }
@@ -99,34 +101,43 @@ class App extends StatelessWidget {
               create: (context) => AuthenticationBloc(
                     database: GetIt.I<Database>(),
                     baseUrlDb: GetIt.I<BaseUrlDb>(),
+                    seagullLogger: GetIt.I<SeagullLogger>(),
                     cancleAllNotificationsFunction: () =>
                         notificationPlugin.cancelAll(),
                   )..add(AppStarted(context.repository<UserRepository>()))),
           BlocProvider<PushBloc>(
             create: (context) => pushBloc ?? PushBloc(),
           ),
+          BlocProvider<ClockBloc>(
+            create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
+          ),
         ],
-        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, state) {
-            if (state is Authenticated) {
-              return AuthenticatedBlocsProvider(
-                authenticatedState: state,
-                child: SeagullApp(
-                  home: wasAlarmStart
-                      ? FullScreenAlarm(alarm: notificationPayload)
-                      : AlarmListener(child: CalendarPage()),
-                ),
-              );
-            }
-            return SeagullApp(
-              home: (state is Unauthenticated)
-                  ? LoginPage(
-                      userRepository: context.repository<UserRepository>(),
-                      push: GetIt.I<FirebasePushService>(),
-                    )
-                  : SplashPage(),
-            );
+        child: BlocListener<ClockBloc, DateTime>(
+          listener: (context, state) async {
+            await GetIt.I<SeagullLogger>().maybeUploadLogs();
           },
+          child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            builder: (context, state) {
+              if (state is Authenticated) {
+                return AuthenticatedBlocsProvider(
+                  authenticatedState: state,
+                  child: SeagullApp(
+                    home: wasAlarmStart
+                        ? FullScreenAlarm(alarm: notificationPayload)
+                        : AlarmListener(child: CalendarPage()),
+                  ),
+                );
+              }
+              return SeagullApp(
+                home: (state is Unauthenticated)
+                    ? LoginPage(
+                        userRepository: context.repository<UserRepository>(),
+                        push: GetIt.I<FirebasePushService>(),
+                      )
+                    : SplashPage(),
+              );
+            },
+          ),
         ),
       ),
     );

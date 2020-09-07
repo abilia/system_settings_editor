@@ -1,36 +1,208 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
+import 'package:flutter_archive/flutter_archive.dart';
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:bloc/bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:synchronized/synchronized.dart';
+import 'package:intl/intl.dart';
 
-void initLogging({bool initAppcenter = false, Level level = Level.ALL}) async {
-  if (initAppcenter) {
-    FlutterError.onError = Crashlytics.instance.recordFlutterError;
-    final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
-    await AppCenter.startAsync(
-      appSecretAndroid: appId,
-      appSecretIOS: appId,
-    );
-    await AppCenter.configureDistributeDebugAsync(enabled: false);
+import 'db/all.dart';
+
+enum LoggingType { File, Print }
+
+class SeagullLogger {
+  final UserDb userDb;
+  File _logFile;
+  final _uploadLock = Lock();
+  final _logFileLock = Lock();
+  final LoggingType loggingType;
+  StreamSubscription loggingSubscription;
+  final _log = Logger((SeagullLogger).toString());
+
+  SeagullLogger(this.userDb,
+      {this.loggingType = kReleaseMode ? LoggingType.File : LoggingType.Print});
+
+  static const LATEST_UPLOAD_KEY = 'LATEST-LOG-UPLOAD-MILLIS';
+  static const UPLOAD_INTERVAL = Duration(hours: 24);
+  static const LOG_FILE_NAME = 'seagull.log';
+  static const LOG_ARCHIVE_PATH = 'logarchive';
+
+  Future<void> initLogging({
+    bool initAppcenter = kReleaseMode,
+    Level level = kReleaseMode ? Level.INFO : Level.FINE,
+  }) async {
+    if (initAppcenter) {
+      FlutterError.onError = Crashlytics.instance.recordFlutterError;
+      final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
+      await AppCenter.startAsync(
+        appSecretAndroid: appId,
+        appSecretIOS: appId,
+      );
+      await AppCenter.configureDistributeDebugAsync(enabled: false);
+    }
+
+    Bloc.observer = BlocLoggingObserver();
+    Logger.root.level = level;
+    if (loggingType == LoggingType.File) {
+      await _initFileLogging();
+    } else {
+      _initPrintLogging();
+    }
   }
 
-  Bloc.observer = BlocLoggingObserver();
+  Future<void> cancelLogging() async {
+    if (loggingSubscription != null) {
+      await loggingSubscription.cancel();
+    }
+  }
 
-  Logger.root.level = level;
-  Logger.root.onRecord.listen((record) {
-    print(
-        '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
-    if (record?.error != null) {
-      print(record.error);
+  Future<void> maybeUploadLogs() async {
+    await _uploadLock.synchronized(() async {
+      if (loggingType == LoggingType.File &&
+          DateTime.now()
+              .subtract(UPLOAD_INTERVAL)
+              .isAfter(await _getLastUploadDate())) {
+        _log.info('Time to upload logs to backend');
+        await sendLogsToBackend();
+      }
+    });
+  }
+
+  Future<void> sendLogsToBackend() async {
+    if (loggingType == LoggingType.File) {
+      final time = DateFormat('yyyyMMddHHmm').format(DateTime.now());
+      final logArchiveDir = Directory(await _logArchivePath);
+      await logArchiveDir.create(recursive: true);
+      final archiveFilePath = '${await _logArchivePath}/seagull_log_$time.log';
+      await _logFileLock.synchronized(() async {
+        await _logFile.copy(archiveFilePath);
+        await _logFile.writeAsString('');
+      });
+
+      final zipFile = File('${await _documentsDir}/tmp_log_zip.zip');
+      await ZipFile.createFromDirectory(
+          sourceDir: logArchiveDir, zipFile: zipFile, recurseSubDirs: true);
+      final uploadSuccess = await _postLogFile(zipFile);
+      if (uploadSuccess) {
+        await _setLastUploadDateToNow();
+        await logArchiveDir.delete(recursive: true);
+      }
+      await zipFile.delete();
     }
-    if (record?.stackTrace != null) {
-      print(record.stackTrace);
+  }
+
+  void _initPrintLogging() {
+    loggingSubscription = Logger.root.onRecord.listen((record) {
+      print(
+          '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
+      if (record?.error != null) {
+        print(record.error);
+      }
+      if (record?.stackTrace != null) {
+        print(record.stackTrace);
+      }
+    });
+  }
+
+  Future<void> _initFileLogging() async {
+    final path = await _documentsDir;
+    _logFile = File('$path/$LOG_FILE_NAME');
+
+    loggingSubscription = Logger.root.onRecord.listen((record) async {
+      final stringBuffer = StringBuffer();
+      stringBuffer.writeln(
+          '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
+      if (record?.error != null) {
+        stringBuffer.writeln(record.error);
+      }
+      if (record?.stackTrace != null) {
+        stringBuffer.writeln(record.stackTrace);
+      }
+      await _writeToLogFile(stringBuffer.toString());
+    });
+  }
+
+  Future<DateTime> _getLastUploadDate() async {
+    final preferences = await SharedPreferences.getInstance();
+    final lastUploadMillis = preferences.getInt(LATEST_UPLOAD_KEY);
+    if (lastUploadMillis == null) {
+      final now = DateTime.now();
+      await preferences.setInt(LATEST_UPLOAD_KEY, now.millisecondsSinceEpoch);
+      return now;
+    } else {
+      return DateTime.fromMicrosecondsSinceEpoch(lastUploadMillis);
     }
-  });
+  }
+
+  Future<bool> _setLastUploadDateToNow() async {
+    final preferences = await SharedPreferences.getInstance();
+    return await preferences.setInt(
+        LATEST_UPLOAD_KEY, DateTime.now().millisecondsSinceEpoch);
+  }
+
+  Future<String> get _documentsDir async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  Future<String> get _logArchivePath async {
+    return '${await _documentsDir}/$LOG_ARCHIVE_PATH';
+  }
+
+  Future<File> _writeToLogFile(String log) async {
+    return await _logFileLock.synchronized(() async {
+      return _logFile.writeAsString('$log', mode: FileMode.append);
+    });
+  }
+
+  Future<bool> _postLogFile(
+    File file,
+  ) async {
+    final _log = Logger('postLogFile');
+    try {
+      final user = await userDb.getUser();
+      final bytes = await file.readAsBytes();
+      final baseUrl = await BaseUrlDb().getBaseUrl();
+
+      final uri = Uri.parse('$baseUrl/open/v1/logs/');
+      final request = MultipartRequest('POST', uri)
+        ..files.add(MultipartFile.fromBytes(
+          'file',
+          bytes,
+          filename:
+              'test.log', // Weird but backend doesn't accept request without filename.
+        ))
+        ..fields.addAll({
+          'owner': user == null ? 'NO_USER' : user.id.toString(),
+          'app': 'seagull',
+          'fileType': 'zip',
+          'secret': 'Mkediq9Jjdn23jKfnKpqmfhkfjMfj',
+        });
+
+      final streamedResponse = await request.send();
+      if (streamedResponse.statusCode == 200) {
+        return true;
+      } else {
+        final response = await Response.fromStream(streamedResponse);
+        _log.warning(
+            'Could not save log file: ${streamedResponse.statusCode}, ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      _log.severe('Could not save log file.', e);
+      return false;
+    }
+  }
 }
 
 mixin Silent {}
