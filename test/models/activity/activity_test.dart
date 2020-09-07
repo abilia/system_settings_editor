@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:uuid/uuid.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   test('parse json test', () {
