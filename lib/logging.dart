@@ -185,6 +185,7 @@ class SeagullLogger {
         ..fields.addAll({
           'owner': user == null ? 'NO_USER' : user.id.toString(),
           'app': 'seagull',
+          'fileType': 'zip',
           'secret': 'Mkediq9Jjdn23jKfnKpqmfhkfjMfj',
         });
 
