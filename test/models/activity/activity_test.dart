@@ -233,10 +233,4 @@ void main() {
     final copy = original.copyActivity(toCopy);
     expect(copy.fileId, null);
   });
-
-  test('df', () {
-    final a = DateFormat('yyyyMMddHHmm').format(DateTime.now());
-    print(a);
-    final b = '';
-  });
 }
