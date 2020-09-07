@@ -27,7 +27,7 @@ class SeagullLogger {
   final _logFileLock = Lock();
   final LoggingType loggingType;
   StreamSubscription loggingSubscription;
-  final _log = Logger('NotificationIsolate');
+  final _log = Logger((SeagullLogger).toString());
 
   SeagullLogger(this.userDb,
       {this.loggingType = kReleaseMode ? LoggingType.File : LoggingType.Print});
