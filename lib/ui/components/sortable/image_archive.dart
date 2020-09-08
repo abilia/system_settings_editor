@@ -19,19 +19,16 @@ class ImageArchive extends StatelessWidget {
           childAspectRatio: 0.96,
           children: currentFolderContent.map((sortable) {
             return sortable.isGroup
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: LibraryFolder(
-                      title: sortable.data.name,
-                      fileId: sortable.data.fileId,
-                      filePath: sortable.data.icon,
-                      onTap: () {
-                        BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(
-                                context)
-                            .add(FolderChanged(sortable.id));
-                      },
-                    ),
-                  )
+                ? LibraryFolder(
+                  title: sortable.data.name,
+                  fileId: sortable.data.fileId,
+                  filePath: sortable.data.icon,
+                  onTap: () {
+                    BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(
+                            context)
+                        .add(FolderChanged(sortable.id));
+                  },
+                )
                 : ArchiveImage(imageArchiveData: sortable.data);
           }).toList(),
         );
