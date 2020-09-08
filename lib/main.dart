@@ -91,20 +91,23 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider<UserRepository>(
       create: (context) => UserRepository(
-          baseUrl: baseUrl,
-          httpClient: GetIt.I<BaseClient>(),
-          tokenDb: GetIt.I<TokenDb>(),
-          userDb: GetIt.I<UserDb>()),
+        baseUrl: baseUrl,
+        httpClient: GetIt.I<BaseClient>(),
+        tokenDb: GetIt.I<TokenDb>(),
+        userDb: GetIt.I<UserDb>(),
+        licenseDb: GetIt.I<LicenseDb>(),
+      ),
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthenticationBloc>(
-              create: (context) => AuthenticationBloc(
-                    database: GetIt.I<Database>(),
-                    baseUrlDb: GetIt.I<BaseUrlDb>(),
-                    seagullLogger: GetIt.I<SeagullLogger>(),
-                    cancleAllNotificationsFunction: () =>
-                        notificationPlugin.cancelAll(),
-                  )..add(AppStarted(context.repository<UserRepository>()))),
+            create: (context) => AuthenticationBloc(
+              database: GetIt.I<Database>(),
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              seagullLogger: GetIt.I<SeagullLogger>(),
+              cancleAllNotificationsFunction: () =>
+                  notificationPlugin.cancelAll(),
+            )..add(AppStarted(context.repository<UserRepository>())),
+          ),
           BlocProvider<PushBloc>(
             create: (context) => pushBloc ?? PushBloc(),
           ),
@@ -125,6 +128,19 @@ class App extends StatelessWidget {
                     home: wasAlarmStart
                         ? FullScreenAlarm(alarm: notificationPayload)
                         : AlarmListener(child: CalendarPage()),
+                  ),
+                );
+              }
+              if (state is InvalidLicense) {
+                return SeagullApp(
+                  home: Scaffold(
+                    body: SafeArea(
+                        child: Column(
+                      children: [
+                        Text('No valid license'),
+                        LogoutButton(),
+                      ],
+                    )),
                   ),
                 );
               }

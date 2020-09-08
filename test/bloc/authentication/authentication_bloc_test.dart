@@ -16,9 +16,11 @@ void main() {
 
   setUp(() {
     userRepository = UserRepository(
-        httpClient: Fakes.client(),
-        tokenDb: MockTokenDb(),
-        userDb: MockUserDb());
+      httpClient: Fakes.client(),
+      tokenDb: MockTokenDb(),
+      userDb: MockUserDb(),
+      licenseDb: MockLicenseDb(),
+    );
     final mockDb = MockDatabase();
     when(mockDb.batch()).thenReturn(MockBatch());
     mockedUserRepository = MockUserRepository();

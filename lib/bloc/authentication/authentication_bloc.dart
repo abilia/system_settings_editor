@@ -61,7 +61,16 @@ class AuthenticationBloc
       UserRepository repo, String token) async* {
     try {
       final user = await repo.me(token);
-      yield Authenticated(token: token, userId: user.id, userRepository: repo);
+      final licenses = await repo.licenses(token);
+      final memoLicense = licenses.any((l) =>
+          l.product == 'memoplanner3' && l.endTime.isAfter(DateTime.now()));
+      if (!memoLicense) {
+        yield (InvalidLicense(
+            token: token, userId: user.id, userRepository: repo));
+      } else {
+        yield Authenticated(
+            token: token, userId: user.id, userRepository: repo);
+      }
     } on UnauthorizedException {
       yield* _logout(repo, token);
     } catch (_) {

@@ -3,6 +3,8 @@ part of 'authentication_bloc.dart';
 abstract class AuthenticationState extends Equatable {
   @override
   List<Object> get props => [];
+  @override
+  bool get stringify => true;
 }
 
 class AuthenticationUninitialized extends AuthenticationState {}
@@ -30,6 +32,21 @@ class Authenticated extends AuthenticationInitialized {
   @override
   String toString() =>
       'Authenticated {userRepository: $userRepository, token: $token, userId: $userId}';
+}
+
+class InvalidLicense extends AuthenticationInitialized {
+  final String token;
+  final int userId;
+  InvalidLicense(
+      {@required this.token,
+      @required this.userId,
+      @required UserRepository userRepository})
+      : super(userRepository);
+  @override
+  List<Object> get props => [userRepository, token, userId];
+  @override
+  String toString() =>
+      'InvalidLicense {userRepository: $userRepository, token: $token, userId: $userId}';
 }
 
 class Unauthenticated extends AuthenticationInitialized {

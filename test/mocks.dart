@@ -51,6 +51,8 @@ class MockUserFileDb extends Mock implements UserFileDb {}
 
 class MockUserDb extends Mock implements UserDb {}
 
+class MockLicenseDb extends Mock implements LicenseDb {}
+
 class MockSettingsDb extends Mock implements SettingsDb {}
 
 class MockDatabase extends Mock implements Database {}

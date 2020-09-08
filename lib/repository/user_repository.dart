@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/models/exceptions.dart';
-import 'package:seagull/models/login.dart';
-import 'package:seagull/models/user.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/end_point.dart';
 import 'package:seagull/repository/repository.dart';
 import 'package:uuid/uuid.dart';
@@ -14,12 +13,14 @@ import 'package:uuid/uuid.dart';
 class UserRepository extends Repository {
   final TokenDb tokenDb;
   final UserDb userDb;
+  final LicenseDb licenseDb;
 
   UserRepository({
     String baseUrl,
     @required BaseClient httpClient,
     @required this.tokenDb,
     @required this.userDb,
+    @required this.licenseDb,
   })  : assert(tokenDb != null),
         super(httpClient, baseUrl);
 
@@ -28,10 +29,12 @@ class UserRepository extends Repository {
     BaseClient httpClient,
   }) =>
       UserRepository(
-          baseUrl: baseUrl ?? this.baseUrl,
-          httpClient: httpClient ?? this.httpClient,
-          tokenDb: tokenDb,
-          userDb: userDb);
+        baseUrl: baseUrl ?? this.baseUrl,
+        httpClient: httpClient ?? this.httpClient,
+        tokenDb: tokenDb,
+        userDb: userDb,
+        licenseDb: licenseDb,
+      );
 
   Future<String> authenticate(
       {@required String username,
@@ -92,10 +95,37 @@ class UserRepository extends Repository {
     }
   }
 
+  Future<List<License>> licenses(String token) async {
+    try {
+      final licenses = await _getLicensesFromApi(token);
+      await licenseDb.insertLicenses(licenses);
+      return licenses;
+    } on UnauthorizedException {
+      throw UnauthorizedException();
+    } catch (_) {
+      return List<License>.empty();
+    }
+  }
+
+  Future<List<License>> _getLicensesFromApi(String token) async {
+    final response = await httpClient.get('$baseUrl/api/v1/license/portal/me',
+        headers: authHeader(token));
+    if (response.statusCode == 200) {
+      return (json.decode(response.body) as List)
+          .map((l) => License.fromJson(l))
+          .toList();
+    } else if (response.statusCode == 401) {
+      throw UnauthorizedException();
+    } else {
+      throw Exception('Could not get license right now');
+    }
+  }
+
   Future<void> logout([String token]) async {
     await _unregisterClient(token);
     await tokenDb.delete();
     await userDb.deleteUser();
+    await licenseDb.deleteLicenses();
   }
 
   Future<void> persistToken(String token) => tokenDb.persistToken(token);

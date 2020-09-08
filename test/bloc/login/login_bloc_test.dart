@@ -16,14 +16,17 @@ void main() {
 
     setUp(() {
       userRepository = UserRepository(
-          httpClient: Fakes.client(),
-          tokenDb: MockTokenDb(),
-          userDb: MockUserDb());
+        httpClient: Fakes.client(),
+        tokenDb: MockTokenDb(),
+        userDb: MockUserDb(),
+        licenseDb: MockLicenseDb(),
+      );
       authenticationBloc = AuthenticationBloc(
-          database: MockDatabase(),
-          baseUrlDb: MockBaseUrlDb(),
-          seagullLogger: MockSeagullLogger(),
-          cancleAllNotificationsFunction: () => Future.value());
+        database: MockDatabase(),
+        baseUrlDb: MockBaseUrlDb(),
+        seagullLogger: MockSeagullLogger(),
+        cancleAllNotificationsFunction: () => Future.value(),
+      );
       mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('pushToken'));

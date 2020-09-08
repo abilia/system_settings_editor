@@ -13,11 +13,14 @@ void main() {
   final mockClient = MockedClient();
   final mockUserDb = MockUserDb();
   final mockTokenDb = MockTokenDb();
+  final mockLicenseDb = MockLicenseDb();
   final userRepo = UserRepository(
-      baseUrl: url,
-      httpClient: mockClient,
-      tokenDb: mockTokenDb,
-      userDb: mockUserDb);
+    baseUrl: url,
+    httpClient: mockClient,
+    tokenDb: mockTokenDb,
+    userDb: mockUserDb,
+    licenseDb: MockLicenseDb(),
+  );
   test('copyWith with new', () {
     // Arrange
     final newClient = Fakes.client();
@@ -120,6 +123,7 @@ void main() {
         headers: authHeader(token)));
     verify(mockTokenDb.delete());
     verify(mockUserDb.deleteUser());
+    verify(mockLicenseDb.deleteLicenses());
   });
 
   test('exception when logging out', () async {
@@ -137,5 +141,6 @@ void main() {
         headers: authHeader(token)));
     verify(mockTokenDb.delete());
     verify(mockUserDb.deleteUser());
+    verify(mockLicenseDb.deleteLicenses());
   });
 }

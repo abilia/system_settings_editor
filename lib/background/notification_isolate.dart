@@ -116,7 +116,7 @@ Future _scheduleAllAlarmNotifications(
     _lock.synchronized(
       () async {
         await notificationPlugin.cancelAll();
-        _log.fine('schedualing ${notifications.length} notifications...');
+        _log.fine('scheduling ${notifications.length} notifications...');
         for (final newNotification in notifications) {
           await _scheduleNotification(
             newNotification,
@@ -156,7 +156,7 @@ Future _scheduleNotification(
       : await _iosNotificationDetails(notificationAlarm, fileStorage);
 
   _log.finest(
-      'schedualing: $title - $subtitle at $notificationTime ${activity.hasImage ? ' with image' : ''}');
+      'scheduling: $title - $subtitle at $notificationTime ${activity.hasImage ? ' with image' : ''}');
   await notificationPlugin.zonedSchedule(
     hash,
     title,
