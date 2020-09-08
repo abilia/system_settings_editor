@@ -89,20 +89,18 @@ class ActivityImage extends StatelessWidget {
                 imageFile: imageFile,
               ),
             ),
-          if (past && !signedOff)
+          if (past || activity.checkable)
             Center(
               child: SizedBox(
-                height: size - crossPadding,
-                width: size - crossPadding,
-                child: CrossOver(),
-              ),
-            )
-          else
-            Center(
-              child: AnimatedOpacity(
-                opacity: signedOff ? 1.0 : 0.0,
-                duration: duration,
-                child: checkmark,
+                height: size != null ? size - crossPadding : null,
+                width: size != null ? size - crossPadding : null,
+                child: past && !signedOff
+                    ? CrossOver()
+                    : AnimatedOpacity(
+                        opacity: signedOff ? 1.0 : 0.0,
+                        duration: duration,
+                        child: checkmark,
+                      ),
               ),
             ),
         ],
