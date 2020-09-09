@@ -142,6 +142,5 @@ void main() {
     expect(largeIcon.bitmap, fileId);
 
     expect(details.android.fullScreenIntent, isTrue);
-    expect(details.android.wakeScreenForMs, greaterThan(0));
   });
 }

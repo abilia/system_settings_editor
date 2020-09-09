@@ -69,6 +69,10 @@ class GetItInitializer {
   set seagullLogger(SeagullLogger seagullLogger) =>
       _seagullLogger = seagullLogger;
 
+  AlarmNavigator _alarmNavigator;
+  set alarmNavigator(AlarmNavigator alarmNavigator) =>
+      _alarmNavigator = alarmNavigator;
+
   void init() {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
@@ -87,7 +91,8 @@ class GetItInitializer {
     GetIt.I.registerSingleton<AlarmScheduler>(
         _alarmScheduler ?? scheduleAlarmNotificationsIsolated);
     GetIt.I.registerSingleton<Ticker>(_ticker ?? Ticker());
-    GetIt.I.registerSingleton<AlarmNavigator>(AlarmNavigator());
+    GetIt.I
+        .registerSingleton<AlarmNavigator>(_alarmNavigator ?? AlarmNavigator());
     GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database));
     GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database));
     GetIt.I.registerSingleton<SettingsDb>(_settingsDb ?? SettingsDb(null));

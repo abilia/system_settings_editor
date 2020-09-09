@@ -9,9 +9,11 @@ class AlarmListener extends StatelessWidget {
   const AlarmListener({
     Key key,
     @required this.child,
+    this.listenWhen,
   }) : super(key: key);
 
   final Widget child;
+  final BlocListenerCondition<AlarmStateBase> listenWhen;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +33,11 @@ class AlarmListener extends StatelessWidget {
         ),
         BlocListener<AlarmBloc, AlarmStateBase>(
           listener: _alarmListener,
+          listenWhen: listenWhen,
         ),
         BlocListener<NotificationBloc, AlarmStateBase>(
           listener: _alarmListener,
+          listenWhen: listenWhen,
         ),
       ],
       child: child,
