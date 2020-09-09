@@ -11,38 +11,6 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 
-class UnderConstruction extends StatelessWidget {
-  final BannerLocation bannerLocation;
-  const UnderConstruction({this.bannerLocation = BannerLocation.topStart});
-  @override
-  Widget build(BuildContext context) {
-    return Transform.scale(
-      alignment: _alignment,
-      scale: 3,
-      child: Banner(
-        location: bannerLocation,
-        color: AbiliaColors.red,
-        message: 'Under construction',
-      ),
-    );
-  }
-
-  Alignment get _alignment {
-    switch (bannerLocation) {
-      case BannerLocation.topStart:
-        return Alignment.topLeft;
-      case BannerLocation.topEnd:
-        return Alignment.topRight;
-      case BannerLocation.bottomStart:
-        return Alignment.bottomLeft;
-      case BannerLocation.bottomEnd:
-        return Alignment.bottomRight;
-      default:
-        return Alignment.center;
-    }
-  }
-}
-
 class ActivityNameAndPictureWidget extends StatelessWidget {
   final EditActivityState state;
   const ActivityNameAndPictureWidget(this.state, {Key key}) : super(key: key);
@@ -451,5 +419,60 @@ class AvailibleForWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class RecurrenceWidget extends StatelessWidget {
+  final Activity activity;
+
+  const RecurrenceWidget(this.activity, {Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final translator = Translator.of(context).translate;
+    final recurrentType = activity.recurs.recurrance;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SubHeading(translator.recurrence),
+        PickField(
+          key: TestKey.changeRecurrence,
+          leading: Icon(
+            recurrentType.iconData(),
+            size: smallIconSize,
+          ),
+          label: Text(recurrentType.text(translator)),
+          onTap: () async {
+            final result = await showViewDialog<RecurrentType>(
+              context: context,
+              builder: (context) =>
+                  SelectRecurrenceDialog(recurrentType: recurrentType),
+            );
+            if (result != null) {
+              final recursType = newType(result, activity);
+              BlocProvider.of<EditActivityBloc>(context).add(
+                ReplaceActivity(
+                  activity.copyWith(
+                    recurs: recursType,
+                  ),
+                ),
+              );
+            }
+          },
+        ),
+      ],
+    );
+  }
+
+  Recurs newType(RecurrentType type, Activity activity) {
+    switch (type) {
+      // case RecurrentType.weekly:
+      //   return Recurs.weeklyOnDays([]);
+      // case RecurrentType.monthly:
+      //   return Recurs.monthlyOnDays([]);
+      case RecurrentType.yearly:
+        return Recurs.yearly(activity.startTime);
+      default:
+        return Recurs.not;
+    }
   }
 }

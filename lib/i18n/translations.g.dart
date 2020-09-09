@@ -8,8 +8,7 @@ import 'dart:ui';
 class Locales {
   static final language = <Locale, Translated>{
     Locale('en'): EN(),
-    Locale('sv'): SV(),
-    Locale('fi'): FI()
+    Locale('sv'): SV()
   };
 }
 
@@ -205,6 +204,16 @@ abstract class Translated {
 
   final String checklistDoneInfo =
       'All checklist tasks in your activity are completed. Do you want to complete the activity?';
+
+  final String recurrence = 'Recurrence';
+
+  final String once = 'Once';
+
+  final String weekly = 'Weekly';
+
+  final String monthly = 'Monthly';
+
+  final String yearly = 'Yearly';
 }
 
 class EN extends Translated {}
@@ -493,221 +502,19 @@ class SV extends Translated {
   @override
   final String checklistDoneInfo =
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
-}
 
-class FI extends Translated {
   @override
-  final String userName = 'Namni';
+  final String recurrence = 'Upprepning';
 
   @override
-  final String password = 'Pekkari';
+  final String once = 'Enstaka';
 
   @override
-  final String infoText1 = 'Tietoja laitteesta';
+  final String weekly = 'Veckovis';
 
   @override
-  final String infoText2 = 'Tietoja Loikki inni';
+  final String monthly = 'Måndadsvis';
 
   @override
-  final String login = 'Aktiviteettia ei ole';
-
-  @override
-  final String logout =
-      '"Haluatko peruuttaa ohjatun toiminnon \""Lisää aktiviteetti\""?"';
-
-  @override
-  final String menu = 'Valitse tyyppi';
-
-  @override
-  final String close = 'Aktiviteettinäkymä';
-
-  @override
-  final String wrongCredentials = 'Poista painike';
-
-  @override
-  final String now = 'Digitaalinen aikalaskuri';
-
-  @override
-  final String fullDay = 'Muokkaa-painike (avaa muokkausnäkymän)';
-
-  @override
-  final String reminders = 'Näytä viimeiset 15 minuuttia viitenä pisteenä';
-
-  @override
-  final String alarm = 'Varttikellon palkki';
-
-  @override
-  final String endsNow = 'Lisää aktiviteetti';
-
-  @override
-  final String startsNow = 'Perusaktiviteetin painike';
-
-  @override
-  final String noActivities = 'Valitse tyyppi';
-
-  @override
-  final String timePillarView = 'Lisää aktiviteetti muokkausnäkymässä';
-
-  @override
-  final String listView = 'Valitse tarkistettavuus ja hälytys';
-
-  @override
-  final String left = 'Tietovalikko';
-
-  @override
-  final String right = 'Lisää aktiviteetti vaiheittain';
-
-  @override
-  final String check = 'Lisää aktiviteetti';
-
-  @override
-  final String uncheck = 'Koko päivä';
-
-  @override
-  final String newActivity = 'Ristiriita:';
-
-  @override
-  final String editActivity = 'Jaksottainen';
-
-  @override
-  final String category = 'Yksittäinen';
-
-  @override
-  final String noColor = 'Nippi Koller';
-
-  @override
-  final String selectAlarmType = 'Osoite';
-
-  @override
-  final String alarmAndVibration = 'Anna osoite';
-
-  @override
-  final String vibration = 'Käynnistä ajastin';
-
-  @override
-  final String noAlarm = 'Hälytys';
-
-  @override
-  final String alarmOnlyAtStartTime = 'Valitse tyyppi';
-
-  @override
-  final String checkable = 'Valitse kaikki';
-
-  @override
-  final String deleteAfter = 'Valitse sana';
-
-  @override
-  final String availableFor = 'Anna kesto';
-
-  @override
-  final String meAndSupportPersons = 'Määritä päättymisaika';
-
-  @override
-  final String onlyMe = 'Valitse hälytys';
-
-  @override
-  final String name = 'Valitse hälytys -painike';
-
-  @override
-  final String picture = 'Vain hälytys alkamisaikaan';
-
-  @override
-  final String date = 'Signaali';
-
-  @override
-  final String today = 'Hälytysnäkymä';
-
-  @override
-  final String startTime = 'Hälytysaika';
-
-  @override
-  final String endTime = 'Hälytys + värinä';
-
-  @override
-  final String noEndTime = 'Koko näyttö';
-
-  @override
-  final String calendarView = 'Ilmoitus';
-
-  @override
-  final String selectPicture = 'Hälytyksen tyyppi';
-
-  @override
-  final String imageArchive = 'Ei-tarkistettavat aktiviteetit';
-
-  @override
-  final String myPhotos = 'Tarkistettavat aktiviteetit';
-
-  @override
-  final String takeNewPhoto = 'Ajastimet';
-
-  @override
-  final String days = 'Hälytysääni';
-
-  @override
-  final String day =
-      'Ääni nauhoitettu. Nauhoita uusi painamalla nauhoituspainiketta.';
-
-  @override
-  final String hours = 'Pyhäinpäivä';
-
-  @override
-  final String hour = 'Koko päivä';
-
-  @override
-  final String h = 'ap';
-
-  @override
-  final String minutes = 'Analoginen';
-
-  @override
-  final String minute = 'Sekä analoginen että digitaalinen';
-
-  @override
-  final String min = 'Analoginen päivän ja yön jako';
-
-  @override
-  final String am = 'Analoginen (kellotaululla)';
-
-  @override
-  final String pm = 'Analoginen digitaalipainikkeella';
-
-  @override
-  final String remove = 'Analoginen kello';
-
-  @override
-  final String deleteActivity = 'Päivämääräkentän painike';
-
-  @override
-  final String removePicture = 'Ja';
-
-  @override
-  final String appyTo = 'Android-versio:';
-
-  @override
-  final String onlyThisDay = 'Helatorstai';
-
-  @override
-  final String allDays = 'Jatketaanko?';
-
-  @override
-  final String thisDayAndForward = 'Haluatko peruuttaa ohjatun toiminnon';
-
-  @override
-  final String settings = 'Perusaktiviteetit';
-
-  @override
-  final String checkActivityQuestion = 'Perusajastimet';
-
-  @override
-  final String unCheckActivityQuestion = 'Tapaninpäivä';
-
-  @override
-  final String inTimePre = 'Kalenteri';
-
-  @override
-  final String timeAgoPre = 'EEEE KKK p';
-
-  @override
-  final String timeAgoPost = 'Kalenterivalikko';
+  final String yearly = 'Årsvis';
 }

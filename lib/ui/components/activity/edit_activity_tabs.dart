@@ -91,3 +91,36 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
     );
   }
 }
+
+class RecurrenceTab extends StatelessWidget with EditActivityTab {
+  const RecurrenceTab({
+    Key key,
+    @required this.state,
+  }) : super(key: key);
+
+  final EditActivityState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12.0),
+      child: Column(
+        children: <Widget>[
+          CollapsableWidget(
+            collapsed: state.activity.fullDay,
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: separated(
+              TimeIntervallPicker(
+                state.timeInterval,
+                startTimeError: state.failedSave && !state.hasStartTime,
+              ),
+            ),
+          ),
+          padded(
+            RecurrenceWidget(state.activity),
+          ),
+        ],
+      ),
+    );
+  }
+}
