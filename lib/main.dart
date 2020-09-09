@@ -91,20 +91,22 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider<UserRepository>(
       create: (context) => UserRepository(
-          baseUrl: baseUrl,
-          httpClient: GetIt.I<BaseClient>(),
-          tokenDb: GetIt.I<TokenDb>(),
-          userDb: GetIt.I<UserDb>()),
+        baseUrl: baseUrl,
+        httpClient: GetIt.I<BaseClient>(),
+        tokenDb: GetIt.I<TokenDb>(),
+        userDb: GetIt.I<UserDb>(),
+      ),
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthenticationBloc>(
-              create: (context) => AuthenticationBloc(
-                    database: GetIt.I<Database>(),
-                    baseUrlDb: GetIt.I<BaseUrlDb>(),
-                    seagullLogger: GetIt.I<SeagullLogger>(),
-                    cancleAllNotificationsFunction: () =>
-                        notificationPlugin.cancelAll(),
-                  )..add(AppStarted(context.repository<UserRepository>()))),
+            create: (context) => AuthenticationBloc(
+              database: GetIt.I<Database>(),
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              seagullLogger: GetIt.I<SeagullLogger>(),
+              cancleAllNotificationsFunction: () =>
+                  notificationPlugin.cancelAll(),
+            )..add(AppStarted(context.repository<UserRepository>())),
+          ),
           BlocProvider<PushBloc>(
             create: (context) => pushBloc ?? PushBloc(),
           ),

@@ -597,7 +597,7 @@ void main() {
           ]));
     });
 
-    test('Should schedual the closest alarms only', () {
+    test('Should schedule the closest alarms only', () {
       // Arrange
       final start = startDate.nextDay().nextDay();
       final reminders = [
@@ -623,14 +623,14 @@ void main() {
 
       // Act
       final alarms = activities.alarmsFrom(startDate, take: 50).toList();
-      // Assert -- 10 activities * 5 reminders = 50, so all schedualed alarms should be reminders
+      // Assert -- 10 activities * 5 reminders = 50, so all scheduled alarms should be reminders
       expect(
         alarms,
         everyElement(isA<ReminderBefore>()),
       );
     });
 
-    test('Should schedual the closest alarms, even if the alarm is next day',
+    test('Should schedule the closest alarms, even if the alarm is next day',
         () {
       // Arrange
       final start = day.nextDay().nextDay().subtract(25.minutes());

@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/models/exceptions.dart';
-import 'package:seagull/models/login.dart';
-import 'package:seagull/models/user.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/end_point.dart';
 import 'package:seagull/repository/repository.dart';
 import 'package:uuid/uuid.dart';
+import 'package:seagull/utils/all.dart';
 
 class UserRepository extends Repository {
   final TokenDb tokenDb;
@@ -28,15 +28,18 @@ class UserRepository extends Repository {
     BaseClient httpClient,
   }) =>
       UserRepository(
-          baseUrl: baseUrl ?? this.baseUrl,
-          httpClient: httpClient ?? this.httpClient,
-          tokenDb: tokenDb,
-          userDb: userDb);
+        baseUrl: baseUrl ?? this.baseUrl,
+        httpClient: httpClient ?? this.httpClient,
+        tokenDb: tokenDb,
+        userDb: userDb,
+      );
 
-  Future<String> authenticate(
-      {@required String username,
-      @required String password,
-      @required String pushToken}) async {
+  Future<String> authenticate({
+    @required String username,
+    @required String password,
+    @required String pushToken,
+    @required DateTime time,
+  }) async {
     final response = await httpClient.post('$baseUrl/api/v1/auth/client/me',
         headers: {
           HttpHeaders.authorizationHeader:
@@ -52,7 +55,13 @@ class UserRepository extends Repository {
         }));
     if (response.statusCode == 200) {
       var login = Login.fromJson(json.decode(response.body));
+      final licenses = await getLicensesFromApi(login.token);
+      if (!licenses.anyValidLicense(time)) {
+        throw NoLicenseException();
+      }
       return login.token;
+    } else if (response.statusCode == 401) {
+      throw UnauthorizedException();
     } else {
       throw Exception(response.body);
     }
@@ -89,6 +98,20 @@ class UserRepository extends Repository {
       throw UnauthorizedException();
     } else {
       throw Exception('Could not get user right now');
+    }
+  }
+
+  Future<List<License>> getLicensesFromApi(String token) async {
+    final response = await httpClient.get('$baseUrl/api/v1/license/portal/me',
+        headers: authHeader(token));
+    if (response.statusCode == 200) {
+      return (json.decode(response.body) as List)
+          .map((l) => License.fromJson(l))
+          .toList();
+    } else if (response.statusCode == 401) {
+      throw UnauthorizedException();
+    } else {
+      throw Exception('Could not get license right now');
     }
   }
 

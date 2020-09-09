@@ -8,6 +8,8 @@ logout;Log out;Logga ut;"Haluatko peruuttaa ohjatun toiminnon \""Lisää aktivit
 menu;Menu;Meny;Valitse tyyppi
 close;Close;Stäng;Aktiviteettinäkymä
 wrongCredentials;Your username/email or password is not correct. Please, try another one.;Fel användarnamn eller lösenord;Poista painike
+noLicense;This account is missing a valid license. You're therefore unable to log in.;Det här kontot saknar giltig licens. Du kan därför inte logga in.;
+noConnection;No contact with myAbilia. Check your Internet connection.;Ingen kontakt med myAbilia. Kontrollera din internetanslutning.;
 now;now;nu;Digitaalinen aikalaskuri
 fullDay;All day;Heldag;Muokkaa-painike (avaa muokkausnäkymän)
 reminders;Reminders;Påminnelser;Näytä viimeiset 15 minuuttia viitenä pisteenä

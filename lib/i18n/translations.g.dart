@@ -33,6 +33,12 @@ abstract class Translated {
   final String wrongCredentials =
       'Your username/email or password is not correct. Please, try another one.';
 
+  final String noLicense =
+      "This account is missing a valid license. You're therefore unable to log in.";
+
+  final String noConnection =
+      'No contact with myAbilia. Check your Internet connection.';
+
   final String now = 'now';
 
   final String fullDay = 'All day';
@@ -230,6 +236,14 @@ class SV extends Translated {
 
   @override
   final String wrongCredentials = 'Fel användarnamn eller lösenord';
+
+  @override
+  final String noLicense =
+      'Det här kontot saknar giltig licens. Du kan därför inte logga in.';
+
+  @override
+  final String noConnection =
+      'Ingen kontakt med myAbilia. Kontrollera din internetanslutning.';
 
   @override
   final String now = 'nu';

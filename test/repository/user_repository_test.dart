@@ -14,10 +14,11 @@ void main() {
   final mockUserDb = MockUserDb();
   final mockTokenDb = MockTokenDb();
   final userRepo = UserRepository(
-      baseUrl: url,
-      httpClient: mockClient,
-      tokenDb: mockTokenDb,
-      userDb: mockUserDb);
+    baseUrl: url,
+    httpClient: mockClient,
+    tokenDb: mockTokenDb,
+    userDb: mockUserDb,
+  );
   test('copyWith with new', () {
     // Arrange
     final newClient = Fakes.client();
