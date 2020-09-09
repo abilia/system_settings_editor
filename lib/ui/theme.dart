@@ -361,7 +361,6 @@ ThemeData _dayTheme(
 }) =>
     themeData.copyWith(
       primaryColor: primaryColor,
-      accentColor: textColor,
       appBarTheme: abiliaTheme.appBarTheme.copyWith(
         color: color,
         brightness: appBarBrightness,
