@@ -9,18 +9,17 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/end_point.dart';
 import 'package:seagull/repository/repository.dart';
 import 'package:uuid/uuid.dart';
+import 'package:seagull/utils/all.dart';
 
 class UserRepository extends Repository {
   final TokenDb tokenDb;
   final UserDb userDb;
-  final LicenseDb licenseDb;
 
   UserRepository({
     String baseUrl,
     @required BaseClient httpClient,
     @required this.tokenDb,
     @required this.userDb,
-    @required this.licenseDb,
   })  : assert(tokenDb != null),
         super(httpClient, baseUrl);
 
@@ -33,13 +32,14 @@ class UserRepository extends Repository {
         httpClient: httpClient ?? this.httpClient,
         tokenDb: tokenDb,
         userDb: userDb,
-        licenseDb: licenseDb,
       );
 
-  Future<String> authenticate(
-      {@required String username,
-      @required String password,
-      @required String pushToken}) async {
+  Future<String> authenticate({
+    @required String username,
+    @required String password,
+    @required String pushToken,
+    @required DateTime time,
+  }) async {
     final response = await httpClient.post('$baseUrl/api/v1/auth/client/me',
         headers: {
           HttpHeaders.authorizationHeader:
@@ -55,7 +55,13 @@ class UserRepository extends Repository {
         }));
     if (response.statusCode == 200) {
       var login = Login.fromJson(json.decode(response.body));
+      final licenses = await getLicensesFromApi(login.token);
+      if (!licenses.anyValidLicense(time)) {
+        throw NoLicenseException();
+      }
       return login.token;
+    } else if (response.statusCode == 401) {
+      throw UnauthorizedException();
     } else {
       throw Exception(response.body);
     }
@@ -95,19 +101,7 @@ class UserRepository extends Repository {
     }
   }
 
-  Future<List<License>> licenses(String token) async {
-    try {
-      final licenses = await _getLicensesFromApi(token);
-      await licenseDb.insertLicenses(licenses);
-      return licenses;
-    } on UnauthorizedException {
-      throw UnauthorizedException();
-    } catch (_) {
-      return List<License>.empty();
-    }
-  }
-
-  Future<List<License>> _getLicensesFromApi(String token) async {
+  Future<List<License>> getLicensesFromApi(String token) async {
     final response = await httpClient.get('$baseUrl/api/v1/license/portal/me',
         headers: authHeader(token));
     if (response.statusCode == 200) {
@@ -125,7 +119,6 @@ class UserRepository extends Repository {
     await _unregisterClient(token);
     await tokenDb.delete();
     await userDb.deleteUser();
-    await licenseDb.deleteLicenses();
   }
 
   Future<void> persistToken(String token) => tokenDb.persistToken(token);

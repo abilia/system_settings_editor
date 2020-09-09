@@ -14,3 +14,7 @@ class UnavailableException implements Exception {
 class WrongRevisionException implements Exception {
   String errMsg() => 'Unavailable';
 }
+
+class NoLicenseException implements Exception {
+  String errMsg() => 'No valid license';
+}

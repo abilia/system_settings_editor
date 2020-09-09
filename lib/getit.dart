@@ -20,9 +20,6 @@ class GetItInitializer {
   UserDb _userDb;
   set userDb(UserDb userDb) => _userDb = userDb;
 
-  LicenseDb _licenseDb;
-  set licenseDb(LicenseDb licenseDb) => _licenseDb = licenseDb;
-
   TokenDb _tokenDb;
   set tokenDb(TokenDb tokenDb) => _tokenDb = tokenDb;
 
@@ -81,7 +78,6 @@ class GetItInitializer {
     GetIt.I.registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database));
     final userDb = _userDb ?? UserDb();
     GetIt.I.registerSingleton<UserDb>(userDb);
-    GetIt.I.registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb());
     GetIt.I.registerSingleton<Database>(_database);
     GetIt.I.registerSingleton<SeagullLogger>(
         _seagullLogger ?? SeagullLogger(userDb));

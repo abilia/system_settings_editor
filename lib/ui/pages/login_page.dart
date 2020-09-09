@@ -19,6 +19,7 @@ class LoginPage extends StatelessWidget {
           create: (context) => LoginBloc(
             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
             pushService: push,
+            clockBloc: BlocProvider.of<ClockBloc>(context),
           ),
         ),
         BlocProvider<LoginFormBloc>(create: (context) => LoginFormBloc()),

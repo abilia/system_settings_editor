@@ -19,7 +19,6 @@ void main() {
       httpClient: Fakes.client(),
       tokenDb: MockTokenDb(),
       userDb: MockUserDb(),
-      licenseDb: MockLicenseDb(),
     );
     final mockDb = MockDatabase();
     when(mockDb.batch()).thenReturn(MockBatch());

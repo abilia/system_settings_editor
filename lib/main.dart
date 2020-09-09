@@ -95,7 +95,6 @@ class App extends StatelessWidget {
         httpClient: GetIt.I<BaseClient>(),
         tokenDb: GetIt.I<TokenDb>(),
         userDb: GetIt.I<UserDb>(),
-        licenseDb: GetIt.I<LicenseDb>(),
       ),
       child: MultiBlocProvider(
         providers: [
@@ -128,19 +127,6 @@ class App extends StatelessWidget {
                     home: wasAlarmStart
                         ? FullScreenAlarm(alarm: notificationPayload)
                         : AlarmListener(child: CalendarPage()),
-                  ),
-                );
-              }
-              if (state is InvalidLicense) {
-                return SeagullApp(
-                  home: Scaffold(
-                    body: SafeArea(
-                        child: Column(
-                      children: [
-                        Text('No valid license'),
-                        LogoutButton(),
-                      ],
-                    )),
                   ),
                 );
               }

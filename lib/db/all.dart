@@ -8,4 +8,3 @@ export 'sortable_db.dart';
 export 'data_db.dart';
 export 'user_file_db.dart';
 export 'settings_db.dart';
-export 'license_db.dart';

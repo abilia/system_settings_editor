@@ -38,6 +38,9 @@ class _LoginFormState extends State<LoginForm> {
         builder: (context, loginState) {
           final errorState =
               loginState is LoginFailure && formState.formSubmitted;
+          final credentialsError = errorState &&
+              (loginState as LoginFailure).loginFailureCause ==
+                  LoginFailureCause.Credentials;
           return Form(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -59,14 +62,14 @@ class _LoginFormState extends State<LoginForm> {
                     controller: _usernameController,
                     keyboardType: TextInputType.emailAddress,
                     heading: i18n.translate.userName,
-                    errorState: errorState,
+                    errorState: credentialsError,
                   ),
                   padding16,
                   PasswordInput(
                     controller: _passwordController,
                     loginFormBloc: _loginFormBloc,
                     obscureText: formState.hidePassword,
-                    errorState: errorState,
+                    errorState: credentialsError,
                   ),
                   padding32,
                   _LoginHint(),
@@ -75,7 +78,7 @@ class _LoginFormState extends State<LoginForm> {
                     ErrorMessage(
                       key: TestKey.loginError,
                       child: Text(
-                        i18n.translate.wrongCredentials,
+                        _errorMessageFromState(loginState, i18n),
                         style: theme.textTheme.bodyText2,
                       ),
                     ),
@@ -154,6 +157,19 @@ class _LoginFormState extends State<LoginForm> {
 
   void _onPasswordChanged() {
     _loginFormBloc.add(PasswordChanged(password: _passwordController.text));
+  }
+
+  String _errorMessageFromState(LoginFailure loginState, Translator i18n) {
+    switch (loginState.loginFailureCause) {
+      case LoginFailureCause.Credentials:
+        return i18n.translate.wrongCredentials;
+      case LoginFailureCause.NoConnection:
+        return i18n.translate.noConnection;
+      case LoginFailureCause.License:
+        return i18n.translate.noLicense;
+      default:
+        throw '';
+    }
   }
 }
 

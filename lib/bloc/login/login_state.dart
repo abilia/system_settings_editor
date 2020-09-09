@@ -9,15 +9,28 @@ abstract class LoginState extends Equatable {
   bool get stringify => true;
 }
 
-class LoginInitial extends LoginState {}
+class LoginSucceeded extends LoginState {}
 
 class LoginLoading extends LoginState {}
 
+enum LoginFailureCause {
+  Credentials,
+  NoConnection,
+  License,
+}
+
 class LoginFailure extends LoginState {
   final String error;
+  final LoginFailureCause loginFailureCause;
 
-  const LoginFailure({@required this.error});
+  const LoginFailure({
+    @required this.error,
+    @required this.loginFailureCause,
+  });
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [
+        error,
+        loginFailureCause,
+      ];
 }

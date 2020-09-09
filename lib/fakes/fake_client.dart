@@ -44,6 +44,9 @@ class Fakes {
                     .toList()),
                 200);
           }
+          if (pathSegments.containsAll(['license', 'portal', 'me'])) {
+            response = licenseSuccessResponse;
+          }
           return Future.value(response ?? Response('not found', 404));
         },
       );
@@ -82,4 +85,14 @@ class Fakes {
         "image" : null
       }
     }''', 200);
+
+  static final Response licenseSuccessResponse = Response('''
+    [
+      {
+        "id":125,
+        "endTime":${DateTime.now().add(Duration(days: 10)).millisecondsSinceEpoch},
+        "product":"memoplanner3"
+      }
+    ]
+  ''', 200);
 }
