@@ -180,9 +180,9 @@ void main() {
       duration: duration,
       reminderBefore: reminders,
       startTime: now,
-      recurs: Recurs.weeklyOnDays([
-        Recurs.EVEN_MONDAY,
-        Recurs.EVEN_SATURDAY,
+      recurs: Recurs.biWeeklyOnDays(evens: [
+        DateTime.monday,
+        DateTime.saturday,
       ]),
       fileId: fileId,
       checkable: true,

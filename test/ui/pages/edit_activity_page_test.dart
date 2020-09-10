@@ -1356,9 +1356,8 @@ text''';
   group('Recurrence', () {
     testWidgets('Recurrence present', (WidgetTester tester) async {
       // Arrange
-      final activity = Activity.createNew(title: 'null', startTime: startTime);
-      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
-          givenActivity: activity));
+      await tester.pumpWidget(
+          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
       await tester.pumpAndSettle();
       // Act
       await tester.goToRecurrenceTab();
@@ -1368,9 +1367,10 @@ text''';
 
     testWidgets('Recurrence present', (WidgetTester tester) async {
       // Arrange
-      final activity = Activity.createNew(title: 'null', startTime: startTime);
-      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
-          givenActivity: activity));
+      await tester.pumpWidget(wrapWithMaterialApp(
+        EditActivityPage(day: today),
+        newActivity: true,
+      ));
       await tester.pumpAndSettle();
       // Act
       await tester.goToRecurrenceTab();
@@ -1382,9 +1382,10 @@ text''';
 
     testWidgets('Shows time picker widget ', (WidgetTester tester) async {
       // Arrange
-      final activity = Activity.createNew(title: 'null', startTime: startTime);
-      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
-          givenActivity: activity));
+      await tester.pumpWidget(wrapWithMaterialApp(
+        EditActivityPage(day: today),
+        newActivity: true,
+      ));
       await tester.pumpAndSettle();
       // Act
       await tester.goToRecurrenceTab();
@@ -1410,9 +1411,10 @@ text''';
 
     testWidgets('No recurrance selected', (WidgetTester tester) async {
       // Arrange
-      final activity = Activity.createNew(title: 'null', startTime: startTime);
-      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
-          givenActivity: activity));
+      await tester.pumpWidget(wrapWithMaterialApp(
+        EditActivityPage(day: today),
+        newActivity: true,
+      ));
       await tester.pumpAndSettle();
       // Act
       await tester.goToRecurrenceTab();
@@ -1424,9 +1426,10 @@ text''';
 
     testWidgets('all info item present', (WidgetTester tester) async {
       // Arrange
-      final activity = Activity.createNew(title: 'null', startTime: startTime);
-      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
-          givenActivity: activity));
+      await tester.pumpWidget(wrapWithMaterialApp(
+        EditActivityPage(day: today),
+        newActivity: true,
+      ));
       await tester.pumpAndSettle();
       // Act
       await tester.goToRecurrenceTab();
@@ -1448,9 +1451,10 @@ text''';
 
     testWidgets('can change to yearly', (WidgetTester tester) async {
       // Arrange
-      final activity = Activity.createNew(title: 'null', startTime: startTime);
-      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
-          givenActivity: activity));
+      await tester.pumpWidget(wrapWithMaterialApp(
+        EditActivityPage(day: today),
+        newActivity: true,
+      ));
       await tester.pumpAndSettle();
 
       // Act
@@ -1471,6 +1475,62 @@ text''';
       expect(find.text(translate.once), findsNothing);
       expect(find.byIcon(AbiliaIcons.basic_activity), findsOneWidget);
       expect(find.text(translate.yearly), findsOneWidget);
+    });
+
+    testWidgets('can change to monthly', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(wrapWithMaterialApp(
+        EditActivityPage(day: today),
+        newActivity: true,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Assert -- Once selected
+      expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
+      expect(find.text(translate.once), findsOneWidget);
+
+      // Act -- Change to Yearly
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+
+      // Assert -- Yearly selected, not Once
+      expect(find.byIcon(AbiliaIcons.day), findsNothing);
+      expect(find.text(translate.once), findsNothing);
+      expect(find.byIcon(AbiliaIcons.month), findsOneWidget);
+      expect(find.text(translate.monthly), findsOneWidget);
+    });
+
+    testWidgets('can change to weekly', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(wrapWithMaterialApp(
+        EditActivityPage(day: today),
+        newActivity: true,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Assert -- Once selected
+      expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
+      expect(find.text(translate.once), findsOneWidget);
+
+      // Act -- Change to Yearly
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      // Assert -- Yearly selected, not Once
+      expect(find.byIcon(AbiliaIcons.day), findsNothing);
+      expect(find.text(translate.once), findsNothing);
+      expect(find.byIcon(AbiliaIcons.week), findsOneWidget);
+      expect(find.text(translate.weekly), findsOneWidget);
     });
   });
 }

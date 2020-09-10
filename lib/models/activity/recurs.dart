@@ -6,41 +6,72 @@ enum ApplyTo { onlyThisDay, allDays, thisDayAndForward }
 
 @immutable
 class Recurs extends Equatable {
-  final int type, data;
+  final int type, data, endTime;
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(endTime);
-  final int endTime;
-  const Recurs._(this.type, this.data, this.endTime)
+
+  @visibleForTesting
+  const Recurs.private(this.type, this.data, int endTime)
       : assert(data != null),
         assert(type != null),
         assert(type >= 0 && type <= 3),
-        assert(endTime != null);
+        endTime = endTime ?? NO_END;
 
-  static const Recurs not = Recurs._(0, 0, NO_END),
-      everyDay = Recurs._(TYPE_WEEKLY, everyday, NO_END);
+  static const Recurs not = Recurs.private(
+        0,
+        0,
+        NO_END,
+      ),
+      everyDay = Recurs.private(
+        TYPE_WEEKLY,
+        everyday,
+        NO_END,
+      );
 
-  factory Recurs.yearly(DateTime dayOfYear, {DateTime ends}) => Recurs._(
+  factory Recurs.yearly(DateTime dayOfYear, {DateTime ends}) => Recurs.private(
         TYPE_YEARLY,
         dayOfYearData(dayOfYear),
-        ends?.millisecondsSinceEpoch ?? NO_END,
+        ends?.millisecondsSinceEpoch,
       );
-  factory Recurs.monthly(int dayOfMonth, {DateTime ends}) => Recurs._(
+
+  factory Recurs.monthly(int dayOfMonth, {DateTime ends}) => Recurs.private(
         TYPE_MONTHLT,
         onDayOfMonth(dayOfMonth),
-        ends?.millisecondsSinceEpoch ?? NO_END,
+        ends?.millisecondsSinceEpoch,
       );
-  factory Recurs.monthlyOnDays(List<int> daysOfMonth, {DateTime ends}) =>
-      Recurs.monthly(onDaysOfMonth(daysOfMonth), ends: ends);
 
-  factory Recurs.weekly(int dayOfWeek, {DateTime ends}) => Recurs._(
-        TYPE_WEEKLY,
-        dayOfWeek,
-        ends?.millisecondsSinceEpoch ?? NO_END,
+  factory Recurs.monthlyOnDays(List<int> daysOfMonth, {DateTime ends}) =>
+      Recurs.private(
+        TYPE_MONTHLT,
+        onDaysOfMonth(daysOfMonth),
+        ends?.millisecondsSinceEpoch,
       );
-  factory Recurs.weeklyOnDays(List<int> daysOfWeek, {DateTime ends}) =>
-      Recurs.weekly(onDaysOfWeek(daysOfWeek), ends: ends);
+
+  factory Recurs.weeklyOnDay(int dayOfWeek, {DateTime ends}) =>
+      Recurs.weeklyOnDays(
+        [dayOfWeek],
+        ends: ends,
+      );
+
+  factory Recurs.weeklyOnDays(List<int> weekdays, {DateTime ends}) =>
+      Recurs.private(
+        TYPE_WEEKLY,
+        onDaysOfWeek(weekdays),
+        ends?.millisecondsSinceEpoch,
+      );
+
+  factory Recurs.biWeeklyOnDays({
+    List<int> evens = const [],
+    List<int> odds = const [],
+    DateTime ends,
+  }) =>
+      Recurs.private(
+        TYPE_WEEKLY,
+        biWeekly(evens: evens, odds: odds),
+        ends?.millisecondsSinceEpoch,
+      );
 
   Recurs changeEnd(DateTime endTime) =>
-      Recurs._(type, data, endTime.millisecondsSinceEpoch);
+      Recurs.private(type, data, endTime.millisecondsSinceEpoch);
 
   RecurrentType get recurrance =>
       RecurrentType.values[type] ?? RecurrentType.none;
@@ -93,10 +124,31 @@ class Recurs extends Equatable {
       everyday = allWeekdays | allWeekends;
 
   static const NO_END = 253402297199000;
-  static int onDayOfMonth(int dayOfMonth) => 1 << (dayOfMonth - 1);
-  static int onDaysOfMonth(List<int> daysOfMonth) =>
-      daysOfMonth.fold(0, (ds, d) => ds | onDayOfMonth(d));
+  static int onDayOfMonth(int dayOfMonth) => _toBitMask(dayOfMonth);
+
+  static int onDaysOfMonth(List<int> daysOfMonth) => daysOfMonth.fold(
+        0,
+        (ds, d) => ds | onDayOfMonth(d),
+      );
+
   static int dayOfYearData(DateTime date) => (date.month - 1) * 100 + date.day;
-  static int onDaysOfWeek(List<int> daysOfMonth) =>
-      daysOfMonth.fold(0, (ds, d) => ds | d);
+
+  static int onDaysOfWeek(List<int> weekDays) => biWeekly(
+        evens: weekDays,
+        odds: weekDays,
+      );
+
+  static int biWeekly({
+    List<int> evens = const [],
+    List<int> odds = const [],
+  }) =>
+      evens
+          .followedBy(odds.map((d) => d + 7))
+          .fold(0, (ds, d) => ds | _toBitMask(d));
+
+  static int _toBitMask(int bit) => 1 << (bit - 1);
+
+  @override
+  String toString() =>
+      '$recurrance; ends -> ${endTime == NO_END ? 'no end' : end}; $data';
 }

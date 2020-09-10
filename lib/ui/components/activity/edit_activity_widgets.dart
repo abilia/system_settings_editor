@@ -448,11 +448,11 @@ class RecurrenceWidget extends StatelessWidget {
                   SelectRecurrenceDialog(recurrentType: recurrentType),
             );
             if (result != null) {
-              final recursType = newType(result, activity);
+              final recurs = newType(result, activity.startTime);
               BlocProvider.of<EditActivityBloc>(context).add(
                 ReplaceActivity(
                   activity.copyWith(
-                    recurs: recursType,
+                    recurs: recurs,
                   ),
                 ),
               );
@@ -463,14 +463,14 @@ class RecurrenceWidget extends StatelessWidget {
     );
   }
 
-  Recurs newType(RecurrentType type, Activity activity) {
+  Recurs newType(RecurrentType type, DateTime startTime) {
     switch (type) {
-      // case RecurrentType.weekly:
-      //   return Recurs.weeklyOnDays([]);
-      // case RecurrentType.monthly:
-      //   return Recurs.monthlyOnDays([]);
+      case RecurrentType.weekly:
+        return Recurs.weeklyOnDay(startTime.weekday);
+      case RecurrentType.monthly:
+        return Recurs.monthly(startTime.day);
       case RecurrentType.yearly:
-        return Recurs.yearly(activity.startTime);
+        return Recurs.yearly(startTime);
       default:
         return Recurs.not;
     }

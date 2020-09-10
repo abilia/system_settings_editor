@@ -25,25 +25,25 @@ class FakeActivity {
           alarmType: ALARM_SILENT);
 
   static Activity reocurrsEveryDay([DateTime startDate]) =>
-      _reoccurs(startDate, Recurs.weekly(Recurs.everyday),
+      _reoccurs(startDate, Recurs.weeklyOnDays(List.generate(7, (d) => d + 1)),
           title: 'recurs everyday');
-  static Activity reocurrsWeekends([DateTime startDate]) =>
-      _reoccurs(startDate, Recurs.weekly(Recurs.allWeekends),
-          title: 'recurs weekend');
+  static Activity reocurrsWeekends([DateTime startDate]) => _reoccurs(
+      startDate, Recurs.weeklyOnDays([DateTime.saturday, DateTime.sunday]),
+      title: 'recurs weekend');
   static Activity reocurrsMondays([DateTime startDate]) =>
-      _reoccurs(startDate, Recurs.weekly(Recurs.MONDAY),
+      _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.monday),
           title: 'recurs monday');
   static Activity reocurrsTuedays([DateTime startDate]) =>
-      _reoccurs(startDate, Recurs.weekly(Recurs.TUESDAY),
+      _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.tuesday),
           title: 'recurs tuesday');
   static Activity reocurrsWednesdays([DateTime startDate]) =>
-      _reoccurs(startDate, Recurs.weekly(Recurs.WEDNESDAY),
+      _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.wednesday),
           title: 'recurs wednesday');
   static Activity reocurrsThursdays([DateTime startDate]) =>
-      _reoccurs(startDate, Recurs.weekly(Recurs.THURSDAY),
+      _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.thursday),
           title: 'recurs thursday');
   static Activity reocurrsFridays([DateTime startDate]) =>
-      _reoccurs(startDate, Recurs.weekly(Recurs.FRIDAY),
+      _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.friday),
           title: 'recurs friday');
   static Activity reocurrsOnDay(int day,
           [DateTime startDate, DateTime endDate]) =>
