@@ -12,6 +12,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/components/widget_test_keys.dart';
+import 'package:seagull/utils/all.dart';
 
 final AlarmScheduler noAlarmScheduler = ((a, b, c, d) async {});
 
@@ -94,6 +95,8 @@ class MockSettingsBloc extends MockBloc<SettingsEvent, SettingsState>
 class MockAuthenticationBloc
     extends MockBloc<AuthenticationEvent, AuthenticationState>
     implements AuthenticationBloc {}
+
+class MockAlarmNavigator extends Mock implements AlarmNavigator {}
 
 class MockBloc<E, S> extends Mock {
   @override

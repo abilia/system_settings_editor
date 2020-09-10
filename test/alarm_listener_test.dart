@@ -22,6 +22,7 @@ void main() {
   StreamController<DateTime> mockTicker;
   StreamController<String> mockNotificationSelected;
   final mockActivityDb = MockActivityDb();
+  final getItInitializer = GetItInitializer();
   final translater = Locales.language.values.first;
 
   final activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
@@ -56,7 +57,7 @@ void main() {
         .thenAnswer((_) => Future.value(response));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
-    GetItInitializer()
+    getItInitializer
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialTime)
@@ -71,6 +72,7 @@ void main() {
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
+      ..alarmNavigator = AlarmNavigator()
       ..init();
   });
 
@@ -519,6 +521,103 @@ void main() {
       // Expect - the alarm screens should be removed and only the latest reminders shoudl show
       expect(reminderFinder, findsNWidgets(activities.length));
       expect(alarmScreenFinder, findsNothing);
+    });
+
+    group('fullscreen alarms', () {
+      testWidgets('Full screen shows', (WidgetTester tester) async {
+        final reminder = ReminderBefore(
+            Activity.createNew(
+                title: 'one reminder title', startTime: activity1StartTime),
+            activity1StartTime.onlyDays(),
+            reminder: 15.minutes());
+
+        // Arrange
+        await tester.pumpWidget(App(notificationPayload: reminder));
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.byType(FullScreenAlarm), findsOneWidget);
+        expect(find.text(reminder.activity.title), findsOneWidget);
+      });
+
+      testWidgets('Fullscreen alarms ignores same alarm ',
+          (WidgetTester tester) async {
+        // Arrange
+        final mockAlarmNavigator = MockAlarmNavigator();
+        final alarmNavigator = AlarmNavigator();
+        when(mockAlarmNavigator.alarmRouteObserver)
+            .thenReturn(alarmNavigator.alarmRouteObserver);
+
+        getItInitializer
+          ..alarmNavigator = mockAlarmNavigator
+          ..init();
+        final reminder = ReminderBefore(
+            Activity.createNew(
+              title: 'one reminder title',
+              startTime: activity1StartTime,
+            ),
+            activity1StartTime.onlyDays(),
+            reminder: 15.minutes());
+
+        final reminderJson = reminder.toJson();
+        final payload = json.encode(reminderJson);
+        await tester.pumpWidget(App(notificationPayload: reminder));
+        await tester.pumpAndSettle();
+
+        // Act
+        mockNotificationSelected.add(payload);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.byType(FullScreenAlarm), findsOneWidget);
+        expect(find.text(reminder.activity.title), findsOneWidget);
+        verifyNever(mockAlarmNavigator.pushAlarm(any, any));
+      });
+
+      testWidgets('Fullscreen alarms stack ', (WidgetTester tester) async {
+        final reminder = ReminderBefore(
+            Activity.createNew(
+              title: 'one reminder title',
+              startTime: activity1StartTime,
+            ),
+            activity1StartTime.onlyDays(),
+            reminder: 15.minutes());
+        final alarm = StartAlarm(
+          Activity.createNew(
+            title: 'one alarm title',
+            startTime: activity1StartTime,
+          ),
+          activity1StartTime.onlyDays(),
+        );
+        final alarmJson = alarm.toJson();
+        final payload = json.encode(alarmJson);
+
+        // Arrange
+        await tester.pumpWidget(App(notificationPayload: reminder));
+        await tester.pumpAndSettle();
+
+        // Assert -- Fullscreen alarm shows
+        expect(find.byType(FullScreenAlarm), findsOneWidget);
+        expect(find.text(reminder.activity.title), findsOneWidget);
+
+        // Act -- notification tapped
+        mockNotificationSelected.add(payload);
+        await tester.pumpAndSettle();
+
+        // Assert -- new alarm page
+        expect(find.byType(FullScreenAlarm), findsNothing);
+        expect(find.text(reminder.activity.title), findsNothing);
+        expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+        expect(find.text(alarm.activity.title), findsOneWidget);
+
+        // Act -- Close alarm page
+        await tester.tap(find.byIcon(AbiliaIcons.close_program));
+        await tester.pumpAndSettle();
+
+        // Assert -- first alarm page
+        expect(find.byType(FullScreenAlarm), findsOneWidget);
+        expect(find.text(reminder.activity.title), findsOneWidget);
+      });
     });
   });
 }

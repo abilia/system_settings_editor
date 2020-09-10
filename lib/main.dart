@@ -78,7 +78,7 @@ class App extends StatelessWidget {
   final PushBloc pushBloc;
   final String baseUrl;
   final NotificationAlarm notificationPayload;
-  bool get wasAlarmStart => notificationPayload != null && Platform.isAndroid;
+  bool get wasAlarmStart => notificationPayload != null && !Platform.isIOS;
 
   App({
     Key key,
@@ -125,7 +125,12 @@ class App extends StatelessWidget {
                   authenticatedState: state,
                   child: SeagullApp(
                     home: wasAlarmStart
-                        ? FullScreenAlarm(alarm: notificationPayload)
+                        ? AlarmListener(
+                            child: FullScreenAlarm(alarm: notificationPayload),
+                            listenWhen: (_, current) =>
+                                current is AlarmState &&
+                                current.alarm != notificationPayload,
+                          )
                         : AlarmListener(child: CalendarPage()),
                   ),
                 );
