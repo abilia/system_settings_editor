@@ -214,6 +214,24 @@ abstract class Translated {
   final String monthly = 'Monthly';
 
   final String yearly = 'Yearly';
+
+  final String noEndDate = 'No end date';
+
+  final String endDate = 'End date';
+
+  final String mo = 'Mo';
+
+  final String tu = 'Tu';
+
+  final String we = 'We';
+
+  final String th = 'Th';
+
+  final String fr = 'Fr';
+
+  final String sa = 'Sa';
+
+  final String su = 'Su';
 }
 
 class EN extends Translated {}
@@ -517,4 +535,31 @@ class SV extends Translated {
 
   @override
   final String yearly = 'Årsvis';
+
+  @override
+  final String noEndDate = 'Inget slutdatum';
+
+  @override
+  final String endDate = 'Slutdatum';
+
+  @override
+  final String mo = 'Må';
+
+  @override
+  final String tu = 'Ti';
+
+  @override
+  final String we = 'On';
+
+  @override
+  final String th = 'To';
+
+  @override
+  final String fr = 'Fr';
+
+  @override
+  final String sa = 'Lö';
+
+  @override
+  final String su = 'Sö';
 }

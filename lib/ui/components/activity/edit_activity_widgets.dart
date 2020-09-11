@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/form/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -474,5 +475,139 @@ class RecurrenceWidget extends StatelessWidget {
       default:
         return Recurs.not;
     }
+  }
+}
+
+class EndDateWidget extends StatelessWidget {
+  final Activity activity;
+
+  const EndDateWidget(this.activity, {Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CollapsableWidget(
+          collapsed: activity.recurs.hasNoEnd,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SubHeading(translate.endDate),
+              DatePicker(
+                activity.recurs.end,
+                onChange: (newDate) =>
+                    BlocProvider.of<EditActivityBloc>(context).add(
+                  ReplaceActivity(
+                    activity.copyWith(
+                        recurs: activity.recurs.changeEnd(newDate)),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+            ],
+          ),
+        ),
+        SwitchField(
+          key: TestKey.noEndDate,
+          leading: Icon(
+            AbiliaIcons.basic_activity,
+            size: smallIconSize,
+          ),
+          label: Text(translate.noEndDate),
+          value: activity.recurs.hasNoEnd,
+          onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
+            ReplaceActivity(
+              activity.copyWith(
+                recurs: activity.recurs.changeEnd(
+                  v ? Recurs.noEndDate : activity.startTime,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class WeekDays extends StatelessWidget {
+  final Activity activity;
+
+  const WeekDays(
+    this.activity, {
+    Key key,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final selectedWeekDays = activity.recurs.weekDays;
+
+    return Wrap(
+      spacing: 14.0,
+      runSpacing: 8.0,
+      children: List.generate(DateTime.daysPerWeek, (i) {
+        final d = i + 1;
+        return SelectableField(
+            label: Text(
+              Translator.of(context).translate.shortWeekday(d),
+              style:
+                  Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
+            ),
+            selected: selectedWeekDays.contains(d),
+            onTap: () {
+              if (!selectedWeekDays.add(d)) {
+                selectedWeekDays.remove(d);
+              }
+              BlocProvider.of<EditActivityBloc>(context).add(
+                ReplaceActivity(
+                  activity.copyWith(
+                      recurs: Recurs.weeklyOnDays(selectedWeekDays,
+                          ends: activity.recurs.end)),
+                ),
+              );
+            });
+      }),
+    );
+  }
+}
+
+class MonthDays extends StatelessWidget {
+  final Activity activity;
+
+  const MonthDays(
+    this.activity, {
+    Key key,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final selectedMonthDays = activity.recurs.monthDays;
+    return Wrap(
+      spacing: 14.0,
+      runSpacing: 8.0,
+      children: List.generate(31, (i) {
+        final d = i + 1;
+        return SelectableField(
+            label: Text(
+              '$d',
+              style:
+                  Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
+            ),
+            selected: selectedMonthDays.contains(d),
+            onTap: () {
+              if (!selectedMonthDays.add(d)) {
+                selectedMonthDays.remove(d);
+              }
+              BlocProvider.of<EditActivityBloc>(context).add(
+                ReplaceActivity(
+                  activity.copyWith(
+                      recurs: Recurs.monthlyOnDays(selectedMonthDays,
+                          ends: activity.recurs.end)),
+                ),
+              );
+            });
+      }),
+    );
   }
 }

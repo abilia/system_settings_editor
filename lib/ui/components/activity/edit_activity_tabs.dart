@@ -102,13 +102,13 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
+    final activity = state.activity;
     return Padding(
       padding: const EdgeInsets.only(right: 12.0),
-      child: Column(
+      child: ListView(
         children: <Widget>[
           CollapsableWidget(
-            collapsed: state.activity.fullDay,
-            padding: const EdgeInsets.only(bottom: 12.0),
+            collapsed: activity.fullDay,
             child: separated(
               TimeIntervallPicker(
                 state.timeInterval,
@@ -116,9 +116,24 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
               ),
             ),
           ),
-          padded(
-            RecurrenceWidget(state.activity),
-          ),
+          if (activity.recurs.recurrance == RecurrentType.none ||
+              activity.recurs.recurrance == RecurrentType.yearly)
+            padded(RecurrenceWidget(activity))
+          else ...[
+            separated(
+              Column(
+                children: [
+                  RecurrenceWidget(activity),
+                  SizedBox(height: 8),
+                  if (activity.recurs.recurrance == RecurrentType.weekly)
+                    WeekDays(activity)
+                  else if (activity.recurs.recurrance == RecurrentType.monthly)
+                    MonthDays(activity),
+                ],
+              ),
+            ),
+            padded(EndDateWidget(activity)),
+          ]
         ],
       ),
     );

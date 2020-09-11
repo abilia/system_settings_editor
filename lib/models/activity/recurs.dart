@@ -8,12 +8,15 @@ enum ApplyTo { onlyThisDay, allDays, thisDayAndForward }
 class Recurs extends Equatable {
   final int type, data, endTime;
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(endTime);
+  bool get hasNoEnd => endTime == NO_END;
 
   @visibleForTesting
   const Recurs.private(this.type, this.data, int endTime)
       : assert(data != null),
         assert(type != null),
         assert(type >= 0 && type <= 3),
+        assert(type != TYPE_WEEKLY || data < 0x4000),
+        assert(type != TYPE_MONTHLT || data < 0x80000000),
         endTime = endTime ?? NO_END;
 
   static const Recurs not = Recurs.private(
@@ -39,7 +42,7 @@ class Recurs extends Equatable {
         ends?.millisecondsSinceEpoch,
       );
 
-  factory Recurs.monthlyOnDays(List<int> daysOfMonth, {DateTime ends}) =>
+  factory Recurs.monthlyOnDays(Iterable<int> daysOfMonth, {DateTime ends}) =>
       Recurs.private(
         TYPE_MONTHLT,
         onDaysOfMonth(daysOfMonth),
@@ -52,7 +55,7 @@ class Recurs extends Equatable {
         ends: ends,
       );
 
-  factory Recurs.weeklyOnDays(List<int> weekdays, {DateTime ends}) =>
+  factory Recurs.weeklyOnDays(Iterable<int> weekdays, {DateTime ends}) =>
       Recurs.private(
         TYPE_WEEKLY,
         onDaysOfWeek(weekdays),
@@ -60,8 +63,8 @@ class Recurs extends Equatable {
       );
 
   factory Recurs.biWeeklyOnDays({
-    List<int> evens = const [],
-    List<int> odds = const [],
+    Iterable<int> evens = const [],
+    Iterable<int> odds = const [],
     DateTime ends,
   }) =>
       Recurs.private(
@@ -124,23 +127,25 @@ class Recurs extends Equatable {
       everyday = allWeekdays | allWeekends;
 
   static const NO_END = 253402297199000;
+  static final noEndDate = DateTime.fromMillisecondsSinceEpoch(NO_END);
+
   static int onDayOfMonth(int dayOfMonth) => _toBitMask(dayOfMonth);
 
-  static int onDaysOfMonth(List<int> daysOfMonth) => daysOfMonth.fold(
+  static int onDaysOfMonth(Iterable<int> daysOfMonth) => daysOfMonth.fold(
         0,
         (ds, d) => ds | onDayOfMonth(d),
       );
 
   static int dayOfYearData(DateTime date) => (date.month - 1) * 100 + date.day;
 
-  static int onDaysOfWeek(List<int> weekDays) => biWeekly(
+  static int onDaysOfWeek(Iterable<int> weekDays) => biWeekly(
         evens: weekDays,
         odds: weekDays,
       );
 
   static int biWeekly({
-    List<int> evens = const [],
-    List<int> odds = const [],
+    Iterable<int> evens = const [],
+    Iterable<int> odds = const [],
   }) =>
       evens
           .followedBy(odds.map((d) => d + 7))

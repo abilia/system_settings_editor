@@ -97,3 +97,12 @@ once;Once;Enstaka
 weekly;Weekly;Veckovis
 monthly;Monthly;Måndadsvis
 yearly;Yearly;Årsvis
+noEndDate;No end date;Inget slutdatum
+endDate;End date;Slutdatum
+mo;Mo;Må
+tu;Tu;Ti
+we;We;On
+th;Th;To
+fr;Fr;Fr
+sa;Sa;Lö
+su;Su;Sö
