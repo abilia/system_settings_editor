@@ -7,7 +7,7 @@ class UserFileDb extends DataDb<UserFile> {
   UserFileDb(Database database) : super(database);
 
   @override
-  String get tableName => 'user_file';
+  String get tableName => DatabaseRepository.USER_FILE_TABLE_NAME;
 
   String get GET_ALL_WITH_MISSING_FILES =>
       'SELECT * FROM $tableName WHERE file_loaded = 0';

@@ -45,6 +45,9 @@ class GetItInitializer {
   SortableDb _sortableDb;
   set sortableDb(SortableDb sortableDb) => _sortableDb = sortableDb;
 
+  GenericDb _genericDb;
+  set genericDb(GenericDb genericDb) => _genericDb = genericDb;
+
   UserFileDb _userFileDb;
   set userFileDb(UserFileDb userFileDb) => _userFileDb = userFileDb;
 
@@ -94,6 +97,7 @@ class GetItInitializer {
     GetIt.I
         .registerSingleton<AlarmNavigator>(_alarmNavigator ?? AlarmNavigator());
     GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database));
+    GetIt.I.registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database));
     GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database));
     GetIt.I.registerSingleton<SettingsDb>(_settingsDb ?? SettingsDb(null));
     GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage(''));

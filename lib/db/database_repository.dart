@@ -8,6 +8,7 @@ class DatabaseRepository {
   static const CALENDAR_TABLE_NAME = 'calendar_activity';
   static const SORTABLE_TABLE_NAME = 'sortable';
   static const USER_FILE_TABLE_NAME = 'user_file';
+  static const GENERIC_TABLE_NAME = 'generic';
   @visibleForTesting
   static final initialScript = [
     '''
@@ -78,6 +79,17 @@ class DatabaseRepository {
     '''
       ALTER TABLE $CALENDAR_TABLE_NAME ADD COLUMN timezone text
     ''',
+    '''
+      CREATE TABLE $GENERIC_TABLE_NAME (
+        id text primary key not null,
+        revision int,
+        deleted int,
+        type text,
+        identifier text,
+        data text,
+        dirty int
+      )
+    ''',
   ];
 
   static Future<Database> createSqfliteDb() async {
@@ -130,6 +142,7 @@ class DatabaseRepository {
     batch.delete(CALENDAR_TABLE_NAME);
     batch.delete(SORTABLE_TABLE_NAME);
     batch.delete(USER_FILE_TABLE_NAME);
+    batch.delete(GENERIC_TABLE_NAME);
     await batch.commit();
   }
 

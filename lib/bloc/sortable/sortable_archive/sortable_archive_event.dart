@@ -1,4 +1,4 @@
-part of 'image_archive_bloc.dart';
+part of 'sortable_archive_bloc.dart';
 
 abstract class SortableArchiveEvent extends Equatable {
   const SortableArchiveEvent();

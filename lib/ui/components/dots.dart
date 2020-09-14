@@ -222,33 +222,44 @@ class SideDotsLarge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Spacer(),
-        BigDots(
-          dots: max(dots, 1),
-          startTime: startTime,
-          endTime: endTime,
-          now: now,
-        ),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              if (endTime.isAtSameMomentOrAfter(now))
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    endTime
-                        .difference(now)
-                        .toUntilString(Translator.of(context).translate),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              Spacer(),
-            ],
-          ),
-        ),
-      ],
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, state) {
+        final displayRemainingTime =
+            state.getSetting(ActivityViewSetting.displayTimeLeft, true) &&
+                endTime.isAtSameMomentOrAfter(now);
+        return Column(
+          children: <Widget>[
+            Spacer(),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: ActivityInfo.margin),
+              child: BigDots(
+                dots: max(dots, 1),
+                startTime: startTime,
+                endTime: endTime,
+                now: now,
+              ),
+            ),
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  if (displayRemainingTime)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        endTime
+                            .difference(now)
+                            .toUntilString(Translator.of(context).translate),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  Spacer(),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -266,30 +277,27 @@ class BigDots extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: ActivityInfo.margin),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: List.generate(dots, (dot) {
-          if (dot == 0) {
-            final timeLeft = endTime.difference(now).inMinutes;
-            return SubQuarerDot(minutes: timeLeft);
-          }
-          final dotEndTime =
-              endTime.subtract((dot * (minutesPerDot + 1)).minutes());
-          final past = now.isAtSameMomentOrAfter(dotEndTime);
-          final decoration = past ? pastDotShape : futureDotShape;
-          return AnimatedDot(decoration: decoration, size: bigDotSize);
-        })
-            .reversed
-            .map(
-              (dot) => Padding(
-                  padding: const EdgeInsets.only(bottom: bigDotPadding),
-                  child: dot),
-            )
-            .toList(),
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: List.generate(dots, (dot) {
+        if (dot == 0) {
+          final timeLeft = endTime.difference(now).inMinutes;
+          return SubQuarerDot(minutes: timeLeft);
+        }
+        final dotEndTime =
+            endTime.subtract((dot * (minutesPerDot + 1)).minutes());
+        final past = now.isAtSameMomentOrAfter(dotEndTime);
+        final decoration = past ? pastDotShape : futureDotShape;
+        return AnimatedDot(decoration: decoration, size: bigDotSize);
+      })
+          .reversed
+          .map(
+            (dot) => Padding(
+                padding: const EdgeInsets.only(bottom: bigDotPadding),
+                child: dot),
+          )
+          .toList(),
     );
   }
 }

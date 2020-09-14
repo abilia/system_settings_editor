@@ -7,8 +7,8 @@ import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-part 'image_archive_event.dart';
-part 'image_archive_state.dart';
+part 'sortable_archive_event.dart';
+part 'sortable_archive_state.dart';
 
 class SortableArchiveBloc<T extends SortableData>
     extends Bloc<SortableArchiveEvent, SortableArchiveState<T>> {

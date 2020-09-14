@@ -5,7 +5,7 @@ class SortableDb extends DataDb<Sortable> {
   SortableDb(Database database) : super(database);
 
   @override
-  String get tableName => 'sortable';
+  String get tableName => DatabaseRepository.SORTABLE_TABLE_NAME;
   @override
   DbMapTo<Sortable> get convertToDataModel => DbSortable.fromDbMap;
 }

@@ -15,11 +15,22 @@ class ActivityInfoWithDots extends StatelessWidget {
   const ActivityInfoWithDots(this.activityDay, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        ActivityInfoSideDots(activityDay),
-        Expanded(child: ActivityInfo(activityDay)),
-      ],
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, settingsState) {
+        final displayQuarter = settingsState.getSetting<bool>(
+            ActivityViewSetting.displayQuarterHour, true);
+        return Row(
+          children: <Widget>[
+            if (displayQuarter) ActivityInfoSideDots(activityDay),
+            Expanded(
+                child: Padding(
+              padding: EdgeInsets.only(
+                  left: displayQuarter ? 0 : ActivityInfo.margin),
+              child: ActivityInfo(activityDay),
+            )),
+          ],
+        );
+      },
     );
   }
 }

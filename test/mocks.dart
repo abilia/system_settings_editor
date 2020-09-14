@@ -89,7 +89,7 @@ class MockDayActivitiesBloc
 class MockDayPickerBloc extends MockBloc<DayPickerBloc, DayPickerState>
     implements DayPickerBloc {}
 
-class MockSettingsBloc extends MockBloc<SettingsEvent, SettingsState>
+class MockSettingsBloc extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettingsState>
     implements SettingsBloc {}
 
 class MockAuthenticationBloc
