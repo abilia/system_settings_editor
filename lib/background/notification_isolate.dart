@@ -32,6 +32,7 @@ FlutterLocalNotificationsPlugin get notificationPlugin {
 
 void ensureNotificationPluginInitialized() {
   if (notificationsPluginInstance == null) {
+    _log.finer('initialize notification plugin... ');
     tz.initializeTimeZones();
     notificationsPluginInstance = FlutterLocalNotificationsPlugin();
     notificationsPluginInstance.initialize(
@@ -46,6 +47,7 @@ void ensureNotificationPluginInitialized() {
         }
       },
     );
+    _log.finer('notification plugin initialize');
   }
 }
 
@@ -54,16 +56,17 @@ Future scheduleAlarmNotifications(
   String language,
   bool alwaysUse24HourFormat,
   FileStorage fileStorage, {
-  DateTime now,
+  DateTime Function() now,
 }) async {
-  now ??= DateTime.now();
-  now = now.nextMinute();
-  final shouldBeScheduledNotifications = allActivities.alarmsFrom(now);
+  now ??= () => DateTime.now();
+  final _now = now().nextMinute();
+  final shouldBeScheduledNotifications = allActivities.alarmsFrom(_now);
   return _scheduleAllAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
     alwaysUse24HourFormat,
     fileStorage,
+    now,
   );
 }
 
@@ -72,14 +75,14 @@ Future scheduleAlarmNotificationsIsolated(
   String language,
   bool alwaysUse24HourFormat,
   FileStorage fileStorage, {
-  DateTime now,
+  DateTime Function() now,
 }) async {
-  now ??= DateTime.now();
-  now = now.nextMinute();
+  now ??= () => DateTime.now();
+  final _now = now().nextMinute();
   final serialized =
       allActivities.map((e) => e.wrapWithDbModel().toJson()).toList();
   final shouldBeScheduledNotificationsSerialized =
-      await compute(alarmsFromIsolate, [serialized, now]);
+      await compute(alarmsFromIsolate, [serialized, _now]);
   final shouldBeScheduledNotifications =
       shouldBeScheduledNotificationsSerialized
           .map((e) => NotificationAlarm.fromJson(e));
@@ -88,6 +91,7 @@ Future scheduleAlarmNotificationsIsolated(
     language,
     alwaysUse24HourFormat,
     fileStorage,
+    now,
   );
 }
 
@@ -108,6 +112,7 @@ Future _scheduleAllAlarmNotifications(
   String language,
   bool alwaysUse24HourFormat,
   FileStorage fileStorage,
+  DateTime Function() now,
 ) =>
     // We need the lock because if two pushes comes simultaniusly
     // (that happens when file is uploaded on myAbilia)
@@ -117,23 +122,26 @@ Future _scheduleAllAlarmNotifications(
       () async {
         await notificationPlugin.cancelAll();
         _log.fine('scheduling ${notifications.length} notifications...');
+        var scheduale = 0;
         for (final newNotification in notifications) {
-          await _scheduleNotification(
+          scheduale += await _scheduleNotification(
             newNotification,
             language,
             alwaysUse24HourFormat,
             fileStorage,
+            now,
           );
         }
-        _log.info('${notifications.length} notifications scheduled');
+        _log.info('$scheduale notifications scheduled');
       },
     );
 
-Future _scheduleNotification(
+Future<int> _scheduleNotification(
   NotificationAlarm notificationAlarm,
   String language,
   bool alwaysUse24HourFormat,
   FileStorage fileStorage,
+  DateTime Function() now,
 ) async {
   final activity = notificationAlarm.activity;
   final title = activity.title;
@@ -155,19 +163,27 @@ Future _scheduleNotification(
       ? null
       : await _iosNotificationDetails(notificationAlarm, fileStorage);
 
-  _log.finest(
-      'scheduling: $title - $subtitle at $notificationTime ${activity.hasImage ? ' with image' : ''}');
-  await notificationPlugin.zonedSchedule(
-    hash,
-    title,
-    subtitle,
-    tz.TZDateTime.from(notificationTime, tz.local),
-    NotificationDetails(android: and, iOS: ios),
-    payload: payload,
-    androidAllowWhileIdle: true,
-    uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.wallClockTime,
-  );
+  if (notificationTime.isBefore(now())) return 0;
+
+  try {
+    _log.finest(
+        'scheduling: $title - $subtitle at $notificationTime ${activity.hasImage ? ' with image' : ''}');
+    await notificationPlugin.zonedSchedule(
+      hash,
+      title,
+      subtitle,
+      tz.TZDateTime.from(notificationTime, tz.local),
+      NotificationDetails(android: and, iOS: ios),
+      payload: payload,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.wallClockTime,
+    );
+  } catch (e) {
+    _log.warning('could not schedual $payload', e);
+    return 0;
+  }
+  return 1;
 }
 
 Future<IOSNotificationDetails> _iosNotificationDetails(
