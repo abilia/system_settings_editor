@@ -18,8 +18,7 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
 // Stream is created so that app can respond to notification-selected events since the plugin is initialised in the main function
-final BehaviorSubject<String> selectNotificationSubject =
-    BehaviorSubject<String>();
+final ReplaySubject<String> selectNotificationSubject = ReplaySubject<String>();
 
 final _log = Logger('NotificationIsolate');
 
@@ -122,30 +121,35 @@ Future _scheduleAllAlarmNotifications(
       () async {
         await notificationPlugin.cancelAll();
         _log.fine('scheduling ${notifications.length} notifications...');
-        var scheduale = 0;
+        final notificationTimes = <DateTime>{};
+        var scheduled = 0;
         for (final newNotification in notifications) {
-          scheduale += await _scheduleNotification(
+          if (await _scheduleNotification(
             newNotification,
             language,
             alwaysUse24HourFormat,
             fileStorage,
             now,
-          );
+            // Adding a delay on simultaneous alarms to let the selectNotificationSubject handle them
+            notificationTimes.add(newNotification.notificationTime) ? 0 : 3,
+          )) scheduled++;
         }
-        _log.info('$scheduale notifications scheduled');
+        _log.info('$scheduled notifications scheduled');
       },
     );
 
-Future<int> _scheduleNotification(
+Future<bool> _scheduleNotification(
   NotificationAlarm notificationAlarm,
   String language,
   bool alwaysUse24HourFormat,
   FileStorage fileStorage,
-  DateTime Function() now,
-) async {
+  DateTime Function() now, [
+  int secondsOffset = 0,
+]) async {
   final activity = notificationAlarm.activity;
   final title = activity.title;
-  final notificationTime = notificationAlarm.notificationTime;
+  final notificationTime =
+      notificationAlarm.notificationTime.add(secondsOffset.seconds());
   final subtitle = _subtitle(
     notificationAlarm,
     language,
@@ -163,7 +167,7 @@ Future<int> _scheduleNotification(
       ? null
       : await _iosNotificationDetails(notificationAlarm, fileStorage);
 
-  if (notificationTime.isBefore(now())) return 0;
+  if (notificationTime.isBefore(now())) return false;
 
   try {
     _log.finest(
@@ -179,11 +183,11 @@ Future<int> _scheduleNotification(
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
     );
+    return true;
   } catch (e) {
     _log.warning('could not schedual $payload', e);
-    return 0;
+    return false;
   }
-  return 1;
 }
 
 Future<IOSNotificationDetails> _iosNotificationDetails(

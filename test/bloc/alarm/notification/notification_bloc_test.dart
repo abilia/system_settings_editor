@@ -1,7 +1,7 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
@@ -10,14 +10,14 @@ import 'package:seagull/utils/all.dart';
 void main() {
   final aTime = DateTime(1999, 12, 20, 20, 12);
   final aDay = aTime.onlyDays();
-  StreamController<String> notificationSelected;
+  ReplaySubject<String> notificationSelected;
   NotificationBloc notificationBloc;
 
   setUp(() {
-    notificationSelected = StreamController<String>();
+    notificationSelected = ReplaySubject<String>();
 
     notificationBloc = NotificationBloc(
-      selectedNotificationStream: notificationSelected.stream,
+      selectedNotificationSubject: notificationSelected.stream,
     );
   });
 

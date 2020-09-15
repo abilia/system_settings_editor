@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/settings/settings_bloc.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/bloc/user_file/user_file_bloc.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 
@@ -110,7 +110,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           ),
           BlocProvider<NotificationBloc>(
             create: (context) => NotificationBloc(
-              selectedNotificationStream: GetIt.I<NotificationStreamGetter>()(),
+              selectedNotificationSubject: GetIt.I<ReplaySubject<String>>(),
             ),
           ),
           BlocProvider<CalendarViewBloc>(
