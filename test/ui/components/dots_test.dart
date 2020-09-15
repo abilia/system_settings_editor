@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/i18n/app_localizations.dart';
@@ -10,24 +11,38 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../mocks.dart';
+
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = startTime.onlyDays();
+  final mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-      supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: [Translator.delegate],
-      localeResolutionCallback: (locale, supportedLocales) => supportedLocales
-          .firstWhere((l) => l.languageCode == locale?.languageCode,
-              orElse: () => supportedLocales.first),
-      home: BlocProvider<ClockBloc>(
-        create: (context) => ClockBloc(
-          StreamController<DateTime>().stream,
-          initialTime: startTime,
+        supportedLocales: Translator.supportedLocals,
+        localizationsDelegates: [Translator.delegate],
+        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
+            .firstWhere((l) => l.languageCode == locale?.languageCode,
+                orElse: () => supportedLocales.first),
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<ClockBloc>(
+              create: (context) => ClockBloc(
+                StreamController<DateTime>().stream,
+                initialTime: startTime,
+              ),
+            ),
+            BlocProvider<MemoplannerSettingBloc>(
+              create: (context) => mockMemoplannerSettingsBloc,
+            )
+          ],
+          child: widget,
         ),
-        child: widget,
-      ));
+      );
 
   setUp(() {
+    // When settings are not loaded the default value will be used
+    when(mockMemoplannerSettingsBloc.state)
+        .thenReturn(MemoplannerSettingsNotLoaded());
     initializeDateFormatting();
   });
 

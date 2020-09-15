@@ -69,22 +69,31 @@ class ActivityBottomAppBar extends StatelessWidget {
       data: bottomNavigationBarTheme,
       child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         builder: (context, memoSettingsState) {
-          final displayDeleteButton = memoSettingsState.getSetting(
+          final displayDeleteButton = memoSettingsState.getSetting<bool>(
               ActivityViewSetting.displayDeleteButton, true);
-          final displayEditButton = memoSettingsState.getSetting(
+          final displayEditButton = memoSettingsState.getSetting<bool>(
               ActivityViewSetting.displayEditButton, true);
-          final displayAlarmButton = memoSettingsState.getSetting(
+          final displayAlarmButton = memoSettingsState.getSetting<bool>(
                   ActivityViewSetting.displayAlarmButton, true) &&
               !activity.fullDay;
-          final hideAll =
-              !displayDeleteButton && !displayEditButton && !displayAlarmButton;
+          final displayReminderButton = displayAlarmButton;
+          final numberOfButtons = [
+            displayDeleteButton,
+            displayEditButton,
+            displayAlarmButton,
+            displayReminderButton
+          ].where((b) => b).length;
+          final paddings = [0.0, 0.0, 70.0, 39.0, 23.0];
+          final padding = paddings[numberOfButtons];
           return BottomAppBar(
             child: SizedBox(
-              height: hideAll ? 0 : 64,
+              height: numberOfButtons == 0 ? 0 : 64,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 23.0),
+                padding: EdgeInsets.symmetric(horizontal: padding),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: numberOfButtons == 1
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     if (displayAlarmButton)
                       ActionButton(
@@ -122,10 +131,8 @@ class ActivityBottomAppBar extends StatelessWidget {
                             }
                           }
                         },
-                      )
-                    else
-                      const SizedBox(width: 48),
-                    if (displayAlarmButton)
+                      ),
+                    if (displayReminderButton)
                       ActionButton(
                         key: TestKey.editReminder,
                         child: Icon(AbiliaIcons.handi_reminder),
@@ -139,9 +146,7 @@ class ActivityBottomAppBar extends StatelessWidget {
                                 activityDay: activityOccasion),
                           ),
                         ),
-                      )
-                    else
-                      const SizedBox(width: 48),
+                      ),
                     if (displayEditButton)
                       ActionButton(
                         child: Icon(AbiliaIcons.edit),
@@ -169,9 +174,7 @@ class ActivityBottomAppBar extends StatelessWidget {
                             ),
                           );
                         },
-                      )
-                    else
-                      const SizedBox(width: 48),
+                      ),
                     if (displayDeleteButton)
                       ActionButton(
                         child: Icon(AbiliaIcons.delete_all_clear),
@@ -206,9 +209,7 @@ class ActivityBottomAppBar extends StatelessWidget {
                             await Navigator.of(context).maybePop();
                           }
                         },
-                      )
-                    else
-                      const SizedBox(width: 48)
+                      ),
                   ],
                 ),
               ),

@@ -27,7 +27,6 @@ class DbGeneric extends DbModel<Generic> {
         return Generic<MemoplannerSettingData>._(
           id: id,
           type: type,
-          identifier: identifier,
           data: MemoplannerSettingData.fromJson(data, identifier),
           deleted: deleted,
         );
@@ -36,7 +35,6 @@ class DbGeneric extends DbModel<Generic> {
           id: id,
           type: type,
           deleted: deleted,
-          identifier: identifier,
           data: RawGenericData(data, identifier),
         );
     }
@@ -58,7 +56,7 @@ class DbGeneric extends DbModel<Generic> {
   Map<String, dynamic> toJson() => {
         'id': generic.id,
         'type': generic.type,
-        'identifier': generic.identifier,
+        'identifier': generic.data.identifier,
         'data': generic.data.toRaw(),
         'deleted': generic.deleted,
         'revision': revision,
@@ -80,7 +78,7 @@ class DbGeneric extends DbModel<Generic> {
   Map<String, dynamic> toMapForDb() => {
         'id': generic.id,
         'type': generic.type,
-        'identifier': generic.identifier,
+        'identifier': generic.data.identifier,
         'data': generic.data.toRaw(),
         'deleted': generic.deleted ? 1 : 0,
         'revision': revision,

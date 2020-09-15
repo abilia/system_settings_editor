@@ -13,7 +13,7 @@ class GenericType {
 }
 
 class Generic<T extends GenericData> extends DataModel {
-  final String type, identifier;
+  final String type;
   final bool deleted;
 
   final T data;
@@ -22,7 +22,6 @@ class Generic<T extends GenericData> extends DataModel {
     @required String id,
     @required this.type,
     @required this.data,
-    @required this.identifier,
     @required this.deleted,
   })  : assert(data != null),
         super(id);
@@ -30,7 +29,6 @@ class Generic<T extends GenericData> extends DataModel {
   static Generic<T> createNew<T extends GenericData>({
     @required T data,
     @required String type,
-    @required String identifier,
     bool deleted = false,
   }) {
     return Generic<T>._(
@@ -38,7 +36,6 @@ class Generic<T extends GenericData> extends DataModel {
       type: _getTypeString<T>(),
       data: data,
       deleted: deleted,
-      identifier: identifier,
     );
   }
 
@@ -48,7 +45,7 @@ class Generic<T extends GenericData> extends DataModel {
   }
 
   @override
-  List<Object> get props => [id, type, identifier, data, deleted];
+  List<Object> get props => [id, type, data, deleted];
 
   @override
   bool get stringify => true;

@@ -20,6 +20,7 @@ import '../../mocks.dart';
 
 void main() {
   MockActivityDb mockActivityDb;
+  MockGenericDb mockGenericDb;
   StreamController<DateTime> mockTicker;
 
   final locale = Locale('en');
@@ -50,6 +51,8 @@ void main() {
   final checkButtonFinder = find.byKey(TestKey.activityCheckButton);
   final unCheckButtonFinder = find.byKey(TestKey.activityUncheckButton);
 
+  final activityInfoSideDotsFinder = find.byType(ActivityInfoSideDots);
+
   ActivityResponse activityResponse = () => [];
 
   setUp(() {
@@ -63,6 +66,7 @@ void main() {
         .thenAnswer((_) => Future.value('fakeToken'));
 
     mockActivityDb = MockActivityDb();
+    mockGenericDb = MockGenericDb();
     when(mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(<DbActivity>[]));
     GetItInitializer()
@@ -74,8 +78,10 @@ void main() {
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(activityResponse)
       ..fileStorage = MockFileStorage()
+      ..genericDb = mockGenericDb
       ..userFileDb = MockUserFileDb()
       ..settingsDb = MockSettingsDb()
+      ..sortableDb = MockSortableDb()
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
@@ -1064,4 +1070,69 @@ void main() {
     expect(checkButtonFinder, findsOneWidget);
     expect(unCheckButtonFinder, findsNothing);
   });
+
+  testWidgets('Do not display delete button when setting is false',
+      (WidgetTester tester) async {
+    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
+        <Activity>[FakeActivity.starts(startTime).copyWith(checkable: true)]));
+    when(mockGenericDb.getAllNonDeleted()).thenAnswer(
+      (_) => Future.value(
+        <Generic>[
+          _memoplannerSetting(false, ActivityViewSetting.displayDeleteButton)
+        ],
+      ),
+    );
+    await navigateToActivityPage(tester);
+    expect(deleteButtonFinder, findsNothing);
+    expect(editActivityButtonFinder, findsOneWidget);
+    expect(reminderButtonFinder, findsOneWidget);
+    expect(alarmButtonFinder, findsOneWidget);
+  });
+
+  testWidgets('Do not display any button when all settings are false',
+      (WidgetTester tester) async {
+    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
+        <Activity>[FakeActivity.starts(startTime).copyWith(checkable: true)]));
+    when(mockGenericDb.getAllNonDeleted()).thenAnswer(
+      (_) => Future.value(
+        <Generic>[
+          _memoplannerSetting(false, ActivityViewSetting.displayDeleteButton),
+          _memoplannerSetting(false, ActivityViewSetting.displayAlarmButton),
+          _memoplannerSetting(false, ActivityViewSetting.displayEditButton),
+        ],
+      ),
+    );
+    await navigateToActivityPage(tester);
+    expect(deleteButtonFinder, findsNothing);
+    expect(editActivityButtonFinder, findsNothing);
+    expect(reminderButtonFinder, findsNothing);
+    expect(alarmButtonFinder, findsNothing);
+  });
+
+  testWidgets('Do not display side dots when setting is false',
+      (WidgetTester tester) async {
+    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
+        <Activity>[FakeActivity.starts(startTime).copyWith(checkable: true)]));
+    when(mockGenericDb.getAllNonDeleted()).thenAnswer(
+      (_) => Future.value(
+        <Generic>[
+          _memoplannerSetting(false, ActivityViewSetting.displayQuarterHour),
+        ],
+      ),
+    );
+    await navigateToActivityPage(tester);
+    expect(activityInfoSideDotsFinder, findsNothing);
+  });
+}
+
+Generic<MemoplannerSettingData> _memoplannerSetting(
+    bool value, String identifier) {
+  return Generic.createNew<MemoplannerSettingData>(
+    data: MemoplannerSettingData(
+      data: value.toString(),
+      type: 'Boolean',
+      identifier: identifier,
+    ),
+    type: GenericType.memoPlannerSettings,
+  );
 }
