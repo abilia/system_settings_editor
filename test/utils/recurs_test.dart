@@ -16,7 +16,7 @@ void main() {
       final splitRecurring = Activity.createNew(
         title: 'Split recurring ',
         reminderBefore: [],
-        recurs: Recurs.private(
+        recurs: Recurs.raw(
           Recurs.TYPE_WEEKLY,
           16383,
           splitEndTime.millisecondsSinceEpoch,
@@ -86,7 +86,7 @@ void main() {
 
       final splitRecurring = Activity.createNew(
         title: 'test',
-        recurs: Recurs.private(
+        recurs: Recurs.raw(
           Recurs.TYPE_WEEKLY,
           16383,
           splitEndTime,
@@ -428,23 +428,72 @@ void main() {
   });
 
   group('Recurring tests', () {
+    group('Recurring factories', () {
+      test('Yearly', () {
+        final expected = Recurs.raw(Recurs.TYPE_YEARLY, 1124, Recurs.NO_END);
+        final yearly = Recurs.yearly(DateTime(2000, 12, 24));
+        expect(yearly, expected);
+      });
+
+      test('Monthly', () {
+        final expected = Recurs.raw(Recurs.TYPE_MONTHLY, 8, Recurs.NO_END);
+        final monthly = Recurs.monthly(4);
+        expect(monthly, expected);
+      });
+
+      test('Monthly on days', () {
+        final expected = Recurs.raw(Recurs.TYPE_MONTHLY, 523, Recurs.NO_END);
+        final monthly = Recurs.monthlyOnDays([1, 2, 4, 10]);
+        expect(monthly, expected);
+
+        final expected2 = Recurs.raw(Recurs.TYPE_MONTHLY, 3, Recurs.NO_END);
+        final monthly2 = Recurs.monthlyOnDays([1, 2]);
+        expect(monthly2, expected2);
+      });
+
+      test('Weekly', () {
+        final expected = Recurs.raw(Recurs.TYPE_WEEKLY, 129, Recurs.NO_END);
+        final weekly = Recurs.weeklyOnDay(1);
+        expect(weekly, expected);
+      });
+
+      test('Weekly on days', () {
+        final expected = Recurs.raw(Recurs.TYPE_WEEKLY, 903, Recurs.NO_END);
+        final weekly = Recurs.weeklyOnDays([1, 2, 3]);
+        expect(weekly, expected);
+      });
+
+      test('Weekly on days', () {
+        final expected = Recurs.raw(Recurs.TYPE_WEEKLY, 1, Recurs.NO_END);
+        final weekly = Recurs.biWeeklyOnDays(evens: [1]);
+        expect(weekly, expected);
+
+        final expected2 = Recurs.raw(Recurs.TYPE_WEEKLY, 32, Recurs.NO_END);
+        final weekly2 = Recurs.biWeeklyOnDays(evens: [6]);
+        expect(weekly2, expected2);
+
+        final expected3 = Recurs.raw(Recurs.TYPE_WEEKLY, 129, Recurs.NO_END);
+        final weekly3 = Recurs.biWeeklyOnDays(evens: [1], odds: [1]);
+        expect(weekly3, expected3);
+      });
+    });
     group('onCorrectYearsDay', () {
       test('-1 is not a correct day of the year', () {
         // arrange
-        final recurrentData = -1;
+        final rec = Recurs.raw(Recurs.TYPE_YEARLY, -1, Recurs.NO_END);
         final start = DateTime(1999, 12, 12);
         // act
-        final result = onCorrectYearsDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, false);
       });
 
       test('onCorrectYearsDay christmas day', () {
         // arrange
-        final recurrentData = 1124;
+        final rec = Recurs.raw(Recurs.TYPE_YEARLY, 1124, Recurs.NO_END);
         final start = DateTime(1999, 12, 24);
         // act
-        final result = onCorrectYearsDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, true);
       });
@@ -452,9 +501,11 @@ void main() {
       test('onCorrectYearsDay new years day', () {
         // arrange
         final recurrentData = 1;
+        final rec =
+            Recurs.raw(Recurs.TYPE_YEARLY, recurrentData, Recurs.NO_END);
         final start = DateTime(2000, 01, 01);
         // act
-        final result = onCorrectYearsDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, true);
       });
@@ -462,9 +513,11 @@ void main() {
       test('onCorrectYearsDay midsummer day', () {
         // arrange
         final recurrentData = 0521;
+        final rec =
+            Recurs.raw(Recurs.TYPE_YEARLY, recurrentData, Recurs.NO_END);
         final start = DateTime(2000, 06, 21);
         // act
-        final result = onCorrectYearsDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, true);
       });
@@ -473,9 +526,11 @@ void main() {
           () {
         // arrange
         final recurrentData = 0521;
+        final rec =
+            Recurs.raw(Recurs.TYPE_YEARLY, recurrentData, Recurs.NO_END);
         final start = DateTime(2000, 06, 22);
         // act
-        final result = onCorrectYearsDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, false);
       });
@@ -483,19 +538,11 @@ void main() {
       test('onCorrectYearsDay midsummer 2500', () {
         // arrange
         final recurrentData = 0521;
+        final rec =
+            Recurs.raw(Recurs.TYPE_YEARLY, recurrentData, Recurs.NO_END);
         final start = DateTime(2500, 06, 21);
         // act
-        final result = onCorrectYearsDay(recurrentData, start);
-        // assert
-        expect(result, true);
-      });
-
-      test('onCorrectYearsDay midsummer 2500', () {
-        // arrange
-        final recurrentData = 0521;
-        final start = DateTime(2500, 06, 21);
-        // act
-        final result = onCorrectYearsDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, true);
       });
@@ -505,9 +552,11 @@ void main() {
       test('onCorrectMonthDay first day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(1);
+        final rec =
+            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
         final start = DateTime(2020, 06, 01);
         // act
-        final result = onCorrectMonthDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, true);
       });
@@ -515,9 +564,11 @@ void main() {
       test('onCorrectMonthDay not first day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(1);
+        final rec =
+            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
         final start = DateTime(2020, 06, 02);
         // act
-        final result = onCorrectMonthDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, false);
       });
@@ -525,9 +576,11 @@ void main() {
       test('onCorrectMonthDay second day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(2);
+        final rec =
+            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
         final start = DateTime(2020, 06, 02);
         // act
-        final result = onCorrectMonthDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, true);
       });
@@ -535,9 +588,11 @@ void main() {
       test('onCorrectMonthDay second day of month ignores other', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(2);
+        final rec =
+            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
         final start = DateTime(2020, 01, 02, 20, 20, 20, 20);
         // act
-        final result = onCorrectMonthDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, true);
       });
@@ -545,9 +600,11 @@ void main() {
       test('onCorrectMonthDay third day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(3);
+        final rec =
+            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
         final start = DateTime(2020, 01, 03);
         // act
-        final result = onCorrectMonthDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, true);
       });
@@ -555,9 +612,11 @@ void main() {
       test('onCorrectMonthDay 10th day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(10);
+        final rec =
+            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
         final start = DateTime(2011, 11, 10);
         // act
-        final result = onCorrectMonthDay(recurrentData, start);
+        final result = rec.recursOnDay(start);
         // assert
         expect(result, true);
       });
@@ -565,31 +624,35 @@ void main() {
       test('onCorrectMonthDay 1st, 2nd, 3rd and 10th day of month', () {
         // arrange
         final recurrentData = Recurs.onDaysOfMonth([1, 2, 3, 10]);
+        final rec =
+            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
         final first = DateTime(2011, 11, 1);
         final second = DateTime(2011, 11, 2);
         final third = DateTime(2011, 11, 3);
-        final forth = DateTime(2011, 11, 4);
+        final fourth = DateTime(2011, 11, 4);
         final tenth = DateTime(2011, 11, 10);
         // act
-        final firstResult = onCorrectMonthDay(recurrentData, first);
-        final secondResult = onCorrectMonthDay(recurrentData, second);
-        final thirdResult = onCorrectMonthDay(recurrentData, third);
-        final forthResult = onCorrectMonthDay(recurrentData, forth);
-        final tenthResult = onCorrectMonthDay(recurrentData, tenth);
+        final firstResult = rec.recursOnDay(first);
+        final secondResult = rec.recursOnDay(second);
+        final thirdResult = rec.recursOnDay(third);
+        final fourthResult = rec.recursOnDay(fourth);
+        final tenthResult = rec.recursOnDay(tenth);
         // assert
         expect(firstResult, true);
         expect(secondResult, true);
         expect(thirdResult, true);
-        expect(forthResult, false);
+        expect(fourthResult, false);
         expect(tenthResult, true);
       });
 
       test('onCorrectMonthDay all day of month', () {
         // arrange
-        final recurrentData = 0xFFFFFFFF;
+        final recurrentData = 0x7FFFFFFF;
+        final rec =
+            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
         final dates = List.generate(31, (i) => DateTime(2020, 10, i + 1));
         // act
-        final result = dates.every((d) => onCorrectMonthDay(recurrentData, d));
+        final result = dates.every((d) => rec.recursOnDay(d));
         // assert
         expect(result, true);
       });
@@ -597,9 +660,11 @@ void main() {
       test('onCorrectMonthDay no day of month', () {
         // arrange
         final recurrentData = 0x0;
+        final rec =
+            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
         final dates = List.generate(31, (i) => DateTime(2020, 10, i + 1));
         // act
-        final result = dates.any((d) => onCorrectMonthDay(recurrentData, d));
+        final result = dates.any((d) => rec.recursOnDay(d));
         // assert
         expect(result, false);
       });
@@ -607,9 +672,11 @@ void main() {
       test('onCorrectMonthDay one day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(5);
+        final rec =
+            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
         final dates = List.generate(31, (i) => DateTime(2020, 10, i + 1));
         // act
-        final results = dates.map((d) => onCorrectMonthDay(recurrentData, d));
+        final results = dates.map((d) => rec.recursOnDay(d));
         final correctDays = results.where((b) => b).length;
         // assert
         expect(correctDays, 1);
@@ -623,11 +690,13 @@ void main() {
         final day4 = DateTime(2004, 04, 04, 04, 04);
         final days = [day1.day, day2.day];
         final recurrentData = Recurs.onDaysOfMonth(days);
+        final rec =
+            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
         // act
-        final results1 = onCorrectMonthDay(recurrentData, day1);
-        final results2 = onCorrectMonthDay(recurrentData, day2);
-        final results3 = onCorrectMonthDay(recurrentData, day3);
-        final results4 = onCorrectMonthDay(recurrentData, day4);
+        final results1 = rec.recursOnDay(day1);
+        final results2 = rec.recursOnDay(day2);
+        final results3 = rec.recursOnDay(day3);
+        final results4 = rec.recursOnDay(day4);
 
         // assert
         expect(results1, isTrue);
@@ -640,10 +709,12 @@ void main() {
       test('All weekdays, monday is true', () {
         // arrange
         final recurrentData = Recurs.allWeekdays;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final evenWeekMonday = DateTime(2019, 11, 25);
 
         // act
-        final correctDays = onCorrectWeeklyDay(recurrentData, evenWeekMonday);
+        final correctDays = rec.recursOnDay(evenWeekMonday);
         // assert
         expect(correctDays, true);
       });
@@ -652,8 +723,10 @@ void main() {
         // arrange
         final recurrentData = Recurs.allWeekdays;
         final evenWeekMonday = DateTime(2019, 11, 24);
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         // act
-        final correctDays = onCorrectWeeklyDay(recurrentData, evenWeekMonday);
+        final correctDays = rec.recursOnDay(evenWeekMonday);
         // assert
         expect(correctDays, false);
       });
@@ -661,10 +734,12 @@ void main() {
       test('All weekdays, correct for whole month', () {
         // arrange
         final recurrentData = Recurs.allWeekdays;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final dates = List.generate(31, (i) => DateTime(2020, 10, i + 1));
         // act
-        final correctDays = dates.every(
-            (d) => onCorrectWeeklyDay(recurrentData, d) != (d.weekday > 5));
+        final correctDays =
+            dates.every((d) => rec.recursOnDay(d) != (d.weekday > 5));
         // assert
         expect(correctDays, true);
       });
@@ -672,10 +747,12 @@ void main() {
       test('Even monday is true', () {
         // arrange
         final recurrentData = Recurs.EVEN_MONDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final evenWeekMonday = DateTime(2019, 11, 25);
 
         // act
-        final correctDays = onCorrectWeeklyDay(recurrentData, evenWeekMonday);
+        final correctDays = rec.recursOnDay(evenWeekMonday);
         // assert
         expect(correctDays, true);
       });
@@ -683,10 +760,12 @@ void main() {
       test('Odd monday is false', () {
         // arrange
         final recurrentData = Recurs.EVEN_MONDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final evenWeekMonday = DateTime(2019, 11, 18);
 
         // act
-        final correctDays = onCorrectWeeklyDay(recurrentData, evenWeekMonday);
+        final correctDays = rec.recursOnDay(evenWeekMonday);
         // assert
         expect(correctDays, false);
       });
@@ -694,10 +773,12 @@ void main() {
       test('Odd and even Monday is true', () {
         // arrange
         final recurrentData = Recurs.EVEN_MONDAY | Recurs.ODD_MONDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final evenWeekMonday = DateTime(2019, 11, 18);
 
         // act
-        final correctDays = onCorrectWeeklyDay(recurrentData, evenWeekMonday);
+        final correctDays = rec.recursOnDay(evenWeekMonday);
         // assert
         expect(correctDays, true);
       });
@@ -705,10 +786,12 @@ void main() {
       test('Monday is true all year', () {
         // arrange
         final recurrentData = Recurs.EVEN_MONDAY | Recurs.ODD_MONDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final dates = List.generate(2000, (i) => DateTime(2020, 01, i + 1));
         // act
-        final correctDays = dates.every(
-            (d) => onCorrectWeeklyDay(recurrentData, d) != (d.weekday != 1));
+        final correctDays =
+            dates.every((d) => rec.recursOnDay(d) != (d.weekday != 1));
         // assert
         expect(correctDays, true);
       });
@@ -716,10 +799,12 @@ void main() {
       test('Not sunday is true all year', () {
         // arrange
         final recurrentData = Recurs.EVEN_MONDAY | Recurs.ODD_MONDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final dates = List.generate(2000, (i) => DateTime(2020, 01, i + 1));
         // act
-        final correctDays = dates.every(
-            (d) => onCorrectWeeklyDay(recurrentData, d) != (d.weekday != 1));
+        final correctDays =
+            dates.every((d) => rec.recursOnDay(d) != (d.weekday != 1));
         // assert
         expect(correctDays, true);
       });
@@ -727,9 +812,11 @@ void main() {
       test('Odd fridays', () {
         // arrange
         final recurrentData = Recurs.ODD_FRIDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final anOddFriday = DateTime(2019, 11, 22);
         // act
-        final result = onCorrectWeeklyDay(recurrentData, anOddFriday);
+        final result = rec.recursOnDay(anOddFriday);
         // assert
         expect(result, true);
       });
@@ -737,9 +824,11 @@ void main() {
       test('Odd fridays', () {
         // arrange
         final recurrentData = Recurs.ODD_FRIDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final anOddFriday = DateTime(2019, 11, 29);
         // act
-        final result = onCorrectWeeklyDay(recurrentData, anOddFriday);
+        final result = rec.recursOnDay(anOddFriday);
         // assert
         expect(result, false);
       });
@@ -751,12 +840,13 @@ void main() {
             Recurs.EVEN_WEDNESDAY |
             Recurs.EVEN_THURSDAY |
             Recurs.EVEN_FRIDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final twoWeeks = List.generate(14, (i) => DateTime(2019, 11, 25 + i));
         // act
-        final correctDays =
-            twoWeeks.takeWhile((d) => onCorrectWeeklyDay(recurrentData, d));
-        final incorrects = twoWeeks.reversed
-            .takeWhile((d) => !onCorrectWeeklyDay(recurrentData, d));
+        final correctDays = twoWeeks.takeWhile((d) => rec.recursOnDay(d));
+        final incorrects =
+            twoWeeks.reversed.takeWhile((d) => !rec.recursOnDay(d));
         // assert
         expect(correctDays.length, 5);
         expect(incorrects.length, 9);
@@ -765,9 +855,11 @@ void main() {
       test('saturdays week 53 time is odd', () {
         // arrange
         final recurrentData = Recurs.ODD_SATURDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final saturDayWeek53 = DateTime(2021, 01, 02);
         // act
-        final correctDays = onCorrectWeeklyDay(recurrentData, saturDayWeek53);
+        final correctDays = rec.recursOnDay(saturDayWeek53);
         // assert
         expect(correctDays, true);
       });
@@ -775,9 +867,11 @@ void main() {
       test('saturdays 11th april is odd', () {
         // arrange
         final recurrentData = Recurs.ODD_SATURDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final april11th = DateTime(2020, 04, 11);
         // act
-        final result = onCorrectWeeklyDay(recurrentData, april11th);
+        final result = rec.recursOnDay(april11th);
         // assert
         expect(result, true);
       });
@@ -787,14 +881,15 @@ void main() {
           () {
         // arrange
         final recurrentData = Recurs.ODD_SATURDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final twoWeeks =
             List.generate(29, (i) => DateTime(2019, 11, 23 + (i * 14)))
               ..add(DateTime(2021, 01, 02))
               ..addAll(
                   List.generate(150, (i) => DateTime(2021, 01, 09 + (i * 14))));
         // act
-        final correctDays =
-            twoWeeks.every((d) => onCorrectWeeklyDay(recurrentData, d));
+        final correctDays = twoWeeks.every((d) => rec.recursOnDay(d));
         // assert
         expect(correctDays, true);
       });
@@ -804,13 +899,14 @@ void main() {
           () {
         // arrange
         final recurrentData = Recurs.EVEN_SATURDAY;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final twoWeeks =
             List.generate(29, (i) => DateTime(2019, 11, 30 + (i * 14)))
               ..addAll(
                   List.generate(150, (i) => DateTime(2021, 01, 16 + (i * 14))));
         // act
-        final correctDays =
-            twoWeeks.every((d) => onCorrectWeeklyDay(recurrentData, d));
+        final correctDays = twoWeeks.every((d) => rec.recursOnDay(d));
         // assert
         expect(correctDays, true);
       });
@@ -818,15 +914,17 @@ void main() {
       test('everyDay is always true', () {
         // arrange
         final recurrentData = Recurs.everyday;
+        final rec =
+            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final loadsOfDays =
             List.generate(3333, (i) => DateTime(2019, 01, 01 + i));
         // act
-        final allCorrect =
-            loadsOfDays.every((d) => onCorrectWeeklyDay(recurrentData, d));
+        final allCorrect = loadsOfDays.every((d) => rec.recursOnDay(d));
         // assert
         expect(allCorrect, true);
       });
     });
+
     group('Recurs monthly', () {
       test('on day 1', () {
         // arrange
@@ -958,8 +1056,7 @@ void main() {
       });
       test('wrong type week return empty list', () {
         // arrange
-        final weekly =
-            Recurs.private(Recurs.TYPE_WEEKLY, Recurs.everyday, null);
+        final weekly = Recurs.raw(Recurs.TYPE_WEEKLY, Recurs.everyday, null);
         // assert
         expect(weekly.monthDays, []);
       });

@@ -370,7 +370,7 @@ void main() {
       final preSplitRecurring = Activity.createNew(
         title: 'Pre Split Recurring',
         reminderBefore: [],
-        recurs: Recurs.private(
+        recurs: Recurs.raw(
           Recurs.TYPE_WEEKLY,
           16383,
           preSplitEndTime.millisecondsSinceEpoch,
@@ -385,7 +385,7 @@ void main() {
       final splitRecurring = Activity.createNew(
         title: 'Split recurring ',
         reminderBefore: [],
-        recurs: Recurs.private(
+        recurs: Recurs.raw(
           Recurs.TYPE_WEEKLY,
           16383,
           splitEndTime.millisecondsSinceEpoch,
