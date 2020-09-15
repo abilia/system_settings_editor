@@ -26,7 +26,7 @@ class Recurs extends Equatable {
       ),
       everyDay = Recurs.raw(
         TYPE_WEEKLY,
-        everyday,
+        allDaysOfWeek,
         NO_END,
       );
 
@@ -152,7 +152,7 @@ class Recurs extends Equatable {
       oddWeekends = Recurs.ODD_SATURDAY | Recurs.ODD_SUNDAY,
       evenWeekends = Recurs.EVEN_SATURDAY | Recurs.EVEN_SUNDAY,
       allWeekends = evenWeekends | oddWeekends,
-      everyday = allWeekdays | allWeekends;
+      allDaysOfWeek = allWeekdays | allWeekends;
 
   static const NO_END = 253402297199000;
   static final noEndDate = DateTime.fromMillisecondsSinceEpoch(NO_END);

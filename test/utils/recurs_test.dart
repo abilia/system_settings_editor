@@ -913,7 +913,7 @@ void main() {
 
       test('everyDay is always true', () {
         // arrange
-        final recurrentData = Recurs.everyday;
+        final recurrentData = Recurs.allDaysOfWeek;
         final rec =
             Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
         final loadsOfDays =
@@ -1034,7 +1034,7 @@ void main() {
 
         // assert
         expect(monthDays.data, recurrentData);
-        expect(recurrentData, Recurs.everyday);
+        expect(recurrentData, Recurs.allDaysOfWeek);
       });
 
       test('on all even week days', () {
@@ -1056,7 +1056,7 @@ void main() {
       });
       test('wrong type week return empty list', () {
         // arrange
-        final weekly = Recurs.raw(Recurs.TYPE_WEEKLY, Recurs.everyday, null);
+        final weekly = Recurs.raw(Recurs.TYPE_WEEKLY, Recurs.allDaysOfWeek, null);
         // assert
         expect(weekly.monthDays, []);
       });
@@ -1116,7 +1116,7 @@ void main() {
       });
       test('wrong type monthly return empty list', () {
         // arrange
-        final monthly = Recurs.monthly(Recurs.everyday);
+        final monthly = Recurs.monthly(Recurs.allDaysOfWeek);
         // assert
         expect(monthly.weekDays, []);
       });
