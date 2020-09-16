@@ -224,9 +224,7 @@ class SideDotsLarge extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, state) {
-        final displayRemainingTime =
-            state.getSetting(ActivityViewSetting.displayTimeLeft, true) &&
-                endTime.isAtSameMomentOrAfter(now);
+        final displayRemainingTime = state.displayTimeLeft;
         return Column(
           children: <Widget>[
             Spacer(),

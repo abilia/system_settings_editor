@@ -10,18 +10,46 @@ class ActivityViewSetting {
 }
 
 abstract class MemoplannerSettingsState {
-  const MemoplannerSettingsState();
-  T getSetting<T>(String settingName, T defaultValue);
+  final MemoplannerSettings settings;
+  const MemoplannerSettingsState(this.settings);
+  bool get displayAlarmButton => settings.displayAlarmButton;
+  bool get displayDeleteButton => settings.displayDeleteButton;
+  bool get displayEditButton => settings.displayEditButton;
+  bool get displayQuarterHour => settings.displayQuarterHour;
+  bool get displayTimeLeft => settings.displayTimeLeft;
+
+  static MemoplannerSettings get defaultSettings => MemoplannerSettings(
+        displayAlarmButton: true,
+        displayDeleteButton: true,
+        displayEditButton: true,
+        displayQuarterHour: true,
+        displayTimeLeft: true,
+      );
 }
 
 class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
-  final List<MemoplannerSettingData> settings;
+  MemoplannerSettingsLoaded(List<MemoplannerSettingData> settings)
+      : super(_parseSettings(settings));
 
-  MemoplannerSettingsLoaded(this.settings);
+  static MemoplannerSettings _parseSettings(
+      List<MemoplannerSettingData> settings) {
+    return MemoplannerSettings(
+      displayAlarmButton:
+          _parseSetting(ActivityViewSetting.displayAlarmButton, settings, true),
+      displayDeleteButton: _parseSetting(
+          ActivityViewSetting.displayDeleteButton, settings, true),
+      displayEditButton:
+          _parseSetting(ActivityViewSetting.displayEditButton, settings, true),
+      displayQuarterHour:
+          _parseSetting(ActivityViewSetting.displayQuarterHour, settings, true),
+      displayTimeLeft:
+          _parseSetting(ActivityViewSetting.displayTimeLeft, settings, true),
+    );
+  }
 
-  @override
-  T getSetting<T>(String settingName, T defaultValue) {
-    final setting = settings.firstWhere((s) => s.identifier == settingName,
+  static T _parseSetting<T>(String settingName,
+      List<MemoplannerSettingData> rawSettings, T defaultValue) {
+    final setting = rawSettings.firstWhere((s) => s.identifier == settingName,
         orElse: () => null);
     if (setting == null) {
       return defaultValue;
@@ -31,8 +59,22 @@ class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
 }
 
 class MemoplannerSettingsNotLoaded extends MemoplannerSettingsState {
-  @override
-  T getSetting<T>(String settingName, T defaultValue) {
-    return defaultValue;
-  }
+  MemoplannerSettingsNotLoaded()
+      : super(MemoplannerSettingsState.defaultSettings);
+}
+
+class MemoplannerSettings {
+  final bool displayAlarmButton,
+      displayDeleteButton,
+      displayEditButton,
+      displayQuarterHour,
+      displayTimeLeft;
+
+  MemoplannerSettings({
+    @required this.displayAlarmButton,
+    @required this.displayDeleteButton,
+    @required this.displayEditButton,
+    @required this.displayQuarterHour,
+    @required this.displayTimeLeft,
+  });
 }

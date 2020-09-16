@@ -17,8 +17,7 @@ class ActivityInfoWithDots extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, settingsState) {
-        final displayQuarter = settingsState.getSetting<bool>(
-            ActivityViewSetting.displayQuarterHour, true);
+        final displayQuarter = settingsState.displayQuarterHour;
         return Row(
           children: <Widget>[
             if (displayQuarter) ActivityInfoSideDots(activityDay),

@@ -69,13 +69,10 @@ class ActivityBottomAppBar extends StatelessWidget {
       data: bottomNavigationBarTheme,
       child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         builder: (context, memoSettingsState) {
-          final displayDeleteButton = memoSettingsState.getSetting<bool>(
-              ActivityViewSetting.displayDeleteButton, true);
-          final displayEditButton = memoSettingsState.getSetting<bool>(
-              ActivityViewSetting.displayEditButton, true);
-          final displayAlarmButton = memoSettingsState.getSetting<bool>(
-                  ActivityViewSetting.displayAlarmButton, true) &&
-              !activity.fullDay;
+          final displayDeleteButton = memoSettingsState.displayDeleteButton;
+          final displayEditButton = memoSettingsState.displayEditButton;
+          final displayAlarmButton =
+              memoSettingsState.displayAlarmButton && !activity.fullDay;
           final displayReminderButton = displayAlarmButton;
           final numberOfButtons = [
             displayDeleteButton,
