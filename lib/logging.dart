@@ -140,7 +140,7 @@ class SeagullLogger {
       await preferences.setInt(LATEST_UPLOAD_KEY, now.millisecondsSinceEpoch);
       return now;
     } else {
-      return DateTime.fromMicrosecondsSinceEpoch(lastUploadMillis);
+      return DateTime.fromMillisecondsSinceEpoch(lastUploadMillis);
     }
   }
 
