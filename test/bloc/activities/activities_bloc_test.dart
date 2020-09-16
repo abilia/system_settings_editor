@@ -1028,7 +1028,7 @@ void main() {
         final a1 = Activity.createNew(
           title: 'asdf',
           startTime: a1Start,
-          recurs: Recurs.private(
+          recurs: Recurs.raw(
             Recurs.TYPE_WEEKLY,
             16383,
             a1End.millisecondsSinceEpoch,
@@ -1038,7 +1038,7 @@ void main() {
           newId: true,
           title: 'asdf',
           startTime: a2Start,
-          recurs: Recurs.private(
+          recurs: Recurs.raw(
             Recurs.TYPE_WEEKLY,
             16383,
             a2End.millisecondsSinceEpoch,

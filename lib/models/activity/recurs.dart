@@ -11,40 +11,40 @@ class Recurs extends Equatable {
   bool get hasNoEnd => endTime == NO_END;
 
   @visibleForTesting
-  const Recurs.private(this.type, this.data, int endTime)
+  const Recurs.raw(this.type, this.data, int endTime)
       : assert(data != null),
         assert(type != null),
         assert(type >= 0 && type <= 3),
         assert(type != TYPE_WEEKLY || data < 0x4000),
-        assert(type != TYPE_MONTHLT || data < 0x80000000),
+        assert(type != TYPE_MONTHLY || data < 0x80000000),
         endTime = endTime ?? NO_END;
 
-  static const Recurs not = Recurs.private(
+  static const Recurs not = Recurs.raw(
         0,
         0,
         NO_END,
       ),
-      everyDay = Recurs.private(
+      everyDay = Recurs.raw(
         TYPE_WEEKLY,
-        everyday,
+        allDaysOfWeek,
         NO_END,
       );
 
-  factory Recurs.yearly(DateTime dayOfYear, {DateTime ends}) => Recurs.private(
+  factory Recurs.yearly(DateTime dayOfYear, {DateTime ends}) => Recurs.raw(
         TYPE_YEARLY,
         dayOfYearData(dayOfYear),
         ends?.millisecondsSinceEpoch,
       );
 
-  factory Recurs.monthly(int dayOfMonth, {DateTime ends}) => Recurs.private(
-        TYPE_MONTHLT,
+  factory Recurs.monthly(int dayOfMonth, {DateTime ends}) => Recurs.raw(
+        TYPE_MONTHLY,
         onDayOfMonth(dayOfMonth),
         ends?.millisecondsSinceEpoch,
       );
 
   factory Recurs.monthlyOnDays(Iterable<int> daysOfMonth, {DateTime ends}) =>
-      Recurs.private(
-        TYPE_MONTHLT,
+      Recurs.raw(
+        TYPE_MONTHLY,
         onDaysOfMonth(daysOfMonth),
         ends?.millisecondsSinceEpoch,
       );
@@ -56,7 +56,7 @@ class Recurs extends Equatable {
       );
 
   factory Recurs.weeklyOnDays(Iterable<int> weekdays, {DateTime ends}) =>
-      Recurs.private(
+      Recurs.raw(
         TYPE_WEEKLY,
         onDaysOfWeek(weekdays),
         ends?.millisecondsSinceEpoch,
@@ -67,17 +67,45 @@ class Recurs extends Equatable {
     Iterable<int> odds = const [],
     DateTime ends,
   }) =>
-      Recurs.private(
+      Recurs.raw(
         TYPE_WEEKLY,
         biWeekly(evens: evens, odds: odds),
         ends?.millisecondsSinceEpoch,
       );
 
   Recurs changeEnd(DateTime endTime) =>
-      Recurs.private(type, data, endTime.millisecondsSinceEpoch);
+      Recurs.raw(type, data, endTime.millisecondsSinceEpoch);
 
   RecurrentType get recurrance =>
       RecurrentType.values[type] ?? RecurrentType.none;
+
+  bool recursOnDay(DateTime day) {
+    switch (recurrance) {
+      case RecurrentType.weekly:
+        return _recursOnWeeklyDay(data, day);
+      case RecurrentType.monthly:
+        return _recursOnMonthDay(data, day);
+      case RecurrentType.yearly:
+        return _recursOnYearDay(data, day);
+      default:
+        return false;
+    }
+  }
+
+  bool _recursOnWeeklyDay(int recurrentData, DateTime date) {
+    final isOddWeek = date.getWeekNumber().isOdd;
+    final leadingZeros = date.weekday - 1 + (isOddWeek ? 7 : 0);
+    return isBitSet(recurrentData, leadingZeros);
+  }
+
+  bool _recursOnMonthDay(int recurrentData, DateTime day) =>
+      isBitSet(recurrentData, day.day - 1);
+
+  bool _recursOnYearDay(int recurrentData, DateTime date) {
+    final recurringDay = recurrentData % 100;
+    final recurringMonth = recurrentData ~/ 100 + 1;
+    return date.month == recurringMonth && date.day == recurringDay;
+  }
 
   @override
   List<Object> get props => [data, type, endTime];
@@ -87,7 +115,7 @@ class Recurs extends Equatable {
 
   static const int TYPE_NONE = 0,
       TYPE_WEEKLY = 1,
-      TYPE_MONTHLT = 2,
+      TYPE_MONTHLY = 2,
       TYPE_YEARLY = 3,
       EVEN_MONDAY = 0x1,
       EVEN_TUESDAY = 0x2,
@@ -124,7 +152,7 @@ class Recurs extends Equatable {
       oddWeekends = Recurs.ODD_SATURDAY | Recurs.ODD_SUNDAY,
       evenWeekends = Recurs.EVEN_SATURDAY | Recurs.EVEN_SUNDAY,
       allWeekends = evenWeekends | oddWeekends,
-      everyday = allWeekdays | allWeekends;
+      allDaysOfWeek = allWeekdays | allWeekends;
 
   static const NO_END = 253402297199000;
   static final noEndDate = DateTime.fromMillisecondsSinceEpoch(NO_END);
@@ -152,6 +180,9 @@ class Recurs extends Equatable {
           .fold(0, (ds, d) => ds | _toBitMask(d));
 
   static int _toBitMask(int bit) => 1 << (bit - 1);
+
+  static bool isBitSet(int recurrentData, int bit) =>
+      recurrentData & (1 << bit) > 0;
 
   @override
   String toString() =>

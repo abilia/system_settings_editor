@@ -35,7 +35,7 @@ class DbActivity extends DbModel<Activity> {
           removeAfter: json['removeAfter'],
           secret: json['secret'],
           fullDay: json['fullDay'],
-          recurs: Recurs.private(
+          recurs: Recurs.raw(
             json['recurrentType'],
             json['recurrentData'],
             json['endTime'],
@@ -65,7 +65,7 @@ class DbActivity extends DbModel<Activity> {
           removeAfter: dbRow['remove_after'] == 1,
           secret: dbRow['secret'] == 1,
           fullDay: dbRow['full_day'] == 1,
-          recurs: Recurs.private(
+          recurs: Recurs.raw(
             dbRow['recurrent_type'],
             dbRow['recurrent_data'],
             dbRow['end_time'],
