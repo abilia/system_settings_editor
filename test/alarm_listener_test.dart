@@ -3,12 +3,14 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -20,7 +22,7 @@ import 'mocks.dart';
 
 void main() {
   StreamController<DateTime> mockTicker;
-  StreamController<String> mockNotificationSelected;
+  ReplaySubject<String> mockNotificationSelected;
   final mockActivityDb = MockActivityDb();
   final getItInitializer = GetItInitializer();
   final translater = Locales.language.values.first;
@@ -43,7 +45,7 @@ void main() {
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
     mockTicker = StreamController<DateTime>();
-    mockNotificationSelected = StreamController<String>();
+    mockNotificationSelected = ReplaySubject<String>();
 
     final mockTokenDb = MockTokenDb();
     when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
@@ -65,7 +67,7 @@ void main() {
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(() => response)
-      ..notificationStreamGetter = (() => mockNotificationSelected.stream)
+      ..notificationStreamGetter = mockNotificationSelected
       ..fileStorage = MockFileStorage()
       ..userFileDb = MockUserFileDb()
       ..settingsDb = MockSettingsDb()
@@ -617,6 +619,82 @@ void main() {
         // Assert -- first alarm page
         expect(find.byType(FullScreenAlarm), findsOneWidget);
         expect(find.text(reminder.activity.title), findsOneWidget);
+      });
+
+      testWidgets('multiple notifications at the same time ',
+          (WidgetTester tester) async {
+        await SeagullLogger(null).initLogging();
+        final alarm1 = StartAlarm(
+          Activity.createNew(
+            title: 'one alarm title',
+            startTime: activity1StartTime,
+          ),
+          activity1StartTime.onlyDays(),
+        );
+        final alarm2 = StartAlarm(
+          Activity.createNew(
+            title: 'two alarm title',
+            startTime: activity1StartTime,
+          ),
+          activity1StartTime.onlyDays(),
+        );
+        final alarm3 = StartAlarm(
+          Activity.createNew(
+            title: 'three alarm title',
+            startTime: activity1StartTime,
+          ),
+          activity1StartTime.onlyDays(),
+        );
+        final alarm4 = StartAlarm(
+          Activity.createNew(
+            title: 'four alarm title',
+            startTime: activity1StartTime,
+          ),
+          activity1StartTime.onlyDays(),
+        );
+        final alarm2Json = alarm2.toJson();
+        final alarm3Json = alarm3.toJson();
+        final alarm4Json = alarm4.toJson();
+        final payload2 = json.encode(alarm2Json);
+        final payload3 = json.encode(alarm3Json);
+        final payload4 = json.encode(alarm4Json);
+
+        // Arrange
+        mockNotificationSelected.add(payload2);
+        mockNotificationSelected.add(payload3);
+        mockNotificationSelected.add(payload4);
+        await tester.pumpWidget(App(notificationPayload: alarm1));
+        await tester.pumpAndSettle();
+
+        // Assert -- Fullscreen alarm shows
+        expect(
+          find.byType(FullScreenAlarm, skipOffstage: false),
+          findsOneWidget,
+        );
+        expect(
+          find.byType(AlarmPage, skipOffstage: false),
+          findsNWidgets(4),
+        );
+        expect(
+          find.byType(NavigatableAlarmPage, skipOffstage: false),
+          findsNWidgets(3),
+        );
+        expect(
+          find.text(alarm1.activity.title, skipOffstage: false),
+          findsOneWidget,
+        );
+        expect(
+          find.text(alarm2.activity.title, skipOffstage: false),
+          findsOneWidget,
+        );
+        expect(
+          find.text(alarm3.activity.title, skipOffstage: false),
+          findsOneWidget,
+        );
+        expect(
+          find.text(alarm4.activity.title, skipOffstage: false),
+          findsOneWidget,
+        );
       });
     });
   });

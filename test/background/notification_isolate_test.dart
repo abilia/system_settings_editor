@@ -44,7 +44,8 @@ void main() {
       title: 'recurring',
       startTime: now.add(2.hours()),
       alarmType: ALARM_SOUND_ONLY_ON_START,
-      recurs: Recurs.weekly(Recurs.everyday, ends: now.add(5.days())),
+      recurs: Recurs.weeklyOnDays(List.generate(7, (d) => d + 1),
+          ends: now.add(5.days())),
     ),
   ];
   setUp(() {
@@ -77,7 +78,7 @@ void main() {
       'en',
       true,
       mockedFileStorage,
-      now: now,
+      now: () => now,
     );
     verify(notificationsPluginInstance.cancelAll());
     verify(notificationsPluginInstance.zonedSchedule(any, any, any, any, any,
@@ -93,7 +94,7 @@ void main() {
       'en',
       true,
       mockedFileStorage,
-      now: now,
+      now: () => now,
     );
     verify(notificationsPluginInstance.cancelAll());
     verify(notificationsPluginInstance.zonedSchedule(any, any, any, any, any,
@@ -110,7 +111,7 @@ void main() {
       'en',
       true,
       mockedFileStorage,
-      now: now,
+      now: () => now,
     );
     verify(notificationsPluginInstance.cancelAll());
     verify(mockedFileStorage.copyImageThumbForNotification(fileId));

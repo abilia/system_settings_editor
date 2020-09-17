@@ -643,4 +643,41 @@ void main() {
     expect(verify(mockActivitiesBloc.add(captureAny)).captured.single,
         UpdateActivity(expectedActivity));
   });
+
+  test('Trying to save recurrance withtout data saves no recurrence', () async {
+    // Arrange
+    final editActivityBloc = EditActivityBloc.newActivity(
+      activitiesBloc: mockActivitiesBloc,
+      day: aDay,
+    );
+
+    // Act
+    final originalActivity = editActivityBloc.state.activity;
+    final activity = originalActivity.copyWith(
+      title: 'null',
+      recurs: Recurs.monthlyOnDays([]),
+    );
+    final expectedActivity = activity.copyWith(
+      recurs: Recurs.not,
+      startTime: aTime,
+    );
+    final time = TimeOfDay.fromDateTime(aTime);
+    editActivityBloc.add(ChangeStartTime(time));
+    editActivityBloc.add(ReplaceActivity(activity));
+
+    // Assert
+    await expectLater(
+        editActivityBloc,
+        emitsInOrder([
+          UnstoredActivityState(originalActivity, TimeInterval(time, null)),
+          UnstoredActivityState(activity, TimeInterval(time, null)),
+        ]));
+
+    editActivityBloc.add(SaveActivity());
+
+    await untilCalled(mockActivitiesBloc.add(any));
+
+    expect(verify(mockActivitiesBloc.add(captureAny)).captured.single,
+        AddActivity(expectedActivity));
+  });
 }

@@ -17,10 +17,19 @@ class EditActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EditActivityBloc, EditActivityState>(
       builder: (context, state) {
-        final fullDay = state.activity.fullDay;
+        final activity = state.activity;
+        final fullDay = activity.fullDay;
+        final storedRecurring =
+            state is StoredActivityState && state.activity.isRecurring;
+        final tabs = [
+          MainTab(state: state, day: day),
+          if (!fullDay) AlarmAndReminderTab(activity: activity),
+          if (!storedRecurring) RecurrenceTab(state: state),
+          InfoItemTab(state: state),
+        ];
         return DefaultTabController(
           initialIndex: 0,
-          length: 3 + (fullDay ? 0 : 1),
+          length: tabs.length,
           child: Scaffold(
             appBar: AbiliaAppBar(
               bottom: AbiliaTabBar(
@@ -28,6 +37,8 @@ class EditActivityPage extends StatelessWidget {
                   switch (i) {
                     case 1:
                       return fullDay;
+                    case 2:
+                      return storedRecurring;
                     default:
                       return false;
                   }
@@ -58,12 +69,7 @@ class EditActivityPage extends StatelessWidget {
                       child: Icon(AbiliaIcons.ok, size: 32),
                       onPressed: () => _finishedPressed(context, state))),
             ),
-            body: TabBarView(children: [
-              MainTab(state: state, day: day),
-              if (!fullDay) AlarmAndReminderTab(activity: state.activity),
-              UnderConstruction(),
-              InfoItemTab(state: state),
-            ]),
+            body: TabBarView(children: tabs),
           ),
         );
       },

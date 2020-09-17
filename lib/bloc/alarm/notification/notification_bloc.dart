@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
@@ -10,9 +11,9 @@ class NotificationBloc extends Bloc<NotificationAlarm, AlarmStateBase> {
   StreamSubscription _selectedNotificationSubscription;
 
   NotificationBloc({
-    @required Stream<String> selectedNotificationStream,
+    @required ReplaySubject<String> selectedNotificationSubject,
   }) : super(UnInitializedAlarmState()) {
-    _selectedNotificationSubscription = selectedNotificationStream.transform(
+    _selectedNotificationSubscription = selectedNotificationSubject.transform(
       StreamTransformer.fromHandlers(
         handleData: (String data, EventSink<NotificationAlarm> sink) {
           try {

@@ -91,3 +91,51 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
     );
   }
 }
+
+class RecurrenceTab extends StatelessWidget with EditActivityTab {
+  const RecurrenceTab({
+    Key key,
+    @required this.state,
+  }) : super(key: key);
+
+  final EditActivityState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final activity = state.activity;
+    return Padding(
+      padding: const EdgeInsets.only(right: 12.0),
+      child: ListView(
+        children: <Widget>[
+          CollapsableWidget(
+            collapsed: activity.fullDay,
+            child: separated(
+              TimeIntervallPicker(
+                state.timeInterval,
+                startTimeError: state.failedSave && !state.hasStartTime,
+              ),
+            ),
+          ),
+          if (activity.recurs.recurrance == RecurrentType.none ||
+              activity.recurs.recurrance == RecurrentType.yearly)
+            padded(RecurrenceWidget(activity))
+          else ...[
+            separated(
+              Column(
+                children: [
+                  RecurrenceWidget(activity),
+                  SizedBox(height: 8),
+                  if (activity.recurs.recurrance == RecurrentType.weekly)
+                    WeekDays(activity)
+                  else if (activity.recurs.recurrance == RecurrentType.monthly)
+                    MonthDays(activity),
+                ],
+              ),
+            ),
+            padded(EndDateWidget(activity)),
+          ]
+        ],
+      ),
+    );
+  }
+}
