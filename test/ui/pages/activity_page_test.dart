@@ -1081,7 +1081,8 @@ void main() {
       when(mockGenericDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            _memoplannerSetting(false, ActivityViewSetting.displayDeleteButton)
+            _memoplannerSetting(
+                false, MemoplannerSettings.displayDeleteButtonKey)
           ],
         ),
       );
@@ -1101,9 +1102,12 @@ void main() {
       when(mockGenericDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            _memoplannerSetting(false, ActivityViewSetting.displayDeleteButton),
-            _memoplannerSetting(false, ActivityViewSetting.displayAlarmButton),
-            _memoplannerSetting(false, ActivityViewSetting.displayEditButton),
+            _memoplannerSetting(
+                false, MemoplannerSettings.displayDeleteButtonKey),
+            _memoplannerSetting(
+                false, MemoplannerSettings.displayAlarmButtonKey),
+            _memoplannerSetting(
+                false, MemoplannerSettings.displayEditButtonKey),
           ],
         ),
       );
@@ -1123,7 +1127,8 @@ void main() {
       when(mockGenericDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            _memoplannerSetting(false, ActivityViewSetting.displayQuarterHour),
+            _memoplannerSetting(
+                false, MemoplannerSettings.displayQuarterHourKey),
           ],
         ),
       );

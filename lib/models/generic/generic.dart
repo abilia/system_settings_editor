@@ -28,12 +28,12 @@ class Generic<T extends GenericData> extends DataModel {
 
   static Generic<T> createNew<T extends GenericData>({
     @required T data,
-    @required String type,
+    String type,
     bool deleted = false,
   }) {
     return Generic<T>._(
       id: Uuid().v4(),
-      type: _getTypeString<T>(),
+      type: _getTypeString<T>() ?? type,
       data: data,
       deleted: deleted,
     );
@@ -41,7 +41,7 @@ class Generic<T extends GenericData> extends DataModel {
 
   static String _getTypeString<T extends GenericData>() {
     if (T == MemoplannerSettingData) return GenericType.memoPlannerSettings;
-    return '';
+    return null;
   }
 
   @override
