@@ -9,6 +9,7 @@ abstract class MemoplannerSettingsState {
   bool get displayQuarterHour => settings.displayQuarterHour;
   bool get displayTimeLeft => settings.displayTimeLeft;
   bool get activityDateEditable => settings.activityDateEditable;
+  bool get activityTypeEditable => settings.activityTypeEditable;
 }
 
 class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
@@ -28,14 +29,16 @@ class MemoplannerSettings {
       displayEditButtonKey = 'activity_detailed_setting_display_edit_button',
       displayQuarterHourKey = 'activity_detailed_setting_display_qhw',
       displayTimeLeftKey = 'activity_detailed_setting_display_qhw_time_left',
-      activityDateEditableKey = 'advanced_activity_date';
+      activityDateEditableKey = 'advanced_activity_date',
+      activityTypeEditableKey = 'advanced_activity_type';
 
   final bool displayAlarmButton,
       displayDeleteButton,
       displayEditButton,
       displayQuarterHour,
       displayTimeLeft,
-      activityDateEditable;
+      activityDateEditable,
+      activityTypeEditable;
 
   MemoplannerSettings({
     @required this.displayAlarmButton,
@@ -44,6 +47,7 @@ class MemoplannerSettings {
     @required this.displayQuarterHour,
     @required this.displayTimeLeft,
     @required this.activityDateEditable,
+    @required this.activityTypeEditable,
   });
 
   factory MemoplannerSettings.fromSettingsList(
@@ -59,6 +63,7 @@ class MemoplannerSettings {
       displayQuarterHour: true,
       displayTimeLeft: true,
       activityDateEditable: true,
+      activityTypeEditable: true,
     );
   }
 
@@ -73,6 +78,8 @@ class MemoplannerSettings {
       displayTimeLeft: _parseSetting(displayTimeLeftKey, settings, true),
       activityDateEditable:
           _parseSetting(activityDateEditableKey, settings, true),
+      activityTypeEditable:
+          _parseSetting(activityTypeEditableKey, settings, true),
     );
   }
 

@@ -22,7 +22,7 @@ class EditActivityPage extends StatelessWidget {
         final storedRecurring =
             state is StoredActivityState && state.activity.isRecurring;
         final tabs = [
-          MainTab(state: state, day: day),
+          MainTab(editActivityState: state, day: day),
           if (!fullDay) AlarmAndReminderTab(activity: activity),
           if (!storedRecurring) RecurrenceTab(state: state),
           InfoItemTab(state: state),
