@@ -4,7 +4,7 @@ import 'package:seagull/models/all.dart';
 const T1 = 'https://t1.abilia-gbg.se';
 const WHALE = 'https://whale.abilia-gbg.se';
 const PROD = 'https://myabilia.com';
-const LOCAL = 'http://192.168.13.78:9103';
+const LOCAL = 'http://192.168.1.63:9103';
 const Map<String, String> backEndEnviorments = {
   'Prod': PROD,
   'Whale': WHALE,

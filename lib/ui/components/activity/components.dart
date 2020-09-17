@@ -76,6 +76,7 @@ class PickField extends StatelessWidget {
   final double heigth;
   final bool active;
   final bool errorState;
+  final bool disabled;
 
   const PickField({
     Key key,
@@ -86,19 +87,22 @@ class PickField extends StatelessWidget {
     this.heigth = 56,
     this.active = true,
     this.errorState = false,
+    this.disabled = false,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onTap,
+        onTap: disabled ? null : onTap,
         borderRadius: borderRadius,
         child: Ink(
           height: heigth,
           decoration: errorState
               ? whiteErrorBoxDecoration
-              : active ? whiteBoxDecoration : offBoxDecoration,
+              : disabled
+                  ? disabledBoxDecoration
+                  : active ? whiteBoxDecoration : offBoxDecoration,
           padding: const EdgeInsets.all(12),
           child: Stack(
             children: <Widget>[
