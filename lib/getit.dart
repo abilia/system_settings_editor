@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
@@ -26,9 +27,9 @@ class GetItInitializer {
   Ticker _ticker;
   set ticker(Ticker ticker) => _ticker = ticker;
 
-  NotificationStreamGetter _selectedNotificationStreamGetter;
+  ReplaySubject<String> _selectedNotificationStreamGetter;
   set notificationStreamGetter(
-          NotificationStreamGetter selectedNotificationStreamGetterFunction) =>
+          ReplaySubject<String> selectedNotificationStreamGetterFunction) =>
       _selectedNotificationStreamGetter =
           selectedNotificationStreamGetterFunction;
 
@@ -86,8 +87,8 @@ class GetItInitializer {
     GetIt.I.registerSingleton<SeagullLogger>(
         _seagullLogger ?? SeagullLogger(userDb));
     GetIt.I.registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb());
-    GetIt.I.registerSingleton<NotificationStreamGetter>(
-        _selectedNotificationStreamGetter ?? () => selectNotificationSubject);
+    GetIt.I.registerSingleton<ReplaySubject<String>>(
+        _selectedNotificationStreamGetter ?? selectNotificationSubject);
     GetIt.I.registerSingleton<AlarmScheduler>(
         _alarmScheduler ?? scheduleAlarmNotificationsIsolated);
     GetIt.I.registerSingleton<Ticker>(_ticker ?? Ticker());

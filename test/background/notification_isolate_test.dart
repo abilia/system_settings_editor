@@ -78,7 +78,7 @@ void main() {
       'en',
       true,
       mockedFileStorage,
-      now: now,
+      now: () => now,
     );
     verify(notificationsPluginInstance.cancelAll());
     verify(notificationsPluginInstance.zonedSchedule(any, any, any, any, any,
@@ -94,7 +94,7 @@ void main() {
       'en',
       true,
       mockedFileStorage,
-      now: now,
+      now: () => now,
     );
     verify(notificationsPluginInstance.cancelAll());
     verify(notificationsPluginInstance.zonedSchedule(any, any, any, any, any,
@@ -111,7 +111,7 @@ void main() {
       'en',
       true,
       mockedFileStorage,
-      now: now,
+      now: () => now,
     );
     verify(notificationsPluginInstance.cancelAll());
     verify(mockedFileStorage.copyImageThumbForNotification(fileId));
