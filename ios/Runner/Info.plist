@@ -54,7 +54,6 @@
 	<array>
 		<string>en</string>
 		<string>sv</string>
-		<string>fi</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photo library needed to add pictures to calendar activity</string>

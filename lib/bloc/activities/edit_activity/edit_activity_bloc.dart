@@ -102,6 +102,10 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       activity = activity.copyWith(infoItem: InfoItem.none);
     }
 
+    if (activity.isRecurring && activity.recurs.data <= 0) {
+      activity = activity.copyWith(recurs: Recurs.not);
+    }
+
     if (activity.fullDay) {
       activity = activity.copyWith(
         startTime: activity.startTime.onlyDays(),
@@ -171,7 +175,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       state.activity.copyWith(
         infoItem: infoItems[newInfoType] ?? _newInfoItem(newInfoType),
       ),
-      infoItems: infoItems, 
+      infoItems: infoItems,
     );
   }
 

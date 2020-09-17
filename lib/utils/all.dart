@@ -1,5 +1,5 @@
 export 'datetime.dart';
-export 'recurs.dart';
+export 'recurs_extensions.dart';
 export 'alarms.dart';
 export 'duration.dart';
 export 'alarm_navigator.dart';
@@ -10,3 +10,4 @@ export 'sort_order.dart';
 export 'image_processing.dart';
 export 'strings.dart';
 export 'licenses.dart';
+export 'recurs_extensions.dart';

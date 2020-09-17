@@ -24,9 +24,9 @@ class DateAndTimeWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SubHeading(translator.date),
-          DatePicker(
-            activity.startTime,
-          ),
+          DatePicker(activity.startTime,
+              onChange: (newDate) => BlocProvider.of<EditActivityBloc>(context)
+                  .add(ChangeDate(newDate))),
           const SizedBox(height: 24.0),
           CollapsableWidget(
             collapsed: activity.fullDay,
@@ -81,7 +81,8 @@ class ReminderSwitch extends StatelessWidget {
 
 class DatePicker extends StatelessWidget {
   final DateTime date;
-  const DatePicker(this.date);
+  final Function(DateTime) onChange;
+  const DatePicker(this.date, {@required this.onChange});
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +109,7 @@ class DatePicker extends StatelessWidget {
                 ),
                 child: child));
         if (newDate != null) {
-          BlocProvider.of<EditActivityBloc>(context).add(ChangeDate(newDate));
+          onChange(newDate);
         }
       },
       leading: Icon(

@@ -1028,13 +1028,21 @@ void main() {
         final a1 = Activity.createNew(
           title: 'asdf',
           startTime: a1Start,
-          recurs: Recurs.weekly(16383, ends: a1End),
+          recurs: Recurs.raw(
+            Recurs.TYPE_WEEKLY,
+            16383,
+            a1End.millisecondsSinceEpoch,
+          ),
         );
         final a2 = a1.copyWith(
           newId: true,
           title: 'asdf',
           startTime: a2Start,
-          recurs: Recurs.weekly(16383, ends: a2End),
+          recurs: Recurs.raw(
+            Recurs.TYPE_WEEKLY,
+            16383,
+            a2End.millisecondsSinceEpoch,
+          ),
         );
         final a3 = a2.copyWith(
           newId: true,

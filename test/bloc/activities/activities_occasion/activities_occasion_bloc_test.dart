@@ -543,8 +543,8 @@ void main() {
           .copyWith(removeAfter: true);
       final everyDayFullDayRecurring = FakeActivity.fullday(longAgo).copyWith(
         removeAfter: true,
-        recurs: Recurs.weekly(
-          Recurs.allWeekdays,
+        recurs: Recurs.weeklyOnDays(
+          List.generate(5, (d) => d + 1),
           ends: DateTime.fromMillisecondsSinceEpoch(253402297199000),
         ),
       );
@@ -696,7 +696,7 @@ void main() {
         title: 'Recurs.MONDAY',
         startTime: longAgo,
         duration: 10.hours(),
-        recurs: Recurs.weekly(Recurs.MONDAY),
+        recurs: Recurs.weeklyOnDay(DateTime.monday),
       );
       final earlyActivity = Activity.createNew(
         title: 'earlyActivity',
