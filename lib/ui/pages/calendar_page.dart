@@ -21,6 +21,7 @@ class _CalendarPageState extends State<CalendarPage>
   ActivitiesBloc _activitiesBloc;
   ScrollPositionBloc _scrollPositionBloc;
   SortableBloc _sortableBloc;
+  GenericBloc _genericBloc;
   ClockBloc _clockBloc;
 
   @override
@@ -30,6 +31,7 @@ class _CalendarPageState extends State<CalendarPage>
     _clockBloc = BlocProvider.of<ClockBloc>(context);
     _scrollPositionBloc = ScrollPositionBloc();
     _sortableBloc = BlocProvider.of<SortableBloc>(context);
+    _genericBloc = BlocProvider.of<GenericBloc>(context);
     BlocProvider.of<UserFileBloc>(context).add(LoadUserFiles());
     WidgetsBinding.instance.addObserver(this);
     super.initState();
@@ -48,6 +50,7 @@ class _CalendarPageState extends State<CalendarPage>
       _clockBloc.add(DateTime.now().onlyMinutes());
       _activitiesBloc.add(LoadActivities());
       _sortableBloc.add(LoadSortables());
+      _genericBloc.add(LoadGenerics());
       _jumpToActivity();
     }
   }

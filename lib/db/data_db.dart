@@ -24,7 +24,7 @@ abstract class DataDb<M extends DataModel> {
 
     await dataModels
         .map(
-          (userFile) => userFile.toMapForDb(),
+          (dataModel) => dataModel.toMapForDb(),
         )
         .forEach(
           (value) => batch.insert(tableName, value,

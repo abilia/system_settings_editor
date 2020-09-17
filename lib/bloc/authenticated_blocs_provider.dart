@@ -52,6 +52,15 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             authToken: authenticatedState.token,
           ),
         ),
+        RepositoryProvider<GenericRepository>(
+          create: (context) => GenericRepository(
+            baseUrl: authenticatedState.userRepository.baseUrl,
+            client: authenticatedState.userRepository.httpClient,
+            genericDb: GetIt.I<GenericDb>(),
+            userId: authenticatedState.userId,
+            authToken: authenticatedState.token,
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -84,6 +93,18 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               syncBloc: context.bloc<SyncBloc>(),
               pushBloc: context.bloc<PushBloc>(),
             )..add(LoadSortables()),
+          ),
+          BlocProvider<GenericBloc>(
+            create: (context) => GenericBloc(
+              genericRepository: context.repository<GenericRepository>(),
+              syncBloc: context.bloc<SyncBloc>(),
+              pushBloc: context.bloc<PushBloc>(),
+            )..add(LoadGenerics()),
+          ),
+          BlocProvider<MemoplannerSettingBloc>(
+            create: (context) => MemoplannerSettingBloc(
+              genericBloc: context.bloc<GenericBloc>(),
+            ),
           ),
           BlocProvider<DayPickerBloc>(
             create: (context) => DayPickerBloc(

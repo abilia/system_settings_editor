@@ -48,11 +48,15 @@ class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
 
 class MockActivityDb extends Mock implements ActivityDb {}
 
+class MockGenericDb extends Mock implements GenericDb {}
+
 class MockUserFileDb extends Mock implements UserFileDb {}
 
 class MockUserDb extends Mock implements UserDb {}
 
 class MockSettingsDb extends Mock implements SettingsDb {}
+
+class MockSortableDb extends Mock implements SortableDb {}
 
 class MockDatabase extends Mock implements Database {}
 
@@ -89,8 +93,9 @@ class MockDayActivitiesBloc
 class MockDayPickerBloc extends MockBloc<DayPickerBloc, DayPickerState>
     implements DayPickerBloc {}
 
-class MockSettingsBloc extends MockBloc<SettingsEvent, SettingsState>
-    implements SettingsBloc {}
+class MockMemoplannerSettingsBloc
+    extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettingsState>
+    implements MemoplannerSettingBloc {}
 
 class MockAuthenticationBloc
     extends MockBloc<AuthenticationEvent, AuthenticationState>

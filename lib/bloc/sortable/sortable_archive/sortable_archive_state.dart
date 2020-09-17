@@ -1,4 +1,4 @@
-part of 'image_archive_bloc.dart';
+part of 'sortable_archive_bloc.dart';
 
 class SortableArchiveState<T extends SortableData> extends Equatable {
   final Map<String, Iterable<Sortable<T>>> allByFolder;
