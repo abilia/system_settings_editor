@@ -149,61 +149,65 @@ class TimeIntervallPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        Expanded(
-          flex: 148,
-          child: TimePicker(
-            translator.startTime,
-            timeInterval.startTime,
-            key: TestKey.startTimePicker,
-            errorState: startTimeError,
-            onTap: () async {
-              final newStartTime = await showViewDialog<TimeInputResult>(
-                context: context,
-                builder: (context) =>
-                    StartTimeInputDialog(time: timeInterval.startTime),
-              );
-              if (newStartTime != null) {
-                BlocProvider.of<EditActivityBloc>(context)
-                    .add(ChangeStartTime(newStartTime.time));
-              }
-            },
-          ),
-        ),
-        Expanded(
-          flex: 48,
-          child: Transform.translate(
-            offset: Offset(0, -20),
-            child: Divider(
-              thickness: 2,
-              indent: 4,
-              endIndent: 4,
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, memoSettingsState) => Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          Expanded(
+            flex: 148,
+            child: TimePicker(
+              translator.startTime,
+              timeInterval.startTime,
+              key: TestKey.startTimePicker,
+              errorState: startTimeError,
+              onTap: () async {
+                final newStartTime = await showViewDialog<TimeInputResult>(
+                  context: context,
+                  builder: (context) =>
+                      StartTimeInputDialog(time: timeInterval.startTime),
+                );
+                if (newStartTime != null) {
+                  BlocProvider.of<EditActivityBloc>(context)
+                      .add(ChangeStartTime(newStartTime.time));
+                }
+              },
             ),
           ),
-        ),
-        Expanded(
-          flex: 148,
-          child: TimePicker(
-            translator.endTime,
-            timeInterval.endTime,
-            key: TestKey.endTimePicker,
-            onTap: () async {
-              final newEndTime = await showViewDialog<TimeInputResult>(
-                context: context,
-                builder: (context) => EndTimeInputDialog(
-                  timeInterval: timeInterval,
+          if (memoSettingsState.activityEndTimeEditable)
+            Expanded(
+              flex: 48,
+              child: Transform.translate(
+                offset: Offset(0, -20),
+                child: Divider(
+                  thickness: 2,
+                  indent: 4,
+                  endIndent: 4,
                 ),
-              );
-              if (newEndTime != null) {
-                BlocProvider.of<EditActivityBloc>(context)
-                    .add(ChangeEndTime(newEndTime.time));
-              }
-            },
-          ),
-        ),
-      ],
+              ),
+            ),
+          if (memoSettingsState.activityEndTimeEditable)
+            Expanded(
+              flex: 148,
+              child: TimePicker(
+                translator.endTime,
+                timeInterval.endTime,
+                key: TestKey.endTimePicker,
+                onTap: () async {
+                  final newEndTime = await showViewDialog<TimeInputResult>(
+                    context: context,
+                    builder: (context) => EndTimeInputDialog(
+                      timeInterval: timeInterval,
+                    ),
+                  );
+                  if (newEndTime != null) {
+                    BlocProvider.of<EditActivityBloc>(context)
+                        .add(ChangeEndTime(newEndTime.time));
+                  }
+                },
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
