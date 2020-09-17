@@ -84,7 +84,7 @@ class GenericRepository extends DataRepository<Generic> {
       return currentGeneric.copyWith(
         revision: success.revision,
         dirty: max(dirtyDiff,
-            0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
+            0), // The generic might have been fetched from backend during the sync and reset with dirty = 0.
       );
     });
     await genericDb.insert(await Future.wait(toUpdate));

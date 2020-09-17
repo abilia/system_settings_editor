@@ -1,14 +1,5 @@
 part of 'memoplanner_setting_bloc.dart';
 
-class ActivityViewSetting {
-  static const String displayAlarmButton =
-          'activity_detailed_setting_display_change_alarm_button',
-      displayDeleteButton = 'activity_detailed_setting_display_delete_button',
-      displayEditButton = 'activity_detailed_setting_display_edit_button',
-      displayQuarterHour = 'activity_detailed_setting_display_qhw',
-      displayTimeLeft = 'activity_detailed_setting_display_qhw_time_left';
-}
-
 abstract class MemoplannerSettingsState {
   final MemoplannerSettings settings;
   const MemoplannerSettingsState(this.settings);
@@ -17,53 +8,26 @@ abstract class MemoplannerSettingsState {
   bool get displayEditButton => settings.displayEditButton;
   bool get displayQuarterHour => settings.displayQuarterHour;
   bool get displayTimeLeft => settings.displayTimeLeft;
-
-  static MemoplannerSettings get defaultSettings => MemoplannerSettings(
-        displayAlarmButton: true,
-        displayDeleteButton: true,
-        displayEditButton: true,
-        displayQuarterHour: true,
-        displayTimeLeft: true,
-      );
 }
 
 class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
   MemoplannerSettingsLoaded(List<MemoplannerSettingData> settings)
-      : super(_parseSettings(settings));
-
-  static MemoplannerSettings _parseSettings(
-      List<MemoplannerSettingData> settings) {
-    return MemoplannerSettings(
-      displayAlarmButton:
-          _parseSetting(ActivityViewSetting.displayAlarmButton, settings, true),
-      displayDeleteButton: _parseSetting(
-          ActivityViewSetting.displayDeleteButton, settings, true),
-      displayEditButton:
-          _parseSetting(ActivityViewSetting.displayEditButton, settings, true),
-      displayQuarterHour:
-          _parseSetting(ActivityViewSetting.displayQuarterHour, settings, true),
-      displayTimeLeft:
-          _parseSetting(ActivityViewSetting.displayTimeLeft, settings, true),
-    );
-  }
-
-  static T _parseSetting<T>(String settingName,
-      List<MemoplannerSettingData> rawSettings, T defaultValue) {
-    final setting = rawSettings.firstWhere((s) => s.identifier == settingName,
-        orElse: () => null);
-    if (setting == null) {
-      return defaultValue;
-    }
-    return json.decode(setting.data);
-  }
+      : super(MemoplannerSettings.fromSettingsList(settings));
 }
 
 class MemoplannerSettingsNotLoaded extends MemoplannerSettingsState {
-  MemoplannerSettingsNotLoaded()
-      : super(MemoplannerSettingsState.defaultSettings);
+  MemoplannerSettingsNotLoaded() : super(MemoplannerSettings.defaultSettigs());
 }
 
 class MemoplannerSettings {
+  static const String displayAlarmButtonKey =
+          'activity_detailed_setting_display_change_alarm_button',
+      displayDeleteButtonKey =
+          'activity_detailed_setting_display_delete_button',
+      displayEditButtonKey = 'activity_detailed_setting_display_edit_button',
+      displayQuarterHourKey = 'activity_detailed_setting_display_qhw',
+      displayTimeLeftKey = 'activity_detailed_setting_display_qhw_time_left';
+
   final bool displayAlarmButton,
       displayDeleteButton,
       displayEditButton,
@@ -77,4 +41,41 @@ class MemoplannerSettings {
     @required this.displayQuarterHour,
     @required this.displayTimeLeft,
   });
+
+  factory MemoplannerSettings.fromSettingsList(
+      List<MemoplannerSettingData> settings) {
+    return _parseSettings(settings);
+  }
+
+  factory MemoplannerSettings.defaultSettigs() {
+    return MemoplannerSettings(
+      displayAlarmButton: true,
+      displayDeleteButton: true,
+      displayEditButton: true,
+      displayQuarterHour: true,
+      displayTimeLeft: true,
+    );
+  }
+
+  static MemoplannerSettings _parseSettings(
+      List<MemoplannerSettingData> settings) {
+    return MemoplannerSettings(
+      displayAlarmButton: _parseSetting(displayAlarmButtonKey, settings, true),
+      displayDeleteButton:
+          _parseSetting(displayDeleteButtonKey, settings, true),
+      displayEditButton: _parseSetting(displayEditButtonKey, settings, true),
+      displayQuarterHour: _parseSetting(displayQuarterHourKey, settings, true),
+      displayTimeLeft: _parseSetting(displayTimeLeftKey, settings, true),
+    );
+  }
+
+  static T _parseSetting<T>(String settingName,
+      List<MemoplannerSettingData> rawSettings, T defaultValue) {
+    final setting = rawSettings.firstWhere((s) => s.identifier == settingName,
+        orElse: () => null);
+    if (setting == null) {
+      return defaultValue;
+    }
+    return json.decode(setting.data);
+  }
 }
