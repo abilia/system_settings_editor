@@ -15,14 +15,12 @@ abstract class EditActivityState extends Equatable with Silent {
     this.originalTimeInterval,
     this.newImage,
     this.failedSave = false,
-    this.saveErrors = const [],
   });
   final Activity activity, originalActivity;
   final TimeInterval timeInterval, originalTimeInterval;
   final MapView<Type, InfoItem> infoItems;
   final File newImage;
   final bool failedSave;
-  final List<SaveError> saveErrors;
 
   bool get hasTitleOrImage =>
       activity.hasTitle || activity.fileId?.isNotEmpty == true;
@@ -41,7 +39,6 @@ abstract class EditActivityState extends Equatable with Silent {
         newImage,
         infoItems,
         failedSave,
-        saveErrors,
       ];
 
   @override
@@ -54,7 +51,7 @@ abstract class EditActivityState extends Equatable with Silent {
     Map<Type, InfoItem> infoItems,
   });
 
-  EditActivityState _failSave(List<SaveError> errors);
+  EditActivityState _failSave();
 }
 
 class UnstoredActivityState extends EditActivityState {
@@ -63,7 +60,6 @@ class UnstoredActivityState extends EditActivityState {
     TimeInterval timeInterval, [
     File newImage,
     bool failedSave = false,
-    List<SaveError> saveErrors = const [],
   ]) : super(
           activity,
           timeInterval,
@@ -72,7 +68,6 @@ class UnstoredActivityState extends EditActivityState {
           originalTimeInterval: timeInterval,
           newImage: newImage,
           failedSave: failedSave,
-          saveErrors: saveErrors,
         );
 
   const UnstoredActivityState._(
@@ -83,7 +78,6 @@ class UnstoredActivityState extends EditActivityState {
     TimeInterval originalTimeInterval, [
     File newImage,
     bool failedSave = false,
-    List<SaveError> saveErrors = const [],
   ]) : super(
           activity,
           timeInterval,
@@ -92,7 +86,6 @@ class UnstoredActivityState extends EditActivityState {
           originalTimeInterval: originalTimeInterval,
           newImage: newImage,
           failedSave: failedSave,
-          saveErrors: saveErrors,
         );
 
   @override
@@ -110,12 +103,10 @@ class UnstoredActivityState extends EditActivityState {
         originalTimeInterval,
         imageUpdate == null ? newImage : imageUpdate.updatedImage,
         failedSave,
-        saveErrors,
       );
 
   @override
-  EditActivityState _failSave(List<SaveError> saveErrors) =>
-      UnstoredActivityState._(
+  EditActivityState _failSave() => UnstoredActivityState._(
         activity,
         timeInterval,
         infoItems,
@@ -123,7 +114,6 @@ class UnstoredActivityState extends EditActivityState {
         originalTimeInterval,
         newImage,
         true,
-        saveErrors,
       );
 }
 
@@ -134,11 +124,14 @@ class StoredActivityState extends EditActivityState {
     Activity activity,
     TimeInterval timeInterval,
     this.day,
-  ) : super(activity, timeInterval, const MapView(<Type, InfoItem>{}),
-            originalActivity: activity,
-            originalTimeInterval: timeInterval,
-            failedSave: false,
-            saveErrors: const []);
+  ) : super(
+          activity,
+          timeInterval,
+          const MapView(<Type, InfoItem>{}),
+          originalActivity: activity,
+          originalTimeInterval: timeInterval,
+          failedSave: false,
+        );
 
   const StoredActivityState._(
     Activity activity,
@@ -149,7 +142,6 @@ class StoredActivityState extends EditActivityState {
     this.day, [
     File newImage,
     bool failedSave,
-    List<SaveError> saveErrors,
   ]) : super(
           activity,
           timeInterval,
@@ -158,7 +150,6 @@ class StoredActivityState extends EditActivityState {
           originalTimeInterval: originalTimeInterval,
           newImage: newImage,
           failedSave: failedSave,
-          saveErrors: saveErrors,
         );
 
   @override
@@ -180,12 +171,10 @@ class StoredActivityState extends EditActivityState {
         day,
         imageUpdate == null ? newImage : imageUpdate.updatedImage,
         failedSave,
-        saveErrors,
       );
 
   @override
-  EditActivityState _failSave(List<SaveError> saveErrors) =>
-      StoredActivityState._(
+  EditActivityState _failSave() => StoredActivityState._(
         activity,
         timeInterval,
         activity,
@@ -194,7 +183,6 @@ class StoredActivityState extends EditActivityState {
         day,
         newImage,
         true,
-        saveErrors,
       );
 }
 

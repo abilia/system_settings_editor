@@ -123,14 +123,9 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnstoredActivityState(activity, timeInterval, null, true,
-            [SaveError.NO_TITLE_OR_IMAGE, SaveError.NO_START_TIME]),
-        UnstoredActivityState(activityWithTitle, timeInterval, null, true,
-            [SaveError.NO_TITLE_OR_IMAGE, SaveError.NO_START_TIME]),
-        UnstoredActivityState(activityWithTitle, timeInterval, null, true,
-            [SaveError.NO_START_TIME]),
-        UnstoredActivityState(activityWithTitle, newTimeInterval, null, true,
-            [SaveError.NO_START_TIME]),
+        UnstoredActivityState(activity, timeInterval, null, true),
+        UnstoredActivityState(activityWithTitle, timeInterval, null, true),
+        UnstoredActivityState(activityWithTitle, newTimeInterval, null, true),
         StoredActivityState(expectedSaved, newTimeInterval, aTime.onlyDays()),
       ]),
     );

@@ -87,7 +87,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       if (errors.isEmpty) {
         yield* _mapSaveActivityToState(state, event);
       } else {
-        yield state._failSave(errors);
+        yield state._failSave();
       }
     }
     if (event is ImageSelected) {
