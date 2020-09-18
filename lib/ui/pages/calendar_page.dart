@@ -228,6 +228,10 @@ class CalendarBottomBar extends StatelessWidget {
                             create: (_) => EditActivityBloc.newActivity(
                               activitiesBloc:
                                   BlocProvider.of<ActivitiesBloc>(context),
+                              clockBloc: BlocProvider.of<ClockBloc>(context),
+                              memoplannerSettingBloc:
+                                  BlocProvider.of<MemoplannerSettingBloc>(
+                                      context),
                               day: day,
                             ),
                             child: EditActivityPage(

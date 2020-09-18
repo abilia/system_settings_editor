@@ -30,10 +30,14 @@ void main() {
 
   MockSortableBloc mockSortableBloc;
   MockUserFileBloc mockUserFileBloc;
+  MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   setUp(() async {
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
     mockUserFileBloc = MockUserFileBloc();
+    mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
+    when(mockMemoplannerSettingsBloc.state)
+        .thenReturn(MemoplannerSettingsNotLoaded());
   });
 
   Widget wrapWithMaterialApp(Widget widget,
@@ -48,18 +52,32 @@ void main() {
       builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24H),
           child: MultiBlocProvider(providers: [
+            BlocProvider<ClockBloc>(
+              create: (context) => ClockBloc(
+                  StreamController<DateTime>().stream,
+                  initialTime: startTime),
+            ),
             BlocProvider<AuthenticationBloc>(
                 create: (context) => MockAuthenticationBloc()),
             BlocProvider<ActivitiesBloc>(
                 create: (context) => MockActivitiesBloc()),
+            BlocProvider<MemoplannerSettingBloc>(
+              create: (context) => mockMemoplannerSettingsBloc,
+            ),
             BlocProvider<EditActivityBloc>(
               create: (context) => newActivity
                   ? EditActivityBloc.newActivity(
                       activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+                      clockBloc: BlocProvider.of<ClockBloc>(context),
+                      memoplannerSettingBloc:
+                          BlocProvider.of<MemoplannerSettingBloc>(context),
                       day: today)
                   : EditActivityBloc(
                       ActivityDay(activity, today),
                       activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+                      clockBloc: BlocProvider.of<ClockBloc>(context),
+                      memoplannerSettingBloc:
+                          BlocProvider.of<MemoplannerSettingBloc>(context),
                     ),
             ),
             BlocProvider<SortableBloc>(
@@ -67,11 +85,6 @@ void main() {
             ),
             BlocProvider<UserFileBloc>(
               create: (context) => mockUserFileBloc,
-            ),
-            BlocProvider<ClockBloc>(
-              create: (context) => ClockBloc(
-                  StreamController<DateTime>().stream,
-                  initialTime: startTime),
             ),
           ], child: child)),
       home: widget,

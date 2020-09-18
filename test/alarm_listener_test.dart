@@ -10,7 +10,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/all.dart';
-import 'package:seagull/logging.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -623,7 +622,6 @@ void main() {
 
       testWidgets('multiple notifications at the same time ',
           (WidgetTester tester) async {
-        await SeagullLogger(null).initLogging();
         final alarm1 = StartAlarm(
           Activity.createNew(
             title: 'one alarm title',

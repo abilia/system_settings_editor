@@ -76,6 +76,7 @@ timeAgoPost;ago;sen
 missingTitleOrImageAndStartTime;Your activity should contain an image or name and start time.;Aktiviteten måste ha ett namn eller en bild och en starttid.
 missingTitleOrImage;Your activity should contain an image or name.;Aktiviteten måste ha ett namn eller en bild.
 missingStartTime;Your activity should contain a start time.;Aktiviteten måste ha en starttid.
+startTimeBeforeNow;You've selected a start time that is before now. That is not allowed.;Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.
 infoType;Info type;Kopplade funktioner
 selectInfoType;Select info type;Välj typ av Info
 infoTypeNone;- None -;- Ingen -

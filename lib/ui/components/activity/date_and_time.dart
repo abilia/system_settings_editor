@@ -19,7 +19,9 @@ class DateAndTimeWidget extends StatelessWidget {
     final activity = editActivityState.activity;
 
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => SizedBox(
+        builder: (context, memoSettingsState) {
+      final errors = BlocProvider.of<EditActivityBloc>(context).canSave;
+      return SizedBox(
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +42,8 @@ class DateAndTimeWidget extends StatelessWidget {
               child: TimeIntervallPicker(
                 editActivityState.timeInterval,
                 startTimeError: editActivityState.failedSave &&
-                    !editActivityState.hasStartTime,
+                    (errors.contains(SaveError.NO_START_TIME) ||
+                        errors.contains(SaveError.START_TIME_BEFORE_NOW)),
               ),
             ),
             SwitchField(
@@ -56,8 +59,8 @@ class DateAndTimeWidget extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 }
 

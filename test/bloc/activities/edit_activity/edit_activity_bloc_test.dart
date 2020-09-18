@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -11,11 +13,17 @@ import '../../../mocks.dart';
 
 void main() {
   ActivitiesBloc mockActivitiesBloc;
+  MemoplannerSettingBloc mockMemoplannerSettingsBloc;
+  ClockBloc clockBloc;
   final aTime = DateTime(2022, 02, 22, 22, 30);
   final aDay = DateTime(2022, 02, 22);
 
   setUp(() {
     mockActivitiesBloc = MockActivitiesBloc();
+    mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
+    clockBloc = ClockBloc(StreamController<DateTime>().stream);
+    when(mockMemoplannerSettingsBloc.state)
+        .thenReturn(MemoplannerSettingsNotLoaded());
   });
 
   test('Initial state is the given activity', () {
@@ -24,6 +32,8 @@ void main() {
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, aDay),
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
     );
     // Act // Assert
     expect(editActivityBloc.state, isA<StoredActivityState>());
@@ -39,6 +49,8 @@ void main() {
     );
     final editActivityBloc = EditActivityBloc.newActivity(
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
       day: aTime,
     );
     // Act // Assert
@@ -51,15 +63,19 @@ void main() {
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, aDay),
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
     );
     // Act // Assert
-    expect(editActivityBloc.state.canSave, isFalse);
+    expect(editActivityBloc.canSave.isEmpty, isFalse);
   });
 
   test('Changing activity changes activity', () async {
     // Arrange
     final editActivityBloc = EditActivityBloc.newActivity(
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
       day: aTime,
     );
     final activity = editActivityBloc.state.activity;
@@ -80,7 +96,11 @@ void main() {
     // Arrange
 
     final editActivityBloc = EditActivityBloc.newActivity(
-        activitiesBloc: mockActivitiesBloc, day: aTime);
+      activitiesBloc: mockActivitiesBloc,
+      day: aTime,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+    );
     final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
     final timeInterval = TimeInterval(null, null);
@@ -103,9 +123,14 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnstoredActivityState(activity, timeInterval, null, true),
-        UnstoredActivityState(activityWithTitle, timeInterval, null, true),
-        UnstoredActivityState(activityWithTitle, newTimeInterval, null, true),
+        UnstoredActivityState(activity, timeInterval, null, true,
+            [SaveError.NO_TITLE_OR_IMAGE, SaveError.NO_START_TIME]),
+        UnstoredActivityState(activityWithTitle, timeInterval, null, true,
+            [SaveError.NO_TITLE_OR_IMAGE, SaveError.NO_START_TIME]),
+        UnstoredActivityState(activityWithTitle, timeInterval, null, true,
+            [SaveError.NO_START_TIME]),
+        UnstoredActivityState(activityWithTitle, newTimeInterval, null, true,
+            [SaveError.NO_START_TIME]),
         StoredActivityState(expectedSaved, newTimeInterval, aTime.onlyDays()),
       ]),
     );
@@ -135,6 +160,8 @@ void main() {
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, aDay),
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
     );
     final timeInterval = TimeInterval(
         TimeOfDay.fromDateTime(activity.startTime),
@@ -159,7 +186,11 @@ void main() {
     final aDate = DateTime(2022, 02, 22, 22, 00);
 
     final editActivityBloc = EditActivityBloc.newActivity(
-        activitiesBloc: mockActivitiesBloc, day: aDate);
+      activitiesBloc: mockActivitiesBloc,
+      day: aDate,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+    );
     final activity = editActivityBloc.state.activity;
     final newDate = DateTime(2011, 11, 11, 11, 11);
     final expetedNewDate = DateTime(2011, 11, 11, 11, 11);
@@ -200,6 +231,8 @@ void main() {
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, day),
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
     );
 
     // Assert
@@ -244,6 +277,8 @@ void main() {
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, aDay),
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
     );
 
     // Assert
@@ -290,6 +325,8 @@ void main() {
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, aDay),
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
     );
 
     // Assert
@@ -335,6 +372,8 @@ void main() {
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, aDay),
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
     );
 
     // Act
@@ -377,6 +416,8 @@ void main() {
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, aDay),
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
     );
 
     // Assert
@@ -403,7 +444,11 @@ void main() {
     final aDay = DateTime(2001, 01, 01);
 
     final editActivityBloc = EditActivityBloc.newActivity(
-        activitiesBloc: mockActivitiesBloc, day: aDay);
+      activitiesBloc: mockActivitiesBloc,
+      day: aDay,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+    );
     final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'title');
 
@@ -439,7 +484,11 @@ void main() {
     final aDay = DateTime(2001, 01, 01);
 
     final editActivityBloc = EditActivityBloc.newActivity(
-        activitiesBloc: mockActivitiesBloc, day: aDay);
+      activitiesBloc: mockActivitiesBloc,
+      day: aDay,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+    );
     final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'title');
 
@@ -483,6 +532,8 @@ void main() {
     // Arrange
     final editActivityBloc = EditActivityBloc.newActivity(
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
       day: aDay,
     );
 
@@ -527,6 +578,8 @@ void main() {
     final editActivityBloc = EditActivityBloc(
       activityDay,
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
     );
 
     // Act
@@ -582,6 +635,8 @@ void main() {
     final editActivityBloc = EditActivityBloc(
       activityDay,
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
     );
 
     // Act
@@ -620,6 +675,8 @@ void main() {
     final editActivityBloc = EditActivityBloc(
       activityDay,
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
     );
 
     // Act
@@ -648,6 +705,8 @@ void main() {
     // Arrange
     final editActivityBloc = EditActivityBloc.newActivity(
       activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
       day: aDay,
     );
 

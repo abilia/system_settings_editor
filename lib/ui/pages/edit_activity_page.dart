@@ -77,7 +77,8 @@ class EditActivityPage extends StatelessWidget {
   }
 
   Future _finishedPressed(BuildContext context, EditActivityState state) async {
-    if (state.canSave) {
+    final errors = BlocProvider.of<EditActivityBloc>(context).canSave;
+    if (errors.isEmpty) {
       if (state is StoredActivityState && state.activity.isRecurring) {
         final applyTo = await showViewDialog<ApplyTo>(
           context: context,
@@ -93,21 +94,26 @@ class EditActivityPage extends StatelessWidget {
     } else {
       _scrollToStart(context);
       final translate = Translator.of(context).translate;
-
       BlocProvider.of<EditActivityBloc>(context).add(SaveActivity());
-      if (!state.hasTitleOrImage && !state.hasStartTime) {
+      if (errors.contains(SaveError.NO_TITLE_OR_IMAGE) &&
+          errors.contains(SaveError.NO_START_TIME)) {
         await showErrorViewDialog(
           translate.missingTitleOrImageAndStartTime,
           context: context,
         );
-      } else if (!state.hasTitleOrImage) {
+      } else if (errors.contains(SaveError.NO_TITLE_OR_IMAGE)) {
         await showErrorViewDialog(
           translate.missingTitleOrImage,
           context: context,
         );
-      } else {
+      } else if (errors.contains(SaveError.NO_START_TIME)) {
         await showErrorViewDialog(
           translate.missingStartTime,
+          context: context,
+        );
+      } else if (errors.contains(SaveError.START_TIME_BEFORE_NOW)) {
+        await showErrorViewDialog(
+          translate.startTimeBeforeNow,
           context: context,
         );
       }
