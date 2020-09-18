@@ -12,6 +12,7 @@ abstract class MemoplannerSettingsState {
   bool get activityTypeEditable => settings.activityTypeEditable;
   bool get activityEndTimeEditable => settings.activityEndTimeEditable;
   bool get activityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
+  bool get activityRecurringEditable => settings.activityRecurringEditable;
 }
 
 class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
@@ -34,7 +35,8 @@ class MemoplannerSettings {
       activityDateEditableKey = 'advanced_activity_date',
       activityTypeEditableKey = 'advanced_activity_type',
       activityEndTimeEditableKey = 'add_activity_end_time',
-      activityTimeBeforeCurrentKey = 'add_activity_time_before_current';
+      activityTimeBeforeCurrentKey = 'add_activity_time_before_current',
+      activityRecurringEditableKey = 'add_activity_recurring_step';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -44,7 +46,8 @@ class MemoplannerSettings {
       activityDateEditable,
       activityTypeEditable,
       activityEndTimeEditable,
-      activityTimeBeforeCurrent;
+      activityTimeBeforeCurrent,
+      activityRecurringEditable;
 
   MemoplannerSettings({
     @required this.displayAlarmButton,
@@ -56,6 +59,7 @@ class MemoplannerSettings {
     @required this.activityTypeEditable,
     @required this.activityEndTimeEditable,
     @required this.activityTimeBeforeCurrent,
+    @required this.activityRecurringEditable,
   });
 
   factory MemoplannerSettings.fromSettingsList(
@@ -74,6 +78,7 @@ class MemoplannerSettings {
       activityTypeEditable: true,
       activityEndTimeEditable: true,
       activityTimeBeforeCurrent: true,
+      activityRecurringEditable: true,
     );
   }
 
@@ -94,6 +99,8 @@ class MemoplannerSettings {
           _parseSetting(activityEndTimeEditableKey, settings, true),
       activityTimeBeforeCurrent:
           _parseSetting(activityTimeBeforeCurrentKey, settings, true),
+      activityRecurringEditable:
+          _parseSetting(activityRecurringEditableKey, settings, true),
     );
   }
 

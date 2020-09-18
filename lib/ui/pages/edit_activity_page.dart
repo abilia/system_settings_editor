@@ -15,64 +15,69 @@ class EditActivityPage extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
-      builder: (context, state) {
-        final activity = state.activity;
-        final fullDay = activity.fullDay;
-        final storedRecurring =
-            state is StoredActivityState && state.activity.isRecurring;
-        final tabs = [
-          MainTab(editActivityState: state, day: day),
-          if (!fullDay) AlarmAndReminderTab(activity: activity),
-          if (!storedRecurring) RecurrenceTab(state: state),
-          InfoItemTab(state: state),
-        ];
-        return DefaultTabController(
-          initialIndex: 0,
-          length: tabs.length,
-          child: Scaffold(
-            appBar: AbiliaAppBar(
-              bottom: AbiliaTabBar(
-                collapsedCondition: (i) {
-                  switch (i) {
-                    case 1:
-                      return fullDay;
-                    case 2:
-                      return storedRecurring;
-                    default:
-                      return false;
-                  }
-                },
-                tabs: <Widget>[
-                  Icon(
-                    AbiliaIcons.my_photos,
-                    size: smallIconSize,
-                  ),
-                  Icon(
-                    AbiliaIcons.attention,
-                    size: smallIconSize,
-                  ),
-                  Icon(
-                    AbiliaIcons.repeat,
-                    size: smallIconSize,
-                  ),
-                  Icon(
-                    AbiliaIcons.attachment,
-                    size: smallIconSize,
-                  ),
-                ],
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, memoSettingsState) =>
+          BlocBuilder<EditActivityBloc, EditActivityState>(
+        builder: (context, state) {
+          final activity = state.activity;
+          final fullDay = activity.fullDay;
+          final storedRecurring =
+              state is StoredActivityState && state.activity.isRecurring;
+          final displayRecurrence =
+              !storedRecurring && memoSettingsState.activityRecurringEditable;
+          final tabs = [
+            MainTab(editActivityState: state, day: day),
+            if (!fullDay) AlarmAndReminderTab(activity: activity),
+            if (displayRecurrence) RecurrenceTab(state: state),
+            InfoItemTab(state: state),
+          ];
+          return DefaultTabController(
+            initialIndex: 0,
+            length: tabs.length,
+            child: Scaffold(
+              appBar: AbiliaAppBar(
+                bottom: AbiliaTabBar(
+                  collapsedCondition: (i) {
+                    switch (i) {
+                      case 1:
+                        return fullDay;
+                      case 2:
+                        return !displayRecurrence;
+                      default:
+                        return false;
+                    }
+                  },
+                  tabs: <Widget>[
+                    Icon(
+                      AbiliaIcons.my_photos,
+                      size: smallIconSize,
+                    ),
+                    Icon(
+                      AbiliaIcons.attention,
+                      size: smallIconSize,
+                    ),
+                    Icon(
+                      AbiliaIcons.repeat,
+                      size: smallIconSize,
+                    ),
+                    Icon(
+                      AbiliaIcons.attachment,
+                      size: smallIconSize,
+                    ),
+                  ],
+                ),
+                title: title,
+                trailing: Builder(
+                    builder: (context) => ActionButton(
+                        key: TestKey.finishEditActivityButton,
+                        child: Icon(AbiliaIcons.ok, size: 32),
+                        onPressed: () => _finishedPressed(context, state))),
               ),
-              title: title,
-              trailing: Builder(
-                  builder: (context) => ActionButton(
-                      key: TestKey.finishEditActivityButton,
-                      child: Icon(AbiliaIcons.ok, size: 32),
-                      onPressed: () => _finishedPressed(context, state))),
+              body: TabBarView(children: tabs),
             ),
-            body: TabBarView(children: tabs),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
