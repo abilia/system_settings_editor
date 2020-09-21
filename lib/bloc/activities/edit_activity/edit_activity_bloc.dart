@@ -44,13 +44,17 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     @required DateTime day,
   })  : assert(day != null),
         assert(activitiesBloc != null),
-        super(UnstoredActivityState(
+        super(
+          UnstoredActivityState(
             Activity.createNew(
               title: '',
               startTime: day.nextHalfHour(),
               timezone: day.timeZoneName,
+              alarmType: memoplannerSettingBloc.state.defaultAlarmType()
             ),
-            TimeInterval(null, null)));
+            TimeInterval(null, null),
+          ),
+        );
 
   List<SaveError> get canSave => [
         if (!state.hasTitleOrImage) SaveError.NO_TITLE_OR_IMAGE,

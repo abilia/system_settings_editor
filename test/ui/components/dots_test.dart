@@ -42,7 +42,7 @@ void main() {
   setUp(() {
     // When settings are not loaded the default value will be used
     when(mockMemoplannerSettingsBloc.state)
-        .thenReturn(MemoplannerSettingsNotLoaded());
+        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
     initializeDateFormatting();
   });
 

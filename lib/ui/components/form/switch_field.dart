@@ -32,9 +32,7 @@ class SwitchField extends StatelessWidget {
         child: Container(
           height: heigth,
           width: width,
-          decoration: onChanged == null
-              ? boxDecoration
-              : value ? whiteBoxDecoration : offBoxDecoration,
+          decoration: onChanged == null ? boxDecoration : whiteBoxDecoration,
           padding: const EdgeInsets.only(left: 12.0, right: 4.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

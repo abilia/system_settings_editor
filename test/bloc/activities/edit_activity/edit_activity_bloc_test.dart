@@ -23,7 +23,7 @@ void main() {
     mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
     clockBloc = ClockBloc(StreamController<DateTime>().stream);
     when(mockMemoplannerSettingsBloc.state)
-        .thenReturn(MemoplannerSettingsNotLoaded());
+        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
   });
 
   test('Initial state is the given activity', () {

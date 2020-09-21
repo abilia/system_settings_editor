@@ -13,15 +13,41 @@ abstract class MemoplannerSettingsState {
   bool get activityEndTimeEditable => settings.activityEndTimeEditable;
   bool get activityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
   bool get activityRecurringEditable => settings.activityRecurringEditable;
+  bool get activityDisplayAlarmOption => settings.activityDisplayAlarmOption;
+  bool get activityDisplaySilentAlarmOption =>
+      settings.activityDisplaySilentAlarmOption;
+  bool get activityDisplayNoAlarmOption =>
+      settings.activityDisplayNoAlarmOption;
+
+  // Properties derived from one or more settings
+  bool get abilityToSelectAlarm =>
+      [
+        settings.activityDisplayAlarmOption,
+        settings.activityDisplaySilentAlarmOption,
+        settings.activityDisplayNoAlarmOption
+      ].where((e) => e).length >=
+      2;
+
+  int defaultAlarmType() {
+    if (settings.activityDisplayAlarmOption) {
+      return ALARM_SOUND_AND_VIBRATION;
+    }
+    if (settings.activityDisplaySilentAlarmOption) {
+      return ALARM_VIBRATION;
+    }
+    if (settings.activityDisplayNoAlarmOption) {
+      return NO_ALARM;
+    }
+    return ALARM_SOUND_AND_VIBRATION;
+  }
 }
 
 class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
-  MemoplannerSettingsLoaded(List<MemoplannerSettingData> settings)
-      : super(MemoplannerSettings.fromSettingsList(settings));
+  MemoplannerSettingsLoaded(MemoplannerSettings settings) : super(settings);
 }
 
 class MemoplannerSettingsNotLoaded extends MemoplannerSettingsState {
-  MemoplannerSettingsNotLoaded() : super(MemoplannerSettings.defaultSettigs());
+  MemoplannerSettingsNotLoaded() : super(MemoplannerSettings());
 }
 
 class MemoplannerSettings {
@@ -36,7 +62,10 @@ class MemoplannerSettings {
       activityTypeEditableKey = 'advanced_activity_type',
       activityEndTimeEditableKey = 'add_activity_end_time',
       activityTimeBeforeCurrentKey = 'add_activity_time_before_current',
-      activityRecurringEditableKey = 'add_activity_recurring_step';
+      activityRecurringEditableKey = 'add_activity_recurring_step',
+      activityDisplayAlarmOptionKey = 'add_activity_display_alarm',
+      activityDisplaySilentAlarmOptionKey = 'add_activity_display_silent_alarm',
+      activityDisplayNoAlarmOptionKey = 'add_activity_display_no_alarm';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -47,39 +76,30 @@ class MemoplannerSettings {
       activityTypeEditable,
       activityEndTimeEditable,
       activityTimeBeforeCurrent,
-      activityRecurringEditable;
+      activityRecurringEditable,
+      activityDisplayAlarmOption,
+      activityDisplaySilentAlarmOption,
+      activityDisplayNoAlarmOption;
 
   MemoplannerSettings({
-    @required this.displayAlarmButton,
-    @required this.displayDeleteButton,
-    @required this.displayEditButton,
-    @required this.displayQuarterHour,
-    @required this.displayTimeLeft,
-    @required this.activityDateEditable,
-    @required this.activityTypeEditable,
-    @required this.activityEndTimeEditable,
-    @required this.activityTimeBeforeCurrent,
-    @required this.activityRecurringEditable,
+    this.displayAlarmButton = true,
+    this.displayDeleteButton = true,
+    this.displayEditButton = true,
+    this.displayQuarterHour = true,
+    this.displayTimeLeft = true,
+    this.activityDateEditable = true,
+    this.activityTypeEditable = true,
+    this.activityEndTimeEditable = true,
+    this.activityTimeBeforeCurrent = true,
+    this.activityRecurringEditable = true,
+    this.activityDisplayAlarmOption = true,
+    this.activityDisplaySilentAlarmOption = true,
+    this.activityDisplayNoAlarmOption = true,
   });
 
   factory MemoplannerSettings.fromSettingsList(
       List<MemoplannerSettingData> settings) {
     return _parseSettings(settings);
-  }
-
-  factory MemoplannerSettings.defaultSettigs() {
-    return MemoplannerSettings(
-      displayAlarmButton: true,
-      displayDeleteButton: true,
-      displayEditButton: true,
-      displayQuarterHour: true,
-      displayTimeLeft: true,
-      activityDateEditable: true,
-      activityTypeEditable: true,
-      activityEndTimeEditable: true,
-      activityTimeBeforeCurrent: true,
-      activityRecurringEditable: true,
-    );
   }
 
   static MemoplannerSettings _parseSettings(
@@ -101,6 +121,12 @@ class MemoplannerSettings {
           _parseSetting(activityTimeBeforeCurrentKey, settings, true),
       activityRecurringEditable:
           _parseSetting(activityRecurringEditableKey, settings, true),
+      activityDisplayAlarmOption:
+          _parseSetting(activityDisplayAlarmOptionKey, settings, true),
+      activityDisplaySilentAlarmOption:
+          _parseSetting(activityDisplaySilentAlarmOptionKey, settings, true),
+      activityDisplayNoAlarmOption:
+          _parseSetting(activityDisplayNoAlarmOptionKey, settings, true),
     );
   }
 

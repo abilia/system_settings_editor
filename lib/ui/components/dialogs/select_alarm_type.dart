@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -27,60 +28,67 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
       onOk: onOk,
       leftPadding: 0.0,
       rightPadding: 0.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          RadioField(
-            groupValue: alarm,
-            onChanged: onChanged,
-            value: Alarm.SoundAndVibration,
-            child: Row(
-              children: <Widget>[
-                Icon(AbiliaIcons.handi_alarm_vibration),
-                const SizedBox(width: 12),
-                Text(translate.alarmAndVibration)
-              ],
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          RadioField(
-            key: TestKey.vibrationAlarm,
-            groupValue: alarm,
-            onChanged: onChanged,
-            value: Alarm.Vibration,
-            child: Row(
-              children: <Widget>[
-                Icon(AbiliaIcons.handi_vibration),
-                const SizedBox(width: 12),
-                Text(translate.vibration),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          RadioField(
-            groupValue: alarm,
-            onChanged: onChanged,
-            value: Alarm.NoAlarm,
-            child: Row(
-              children: <Widget>[
-                Icon(AbiliaIcons.handi_no_alarm_vibration),
-                const SizedBox(width: 12),
-                Text(translate.noAlarm),
-              ],
-            ),
-          ),
-          ...trailing
-        ]
-            .map((widget) => widget is Divider
-                ? widget
-                : Padding(
-                    padding: const EdgeInsets.only(
-                      left: ViewDialog.leftPadding,
-                      right: ViewDialog.rightPadding,
-                    ),
-                    child: widget,
-                  ))
-            .toList(),
+      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        builder: (context, memoSettingsState) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            if (memoSettingsState.activityDisplayAlarmOption)
+              RadioField(
+                groupValue: alarm,
+                onChanged: onChanged,
+                value: Alarm.SoundAndVibration,
+                child: Row(
+                  children: <Widget>[
+                    Icon(AbiliaIcons.handi_alarm_vibration),
+                    const SizedBox(width: 12),
+                    Text(translate.alarmAndVibration)
+                  ],
+                ),
+              ),
+            if (memoSettingsState.activityDisplayAlarmOption)
+              const SizedBox(height: 8.0),
+            if (memoSettingsState.activityDisplaySilentAlarmOption)
+              RadioField(
+                key: TestKey.vibrationAlarm,
+                groupValue: alarm,
+                onChanged: onChanged,
+                value: Alarm.Vibration,
+                child: Row(
+                  children: <Widget>[
+                    Icon(AbiliaIcons.handi_vibration),
+                    const SizedBox(width: 12),
+                    Text(translate.vibration),
+                  ],
+                ),
+              ),
+            if (memoSettingsState.activityDisplaySilentAlarmOption)
+              const SizedBox(height: 8.0),
+            if (memoSettingsState.activityDisplayNoAlarmOption)
+              RadioField(
+                groupValue: alarm,
+                onChanged: onChanged,
+                value: Alarm.NoAlarm,
+                child: Row(
+                  children: <Widget>[
+                    Icon(AbiliaIcons.handi_no_alarm_vibration),
+                    const SizedBox(width: 12),
+                    Text(translate.noAlarm),
+                  ],
+                ),
+              ),
+            ...trailing
+          ]
+              .map((widget) => widget is Divider
+                  ? widget
+                  : Padding(
+                      padding: const EdgeInsets.only(
+                        left: ViewDialog.leftPadding,
+                        right: ViewDialog.rightPadding,
+                      ),
+                      child: widget,
+                    ))
+              .toList(),
+        ),
       ),
     );
   }
