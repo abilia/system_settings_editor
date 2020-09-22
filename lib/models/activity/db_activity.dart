@@ -98,7 +98,9 @@ class DbActivity extends DbModel<Activity> {
         'recurrentData': activity.recurs.data,
         'reminderBefore': activity.reminderBefore.join(';'),
         'icon': activity.icon,
-        'infoItem': activity.infoItem?.toBase64(),
+        'infoItem': activity.infoItem is NoInfoItem
+            ? ''
+            : activity.infoItem?.toBase64(),
         'alarmType': activity.alarmType,
         'signedOffDates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'revision': revision,
@@ -124,7 +126,9 @@ class DbActivity extends DbModel<Activity> {
         'recurrent_data': activity.recurs.data,
         'reminder_before': activity.reminderBefore.join(';'),
         'icon': activity.icon,
-        'info_item': activity.infoItem?.toBase64(),
+        'info_item': activity.infoItem is NoInfoItem
+            ? ''
+            : activity.infoItem?.toBase64(),
         'alarm_type': activity.alarmType,
         'signed_off_dates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'timezone': activity.timezone,
