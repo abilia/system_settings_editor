@@ -28,28 +28,31 @@ mixin EditActivityTab {
 class MainTab extends StatelessWidget with EditActivityTab {
   const MainTab({
     Key key,
-    @required this.state,
+    @required this.editActivityState,
     @required this.day,
   }) : super(key: key);
 
-  final EditActivityState state;
+  final EditActivityState editActivityState;
   final DateTime day;
 
   @override
   Widget build(BuildContext context) {
-    final activity = state.activity;
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 56.0),
-      children: <Widget>[
-        separated(ActivityNameAndPictureWidget(state)),
-        separated(DateAndTimeWidget(state)),
-        CollapsableWidget(
-          child: separated(CategoryWidget(activity)),
-          collapsed: activity.fullDay,
-        ),
-        separated(CheckableAndDeleteAfterWidget(activity)),
-        padded(AvailibleForWidget(activity)),
-      ],
+    final activity = editActivityState.activity;
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, memoSettingsState) => ListView(
+        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 56.0),
+        children: <Widget>[
+          separated(ActivityNameAndPictureWidget(editActivityState)),
+          separated(DateAndTimeWidget(editActivityState)),
+          CollapsableWidget(
+            child: separated(CategoryWidget(activity)),
+            collapsed:
+                activity.fullDay || !memoSettingsState.activityTypeEditable,
+          ),
+          separated(CheckableAndDeleteAfterWidget(activity)),
+          padded(AvailibleForWidget(activity)),
+        ],
+      ),
     );
   }
 }

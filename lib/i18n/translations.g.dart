@@ -172,6 +172,9 @@ abstract class Translated {
 
   final String missingStartTime = 'Your activity should contain a start time.';
 
+  final String startTimeBeforeNow =
+      "You've selected a start time that is before now. That is not allowed.";
+
   final String infoType = 'Info type';
 
   final String selectInfoType = 'Select info type';
@@ -471,6 +474,10 @@ class SV extends Translated {
 
   @override
   final String missingStartTime = 'Aktiviteten måste ha en starttid.';
+
+  @override
+  final String startTimeBeforeNow =
+      'Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.';
 
   @override
   final String infoType = 'Kopplade funktioner';

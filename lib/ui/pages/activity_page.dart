@@ -136,9 +136,15 @@ class ActivityBottomAppBar extends StatelessWidget {
                         onPressed: () => showViewDialog<bool>(
                           context: context,
                           builder: (_) => BlocProvider<EditActivityBloc>.value(
-                            value: EditActivityBloc(activityOccasion,
-                                activitiesBloc:
-                                    BlocProvider.of<ActivitiesBloc>(context)),
+                            value: EditActivityBloc(
+                              activityOccasion,
+                              activitiesBloc:
+                                  BlocProvider.of<ActivitiesBloc>(context),
+                              clockBloc: BlocProvider.of<ClockBloc>(context),
+                              memoplannerSettingBloc:
+                                  BlocProvider.of<MemoplannerSettingBloc>(
+                                      context),
+                            ),
                             child: SelectReminderDialog(
                                 activityDay: activityOccasion),
                           ),
@@ -156,6 +162,11 @@ class ActivityBottomAppBar extends StatelessWidget {
                                     activityOccasion,
                                     activitiesBloc:
                                         BlocProvider.of<ActivitiesBloc>(
+                                            context),
+                                    clockBloc:
+                                        BlocProvider.of<ClockBloc>(context),
+                                    memoplannerSettingBloc:
+                                        BlocProvider.of<MemoplannerSettingBloc>(
                                             context),
                                   ),
                                   child: EditActivityPage(

@@ -10,46 +10,57 @@ import 'package:seagull/utils/all.dart';
 import 'package:intl/intl.dart';
 
 class DateAndTimeWidget extends StatelessWidget {
-  final EditActivityState state;
+  final EditActivityState editActivityState;
 
-  const DateAndTimeWidget(this.state, {Key key}) : super(key: key);
+  const DateAndTimeWidget(this.editActivityState, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    final activity = state.activity;
+    final activity = editActivityState.activity;
 
-    return SizedBox(
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SubHeading(translator.date),
-          DatePicker(activity.startTime,
-              onChange: (newDate) => BlocProvider.of<EditActivityBloc>(context)
-                  .add(ChangeDate(newDate))),
-          const SizedBox(height: 24.0),
-          CollapsableWidget(
-            collapsed: activity.fullDay,
-            padding: const EdgeInsets.only(bottom: 12.0),
-            child: TimeIntervallPicker(
-              state.timeInterval,
-              startTimeError: state.failedSave && !state.hasStartTime,
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        builder: (context, memoSettingsState) {
+      final errors = BlocProvider.of<EditActivityBloc>(context).canSave;
+      return SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SubHeading(translator.date),
+            DatePicker(
+              activity.startTime,
+              onChange: (newDate) =>
+                  BlocProvider.of<EditActivityBloc>(context).add(
+                ChangeDate(newDate),
+              ),
+              disabled: !memoSettingsState.activityDateEditable,
             ),
-          ),
-          SwitchField(
-            key: TestKey.fullDaySwitch,
-            leading: Icon(
-              AbiliaIcons.restore,
-              size: smallIconSize,
+            const SizedBox(height: 24.0),
+            CollapsableWidget(
+              collapsed: activity.fullDay,
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: TimeIntervallPicker(
+                editActivityState.timeInterval,
+                startTimeError: editActivityState.failedSave &&
+                    (errors.contains(SaveError.NO_START_TIME) ||
+                        errors.contains(SaveError.START_TIME_BEFORE_NOW)),
+              ),
             ),
-            label: Text(translator.fullDay),
-            value: activity.fullDay,
-            onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-                .add(ReplaceActivity(activity.copyWith(fullDay: v))),
-          ),
-        ],
-      ),
-    );
+            SwitchField(
+              key: TestKey.fullDaySwitch,
+              leading: Icon(
+                AbiliaIcons.restore,
+                size: smallIconSize,
+              ),
+              label: Text(translator.fullDay),
+              value: activity.fullDay,
+              onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
+                  .add(ReplaceActivity(activity.copyWith(fullDay: v))),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -81,8 +92,13 @@ class ReminderSwitch extends StatelessWidget {
 
 class DatePicker extends StatelessWidget {
   final DateTime date;
+  final bool disabled;
   final Function(DateTime) onChange;
-  const DatePicker(this.date, {@required this.onChange});
+  const DatePicker(
+    this.date, {
+    @required this.onChange,
+    this.disabled = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +109,7 @@ class DatePicker extends StatelessWidget {
     final color = dayColor == AbiliaColors.white ? dayColor[120] : dayColor;
 
     return PickField(
+      disabled: disabled,
       key: TestKey.datePicker,
       onTap: () async {
         final newDate = await showDatePicker(
@@ -135,61 +152,65 @@ class TimeIntervallPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        Expanded(
-          flex: 148,
-          child: TimePicker(
-            translator.startTime,
-            timeInterval.startTime,
-            key: TestKey.startTimePicker,
-            errorState: startTimeError,
-            onTap: () async {
-              final newStartTime = await showViewDialog<TimeInputResult>(
-                context: context,
-                builder: (context) =>
-                    StartTimeInputDialog(time: timeInterval.startTime),
-              );
-              if (newStartTime != null) {
-                BlocProvider.of<EditActivityBloc>(context)
-                    .add(ChangeStartTime(newStartTime.time));
-              }
-            },
-          ),
-        ),
-        Expanded(
-          flex: 48,
-          child: Transform.translate(
-            offset: Offset(0, -20),
-            child: Divider(
-              thickness: 2,
-              indent: 4,
-              endIndent: 4,
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, memoSettingsState) => Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          Expanded(
+            flex: 148,
+            child: TimePicker(
+              translator.startTime,
+              timeInterval.startTime,
+              key: TestKey.startTimePicker,
+              errorState: startTimeError,
+              onTap: () async {
+                final newStartTime = await showViewDialog<TimeInputResult>(
+                  context: context,
+                  builder: (context) =>
+                      StartTimeInputDialog(time: timeInterval.startTime),
+                );
+                if (newStartTime != null) {
+                  BlocProvider.of<EditActivityBloc>(context)
+                      .add(ChangeStartTime(newStartTime.time));
+                }
+              },
             ),
           ),
-        ),
-        Expanded(
-          flex: 148,
-          child: TimePicker(
-            translator.endTime,
-            timeInterval.endTime,
-            key: TestKey.endTimePicker,
-            onTap: () async {
-              final newEndTime = await showViewDialog<TimeInputResult>(
-                context: context,
-                builder: (context) => EndTimeInputDialog(
-                  timeInterval: timeInterval,
+          if (memoSettingsState.activityEndTimeEditable)
+            Expanded(
+              flex: 48,
+              child: Transform.translate(
+                offset: Offset(0, -20),
+                child: Divider(
+                  thickness: 2,
+                  indent: 4,
+                  endIndent: 4,
                 ),
-              );
-              if (newEndTime != null) {
-                BlocProvider.of<EditActivityBloc>(context)
-                    .add(ChangeEndTime(newEndTime.time));
-              }
-            },
-          ),
-        ),
-      ],
+              ),
+            ),
+          if (memoSettingsState.activityEndTimeEditable)
+            Expanded(
+              flex: 148,
+              child: TimePicker(
+                translator.endTime,
+                timeInterval.endTime,
+                key: TestKey.endTimePicker,
+                onTap: () async {
+                  final newEndTime = await showViewDialog<TimeInputResult>(
+                    context: context,
+                    builder: (context) => EndTimeInputDialog(
+                      timeInterval: timeInterval,
+                    ),
+                  );
+                  if (newEndTime != null) {
+                    BlocProvider.of<EditActivityBloc>(context)
+                        .add(ChangeEndTime(newEndTime.time));
+                  }
+                },
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

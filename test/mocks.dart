@@ -83,6 +83,10 @@ class MockFlutterLocalNotificationsPlugin extends Mock
 class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesState>
     implements ActivitiesBloc {}
 
+class MockMemoplannerSettings
+    extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettingsState>
+    implements MemoplannerSettingBloc {}
+
 class MockActivitiesOccasionBloc extends Mock
     implements ActivitiesOccasionBloc {}
 

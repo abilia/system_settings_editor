@@ -30,10 +30,14 @@ void main() {
 
   MockSortableBloc mockSortableBloc;
   MockUserFileBloc mockUserFileBloc;
+  MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   setUp(() async {
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
     mockUserFileBloc = MockUserFileBloc();
+    mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
+    when(mockMemoplannerSettingsBloc.state)
+        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
   });
 
   Widget wrapWithMaterialApp(Widget widget,
@@ -48,18 +52,32 @@ void main() {
       builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24H),
           child: MultiBlocProvider(providers: [
+            BlocProvider<ClockBloc>(
+              create: (context) => ClockBloc(
+                  StreamController<DateTime>().stream,
+                  initialTime: startTime),
+            ),
             BlocProvider<AuthenticationBloc>(
                 create: (context) => MockAuthenticationBloc()),
             BlocProvider<ActivitiesBloc>(
                 create: (context) => MockActivitiesBloc()),
+            BlocProvider<MemoplannerSettingBloc>(
+              create: (context) => mockMemoplannerSettingsBloc,
+            ),
             BlocProvider<EditActivityBloc>(
               create: (context) => newActivity
                   ? EditActivityBloc.newActivity(
                       activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+                      clockBloc: BlocProvider.of<ClockBloc>(context),
+                      memoplannerSettingBloc:
+                          BlocProvider.of<MemoplannerSettingBloc>(context),
                       day: today)
                   : EditActivityBloc(
                       ActivityDay(activity, today),
                       activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+                      clockBloc: BlocProvider.of<ClockBloc>(context),
+                      memoplannerSettingBloc:
+                          BlocProvider.of<MemoplannerSettingBloc>(context),
                     ),
             ),
             BlocProvider<SortableBloc>(
@@ -67,11 +85,6 @@ void main() {
             ),
             BlocProvider<UserFileBloc>(
               create: (context) => mockUserFileBloc,
-            ),
-            BlocProvider<ClockBloc>(
-              create: (context) => ClockBloc(
-                  StreamController<DateTime>().stream,
-                  initialTime: startTime),
             ),
           ], child: child)),
       home: widget,
@@ -1562,6 +1575,79 @@ text''';
       expect(find.byType(EndDateWidget), findsOneWidget);
       expect(find.byType(DatePicker), findsOneWidget);
       expect(find.text(translate.endDate), findsOneWidget);
+    });
+  });
+
+  group('Memoplanner settings', () {
+    testWidgets('Date picker not available when setting says so',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        activityDateEditable: false,
+      )));
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      expect(find.byType(DatePicker), findsOneWidget);
+      final datePicker =
+          tester.widgetList(find.byType(DatePicker)).first as DatePicker;
+      expect(datePicker.disabled, true);
+    });
+
+    testWidgets('Right/left not visible', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        activityTypeEditable: false,
+      )));
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(TestKey.leftCategoryRadio), findsNothing);
+      expect(find.byKey(TestKey.rightCategoryRadio), findsNothing);
+    });
+
+    testWidgets('No end time', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        activityEndTimeEditable: false,
+      )));
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+
+      expect(endTimeFieldFinder, findsNothing);
+    });
+
+    testWidgets('No recurring option', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        activityRecurringEditable: false,
+      )));
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(AbiliaIcons.repeat), findsNothing);
+    });
+
+    testWidgets('Alarm options', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        activityDisplayAlarmOption: false,
+        activityDisplaySilentAlarmOption: false,
+      )));
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(PickField), findsOneWidget);
+      final alarmPicker =
+          tester.widgetList(find.byType(PickField)).first as PickField;
+
+      expect(alarmPicker.disabled, true);
     });
   });
 }

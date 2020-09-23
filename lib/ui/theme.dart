@@ -72,6 +72,10 @@ const BoxDecoration offBoxDecoration = BoxDecoration(
   color: AbiliaColors.transparentWhite40,
   border: border,
 );
+const BoxDecoration disabledBoxDecoration = BoxDecoration(
+  borderRadius: borderRadius,
+  color: AbiliaColors.transparentWhite40,
+);
 const BoxDecoration currentBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,

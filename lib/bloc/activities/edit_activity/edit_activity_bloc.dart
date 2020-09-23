@@ -14,33 +14,58 @@ part 'edit_activity_state.dart';
 
 class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   final ActivitiesBloc activitiesBloc;
+  final ClockBloc clockBloc;
+  final MemoplannerSettingBloc memoplannerSettingBloc;
 
-  EditActivityBloc(ActivityDay activityDay, {@required this.activitiesBloc})
-      : assert(activityDay != null),
+  EditActivityBloc(
+    ActivityDay activityDay, {
+    @required this.activitiesBloc,
+    @required this.clockBloc,
+    @required this.memoplannerSettingBloc,
+  })  : assert(activityDay != null),
         assert(activitiesBloc != null),
-        super(StoredActivityState(
-            activityDay.activity,
-            activityDay.activity.fullDay
-                ? TimeInterval.empty()
-                : TimeInterval.fromDateTime(
-                    activityDay.activity.startClock(activityDay.day),
-                    activityDay.activity.hasEndTime
-                        ? activityDay.activity.endClock(activityDay.day)
-                        : null),
-            activityDay.day));
+        super(
+          StoredActivityState(
+              activityDay.activity,
+              activityDay.activity.fullDay
+                  ? TimeInterval.empty()
+                  : TimeInterval.fromDateTime(
+                      activityDay.activity.startClock(activityDay.day),
+                      activityDay.activity.hasEndTime
+                          ? activityDay.activity.endClock(activityDay.day)
+                          : null),
+              activityDay.day),
+        );
 
   EditActivityBloc.newActivity({
     @required this.activitiesBloc,
+    @required this.clockBloc,
+    @required this.memoplannerSettingBloc,
     @required DateTime day,
   })  : assert(day != null),
         assert(activitiesBloc != null),
-        super(UnstoredActivityState(
+        super(
+          UnstoredActivityState(
             Activity.createNew(
               title: '',
               startTime: day.nextHalfHour(),
               timezone: day.timeZoneName,
+              alarmType: memoplannerSettingBloc.state.defaultAlarmType()
             ),
-            TimeInterval(null, null)));
+            TimeInterval(null, null),
+          ),
+        );
+
+  List<SaveError> get canSave => [
+        if (!state.hasTitleOrImage) SaveError.NO_TITLE_OR_IMAGE,
+        if (!state.hasStartTime) SaveError.NO_START_TIME,
+        if (!memoplannerSettingBloc.state.activityTimeBeforeCurrent &&
+            state.hasStartTime &&
+            state.activity.startTime
+                .withTime(state.timeInterval.startTime)
+                .isBefore(clockBloc.state))
+          SaveError.START_TIME_BEFORE_NOW,
+      ];
 
   @override
   Stream<EditActivityState> mapEventToState(
@@ -62,7 +87,8 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       yield* _mapAddOrRemoveReminderToState(event.reminder.inMilliseconds);
     }
     if (event is SaveActivity) {
-      if (state.canSave) {
+      final errors = canSave;
+      if (errors.isEmpty) {
         yield* _mapSaveActivityToState(state, event);
       } else {
         yield state._failSave();

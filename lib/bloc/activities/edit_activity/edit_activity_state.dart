@@ -1,5 +1,11 @@
 part of 'edit_activity_bloc.dart';
 
+enum SaveError {
+  NO_START_TIME,
+  NO_TITLE_OR_IMAGE,
+  START_TIME_BEFORE_NOW,
+}
+
 abstract class EditActivityState extends Equatable with Silent {
   const EditActivityState(
     this.activity,
@@ -16,8 +22,6 @@ abstract class EditActivityState extends Equatable with Silent {
   final File newImage;
   final bool failedSave;
 
-  bool get canSave => hasTitleOrImage && hasStartTime;
-
   bool get hasTitleOrImage =>
       activity.hasTitle || activity.fileId?.isNotEmpty == true;
 
@@ -33,8 +37,8 @@ abstract class EditActivityState extends Equatable with Silent {
         activity,
         timeInterval,
         newImage,
-        failedSave,
         infoItems,
+        failedSave,
       ];
 
   @override

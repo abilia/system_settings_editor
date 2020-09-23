@@ -16,7 +16,10 @@ class MemoplannerSettingBloc
   MemoplannerSettingBloc({@required GenericBloc genericBloc})
       : super(genericBloc.state is GenericsLoaded
             ? MemoplannerSettingsLoaded(
-                _filter((genericBloc.state as GenericsLoaded).generics))
+                MemoplannerSettings.fromSettingsList(
+                  _filter((genericBloc.state as GenericsLoaded).generics),
+                ),
+              )
             : MemoplannerSettingsNotLoaded()) {
     _genericSubscription = genericBloc.listen((state) {
       if (state is GenericsLoaded) {
@@ -29,7 +32,8 @@ class MemoplannerSettingBloc
   Stream<MemoplannerSettingsState> mapEventToState(
       MemoplannerSettingsEvent event) async* {
     if (event is UpdateMemoplannerSettings) {
-      yield MemoplannerSettingsLoaded(_filter(event.generics));
+      yield MemoplannerSettingsLoaded(
+          MemoplannerSettings.fromSettingsList(_filter(event.generics)));
     }
   }
 

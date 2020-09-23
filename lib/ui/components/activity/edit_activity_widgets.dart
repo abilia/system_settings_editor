@@ -283,41 +283,44 @@ class AlarmWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
     final alarm = activity.alarm;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SubHeading(translator.alarm),
-        PickField(
-          key: TestKey.selectAlarm,
-          leading: Icon(
-            alarm.iconData(),
-            size: smallIconSize,
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, memoSettingsState) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SubHeading(translator.alarm),
+          PickField(
+            disabled: !memoSettingsState.abilityToSelectAlarm,
+            key: TestKey.selectAlarm,
+            leading: Icon(
+              alarm.iconData(),
+              size: smallIconSize,
+            ),
+            label: Text(alarm.text(translator)),
+            onTap: () async {
+              final result = await showViewDialog<Alarm>(
+                context: context,
+                builder: (context) => SelectAlarmTypeDialog(
+                  alarm: alarm.type,
+                ),
+              );
+              if (result != null) {
+                BlocProvider.of<EditActivityBloc>(context).add(ReplaceActivity(
+                    activity.copyWith(
+                        alarm: activity.alarm.copyWith(type: result))));
+              }
+            },
           ),
-          label: Text(alarm.text(translator)),
-          onTap: () async {
-            final result = await showViewDialog<Alarm>(
-              context: context,
-              builder: (context) => SelectAlarmTypeDialog(
-                alarm: alarm.type,
+          const SizedBox(height: 8.0),
+          AlarmOnlyAtStartSwitch(
+            alarm: alarm,
+            onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
+              ReplaceActivity(
+                activity.copyWith(alarm: alarm.copyWith(onlyStart: v)),
               ),
-            );
-            if (result != null) {
-              BlocProvider.of<EditActivityBloc>(context).add(ReplaceActivity(
-                  activity.copyWith(
-                      alarm: activity.alarm.copyWith(type: result))));
-            }
-          },
-        ),
-        const SizedBox(height: 8.0),
-        AlarmOnlyAtStartSwitch(
-          alarm: alarm,
-          onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
-            ReplaceActivity(
-              activity.copyWith(alarm: alarm.copyWith(onlyStart: v)),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
