@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
+import 'package:meta/meta.dart';
 
 abstract class InfoItem extends Equatable {
   const InfoItem();
@@ -14,6 +15,7 @@ abstract class InfoItem extends Equatable {
 
   bool get isEmpty;
 
+  @visibleForTesting
   Map<String, dynamic> toJson();
   static InfoItem fromBase64(String base64) {
     try {
@@ -58,7 +60,9 @@ class NoInfoItem extends InfoItem {
   @override
   Map<String, dynamic> toJson() => null;
   @override
-  String get typeId => 'none';
+  String toBase64() => null;
+  @override
+  String get typeId => null;
   @override
   bool get isEmpty => true;
 }

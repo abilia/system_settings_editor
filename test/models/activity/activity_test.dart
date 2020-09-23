@@ -232,4 +232,41 @@ void main() {
     final copy = original.copyActivity(toCopy);
     expect(copy.fileId, null);
   });
+
+  test('same values in db and json', () {
+    final now = DateTime(2020, 02, 02, 02, 02, 02, 02);
+    final a = Activity.createNew(
+      title: 'Title',
+      startTime: now,
+      fileId: null,
+    );
+    final dbModel = a.wrapWithDbModel();
+    final json = dbModel.toJson();
+    final db = dbModel.toMapForDb()..remove('dirty');
+    final jsonWithoutBool = json.values
+        .map((value) => value is bool ? (value ? 1 : 0) : value)
+        .toList();
+
+    expect(
+      jsonWithoutBool,
+      containsAll(db.values),
+    );
+  });
+
+  test('infoItem is null or empty (Bug SGC-328)', () {
+    final now = DateTime(2020, 02, 02, 02, 02, 02, 02);
+    final a = Activity.createNew(
+      title: 'Title',
+      startTime: now,
+      fileId: null,
+    );
+    final dbModel = a.wrapWithDbModel();
+    final json = dbModel.toJson();
+    final db = dbModel.toMapForDb()..remove('dirty');
+
+    final dbInfoItem = db['info_item'];
+    final jsonInfoItem = json['infoItem'];
+    expect(dbInfoItem, anyOf(isNull, isEmpty));
+    expect(jsonInfoItem, anyOf(isNull, isEmpty));
+  });
 }
