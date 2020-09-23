@@ -36,7 +36,7 @@ class GenericRepository extends DataRepository<Generic> {
       } catch (e) {
         _log.severe('Error when loading generics', e);
       }
-      return genericDb.getAllNonDeleted();
+      return genericDb.getAllNonDeletedMaxRevision();
     });
   }
 

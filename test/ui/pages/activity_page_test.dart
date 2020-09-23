@@ -16,6 +16,7 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../db/generic_db_test.dart';
 import '../../mocks.dart';
 
 void main() {
@@ -1074,14 +1075,12 @@ void main() {
   group('Memoplanner settings', () {
     testWidgets('Do not display delete button when setting is false',
         (WidgetTester tester) async {
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(checkable: true)
-          ]));
-      when(mockGenericDb.getAllNonDeleted()).thenAnswer(
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            _memoplannerSetting(
+            memoplannerSetting(
                 false, MemoplannerSettings.displayDeleteButtonKey)
           ],
         ),
@@ -1095,19 +1094,16 @@ void main() {
 
     testWidgets('Do not display any button when all settings are false',
         (WidgetTester tester) async {
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(checkable: true)
-          ]));
-      when(mockGenericDb.getAllNonDeleted()).thenAnswer(
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            _memoplannerSetting(
+            memoplannerSetting(
                 false, MemoplannerSettings.displayDeleteButtonKey),
-            _memoplannerSetting(
+            memoplannerSetting(
                 false, MemoplannerSettings.displayAlarmButtonKey),
-            _memoplannerSetting(
-                false, MemoplannerSettings.displayEditButtonKey),
+            memoplannerSetting(false, MemoplannerSettings.displayEditButtonKey),
           ],
         ),
       );
@@ -1120,14 +1116,12 @@ void main() {
 
     testWidgets('Do not display side dots when setting is false',
         (WidgetTester tester) async {
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(checkable: true)
-          ]));
-      when(mockGenericDb.getAllNonDeleted()).thenAnswer(
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            _memoplannerSetting(
+            memoplannerSetting(
                 false, MemoplannerSettings.displayQuarterHourKey),
           ],
         ),
@@ -1136,16 +1130,4 @@ void main() {
       expect(activityInfoSideDotsFinder, findsNothing);
     });
   });
-}
-
-Generic<MemoplannerSettingData> _memoplannerSetting(
-    bool value, String identifier) {
-  return Generic.createNew<MemoplannerSettingData>(
-    data: MemoplannerSettingData(
-      data: value.toString(),
-      type: 'Boolean',
-      identifier: identifier,
-    ),
-    type: GenericType.memoPlannerSettings,
-  );
 }
