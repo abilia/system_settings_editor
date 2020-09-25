@@ -26,13 +26,8 @@ class TimeIllustration extends StatelessWidget {
               onChanged: (v) => BlocProvider.of<SettingsBloc>(context)
                   .add(DotsInTimepillarUpdated(v)),
               value: true,
-              child: Row(
-                children: <Widget>[
-                  Icon(AbiliaIcons.options),
-                  const SizedBox(width: 12.0),
-                  Text(translate.dots),
-                ],
-              ),
+              leading: Icon(AbiliaIcons.options),
+              text: Text(translate.dots),
             ),
             const SizedBox(height: 8.0),
             RadioField<bool>(
@@ -40,13 +35,8 @@ class TimeIllustration extends StatelessWidget {
               onChanged: (v) => BlocProvider.of<SettingsBloc>(context)
                   .add(DotsInTimepillarUpdated(v)),
               value: false,
-              child: Row(
-                children: <Widget>[
-                  Icon(AbiliaIcons.flarp),
-                  const SizedBox(width: 12),
-                  Text(translate.edge),
-                ],
-              ),
+              leading: Icon(AbiliaIcons.flarp),
+              text: Text(translate.edge),
             ),
           ],
         ),
@@ -70,10 +60,12 @@ class TimeIllustrationPreview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              Translator.of(context).translate.preview,
-              style: abiliaTheme.textTheme.bodyText1
-                  .copyWith(color: AbiliaColors.white),
+            Tts(
+              child: Text(
+                Translator.of(context).translate.preview,
+                style: abiliaTheme.textTheme.bodyText1
+                    .copyWith(color: AbiliaColors.white),
+              ),
             ),
             const SizedBox(height: 8.0),
             AnimatedCrossFade(

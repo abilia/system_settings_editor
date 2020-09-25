@@ -109,50 +109,56 @@ class LibraryFolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 4),
-              Text(
-                title,
-                style: abiliaTextTheme.caption,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 2.0),
-                    child: Icon(
-                      AbiliaIcons.folder,
-                      size: 86,
-                      color: AbiliaColors.orange,
+    return Tts.fromSemantics(
+      SemanticsProperties(
+        label: title,
+        button: true,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 4),
+                Text(
+                  title,
+                  style: abiliaTextTheme.caption,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2.0),
+                      child: Icon(
+                        AbiliaIcons.folder,
+                        size: 86,
+                        color: AbiliaColors.orange,
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 16,
-                    left: 10,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: Align(
-                        alignment: Alignment.center,
-                        heightFactor: 42 / 66,
-                        child: FadeInAbiliaImage(
-                          imageFileId: fileId,
-                          imageFilePath: filePath,
-                          width: 66,
-                          height: 66,
+                    Positioned(
+                      bottom: 16,
+                      left: 10,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: Align(
+                          alignment: Alignment.center,
+                          heightFactor: 42 / 66,
+                          child: FadeInAbiliaImage(
+                            imageFileId: fileId,
+                            imageFilePath: filePath,
+                            width: 66,
+                            height: 66,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -20,14 +20,16 @@ class AbiliaTextInput extends StatelessWidget {
   const AbiliaTextInput({
     Key key,
     this.formKey,
-    this.heading,
+    @required this.heading,
     @required this.controller,
     this.keyboardType,
     this.textCapitalization = TextCapitalization.none,
     this.inputFormatters = const <TextInputFormatter>[],
     this.errorState = false,
     this.maxLines = 1,
-  }) : super(key: key);
+  })  : assert(heading != null),
+        assert(controller != null),
+        super(key: key);
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -35,25 +37,35 @@ class AbiliaTextInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         if (heading != null) SubHeading(heading),
-        TextFormField(
-          maxLines: maxLines,
-          minLines: 1,
-          readOnly: true,
-          onTap: () =>
-              showViewDialog(context: context, builder: buildViewDialog),
-          key: formKey,
-          controller: controller,
-          style: theme.textTheme.bodyText1,
-          autovalidate: true,
-          validator: (_) => errorState ? '' : null,
-          decoration: errorState
-              ? InputDecoration(
-                  suffixIcon: Icon(
-                    AbiliaIcons.ir_error,
-                    color: theme.errorColor,
-                  ),
-                )
-              : null,
+        Tts(
+          data: controller.text.isNotEmpty ? controller.text : heading,
+          child: GestureDetector(
+            onTap: () =>
+                showViewDialog(context: context, builder: buildViewDialog),
+            child: Container(
+              color: Colors.transparent,
+              child: IgnorePointer(
+                child: TextFormField(
+                  maxLines: maxLines,
+                  minLines: 1,
+                  readOnly: true,
+                  key: formKey,
+                  controller: controller,
+                  style: theme.textTheme.bodyText1,
+                  autovalidate: true,
+                  validator: (_) => errorState ? '' : null,
+                  decoration: errorState
+                      ? InputDecoration(
+                          suffixIcon: Icon(
+                            AbiliaIcons.ir_error,
+                            color: theme.errorColor,
+                          ),
+                        )
+                      : null,
+                ),
+              ),
+            ),
+          ),
         ),
       ],
     );
@@ -68,23 +80,26 @@ class AbiliaTextInput extends StatelessWidget {
         controller.value = onBuildValue;
         Navigator.of(context).maybePop();
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (heading != null) SubHeading(heading),
-          TextField(
-            key: TestKey.input,
-            controller: controller,
-            keyboardType: keyboardType,
-            inputFormatters: inputFormatters,
-            textCapitalization: textCapitalization,
-            style: theme.textTheme.bodyText1,
-            autofocus: true,
-            onEditingComplete: Navigator.of(context).maybePop,
-            maxLines: maxLines,
-            minLines: 1,
-          ),
-        ],
+      child: Tts.fromSemantics(
+        SemanticsProperties(label: heading),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            if (heading != null) SubHeading(heading),
+            TextField(
+              key: TestKey.input,
+              controller: controller,
+              keyboardType: keyboardType,
+              inputFormatters: inputFormatters,
+              textCapitalization: textCapitalization,
+              style: theme.textTheme.bodyText1,
+              autofocus: true,
+              onEditingComplete: Navigator.of(context).maybePop,
+              maxLines: maxLines,
+              minLines: 1,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -105,32 +120,50 @@ class PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final heading = Translator.of(context).translate.password;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SubHeading(Translator.of(context).translate.password),
+        SubHeading(heading),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Expanded(
-              child: TextFormField(
-                readOnly: true,
-                onTap: () =>
-                    showViewDialog(context: context, builder: buildViewDialog),
-                key: TestKey.passwordInput,
-                controller: controller,
-                obscureText: obscureText,
-                style: theme.textTheme.bodyText1,
-                autovalidate: true,
-                validator: (_) => errorState ? '' : null,
-                decoration: errorState
-                    ? InputDecoration(
-                        suffixIcon: Icon(
-                          AbiliaIcons.ir_error,
-                          color: theme.errorColor,
-                        ),
-                      )
-                    : null,
+              child: Tts.fromSemantics(
+                SemanticsProperties(
+                  label: heading,
+                  value: controller.value.text,
+                  textField: true,
+                  obscured: true,
+                ),
+                child: GestureDetector(
+                  onTap: () => showViewDialog(
+                      context: context, builder: buildViewDialog),
+                  child: Container(
+                    color: Colors.transparent,
+                    child: IgnorePointer(
+                      child: TextFormField(
+                        readOnly: true,
+                        onTap: () => showViewDialog(
+                            context: context, builder: buildViewDialog),
+                        key: TestKey.passwordInput,
+                        controller: controller,
+                        obscureText: obscureText,
+                        style: theme.textTheme.bodyText1,
+                        autovalidate: true,
+                        validator: (_) => errorState ? '' : null,
+                        decoration: errorState
+                            ? InputDecoration(
+                                suffixIcon: Icon(
+                                  AbiliaIcons.ir_error,
+                                  color: theme.errorColor,
+                                ),
+                              )
+                            : null,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
             HidePasswordButton(
@@ -145,40 +178,49 @@ class PasswordInput extends StatelessWidget {
   Widget buildViewDialog(BuildContext context) {
     final theme = Theme.of(context);
     final onBuildValue = controller.value;
+    final heading = Translator.of(context).translate.password;
     return ViewDialog(
       onOk: Navigator.of(context).maybePop,
       onCancle: () {
         controller.value = onBuildValue;
         Navigator.of(context).maybePop();
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SubHeading(Translator.of(context).translate.password),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              BlocBuilder<LoginFormBloc, LoginFormState>(
-                cubit: loginFormBloc,
-                builder: (context, state) => Expanded(
-                  child: TextFormField(
-                    key: TestKey.input,
-                    controller: controller,
-                    obscureText: state.hidePassword,
-                    keyboardType: TextInputType.visiblePassword,
-                    style: theme.textTheme.bodyText1,
-                    autofocus: true,
-                    onEditingComplete: Navigator.of(context).maybePop,
+      child: Tts.fromSemantics(
+        SemanticsProperties(
+          label: heading,
+          value: controller.value.text,
+          textField: true,
+          obscured: true,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SubHeading(Translator.of(context).translate.password),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                BlocBuilder<LoginFormBloc, LoginFormState>(
+                  cubit: loginFormBloc,
+                  builder: (context, state) => Expanded(
+                    child: TextFormField(
+                      key: TestKey.input,
+                      controller: controller,
+                      obscureText: state.hidePassword,
+                      keyboardType: TextInputType.visiblePassword,
+                      style: theme.textTheme.bodyText1,
+                      autofocus: true,
+                      onEditingComplete: Navigator.of(context).maybePop,
+                    ),
                   ),
                 ),
-              ),
-              HidePasswordButton(
-                key: TestKey.hidePassword,
-                loginFormBloc: loginFormBloc,
-              )
-            ],
-          ),
-        ],
+                HidePasswordButton(
+                  key: TestKey.hidePassword,
+                  loginFormBloc: loginFormBloc,
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

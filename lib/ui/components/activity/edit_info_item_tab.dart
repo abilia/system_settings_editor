@@ -62,7 +62,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
                   AbiliaIcons.information,
                   size: smallIconSize,
                 ),
-                label: Text(translate.infoTypeNone),
+                text: Text(translate.infoTypeNone),
                 onTap: onTap,
               ),
           ],
@@ -107,7 +107,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                   AbiliaIcons.ok,
                   size: smallIconSize,
                 ),
-                label: Text(Translator.of(context).translate.infoTypeChecklist),
+                text: Text(Translator.of(context).translate.infoTypeChecklist),
                 onTap: widget.onTap,
               ),
             ),
@@ -169,25 +169,28 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(right: 16.0),
-                      child: RawMaterialButton(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(color: AbiliaColors.green140),
-                          borderRadius: borderRadius,
-                        ),
-                        fillColor: AbiliaColors.green,
-                        elevation: 0.0,
-                        disabledElevation: 0.0,
-                        focusElevation: 0.0,
-                        highlightElevation: 0.0,
-                        hoverElevation: 0.0,
-                        onPressed: _handleNewQuestion,
-                        child: Row(
-                          children: [
-                            const SizedBox(width: 12.0),
-                            Icon(AbiliaIcons.new_icon),
-                            const SizedBox(width: 12.0),
-                            Text(Translator.of(context).translate.addNew),
-                          ],
+                      child: Tts(
+                        data: Translator.of(context).translate.addNew,
+                        child: RawMaterialButton(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(color: AbiliaColors.green140),
+                            borderRadius: borderRadius,
+                          ),
+                          fillColor: AbiliaColors.green,
+                          elevation: 0.0,
+                          disabledElevation: 0.0,
+                          focusElevation: 0.0,
+                          highlightElevation: 0.0,
+                          hoverElevation: 0.0,
+                          onPressed: _handleNewQuestion,
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 12.0),
+                              Icon(AbiliaIcons.new_icon),
+                              const SizedBox(width: 12.0),
+                              Text(Translator.of(context).translate.addNew),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -280,7 +283,7 @@ class EditNoteWidget extends StatelessWidget {
                   AbiliaIcons.edit,
                   size: smallIconSize,
                 ),
-                label: Text(Translator.of(context).translate.infoTypeNote),
+                text: Text(Translator.of(context).translate.infoTypeNote),
                 onTap: onTap,
               ),
             ),
@@ -329,7 +332,7 @@ class EditNoteWidget extends StatelessWidget {
               decoration: whiteBoxDecoration,
               child: NoteBlock(
                 text: infoItem.text,
-                child: infoItem.text.isEmpty
+                textWidget: infoItem.text.isEmpty
                     ? Text(
                         Translator.of(context).translate.typeSomething,
                         style: abiliaTextTheme.bodyText1

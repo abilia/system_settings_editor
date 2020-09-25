@@ -10,7 +10,7 @@ class EditActivityPage extends StatelessWidget {
   final String title;
   const EditActivityPage({
     @required this.day,
-    this.title = '',
+    this.title,
     Key key,
   }) : super(key: key);
   @override

@@ -19,7 +19,7 @@ class TimePillarSettings extends StatelessWidget {
           children: <Widget>[
             PickField(
               leading: Icon(AbiliaIcons.options),
-              label: Text(
+              text: Text(
                 translate.activityDuration,
                 style: abiliaTheme.textTheme.bodyText1,
               ),

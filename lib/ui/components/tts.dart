@@ -7,39 +7,35 @@ import 'package:get_it/get_it.dart';
 class Tts extends StatelessWidget {
   final Widget child;
   final String data;
-  final SemanticsProperties semantics;
 
   const Tts({
     Key key,
-    this.child,
-    this.semantics,
+    @required this.child,
     this.data,
-  })  : assert(semantics != null || data != null || child is Text),
-        assert(semantics == null || data == null),
+  })  : assert(data != null || child is Text),
         super(key: key);
   @override
   Widget build(BuildContext context) {
-    var wrapped = child;
-    var label = data;
-    if (wrapped is Text && data == null && semantics?.label == null) {
-      label = wrapped.semanticsLabel ?? wrapped.data;
-    }
-
-    if (semantics != null) {
-      wrapped = Semantics.fromProperties(
-        properties: semantics,
-        child: wrapped,
-      );
-      if (semantics.label != null) {
-        label = semantics.label;
-      }
-    }
-    assert(label?.isNotEmpty == true,
-        'either provide a Text widge, a sematics label or data');
+    final _text = (Text text) => text.semanticsLabel ?? text.data;
+    var label = data ?? _text(child);
+    assert(
+        label?.isNotEmpty == true, 'either provide a Text widget or tts data');
     return _Tts(
       data: label,
-      child: wrapped,
+      child: child,
     );
+  }
+
+  static Widget fromSemantics(
+    SemanticsProperties properties, {
+    @required Widget child,
+  }) {
+    final semantics =
+        Semantics.fromProperties(properties: properties, child: child);
+    if (properties.label?.isNotEmpty == true) {
+      return _Tts(data: properties.label, child: semantics);
+    }
+    return semantics;
   }
 }
 

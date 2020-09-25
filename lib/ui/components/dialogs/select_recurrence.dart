@@ -31,13 +31,8 @@ class SelectRecurrenceDialog extends StatelessWidget {
                 groupValue: recurrentType,
                 onChanged: Navigator.of(context).maybePop,
                 value: type,
-                child: Row(
-                  children: <Widget>[
-                    Icon(type.iconData()),
-                    const SizedBox(width: 12),
-                    Text(type.text(translate))
-                  ],
-                ),
+                leading: Icon(type.iconData()),
+                text: Text(type.text(translate)),
               ),
             ),
           )

@@ -78,12 +78,14 @@ class ReminderPage extends StatelessWidget {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 18, bottom: 30),
-                child: Text(
-                  text,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4
-                      .copyWith(color: AbiliaColors.red),
+                child: Tts(
+                  child: Text(
+                    text,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4
+                        .copyWith(color: AbiliaColors.red),
+                  ),
                 ),
               ),
             ),

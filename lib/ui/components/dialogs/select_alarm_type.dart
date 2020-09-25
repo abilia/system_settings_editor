@@ -37,13 +37,8 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
                 groupValue: alarm,
                 onChanged: onChanged,
                 value: Alarm.SoundAndVibration,
-                child: Row(
-                  children: <Widget>[
-                    Icon(AbiliaIcons.handi_alarm_vibration),
-                    const SizedBox(width: 12),
-                    Text(translate.alarmAndVibration)
-                  ],
-                ),
+                leading: Icon(AbiliaIcons.handi_alarm_vibration),
+                text: Text(translate.alarmAndVibration),
               ),
             if (memoSettingsState.activityDisplayAlarmOption)
               const SizedBox(height: 8.0),
@@ -53,13 +48,8 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
                 groupValue: alarm,
                 onChanged: onChanged,
                 value: Alarm.Vibration,
-                child: Row(
-                  children: <Widget>[
-                    Icon(AbiliaIcons.handi_vibration),
-                    const SizedBox(width: 12),
-                    Text(translate.vibration),
-                  ],
-                ),
+                leading: Icon(AbiliaIcons.handi_vibration),
+                text: Text(translate.vibration),
               ),
             if (memoSettingsState.activityDisplaySilentAlarmOption)
               const SizedBox(height: 8.0),
@@ -68,13 +58,8 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
                 groupValue: alarm,
                 onChanged: onChanged,
                 value: Alarm.NoAlarm,
-                child: Row(
-                  children: <Widget>[
-                    Icon(AbiliaIcons.handi_no_alarm_vibration),
-                    const SizedBox(width: 12),
-                    Text(translate.noAlarm),
-                  ],
-                ),
+                leading: Icon(AbiliaIcons.handi_no_alarm_vibration),
+                text: Text(translate.noAlarm),
               ),
             ...trailing
           ]

@@ -11,28 +11,34 @@ Future<T> showViewDialog<T>({
   @required BuildContext context,
   @required WidgetBuilder builder,
   bool barrierDismissible = true,
-  bool useRootNavigator = true,
   Color barrierColor = AbiliaColors.transparentBlack90,
+  bool useSafeArea = true,
+  bool useRootNavigator = true,
+  RouteSettings routeSettings,
   RouteTransitionsBuilder transitionBuilder = buildMaterialDialogTransitions,
 }) {
   assert(builder != null);
+  assert(barrierDismissible != null);
+  assert(useSafeArea != null);
   assert(useRootNavigator != null);
   assert(debugCheckHasMaterialLocalizations(context));
 
   final theme = Theme.of(context, shadowThemeOnly: true);
   return showGeneralDialog(
     context: context,
-    pageBuilder: (BuildContext buildContext, Animation<double> animation,
-        Animation<double> secondaryAnimation) {
+    pageBuilder: (
+      BuildContext buildContext,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+    ) {
       final Widget pageChild = Builder(builder: builder);
-      return SafeArea(
-        bottom: false,
-        child: Builder(builder: (BuildContext context) {
-          return theme != null
-              ? Theme(data: theme, child: pageChild)
-              : pageChild;
-        }),
-      );
+      Widget dialog = Builder(builder: (BuildContext context) {
+        return theme != null ? Theme(data: theme, child: pageChild) : pageChild;
+      });
+      if (useSafeArea) {
+        dialog = SafeArea(child: dialog);
+      }
+      return dialog;
     },
     barrierDismissible: barrierDismissible,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -40,34 +46,38 @@ Future<T> showViewDialog<T>({
     transitionDuration: const Duration(milliseconds: 150),
     transitionBuilder: transitionBuilder,
     useRootNavigator: useRootNavigator,
+    routeSettings: routeSettings,
   );
 }
 
 Future showErrorViewDialog(String text, {@required BuildContext context}) {
   return showViewDialog(
     context: context,
-    builder: (context) => GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTapDown: Navigator.of(context).pop,
-      child: Container(
-        height: double.infinity,
-        width: double.infinity,
-        color: Colors.transparent,
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            ErrorMessage(
+    builder: (context) => Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Expanded(
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTapDown: Navigator.of(context).pop,
+          ),
+        ),
+        GestureDetector(
+          onTap: Navigator.of(context).pop,
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            child: ErrorMessage(
               key: TestKey.loginError,
-              child: Text(
+              text: Text(
                 text,
                 style: Theme.of(context).textTheme.bodyText2,
               ),
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     ),
     barrierColor: const Color(0x01000000),
     transitionBuilder: buildSlideDialogTransitions,
@@ -110,7 +120,7 @@ Widget buildSlideDialogTransitions(
 }
 
 class ViewDialog extends StatelessWidget {
-  final Widget heading;
+  final Text heading;
   final Widget child;
   final Color backgroundColor;
   final GestureTapCallback onOk;
@@ -193,7 +203,7 @@ class ViewDialog extends StatelessWidget {
                                 rightPadding,
                                 seperatorPadding,
                               ),
-                              child: heading,
+                              child: Tts(child: heading),
                             ),
                         ],
                       ),

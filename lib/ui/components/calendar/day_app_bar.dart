@@ -46,13 +46,12 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
                   children: <Widget>[
                     Align(
                       alignment: Alignment.center,
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            DateFormat('EEEE, d MMM', langCode).format(day),
-                            style: textStyle,
-                          ),
-                        ],
+                      child: Tts(
+                        child: Text(
+                          DateFormat('EEEE, d MMM', langCode).format(day),
+                          key: TestKey.dayAppBarTitle,
+                          style: textStyle,
+                        ),
                       ),
                     ),
                     if (day.isDayBefore(time))

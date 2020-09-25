@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class RemoveButton extends StatelessWidget {
@@ -17,35 +18,41 @@ class RemoveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: borderRadius,
-        child: Container(
-          decoration: BoxDecoration(
-            color: AbiliaColors.transparentRed[80],
-            borderRadius: borderRadius,
-            border: Border.all(
-              color: AbiliaColors.red,
+    return Tts.fromSemantics(
+      SemanticsProperties(
+        button: true,
+        label: text,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: borderRadius,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AbiliaColors.transparentRed[80],
+              borderRadius: borderRadius,
+              border: Border.all(
+                color: AbiliaColors.red,
+              ),
+            ),
+            padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                icon ?? Container(),
+                SizedBox(
+                  width: 4,
+                ),
+                text == null
+                    ? Container()
+                    : Text(text,
+                        style: abiliaTextTheme.bodyText1
+                            .copyWith(color: AbiliaColors.white, height: 1)),
+              ],
             ),
           ),
-          padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              icon ?? Container(),
-              SizedBox(
-                width: 4,
-              ),
-              text == null
-                  ? Container()
-                  : Text(text,
-                      style: abiliaTextTheme.bodyText1
-                          .copyWith(color: AbiliaColors.white, height: 1)),
-            ],
-          ),
+          onTap: onTap,
         ),
-        onTap: onTap,
       ),
     );
   }

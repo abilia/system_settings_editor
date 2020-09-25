@@ -101,7 +101,7 @@ class ActivityInfo extends StatelessWidget with Checker {
   }
 }
 
-abstract class Checker {
+mixin Checker {
   Future checkConfirmation(
     BuildContext context,
     DateTime now,
@@ -213,7 +213,7 @@ class Attachment extends StatelessWidget with Checker {
     if (item is NoteInfoItem) {
       return NoteBlock(
         text: item.text,
-        child: Text(item.text),
+        textWidget: Text(item.text),
       );
     } else if (item is Checklist) {
       return CheckListView(
@@ -257,20 +257,23 @@ class CheckButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(4.0),
-      decoration: BoxDecoration(
-        color: theme.scaffoldBackgroundColor,
-        borderRadius: borderRadius,
-      ),
-      child: FlatButton.icon(
-        icon: Icon(iconData),
-        label: Text(
-          text,
-          style: theme.textTheme.bodyText1.copyWith(height: 1),
+    return Tts(
+      data: text,
+      child: Container(
+        padding: const EdgeInsets.all(4.0),
+        decoration: BoxDecoration(
+          color: theme.scaffoldBackgroundColor,
+          borderRadius: borderRadius,
         ),
-        color: theme.buttonColor,
-        onPressed: onPressed,
+        child: FlatButton.icon(
+          icon: Icon(iconData),
+          label: Text(
+            text,
+            style: theme.textTheme.bodyText1.copyWith(height: 1),
+          ),
+          color: theme.buttonColor,
+          onPressed: onPressed,
+        ),
       ),
     );
   }
@@ -318,11 +321,13 @@ class TopInfo extends StatelessWidget {
               if (hasTitle)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    activity.title,
-                    style: themeData.textTheme.headline5,
-                    overflow: TextOverflow.visible,
-                    textAlign: TextAlign.center,
+                  child: Tts(
+                    child: Text(
+                      activity.title,
+                      style: themeData.textTheme.headline5,
+                      overflow: TextOverflow.visible,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               if (imageBelow) checkableImage,

@@ -244,11 +244,13 @@ class SideDotsLarge extends StatelessWidget {
                   if (displayRemainingTime)
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                        endTime
-                            .difference(now)
-                            .toUntilString(Translator.of(context).translate),
-                        textAlign: TextAlign.center,
+                      child: Tts(
+                        child: Text(
+                          endTime
+                              .difference(now)
+                              .toUntilString(Translator.of(context).translate),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   Spacer(),
