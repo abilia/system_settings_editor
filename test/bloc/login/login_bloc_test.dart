@@ -164,7 +164,7 @@ void main() {
           .thenAnswer((_) => Future.value(Fakes.token));
       when(mockedUserRepository.me(any))
           .thenAnswer((_) => Future.value(User(id: 0, name: '', type: '')));
-      when(mockedUserRepository.getLicensesFromApi(Fakes.token))
+      when(mockedUserRepository.getLicensesFromApi())
           .thenAnswer((_) => Future.value([
                 License(
                     endTime: DateTime.now().add(Duration(hours: 24)),

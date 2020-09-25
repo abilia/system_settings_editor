@@ -20,6 +20,7 @@ import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/background/all.dart';
@@ -28,6 +29,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/all.dart';
+import 'ui/components/all.dart';
 
 final _log = Logger('main');
 
@@ -95,6 +97,7 @@ class App extends StatelessWidget {
         httpClient: GetIt.I<BaseClient>(),
         tokenDb: GetIt.I<TokenDb>(),
         userDb: GetIt.I<UserDb>(),
+        licenseDb: GetIt.I<LicenseDb>(),
       ),
       child: MultiBlocProvider(
         providers: [
@@ -124,14 +127,29 @@ class App extends StatelessWidget {
                 return AuthenticatedBlocsProvider(
                   authenticatedState: state,
                   child: SeagullApp(
-                    home: wasAlarmStart
-                        ? AlarmListener(
-                            child: FullScreenAlarm(alarm: notificationPayload),
-                            listenWhen: (_, current) =>
-                                current is AlarmState &&
-                                current.alarm != notificationPayload,
-                          )
-                        : AlarmListener(child: CalendarPage()),
+                    home: BlocListener<LicenseBloc, LicenseState>(
+                      listener: (context, state) async {
+                        if (state is NoValidLicense) {
+                          await showViewDialog(
+                            context: context,
+                            builder: (context) {
+                              return LicenseExpiredDialog();
+                            },
+                          );
+                          BlocProvider.of<AuthenticationBloc>(context)
+                              .add(LoggedOut());
+                        }
+                      },
+                      child: wasAlarmStart
+                          ? AlarmListener(
+                              child:
+                                  FullScreenAlarm(alarm: notificationPayload),
+                              listenWhen: (_, current) =>
+                                  current is AlarmState &&
+                                  current.alarm != notificationPayload,
+                            )
+                          : AlarmListener(child: CalendarPage()),
+                    ),
                   ),
                 );
               }

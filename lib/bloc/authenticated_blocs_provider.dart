@@ -141,6 +141,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             create: (context) => SettingsBloc(
               settingsDb: GetIt.I<SettingsDb>(),
             ),
+          ),
+          BlocProvider<LicenseBloc>(
+            create: (context) => LicenseBloc(
+              clockBloc: context.bloc<ClockBloc>(),
+              pushBloc: context.bloc<PushBloc>(),
+              userRepository: context.repository<UserRepository>(),
+              authenticationBloc: context.repository<AuthenticationBloc>(),
+            )..add(ReloadLicenses()),
           )
         ],
         child: child,

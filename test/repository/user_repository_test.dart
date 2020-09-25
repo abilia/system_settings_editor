@@ -18,6 +18,7 @@ void main() {
     httpClient: mockClient,
     tokenDb: mockTokenDb,
     userDb: mockUserDb,
+    licenseDb: MockLicenseDb(),
   );
   test('copyWith with new', () {
     // Arrange
