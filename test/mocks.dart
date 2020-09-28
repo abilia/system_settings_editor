@@ -2,6 +2,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/analytics/analytics_service.dart';
@@ -70,6 +72,12 @@ class MockFileStorage extends Mock implements FileStorage {}
 
 class MockAnalyticsService extends Mock implements AnalyticsService {}
 
+class MockFlutterTts extends Mock implements FlutterTts {
+  MockFlutterTts() {
+    when(speak(any)).thenAnswer((realInvocation) => Future.value());
+  }
+}
+
 class MockMultipartRequestBuilder extends Mock
     implements MultipartRequestBuilder {}
 
@@ -126,5 +134,17 @@ extension OurEnterText on WidgetTester {
     await pump();
     await tap(find.byKey(TestKey.okDialog).first);
     await pump();
+  }
+
+  Future verifyTts(Finder finder, {String contains, String exact}) async {
+    await longPress(finder);
+    final arg = verify(GetIt.I<FlutterTts>().speak(captureAny)).captured.first;
+    if (contains != null) {
+      expect(arg.contains(contains), isTrue,
+          reason: '$arg does not contain $contains');
+    }
+    if (exact != null) {
+      expect(arg, exact);
+    }
   }
 }

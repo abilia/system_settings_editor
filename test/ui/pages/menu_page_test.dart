@@ -2,13 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/getit.dart';
+import 'package:seagull/i18n/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 
 import '../../mocks.dart';
 
 void main() {
-  final mockSettingsDb = MockSettingsDb();
+  MockSettingsDb mockSettingsDb;
+  MockAuthenticationBloc mockAuthenticationBloc;
+  final translate = Locales.language.values.first;
+  setUp(() {
+    mockSettingsDb = MockSettingsDb();
+    mockAuthenticationBloc = MockAuthenticationBloc();
+    GetItInitializer()
+      ..flutterTts = MockFlutterTts()
+      ..init();
+  });
+
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [Translator.delegate],
@@ -17,7 +29,7 @@ void main() {
                 orElse: () => supportedLocales.first),
         builder: (context, child) => MultiBlocProvider(providers: [
           BlocProvider<AuthenticationBloc>(
-              create: (context) => MockAuthenticationBloc()),
+              create: (context) => mockAuthenticationBloc),
           BlocProvider<ActivitiesBloc>(
               create: (context) => MockActivitiesBloc()),
           BlocProvider<SettingsBloc>(
@@ -36,5 +48,36 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(LogoutButton), findsOneWidget);
     expect(find.byType(ProfilePictureNameAndEmail), findsOneWidget);
+  });
+
+  testWidgets('tts', (WidgetTester tester) async {
+    final mockUserRepository = MockUserRepository();
+    final name = 'Slartibartfast', username = 'Zaphod Beeblebrox';
+    when(mockUserRepository.me(any)).thenAnswer((_) => Future.value(User(
+        username: username,
+        language: 'en',
+        image: 'img',
+        id: 0,
+        type: '1',
+        name: name)));
+
+    when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
+    when(mockAuthenticationBloc.state).thenReturn(
+      Authenticated(
+        token: 'token',
+        userId: 0,
+        userRepository: mockUserRepository,
+      ),
+    );
+
+    await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
+    await tester.pumpAndSettle();
+    await tester.verifyTts(find.byType(LogoutPickField),
+        exact: translate.logout);
+    await tester.tap(find.byType(LogoutPickField));
+    await tester.pumpAndSettle();
+    await tester.verifyTts(find.byType(LogoutButton), exact: translate.logout);
+    await tester.verifyTts(find.text(name), exact: name);
+    await tester.verifyTts(find.text(username), exact: username);
   });
 }

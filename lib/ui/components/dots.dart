@@ -249,6 +249,7 @@ class SideDotsLarge extends StatelessWidget {
                           endTime
                               .difference(now)
                               .toUntilString(Translator.of(context).translate),
+                          key: TestKey.sideDotsTimeText,
                           textAlign: TextAlign.center,
                         ),
                       ),

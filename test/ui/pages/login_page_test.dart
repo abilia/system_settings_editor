@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/getit.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -17,6 +18,7 @@ import '../../mocks.dart';
 void main() {
   group('login page widget test', () {
     final secretPassword = 'pwfafawfa';
+    final translate = Locales.language.values.first;
 
     setUp(() {
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
@@ -50,6 +52,7 @@ void main() {
         ..userFileDb = MockUserFileDb()
         ..settingsDb = mockSettingsDb
         ..database = mockDatabase
+        ..flutterTts = MockFlutterTts()
         ..init();
     });
 
@@ -225,6 +228,33 @@ void main() {
       await tester.tap(find.byKey(TestKey.loggInButton));
       await tester.pumpAndSettle();
       expect(find.byType(CalendarPage), findsOneWidget);
+    });
+
+    testWidgets('tts', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byKey(TestKey.userNameInput),
+          exact: translate.userName);
+      await tester.enterText_(
+          find.byKey(TestKey.userNameInput), Fakes.username);
+      await tester.verifyTts(find.byKey(TestKey.userNameInput),
+          exact: Fakes.username);
+      await tester.verifyTts(find.byKey(TestKey.passwordInput),
+          exact: translate.password);
+      await tester.enterText_(
+          find.byKey(TestKey.passwordInput), Fakes.incorrectPassword);
+      await tester.verifyTts(find.byKey(TestKey.passwordInput),
+          exact: translate.password);
+      await tester.verifyTts(find.byKey(TestKey.loggInButton),
+          exact: translate.login);
+      await tester.pump();
+      await tester.tap(find.byKey(TestKey.loggInButton));
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byKey(TestKey.loginError),
+          exact: translate.wrongCredentials);
+      await tester.verifyTts(find.byType(WebLink), contains: 'myAbilia');
     });
   });
 }

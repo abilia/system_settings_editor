@@ -64,12 +64,12 @@ Future showErrorViewDialog(String text, {@required BuildContext context}) {
           ),
         ),
         GestureDetector(
+          key: TestKey.errorViewDialog,
           onTap: Navigator.of(context).pop,
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
             child: ErrorMessage(
-              key: TestKey.loginError,
               text: Text(
                 text,
                 style: Theme.of(context).textTheme.bodyText2,
