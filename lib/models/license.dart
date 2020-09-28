@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+const MEMOPLANNER_LICENSE_NAME = 'memoplanner3';
+
 class License extends Equatable {
   final int id;
   final String product;

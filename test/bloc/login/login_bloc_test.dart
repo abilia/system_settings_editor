@@ -99,41 +99,6 @@ void main() {
       );
     });
 
-    test('Login fails when no license', () async {
-      final mockUserRepository = MockUserRepository();
-      when(mockUserRepository.authenticate(
-        username: anyNamed('username'),
-        password: anyNamed('password'),
-        pushToken: anyNamed('pushToken'),
-        time: anyNamed('time'),
-      )).thenThrow(NoLicenseException());
-
-      authenticationBloc.add(AppStarted(mockUserRepository));
-
-      await expectLater(
-        authenticationBloc,
-        emitsInOrder([
-          AuthenticationLoading(mockUserRepository),
-          Unauthenticated(mockUserRepository),
-        ]),
-      );
-
-      loginBloc.add(LoginButtonPressed(
-        username: 'username',
-        password: 'password',
-      ));
-
-      await expectLater(
-        loginBloc,
-        emitsInOrder([
-          LoginLoading(),
-          LoginFailure(
-              error: NoLicenseException().toString(),
-              loginFailureCause: LoginFailureCause.License),
-        ]),
-      );
-    });
-
     tearDown(() {
       loginBloc.close();
       authenticationBloc.close();
@@ -169,7 +134,7 @@ void main() {
                 License(
                     endTime: DateTime.now().add(Duration(hours: 24)),
                     id: 1,
-                    product: 'memoplanner3')
+                    product: MEMOPLANNER_LICENSE_NAME)
               ]));
     });
 
