@@ -146,7 +146,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             create: (context) => LicenseBloc(
               clockBloc: context.bloc<ClockBloc>(),
               pushBloc: context.bloc<PushBloc>(),
-              userRepository: context.repository<UserRepository>(),
+              userRepository: authenticatedState.userRepository,
               authenticationBloc: context.repository<AuthenticationBloc>(),
             )..add(ReloadLicenses()),
           )
