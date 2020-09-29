@@ -24,6 +24,9 @@ class GetItInitializer {
   TokenDb _tokenDb;
   set tokenDb(TokenDb tokenDb) => _tokenDb = tokenDb;
 
+  LicenseDb _licenseDb;
+  set licenseDb(LicenseDb licenseDb) => _licenseDb = licenseDb;
+
   Ticker _ticker;
   set ticker(Ticker ticker) => _ticker = ticker;
 
@@ -81,6 +84,7 @@ class GetItInitializer {
     GetIt.I.reset();
     GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
     GetIt.I.registerSingleton<TokenDb>(_tokenDb ?? TokenDb());
+    GetIt.I.registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb());
     GetIt.I.registerSingleton<FirebasePushService>(
         _firebasePushService ?? FirebasePushService());
     GetIt.I.registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database));

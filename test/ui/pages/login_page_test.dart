@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/fakes/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
@@ -17,6 +19,7 @@ import '../../mocks.dart';
 void main() {
   group('login page widget test', () {
     final secretPassword = 'pwfafawfa';
+    LicenseDb mockLicenseDb;
 
     setUp(() {
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
@@ -38,6 +41,13 @@ void main() {
       when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value([]));
+      mockLicenseDb = MockLicenseDb();
+      when(mockLicenseDb.getLicenses()).thenAnswer((_) => Future.value([
+            License(
+                endTime: DateTime.now().add(Duration(hours: 24)),
+                id: 1,
+                product: MEMOPLANNER_LICENSE_NAME)
+          ]));
       GetItInitializer()
         ..activityDb = mockActivityDb
         ..fireBasePushService = mockFirebasePushService
@@ -50,6 +60,7 @@ void main() {
         ..userFileDb = MockUserFileDb()
         ..settingsDb = mockSettingsDb
         ..database = mockDatabase
+        ..licenseDb = mockLicenseDb
         ..init();
     });
 
@@ -225,6 +236,28 @@ void main() {
       await tester.tap(find.byKey(TestKey.loggInButton));
       await tester.pumpAndSettle();
       expect(find.byType(CalendarPage), findsOneWidget);
+    });
+
+    testWidgets('Gets no valid license dialog when no valid license',
+        (WidgetTester tester) async {
+      when(mockLicenseDb.getLicenses()).thenAnswer((_) => Future.value([
+            License(
+                endTime: DateTime.now().subtract(Duration(hours: 24)),
+                id: 1,
+                product: MEMOPLANNER_LICENSE_NAME)
+          ]));
+      await tester.pumpWidget(App());
+
+      await tester.pumpAndSettle();
+
+      await tester.enterText_(
+          find.byKey(TestKey.passwordInput), secretPassword);
+      await tester.enterText_(
+          find.byKey(TestKey.userNameInput), Fakes.username);
+      await tester.pump();
+      await tester.tap(find.byKey(TestKey.loggInButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(LicenseExpiredDialog), findsOneWidget);
     });
   });
 }

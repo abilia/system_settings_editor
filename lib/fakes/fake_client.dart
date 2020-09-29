@@ -91,7 +91,7 @@ class Fakes {
       {
         "id":125,
         "endTime":${DateTime.now().add(Duration(days: 10)).millisecondsSinceEpoch},
-        "product":"memoplanner3"
+        "product":"$MEMOPLANNER_LICENSE_NAME"
       }
     ]
   ''', 200);
