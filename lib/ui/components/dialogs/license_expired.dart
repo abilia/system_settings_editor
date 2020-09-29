@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -12,6 +13,7 @@ class LicenseExpiredDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translator = Translator.of(context).translate;
     return ViewDialog(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(22, 128, 22, 0),
@@ -27,11 +29,11 @@ class LicenseExpiredDialog extends StatelessWidget {
               height: 80,
             ),
             Text(
-              'License is expired',
+              translator.licenseExpired,
               style: abiliaTheme.textTheme.headline6,
             ),
             Text(
-              'You have been logged out because your MEMOplanner license expired. Please, extend your license to continue using this app.',
+              translator.licenseExpiredMessage,
               textAlign: TextAlign.center,
             ),
           ],
