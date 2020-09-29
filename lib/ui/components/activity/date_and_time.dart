@@ -28,7 +28,7 @@ class DateAndTimeWidget extends StatelessWidget {
           children: <Widget>[
             SubHeading(translator.date),
             DatePicker(
-              activity.startTime,
+              editActivityState.timeInterval.startDate,
               onChange: (newDate) =>
                   BlocProvider.of<EditActivityBloc>(context).add(
                 ChangeDate(newDate),

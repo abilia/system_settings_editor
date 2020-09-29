@@ -957,7 +957,7 @@ void main() {
     group('Edit recurring Activity', () {
       final titleTextFormFieldFinder =
           find.byKey(TestKey.editTitleTextFormField);
-      testWidgets('Edit an recurring should show Apply to dialog',
+      testWidgets('Edit an recurring should show Apply to dialog when edited',
           (WidgetTester tester) async {
         // Arrange
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
@@ -966,6 +966,9 @@ void main() {
 
         // Act
         await tester.tap(editActivityButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.enterText_(
+            find.byKey(TestKey.editTitleTextFormField), 'new title');
         await tester.pumpAndSettle();
         await tester.tap(finishActivityFinder);
         await tester.pumpAndSettle();
@@ -989,6 +992,84 @@ void main() {
         await tester.tap(finishActivityFinder);
         await tester.pumpAndSettle();
         await tester.tap(okInkWellFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.text(newTitle), findsOneWidget);
+      });
+
+      testWidgets(
+          'Correct day in datepicker shows in edit activity when edit recurring activity',
+          (WidgetTester tester) async {
+        // Arrange
+        final activity = Activity.createNew(
+          title: 'title',
+          startTime: startTime.subtract(100.days()),
+          recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+        );
+        when(mockActivityDb.getAllNonDeleted())
+            .thenAnswer((_) => Future.value(<Activity>[activity]));
+        await navigateToActivityPage(tester);
+
+        // Act -- tap the edit activity button
+        await tester.tap(editActivityButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Assert -- edit activity date is same as picked day
+        expect(find.byType(EditActivityPage), findsOneWidget);
+        final datePickerDate =
+            tester.widget<DatePicker>(find.byType(DatePicker)).date;
+        expect(datePickerDate.onlyDays(), startTime.onlyDays());
+      });
+
+      testWidgets('No edit on recuring activity does not show apply to pop up',
+          (WidgetTester tester) async {
+        // Arrange
+        final activity = Activity.createNew(
+          title: 'title',
+          startTime: startTime.subtract(100.days()),
+          recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+        );
+        when(mockActivityDb.getAllNonDeleted())
+            .thenAnswer((_) => Future.value(<Activity>[activity]));
+        await navigateToActivityPage(tester);
+
+        // Act -- tap the edit activity button
+        await tester.tap(editActivityButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(finishActivityFinder);
+        await tester.pumpAndSettle();
+
+        // Assert -- we are back on activity page
+        expect(activityPageFinder, findsOneWidget);
+      });
+
+      testWidgets('Edit an recurring This day and forward shows changes',
+          (WidgetTester tester) async {
+        // Arrange
+        final newTitle = 'new Title', oldTitle = 'old title';
+        when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(
+            <Activity>[
+              Activity.createNew(
+                title: oldTitle,
+                startTime: startTime.subtract(100.days()),
+                recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+              )
+            ],
+          ),
+        );
+        await navigateToActivityPage(tester);
+
+        // Act
+        await tester.tap(editActivityButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.enterText_(titleTextFormFieldFinder, newTitle);
+        await tester.tap(finishActivityFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(thisDayAndForwardRadioFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(finishActivityFinder);
         await tester.pumpAndSettle();
 
         // Assert

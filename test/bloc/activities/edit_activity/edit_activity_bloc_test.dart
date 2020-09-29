@@ -44,7 +44,7 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: '',
-      startTime: aTime.nextHalfHour(),
+      startTime: aTime,
       timezone: aTime.timeZoneName,
     );
     final editActivityBloc = EditActivityBloc.newActivity(
@@ -80,7 +80,7 @@ void main() {
     );
     final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
-    final timeInterval = TimeInterval(null, null);
+    final timeInterval = TimeInterval(null, null, aTime);
 
     // Act
     editActivityBloc.add(ReplaceActivity(activityWithTitle));
@@ -103,13 +103,13 @@ void main() {
     );
     final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
-    final timeInterval = TimeInterval(null, null);
+    final timeInterval = TimeInterval(null, null, aTime);
     final newStartTime = TimeOfDay(hour: 10, minute: 0);
     final newTime = aTime.copyWith(
       hour: newStartTime.hour,
       minute: newStartTime.minute,
     );
-    final newTimeInterval = TimeInterval(newStartTime, null);
+    final newTimeInterval = TimeInterval(newStartTime, null, aTime);
 
     final expectedSaved = activityWithTitle.copyWith(startTime: newTime);
     // Act
@@ -159,8 +159,10 @@ void main() {
       clockBloc: clockBloc,
     );
     final timeInterval = TimeInterval(
-        TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.noneRecurringEnd));
+      TimeOfDay.fromDateTime(activity.startTime),
+      TimeOfDay.fromDateTime(activity.noneRecurringEnd),
+      aTime,
+    );
     // Act
     editActivityBloc.add(ReplaceActivity(activityAsFullDay));
     editActivityBloc.add(SaveActivity());
@@ -189,8 +191,7 @@ void main() {
     final activity = editActivityBloc.state.activity;
     final newDate = DateTime(2011, 11, 11, 11, 11);
     final expetedNewDate = DateTime(2011, 11, 11, 11, 11);
-    final expetedNewActivity = activity.copyWith(startTime: expetedNewDate);
-    final expectedTimeInterval = TimeInterval(null, null);
+    final expectedTimeInterval = TimeInterval(null, null, expetedNewDate);
 
     // Act
     editActivityBloc.add(ChangeDate(newDate));
@@ -198,7 +199,59 @@ void main() {
     // Assert
     await expectLater(
       editActivityBloc,
-      emits(UnstoredActivityState(expetedNewActivity, expectedTimeInterval)),
+      emits(UnstoredActivityState(activity, expectedTimeInterval)),
+    );
+  });
+
+  test('activity.startTime set correctly', () async {
+    // Arrange
+    final aDate = DateTime(2022, 02, 22, 22, 00);
+
+    final editActivityBloc = EditActivityBloc.newActivity(
+      activitiesBloc: mockActivitiesBloc,
+      day: aDate,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+    );
+    final activity = editActivityBloc.state.activity;
+
+    final newDate = DateTime(2011, 11, 11, 11, 11);
+    final newTime = TimeOfDay(hour: 1, minute: 1);
+    final newActivity = activity.copyWith(title: 'newTile');
+    final expectedTimeInterval1 = TimeInterval(newTime, null, aDate);
+    final expectedTimeInterval2 = TimeInterval(newTime, null, newDate);
+    final expectedFinalStartTime = DateTime(
+      expectedTimeInterval2.startDate.year,
+      expectedTimeInterval2.startDate.month,
+      expectedTimeInterval2.startDate.day,
+      expectedTimeInterval2.startTime.hour,
+      expectedTimeInterval2.startTime.minute,
+    );
+    final expectedFinalActivity = newActivity.copyWith(
+      startTime: expectedFinalStartTime,
+    );
+
+    // Act
+    editActivityBloc.add(ChangeStartTime(TimeOfDay(hour: 1, minute: 1)));
+    editActivityBloc.add(ChangeDate(newDate));
+    editActivityBloc.add(ReplaceActivity(newActivity));
+    editActivityBloc.add(SaveActivity());
+
+    // Assert
+    await expectLater(
+      editActivityBloc,
+      emitsInOrder(
+        [
+          UnstoredActivityState(activity, expectedTimeInterval1),
+          UnstoredActivityState(activity, expectedTimeInterval2),
+          UnstoredActivityState(newActivity, expectedTimeInterval2),
+          StoredActivityState(
+            expectedFinalActivity,
+            expectedTimeInterval2,
+            expectedFinalStartTime.onlyDays(),
+          ),
+        ],
+      ),
     );
   });
 
@@ -206,7 +259,6 @@ void main() {
     // Arrange
     final aDate = DateTime(2022, 02, 22, 22, 30);
     final day = DateTime(2022, 02, 22);
-
     final activity = Activity.createNew(
       title: 'test',
       startTime: aDate,
@@ -215,13 +267,17 @@ void main() {
     final newStartTime = TimeOfDay(hour: 11, minute: 00);
     final expectedNewDate = DateTime(2022, 02, 22, 11, 00);
     final expectedTimeInterval = TimeInterval(
-        TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.noneRecurringEnd));
+      TimeOfDay.fromDateTime(activity.startTime),
+      TimeOfDay.fromDateTime(activity.noneRecurringEnd),
+      aDate,
+    );
 
     final expetedNewActivity = activity.copyWith(startTime: expectedNewDate);
     final expectedNewTimeInterval = TimeInterval(
-        TimeOfDay.fromDateTime(expectedNewDate),
-        TimeOfDay.fromDateTime(expectedNewDate.add(activity.duration)));
+      TimeOfDay.fromDateTime(expectedNewDate),
+      TimeOfDay.fromDateTime(expectedNewDate.add(activity.duration)),
+      aDate,
+    );
 
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, day),
@@ -230,9 +286,10 @@ void main() {
       clockBloc: clockBloc,
     );
 
+    final orignalState =
+        StoredActivityState(activity, expectedTimeInterval, day);
     // Assert
-    expect(editActivityBloc.state,
-        StoredActivityState(activity, expectedTimeInterval, day));
+    expect(editActivityBloc.state, orignalState);
 
     // Act
     editActivityBloc.add(ChangeStartTime(newStartTime));
@@ -261,13 +318,17 @@ void main() {
     final newEndTime = TimeOfDay(hour: 11, minute: 11);
     final expectedDuration = Duration(hours: 10, minutes: 10);
     final expectedTimeInterval = TimeInterval(
-        TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.noneRecurringEnd));
+      TimeOfDay.fromDateTime(activity.startTime),
+      TimeOfDay.fromDateTime(activity.noneRecurringEnd),
+      aDate,
+    );
 
     final expetedNewActivity = activity.copyWith(duration: expectedDuration);
     final expectedNewTimeInterval = TimeInterval(
-        TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.startTime.add(expectedDuration)));
+      TimeOfDay.fromDateTime(activity.startTime),
+      TimeOfDay.fromDateTime(activity.startTime.add(expectedDuration)),
+      aDay,
+    );
 
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, aDay),
@@ -287,10 +348,13 @@ void main() {
     // Assert
     await expectLater(
       editActivityBloc,
-      emitsInOrder([
-        StoredActivityState(activity, expectedNewTimeInterval, aDay),
-        StoredActivityState(expetedNewActivity, expectedNewTimeInterval, aDay),
-      ]),
+      emitsInOrder(
+        [
+          StoredActivityState(activity, expectedNewTimeInterval, aDay),
+          StoredActivityState(
+              expetedNewActivity, expectedNewTimeInterval, aDay),
+        ],
+      ),
     );
   });
 
@@ -310,12 +374,15 @@ void main() {
     final expectedDuration = Duration(hours: 23, minutes: 30);
     final expectedTimeInterval = TimeInterval(
         TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.noneRecurringEnd));
+        TimeOfDay.fromDateTime(activity.noneRecurringEnd),
+        aDate);
 
     final expetedNewActivity = activity.copyWith(duration: expectedDuration);
     final expectedNewTimeInterval = TimeInterval(
-        TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.startTime.add(expectedDuration)));
+      TimeOfDay.fromDateTime(activity.startTime),
+      TimeOfDay.fromDateTime(activity.startTime.add(expectedDuration)),
+      aDate,
+    );
 
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, aDay),
@@ -353,8 +420,10 @@ void main() {
       duration: 30.minutes(),
     );
     final timeInterval = TimeInterval(
-        TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.noneRecurringEnd));
+      TimeOfDay.fromDateTime(activity.startTime),
+      TimeOfDay.fromDateTime(activity.noneRecurringEnd),
+      aDate,
+    );
     final min15Reminder = 15.minutes();
     final hour1Reminder = 1.hours();
     final with15MinReminder =
@@ -401,12 +470,17 @@ void main() {
     );
     final expectedDuration = Duration.zero;
     final expectedTimeInterval = TimeInterval(
-        TimeOfDay.fromDateTime(activity.startTime),
-        TimeOfDay.fromDateTime(activity.startTime.add(30.minutes())));
+      TimeOfDay.fromDateTime(activity.startTime),
+      TimeOfDay.fromDateTime(activity.startTime.add(30.minutes())),
+      aDate,
+    );
 
     final expectedNewActivity = activity.copyWith(duration: expectedDuration);
-    final expectedNewTimeInterval =
-        TimeInterval(TimeOfDay.fromDateTime(activity.startTime), null);
+    final expectedNewTimeInterval = TimeInterval(
+      TimeOfDay.fromDateTime(activity.startTime),
+      null,
+      aDate,
+    );
 
     final editActivityBloc = EditActivityBloc(
       ActivityDay(activity, aDay),
@@ -450,8 +524,10 @@ void main() {
     final expectedActivity = activityWithTitle.copyWith(
         startTime: aDay.copyWith(hour: 8, minute: 0), duration: 2.hours());
     final expectedTimeInterval = TimeInterval(
-        TimeOfDay.fromDateTime(aDay.copyWith(hour: 8, minute: 0)),
-        TimeOfDay.fromDateTime(aDay.copyWith(hour: 10, minute: 0)));
+      TimeOfDay.fromDateTime(aDay.copyWith(hour: 8, minute: 0)),
+      TimeOfDay.fromDateTime(aDay.copyWith(hour: 10, minute: 0)),
+      aDay,
+    );
 
     // Act
     editActivityBloc.add(ChangeEndTime(TimeOfDay(hour: 10, minute: 0)));
@@ -464,9 +540,13 @@ void main() {
       editActivityBloc,
       emitsInOrder([
         UnstoredActivityState(
-            activity,
-            TimeInterval(null,
-                TimeOfDay.fromDateTime(aDay.copyWith(hour: 10, minute: 0)))),
+          activity,
+          TimeInterval(
+            null,
+            TimeOfDay.fromDateTime(aDay.copyWith(hour: 10, minute: 0)),
+            aDay,
+          ),
+        ),
         UnstoredActivityState(activity, expectedTimeInterval),
         UnstoredActivityState(activityWithTitle, expectedTimeInterval),
         StoredActivityState(expectedActivity, expectedTimeInterval, aDay)
@@ -490,7 +570,10 @@ void main() {
     final expectedActivity = activityWithTitle.copyWith(
         startTime: aDay.copyWith(hour: 12, minute: 0), duration: 22.hours());
     final expectedTimeInterval = TimeInterval(
-        TimeOfDay(hour: 12, minute: 0), TimeOfDay(hour: 10, minute: 0));
+      TimeOfDay(hour: 12, minute: 0),
+      TimeOfDay(hour: 10, minute: 0),
+      aDay,
+    );
 
     // Act
     editActivityBloc.add(ChangeEndTime(TimeOfDay(hour: 10, minute: 0)));
@@ -504,7 +587,11 @@ void main() {
       emitsInOrder([
         UnstoredActivityState(
           activity,
-          TimeInterval(null, TimeOfDay(hour: 10, minute: 0)),
+          TimeInterval(
+            null,
+            TimeOfDay(hour: 10, minute: 0),
+            aDay,
+          ),
         ),
         UnstoredActivityState(
           activity,
@@ -553,10 +640,22 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnstoredActivityState(activity, TimeInterval(startTime1, null)),
-        UnstoredActivityState(activity, TimeInterval(startTime1, endTime1)),
-        UnstoredActivityState(activity, TimeInterval(startTime2, endTime2)),
-        UnstoredActivityState(activity, TimeInterval(startTime3, endTime3)),
+        UnstoredActivityState(
+          activity,
+          TimeInterval(startTime1, null, aDay),
+        ),
+        UnstoredActivityState(
+          activity,
+          TimeInterval(startTime1, endTime1, aDay),
+        ),
+        UnstoredActivityState(
+          activity,
+          TimeInterval(startTime2, endTime2, aDay),
+        ),
+        UnstoredActivityState(
+          activity,
+          TimeInterval(startTime3, endTime3, aDay),
+        ),
       ]),
     );
   });
@@ -569,7 +668,8 @@ void main() {
     final withChecklist = withNote.copyWith(infoItem: Checklist());
     final withNoInfoItem = withNote.copyWith(infoItem: NoInfoItem());
     final activityDay = ActivityDay(withNote, aDay);
-    final timeInterval = TimeInterval(TimeOfDay.fromDateTime(aTime), null);
+    final timeInterval =
+        TimeInterval(TimeOfDay.fromDateTime(aTime), null, aTime);
     final editActivityBloc = EditActivityBloc(
       activityDay,
       activitiesBloc: mockActivitiesBloc,
@@ -626,7 +726,11 @@ void main() {
     final activityWithEmptyChecklist = activity.copyWith(infoItem: Checklist());
     final expectedActivity = activity.copyWith(infoItem: InfoItem.none);
     final activityDay = ActivityDay(activity, aDay);
-    final timeInterval = TimeInterval(TimeOfDay.fromDateTime(aTime), null);
+    final timeInterval = TimeInterval(
+      TimeOfDay.fromDateTime(aTime),
+      null,
+      aTime,
+    );
     final editActivityBloc = EditActivityBloc(
       activityDay,
       activitiesBloc: mockActivitiesBloc,
@@ -666,7 +770,11 @@ void main() {
     final expectedActivity = activity.copyWith(infoItem: InfoItem.none);
     final activityWithEmptyNote = activity.copyWith(infoItem: NoteInfoItem());
     final activityDay = ActivityDay(activity, aDay);
-    final timeInterval = TimeInterval(TimeOfDay.fromDateTime(aTime), null);
+    final timeInterval = TimeInterval(
+      TimeOfDay.fromDateTime(aTime),
+      null,
+      aTime,
+    );
     final editActivityBloc = EditActivityBloc(
       activityDay,
       activitiesBloc: mockActivitiesBloc,
@@ -723,8 +831,22 @@ void main() {
     await expectLater(
         editActivityBloc,
         emitsInOrder([
-          UnstoredActivityState(originalActivity, TimeInterval(time, null)),
-          UnstoredActivityState(activity, TimeInterval(time, null)),
+          UnstoredActivityState(
+            originalActivity,
+            TimeInterval(
+              time,
+              null,
+              aDay,
+            ),
+          ),
+          UnstoredActivityState(
+            activity,
+            TimeInterval(
+              time,
+              null,
+              aDay,
+            ),
+          ),
         ]));
 
     editActivityBloc.add(SaveActivity());
@@ -733,5 +855,59 @@ void main() {
 
     expect(verify(mockActivitiesBloc.add(captureAny)).captured.single,
         AddActivity(expectedActivity));
+  });
+
+  test('bug SGC-332 - Editing recurring on this day should save this day',
+      () async {
+    // Arrange
+    final activity = Activity.createNew(
+      title: 'title',
+      startTime: aTime.subtract(
+        100.days(),
+      ),
+      recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+    );
+
+    final editActivityBloc = EditActivityBloc(
+      ActivityDay(activity, aDay),
+      activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+    );
+
+    final activityWithNewTitle = activity.copyWith(title: 'new title');
+    final expetedActivityToSave =
+        activityWithNewTitle.copyWith(startTime: activity.startClock(aDay));
+
+    // Act
+    editActivityBloc.add(ReplaceActivity(activityWithNewTitle));
+
+    // Assert
+    await expectLater(
+        editActivityBloc,
+        emitsInOrder([
+          StoredActivityState(
+            activityWithNewTitle,
+            TimeInterval(
+              TimeOfDay.fromDateTime(activity.startTime),
+              null,
+              aDay,
+            ),
+            aDay,
+          ),
+        ]));
+
+    // Act
+    editActivityBloc.add(SaveRecurringActivity(ApplyTo.onlyThisDay, aDay));
+
+    // Assert
+    await untilCalled(mockActivitiesBloc.add(any));
+    expect(
+      verify(mockActivitiesBloc.add(captureAny)).captured.single,
+      UpdateRecurringActivity(
+        ActivityDay(expetedActivityToSave, aDay),
+        ApplyTo.onlyThisDay,
+      ),
+    );
   });
 }

@@ -82,6 +82,11 @@ class EditActivityPage extends StatelessWidget {
   }
 
   Future _finishedPressed(BuildContext context, EditActivityState state) async {
+    if (state is StoredActivityState && state.unchanged) {
+      await Navigator.of(context).maybePop();
+      return;
+    }
+
     final errors = BlocProvider.of<EditActivityBloc>(context).canSave;
     if (errors.isEmpty) {
       if (state is StoredActivityState && state.activity.isRecurring) {
