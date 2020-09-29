@@ -190,12 +190,6 @@ void main() {
     });
 
     testWidgets('Can login', (WidgetTester tester) async {
-      when(mockLicenseDb.getLicenses()).thenAnswer((_) => Future.value([
-            License(
-                endTime: DateTime.now().add(Duration(hours: 24)),
-                id: 1,
-                product: MEMOPLANNER_LICENSE_NAME)
-          ]));
       await tester.pumpWidget(App());
 
       await tester.pumpAndSettle();
