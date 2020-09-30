@@ -1,3 +1,4 @@
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:rxdart/rxdart.dart';
@@ -80,34 +81,38 @@ class GetItInitializer {
   set alarmNavigator(AlarmNavigator alarmNavigator) =>
       _alarmNavigator = alarmNavigator;
 
+  FlutterTts _flutterTts;
+  set flutterTts(FlutterTts flutterTts) => _flutterTts = flutterTts;
+
   void init() {
-    GetIt.I.reset();
-    GetIt.I.registerSingleton<BaseClient>(_baseClient ?? Client());
-    GetIt.I.registerSingleton<TokenDb>(_tokenDb ?? TokenDb());
-    GetIt.I.registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb());
-    GetIt.I.registerSingleton<FirebasePushService>(
-        _firebasePushService ?? FirebasePushService());
-    GetIt.I.registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database));
     final userDb = _userDb ?? UserDb();
-    GetIt.I.registerSingleton<UserDb>(userDb);
-    GetIt.I.registerSingleton<Database>(_database);
-    GetIt.I.registerSingleton<SeagullLogger>(
-        _seagullLogger ?? SeagullLogger(userDb));
-    GetIt.I.registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb());
-    GetIt.I.registerSingleton<ReplaySubject<String>>(
-        _selectedNotificationStreamGetter ?? selectNotificationSubject);
-    GetIt.I.registerSingleton<AlarmScheduler>(
-        _alarmScheduler ?? scheduleAlarmNotificationsIsolated);
-    GetIt.I.registerSingleton<Ticker>(_ticker ?? Ticker());
     GetIt.I
-        .registerSingleton<AlarmNavigator>(_alarmNavigator ?? AlarmNavigator());
-    GetIt.I.registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database));
-    GetIt.I.registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database));
-    GetIt.I.registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database));
-    GetIt.I.registerSingleton<SettingsDb>(_settingsDb ?? SettingsDb(null));
-    GetIt.I.registerSingleton<FileStorage>(_fileStorage ?? FileStorage(''));
-    GetIt.I.registerSingleton<MultipartRequestBuilder>(
-        _multipartRequestBuilder ?? MultipartRequestBuilder());
-    GetIt.I.registerSingleton<SyncDelays>(_syncDelay ?? const SyncDelays());
+      ..reset()
+      ..registerSingleton<BaseClient>(_baseClient ?? Client())
+      ..registerSingleton<TokenDb>(_tokenDb ?? TokenDb())
+      ..registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb())
+      ..registerSingleton<FirebasePushService>(
+          _firebasePushService ?? FirebasePushService())
+      ..registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database))
+      ..registerSingleton<UserDb>(userDb)
+      ..registerSingleton<Database>(_database)
+      ..registerSingleton<SeagullLogger>(
+          _seagullLogger ?? SeagullLogger(userDb))
+      ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb())
+      ..registerSingleton<ReplaySubject<String>>(
+          _selectedNotificationStreamGetter ?? selectNotificationSubject)
+      ..registerSingleton<AlarmScheduler>(
+          _alarmScheduler ?? scheduleAlarmNotificationsIsolated)
+      ..registerSingleton<Ticker>(_ticker ?? Ticker())
+      ..registerSingleton<AlarmNavigator>(_alarmNavigator ?? AlarmNavigator())
+      ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
+      ..registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database))
+      ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
+      ..registerSingleton<SettingsDb>(_settingsDb ?? SettingsDb(null))
+      ..registerSingleton<FileStorage>(_fileStorage ?? FileStorage(''))
+      ..registerSingleton<MultipartRequestBuilder>(
+          _multipartRequestBuilder ?? MultipartRequestBuilder())
+      ..registerSingleton<SyncDelays>(_syncDelay ?? const SyncDelays())
+      ..registerSingleton<FlutterTts>(_flutterTts);
   }
 }

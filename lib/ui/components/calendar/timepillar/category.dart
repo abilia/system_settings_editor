@@ -111,44 +111,50 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
       },
       child: Align(
         alignment: widget.alignment.add(top),
-        child: Container(
-          margin: const EdgeInsets.only(top: 4.0),
-          padding: EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            borderRadius: widget.borderRadius,
-            color: AbiliaColors.black80,
+        child: Tts.fromSemantics(
+          SemanticsProperties(
+            header: true,
+            label: widget.text,
           ),
-          child: Stack(
-            textDirection: widget.textDirection,
-            alignment: widget.alignment,
-            children: [
-              AnimatedBuilder(
-                animation: matrixAnimation,
-                child: Icon(widget.icon, color: AbiliaColors.black60),
-                builder: (context, child) => Transform(
-                  alignment: Alignment.center,
-                  transform: matrixAnimation.value,
-                  child: child,
-                ),
-              ),
-              Padding(
-                padding: widget.left
-                    ? const EdgeInsets.only(left: 22, right: 16)
-                    : const EdgeInsets.only(left: 16, right: 22),
-                child: AnimatedBuilder(
-                  animation: intAnimation,
-                  builder: (context, _) => Text(
-                    widget.text.substring(0, intAnimation.value),
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1
-                        .copyWith(color: AbiliaColors.white),
-                    softWrap: false,
-                    overflow: TextOverflow.fade,
+          child: Container(
+            margin: const EdgeInsets.only(top: 4.0),
+            padding: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              borderRadius: widget.borderRadius,
+              color: AbiliaColors.black80,
+            ),
+            child: Stack(
+              textDirection: widget.textDirection,
+              alignment: widget.alignment,
+              children: [
+                AnimatedBuilder(
+                  animation: matrixAnimation,
+                  child: Icon(widget.icon, color: AbiliaColors.black60),
+                  builder: (context, child) => Transform(
+                    alignment: Alignment.center,
+                    transform: matrixAnimation.value,
+                    child: child,
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: widget.left
+                      ? const EdgeInsets.only(left: 22, right: 16)
+                      : const EdgeInsets.only(left: 16, right: 22),
+                  child: AnimatedBuilder(
+                    animation: intAnimation,
+                    builder: (context, _) => Text(
+                      widget.text.substring(0, intAnimation.value),
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(color: AbiliaColors.white),
+                      softWrap: false,
+                      overflow: TextOverflow.fade,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

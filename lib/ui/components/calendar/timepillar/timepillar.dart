@@ -78,11 +78,13 @@ class TimePillar extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               width: 25.0,
-                              child: Text(
-                                formatHour(hour).removeLeadingZeros(),
-                                softWrap: false,
-                                overflow: TextOverflow.visible,
-                                textAlign: TextAlign.end,
+                              child: Tts(
+                                child: Text(
+                                  formatHour(hour).removeLeadingZeros(),
+                                  softWrap: false,
+                                  overflow: TextOverflow.visible,
+                                  textAlign: TextAlign.end,
+                                ),
                               ),
                             ),
                             dots(hour),

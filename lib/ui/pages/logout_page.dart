@@ -42,9 +42,9 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
             : null,
         builder: (context, AsyncSnapshot<User> userSnapshot) => Column(
           children: <Widget>[
-            InkWell(
+            GestureDetector(
               onDoubleTap: () =>
-                  DatabaseRepository.printAll(GetIt.I<Database>()),
+                  DatabaseRepository.logAll(GetIt.I<Database>()),
               child: ProfilePicture(
                   state is AuthenticationInitialized
                       ? state.userRepository.baseUrl
@@ -52,18 +52,24 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
                   userSnapshot.data),
             ),
             SizedBox(height: 24.0),
-            Text(
-              userSnapshot.data?.name ?? '',
-              style: Theme.of(context).textTheme.headline6,
-            ),
+            if (userSnapshot.data?.name?.isNotEmpty == true)
+              Tts(
+                child: Text(
+                  userSnapshot.data.name,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ),
             SizedBox(height: 4.0),
-            Text(
-              userSnapshot.data?.username ?? '',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  .copyWith(color: AbiliaColors.black75),
-            ),
+            if (userSnapshot.data?.username?.isNotEmpty == true)
+              Tts(
+                child: Text(
+                  userSnapshot.data.username,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(color: AbiliaColors.black75),
+                ),
+              ),
           ],
         ),
       ),
@@ -75,19 +81,24 @@ class LogoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = redButtonTheme;
+    final text = Translator.of(context).translate.logout;
     return Theme(
       data: theme,
-      child: FlatButton(
-        color: theme.buttonColor,
-        key: TestKey.loggInButton,
-        child: Text(
-          Translator.of(context).translate.logout,
-          style: theme.textTheme.subtitle1.copyWith(color: AbiliaColors.white),
+      child: Tts(
+        data: text,
+        child: FlatButton(
+          color: theme.buttonColor,
+          key: TestKey.loggInButton,
+          child: Text(
+            text,
+            style:
+                theme.textTheme.subtitle1.copyWith(color: AbiliaColors.white),
+          ),
+          onPressed: () {
+            BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
+            Navigator.of(context).maybePop();
+          },
         ),
-        onPressed: () {
-          BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
-          Navigator.of(context).maybePop();
-        },
       ),
     );
   }

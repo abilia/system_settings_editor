@@ -22,18 +22,16 @@ class ConfirmActivityActionDialog extends StatelessWidget {
       onOk: () => Navigator.of(context).maybePop(true),
       child: Column(
         children: [
-          AbsorbPointer(
-            child: ActivityCard(
-              activityOccasion: activityOccasion,
-              preview: true,
-            ),
+          ActivityCard(
+            activityOccasion: activityOccasion,
+            preview: true,
           ),
           if (extraMessage != null)
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(extraMessage),
+                child: Tts(child: Text(extraMessage)),
               ),
             ),
         ],

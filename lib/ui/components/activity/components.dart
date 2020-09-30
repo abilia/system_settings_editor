@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'dart:ui' show lerpDouble;
 
 import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/abilia_icons.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -14,14 +14,20 @@ class SubHeading extends StatelessWidget {
   const SubHeading(this.data, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(
-        data,
-        style: Theme.of(context)
-            .textTheme
-            .bodyText2
-            .copyWith(color: AbiliaColors.black75),
+    return Tts.fromSemantics(
+      SemanticsProperties(
+        label: data,
+        header: true,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Text(
+          data,
+          style: Theme.of(context)
+              .textTheme
+              .bodyText2
+              .copyWith(color: AbiliaColors.black75),
+        ),
       ),
     );
   }
@@ -72,55 +78,64 @@ class PickField extends StatelessWidget {
     color: AbiliaColors.black60,
   );
   final GestureTapCallback onTap;
-  final Widget leading, label, trailing;
+  final Widget leading, trailing;
+  final Text text;
   final double heigth;
   final bool active;
   final bool errorState;
   final bool disabled;
+  final String semanticsLabel;
 
   const PickField({
+    @required this.text,
     Key key,
     this.leading,
-    this.label,
     this.trailing = trailingArrow,
     this.onTap,
     this.heigth = 56,
     this.active = true,
     this.errorState = false,
     this.disabled = false,
+    this.semanticsLabel,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: disabled ? null : onTap,
-        borderRadius: borderRadius,
-        child: Ink(
-          height: heigth,
-          decoration: errorState
-              ? whiteErrorBoxDecoration
-              : disabled
-                  ? disabledBoxDecoration
-                  : active ? whiteBoxDecoration : offBoxDecoration,
-          padding: const EdgeInsets.all(12),
-          child: Stack(
-            children: <Widget>[
-              Center(
-                child: Row(
-                  children: <Widget>[
-                    if (leading != null) leading,
-                    const SizedBox(width: 12),
-                    if (label != null) label,
-                  ],
+    return Tts.fromSemantics(
+      SemanticsProperties(
+        label: text.data.isEmpty ? semanticsLabel : text.data,
+        button: true,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: disabled ? null : onTap,
+          borderRadius: borderRadius,
+          child: Ink(
+            height: heigth,
+            decoration: errorState
+                ? whiteErrorBoxDecoration
+                : disabled
+                    ? disabledBoxDecoration
+                    : active ? whiteBoxDecoration : offBoxDecoration,
+            padding: const EdgeInsets.all(12),
+            child: Stack(
+              children: <Widget>[
+                Center(
+                  child: Row(
+                    children: <Widget>[
+                      if (leading != null) leading,
+                      const SizedBox(width: 12),
+                      if (text != null) text,
+                    ],
+                  ),
                 ),
-              ),
-              if (trailing != null)
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: trailing,
-                ),
-            ],
+                if (trailing != null)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: trailing,
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -129,7 +144,8 @@ class PickField extends StatelessWidget {
 }
 
 class RadioField<T> extends StatelessWidget {
-  final Widget child;
+  final Widget leading;
+  final Text text;
   final double heigth, width;
   final T value, groupValue;
   final ValueChanged<T> onChanged;
@@ -140,7 +156,8 @@ class RadioField<T> extends StatelessWidget {
     @required this.value,
     @required this.groupValue,
     @required this.onChanged,
-    this.child,
+    this.leading,
+    this.text,
     this.heigth = 56,
     this.width,
     this.margin = const EdgeInsets.all(8.0),
@@ -150,43 +167,59 @@ class RadioField<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final decoration =
         value == groupValue ? whiteBoxDecoration : offBoxDecoration;
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () => onChanged(value),
-        borderRadius: borderRadius,
-        child: Stack(
-          overflow: Overflow.visible,
-          children: <Widget>[
-            Ink(
-              height: heigth,
-              width: width,
-              decoration: decoration,
-              padding: margin.subtract(decoration.border.dimensions),
-              child: child,
-            ),
-            Positioned(
-              top: -6,
-              right: -6,
-              child: Container(
-                padding: const EdgeInsets.all(4.0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  shape: BoxShape.circle,
-                ),
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: AbiliaRadio(
-                    key: ObjectKey(key),
-                    value: value,
-                    groupValue: groupValue,
-                    onChanged: onChanged,
-                  ),
+    return Tts.fromSemantics(
+      SemanticsProperties(
+        label: text.data,
+        selected: value == groupValue,
+        toggled: value == groupValue,
+        inMutuallyExclusiveGroup: true,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => onChanged(value),
+          borderRadius: borderRadius,
+          child: Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Ink(
+                height: heigth,
+                width: width,
+                decoration: decoration,
+                padding: margin.subtract(decoration.border.dimensions),
+                child: Row(
+                  children: [
+                    if (leading != null) ...[
+                      leading,
+                      const SizedBox(width: 12),
+                    ],
+                    text,
+                  ],
                 ),
               ),
-            )
-          ],
+              Positioned(
+                top: -6,
+                right: -6,
+                child: Container(
+                  padding: const EdgeInsets.all(4.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: AbiliaRadio(
+                      key: ObjectKey(key),
+                      value: value,
+                      groupValue: groupValue,
+                      onChanged: onChanged,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -233,7 +266,7 @@ class CollapsableWidget extends StatelessWidget {
 }
 
 class SelectableField extends StatelessWidget {
-  final Widget label;
+  final Text text;
   final double heigth, width;
   final bool selected;
   final GestureTapCallback onTap;
@@ -242,67 +275,76 @@ class SelectableField extends StatelessWidget {
     Key key,
     @required this.selected,
     @required this.onTap,
-    @required this.label,
+    @required this.text,
     this.heigth = 48,
     this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: borderRadius,
-        child: Stack(
-          overflow: Overflow.visible,
-          children: <Widget>[
-            Ink(
-              height: heigth,
-              width: width,
-              decoration: selected ? whiteBoxDecoration : offBoxDecoration,
-              padding:
-                  const EdgeInsets.only(left: 12.0, top: 10.0, right: 22.0),
-              child: label,
-            ),
-            Positioned(
-              top: -6,
-              right: -6,
-              child: Container(
-                padding: const EdgeInsets.all(4.0),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    shape: BoxShape.circle),
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: AnimatedSwitcher(
-                    duration: 300.milliseconds(),
-                    transitionBuilder: (child, animation) => child is Container
-                        ? child
-                        : RotationTransition(
-                            turns: animation,
-                            child: ScaleTransition(
-                              child: child,
-                              scale: animation,
+    return Tts.fromSemantics(
+      SemanticsProperties(
+        label: text.data,
+        selected: selected,
+        toggled: selected,
+        inMutuallyExclusiveGroup: true,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: borderRadius,
+          child: Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Ink(
+                height: heigth,
+                width: width,
+                decoration: selected ? whiteBoxDecoration : offBoxDecoration,
+                padding:
+                    const EdgeInsets.only(left: 12.0, top: 10.0, right: 22.0),
+                child: text,
+              ),
+              Positioned(
+                top: -6,
+                right: -6,
+                child: Container(
+                  padding: const EdgeInsets.all(4.0),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      shape: BoxShape.circle),
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: AnimatedSwitcher(
+                      duration: 300.milliseconds(),
+                      transitionBuilder: (child, animation) =>
+                          child is Container
+                              ? child
+                              : RotationTransition(
+                                  turns: animation,
+                                  child: ScaleTransition(
+                                    child: child,
+                                    scale: animation,
+                                  ),
+                                ),
+                      child: selected
+                          ? Icon(
+                              AbiliaIcons.radiocheckbox_selected,
+                              color: AbiliaColors.green,
+                            )
+                          : Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: border,
+                              ),
                             ),
-                          ),
-                    child: selected
-                        ? Icon(
-                            AbiliaIcons.radiocheckbox_selected,
-                            color: AbiliaColors.green,
-                          )
-                        : Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: border,
-                            ),
-                          ),
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

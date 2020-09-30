@@ -1130,13 +1130,12 @@ text''';
     });
   });
 
+  final hourInputFinder = find.byKey(TestKey.hourTextInput);
+  final minInputFinder = find.byKey(TestKey.minTextInput);
+  final pmRadioFinder = find.byKey(ObjectKey(TestKey.pmRadioField));
+  final amRadioFinder = find.byKey(ObjectKey(TestKey.amRadioField));
+  final removeEndTimeFinder = find.byIcon(AbiliaIcons.delete_all_clear);
   group('Edit time', () {
-    final hourInputFinder = find.byKey(TestKey.hourTextInput);
-    final minInputFinder = find.byKey(TestKey.minTextInput);
-    final removeEndTimeFinder = find.byIcon(AbiliaIcons.delete_all_clear);
-    final pmRadioFinder = find.byKey(ObjectKey(TestKey.pmRadioField));
-    final amRadioFinder = find.byKey(ObjectKey(TestKey.amRadioField));
-
     testWidgets('Start time shows start time', (WidgetTester tester) async {
       // Arrange
       final acivity = Activity.createNew(
@@ -1745,6 +1744,434 @@ text''';
       await tester.pumpAndSettle();
 
       expect(find.text(translate.startTimeBeforeNow), findsNothing);
+    });
+  });
+
+  group('tts', () {
+    setUp(() {
+      GetItInitializer()
+        ..flutterTts = MockFlutterTts()
+        ..init();
+    });
+    testWidgets('title', (WidgetTester tester) async {
+      final name = 'new name of a activity';
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byKey(TestKey.editTitleTextFormField),
+          exact: translate.name);
+
+      await tester.enterText_(find.byKey(TestKey.editTitleTextFormField), name);
+
+      await tester.verifyTts(find.byKey(TestKey.editTitleTextFormField),
+          exact: name);
+    });
+
+    testWidgets('image', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byKey(TestKey.addPicture),
+          exact: translate.picture);
+    });
+
+    testWidgets('date', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byKey(TestKey.datePicker),
+          contains: translate.today);
+    });
+
+    testWidgets('start time', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert -- that the activities start time shows
+      await tester.verifyTts(startTimeFieldFinder, exact: translate.startTime);
+
+      // Act -- Change  start time
+      await tester.tap(startTimeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.enterText(hourInputFinder, '9');
+      await tester.enterText(minInputFinder, '33');
+      await tester.tap(amRadioFinder);
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(
+        amRadioFinder,
+        exact: translate.am,
+      );
+      await tester.verifyTts(
+        pmRadioFinder,
+        exact: translate.pm,
+      );
+      await tester.tap(okFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- that the activities new start tts
+      await tester.verifyTts(
+        startTimeFieldFinder,
+        exact: '9:33 AM',
+      );
+    });
+
+    testWidgets('time input', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          givenActivity: Activity.createNew(
+              title: '', startTime: DateTime(2000, 11, 22, 11, 55)),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert -- that the activities start time shows
+      await tester.verifyTts(startTimeFieldFinder, exact: translate.startTime);
+
+      // Act -- Change  start time
+      await tester.tap(startTimeFieldFinder);
+
+      await tester.verifyTts(
+        hourInputFinder,
+        exact: '11',
+      );
+      await tester.verifyTts(
+        minInputFinder,
+        exact: '55',
+      );
+    },
+        skip:
+            true); // 2020-09-28 Not possible to add GestureDetector over text field
+
+    testWidgets('end time', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert -- that the activities endtime time tts
+      await tester.verifyTts(endTimeFieldFinder, exact: translate.endTime);
+
+      // Act -- Change  start time
+      await tester.tap(endTimeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.enterText(hourInputFinder, '11');
+      await tester.enterText(minInputFinder, '22');
+      await tester.tap(pmRadioFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(okFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- that the activities new start tts
+      await tester.verifyTts(
+        endTimeFieldFinder,
+        exact: '11:22 PM',
+      );
+
+      // Act -- remove end time tts
+      await tester.tap(endTimeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.verifyTts(removeEndTimeFinder, exact: translate.noEndTime);
+    });
+
+    testWidgets('fullday', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byKey(TestKey.fullDaySwitch),
+          exact: translate.fullDay);
+    });
+
+    testWidgets('category', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.scrollDown();
+
+      await tester.verifyTts(find.byKey(TestKey.rightCategoryRadio),
+          exact: translate.right);
+      await tester.verifyTts(find.byKey(TestKey.leftCategoryRadio),
+          exact: translate.left);
+    });
+
+    testWidgets('checkable', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.scrollDown();
+
+      await tester.verifyTts(find.byKey(TestKey.checkableSwitch),
+          exact: translate.checkable);
+    });
+
+    testWidgets('delete after', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.scrollDown();
+
+      await tester.verifyTts(find.byKey(TestKey.deleteAfterSwitch),
+          exact: translate.deleteAfter);
+    });
+
+    testWidgets('availible for', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.scrollDown();
+
+      await tester.verifyTts(find.byKey(TestKey.availibleFor),
+          exact: translate.meAndSupportPersons);
+
+      await tester.tap(find.byKey(TestKey.availibleFor));
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byKey(TestKey.onlyMe),
+          exact: translate.onlyMe);
+    });
+
+    testWidgets('reminders', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+
+      await tester.verifyTts(find.byIcon(AbiliaIcons.handi_reminder),
+          exact: translate.reminders);
+
+      await tester.tap(find.byIcon(AbiliaIcons.handi_reminder));
+      await tester.pumpAndSettle();
+
+      final reminders = [
+        5.minutes(),
+        15.minutes(),
+        30.minutes(),
+        1.hours(),
+        2.hours(),
+        1.days(),
+      ].map((r) => r.toReminderString(translate));
+
+      for (final t in reminders) {
+        await tester.verifyTts(find.text(t), exact: t);
+      }
+    });
+
+    testWidgets('alarms', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+
+      await tester.verifyTts(find.byKey(TestKey.alarmAtStartSwitch),
+          exact: translate.alarmOnlyAtStartTime);
+      await tester.verifyTts(find.byKey(TestKey.selectAlarm),
+          exact: translate.alarmAndVibration);
+
+      await tester.tap(find.byKey(TestKey.selectAlarm));
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byKey(TestKey.vibrationAlarm),
+          exact: translate.vibration);
+    });
+
+    testWidgets('recurrance', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.goToRecurrenceTab();
+      await tester.verifyTts(find.byIcon(AbiliaIcons.day),
+          exact: translate.once);
+      await tester.tap(find.byIcon(AbiliaIcons.day));
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byIcon(AbiliaIcons.week),
+          exact: translate.weekly);
+      await tester.verifyTts(find.byIcon(AbiliaIcons.month),
+          exact: translate.monthly);
+      await tester.verifyTts(find.byIcon(AbiliaIcons.basic_activity),
+          exact: translate.yearly);
+
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byType(EndDateWidget),
+          exact: translate.noEndDate);
+    });
+
+    testWidgets('error view', (WidgetTester tester) async {
+      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
+
+      // Act press submit
+      await tester.pumpWidget(
+          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+      await tester.pumpAndSettle();
+
+      await tester.tap(submitButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert error message
+      await tester.verifyTts(find.byKey(TestKey.errorViewDialog),
+          exact: translate.missingTitleOrImageAndStartTime);
+    });
+
+    group('info items tts', () {
+      testWidgets('info item', (WidgetTester tester) async {
+        // Arrange
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            EditActivityPage(day: today),
+            newActivity: true,
+          ),
+        );
+        await tester.pumpAndSettle();
+        await tester.goToInfoItemTab();
+        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.pumpAndSettle();
+
+        await tester.verifyTts(find.byKey(TestKey.infoItemNoneRadio),
+            exact: translate.infoTypeNone);
+        await tester.verifyTts(find.byKey(TestKey.infoItemChecklistRadio),
+            exact: translate.infoTypeChecklist);
+        await tester.verifyTts(find.byKey(TestKey.infoItemNoteRadio),
+            exact: translate.infoTypeNote);
+      });
+
+      testWidgets('checklist', (WidgetTester tester) async {
+        // Arrange
+        when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
+        final title1 = 'listtitle1';
+        final item1Name = 'Item 1 name';
+        when(mockSortableBloc.state).thenReturn(
+          SortablesLoaded(
+            sortables: [
+              Sortable.createNew<ChecklistData>(
+                  data: ChecklistData(Checklist(
+                      name: title1,
+                      fileId: 'fileid1',
+                      questions: [
+                    Question(id: 0, name: item1Name),
+                    Question(id: 1, name: '2', fileId: '2222')
+                  ]))),
+            ],
+          ),
+        );
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            EditActivityPage(day: today),
+            newActivity: true,
+          ),
+        );
+        await tester.pumpAndSettle();
+        await tester.goToInfoItemTab();
+        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byIcon(AbiliaIcons.show_text));
+        await tester.pumpAndSettle();
+        await tester.verifyTts(find.byType(LibraryChecklist), exact: title1);
+        await tester.tap(find.byType(LibraryChecklist));
+        await tester.pumpAndSettle();
+        await tester.verifyTts(find.text(item1Name), exact: item1Name);
+        await tester.verifyTts(find.byIcon(AbiliaIcons.new_icon),
+            exact: translate.addNew);
+      });
+    });
+
+    testWidgets('note', (WidgetTester tester) async {
+      final name = 'Rigel';
+      final content =
+          'is a blue supergiant star in the constellation of Orion, approximately 860 light-years (260 pc) from Earth. It is the brightest and most massive component of a star system of at least four stars that appear as a single blue-white point of light to the naked eye. A star of spectral type B8Ia, Rigel is calculated to be anywhere from 61,500 to 363,000 times as luminous as the Sun, and 18 to 24 times as massive. ';
+      when(mockSortableBloc.state).thenReturn(
+        SortablesLoaded(
+          sortables: [
+            Sortable.createNew<NoteData>(
+              data: NoteData(
+                name: name,
+                text: content,
+              ),
+            ),
+          ],
+        ),
+      );
+
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.show_text));
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.text(content), exact: content);
+      await tester.tap(find.text(content));
+      await tester.pumpAndSettle();
+      await tester.verifyTts(find.text(content), exact: content);
+      await tester.tap(find.text(content));
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byType(RemoveButton), exact: translate.clear);
     });
   });
 }

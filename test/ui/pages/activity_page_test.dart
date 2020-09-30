@@ -86,6 +86,7 @@ void main() {
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
+      ..flutterTts = MockFlutterTts()
       ..init();
   });
   Future<void> navigateToActivityPage(WidgetTester tester) async {
@@ -313,10 +314,11 @@ void main() {
     });
   });
 
+  final reminder5MinText = 5.minutes().toReminderString(translate);
+  final reminder5MinFinder = find.text(reminder5MinText);
+  final reminderDayText = 1.days().toReminderString(translate);
+  final reminderDayFinder = find.text(reminderDayText);
   group('Change reminder', () {
-    final reminder5MinFinder =
-        find.text(5.minutes().toReminderString(translate));
-    final reminderDayFinder = find.text(1.days().toReminderString(translate));
     final remindersAllSelected =
         find.byIcon(AbiliaIcons.radiocheckbox_selected);
     final reminderField = find.byType(Reminders);
@@ -1209,6 +1211,218 @@ void main() {
       );
       await navigateToActivityPage(tester);
       expect(activityInfoSideDotsFinder, findsNothing);
+    });
+  });
+  group('tts', () {
+    testWidgets('heading', (WidgetTester tester) async {
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+          Future.value(<Activity>[
+            Activity.createNew(title: 'title', startTime: startTime)
+          ]));
+
+      await navigateToActivityPage(tester);
+      await tester.verifyTts(find.byType(AppBar), contains: 'Wednesday');
+    });
+
+    testWidgets('title', (WidgetTester tester) async {
+      final title = 'generic title';
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
+          <Activity>[Activity.createNew(title: title, startTime: startTime)]));
+
+      await navigateToActivityPage(tester);
+      await tester.verifyTts(find.text(title), exact: title);
+    });
+
+    testWidgets('start time', (WidgetTester tester) async {
+      final expectedTts = '11:11 AM';
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+          Future.value(<Activity>[
+            Activity.createNew(title: 'title', startTime: startTime)
+          ]));
+
+      await navigateToActivityPage(tester);
+      await tester.verifyTts(find.byKey(TestKey.startTime), exact: expectedTts);
+    });
+
+    testWidgets('end time', (WidgetTester tester) async {
+      final expectedTts = '3:11 PM';
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+                title: 'title',
+                startTime: startTime.add(2.hours()),
+                duration: 2.hours())
+          ],
+        ),
+      );
+
+      await navigateToActivityPage(tester);
+      await tester.verifyTts(find.byKey(TestKey.endTime), exact: expectedTts);
+    });
+
+    testWidgets('note', (WidgetTester tester) async {
+      final noteText =
+          '''Ceasarsallad - Kyckling, bacon, sallad, gurka, tomat, rödlök, brödkrutonger, Grana Padano samt ceasardressing ((G), (L))
+Asien sweet and SourBowl – Sesam marinerad kycklingfile, plocksallad, picklade morötter, risnudlar, sojabönor toppas med rostade sesamfrön och koriander, chili och apelsindressing
+Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade morötter, risnudlar, sojabönor toppas med rostade sesamfrön och koriander, chili och apelsindressing
+''';
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+                title: 'title',
+                startTime: startTime,
+                infoItem: NoteInfoItem(noteText))
+          ],
+        ),
+      );
+
+      await navigateToActivityPage(tester);
+      await tester.verifyTts(find.byType(NoteBlock), exact: noteText);
+    });
+
+    testWidgets('checklist', (WidgetTester tester) async {
+      final item1 = 'first thing on the list';
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+              title: 'title',
+              startTime: startTime,
+              infoItem: Checklist(questions: [Question(name: item1)]),
+            )
+          ],
+        ),
+      );
+
+      await navigateToActivityPage(tester);
+      await tester.verifyTts(find.byType(QuestionView), exact: item1);
+    });
+
+    testWidgets('timepillar left to start', (WidgetTester tester) async {
+      final expectedTts = '2 h\n2 min';
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+                title: 'title',
+                startTime: startTime.add(2.hours() + 2.minutes()),
+                duration: 2.hours())
+          ],
+        ),
+      );
+
+      await navigateToActivityPage(tester);
+      await tester.verifyTts(find.byKey(TestKey.sideDotsTimeText),
+          contains: expectedTts);
+    });
+
+    testWidgets('check button', (WidgetTester tester) async {
+      final title = 'just some title';
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+                title: title, startTime: startTime, checkable: true),
+          ],
+        ),
+      );
+
+      await navigateToActivityPage(tester);
+      await tester.verifyTts(checkButtonFinder, exact: translate.check);
+      await tester.tap(checkButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.verifyTts(find.byType(ActivityCard), contains: title);
+      await tester.tap(okInkWellFinder);
+      await tester.pumpAndSettle();
+      await tester.verifyTts(unCheckButtonFinder, exact: translate.uncheck);
+    });
+
+    testWidgets('delete activity', (WidgetTester tester) async {
+      final title = 'just some title';
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+                title: title, startTime: startTime, checkable: true),
+          ],
+        ),
+      );
+
+      await navigateToActivityPage(tester);
+      await tester.tap(deleteButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.verifyTts(find.byType(ActivityCard), contains: title);
+      await tester.verifyTts(find.text(translate.deleteActivity),
+          exact: translate.deleteActivity);
+    });
+
+    testWidgets('alarms', (WidgetTester tester) async {
+      final title = 'just some title';
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+              checkable: true,
+              alarmType: ALARM_VIBRATION,
+            ),
+          ],
+        ),
+      );
+
+      await navigateToActivityPage(tester);
+      // Act -- tap reminder button
+      await tester.tap(alarmButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- tts
+      await tester.verifyTts(
+        find.byIcon(AbiliaIcons.handi_alarm_vibration),
+        exact: translate.alarmAndVibration,
+      );
+      await tester.verifyTts(
+        find.byKey(TestKey.vibrationAlarm),
+        exact: translate.vibration,
+      );
+      await tester.verifyTts(
+        find.byIcon(AbiliaIcons.handi_no_alarm_vibration),
+        exact: translate.noAlarm,
+      );
+
+      await tester.verifyTts(
+        find.byKey(TestKey.alarmAtStartSwitch),
+        exact: translate.alarmOnlyAtStartTime,
+      );
+    });
+
+    testWidgets('reminders', (WidgetTester tester) async {
+      final title = 'just some title';
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+              checkable: true,
+              alarmType: ALARM_VIBRATION,
+            ),
+          ],
+        ),
+      );
+
+      await navigateToActivityPage(tester);
+      // Act -- tap reminder button
+      // Act -- tap reminder button
+      await tester.tap(reminderButtonFinder);
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(reminderSwitchFinder, exact: translate.reminders);
+
+      await tester.verifyTts(reminder5MinFinder, exact: reminder5MinText);
+      await tester.verifyTts(reminderDayFinder, exact: reminderDayText);
     });
   });
 }

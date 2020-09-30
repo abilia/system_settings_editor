@@ -8,6 +8,7 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -19,6 +20,7 @@ void main() {
   MockSettingsDb mockSettingsDb;
   final TestWidgetsFlutterBinding binding =
       TestWidgetsFlutterBinding.ensureInitialized();
+  final translate = Locales.language.values.first;
 
   setUp(() {
     final initTime = DateTime(2020, 07, 23, 11, 29);
@@ -54,14 +56,10 @@ void main() {
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
+      ..flutterTts = MockFlutterTts()
       ..init();
   });
 
-  testWidgets('Settings view for timepillar shows',
-      (WidgetTester tester) async {
-    await tester.goToTimePillarSettings();
-    expect(find.byType(TimePillarSettings), findsOneWidget);
-  });
   testWidgets('Settings view for timepillar shows',
       (WidgetTester tester) async {
     await tester.goToTimePillarSettings();
@@ -162,6 +160,23 @@ void main() {
     expect(find.byType(TimePillarCalendar), findsOneWidget);
     expect(find.byType(SideDots), findsNothing);
     expect(find.byType(SideTime), findsWidgets);
+  });
+
+  testWidgets('tts', (WidgetTester tester) async {
+    await tester.goToTimePillarSettings();
+
+    await tester.verifyTts(find.byIcon(AbiliaIcons.options),
+        exact: translate.activityDuration);
+    await tester.tap(find.byIcon(AbiliaIcons.options));
+    await tester.pumpAndSettle();
+    await tester.verifyTts(find.byIcon(AbiliaIcons.options),
+        exact: translate.dots);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.flarp),
+        exact: translate.edge);
+    await tester.verifyTts(find.text(translate.activityDuration),
+        exact: translate.activityDuration);
+    await tester.verifyTts(find.text(translate.preview),
+        exact: translate.preview);
   });
 }
 

@@ -61,80 +61,89 @@ class ActivityTimepillarCard extends StatelessWidget {
           right: right ? null : column * totalWith,
           left: right ? column * totalWith : null,
           top: top,
-          child: Stack(
-            textDirection: right ? TextDirection.ltr : TextDirection.rtl,
-            children: <Widget>[
-              if (settings.dotsInTimepillar)
-                SideDots(
-                  startTime:
-                      startTime.isBefore(currentDay) ? currentDay : startTime,
-                  endTime: endTime.isAfter(currentDay.nextDay())
-                      ? currentDay.nextDay()
-                      : endTime,
-                  dots: dots,
-                )
-              else
-                SideTime(
-                  occasion: activityOccasion.occasion,
-                  category: activityOccasion.activity.category,
-                  height: dotHeight +
-                      (dotHeight > 0
-                          ? decoration.border.dimensions.vertical
-                          : 0),
-                ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (innerContext) =>
-                            ActivityPage(occasion: activityOccasion),
-                        settings: RouteSettings(
-                            name: 'ActivityPage $activityOccasion')),
-                  );
-                },
-                child: Container(
-                  margin: right
-                      ? const EdgeInsets.only(left: dotSize + hourPadding)
-                      : const EdgeInsets.only(right: dotSize + hourPadding),
-                  decoration: decoration,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: width,
-                      minWidth: width,
-                      minHeight: minHeight,
-                      maxHeight: height,
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          if (hasTitle)
-                            Text(
-                              activity.title,
-                              overflow: TextOverflow.visible,
-                              textAlign: TextAlign.center,
-                              maxLines: maxTitleLines,
-                              style: textStyle,
-                            ),
-                          if (hasImage || signedOff)
-                            ActivityImage.fromActivityOccasion(
-                              activityOccasion: activityOccasion,
-                              size: imageSize,
-                            )
-                          else if (past)
-                            SizedBox(
-                              width: crossWidth,
-                              height: height - crossVerticalPadding,
-                              child: const CrossOver(),
-                            )
-                        ],
+          child: Tts.fromSemantics(
+            SemanticsProperties(
+              button: true,
+              image: hasImage,
+              label: hasTitle
+                  ? activity.title
+                  : hourAndMinuteFormat(context)(activityOccasion.start),
+            ),
+            child: Stack(
+              textDirection: right ? TextDirection.ltr : TextDirection.rtl,
+              children: <Widget>[
+                if (settings.dotsInTimepillar)
+                  SideDots(
+                    startTime:
+                        startTime.isBefore(currentDay) ? currentDay : startTime,
+                    endTime: endTime.isAfter(currentDay.nextDay())
+                        ? currentDay.nextDay()
+                        : endTime,
+                    dots: dots,
+                  )
+                else
+                  SideTime(
+                    occasion: activityOccasion.occasion,
+                    category: activityOccasion.activity.category,
+                    height: dotHeight +
+                        (dotHeight > 0
+                            ? decoration.border.dimensions.vertical
+                            : 0),
+                  ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (innerContext) =>
+                              ActivityPage(occasion: activityOccasion),
+                          settings: RouteSettings(
+                              name: 'ActivityPage $activityOccasion')),
+                    );
+                  },
+                  child: Container(
+                    margin: right
+                        ? const EdgeInsets.only(left: dotSize + hourPadding)
+                        : const EdgeInsets.only(right: dotSize + hourPadding),
+                    decoration: decoration,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: width,
+                        minWidth: width,
+                        minHeight: minHeight,
+                        maxHeight: height,
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            if (hasTitle)
+                              Text(
+                                activity.title,
+                                overflow: TextOverflow.visible,
+                                textAlign: TextAlign.center,
+                                maxLines: maxTitleLines,
+                                style: textStyle,
+                              ),
+                            if (hasImage || signedOff)
+                              ActivityImage.fromActivityOccasion(
+                                activityOccasion: activityOccasion,
+                                size: imageSize,
+                              )
+                            else if (past)
+                              SizedBox(
+                                width: crossWidth,
+                                height: height - crossVerticalPadding,
+                                child: const CrossOver(),
+                              )
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

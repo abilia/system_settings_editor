@@ -32,13 +32,23 @@ class TimeRow extends StatelessWidget {
                   text: Translator.of(context).translate.fullDay,
                 )
               else if (!activity.hasEndTime)
-                _timeText(context, date: activityDay.start, now: now)
+                _timeText(
+                  context,
+                  date: activityDay.start,
+                  now: now,
+                  key: TestKey.startTime,
+                )
               else ...[
                 Expanded(
                   child: Row(
                     children: [
                       Spacer(),
-                      _timeText(context, date: activityDay.start, now: now),
+                      _timeText(
+                        context,
+                        date: activityDay.start,
+                        now: now,
+                        key: TestKey.startTime,
+                      ),
                     ],
                   ),
                 ),
@@ -54,6 +64,7 @@ class TimeRow extends StatelessWidget {
                         context,
                         date: activityDay.end,
                         now: now,
+                        key: TestKey.endTime,
                       ),
                       Spacer(),
                     ],
@@ -71,10 +82,13 @@ class TimeRow extends StatelessWidget {
     BuildContext context, {
     @required DateTime date,
     @required DateTime now,
+    @required Key key,
   }) =>
       _TimeBox(
-          text: hourAndMinuteFormat(context)(date),
-          occasion: date.occasion(now));
+        key: key,
+        text: hourAndMinuteFormat(context)(date),
+        occasion: date.occasion(now),
+      );
 }
 
 class _TimeBox extends StatelessWidget {
@@ -92,33 +106,35 @@ class _TimeBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var past = false, current = true;
     final textStyle = Theme.of(context)
         .textTheme
         .headline6
         .copyWith(color: past ? AbiliaColors.white140 : AbiliaColors.black);
     final boxDecoration = _decoration;
-    return Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        AnimatedContainer(
-          duration: ActivityInfo.animationDuration,
-          padding: _padding,
-          constraints: const BoxConstraints(minWidth: 92.0, minHeight: 52.0),
-          decoration: boxDecoration,
-          child: Center(
-            child: Text(
-              text,
-              style: textStyle,
-              textAlign: TextAlign.center,
+    return Tts(
+      data: text,
+      child: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          AnimatedContainer(
+            duration: ActivityInfo.animationDuration,
+            padding: _padding,
+            constraints: const BoxConstraints(minWidth: 92.0, minHeight: 52.0),
+            decoration: boxDecoration,
+            child: Center(
+              child: Text(
+                text,
+                style: textStyle,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
-        ),
-        AnimatedOpacity(
-            opacity: past ? 1.0 : 0.0,
-            duration: ActivityInfo.animationDuration,
-            child: const CrossOver(fallbackHeight: 38, fallbackWidth: 64)),
-      ],
+          AnimatedOpacity(
+              opacity: past ? 1.0 : 0.0,
+              duration: ActivityInfo.animationDuration,
+              child: const CrossOver(fallbackHeight: 38, fallbackWidth: 64)),
+        ],
+      ),
     );
   }
 

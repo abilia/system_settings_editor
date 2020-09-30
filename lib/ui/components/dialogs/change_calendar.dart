@@ -27,7 +27,7 @@ class ChangeCalendarDialog extends StatelessWidget {
                   child: PickField(
                     key: TestKey.timePillarButton,
                     leading: Icon(AbiliaIcons.timeline),
-                    label: Text(
+                    text: Text(
                       translate.timePillarView,
                       style: abiliaTheme.textTheme.bodyText1,
                     ),
@@ -58,7 +58,7 @@ class ChangeCalendarDialog extends StatelessWidget {
             PickField(
               key: TestKey.agendaListButton,
               leading: Icon(AbiliaIcons.list_order),
-              label: Text(
+              text: Text(
                 translate.listView,
                 style: abiliaTheme.textTheme.bodyText1,
               ),

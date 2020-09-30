@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/getit.dart';
 
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
@@ -44,6 +45,10 @@ void main() {
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
     initializeDateFormatting();
+
+    GetItInitializer()
+      ..flutterTts = MockFlutterTts()
+      ..init();
   });
 
   group('ActivityInfoSideDots', () {
@@ -396,6 +401,31 @@ void main() {
       final dots = tester.widgetList<MiniDot>(find.byType(MiniDot)).toList();
       expect(dots, hasLength(5));
       expect(dots.where((d) => d.visible), hasLength(1), reason: '1 mini dot');
+    });
+
+    testWidgets('tts', (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(
+        title: 'null',
+        startTime: startTime.add(37.minutes()),
+        duration: 2.hours(),
+      );
+      final expectedText = '''37 min
+''';
+
+      // Act
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          ActivityInfoSideDots.from(
+            activity: activity,
+            day: day,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      await tester.verifyTts(find.text(expectedText), exact: expectedText);
     });
   });
 }

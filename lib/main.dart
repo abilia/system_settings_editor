@@ -20,6 +20,7 @@ import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:seagull/tts/flutter_tts.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/background/all.dart';
@@ -55,6 +56,7 @@ Future<void> initServices() async {
     ..userDb = userDb
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
+    ..flutterTts = await flutterTts(currentLocale)
     ..init();
 }
 

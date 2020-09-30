@@ -23,16 +23,11 @@ class SelectInfoTypeDialog extends StatelessWidget {
             groupValue: infoItemType,
             onChanged: Navigator.of(context).maybePop,
             value: NoInfoItem,
-            child: Row(
-              children: <Widget>[
-                const Icon(
-                  AbiliaIcons.information,
-                  size: smallIconSize,
-                ),
-                const SizedBox(width: 12),
-                Text(translate.infoTypeNone),
-              ],
+            leading: const Icon(
+              AbiliaIcons.information,
+              size: smallIconSize,
             ),
+            text: Text(translate.infoTypeNone),
           ),
           SizedBox(height: 8.0),
           RadioField(
@@ -40,16 +35,11 @@ class SelectInfoTypeDialog extends StatelessWidget {
             groupValue: infoItemType,
             onChanged: Navigator.of(context).maybePop,
             value: Checklist,
-            child: Row(
-              children: <Widget>[
-                const Icon(
-                  AbiliaIcons.ok,
-                  size: smallIconSize,
-                ),
-                const SizedBox(width: 12),
-                Text(translate.infoTypeChecklist),
-              ],
+            leading: const Icon(
+              AbiliaIcons.ok,
+              size: smallIconSize,
             ),
+            text: Text(translate.infoTypeChecklist),
           ),
           SizedBox(height: 8.0),
           RadioField(
@@ -57,16 +47,11 @@ class SelectInfoTypeDialog extends StatelessWidget {
             groupValue: infoItemType,
             onChanged: Navigator.of(context).maybePop,
             value: NoteInfoItem,
-            child: Row(
-              children: <Widget>[
-                const Icon(
-                  AbiliaIcons.edit,
-                  size: smallIconSize,
-                ),
-                const SizedBox(width: 12),
-                Text(translate.infoTypeNote),
-              ],
+            leading: const Icon(
+              AbiliaIcons.edit,
+              size: smallIconSize,
             ),
+            text: Text(translate.infoTypeNote),
           ),
         ],
       ),

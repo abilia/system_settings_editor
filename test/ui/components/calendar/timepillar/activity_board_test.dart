@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -25,6 +26,9 @@ void main() {
     stream = streamController.stream;
     mockSettingsDb = MockSettingsDb();
     when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
+    GetItInitializer()
+      ..flutterTts = MockFlutterTts()
+      ..init();
   });
 
   Widget multiWrap(List<ActivityOccasion> activityOccasions,
@@ -77,6 +81,21 @@ void main() {
     );
     expect(find.text(title), findsOneWidget);
   });
+
+  testWidgets('tts', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      wrap(
+        ActivityOccasion.forTest(
+          Activity.createNew(
+            title: title,
+            startTime: startTime,
+          ),
+        ),
+      ),
+    );
+    await tester.verifyTts(find.text(title), exact: title);
+  });
+
   group('position', () {
     testWidgets('Has same horizontal position', (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);

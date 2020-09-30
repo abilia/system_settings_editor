@@ -20,15 +20,15 @@ class ImageArchive extends StatelessWidget {
           children: currentFolderContent.map((sortable) {
             return sortable.isGroup
                 ? LibraryFolder(
-                  title: sortable.data.name,
-                  fileId: sortable.data.fileId,
-                  filePath: sortable.data.icon,
-                  onTap: () {
-                    BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(
-                            context)
-                        .add(FolderChanged(sortable.id));
-                  },
-                )
+                    title: sortable.data.name,
+                    fileId: sortable.data.fileId,
+                    filePath: sortable.data.icon,
+                    onTap: () {
+                      BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(
+                              context)
+                          .add(FolderChanged(sortable.id));
+                    },
+                  )
                 : ArchiveImage(imageArchiveData: sortable.data);
           }).toList(),
         );
@@ -46,15 +46,18 @@ class ArchiveImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final imageHeight = 84.0;
     final imageWidth = 84.0;
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: BlocBuilder<SortableArchiveBloc<ImageArchiveData>,
-              SortableArchiveState<ImageArchiveData>>(
-          builder: (context, archiveState) {
-        final imageId = imageArchiveData.fileId;
-        final name = imageArchiveData.name;
-        final iconPath = imageArchiveData.file;
-        return Material(
+    final name = imageArchiveData.name;
+    final imageId = imageArchiveData.fileId;
+    final iconPath = imageArchiveData.file;
+    return Tts.fromSemantics(
+      SemanticsProperties(
+        label: imageArchiveData.name,
+        image: imageArchiveData.fileId != null || imageArchiveData.file != null,
+        button: true,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Material(
           type: MaterialType.transparency,
           child: InkWell(
             onTap: () async {
@@ -104,8 +107,8 @@ class ArchiveImage extends StatelessWidget {
               ),
             ),
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }

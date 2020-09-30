@@ -43,7 +43,6 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
 }
 
 class NameAndPictureWidget extends StatelessWidget {
-  static const imageSize = 84.0, padding = 4.0;
   final String imageFileId;
   final String imageFilePath;
   final File newImage;
@@ -68,87 +67,17 @@ class NameAndPictureWidget extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
-    final imageClick = () async {
-      final selectedImage = await showViewDialog<SelectedImage>(
-        context: context,
-        builder: (_) => MultiBlocProvider(
-          providers: [
-            BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
-              create: (_) => SortableArchiveBloc<ImageArchiveData>(
-                sortableBloc: BlocProvider.of<SortableBloc>(context),
-              ),
-            ),
-            BlocProvider<UserFileBloc>.value(
-              value: BlocProvider.of<UserFileBloc>(context),
-            ),
-          ],
-          child: SelectPictureDialog(previousImage: imageFileId),
-        ),
-      );
-      if (selectedImage != null && onImageSelected != null) {
-        if (selectedImage.newImage != null) {
-          BlocProvider.of<UserFileBloc>(context).add(
-            ImageAdded(
-              selectedImage.id,
-              selectedImage.path,
-              selectedImage.newImage,
-            ),
-          );
-          BlocProvider.of<SortableBloc>(context).add(
-            ImageArchiveImageAdded(
-              selectedImage.id,
-              selectedImage.newImage.path,
-            ),
-          );
-        }
-        onImageSelected(selectedImage);
-      }
-    };
     return Material(
       type: MaterialType.transparency,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SubHeading(translator.picture),
-              if ((imageFileId?.isNotEmpty ?? false) ||
-                  (imageFilePath?.isNotEmpty ?? false))
-                InkWell(
-                  onTap: imageClick,
-                  child: FadeInCalendarImage(
-                    height: imageSize,
-                    width: imageSize,
-                    imageFileId: imageFileId,
-                    imageFilePath: imageFilePath,
-                    imageFile: newImage,
-                  ),
-                )
-              else
-                SizedBox(
-                  width: imageSize,
-                  height: imageSize,
-                  child: LinedBorder(
-                    key: TestKey.addPicture,
-                    padding: const EdgeInsets.all(padding),
-                    errorState: errorState,
-                    child: Container(
-                      decoration: whiteNoBorderBoxDecoration,
-                      width: imageSize - padding,
-                      height: imageSize - padding,
-                      child: const Icon(
-                        AbiliaIcons.add_photo,
-                        size: 32,
-                        color: AbiliaColors.black75,
-                      ),
-                    ),
-                    onTap: imageClick,
-                  ),
-                ),
-            ],
+          SelectPictureWidget(
+            imageFileId: imageFileId,
+            imageFilePath: imageFilePath,
+            newImage: newImage,
+            onImageSelected: onImageSelected,
+            errorState: errorState,
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -163,6 +92,116 @@ class NameAndPictureWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class SelectPictureWidget extends StatefulWidget {
+  static const imageSize = 84.0, padding = 4.0;
+  final String imageFileId;
+  final String imageFilePath;
+  final File newImage;
+  final void Function(SelectedImage) onImageSelected;
+  final bool errorState;
+
+  const SelectPictureWidget({
+    Key key,
+    @required this.imageFileId,
+    @required this.imageFilePath,
+    @required this.newImage,
+    @required this.onImageSelected,
+    @required this.errorState,
+  }) : super(key: key);
+
+  @override
+  _SelectPictureWidgetState createState() => _SelectPictureWidgetState();
+}
+
+class _SelectPictureWidgetState extends State<SelectPictureWidget> {
+  @override
+  Widget build(BuildContext context) {
+    final heading = Translator.of(context).translate.picture;
+    return Tts.fromSemantics(
+      SemanticsProperties(button: true, label: heading),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SubHeading(heading),
+          if ((widget.imageFileId?.isNotEmpty ?? false) ||
+              (widget.imageFilePath?.isNotEmpty ?? false))
+            InkWell(
+              onTap: imageClick,
+              child: FadeInCalendarImage(
+                height: SelectPictureWidget.imageSize,
+                width: SelectPictureWidget.imageSize,
+                imageFileId: widget.imageFileId,
+                imageFilePath: widget.imageFilePath,
+                imageFile: widget.newImage,
+              ),
+            )
+          else
+            SizedBox(
+              width: SelectPictureWidget.imageSize,
+              height: SelectPictureWidget.imageSize,
+              child: LinedBorder(
+                key: TestKey.addPicture,
+                padding: const EdgeInsets.all(SelectPictureWidget.padding),
+                errorState: widget.errorState,
+                child: Container(
+                  decoration: whiteNoBorderBoxDecoration,
+                  width: SelectPictureWidget.imageSize -
+                      SelectPictureWidget.padding,
+                  height: SelectPictureWidget.imageSize -
+                      SelectPictureWidget.padding,
+                  child: const Icon(
+                    AbiliaIcons.add_photo,
+                    size: 32,
+                    color: AbiliaColors.black75,
+                  ),
+                ),
+                onTap: imageClick,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void imageClick() async {
+    final selectedImage = await showViewDialog<SelectedImage>(
+      context: context,
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
+            create: (_) => SortableArchiveBloc<ImageArchiveData>(
+              sortableBloc: BlocProvider.of<SortableBloc>(context),
+            ),
+          ),
+          BlocProvider<UserFileBloc>.value(
+            value: BlocProvider.of<UserFileBloc>(context),
+          ),
+        ],
+        child: SelectPictureDialog(previousImage: widget.imageFileId),
+      ),
+    );
+    if (selectedImage != null && widget.onImageSelected != null) {
+      if (selectedImage.newImage != null) {
+        BlocProvider.of<UserFileBloc>(context).add(
+          ImageAdded(
+            selectedImage.id,
+            selectedImage.path,
+            selectedImage.newImage,
+          ),
+        );
+        BlocProvider.of<SortableBloc>(context).add(
+          ImageArchiveImageAdded(
+            selectedImage.id,
+            selectedImage.newImage.path,
+          ),
+        );
+      }
+      widget.onImageSelected(selectedImage);
+    }
   }
 }
 
@@ -257,17 +296,14 @@ class CategoryWidget extends StatelessWidget {
         key: key,
         onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
             .add(ReplaceActivity(activity.copyWith(category: v))),
-        child: Row(
-          children: <Widget>[
-            const SizedBox(width: 6),
-            Icon(
-              icon,
-              size: smallIconSize,
-            ),
-            const SizedBox(width: 12),
-            Text(text)
-          ],
-        ),
+        leading: Row(children: <Widget>[
+          const SizedBox(width: 6),
+          Icon(
+            icon,
+            size: smallIconSize,
+          ),
+        ]),
+        text: Text(text),
         groupValue: activity.category,
         value: category,
       ),
@@ -295,7 +331,7 @@ class AlarmWidget extends StatelessWidget {
               alarm.iconData(),
               size: smallIconSize,
             ),
-            label: Text(alarm.text(translator)),
+            text: Text(alarm.text(translator)),
             onTap: () async {
               final result = await showViewDialog<Alarm>(
                 context: context,
@@ -342,7 +378,7 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
           AbiliaIcons.handi_alarm,
           size: smallIconSize,
         ),
-        label: Text(Translator.of(context).translate.alarmOnlyAtStartTime),
+        text: Text(Translator.of(context).translate.alarmOnlyAtStartTime),
         value: alarm.onlyStart,
         onChanged: alarm.shouldAlarm ? onChanged : null,
       );
@@ -366,7 +402,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
             AbiliaIcons.handi_check,
             size: smallIconSize,
           ),
-          label: Text(translator.checkable),
+          text: Text(translator.checkable),
           value: activity.checkable,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
               .add(ReplaceActivity(activity.copyWith(checkable: v))),
@@ -378,7 +414,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
             AbiliaIcons.delete_all_clear,
             size: smallIconSize,
           ),
-          label: Text(translator.deleteAfter),
+          text: Text(translator.deleteAfter),
           value: activity.removeAfter,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
               .add(ReplaceActivity(activity.copyWith(removeAfter: v))),
@@ -406,7 +442,7 @@ class AvailibleForWidget extends StatelessWidget {
             secret ? AbiliaIcons.password_protection : AbiliaIcons.user_group,
             size: smallIconSize,
           ),
-          label:
+          text:
               Text(secret ? translator.onlyMe : translator.meAndSupportPersons),
           onTap: () async {
             final result = await showViewDialog<bool>(
@@ -444,7 +480,7 @@ class RecurrenceWidget extends StatelessWidget {
             recurrentType.iconData(),
             size: smallIconSize,
           ),
-          label: Text(recurrentType.text(translator)),
+          text: Text(recurrentType.text(translator)),
           onTap: () async {
             final result = await showViewDialog<RecurrentType>(
               context: context,
@@ -519,7 +555,7 @@ class EndDateWidget extends StatelessWidget {
             AbiliaIcons.basic_activity,
             size: smallIconSize,
           ),
-          label: Text(translate.noEndDate),
+          text: Text(translate.noEndDate),
           value: activity.recurs.hasNoEnd,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
             ReplaceActivity(
@@ -553,7 +589,7 @@ class WeekDays extends StatelessWidget {
       children: List.generate(DateTime.daysPerWeek, (i) {
         final d = i + 1;
         return SelectableField(
-            label: Text(
+            text: Text(
               Translator.of(context).translate.shortWeekday(d),
               style:
                   Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
@@ -592,7 +628,7 @@ class MonthDays extends StatelessWidget {
       children: List.generate(31, (i) {
         final d = i + 1;
         return SelectableField(
-            label: Text(
+            text: Text(
               '$d',
               style:
                   Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
