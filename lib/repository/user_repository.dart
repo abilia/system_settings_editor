@@ -3,23 +3,27 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/db/license_db.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/end_point.dart';
 import 'package:seagull/repository/repository.dart';
 import 'package:uuid/uuid.dart';
-import 'package:seagull/utils/all.dart';
 
 class UserRepository extends Repository {
+  static final _log = Logger((UserRepository).toString());
   final TokenDb tokenDb;
   final UserDb userDb;
+  final LicenseDb licenseDb;
 
   UserRepository({
     String baseUrl,
     @required BaseClient httpClient,
     @required this.tokenDb,
     @required this.userDb,
+    @required this.licenseDb,
   })  : assert(tokenDb != null),
         super(httpClient, baseUrl);
 
@@ -32,6 +36,7 @@ class UserRepository extends Repository {
         httpClient: httpClient ?? this.httpClient,
         tokenDb: tokenDb,
         userDb: userDb,
+        licenseDb: licenseDb,
       );
 
   Future<String> authenticate({
@@ -55,10 +60,6 @@ class UserRepository extends Repository {
         }));
     if (response.statusCode == 200) {
       var login = Login.fromJson(json.decode(response.body));
-      final licenses = await getLicensesFromApi(login.token);
-      if (!licenses.anyValidLicense(time)) {
-        throw NoLicenseException();
-      }
       return login.token;
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
@@ -101,7 +102,18 @@ class UserRepository extends Repository {
     }
   }
 
-  Future<List<License>> getLicensesFromApi(String token) async {
+  Future<List<License>> getLicenses() async {
+    try {
+      final fromApi = await getLicensesFromApi();
+      await licenseDb.persistLicenses(fromApi);
+    } catch (e) {
+      _log.warning('Could not fetch licenses from backend', e);
+    }
+    return licenseDb.getLicenses();
+  }
+
+  Future<List<License>> getLicensesFromApi() async {
+    final token = await tokenDb.getToken();
     final response = await httpClient.get('$baseUrl/api/v1/license/portal/me',
         headers: authHeader(token));
     if (response.statusCode == 200) {

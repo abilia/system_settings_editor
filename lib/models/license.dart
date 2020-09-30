@@ -1,6 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-class License {
+const MEMOPLANNER_LICENSE_NAME = 'memoplanner3';
+
+class License extends Equatable {
   final int id;
   final String product;
   final DateTime endTime;
@@ -21,7 +24,12 @@ class License {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'product': 'product',
+        'product': product,
         'endTime': endTime.millisecondsSinceEpoch,
       };
+
+  @override
+  List<Object> get props => [id, product, endTime];
+  @override
+  bool get stringify => true;
 }

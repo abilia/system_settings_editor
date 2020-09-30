@@ -22,3 +22,4 @@ export 'authenticated_blocs_provider.dart';
 export 'settings/settings_bloc.dart';
 export 'generic/generic_bloc.dart';
 export 'generic/memoplannersetting/memoplanner_setting_bloc.dart';
+export 'license/license_bloc.dart';

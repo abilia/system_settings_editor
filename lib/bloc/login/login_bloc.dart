@@ -42,10 +42,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           yield LoginFailure(
               error: error.toString(),
               loginFailureCause: LoginFailureCause.Credentials);
-        } on NoLicenseException catch (error) {
-          yield LoginFailure(
-              error: error.toString(),
-              loginFailureCause: LoginFailureCause.License);
         } catch (error) {
           yield LoginFailure(
               error: error.toString(),

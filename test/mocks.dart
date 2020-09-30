@@ -32,6 +32,8 @@ class MockUserFileRepository extends Mock implements UserFileRepository {}
 
 class MockTokenDb extends Mock implements TokenDb {}
 
+class MockLicenseDb extends Mock implements LicenseDb {}
+
 class MockPushBloc extends Mock implements PushBloc {}
 
 class MockSyncBloc extends Mock implements SyncBloc {}
