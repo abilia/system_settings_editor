@@ -67,7 +67,7 @@ void main() {
       clockBloc: clockBloc,
     );
     // Act // Assert
-    expect(editActivityBloc.canSave.isEmpty, isFalse);
+    expect(editActivityBloc.saveErrors.isEmpty, isFalse);
   });
 
   test('Changing activity changes activity', () async {

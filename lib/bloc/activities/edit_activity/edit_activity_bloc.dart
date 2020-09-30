@@ -55,12 +55,12 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
           ),
         );
 
-  List<SaveError> get canSave => [
+  List<SaveError> get saveErrors => [
         if (!state.hasTitleOrImage) SaveError.NO_TITLE_OR_IMAGE,
         if (!state.hasStartTime) SaveError.NO_START_TIME,
         if (!memoplannerSettingBloc.state.activityTimeBeforeCurrent &&
             state.hasStartTime &&
-            state.activity.startTime
+            state.timeInterval.startDate
                 .withTime(state.timeInterval.startTime)
                 .isBefore(clockBloc.state))
           SaveError.START_TIME_BEFORE_NOW,
@@ -86,7 +86,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       yield* _mapAddOrRemoveReminderToState(event.reminder.inMilliseconds);
     }
     if (event is SaveActivity) {
-      final errors = canSave;
+      final errors = saveErrors;
       if (errors.isEmpty) {
         yield* _mapSaveActivityToState(state, event);
       } else {
