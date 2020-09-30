@@ -65,6 +65,7 @@ void main() {
     GetItInitializer()
       ..fileStorage = MockFileStorage()
       ..database = MockDatabase()
+      ..flutterTts = MockFlutterTts()
       ..init();
   });
 
@@ -290,5 +291,17 @@ void main() {
         ),
         Occasion.past);
     expect(find.byType(CrossOver), findsNothing);
+  });
+
+  testWidgets('tts', (WidgetTester tester) async {
+    final activity = Activity.createNew(
+      title: 'title',
+      startTime: startTime,
+      fileId: Uuid().v4(),
+      checkable: true,
+      signedOffDates: [startTime.onlyDays()],
+    );
+    await pumpActivityCard(tester, activity, Occasion.past);
+    await tester.verifyTts(find.byType(ActivityCard), contains: activity.title);
   });
 }

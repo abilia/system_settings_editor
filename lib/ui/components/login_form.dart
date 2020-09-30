@@ -77,7 +77,7 @@ class _LoginFormState extends State<LoginForm> {
                   if (errorState)
                     ErrorMessage(
                       key: TestKey.loginError,
-                      child: Text(
+                      text: Text(
                         _errorMessageFromState(loginState, i18n),
                         style: theme.textTheme.bodyText2,
                       ),
@@ -87,20 +87,23 @@ class _LoginFormState extends State<LoginForm> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Theme(
                       data: redButtonTheme,
-                      child: FlatButton(
-                        color: AbiliaColors.red,
-                        disabledColor: AbiliaColors.red40,
-                        key: TestKey.loggInButton,
-                        child: Text(
-                          i18n.translate.login,
-                          style: theme.textTheme.subtitle1
-                              .copyWith(color: AbiliaColors.white),
+                      child: Tts(
+                        data: i18n.translate.login,
+                        child: FlatButton(
+                          color: AbiliaColors.red,
+                          disabledColor: AbiliaColors.red40,
+                          key: TestKey.loggInButton,
+                          child: Text(
+                            i18n.translate.login,
+                            style: theme.textTheme.subtitle1
+                                .copyWith(color: AbiliaColors.white),
+                          ),
+                          onPressed: loginState is! LoginLoading &&
+                                  formState.isFormValid &&
+                                  !(errorState)
+                              ? _onLoginButtonPressed
+                              : null,
                         ),
-                        onPressed: loginState is! LoginLoading &&
-                                formState.isFormValid &&
-                                !(errorState)
-                            ? _onLoginButtonPressed
-                            : null,
                       ),
                     ),
                   ),
@@ -186,22 +189,29 @@ class _LoginHint extends StatelessWidget {
         .copyWith(color: AbiliaColors.black75);
     final translate = Translator.of(context).translate;
     ;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          translate.infoText1,
-          style: bodyText12Grey,
-        ),
-        WebLink(
-          text: 'myAbilia',
-          urlString: 'https://myabilia.com/user-create',
-        ),
-        Text(
-          translate.infoText2,
-          style: bodyText12Grey,
-        )
-      ],
+    final infoText1 = translate.infoText1,
+        ling = 'myAbilia',
+        infoText2 = translate.infoText2;
+
+    return Tts(
+      data: '$infoText1$ling$infoText2',
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            translate.infoText1,
+            style: bodyText12Grey,
+          ),
+          WebLink(
+            text: 'myAbilia',
+            urlString: 'https://myabilia.com/user-create',
+          ),
+          Text(
+            translate.infoText2,
+            style: bodyText12Grey,
+          )
+        ],
+      ),
     );
   }
 }

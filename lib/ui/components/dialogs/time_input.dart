@@ -180,7 +180,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
                         width: 63.0,
                         heigth: 48.0,
                         key: TestKey.amRadioField,
-                        child: Text(
+                        text: Text(
                           Translator.of(context).translate.am,
                           style: theme.textTheme.bodyText1,
                           textAlign: TextAlign.center,
@@ -194,7 +194,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
                         width: 63.0,
                         heigth: 48.0,
                         key: TestKey.pmRadioField,
-                        child: Text(
+                        text: Text(
                           Translator.of(context).translate.pm,
                           style: theme.textTheme.bodyText1,
                         ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/pages/all.dart';
@@ -39,14 +40,12 @@ void main() {
         ], child: widget),
       );
 
+  final title0 = 'allDay0',
+      title1 = 'allDay1',
+      title2 = 'allDay2',
+      title3 = 'allDay3';
   setUp(() {
     initializeDateFormatting();
-  });
-  testWidgets('All DayList shows', (WidgetTester tester) async {
-    final title0 = 'allDay0',
-        title1 = 'allDay1',
-        title2 = 'allDay2',
-        title3 = 'allDay3';
     final allDayActivities = [
       Activity.createNew(
         title: title0,
@@ -76,12 +75,22 @@ void main() {
     when(activitiesOccasionBlocMock.state).thenReturn(expected);
     when(activitiesOccasionBlocMock.skip(1))
         .thenAnswer((_) => StreamController<ActivitiesOccasionState>().stream);
-
+    GetItInitializer()
+      ..flutterTts = MockFlutterTts()
+      ..init();
+  });
+  testWidgets('All DayList shows', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(AllDayList()));
     await tester.pumpAndSettle();
     expect(find.text(title0), findsOneWidget);
     expect(find.text(title1), findsOneWidget);
     expect(find.text(title2), findsOneWidget);
     expect(find.text(title3), findsOneWidget);
+  });
+
+  testWidgets('tts', (WidgetTester tester) async {
+    await tester.pumpWidget(wrapWithMaterialApp(AllDayList()));
+    await tester.pumpAndSettle();
+    await tester.verifyTts(find.text(title0), contains: title0);
   });
 }

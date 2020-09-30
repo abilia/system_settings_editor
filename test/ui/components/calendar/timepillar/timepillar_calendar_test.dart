@@ -31,6 +31,8 @@ void main() {
   final leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
 
+  final translated = Locales.language.values.first;
+
   var givenActivities = <Activity>[];
 
   ActivityResponse activityResponse = () => givenActivities;
@@ -68,6 +70,7 @@ void main() {
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
+      ..flutterTts = MockFlutterTts()
       ..init();
   });
   tearDown(() {
@@ -96,16 +99,32 @@ void main() {
     expect(find.byType(TimePillarCalendar), findsNothing);
     expect(find.byType(Agenda), findsOneWidget);
   });
-  testWidgets('Shows all days activities', (WidgetTester tester) async {
-    givenActivities = [FakeActivity.fullday(time)];
+
+  testWidgets('all days activity tts', (WidgetTester tester) async {
+    final activity = Activity.createNew(
+        title: 'fuyllday',
+        startTime: time.onlyDays(),
+        duration: 1.days() - 1.milliseconds(),
+        fullDay: true,
+        reminderBefore: [60 * 60 * 1000],
+        alarmType: NO_ALARM);
+    givenActivities = [activity];
     await goToTimePillar(tester);
     expect(find.byType(FullDayContainer), findsOneWidget);
+    await tester.verifyTts(find.byType(FullDayContainer),
+        contains: activity.title);
   });
 
-  group('timepillar scroll behaivor', () {
+  group('timepillar', () {
     testWidgets('timepillar shows', (WidgetTester tester) async {
       await goToTimePillar(tester);
       expect(find.byType(SliverTimePillar), findsOneWidget);
+    });
+
+    testWidgets('tts', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      final hour = '${time.hour}';
+      await tester.verifyTts(find.text(hour).first, contains: hour);
     });
 
     testWidgets('Shows timepillar when scrolled in x',
@@ -186,274 +205,290 @@ void main() {
             hasLength(1));
       }
     });
+  });
 
-    group('Timeline', () {
-      testWidgets('Exists', (WidgetTester tester) async {
-        await goToTimePillar(tester);
-        expect(find.byType(Timeline), findsWidgets);
-      });
-
-      testWidgets('Tomorrow does not show timeline',
-          (WidgetTester tester) async {
-        await goToTimePillar(tester);
-        await tester.tap(nextDayButtonFinder);
-        await tester.pumpAndSettle();
-        expect(find.byType(Timeline), findsNothing);
-      });
-
-      testWidgets('Yesterday does not show timline',
-          (WidgetTester tester) async {
-        await goToTimePillar(tester);
-        await tester.tap(previusDayButtonFinder);
-        await tester.pumpAndSettle();
-        expect(find.byType(Timeline), findsNothing);
-      });
-
-      testWidgets('timeline is at same y pos as current-time-dot',
-          (WidgetTester tester) async {
-        await goToTimePillar(tester);
-        final currentDot = tester
-            .widgetList<AnimatedDot>(find.byType(AnimatedDot))
-            .firstWhere((d) => d.decoration == currentDotShape);
-
-        final currentDotPosition =
-            await tester.getCenter(find.byWidget(currentDot));
-
-        for (final element in find.byType(Timeline).evaluate()) {
-          final box = element.renderObject as RenderBox;
-          final timeLinePostion =
-              box.localToGlobal(box.size.center(Offset.zero));
-          expect(timeLinePostion.dy, closeTo(currentDotPosition.dy, 0.0001));
-        }
-      });
+  group('Timeline', () {
+    testWidgets('Exists', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      expect(find.byType(Timeline), findsWidgets);
     });
-    group('Categories', () {
-      Finder leftCollapsedFinder;
-      Finder rightCollapsedFinder;
-      Finder leftFinder;
-      Finder rightFinder;
-      setUp(() {
-        final translator = Locales.language.values.first;
-        final right = translator.right;
-        final left = translator.left;
-        leftFinder = find.text(left);
-        rightFinder = find.text(right);
-        leftCollapsedFinder = find.text(left.substring(0, 1));
-        rightCollapsedFinder = find.text(right.substring(0, 1));
-      });
 
-      testWidgets('Starts expanded', (WidgetTester tester) async {
-        await goToTimePillar(tester);
-        expect(leftFinder, findsOneWidget);
-        expect(rightFinder, findsOneWidget);
-        expect(leftCollapsedFinder, findsNothing);
-        expect(rightCollapsedFinder, findsNothing);
-      });
-      testWidgets('Tap right', (WidgetTester tester) async {
-        await goToTimePillar(tester);
-        await tester.tap(rightFinder);
-        await tester.pumpAndSettle();
-        expect(leftFinder, findsOneWidget);
-        expect(rightFinder, findsNothing);
-        expect(leftCollapsedFinder, findsNothing);
-        expect(rightCollapsedFinder, findsOneWidget);
-      });
-      testWidgets('Tap left', (WidgetTester tester) async {
-        await goToTimePillar(tester);
-        await tester.tap(leftFinder);
-        await tester.pumpAndSettle();
-        expect(leftFinder, findsNothing);
-        expect(rightFinder, findsOneWidget);
-        expect(leftCollapsedFinder, findsOneWidget);
-        expect(rightCollapsedFinder, findsNothing);
-      });
-      testWidgets('Tap left, change day', (WidgetTester tester) async {
-        await goToTimePillar(tester);
-        await tester.tap(leftFinder);
-        await tester.tap(previusDayButtonFinder);
-        await tester.pumpAndSettle();
-        expect(leftFinder, findsNothing);
-        expect(rightFinder, findsOneWidget);
-        expect(leftCollapsedFinder, findsOneWidget);
-        expect(rightCollapsedFinder, findsNothing);
-      });
-
-      testWidgets('Tap right, change day', (WidgetTester tester) async {
-        await goToTimePillar(tester);
-        await tester.tap(rightFinder);
-        await tester.tap(nextDayButtonFinder);
-
-        await tester.pumpAndSettle();
-        expect(leftFinder, findsOneWidget);
-        expect(rightFinder, findsNothing);
-        expect(leftCollapsedFinder, findsNothing);
-        expect(rightCollapsedFinder, findsOneWidget);
-      });
+    testWidgets('Tomorrow does not show timeline', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(Timeline), findsNothing);
     });
-    group('Activities', () {
-      final leftActivityFinder = find.text(leftTitle);
-      final rightActivityFinder = find.text(rightTitle);
-      final cardFinder = find.byType(ActivityTimepillarCard);
-      setUp(() {
-        givenActivities = [
-          FakeActivity.starts(
-            time,
-            title: rightTitle,
-          ).copyWith(
+
+    testWidgets('Yesterday does not show timline', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      await tester.tap(previusDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(Timeline), findsNothing);
+    });
+
+    testWidgets('timeline is at same y pos as current-time-dot',
+        (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      final currentDot = tester
+          .widgetList<AnimatedDot>(find.byType(AnimatedDot))
+          .firstWhere((d) => d.decoration == currentDotShape);
+
+      final currentDotPosition =
+          await tester.getCenter(find.byWidget(currentDot));
+
+      for (final element in find.byType(Timeline).evaluate()) {
+        final box = element.renderObject as RenderBox;
+        final timeLinePostion = box.localToGlobal(box.size.center(Offset.zero));
+        expect(timeLinePostion.dy, closeTo(currentDotPosition.dy, 0.0001));
+      }
+    });
+  });
+  group('Categories', () {
+    Finder leftCollapsedFinder;
+    Finder rightCollapsedFinder;
+    Finder leftFinder;
+    Finder rightFinder;
+    setUp(() {
+      final translator = Locales.language.values.first;
+      final right = translator.right;
+      final left = translator.left;
+      leftFinder = find.text(left);
+      rightFinder = find.text(right);
+      leftCollapsedFinder = find.text(left.substring(0, 1));
+      rightCollapsedFinder = find.text(right.substring(0, 1));
+    });
+
+    testWidgets('Starts expanded', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsOneWidget);
+      expect(leftCollapsedFinder, findsNothing);
+      expect(rightCollapsedFinder, findsNothing);
+    });
+    testWidgets('Tap right', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      await tester.tap(rightFinder);
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsNothing);
+      expect(leftCollapsedFinder, findsNothing);
+      expect(rightCollapsedFinder, findsOneWidget);
+    });
+    testWidgets('Tap left', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      await tester.tap(leftFinder);
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsNothing);
+      expect(rightFinder, findsOneWidget);
+      expect(leftCollapsedFinder, findsOneWidget);
+      expect(rightCollapsedFinder, findsNothing);
+    });
+
+    testWidgets('tts', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      await tester.verifyTts(leftFinder, exact: translated.left);
+      await tester.verifyTts(rightFinder, exact: translated.right);
+      await tester.tap(leftFinder);
+      await tester.tap(rightFinder);
+      await tester.pumpAndSettle();
+      await tester.verifyTts(leftCollapsedFinder, exact: translated.left);
+      await tester.verifyTts(rightCollapsedFinder, exact: translated.right);
+    });
+
+    testWidgets('Tap left, change day', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      await tester.tap(leftFinder);
+      await tester.tap(previusDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsNothing);
+      expect(rightFinder, findsOneWidget);
+      expect(leftCollapsedFinder, findsOneWidget);
+      expect(rightCollapsedFinder, findsNothing);
+    });
+
+    testWidgets('Tap right, change day', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      await tester.tap(rightFinder);
+      await tester.tap(nextDayButtonFinder);
+
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsNothing);
+      expect(leftCollapsedFinder, findsNothing);
+      expect(rightCollapsedFinder, findsOneWidget);
+    });
+  });
+  group('Activities', () {
+    final leftActivityFinder = find.text(leftTitle);
+    final rightActivityFinder = find.text(rightTitle);
+    final cardFinder = find.byType(ActivityTimepillarCard);
+    setUp(() {
+      givenActivities = [
+        FakeActivity.starts(
+          time,
+          title: rightTitle,
+        ).copyWith(
+          checkable: true,
+        ),
+        FakeActivity.starts(
+          time,
+          title: leftTitle,
+        ).copyWith(
+          category: Category.left,
+        ),
+      ];
+    });
+
+    testWidgets('Shows activity', (WidgetTester tester) async {
+      // Act
+      await goToTimePillar(tester);
+      // Assert
+      expect(leftActivityFinder, findsOneWidget);
+      expect(rightActivityFinder, findsOneWidget);
+      expect(cardFinder, findsNWidgets(2));
+    });
+
+    testWidgets('tts', (WidgetTester tester) async {
+      // Act
+      await goToTimePillar(tester);
+      // Assert
+      await tester.verifyTts(leftActivityFinder, contains: leftTitle);
+      await tester.verifyTts(rightActivityFinder, contains: rightTitle);
+    });
+
+    testWidgets('Activities is right or left of timeline',
+        (WidgetTester tester) async {
+      // Arrange
+      await goToTimePillar(tester);
+
+      // Act
+      final timelineXPostion =
+          await tester.getCenter(find.byType(Timeline).first).dx;
+      final leftActivityXPostion =
+          await tester.getCenter(leftActivityFinder).dx;
+      final rightActivityXPostion =
+          await tester.getCenter(rightActivityFinder).dx;
+
+      // Assert
+      expect(leftActivityXPostion, lessThan(timelineXPostion));
+      expect(rightActivityXPostion, greaterThan(timelineXPostion));
+    });
+
+    testWidgets('tapping activity shows activity info',
+        (WidgetTester tester) async {
+      // Arrange
+      await goToTimePillar(tester);
+      // Act
+      await tester.tap(leftActivityFinder);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(leftActivityFinder, findsOneWidget);
+      expect(rightActivityFinder, findsNothing);
+      expect(find.byType(ActivityPage), findsOneWidget);
+    });
+
+    testWidgets('changing activity shows in timepillar card',
+        (WidgetTester tester) async {
+      // Arrange
+      await goToTimePillar(tester);
+      // Act
+      await tester.tap(rightActivityFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(CheckButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.okDialog));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.activityBackButton));
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(CheckMarkWithBorder), findsOneWidget);
+    });
+
+    testWidgets('setting no dots shows SideTime', (WidgetTester tester) async {
+      // Arrange
+      when(mockSettingsDb.getDotsInTimepillar()).thenReturn(false);
+      await goToTimePillar(tester);
+      // Act
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(SideTime), findsNWidgets(2));
+    });
+
+    testWidgets('current activity shows no CrossOver',
+        (WidgetTester tester) async {
+      // Arrange
+      givenActivities = [Activity.createNew(title: 'title', startTime: time)];
+      await goToTimePillar(tester);
+      // Act
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(CrossOver), findsNothing);
+    });
+
+    testWidgets('past activity shows CrossOver', (WidgetTester tester) async {
+      // Arrange
+      givenActivities = [
+        Activity.createNew(
+            title: 'title', startTime: time.subtract(10.minutes()))
+      ];
+      await goToTimePillar(tester);
+      // Act
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(CrossOver), findsWidgets);
+    });
+
+    testWidgets('past activity with endtime shows CrossOver',
+        (WidgetTester tester) async {
+      // Arrange
+      givenActivities = [
+        Activity.createNew(
+          title: 'title',
+          startTime: time.subtract(9.hours()),
+          duration: 8.hours(),
+        )
+      ];
+      await goToTimePillar(tester);
+      // Act
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(CrossOver), findsWidgets);
+    });
+
+    testWidgets('past activity with endtime shows CrossOver',
+        (WidgetTester tester) async {
+      // Arrange
+      givenActivities = [
+        Activity.createNew(
+          title: 'title',
+          startTime: time.subtract(2.hours()),
+          duration: 1.hours(),
+        )
+      ];
+      await goToTimePillar(tester);
+      // Act
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(CrossOver), findsWidgets);
+    });
+
+    testWidgets('sigend off past activity shows no CrossOver',
+        (WidgetTester tester) async {
+      // Arrange
+      givenActivities = [
+        Activity.createNew(
+            title: 'title',
+            startTime: time.subtract(40.minutes()),
             checkable: true,
-          ),
-          FakeActivity.starts(
-            time,
-            title: leftTitle,
-          ).copyWith(
-            category: Category.left,
-          ),
-        ];
-      });
-
-      testWidgets('Shows activity', (WidgetTester tester) async {
-        // Act
-        await goToTimePillar(tester);
-        // Assert
-        expect(leftActivityFinder, findsOneWidget);
-        expect(rightActivityFinder, findsOneWidget);
-        expect(cardFinder, findsNWidgets(2));
-      });
-
-      testWidgets('Activities is right or left of timeline',
-          (WidgetTester tester) async {
-        // Arrange
-        await goToTimePillar(tester);
-
-        // Act
-        final timelineXPostion =
-            await tester.getCenter(find.byType(Timeline).first).dx;
-        final leftActivityXPostion =
-            await tester.getCenter(leftActivityFinder).dx;
-        final rightActivityXPostion =
-            await tester.getCenter(rightActivityFinder).dx;
-
-        // Assert
-        expect(leftActivityXPostion, lessThan(timelineXPostion));
-        expect(rightActivityXPostion, greaterThan(timelineXPostion));
-      });
-
-      testWidgets('tapping activity shows activity info',
-          (WidgetTester tester) async {
-        // Arrange
-        await goToTimePillar(tester);
-        // Act
-        await tester.tap(leftActivityFinder);
-        await tester.pumpAndSettle();
-        // Assert
-        expect(leftActivityFinder, findsOneWidget);
-        expect(rightActivityFinder, findsNothing);
-        expect(find.byType(ActivityPage), findsOneWidget);
-      });
-
-      testWidgets('changing activity shows in timepillar card',
-          (WidgetTester tester) async {
-        // Arrange
-        await goToTimePillar(tester);
-        // Act
-        await tester.tap(rightActivityFinder);
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(CheckButton));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.okDialog));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.activityBackButton));
-        await tester.pumpAndSettle();
-
-        // Assert
-        expect(find.byType(CheckMarkWithBorder), findsOneWidget);
-      });
-
-      testWidgets('setting no dots shows SideTime',
-          (WidgetTester tester) async {
-        // Arrange
-        when(mockSettingsDb.getDotsInTimepillar()).thenReturn(false);
-        await goToTimePillar(tester);
-        // Act
-        await tester.pumpAndSettle();
-        // Assert
-        expect(find.byType(SideTime), findsNWidgets(2));
-      });
-
-      testWidgets('current activity shows no CrossOver',
-          (WidgetTester tester) async {
-        // Arrange
-        givenActivities = [Activity.createNew(title: 'title', startTime: time)];
-        await goToTimePillar(tester);
-        // Act
-        await tester.pumpAndSettle();
-        // Assert
-        expect(find.byType(CrossOver), findsNothing);
-      });
-
-      testWidgets('past activity shows CrossOver', (WidgetTester tester) async {
-        // Arrange
-        givenActivities = [
-          Activity.createNew(
-              title: 'title', startTime: time.subtract(10.minutes()))
-        ];
-        await goToTimePillar(tester);
-        // Act
-        await tester.pumpAndSettle();
-        // Assert
-        expect(find.byType(CrossOver), findsWidgets);
-      });
-
-      testWidgets('past activity with endtime shows CrossOver',
-          (WidgetTester tester) async {
-        // Arrange
-        givenActivities = [
-          Activity.createNew(
-            title: 'title',
-            startTime: time.subtract(9.hours()),
-            duration: 8.hours(),
-          )
-        ];
-        await goToTimePillar(tester);
-        // Act
-        await tester.pumpAndSettle();
-        // Assert
-        expect(find.byType(CrossOver), findsWidgets);
-      });
-
-      testWidgets('past activity with endtime shows CrossOver',
-          (WidgetTester tester) async {
-        // Arrange
-        givenActivities = [
-          Activity.createNew(
-            title: 'title',
-            startTime: time.subtract(2.hours()),
-            duration: 1.hours(),
-          )
-        ];
-        await goToTimePillar(tester);
-        // Act
-        await tester.pumpAndSettle();
-        // Assert
-        expect(find.byType(CrossOver), findsWidgets);
-      });
-
-      testWidgets('sigend off past activity shows no CrossOver',
-          (WidgetTester tester) async {
-        // Arrange
-        givenActivities = [
-          Activity.createNew(
-              title: 'title',
-              startTime: time.subtract(40.minutes()),
-              checkable: true,
-              signedOffDates: [time.onlyDays()])
-        ];
-        await goToTimePillar(tester);
-        // Act
-        await tester.pumpAndSettle();
-        // Assert
-        expect(find.byType(CrossOver), findsNothing);
-      });
+            signedOffDates: [time.onlyDays()])
+      ];
+      await goToTimePillar(tester);
+      // Act
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(CrossOver), findsNothing);
     });
   });
 }

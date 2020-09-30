@@ -16,18 +16,21 @@ void main() {
       GetItInitializer()
         ..fileStorage = MockFileStorage()
         ..database = MockDatabase()
+        ..flutterTts = MockFlutterTts()
         ..init();
     });
     final fileId = '351d5e7d-0d87-4037-9829-538a14936128',
         path = '/images/Basic/Basic/bingo.gif';
 
+    final imageName = 'bingo';
     final imageData = ImageArchiveData.fromJson('''
-          {"name":"bingo","fileId":"$fileId","file":"$path"}
+          {"name":"$imageName","fileId":"$fileId","file":"$path"}
           ''');
     final image = Sortable.createNew<ImageArchiveData>(data: imageData);
 
+    final folderName = 'Basic';
     final folderData = ImageArchiveData.fromJson('''
-          {"name":"Basic","fileId":"19da3060-be12-42f9-922e-7e1635293126","icon":"/images/Basic/Basic.png"}
+          {"name":"$folderName","fileId":"19da3060-be12-42f9-922e-7e1635293126","icon":"/images/Basic/Basic.png"}
           ''');
     final folder =
         Sortable.createNew<ImageArchiveData>(data: folderData, isGroup: true);
@@ -110,6 +113,15 @@ void main() {
       final selectedImageRoute = route as Route<SelectedImage>;
       final res = await selectedImageRoute.popped;
       expect(res, SelectedImage(id: fileId, path: path));
+    });
+
+    testWidgets('tts', (WidgetTester tester) async {
+      when(imageArchiveBlocMock.state)
+          .thenAnswer((_) => stateFromSortables([image, folder]));
+      await tester.pumpWidget(wrapWithMaterialApp(ImageArchive()));
+      await tester.pumpAndSettle();
+      await tester.verifyTts(find.byType(LibraryFolder), exact: folderName);
+      await tester.verifyTts(find.byType(ArchiveImage), exact: imageName);
     });
   });
 }

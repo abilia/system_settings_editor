@@ -30,7 +30,7 @@ class LogoutPickField extends StatelessWidget {
     return PickField(
       key: TestKey.availibleFor,
       leading: Icon(AbiliaIcons.power_off_on),
-      label: Text(Translator.of(context).translate.logout),
+      text: Text(Translator.of(context).translate.logout),
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => LogoutPage(),

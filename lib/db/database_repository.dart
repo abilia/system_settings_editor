@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+final _log = Logger((DatabaseRepository).toString());
 
 class DatabaseRepository {
   DatabaseRepository._();
@@ -115,26 +118,26 @@ class DatabaseRepository {
     );
   }
 
-  static Future printAll(Database db) async {
-    void printTable(List<Map<String, dynamic>> calendar) {
-      print(calendar.first.keys.join('\t'));
+  static Future logAll(Database db) async {
+    void logTable(List<Map<String, dynamic>> calendar) {
+      _log.info(calendar.first.keys.join('\t'));
       calendar.forEach((element) {
-        print(element.values.join('\t'));
+        _log.info(element.values.join('\t'));
       });
     }
 
     final calendar = await db.rawQuery(
         'select id, title, file_id, revision, dirty, deleted from $CALENDAR_TABLE_NAME order by revision desc');
-    print('------------------- CALENDAR ---------------------');
-    printTable(calendar);
+    _log.info('------------------- CALENDAR ---------------------');
+    logTable(calendar);
     final userFile = await db.rawQuery(
         'select id, revision, deleted, path, content_type, file_loaded from $USER_FILE_TABLE_NAME order by revision desc');
-    print('------------------- USER FILES ---------------------');
-    printTable(userFile);
+    _log.info('------------------- USER FILES ---------------------');
+    logTable(userFile);
     final sortables = await db.rawQuery(
         'select id, data, revision, dirty, deleted, is_group, type, group_id from $SORTABLE_TABLE_NAME order by revision desc');
-    print('------------------- SORTABLES ---------------------');
-    printTable(sortables);
+    _log.info('------------------- SORTABLES ---------------------');
+    logTable(sortables);
   }
 
   static Future clearAll(Database db) async {

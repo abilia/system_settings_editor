@@ -57,5 +57,10 @@ class TestKey {
       dotsPreview = Key('dotsPreview'),
       changeInfoItem = Key('changeInfoItem'),
       changeRecurrence = Key('changeRecurrence'),
-      noEndDate = Key('noEndDate');
+      noEndDate = Key('noEndDate'),
+      startTime = Key('startTime'),
+      endTime = Key('endTime'),
+      dayAppBarTitle = Key('dayAppBarTitle'),
+      sideDotsTimeText = Key('sideDotsTimeText'),
+      errorViewDialog = Key('errorViewDialog');
 }

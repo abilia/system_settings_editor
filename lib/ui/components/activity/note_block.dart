@@ -8,13 +8,13 @@ import 'package:seagull/utils/all.dart';
 class NoteBlock extends StatefulWidget {
   final String text;
   final TextStyle textStyle;
-  final Widget child;
+  final Text textWidget;
   final ScrollController scrollController;
   const NoteBlock({
     Key key,
     this.text = '',
     this.textStyle,
-    this.child,
+    this.textWidget,
     this.scrollController,
   }) : super(key: key);
 
@@ -31,40 +31,43 @@ class _NoteBlockState extends State<NoteBlock> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        final textRenderingSize = widget.text.calulcateTextRenderSize(
-          constraints: constraints,
-          textStyle: textStyle,
-          padding: Attachment.padding,
-          textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        );
-        return DefaultTextStyle(
-          style: textStyle,
-          child: Stack(
-            children: <Widget>[
-              CupertinoScrollbar(
-                controller: controller,
-                child: SingleChildScrollView(
-                  padding: Attachment.padding,
+    return Tts(
+      data: widget.textWidget.data,
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final textRenderingSize = widget.text.calulcateTextRenderSize(
+            constraints: constraints,
+            textStyle: textStyle,
+            padding: Attachment.padding,
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+          );
+          return DefaultTextStyle(
+            style: textStyle,
+            child: Stack(
+              children: <Widget>[
+                CupertinoScrollbar(
                   controller: controller,
-                  child: Stack(
-                    children: [
-                      if (widget.child != null) widget.child,
-                      Lines(
-                        lineHeight: textRenderingSize.scaledLineHeight,
-                        numberOfLines: textRenderingSize.numberOfLines,
-                      ),
-                    ],
+                  child: SingleChildScrollView(
+                    padding: Attachment.padding,
+                    controller: controller,
+                    child: Stack(
+                      children: [
+                        if (widget.textWidget != null) widget.textWidget,
+                        Lines(
+                          lineHeight: textRenderingSize.scaledLineHeight,
+                          numberOfLines: textRenderingSize.numberOfLines,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              ArrowUp(controller: controller),
-              ArrowDown(controller: controller),
-            ],
-          ),
-        );
-      },
+                ArrowUp(controller: controller),
+                ArrowDown(controller: controller),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

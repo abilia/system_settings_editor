@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -18,6 +19,8 @@ void main() {
   MockActivityDb mockActivityDb;
   final now = DateTime(2020, 06, 04, 11, 24);
   ActivityResponse activityResponse = () => [];
+
+  final translate = Locales.language.values.first;
 
   final firstFullDayTitle = 'first full day',
       secondFullDayTitle = 'second full day',
@@ -57,6 +60,7 @@ void main() {
       ..settingsDb = MockSettingsDb()
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
+      ..flutterTts = MockFlutterTts()
       ..init();
   });
 
@@ -363,5 +367,25 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
     expect(find.byType(CrossOver), findsOneWidget);
+  });
+
+  testWidgets('tts', (WidgetTester tester) async {
+    final activity = Activity.createNew(
+      title: 'normal',
+      startTime: now,
+      duration: 1.hours(),
+    );
+    activityResponse = () => [activity, firstFullDay];
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+
+    await tester.verifyTts(find.text(activity.title), contains: activity.title);
+    await tester.verifyTts(find.text(firstFullDay.title),
+        contains: firstFullDay.title);
+    await tester.verifyTts(find.text(firstFullDay.title),
+        contains: translate.fullDay);
+
+    await tester.verifyTts(find.byKey(TestKey.dayAppBarTitle),
+        contains: '${now.day}');
   });
 }

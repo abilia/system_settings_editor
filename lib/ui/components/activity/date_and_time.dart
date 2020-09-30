@@ -52,7 +52,7 @@ class DateAndTimeWidget extends StatelessWidget {
                 AbiliaIcons.restore,
                 size: smallIconSize,
               ),
-              label: Text(translator.fullDay),
+              text: Text(translator.fullDay),
               value: activity.fullDay,
               onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
                   .add(ReplaceActivity(activity.copyWith(fullDay: v))),
@@ -79,7 +79,7 @@ class ReminderSwitch extends StatelessWidget {
         AbiliaIcons.handi_reminder,
         size: smallIconSize,
       ),
-      label: Text(Translator.of(context).translate.reminders),
+      text: Text(Translator.of(context).translate.reminders),
       value: activity.reminders.isNotEmpty,
       onChanged: (switchOn) {
         final reminders = switchOn ? [15.minutes().inMilliseconds] : <int>[];
@@ -108,33 +108,33 @@ class DatePicker extends StatelessWidget {
     final dayColor = weekDayColor[date.weekday];
     final color = dayColor == AbiliaColors.white ? dayColor[120] : dayColor;
 
-    return PickField(
-      disabled: disabled,
-      key: TestKey.datePicker,
-      onTap: () async {
-        final newDate = await showDatePicker(
-            context: context,
-            initialDate: date,
-            firstDate: DateTime(date.year - 20),
-            lastDate: DateTime(date.year + 20),
-            builder: (context, child) => Theme(
-                data: abiliaTheme.copyWith(
-                  colorScheme: abiliaTheme.colorScheme.copyWith(
-                    primary: color,
-                    surface: color,
+    return BlocBuilder<ClockBloc, DateTime>(
+      builder: (context, time) => PickField(
+        disabled: disabled,
+        key: TestKey.datePicker,
+        onTap: () async {
+          final newDate = await showDatePicker(
+              context: context,
+              initialDate: date,
+              firstDate: DateTime(date.year - 20),
+              lastDate: DateTime(date.year + 20),
+              builder: (context, child) => Theme(
+                  data: abiliaTheme.copyWith(
+                    colorScheme: abiliaTheme.colorScheme.copyWith(
+                      primary: color,
+                      surface: color,
+                    ),
                   ),
-                ),
-                child: child));
-        if (newDate != null) {
-          onChange(newDate);
-        }
-      },
-      leading: Icon(
-        AbiliaIcons.calendar,
-        size: smallIconSize,
-      ),
-      label: BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, time) => Text(
+                  child: child));
+          if (newDate != null) {
+            onChange(newDate);
+          }
+        },
+        leading: Icon(
+          AbiliaIcons.calendar,
+          size: smallIconSize,
+        ),
+        text: Text(
           (time.isAtSameDay(date) ? '(${translator.today}) ' : '') +
               '${timeFormat.format(date)}',
         ),
@@ -231,11 +231,13 @@ class TimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final timeSet = time != null;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SubHeading(text),
         PickField(
+          semanticsLabel: text,
           onTap: onTap,
           heigth: heigth,
           errorState: errorState,
@@ -243,7 +245,7 @@ class TimePicker extends StatelessWidget {
             AbiliaIcons.clock,
             size: smallIconSize,
           ),
-          label: Text(time != null ? time.format(context) : ''),
+          text: Text(timeSet ? time.format(context) : ''),
           trailing: errorState
               ? const Icon(
                   AbiliaIcons.ir_error,
@@ -276,7 +278,7 @@ class Reminders extends StatelessWidget {
       ]
           .map(
             (r) => SelectableField(
-              label: Text(
+              text: Text(
                 r.toReminderString(translator),
                 style:
                     Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),

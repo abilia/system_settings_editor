@@ -27,13 +27,8 @@ class _EditRecurrentDialogState extends State<EditRecurrentDialog> {
         children: <Widget>[
           RadioField(
             key: TestKey.onlyThisDay,
-            child: Row(
-              children: <Widget>[
-                Icon(AbiliaIcons.day),
-                const SizedBox(width: 12),
-                Text(translate.onlyThisDay)
-              ],
-            ),
+            leading: Icon(AbiliaIcons.day),
+            text: Text(translate.onlyThisDay),
             value: ApplyTo.onlyThisDay,
             groupValue: applyTo,
             onChanged: _radioChanged,
@@ -42,13 +37,8 @@ class _EditRecurrentDialogState extends State<EditRecurrentDialog> {
           if (widget.allDaysVisible)
             RadioField(
               key: TestKey.allDays,
-              child: Row(
-                children: <Widget>[
-                  Icon(AbiliaIcons.month),
-                  const SizedBox(width: 12),
-                  Text(translate.allDays)
-                ],
-              ),
+              leading: Icon(AbiliaIcons.month),
+              text: Text(translate.allDays),
               value: ApplyTo.allDays,
               groupValue: applyTo,
               onChanged: _radioChanged,
@@ -56,13 +46,8 @@ class _EditRecurrentDialogState extends State<EditRecurrentDialog> {
           SizedBox(height: 8.0),
           RadioField(
             key: TestKey.thisDayAndForward,
-            child: Row(
-              children: <Widget>[
-                Icon(AbiliaIcons.week),
-                const SizedBox(width: 12),
-                Text(translate.thisDayAndForward)
-              ],
-            ),
+            leading: Icon(AbiliaIcons.week),
+            text: Text(translate.thisDayAndForward),
             value: ApplyTo.thisDayAndForward,
             groupValue: applyTo,
             onChanged: _radioChanged,

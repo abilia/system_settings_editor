@@ -72,7 +72,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
           PickField(
             key: TestKey.imageArchiveButton,
             leading: Icon(AbiliaIcons.folder),
-            label: Text(
+            text: Text(
               translate.imageArchive,
               style: abiliaTheme.textTheme.bodyText1,
             ),
@@ -85,7 +85,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
           SizedBox(height: 8.0),
           PickField(
             leading: Icon(AbiliaIcons.my_photos),
-            label: Text(
+            text: Text(
               translate.myPhotos,
               style: abiliaTheme.textTheme.bodyText1,
             ),
@@ -95,7 +95,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
           SizedBox(height: 8.0),
           PickField(
             leading: Icon(AbiliaIcons.camera_photo),
-            label: Text(
+            text: Text(
               translate.takeNewPhoto,
               style: abiliaTheme.textTheme.bodyText1,
             ),

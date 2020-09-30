@@ -21,7 +21,9 @@ void main() {
   final day = startTime.onlyDays();
   MockAuthenticationBloc mockedAuthenticationBloc;
   final infoItemWithTestNote = InfoItem.fromBase64(
-      'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19');
+          'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19')
+      as NoteInfoItem;
+  final translate = Locales.language.values.first;
 
   Widget wrapWithMaterialApp(Widget widget) => MultiBlocProvider(
         providers: [
@@ -60,6 +62,7 @@ void main() {
       ..fileStorage = MockFileStorage()
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
+      ..flutterTts = MockFlutterTts()
       ..init();
   });
 
@@ -111,6 +114,8 @@ void main() {
     // Assert
     expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
     expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+
+    await tester.verifyTts(find.byKey(TestKey.activityCheckButton));
   });
 
   testWidgets('signed off shows signed off button',
@@ -135,6 +140,8 @@ void main() {
 
     expect(find.byKey(TestKey.activityCheckButton), findsNothing);
     expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
+
+    await tester.verifyTts(find.byKey(TestKey.activityUncheckButton));
   });
 
   testWidgets('activity with null title', (WidgetTester tester) async {
@@ -324,6 +331,7 @@ void main() {
     expect(find.byType(NoteBlock), findsOneWidget);
     expect(find.text('Test'), findsOneWidget);
   });
+
   testWidgets('Checklist from base64 attachment is present',
       (WidgetTester tester) async {
     final activity = Activity.createNew(
@@ -389,16 +397,18 @@ void main() {
 
   testWidgets('Checklist attachment is present and not signed off',
       (WidgetTester tester) async {
+    final checklist = Checklist(questions: [
+      Question(id: 0, name: 'tag'),
+      Question(id: 1, fileId: 'fileid'),
+    ]);
     final activity = Activity.createNew(
-        title: null,
-        startTime: startTime,
-        category: 0,
-        reminderBefore: [],
-        fileId: Uuid().v4(),
-        infoItem: Checklist(questions: [
-          Question(id: 0, name: 'tag'),
-          Question(id: 1, fileId: 'fileid'),
-        ]));
+      title: null,
+      startTime: startTime,
+      category: 0,
+      reminderBefore: [],
+      fileId: Uuid().v4(),
+      infoItem: checklist,
+    );
 
     await tester.pumpWidget(
       wrapWithMaterialApp(
@@ -418,6 +428,9 @@ void main() {
         expect(element.signedOff, isFalse);
       }
     });
+
+    await tester.verifyTts(find.text(checklist.questions.first.name),
+        exact: checklist.questions.first.name);
   });
 
   testWidgets('Checklist attachment is present and signed off',
@@ -514,5 +527,40 @@ void main() {
     await tester.tap(find.text('unchecked'));
     await tester.pumpAndSettle();
     expect(find.byType(ConfirmActivityActionDialog), findsOneWidget);
+  });
+
+  testWidgets('Tts with note', (WidgetTester tester) async {
+    final activity = Activity.createNew(
+      title: 'a title',
+      startTime: startTime,
+      duration: 1.hours(),
+      category: 0,
+      checkable: true,
+      reminderBefore: [],
+      fileId: Uuid().v4(),
+      infoItem: infoItemWithTestNote,
+    );
+
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        ActivityInfo.from(
+          activity: activity,
+          day: day,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.verifyTts(find.byType(NoteBlock),
+        exact: infoItemWithTestNote.text);
+
+    await tester.verifyTts(find.text(activity.title), exact: activity.title);
+
+    await tester.verifyTts(find.byKey(TestKey.activityCheckButton),
+        exact: translate.check);
+
+    await tester.verifyTts(find.byKey(TestKey.startTime));
+
+    await tester.verifyTts(find.byKey(TestKey.endTime));
   });
 }

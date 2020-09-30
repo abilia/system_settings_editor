@@ -85,78 +85,86 @@ class QuestionView extends StatelessWidget {
       ),
     );
 
-    return AnimatedTheme(
-      data: signedOff ? selectedTheme : theme,
-      duration: duration,
-      child: Builder(
-        builder: (context) => Padding(
-          padding: padding,
-          child: Material(
-            color: Colors.transparent,
-            borderRadius: borderRadius,
-            child: InkWell(
+    return Tts.fromSemantics(
+      SemanticsProperties(
+        checked: question.checked,
+        label: question.name,
+      ),
+      child: AnimatedTheme(
+        data: signedOff ? selectedTheme : theme,
+        duration: duration,
+        child: Builder(
+          builder: (context) => Padding(
+            padding: padding,
+            child: Material(
+              color: Colors.transparent,
               borderRadius: borderRadius,
-              onTap: onTap,
-              child: AnimatedContainer(
-                duration: duration,
-                decoration: signedOff
-                    ? boxDecoration.copyWith(
-                        border: Border.all(style: BorderStyle.none))
-                    : boxDecoration,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  textBaseline: TextBaseline.ideographic,
-                  children: <Widget>[
-                    if (question.hasImage)
-                      InkWell(
-                        borderRadius: borderRadius,
-                        onTap: () => _showImage(
-                          question.fileId,
-                          question.image,
-                          context,
-                        ),
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(6.0, 4.0, 0.0, 4.0),
-                          child: AnimatedOpacity(
-                            duration: duration,
-                            opacity: signedOff ? 0.5 : 1.0,
-                            child: FadeInCalendarImage(
-                              key: TestKey.checklistQuestionImageKey,
-                              imageFileId: question.fileId,
-                              imageFilePath: question.image,
-                              imageFile: tempImageFile,
-                              width: 40,
-                              height: 40,
-                              fit: BoxFit.contain,
+              child: InkWell(
+                borderRadius: borderRadius,
+                onTap: onTap,
+                child: AnimatedContainer(
+                  duration: duration,
+                  decoration: signedOff
+                      ? boxDecoration.copyWith(
+                          border: Border.all(style: BorderStyle.none))
+                      : boxDecoration,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    textBaseline: TextBaseline.ideographic,
+                    children: <Widget>[
+                      if (question.hasImage)
+                        InkWell(
+                          borderRadius: borderRadius,
+                          onTap: () => _showImage(
+                            question.fileId,
+                            question.image,
+                            context,
+                          ),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(6.0, 4.0, 0.0, 4.0),
+                            child: AnimatedOpacity(
+                              duration: duration,
+                              opacity: signedOff ? 0.5 : 1.0,
+                              child: FadeInCalendarImage(
+                                key: TestKey.checklistQuestionImageKey,
+                                imageFileId: question.fileId,
+                                imageFilePath: question.image,
+                                imageFile: tempImageFile,
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    if (question.hasTitle)
+                      if (question.hasTitle)
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 10.0),
+                          child: Text(
+                            question.name,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                      Spacer(),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 10.0),
-                        child: Text(
-                          question.name,
-                          style: Theme.of(context).textTheme.bodyText1,
+                        padding:
+                            const EdgeInsets.fromLTRB(0.0, 12.0, 12.0, 12.0),
+                        child: AnimatedCrossFade(
+                          firstChild: Icon(
+                            AbiliaIcons.checkbox_selected,
+                            color: AbiliaColors.green,
+                          ),
+                          secondChild: Icon(AbiliaIcons.checkbox_unselected),
+                          crossFadeState: signedOff
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
+                          duration: duration,
                         ),
-                      ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 12.0, 12.0, 12.0),
-                      child: AnimatedCrossFade(
-                        firstChild: Icon(
-                          AbiliaIcons.checkbox_selected,
-                          color: AbiliaColors.green,
-                        ),
-                        secondChild: Icon(AbiliaIcons.checkbox_unselected),
-                        crossFadeState: signedOff
-                            ? CrossFadeState.showFirst
-                            : CrossFadeState.showSecond,
-                        duration: duration,
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

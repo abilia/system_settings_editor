@@ -37,15 +37,18 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: onClosedPressed ?? () => _pop(context),
           ),
         ),
-        Center(
-          child: Text(  
-            title,
-            style: Theme.of(context)
-                .textTheme
-                .headline6
-                .copyWith(color: AbiliaColors.white),
+        if (title != null)
+          Center(
+            child: Tts(
+              child: Text(
+                title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: AbiliaColors.white),
+              ),
+            ),
           ),
-        ),
         if (trailing != null)
           Align(
             alignment: Alignment.centerRight,
