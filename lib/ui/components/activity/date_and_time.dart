@@ -94,10 +94,14 @@ class DatePicker extends StatelessWidget {
   final DateTime date;
   final bool disabled;
   final Function(DateTime) onChange;
+  final DateTime firstDate;
+  final DateTime lastDate;
   const DatePicker(
     this.date, {
     @required this.onChange,
     this.disabled = false,
+    this.firstDate,
+    this.lastDate,
   });
 
   @override
@@ -107,6 +111,8 @@ class DatePicker extends StatelessWidget {
     final translator = Translator.of(context).translate;
     final dayColor = weekDayColor[date.weekday];
     final color = dayColor == AbiliaColors.white ? dayColor[120] : dayColor;
+    final _firstDate = firstDate ?? DateTime(date.year - 20);
+    final _lastDate = lastDate ?? DateTime(date.year + 20);
 
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, time) => PickField(
@@ -116,8 +122,8 @@ class DatePicker extends StatelessWidget {
           final newDate = await showDatePicker(
               context: context,
               initialDate: date,
-              firstDate: DateTime(date.year - 20),
-              lastDate: DateTime(date.year + 20),
+              firstDate: _firstDate,
+              lastDate: _lastDate,
               builder: (context, child) => Theme(
                   data: abiliaTheme.copyWith(
                     colorScheme: abiliaTheme.colorScheme.copyWith(

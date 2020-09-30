@@ -135,7 +135,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                 ],
               ),
             ),
-            padded(EndDateWidget(activity)),
+            padded(EndDateWidget(state)),
           ]
         ],
       ),
