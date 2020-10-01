@@ -5,8 +5,10 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
 
-class AlarmListener extends StatelessWidget {
-  const AlarmListener({
+import 'ui/components/all.dart';
+
+class SeagullListeners extends StatefulWidget {
+  const SeagullListeners({
     Key key,
     @required this.child,
     this.listenWhen,
@@ -14,6 +16,19 @@ class AlarmListener extends StatelessWidget {
 
   final Widget child;
   final BlocListenerCondition<AlarmStateBase> listenWhen;
+
+  @override
+  _SeagullListenersState createState() => _SeagullListenersState();
+}
+
+class _SeagullListenersState extends State<SeagullListeners>
+    with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      BlocProvider.of<LicenseBloc>(context).add(ReloadLicenses());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,16 +46,29 @@ class AlarmListener extends StatelessWidget {
             }
           },
         ),
+        BlocListener<LicenseBloc, LicenseState>(
+          listener: (context, state) async {
+            if (state is NoValidLicense) {
+              await showViewDialog(
+                context: context,
+                builder: (context) {
+                  return LicenseExpiredDialog();
+                },
+              );
+              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
+            }
+          },
+        ),
         BlocListener<AlarmBloc, AlarmStateBase>(
           listener: _alarmListener,
-          listenWhen: listenWhen,
+          listenWhen: widget.listenWhen,
         ),
         BlocListener<NotificationBloc, AlarmStateBase>(
           listener: _alarmListener,
-          listenWhen: listenWhen,
+          listenWhen: widget.listenWhen,
         ),
       ],
-      child: child,
+      child: widget.child,
     );
   }
 
