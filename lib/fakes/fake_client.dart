@@ -8,6 +8,7 @@ import 'package:seagull/models/all.dart';
 import 'fake_activities.dart';
 
 typedef ActivityResponse = Iterable<Activity> Function();
+typedef SortableResponse = Iterable<Sortable> Function();
 
 class Fakes {
   Fakes._();
@@ -17,8 +18,12 @@ class Fakes {
       username = 'username',
       type = 'testcase',
       incorrectPassword = 'wrong';
-  static final ActivityResponse allActivitiesFunciton = () => allActivities;
-  static MockClient client([ActivityResponse activitiesResponse]) => MockClient(
+
+  static MockClient client([
+    ActivityResponse activitiesResponse,
+    SortableResponse sortableResponse,
+  ]) =>
+      MockClient(
         (r) {
           final pathSegments = r.url.pathSegments.toSet();
           Response response;
@@ -39,7 +44,14 @@ class Fakes {
           }
           if (pathSegments.containsAll(['data', 'activities'])) {
             response = Response(
-                json.encode((activitiesResponse ?? allActivitiesFunciton)()
+                json.encode((activitiesResponse?.call() ?? allActivities)
+                    .map((a) => a.wrapWithDbModel())
+                    .toList()),
+                200);
+          }
+          if (pathSegments.containsAll(['data', 'sortableitems'])) {
+            response = Response(
+                json.encode((sortableResponse?.call() ?? allSortables)
                     .map((a) => a.wrapWithDbModel())
                     .toList()),
                 200);
@@ -51,7 +63,7 @@ class Fakes {
         },
       );
 
-  static final Iterable<Activity> allActivities = [
+  static final allActivities = [
     FakeActivity.reocurrsMondays(),
     FakeActivity.reocurrsTuedays(),
     FakeActivity.reocurrsWednesdays(),
@@ -66,6 +78,8 @@ class Fakes {
     FakeActivity.reocurrsOnDate(DateTime(2000, 06, 21)),
     FakeActivity.reocurrsOnDate(DateTime(2000, 10, 06)),
   ];
+
+  static final allSortables = <Sortable>[];
 
   static final Response clientMeSuccessResponse = Response('''
     {

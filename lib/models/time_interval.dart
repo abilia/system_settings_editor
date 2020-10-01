@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:seagull/utils/all.dart';
 
 class TimeInterval extends Equatable {
+  final DateTime startDate;
   final TimeOfDay startTime;
   final TimeOfDay endTime;
 
@@ -11,20 +13,29 @@ class TimeInterval extends Equatable {
   bool get onlyStartTime => startTimeSet && !endTimeSet;
   bool get onlyEndTime => endTimeSet && !startTimeSet;
 
-  TimeInterval(this.startTime, this.endTime);
+  const TimeInterval({this.startTime, this.endTime, @required this.startDate})
+      : assert(startDate != null);
 
   TimeInterval.fromDateTime(DateTime startDate, DateTime endDate)
       : startTime =
             startDate != null ? TimeOfDay.fromDateTime(startDate) : null,
-        endTime = endDate != null ? TimeOfDay.fromDateTime(endDate) : null;
+        endTime = endDate != null ? TimeOfDay.fromDateTime(endDate) : null,
+        startDate = startDate;
 
-  TimeInterval.empty()
-      : startTime = null,
-        endTime = null;
+  TimeInterval copyWith({
+    TimeOfDay startTime,
+    TimeOfDay endTime,
+    DateTime startDate,
+  }) =>
+      TimeInterval(
+        startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
+        startDate: startDate ?? this.startDate,
+      );
 
   @override
-  List<Object> get props => [startTime, endTime];
+  List<Object> get props => [startTime, endTime, startDate.onlyDays()];
 
   @override
-  String toString() => 'TimeInterval: $startTime - $endTime';
+  String toString() => 'TimeInterval: ${yMd(startDate)} $startTime - $endTime';
 }

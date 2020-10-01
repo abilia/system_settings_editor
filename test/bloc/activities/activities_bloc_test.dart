@@ -537,8 +537,7 @@ void main() {
           startTime: starttime,
         );
 
-        final expected = updated.copyWith(
-            recurs: Recurs.not.changeEnd(updated.noneRecurringEnd));
+        final expected = updated.copyWith(recurs: Recurs.not);
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
@@ -574,7 +573,7 @@ void main() {
 
         final expcetedUpdatedActivity = updated.copyWith(
           newId: true,
-          recurs: Recurs.not.changeEnd(starttime.add(recurring.duration)),
+          recurs: Recurs.not,
         );
         final updatedOldActivity =
             recurring.copyWith(startTime: recurring.startTime.nextDay());
@@ -601,14 +600,30 @@ void main() {
             [expcetedUpdatedActivity, updatedOldActivity]))));
         verify(mockSyncBloc.add(ActivitySaved()));
       });
+
       test('on last day split activity in two and updates the activty ',
           () async {
         // Arrange
         final startTime = DateTime(2020, 01, 01, 15, 20);
         final lastDay = DateTime(2020, 05, 05);
         final lastDayEndTime = DateTime(2020, 05, 06).millisecondBefore();
-        final recurring = FakeActivity.reocurrsEveryDay(startTime)
-            .copyWithRecurringEnd(lastDayEndTime);
+        final recurring = Activity.createNew(
+          title: 'null',
+          startTime: startTime,
+          recurs: Recurs.weeklyOnDays(
+            [
+              DateTime.monday,
+              DateTime.tuesday,
+              DateTime.wednesday,
+              DateTime.thursday,
+              DateTime.friday,
+              DateTime.saturday,
+              DateTime.sunday,
+            ],
+            ends: lastDayEndTime,
+          ),
+        );
+
         when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value([recurring]));
 
@@ -617,7 +632,7 @@ void main() {
             recurring.copyWith(title: 'new title', startTime: newStartTime);
 
         final expectedUpdatedActivity = updated.copyWith(
-          recurs: Recurs.not.changeEnd(updated.noneRecurringEnd),
+          recurs: Recurs.not,
           newId: true,
         );
         final exptectedUpdatedOldActivity =
@@ -647,28 +662,38 @@ void main() {
         verify(mockSyncBloc.add(ActivitySaved()));
       });
 
-      test('on a day split activity in three and updates the activty ',
+      test(
+          'on a day split in middle activity in three and updates the activty ',
           () async {
         // Arrange
-        final aDay = anyDay.add(5.days()).onlyDays();
-        final recurring = FakeActivity.reocurrsEveryDay(anyTime);
+        final updatedDay = anyDay.add(5.days()).onlyDays();
+        final recurring = Activity.createNew(
+          title: 'title',
+          startTime: anyTime,
+          recurs: Recurs.raw(
+            Recurs.TYPE_WEEKLY,
+            Recurs.allDaysOfWeek,
+            Recurs.NO_END,
+          ),
+        );
+
         when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value([recurring]));
 
         final updated = recurring.copyWith(
             title: 'new title',
-            startTime: aDay.copyWith(
+            startTime: updatedDay.copyWith(
                 hour: anyTime.hour - 1, minute: anyTime.millisecond));
 
         final expectedUpdatedActivity = updated.copyWith(
-          recurs: Recurs.not.changeEnd(updated.noneRecurringEnd),
+          recurs: Recurs.not,
           newId: true,
         );
         final preModDaySeries =
-            recurring.copyWithRecurringEnd(aDay.millisecondBefore());
+            recurring.copyWithRecurringEnd(updatedDay.millisecondBefore());
         final postModDaySeries = recurring.copyWith(
             newId: true,
-            startTime: aDay.nextDay().copyWith(
+            startTime: updatedDay.nextDay().copyWith(
                 hour: recurring.startTime.hour,
                 minute: recurring.startTime.minute));
 
@@ -678,7 +703,7 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
-          ActivityDay(updated, aDay),
+          ActivityDay(updated, updatedDay),
           ApplyTo.onlyThisDay,
         ));
 
@@ -713,7 +738,7 @@ void main() {
 
         final expectedUpdatedActivity = fullday.copyWith(
           newId: true,
-          recurs: Recurs.not.changeEnd(fullday.noneRecurringEnd),
+          recurs: Recurs.not,
         );
 
         final preModDaySeries =

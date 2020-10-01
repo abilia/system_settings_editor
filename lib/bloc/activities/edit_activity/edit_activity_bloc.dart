@@ -28,7 +28,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
           StoredActivityState(
               activityDay.activity,
               activityDay.activity.fullDay
-                  ? TimeInterval.empty()
+                  ? TimeInterval(startDate: activityDay.activity.startTime)
                   : TimeInterval.fromDateTime(
                       activityDay.activity.startClock(activityDay.day),
                       activityDay.activity.hasEndTime
@@ -47,12 +47,11 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
         super(
           UnstoredActivityState(
             Activity.createNew(
-              title: '',
-              startTime: day.nextHalfHour(),
-              timezone: day.timeZoneName,
-              alarmType: memoplannerSettingBloc.state.defaultAlarmType()
-            ),
-            TimeInterval(null, null),
+                title: '',
+                startTime: day,
+                timezone: day.timeZoneName,
+                alarmType: memoplannerSettingBloc.state.defaultAlarmType()),
+            TimeInterval(startDate: day),
           ),
         );
 
@@ -132,6 +131,10 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       activity = activity.copyWith(recurs: Recurs.not);
     }
 
+    activity = activity.copyWith(
+      startTime: activity.startClock(state.timeInterval.startDate),
+    );
+
     if (activity.fullDay) {
       activity = activity.copyWith(
         startTime: activity.startTime.onlyDays(),
@@ -169,9 +172,10 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   }
 
   Stream<EditActivityState> _mapChangeDateToState(ChangeDate event) async* {
-    yield state.copyWith(state.activity.copyWith(
-      startTime: event.date,
-    ));
+    yield state.copyWith(
+      state.activity,
+      timeInterval: state.timeInterval.copyWith(startDate: event.date),
+    );
   }
 
   Stream<EditActivityState> _mapChangeStartTimeToState(
@@ -179,12 +183,20 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     // Move end time if start time changes
     if (state.timeInterval.startTimeSet && state.timeInterval.endTimeSet) {
       final newEndTime = _calculateNewEndTime(event);
-      yield (state.copyWith(state.activity,
-          timeInterval:
-              TimeInterval(event.time, TimeOfDay.fromDateTime(newEndTime))));
+      yield state.copyWith(
+        state.activity,
+        timeInterval: state.timeInterval.copyWith(
+          startTime: event.time,
+          endTime: TimeOfDay.fromDateTime(newEndTime),
+        ),
+      );
     } else {
-      yield state.copyWith(state.activity,
-          timeInterval: TimeInterval(event.time, state.timeInterval.endTime));
+      yield state.copyWith(
+        state.activity,
+        timeInterval: state.timeInterval.copyWith(
+          startTime: event.time,
+        ),
+      );
     }
   }
 
@@ -227,8 +239,14 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
 
   Stream<EditActivityState> _mapChangeEndTimeToState(
       ChangeEndTime event) async* {
-    yield state.copyWith(state.activity,
-        timeInterval: TimeInterval(state.timeInterval.startTime, event.time));
+    yield state.copyWith(
+      state.activity,
+      timeInterval: TimeInterval(
+        startTime: state.timeInterval.startTime,
+        endTime: event.time,
+        startDate: state.timeInterval.startDate,
+      ),
+    );
   }
 
   Duration _getDuration(DateTime startTime, TimeOfDay endTime) {
