@@ -21,10 +21,9 @@ class EditActivityPage extends StatelessWidget {
         builder: (context, state) {
           final activity = state.activity;
           final fullDay = activity.fullDay;
-          final storedRecurring =
-              state is StoredActivityState && state.activity.isRecurring;
-          final displayRecurrence =
-              !storedRecurring && memoSettingsState.activityRecurringEditable;
+
+          final displayRecurrence = !state.storedRecurring &&
+              memoSettingsState.activityRecurringEditable;
           final tabs = [
             MainTab(editActivityState: state, day: day),
             if (!fullDay) AlarmAndReminderTab(activity: activity),
@@ -68,78 +67,110 @@ class EditActivityPage extends StatelessWidget {
                 ),
                 title: title,
                 trailing: Builder(
-                    builder: (context) => ActionButton(
-                        key: TestKey.finishEditActivityButton,
-                        child: Icon(AbiliaIcons.ok, size: 32),
-                        onPressed: () => _finishedPressed(context, state))),
+                  builder: (context) => ActionButton(
+                      key: TestKey.finishEditActivityButton,
+                      child: Icon(AbiliaIcons.ok, size: 32),
+                      onPressed: () =>
+                          BlocProvider.of<EditActivityBloc>(context)
+                              .add(SaveActivity())),
+                ),
               ),
-              body: TabBarView(children: tabs),
+              body: EditActivityListners(
+                child: TabBarView(children: tabs),
+                nrTabs: tabs.length,
+              ),
             ),
           );
         },
       ),
     );
   }
+}
 
-  Future _finishedPressed(BuildContext context, EditActivityState state) async {
-    if (state is StoredActivityState && state.unchanged) {
-      await Navigator.of(context).maybePop();
-      return;
-    }
+class EditActivityListners extends StatelessWidget {
+  final Widget child;
+  final int nrTabs;
 
-    final errors = BlocProvider.of<EditActivityBloc>(context).saveErrors;
-    if (errors.isEmpty) {
-      if (state is StoredActivityState && state.activity.isRecurring) {
-        final applyTo = await showViewDialog<ApplyTo>(
-          context: context,
-          builder: (context) => EditRecurrentDialog(),
-        );
-        if (applyTo == null) return;
-        BlocProvider.of<EditActivityBloc>(context)
-            .add(SaveRecurringActivity(applyTo, state.day));
-      } else {
-        BlocProvider.of<EditActivityBloc>(context).add(SaveActivity());
-      }
-      await Navigator.of(context).maybePop();
-    } else {
-      _scrollToStart(context);
-      final translate = Translator.of(context).translate;
-      BlocProvider.of<EditActivityBloc>(context).add(SaveActivity());
-      if (errors.contains(SaveError.NO_TITLE_OR_IMAGE) &&
-          errors.contains(SaveError.NO_START_TIME)) {
-        await showErrorViewDialog(
-          translate.missingTitleOrImageAndStartTime,
-          context: context,
-        );
-      } else if (errors.contains(SaveError.NO_TITLE_OR_IMAGE)) {
-        await showErrorViewDialog(
-          translate.missingTitleOrImage,
-          context: context,
-        );
-      } else if (errors.contains(SaveError.NO_START_TIME)) {
-        await showErrorViewDialog(
-          translate.missingStartTime,
-          context: context,
-        );
-      } else if (errors.contains(SaveError.START_TIME_BEFORE_NOW)) {
-        await showErrorViewDialog(
-          translate.startTimeBeforeNow,
-          context: context,
-        );
-      }
-    }
+  const EditActivityListners({
+    Key key,
+    @required this.child,
+    @required this.nrTabs,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<EditActivityBloc, EditActivityState>(
+          listenWhen: (_, current) => current.sucessfullSave == true,
+          listener: (context, state) => Navigator.of(context).maybePop(),
+        ),
+        BlocListener<EditActivityBloc, EditActivityState>(
+          listenWhen: (_, current) => current.saveErrors.isNotEmpty,
+          listener: (context, state) async {
+            final errors = state.saveErrors;
+            if (errors.any(
+              {
+                SaveError.NO_TITLE_OR_IMAGE,
+                SaveError.NO_START_TIME,
+                SaveError.START_TIME_BEFORE_NOW,
+              }.contains,
+            )) {
+              return _mainPageError(errors, context);
+            } else if (errors.contains(SaveError.NO_RECURING_DAYS)) {
+              _scrollToTab(context, nrTabs - 2);
+              return showErrorViewDialog(
+                  Translator.of(context)
+                      .translate
+                      .recuringDataEmptyErrorMessage,
+                  context: context);
+            } else if (errors.contains(SaveError.STORED_RECURING)) {
+              if (state is StoredActivityState) {
+                final applyTo = await showViewDialog<ApplyTo>(
+                  context: context,
+                  builder: (context) => EditRecurrentDialog(),
+                );
+                if (applyTo == null) return;
+                BlocProvider.of<EditActivityBloc>(context)
+                    .add(SaveRecurringActivity(applyTo, state.day));
+              }
+            }
+          },
+        )
+      ],
+      child: child,
+    );
   }
 
-  void _scrollToStart(BuildContext context) {
+  Future _mainPageError(Set<SaveError> errors, BuildContext context) {
+    final translate = Translator.of(context).translate;
+    _scrollToTab(context, 0);
+    var text = '';
+
+    if (errors.containsAll(
+      {
+        SaveError.NO_TITLE_OR_IMAGE,
+        SaveError.NO_START_TIME,
+      },
+    )) {
+      text = translate.missingTitleOrImageAndStartTime;
+    } else if (errors.contains(SaveError.NO_TITLE_OR_IMAGE)) {
+      text = translate.missingTitleOrImage;
+    } else if (errors.contains(SaveError.NO_START_TIME)) {
+      text = translate.missingStartTime;
+    } else if (errors.contains(SaveError.START_TIME_BEFORE_NOW)) {
+      text = translate.startTimeBeforeNow;
+    }
+    assert(text.isNotEmpty);
+    return showErrorViewDialog(text, context: context);
+  }
+
+  void _scrollToTab(BuildContext context, int tabIndex) {
     final tabController = DefaultTabController.of(context);
-    if (tabController.index != 0) {
-      tabController.animateTo(0);
+    if (tabController.index != tabIndex) {
+      tabController.animateTo(tabIndex);
     } else {
-      final scrollController = PrimaryScrollController.of(context);
-      if (scrollController != null) {
-        scrollController.animateTo(0.0,
-            duration: kTabScrollDuration, curve: Curves.ease);
-      }
+      PrimaryScrollController.of(context)
+          ?.animateTo(0.0, duration: kTabScrollDuration, curve: Curves.ease);
     }
   }
 }

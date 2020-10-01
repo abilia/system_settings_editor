@@ -21,7 +21,7 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
     return NameAndPictureWidget(
       imageFileId: state.activity.fileId,
       imageFilePath: state.activity.icon,
-      errorState: state.failedSave && !state.hasTitleOrImage,
+      errorState: state.saveErrors.contains(SaveError.NO_TITLE_OR_IMAGE),
       text: state.activity.title,
       newImage: state.newImage,
       inputFormatters: [LengthLimitingTextInputFormatter(50)],

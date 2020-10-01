@@ -9,6 +9,10 @@ class Recurs extends Equatable {
   final int type, data, endTime;
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(endTime);
   bool get hasNoEnd => endTime == NO_END;
+  bool get weekly => type == TYPE_WEEKLY;
+  bool get monthly => type == TYPE_MONTHLY;
+  bool get yearly => type == TYPE_YEARLY;
+  bool get once => type == TYPE_NONE;
 
   @visibleForTesting
   const Recurs.raw(this.type, this.data, int endTime)

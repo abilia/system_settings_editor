@@ -311,8 +311,9 @@ class SelectableField extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(4.0),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      shape: BoxShape.circle),
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    shape: BoxShape.circle,
+                  ),
                   child: SizedBox(
                     width: 24,
                     height: 24,
@@ -329,9 +330,10 @@ class SelectableField extends StatelessWidget {
                                   ),
                                 ),
                       child: selected
-                          ? Icon(
+                          ? const Icon(
                               AbiliaIcons.radiocheckbox_selected,
                               color: AbiliaColors.green,
+                              size: smallIconSize,
                             )
                           : Container(
                               decoration: const BoxDecoration(

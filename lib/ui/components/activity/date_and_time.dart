@@ -20,7 +20,6 @@ class DateAndTimeWidget extends StatelessWidget {
 
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         builder: (context, memoSettingsState) {
-      final errors = BlocProvider.of<EditActivityBloc>(context).saveErrors;
       return SizedBox(
         width: double.infinity,
         child: Column(
@@ -39,12 +38,11 @@ class DateAndTimeWidget extends StatelessWidget {
             CollapsableWidget(
               collapsed: activity.fullDay,
               padding: const EdgeInsets.only(bottom: 12.0),
-              child: TimeIntervallPicker(
-                editActivityState.timeInterval,
-                startTimeError: editActivityState.failedSave &&
-                    (errors.contains(SaveError.NO_START_TIME) ||
-                        errors.contains(SaveError.START_TIME_BEFORE_NOW)),
-              ),
+              child: TimeIntervallPicker(editActivityState.timeInterval,
+                  startTimeError: editActivityState.saveErrors.any({
+                    SaveError.NO_START_TIME,
+                    SaveError.START_TIME_BEFORE_NOW
+                  }.contains)),
             ),
             SwitchField(
               key: TestKey.fullDaySwitch,
