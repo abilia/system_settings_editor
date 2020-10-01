@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/duration.dart';
 
 final yMd = DateFormat('y-MM-dd').format;
 final hm = DateFormat.Hm().format;
+
+extension IntToTimeOfDay on int {
+  TimeOfDay timeOfDay() => TimeOfDay.fromDateTime(
+      DateTime.now().onlyDays().add(Duration(milliseconds: this)));
+}
 
 extension DateTimeExtensions on DateTime {
   DateTime onlyDays() => DateTime(year, month, day);
@@ -100,6 +107,26 @@ extension DateTimeExtensions on DateTime {
 
   DateTime withTime(TimeOfDay timeOfDay) =>
       copyWith(hour: timeOfDay.hour, minute: timeOfDay.minute);
+
+  DayPart dayPart(DayParts dayParts) {
+    final date = onlyDays();
+    if (date.add(dayParts.nightStart.milliseconds()).isBefore(this)) {
+      return DayPart.night;
+    }
+    if (date.add(dayParts.eveningStart.milliseconds()).isBefore(this)) {
+      return DayPart.evening;
+    }
+    if (date.add(dayParts.afternoonStart.milliseconds()).isBefore(this)) {
+      return DayPart.afternoon;
+    }
+    if (date.add(dayParts.forenoonStart.milliseconds()).isBefore(this)) {
+      return DayPart.forenoon;
+    }
+    if (date.add(dayParts.morningStart.milliseconds()).isBefore(this)) {
+      return DayPart.morning;
+    }
+    return DayPart.night;
+  }
 }
 
 extension IntDateTimeExtensions on int {
