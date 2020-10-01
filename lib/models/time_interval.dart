@@ -13,7 +13,7 @@ class TimeInterval extends Equatable {
   bool get onlyStartTime => startTimeSet && !endTimeSet;
   bool get onlyEndTime => endTimeSet && !startTimeSet;
 
-  const TimeInterval(this.startTime, this.endTime, this.startDate)
+  const TimeInterval({this.startTime, this.endTime, @required this.startDate})
       : assert(startDate != null);
 
   TimeInterval.fromDateTime(DateTime startDate, DateTime endDate)
@@ -28,9 +28,9 @@ class TimeInterval extends Equatable {
     DateTime startDate,
   }) =>
       TimeInterval(
-        startTime ?? this.startTime,
-        endTime ?? this.endTime,
-        startDate ?? this.startDate,
+        startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
+        startDate: startDate ?? this.startDate,
       );
 
   @override

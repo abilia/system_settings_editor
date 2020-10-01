@@ -28,7 +28,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
           StoredActivityState(
               activityDay.activity,
               activityDay.activity.fullDay
-                  ? TimeInterval(null, null, activityDay.activity.startTime)
+                  ? TimeInterval(startDate: activityDay.activity.startTime)
                   : TimeInterval.fromDateTime(
                       activityDay.activity.startClock(activityDay.day),
                       activityDay.activity.hasEndTime
@@ -51,7 +51,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
                 startTime: day,
                 timezone: day.timeZoneName,
                 alarmType: memoplannerSettingBloc.state.defaultAlarmType()),
-            TimeInterval(null, null, day),
+            TimeInterval(startDate: day),
           ),
         );
 
@@ -132,9 +132,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     }
 
     activity = activity.copyWith(
-      startTime: activity.startClock(
-        activity.startClock(state.timeInterval.startDate),
-      ),
+      startTime: activity.startClock(state.timeInterval.startDate),
     );
 
     if (activity.fullDay) {
@@ -244,9 +242,9 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     yield state.copyWith(
       state.activity,
       timeInterval: TimeInterval(
-        state.timeInterval.startTime,
-        event.time,
-        state.timeInterval.startDate,
+        startTime: state.timeInterval.startTime,
+        endTime: event.time,
+        startDate: state.timeInterval.startDate,
       ),
     );
   }
