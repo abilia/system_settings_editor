@@ -52,7 +52,7 @@ class AbiliaTextInput extends StatelessWidget {
                   key: formKey,
                   controller: controller,
                   style: theme.textTheme.bodyText1,
-                  autovalidate: true,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (_) => errorState ? '' : null,
                   decoration: errorState
                       ? InputDecoration(
@@ -150,7 +150,7 @@ class PasswordInput extends StatelessWidget {
                         controller: controller,
                         obscureText: obscureText,
                         style: theme.textTheme.bodyText1,
-                        autovalidate: true,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (_) => errorState ? '' : null,
                         decoration: errorState
                             ? InputDecoration(
