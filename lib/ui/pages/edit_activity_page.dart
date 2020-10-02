@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
@@ -66,14 +67,7 @@ class EditActivityPage extends StatelessWidget {
                   ],
                 ),
                 title: title,
-                trailing: Builder(
-                  builder: (context) => ActionButton(
-                      key: TestKey.finishEditActivityButton,
-                      child: Icon(AbiliaIcons.ok, size: 32),
-                      onPressed: () =>
-                          BlocProvider.of<EditActivityBloc>(context)
-                              .add(SaveActivity())),
-                ),
+                trailing: OkButton(),
               ),
               body: EditActivityListners(
                 child: TabBarView(children: tabs),
@@ -83,6 +77,38 @@ class EditActivityPage extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class OkButton extends StatelessWidget {
+  const OkButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Builder(
+      builder: (context) => ActionButton(
+          themeData: theme.copyWith(
+            buttonColor: AbiliaColors.green,
+            textTheme: abiliaTextTheme.copyWith(
+              button: abiliaTextTheme.button.copyWith(
+                color: AbiliaColors.black,
+              ),
+            ),
+            buttonTheme: abiliaTheme.buttonTheme.copyWith(
+              shape: RoundedRectangleBorder(
+                borderRadius: borderRadius,
+                side: BorderSide(color: AbiliaColors.green140),
+              ),
+            ),
+          ),
+          key: TestKey.finishEditActivityButton,
+          child: Icon(AbiliaIcons.ok),
+          onPressed: () =>
+              BlocProvider.of<EditActivityBloc>(context).add(SaveActivity())),
     );
   }
 }
