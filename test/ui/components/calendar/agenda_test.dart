@@ -388,4 +388,13 @@ void main() {
     await tester.verifyTts(find.byKey(TestKey.dayAppBarTitle),
         contains: '${now.day}');
   });
+
+  testWidgets('tts no activities', (WidgetTester tester) async {
+    activityResponse = () => [];
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+
+    await tester.verifyTts(find.text(translate.noActivities),
+        exact: translate.noActivities);
+  });
 }
