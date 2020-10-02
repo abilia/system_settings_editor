@@ -389,278 +389,398 @@ void main() {
         expect(res.state, expected);
       });
     });
-  });
+    group('This day and forward', () {
+      test('on first day, just updates the activty ', () async {
+        // Arrange
+        final recurrringActivity = FakeActivity.reocurrsFridays(anyTime);
+        final updatedRecurrringActivity =
+            recurrringActivity.copyWith(title: 'new title');
 
-  group('This day and forward', () {
-    test('on first day, just updates the activty ', () async {
-      // Arrange
-      final recurrringActivity = FakeActivity.reocurrsFridays(anyTime);
-      final updatedRecurrringActivity =
-          recurrringActivity.copyWith(title: 'new title');
+        // Act
+        final res = editRecurringMixin.updateThisDayAndForward(
+            activity: updatedRecurrringActivity,
+            activities: {recurrringActivity});
 
-      // Act
-      final res = editRecurringMixin.updateThisDayAndForward(
+        // Assert
+        expect(res.state, [updatedRecurrringActivity]);
+        expect(res.save, [updatedRecurrringActivity]);
+      });
+
+      test('on second day splits the activity ', () async {
+        // Arrange
+        final recurrringActivity = FakeActivity.reocurrsFridays(anyTime);
+        final aDay = anyDay.add(2.days()).onlyDays();
+        final updatedRecurrringActivity = recurrringActivity.copyWith(
+            title: 'new title', startTime: aDay.copyWith(hour: 4, minute: 4));
+
+        final beforeModifiedDay = recurrringActivity.copyWithRecurringEnd(
+          aDay.millisecondBefore(),
+          newId: true,
+        );
+        final onAndAfterModifiedDay = updatedRecurrringActivity.copyWith();
+
+        final exptected = [beforeModifiedDay, onAndAfterModifiedDay];
+
+        // Act
+        final res = editRecurringMixin.updateThisDayAndForward(
           activity: updatedRecurrringActivity,
-          activities: {recurrringActivity});
+          activities: {recurrringActivity},
+        );
 
-      // Assert
-      expect(res.state, [updatedRecurrringActivity]);
-      expect(res.save, [updatedRecurrringActivity]);
-    });
+        final matcher = MatchActivitiesWithoutId(exptected);
+        // Assert
+        expect(res.state, matcher);
+        expect(res.save, matcher);
+      });
 
-    test('on second day splits the activity ', () async {
-      // Arrange
-      final recurrringActivity = FakeActivity.reocurrsFridays(anyTime);
-      final aDay = anyDay.add(2.days()).onlyDays();
-      final updatedRecurrringActivity = recurrringActivity.copyWith(
-          title: 'new title', startTime: aDay.copyWith(hour: 4, minute: 4));
+      test('change on occourance backwards ', () async {
+        // Arrange
+        final recurrringActivity = FakeActivity.reocurrsEveryDay(anyTime);
+        final inAWeek = anyTime.copyWith(day: anyTime.day + 7);
 
-      final beforeModifiedDay = recurrringActivity.copyWithRecurringEnd(
-        aDay.millisecondBefore(),
-        newId: true,
-      );
-      final onAndAfterModifiedDay = updatedRecurrringActivity.copyWith();
+        final updatedRecurrringActivity =
+            recurrringActivity.copyWith(title: 'new title', startTime: inAWeek);
 
-      final exptected = [beforeModifiedDay, onAndAfterModifiedDay];
+        final expectedPreModified = recurrringActivity.copyWithRecurringEnd(
+          inAWeek.onlyDays().millisecondBefore(),
+          newId: true,
+        );
+        final exptectedList = [expectedPreModified, updatedRecurrringActivity];
 
-      // Act
-      final res = editRecurringMixin.updateThisDayAndForward(
-        activity: updatedRecurrringActivity,
-        activities: {recurrringActivity},
-      );
+        // Act
+        final res = editRecurringMixin.updateThisDayAndForward(
+            activity: updatedRecurrringActivity,
+            activities: {recurrringActivity});
+        final matcher = MatchActivitiesWithoutId(exptectedList);
 
-      final matcher = MatchActivitiesWithoutId(exptected);
-      // Assert
-      expect(res.state, matcher);
-      expect(res.save, matcher);
-    });
+        // Assert
+        expect(res.state, matcher);
+        expect(res.save, matcher);
+      });
 
-    test('change on occourance backwards ', () async {
-      // Arrange
-      final recurrringActivity = FakeActivity.reocurrsEveryDay(anyTime);
-      final inAWeek = anyTime.copyWith(day: anyTime.day + 7);
+      test('change on occourance forward ', () async {
+        // Arrange
+        final inTwoWeeks = anyTime.copyWith(day: anyTime.day + 14);
+        final inFourWeeks = anyTime.copyWith(day: anyTime.day + 4 * 7);
 
-      final updatedRecurrringActivity =
-          recurrringActivity.copyWith(title: 'new title', startTime: inAWeek);
+        final recurrringActivity = FakeActivity.reocurrsEveryDay(anyTime)
+            .copyWithRecurringEnd(inFourWeeks);
 
-      final expectedPreModified = recurrringActivity.copyWithRecurringEnd(
-        inAWeek.onlyDays().millisecondBefore(),
-        newId: true,
-      );
-      final exptectedList = [expectedPreModified, updatedRecurrringActivity];
+        final updatedRecurrringActivity = recurrringActivity.copyWith(
+            title: 'new title', startTime: inTwoWeeks);
 
-      // Act
-      final res = editRecurringMixin.updateThisDayAndForward(
+        final expectedPreModified = recurrringActivity.copyWithRecurringEnd(
+          inTwoWeeks.onlyDays().millisecondBefore(),
+          newId: true,
+        );
+        final exptectedList = [expectedPreModified, updatedRecurrringActivity];
+
+        // Act
+        final res = editRecurringMixin.updateThisDayAndForward(
           activity: updatedRecurrringActivity,
-          activities: {recurrringActivity});
-      final matcher = MatchActivitiesWithoutId(exptectedList);
+          activities: {recurrringActivity},
+        );
+        final matcher = MatchActivitiesWithoutId(exptectedList);
 
-      // Assert
-      expect(res.state, matcher);
-      expect(res.save, matcher);
+        // Assert
+        expect(res.state, matcher);
+        expect(res.save, matcher);
+      });
+
+      test('change on occourance past endTime ', () async {
+        // Arrange
+        final inFourWeeks = anyTime.copyWith(day: anyTime.day + 4 * 7);
+        final inSixWeeks = anyTime.copyWith(day: anyTime.day + 6 * 7);
+
+        final recurrringActivity = FakeActivity.reocurrsEveryDay(anyTime)
+            .copyWithRecurringEnd(inFourWeeks);
+
+        final updatedRecurrringActivity = recurrringActivity.copyWith(
+            title: 'new title', startTime: inSixWeeks);
+
+        // Act
+        final res = editRecurringMixin.updateThisDayAndForward(
+          activity: updatedRecurrringActivity,
+          activities: {recurrringActivity},
+        );
+        final matcher = [recurrringActivity];
+
+        // Assert
+        expect(res.state, matcher);
+        expect(res.save, []);
+      });
+
+      test('changes all future activities in series ', () async {
+        // Arrange
+        final inFiveDays = anyTime.copyWith(day: anyTime.day + 5);
+        final inSevenDays = anyTime.copyWith(day: anyTime.day + 7);
+        final inNineDays = anyTime.copyWith(day: anyTime.day + 8);
+        final in12Days = anyTime.copyWith(day: anyTime.day + 12);
+
+        final og = FakeActivity.reocurrsEveryDay(anyTime);
+        final before = og
+            .copyWith(title: 'original')
+            .copyWithRecurringEnd(inSevenDays.onlyDays().millisecondBefore());
+
+        final after = og.copyWith(
+          newId: true,
+          startTime: inNineDays,
+          fullDay: true,
+          title: 'now full day',
+        );
+
+        final stray = og
+            .copyWith(
+              newId: true,
+              startTime: in12Days,
+              duration: 10.minutes(),
+              recurs: Recurs.not,
+              title: 'a stray',
+            )
+            .copyWithRecurringEnd(in12Days.add(10.minutes()));
+
+        final stray2 = og
+            .copyWith(
+              newId: true,
+              startTime: inFiveDays,
+              duration: 66.minutes(),
+              title: 'a second stray',
+            )
+            .copyWithRecurringEnd(inFiveDays.add(66.minutes()));
+
+        final currentActivities = {before, after, stray, stray2};
+
+        final newTitle = 'newTitle';
+        final newTime = inFiveDays.add(2.hours());
+        final newDuration = 30.minutes();
+
+        final updatedRecurrringActivity = stray2.copyWith(
+          title: newTitle,
+          startTime: newTime,
+          duration: newDuration,
+          removeAfter: true,
+        );
+
+        final beforePostMod = before
+            .copyWithRecurringEnd(inFiveDays.onlyDays().millisecondBefore());
+
+        final beforeSplitPostMod = before.copyWith(
+          newId: true,
+          title: newTitle,
+          startTime: newTime,
+          duration: newDuration,
+          removeAfter: true,
+        );
+
+        final afterPostMod = after.copyWith(
+          title: newTitle,
+          startTime: after.startTime.copyWith(
+            hour: newTime.hour,
+            minute: newTime.minute,
+          ),
+          duration: newDuration,
+          fullDay: false,
+          removeAfter: true,
+        );
+        final strayPostMod = stray.copyWith(
+          title: newTitle,
+          startTime: stray.startTime.copyWith(
+            hour: newTime.hour,
+            minute: newTime.minute,
+          ),
+          duration: newDuration,
+          removeAfter: true,
+        );
+
+        final exptectedList = <Activity>[
+          beforePostMod,
+          updatedRecurrringActivity,
+          beforeSplitPostMod,
+          afterPostMod,
+          strayPostMod
+        ];
+
+        // Act
+        final res = editRecurringMixin.updateThisDayAndForward(
+            activity: updatedRecurrringActivity, activities: currentActivities);
+        final matcher = MatchActivitiesWithoutId(exptectedList);
+
+        // Assert
+        expect(res.state, matcher);
+        expect(res.save, matcher);
+      });
+
+      test('dont edited activity before ', () async {
+        final a1Start = DateTime(2020, 04, 01, 13, 00);
+        final a1End = DateTime(2020, 04, 05).millisecondBefore();
+        final a2Start = DateTime(2020, 04, 06, 13, 00);
+        final a2End = DateTime(10000);
+        final a3Time = DateTime(2020, 04, 18, 13, 00);
+
+        // Arrange
+        final a1 = Activity.createNew(
+          title: 'asdf',
+          startTime: a1Start,
+          recurs: Recurs.raw(
+              Recurs.TYPE_WEEKLY, 16383, a1End.millisecondsSinceEpoch),
+        );
+        final a2 = a1.copyWith(
+          newId: true,
+          title: 'asdf',
+          startTime: a2Start,
+          recurs: Recurs.raw(
+            Recurs.TYPE_WEEKLY,
+            16383,
+            a2End.millisecondsSinceEpoch,
+          ),
+        );
+        final a3 = a2.copyWith(
+          newId: true,
+          title: 'Moved',
+          startTime: a3Time,
+          recurs: Recurs.not.changeEnd(a3Time),
+        );
+
+        final newTitle = 'updated';
+        final newTime = DateTime(2020, 04, 08, 13, 00);
+        final updatedA2 = a2.copyWith(title: 'updated', startTime: newTime);
+
+        final a2Part1 =
+            a2.copyWithRecurringEnd(newTime.onlyDays().millisecondBefore());
+
+        final expectedA3 = a3.copyWith(title: newTitle);
+
+        // Act
+        final res = editRecurringMixin.updateThisDayAndForward(
+            activity: updatedA2, activities: {a1, a2, a3});
+
+        // Assert
+        expect(res.state,
+            MatchActivitiesWithoutId([a1, a2Part1, updatedA2, expectedA3]));
+        expect(res.save,
+            MatchActivitiesWithoutId([a2Part1, updatedA2, expectedA3]));
+      });
     });
 
-    test('change on occourance forward ', () async {
-      // Arrange
-      final inTwoWeeks = anyTime.copyWith(day: anyTime.day + 14);
-      final inFourWeeks = anyTime.copyWith(day: anyTime.day + 4 * 7);
-
-      final recurrringActivity = FakeActivity.reocurrsEveryDay(anyTime)
-          .copyWithRecurringEnd(inFourWeeks);
-
-      final updatedRecurrringActivity = recurrringActivity.copyWith(
-          title: 'new title', startTime: inTwoWeeks);
-
-      final expectedPreModified = recurrringActivity.copyWithRecurringEnd(
-        inTwoWeeks.onlyDays().millisecondBefore(),
-        newId: true,
-      );
-      final exptectedList = [expectedPreModified, updatedRecurrringActivity];
-
-      // Act
-      final res = editRecurringMixin.updateThisDayAndForward(
-        activity: updatedRecurrringActivity,
-        activities: {recurrringActivity},
-      );
-      final matcher = MatchActivitiesWithoutId(exptectedList);
-
-      // Assert
-      expect(res.state, matcher);
-      expect(res.save, matcher);
-    });
-
-    test('change on occourance past endTime ', () async {
-      // Arrange
-      final inFourWeeks = anyTime.copyWith(day: anyTime.day + 4 * 7);
-      final inSixWeeks = anyTime.copyWith(day: anyTime.day + 6 * 7);
-
-      final recurrringActivity = FakeActivity.reocurrsEveryDay(anyTime)
-          .copyWithRecurringEnd(inFourWeeks);
-
-      final updatedRecurrringActivity = recurrringActivity.copyWith(
-          title: 'new title', startTime: inSixWeeks);
-
-      // Act
-      final res = editRecurringMixin.updateThisDayAndForward(
-        activity: updatedRecurrringActivity,
-        activities: {recurrringActivity},
-      );
-      final matcher = [recurrringActivity];
-
-      // Assert
-      expect(res.state, matcher);
-      expect(res.save, []);
-    });
-
-    test('changes all future activities in series ', () async {
-      // Arrange
-      final inFiveDays = anyTime.copyWith(day: anyTime.day + 5);
-      final inSevenDays = anyTime.copyWith(day: anyTime.day + 7);
-      final inNineDays = anyTime.copyWith(day: anyTime.day + 8);
-      final in12Days = anyTime.copyWith(day: anyTime.day + 12);
-
-      final og = FakeActivity.reocurrsEveryDay(anyTime);
-      final before = og
-          .copyWith(title: 'original')
-          .copyWithRecurringEnd(inSevenDays.onlyDays().millisecondBefore());
-
-      final after = og.copyWith(
-        newId: true,
-        startTime: inNineDays,
-        fullDay: true,
-        title: 'now full day',
-      );
-
-      final stray = og
-          .copyWith(
-            newId: true,
-            startTime: in12Days,
-            duration: 10.minutes(),
-            recurs: Recurs.not,
-            title: 'a stray',
-          )
-          .copyWithRecurringEnd(in12Days.add(10.minutes()));
-
-      final stray2 = og
-          .copyWith(
-            newId: true,
-            startTime: inFiveDays,
-            duration: 66.minutes(),
-            title: 'a second stray',
-          )
-          .copyWithRecurringEnd(inFiveDays.add(66.minutes()));
-
-      final currentActivities = {before, after, stray, stray2};
-
-      final newTitle = 'newTitle';
-      final newTime = inFiveDays.add(2.hours());
-      final newDuration = 30.minutes();
-
-      final updatedRecurrringActivity = stray2.copyWith(
-        title: newTitle,
-        startTime: newTime,
-        duration: newDuration,
-        removeAfter: true,
-      );
-
-      final beforePostMod = before
-          .copyWithRecurringEnd(inFiveDays.onlyDays().millisecondBefore());
-
-      final beforeSplitPostMod = before.copyWith(
-        newId: true,
-        title: newTitle,
-        startTime: newTime,
-        duration: newDuration,
-        removeAfter: true,
-      );
-
-      final afterPostMod = after.copyWith(
-        title: newTitle,
-        startTime: after.startTime.copyWith(
-          hour: newTime.hour,
-          minute: newTime.minute,
-        ),
-        duration: newDuration,
-        fullDay: false,
-        removeAfter: true,
-      );
-      final strayPostMod = stray.copyWith(
-        title: newTitle,
-        startTime: stray.startTime.copyWith(
-          hour: newTime.hour,
-          minute: newTime.minute,
-        ),
-        duration: newDuration,
-        removeAfter: true,
-      );
-
-      final exptectedList = <Activity>[
-        beforePostMod,
-        updatedRecurrringActivity,
-        beforeSplitPostMod,
-        afterPostMod,
-        strayPostMod
-      ];
-
-      // Act
-      final res = editRecurringMixin.updateThisDayAndForward(
-          activity: updatedRecurrringActivity, activities: currentActivities);
-      final matcher = MatchActivitiesWithoutId(exptectedList);
-
-      // Assert
-      expect(res.state, matcher);
-      expect(res.save, matcher);
-    });
-
-    test('dont edited activity before ', () async {
-      final a1Start = DateTime(2020, 04, 01, 13, 00);
-      final a1End = DateTime(2020, 04, 05).millisecondBefore();
-      final a2Start = DateTime(2020, 04, 06, 13, 00);
-      final a2End = DateTime(10000);
-      final a3Time = DateTime(2020, 04, 18, 13, 00);
-
-      // Arrange
-      final a1 = Activity.createNew(
+    test(
+        'bug SGC-332 recuring with traling day before is not affected by this day and forward',
+        () {
+      final a = Activity.createNew(
         title: 'asdf',
-        startTime: a1Start,
-        recurs:
-            Recurs.raw(Recurs.TYPE_WEEKLY, 16383, a1End.millisecondsSinceEpoch),
-      );
-      final a2 = a1.copyWith(
-        newId: true,
-        title: 'asdf',
-        startTime: a2Start,
-        recurs: Recurs.raw(
-          Recurs.TYPE_WEEKLY,
-          16383,
-          a2End.millisecondsSinceEpoch,
-        ),
-      );
-      final a3 = a2.copyWith(
-        newId: true,
-        title: 'Moved',
-        startTime: a3Time,
-        recurs: Recurs.not.changeEnd(a3Time),
+        startTime: DateTime(2020, 10, 02, 13, 14),
+        recurs: Recurs.everyDay,
       );
 
-      final newTitle = 'updated';
-      final newTime = DateTime(2020, 04, 08, 13, 00);
-      final updatedA2 = a2.copyWith(title: 'updated', startTime: newTime);
+      final aUpdated = a.copyWith(title: 'only this day');
 
-      final a2Part1 =
-          a2.copyWithRecurringEnd(newTime.onlyDays().millisecondBefore());
+      final expetedUpdate1 = aUpdated.copyWith(
+        recurs: Recurs.not,
+      );
 
-      final expectedA3 = a3.copyWith(title: newTitle);
+      final expetedUpdate2 = a.copyWith(
+        startTime: a.startTime.nextDay(),
+      );
 
       // Act
-      final res = editRecurringMixin.updateThisDayAndForward(
-          activity: updatedA2, activities: {a1, a2, a3});
+      final res1 = editRecurringMixin.updateOnlyThisDay(
+        activity: aUpdated,
+        activities: {a},
+        day: a.startTime.onlyDays(),
+      );
 
       // Assert
-      expect(res.state,
-          MatchActivitiesWithoutId([a1, a2Part1, updatedA2, expectedA3]));
       expect(
-          res.save, MatchActivitiesWithoutId([a2Part1, updatedA2, expectedA3]));
+        res1.state,
+        MatchActivitiesWithoutId(
+          [
+            expetedUpdate1,
+            expetedUpdate2,
+          ],
+        ),
+      );
+      expect(
+        res1.save,
+        MatchActivitiesWithoutId(
+          [
+            expetedUpdate1,
+            expetedUpdate2,
+          ],
+        ),
+      );
+
+      // Arrange
+      final recuringA = res1.state.firstWhere((a) => a.isRecurring);
+
+      expect(recuringA, MatchActivityWithoutId(expetedUpdate2));
+
+      final recuringAUpdated2 = recuringA.copyWith(title: 'brand new title');
+
+      final res2 = editRecurringMixin.updateThisDayAndForward(
+        activity: recuringAUpdated2,
+        activities: res1.state.toSet(),
+      );
+
+      // Assert
+      expect(
+        res2.state,
+        MatchActivitiesWithoutId(
+          [
+            expetedUpdate1,
+            recuringAUpdated2,
+          ],
+        ),
+      );
+      expect(
+        res2.save,
+        MatchActivitiesWithoutId(
+          [
+            recuringAUpdated2,
+          ],
+        ),
+      );
+    });
+
+    test('bug SGC-332 recuring not with endtime is not overlapping', () {
+      final activity = Activity.createNew(
+        title: 'old title',
+        startTime: DateTime(2022, 12, 12, 12, 12),
+        recurs: Recurs.everyDay,
+      );
+
+      final onlyThis = activity.copyWith(
+        title: 'new title',
+        recurs: Recurs.raw(0, 0, Recurs.NO_END),
+      );
+      final recuring = activity.copyWith(
+        startTime: activity.startTime.nextDay(),
+        newId: true,
+      );
+
+      final recuringUpdated = recuring.copyWith(title: 'brand new title');
+
+      final res2 = editRecurringMixin.updateThisDayAndForward(
+        activity: recuringUpdated,
+        activities: {onlyThis, recuring},
+      );
+
+      // Assert
+      expect(
+        res2.state,
+        MatchActivitiesWithoutId(
+          [
+            onlyThis,
+            recuringUpdated,
+          ],
+        ),
+      );
+      expect(
+        res2.save,
+        MatchActivitiesWithoutId(
+          [
+            recuringUpdated,
+          ],
+        ),
+      );
     });
   });
 }
