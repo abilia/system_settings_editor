@@ -111,7 +111,8 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
   }
 
   @override
-  void insertChildRenderObject(RenderObject child, slot) {
+  void insertRenderObjectChild(
+      covariant RenderObject child, covariant dynamic slot) {
     final RenderObjectWithChildMixin<RenderObject> renderObject =
         this.renderObject;
     assert(slot == null);
@@ -121,12 +122,14 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
   }
 
   @override
-  void moveChildRenderObject(RenderObject child, slot) {
+  void moveRenderObjectChild(covariant RenderObject child,
+      covariant dynamic oldSlot, covariant dynamic newSlot) {
     assert(false);
   }
 
   @override
-  void removeChildRenderObject(RenderObject child) {
+  void removeRenderObjectChild(
+      covariant RenderObject child, covariant dynamic slot) {
     final renderObject = this.renderObject;
     assert(renderObject.child == child);
     renderObject.child = null;
