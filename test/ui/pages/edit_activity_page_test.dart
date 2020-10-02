@@ -179,7 +179,7 @@ void main() {
           find.text(translate.missingTitleOrImageAndStartTime), findsNothing);
     });
 
-    testWidgets('pressing add activity button with time shows error',
+    testWidgets('pressing add activity button without time shows error',
         (WidgetTester tester) async {
       final newActivtyName = 'new activity name';
       final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
@@ -1647,6 +1647,103 @@ text''';
           tester.widgetList(find.byType(PickField)).first as PickField;
 
       expect(alarmPicker.disabled, true);
+    });
+
+    final hourInputFinder = find.byKey(TestKey.hourTextInput);
+    final minInputFinder = find.byKey(TestKey.minTextInput);
+    final finishActivityFinder = find.byKey(TestKey.finishEditActivityButton);
+    testWidgets(
+        'activityTimeBeforeCurrent true - Cant save when start time is past',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        activityTimeBeforeCurrent: false,
+      )));
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          givenActivity:
+              Activity.createNew(title: 't i t l e', startTime: startTime),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      await tester.tap(startTimeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.enterText(hourInputFinder, '${startTime.hour}');
+      await tester.enterText(minInputFinder, '${startTime.minute - 1}');
+      await tester.pumpAndSettle();
+      await tester.tap(okFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(finishActivityFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.text(translate.startTimeBeforeNow), findsOneWidget);
+    });
+
+    testWidgets(
+        'activityTimeBeforeCurrent true - CAN save when start time is future',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        activityTimeBeforeCurrent: false,
+      )));
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          givenActivity:
+              Activity.createNew(title: 't i t l e', startTime: startTime),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      await tester.tap(startTimeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.enterText(hourInputFinder, '${startTime.hour}');
+      await tester.enterText(minInputFinder, '${startTime.minute + 1}');
+      await tester.pumpAndSettle();
+      await tester.tap(okFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(finishActivityFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.text(translate.startTimeBeforeNow), findsNothing);
+    });
+
+    testWidgets(
+        'activityTimeBeforeCurrent true - CAN save recuring when start time is future',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        activityTimeBeforeCurrent: false,
+      )));
+
+      final activity = Activity.createNew(
+        title: 't i t l e',
+        startTime: startTime.subtract(100.days()),
+        recurs: Recurs.everyDay,
+      );
+
+      await tester.pumpWidget(
+        wrapWithMaterialApp(EditActivityPage(day: today),
+            givenActivity: activity),
+      );
+
+      await tester.pumpAndSettle();
+
+      await tester.tap(startTimeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.enterText(hourInputFinder, '${startTime.hour + 1}');
+      await tester.enterText(minInputFinder, '${startTime.minute + 1}');
+      await tester.pumpAndSettle();
+      await tester.tap(okFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(finishActivityFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.text(translate.startTimeBeforeNow), findsNothing);
     });
   });
 
