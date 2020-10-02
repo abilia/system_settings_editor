@@ -49,13 +49,13 @@ class _SeagullListenersState extends State<SeagullListeners>
         BlocListener<LicenseBloc, LicenseState>(
           listener: (context, state) async {
             if (state is NoValidLicense) {
+              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
               await showViewDialog(
                 context: context,
                 builder: (context) {
                   return LicenseExpiredDialog();
                 },
               );
-              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
             }
           },
         ),
