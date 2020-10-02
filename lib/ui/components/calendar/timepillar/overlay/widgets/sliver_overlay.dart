@@ -127,7 +127,8 @@ class SliverOverlayRenderObjectElement extends RenderObjectElement {
   }
 
   @override
-  void insertChildRenderObject(RenderObject child, int slot) {
+  void insertRenderObjectChild(
+      covariant RenderObject child, covariant dynamic slot) {
     final RenderSliverOverlay renderObject = this.renderObject;
     if (slot == 0) renderObject.overlay = child;
     if (slot == 1) renderObject.child = child;
@@ -135,12 +136,14 @@ class SliverOverlayRenderObjectElement extends RenderObjectElement {
   }
 
   @override
-  void moveChildRenderObject(RenderObject child, slot) {
+  void moveRenderObjectChild(covariant RenderObject child,
+      covariant dynamic oldSlot, covariant dynamic newSlot) {
     assert(false);
   }
 
   @override
-  void removeChildRenderObject(RenderObject child) {
+  void removeRenderObjectChild(
+      covariant RenderObject child, covariant dynamic slot) {
     final RenderSliverOverlay renderObject = this.renderObject;
     if (renderObject.overlay == child) renderObject.overlay = null;
     if (renderObject.child == child) renderObject.child = null;
