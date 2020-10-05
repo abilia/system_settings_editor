@@ -30,7 +30,7 @@ abstract class EditActivityState extends Equatable with Silent {
   bool get unchanged =>
       activity == originalActivity &&
       timeInterval == originalTimeInterval &&
-      newImage == newImage;
+      newImage == null;
 
   @override
   List<Object> get props => [

@@ -20,7 +20,7 @@ class DateAndTimeWidget extends StatelessWidget {
 
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         builder: (context, memoSettingsState) {
-      final errors = BlocProvider.of<EditActivityBloc>(context).canSave;
+      final errors = BlocProvider.of<EditActivityBloc>(context).saveErrors;
       return SizedBox(
         width: double.infinity,
         child: Column(
@@ -28,7 +28,7 @@ class DateAndTimeWidget extends StatelessWidget {
           children: <Widget>[
             SubHeading(translator.date),
             DatePicker(
-              activity.startTime,
+              editActivityState.timeInterval.startDate,
               onChange: (newDate) =>
                   BlocProvider.of<EditActivityBloc>(context).add(
                 ChangeDate(newDate),

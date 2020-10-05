@@ -231,9 +231,7 @@ void main() {
           startTime: starttime,
         );
 
-        final expected = updated.copyWith(
-          recurs: Recurs.not.changeEnd(updated.noneRecurringEnd),
-        );
+        final expected = updated.copyWith(recurs: Recurs.not);
 
         // Act
         final res = editRecurringMixin.updateOnlyThisDay(
@@ -246,149 +244,150 @@ void main() {
         expect(res.state, [expected]);
         expect(res.save, [expected]);
       });
-    });
 
-    test('on first day split activity in two and updates the activty ',
-        () async {
-      // Arrange
-      final recurring = FakeActivity.reocurrsEveryDay(anyTime)
-          .copyWithRecurringEnd(anyDay.add(5.days()).millisecondBefore());
+      test('on first day split activity in two and updates the activty ',
+          () async {
+        // Arrange
+        final recurring = FakeActivity.reocurrsEveryDay(anyTime)
+            .copyWithRecurringEnd(anyDay.add(5.days()).millisecondBefore());
 
-      final starttime = recurring.startTime.subtract(1.hours());
-      final updated =
-          recurring.copyWith(title: 'new title', startTime: starttime);
+        final starttime = recurring.startTime.subtract(1.hours());
+        final updated =
+            recurring.copyWith(title: 'new title', startTime: starttime);
 
-      final expcetedUpdatedActivity = updated.copyWith(
-        newId: true,
-        recurs: Recurs.not.changeEnd(starttime.add(recurring.duration)),
-      );
-      final updatedOldActivity =
-          recurring.copyWith(startTime: recurring.startTime.nextDay());
-
-      // Act
-      final res = editRecurringMixin.updateOnlyThisDay(
-        activity: updated,
-        activities: {recurring},
-        day: anyDay,
-      );
-
-      // Assert
-      expect(
-          res.state,
-          MatchActivitiesWithoutId(
-              [expcetedUpdatedActivity, updatedOldActivity]));
-      expect(
-          res.save,
-          MatchActivitiesWithoutId(
-              [expcetedUpdatedActivity, updatedOldActivity]));
-    });
-
-    test('on last day split activity in two and updates the activty ',
-        () async {
-      // Arrange
-      final startTime = DateTime(2020, 01, 01, 15, 20);
-      final lastDay = DateTime(2020, 05, 05);
-      final lastDayEndTime = DateTime(2020, 05, 06).millisecondBefore();
-      final recurring = FakeActivity.reocurrsEveryDay(startTime)
-          .copyWithRecurringEnd(lastDayEndTime);
-
-      final newStartTime = recurring.startClock(lastDay).subtract(1.hours());
-      final updated =
-          recurring.copyWith(title: 'new title', startTime: newStartTime);
-
-      final expectedUpdatedActivity = updated.copyWith(
-        newId: true,
-        recurs: Recurs.not.changeEnd(newStartTime.add(recurring.duration)),
-      );
-      final exptectedUpdatedOldActivity =
-          recurring.copyWithRecurringEnd(lastDay.millisecondBefore());
-
-      // Act
-      final res = editRecurringMixin.updateOnlyThisDay(
-          activity: updated, activities: {recurring}, day: lastDay);
-
-      // Assert
-      final exptected = MatchActivitiesWithoutId(
-          [exptectedUpdatedOldActivity, expectedUpdatedActivity]);
-
-      expect(res.state, exptected);
-      expect(res.save, exptected);
-    });
-
-    test('on a day split activity in three and updates the activty ', () async {
-      // Arrange
-      final aDay = anyDay.add(5.days()).onlyDays();
-      final recurring = FakeActivity.reocurrsEveryDay(anyTime);
-
-      final updated = recurring.copyWith(
-          title: 'new title',
-          startTime: aDay.copyWith(
-              hour: anyTime.hour - 1, minute: anyTime.millisecond));
-
-      final expectedUpdatedActivity = updated.copyWith(
-        newId: true,
-        recurs: Recurs.not.changeEnd(updated.startTime.add(updated.duration)),
-      );
-      final preModDaySeries =
-          recurring.copyWithRecurringEnd(aDay.millisecondBefore());
-      final postModDaySeries = recurring.copyWith(
+        final expcetedUpdatedActivity = updated.copyWith(
           newId: true,
-          startTime: aDay.nextDay().copyWith(
-              hour: recurring.startTime.hour,
-              minute: recurring.startTime.minute));
+          recurs: Recurs.not,
+        );
+        final updatedOldActivity =
+            recurring.copyWith(startTime: recurring.startTime.nextDay());
 
-      // Act
-      final res = editRecurringMixin.updateOnlyThisDay(
-          activity: updated, activities: {recurring}, day: aDay);
+        // Act
+        final res = editRecurringMixin.updateOnlyThisDay(
+          activity: updated,
+          activities: {recurring},
+          day: anyDay,
+        );
 
-      // Assert
-      final expected = MatchActivitiesWithoutId(
-          [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
-      expect(res.state, expected);
-      expect(res.state, expected);
-    });
+        // Assert
+        expect(
+            res.state,
+            MatchActivitiesWithoutId(
+                [expcetedUpdatedActivity, updatedOldActivity]));
+        expect(
+            res.save,
+            MatchActivitiesWithoutId(
+                [expcetedUpdatedActivity, updatedOldActivity]));
+      });
 
-    test('fullday split', () async {
-      // Arrange
-      final aDay = DateTime(2020, 04, 01);
-      final recurring = FakeActivity.reocurrsEveryDay(anyTime);
-      // when(mockActivityRepository.load())
-      //     .thenAnswer((_) => Future.value([recurring]));
+      test('on last day split activity in two and updates the activty ',
+          () async {
+        // Arrange
+        final startTime = DateTime(2020, 01, 01, 15, 20);
+        final lastDay = DateTime(2020, 05, 05);
+        final lastDayEndTime = DateTime(2020, 05, 06).millisecondBefore();
+        final recurring = FakeActivity.reocurrsEveryDay(startTime)
+            .copyWithRecurringEnd(lastDayEndTime);
 
-      final fullday = recurring.copyWith(
-          title: 'new title',
-          alarmType: NO_ALARM,
-          reminderBefore: [],
-          fullDay: true,
-          duration: 1.days() - 1.milliseconds(),
-          startTime: aDay);
+        final newStartTime = recurring.startClock(lastDay).subtract(1.hours());
+        final updated =
+            recurring.copyWith(title: 'new title', startTime: newStartTime);
 
-      final expectedUpdatedActivity = fullday.copyWith(
-        newId: true,
-        recurs: Recurs.not.changeEnd(aDay.nextDay().millisecondBefore()),
-      );
-
-      final preModDaySeries =
-          recurring.copyWithRecurringEnd(aDay.millisecondBefore());
-      final postModDaySeries = recurring.copyWith(
+        final expectedUpdatedActivity = updated.copyWith(
           newId: true,
-          startTime: aDay.nextDay().copyWith(
+          recurs: Recurs.not,
+        );
+        final exptectedUpdatedOldActivity =
+            recurring.copyWithRecurringEnd(lastDay.millisecondBefore());
+
+        // Act
+        final res = editRecurringMixin.updateOnlyThisDay(
+            activity: updated, activities: {recurring}, day: lastDay);
+
+        // Assert
+        final exptected = MatchActivitiesWithoutId(
+            [exptectedUpdatedOldActivity, expectedUpdatedActivity]);
+
+        expect(res.state, exptected);
+        expect(res.save, exptected);
+      });
+
+      test('on a day split activity in three and updates the activty ',
+          () async {
+        // Arrange
+        final aDay = anyDay.add(5.days()).onlyDays();
+        final recurring = FakeActivity.reocurrsEveryDay(anyTime);
+
+        final updated = recurring.copyWith(
+            title: 'new title',
+            startTime: aDay.copyWith(
+                hour: anyTime.hour - 1, minute: anyTime.millisecond));
+
+        final expectedUpdatedActivity = updated.copyWith(
+          newId: true,
+          recurs: Recurs.not,
+        );
+        final preModDaySeries =
+            recurring.copyWithRecurringEnd(aDay.millisecondBefore());
+        final postModDaySeries = recurring.copyWith(
+            newId: true,
+            startTime: aDay.nextDay().copyWith(
                 hour: recurring.startTime.hour,
-                minute: recurring.startTime.minute,
-              ));
+                minute: recurring.startTime.minute));
 
-      final expected = MatchActivitiesWithoutId(
-          [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
+        // Act
+        final res = editRecurringMixin.updateOnlyThisDay(
+            activity: updated, activities: {recurring}, day: aDay);
 
-      final res = editRecurringMixin.updateOnlyThisDay(
-        activity: fullday,
-        activities: {recurring},
-        day: aDay,
-      );
+        // Assert
+        final expected = MatchActivitiesWithoutId(
+            [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
+        expect(res.state, expected);
+        expect(res.state, expected);
+      });
 
-      // Assert
-      expect(res.state, expected);
-      expect(res.state, expected);
+      test('fullday split', () async {
+        // Arrange
+        final aDay = DateTime(2020, 04, 01);
+        final recurring = FakeActivity.reocurrsEveryDay(anyTime);
+        // when(mockActivityRepository.load())
+        //     .thenAnswer((_) => Future.value([recurring]));
+
+        final fullday = recurring.copyWith(
+            title: 'new title',
+            alarmType: NO_ALARM,
+            reminderBefore: [],
+            fullDay: true,
+            duration: 1.days() - 1.milliseconds(),
+            startTime: aDay);
+
+        final expectedUpdatedActivity = fullday.copyWith(
+          newId: true,
+          recurs: Recurs.not,
+        );
+
+        final preModDaySeries =
+            recurring.copyWithRecurringEnd(aDay.millisecondBefore());
+        final postModDaySeries = recurring.copyWith(
+            newId: true,
+            startTime: aDay.nextDay().copyWith(
+                  hour: recurring.startTime.hour,
+                  minute: recurring.startTime.minute,
+                ));
+
+        final expected = MatchActivitiesWithoutId(
+            [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
+
+        final res = editRecurringMixin.updateOnlyThisDay(
+          activity: fullday,
+          activities: {recurring},
+          day: aDay,
+        );
+
+        // Assert
+        expect(res.state, expected);
+        expect(res.state, expected);
+      });
     });
   });
 
@@ -624,8 +623,8 @@ void main() {
       final a1 = Activity.createNew(
         title: 'asdf',
         startTime: a1Start,
-        recurs: Recurs.raw(
-            Recurs.TYPE_WEEKLY, 16383, a1End.millisecondsSinceEpoch),
+        recurs:
+            Recurs.raw(Recurs.TYPE_WEEKLY, 16383, a1End.millisecondsSinceEpoch),
       );
       final a2 = a1.copyWith(
         newId: true,

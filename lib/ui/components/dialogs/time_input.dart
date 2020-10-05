@@ -302,7 +302,7 @@ class _InputField extends StatelessWidget {
         autofocus: autoFocus,
         keyboardType: TextInputType.number,
         inputFormatters: <TextInputFormatter>[
-          WhitelistingTextInputFormatter.digitsOnly,
+          FilteringTextInputFormatter.digitsOnly,
           LengthLimitingTextInputFormatter(2),
           ...extraFormatter,
         ],

@@ -80,12 +80,14 @@ mixin EditRecurringMixin {
         .toSet(); // Should be split
 
     final activityBeforeSplit = overlappingInSeries
-        .map((a) =>
-            a.copyWithRecurringEnd(newStart.onlyDays().millisecondBefore()))
+        .map((a) => a.copyWithRecurringEnd(
+              newStart.onlyDays().millisecondBefore(),
+              newId: true,
+            ))
         .toSet();
 
-    final activityAfterDateSplit = overlappingInSeries
-        .map((a) => a.copyWith(newId: true, startTime: newStart));
+    final activityAfterDateSplit =
+        overlappingInSeries.map((a) => a.copyWith(startTime: newStart));
 
     final startDayIsOnOrAfter = series
         .where((a) => !a.startTime.isDayBefore(newStart))
@@ -110,44 +112,37 @@ mixin EditRecurringMixin {
     @required Set<Activity> activities,
     @required DateTime day,
   }) {
-    final onlyDayActivity = activity.copyWith(
-        recurs: Recurs.not.changeEnd(activity.noneRecurringEnd));
+    final onlyDayActivity = activity.copyWith(recurs: Recurs.not);
     final oldActivity = activities.firstWhere((a) => a.id == activity.id);
 
     final atFirstDay = oldActivity.startTime.isAtSameDay(day);
     final atLastDay = oldActivity.recurs.end.isAtSameDay(day);
 
-    final newActivities = <Activity>[];
-    if (atFirstDay && !atLastDay) {
-      newActivities.add(
+    final newActivities = <Activity>[
+      if (atFirstDay && !atLastDay)
         oldActivity.copyWith(
           newId: true,
           startTime: oldActivity.startTime.nextDay(),
-        ),
-      );
-    } else if (atLastDay && !atFirstDay) {
-      newActivities.add(
+        )
+      else if (atLastDay && !atFirstDay)
+        oldActivity.copyWithRecurringEnd(
+          day.millisecondBefore(),
+          newId: true,
+        )
+      else if (!atFirstDay && !atLastDay) ...[
         oldActivity.copyWithRecurringEnd(
           day.millisecondBefore(),
           newId: true,
         ),
-      );
-    } else if (!atFirstDay && !atLastDay) {
-      newActivities.addAll(
-        [
-          oldActivity.copyWithRecurringEnd(
-            day.millisecondBefore(),
-            newId: true,
-          ),
-          oldActivity.copyWith(
-            newId: true,
-            startTime: day.nextDay().copyWith(
-                hour: oldActivity.startTime.hour,
-                minute: oldActivity.startTime.minute),
-          ),
-        ],
-      );
-    }
+        oldActivity.copyWith(
+          newId: true,
+          startTime: day.nextDay().copyWith(
+              hour: oldActivity.startTime.hour,
+              minute: oldActivity.startTime.minute),
+        ),
+      ],
+    ];
+
     return _updateActivityToResult(onlyDayActivity, activities,
         andAdd: newActivities);
   }
@@ -155,10 +150,10 @@ mixin EditRecurringMixin {
   ActivityMappingResult _updateActivityToResult(
       Activity activity, Iterable<Activity> activities,
       {Iterable<Activity> andAdd = const []}) {
-    final save = [activity].followedBy(andAdd);
+    final save = [activity, ...andAdd];
     final updatedActivities = activities.map<Activity>((a) {
       return a.id == activity.id ? activity : a;
     }).toList(growable: false);
-    return ActivityMappingResult(save, updatedActivities.followedBy(andAdd));
+    return ActivityMappingResult(save, [...updatedActivities, ...andAdd]);
   }
 }
