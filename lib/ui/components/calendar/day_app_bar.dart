@@ -17,7 +17,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
       {Key key,
       this.leftAction = _emptyAction,
       this.rightAction = _emptyAction,
-      this.day})
+      @required this.day})
       : super(key: key);
 
   @override
@@ -48,7 +48,10 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
                     Align(
                       alignment: Alignment.center,
                       child: DayAppBarTitle(
-                          langCode: langCode, day: time, textStyle: textStyle),
+                          langCode: langCode,
+                          currentTime: time,
+                          day: day,
+                          textStyle: textStyle),
                     ),
                     if (day.isDayBefore(time))
                       CrossOver(color: textStyle.color),
@@ -74,39 +77,44 @@ class DayAppBarTitleRows {
     bool displayWeekDay = true,
     bool displayPartOfDay = true,
     bool displayDate = true,
+    DateTime currentTime,
     DateTime day,
     DayParts dayParts,
     String langCode,
     BuildContext context,
   }) {
     final translator = Translator.of(context).translate;
-    final part = day.dayPart(dayParts);
-    var partOfDay = 'förmiddag';
-    switch (part) {
-      case DayPart.night:
-        partOfDay = translator.night;
-        break;
-      case DayPart.evening:
-        partOfDay = translator.evening;
-        break;
-      case DayPart.afternoon:
-        partOfDay = translator.afternoon;
-        break;
-      case DayPart.forenoon:
-        partOfDay = translator.forenoon;
-        break;
-      case DayPart.morning:
-        partOfDay = translator.morning;
-        break;
-      default:
-        partOfDay = '';
+    final part = currentTime.dayPart(dayParts);
+    var partOfDay = '';
+    if (currentTime.onlyDays() == day.onlyDays()) {
+      switch (part) {
+        case DayPart.night:
+          partOfDay = translator.night;
+          break;
+        case DayPart.evening:
+          partOfDay = translator.evening;
+          break;
+        case DayPart.afternoon:
+          partOfDay = translator.afternoon;
+          break;
+        case DayPart.forenoon:
+          partOfDay = translator.forenoon;
+          break;
+        case DayPart.morning:
+          partOfDay = translator.morning;
+          break;
+        default:
+          partOfDay = '';
+      }
     }
     var row1 =
         displayWeekDay ? '${DateFormat('EEEE', langCode).format(day)}' : '';
     var row2 = displayDate
         ? DateFormat('d MMMM y', langCode).format(day)
-        : displayPartOfDay ? partOfDay : '';
-    if (displayDate && displayPartOfDay) {
+        : displayPartOfDay
+            ? partOfDay
+            : '';
+    if (displayDate && displayPartOfDay && partOfDay.isNotEmpty) {
       row1 += displayWeekDay ? ', $partOfDay' : partOfDay;
     }
     return DayAppBarTitleRows(row1, row2);
@@ -117,12 +125,13 @@ class DayAppBarTitle extends StatelessWidget {
   const DayAppBarTitle({
     Key key,
     @required this.langCode,
+    @required this.currentTime,
     @required this.day,
     @required this.textStyle,
   }) : super(key: key);
 
   final String langCode;
-  final DateTime day;
+  final DateTime currentTime, day;
   final TextStyle textStyle;
 
   @override
@@ -132,6 +141,8 @@ class DayAppBarTitle extends StatelessWidget {
       final rows = DayAppBarTitleRows.fromSettings(
         displayWeekDay: memoSettingsState.activityDisplayWeekDay,
         displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
+        displayDate: memoSettingsState.activityDisplayDate,
+        currentTime: currentTime,
         day: day,
         dayParts: memoSettingsState.dayParts,
         langCode: langCode,

@@ -20,6 +20,7 @@ abstract class MemoplannerSettingsState {
       settings.activityDisplayNoAlarmOption;
   bool get activityDisplayDayPeriod => settings.activityDisplayDayPeriod;
   bool get activityDisplayWeekDay => settings.activityDisplayWeekDay;
+  bool get activityDisplayDate => settings.activityDisplayDate;
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;
   int get afternoonStart => settings.afternoonIntervalStart;
@@ -95,6 +96,7 @@ class MemoplannerSettings {
       activityDisplayNoAlarmOptionKey = 'add_activity_display_no_alarm',
       activityDisplayDayPeriodKey = 'day_caption_show_period',
       activityDisplayWeekDayKey = 'day_caption_show_weekday',
+      activityDisplayDateKey = 'day_caption_show_date',
       morningIntervalStartKey = 'morning_interval_start',
       forenoonIntervalStartKey = 'forenoon_interval_start',
       afternoonIntervalStartKey = 'afternoon_interval_start',
@@ -115,7 +117,8 @@ class MemoplannerSettings {
       activityDisplaySilentAlarmOption,
       activityDisplayNoAlarmOption,
       activityDisplayDayPeriod,
-      activityDisplayWeekDay;
+      activityDisplayWeekDay,
+      activityDisplayDate;
 
   final int morningIntervalStart,
       forenoonIntervalStart,
@@ -139,6 +142,7 @@ class MemoplannerSettings {
     this.activityDisplayNoAlarmOption = true,
     this.activityDisplayDayPeriod = true,
     this.activityDisplayWeekDay = true,
+    this.activityDisplayDate = true,
     this.morningIntervalStart = 21600000,
     this.forenoonIntervalStart = 36000000,
     this.afternoonIntervalStart = 43200000,
@@ -180,6 +184,8 @@ class MemoplannerSettings {
           _parseSetting(activityDisplayDayPeriodKey, settings, true),
       activityDisplayWeekDay:
           _parseSetting(activityDisplayWeekDayKey, settings, true),
+      activityDisplayDate:
+          _parseSetting(activityDisplayDateKey, settings, true),
       morningIntervalStart:
           _parseSetting(morningIntervalStartKey, settings, 21600000),
       forenoonIntervalStart:

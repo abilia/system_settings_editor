@@ -103,26 +103,30 @@ extension DateTimeExtensions on DateTime {
 
   Occasion occasion(DateTime now) => isAfter(now)
       ? Occasion.future
-      : isBefore(now) ? Occasion.past : Occasion.current;
+      : isBefore(now)
+          ? Occasion.past
+          : Occasion.current;
 
   DateTime withTime(TimeOfDay timeOfDay) =>
       copyWith(hour: timeOfDay.hour, minute: timeOfDay.minute);
 
   DayPart dayPart(DayParts dayParts) {
     final date = onlyDays();
-    if (date.add(dayParts.nightStart.milliseconds()).isBefore(this)) {
+    if (isAtSameMomentOrAfter(date.add(dayParts.nightStart.milliseconds()))) {
       return DayPart.night;
     }
-    if (date.add(dayParts.eveningStart.milliseconds()).isBefore(this)) {
+    if (isAtSameMomentOrAfter(date.add(dayParts.eveningStart.milliseconds()))) {
       return DayPart.evening;
     }
-    if (date.add(dayParts.afternoonStart.milliseconds()).isBefore(this)) {
+    if (isAtSameMomentOrAfter(
+        date.add(dayParts.afternoonStart.milliseconds()))) {
       return DayPart.afternoon;
     }
-    if (date.add(dayParts.forenoonStart.milliseconds()).isBefore(this)) {
+    if (isAtSameMomentOrAfter(
+        date.add(dayParts.forenoonStart.milliseconds()))) {
       return DayPart.forenoon;
     }
-    if (date.add(dayParts.morningStart.milliseconds()).isBefore(this)) {
+    if (isAtSameMomentOrAfter(date.add(dayParts.morningStart.milliseconds()))) {
       return DayPart.morning;
     }
     return DayPart.night;
