@@ -253,6 +253,8 @@ abstract class Translated {
   final String evening = 'evening';
 
   final String night = 'night';
+
+  final String everyOtherWeek = 'Every other week';
 }
 
 class EN extends Translated {}
@@ -613,4 +615,7 @@ class SV extends Translated {
 
   @override
   final String night = 'natt';
+
+  @override
+  final String everyOtherWeek = 'Varannan vecka';
 }

@@ -303,7 +303,8 @@ class SelectableField extends StatelessWidget {
                 height: heigth,
                 width: width,
                 decoration: decoration,
-                padding: const EdgeInsets.fromLTRB(13.0, 11.0, 23.0, 2.0)
+                padding: EdgeInsets.fromLTRB(
+                        12.0, 10.0, 24.0, decoration.border.bottom.width)
                     .subtract(decoration.border.dimensions),
                 child: text,
               ),
