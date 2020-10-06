@@ -62,9 +62,9 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
         if (!memoplannerSettingBloc.state.activityTimeBeforeCurrent &&
             state.startTimeBeforeNow(clockBloc.state))
           SaveError.START_TIME_BEFORE_NOW,
-        if (state.emptyRecurringData) SaveError.NO_RECURING_DAYS,
+        if (state.emptyRecurringData) SaveError.NO_RECURRING_DAYS,
         if (state.storedRecurring && event is! SaveRecurringActivity)
-          SaveError.STORED_RECURING,
+          SaveError.STORED_RECURRING,
       };
 
   @override

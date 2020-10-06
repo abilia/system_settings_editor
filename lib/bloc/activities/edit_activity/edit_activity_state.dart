@@ -4,8 +4,8 @@ enum SaveError {
   NO_START_TIME,
   NO_TITLE_OR_IMAGE,
   START_TIME_BEFORE_NOW,
-  NO_RECURING_DAYS,
-  STORED_RECURING,
+  NO_RECURRING_DAYS,
+  STORED_RECURRING,
 }
 
 abstract class EditActivityState extends Equatable with Silent {

@@ -1625,7 +1625,7 @@ text''';
       // Assert error message
       expect(find.byType(ErrorMessage), findsOneWidget);
       expect(
-          find.text(translate.recuringDataEmptyErrorMessage), findsOneWidget);
+          find.text(translate.recurringDataEmptyErrorMessage), findsOneWidget);
 
       // Act dissmiss
       await tester.tapAt(Offset.zero);
@@ -1772,7 +1772,7 @@ text''';
     });
 
     testWidgets(
-        'activityTimeBeforeCurrent true - CAN save recuring when start time is future',
+        'activityTimeBeforeCurrent true - CAN save recurring when start time is future',
         (WidgetTester tester) async {
       when(mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(

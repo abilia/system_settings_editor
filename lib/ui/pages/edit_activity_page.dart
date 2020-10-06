@@ -142,14 +142,14 @@ class EditActivityListners extends StatelessWidget {
               }.contains,
             )) {
               return _mainPageError(errors, context);
-            } else if (errors.contains(SaveError.NO_RECURING_DAYS)) {
+            } else if (errors.contains(SaveError.NO_RECURRING_DAYS)) {
               _scrollToTab(context, nrTabs - 2);
               return showErrorViewDialog(
                   Translator.of(context)
                       .translate
-                      .recuringDataEmptyErrorMessage,
+                      .recurringDataEmptyErrorMessage,
                   context: context);
-            } else if (errors.contains(SaveError.STORED_RECURING)) {
+            } else if (errors.contains(SaveError.STORED_RECURRING)) {
               if (state is StoredActivityState) {
                 final applyTo = await showViewDialog<ApplyTo>(
                   context: context,

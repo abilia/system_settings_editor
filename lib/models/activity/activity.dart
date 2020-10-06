@@ -17,7 +17,7 @@ class Activity extends DataModel {
       DateTime(day.year, day.month, day.day, startTime.hour, startTime.minute);
   DateTime get noneRecurringEnd => startTime.add(duration);
   bool get hasEndTime => duration.inMinutes > 0;
-  bool get isRecurring => recurs.recurrance != RecurrentType.none;
+  bool get isRecurring => recurs.isRecurring;
   Iterable<Duration> get reminders =>
       reminderBefore.map((r) => r.milliseconds()).toSet();
   bool get hasImage =>

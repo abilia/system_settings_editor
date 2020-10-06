@@ -125,7 +125,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
   @override
   Widget build(BuildContext context) {
     final recurringDataError =
-        state.saveErrors.contains(SaveError.NO_RECURING_DAYS);
+        state.saveErrors.contains(SaveError.NO_RECURRING_DAYS);
     final activity = state.activity;
     final recurs = activity.recurs;
     return ListView(
@@ -208,7 +208,6 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
             padding: _ordinaryPadding
                 .subtract(EdgeInsets.only(top: _errorBoarderPadding.top)),
             child: SwitchField(
-              key: TestKey.noEndDate,
               leading: Icon(
                 AbiliaIcons.thisWeek,
                 size: smallIconSize,
