@@ -24,11 +24,11 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
       }
     });
 
-    listen((recurintWeekState) {
+    listen((recurringWeekState) {
       editActivityBloc.add(
         ReplaceActivity(
           editActivityBloc.state.activity.copyWith(
-            recurs: recurintWeekState.recurs,
+            recurs: recurringWeekState.recurs,
           ),
         ),
       );
