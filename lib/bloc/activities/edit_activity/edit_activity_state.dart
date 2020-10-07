@@ -4,6 +4,8 @@ enum SaveError {
   NO_START_TIME,
   NO_TITLE_OR_IMAGE,
   START_TIME_BEFORE_NOW,
+  NO_RECURING_DAYS,
+  STORED_RECURING,
 }
 
 abstract class EditActivityState extends Equatable with Silent {
@@ -14,13 +16,16 @@ abstract class EditActivityState extends Equatable with Silent {
     this.originalActivity,
     this.originalTimeInterval,
     this.newImage,
-    this.failedSave = false,
+    this.sucessfullSave,
+    this.saveErrors = const UnmodifiableSetView.empty(),
   });
+
   final Activity activity, originalActivity;
   final TimeInterval timeInterval, originalTimeInterval;
   final MapView<Type, InfoItem> infoItems;
   final File newImage;
-  final bool failedSave;
+  final bool sucessfullSave;
+  final UnmodifiableSetView<SaveError> saveErrors;
 
   bool get hasTitleOrImage =>
       activity.hasTitle || activity.fileId?.isNotEmpty == true;
@@ -32,13 +37,24 @@ abstract class EditActivityState extends Equatable with Silent {
       timeInterval == originalTimeInterval &&
       newImage == null;
 
+  bool get storedRecurring =>
+      this is StoredActivityState && activity.isRecurring;
+
+  bool get emptyRecurringData =>
+      activity.isRecurring && activity.recurs.data <= 0;
+
+  bool startTimeBeforeNow(DateTime now) =>
+      hasStartTime &&
+      timeInterval.startDate.withTime(timeInterval.startTime).isBefore(now);
+
   @override
   List<Object> get props => [
         activity,
         timeInterval,
         newImage,
         infoItems,
-        failedSave,
+        sucessfullSave,
+        saveErrors,
       ];
 
   @override
@@ -51,23 +67,21 @@ abstract class EditActivityState extends Equatable with Silent {
     Map<Type, InfoItem> infoItems,
   });
 
-  EditActivityState _failSave();
+  EditActivityState failSave(Set<SaveError> saveErrors);
 }
 
 class UnstoredActivityState extends EditActivityState {
   const UnstoredActivityState(
     Activity activity,
-    TimeInterval timeInterval, [
+    TimeInterval timeInterval, {
     File newImage,
-    bool failedSave = false,
-  ]) : super(
+  }) : super(
           activity,
           timeInterval,
           const MapView(<Type, InfoItem>{}),
           originalActivity: activity,
           originalTimeInterval: timeInterval,
           newImage: newImage,
-          failedSave: failedSave,
         );
 
   const UnstoredActivityState._(
@@ -75,17 +89,20 @@ class UnstoredActivityState extends EditActivityState {
     TimeInterval timeInterval,
     MapView<Type, InfoItem> infoItems,
     Activity originalActivity,
-    TimeInterval originalTimeInterval, [
+    TimeInterval originalTimeInterval, {
     File newImage,
-    bool failedSave = false,
-  ]) : super(
+    UnmodifiableSetView<SaveError> saveErrors =
+        const UnmodifiableSetView.empty(),
+    bool sucessfullSave,
+  }) : super(
           activity,
           timeInterval,
           infoItems,
           originalActivity: originalActivity,
           originalTimeInterval: originalTimeInterval,
           newImage: newImage,
-          failedSave: failedSave,
+          sucessfullSave: sucessfullSave,
+          saveErrors: saveErrors,
         );
 
   @override
@@ -101,19 +118,22 @@ class UnstoredActivityState extends EditActivityState {
         MapView(infoItems ?? this.infoItems),
         originalActivity,
         originalTimeInterval,
-        imageUpdate == null ? newImage : imageUpdate.updatedImage,
-        failedSave,
+        newImage: imageUpdate == null ? newImage : imageUpdate.updatedImage,
       );
 
   @override
-  EditActivityState _failSave() => UnstoredActivityState._(
+  EditActivityState failSave(Set<SaveError> saveErrors) =>
+      UnstoredActivityState._(
         activity,
         timeInterval,
         infoItems,
         originalActivity,
         originalTimeInterval,
-        newImage,
-        true,
+        newImage: newImage,
+        saveErrors: UnmodifiableSetView(saveErrors),
+        sucessfullSave: sucessfullSave == null
+            ? false
+            : null, // this ugly trick to force state change each failSave
       );
 }
 
@@ -130,7 +150,6 @@ class StoredActivityState extends EditActivityState {
           const MapView(<Type, InfoItem>{}),
           originalActivity: activity,
           originalTimeInterval: timeInterval,
-          failedSave: false,
         );
 
   const StoredActivityState._(
@@ -139,17 +158,20 @@ class StoredActivityState extends EditActivityState {
     Activity originalgActivity,
     TimeInterval originalTimeInterval,
     MapView<Type, InfoItem> infoItems,
-    this.day, [
+    this.day, {
     File newImage,
-    bool failedSave,
-  ]) : super(
+    bool sucessfullSave,
+    UnmodifiableSetView<SaveError> saveErrors =
+        const UnmodifiableSetView.empty(),
+  }) : super(
           activity,
           timeInterval,
           infoItems,
           originalActivity: originalgActivity,
           originalTimeInterval: originalTimeInterval,
           newImage: newImage,
-          failedSave: failedSave,
+          sucessfullSave: sucessfullSave,
+          saveErrors: saveErrors,
         );
 
   @override
@@ -169,20 +191,34 @@ class StoredActivityState extends EditActivityState {
         originalTimeInterval,
         MapView(infoItems ?? this.infoItems),
         day,
-        imageUpdate == null ? newImage : imageUpdate.updatedImage,
-        failedSave,
+        newImage: imageUpdate == null ? newImage : imageUpdate.updatedImage,
       );
 
   @override
-  EditActivityState _failSave() => StoredActivityState._(
+  EditActivityState failSave(Set<SaveError> saveErrors) =>
+      StoredActivityState._(
+        activity,
+        timeInterval,
+        originalActivity,
+        originalTimeInterval,
+        infoItems,
+        day,
+        newImage: newImage,
+        saveErrors: UnmodifiableSetView(saveErrors),
+        sucessfullSave: sucessfullSave == null
+            ? false
+            : null, // this ugly trick to force state change each failSave
+      );
+
+  StoredActivityState saveSucess() => StoredActivityState._(
         activity,
         timeInterval,
         activity,
         timeInterval,
         infoItems,
         day,
-        newImage,
-        true,
+        newImage: newImage,
+        sucessfullSave: true,
       );
 }
 

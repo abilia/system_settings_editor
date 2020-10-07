@@ -21,7 +21,7 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
     return NameAndPictureWidget(
       imageFileId: state.activity.fileId,
       imageFilePath: state.activity.icon,
-      errorState: state.failedSave && !state.hasTitleOrImage,
+      errorState: state.saveErrors.contains(SaveError.NO_TITLE_OR_IMAGE),
       text: state.activity.title,
       newImage: state.newImage,
       inputFormatters: [LengthLimitingTextInputFormatter(50)],
@@ -518,11 +518,12 @@ class RecurrenceWidget extends StatelessWidget {
 }
 
 class EndDateWidget extends StatelessWidget {
-  final Activity activity;
+  final EditActivityState state;
 
-  const EndDateWidget(this.activity, {Key key}) : super(key: key);
+  const EndDateWidget(this.state, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final activity = state.activity;
     final translate = Translator.of(context).translate;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -535,6 +536,7 @@ class EndDateWidget extends StatelessWidget {
               SubHeading(translate.endDate),
               DatePicker(
                 activity.recurs.end,
+                firstDate: state.timeInterval.startDate,
                 onChange: (newDate) =>
                     BlocProvider.of<EditActivityBloc>(context).add(
                   ReplaceActivity(

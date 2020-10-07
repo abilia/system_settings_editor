@@ -4,6 +4,7 @@ import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/theme.dart';
 
 mixin EditActivityTab {
   Widget separated(Widget child) {
@@ -105,7 +106,10 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
+    final recurringDataError =
+        state.saveErrors.contains(SaveError.NO_RECURING_DAYS);
     final activity = state.activity;
+    final recurs = activity.recurs;
     return Padding(
       padding: const EdgeInsets.only(right: 12.0),
       child: ListView(
@@ -115,27 +119,44 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
             child: separated(
               TimeIntervallPicker(
                 state.timeInterval,
-                startTimeError: state.failedSave && !state.hasStartTime,
+                startTimeError:
+                    state.saveErrors.contains(SaveError.NO_START_TIME),
               ),
             ),
           ),
-          if (activity.recurs.recurrance == RecurrentType.none ||
-              activity.recurs.recurrance == RecurrentType.yearly)
+          if (recurs.yearly || recurs.once)
             padded(RecurrenceWidget(activity))
           else ...[
             separated(
               Column(
                 children: [
                   RecurrenceWidget(activity),
-                  SizedBox(height: 8),
-                  if (activity.recurs.recurrance == RecurrentType.weekly)
-                    WeekDays(activity)
-                  else if (activity.recurs.recurrance == RecurrentType.monthly)
-                    MonthDays(activity),
+                  SizedBox(height: 4),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    decoration: recurringDataError
+                        ? errorBoxDecoration
+                        : const BoxDecoration(),
+                    padding: recurringDataError
+                        ? EdgeInsets.zero
+                        : const EdgeInsets.all(2),
+                    child: ClipRRect(
+                      borderRadius: borderRadius,
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Column(
+                          children: [
+                            if (recurs.weekly) WeekDays(activity),
+                            if (recurs.monthly) MonthDays(activity),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-            padded(EndDateWidget(activity)),
+            padded(EndDateWidget(state)),
           ]
         ],
       ),

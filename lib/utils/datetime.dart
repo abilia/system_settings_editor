@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/duration.dart';
 
 final yMd = DateFormat('y-MM-dd').format;
 final hm = DateFormat.Hm().format;
@@ -104,7 +103,6 @@ extension DateTimeExtensions on DateTime {
 
   DateTime withTime(TimeOfDay timeOfDay) =>
       copyWith(hour: timeOfDay.hour, minute: timeOfDay.minute);
-
 
   DayPart dayPart(DayParts dayParts) {
     final msAfterMidnight = difference(onlyDays()).inMilliseconds;

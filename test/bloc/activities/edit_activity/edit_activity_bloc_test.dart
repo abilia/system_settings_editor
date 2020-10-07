@@ -67,7 +67,7 @@ void main() {
       clockBloc: clockBloc,
     );
     // Act // Assert
-    expect(editActivityBloc.saveErrors.isEmpty, isFalse);
+    expect(editActivityBloc.saveErrors(SaveActivity()), isNotEmpty);
   });
 
   test('Changing activity changes activity', () async {
@@ -92,7 +92,9 @@ void main() {
     );
   });
 
-  test('Trying to save yields failed save and does not try to save', () async {
+  test(
+      'Trying to save uncompleted activity yields failed save and does not try to save',
+      () async {
     // Arrange
 
     final editActivityBloc = EditActivityBloc.newActivity(
@@ -126,10 +128,17 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        UnstoredActivityState(activity, timeInterval, null, true),
-        UnstoredActivityState(activityWithTitle, timeInterval, null, true),
-        UnstoredActivityState(activityWithTitle, newTimeInterval, null, true),
-        StoredActivityState(expectedSaved, newTimeInterval, aTime.onlyDays()),
+        UnstoredActivityState(activity, timeInterval).failSave({
+          SaveError.NO_TITLE_OR_IMAGE,
+          SaveError.NO_START_TIME,
+        }),
+        UnstoredActivityState(activityWithTitle, timeInterval),
+        UnstoredActivityState(activityWithTitle, timeInterval).failSave({
+          SaveError.NO_START_TIME,
+        }),
+        UnstoredActivityState(activityWithTitle, newTimeInterval),
+        StoredActivityState(expectedSaved, newTimeInterval, aTime.onlyDays())
+            .saveSucess(),
       ]),
     );
     verify(mockActivitiesBloc.add(AddActivity(expectedSaved)));
@@ -176,7 +185,8 @@ void main() {
       emitsInOrder([
         StoredActivityState(activityAsFullDay, timeInterval, aDay),
         StoredActivityState(activityExpectedToBeSaved, timeInterval,
-            activityExpectedToBeSaved.startTime.onlyDays()),
+                activityExpectedToBeSaved.startTime.onlyDays())
+            .saveSucess(),
       ]),
     );
   });
@@ -258,7 +268,7 @@ void main() {
             expectedFinalActivity,
             expectedTimeInterval2,
             expectedFinalStartTime.onlyDays(),
-          ),
+          ).saveSucess(),
         ],
       ),
     );
@@ -309,7 +319,8 @@ void main() {
         editActivityBloc,
         emitsInOrder([
           StoredActivityState(activity, expectedNewTimeInterval, day),
-          StoredActivityState(expetedNewActivity, expectedNewTimeInterval, day),
+          StoredActivityState(expetedNewActivity, expectedNewTimeInterval, day)
+              .saveSucess(),
         ]));
   });
 
@@ -360,8 +371,8 @@ void main() {
       emitsInOrder(
         [
           StoredActivityState(activity, expectedNewTimeInterval, aDay),
-          StoredActivityState(
-              expetedNewActivity, expectedNewTimeInterval, aDay),
+          StoredActivityState(expetedNewActivity, expectedNewTimeInterval, aDay)
+              .saveSucess(),
         ],
       ),
     );
@@ -414,7 +425,8 @@ void main() {
       editActivityBloc,
       emitsInOrder([
         StoredActivityState(activity, expectedNewTimeInterval, aDay),
-        StoredActivityState(expetedNewActivity, expectedNewTimeInterval, aDay),
+        StoredActivityState(expetedNewActivity, expectedNewTimeInterval, aDay)
+            .saveSucess(),
       ]),
     );
   });
@@ -512,6 +524,7 @@ void main() {
       emitsInOrder([
         StoredActivityState(activity, expectedNewTimeInterval, aDay),
         StoredActivityState(expectedNewActivity, expectedNewTimeInterval, aDay)
+            .saveSucess(),
       ]),
     );
   });
@@ -558,6 +571,7 @@ void main() {
         UnstoredActivityState(activity, expectedTimeInterval),
         UnstoredActivityState(activityWithTitle, expectedTimeInterval),
         StoredActivityState(expectedActivity, expectedTimeInterval, aDay)
+            .saveSucess(),
       ]),
     );
   });
@@ -592,28 +606,30 @@ void main() {
     // Assert
     await expectLater(
       editActivityBloc,
-      emitsInOrder([
-        UnstoredActivityState(
-          activity,
-          TimeInterval(
-            endTime: TimeOfDay(hour: 10, minute: 0),
-            startDate: aDay,
+      emitsInOrder(
+        [
+          UnstoredActivityState(
+            activity,
+            TimeInterval(
+              endTime: TimeOfDay(hour: 10, minute: 0),
+              startDate: aDay,
+            ),
           ),
-        ),
-        UnstoredActivityState(
-          activity,
-          expectedTimeInterval,
-        ),
-        UnstoredActivityState(
-          activityWithTitle,
-          expectedTimeInterval,
-        ),
-        StoredActivityState(
-          expectedActivity,
-          expectedTimeInterval,
-          aDay,
-        )
-      ]),
+          UnstoredActivityState(
+            activity,
+            expectedTimeInterval,
+          ),
+          UnstoredActivityState(
+            activityWithTitle,
+            expectedTimeInterval,
+          ),
+          StoredActivityState(
+            expectedActivity,
+            expectedTimeInterval,
+            aDay,
+          ).saveSucess(),
+        ],
+      ),
     );
   });
 
@@ -826,7 +842,7 @@ void main() {
         UpdateActivity(expectedActivity));
   });
 
-  test('Trying to save recurrance withtout data saves no recurrence', () async {
+  test('Trying to save recurrance withtout data yeilds error', () async {
     // Arrange
     final editActivityBloc = EditActivityBloc.newActivity(
       activitiesBloc: mockActivitiesBloc,
@@ -841,13 +857,14 @@ void main() {
       title: 'null',
       recurs: Recurs.monthlyOnDays([]),
     );
-    final expectedActivity = activity.copyWith(
-      recurs: Recurs.not,
-      startTime: aTime,
-    );
     final time = TimeOfDay.fromDateTime(aTime);
+    final expectedTimeIntervall = TimeInterval(
+      startTime: time,
+      startDate: aDay,
+    );
     editActivityBloc.add(ChangeStartTime(time));
     editActivityBloc.add(ReplaceActivity(activity));
+    editActivityBloc.add(SaveActivity());
 
     // Assert
     await expectLater(
@@ -855,26 +872,17 @@ void main() {
         emitsInOrder([
           UnstoredActivityState(
             originalActivity,
-            TimeInterval(
-              startTime: time,
-              startDate: aDay,
-            ),
+            expectedTimeIntervall,
           ),
           UnstoredActivityState(
             activity,
-            TimeInterval(
-              startTime: time,
-              startDate: aDay,
-            ),
+            expectedTimeIntervall,
           ),
+          UnstoredActivityState(
+            activity,
+            expectedTimeIntervall,
+          ).failSave({SaveError.NO_RECURING_DAYS}),
         ]));
-
-    editActivityBloc.add(SaveActivity());
-
-    await untilCalled(mockActivitiesBloc.add(any));
-
-    expect(verify(mockActivitiesBloc.add(captureAny)).captured.single,
-        AddActivity(expectedActivity));
   });
 
   test('bug SGC-332 - Editing recurring on this day should save this day',
@@ -919,7 +927,7 @@ void main() {
     // Act
     editActivityBloc.add(SaveRecurringActivity(ApplyTo.onlyThisDay, aDay));
 
-    // Assert
+    // Assert - correct day is saved
     await untilCalled(mockActivitiesBloc.add(any));
     expect(
       verify(mockActivitiesBloc.add(captureAny)).captured.single,

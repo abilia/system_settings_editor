@@ -241,6 +241,9 @@ abstract class Translated {
   final String licenseExpiredMessage =
       'You have been logged out because your MEMOplanner license expired. Please, extend your license to continue using this app.';
 
+  final String recuringDataEmptyErrorMessage =
+      'You need to select at least one day';
+
   final String morning = 'morning';
 
   final String forenoon = 'forenoon';
@@ -591,6 +594,10 @@ class SV extends Translated {
   @override
   final String licenseExpiredMessage =
       'Du har blivit utloggad eftersom din licens för MEMOplanner har gått ut. Du måste förlänga licensen för att fortsätta använda den här appen.';
+
+  @override
+  final String recuringDataEmptyErrorMessage =
+      'En återkommande aktivitet måste ha en vald upprepning';
 
   @override
   final String morning = 'morgon';
