@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/duration.dart';
 
 final yMd = DateFormat('y-MM-dd').format;
 final hm = DateFormat.Hm().format;

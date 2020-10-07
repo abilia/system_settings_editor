@@ -10,3 +10,12 @@ class DotsInTimepillarUpdated extends SettingsEvent {
   String toString() =>
       'DotsInTimepillarUpdated {dotsInTimepillar: $dotsInTimepillar}';
 }
+
+class TextToSpeechUpdated extends SettingsEvent {
+  final bool textToSpeech;
+
+  TextToSpeechUpdated(this.textToSpeech);
+
+  @override
+  String toString() => 'TextToSpeechUpdated {textToSpeech: $textToSpeech}';
+}

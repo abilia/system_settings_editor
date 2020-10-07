@@ -6,6 +6,7 @@ class SettingsDb {
   static const String _LANGUAGE_RECORD = 'language';
   static const String _ALWAYS_USE_24_RECORD = 'ALWAYS_USE_24';
   static const String _DOTS_IN_TIMEPILLAR_RECORD = 'DOTS_IN_TIMEPILLAR';
+  static const String _TEXT_TO_SPEECH_RECORD = 'TEXT_TO_SPEECH';
 
   final SharedPreferences preferences;
 
@@ -46,6 +47,20 @@ class SettingsDb {
       return dots ?? true;
     } catch (_) {
       _log.warning('Could not get dots in timepillar. Defaults to true.');
+      return true;
+    }
+  }
+
+  Future setTextToSpeech(bool textToSpeech) async {
+    await preferences.setBool(_TEXT_TO_SPEECH_RECORD, textToSpeech);
+  }
+
+  bool getTextToSpeech() {
+    try {
+      final textToSpeech = preferences.getBool(_TEXT_TO_SPEECH_RECORD);
+      return textToSpeech ?? true;
+    } catch (_) {
+      _log.warning('Could not get text to speech setting. Defaults to true.');
       return true;
     }
   }

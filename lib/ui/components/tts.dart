@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 import 'package:get_it/get_it.dart';
+import 'package:seagull/bloc/all.dart';
 
 class Tts extends StatelessWidget {
   final Widget child;
@@ -45,10 +46,15 @@ class _Tts extends StatelessWidget {
       : assert(data != null),
         super(key: key);
   @override
-  Widget build(BuildContext context) => GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        excludeFromSemantics: true,
-        onLongPress: () => GetIt.I<FlutterTts>().speak(data),
-        child: child,
+  Widget build(BuildContext context) =>
+      BlocBuilder<SettingsBloc, SettingsState>(
+        builder: (context, settingsState) => GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          excludeFromSemantics: true,
+          onLongPress: () {
+            if (settingsState.textToSpeech) GetIt.I<FlutterTts>().speak(data);
+          },
+          child: child,
+        ),
       );
 }
