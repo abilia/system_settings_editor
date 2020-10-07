@@ -575,40 +575,27 @@ class EndDateWidget extends StatelessWidget {
 }
 
 class WeekDays extends StatelessWidget {
-  final Activity activity;
-
+  final Set<int> selectedWeekDays;
   const WeekDays(
-    this.activity, {
+    this.selectedWeekDays, {
     Key key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final selectedWeekDays = activity.recurs.weekDays;
-
     return Wrap(
       spacing: 14.0,
       runSpacing: 8.0,
       children: List.generate(DateTime.daysPerWeek, (i) {
         final d = i + 1;
         return SelectableField(
-            text: Text(
-              Translator.of(context).translate.shortWeekday(d),
-              style:
-                  Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
-            ),
-            selected: selectedWeekDays.contains(d),
-            onTap: () {
-              if (!selectedWeekDays.add(d)) {
-                selectedWeekDays.remove(d);
-              }
-              BlocProvider.of<EditActivityBloc>(context).add(
-                ReplaceActivity(
-                  activity.copyWith(
-                      recurs: Recurs.weeklyOnDays(selectedWeekDays,
-                          ends: activity.recurs.end)),
-                ),
-              );
-            });
+          text: Text(
+            Translator.of(context).translate.shortWeekday(d),
+            style: Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
+          ),
+          selected: selectedWeekDays.contains(d),
+          onTap: () =>
+              context.bloc<RecurringWeekBloc>().add(AddOrRemoveWeekday(d)),
+        );
       }),
     );
   }

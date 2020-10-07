@@ -160,7 +160,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (recurs.weekly)
-                ..._weekly(activity, recurringDataError, context)
+                Weekly(errorState: recurringDataError)
               else if (recurs.monthly)
                 separated(
                   Padding(
@@ -186,40 +186,59 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
       ],
     );
   }
+}
 
-  List<Widget> _weekly(
-    Activity activity,
-    bool noRecuringDataError,
-    BuildContext context,
-  ) {
-    return [
-      Padding(
-        padding: EdgeInsets.only(
-            left: _ordinaryPadding.left - _errorBoarderPadding.left),
-        child: errorBordered(
-          WeekDays(activity),
-          errorState: noRecuringDataError,
-        ),
-      ),
-      Padding(
-        padding: _errorBoarderPaddingRight,
-        child: separated(
-          Padding(
-            padding: _ordinaryPadding
-                .subtract(EdgeInsets.only(top: _errorBoarderPadding.top)),
-            child: SwitchField(
-              leading: Icon(
-                AbiliaIcons.thisWeek,
-                size: smallIconSize,
+class Weekly extends StatelessWidget with EditActivityTab {
+  final bool errorState;
+  const Weekly({
+    Key key,
+    @required this.errorState,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => RecurringWeekBloc(context.bloc<EditActivityBloc>()),
+      child: BlocBuilder<RecurringWeekBloc, RecurringWeekState>(
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    left: _ordinaryPadding.left - _errorBoarderPadding.left),
+                child: errorBordered(
+                  WeekDays(state.weekdays),
+                  errorState: errorState,
+                ),
               ),
-              text: Text(
-                Translator.of(context).translate.everyOtherWeek,
+              Padding(
+                padding: _errorBoarderPaddingRight,
+                child: separated(
+                  Padding(
+                    padding: _ordinaryPadding.subtract(
+                      EdgeInsets.only(top: _errorBoarderPadding.top),
+                    ),
+                    child: SwitchField(
+                      leading: Icon(
+                        AbiliaIcons.thisWeek,
+                        size: smallIconSize,
+                      ),
+                      text: Text(
+                        Translator.of(context).translate.everyOtherWeek,
+                      ),
+                      value: state.everyOtherWeek,
+                      onChanged: (v) => context
+                          .bloc<RecurringWeekBloc>()
+                          .add(EveryOtherWeek(v)),
+                    ),
+                  ),
+                ),
               ),
-              value: false,
-            ),
-          ),
-        ),
+            ],
+          );
+        },
       ),
-    ];
+    );
   }
 }
