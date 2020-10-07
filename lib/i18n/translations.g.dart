@@ -240,6 +240,16 @@ abstract class Translated {
 
   final String licenseExpiredMessage =
       'You have been logged out because your MEMOplanner license expired. Please, extend your license to continue using this app.';
+
+  final String morning = 'morning';
+
+  final String forenoon = 'forenoon';
+
+  final String afternoon = 'afternoon';
+
+  final String evening = 'evening';
+
+  final String night = 'night';
 }
 
 class EN extends Translated {}
@@ -581,4 +591,19 @@ class SV extends Translated {
   @override
   final String licenseExpiredMessage =
       'Du har blivit utloggad eftersom din licens för MEMOplanner har gått ut. Du måste förlänga licensen för att fortsätta använda den här appen.';
+
+  @override
+  final String morning = 'morgon';
+
+  @override
+  final String forenoon = 'förmiddag';
+
+  @override
+  final String afternoon = 'eftermiddag';
+
+  @override
+  final String evening = 'kväll';
+
+  @override
+  final String night = 'natt';
 }
