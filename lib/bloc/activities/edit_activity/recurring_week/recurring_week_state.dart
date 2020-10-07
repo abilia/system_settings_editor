@@ -17,7 +17,7 @@ class RecurringWeekState extends Equatable {
             {editActivityState.timeInterval.startDate.weekday}),
         everyOtherWeek = false,
         startDate = editActivityState.timeInterval.startDate,
-        endDate = editActivityState.activity.recurs.end;
+        endDate = Recurs.noEndDate;
 
   bool get evenStartWeek => startDate.getWeekNumber().isEven;
 

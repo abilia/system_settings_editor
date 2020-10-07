@@ -44,7 +44,7 @@ void main() {
         UnmodifiableSetView({day.weekday}),
         false,
         initialS.timeInterval.startDate,
-        initialS.activity.recurs.end,
+        Recurs.noEndDate,
       ),
     );
     expect(
@@ -91,7 +91,7 @@ void main() {
             }),
             false,
             editActivityBloc.state.timeInterval.startDate,
-            editActivityBloc.state.activity.recurs.end,
+            Recurs.noEndDate,
           ),
           RecurringWeekState(
             UnmodifiableSetView({
@@ -101,7 +101,7 @@ void main() {
             }),
             false,
             editActivityBloc.state.timeInterval.startDate,
-            editActivityBloc.state.activity.recurs.end,
+            Recurs.noEndDate,
           ),
           RecurringWeekState(
             UnmodifiableSetView({
@@ -110,7 +110,7 @@ void main() {
             }),
             false,
             editActivityBloc.state.timeInterval.startDate,
-            editActivityBloc.state.activity.recurs.end,
+            Recurs.noEndDate,
           ),
         ],
       ),
@@ -207,7 +207,7 @@ void main() {
             }),
             false,
             editActivityBloc.state.timeInterval.startDate,
-            editActivityBloc.state.activity.recurs.end,
+            Recurs.noEndDate,
           ),
           RecurringWeekState(
             UnmodifiableSetView({
@@ -216,7 +216,7 @@ void main() {
             }),
             true,
             editActivityBloc.state.timeInterval.startDate,
-            editActivityBloc.state.activity.recurs.end,
+            Recurs.noEndDate,
           ),
         ],
       ),
