@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/colors.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:package_info/package_info.dart';
@@ -41,6 +41,21 @@ class _LoginFormState extends State<LoginForm> {
           final credentialsError = errorState &&
               (loginState as LoginFailure).loginFailureCause ==
                   LoginFailureCause.Credentials;
+          final licenseError = errorState &&
+              (loginState as LoginFailure).loginFailureCause ==
+                  LoginFailureCause.License;
+          if (licenseError) {
+            context.bloc<LoginFormBloc>().add(ResetForm());
+            Future.delayed(
+              Duration.zero,
+              () => showViewDialog(
+                context: context,
+                builder: (context) {
+                  return LicenseExpiredDialog();
+                },
+              ),
+            );
+          }
           return Form(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -74,7 +89,7 @@ class _LoginFormState extends State<LoginForm> {
                   padding32,
                   _LoginHint(),
                   padding16,
-                  if (errorState)
+                  if (errorState && !licenseError)
                     ErrorMessage(
                       key: TestKey.loginError,
                       text: Text(

@@ -37,6 +37,9 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
     if (event is FormSubmitted) {
       yield state.copyWith(formSubmitted: true);
     }
+    if (event is ResetForm) {
+      yield state.copyWith(formSubmitted: false);
+    }
   }
 
   bool _isUsernameValid(String username) => username.length > 2;
