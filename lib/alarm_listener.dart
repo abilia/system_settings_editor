@@ -5,8 +5,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
 
-import 'ui/components/all.dart';
-
 class SeagullListeners extends StatefulWidget {
   const SeagullListeners({
     Key key,
@@ -49,13 +47,9 @@ class _SeagullListenersState extends State<SeagullListeners>
         BlocListener<LicenseBloc, LicenseState>(
           listener: (context, state) async {
             if (state is NoValidLicense) {
-              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
-              await showViewDialog(
-                context: context,
-                builder: (context) {
-                  return LicenseExpiredDialog();
-                },
-              );
+              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut(
+                loggedOutReason: LoggedOutReason.LICENSE_EXPIRED,
+              ));
             }
           },
         ),

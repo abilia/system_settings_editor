@@ -52,7 +52,7 @@ class AuthenticationBloc
         yield* _tryGetUser(repo, event.token);
       } else if (event is LoggedOut) {
         yield AuthenticationLoading.fromInitilized(state);
-        yield* _logout(repo);
+        yield* _logout(repo, loggedOutReason: event.loggedOutReason);
       }
     }
   }
@@ -63,19 +63,28 @@ class AuthenticationBloc
       final user = await repo.me(token);
       yield Authenticated(token: token, userId: user.id, userRepository: repo);
     } on UnauthorizedException {
-      yield* _logout(repo, token);
+      yield* _logout(
+        repo,
+        token: token,
+      );
     } catch (_) {
       yield Unauthenticated(repo);
       // Do nothing
     }
   }
 
-  Stream<AuthenticationState> _logout(UserRepository repo,
-      [String token]) async* {
+  Stream<AuthenticationState> _logout(
+    UserRepository repo, {
+    String token,
+    LoggedOutReason loggedOutReason = LoggedOutReason.LOG_OUT,
+  }) async* {
     await seagullLogger.sendLogsToBackend();
     await repo.logout(token);
     await DatabaseRepository.clearAll(database);
     await cancleAllNotificationsFunction();
-    yield Unauthenticated.fromInitilized(state);
+    yield Unauthenticated.fromInitilized(
+      state,
+      loggedOutReason: loggedOutReason,
+    );
   }
 }

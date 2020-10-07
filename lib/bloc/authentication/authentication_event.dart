@@ -24,4 +24,13 @@ class LoggedIn extends AuthenticationEvent {
   String toString() => 'LoggedIn { token: $token }';
 }
 
-class LoggedOut extends AuthenticationEvent {}
+enum LoggedOutReason {
+  LICENSE_EXPIRED,
+  LOG_OUT,
+}
+
+class LoggedOut extends AuthenticationEvent {
+  final LoggedOutReason loggedOutReason;
+
+  LoggedOut({this.loggedOutReason = LoggedOutReason.LOG_OUT});
+}

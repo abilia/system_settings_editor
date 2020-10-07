@@ -26,8 +26,23 @@ class LoginPage extends StatelessWidget {
       ],
       child: Scaffold(
         body: SafeArea(
-          child: LoginForm(),
-        ),
+            child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+            if (state is Unauthenticated &&
+                state.loggedOutReason == LoggedOutReason.LICENSE_EXPIRED) {
+              Future.delayed(
+                Duration.zero,
+                () => showViewDialog(
+                  context: context,
+                  builder: (context) {
+                    return LicenseExpiredDialog();
+                  },
+                ),
+              );
+            }
+            return LoginForm();
+          },
+        )),
       ),
     );
   }
