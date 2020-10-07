@@ -106,7 +106,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
-    final noRecuringDataError =
+    final recurringDataError =
         state.saveErrors.contains(SaveError.NO_RECURING_DAYS);
     final activity = state.activity;
     final recurs = activity.recurs;
@@ -134,10 +134,10 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                   SizedBox(height: 4),
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
-                    decoration: noRecuringDataError
+                    decoration: recurringDataError
                         ? errorBoxDecoration
                         : const BoxDecoration(),
-                    padding: noRecuringDataError
+                    padding: recurringDataError
                         ? EdgeInsets.zero
                         : const EdgeInsets.all(2),
                     child: ClipRRect(
