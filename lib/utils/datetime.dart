@@ -8,11 +8,6 @@ import 'package:seagull/utils/duration.dart';
 final yMd = DateFormat('y-MM-dd').format;
 final hm = DateFormat.Hm().format;
 
-extension IntToTimeOfDay on int {
-  TimeOfDay timeOfDay() => TimeOfDay.fromDateTime(
-      DateTime.now().onlyDays().add(Duration(milliseconds: this)));
-}
-
 extension DateTimeExtensions on DateTime {
   DateTime onlyDays() => DateTime(year, month, day);
 
@@ -110,25 +105,20 @@ extension DateTimeExtensions on DateTime {
   DateTime withTime(TimeOfDay timeOfDay) =>
       copyWith(hour: timeOfDay.hour, minute: timeOfDay.minute);
 
+
   DayPart dayPart(DayParts dayParts) {
-    final date = onlyDays();
-    if (isAtSameMomentOrAfter(date.add(dayParts.nightStart.milliseconds()))) {
-      return DayPart.night;
-    }
-    if (isAtSameMomentOrAfter(date.add(dayParts.eveningStart.milliseconds()))) {
-      return DayPart.evening;
-    }
-    if (isAtSameMomentOrAfter(
-        date.add(dayParts.afternoonStart.milliseconds()))) {
-      return DayPart.afternoon;
-    }
-    if (isAtSameMomentOrAfter(
-        date.add(dayParts.forenoonStart.milliseconds()))) {
-      return DayPart.forenoon;
-    }
-    if (isAtSameMomentOrAfter(date.add(dayParts.morningStart.milliseconds()))) {
-      return DayPart.morning;
-    }
+    final msAfterMidnight = difference(onlyDays()).inMilliseconds;
+
+    if (msAfterMidnight >= dayParts.nightStart) return DayPart.night;
+
+    if (msAfterMidnight >= dayParts.eveningStart) return DayPart.evening;
+
+    if (msAfterMidnight >= dayParts.afternoonStart) return DayPart.afternoon;
+
+    if (msAfterMidnight >= dayParts.forenoonStart) return DayPart.forenoon;
+
+    if (msAfterMidnight >= dayParts.morningStart) return DayPart.morning;
+
     return DayPart.night;
   }
 }

@@ -81,32 +81,10 @@ class DayAppBarTitleRows {
     DateTime day,
     DayParts dayParts,
     String langCode,
-    BuildContext context,
+    Translated translator,
   }) {
-    final translator = Translator.of(context).translate;
     final part = currentTime.dayPart(dayParts);
-    var partOfDay = '';
-    if (currentTime.onlyDays() == day.onlyDays()) {
-      switch (part) {
-        case DayPart.night:
-          partOfDay = translator.night;
-          break;
-        case DayPart.evening:
-          partOfDay = translator.evening;
-          break;
-        case DayPart.afternoon:
-          partOfDay = translator.afternoon;
-          break;
-        case DayPart.forenoon:
-          partOfDay = translator.forenoon;
-          break;
-        case DayPart.morning:
-          partOfDay = translator.morning;
-          break;
-        default:
-          partOfDay = '';
-      }
-    }
+    final partOfDay = _getPartOfDay(currentTime, day, part, translator);
     var row1 =
         displayWeekDay ? '${DateFormat('EEEE', langCode).format(day)}' : '';
     var row2 = displayDate
@@ -118,6 +96,31 @@ class DayAppBarTitleRows {
       row1 += displayWeekDay ? ', $partOfDay' : partOfDay;
     }
     return DayAppBarTitleRows(row1, row2);
+  }
+
+  static String _getPartOfDay(
+    DateTime currentTime,
+    DateTime day,
+    DayPart part,
+    Translated translator,
+  ) {
+    if (currentTime.onlyDays() == day.onlyDays()) {
+      switch (part) {
+        case DayPart.night:
+          return translator.night;
+        case DayPart.evening:
+          return translator.evening;
+        case DayPart.afternoon:
+          return translator.afternoon;
+        case DayPart.forenoon:
+          return translator.forenoon;
+        case DayPart.morning:
+          return translator.morning;
+        default:
+          return '';
+      }
+    }
+    return '';
   }
 }
 
@@ -146,7 +149,7 @@ class DayAppBarTitle extends StatelessWidget {
         day: day,
         dayParts: memoSettingsState.dayParts,
         langCode: langCode,
-        context: context,
+        translator: Translator.of(context).translate,
       );
       return Tts(
         data: rows.row1 + rows.row2,
