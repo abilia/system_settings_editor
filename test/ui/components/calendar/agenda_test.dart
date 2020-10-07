@@ -397,4 +397,92 @@ void main() {
     await tester.verifyTts(find.text(translate.noActivities),
         exact: translate.noActivities);
   });
+
+  group('Categories', () {
+    final translated = Locales.language.values.first;
+    final right = translated.right;
+    final left = translated.left;
+    final leftCollapsedFinder = find.text(left.substring(0, 1));
+    final rightCollapsedFinder = find.text(right.substring(0, 1));
+    final leftFinder = find.text(left);
+    final rightFinder = find.text(right);
+    final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
+    final previusDayButtonFinder =
+        find.byIcon(AbiliaIcons.return_to_previous_page);
+
+    testWidgets('Exists', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byType(CategoryLeft), findsOneWidget);
+      expect(find.byType(CategoryRight), findsOneWidget);
+    });
+
+    testWidgets('Starts expanded', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsOneWidget);
+      expect(leftCollapsedFinder, findsNothing);
+      expect(rightCollapsedFinder, findsNothing);
+    });
+  
+    testWidgets('Tap right', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(rightFinder);
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsNothing);
+      expect(leftCollapsedFinder, findsNothing);
+      expect(rightCollapsedFinder, findsOneWidget);
+    });
+
+    testWidgets('Tap left', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(leftFinder);
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsNothing);
+      expect(rightFinder, findsOneWidget);
+      expect(leftCollapsedFinder, findsOneWidget);
+      expect(rightCollapsedFinder, findsNothing);
+    });
+
+    testWidgets('tts', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.verifyTts(leftFinder, exact: translated.left);
+      await tester.verifyTts(rightFinder, exact: translated.right);
+      await tester.tap(leftFinder);
+      await tester.tap(rightFinder);
+      await tester.pumpAndSettle();
+      await tester.verifyTts(leftCollapsedFinder, exact: translated.left);
+      await tester.verifyTts(rightCollapsedFinder, exact: translated.right);
+    });
+
+    testWidgets('Tap left, change day', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(leftFinder);
+      await tester.tap(previusDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsNothing);
+      expect(rightFinder, findsOneWidget);
+      expect(leftCollapsedFinder, findsOneWidget);
+      expect(rightCollapsedFinder, findsNothing);
+    });
+
+    testWidgets('Tap right, change day', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(rightFinder);
+      await tester.tap(nextDayButtonFinder);
+
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsNothing);
+      expect(leftCollapsedFinder, findsNothing);
+      expect(rightCollapsedFinder, findsOneWidget);
+    });
+  });
 }

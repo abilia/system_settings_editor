@@ -18,20 +18,12 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage>
     with WidgetsBindingObserver {
   DayPickerBloc _dayPickerBloc;
-  ActivitiesBloc _activitiesBloc;
   ScrollPositionBloc _scrollPositionBloc;
-  SortableBloc _sortableBloc;
-  GenericBloc _genericBloc;
-  ClockBloc _clockBloc;
 
   @override
   void initState() {
     _dayPickerBloc = BlocProvider.of<DayPickerBloc>(context);
-    _activitiesBloc = BlocProvider.of<ActivitiesBloc>(context);
-    _clockBloc = BlocProvider.of<ClockBloc>(context);
     _scrollPositionBloc = ScrollPositionBloc();
-    _sortableBloc = BlocProvider.of<SortableBloc>(context);
-    _genericBloc = BlocProvider.of<GenericBloc>(context);
     BlocProvider.of<UserFileBloc>(context).add(LoadUserFiles());
     WidgetsBinding.instance.addObserver(this);
     super.initState();
@@ -47,10 +39,10 @@ class _CalendarPageState extends State<CalendarPage>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      _clockBloc.add(DateTime.now().onlyMinutes());
-      _activitiesBloc.add(LoadActivities());
-      _sortableBloc.add(LoadSortables());
-      _genericBloc.add(LoadGenerics());
+      context.bloc<ClockBloc>().add(DateTime.now().onlyMinutes());
+      context.bloc<ActivitiesBloc>().add(LoadActivities());
+      context.bloc<SortableBloc>().add(LoadSortables());
+      context.bloc<GenericBloc>().add(LoadGenerics());
       _jumpToActivity();
     }
   }
@@ -58,8 +50,8 @@ class _CalendarPageState extends State<CalendarPage>
   @override
   Widget build(BuildContext context) {
     final controller = PageController(initialPage: DayPickerBloc.startIndex);
-    return BlocProvider<ScrollPositionBloc>(
-      create: (context) => _scrollPositionBloc,
+    return BlocProvider<ScrollPositionBloc>.value(
+      value: _scrollPositionBloc,
       child: BlocBuilder<DayPickerBloc, DayPickerState>(
         builder: (context, pickedDay) =>
             BlocBuilder<CalendarViewBloc, CalendarViewState>(
@@ -100,18 +92,22 @@ class _CalendarPageState extends State<CalendarPage>
                                     fullDayActivities: fullDayActivities,
                                     day: state.day,
                                   ),
-                                Expanded(
-                                  child: calendarViewState.currentView ==
-                                          CalendarViewType.LIST
-                                      ? Agenda(
-                                          state: state,
-                                        )
-                                      : TimePillarCalendar(
-                                          state: state,
-                                          now: _clockBloc.state,
-                                          calendarViewState: calendarViewState,
-                                        ),
-                                )
+                                if (calendarViewState.currentView ==
+                                    CalendarViewType.LIST)
+                                  Expanded(
+                                    child: Agenda(
+                                      state: state,
+                                      calendarViewState: calendarViewState,
+                                    ),
+                                  )
+                                else
+                                  Expanded(
+                                    child: TimePillarCalendar(
+                                      state: state,
+                                      now: context.bloc<ClockBloc>().state,
+                                      calendarViewState: calendarViewState,
+                                    ),
+                                  ),
                               ],
                             );
                           }

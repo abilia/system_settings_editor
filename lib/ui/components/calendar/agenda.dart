@@ -7,9 +7,16 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
 class Agenda extends StatefulWidget {
-  final ActivitiesOccasionLoaded state;
+  static const topPadding = 60.0, bottomPadding = 125.0;
 
-  const Agenda({Key key, @required this.state}) : super(key: key);
+  final ActivitiesOccasionLoaded state;
+  final CalendarViewState calendarViewState;
+
+  const Agenda({
+    Key key,
+    @required this.state,
+    @required this.calendarViewState,
+  }) : super(key: key);
 
   @override
   _AgendaState createState() => _AgendaState();
@@ -33,7 +40,7 @@ class _AgendaState extends State<Agenda> {
     if (widget.state.isToday) {
       if (widget.state.pastActivities.isNotEmpty) {
         scrollController = ScrollController(
-          initialScrollOffset: -todayScrollOffset,
+          initialScrollOffset: -todayScrollOffset - Agenda.topPadding,
           keepScrollOffset: false,
         );
       }
@@ -47,7 +54,6 @@ class _AgendaState extends State<Agenda> {
   @override
   Widget build(BuildContext context) {
     final state = widget.state;
-    final topMargin = 8.0;
     return RefreshIndicator(
       onRefresh: _refresh,
       child: Stack(
@@ -59,49 +65,44 @@ class _AgendaState extends State<Agenda> {
               child: CustomScrollView(
                 center: state.isToday ? center : null,
                 controller: scrollController,
-                physics: AlwaysScrollableScrollPhysics(),
-                slivers: (state.activities.isEmpty &&
-                        state.fullDayActivities.isEmpty)
-                    ? <Widget>[
-                        SliverPadding(
-                          key: center,
-                          padding: const EdgeInsets.only(top: 24.0),
-                          sliver: SliverToBoxAdapter(
-                            child: Center(
-                              child: Tts(
-                                child: Text(
-                                  Translator.of(context).translate.noActivities,
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ]
-                    : [
-                        SliverPadding(padding: EdgeInsets.only(top: topMargin)),
-                        SliverActivityList(
-                          state.isToday
-                              ? state.pastActivities
-                                  .reversed // Reversed because slivers before center are called in reverse order
-                                  .toList()
-                              : state.pastActivities,
-                        ),
-                        SliverActivityList(state.notPastActivities,
-                            key: center),
-                        SliverPadding(padding: EdgeInsets.only(top: topMargin)),
-                      ],
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  if (state.activities.isEmpty &&
+                      state.fullDayActivities.isEmpty)
+                    SliverNoActivities(key: center)
+                  else ...[
+                    SliverPadding(
+                      padding: EdgeInsets.only(top: Agenda.topPadding),
+                    ),
+                    SliverActivityList(
+                      state.isToday
+                          ? state.pastActivities
+                              .reversed // Reversed because slivers before center are called in reverse order
+                              .toList()
+                          : state.pastActivities,
+                    ),
+                    SliverActivityList(
+                      state.notPastActivities,
+                      key: center,
+                    ),
+                    SliverPadding(
+                      padding: EdgeInsets.only(top: Agenda.bottomPadding),
+                    ),
+                  ],
+                ],
               ),
             ),
           ),
           ArrowUp(
             controller: scrollController,
-            collapseMargin: topMargin,
+            collapseMargin: Agenda.topPadding,
           ),
           ArrowDown(
             controller: scrollController,
-            collapseMargin: topMargin + todayScrollOffset,
+            collapseMargin: Agenda.bottomPadding + todayScrollOffset,
           ),
+          CategoryLeft(expanded: widget.calendarViewState.expandLeftCategory),
+          CategoryRight(expanded: widget.calendarViewState.expandRightCategory),
         ],
       ),
     );
@@ -117,6 +118,27 @@ class _AgendaState extends State<Agenda> {
     _scrollPositionBloc
         .add(ScrollPositionUpdated(scrollNotification.metrics.pixels));
     return false;
+  }
+}
+
+class SliverNoActivities extends StatelessWidget {
+  const SliverNoActivities({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.only(top: 24.0),
+      sliver: SliverToBoxAdapter(
+        child: Center(
+          child: Tts(
+            child: Text(
+              Translator.of(context).translate.noActivities,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
