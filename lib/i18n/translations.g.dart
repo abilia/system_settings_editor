@@ -243,6 +243,16 @@ abstract class Translated {
 
   final String recuringDataEmptyErrorMessage =
       'You need to select at least one day';
+
+  final String morning = 'morning';
+
+  final String forenoon = 'forenoon';
+
+  final String afternoon = 'afternoon';
+
+  final String evening = 'evening';
+
+  final String night = 'night';
 }
 
 class EN extends Translated {}
@@ -588,4 +598,19 @@ class SV extends Translated {
   @override
   final String recuringDataEmptyErrorMessage =
       'En återkommande aktivitet måste ha en vald upprepning';
+
+  @override
+  final String morning = 'morgon';
+
+  @override
+  final String forenoon = 'förmiddag';
+
+  @override
+  final String afternoon = 'eftermiddag';
+
+  @override
+  final String evening = 'kväll';
+
+  @override
+  final String night = 'natt';
 }

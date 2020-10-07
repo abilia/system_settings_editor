@@ -18,6 +18,16 @@ abstract class MemoplannerSettingsState {
       settings.activityDisplaySilentAlarmOption;
   bool get activityDisplayNoAlarmOption =>
       settings.activityDisplayNoAlarmOption;
+  bool get activityDisplayDayPeriod => settings.activityDisplayDayPeriod;
+  bool get activityDisplayWeekDay => settings.activityDisplayWeekDay;
+  bool get activityDisplayDate => settings.activityDisplayDate;
+  int get morningStart => settings.morningIntervalStart;
+  int get forenoonStart => settings.forenoonIntervalStart;
+  int get afternoonStart => settings.afternoonIntervalStart;
+  int get eveningStart => settings.eveningIntervalStart;
+  int get nightStart => settings.nightIntervalStart;
+  DayParts get dayParts => DayParts(
+      morningStart, forenoonStart, afternoonStart, eveningStart, nightStart);
 
   // Properties derived from one or more settings
   bool get abilityToSelectAlarm =>
@@ -50,6 +60,24 @@ class MemoplannerSettingsNotLoaded extends MemoplannerSettingsState {
   MemoplannerSettingsNotLoaded() : super(MemoplannerSettings());
 }
 
+class DayParts {
+  final int morningStart,
+      forenoonStart,
+      afternoonStart,
+      eveningStart,
+      nightStart;
+
+  DayParts(
+    this.morningStart,
+    this.forenoonStart,
+    this.afternoonStart,
+    this.eveningStart,
+    this.nightStart,
+  );
+}
+
+enum DayPart { morning, forenoon, afternoon, evening, night }
+
 class MemoplannerSettings {
   static const String displayAlarmButtonKey =
           'activity_detailed_setting_display_change_alarm_button',
@@ -65,7 +93,15 @@ class MemoplannerSettings {
       activityRecurringEditableKey = 'add_activity_recurring_step',
       activityDisplayAlarmOptionKey = 'add_activity_display_alarm',
       activityDisplaySilentAlarmOptionKey = 'add_activity_display_silent_alarm',
-      activityDisplayNoAlarmOptionKey = 'add_activity_display_no_alarm';
+      activityDisplayNoAlarmOptionKey = 'add_activity_display_no_alarm',
+      activityDisplayDayPeriodKey = 'day_caption_show_period',
+      activityDisplayWeekDayKey = 'day_caption_show_weekday',
+      activityDisplayDateKey = 'day_caption_show_date',
+      morningIntervalStartKey = 'morning_interval_start',
+      forenoonIntervalStartKey = 'forenoon_interval_start',
+      afternoonIntervalStartKey = 'afternoon_interval_start',
+      eveningIntervalStartKey = 'evening_interval_start',
+      nightIntervalStartKey = 'night_interval_start';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -79,7 +115,16 @@ class MemoplannerSettings {
       activityRecurringEditable,
       activityDisplayAlarmOption,
       activityDisplaySilentAlarmOption,
-      activityDisplayNoAlarmOption;
+      activityDisplayNoAlarmOption,
+      activityDisplayDayPeriod,
+      activityDisplayWeekDay,
+      activityDisplayDate;
+
+  final int morningIntervalStart,
+      forenoonIntervalStart,
+      afternoonIntervalStart,
+      eveningIntervalStart,
+      nightIntervalStart;
 
   MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -95,6 +140,14 @@ class MemoplannerSettings {
     this.activityDisplayAlarmOption = true,
     this.activityDisplaySilentAlarmOption = true,
     this.activityDisplayNoAlarmOption = true,
+    this.activityDisplayDayPeriod = true,
+    this.activityDisplayWeekDay = true,
+    this.activityDisplayDate = true,
+    this.morningIntervalStart = 21600000,
+    this.forenoonIntervalStart = 36000000,
+    this.afternoonIntervalStart = 43200000,
+    this.eveningIntervalStart = 64800000,
+    this.nightIntervalStart = 82800000,
   });
 
   factory MemoplannerSettings.fromSettingsList(
@@ -127,6 +180,22 @@ class MemoplannerSettings {
           _parseSetting(activityDisplaySilentAlarmOptionKey, settings, true),
       activityDisplayNoAlarmOption:
           _parseSetting(activityDisplayNoAlarmOptionKey, settings, true),
+      activityDisplayDayPeriod:
+          _parseSetting(activityDisplayDayPeriodKey, settings, true),
+      activityDisplayWeekDay:
+          _parseSetting(activityDisplayWeekDayKey, settings, true),
+      activityDisplayDate:
+          _parseSetting(activityDisplayDateKey, settings, true),
+      morningIntervalStart:
+          _parseSetting(morningIntervalStartKey, settings, 21600000),
+      forenoonIntervalStart:
+          _parseSetting(forenoonIntervalStartKey, settings, 36000000),
+      afternoonIntervalStart:
+          _parseSetting(afternoonIntervalStartKey, settings, 43200000),
+      eveningIntervalStart:
+          _parseSetting(eveningIntervalStartKey, settings, 64800000),
+      nightIntervalStart:
+          _parseSetting(nightIntervalStartKey, settings, 82800000),
     );
   }
 

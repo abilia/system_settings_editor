@@ -73,6 +73,7 @@ mixin EditRecurringMixin {
     final series = activities.where((a) => a.seriesId == activity.seriesId);
 
     final overlappingInSeries = series
+        .where((a) => a.isRecurring)
         .where((a) => a.startTime.isDayBefore(newStart))
         .where((a) =>
             a.recurs.end.isDayAfter(newStart) ||

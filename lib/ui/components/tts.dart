@@ -18,8 +18,6 @@ class Tts extends StatelessWidget {
   Widget build(BuildContext context) {
     final _text = (Text text) => text.semanticsLabel ?? text.data;
     var label = data ?? _text(child);
-    assert(
-        label?.isNotEmpty == true, 'either provide a Text widget or tts data');
     return _Tts(
       data: label,
       child: child,

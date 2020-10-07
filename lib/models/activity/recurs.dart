@@ -23,11 +23,7 @@ class Recurs extends Equatable {
         assert(type != TYPE_MONTHLY || data < 0x80000000),
         endTime = endTime ?? NO_END;
 
-  static const Recurs not = Recurs.raw(
-        0,
-        0,
-        NO_END,
-      ),
+  static const Recurs not = Recurs.raw(0, 0, 0),
       everyDay = Recurs.raw(
         TYPE_WEEKLY,
         allDaysOfWeek,

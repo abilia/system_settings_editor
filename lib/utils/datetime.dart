@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/duration.dart';
 
 final yMd = DateFormat('y-MM-dd').format;
 final hm = DateFormat.Hm().format;
@@ -96,10 +98,29 @@ extension DateTimeExtensions on DateTime {
 
   Occasion occasion(DateTime now) => isAfter(now)
       ? Occasion.future
-      : isBefore(now) ? Occasion.past : Occasion.current;
+      : isBefore(now)
+          ? Occasion.past
+          : Occasion.current;
 
   DateTime withTime(TimeOfDay timeOfDay) =>
       copyWith(hour: timeOfDay.hour, minute: timeOfDay.minute);
+
+
+  DayPart dayPart(DayParts dayParts) {
+    final msAfterMidnight = difference(onlyDays()).inMilliseconds;
+
+    if (msAfterMidnight >= dayParts.nightStart) return DayPart.night;
+
+    if (msAfterMidnight >= dayParts.eveningStart) return DayPart.evening;
+
+    if (msAfterMidnight >= dayParts.afternoonStart) return DayPart.afternoon;
+
+    if (msAfterMidnight >= dayParts.forenoonStart) return DayPart.forenoon;
+
+    if (msAfterMidnight >= dayParts.morningStart) return DayPart.morning;
+
+    return DayPart.night;
+  }
 }
 
 extension IntDateTimeExtensions on int {

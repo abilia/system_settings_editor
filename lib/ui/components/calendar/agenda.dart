@@ -68,9 +68,11 @@ class _AgendaState extends State<Agenda> {
                           padding: const EdgeInsets.only(top: 24.0),
                           sliver: SliverToBoxAdapter(
                             child: Center(
-                              child: Text(
-                                Translator.of(context).translate.noActivities,
-                                style: Theme.of(context).textTheme.bodyText1,
+                              child: Tts(
+                                child: Text(
+                                  Translator.of(context).translate.noActivities,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
                               ),
                             ),
                           ),

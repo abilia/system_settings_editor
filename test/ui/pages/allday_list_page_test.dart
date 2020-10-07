@@ -18,6 +18,7 @@ void main() {
   final clocBloc =
       ClockBloc(StreamController<DateTime>().stream, initialTime: day);
   final activitiesOccasionBlocMock = MockActivitiesOccasionBloc();
+  final memoplannerSettingsBlocMock = MockMemoplannerSettingsBloc();
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -36,7 +37,10 @@ void main() {
           ),
           BlocProvider<ClockBloc>(
             create: (context) => clocBloc,
-          )
+          ),
+          BlocProvider<MemoplannerSettingBloc>(
+            create: (context) => memoplannerSettingsBlocMock,
+          ),
         ], child: widget),
       );
 
@@ -78,6 +82,8 @@ void main() {
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
       ..init();
+    when(memoplannerSettingsBlocMock.state)
+        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
   });
   testWidgets('All DayList shows', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(AllDayList()));
