@@ -34,7 +34,12 @@ void main() {
             ),
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingsBloc,
-            )
+            ),
+            BlocProvider<SettingsBloc>(
+              create: (context) => SettingsBloc(
+                settingsDb: MockSettingsDb(),
+              ),
+            ),
           ],
           child: widget,
         ),

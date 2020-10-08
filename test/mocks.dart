@@ -111,6 +111,9 @@ class MockMemoplannerSettingsBloc
     extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettingsState>
     implements MemoplannerSettingBloc {}
 
+class MockSettingsBloc extends MockBloc<SettingsEvent, SettingsState>
+    implements SettingsBloc {}
+
 class MockAuthenticationBloc
     extends MockBloc<AuthenticationEvent, AuthenticationState>
     implements AuthenticationBloc {}
@@ -148,5 +151,10 @@ extension OurEnterText on WidgetTester {
     if (exact != null) {
       expect(arg, exact);
     }
+  }
+
+  Future verifyNoTts(Finder finder) async {
+    await longPress(finder);
+    verifyNever(GetIt.I<FlutterTts>().speak(any));
   }
 }

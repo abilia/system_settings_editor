@@ -42,7 +42,12 @@ void main() {
           ),
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc(StreamController<DateTime>().stream),
-          )
+          ),
+          BlocProvider<SettingsBloc>(
+            create: (context) => SettingsBloc(
+              settingsDb: MockSettingsDb(),
+            ),
+          ),
         ],
         child: MaterialApp(
           supportedLocales: Translator.supportedLocals,

@@ -56,7 +56,7 @@ class AbiliaIcons {
       voice = IconData(0xe930, fontFamily: fontFamily),
       yes = IconData(0xe931, fontFamily: fontFamily),
       no = IconData(0xe932, fontFamily: fontFamily),
-      empty3 = IconData(0xe933, fontFamily: fontFamily),
+      speak_on_entry = IconData(0xe933, fontFamily: fontFamily),
       empty4 = IconData(0xe934, fontFamily: fontFamily),
       edit = IconData(0xe935, fontFamily: fontFamily),
       back_delete = IconData(0xe936, fontFamily: fontFamily),

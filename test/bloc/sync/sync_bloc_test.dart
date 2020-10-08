@@ -41,7 +41,7 @@ void main() {
       await untilCalled(sortableRepository.synchronize());
     });
   });
-  group('Failed caseas', () {
+  group('Failed cases', () {
     final syncStallTime = 10.milliseconds();
     final syncBloc = SyncBloc(
       activityRepository: activityRepository,

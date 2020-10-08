@@ -88,6 +88,11 @@ void main() {
             BlocProvider<UserFileBloc>(
               create: (context) => mockUserFileBloc,
             ),
+            BlocProvider<SettingsBloc>(
+              create: (context) => SettingsBloc(
+                settingsDb: MockSettingsDb(),
+              ),
+            ),
           ], child: child)),
       home: widget,
     );

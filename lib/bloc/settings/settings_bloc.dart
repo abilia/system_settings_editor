@@ -13,7 +13,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   SettingsBloc({
     @required this.settingsDb,
-  }) : super(SettingsState(settingsDb.getDotsInTimepillar()));
+  }) : super(SettingsState(
+          dotsInTimepillar: settingsDb.getDotsInTimepillar() ?? true,
+          textToSpeech: settingsDb.getTextToSpeech() ?? true,
+        ));
 
   @override
   Stream<SettingsState> mapEventToState(
@@ -21,7 +24,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   ) async* {
     if (event is DotsInTimepillarUpdated) {
       await settingsDb.setDotsInTimepillar(event.dotsInTimepillar);
-      yield SettingsState(event.dotsInTimepillar);
+      yield state.copyWith(dotsInTimepillar: event.dotsInTimepillar);
+    } else if (event is TextToSpeechUpdated) {
+      await settingsDb.setTextToSpeech(event.textToSpeech);
+      yield state.copyWith(textToSpeech: event.textToSpeech);
     }
   }
 }

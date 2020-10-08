@@ -251,10 +251,19 @@ abstract class Translated {
 
   final String night = 'night';
 
+  final String textToSpeech = 'Text to speech';
+
+  final String longpressToSpeak = 'Long press to speak';
+
   final String everyOtherWeek = 'Every other week';
 
   final String recurringDataEmptyErrorMessage =
       'You need to select at least one day';
+
+  final String longPressInfoText =
+      'Make a long press on any text or object with text to speak it loudly';
+
+  final String lunch = 'Lunch';
 }
 
 class EN extends Translated {}
@@ -613,9 +622,22 @@ class SV extends Translated {
   final String night = 'natt';
 
   @override
+  final String textToSpeech = 'Text till tal';
+
+  @override
+  final String longpressToSpeak = 'Tryck länge för tal';
+
+  @override
   final String everyOtherWeek = 'Varannan vecka';
 
   @override
   final String recurringDataEmptyErrorMessage =
       'En återkommande aktivitet måste ha en vald upprepning';
+
+  @override
+  final String longPressInfoText =
+      'Tryck länge på någon text för att få den uppläst';
+
+  @override
+  final String lunch = 'Lunch';
 }
