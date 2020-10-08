@@ -111,6 +111,9 @@ class MockMemoplannerSettingsBloc
     extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettingsState>
     implements MemoplannerSettingBloc {}
 
+class MockSettingsBloc extends MockBloc<SettingsEvent, SettingsState>
+    implements SettingsBloc {}
+
 class MockAuthenticationBloc
     extends MockBloc<AuthenticationEvent, AuthenticationState>
     implements AuthenticationBloc {}

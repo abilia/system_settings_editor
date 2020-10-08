@@ -48,6 +48,11 @@ void main() {
                         StreamController<DateTime>().stream,
                         initialTime: startTime),
                   ),
+                  BlocProvider<SettingsBloc>(
+                    create: (context) => SettingsBloc(
+                      settingsDb: MockSettingsDb(),
+                    ),
+                  ),
                 ],
                 child: Material(
                   child: ActivityCard(

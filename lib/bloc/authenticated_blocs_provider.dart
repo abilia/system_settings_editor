@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/settings/settings_bloc.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/bloc/user_file/user_file_bloc.dart';
 import 'package:seagull/db/all.dart';
@@ -136,11 +135,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           ),
           BlocProvider<CalendarViewBloc>(
             create: (context) => CalendarViewBloc(),
-          ),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
-              settingsDb: GetIt.I<SettingsDb>(),
-            ),
           ),
           BlocProvider<LicenseBloc>(
             create: (context) => LicenseBloc(

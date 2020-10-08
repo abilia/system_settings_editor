@@ -53,12 +53,18 @@ void main() {
             BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
                 create: (context) => imageArchiveBlocMock),
             BlocProvider<UserFileBloc>(
-                create: (context) => UserFileBloc(
-                      fileStorage: MockFileStorage(),
-                      pushBloc: MockPushBloc(),
-                      syncBloc: MockSyncBloc(),
-                      userFileRepository: MockUserFileRepository(),
-                    )),
+              create: (context) => UserFileBloc(
+                fileStorage: MockFileStorage(),
+                pushBloc: MockPushBloc(),
+                syncBloc: MockSyncBloc(),
+                userFileRepository: MockUserFileRepository(),
+              ),
+            ),
+            BlocProvider<SettingsBloc>(
+              create: (context) => SettingsBloc(
+                settingsDb: MockSettingsDb(),
+              ),
+            ),
           ], child: child),
           home: widget,
         );

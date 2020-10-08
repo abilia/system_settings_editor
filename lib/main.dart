@@ -117,6 +117,11 @@ class App extends StatelessWidget {
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
           ),
+          BlocProvider<SettingsBloc>(
+            create: (context) => SettingsBloc(
+              settingsDb: GetIt.I<SettingsDb>(),
+            ),
+          ),
         ],
         child: BlocListener<ClockBloc, DateTime>(
           listener: (context, state) async {
