@@ -73,12 +73,9 @@ extension RecurringActivityExtension on Activity {
 }
 
 extension RecursToList on Recurs {
-  Set<int> get weekDays => recurrance == RecurrentType.weekly
-      ? _generateBitsSet(DateTime.daysPerWeek)
-      : {};
+  Set<int> get weekDays => weekly ? _generateBitsSet(DateTime.daysPerWeek) : {};
 
-  Set<int> get monthDays =>
-      recurrance == RecurrentType.monthly ? _generateBitsSet(31) : {};
+  Set<int> get monthDays => monthly ? _generateBitsSet(31) : {};
 
   Set<int> _generateBitsSet(int bits) =>
       List.generate(bits, (bit) => bit, growable: false)

@@ -192,7 +192,7 @@ void main() {
         alarmBloc, emits(AlarmState(StartAlarm(inTwoMinutesActivity, day))));
   });
 
-  test('Recuring weekly alarms shows', () async {
+  test('Recurring weekly alarms shows', () async {
     // Arrange
     final recursThursday = FakeActivity.reocurrsTuedays(nextMinute);
     when(mockActivityRepository.load())
@@ -206,7 +206,7 @@ void main() {
         alarmBloc, emits(AlarmState(StartAlarm(recursThursday, day))));
   });
 
-  test('Recuring monthly alarms shows', () async {
+  test('Recurring monthly alarms shows', () async {
     // Arrange
     final recursTheThisDayOfMonth = FakeActivity.reocurrsOnDay(
         nextMinute.day,
@@ -223,7 +223,7 @@ void main() {
         alarmBloc, emits(AlarmState(StartAlarm(recursTheThisDayOfMonth, day))));
   });
 
-  test('Recuring yearly alarms shows', () async {
+  test('Recurring yearly alarms shows', () async {
     // Arrange
     final recursTheThisDayOfYear = FakeActivity.reocurrsOnDate(nextMinute);
     when(mockActivityRepository.load())

@@ -116,7 +116,9 @@ class PickField extends StatelessWidget {
                 ? whiteErrorBoxDecoration
                 : disabled
                     ? disabledBoxDecoration
-                    : active ? whiteBoxDecoration : offBoxDecoration,
+                    : active
+                        ? whiteBoxDecoration
+                        : offBoxDecoration,
             padding: const EdgeInsets.all(12),
             child: Stack(
               children: <Widget>[
@@ -165,8 +167,7 @@ class RadioField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final decoration =
-        value == groupValue ? whiteBoxDecoration : offBoxDecoration;
+    final decoration = selectedBoxDecoration(value == groupValue);
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data,
@@ -282,6 +283,7 @@ class SelectableField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final decoration = selectedBoxDecoration(selected);
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data,
@@ -300,9 +302,10 @@ class SelectableField extends StatelessWidget {
               Ink(
                 height: heigth,
                 width: width,
-                decoration: selected ? whiteBoxDecoration : offBoxDecoration,
-                padding:
-                    const EdgeInsets.only(left: 12.0, top: 10.0, right: 22.0),
+                decoration: decoration,
+                padding: EdgeInsets.fromLTRB(
+                        12.0, 10.0, 24.0, decoration.border.bottom.width)
+                    .subtract(decoration.border.dimensions),
                 child: text,
               ),
               Positioned(

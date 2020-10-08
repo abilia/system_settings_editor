@@ -27,48 +27,6 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
       Size.fromHeight(height + (bottom?.preferredSize?.height ?? 0.0));
   @override
   Widget build(BuildContext context) {
-    Widget wrappedWidget = Stack(
-      children: <Widget>[
-        Align(
-          alignment: Alignment.centerLeft,
-          child: ActionButton(
-            key: TestKey.appBarCloseButton,
-            child: Icon(closeIcon),
-            onPressed: onClosedPressed ?? () => _pop(context),
-          ),
-        ),
-        if (title != null)
-          Center(
-            child: Tts(
-              child: Text(
-                title,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    .copyWith(color: AbiliaColors.white),
-              ),
-            ),
-          ),
-        if (trailing != null)
-          Align(
-            alignment: Alignment.centerRight,
-            child: trailing,
-          ),
-      ],
-    );
-
-    if (bottom != null) {
-      wrappedWidget = Column(
-        children: <Widget>[
-          wrappedWidget,
-          SizedBox(
-            height: 14.0,
-          ),
-          bottom,
-        ],
-      );
-    }
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Theme(
@@ -79,7 +37,40 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: wrappedWidget,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: ActionButton(
+                          key: TestKey.appBarCloseButton,
+                          child: Icon(closeIcon),
+                          onPressed: onClosedPressed ?? () => _pop(context),
+                        ),
+                      ),
+                      if (title != null)
+                        Tts(
+                          child: Text(
+                            title,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                .copyWith(color: AbiliaColors.white),
+                          ),
+                        ),
+                      if (trailing != null)
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: trailing,
+                        ),
+                    ],
+                  ),
+                  if (bottom != null) bottom,
+                ],
+              ),
             ),
           ),
         ),

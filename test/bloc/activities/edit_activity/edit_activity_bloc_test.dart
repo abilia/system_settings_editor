@@ -881,7 +881,7 @@ void main() {
           UnstoredActivityState(
             activity,
             expectedTimeIntervall,
-          ).failSave({SaveError.NO_RECURING_DAYS}),
+          ).failSave({SaveError.NO_RECURRING_DAYS}),
         ]));
   });
 
