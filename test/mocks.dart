@@ -149,4 +149,9 @@ extension OurEnterText on WidgetTester {
       expect(arg, exact);
     }
   }
+
+  Future verifyNoTts(Finder finder) async {
+    await longPress(finder);
+    verifyNever(GetIt.I<FlutterTts>().speak(any));
+  }
 }

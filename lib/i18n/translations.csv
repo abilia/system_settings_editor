@@ -114,3 +114,7 @@ forenoon;forenoon;förmiddag;
 afternoon;afternoon;eftermiddag;
 evening;evening;kväll;
 night;night;natt;
+textToSpeech;Text to speech;Text till tal;
+longpressToSpeak;Long press to speak;Tryck länge för tal;
+longPressInfoText;Make along press on any text or object with text to speak it loudly;Tryck länge på någon text för att få den uppläst;
+lunch;Lunch;Lunch;
