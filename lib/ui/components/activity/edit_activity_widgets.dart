@@ -267,30 +267,42 @@ class CategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SubHeading(translator.category),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            buildCategoryRadioField(context, Category.left),
-            const SizedBox(width: 8),
-            buildCategoryRadioField(context, Category.right),
+            SubHeading(translator.category),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                buildCategoryRadioField(
+                  context,
+                  Category.left,
+                  state.leftCategoryName ??
+                      Translator.of(context).translate.left,
+                ),
+                const SizedBox(width: 8),
+                buildCategoryRadioField(
+                  context,
+                  Category.right,
+                  state.rightCategoryName ??
+                      Translator.of(context).translate.right,
+                ),
+              ],
+            )
           ],
-        )
-      ],
+        );
+      },
     );
   }
 
-  Expanded buildCategoryRadioField(BuildContext context, int category) {
+  Expanded buildCategoryRadioField(
+      BuildContext context, int category, String text) {
     final left = category == Category.left;
     final key = left ? TestKey.leftCategoryRadio : TestKey.rightCategoryRadio;
     final icon =
         left ? AbiliaIcons.move_item_left : AbiliaIcons.move_item_right;
-    final text = left
-        ? Translator.of(context).translate.left
-        : Translator.of(context).translate.right;
     return Expanded(
       child: RadioField(
         key: key,
@@ -303,7 +315,10 @@ class CategoryWidget extends StatelessWidget {
             size: smallIconSize,
           ),
         ]),
-        text: Text(text),
+        text: Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+        ),
         groupValue: activity.category,
         value: category,
       ),

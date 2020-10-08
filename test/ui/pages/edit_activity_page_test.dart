@@ -1811,6 +1811,30 @@ text''';
 
       expect(find.text(translate.startTimeBeforeNow), findsNothing);
     });
+
+    testWidgets('calendarActivityType-Left/Rigth given name',
+        (WidgetTester tester) async {
+      final leftCategoryName = 'VÄNSTER',
+          rightCategoryName =
+              'HÖGER IS SUPER LONG AND WILL PROBABLY OVERFLOW BADLY!';
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            calendarActivityTypeLeft: leftCategoryName,
+            calendarActivityTypeRight: rightCategoryName,
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(
+        wrapWithMaterialApp(EditActivityPage(day: today)),
+      );
+      await tester.pumpAndSettle();
+      await tester.scrollDown();
+
+      expect(find.text(leftCategoryName), findsOneWidget);
+      expect(find.text(rightCategoryName), findsOneWidget);
+    });
   });
 
   group('tts', () {

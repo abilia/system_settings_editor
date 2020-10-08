@@ -54,57 +54,69 @@ class _AgendaState extends State<Agenda> {
   @override
   Widget build(BuildContext context) {
     final state = widget.state;
-    return RefreshIndicator(
-      onRefresh: _refresh,
-      child: Stack(
-        children: <Widget>[
-          NotificationListener<ScrollNotification>(
-            onNotification: state.isToday ? _onScrollNotification : null,
-            child: CupertinoScrollbar(
-              controller: scrollController,
-              child: CustomScrollView(
-                center: state.isToday ? center : null,
-                controller: scrollController,
-                physics: const AlwaysScrollableScrollPhysics(),
-                slivers: [
-                  if (state.activities.isEmpty &&
-                      state.fullDayActivities.isEmpty)
-                    SliverNoActivities(key: center)
-                  else ...[
-                    SliverPadding(
-                      padding: EdgeInsets.only(top: Agenda.topPadding),
-                    ),
-                    SliverActivityList(
-                      state.isToday
-                          ? state.pastActivities
-                              .reversed // Reversed because slivers before center are called in reverse order
-                              .toList()
-                          : state.pastActivities,
-                    ),
-                    SliverActivityList(
-                      state.notPastActivities,
-                      key: center,
-                    ),
-                    SliverPadding(
-                      padding: EdgeInsets.only(top: Agenda.bottomPadding),
-                    ),
-                  ],
-                ],
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        final categoryLabelWidth =
+            (boxConstraints.maxWidth - timePillarWidth) / 2;
+        return RefreshIndicator(
+          onRefresh: _refresh,
+          child: Stack(
+            children: <Widget>[
+              NotificationListener<ScrollNotification>(
+                onNotification: state.isToday ? _onScrollNotification : null,
+                child: CupertinoScrollbar(
+                  controller: scrollController,
+                  child: CustomScrollView(
+                    center: state.isToday ? center : null,
+                    controller: scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    slivers: [
+                      if (state.activities.isEmpty &&
+                          state.fullDayActivities.isEmpty)
+                        SliverNoActivities(key: center)
+                      else ...[
+                        SliverPadding(
+                          padding: EdgeInsets.only(top: Agenda.topPadding),
+                        ),
+                        SliverActivityList(
+                          state.isToday
+                              ? state.pastActivities
+                                  .reversed // Reversed because slivers before center are called in reverse order
+                                  .toList()
+                              : state.pastActivities,
+                        ),
+                        SliverActivityList(
+                          state.notPastActivities,
+                          key: center,
+                        ),
+                        SliverPadding(
+                          padding: EdgeInsets.only(top: Agenda.bottomPadding),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ),
-            ),
+              ArrowUp(
+                controller: scrollController,
+                collapseMargin: Agenda.topPadding,
+              ),
+              ArrowDown(
+                controller: scrollController,
+                collapseMargin: Agenda.bottomPadding + todayScrollOffset,
+              ),
+              CategoryLeft(
+                maxWidth: categoryLabelWidth,
+                expanded: widget.calendarViewState.expandLeftCategory,
+              ),
+              CategoryRight(
+                maxWidth: categoryLabelWidth,
+                expanded: widget.calendarViewState.expandRightCategory,
+              ),
+            ],
           ),
-          ArrowUp(
-            controller: scrollController,
-            collapseMargin: Agenda.topPadding,
-          ),
-          ArrowDown(
-            controller: scrollController,
-            collapseMargin: Agenda.bottomPadding + todayScrollOffset,
-          ),
-          CategoryLeft(expanded: widget.calendarViewState.expandLeftCategory),
-          CategoryRight(expanded: widget.calendarViewState.expandRightCategory),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -127,7 +139,7 @@ class SliverNoActivities extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.only(top: 24.0),
+      padding: const EdgeInsets.only(top: Agenda.topPadding),
       sliver: SliverToBoxAdapter(
         child: Center(
           child: Tts(
@@ -152,7 +164,7 @@ class SliverActivityList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
       sliver: SliverFixedExtentList(
         itemExtent: ActivityCard.cardHeight + ActivityCard.cardMargin,
         delegate: SliverChildBuilderDelegate(
