@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -49,7 +50,7 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
   Stream<RecurringWeekState> mapEventToState(
     RecurringWeekEvent event,
   ) async* {
-    if (event is EveryOtherWeek) {
+    if (event is ChangeEveryOtherWeek) {
       yield state.copyWith(everyOtherWeek: event.everyOtherWeek);
     }
     if (event is ChangeStartDate) {

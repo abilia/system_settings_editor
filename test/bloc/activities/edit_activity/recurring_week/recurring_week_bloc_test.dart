@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:seagull/bloc/activities/activities_bloc.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -194,7 +194,7 @@ void main() {
 
     // Act
     recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.monday));
-    recurringWeekBloc.add(EveryOtherWeek(true));
+    recurringWeekBloc.add(ChangeEveryOtherWeek(true));
 
     await expectLater(
       recurringWeekBloc,
@@ -237,7 +237,7 @@ void main() {
 
     // Act
     recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.monday));
-    recurringWeekBloc.add(EveryOtherWeek(true));
+    recurringWeekBloc.add(ChangeEveryOtherWeek(true));
 
     await expectLater(
       editActivityBloc,
@@ -290,7 +290,7 @@ void main() {
 
     // Act
     recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.monday));
-    recurringWeekBloc.add(EveryOtherWeek(true));
+    recurringWeekBloc.add(ChangeEveryOtherWeek(true));
     editActivityBloc.add(ChangeDate(newStartDate));
 
     await expectLater(
@@ -359,7 +359,7 @@ void main() {
 
     // Act
     recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.monday));
-    recurringWeekBloc.add(EveryOtherWeek(true));
+    recurringWeekBloc.add(ChangeEveryOtherWeek(true));
 
     // Assert
     await expectLater(

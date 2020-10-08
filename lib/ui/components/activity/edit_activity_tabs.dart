@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
@@ -9,7 +10,7 @@ import 'package:seagull/ui/theme.dart';
 const _rightPadding = EdgeInsets.only(right: 12.0),
     _ordinaryPadding = EdgeInsets.fromLTRB(12.0, 24.0, 4.0, 16.0),
     _errorBorderPadding = EdgeInsets.all(4.0),
-    _errorBoarderPaddingRight = EdgeInsets.only(right: 5.0),
+    _errorBorderPaddingRight = EdgeInsets.only(right: 5.0),
     _bottomPadding = EdgeInsets.only(bottom: 56.0);
 mixin EditActivityTab {
   Widget errorBordered(Widget child, {@required bool errorState}) {
@@ -19,7 +20,7 @@ mixin EditActivityTab {
       child: ClipRRect(
         borderRadius: borderRadius,
         child: Padding(
-          padding: _errorBoarderPadding
+          padding: _errorBorderPadding
               .subtract(decoration.border?.dimensions ?? EdgeInsets.zero),
           child: child,
         ),
@@ -130,10 +131,10 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
     final recurs = activity.recurs;
     return ListView(
       padding:
-          _rightPadding.add(_bottomPadding).subtract(_errorBoarderPaddingRight),
+          _rightPadding.add(_bottomPadding).subtract(_errorBorderPaddingRight),
       children: <Widget>[
         Padding(
-          padding: _errorBoarderPaddingRight,
+          padding: _errorBorderPaddingRight,
           child: Column(
             children: [
               CollapsableWidget(
@@ -149,7 +150,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
               Padding(
                 padding: _ordinaryPadding
                     .subtract(EdgeInsets.only(bottom: _ordinaryPadding.bottom))
-                    .add(EdgeInsets.only(bottom: _errorBoarderPadding.bottom)),
+                    .add(EdgeInsets.only(bottom: _errorBorderPadding.bottom)),
                 child: RecurrenceWidget(activity),
               ),
             ],
@@ -165,9 +166,9 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                 separated(
                   Padding(
                     padding: EdgeInsets.only(
-                      left: _ordinaryPadding.left - _errorBoarderPadding.left,
+                      left: _ordinaryPadding.left - _errorBorderPadding.left,
                       bottom:
-                          _ordinaryPadding.bottom - _errorBoarderPadding.bottom,
+                          _ordinaryPadding.bottom - _errorBorderPadding.bottom,
                     ),
                     child: errorBordered(
                       MonthDays(activity),
@@ -176,7 +177,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                   ),
                 ),
               Padding(
-                padding: _errorBoarderPaddingRight,
+                padding: _errorBorderPaddingRight,
                 child: padded(
                   EndDateWidget(state),
                 ),
@@ -206,22 +207,22 @@ class Weekly extends StatelessWidget with EditActivityTab {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    left: _ordinaryPadding.left - _errorBoarderPadding.left),
+                    left: _ordinaryPadding.left - _errorBorderPadding.left),
                 child: errorBordered(
                   WeekDays(state.weekdays),
                   errorState: errorState,
                 ),
               ),
               Padding(
-                padding: _errorBoarderPaddingRight,
+                padding: _errorBorderPaddingRight,
                 child: separated(
                   Padding(
                     padding: _ordinaryPadding.subtract(
-                      EdgeInsets.only(top: _errorBoarderPadding.top),
+                      EdgeInsets.only(top: _errorBorderPadding.top),
                     ),
                     child: SwitchField(
                       leading: Icon(
-                        AbiliaIcons.thisWeek,
+                        AbiliaIcons.this_week,
                         size: smallIconSize,
                       ),
                       text: Text(
@@ -230,7 +231,7 @@ class Weekly extends StatelessWidget with EditActivityTab {
                       value: state.everyOtherWeek,
                       onChanged: (v) => context
                           .bloc<RecurringWeekBloc>()
-                          .add(EveryOtherWeek(v)),
+                          .add(ChangeEveryOtherWeek(v)),
                     ),
                   ),
                 ),

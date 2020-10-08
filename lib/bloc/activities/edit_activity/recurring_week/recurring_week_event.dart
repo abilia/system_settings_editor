@@ -15,10 +15,10 @@ class AddOrRemoveWeekday extends RecurringWeekEvent {
   List<Object> get props => [day];
 }
 
-class EveryOtherWeek extends RecurringWeekEvent {
+class ChangeEveryOtherWeek extends RecurringWeekEvent {
   final bool everyOtherWeek;
 
-  EveryOtherWeek(this.everyOtherWeek) : assert(everyOtherWeek != null);
+  ChangeEveryOtherWeek(this.everyOtherWeek) : assert(everyOtherWeek != null);
   @override
   List<Object> get props => [everyOtherWeek];
 }

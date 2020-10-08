@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/all.dart';
@@ -10,6 +11,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
@@ -1883,35 +1885,6 @@ text''';
         exact: '9:33 AM',
       );
     });
-
-    testWidgets('time input', (WidgetTester tester) async {
-      // Arrange
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
-          givenActivity: Activity.createNew(
-              title: '', startTime: DateTime(2000, 11, 22, 11, 55)),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Assert -- that the activities start time shows
-      await tester.verifyTts(startTimeFieldFinder, exact: translate.startTime);
-
-      // Act -- Change  start time
-      await tester.tap(startTimeFieldFinder);
-
-      await tester.verifyTts(
-        hourInputFinder,
-        exact: '11',
-      );
-      await tester.verifyTts(
-        minInputFinder,
-        exact: '55',
-      );
-    },
-        skip:
-            true); // 2020-09-28 Not possible to add GestureDetector over text field
 
     testWidgets('end time', (WidgetTester tester) async {
       // Arrange
