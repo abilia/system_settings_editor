@@ -256,7 +256,7 @@ abstract class Translated {
   final String longpressToSpeak = 'Long press to speak';
 
   final String longPressInfoText =
-      'Make along press on any text or object with text to speak it loudly';
+      'Make a long press on any text or object with text to speak it loudly';
 
   final String lunch = 'Lunch';
 }

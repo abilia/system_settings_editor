@@ -51,9 +51,9 @@ class _Tts extends StatelessWidget {
         builder: (context, settingsState) => GestureDetector(
           behavior: HitTestBehavior.translucent,
           excludeFromSemantics: true,
-          onLongPress: () {
-            if (settingsState.textToSpeech) GetIt.I<FlutterTts>().speak(data);
-          },
+          onLongPress: settingsState.textToSpeech
+              ? () => GetIt.I<FlutterTts>().speak(data)
+              : null,
           child: child,
         ),
       );

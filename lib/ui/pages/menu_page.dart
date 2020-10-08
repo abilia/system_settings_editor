@@ -116,7 +116,7 @@ class LongPressInfoDialog extends StatelessWidget {
             SizedBox(
               height: 100,
             ),
-            Stack(overflow: Overflow.visible, children: [
+            Stack(children: [
               Transform.scale(
                 scale: 0.85,
                 child: buildPreviewActivityCard(translate),
