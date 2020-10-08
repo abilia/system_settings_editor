@@ -11,9 +11,12 @@ part 'recurring_week_event.dart';
 part 'recurring_week_state.dart';
 
 class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
+  StreamSubscription _editActivityBlocSubscription, _selfSubscription;
+
   RecurringWeekBloc(EditActivityBloc editActivityBloc)
       : super(RecurringWeekState.initial(editActivityBloc.state)) {
-    editActivityBloc.listen((editActivityState) {
+    _editActivityBlocSubscription =
+        editActivityBloc.listen((editActivityState) {
       final startDate = editActivityState.timeInterval.startDate;
       final endDate = editActivityState.activity.recurs.end;
       if (startDate != state.startDate) {
@@ -24,7 +27,7 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
       }
     });
 
-    listen((recurringWeekState) {
+    _selfSubscription = listen((recurringWeekState) {
       editActivityBloc.add(
         ReplaceActivity(
           editActivityBloc.state.activity.copyWith(
@@ -62,5 +65,12 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
       }
       yield state.copyWith(weekdays: weekdays);
     }
+  }
+
+  @override
+  Future<void> close() async {
+    await _editActivityBlocSubscription.cancel();
+    await _selfSubscription.cancel();
+    return super.close();
   }
 }
