@@ -54,6 +54,8 @@ const Border currentActivityBorder =
     Border.fromBorderSide(BorderSide(color: AbiliaColors.red, width: 2.0));
 const Border errorBorder =
     Border.fromBorderSide(BorderSide(color: AbiliaColors.red));
+const borderGreen =
+    Border.fromBorderSide(BorderSide(color: AbiliaColors.green, width: 2.0));
 const border = Border.fromBorderSide(borderSide);
 const ligthShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
@@ -86,6 +88,11 @@ const BoxDecoration whiteBoxDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: border,
 );
+const BoxDecoration greenBoarderWhiteBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white,
+  borderRadius: borderRadius,
+  border: borderGreen,
+);
 const BoxDecoration whiteNoBorderBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
@@ -108,7 +115,12 @@ const BoxDecoration whiteErrorBoxDecoration = BoxDecoration(
 
 BoxDecoration getBoxDecoration(bool current, bool inactive) => inactive
     ? inactiveBoxDecoration
-    : current ? currentBoxDecoration : whiteBoxDecoration;
+    : current
+        ? currentBoxDecoration
+        : whiteBoxDecoration;
+
+BoxDecoration selectedBoxDecoration(bool selected) =>
+    selected ? greenBoarderWhiteBoxDecoration : offBoxDecoration;
 
 const OutlineInputBorder inputBorder = OutlineInputBorder(
   borderSide: borderSide,

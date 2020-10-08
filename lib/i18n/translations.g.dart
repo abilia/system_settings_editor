@@ -255,6 +255,11 @@ abstract class Translated {
 
   final String longpressToSpeak = 'Long press to speak';
 
+  final String everyOtherWeek = 'Every other week';
+
+  final String recurringDataEmptyErrorMessage =
+      'You need to select at least one day';
+
   final String longPressInfoText =
       'Make a long press on any text or object with text to speak it loudly';
 
@@ -621,6 +626,13 @@ class SV extends Translated {
 
   @override
   final String longpressToSpeak = 'Tryck länge för tal';
+
+  @override
+  final String everyOtherWeek = 'Varannan vecka';
+
+  @override
+  final String recurringDataEmptyErrorMessage =
+      'En återkommande aktivitet måste ha en vald upprepning';
 
   @override
   final String longPressInfoText =

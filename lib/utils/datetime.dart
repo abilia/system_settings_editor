@@ -104,7 +104,6 @@ extension DateTimeExtensions on DateTime {
   DateTime withTime(TimeOfDay timeOfDay) =>
       copyWith(hour: timeOfDay.hour, minute: timeOfDay.minute);
 
-
   DayPart dayPart(DayParts dayParts) {
     final msAfterMidnight = difference(onlyDays()).inMilliseconds;
 

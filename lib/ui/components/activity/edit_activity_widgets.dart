@@ -21,7 +21,7 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
     return NameAndPictureWidget(
       imageFileId: state.activity.fileId,
       imageFilePath: state.activity.icon,
-      errorState: state.failedSave && !state.hasTitleOrImage,
+      errorState: state.saveErrors.contains(SaveError.NO_TITLE_OR_IMAGE),
       text: state.activity.title,
       newImage: state.newImage,
       inputFormatters: [LengthLimitingTextInputFormatter(50)],
@@ -518,11 +518,12 @@ class RecurrenceWidget extends StatelessWidget {
 }
 
 class EndDateWidget extends StatelessWidget {
-  final Activity activity;
+  final EditActivityState state;
 
-  const EndDateWidget(this.activity, {Key key}) : super(key: key);
+  const EndDateWidget(this.state, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final activity = state.activity;
     final translate = Translator.of(context).translate;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -535,6 +536,7 @@ class EndDateWidget extends StatelessWidget {
               SubHeading(translate.endDate),
               DatePicker(
                 activity.recurs.end,
+                firstDate: state.timeInterval.startDate,
                 onChange: (newDate) =>
                     BlocProvider.of<EditActivityBloc>(context).add(
                   ReplaceActivity(
@@ -573,40 +575,27 @@ class EndDateWidget extends StatelessWidget {
 }
 
 class WeekDays extends StatelessWidget {
-  final Activity activity;
-
+  final Set<int> selectedWeekDays;
   const WeekDays(
-    this.activity, {
+    this.selectedWeekDays, {
     Key key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final selectedWeekDays = activity.recurs.weekDays;
-
     return Wrap(
       spacing: 14.0,
       runSpacing: 8.0,
       children: List.generate(DateTime.daysPerWeek, (i) {
         final d = i + 1;
         return SelectableField(
-            text: Text(
-              Translator.of(context).translate.shortWeekday(d),
-              style:
-                  Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
-            ),
-            selected: selectedWeekDays.contains(d),
-            onTap: () {
-              if (!selectedWeekDays.add(d)) {
-                selectedWeekDays.remove(d);
-              }
-              BlocProvider.of<EditActivityBloc>(context).add(
-                ReplaceActivity(
-                  activity.copyWith(
-                      recurs: Recurs.weeklyOnDays(selectedWeekDays,
-                          ends: activity.recurs.end)),
-                ),
-              );
-            });
+          text: Text(
+            Translator.of(context).translate.shortWeekday(d),
+            style: Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
+          ),
+          selected: selectedWeekDays.contains(d),
+          onTap: () =>
+              context.bloc<RecurringWeekBloc>().add(AddOrRemoveWeekday(d)),
+        );
       }),
     );
   }

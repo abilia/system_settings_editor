@@ -663,7 +663,7 @@ void main() {
     });
 
     test(
-        'bug SGC-332 recuring with traling day before is not affected by this day and forward',
+        'bug SGC-332 recurring with traling day before is not affected by this day and forward',
         () {
       final a = Activity.createNew(
         title: 'asdf',
@@ -709,14 +709,14 @@ void main() {
       );
 
       // Arrange
-      final recuringA = res1.state.firstWhere((a) => a.isRecurring);
+      final recurringA = res1.state.firstWhere((a) => a.isRecurring);
 
-      expect(recuringA, MatchActivityWithoutId(expetedUpdate2));
+      expect(recurringA, MatchActivityWithoutId(expetedUpdate2));
 
-      final recuringAUpdated2 = recuringA.copyWith(title: 'brand new title');
+      final recurringAUpdated2 = recurringA.copyWith(title: 'brand new title');
 
       final res2 = editRecurringMixin.updateThisDayAndForward(
-        activity: recuringAUpdated2,
+        activity: recurringAUpdated2,
         activities: res1.state.toSet(),
       );
 
@@ -726,7 +726,7 @@ void main() {
         MatchActivitiesWithoutId(
           [
             expetedUpdate1,
-            recuringAUpdated2,
+            recurringAUpdated2,
           ],
         ),
       );
@@ -734,13 +734,13 @@ void main() {
         res2.save,
         MatchActivitiesWithoutId(
           [
-            recuringAUpdated2,
+            recurringAUpdated2,
           ],
         ),
       );
     });
 
-    test('bug SGC-332 recuring not with endtime is not overlapping', () {
+    test('bug SGC-332 recurring not with endtime is not overlapping', () {
       final activity = Activity.createNew(
         title: 'old title',
         startTime: DateTime(2022, 12, 12, 12, 12),
@@ -751,16 +751,16 @@ void main() {
         title: 'new title',
         recurs: Recurs.raw(0, 0, Recurs.NO_END),
       );
-      final recuring = activity.copyWith(
+      final recurring = activity.copyWith(
         startTime: activity.startTime.nextDay(),
         newId: true,
       );
 
-      final recuringUpdated = recuring.copyWith(title: 'brand new title');
+      final recurringUpdated = recurring.copyWith(title: 'brand new title');
 
       final res2 = editRecurringMixin.updateThisDayAndForward(
-        activity: recuringUpdated,
-        activities: {onlyThis, recuring},
+        activity: recurringUpdated,
+        activities: {onlyThis, recurring},
       );
 
       // Assert
@@ -769,7 +769,7 @@ void main() {
         MatchActivitiesWithoutId(
           [
             onlyThis,
-            recuringUpdated,
+            recurringUpdated,
           ],
         ),
       );
@@ -777,7 +777,7 @@ void main() {
         res2.save,
         MatchActivitiesWithoutId(
           [
-            recuringUpdated,
+            recurringUpdated,
           ],
         ),
       );

@@ -107,14 +107,16 @@ th;Th;To
 fr;Fr;Fr
 sa;Sa;Lö
 su;Su;Sö
-licenseExpired;License is expired;Licensen har gått ut;
-licenseExpiredMessage;You have been logged out because your MEMOplanner license expired. Please, extend your license to continue using this app.;Du har blivit utloggad eftersom din licens för MEMOplanner har gått ut. Du måste förlänga licensen för att fortsätta använda den här appen.;
-morning;morning;morgon;
-forenoon;forenoon;förmiddag;
-afternoon;afternoon;eftermiddag;
-evening;evening;kväll;
-night;night;natt;
+licenseExpired;License is expired;Licensen har gått ut
+licenseExpiredMessage;You have been logged out because your MEMOplanner license expired. Please, extend your license to continue using this app.;Du har blivit utloggad eftersom din licens för MEMOplanner har gått ut. Du måste förlänga licensen för att fortsätta använda den här appen.
+morning;morning;morgon
+forenoon;forenoon;förmiddag
+afternoon;afternoon;eftermiddag
+evening;evening;kväll
+night;night;natt
 textToSpeech;Text to speech;Text till tal;
 longpressToSpeak;Long press to speak;Tryck länge för tal;
+everyOtherWeek;Every other week;Varannan vecka
+recurringDataEmptyErrorMessage;You need to select at least one day;En återkommande aktivitet måste ha en vald upprepning
 longPressInfoText;Make a long press on any text or object with text to speak it loudly;Tryck länge på någon text för att få den uppläst;
 lunch;Lunch;Lunch;

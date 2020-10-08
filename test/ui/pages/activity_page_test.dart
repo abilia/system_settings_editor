@@ -1024,7 +1024,7 @@ void main() {
         expect(datePickerDate.onlyDays(), startTime.onlyDays());
       });
 
-      testWidgets('No edit on recuring activity does not show apply to pop up',
+      testWidgets('No edit on recurring activity does not show apply to pop up',
           (WidgetTester tester) async {
         // Arrange
         final activity = Activity.createNew(

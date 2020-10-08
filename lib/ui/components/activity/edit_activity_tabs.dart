@@ -1,11 +1,35 @@
 import 'package:flutter/widgets.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/theme.dart';
 
+const _rightPadding = EdgeInsets.only(right: 12.0),
+    _ordinaryPadding = EdgeInsets.fromLTRB(12.0, 24.0, 4.0, 16.0),
+    _errorBorderPadding = EdgeInsets.all(4.0),
+    _errorBorderPaddingRight = EdgeInsets.only(right: 5.0),
+    _bottomPadding = EdgeInsets.only(bottom: 56.0);
 mixin EditActivityTab {
+  Widget errorBordered(Widget child, {@required bool errorState}) {
+    final decoration = errorState ? errorBoxDecoration : const BoxDecoration();
+    return Container(
+      decoration: decoration,
+      child: ClipRRect(
+        borderRadius: borderRadius,
+        child: Padding(
+          padding: _errorBorderPadding
+              .subtract(decoration.border?.dimensions ?? EdgeInsets.zero),
+          child: child,
+        ),
+      ),
+    );
+  }
+
+  Widget separatedAndPadded(Widget child) => separated(padded(child));
+
   Widget separated(Widget child) {
     return Container(
       decoration: const BoxDecoration(
@@ -13,16 +37,12 @@ mixin EditActivityTab {
           bottom: BorderSide(color: AbiliaColors.white120),
         ),
       ),
-      child: padded(child),
-    );
-  }
-
-  Widget padded(Widget child) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(12.0, 24.0, 4.0, 16.0),
       child: child,
     );
   }
+
+  Widget padded(Widget child) =>
+      Padding(padding: _ordinaryPadding, child: child);
 }
 
 class MainTab extends StatelessWidget with EditActivityTab {
@@ -40,16 +60,16 @@ class MainTab extends StatelessWidget with EditActivityTab {
     final activity = editActivityState.activity;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) => ListView(
-        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 56.0),
+        padding: _rightPadding.add(_bottomPadding),
         children: <Widget>[
-          separated(ActivityNameAndPictureWidget(editActivityState)),
-          separated(DateAndTimeWidget(editActivityState)),
+          separatedAndPadded(ActivityNameAndPictureWidget(editActivityState)),
+          separatedAndPadded(DateAndTimeWidget(editActivityState)),
           CollapsableWidget(
-            child: separated(CategoryWidget(activity)),
+            child: separatedAndPadded(CategoryWidget(activity)),
             collapsed:
                 activity.fullDay || !memoSettingsState.activityTypeEditable,
           ),
-          separated(CheckableAndDeleteAfterWidget(activity)),
+          separatedAndPadded(CheckableAndDeleteAfterWidget(activity)),
           padded(AvailibleForWidget(activity)),
         ],
       ),
@@ -68,10 +88,10 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 12.0),
+      padding: _rightPadding,
       child: Column(
         children: <Widget>[
-          separated(
+          separatedAndPadded(
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -105,39 +125,120 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
+    final recurringDataError =
+        state.saveErrors.contains(SaveError.NO_RECURRING_DAYS);
     final activity = state.activity;
-    return Padding(
-      padding: const EdgeInsets.only(right: 12.0),
-      child: ListView(
-        children: <Widget>[
-          CollapsableWidget(
-            collapsed: activity.fullDay,
-            child: separated(
-              TimeIntervallPicker(
-                state.timeInterval,
-                startTimeError: state.failedSave && !state.hasStartTime,
+    final recurs = activity.recurs;
+    return ListView(
+      padding:
+          _rightPadding.add(_bottomPadding).subtract(_errorBorderPaddingRight),
+      children: <Widget>[
+        Padding(
+          padding: _errorBorderPaddingRight,
+          child: Column(
+            children: [
+              CollapsableWidget(
+                collapsed: activity.fullDay,
+                child: separatedAndPadded(
+                  TimeIntervallPicker(
+                    state.timeInterval,
+                    startTimeError:
+                        state.saveErrors.contains(SaveError.NO_START_TIME),
+                  ),
+                ),
               ),
-            ),
+              Padding(
+                padding: _ordinaryPadding
+                    .subtract(EdgeInsets.only(bottom: _ordinaryPadding.bottom))
+                    .add(EdgeInsets.only(bottom: _errorBorderPadding.bottom)),
+                child: RecurrenceWidget(activity),
+              ),
+            ],
           ),
-          if (activity.recurs.recurrance == RecurrentType.none ||
-              activity.recurs.recurrance == RecurrentType.yearly)
-            padded(RecurrenceWidget(activity))
-          else ...[
-            separated(
-              Column(
-                children: [
-                  RecurrenceWidget(activity),
-                  SizedBox(height: 8),
-                  if (activity.recurs.recurrance == RecurrentType.weekly)
-                    WeekDays(activity)
-                  else if (activity.recurs.recurrance == RecurrentType.monthly)
-                    MonthDays(activity),
-                ],
+        ),
+        if (recurs.weekly || recurs.monthly)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (recurs.weekly)
+                Weekly(errorState: recurringDataError)
+              else if (recurs.monthly)
+                separated(
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: _ordinaryPadding.left - _errorBorderPadding.left,
+                      bottom:
+                          _ordinaryPadding.bottom - _errorBorderPadding.bottom,
+                    ),
+                    child: errorBordered(
+                      MonthDays(activity),
+                      errorState: recurringDataError,
+                    ),
+                  ),
+                ),
+              Padding(
+                padding: _errorBorderPaddingRight,
+                child: padded(
+                  EndDateWidget(state),
+                ),
               ),
-            ),
-            padded(EndDateWidget(activity)),
-          ]
-        ],
+            ],
+          ),
+      ],
+    );
+  }
+}
+
+class Weekly extends StatelessWidget with EditActivityTab {
+  final bool errorState;
+  const Weekly({
+    Key key,
+    @required this.errorState,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => RecurringWeekBloc(context.bloc<EditActivityBloc>()),
+      child: BlocBuilder<RecurringWeekBloc, RecurringWeekState>(
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    left: _ordinaryPadding.left - _errorBorderPadding.left),
+                child: errorBordered(
+                  WeekDays(state.weekdays),
+                  errorState: errorState,
+                ),
+              ),
+              Padding(
+                padding: _errorBorderPaddingRight,
+                child: separated(
+                  Padding(
+                    padding: _ordinaryPadding.subtract(
+                      EdgeInsets.only(top: _errorBorderPadding.top),
+                    ),
+                    child: SwitchField(
+                      leading: Icon(
+                        AbiliaIcons.this_week,
+                        size: smallIconSize,
+                      ),
+                      text: Text(
+                        Translator.of(context).translate.everyOtherWeek,
+                      ),
+                      value: state.everyOtherWeek,
+                      onChanged: (v) => context
+                          .bloc<RecurringWeekBloc>()
+                          .add(ChangeEveryOtherWeek(v)),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

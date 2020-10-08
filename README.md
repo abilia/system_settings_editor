@@ -29,3 +29,7 @@ All missing translations will be written to the file `lib/i18n/translation.missi
 - If you want an empty string, put **&empty&** as placeholder
 - **\\** needs to be escaped with another **\\** as such: **\\\\**
 - The character **;** is not supported
+
+## Test coverage
+For test coverage run
+`$ flutter test --coverage && genhtml coverage/lcov.info -o coverage/html && open coverage/html/index.html`

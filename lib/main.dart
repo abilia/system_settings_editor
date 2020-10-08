@@ -29,7 +29,6 @@ import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/all.dart';
-import 'ui/components/all.dart';
 
 final _log = Logger('main');
 
@@ -133,29 +132,14 @@ class App extends StatelessWidget {
                 return AuthenticatedBlocsProvider(
                   authenticatedState: state,
                   child: SeagullApp(
-                    home: BlocListener<LicenseBloc, LicenseState>(
-                      listener: (context, state) async {
-                        if (state is NoValidLicense) {
-                          await showViewDialog(
-                            context: context,
-                            builder: (context) {
-                              return LicenseExpiredDialog();
-                            },
-                          );
-                          BlocProvider.of<AuthenticationBloc>(context)
-                              .add(LoggedOut());
-                        }
-                      },
-                      child: wasAlarmStart
-                          ? AlarmListener(
-                              child:
-                                  FullScreenAlarm(alarm: notificationPayload),
-                              listenWhen: (_, current) =>
-                                  current is AlarmState &&
-                                  current.alarm != notificationPayload,
-                            )
-                          : AlarmListener(child: CalendarPage()),
-                    ),
+                    home: wasAlarmStart
+                        ? SeagullListeners(
+                            child: FullScreenAlarm(alarm: notificationPayload),
+                            listenWhen: (_, current) =>
+                                current is AlarmState &&
+                                current.alarm != notificationPayload,
+                          )
+                        : SeagullListeners(child: CalendarPage()),
                   ),
                 );
               }

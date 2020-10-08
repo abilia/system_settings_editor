@@ -49,7 +49,7 @@ void main() {
       when(mockUserRepository.authenticate(
         username: anyNamed('username'),
         password: anyNamed('password'),
-        pushToken: anyNamed(pushToken),
+        pushToken: anyNamed('pushToken'),
         time: anyNamed('time'),
       )).thenAnswer((_) => Future.value(loginToken));
 
@@ -60,6 +60,16 @@ void main() {
               type: '',
             ),
           ));
+
+      when(mockUserRepository.getLicensesFromApi(any)).thenAnswer(
+        (_) => Future.value([
+          License(
+            endTime: DateTime.now().add(Duration(hours: 24)),
+            id: 1,
+            product: MEMOPLANNER_LICENSE_NAME,
+          ),
+        ]),
+      );
 
       // Act
       authenticationBloc.add(AppStarted(mockUserRepository));
@@ -129,7 +139,7 @@ void main() {
           .thenAnswer((_) => Future.value(Fakes.token));
       when(mockedUserRepository.me(any))
           .thenAnswer((_) => Future.value(User(id: 0, name: '', type: '')));
-      when(mockedUserRepository.getLicensesFromApi())
+      when(mockedUserRepository.getLicensesFromApi(any))
           .thenAnswer((_) => Future.value([
                 License(
                     endTime: DateTime.now().add(Duration(hours: 24)),
@@ -142,9 +152,16 @@ void main() {
       // Arrange
       final username = 'username',
           password = 'password',
-          fakePushToken = 'fakePushToken';
+          fakePushToken = 'pushToken';
+      final loginToken = 'loginToken';
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value(fakePushToken));
+      when(mockedUserRepository.authenticate(
+        username: anyNamed('username'),
+        password: anyNamed('password'),
+        pushToken: anyNamed('pushToken'),
+        time: anyNamed('time'),
+      )).thenAnswer((_) => Future.value(loginToken));
 
       // Act
       loginBloc.add(LoginButtonPressed(username: username, password: password));

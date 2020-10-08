@@ -104,7 +104,8 @@ class UserRepository extends Repository {
 
   Future<List<License>> getLicenses() async {
     try {
-      final fromApi = await getLicensesFromApi();
+      final token = await tokenDb.getToken();
+      final fromApi = await getLicensesFromApi(token);
       await licenseDb.persistLicenses(fromApi);
     } catch (e) {
       _log.warning('Could not fetch licenses from backend', e);
@@ -112,8 +113,7 @@ class UserRepository extends Repository {
     return licenseDb.getLicenses();
   }
 
-  Future<List<License>> getLicensesFromApi() async {
-    final token = await tokenDb.getToken();
+  Future<List<License>> getLicensesFromApi(String token) async {
     final response = await httpClient.get('$baseUrl/api/v1/license/portal/me',
         headers: authHeader(token));
     if (response.statusCode == 200) {

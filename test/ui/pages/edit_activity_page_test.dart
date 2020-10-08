@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/all.dart';
@@ -10,13 +11,14 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '../../mocks.dart';
 
 void main() {
-  final startTime = DateTime(2020, 02, 25, 15, 30);
+  final startTime = DateTime(2020, 02, 10, 15, 30);
   final today = startTime.onlyDays();
   final startActivity = Activity.createNew(
     title: '',
@@ -236,7 +238,8 @@ void main() {
       expect(find.text(translate.missingTitleOrImage), findsNothing);
     });
 
-    testWidgets('pressing add activity on other tab scrolls back to main page',
+    testWidgets(
+        'pressing add activity on other tab scrolls back to main page on error',
         (WidgetTester tester) async {
       final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
 
@@ -390,7 +393,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      expect(find.text('(Today) February 25, 2020'), findsOneWidget);
+      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
 
       await tester.tap(find.byKey(TestKey.datePicker));
       await tester.pumpAndSettle();
@@ -398,7 +401,7 @@ void main() {
       await tester.tap(find.text('OK'));
       await tester.pumpAndSettle();
 
-      expect(find.text('(Today) February 25, 2020'), findsNothing);
+      expect(find.text('(Today) February 10, 2020'), findsNothing);
       expect(find.text('February 14, 2020'), findsOneWidget);
     });
 
@@ -1509,13 +1512,13 @@ text''';
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
       expect(find.text(translate.once), findsOneWidget);
 
-      // Act -- Change to Yearly
+      // Act -- Change to montly
       await tester.tap(find.byKey(TestKey.changeRecurrence));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
 
-      // Assert -- Yearly selected, not Once
+      // Assert -- monthly selected, not Once
       expect(find.byIcon(AbiliaIcons.day), findsNothing);
       expect(find.text(translate.once), findsNothing);
       expect(find.byIcon(AbiliaIcons.month), findsOneWidget);
@@ -1540,13 +1543,13 @@ text''';
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
       expect(find.text(translate.once), findsOneWidget);
 
-      // Act -- Change to Yearly
+      // Act -- Change to weekly
       await tester.tap(find.byKey(TestKey.changeRecurrence));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
 
-      // Assert -- Yearly selected, not Once
+      // Assert -- Weekly selected, not Once
       expect(find.byIcon(AbiliaIcons.day), findsNothing);
       expect(find.text(translate.once), findsNothing);
       expect(find.byIcon(AbiliaIcons.week), findsOneWidget);
@@ -1567,7 +1570,7 @@ text''';
       // Act
       await tester.goToRecurrenceTab();
 
-      // Act -- Change to Yearly
+      // Act -- Change to weekly
       await tester.tap(find.byKey(TestKey.changeRecurrence));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
@@ -1575,10 +1578,68 @@ text''';
       await tester.tap(find.byKey(TestKey.noEndDate));
       await tester.pumpAndSettle();
 
-      // Assert -- Yearly selected, not Once
+      // Assert -- date picker visible
       expect(find.byType(EndDateWidget), findsOneWidget);
       expect(find.byType(DatePicker), findsOneWidget);
       expect(find.text(translate.endDate), findsOneWidget);
+    });
+
+    testWidgets(
+        'add activity without recurance data tab scrolls back to recurance tab',
+        (WidgetTester tester) async {
+      // Arrange
+      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
+      final hourInputFinder = find.byKey(TestKey.hourTextInput);
+      final minInputFinder = find.byKey(TestKey.minTextInput);
+
+      await tester.pumpWidget(
+          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+
+      await tester.pumpAndSettle();
+      // Arrange -- enter title
+      await tester.enterText_(
+          find.byKey(TestKey.editTitleTextFormField), 'newActivtyTitle');
+
+      // Arrange -- enter start time
+      await tester.tap(startTimeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.enterText(hourInputFinder, '9');
+      await tester.enterText(minInputFinder, '33');
+      await tester.pumpAndSettle();
+      await tester.tap(okFinder);
+      await tester.pumpAndSettle();
+      // Arrange -- set full day
+      await tester.tap(find.byKey(TestKey.fullDaySwitch));
+      await tester.pumpAndSettle();
+      await tester.goToRecurrenceTab();
+      await tester.pumpAndSettle();
+      // Arrange -- set weekly recurance
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      // Arrange -- deselect preselect
+      await tester.tap(find.text(translate.shortWeekday(startTime.weekday)));
+      await tester.goToMainTab();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MainTab), findsOneWidget);
+
+      // Act press submit
+      await tester.tap(submitButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert error message
+      expect(find.byType(ErrorMessage), findsOneWidget);
+      expect(
+          find.text(translate.recurringDataEmptyErrorMessage), findsOneWidget);
+
+      // Act dissmiss
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+
+      // Assert at Recurrence Tab
+      expect(find.byType(RecurrenceTab), findsOneWidget);
     });
   });
 
@@ -1718,7 +1779,7 @@ text''';
     });
 
     testWidgets(
-        'activityTimeBeforeCurrent true - CAN save recuring when start time is future',
+        'activityTimeBeforeCurrent true - CAN save recurring when start time is future',
         (WidgetTester tester) async {
       when(mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
@@ -1829,35 +1890,6 @@ text''';
         exact: '9:33 AM',
       );
     });
-
-    testWidgets('time input', (WidgetTester tester) async {
-      // Arrange
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
-          givenActivity: Activity.createNew(
-              title: '', startTime: DateTime(2000, 11, 22, 11, 55)),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Assert -- that the activities start time shows
-      await tester.verifyTts(startTimeFieldFinder, exact: translate.startTime);
-
-      // Act -- Change  start time
-      await tester.tap(startTimeFieldFinder);
-
-      await tester.verifyTts(
-        hourInputFinder,
-        exact: '11',
-      );
-      await tester.verifyTts(
-        minInputFinder,
-        exact: '55',
-      );
-    },
-        skip:
-            true); // 2020-09-28 Not possible to add GestureDetector over text field
 
     testWidgets('end time', (WidgetTester tester) async {
       // Arrange

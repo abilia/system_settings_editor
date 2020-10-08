@@ -35,9 +35,19 @@ class Authenticated extends AuthenticationInitialized {
 }
 
 class Unauthenticated extends AuthenticationInitialized {
-  Unauthenticated(UserRepository userRepository) : super(userRepository);
-  factory Unauthenticated.fromInitilized(AuthenticationInitialized state) =>
-      Unauthenticated(state.userRepository);
+  final LoggedOutReason loggedOutReason;
+  Unauthenticated(
+    UserRepository userRepository, {
+    this.loggedOutReason = LoggedOutReason.LOG_OUT,
+  }) : super(userRepository);
+  factory Unauthenticated.fromInitilized(
+    AuthenticationInitialized state, {
+    LoggedOutReason loggedOutReason = LoggedOutReason.LOG_OUT,
+  }) =>
+      Unauthenticated(
+        state.userRepository,
+        loggedOutReason: loggedOutReason,
+      );
   @override
   String toString() => 'Unauthenticated {userRepository: $userRepository}';
 }

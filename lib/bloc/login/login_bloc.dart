@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -36,8 +37,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             pushToken: pushToken,
             time: clockBloc.state,
           );
-          authenticationBloc.add(LoggedIn(token: token));
-          yield LoginSucceeded();
+          final licenses =
+              await authState.userRepository.getLicensesFromApi(token);
+          if (licenses.anyValidLicense(clockBloc.state)) {
+            authenticationBloc.add(LoggedIn(token: token));
+            yield LoginSucceeded();
+          } else {
+            yield LoginFailure(
+                error: 'No valid license',
+                loginFailureCause: LoginFailureCause.License);
+          }
         } on UnauthorizedException catch (error) {
           yield LoginFailure(
               error: error.toString(),

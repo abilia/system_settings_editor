@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
@@ -55,16 +56,16 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
           ),
         );
 
-  List<SaveError> get saveErrors => [
+  Set<SaveError> saveErrors(SaveActivity event) => {
         if (!state.hasTitleOrImage) SaveError.NO_TITLE_OR_IMAGE,
         if (!state.hasStartTime) SaveError.NO_START_TIME,
         if (!memoplannerSettingBloc.state.activityTimeBeforeCurrent &&
-            state.hasStartTime &&
-            state.timeInterval.startDate
-                .withTime(state.timeInterval.startTime)
-                .isBefore(clockBloc.state))
+            state.startTimeBeforeNow(clockBloc.state))
           SaveError.START_TIME_BEFORE_NOW,
-      ];
+        if (state.emptyRecurringData) SaveError.NO_RECURRING_DAYS,
+        if (state.storedRecurring && event is! SaveRecurringActivity)
+          SaveError.STORED_RECURRING,
+      };
 
   @override
   Stream<EditActivityState> mapEventToState(
@@ -86,12 +87,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       yield* _mapAddOrRemoveReminderToState(event.reminder.inMilliseconds);
     }
     if (event is SaveActivity) {
-      final errors = saveErrors;
-      if (errors.isEmpty) {
-        yield* _mapSaveActivityToState(state, event);
-      } else {
-        yield state._failSave();
-      }
+      yield* _mapSaveActivityToState(state, event);
     }
     if (event is ImageSelected) {
       yield state.copyWith(
@@ -116,59 +112,60 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     yield state.copyWith(state.activity.copyWith(reminderBefore: reminders));
   }
 
-  Stream<StoredActivityState> _mapSaveActivityToState(
+  Stream<EditActivityState> _mapSaveActivityToState(
     EditActivityState state,
     SaveActivity event,
   ) async* {
-    if (state.unchanged) return;
+    if (state is StoredActivityState && state.unchanged) {
+      yield state.saveSucess();
+      return;
+    }
+
+    final errors = saveErrors(event);
+    if (errors.isNotEmpty) {
+      yield state.failSave(errors);
+      return;
+    }
+
     var activity = state.activity;
 
     if (activity.hasAttachment && activity.infoItem.isEmpty) {
       activity = activity.copyWith(infoItem: InfoItem.none);
     }
 
-    if (activity.isRecurring && activity.recurs.data <= 0) {
-      activity = activity.copyWith(recurs: Recurs.not);
-    }
-
-    activity = activity.copyWith(
-      startTime: activity.startClock(state.timeInterval.startDate),
-    );
-
+    final timeInterval = state.timeInterval;
     if (activity.fullDay) {
       activity = activity.copyWith(
-        startTime: activity.startTime.onlyDays(),
+        startTime: timeInterval.startDate.onlyDays(),
         alarmType: NO_ALARM,
-        reminderBefore: [],
+        reminderBefore: const [],
       );
     } else {
-      final startTime =
-          activity.startTime.withTime(state.timeInterval.startTime);
-      final duration = state.timeInterval.endTimeSet
-          ? _getDuration(startTime, state.timeInterval.endTime)
-          : Duration.zero;
+      final startTime = timeInterval.startDate.withTime(timeInterval.startTime);
       activity = activity.copyWith(
         startTime: startTime,
-        duration: duration,
+        duration: _getDuration(startTime, timeInterval.endTime),
       );
     }
 
     if (state is UnstoredActivityState) {
       activitiesBloc.add(AddActivity(activity));
     } else if (event is SaveRecurringActivity) {
-      activitiesBloc.add(UpdateRecurringActivity(
-        ActivityDay(activity, event.day),
-        event.applyTo,
-      ));
+      activitiesBloc.add(
+        UpdateRecurringActivity(
+          ActivityDay(activity, event.day),
+          event.applyTo,
+        ),
+      );
     } else {
       activitiesBloc.add(UpdateActivity(activity));
     }
+
     yield StoredActivityState(
-        activity,
-        state.timeInterval,
-        state is StoredActivityState
-            ? state.day
-            : activity.startTime.onlyDays());
+      activity,
+      timeInterval,
+      state is StoredActivityState ? state.day : activity.startTime.onlyDays(),
+    ).saveSucess();
   }
 
   Stream<EditActivityState> _mapChangeDateToState(ChangeDate event) async* {
@@ -250,6 +247,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   }
 
   Duration _getDuration(DateTime startTime, TimeOfDay endTime) {
+    if (startTime == null || endTime == null) return Duration.zero;
     final pickedEndTimeBeforeStartTime = endTime.hour < startTime.hour ||
         endTime.hour == startTime.hour && endTime.minute < startTime.minute;
 
