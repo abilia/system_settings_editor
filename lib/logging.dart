@@ -12,11 +12,12 @@ import 'package:bloc/bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:intl/intl.dart';
 
-import 'db/all.dart';
+export 'package:logging/logging.dart';
 
 enum LoggingType { File, Print }
 
@@ -29,8 +30,10 @@ class SeagullLogger {
   StreamSubscription loggingSubscription;
   final _log = Logger((SeagullLogger).toString());
 
-  SeagullLogger(this.userDb,
-      {this.loggingType = kReleaseMode ? LoggingType.File : LoggingType.Print});
+  SeagullLogger({
+    this.userDb,
+    this.loggingType = kReleaseMode ? LoggingType.File : LoggingType.Print,
+  });
 
   static const LATEST_UPLOAD_KEY = 'LATEST-LOG-UPLOAD-MILLIS';
   static const UPLOAD_INTERVAL = Duration(hours: 24);
@@ -39,7 +42,7 @@ class SeagullLogger {
 
   Future<void> initLogging({
     bool initAppcenter = kReleaseMode,
-    Level level = kReleaseMode ? Level.INFO : Level.FINE,
+    Level level = kReleaseMode ? Level.INFO : Level.ALL,
   }) async {
     if (initAppcenter) {
       FlutterError.onError = Crashlytics.instance.recordFlutterError;

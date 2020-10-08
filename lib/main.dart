@@ -42,7 +42,7 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   final userDb = UserDb();
-  final seagullLogger = SeagullLogger(userDb);
+  final seagullLogger = SeagullLogger(userDb: userDb);
   await seagullLogger.initLogging();
   _log.fine('Initializing services');
   final currentLocale = await Devicelocale.currentLocale;

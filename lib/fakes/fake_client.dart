@@ -9,6 +9,7 @@ import 'fake_activities.dart';
 
 typedef ActivityResponse = Iterable<Activity> Function();
 typedef SortableResponse = Iterable<Sortable> Function();
+typedef GenericResponse = Iterable<Generic> Function();
 
 class Fakes {
   Fakes._();
@@ -19,10 +20,11 @@ class Fakes {
       type = 'testcase',
       incorrectPassword = 'wrong';
 
-  static MockClient client([
-    ActivityResponse activitiesResponse,
+  static MockClient client({
+    ActivityResponse activityResponse,
     SortableResponse sortableResponse,
-  ]) =>
+    GenericResponse genericResponse,
+  }) =>
       MockClient(
         (r) {
           final pathSegments = r.url.pathSegments.toSet();
@@ -44,7 +46,7 @@ class Fakes {
           }
           if (pathSegments.containsAll(['data', 'activities'])) {
             response = Response(
-                json.encode((activitiesResponse?.call() ?? allActivities)
+                json.encode((activityResponse?.call() ?? allActivities)
                     .map((a) => a.wrapWithDbModel())
                     .toList()),
                 200);
@@ -56,9 +58,17 @@ class Fakes {
                     .toList()),
                 200);
           }
+          if (pathSegments.containsAll(['data', 'generics'])) {
+            response = Response(
+                json.encode((genericResponse?.call() ?? allGenerics)
+                    .map((a) => a.wrapWithDbModel())
+                    .toList()),
+                200);
+          }
           if (pathSegments.containsAll(['license', 'portal', 'me'])) {
             response = licenseSuccessResponse;
           }
+
           return Future.value(response ?? Response('not found', 404));
         },
       );
@@ -80,6 +90,7 @@ class Fakes {
   ];
 
   static final allSortables = <Sortable>[];
+  static final allGenerics = <Generic>[];
 
   static final Response clientMeSuccessResponse = Response('''
     {
