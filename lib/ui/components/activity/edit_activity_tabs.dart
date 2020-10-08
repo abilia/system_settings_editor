@@ -8,7 +8,7 @@ import 'package:seagull/ui/theme.dart';
 
 const _rightPadding = EdgeInsets.only(right: 12.0),
     _ordinaryPadding = EdgeInsets.fromLTRB(12.0, 24.0, 4.0, 16.0),
-    _errorBoarderPadding = EdgeInsets.all(4.0),
+    _errorBorderPadding = EdgeInsets.all(4.0),
     _errorBoarderPaddingRight = EdgeInsets.only(right: 5.0),
     _bottomPadding = EdgeInsets.only(bottom: 56.0);
 mixin EditActivityTab {
