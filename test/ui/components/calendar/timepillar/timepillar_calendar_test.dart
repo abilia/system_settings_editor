@@ -10,7 +10,6 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -30,8 +29,6 @@ void main() {
   final time = DateTime(2007, 08, 09, 10, 11);
   final leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
-
-  final translated = Locales.language.values.first;
 
   var givenActivities = <Activity>[];
 
@@ -63,7 +60,7 @@ void main() {
       ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
-      ..httpClient = Fakes.client(activityResponse)
+      ..httpClient = Fakes.client(activityResponse: activityResponse)
       ..fileStorage = MockFileStorage()
       ..userFileDb = MockUserFileDb()
       ..settingsDb = mockSettingsDb
@@ -244,81 +241,13 @@ void main() {
       }
     });
   });
-  group('Categories', () {
-    Finder leftCollapsedFinder;
-    Finder rightCollapsedFinder;
-    Finder leftFinder;
-    Finder rightFinder;
-    setUp(() {
-      final translator = Locales.language.values.first;
-      final right = translator.right;
-      final left = translator.left;
-      leftFinder = find.text(left);
-      rightFinder = find.text(right);
-      leftCollapsedFinder = find.text(left.substring(0, 1));
-      rightCollapsedFinder = find.text(right.substring(0, 1));
-    });
 
-    testWidgets('Starts expanded', (WidgetTester tester) async {
-      await goToTimePillar(tester);
-      expect(leftFinder, findsOneWidget);
-      expect(rightFinder, findsOneWidget);
-      expect(leftCollapsedFinder, findsNothing);
-      expect(rightCollapsedFinder, findsNothing);
-    });
-    testWidgets('Tap right', (WidgetTester tester) async {
-      await goToTimePillar(tester);
-      await tester.tap(rightFinder);
-      await tester.pumpAndSettle();
-      expect(leftFinder, findsOneWidget);
-      expect(rightFinder, findsNothing);
-      expect(leftCollapsedFinder, findsNothing);
-      expect(rightCollapsedFinder, findsOneWidget);
-    });
-    testWidgets('Tap left', (WidgetTester tester) async {
-      await goToTimePillar(tester);
-      await tester.tap(leftFinder);
-      await tester.pumpAndSettle();
-      expect(leftFinder, findsNothing);
-      expect(rightFinder, findsOneWidget);
-      expect(leftCollapsedFinder, findsOneWidget);
-      expect(rightCollapsedFinder, findsNothing);
-    });
-
-    testWidgets('tts', (WidgetTester tester) async {
-      await goToTimePillar(tester);
-      await tester.verifyTts(leftFinder, exact: translated.left);
-      await tester.verifyTts(rightFinder, exact: translated.right);
-      await tester.tap(leftFinder);
-      await tester.tap(rightFinder);
-      await tester.pumpAndSettle();
-      await tester.verifyTts(leftCollapsedFinder, exact: translated.left);
-      await tester.verifyTts(rightCollapsedFinder, exact: translated.right);
-    });
-
-    testWidgets('Tap left, change day', (WidgetTester tester) async {
-      await goToTimePillar(tester);
-      await tester.tap(leftFinder);
-      await tester.tap(previusDayButtonFinder);
-      await tester.pumpAndSettle();
-      expect(leftFinder, findsNothing);
-      expect(rightFinder, findsOneWidget);
-      expect(leftCollapsedFinder, findsOneWidget);
-      expect(rightCollapsedFinder, findsNothing);
-    });
-
-    testWidgets('Tap right, change day', (WidgetTester tester) async {
-      await goToTimePillar(tester);
-      await tester.tap(rightFinder);
-      await tester.tap(nextDayButtonFinder);
-
-      await tester.pumpAndSettle();
-      expect(leftFinder, findsOneWidget);
-      expect(rightFinder, findsNothing);
-      expect(leftCollapsedFinder, findsNothing);
-      expect(rightCollapsedFinder, findsOneWidget);
-    });
+  testWidgets('Categories Exists', (WidgetTester tester) async {
+    await goToTimePillar(tester);
+    expect(find.byType(CategoryLeft), findsOneWidget);
+    expect(find.byType(CategoryRight), findsOneWidget);
   });
+
   group('Activities', () {
     final leftActivityFinder = find.text(leftTitle);
     final rightActivityFinder = find.text(rightTitle);

@@ -43,7 +43,7 @@ void main() {
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
-        ..httpClient = Fakes.client(activityResponse)
+        ..httpClient = Fakes.client(activityResponse: activityResponse)
         ..fileStorage = MockFileStorage()
         ..userFileDb = MockUserFileDb()
         ..settingsDb = MockSettingsDb()
@@ -130,7 +130,7 @@ void main() {
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
-        ..httpClient = Fakes.client(() => fullDayActivities)
+        ..httpClient = Fakes.client(activityResponse: () => fullDayActivities)
         ..fileStorage = MockFileStorage()
         ..userFileDb = MockUserFileDb()
         ..settingsDb = MockSettingsDb()

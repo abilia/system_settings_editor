@@ -14,7 +14,7 @@ import 'all.dart';
 // in android/app/src/main/kotlin/com/abilia/seagull/Application.kt
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
   final userDb = UserDb();
-  final logger = SeagullLogger(userDb);
+  final logger = SeagullLogger(userDb: userDb);
   await logger.initLogging();
   final log = Logger('BackgroundMessageHandler');
 

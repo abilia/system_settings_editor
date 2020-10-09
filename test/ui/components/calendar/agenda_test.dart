@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/all.dart';
@@ -16,9 +17,9 @@ import 'package:seagull/utils/all.dart';
 import '../../../mocks.dart';
 
 void main() {
-  MockActivityDb mockActivityDb;
   final now = DateTime(2020, 06, 04, 11, 24);
   ActivityResponse activityResponse = () => [];
+  GenericResponse genericResponse = () => [];
 
   final translate = Locales.language.values.first;
 
@@ -43,18 +44,23 @@ void main() {
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
-    mockActivityDb = MockActivityDb();
+    final mockActivityDb = MockActivityDb();
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
+    final mockGenericDb = MockGenericDb();
+    when(mockGenericDb.getAllNonDeletedMaxRevision())
+        .thenAnswer((_) => Future.value(genericResponse()));
+
     GetItInitializer()
       ..activityDb = mockActivityDb
+      ..genericDb = mockGenericDb
       ..userDb = MockUserDb()
       ..ticker =
           Ticker(stream: StreamController<DateTime>().stream, initialTime: now)
       ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
-      ..httpClient = Fakes.client(activityResponse)
+      ..httpClient = Fakes.client()
       ..fileStorage = MockFileStorage()
       ..userFileDb = MockUserFileDb()
       ..settingsDb = MockSettingsDb()
@@ -66,6 +72,7 @@ void main() {
 
   tearDown(() {
     activityResponse = () => [];
+    genericResponse = () => [];
   });
 
   testWidgets('Application starts', (WidgetTester tester) async {
@@ -81,9 +88,6 @@ void main() {
   });
 
   testWidgets('Should show one activity', (WidgetTester tester) async {
-    when(mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(<Activity>[FakeActivity.starts(now)]));
-
     activityResponse = () => [FakeActivity.starts(now.add(1.hours()))];
 
     await tester.pumpWidget(App());
@@ -186,7 +190,6 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    expect(find.text(pastTitle), findsNothing);
     expect(find.text(pastTitle2),
         findsOneWidget); // Default scroll is showingn part of the closest past activity
     expect(find.text(currentTitle), findsOneWidget);
@@ -318,9 +321,7 @@ void main() {
             'leftTitleleftTitleleftTitleleftTitleleftTitleleftTitleleftTitleleftTitle',
         rightTitle =
             'rightTitlerightTitlerightTitlerightTitlerightTitlerightTitlerightTitle';
-    when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-      (_) => Future.value(
-        [
+    activityResponse = () => [
           Activity.createNew(
             title: leftTitle,
             startTime: now,
@@ -331,9 +332,7 @@ void main() {
             startTime: now,
             category: Category.right,
           ),
-        ],
-      ),
-    );
+        ];
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -352,17 +351,13 @@ void main() {
   });
 
   testWidgets('CrossOver for past activities', (WidgetTester tester) async {
-    when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-      (_) => Future.value(
-        [
+    activityResponse = () => [
           Activity.createNew(
             title: 'test',
             startTime: now.subtract(1.hours()),
             duration: 30.minutes(),
           ),
-        ],
-      ),
-    );
+        ];
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -396,5 +391,162 @@ void main() {
 
     await tester.verifyTts(find.text(translate.noActivities),
         exact: translate.noActivities);
+  });
+
+  group('Categories', () {
+    final translated = Locales.language.values.first;
+    final right = translated.right;
+    final left = translated.left;
+    final leftCollapsedFinder = find.text(left.substring(0, 1));
+    final rightCollapsedFinder = find.text(right.substring(0, 1));
+    final leftFinder = find.text(left);
+    final rightFinder = find.text(right);
+    final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
+    final previusDayButtonFinder =
+        find.byIcon(AbiliaIcons.return_to_previous_page);
+
+    testWidgets('Exists', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byType(CategoryLeft), findsOneWidget);
+      expect(find.byType(CategoryRight), findsOneWidget);
+    });
+
+    testWidgets('Starts expanded', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsOneWidget);
+      expect(leftCollapsedFinder, findsNothing);
+      expect(rightCollapsedFinder, findsNothing);
+    });
+
+    testWidgets('Tap right', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(rightFinder);
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsNothing);
+      expect(leftCollapsedFinder, findsNothing);
+      expect(rightCollapsedFinder, findsOneWidget);
+    });
+
+    testWidgets('Tap left', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(leftFinder);
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsNothing);
+      expect(rightFinder, findsOneWidget);
+      expect(leftCollapsedFinder, findsOneWidget);
+      expect(rightCollapsedFinder, findsNothing);
+    });
+
+    testWidgets('tts', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.verifyTts(leftFinder, exact: translated.left);
+      await tester.verifyTts(rightFinder, exact: translated.right);
+      await tester.tap(leftFinder);
+      await tester.tap(rightFinder);
+      await tester.pumpAndSettle();
+      await tester.verifyTts(leftCollapsedFinder, exact: translated.left);
+      await tester.verifyTts(rightCollapsedFinder, exact: translated.right);
+    });
+
+    testWidgets('Tap left, change day', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(leftFinder);
+      await tester.tap(previusDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsNothing);
+      expect(rightFinder, findsOneWidget);
+      expect(leftCollapsedFinder, findsOneWidget);
+      expect(rightCollapsedFinder, findsNothing);
+    });
+
+    testWidgets('Tap right, change day', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(rightFinder);
+      await tester.tap(nextDayButtonFinder);
+
+      await tester.pumpAndSettle();
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsNothing);
+      expect(leftCollapsedFinder, findsNothing);
+      expect(rightCollapsedFinder, findsOneWidget);
+    });
+
+    testWidgets('memoplanner settings - category name ',
+        (WidgetTester tester) async {
+      final leftCategoryName = 'New Left', rightCategoryName = 'New Right';
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: leftCategoryName,
+                type: 'String',
+                identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
+              ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: rightCategoryName,
+                type: 'String',
+                identifier: MemoplannerSettings.calendarActivityTypeRightKey,
+              ),
+            )
+          ];
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      expect(find.text(leftCategoryName), findsOneWidget);
+      expect(find.text(rightCategoryName), findsOneWidget);
+      expect(leftFinder, findsNothing);
+      expect(rightFinder, findsNothing);
+    });
+
+    testWidgets(' memoplanner settings - category name push update ',
+        (WidgetTester tester) async {
+      final leftCategoryName = 'Something unique',
+          rightCategoryName = 'Another not seen before string';
+      final pushBloc = PushBloc();
+
+      await tester.pumpWidget(App(pushBloc: pushBloc));
+      await tester.pumpAndSettle();
+
+      expect(find.text(leftCategoryName), findsNothing);
+      expect(find.text(rightCategoryName), findsNothing);
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsOneWidget);
+
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: leftCategoryName,
+                type: 'String',
+                identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
+              ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: rightCategoryName,
+                type: 'String',
+                identifier: MemoplannerSettings.calendarActivityTypeRightKey,
+              ),
+            )
+          ];
+      pushBloc.add(PushEvent('collapse_key'));
+
+      await tester.pumpAndSettle();
+
+      expect(find.text(leftCategoryName), findsOneWidget);
+      expect(find.text(rightCategoryName), findsOneWidget);
+      expect(leftFinder, findsNothing);
+      expect(rightFinder, findsNothing);
+    });
   });
 }

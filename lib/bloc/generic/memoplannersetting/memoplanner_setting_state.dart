@@ -21,13 +21,18 @@ abstract class MemoplannerSettingsState {
   bool get activityDisplayDayPeriod => settings.activityDisplayDayPeriod;
   bool get activityDisplayWeekDay => settings.activityDisplayWeekDay;
   bool get activityDisplayDate => settings.activityDisplayDate;
+
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;
   int get afternoonStart => settings.afternoonIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
+
   DayParts get dayParts => DayParts(
       morningStart, forenoonStart, afternoonStart, eveningStart, nightStart);
+
+  String get leftCategoryName => settings.calendarActivityTypeLeft;
+  String get rightCategoryName => settings.calendarActivityTypeRight;
 
   // Properties derived from one or more settings
   bool get abilityToSelectAlarm =>
@@ -101,7 +106,9 @@ class MemoplannerSettings {
       forenoonIntervalStartKey = 'forenoon_interval_start',
       afternoonIntervalStartKey = 'afternoon_interval_start',
       eveningIntervalStartKey = 'evening_interval_start',
-      nightIntervalStartKey = 'night_interval_start';
+      nightIntervalStartKey = 'night_interval_start',
+      calendarActivityTypeLeftKey = 'calendar_activity_type_left',
+      calendarActivityTypeRightKey = 'calendar_activity_type_right';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -126,6 +133,8 @@ class MemoplannerSettings {
       eveningIntervalStart,
       nightIntervalStart;
 
+  final String calendarActivityTypeLeft, calendarActivityTypeRight;
+
   MemoplannerSettings({
     this.displayAlarmButton = true,
     this.displayDeleteButton = true,
@@ -148,6 +157,8 @@ class MemoplannerSettings {
     this.afternoonIntervalStart = 43200000,
     this.eveningIntervalStart = 64800000,
     this.nightIntervalStart = 82800000,
+    this.calendarActivityTypeLeft,
+    this.calendarActivityTypeRight,
   });
 
   factory MemoplannerSettings.fromSettingsList(
@@ -158,54 +169,117 @@ class MemoplannerSettings {
   static MemoplannerSettings _parseSettings(
       List<MemoplannerSettingData> settings) {
     return MemoplannerSettings(
-      displayAlarmButton: _parseSetting(displayAlarmButtonKey, settings, true),
-      displayDeleteButton:
-          _parseSetting(displayDeleteButtonKey, settings, true),
-      displayEditButton: _parseSetting(displayEditButtonKey, settings, true),
-      displayQuarterHour: _parseSetting(displayQuarterHourKey, settings, true),
-      displayTimeLeft: _parseSetting(displayTimeLeftKey, settings, true),
-      activityDateEditable:
-          _parseSetting(activityDateEditableKey, settings, true),
-      activityTypeEditable:
-          _parseSetting(activityTypeEditableKey, settings, true),
-      activityEndTimeEditable:
-          _parseSetting(activityEndTimeEditableKey, settings, true),
-      activityTimeBeforeCurrent:
-          _parseSetting(activityTimeBeforeCurrentKey, settings, true),
-      activityRecurringEditable:
-          _parseSetting(activityRecurringEditableKey, settings, true),
-      activityDisplayAlarmOption:
-          _parseSetting(activityDisplayAlarmOptionKey, settings, true),
-      activityDisplaySilentAlarmOption:
-          _parseSetting(activityDisplaySilentAlarmOptionKey, settings, true),
-      activityDisplayNoAlarmOption:
-          _parseSetting(activityDisplayNoAlarmOptionKey, settings, true),
-      activityDisplayDayPeriod:
-          _parseSetting(activityDisplayDayPeriodKey, settings, true),
-      activityDisplayWeekDay:
-          _parseSetting(activityDisplayWeekDayKey, settings, true),
-      activityDisplayDate:
-          _parseSetting(activityDisplayDateKey, settings, true),
-      morningIntervalStart:
-          _parseSetting(morningIntervalStartKey, settings, 21600000),
-      forenoonIntervalStart:
-          _parseSetting(forenoonIntervalStartKey, settings, 36000000),
-      afternoonIntervalStart:
-          _parseSetting(afternoonIntervalStartKey, settings, 43200000),
-      eveningIntervalStart:
-          _parseSetting(eveningIntervalStartKey, settings, 64800000),
-      nightIntervalStart:
-          _parseSetting(nightIntervalStartKey, settings, 82800000),
+      displayAlarmButton: settings.parse(
+        displayAlarmButtonKey,
+        true,
+      ),
+      displayDeleteButton: settings.parse(
+        displayDeleteButtonKey,
+        true,
+      ),
+      displayEditButton: settings.parse(
+        displayEditButtonKey,
+        true,
+      ),
+      displayQuarterHour: settings.parse(
+        displayQuarterHourKey,
+        true,
+      ),
+      displayTimeLeft: settings.parse(
+        displayTimeLeftKey,
+        true,
+      ),
+      activityDateEditable: settings.parse(
+        activityDateEditableKey,
+        true,
+      ),
+      activityTypeEditable: settings.parse(
+        activityTypeEditableKey,
+        true,
+      ),
+      activityEndTimeEditable: settings.parse(
+        activityEndTimeEditableKey,
+        true,
+      ),
+      activityTimeBeforeCurrent: settings.parse(
+        activityTimeBeforeCurrentKey,
+        true,
+      ),
+      activityRecurringEditable: settings.parse(
+        activityRecurringEditableKey,
+        true,
+      ),
+      activityDisplayAlarmOption: settings.parse(
+        activityDisplayAlarmOptionKey,
+        true,
+      ),
+      activityDisplaySilentAlarmOption: settings.parse(
+        activityDisplaySilentAlarmOptionKey,
+        true,
+      ),
+      activityDisplayNoAlarmOption: settings.parse(
+        activityDisplayNoAlarmOptionKey,
+        true,
+      ),
+      activityDisplayDayPeriod: settings.parse(
+        activityDisplayDayPeriodKey,
+        true,
+      ),
+      activityDisplayWeekDay: settings.parse(
+        activityDisplayWeekDayKey,
+        true,
+      ),
+      activityDisplayDate: settings.parse(
+        activityDisplayDateKey,
+        true,
+      ),
+      morningIntervalStart: settings.parse(
+        morningIntervalStartKey,
+        21600000,
+      ),
+      forenoonIntervalStart: settings.parse(
+        forenoonIntervalStartKey,
+        36000000,
+      ),
+      afternoonIntervalStart: settings.parse(
+        afternoonIntervalStartKey,
+        43200000,
+      ),
+      eveningIntervalStart: settings.parse(
+        eveningIntervalStartKey,
+        64800000,
+      ),
+      nightIntervalStart: settings.parse(
+        nightIntervalStartKey,
+        82800000,
+      ),
+      calendarActivityTypeLeft: settings.getString(
+        calendarActivityTypeLeftKey,
+      ),
+      calendarActivityTypeRight: settings.getString(
+        calendarActivityTypeRightKey,
+      ),
     );
   }
+}
 
-  static T _parseSetting<T>(String settingName,
-      List<MemoplannerSettingData> rawSettings, T defaultValue) {
-    final setting = rawSettings.firstWhere((s) => s.identifier == settingName,
-        orElse: () => null);
+extension _Parsing on List<MemoplannerSettingData> {
+  T parse<T>(String settingName, T defaultValue) {
+    final setting =
+        firstWhere((s) => s.identifier == settingName, orElse: () => null);
     if (setting == null) {
       return defaultValue;
     }
     return json.decode(setting.data);
   }
+
+  String getString(
+    String settingName, [
+    String defaultValue,
+  ]) =>
+      firstWhere(
+        (s) => s.identifier == settingName,
+        orElse: () => null,
+      )?.data ??
+      defaultValue;
 }

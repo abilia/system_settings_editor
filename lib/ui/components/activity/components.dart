@@ -194,7 +194,7 @@ class RadioField<T> extends StatelessWidget {
                       leading,
                       const SizedBox(width: 12),
                     ],
-                    text,
+                    Expanded(child: text),
                   ],
                 ),
               ),

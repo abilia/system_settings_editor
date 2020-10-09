@@ -36,7 +36,7 @@ class BackendSwitches extends StatelessWidget {
         'Mock',
         userRepository: repository,
         backEndUrl: 'https://via.placeholder.com/190/09CDDA/FFFFFF&',
-        client: Fakes.client(() => []),
+        client: Fakes.client(activityResponse: () => []),
       );
 }
 

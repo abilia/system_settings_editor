@@ -97,7 +97,7 @@ class GetItInitializer {
       ..registerSingleton<UserDb>(userDb)
       ..registerSingleton<Database>(_database)
       ..registerSingleton<SeagullLogger>(
-          _seagullLogger ?? SeagullLogger(userDb))
+          _seagullLogger ?? SeagullLogger(userDb: userDb))
       ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb())
       ..registerSingleton<ReplaySubject<String>>(
           _selectedNotificationStreamGetter ?? selectNotificationSubject)
