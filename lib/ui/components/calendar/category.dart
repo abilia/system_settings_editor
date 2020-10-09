@@ -6,6 +6,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/theme.dart';
 
 const _radius = Radius.circular(100);
 
@@ -103,8 +104,15 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final begin = value ? widget.text.length : 1;
-    final end = value ? 1 : widget.text.length;
+    final intAnimation = IntTween(
+      begin: value ? widget.text.length : 1,
+      end: value ? 1 : widget.text.length,
+    ).animate(
+      CurvedAnimation(
+        curve: Curves.easeInOutExpo,
+        parent: controller,
+      ),
+    );
     return GestureDetector(
       onTap: () {
         if (value == widget.expanded) {
@@ -136,7 +144,11 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                 children: [
                   AnimatedBuilder(
                     animation: matrixAnimation,
-                    child: Icon(widget.icon, color: AbiliaColors.black60),
+                    child: Icon(
+                      widget.icon,
+                      size: smallIconSize,
+                      color: AbiliaColors.black60,
+                    ),
                     builder: (context, child) => Transform(
                       alignment: Alignment.center,
                       transform: matrixAnimation.value,
@@ -150,10 +162,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                     child: AnimatedBuilder(
                       animation: controller,
                       builder: (context, _) => Text(
-                        widget.text.substring(
-                          0,
-                          (begin + (end - begin) * controller.value).round(),
-                        ),
+                        widget.text.substring(0, intAnimation.value),
                         style: Theme.of(context)
                             .textTheme
                             .subtitle1
