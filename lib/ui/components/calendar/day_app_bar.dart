@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -26,43 +27,50 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final langCode = Localizations.localeOf(context).toLanguageTag();
-    final textStyle = weekDayTheme[day.weekday].textTheme.headline6;
-    return AppBar(
-      elevation: 0.0,
-      automaticallyImplyLeading: false,
-      flexibleSpace: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-            vertical: 8.0,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              leftAction,
-              BlocBuilder<ClockBloc, DateTime>(
-                builder: (context, time) => Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.center,
-                      child: DayAppBarTitle(
-                          langCode: langCode,
-                          currentTime: time,
-                          day: day,
-                          textStyle: textStyle),
-                    ),
-                    if (day.isDayBefore(time))
-                      CrossOver(color: textStyle.color),
-                  ],
-                ),
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, memoSettingsState) {
+        final textStyle = weekDayThemes[memoSettingsState.calendarDayColor]
+                [day.weekday]
+            .textTheme
+            .headline6;
+        return AppBar(
+          elevation: 0.0,
+          automaticallyImplyLeading: false,
+          flexibleSpace: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
               ),
-              rightAction,
-            ],
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  leftAction,
+                  BlocBuilder<ClockBloc, DateTime>(
+                    builder: (context, time) => Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.center,
+                          child: DayAppBarTitle(
+                              langCode: langCode,
+                              currentTime: time,
+                              day: day,
+                              textStyle: textStyle),
+                        ),
+                        if (day.isDayBefore(time))
+                          CrossOver(color: textStyle.color),
+                      ],
+                    ),
+                  ),
+                  rightAction,
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

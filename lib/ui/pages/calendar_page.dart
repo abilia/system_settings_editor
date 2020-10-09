@@ -56,74 +56,79 @@ class _CalendarPageState extends State<CalendarPage>
         builder: (context, pickedDay) =>
             BlocBuilder<CalendarViewBloc, CalendarViewState>(
           builder: (context, calendarViewState) {
-            return AnimatedTheme(
-              data: weekDayTheme[pickedDay.day.weekday],
-              child: Scaffold(
-                appBar: buildAppBar(pickedDay.day),
-                body: BlocListener<DayPickerBloc, DayPickerState>(
-                  listener: (context, state) {
-                    controller.animateToPage(state.index,
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.easeOutQuad);
-                  },
-                  child: PageView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: controller,
-                    itemBuilder: (context, index) {
-                      return BlocBuilder<ActivitiesOccasionBloc,
-                          ActivitiesOccasionState>(
-                        buildWhen: (oldState, newState) {
-                          return (oldState is ActivitiesOccasionLoaded &&
-                                  newState is ActivitiesOccasionLoaded &&
-                                  oldState.day == newState.day) ||
-                              oldState.runtimeType != newState.runtimeType;
-                        },
-                        builder: (context, state) {
-                          if (state is ActivitiesOccasionLoaded) {
-                            if (!state.isToday) {
-                              BlocProvider.of<ScrollPositionBloc>(context)
-                                  .add(WrongDaySelected());
-                            }
-                            final fullDayActivities = state.fullDayActivities;
-                            return Column(
-                              children: <Widget>[
-                                if (fullDayActivities.isNotEmpty)
-                                  FullDayContainer(
-                                    fullDayActivities: fullDayActivities,
-                                    day: state.day,
-                                  ),
-                                if (calendarViewState.currentView ==
-                                    CalendarViewType.LIST)
-                                  Expanded(
-                                    child: Agenda(
-                                      state: state,
-                                      calendarViewState: calendarViewState,
-                                    ),
-                                  )
-                                else
-                                  Expanded(
-                                    child: TimePillarCalendar(
-                                      state: state,
-                                      now: context.bloc<ClockBloc>().state,
-                                      calendarViewState: calendarViewState,
-                                    ),
-                                  ),
-                              ],
-                            );
-                          }
-                          return Center(child: CircularProgressIndicator());
-                        },
-                      );
+            return BlocBuilder<MemoplannerSettingBloc,
+                    MemoplannerSettingsState>(
+                builder: (context, memoSettingsState) {
+              return AnimatedTheme(
+                data: weekDayThemes[memoSettingsState.calendarDayColor]
+                    [pickedDay.day.weekday],
+                child: Scaffold(
+                  appBar: buildAppBar(pickedDay.day),
+                  body: BlocListener<DayPickerBloc, DayPickerState>(
+                    listener: (context, state) {
+                      controller.animateToPage(state.index,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeOutQuad);
                     },
+                    child: PageView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      controller: controller,
+                      itemBuilder: (context, index) {
+                        return BlocBuilder<ActivitiesOccasionBloc,
+                            ActivitiesOccasionState>(
+                          buildWhen: (oldState, newState) {
+                            return (oldState is ActivitiesOccasionLoaded &&
+                                    newState is ActivitiesOccasionLoaded &&
+                                    oldState.day == newState.day) ||
+                                oldState.runtimeType != newState.runtimeType;
+                          },
+                          builder: (context, state) {
+                            if (state is ActivitiesOccasionLoaded) {
+                              if (!state.isToday) {
+                                BlocProvider.of<ScrollPositionBloc>(context)
+                                    .add(WrongDaySelected());
+                              }
+                              final fullDayActivities = state.fullDayActivities;
+                              return Column(
+                                children: <Widget>[
+                                  if (fullDayActivities.isNotEmpty)
+                                    FullDayContainer(
+                                      fullDayActivities: fullDayActivities,
+                                      day: state.day,
+                                    ),
+                                  if (calendarViewState.currentView ==
+                                      CalendarViewType.LIST)
+                                    Expanded(
+                                      child: Agenda(
+                                        state: state,
+                                        calendarViewState: calendarViewState,
+                                      ),
+                                    )
+                                  else
+                                    Expanded(
+                                      child: TimePillarCalendar(
+                                        state: state,
+                                        now: context.bloc<ClockBloc>().state,
+                                        calendarViewState: calendarViewState,
+                                      ),
+                                    ),
+                                ],
+                              );
+                            }
+                            return Center(child: CircularProgressIndicator());
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  bottomNavigationBar: CalendarBottomBar(
+                    currentView: calendarViewState.currentView,
+                    day: pickedDay.day,
+                    goToNow: _jumpToActivity,
                   ),
                 ),
-                bottomNavigationBar: CalendarBottomBar(
-                  currentView: calendarViewState.currentView,
-                  day: pickedDay.day,
-                  goToNow: _jumpToActivity,
-                ),
-              ),
-            );
+              );
+            });
           },
         ),
       ),

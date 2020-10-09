@@ -10,43 +10,43 @@ import 'package:seagull/ui/theme.dart';
 
 class ActivityPage extends StatelessWidget {
   final ActivityOccasion occasion;
-  final ThemeData dayThemeData;
 
-  ActivityPage({Key key, @required this.occasion})
-      : dayThemeData = weekDayTheme[occasion.day.weekday],
-        super(key: key);
+  ActivityPage({Key key, @required this.occasion}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ActivitiesBloc, ActivitiesState>(
       builder: (context, state) {
         final activityOccasion = occasion.fromActivitiesState(state);
-        return AnimatedTheme(
-          data: dayThemeData,
-          child: Scaffold(
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(68),
-              child: AnimatedSwitcher(
-                duration: 200.milliseconds(),
-                child: DayAppBar(
-                  day: activityOccasion.day,
-                  leftAction: ActionButton(
-                    key: TestKey.activityBackButton,
-                    child: Icon(
-                      AbiliaIcons.navigation_previous,
+        return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+          builder: (context, memoSettingsState) => AnimatedTheme(
+            data: weekDayThemes[memoSettingsState.calendarDayColor]
+                [occasion.day.weekday],
+            child: Scaffold(
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(68),
+                child: AnimatedSwitcher(
+                  duration: 200.milliseconds(),
+                  child: DayAppBar(
+                    day: activityOccasion.day,
+                    leftAction: ActionButton(
+                      key: TestKey.activityBackButton,
+                      child: Icon(
+                        AbiliaIcons.navigation_previous,
+                      ),
+                      onPressed: () => Navigator.of(context).maybePop(),
                     ),
-                    onPressed: () => Navigator.of(context).maybePop(),
                   ),
                 ),
               ),
+              body: Padding(
+                padding: const EdgeInsets.all(ActivityInfo.margin)
+                    .subtract(const EdgeInsets.only(left: ActivityInfo.margin)),
+                child: ActivityInfoWithDots(activityOccasion),
+              ),
+              bottomNavigationBar:
+                  ActivityBottomAppBar(activityOccasion: activityOccasion),
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(ActivityInfo.margin)
-                  .subtract(const EdgeInsets.only(left: ActivityInfo.margin)),
-              child: ActivityInfoWithDots(activityOccasion),
-            ),
-            bottomNavigationBar:
-                ActivityBottomAppBar(activityOccasion: activityOccasion),
           ),
         );
       },

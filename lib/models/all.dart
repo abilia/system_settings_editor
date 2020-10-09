@@ -16,3 +16,4 @@ export 'info_item.dart';
 export 'time_interval.dart';
 export 'license.dart';
 export 'generic/generic.dart';
+export 'memoplanner_settings.dart';
