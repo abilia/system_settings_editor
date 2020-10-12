@@ -54,6 +54,7 @@ class _AgendaState extends State<Agenda> {
   @override
   Widget build(BuildContext context) {
     final state = widget.state;
+    final todayFirstActivity = state.isToday && state.pastActivities.isEmpty;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final categoryLabelWidth =
@@ -75,22 +76,27 @@ class _AgendaState extends State<Agenda> {
                           state.fullDayActivities.isEmpty)
                         SliverNoActivities(key: center)
                       else ...[
+                        if (!todayFirstActivity)
+                          SliverPadding(
+                            padding:
+                                const EdgeInsets.only(top: Agenda.topPadding),
+                            sliver: SliverActivityList(
+                              state.isToday
+                                  ? state.pastActivities
+                                      .reversed // Reversed because slivers before center are called in reverse order
+                                      .toList()
+                                  : state.pastActivities,
+                            ),
+                          ),
                         SliverPadding(
-                          padding: EdgeInsets.only(top: Agenda.topPadding),
-                        ),
-                        SliverActivityList(
-                          state.isToday
-                              ? state.pastActivities
-                                  .reversed // Reversed because slivers before center are called in reverse order
-                                  .toList()
-                              : state.pastActivities,
-                        ),
-                        SliverActivityList(
-                          state.notPastActivities,
                           key: center,
-                        ),
-                        SliverPadding(
-                          padding: EdgeInsets.only(top: Agenda.bottomPadding),
+                          padding: EdgeInsets.only(
+                            top: todayFirstActivity ? Agenda.topPadding : 0.0,
+                            bottom: Agenda.bottomPadding,
+                          ),
+                          sliver: SliverActivityList(
+                            state.notPastActivities,
+                          ),
                         ),
                       ],
                     ],
