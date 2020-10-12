@@ -151,7 +151,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                 padding: _ordinaryPadding
                     .subtract(EdgeInsets.only(bottom: _ordinaryPadding.bottom))
                     .add(EdgeInsets.only(bottom: _errorBorderPadding.bottom)),
-                child: RecurrenceWidget(activity),
+                child: RecurrenceWidget(state),
               ),
             ],
           ),

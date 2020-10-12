@@ -20,11 +20,13 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
         editActivityBloc.listen((editActivityState) {
       final startDate = editActivityState.timeInterval.startDate;
       final endDate = editActivityState.activity.recurs.end;
-      if (startDate != state.startDate) {
-        add(ChangeStartDate(startDate));
-      }
-      if (endDate != state.endDate) {
-        add(ChangeEndDate(endDate));
+      if (editActivityState.activity.recurs.weekly) {
+        if (startDate != state.startDate) {
+          add(ChangeStartDate(startDate));
+        }
+        if (endDate != state.endDate) {
+          add(ChangeEndDate(endDate));
+        }
       }
     });
 
@@ -37,13 +39,6 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
         ),
       );
     });
-    editActivityBloc.add(
-      ReplaceActivity(
-        editActivityBloc.state.activity.copyWith(
-          recurs: state.recurs,
-        ),
-      ),
-    );
   }
 
   @override

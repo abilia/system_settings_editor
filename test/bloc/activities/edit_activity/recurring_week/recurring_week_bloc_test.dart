@@ -25,13 +25,19 @@ void main() {
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
   });
 
-  test('Initial state', () async {
+  test('Initial state', () {
     // Arrange
-    final editActivityBloc = EditActivityBloc.newActivity(
+    final editActivityBloc = EditActivityBloc(
+      ActivityDay(
+        Activity.createNew(
+            title: 'title',
+            startTime: day,
+            recurs: Recurs.weeklyOnDay(day.weekday)),
+        day,
+      ),
       activitiesBloc: mockActivitiesBloc,
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
-      day: day,
     );
     final initialS = editActivityBloc.state;
 
@@ -51,26 +57,21 @@ void main() {
       recurringWeekBloc.state.recurs,
       Recurs.weeklyOnDays({day.weekday}),
     );
-
-    await expectLater(
-      editActivityBloc,
-      emits(
-        initialS.copyWith(
-          initialS.activity.copyWith(
-            recurs: Recurs.weeklyOnDay(day.weekday),
-          ),
-        ),
-      ),
-    );
   });
 
   test('Adding and removing days', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.newActivity(
+    final editActivityBloc = EditActivityBloc(
+      ActivityDay(
+        Activity.createNew(
+            title: 'null',
+            startTime: day,
+            recurs: Recurs.weeklyOnDay(day.weekday)),
+        day,
+      ),
       activitiesBloc: mockActivitiesBloc,
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
-      day: day,
     );
 
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
@@ -119,11 +120,17 @@ void main() {
 
   test('Adding and removing days on EditActivityBloc', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.newActivity(
+    final editActivityBloc = EditActivityBloc(
+      ActivityDay(
+        Activity.createNew(
+            title: 'null',
+            startTime: day,
+            recurs: Recurs.weeklyOnDay(day.weekday)),
+        day,
+      ),
       activitiesBloc: mockActivitiesBloc,
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
-      day: day,
     );
     final initialS = editActivityBloc.state;
 
@@ -137,15 +144,6 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        initialS.copyWith(
-          initialS.activity.copyWith(
-            recurs: Recurs.weeklyOnDays(
-              {
-                day.weekday,
-              },
-            ),
-          ),
-        ),
         initialS.copyWith(
           initialS.activity.copyWith(
             recurs: Recurs.weeklyOnDays(
@@ -183,11 +181,17 @@ void main() {
 
   test('Changing to every other week ', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.newActivity(
+    final editActivityBloc = EditActivityBloc(
+      ActivityDay(
+        Activity.createNew(
+            title: 'null',
+            startTime: day,
+            recurs: Recurs.weeklyOnDay(day.weekday)),
+        day,
+      ),
       activitiesBloc: mockActivitiesBloc,
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
-      day: day,
     );
 
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
@@ -225,11 +229,17 @@ void main() {
 
   test('Changing to every other week on EditActivityBloc', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.newActivity(
+    final editActivityBloc = EditActivityBloc(
+      ActivityDay(
+        Activity.createNew(
+            title: 'null',
+            startTime: day,
+            recurs: Recurs.weeklyOnDay(day.weekday)),
+        day,
+      ),
       activitiesBloc: mockActivitiesBloc,
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
-      day: day,
     );
     final initialS = editActivityBloc.state;
 
@@ -242,15 +252,6 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        initialS.copyWith(
-          initialS.activity.copyWith(
-            recurs: Recurs.weeklyOnDays(
-              {
-                day.weekday,
-              },
-            ),
-          ),
-        ),
         initialS.copyWith(
           initialS.activity.copyWith(
             recurs: Recurs.weeklyOnDays(
@@ -277,11 +278,17 @@ void main() {
 
   test('Changing to every other week on even weeks', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.newActivity(
+    final editActivityBloc = EditActivityBloc(
+      ActivityDay(
+        Activity.createNew(
+            title: 'null',
+            startTime: day,
+            recurs: Recurs.weeklyOnDay(day.weekday)),
+        day,
+      ),
       activitiesBloc: mockActivitiesBloc,
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
-      day: day,
     );
 
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
@@ -332,19 +339,21 @@ void main() {
   test('Changing to every other week on even week on EditActivityBloc',
       () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.newActivity(
+    final editActivityBloc = EditActivityBloc(
+      ActivityDay(
+        Activity.createNew(
+            title: 'null',
+            startTime: day,
+            recurs: Recurs.weeklyOnDay(day.weekday)),
+        day,
+      ),
       activitiesBloc: mockActivitiesBloc,
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
-      day: day,
     );
     final initialState = editActivityBloc.state;
 
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
-
-    final activity1 = initialState.activity.copyWith(
-      recurs: Recurs.weeklyOnDay(day.weekday),
-    );
     final activity2 = initialState.activity.copyWith(
       recurs: Recurs.weeklyOnDays([day.weekday, DateTime.monday]),
     );
@@ -365,7 +374,6 @@ void main() {
     await expectLater(
       editActivityBloc,
       emitsInOrder([
-        initialState.copyWith(activity1),
         initialState.copyWith(activity2),
         initialState.copyWith(activity3),
       ]),

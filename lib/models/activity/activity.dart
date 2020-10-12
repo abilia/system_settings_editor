@@ -192,6 +192,8 @@ class Activity extends DataModel {
         alarmType: other.alarmType,
         infoItem: other.infoItem,
         timezone: other.timezone,
+        recurs:
+            recurs.isRecurring ? other.recurs.changeEnd(recurs.end) : recurs,
       );
 
   @override
