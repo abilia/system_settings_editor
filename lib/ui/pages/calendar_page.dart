@@ -43,6 +43,7 @@ class _CalendarPageState extends State<CalendarPage>
       context.bloc<ActivitiesBloc>().add(LoadActivities());
       context.bloc<SortableBloc>().add(LoadSortables());
       context.bloc<GenericBloc>().add(LoadGenerics());
+      context.bloc<LicenseBloc>().add(ReloadLicenses());
       _jumpToActivity();
     }
   }
