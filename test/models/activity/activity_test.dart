@@ -262,11 +262,31 @@ void main() {
     );
     final dbModel = a.wrapWithDbModel();
     final json = dbModel.toJson();
-    final db = dbModel.toMapForDb()..remove('dirty');
+    final db = dbModel.toMapForDb();
 
     final dbInfoItem = db['info_item'];
     final jsonInfoItem = json['infoItem'];
     expect(dbInfoItem, anyOf(isNull, isEmpty));
     expect(jsonInfoItem, anyOf(isNull, isEmpty));
+  });
+
+  test(
+      'newly created activity has endTime larger then start time (BUG SGC-351)',
+      () {
+    final now = DateTime(2020, 10, 13, 10, 09, 23);
+    final a = Activity.createNew(
+      title: 'A bug test',
+      startTime: now,
+    );
+    final dbModel = a.wrapWithDbModel();
+
+    final dbMap = dbModel.toMapForDb();
+    final json = dbModel.toJson();
+    final jEndTime = json['endTime'];
+    final dbEndTime = dbMap['end_time'];
+
+    expect(a.recurs.endTime, greaterThanOrEqualTo(now.millisecondsSinceEpoch));
+    expect(jEndTime, a.recurs.endTime);
+    expect(dbEndTime, a.recurs.endTime);
   });
 }
