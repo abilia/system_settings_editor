@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 void main() {
@@ -233,10 +233,14 @@ void main() {
       expect(DateTime(2020, 10, 07, 05, 59).dayPart(dayParts), DayPart.night);
       expect(DateTime(2020, 10, 07, 06, 00).dayPart(dayParts), DayPart.morning);
       expect(DateTime(2020, 10, 07, 09, 59).dayPart(dayParts), DayPart.morning);
-      expect(DateTime(2020, 10, 07, 10, 00).dayPart(dayParts), DayPart.forenoon);
-      expect(DateTime(2020, 10, 07, 11, 59).dayPart(dayParts), DayPart.forenoon);
-      expect(DateTime(2020, 10, 07, 12, 00).dayPart(dayParts), DayPart.afternoon);
-      expect(DateTime(2020, 10, 07, 17, 59).dayPart(dayParts), DayPart.afternoon);
+      expect(
+          DateTime(2020, 10, 07, 10, 00).dayPart(dayParts), DayPart.forenoon);
+      expect(
+          DateTime(2020, 10, 07, 11, 59).dayPart(dayParts), DayPart.forenoon);
+      expect(
+          DateTime(2020, 10, 07, 12, 00).dayPart(dayParts), DayPart.afternoon);
+      expect(
+          DateTime(2020, 10, 07, 17, 59).dayPart(dayParts), DayPart.afternoon);
       expect(DateTime(2020, 10, 07, 18, 00).dayPart(dayParts), DayPart.evening);
       expect(DateTime(2020, 10, 07, 22, 59).dayPart(dayParts), DayPart.evening);
       expect(DateTime(2020, 10, 07, 23, 00).dayPart(dayParts), DayPart.night);

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:seagull/models/all.dart';
 
 import 'colors.dart';
 
@@ -328,49 +329,95 @@ const Map<int, MaterialColor> weekDayColor = {
   DateTime.sunday: AbiliaColors.red,
 };
 
+ThemeData mondayThemeData = _dayTheme(
+  darkButtonTheme,
+  weekDayColor[DateTime.monday],
+  textColor: AbiliaColors.black,
+  primaryColor: AbiliaColors.white,
+);
+
+ThemeData tuesdayThemeData = _dayTheme(
+  lightButtonTheme,
+  weekDayColor[DateTime.tuesday],
+  appBarBrightness: Brightness.dark,
+);
+
+ThemeData wednesdayThemeData = _dayTheme(
+  darkButtonTheme,
+  weekDayColor[DateTime.wednesday],
+  textColor: AbiliaColors.black,
+);
+
+ThemeData thursdayThemeData = _dayTheme(
+  lightButtonTheme,
+  weekDayColor[DateTime.thursday],
+  appBarBrightness: Brightness.dark,
+);
+
+ThemeData fridayThemeData = _dayTheme(
+  darkButtonTheme,
+  weekDayColor[DateTime.friday],
+  textColor: AbiliaColors.black,
+  primaryColor: AbiliaColors.white,
+);
+
+ThemeData saturdayThemeData = _dayTheme(
+  darkButtonTheme,
+  weekDayColor[DateTime.saturday],
+  textColor: AbiliaColors.black,
+);
+
+ThemeData sundayThemeData = _dayTheme(
+  lightButtonTheme,
+  weekDayColor[DateTime.sunday],
+  appBarBrightness: Brightness.dark,
+);
+
+ThemeData neutralThemeData = _dayTheme(
+  lightButtonTheme,
+  AbiliaColors.black80,
+  appBarBrightness: Brightness.dark,
+);
+
 Map<int, ThemeData> weekDayTheme = {
-  DateTime.monday: _dayTheme(
-    darkButtonTheme,
-    weekDayColor[DateTime.monday],
-    textColor: AbiliaColors.black,
-    primaryColor: AbiliaColors.white,
-  ),
-  DateTime.tuesday: _dayTheme(
-    lightButtonTheme,
-    weekDayColor[DateTime.tuesday],
-    appBarBrightness: Brightness.dark,
-  ),
-  DateTime.wednesday: _dayTheme(
-    darkButtonTheme,
-    weekDayColor[DateTime.wednesday],
-    textColor: AbiliaColors.black,
-  ),
-  DateTime.thursday: _dayTheme(
-    lightButtonTheme,
-    weekDayColor[DateTime.thursday],
-    appBarBrightness: Brightness.dark,
-  ),
-  DateTime.friday: _dayTheme(
-    darkButtonTheme,
-    weekDayColor[DateTime.friday],
-    textColor: AbiliaColors.black,
-    primaryColor: AbiliaColors.white,
-  ),
-  DateTime.saturday: _dayTheme(
-    darkButtonTheme,
-    weekDayColor[DateTime.saturday],
-    textColor: AbiliaColors.black,
-  ),
-  DateTime.sunday: _dayTheme(
-    lightButtonTheme,
-    weekDayColor[DateTime.sunday],
-    appBarBrightness: Brightness.dark,
-  ),
+  DateTime.monday: mondayThemeData,
+  DateTime.tuesday: tuesdayThemeData,
+  DateTime.wednesday: wednesdayThemeData,
+  DateTime.thursday: thursdayThemeData,
+  DateTime.friday: fridayThemeData,
+  DateTime.saturday: saturdayThemeData,
+  DateTime.sunday: sundayThemeData,
+};
+
+Map<int, ThemeData> weekEndTheme = {
+  DateTime.monday: neutralThemeData,
+  DateTime.tuesday: neutralThemeData,
+  DateTime.wednesday: neutralThemeData,
+  DateTime.thursday: neutralThemeData,
+  DateTime.friday: neutralThemeData,
+  DateTime.saturday: saturdayThemeData,
+  DateTime.sunday: sundayThemeData,
+};
+
+Map<int, ThemeData> neutralTheme = {
+  DateTime.monday: neutralThemeData,
+  DateTime.tuesday: neutralThemeData,
+  DateTime.wednesday: neutralThemeData,
+  DateTime.thursday: neutralThemeData,
+  DateTime.friday: neutralThemeData,
+  DateTime.saturday: neutralThemeData,
+  DateTime.sunday: neutralThemeData,
+};
+
+Map<int, Map<int, ThemeData>> weekDayThemes = {
+  DayColors.ALL_DAYS: weekDayTheme,
+  DayColors.SATURDAY_AND_SUNDAY: weekEndTheme,
+  DayColors.NO_COLORS: neutralTheme,
 };
 
 ThemeData _dayTheme(
   ThemeData themeData,
-  MaterialColor color, {
+  Color color, {
   MaterialColor textColor = AbiliaColors.white,
   MaterialColor primaryColor = AbiliaColors.black,
   Brightness appBarBrightness = Brightness.light,

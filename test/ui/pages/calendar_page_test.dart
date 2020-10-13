@@ -1,17 +1,21 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
+import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
@@ -76,6 +80,172 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
+    });
+  });
+
+  group('Color settings', () {
+    final userRepository = UserRepository(
+      httpClient: Fakes.client(),
+      tokenDb: MockTokenDb(),
+      userDb: MockUserDb(),
+      licenseDb: MockLicenseDb(),
+    );
+
+    MemoplannerSettingBloc memoplannerSettingBlocMock;
+
+    Widget wrapWithMaterialApp(Widget widget) => TopLevelBlocsProvider(
+          baseUrl: 'test',
+          child: AuthenticatedBlocsProvider(
+            memoplannerSettingBloc: memoplannerSettingBlocMock,
+            authenticatedState: Authenticated(
+              token: '',
+              userId: 1,
+              userRepository: userRepository,
+            ),
+            child: MaterialApp(
+              supportedLocales: Translator.supportedLocals,
+              localizationsDelegates: [Translator.delegate],
+              localeResolutionCallback: (locale, supportedLocales) =>
+                  supportedLocales.firstWhere(
+                      (l) => l.languageCode == locale?.languageCode,
+                      orElse: () => supportedLocales.first),
+              home: Material(child: widget),
+            ),
+          ),
+        );
+
+    void _expectCorrectColor(WidgetTester tester, Color color) {
+      final at = find.byKey(TestKey.animatedTheme);
+      expect(at, findsOneWidget);
+      final theme = tester.firstWidget(at) as AnimatedTheme;
+      expect(theme.data.appBarTheme.color, color);
+    }
+
+    MockActivityDb mockActivityDb;
+
+    StreamController<DateTime> mockTicker;
+    ActivityResponse activityResponse = () => [];
+    final initialDay = DateTime(2020, 08, 05);
+
+    setUp(() {
+      initializeDateFormatting();
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
+      mockTicker = StreamController<DateTime>();
+      final mockTokenDb = MockTokenDb();
+      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
+      final mockFirebasePushService = MockFirebasePushService();
+      when(mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value('fakeToken'));
+      mockActivityDb = MockActivityDb();
+      when(mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(<Activity>[]));
+      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+      memoplannerSettingBlocMock = MockMemoplannerSettingsBloc();
+      GetItInitializer()
+        ..activityDb = mockActivityDb
+        ..userDb = MockUserDb()
+        ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialDay)
+        ..baseUrlDb = MockBaseUrlDb()
+        ..fireBasePushService = mockFirebasePushService
+        ..tokenDb = mockTokenDb
+        ..httpClient = Fakes.client(activityResponse: activityResponse)
+        ..fileStorage = MockFileStorage()
+        ..userFileDb = MockUserFileDb()
+        ..settingsDb = MockSettingsDb()
+        ..genericDb = MockGenericDb()
+        ..syncDelay = SyncDelays.zero
+        ..alarmScheduler = noAlarmScheduler
+        ..database = MockDatabase()
+        ..init();
+    });
+
+    testWidgets('Color settings with colors on all days',
+        (WidgetTester tester) async {
+      when(memoplannerSettingBlocMock.state)
+          .thenReturn(MemoplannerSettingsLoaded(
+        MemoplannerSettings(calendarDayColor: DayColors.ALL_DAYS),
+      ));
+      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, weekDayColor[DateTime.wednesday]);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, weekDayColor[DateTime.thursday]);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, weekDayColor[DateTime.friday]);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, weekDayColor[DateTime.saturday]);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, weekDayColor[DateTime.sunday]);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, weekDayColor[DateTime.monday]);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, weekDayColor[DateTime.tuesday]);
+    });
+
+    testWidgets('Color settings with colors only on weekends',
+        (WidgetTester tester) async {
+      when(memoplannerSettingBlocMock.state)
+          .thenReturn(MemoplannerSettingsLoaded(
+        MemoplannerSettings(calendarDayColor: DayColors.SATURDAY_AND_SUNDAY),
+      ));
+      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+      await tester.pumpAndSettle();
+      expect(find.byType(CalendarPage), findsOneWidget);
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, weekDayColor[DateTime.saturday]);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, weekDayColor[DateTime.sunday]);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+    });
+
+    testWidgets('Color settings with no colors', (WidgetTester tester) async {
+      when(memoplannerSettingBlocMock.state)
+          .thenReturn(MemoplannerSettingsLoaded(
+        MemoplannerSettings(calendarDayColor: DayColors.NO_COLORS),
+      ));
+      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+      await tester.pumpAndSettle();
+      expect(find.byType(CalendarPage), findsOneWidget);
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
     });
   });
 

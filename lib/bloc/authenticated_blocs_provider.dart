@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/bloc/user_file/user_file_bloc.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {
   final Authenticated authenticatedState;
   final Widget child;
+  final MemoplannerSettingBloc memoplannerSettingBloc;
   AuthenticatedBlocsProvider({
     @required this.authenticatedState,
     @required this.child,
+    this.memoplannerSettingBloc,
   }) {
     ensureNotificationPluginInitialized();
   }
@@ -101,7 +105,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             )..add(LoadGenerics()),
           ),
           BlocProvider<MemoplannerSettingBloc>(
-            create: (context) => MemoplannerSettingBloc(
+            create: (context) => memoplannerSettingBloc ?? MemoplannerSettingBloc(
               genericBloc: context.bloc<GenericBloc>(),
             ),
           ),
@@ -144,6 +148,56 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               authenticationBloc: context.repository<AuthenticationBloc>(),
             )..add(ReloadLicenses()),
           )
+        ],
+        child: child,
+      ),
+    );
+  }
+}
+
+class TopLevelBlocsProvider extends StatelessWidget {
+  final Widget child;
+  final PushBloc pushBloc;
+  final String baseUrl;
+  const TopLevelBlocsProvider({
+    Key key,
+    @required this.child,
+    @required this.baseUrl,
+    this.pushBloc,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RepositoryProvider<UserRepository>(
+      create: (context) => UserRepository(
+        baseUrl: baseUrl,
+        httpClient: GetIt.I<BaseClient>(),
+        tokenDb: GetIt.I<TokenDb>(),
+        userDb: GetIt.I<UserDb>(),
+        licenseDb: GetIt.I<LicenseDb>(),
+      ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthenticationBloc>(
+            create: (context) => AuthenticationBloc(
+              database: GetIt.I<Database>(),
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              seagullLogger: GetIt.I<SeagullLogger>(),
+              cancleAllNotificationsFunction: () =>
+                  notificationPlugin.cancelAll(),
+            )..add(AppStarted(context.repository<UserRepository>())),
+          ),
+          BlocProvider<PushBloc>(
+            create: (context) => pushBloc ?? PushBloc(),
+          ),
+          BlocProvider<ClockBloc>(
+            create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
+          ),
+          BlocProvider<SettingsBloc>(
+            create: (context) => SettingsBloc(
+              settingsDb: GetIt.I<SettingsDb>(),
+            ),
+          ),
         ],
         child: child,
       ),
