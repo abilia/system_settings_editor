@@ -889,6 +889,48 @@ void main() {
         ]));
   });
 
+  test('BUG SGC-352 edit a none recurring activity to be recurring', () async {
+    // Arrange
+    final activity = Activity.createNew(title: 'SGC-352', startTime: aTime);
+    final editActivityBloc = EditActivityBloc(
+      ActivityDay(activity, aDay),
+      activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+    );
+
+    final expectedTimeIntervall = TimeInterval(
+      startDate: aDay,
+      startTime: TimeOfDay.fromDateTime(aTime),
+    );
+    final recurringActivity = activity.copyWith(
+      recurs: Recurs.weeklyOnDay(aTime.weekday),
+    );
+
+    // Act
+    editActivityBloc.add(ReplaceActivity(recurringActivity));
+    editActivityBloc.add(SaveActivity());
+
+    // Assert
+    await expectLater(
+      editActivityBloc,
+      emitsInOrder(
+        [
+          StoredActivityState(
+            recurringActivity,
+            expectedTimeIntervall,
+            aDay,
+          ),
+          StoredActivityState(
+            recurringActivity,
+            expectedTimeIntervall,
+            aDay,
+          ).saveSucess(),
+        ],
+      ),
+    );
+  });
+
   test('bug SGC-332 - Editing recurring on this day should save this day',
       () async {
     // Arrange
