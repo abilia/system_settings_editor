@@ -83,28 +83,27 @@ class Recurs extends Equatable {
   bool recursOnDay(DateTime day) {
     switch (recurrance) {
       case RecurrentType.weekly:
-        return _recursOnWeeklyDay(data, day);
+        return _recursOnWeeklyDay(day);
       case RecurrentType.monthly:
-        return _recursOnMonthDay(data, day);
+        return _recursOnMonthDay(day);
       case RecurrentType.yearly:
-        return _recursOnYearDay(data, day);
+        return _recursOnYearDay(day);
       default:
         return false;
     }
   }
 
-  bool _recursOnWeeklyDay(int recurrentData, DateTime date) {
+  bool _recursOnWeeklyDay(DateTime date) {
     final isOddWeek = date.getWeekNumber().isOdd;
     final leadingZeros = date.weekday - 1 + (isOddWeek ? 7 : 0);
-    return isBitSet(recurrentData, leadingZeros);
+    return _isBitSet(data, leadingZeros);
   }
 
-  bool _recursOnMonthDay(int recurrentData, DateTime day) =>
-      isBitSet(recurrentData, day.day - 1);
+  bool _recursOnMonthDay(DateTime day) => _isBitSet(data, day.day - 1);
 
-  bool _recursOnYearDay(int recurrentData, DateTime date) {
-    final recurringDay = recurrentData % 100;
-    final recurringMonth = recurrentData ~/ 100 + 1;
+  bool _recursOnYearDay(DateTime date) {
+    final recurringDay = data % 100;
+    final recurringMonth = data ~/ 100 + 1;
     return date.month == recurringMonth && date.day == recurringDay;
   }
 
@@ -158,20 +157,25 @@ class Recurs extends Equatable {
   static const NO_END = 253402297199000;
   static final noEndDate = DateTime.fromMillisecondsSinceEpoch(NO_END);
 
+  @visibleForTesting
   static int onDayOfMonth(int dayOfMonth) => _toBitMask(dayOfMonth);
 
+  @visibleForTesting
   static int onDaysOfMonth(Iterable<int> daysOfMonth) => daysOfMonth.fold(
         0,
         (ds, d) => ds | onDayOfMonth(d),
       );
 
+  @visibleForTesting
   static int dayOfYearData(DateTime date) => (date.month - 1) * 100 + date.day;
 
+  @visibleForTesting
   static int onDaysOfWeek(Iterable<int> weekDays) => biWeekly(
         evens: weekDays,
         odds: weekDays,
       );
 
+  @visibleForTesting
   static int biWeekly({
     Iterable<int> evens = const [],
     Iterable<int> odds = const [],
@@ -182,10 +186,29 @@ class Recurs extends Equatable {
 
   static int _toBitMask(int bit) => 1 << (bit - 1);
 
-  static bool isBitSet(int recurrentData, int bit) =>
-      recurrentData & (1 << bit) > 0;
+  Set<int> get weekDays => weekly
+      ? _generateBitsSet(
+          DateTime.daysPerWeek, _onlyOddWeeks ? _oddWeekBits : data)
+      : {};
+
+  Set<int> get monthDays => monthly ? _generateBitsSet(31, data) : {};
+  bool get everyOtherWeek => weekly && _onEvenWeek != _onOddWeek;
+
+  bool get _onEvenWeek => weekly && _evenWeekBits > 0;
+  bool get _onOddWeek => weekly && _oddWeekBits > 0;
+  bool get _onlyOddWeeks => everyOtherWeek && _onOddWeek;
+  int get _oddWeekBits => data >> 7;
+  int get _evenWeekBits => data & 0x7F;
+
+  bool _isBitSet(int recurrentData, int bit) => recurrentData & (1 << bit) > 0;
+
+  Set<int> _generateBitsSet(int bits, int data) =>
+      List.generate(bits, (bit) => bit, growable: false)
+          .where((bit) => _isBitSet(data, bit))
+          .map((bit) => bit + 1)
+          .toSet();
 
   @override
   String toString() =>
-      '$recurrance; ends -> ${endTime == NO_END ? 'no end' : end}; $data';
+      '$recurrance; ends -> ${endTime == NO_END ? 'no end' : end}; ${_generateBitsSet(31, data)}';
 }

@@ -13,11 +13,12 @@ class RecurringWeekState extends Equatable {
 
   RecurringWeekState.initial(
     EditActivityState editActivityState,
-  )   : weekdays = UnmodifiableSetView(
-            {editActivityState.timeInterval.startDate.weekday}),
-        everyOtherWeek = false,
+  )   : weekdays =
+            UnmodifiableSetView(editActivityState.activity.recurs.weekDays),
+        everyOtherWeek = editActivityState.activity.recurs.everyOtherWeek,
         startDate = editActivityState.timeInterval.startDate,
-        endDate = Recurs.noEndDate;
+        endDate = editActivityState.activity.recurs.end;
+
 
   bool get evenStartWeek => startDate.getWeekNumber().isEven;
 

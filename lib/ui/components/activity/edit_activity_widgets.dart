@@ -478,12 +478,13 @@ class AvailibleForWidget extends StatelessWidget {
 }
 
 class RecurrenceWidget extends StatelessWidget {
-  final Activity activity;
+  final EditActivityState state;
 
-  const RecurrenceWidget(this.activity, {Key key}) : super(key: key);
+  const RecurrenceWidget(this.state, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
+    final activity = state.activity;
     final recurrentType = activity.recurs.recurrance;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -503,14 +504,28 @@ class RecurrenceWidget extends StatelessWidget {
                   SelectRecurrenceDialog(recurrentType: recurrentType),
             );
             if (result != null) {
-              final recurs = newType(result, activity.startTime);
-              BlocProvider.of<EditActivityBloc>(context).add(
-                ReplaceActivity(
-                  activity.copyWith(
-                    recurs: recurs,
+              if (state.storedRecurring &&
+                  result == state.originalActivity.recurs.recurrance) {
+                BlocProvider.of<EditActivityBloc>(context).add(
+                  ReplaceActivity(
+                    activity.copyWith(
+                      recurs: state.originalActivity.recurs,
+                    ),
                   ),
-                ),
-              );
+                );
+              } else {
+                final recurentType = _newType(
+                  result,
+                  state.timeInterval.startDate,
+                );
+                BlocProvider.of<EditActivityBloc>(context).add(
+                  ReplaceActivity(
+                    activity.copyWith(
+                      recurs: recurentType,
+                    ),
+                  ),
+                );
+              }
             }
           },
         ),
@@ -518,14 +533,14 @@ class RecurrenceWidget extends StatelessWidget {
     );
   }
 
-  Recurs newType(RecurrentType type, DateTime startTime) {
+  Recurs _newType(RecurrentType type, DateTime startdate) {
     switch (type) {
       case RecurrentType.weekly:
-        return Recurs.weeklyOnDay(startTime.weekday);
+        return Recurs.weeklyOnDay(startdate.weekday);
       case RecurrentType.monthly:
-        return Recurs.monthly(startTime.day);
+        return Recurs.monthly(startdate.day);
       case RecurrentType.yearly:
-        return Recurs.yearly(startTime);
+        return Recurs.yearly(startdate);
       default:
         return Recurs.not;
     }

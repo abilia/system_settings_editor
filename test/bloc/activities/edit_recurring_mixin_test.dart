@@ -512,59 +512,66 @@ void main() {
 
       test('changes all future activities in series ', () async {
         // Arrange
-        final inFiveDays = anyTime.copyWith(day: anyTime.day + 5);
-        final inSevenDays = anyTime.copyWith(day: anyTime.day + 7);
-        final inNineDays = anyTime.copyWith(day: anyTime.day + 8);
+        final in5Days = anyTime.copyWith(day: anyTime.day + 5);
+        final in7Days = anyTime.copyWith(day: anyTime.day + 7);
+        final in8Days = anyTime.copyWith(day: anyTime.day + 8);
         final in12Days = anyTime.copyWith(day: anyTime.day + 12);
 
         final og = FakeActivity.reocurrsEveryDay(anyTime);
-        final before = og
+        final startsBeforeEndsAfter = og
             .copyWith(title: 'original')
-            .copyWithRecurringEnd(inSevenDays.onlyDays().millisecondBefore());
+            .copyWithRecurringEnd(in7Days.onlyDays().millisecondBefore());
 
-        final after = og.copyWith(
+        final startsAfter = og
+            .copyWith(
+              newId: true,
+              startTime: in8Days,
+              fullDay: true,
+              title: 'now full day',
+            )
+            .copyWithRecurringEnd(Recurs.noEndDate);
+
+        final strayAfterNoRecurrency = og.copyWith(
           newId: true,
-          startTime: inNineDays,
-          fullDay: true,
-          title: 'now full day',
+          startTime: in12Days,
+          duration: 10.minutes(),
+          recurs: Recurs.not,
+          title: 'a stray',
         );
 
-        final stray = og
+        final strayWithSameStartAndEndDay = og
             .copyWith(
               newId: true,
-              startTime: in12Days,
-              duration: 10.minutes(),
-              recurs: Recurs.not,
-              title: 'a stray',
-            )
-            .copyWithRecurringEnd(in12Days.add(10.minutes()));
-
-        final stray2 = og
-            .copyWith(
-              newId: true,
-              startTime: inFiveDays,
+              startTime: in5Days,
               duration: 66.minutes(),
               title: 'a second stray',
             )
-            .copyWithRecurringEnd(inFiveDays.add(66.minutes()));
+            .copyWithRecurringEnd(in5Days);
 
-        final currentActivities = {before, after, stray, stray2};
+        final currentActivities = {
+          startsBeforeEndsAfter,
+          startsAfter,
+          strayAfterNoRecurrency,
+          strayWithSameStartAndEndDay
+        };
 
         final newTitle = 'newTitle';
-        final newTime = inFiveDays.add(2.hours());
+        final newTime = in5Days.add(2.hours());
         final newDuration = 30.minutes();
 
-        final updatedRecurrringActivity = stray2.copyWith(
+        final updatedRecurrringActivity = strayWithSameStartAndEndDay.copyWith(
           title: newTitle,
           startTime: newTime,
           duration: newDuration,
           removeAfter: true,
         );
 
-        final beforePostMod = before
-            .copyWithRecurringEnd(inFiveDays.onlyDays().millisecondBefore());
+        final beforePostMod = startsBeforeEndsAfter.copyWithRecurringEnd(
+          in5Days.onlyDays().millisecondBefore(),
+        );
 
-        final beforeSplitPostMod = before.copyWith(
+        final startsBeforeEndsAfterSplitPostMod =
+            startsBeforeEndsAfter.copyWith(
           newId: true,
           title: newTitle,
           startTime: newTime,
@@ -572,9 +579,9 @@ void main() {
           removeAfter: true,
         );
 
-        final afterPostMod = after.copyWith(
+        final startsAfterPostMod = startsAfter.copyWith(
           title: newTitle,
-          startTime: after.startTime.copyWith(
+          startTime: startsAfter.startTime.copyWith(
             hour: newTime.hour,
             minute: newTime.minute,
           ),
@@ -582,9 +589,9 @@ void main() {
           fullDay: false,
           removeAfter: true,
         );
-        final strayPostMod = stray.copyWith(
+        final strayAfterNoRecurrencyPostMod = strayAfterNoRecurrency.copyWith(
           title: newTitle,
-          startTime: stray.startTime.copyWith(
+          startTime: strayAfterNoRecurrency.startTime.copyWith(
             hour: newTime.hour,
             minute: newTime.minute,
           ),
@@ -595,14 +602,16 @@ void main() {
         final exptectedList = <Activity>[
           beforePostMod,
           updatedRecurrringActivity,
-          beforeSplitPostMod,
-          afterPostMod,
-          strayPostMod
+          startsBeforeEndsAfterSplitPostMod,
+          startsAfterPostMod,
+          strayAfterNoRecurrencyPostMod
         ];
 
         // Act
         final res = editRecurringMixin.updateThisDayAndForward(
-            activity: updatedRecurrringActivity, activities: currentActivities);
+          activity: updatedRecurrringActivity,
+          activities: currentActivities,
+        );
         final matcher = MatchActivitiesWithoutId(exptectedList);
 
         // Assert
@@ -655,10 +664,21 @@ void main() {
             activity: updatedA2, activities: {a1, a2, a3});
 
         // Assert
-        expect(res.state,
-            MatchActivitiesWithoutId([a1, a2Part1, updatedA2, expectedA3]));
-        expect(res.save,
-            MatchActivitiesWithoutId([a2Part1, updatedA2, expectedA3]));
+        expect(
+            res.state,
+            MatchActivitiesWithoutId([
+              a1,
+              a2Part1,
+              updatedA2,
+              expectedA3,
+            ]));
+        expect(
+            res.save,
+            MatchActivitiesWithoutId([
+              a2Part1,
+              updatedA2,
+              expectedA3,
+            ]));
       });
     });
 

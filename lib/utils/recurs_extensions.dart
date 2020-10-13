@@ -71,15 +71,3 @@ extension RecurringActivityExtension on Activity {
     return recurs.recursOnDay(day);
   }
 }
-
-extension RecursToList on Recurs {
-  Set<int> get weekDays => weekly ? _generateBitsSet(DateTime.daysPerWeek) : {};
-
-  Set<int> get monthDays => monthly ? _generateBitsSet(31) : {};
-
-  Set<int> _generateBitsSet(int bits) =>
-      List.generate(bits, (bit) => bit, growable: false)
-          .where((bit) => Recurs.isBitSet(data, bit))
-          .map((bit) => bit + 1)
-          .toSet();
-}
