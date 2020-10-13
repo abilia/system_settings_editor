@@ -10,6 +10,8 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import 'package:seagull/repository/timezone.dart' as tz;
+
 part 'edit_activity_event.dart';
 part 'edit_activity_state.dart';
 
@@ -50,7 +52,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
             Activity.createNew(
                 title: '',
                 startTime: day,
-                timezone: day.timeZoneName,
+                timezone: tz.local.name,
                 alarmType: memoplannerSettingBloc.state.defaultAlarmType()),
             TimeInterval(startDate: day),
           ),

@@ -12,6 +12,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 
+import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
@@ -34,6 +35,7 @@ void main() {
   MockUserFileBloc mockUserFileBloc;
   MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   setUp(() async {
+    tz.initializeTimeZones();
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
     mockUserFileBloc = MockUserFileBloc();

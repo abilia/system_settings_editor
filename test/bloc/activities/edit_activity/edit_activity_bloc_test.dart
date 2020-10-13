@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -19,6 +22,7 @@ void main() {
   final aDay = DateTime(2022, 02, 22);
 
   setUp(() {
+    tz.initializeTimeZones();
     mockActivitiesBloc = MockActivitiesBloc();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
     clockBloc = ClockBloc(StreamController<DateTime>().stream);
@@ -45,7 +49,7 @@ void main() {
     final activity = Activity.createNew(
       title: '',
       startTime: aTime,
-      timezone: aTime.timeZoneName,
+      timezone: tz.local.name,
     );
     final editActivityBloc = EditActivityBloc.newActivity(
       activitiesBloc: mockActivitiesBloc,

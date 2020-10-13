@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,6 +10,7 @@ import 'package:devicelocale/devicelocale.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:seagull/alarm_listener.dart';
 import 'package:seagull/analytics/analytics_service.dart';
@@ -23,11 +25,8 @@ import 'package:seagull/tts/flutter_tts.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/background/all.dart';
-import 'package:flutter/foundation.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'models/all.dart';
 
 final _log = Logger('main');
 
@@ -44,6 +43,7 @@ Future<void> initServices() async {
   final seagullLogger = SeagullLogger(userDb: userDb);
   await seagullLogger.initLogging();
   _log.fine('Initializing services');
+  await configureLocalTimeZone();
   final currentLocale = await Devicelocale.currentLocale;
   final settingsDb = SettingsDb(await SharedPreferences.getInstance());
   await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);

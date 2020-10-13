@@ -8,9 +8,8 @@ import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
+import 'package:seagull/repository/timezone.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
@@ -32,7 +31,6 @@ FlutterLocalNotificationsPlugin get notificationPlugin {
 void ensureNotificationPluginInitialized() {
   if (notificationsPluginInstance == null) {
     _log.finer('initialize notification plugin... ');
-    tz.initializeTimeZones();
     notificationsPluginInstance = FlutterLocalNotificationsPlugin();
     notificationsPluginInstance.initialize(
       InitializationSettings(
@@ -168,15 +166,16 @@ Future<bool> _scheduleNotification(
       : await _iosNotificationDetails(notificationAlarm, fileStorage);
 
   if (notificationTime.isBefore(now())) return false;
-
+  final time = TZDateTime.from(
+      notificationTime, tryGetLocation(activity.timezone, log: _log));
   try {
     _log.finest(
-        'scheduling: $title - $subtitle at $notificationTime ${activity.hasImage ? ' with image' : ''}');
+        'scheduling: $title - $subtitle at $time ${activity.hasImage ? ' with image' : ''}');
     await notificationPlugin.zonedSchedule(
       hash,
       title,
       subtitle,
-      tz.TZDateTime.from(notificationTime, tz.local),
+      time,
       NotificationDetails(android: and, iOS: ios),
       payload: payload,
       androidAllowWhileIdle: true,
