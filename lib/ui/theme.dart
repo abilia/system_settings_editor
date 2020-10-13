@@ -236,7 +236,7 @@ ThemeData availableToSelectButtonTheme = abiliaTheme.copyWith(
 ThemeData bottomNavigationBarTheme = abiliaTheme.copyWith(
   buttonTheme: lightActionButtonThemeData.copyWith(shape: ligthShapeBorder),
   buttonColor: AbiliaColors.transparentWhite20,
-  iconTheme: IconThemeData(size: 32.0),
+  iconTheme: IconThemeData(size: defaultIconSize),
 );
 
 TextTheme abiliaTextTheme = TextTheme(

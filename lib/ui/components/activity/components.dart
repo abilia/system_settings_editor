@@ -74,7 +74,7 @@ class LinedBorder extends StatelessWidget {
 class PickField extends StatelessWidget {
   static const trailingArrow = Icon(
     AbiliaIcons.navigation_next,
-    size: 32.0,
+    size: defaultIconSize,
     color: AbiliaColors.black60,
   );
   final GestureTapCallback onTap;

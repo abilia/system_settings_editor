@@ -41,7 +41,7 @@ class AllDayList extends StatelessWidget {
                 leftAction: ActionButton(
                   child: Icon(
                     AbiliaIcons.close_program,
-                    size: 32,
+                    size: defaultIconSize,
                   ),
                   onPressed: () => Navigator.of(context).maybePop(),
                 ),

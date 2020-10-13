@@ -155,7 +155,7 @@ class _SelectPictureWidgetState extends State<SelectPictureWidget> {
                       SelectPictureWidget.padding,
                   child: const Icon(
                     AbiliaIcons.add_photo,
-                    size: 32,
+                    size: defaultIconSize,
                     color: AbiliaColors.black75,
                   ),
                 ),

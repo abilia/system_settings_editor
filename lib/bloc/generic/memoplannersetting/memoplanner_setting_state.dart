@@ -8,6 +8,7 @@ abstract class MemoplannerSettingsState {
   bool get displayEditButton => settings.displayEditButton;
   bool get displayQuarterHour => settings.displayQuarterHour;
   bool get displayTimeLeft => settings.displayTimeLeft;
+  bool get dayCaptionShowDayButtons => settings.dayCaptionShowDayButtons;
   bool get activityDateEditable => settings.activityDateEditable;
   bool get activityTypeEditable => settings.activityTypeEditable;
   bool get activityEndTimeEditable => settings.activityEndTimeEditable;
@@ -65,4 +66,3 @@ class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
 class MemoplannerSettingsNotLoaded extends MemoplannerSettingsState {
   MemoplannerSettingsNotLoaded() : super(MemoplannerSettings());
 }
-

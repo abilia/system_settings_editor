@@ -10,6 +10,7 @@ class MemoplannerSettings {
       displayEditButtonKey = 'activity_detailed_setting_display_edit_button',
       displayQuarterHourKey = 'activity_detailed_setting_display_qhw',
       displayTimeLeftKey = 'activity_detailed_setting_display_qhw_time_left',
+      dayCaptionShowDayButtonsKey = 'day_caption_show_day_buttons',
       activityDateEditableKey = 'advanced_activity_date',
       activityTypeEditableKey = 'advanced_activity_type',
       activityEndTimeEditableKey = 'add_activity_end_time',
@@ -35,6 +36,7 @@ class MemoplannerSettings {
       displayEditButton,
       displayQuarterHour,
       displayTimeLeft,
+      dayCaptionShowDayButtons,
       activityDateEditable,
       activityTypeEditable,
       activityEndTimeEditable,
@@ -62,6 +64,7 @@ class MemoplannerSettings {
     this.displayEditButton = true,
     this.displayQuarterHour = true,
     this.displayTimeLeft = true,
+    this.dayCaptionShowDayButtons = true,
     this.activityDateEditable = true,
     this.activityTypeEditable = true,
     this.activityEndTimeEditable = true,
@@ -105,6 +108,9 @@ class MemoplannerSettings {
       ),
       displayTimeLeft: settings.getBool(
         displayTimeLeftKey,
+      ),
+      dayCaptionShowDayButtons: settings.getBool(
+        dayCaptionShowDayButtonsKey,
       ),
       activityDateEditable: settings.getBool(
         activityDateEditableKey,
