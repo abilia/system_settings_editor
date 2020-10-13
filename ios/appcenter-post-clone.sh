@@ -11,6 +11,9 @@ git clone -b beta https://github.com/flutter/flutter.git
 export PATH=`pwd`/flutter/bin:$PATH
 
 flutter channel stable
+sudo gem uninstall cocoapods
+sudo gem install cocoapods --pre
+pod setup
 flutter doctor
 
 echo "Installed flutter to `pwd`/flutter"
