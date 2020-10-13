@@ -38,7 +38,7 @@ abstract class EditActivityState extends Equatable with Silent {
       newImage == null;
 
   bool get storedRecurring =>
-      this is StoredActivityState && activity.isRecurring;
+      this is StoredActivityState && originalActivity.isRecurring;
 
   bool get emptyRecurringData =>
       activity.isRecurring && activity.recurs.data <= 0;
