@@ -228,10 +228,8 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
   void onMinFocusChanged() {
     if (minuteFocusNode.hasFocus) {
       _selectAllText(minuteInputController);
-    } else {
-      minuteInputController.text = minuteInputController.text.isEmpty
-          ? oldMinute
-          : pad0(minuteInputController.text);
+    } else if (minuteInputController.text.isNotEmpty) {
+      minuteInputController.text = pad0(minuteInputController.text);
     }
     setState(() {});
   }
@@ -256,7 +254,16 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
     setState(() {});
   }
 
-  void minuteInputListener() => setState(() {});
+  var _lastMinText = '';
+  void minuteInputListener() {
+    final lastMinDigitDeleted = minuteInputController.text.isEmpty &&
+        minuteInputController.text != _lastMinText;
+    if (lastMinDigitDeleted) {
+      hourFocusNode.requestFocus();
+    }
+    _lastMinText = minuteInputController.text;
+    setState(() {});
+  }
 
   @override
   void dispose() {

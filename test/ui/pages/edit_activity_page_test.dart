@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -1318,6 +1319,49 @@ text''';
 
       // Assert -- time is same
       expect(find.text('3:44 AM'), findsOneWidget);
+    });
+
+    testWidgets('removing minute change focus to hours',
+        (WidgetTester tester) async {
+      // Arrange
+      final acivity = Activity.createNew(
+        title: '',
+        startTime: DateTime(2000, 11, 22, 3, 04),
+        duration: 20.minutes(),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          givenActivity: acivity,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Act -- open end time
+      await tester.tap(endTimeFieldFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- end time is correct
+      expect(find.text('3'), findsOneWidget);
+      expect(find.text('24'), findsOneWidget);
+
+      // Act -- erase minute
+      await tester.tap(minInputFinder);
+      await tester.showKeyboard(minInputFinder);
+      await tester.sendKeyEvent(LogicalKeyboardKey.delete);
+      await tester.pump();
+
+      // Assert -- minute gone
+      expect(find.text('3'), findsOneWidget);
+      expect(find.text('24'), findsNothing);
+
+      // Act -- erase should erase hour
+      await tester.sendKeyEvent(LogicalKeyboardKey.delete);
+      await tester.pump();
+
+      // Assert -- hour gone
+      expect(find.text('3'), findsNothing);
+      expect(find.text('24'), findsNothing);
     });
 
     testWidgets('24h clock', (WidgetTester tester) async {
