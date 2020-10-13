@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -21,6 +22,7 @@ void main() {
     mockActivitiesBloc = MockActivitiesBloc();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
     clockBloc = ClockBloc(StreamController<DateTime>().stream);
+    tz.initializeTimeZones();
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
   });

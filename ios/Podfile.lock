@@ -88,6 +88,8 @@ PODS:
     - ZIPFoundation (= 0.9.11)
   - flutter_local_notifications (0.0.1):
     - Flutter
+  - flutter_native_timezone (0.0.1):
+    - Flutter
   - flutter_tts (0.0.1):
     - Flutter
   - FMDB (2.7.5):
@@ -153,6 +155,7 @@ DEPENDENCIES:
   - flutter_appcenter_bundle (from `.symlinks/plugins/flutter_appcenter_bundle/ios`)
   - flutter_archive (from `.symlinks/plugins/flutter_archive/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - flutter_native_timezone (from `.symlinks/plugins/flutter_native_timezone/ios`)
   - flutter_tts (from `.symlinks/plugins/flutter_tts/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
@@ -202,6 +205,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_archive/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  flutter_native_timezone:
+    :path: ".symlinks/plugins/flutter_native_timezone/ios"
   flutter_tts:
     :path: ".symlinks/plugins/flutter_tts/ios"
   image_picker:
@@ -238,6 +243,7 @@ SPEC CHECKSUMS:
   flutter_appcenter_bundle: bbf1dd726a7a090027c88201a62b83269a56f075
   flutter_archive: 47fe3c4d4c74c5fb58196c44d5e6369b37acd1dd
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  flutter_native_timezone: e72ff1900460ff57cfd331d1758050c9269f3e99
   flutter_tts: 0f492aab6accf87059b72354fcb4ba934304771d
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleAppMeasurement: 67458367830514fb20fd9e233496f1eef9d90185

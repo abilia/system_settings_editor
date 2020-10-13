@@ -10,7 +10,7 @@ import 'package:seagull/storage/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'all.dart';
 
-// Don't forgett to register new plugin used in background
+// Don't forget to register new plugin used in background
 // in android/app/src/main/kotlin/com/abilia/seagull/Application.kt
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
   final userDb = UserDb();
@@ -21,6 +21,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
   try {
     log.info('Handling background message...');
     message.forEach((key, value) => log.fine('$key: $value'));
+    await configureLocalTimeZone();
     final baseUrl = await BaseUrlDb().getBaseUrl();
     final httpClient = Client();
     final user = await userDb.getUser();
