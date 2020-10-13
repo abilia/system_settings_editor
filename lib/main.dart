@@ -7,7 +7,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:devicelocale/devicelocale.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -91,68 +90,39 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<UserRepository>(
-      create: (context) => UserRepository(
-        baseUrl: baseUrl,
-        httpClient: GetIt.I<BaseClient>(),
-        tokenDb: GetIt.I<TokenDb>(),
-        userDb: GetIt.I<UserDb>(),
-        licenseDb: GetIt.I<LicenseDb>(),
-      ),
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthenticationBloc>(
-            create: (context) => AuthenticationBloc(
-              database: GetIt.I<Database>(),
-              baseUrlDb: GetIt.I<BaseUrlDb>(),
-              seagullLogger: GetIt.I<SeagullLogger>(),
-              cancleAllNotificationsFunction: () =>
-                  notificationPlugin.cancelAll(),
-            )..add(AppStarted(context.repository<UserRepository>())),
-          ),
-          BlocProvider<PushBloc>(
-            create: (context) => pushBloc ?? PushBloc(),
-          ),
-          BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
-          ),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
-              settingsDb: GetIt.I<SettingsDb>(),
-            ),
-          ),
-        ],
-        child: BlocListener<ClockBloc, DateTime>(
-          listener: (context, state) async {
-            await GetIt.I<SeagullLogger>().maybeUploadLogs();
-          },
-          child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-            builder: (context, state) {
-              if (state is Authenticated) {
-                return AuthenticatedBlocsProvider(
-                  authenticatedState: state,
-                  child: SeagullApp(
-                    home: wasAlarmStart
-                        ? SeagullListeners(
-                            child: FullScreenAlarm(alarm: notificationPayload),
-                            listenWhen: (_, current) =>
-                                current is AlarmState &&
-                                current.alarm != notificationPayload,
-                          )
-                        : SeagullListeners(child: CalendarPage()),
-                  ),
-                );
-              }
-              return SeagullApp(
-                home: (state is Unauthenticated)
-                    ? LoginPage(
-                        userRepository: context.repository<UserRepository>(),
-                        push: GetIt.I<FirebasePushService>(),
-                      )
-                    : SplashPage(),
+    return TopLevelBlocsProvider(
+      pushBloc: pushBloc,
+      baseUrl: baseUrl,
+      child: BlocListener<ClockBloc, DateTime>(
+        listener: (context, state) async {
+          await GetIt.I<SeagullLogger>().maybeUploadLogs();
+        },
+        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+            if (state is Authenticated) {
+              return AuthenticatedBlocsProvider(
+                authenticatedState: state,
+                child: SeagullApp(
+                  home: wasAlarmStart
+                      ? SeagullListeners(
+                          child: FullScreenAlarm(alarm: notificationPayload),
+                          listenWhen: (_, current) =>
+                              current is AlarmState &&
+                              current.alarm != notificationPayload,
+                        )
+                      : SeagullListeners(child: CalendarPage()),
+                ),
               );
-            },
-          ),
+            }
+            return SeagullApp(
+              home: (state is Unauthenticated)
+                  ? LoginPage(
+                      userRepository: context.repository<UserRepository>(),
+                      push: GetIt.I<FirebasePushService>(),
+                    )
+                  : SplashPage(),
+            );
+          },
         ),
       ),
     );

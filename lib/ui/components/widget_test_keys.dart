@@ -63,5 +63,6 @@ class TestKey {
       dayAppBarTitle = Key('dayAppBarTitle'),
       sideDotsTimeText = Key('sideDotsTimeText'),
       errorViewDialog = Key('errorViewDialog'),
-      ttsInfoButton = Key('ttsInfoButton');
+      ttsInfoButton = Key('ttsInfoButton'),
+      animatedTheme = Key('animatedTheme');
 }

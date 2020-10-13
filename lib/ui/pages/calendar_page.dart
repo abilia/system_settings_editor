@@ -60,6 +60,7 @@ class _CalendarPageState extends State<CalendarPage>
                     MemoplannerSettingsState>(
                 builder: (context, memoSettingsState) {
               return AnimatedTheme(
+                key: TestKey.animatedTheme,
                 data: weekDayThemes[memoSettingsState.calendarDayColor]
                     [pickedDay.day.weekday],
                 child: Scaffold(
