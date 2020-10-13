@@ -22,6 +22,17 @@ import 'package:seagull/utils/all.dart';
 import '../../mocks.dart';
 
 void main() {
+  final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page),
+      previousDayButtonFinder =
+          find.byIcon(AbiliaIcons.return_to_previous_page);
+
+  Future goToTimePillar(WidgetTester tester) async {
+    await tester.tap(find.byKey(TestKey.changeView));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(TestKey.timePillarButton));
+    await tester.pumpAndSettle();
+  }
+
   group('calendar page', () {
     MockActivityDb mockActivityDb;
     StreamController<DateTime> mockTicker;
@@ -59,6 +70,7 @@ void main() {
         ..database = MockDatabase()
         ..init();
     });
+
     testWidgets('New activity', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -72,9 +84,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(nextDayButtonFinder);
+      await tester.tap(nextDayButtonFinder);
+      await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
 
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
@@ -86,7 +98,7 @@ void main() {
     });
   });
 
-  group('Color settings', () {
+  group('MemoPlanner settings', () {
     final userRepository = UserRepository(
       httpClient: Fakes.client(),
       tokenDb: MockTokenDb(),
@@ -116,14 +128,6 @@ void main() {
             ),
           ),
         );
-
-    void _expectCorrectColor(WidgetTester tester, Color color) {
-      final at = find.byKey(TestKey.animatedTheme);
-      expect(at, findsOneWidget);
-      final theme = tester.firstWidget(at) as AnimatedTheme;
-      expect(theme.data.appBarTheme.color, color);
-    }
-
     MockActivityDb mockActivityDb;
 
     StreamController<DateTime> mockTicker;
@@ -163,92 +167,139 @@ void main() {
         ..init();
     });
 
-    testWidgets('Color settings with colors on all days',
-        (WidgetTester tester) async {
-      when(memoplannerSettingBlocMock.state)
-          .thenReturn(MemoplannerSettingsLoaded(
-        MemoplannerSettings(calendarDayColor: DayColors.ALL_DAYS),
-      ));
-      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, weekDayColor[DateTime.wednesday]);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, weekDayColor[DateTime.thursday]);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, weekDayColor[DateTime.friday]);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, weekDayColor[DateTime.saturday]);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, weekDayColor[DateTime.sunday]);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, weekDayColor[DateTime.monday]);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, weekDayColor[DateTime.tuesday]);
+    group('Color settings', () {
+      void _expectCorrectColor(WidgetTester tester, Color color) {
+        final at = find.byKey(TestKey.animatedTheme);
+        expect(at, findsOneWidget);
+        final theme = tester.firstWidget(at) as AnimatedTheme;
+        expect(theme.data.appBarTheme.color, color);
+      }
+
+      testWidgets('Color settings with colors on all days',
+          (WidgetTester tester) async {
+        when(memoplannerSettingBlocMock.state)
+            .thenReturn(MemoplannerSettingsLoaded(
+          MemoplannerSettings(calendarDayColor: DayColors.ALL_DAYS),
+        ));
+        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, weekDayColor[DateTime.wednesday]);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, weekDayColor[DateTime.thursday]);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, weekDayColor[DateTime.friday]);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, weekDayColor[DateTime.saturday]);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, weekDayColor[DateTime.sunday]);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, weekDayColor[DateTime.monday]);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, weekDayColor[DateTime.tuesday]);
+      });
+
+      testWidgets('Color settings with colors only on weekends',
+          (WidgetTester tester) async {
+        when(memoplannerSettingBlocMock.state)
+            .thenReturn(MemoplannerSettingsLoaded(
+          MemoplannerSettings(calendarDayColor: DayColors.SATURDAY_AND_SUNDAY),
+        ));
+        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+        await tester.pumpAndSettle();
+        expect(find.byType(CalendarPage), findsOneWidget);
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, weekDayColor[DateTime.saturday]);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, weekDayColor[DateTime.sunday]);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      });
+
+      testWidgets('Color settings with no colors', (WidgetTester tester) async {
+        when(memoplannerSettingBlocMock.state)
+            .thenReturn(MemoplannerSettingsLoaded(
+          MemoplannerSettings(calendarDayColor: DayColors.NO_COLORS),
+        ));
+        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+        await tester.pumpAndSettle();
+        expect(find.byType(CalendarPage), findsOneWidget);
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+      });
     });
 
-    testWidgets('Color settings with colors only on weekends',
-        (WidgetTester tester) async {
-      when(memoplannerSettingBlocMock.state)
-          .thenReturn(MemoplannerSettingsLoaded(
-        MemoplannerSettings(calendarDayColor: DayColors.SATURDAY_AND_SUNDAY),
-      ));
-      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
-      await tester.pumpAndSettle();
-      expect(find.byType(CalendarPage), findsOneWidget);
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, weekDayColor[DateTime.saturday]);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, weekDayColor[DateTime.sunday]);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
-    });
+    group('dayCaptionShowDayButtons settings', () {
+      testWidgets('show next/previous day buttons',
+          (WidgetTester tester) async {
+        when(memoplannerSettingBlocMock.state)
+            .thenReturn(MemoplannerSettingsLoaded(
+          MemoplannerSettings(dayCaptionShowDayButtons: true),
+        ));
+        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+        await tester.pumpAndSettle();
 
-    testWidgets('Color settings with no colors', (WidgetTester tester) async {
-      when(memoplannerSettingBlocMock.state)
-          .thenReturn(MemoplannerSettingsLoaded(
-        MemoplannerSettings(calendarDayColor: DayColors.NO_COLORS),
-      ));
-      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
-      await tester.pumpAndSettle();
-      expect(find.byType(CalendarPage), findsOneWidget);
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-      await tester.pumpAndSettle();
-      _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        expect(nextDayButtonFinder, findsOneWidget);
+        expect(previousDayButtonFinder, findsOneWidget);
+
+        await goToTimePillar(tester);
+
+        expect(nextDayButtonFinder, findsOneWidget);
+        expect(previousDayButtonFinder, findsOneWidget);
+      });
+
+      testWidgets('do not show next/previous day buttons',
+          (WidgetTester tester) async {
+        when(memoplannerSettingBlocMock.state)
+            .thenReturn(MemoplannerSettingsLoaded(
+          MemoplannerSettings(dayCaptionShowDayButtons: false),
+        ));
+        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+        await tester.pumpAndSettle();
+
+        expect(nextDayButtonFinder, findsNothing);
+        expect(previousDayButtonFinder, findsNothing);
+
+        await goToTimePillar(tester);
+
+        expect(nextDayButtonFinder, findsNothing);
+        expect(previousDayButtonFinder, findsNothing);
+      });
     });
   });
 

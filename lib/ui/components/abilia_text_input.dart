@@ -248,7 +248,7 @@ class HidePasswordButton extends StatelessWidget {
             child: state.password.isNotEmpty
                 ? Icon(
                     state.hidePassword ? AbiliaIcons.show : AbiliaIcons.hide,
-                    size: 32,
+                    size: defaultIconSize,
                     color: AbiliaColors.black,
                   )
                 : null,

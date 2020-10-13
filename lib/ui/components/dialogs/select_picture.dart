@@ -121,7 +121,8 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
   }
 
   Widget buildImageArchiveDialog() {
-    return BlocBuilder<SortableArchiveBloc<ImageArchiveData>, SortableArchiveState<ImageArchiveData>>(
+    return BlocBuilder<SortableArchiveBloc<ImageArchiveData>,
+        SortableArchiveState<ImageArchiveData>>(
       builder: (innerContext, imageArchiveState) => ViewDialog(
         verticalPadding: 0.0,
         backButton: ActionButton(
@@ -129,14 +130,15 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
             if (imageArchiveState.currentFolderId == null) {
               setState(() => imageArchiveView = false);
             } else {
-              BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(innerContext)
+              BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(
+                      innerContext)
                   .add(NavigateUp());
             }
           },
           themeData: darkButtonTheme,
           child: Icon(
             AbiliaIcons.navigation_previous,
-            size: 32,
+            size: defaultIconSize,
           ),
         ),
         heading: getImageArchiveHeading(imageArchiveState),

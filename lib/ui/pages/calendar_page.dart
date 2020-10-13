@@ -39,11 +39,12 @@ class _CalendarPageState extends State<CalendarPage>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      context.bloc<ClockBloc>().add(DateTime.now().onlyMinutes());
-      context.bloc<ActivitiesBloc>().add(LoadActivities());
-      context.bloc<SortableBloc>().add(LoadSortables());
-      context.bloc<GenericBloc>().add(LoadGenerics());
-      context.bloc<LicenseBloc>().add(ReloadLicenses());
+      context
+        ..bloc<ClockBloc>().add(DateTime.now().onlyMinutes())
+        ..bloc<ActivitiesBloc>().add(LoadActivities())
+        ..bloc<SortableBloc>().add(LoadSortables())
+        ..bloc<GenericBloc>().add(LoadGenerics())
+        ..bloc<LicenseBloc>().add(ReloadLicenses());
       _jumpToActivity();
     }
   }
@@ -65,7 +66,10 @@ class _CalendarPageState extends State<CalendarPage>
                 data: weekDayThemes[memoSettingsState.calendarDayColor]
                     [pickedDay.day.weekday],
                 child: Scaffold(
-                  appBar: buildAppBar(pickedDay.day),
+                  appBar: buildAppBar(
+                    pickedDay.day,
+                    memoSettingsState.dayCaptionShowDayButtons,
+                  ),
                   body: BlocListener<DayPickerBloc, DayPickerState>(
                     listener: (context, state) {
                       controller.animateToPage(state.index,
@@ -137,23 +141,28 @@ class _CalendarPageState extends State<CalendarPage>
     );
   }
 
-  Widget buildAppBar(DateTime pickedDay) => DayAppBar(
-        day: pickedDay,
-        leftAction: ActionButton(
-          child: Icon(
-            AbiliaIcons.return_to_previous_page,
-            size: 32,
-          ),
-          onPressed: () => _dayPickerBloc.add(PreviousDay()),
-        ),
-        rightAction: ActionButton(
-          child: Icon(
-            AbiliaIcons.go_to_next_page,
-            size: 32,
-          ),
-          onPressed: () => _dayPickerBloc.add(NextDay()),
-        ),
-      );
+  Widget buildAppBar(
+    DateTime pickedDay,
+    bool dayCaptionShowDayButtons,
+  ) =>
+      dayCaptionShowDayButtons
+          ? DayAppBar(
+              day: pickedDay,
+              leftAction: ActionButton(
+                child: Icon(
+                  AbiliaIcons.return_to_previous_page,
+                  size: defaultIconSize,
+                ),
+                onPressed: () => _dayPickerBloc.add(PreviousDay()),
+              ),
+              rightAction: ActionButton(
+                child: Icon(
+                  AbiliaIcons.go_to_next_page,
+                  size: defaultIconSize,
+                ),
+                onPressed: () => _dayPickerBloc.add(NextDay()),
+              ))
+          : DayAppBar(day: pickedDay);
 
   void _jumpToActivity() {
     final scrollState = _scrollPositionBloc.state;

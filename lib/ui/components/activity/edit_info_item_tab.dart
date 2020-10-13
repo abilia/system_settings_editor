@@ -115,7 +115,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
             ActionButton(
               child: Icon(
                 AbiliaIcons.show_text,
-                size: 32.0,
+                size: defaultIconSize,
                 color: AbiliaColors.black,
               ),
               onPressed: () async {
@@ -291,7 +291,7 @@ class EditNoteWidget extends StatelessWidget {
             ActionButton(
               child: Icon(
                 AbiliaIcons.show_text,
-                size: 32.0,
+                size: defaultIconSize,
                 color: AbiliaColors.black,
               ),
               onPressed: () async {

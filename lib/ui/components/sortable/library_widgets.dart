@@ -40,7 +40,7 @@ class SortableLibraryDialog<T extends SortableData> extends StatelessWidget {
                   themeData: darkButtonTheme,
                   child: Icon(
                     AbiliaIcons.navigation_previous,
-                    size: 32,
+                    size: defaultIconSize,
                   ),
                 ),
           heading: _getArchiveHeading(checklistState, context),
