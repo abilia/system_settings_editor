@@ -24,19 +24,19 @@ class ChangeCalendarDialog extends StatelessWidget {
             Row(
               children: <Widget>[
                 Expanded(
-                  child: PickField(
+                  child: RadioField(
                     key: TestKey.timePillarButton,
                     leading: Icon(AbiliaIcons.timeline),
                     text: Text(
                       translate.timePillarView,
                       style: abiliaTheme.textTheme.bodyText1,
                     ),
-                    active: currentViewType == CalendarViewType.TIMEPILLAR,
+                    value: CalendarViewType.TIMEPILLAR,
+                    groupValue: currentViewType,
                     trailing: currentViewType != CalendarViewType.TIMEPILLAR
                         ? PickField.trailingArrow
                         : null,
-                    onTap: () => Navigator.of(context)
-                        .maybePop(CalendarViewType.TIMEPILLAR),
+                    onChanged: Navigator.of(context).maybePop,
                   ),
                 ),
                 Padding(
@@ -55,19 +55,19 @@ class ChangeCalendarDialog extends StatelessWidget {
               ],
             ),
             SizedBox(height: 8.0),
-            PickField(
+            RadioField(
               key: TestKey.agendaListButton,
               leading: Icon(AbiliaIcons.list_order),
               text: Text(
                 translate.listView,
                 style: abiliaTheme.textTheme.bodyText1,
               ),
-              active: currentViewType == CalendarViewType.LIST,
+              value: CalendarViewType.LIST,
+              groupValue: currentViewType,
               trailing: currentViewType != CalendarViewType.LIST
                   ? PickField.trailingArrow
                   : null,
-              onTap: () =>
-                  Navigator.of(context).maybePop(CalendarViewType.LIST),
+              onChanged: Navigator.of(context).maybePop,
             ),
           ],
         ),
