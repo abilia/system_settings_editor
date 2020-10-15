@@ -362,6 +362,7 @@ class _CreateActivityDialogState extends State<CreateActivityDialog>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           PickField(
+            key: TestKey.newActivityButton,
             leading: Icon(
               AbiliaIcons.new_icon,
               size: smallIconSize,
@@ -375,6 +376,7 @@ class _CreateActivityDialogState extends State<CreateActivityDialog>
           ),
           SizedBox(height: 8.0),
           PickField(
+            key: TestKey.selectBasicActivityButton,
             leading: Icon(AbiliaIcons.day, size: smallIconSize),
             text: Text(
               translate.fromBasicActivity,

@@ -64,5 +64,7 @@ class TestKey {
       sideDotsTimeText = Key('sideDotsTimeText'),
       errorViewDialog = Key('errorViewDialog'),
       ttsInfoButton = Key('ttsInfoButton'),
-      animatedTheme = Key('animatedTheme');
+      animatedTheme = Key('animatedTheme'),
+      newActivityButton = Key('newActivityButton'),
+      selectBasicActivityButton = Key('selectBasicActivityButton');
 }
