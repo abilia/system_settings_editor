@@ -146,7 +146,7 @@ class PickField extends StatelessWidget {
 }
 
 class RadioField<T> extends StatelessWidget {
-  final Widget leading;
+  final Widget leading, trailing;
   final Text text;
   final double heigth, width;
   final T value, groupValue;
@@ -159,6 +159,7 @@ class RadioField<T> extends StatelessWidget {
     @required this.groupValue,
     @required this.onChanged,
     this.leading,
+    this.trailing,
     this.text,
     this.heigth = 56,
     this.width,
@@ -195,6 +196,10 @@ class RadioField<T> extends StatelessWidget {
                       const SizedBox(width: 12),
                     ],
                     Expanded(child: text),
+                    if (trailing != null) ...[
+                      trailing,
+                      const SizedBox(width: 12),
+                    ],
                   ],
                 ),
               ),
