@@ -28,9 +28,9 @@ class SortableLibraryDialog<T extends SortableData> extends StatelessWidget {
         ),
       ],
       child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
-        builder: (innerContext, checklistState) => ViewDialog(
+        builder: (innerContext, sortableArchiveState) => ViewDialog(
           verticalPadding: 0.0,
-          backButton: checklistState.currentFolderId == null
+          backButton: sortableArchiveState.currentFolderId == null
               ? null
               : ActionButton(
                   onPressed: () {
@@ -43,7 +43,7 @@ class SortableLibraryDialog<T extends SortableData> extends StatelessWidget {
                     size: defaultIconSize,
                   ),
                 ),
-          heading: _getArchiveHeading(checklistState, context),
+          heading: _getArchiveHeading(sortableArchiveState, context),
           child: SortableLibrary<T>(libraryItemGenerator),
         ),
       ),

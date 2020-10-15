@@ -45,16 +45,23 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     @required this.clockBloc,
     @required this.memoplannerSettingBloc,
     @required DateTime day,
+    BaseActivityData baseActivityData,
   })  : assert(day != null),
         assert(activitiesBloc != null),
         super(
           UnstoredActivityState(
-            Activity.createNew(
-                title: '',
-                startTime: day,
-                timezone: tz.local.name,
-                alarmType: memoplannerSettingBloc.state.defaultAlarmType()),
-            TimeInterval(startDate: day),
+            baseActivityData == null
+                ? Activity.createNew(
+                    title: '',
+                    startTime: day,
+                    timezone: tz.local.name,
+                    alarmType: memoplannerSettingBloc.state.defaultAlarmType(),
+                  )
+                : baseActivityData.toActivity(
+                    timezone: tz.local.name, day: day),
+            baseActivityData == null
+                ? TimeInterval(startDate: day)
+                : baseActivityData.toTimeInterval(startDate: day),
           ),
         );
 

@@ -5,7 +5,9 @@ import 'package:flutter/rendering.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/components/sortable/basic_activity_library.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
@@ -233,30 +235,53 @@ class CalendarBottomBar extends StatelessWidget {
                   key: TestKey.addActivity,
                   child: Icon(AbiliaIcons.plus),
                   onPressed: () async {
-                    await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) {
-                          return BlocProvider<EditActivityBloc>(
-                            create: (_) => EditActivityBloc.newActivity(
-                              activitiesBloc:
-                                  BlocProvider.of<ActivitiesBloc>(context),
-                              clockBloc: BlocProvider.of<ClockBloc>(context),
-                              memoplannerSettingBloc:
-                                  BlocProvider.of<MemoplannerSettingBloc>(
-                                      context),
-                              day: day,
+                    final response =
+                        await showViewDialog<CreateActivityDialogResponse>(
+                      context: context,
+                      builder: (_) => MultiBlocProvider(
+                        providers: [
+                          BlocProvider<SortableArchiveBloc<BaseActivityData>>(
+                            create: (_) =>
+                                SortableArchiveBloc<BaseActivityData>(
+                              sortableBloc:
+                                  BlocProvider.of<SortableBloc>(context),
                             ),
-                            child: EditActivityPage(
-                              day: day,
-                              title:
-                                  Translator.of(context).translate.newActivity,
-                            ),
-                          );
-                        },
-                        settings: RouteSettings(
-                            name: 'EditActivityPage new activity'),
+                          ),
+                          BlocProvider<UserFileBloc>.value(
+                            value: BlocProvider.of<UserFileBloc>(context),
+                          ),
+                        ],
+                        child: CreateActivityDialog(),
                       ),
                     );
+                    if (response != null) {
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) {
+                            return BlocProvider<EditActivityBloc>(
+                              create: (_) => EditActivityBloc.newActivity(
+                                activitiesBloc:
+                                    BlocProvider.of<ActivitiesBloc>(context),
+                                clockBloc: BlocProvider.of<ClockBloc>(context),
+                                memoplannerSettingBloc:
+                                    BlocProvider.of<MemoplannerSettingBloc>(
+                                        context),
+                                day: day,
+                                baseActivityData: response.baseActivityData,
+                              ),
+                              child: EditActivityPage(
+                                day: day,
+                                title: Translator.of(context)
+                                    .translate
+                                    .newActivity,
+                              ),
+                            );
+                          },
+                          settings: RouteSettings(
+                              name: 'EditActivityPage new activity'),
+                        ),
+                      );
+                    }
                   },
                 ),
               ),
@@ -275,6 +300,93 @@ class CalendarBottomBar extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CreateActivityDialogResponse {
+  final BaseActivityData baseActivityData;
+
+  CreateActivityDialogResponse({this.baseActivityData});
+}
+
+class CreateActivityDialog extends StatefulWidget {
+  const CreateActivityDialog({Key key}) : super(key: key);
+
+  @override
+  _CreateActivityDialogState createState() => _CreateActivityDialogState(false);
+}
+
+class _CreateActivityDialogState extends State<CreateActivityDialog>
+    with SingleTickerProviderStateMixin {
+  bool pickBasicActivityView;
+
+  _CreateActivityDialogState(this.pickBasicActivityView);
+  @override
+  Widget build(BuildContext context) {
+    return pickBasicActivityView
+        ? buildPickBaseActivity()
+        : buildSelectNewOrBase();
+  }
+
+  Widget buildPickBaseActivity() {
+    return BlocBuilder<SortableArchiveBloc<BaseActivityData>,
+        SortableArchiveState<BaseActivityData>>(
+      builder: (innerContext, sortableArchiveState) => ViewDialog(
+        verticalPadding: 0,
+        heading: getSortableArchiveHeading(sortableArchiveState),
+        child: SortableLibrary<BaseActivityData>(
+          (Sortable<BaseActivityData> s) => BasicActivityLibraryItem(
+            baseActivityData: s.data,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Text getSortableArchiveHeading(SortableArchiveState state) {
+    final folderName = state.allById[state.currentFolderId]?.data?.title() ??
+        Translator.of(context).translate.basicActivities;
+    return Text(folderName, style: abiliaTheme.textTheme.headline6);
+  }
+
+  Widget buildSelectNewOrBase() {
+    final translate = Translator.of(context).translate;
+    return ViewDialog(
+      heading: Text(
+        translate.createActivity,
+        style: abiliaTextTheme.headline6,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          PickField(
+            leading: Icon(
+              AbiliaIcons.new_icon,
+              size: smallIconSize,
+            ),
+            text: Text(
+              translate.newActivity,
+              style: abiliaTheme.textTheme.bodyText1,
+            ),
+            onTap: () async => await Navigator.of(context)
+                .maybePop(CreateActivityDialogResponse()),
+          ),
+          SizedBox(height: 8.0),
+          PickField(
+            leading: Icon(AbiliaIcons.day, size: smallIconSize),
+            text: Text(
+              translate.fromBasicActivity,
+              style: abiliaTheme.textTheme.bodyText1,
+            ),
+            onTap: () async => setState(
+              () {
+                pickBasicActivityView = true;
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

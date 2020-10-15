@@ -264,6 +264,12 @@ abstract class Translated {
       'Make a long press on any text or object with text to speak it loudly';
 
   final String lunch = 'Lunch';
+
+  final String fromBasicActivity = 'From basic activity';
+
+  final String createActivity = 'Create activity';
+
+  final String basicActivities = 'Basic activities';
 }
 
 class EN extends Translated {}
@@ -640,4 +646,13 @@ class SV extends Translated {
 
   @override
   final String lunch = 'Lunch';
+
+  @override
+  final String fromBasicActivity = 'Från basaktivitet';
+
+  @override
+  final String createActivity = 'Skapa aktivitet';
+
+  @override
+  final String basicActivities = 'Basaktiviteter';
 }

@@ -40,7 +40,7 @@ class DbActivity extends DbModel<Activity> {
             json['recurrentData'],
             json['endTime'],
           ),
-          reminderBefore: _parseReminders(json['reminderBefore']),
+          reminderBefore: parseReminders(json['reminderBefore']),
           alarmType: json['alarmType'],
           signedOffDates: _parseSignedOffDates(json['signedOffDates']),
           timezone: json['timezone'],
@@ -70,7 +70,7 @@ class DbActivity extends DbModel<Activity> {
             dbRow['recurrent_data'],
             dbRow['end_time'],
           ),
-          reminderBefore: _parseReminders(dbRow['reminder_before']),
+          reminderBefore: parseReminders(dbRow['reminder_before']),
           alarmType: dbRow['alarm_type'],
           signedOffDates: _parseSignedOffDates(dbRow['signed_off_dates']),
           timezone: dbRow['timezone'],
@@ -135,7 +135,7 @@ class DbActivity extends DbModel<Activity> {
       UnmodifiableListView(
           (signedOffDates as String)?.tryDecodeSignedOffDates() ?? []);
 
-  static UnmodifiableListView<int> _parseReminders(String reminders) =>
+  static UnmodifiableListView<int> parseReminders(String reminders) =>
       UnmodifiableListView(
           reminders?.split(';')?.map(int.tryParse)?.where((v) => v != null) ??
               []);
