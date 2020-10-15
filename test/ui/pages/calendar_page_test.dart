@@ -81,7 +81,6 @@ void main() {
 
     setUp(() {
       tz.initializeTimeZones();
-      initializeDateFormatting();
 
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
