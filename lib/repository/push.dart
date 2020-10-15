@@ -1,11 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FirebasePushService {
-  Future<String> initPushToken() async {
-    final _firebaseMessaging = FirebaseMessaging();
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
-    final token = await _firebaseMessaging.getToken();
-    return token;
-  }
+  Future<String> initPushToken() => FirebaseMessaging().getToken();
 }

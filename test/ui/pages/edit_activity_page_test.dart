@@ -96,6 +96,9 @@ void main() {
                 settingsDb: MockSettingsDb(),
               ),
             ),
+            BlocProvider<PermissionBloc>(
+              create: (context) => PermissionBloc(),
+            ),
           ], child: child)),
       home: widget,
     );
@@ -1758,7 +1761,7 @@ text''';
       final alarmPicker =
           tester.widgetList(find.byType(PickField)).first as PickField;
 
-      expect(alarmPicker.disabled, true);
+      expect(alarmPicker.onTap, isNull);
     });
 
     final hourInputFinder = find.byKey(TestKey.hourTextInput);

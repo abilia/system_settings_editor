@@ -44,7 +44,8 @@ class _CalendarPageState extends State<CalendarPage>
         ..bloc<ActivitiesBloc>().add(LoadActivities())
         ..bloc<SortableBloc>().add(LoadSortables())
         ..bloc<GenericBloc>().add(LoadGenerics())
-        ..bloc<LicenseBloc>().add(ReloadLicenses());
+        ..bloc<LicenseBloc>().add(ReloadLicenses())
+        ..bloc<PermissionBloc>().checkAll();
       _jumpToActivity();
     }
   }

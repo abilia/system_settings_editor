@@ -83,7 +83,6 @@ class PickField extends StatelessWidget {
   final double heigth;
   final bool active;
   final bool errorState;
-  final bool disabled;
   final String semanticsLabel;
 
   const PickField({
@@ -95,7 +94,6 @@ class PickField extends StatelessWidget {
     this.heigth = 56,
     this.active = true,
     this.errorState = false,
-    this.disabled = false,
     this.semanticsLabel,
   }) : super(key: key);
   @override
@@ -108,13 +106,13 @@ class PickField extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: disabled ? null : onTap,
+          onTap: onTap,
           borderRadius: borderRadius,
           child: Ink(
             height: heigth,
             decoration: errorState
                 ? whiteErrorBoxDecoration
-                : disabled
+                : onTap == null
                     ? disabledBoxDecoration
                     : active
                         ? whiteBoxDecoration

@@ -114,9 +114,17 @@ forenoon;forenoon;förmiddag
 afternoon;afternoon;eftermiddag
 evening;evening;kväll
 night;night;natt
-textToSpeech;Text to speech;Text till tal;
-longpressToSpeak;Long press to speak;Tryck länge för tal;
+textToSpeech;Text to speech;Text till tal
+longpressToSpeak;Long press to speak;Tryck länge för tal
 everyOtherWeek;Every other week;Varannan vecka
 recurringDataEmptyErrorMessage;You need to select at least one day;En återkommande aktivitet måste ha en vald upprepning
-longPressInfoText;Make a long press on any text or object with text to speak it loudly;Tryck länge på någon text för att få den uppläst;
-lunch;Lunch;Lunch;
+longPressInfoText;Make a long press on any text or object with text to speak it loudly;Tryck länge på någon text för att få den uppläst
+lunch;Lunch;Lunch
+permissions;Permissions;Behörigheter
+notifications;Notifications;Notifications
+accessToPhotos;Access to Photos;Tillgång till bilder
+accessToCamera;Access to Camera;Tillgång till kameran
+allowNotifications;Allow notifications;Tillåt notiser
+allowNotificationsDescription1;Allow notifications to be able to get alarms and reminders from activities. You can do that from the ;Tillåt notiser för att larm och påminnelser från aktiviteter. Du kan göra det ifrån 
+allowNotificationsDescriptionSettingsLink;settings;inställningar
+allowNotificationsDescription2;.;.

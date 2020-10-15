@@ -264,6 +264,23 @@ abstract class Translated {
       'Make a long press on any text or object with text to speak it loudly';
 
   final String lunch = 'Lunch';
+
+  final String permissions = 'Permissions';
+
+  final String notifications = 'Notifications';
+
+  final String accessToPhotos = 'Access to Photos';
+
+  final String accessToCamera = 'Access to Camera';
+
+  final String allowNotifications = 'Allow notifications';
+
+  final String allowNotificationsDescription1 =
+      'Allow notifications to be able to get alarms and reminders from activities. You can do that from the ';
+
+  final String allowNotificationsDescriptionSettingsLink = 'settings';
+
+  final String allowNotificationsDescription2 = '.';
 }
 
 class EN extends Translated {}
@@ -640,4 +657,29 @@ class SV extends Translated {
 
   @override
   final String lunch = 'Lunch';
+
+  @override
+  final String permissions = 'Behörigheter';
+
+  @override
+  final String notifications = 'Notifications';
+
+  @override
+  final String accessToPhotos = 'Tillgång till bilder';
+
+  @override
+  final String accessToCamera = 'Tillgång till kameran';
+
+  @override
+  final String allowNotifications = 'Tillåt notiser';
+
+  @override
+  final String allowNotificationsDescription1 =
+      'Tillåt notiser för att larm och påminnelser från aktiviteter. Du kan göra det ifrån ';
+
+  @override
+  final String allowNotificationsDescriptionSettingsLink = 'inställningar';
+
+  @override
+  final String allowNotificationsDescription2 = '.';
 }

@@ -105,9 +105,11 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             )..add(LoadGenerics()),
           ),
           BlocProvider<MemoplannerSettingBloc>(
-            create: (context) => memoplannerSettingBloc ?? MemoplannerSettingBloc(
-              genericBloc: context.bloc<GenericBloc>(),
-            ),
+            create: (context) =>
+                memoplannerSettingBloc ??
+                MemoplannerSettingBloc(
+                  genericBloc: context.bloc<GenericBloc>(),
+                ),
           ),
           BlocProvider<DayPickerBloc>(
             create: (context) => DayPickerBloc(
@@ -147,7 +149,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               userRepository: authenticatedState.userRepository,
               authenticationBloc: context.repository<AuthenticationBloc>(),
             )..add(ReloadLicenses()),
-          )
+          ),
+          BlocProvider<PermissionBloc>(
+            create: (context) => PermissionBloc()
+              ..add(RequestPermission(Permission.notification))
+              ..checkAll(),
+          ),
         ],
         child: child,
       ),

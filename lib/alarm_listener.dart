@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/file_storage.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class SeagullListeners extends StatefulWidget {
@@ -61,6 +62,14 @@ class _SeagullListenersState extends State<SeagullListeners>
           listener: _alarmListener,
           listenWhen: widget.listenWhen,
         ),
+        BlocListener<PermissionBloc, PermissionState>(
+            listenWhen: (previous, current) =>
+                current.status[Permission.notification].isDenied &&
+                !previous.status[Permission.notification].isDenied,
+            listener: (context, state) => showViewDialog(
+                  context: context,
+                  builder: (context) => NotificationPermissionWarningDialog(),
+                )),
       ],
       child: widget.child,
     );
