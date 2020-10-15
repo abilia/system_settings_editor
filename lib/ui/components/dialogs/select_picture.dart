@@ -70,6 +70,10 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
       onOk: onOk,
       child: BlocBuilder<PermissionBloc, PermissionState>(
         builder: (context, permission) {
+          final photosNotDenied =
+              permission.status[Permission.photos].isGrantedOrUndetermined;
+          final cameraNotDenied =
+              permission.status[Permission.camera].isGrantedOrUndetermined;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -88,29 +92,29 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
               ),
               const SizedBox(height: 8.0),
               PickField(
+                key: TestKey.photosPickField,
                 leading: Icon(AbiliaIcons.my_photos),
                 text: Text(
                   translate.myPhotos,
                   style: abiliaTheme.textTheme.bodyText1,
                 ),
-                onTap:
-                    permission.status[Permission.photos].isGrantedOrUndetermined
-                        ? () async =>
-                            await _getExternalFile(source: ImageSource.gallery)
-                        : null,
+                onTap: photosNotDenied
+                    ? () async =>
+                        await _getExternalFile(source: ImageSource.gallery)
+                    : null,
               ),
               const SizedBox(height: 8.0),
               PickField(
+                key: TestKey.cameraPickField,
                 leading: Icon(AbiliaIcons.camera_photo),
                 text: Text(
                   translate.takeNewPhoto,
                   style: abiliaTheme.textTheme.bodyText1,
                 ),
-                onTap:
-                    permission.status[Permission.camera].isGrantedOrUndetermined
-                        ? () async =>
-                            await _getExternalFile(source: ImageSource.camera)
-                        : null,
+                onTap: cameraNotDenied
+                    ? () async =>
+                        await _getExternalFile(source: ImageSource.camera)
+                    : null,
               ),
             ],
           );

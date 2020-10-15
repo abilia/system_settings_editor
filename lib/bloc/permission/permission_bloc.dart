@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:seagull/logging.dart';
 
@@ -12,7 +13,7 @@ part 'permission_event.dart';
 part 'permission_state.dart';
 
 class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Shout {
-  PermissionBloc() : super(PermissionState(UnmodifiableMapView({})));
+  PermissionBloc() : super(PermissionState.empty());
 
   @override
   Stream<PermissionState> mapEventToState(
@@ -30,13 +31,10 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Shout {
     }
   }
 
-  void checkAll() => add(
-        const CheckStatusForPermissions(
-          [
-            Permission.notification,
-            Permission.camera,
-            Permission.photos,
-          ],
-        ),
-      );
+  static const allPermissions = [
+    Permission.notification,
+    Permission.camera,
+    Permission.photos,
+  ];
+  void checkAll() => add(const CheckStatusForPermissions(allPermissions));
 }

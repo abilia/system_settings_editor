@@ -44,6 +44,7 @@ class PermissionSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SwitchField(
+        key: ObjectKey(permission),
         text: Text(permission.translate(Translator.of(context).translate)),
         value: status.isGranted,
         onChanged: status.isGranted

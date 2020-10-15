@@ -97,7 +97,7 @@ void main() {
               ),
             ),
             BlocProvider<PermissionBloc>(
-              create: (context) => PermissionBloc(),
+              create: (context) => PermissionBloc()..checkAll(),
             ),
           ], child: child)),
       home: widget,
@@ -156,16 +156,44 @@ void main() {
       expect(find.text(newActivtyTitle), findsOneWidget);
     });
 
-    testWidgets('Select picture dialog shows', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.addPicture));
-      await tester.pumpAndSettle();
-      expect(find.byType(SelectPictureDialog), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.closeDialog));
-      await tester.pumpAndSettle();
-      expect(find.byType(SelectPictureDialog), findsNothing);
+    group('picture dialog', () {
+      tearDown(() {
+        setupPermissions();
+      });
+      testWidgets('Select picture dialog shows', (WidgetTester tester) async {
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.addPicture));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectPictureDialog), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.closeDialog));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectPictureDialog), findsNothing);
+      });
+
+      testWidgets(
+          'Select picture dialog picker options are disabled when premission in denied',
+          (WidgetTester tester) async {
+        setupPermissions({
+          Permission.camera: PermissionStatus.denied,
+          Permission.photos: PermissionStatus.undetermined,
+        });
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.addPicture));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectPictureDialog), findsOneWidget);
+
+        final photoPickField =
+            tester.widget<PickField>(find.byKey(TestKey.photosPickField));
+        final cameraPickField =
+            tester.widget<PickField>(find.byKey(TestKey.cameraPickField));
+
+        expect(photoPickField.onTap, isNotNull);
+        expect(cameraPickField.onTap, isNull);
+      });
     });
 
     testWidgets(

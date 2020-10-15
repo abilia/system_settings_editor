@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -68,6 +69,7 @@ void main() {
         ..syncDelay = SyncDelays.zero
         ..alarmScheduler = noAlarmScheduler
         ..database = MockDatabase()
+        ..flutterTts = MockFlutterTts()
         ..init();
     });
 
@@ -95,6 +97,83 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
+    });
+
+    group('Premission pop up', () {
+      final translate = Locales.language.values.first;
+
+      setUp(() {
+        setupPermissions();
+      });
+      tearDown(() {
+        setupPermissions();
+      });
+      testWidgets('Notification permission is requested at start up',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(requestedPermissions, {Permission.notification});
+      });
+
+      testWidgets('Denied notifications shows popup',
+          (WidgetTester tester) async {
+        setupPermissions({Permission.notification: PermissionStatus.denied});
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(
+            find.byType(NotificationPermissionWarningDialog), findsOneWidget);
+      });
+
+      testWidgets('Granted premission shows nothing',
+          (WidgetTester tester) async {
+        setupPermissions({Permission.notification: PermissionStatus.granted});
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(NotificationPermissionWarningDialog), findsNothing);
+      });
+
+      testWidgets('Denied notifications popup tts',
+          (WidgetTester tester) async {
+        setupPermissions({Permission.notification: PermissionStatus.denied});
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.verifyTts(find.text(translate.allowNotifications),
+            exact: translate.allowNotifications);
+        final compound = translate.allowNotificationsDescription1 +
+            translate.allowNotificationsDescriptionSettingsLink +
+            translate.allowNotificationsDescription2;
+        await tester.verifyTts(find.byType(NotificationBodyTextWarning),
+            exact: compound);
+      });
+
+      testWidgets('Denied notifications link to permission settings',
+          (WidgetTester tester) async {
+        bool tapTextSpan(RichText richText, String text) {
+          return !richText.text.visitChildren(
+            (InlineSpan visitor) {
+              if (visitor is TextSpan && visitor.text == text) {
+                (visitor.recognizer as TapGestureRecognizer).onTap();
+                return false;
+              }
+              return true;
+            },
+          );
+        }
+
+        setupPermissions({Permission.notification: PermissionStatus.denied});
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(
+            find.byWidgetPredicate(
+              (widget) =>
+                  widget is RichText &&
+                  tapTextSpan(widget,
+                      translate.allowNotificationsDescriptionSettingsLink),
+            ),
+            findsOneWidget);
+        await tester.pumpAndSettle();
+        expect(find.byType(PermissionsPage), findsOneWidget);
+      });
     });
   });
 
