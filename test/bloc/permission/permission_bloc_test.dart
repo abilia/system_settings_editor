@@ -29,7 +29,7 @@ void main() {
   test('requesting a permission requests the permission', () async {
     setupPermissions({Permission.camera: PermissionStatus.granted});
     final permissionBloc = PermissionBloc();
-    permissionBloc.add(RequestPermission(Permission.camera));
+    permissionBloc.add(RequestPermissions([Permission.camera]));
     await expectLater(
       permissionBloc,
       emits(
@@ -59,7 +59,7 @@ void main() {
   test('checking a permission', () async {
     setupPermissions({Permission.camera: PermissionStatus.granted});
     final permissionBloc = PermissionBloc();
-    permissionBloc.add(CheckStatusForPermission(Permission.camera));
+    permissionBloc.add(CheckStatusForPermissions([Permission.camera]));
     await expectLater(
       permissionBloc,
       emits(

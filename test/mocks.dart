@@ -168,15 +168,15 @@ void setupPermissions(
     [Map<Permission, PermissionStatus> permissions = const {}]) {
   MethodChannel('flutter.baseflow.com/permissions/methods')
       .setMockMethodCallHandler((MethodCall methodCall) async {
-    final _permissions = permissions
-        .map((key, value) => MapEntry<int, int>(key.value, value.value));
     switch (methodCall.method) {
       case 'requestPermissions':
-        final args = (methodCall.arguments as List)
-            .cast<int>()
-            .map((i) => Permission.values[i]);
-        requestedPermissions.addAll(args);
-        return _permissions;
+        requestedPermissions.addAll(
+          (methodCall.arguments as List)
+              .cast<int>()
+              .map((i) => Permission.values[i]),
+        );
+        return permissions
+            .map((key, value) => MapEntry<int, int>(key.value, value.value));
       case 'checkPermissionStatus':
         final askedPermission = Permission.values[methodCall.arguments as int];
         checkedPermissions.add(askedPermission);

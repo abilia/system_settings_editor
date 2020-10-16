@@ -12,7 +12,7 @@ export 'package:permission_handler/permission_handler.dart';
 part 'permission_event.dart';
 part 'permission_state.dart';
 
-class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Shout {
+class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
   PermissionBloc() : super(PermissionState.empty());
 
   @override
@@ -36,5 +36,6 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Shout {
     Permission.camera,
     Permission.photos,
   ];
+
   void checkAll() => add(const CheckStatusForPermissions(allPermissions));
 }

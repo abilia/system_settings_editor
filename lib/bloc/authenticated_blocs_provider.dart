@@ -152,7 +152,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           ),
           BlocProvider<PermissionBloc>(
             create: (context) => PermissionBloc()
-              ..add(RequestPermission(Permission.notification))
+              ..add(RequestPermissions([Permission.notification]))
               ..checkAll(),
           ),
         ],

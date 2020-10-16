@@ -63,13 +63,12 @@ class _SeagullListenersState extends State<SeagullListeners>
           listenWhen: widget.listenWhen,
         ),
         BlocListener<PermissionBloc, PermissionState>(
-            listenWhen: (previous, current) =>
-                current.status[Permission.notification].isDenied &&
-                !previous.status[Permission.notification].isDenied,
-            listener: (context, state) => showViewDialog(
-                  context: context,
-                  builder: (context) => NotificationPermissionWarningDialog(),
-                )),
+          listenWhen: _currentDeniedLastNot,
+          listener: (context, state) => showViewDialog(
+            context: context,
+            builder: (context) => NotificationPermissionWarningDialog(),
+          ),
+        ),
       ],
       child: widget.child,
     );
@@ -80,4 +79,9 @@ class _SeagullListenersState extends State<SeagullListeners>
       await GetIt.I<AlarmNavigator>().pushAlarm(context, state.alarm);
     }
   }
+
+  bool _currentDeniedLastNot(
+          PermissionState previous, PermissionState current) =>
+      current.status[Permission.notification].isDenied &&
+      !previous.status[Permission.notification].isDenied;
 }

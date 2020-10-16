@@ -52,7 +52,7 @@ class PermissionSwitch extends StatelessWidget {
             : (_) => status.isUndetermined
                 ? context
                     .bloc<PermissionBloc>()
-                    .add(RequestPermission(permission))
+                    .add(RequestPermissions([permission]))
                 : openAppSettings(),
       );
 }
