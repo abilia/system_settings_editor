@@ -90,6 +90,7 @@ class ActivityInfo extends StatelessWidget with Checker {
                       context,
                       now,
                       activityDay,
+                      overlayStyle: true,
                     );
                   },
                 ),
@@ -105,9 +106,10 @@ mixin Checker {
   Future checkConfirmation(
     BuildContext context,
     DateTime now,
-    ActivityDay activityDay, [
+    ActivityDay activityDay, {
     String extraMessage,
-  ]) async {
+    bool overlayStyle = false,
+  }) async {
     final translate = Translator.of(context).translate;
     final shouldCheck = await showViewDialog<bool>(
       context: context,
@@ -117,6 +119,7 @@ mixin Checker {
             ? translate.unCheckActivityQuestion
             : translate.checkActivityQuestion,
         extraMessage: extraMessage,
+        overlayStyle: overlayStyle,
       ),
     );
     if (shouldCheck == true) {
@@ -236,7 +239,7 @@ class Attachment extends StatelessWidget with Checker {
               context,
               DateTime.now(),
               ActivityDay(updatedActivity, activityDay.day),
-              translate.checklistDoneInfo,
+              extraMessage: translate.checklistDoneInfo,
             );
           }
         },
