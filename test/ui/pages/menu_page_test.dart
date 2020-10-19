@@ -173,12 +173,10 @@ void main() {
           tester.widgetList<SwitchField>(find.byType(SwitchField));
       // Assert - Switches is on
       expect(permissionSwitches.every((e) => e.value), isTrue);
-      // Assert - Can't be pressed
-      expect(permissionSwitches.every((e) => e.onChanged == null), isTrue);
     });
 
-    testWidgets('Permission has switches tts', (WidgetTester tester) async {
-      setupPermissions();
+    testWidgets('Permission tts', (WidgetTester tester) async {
+      setupPermissions({Permission.notification: PermissionStatus.denied});
       await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
@@ -189,6 +187,11 @@ void main() {
         await tester.verifyTts(find.byKey(ObjectKey(permission)),
             exact: permission.translate(translate));
       }
+
+      await tester.verifyTts(
+        find.byType(ErrorMessage),
+        exact: translate.notificationsWarningHintText,
+      );
     });
 
     testWidgets(
@@ -207,12 +210,11 @@ void main() {
       expect(requestedPermissions, containsAll(PermissionBloc.allPermissions));
     });
 
-    testWidgets(
-        'Permission has switches undetermined tapped calls for request permission',
+    testWidgets('Permission perma denied tapped opens settings',
         (WidgetTester tester) async {
       setupPermissions({
         for (var key in PermissionBloc.allPermissions)
-          key: PermissionStatus.denied
+          key: PermissionStatus.permanentlyDenied
       });
       await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
       await tester.pumpAndSettle();
@@ -225,6 +227,58 @@ void main() {
       }
 
       expect(openAppSettingsCalls, PermissionBloc.allPermissions.length);
+    });
+
+    testWidgets('Permission granted, except notifcation, tapped calls settings',
+        (WidgetTester tester) async {
+      setupPermissions({
+        for (var key in PermissionBloc.allPermissions)
+          key: PermissionStatus.granted
+      });
+      await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
+      await tester.pumpAndSettle();
+      await tester.tap(permissionButtonFinder);
+      await tester.pumpAndSettle();
+
+      final allExceptNotifcation = PermissionBloc.allPermissions.toList()
+        ..remove(Permission.notification);
+
+      for (final permission in allExceptNotifcation) {
+        await tester.tap(find.byKey(ObjectKey(permission)));
+        await tester.pumpAndSettle();
+      }
+
+      expect(openAppSettingsCalls, allExceptNotifcation.length);
+    });
+
+    testWidgets('Notification granted tapped calls shows warning',
+        (WidgetTester tester) async {
+      setupPermissions({Permission.notification: PermissionStatus.granted});
+      await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
+      await tester.pumpAndSettle();
+      await tester.tap(permissionButtonFinder);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(NotificationPermissionSwitch));
+      await tester.pumpAndSettle();
+
+      expect(
+          find.byType(NotificationPermissionOffWarningDialog), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.okDialog));
+      expect(openAppSettingsCalls, 1);
+    });
+
+    testWidgets('Notification denied shows warnings',
+        (WidgetTester tester) async {
+      setupPermissions({Permission.notification: PermissionStatus.denied});
+      await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
+      await tester.pumpAndSettle();
+      await tester.tap(permissionButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(AbiliaIcons.ir_error), findsOneWidget);
+      expect(find.byType(ErrorMessage), findsOneWidget);
+      expect(find.text(translate.notificationsWarningHintText), findsOneWidget);
     });
   });
 }

@@ -99,7 +99,7 @@ void main() {
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
     });
 
-    group('Premission pop up', () {
+    group('Premissions', () {
       final translate = Locales.language.values.first;
 
       setUp(() {
@@ -115,13 +115,16 @@ void main() {
         expect(requestedPermissions, {Permission.notification});
       });
 
-      testWidgets('Denied notifications shows popup',
+      testWidgets('Denied notifications shows popup and warnings',
           (WidgetTester tester) async {
         setupPermissions({Permission.notification: PermissionStatus.denied});
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         expect(
             find.byType(NotificationPermissionWarningDialog), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.closeDialog));
+        expect(find.byType(OrangeDot), findsOneWidget);
+        expect(find.byType(ErrorMessage), findsOneWidget);
       });
 
       testWidgets('Granted premission shows nothing',
@@ -130,10 +133,11 @@ void main() {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         expect(find.byType(NotificationPermissionWarningDialog), findsNothing);
+        expect(find.byType(OrangeDot), findsNothing);
+        expect(find.byType(ErrorMessage), findsNothing);
       });
 
-      testWidgets('Denied notifications popup tts',
-          (WidgetTester tester) async {
+      testWidgets('Denied notifications tts', (WidgetTester tester) async {
         setupPermissions({Permission.notification: PermissionStatus.denied});
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
@@ -144,6 +148,10 @@ void main() {
             translate.allowNotificationsDescription2;
         await tester.verifyTts(find.byType(NotificationBodyTextWarning),
             exact: compound);
+        await tester.tap(find.byKey(TestKey.closeDialog));
+        await tester.pumpAndSettle();
+        await tester.verifyTts(find.byType(ErrorMessage),
+            exact: translate.notificationsWarningText);
       });
 
       testWidgets('Denied notifications link to permission settings',

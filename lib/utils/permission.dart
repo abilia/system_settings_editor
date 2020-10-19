@@ -12,6 +12,8 @@ extension PermissionExtension on Permission {
       case Permission.photos:
       case Permission.storage:
         return translate.accessToPhotos;
+      case Permission.notification:
+        return translate.notifications;
       default:
         return toString();
     }

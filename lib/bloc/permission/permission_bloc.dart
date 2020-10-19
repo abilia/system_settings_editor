@@ -34,15 +34,17 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
     }
   }
 
-  static final allPermissions = [
-    Permission.notification,
-    if (Platform.isAndroid) ...[
-      Permission.storage,
-    ] else ...[
-      Permission.camera,
-      Permission.photos,
-    ]
-  ];
+  static final allPermissions = UnmodifiableListView(
+    [
+      Permission.notification,
+      if (Platform.isAndroid) ...[
+        Permission.storage,
+      ] else ...[
+        Permission.camera,
+        Permission.photos,
+      ]
+    ],
+  );
 
   void checkAll() => add(CheckStatusForPermissions(allPermissions));
 }
