@@ -32,17 +32,7 @@ class SortableLibraryDialog<T extends SortableData> extends StatelessWidget {
           verticalPadding: 0.0,
           backButton: sortableArchiveState.currentFolderId == null
               ? null
-              : ActionButton(
-                  onPressed: () {
-                    BlocProvider.of<SortableArchiveBloc<T>>(innerContext)
-                        .add(NavigateUp());
-                  },
-                  themeData: darkButtonTheme,
-                  child: Icon(
-                    AbiliaIcons.navigation_previous,
-                    size: defaultIconSize,
-                  ),
-                ),
+              : SortableLibraryBackButton<T>(),
           heading: _getArchiveHeading(sortableArchiveState, context),
           child: SortableLibrary<T>(libraryItemGenerator),
         ),
@@ -54,6 +44,27 @@ class SortableLibraryDialog<T extends SortableData> extends StatelessWidget {
     final folderName = state.allById[state.currentFolderId]?.data?.title() ??
         Translator.of(context).translate.selectFromLibrary;
     return Text(folderName, style: abiliaTheme.textTheme.headline6);
+  }
+}
+
+class SortableLibraryBackButton<T extends SortableData>
+    extends StatelessWidget {
+  const SortableLibraryBackButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ActionButton(
+      onPressed: () {
+        BlocProvider.of<SortableArchiveBloc<T>>(context).add(NavigateUp());
+      },
+      themeData: darkButtonTheme,
+      child: Icon(
+        AbiliaIcons.navigation_previous,
+        size: defaultIconSize,
+      ),
+    );
   }
 }
 

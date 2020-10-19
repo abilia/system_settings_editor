@@ -79,9 +79,8 @@ void main() {
     ActivityResponse activityResponse = () => [];
     final initialDay = DateTime(2020, 08, 05);
 
-    setUp(() {
+    setUp(() async {
       tz.initializeTimeZones();
-
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
       mockTicker = StreamController<DateTime>();
@@ -124,11 +123,12 @@ void main() {
 
     testWidgets('New activity from basic activity gets correct title',
         (WidgetTester tester) async {
+      await initializeDateFormatting();
       final sortableBlocMock = MockSortableBloc();
       final title = 'testtitle';
       when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
-        Sortable.createNew<BaseActivityData>(
-          data: BaseActivityData.createNew(title: title),
+        Sortable.createNew<BasicActivityData>(
+          data: BasicActivityDataItem.createNew(title: title),
         ),
       ]));
       await tester.pumpWidget(
@@ -139,7 +139,7 @@ void main() {
       expect(find.byType(CreateActivityDialog), findsOneWidget);
       await tester.tap(find.byKey(TestKey.selectBasicActivityButton));
       await tester.pumpAndSettle();
-      expect(find.byType(typeOf<SortableLibrary<BaseActivityData>>()),
+      expect(find.byType(typeOf<SortableLibrary<BasicActivityData>>()),
           findsOneWidget);
       expect(find.text(title), findsOneWidget);
       await tester.tap(find.text(title));

@@ -231,59 +231,7 @@ class CalendarBottomBar extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.center,
-                child: ActionButton(
-                  key: TestKey.addActivity,
-                  child: Icon(AbiliaIcons.plus),
-                  onPressed: () async {
-                    final response =
-                        await showViewDialog<CreateActivityDialogResponse>(
-                      context: context,
-                      builder: (_) => MultiBlocProvider(
-                        providers: [
-                          BlocProvider<SortableArchiveBloc<BaseActivityData>>(
-                            create: (_) =>
-                                SortableArchiveBloc<BaseActivityData>(
-                              sortableBloc:
-                                  BlocProvider.of<SortableBloc>(context),
-                            ),
-                          ),
-                          BlocProvider<UserFileBloc>.value(
-                            value: BlocProvider.of<UserFileBloc>(context),
-                          ),
-                        ],
-                        child: CreateActivityDialog(),
-                      ),
-                    );
-                    if (response != null) {
-                      await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) {
-                            return BlocProvider<EditActivityBloc>(
-                              create: (_) => EditActivityBloc.newActivity(
-                                activitiesBloc:
-                                    BlocProvider.of<ActivitiesBloc>(context),
-                                clockBloc: BlocProvider.of<ClockBloc>(context),
-                                memoplannerSettingBloc:
-                                    BlocProvider.of<MemoplannerSettingBloc>(
-                                        context),
-                                day: day,
-                                baseActivityData: response.baseActivityData,
-                              ),
-                              child: EditActivityPage(
-                                day: day,
-                                title: Translator.of(context)
-                                    .translate
-                                    .newActivity,
-                              ),
-                            );
-                          },
-                          settings: RouteSettings(
-                              name: 'EditActivityPage new activity'),
-                        ),
-                      );
-                    }
-                  },
-                ),
+                child: AddActivityButton(day: day),
               ),
               Align(
                 alignment: Alignment.centerRight,
@@ -306,9 +254,9 @@ class CalendarBottomBar extends StatelessWidget {
 }
 
 class CreateActivityDialogResponse {
-  final BaseActivityData baseActivityData;
+  final BasicActivityDataItem basicActivityData;
 
-  CreateActivityDialogResponse({this.baseActivityData});
+  CreateActivityDialogResponse({this.basicActivityData});
 }
 
 class CreateActivityDialog extends StatefulWidget {
@@ -326,19 +274,22 @@ class _CreateActivityDialogState extends State<CreateActivityDialog>
   @override
   Widget build(BuildContext context) {
     return pickBasicActivityView
-        ? buildPickBaseActivity()
+        ? buildPickBasicActivity()
         : buildSelectNewOrBase();
   }
 
-  Widget buildPickBaseActivity() {
-    return BlocBuilder<SortableArchiveBloc<BaseActivityData>,
-        SortableArchiveState<BaseActivityData>>(
+  Widget buildPickBasicActivity() {
+    return BlocBuilder<SortableArchiveBloc<BasicActivityData>,
+        SortableArchiveState<BasicActivityData>>(
       builder: (innerContext, sortableArchiveState) => ViewDialog(
         verticalPadding: 0,
+        backButton: sortableArchiveState.currentFolderId == null
+            ? null
+            : SortableLibraryBackButton<BasicActivityData>(),
         heading: getSortableArchiveHeading(sortableArchiveState),
-        child: SortableLibrary<BaseActivityData>(
-          (Sortable<BaseActivityData> s) => BasicActivityLibraryItem(
-            baseActivityData: s.data,
+        child: SortableLibrary<BasicActivityData>(
+          (Sortable<BasicActivityData> s) => BasicActivityLibraryItem(
+            basicActivityData: s.data,
           ),
         ),
       ),

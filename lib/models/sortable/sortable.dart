@@ -14,7 +14,7 @@ class SortableType {
   static const String imageArchive = 'imagearchive',
       checklist = 'checklist',
       basetimer = 'basetimer',
-      baseactivity = 'baseactivity',
+      basicactivity = 'baseactivity',
       note = 'note';
 }
 
