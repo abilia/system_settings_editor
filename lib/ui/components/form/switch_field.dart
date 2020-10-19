@@ -8,6 +8,7 @@ class SwitchField extends StatelessWidget {
   final Text text;
   final double heigth, width;
   final bool value;
+  final Decoration decoration;
 
   const SwitchField({
     Key key,
@@ -17,6 +18,7 @@ class SwitchField extends StatelessWidget {
     this.heigth = 56,
     this.width,
     this.value = false,
+    this.decoration = whiteBoxDecoration,
   })  : assert(text != null),
         super(key: key);
 
@@ -41,7 +43,7 @@ class SwitchField extends StatelessWidget {
           child: Container(
             height: heigth,
             width: width,
-            decoration: onChanged == null ? boxDecoration : whiteBoxDecoration,
+            decoration: onChanged == null ? boxDecoration : decoration,
             padding: const EdgeInsets.only(left: 12.0, right: 4.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

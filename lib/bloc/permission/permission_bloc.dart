@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 import 'package:seagull/logging.dart';
+import 'package:seagull/utils/all.dart';
 
 export 'package:permission_handler/permission_handler.dart';
 
@@ -31,11 +34,15 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
     }
   }
 
-  static const allPermissions = [
+  static final allPermissions = [
     Permission.notification,
-    Permission.camera,
-    Permission.photos,
+    if (Platform.isAndroid) ...[
+      Permission.storage,
+    ] else ...[
+      Permission.camera,
+      Permission.photos,
+    ]
   ];
 
-  void checkAll() => add(const CheckStatusForPermissions(allPermissions));
+  void checkAll() => add(CheckStatusForPermissions(allPermissions));
 }

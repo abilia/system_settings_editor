@@ -1,9 +1,38 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:seagull/bloc/permission/permission_bloc.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
+
+class NotificationPermissionOffWarningDialog extends StatelessWidget {
+  const NotificationPermissionOffWarningDialog({
+    Key key,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    return WarningDialog(
+      onOk: () async {
+        await Navigator.of(context).maybePop();
+        await openAppSettings();
+      },
+      icon: const Icon(
+        AbiliaIcons.ir_error,
+        size: 96.0,
+        color: AbiliaColors.orange,
+      ),
+      heading: Translator.of(context).translate.turnOffNotifications,
+      text: Tts(
+        child: Text(
+          translate.turnOffNotificationsBody,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+}
 
 class NotificationPermissionWarningDialog extends StatelessWidget {
   const NotificationPermissionWarningDialog({
@@ -11,32 +40,14 @@ class NotificationPermissionWarningDialog extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return ViewDialog(
-      verticalPadding: 0.0,
-      leftPadding: 32.0,
-      rightPadding: 32.0,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Spacer(flex: 128),
-          const Icon(
-            AbiliaIcons.ir_error,
-            size: 96.0,
-            color: AbiliaColors.orange,
-          ),
-          const Spacer(flex: 80),
-          Tts(
-            child: Text(
-              Translator.of(context).translate.allowNotifications,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          NotificationBodyTextWarning(),
-          const Spacer(flex: 199),
-        ],
+    return WarningDialog(
+      icon: const Icon(
+        AbiliaIcons.ir_error,
+        size: 96.0,
+        color: AbiliaColors.orange,
       ),
+      heading: Translator.of(context).translate.allowNotifications,
+      text: NotificationBodyTextWarning(),
     );
   }
 }

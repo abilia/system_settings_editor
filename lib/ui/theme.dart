@@ -57,6 +57,8 @@ const Border errorBorder =
     Border.fromBorderSide(BorderSide(color: AbiliaColors.red));
 const borderGreen =
     Border.fromBorderSide(BorderSide(color: AbiliaColors.green, width: 2.0));
+const borderOrange =
+    Border.fromBorderSide(BorderSide(color: AbiliaColors.orange40, width: 2.0));
 const border = Border.fromBorderSide(borderSide);
 const ligthShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
@@ -97,6 +99,11 @@ const BoxDecoration greenBoarderWhiteBoxDecoration = BoxDecoration(
 const BoxDecoration whiteNoBorderBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
+);
+const BoxDecoration warningBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white,
+  borderRadius: borderRadius,
+  border: borderOrange,
 );
 const inactiveGrey = AbiliaColors.white110;
 const BoxDecoration inactiveBoxDecoration = BoxDecoration(

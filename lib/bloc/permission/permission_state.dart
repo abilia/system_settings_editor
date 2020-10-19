@@ -7,13 +7,26 @@ class PermissionState extends Equatable {
 
   @visibleForTesting
   factory PermissionState.from(Map<Permission, PermissionStatus> statuses) =>
-      PermissionState(UnmodifiableMapView(statuses));
+      PermissionState(
+          UnmodifiableMapView(statuses._mapiOSDeniedToPermanentlyDenied));
 
   final UnmodifiableMapView<Permission, PermissionStatus> status;
 
+  bool get photosIsGrantedOrUndetermined =>
+      status[Platform.isAndroid ? Permission.storage : Permission.photos]
+          .isGrantedOrUndetermined;
+
+  bool get notificationDenied =>
+      status[Permission.notification].isDeniedOrPermenantlyDenied;
+
   PermissionState _update(Map<Permission, PermissionStatus> newStates) =>
       PermissionState(
-        UnmodifiableMapView(Map.of(status)..addAll(newStates)),
+        UnmodifiableMapView(
+          Map.of(status)
+            ..addAll(
+              newStates._mapiOSDeniedToPermanentlyDenied,
+            ),
+        ),
       );
 
   @override
@@ -21,4 +34,17 @@ class PermissionState extends Equatable {
 
   @override
   bool get stringify => true;
+}
+
+extension _PermissionStatusMapExtension on Map<Permission, PermissionStatus> {
+  Map<Permission, PermissionStatus> get _mapiOSDeniedToPermanentlyDenied =>
+      map((key, value) => MapEntry(key, value._iOSDeniedToPermanentlyDenied));
+}
+
+extension PermissionStatusExtension on PermissionStatus {
+  bool get isGrantedOrUndetermined =>
+      this == null || isGranted || isUndetermined;
+
+  PermissionStatus get _iOSDeniedToPermanentlyDenied =>
+      Platform.isIOS && isDenied ? PermissionStatus.permanentlyDenied : this;
 }

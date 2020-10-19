@@ -15,14 +15,20 @@ class ErrorMessage extends StatelessWidget {
   Widget build(BuildContext context) => Tts(
         data: text.data,
         child: Container(
-          decoration: BoxDecoration(
-            color: AbiliaColors.orange[40],
+          decoration: const BoxDecoration(
+            color: AbiliaColors.orange40,
             borderRadius: borderRadius,
           ),
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            child: text,
+            child: DefaultTextStyle(
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  .copyWith(color: AbiliaColors.black75),
+              child: text,
+            ),
           ),
         ),
       );

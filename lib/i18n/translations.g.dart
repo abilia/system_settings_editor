@@ -281,6 +281,17 @@ abstract class Translated {
   final String allowNotificationsDescriptionSettingsLink = 'settings';
 
   final String allowNotificationsDescription2 = '.';
+
+  final String turnOffNotifications = 'Turn off notifications?';
+
+  final String turnOffNotificationsBody =
+      'You will no longer be able to get alarms and reminders from activities.';
+
+  final String notificationsWarningHintText =
+      'Allow notifications to be able to get alarms and reminders from activities.';
+
+  final String notificationsWarningText =
+      'Allow notifications from the settings to be able to receive alarms and reminders.';
 }
 
 class EN extends Translated {}
@@ -682,4 +693,19 @@ class SV extends Translated {
 
   @override
   final String allowNotificationsDescription2 = '.';
+
+  @override
+  final String turnOffNotifications = 'Turn off notifications?';
+
+  @override
+  final String turnOffNotificationsBody =
+      'Du kommer inte längre kunna få alarm och notifikationer.';
+
+  @override
+  final String notificationsWarningHintText =
+      'Tillåt notifikationer för att få larm och påminnelser.';
+
+  @override
+  final String notificationsWarningText =
+      'Tillåt notifikationer från inställningar för att få larm och påminnelser.';
 }

@@ -177,16 +177,30 @@ class PermissionPickField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PickField(
-      leading: Icon(AbiliaIcons.menu_setup),
-      text: Text(Translator.of(context).translate.permissions),
-      onTap: () async {
-        context.bloc<PermissionBloc>().checkAll();
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => PermissionsPage(),
-            settings: RouteSettings(name: 'PermissionPage'),
-          ),
+    return BlocBuilder<PermissionBloc, PermissionState>(
+      builder: (context, state) {
+        return Stack(
+          children: [
+            PickField(
+              leading: Icon(AbiliaIcons.menu_setup),
+              text: Text(Translator.of(context).translate.permissions),
+              onTap: () async {
+                context.bloc<PermissionBloc>().checkAll();
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => PermissionsPage(),
+                    settings: RouteSettings(name: 'PermissionPage'),
+                  ),
+                );
+              },
+            ),
+            if (state.notificationDenied)
+              Positioned(
+                top: 8.0,
+                right: 8.0,
+                child: OrangeDot(),
+              ),
+          ],
         );
       },
     );

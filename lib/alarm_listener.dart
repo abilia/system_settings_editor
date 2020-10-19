@@ -82,6 +82,6 @@ class _SeagullListenersState extends State<SeagullListeners>
 
   bool _currentDeniedLastNot(
           PermissionState previous, PermissionState current) =>
-      current.status[Permission.notification].isDenied &&
-      !previous.status[Permission.notification].isDenied;
+      current.status[Permission.notification].isDeniedOrPermenantlyDenied &&
+      !previous.status[Permission.notification].isDeniedOrPermenantlyDenied;
 }

@@ -7,7 +7,6 @@ import 'package:equatable/equatable.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/ui/colors.dart';
@@ -70,10 +69,6 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
       onOk: onOk,
       child: BlocBuilder<PermissionBloc, PermissionState>(
         builder: (context, permission) {
-          final photosNotDenied =
-              permission.status[Permission.photos].isGrantedOrUndetermined;
-          final cameraNotDenied =
-              permission.status[Permission.camera].isGrantedOrUndetermined;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -98,7 +93,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
                   translate.myPhotos,
                   style: abiliaTheme.textTheme.bodyText1,
                 ),
-                onTap: photosNotDenied
+                onTap: permission.photosIsGrantedOrUndetermined
                     ? () async =>
                         await _getExternalFile(source: ImageSource.gallery)
                     : null,
@@ -111,10 +106,11 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
                   translate.takeNewPhoto,
                   style: abiliaTheme.textTheme.bodyText1,
                 ),
-                onTap: cameraNotDenied
-                    ? () async =>
-                        await _getExternalFile(source: ImageSource.camera)
-                    : null,
+                onTap:
+                    permission.status[Permission.camera].isGrantedOrUndetermined
+                        ? () async =>
+                            await _getExternalFile(source: ImageSource.camera)
+                        : null,
               ),
             ],
           );
