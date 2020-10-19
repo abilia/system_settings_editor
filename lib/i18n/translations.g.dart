@@ -695,15 +695,15 @@ class SV extends Translated {
   final String allowNotificationsDescription2 = '.';
 
   @override
-  final String turnOffNotifications = 'Turn off notifications?';
+  final String turnOffNotifications = 'Stäng av notifikationer?';
 
   @override
   final String turnOffNotificationsBody =
-      'Du kommer inte längre kunna få alarm och notifikationer.';
+      'Du kommer inte längre kunna få alarm och notifikationer för aktiviteter.';
 
   @override
   final String notificationsWarningHintText =
-      'Tillåt notifikationer för att få larm och påminnelser.';
+      'Tillåt notifikationer för att få larm och påminnelser för aktiviteter.';
 
   @override
   final String notificationsWarningText =

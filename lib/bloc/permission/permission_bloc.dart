@@ -23,12 +23,12 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
     PermissionEvent event,
   ) async* {
     if (event is RequestPermissions) {
-      yield state._update(
+      yield state.update(
         await event.permissions.request(),
       );
     }
     if (event is CheckStatusForPermissions) {
-      yield state._update(
+      yield state.update(
         await {for (final p in event.permissions) p: await p.status},
       );
     }

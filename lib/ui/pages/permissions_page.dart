@@ -127,7 +127,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
             child: ErrorMessage(
               text: Text(translate.notificationsWarningHintText),
             ),
-          )
+          ),
       ],
     );
   }

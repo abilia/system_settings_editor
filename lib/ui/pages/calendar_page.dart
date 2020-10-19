@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -320,7 +319,7 @@ class MenuButton extends StatelessWidget {
           overflow: Overflow.visible,
           children: [
             ActionButton(
-              child: Icon(AbiliaIcons.menu),
+              child: const Icon(AbiliaIcons.menu),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => MenuPage(),
@@ -329,7 +328,7 @@ class MenuButton extends StatelessWidget {
               ),
             ),
             if (state.notificationDenied)
-              Positioned(
+              const Positioned(
                 top: -3,
                 right: -3,
                 child: OrangeDot(),
@@ -337,22 +336,6 @@ class MenuButton extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class OrangeDot extends StatelessWidget {
-  const OrangeDot({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 12,
-      height: 12,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(6)),
-        color: AbiliaColors.orange40,
-      ),
     );
   }
 }

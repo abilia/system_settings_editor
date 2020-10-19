@@ -176,10 +176,9 @@ class PermissionPickField extends StatelessWidget {
   const PermissionPickField({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<PermissionBloc, PermissionState>(
-      builder: (context, state) {
-        return Stack(
+  Widget build(BuildContext context) =>
+      BlocBuilder<PermissionBloc, PermissionState>(
+        builder: (context, state) => Stack(
           children: [
             PickField(
               leading: Icon(AbiliaIcons.menu_setup),
@@ -201,8 +200,6 @@ class PermissionPickField extends StatelessWidget {
                 child: OrangeDot(),
               ),
           ],
-        );
-      },
-    );
-  }
+        ),
+      );
 }

@@ -74,7 +74,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
             children: <Widget>[
               PickField(
                 key: TestKey.imageArchiveButton,
-                leading: Icon(AbiliaIcons.folder),
+                leading: const Icon(AbiliaIcons.folder),
                 text: Text(
                   translate.imageArchive,
                   style: abiliaTheme.textTheme.bodyText1,
@@ -88,7 +88,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
               const SizedBox(height: 8.0),
               PickField(
                 key: TestKey.photosPickField,
-                leading: Icon(AbiliaIcons.my_photos),
+                leading: const Icon(AbiliaIcons.my_photos),
                 text: Text(
                   translate.myPhotos,
                   style: abiliaTheme.textTheme.bodyText1,
@@ -101,7 +101,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
               const SizedBox(height: 8.0),
               PickField(
                 key: TestKey.cameraPickField,
-                leading: Icon(AbiliaIcons.camera_photo),
+                leading: const Icon(AbiliaIcons.camera_photo),
                 text: Text(
                   translate.takeNewPhoto,
                   style: abiliaTheme.textTheme.bodyText1,

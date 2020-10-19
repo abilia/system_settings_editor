@@ -52,6 +52,7 @@ class NotificationPermissionWarningDialog extends StatelessWidget {
   }
 }
 
+@visibleForTesting
 class NotificationBodyTextWarning extends StatelessWidget {
   const NotificationBodyTextWarning({
     Key key,
