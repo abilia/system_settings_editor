@@ -120,3 +120,4 @@ everyOtherWeek;Every other week;Varannan vecka
 recurringDataEmptyErrorMessage;You need to select at least one day;En återkommande aktivitet måste ha en vald upprepning
 longPressInfoText;Make a long press on any text or object with text to speak it loudly;Tryck länge på någon text för att få den uppläst;
 lunch;Lunch;Lunch;
+cancel;Cancel;Avbryt;

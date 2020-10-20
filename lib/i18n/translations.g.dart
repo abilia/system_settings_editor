@@ -264,6 +264,8 @@ abstract class Translated {
       'Make a long press on any text or object with text to speak it loudly';
 
   final String lunch = 'Lunch';
+
+  final String cancel = 'Cancel';
 }
 
 class EN extends Translated {}
@@ -640,4 +642,7 @@ class SV extends Translated {
 
   @override
   final String lunch = 'Lunch';
+
+  @override
+  final String cancel = 'Avbryt';
 }

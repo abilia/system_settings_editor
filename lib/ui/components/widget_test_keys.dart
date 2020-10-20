@@ -64,5 +64,8 @@ class TestKey {
       sideDotsTimeText = Key('sideDotsTimeText'),
       errorViewDialog = Key('errorViewDialog'),
       ttsInfoButton = Key('ttsInfoButton'),
-      animatedTheme = Key('animatedTheme');
+      animatedTheme = Key('animatedTheme'),
+      checkDialogCheckButton = Key('checkDialogCheckButton'),
+      checkDialogUncheckButton = Key('checkDialogUncheckButton'),
+      checkDialogCancelButton = Key('checkDialogCancelButton');
 }

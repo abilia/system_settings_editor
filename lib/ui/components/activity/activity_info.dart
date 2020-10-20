@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
@@ -34,21 +35,31 @@ class ActivityInfoWithDots extends StatelessWidget {
   }
 }
 
-class ActivityInfo extends StatelessWidget with Checker {
+class ActivityInfo extends StatefulWidget {
   static const margin = 12.0;
   final ActivityDay activityDay;
-  Activity get activity => activityDay.activity;
-  DateTime get day => activityDay.day;
-  const ActivityInfo(this.activityDay, {Key key}) : super(key: key);
+  ActivityInfo(this.activityDay, {Key key}) : super(key: key);
   factory ActivityInfo.from({Activity activity, DateTime day, Key key}) =>
       ActivityInfo(ActivityDay(activity, day), key: key);
 
   static const animationDuration = Duration(milliseconds: 500);
 
   @override
+  _ActivityInfoState createState() => _ActivityInfoState();
+}
+
+class _ActivityInfoState extends State<ActivityInfo> with Checker {
+  Activity get activity => widget.activityDay.activity;
+
+  DateTime get day => widget.activityDay.day;
+
+  var activityContainerSize = Size.zero;
+  var activityContainerPosition = Offset.zero;
+
+  @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final signedOff = activityDay.isSignedOff;
+    final signedOff = widget.activityDay.isSignedOff;
     final theme = signedOff
         ? Theme.of(context).copyWith(
             buttonTheme: uncheckButtonThemeData,
@@ -60,18 +71,25 @@ class ActivityInfo extends StatelessWidget with Checker {
           );
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) => AnimatedTheme(
-        duration: animationDuration,
+        duration: ActivityInfo.animationDuration,
         data: theme.copyWith(
-            cardColor: activityDay.end.occasion(now) == Occasion.past
+            cardColor: widget.activityDay.end.occasion(now) == Occasion.past
                 ? AbiliaColors.white110
                 : AbiliaColors.white),
         child: Column(
           children: <Widget>[
-            TimeRow(activityDay),
+            TimeRow(widget.activityDay),
             Expanded(
               child: Container(
                 decoration: boxDecoration,
-                child: ActivityContainer(activityDay: activityDay),
+                child: MeasureSize(
+                    onChange: (Size size, Offset offset) {
+                      setState(() {
+                        activityContainerSize = size;
+                        activityContainerPosition = offset;
+                      });
+                    },
+                    child: ActivityContainer(activityDay: widget.activityDay)),
               ),
             ),
             if (activity.checkable)
@@ -86,11 +104,11 @@ class ActivityInfo extends StatelessWidget with Checker {
                       : AbiliaIcons.handi_check,
                   text: signedOff ? translate.uncheck : translate.check,
                   onPressed: () async {
-                    await checkConfirmation(
+                    await checkConfirmationOverlay(
                       context,
-                      now,
-                      activityDay,
-                      overlayStyle: true,
+                      widget.activityDay.toOccasion(now),
+                      activityContainerSize,
+                      activityContainerPosition,
                     );
                   },
                 ),
@@ -102,30 +120,89 @@ class ActivityInfo extends StatelessWidget with Checker {
   }
 }
 
+typedef OnWidgetSizeChange = void Function(Size size, Offset offset);
+
+class MeasureSize extends StatefulWidget {
+  final Widget child;
+  final OnWidgetSizeChange onChange;
+
+  const MeasureSize({
+    Key key,
+    @required this.onChange,
+    @required this.child,
+  }) : super(key: key);
+
+  @override
+  _MeasureSizeState createState() => _MeasureSizeState();
+}
+
+class _MeasureSizeState extends State<MeasureSize> {
+  @override
+  Widget build(BuildContext context) {
+    SchedulerBinding.instance.addPostFrameCallback(postFrameCallback);
+    return Container(
+      key: widgetKey,
+      child: widget.child,
+    );
+  }
+
+  var widgetKey = GlobalKey();
+  var oldSize;
+
+  void postFrameCallback(_) {
+    var context = widgetKey.currentContext;
+    if (context == null) return;
+    final box = context.findRenderObject() as RenderBox;
+    final pos = box.localToGlobal(Offset.zero);
+    var newSize = context.size;
+    if (oldSize == newSize) return;
+    oldSize = newSize;
+    widget.onChange(newSize, pos);
+  }
+}
+
 mixin Checker {
   Future checkConfirmation(
     BuildContext context,
-    DateTime now,
-    ActivityDay activityDay, {
+    ActivityOccasion activityOccasion, {
     String extraMessage,
-    bool overlayStyle = false,
   }) async {
     final translate = Translator.of(context).translate;
     final shouldCheck = await showViewDialog<bool>(
       context: context,
       builder: (_) => ConfirmActivityActionDialog(
-        activityOccasion: activityDay.toOccasion(now),
-        title: activityDay.isSignedOff
+        activityOccasion: activityOccasion,
+        title: activityOccasion.isSignedOff
             ? translate.unCheckActivityQuestion
             : translate.checkActivityQuestion,
         extraMessage: extraMessage,
-        overlayStyle: overlayStyle,
       ),
     );
     if (shouldCheck == true) {
-      BlocProvider.of<ActivitiesBloc>(context)
-          .add(UpdateActivity(activityDay.activity.signOff(activityDay.day)));
+      BlocProvider.of<ActivitiesBloc>(context).add(UpdateActivity(
+          activityOccasion.activity.signOff(activityOccasion.day)));
     }
+  }
+
+  Future checkConfirmationOverlay(
+    BuildContext context,
+    ActivityOccasion activityOccasion,
+    Size size,
+    Offset offset,
+  ) async {
+    final translate = Translator.of(context).translate;
+    await showViewDialog<void>(
+      useSafeArea: false,
+      context: context,
+      builder: (_) => ConfirmCheckDialogOverlay(
+        occasion: activityOccasion,
+        title: activityOccasion.isSignedOff
+            ? translate.unCheckActivityQuestion
+            : translate.checkActivityQuestion,
+        activityContainerSize: size,
+        activityContainerPosition: offset,
+      ),
+    );
   }
 }
 
@@ -237,8 +314,8 @@ class Attachment extends StatelessWidget with Checker {
               !activityDay.isSignedOff) {
             await checkConfirmation(
               context,
-              DateTime.now(),
-              ActivityDay(updatedActivity, activityDay.day),
+              ActivityDay(updatedActivity, activityDay.day)
+                  .toOccasion(DateTime.now()),
               extraMessage: translate.checklistDoneInfo,
             );
           }
