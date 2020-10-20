@@ -137,7 +137,6 @@ class _ConfirmCheckDialogOverlayState extends State<ConfirmCheckDialogOverlay> {
                                 await Future.delayed(1.seconds(), () async {
                                   await Navigator.of(context).maybePop();
                                 });
-                                // await Navigator.of(context).maybePop();
                               },
                             ),
                         ],
