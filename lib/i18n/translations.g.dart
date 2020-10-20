@@ -292,6 +292,12 @@ abstract class Translated {
 
   final String notificationsWarningText =
       'Allow notifications from the settings to be able to receive alarms and reminders.';
+
+  final String fromBasicActivity = 'From basic activity';
+
+  final String createActivity = 'Create activity';
+
+  final String basicActivities = 'Basic activities';
 }
 
 class EN extends Translated {}
@@ -708,4 +714,13 @@ class SV extends Translated {
   @override
   final String notificationsWarningText =
       'Tillåt notifikationer från inställningar för att få larm och påminnelser.';
+
+  @override
+  final String fromBasicActivity = 'Från basaktivitet';
+
+  @override
+  final String createActivity = 'Skapa aktivitet';
+
+  @override
+  final String basicActivities = 'Basaktiviteter';
 }

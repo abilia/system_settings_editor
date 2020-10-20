@@ -81,7 +81,6 @@ class NoteData extends SortableData {
   NoteData({this.name, this.text, this.icon, this.fileId});
 
   @override
-  @override
   String toRaw() => json.encode({
         'name': name,
         'text': text,
@@ -156,4 +155,176 @@ class ChecklistData extends SortableData {
 
   @override
   String folderFilePath() => checklist.icon;
+}
+
+abstract class BasicActivityData extends SortableData {}
+
+class BasicActivityDataItem extends BasicActivityData {
+  final int alarmType, category, duration, startTime;
+  final bool checkable, fullDay, removeAfter, secret;
+  final String fileId, icon, info, reminders, activityTitle, name;
+
+  BasicActivityDataItem._({
+    this.alarmType = 0,
+    this.category = 0,
+    this.duration = 0,
+    this.startTime = 0,
+    this.checkable = false,
+    this.fullDay = false,
+    this.removeAfter = false,
+    this.secret = false,
+    this.fileId,
+    this.icon,
+    this.info = '',
+    this.reminders = '',
+    this.activityTitle = '',
+    this.name = '',
+  });
+
+  factory BasicActivityDataItem.fromJson(String data) {
+    final sortableData = json.decode(data);
+    return BasicActivityDataItem._(
+      alarmType: sortableData['alarmType'] ?? 0,
+      category: sortableData['category'] ?? 0,
+      duration: sortableData['duration'] ?? 0,
+      startTime: sortableData['startTime'] ?? 0,
+      checkable: sortableData['checkable'] ?? false,
+      fullDay: sortableData['fullDay'] ?? false,
+      removeAfter: sortableData['removeAfter'] ?? false,
+      secret: sortableData['secret'] ?? false,
+      fileId: sortableData['fileId'] ?? '',
+      icon: sortableData['icon'] ?? '',
+      info: sortableData['info'] ?? '',
+      reminders: sortableData['reminders'],
+      activityTitle: sortableData['title'],
+      name: sortableData['name'],
+    );
+  }
+
+  factory BasicActivityDataItem.createNew({
+    @required String title,
+  }) {
+    return BasicActivityDataItem._(activityTitle: title);
+  }
+
+  bool get hasImage =>
+      (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
+
+  @override
+  String folderFileId() => fileId;
+
+  @override
+  String folderFilePath() => icon;
+
+  @override
+  List<Object> get props => [
+        alarmType,
+        category,
+        duration,
+        startTime,
+        checkable,
+        fullDay,
+        removeAfter,
+        secret,
+        fileId,
+        icon,
+        info,
+        reminders,
+        activityTitle,
+        name,
+      ];
+
+  @override
+  String title() => activityTitle ?? name;
+
+  @override
+  String toRaw() => json.encode({
+        'alarmType': alarmType,
+        'category': category,
+        'duration': duration,
+        'startTime': startTime,
+        'checkable': checkable,
+        'fullDay': fullDay,
+        'removeAfter': removeAfter,
+        'secret': secret,
+        'fileId': fileId,
+        'icon': icon,
+        'info': info,
+        'reminders': reminders,
+        'title': activityTitle,
+        'name': name,
+      });
+
+  Activity toActivity({
+    @required String timezone,
+    @required DateTime day,
+  }) {
+    return Activity.createNew(
+      title: activityTitle,
+      startTime: day,
+      timezone: timezone,
+      alarmType: alarmType,
+      category: category,
+      duration:
+          duration == null ? 0.seconds() : Duration(milliseconds: duration),
+      checkable: checkable,
+      fullDay: fullDay,
+      removeAfter: removeAfter,
+      secret: secret,
+      fileId: fileId,
+      icon: icon,
+      infoItem: InfoItem.fromJsonString(info),
+      reminderBefore: DbActivity.parseReminders(reminders),
+    );
+  }
+
+  TimeInterval toTimeInterval({DateTime startDate}) {
+    final start = startDate.onlyDays().add(startTime.milliseconds());
+    final end = start.add(duration.milliseconds());
+    return TimeInterval(
+      startDate: startDate,
+      startTime: TimeOfDay.fromDateTime(start),
+      endTime: (duration == null || duration == 0)
+          ? null
+          : TimeOfDay.fromDateTime(end),
+    );
+  }
+}
+
+class BasicActivityDataFolder extends BasicActivityData {
+  final String name, icon, fileId;
+
+  BasicActivityDataFolder._({
+    @required this.name,
+    @required this.icon,
+    @required this.fileId,
+  });
+
+  factory BasicActivityDataFolder.fromJson(String data) {
+    final sortableData = json.decode(data);
+    return BasicActivityDataFolder._(
+      name: sortableData['name'] ?? '',
+      icon: sortableData['icon'] ?? '',
+      fileId: sortableData['fileId'] ?? '',
+    );
+  }
+
+  @override
+  String folderFileId() => fileId;
+
+  @override
+  String folderFilePath() => icon;
+
+  @override
+  List<Object> get props => [name, icon, fileId];
+
+  @override
+  String title() => name;
+
+  @override
+  String toRaw() => json.encode({
+        'name': name,
+        'icon': icon,
+        'fileId': fileId,
+      });
 }

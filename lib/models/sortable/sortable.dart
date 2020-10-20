@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 import 'package:uuid/uuid.dart';
+import 'package:seagull/utils/all.dart';
 
 part 'db_sortable.dart';
 part 'sortable_data.dart';
@@ -12,7 +14,7 @@ class SortableType {
   static const String imageArchive = 'imagearchive',
       checklist = 'checklist',
       basetimer = 'basetimer',
-      baseactivity = 'baseactivity',
+      basicactivity = 'baseactivity',
       note = 'note';
 }
 

@@ -66,5 +66,7 @@ class TestKey {
       ttsInfoButton = Key('ttsInfoButton'),
       animatedTheme = Key('animatedTheme'),
       cameraPickField = Key('cameraPickField'),
-      photosPickField = Key('photosPickField');
+      photosPickField = Key('photosPickField'),
+      newActivityButton = Key('newActivityButton'),
+      selectBasicActivityButton = Key('selectBasicActivityButton');
 }

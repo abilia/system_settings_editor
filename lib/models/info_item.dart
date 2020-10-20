@@ -21,6 +21,15 @@ abstract class InfoItem extends Equatable {
     try {
       if (base64?.isEmpty ?? true) return NoInfoItem();
       final jsonString = utf8.decode(base64Decode(base64));
+      return fromJsonString(jsonString);
+    } catch (e) {
+      _log.severe('Exception when trying to create info item', e);
+    }
+    return NoInfoItem();
+  }
+
+  static InfoItem fromJsonString(String jsonString) {
+    try {
       final json = jsonDecode(jsonString);
       final infoItem = json['info-item'][0];
       final data = infoItem['data'];

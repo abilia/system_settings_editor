@@ -37,11 +37,11 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     if (imageArchiveView) {
       return buildImageArchiveDialog();
     } else {
-      return buildPictureSourceDialog(context);
+      return buildPictureSourceDialog();
     }
   }
 
-  ViewDialog buildPictureSourceDialog(BuildContext context) {
+  ViewDialog buildPictureSourceDialog() {
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
     return ViewDialog(

@@ -18,6 +18,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '../../mocks.dart';
+import '../../utils/types.dart';
 
 void main() {
   final startTime = DateTime(2020, 02, 10, 15, 30);
@@ -103,8 +104,6 @@ void main() {
       home: widget,
     );
   }
-
-  Type typeOf<T>() => T;
 
   group('edit activity test', () {
     testWidgets('New activity shows', (WidgetTester tester) async {

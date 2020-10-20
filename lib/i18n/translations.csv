@@ -132,3 +132,6 @@ turnOffNotifications;Turn off notifications?;Stäng av notifikationer?
 turnOffNotificationsBody;You will no longer be able to get alarms and reminders from activities.;Du kommer inte längre kunna få alarm och notifikationer för aktiviteter.
 notificationsWarningHintText;Allow notifications to be able to get alarms and reminders from activities.;Tillåt notifikationer för att få larm och påminnelser för aktiviteter.
 notificationsWarningText;Allow notifications from the settings to be able to receive alarms and reminders.;Tillåt notifikationer från inställningar för att få larm och påminnelser.
+fromBasicActivity;From basic activity;Från basaktivitet
+createActivity;Create activity;Skapa aktivitet
+basicActivities;Basic activities;Basaktiviteter
