@@ -5,7 +5,9 @@ import 'package:flutter/rendering.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/components/sortable/basic_activity_library.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
@@ -229,36 +231,7 @@ class CalendarBottomBar extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.center,
-                child: ActionButton(
-                  key: TestKey.addActivity,
-                  child: Icon(AbiliaIcons.plus),
-                  onPressed: () async {
-                    await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) {
-                          return BlocProvider<EditActivityBloc>(
-                            create: (_) => EditActivityBloc.newActivity(
-                              activitiesBloc:
-                                  BlocProvider.of<ActivitiesBloc>(context),
-                              clockBloc: BlocProvider.of<ClockBloc>(context),
-                              memoplannerSettingBloc:
-                                  BlocProvider.of<MemoplannerSettingBloc>(
-                                      context),
-                              day: day,
-                            ),
-                            child: EditActivityPage(
-                              day: day,
-                              title:
-                                  Translator.of(context).translate.newActivity,
-                            ),
-                          );
-                        },
-                        settings: RouteSettings(
-                            name: 'EditActivityPage new activity'),
-                      ),
-                    );
-                  },
-                ),
+                child: AddActivityButton(day: day),
               ),
               Align(
                 alignment: Alignment.centerRight,
@@ -275,6 +248,98 @@ class CalendarBottomBar extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CreateActivityDialogResponse {
+  final BasicActivityDataItem basicActivityData;
+
+  CreateActivityDialogResponse({this.basicActivityData});
+}
+
+class CreateActivityDialog extends StatefulWidget {
+  const CreateActivityDialog({Key key}) : super(key: key);
+
+  @override
+  _CreateActivityDialogState createState() => _CreateActivityDialogState(false);
+}
+
+class _CreateActivityDialogState extends State<CreateActivityDialog>
+    with SingleTickerProviderStateMixin {
+  bool pickBasicActivityView;
+
+  _CreateActivityDialogState(this.pickBasicActivityView);
+  @override
+  Widget build(BuildContext context) {
+    return pickBasicActivityView
+        ? buildPickBasicActivity()
+        : buildSelectNewOrBase();
+  }
+
+  Widget buildPickBasicActivity() {
+    return BlocBuilder<SortableArchiveBloc<BasicActivityData>,
+        SortableArchiveState<BasicActivityData>>(
+      builder: (innerContext, sortableArchiveState) => ViewDialog(
+        verticalPadding: 0,
+        backButton: sortableArchiveState.currentFolderId == null
+            ? null
+            : SortableLibraryBackButton<BasicActivityData>(),
+        heading: getSortableArchiveHeading(sortableArchiveState),
+        child: SortableLibrary<BasicActivityData>(
+          (Sortable<BasicActivityData> s) => BasicActivityLibraryItem(
+            basicActivityData: s.data,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Text getSortableArchiveHeading(SortableArchiveState state) {
+    final folderName = state.allById[state.currentFolderId]?.data?.title() ??
+        Translator.of(context).translate.basicActivities;
+    return Text(folderName, style: abiliaTheme.textTheme.headline6);
+  }
+
+  Widget buildSelectNewOrBase() {
+    final translate = Translator.of(context).translate;
+    return ViewDialog(
+      heading: Text(
+        translate.createActivity,
+        style: abiliaTextTheme.headline6,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          PickField(
+            key: TestKey.newActivityButton,
+            leading: Icon(
+              AbiliaIcons.new_icon,
+              size: smallIconSize,
+            ),
+            text: Text(
+              translate.newActivity,
+              style: abiliaTheme.textTheme.bodyText1,
+            ),
+            onTap: () async => await Navigator.of(context)
+                .maybePop(CreateActivityDialogResponse()),
+          ),
+          SizedBox(height: 8.0),
+          PickField(
+            key: TestKey.selectBasicActivityButton,
+            leading: Icon(AbiliaIcons.day, size: smallIconSize),
+            text: Text(
+              translate.fromBasicActivity,
+              style: abiliaTheme.textTheme.bodyText1,
+            ),
+            onTap: () async => setState(
+              () {
+                pickBasicActivityView = true;
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
