@@ -121,17 +121,17 @@ recurringDataEmptyErrorMessage;You need to select at least one day;En återkomma
 longPressInfoText;Make a long press on any text or object with text to speak it loudly;Tryck länge på någon text för att få den uppläst
 lunch;Lunch;Lunch
 permissions;Permissions;Behörigheter
-notifications;Notifications;Notifications
+notifications;Notifications;Notiser
 accessToPhotos;Access to Photos;Tillgång till bilder
 accessToCamera;Access to Camera;Tillgång till kameran
 allowNotifications;Allow notifications;Tillåt notiser
-allowNotificationsDescription1;Allow notifications to be able to get alarms and reminders from activities. You can do that from the ;Tillåt notiser för att larm och påminnelser från aktiviteter. Du kan göra det ifrån 
+allowNotificationsDescription1;Allow notifications to be able to get alarms and reminders from activities. You can do that from the ;Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån 
 allowNotificationsDescriptionSettingsLink;settings;inställningar
 allowNotificationsDescription2;.;.
-turnOffNotifications;Turn off notifications?;Stäng av notifikationer?
-turnOffNotificationsBody;You will no longer be able to get alarms and reminders from activities.;Du kommer inte längre kunna få alarm och notifikationer för aktiviteter.
-notificationsWarningHintText;Allow notifications to be able to get alarms and reminders from activities.;Tillåt notifikationer för att få larm och påminnelser för aktiviteter.
-notificationsWarningText;Allow notifications from the settings to be able to receive alarms and reminders.;Tillåt notifikationer från inställningar för att få larm och påminnelser.
+turnOffNotifications;Turn off notifications?;Stäng av notiser?
+turnOffNotificationsBody;You will no longer be able to get alarms and reminders from activities.;Du kommer inte längre kunna få alarm och notiser för aktiviteter.
+notificationsWarningHintText;Allow notifications to be able to get alarms and reminders from activities.;Tillåt notiser för att få larm och påminnelser för aktiviteter.
+notificationsWarningText;Allow notifications from the settings to be able to receive alarms and reminders.;Tillåt notiser från inställningar för att få larm och påminnelser.
 fromBasicActivity;From basic activity;Från basaktivitet
 createActivity;Create activity;Skapa aktivitet
 basicActivities;Basic activities;Basaktiviteter

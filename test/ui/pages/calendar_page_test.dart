@@ -175,14 +175,12 @@ void main() {
     group('Premissions', () {
       final translate = Locales.language.values.first;
 
-      setUp(() {
-        setupPermissions();
-      });
       tearDown(() {
         setupPermissions();
       });
       testWidgets('Notification permission is requested at start up',
           (WidgetTester tester) async {
+        setupPermissions();
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         expect(requestedPermissions, {Permission.notification});

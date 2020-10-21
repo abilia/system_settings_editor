@@ -75,7 +75,7 @@ class _CalendarPageState extends State<CalendarPage>
                   body: BlocBuilder<PermissionBloc, PermissionState>(
                     builder: (context, state) => Stack(
                       children: [
-                        Calenders(calendarViewState: calendarViewState),
+                        Calendars(calendarViewState: calendarViewState),
                         if (state.notificationDenied)
                           Align(
                             alignment: Alignment.bottomCenter,
@@ -142,8 +142,8 @@ class _CalendarPageState extends State<CalendarPage>
   }
 }
 
-class Calenders extends StatelessWidget {
-  const Calenders({
+class Calendars extends StatelessWidget {
+  const Calendars({
     Key key,
     @required this.calendarViewState,
   }) : super(key: key);

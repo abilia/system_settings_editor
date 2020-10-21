@@ -679,7 +679,7 @@ class SV extends Translated {
   final String permissions = 'Behörigheter';
 
   @override
-  final String notifications = 'Notifications';
+  final String notifications = 'Notiser';
 
   @override
   final String accessToPhotos = 'Tillgång till bilder';
@@ -692,7 +692,7 @@ class SV extends Translated {
 
   @override
   final String allowNotificationsDescription1 =
-      'Tillåt notiser för att larm och påminnelser från aktiviteter. Du kan göra det ifrån ';
+      'Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån ';
 
   @override
   final String allowNotificationsDescriptionSettingsLink = 'inställningar';
@@ -701,19 +701,19 @@ class SV extends Translated {
   final String allowNotificationsDescription2 = '.';
 
   @override
-  final String turnOffNotifications = 'Stäng av notifikationer?';
+  final String turnOffNotifications = 'Stäng av notiser?';
 
   @override
   final String turnOffNotificationsBody =
-      'Du kommer inte längre kunna få alarm och notifikationer för aktiviteter.';
+      'Du kommer inte längre kunna få alarm och notiser för aktiviteter.';
 
   @override
   final String notificationsWarningHintText =
-      'Tillåt notifikationer för att få larm och påminnelser för aktiviteter.';
+      'Tillåt notiser för att få larm och påminnelser för aktiviteter.';
 
   @override
   final String notificationsWarningText =
-      'Tillåt notifikationer från inställningar för att få larm och påminnelser.';
+      'Tillåt notiser från inställningar för att få larm och påminnelser.';
 
   @override
   final String fromBasicActivity = 'Från basaktivitet';
