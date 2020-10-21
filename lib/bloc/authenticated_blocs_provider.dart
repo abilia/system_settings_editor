@@ -153,7 +153,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               userRepository: authenticatedState.userRepository,
               authenticationBloc: context.repository<AuthenticationBloc>(),
             )..add(ReloadLicenses()),
-          )
+          ),
+          BlocProvider<PermissionBloc>(
+            create: (context) => PermissionBloc()
+              ..add(RequestPermissions([Permission.notification]))
+              ..checkAll(),
+          ),
         ],
         child: child,
       ),

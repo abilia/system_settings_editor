@@ -46,14 +46,14 @@ class _CalendarPageState extends State<CalendarPage>
         ..bloc<ActivitiesBloc>().add(LoadActivities())
         ..bloc<SortableBloc>().add(LoadSortables())
         ..bloc<GenericBloc>().add(LoadGenerics())
-        ..bloc<LicenseBloc>().add(ReloadLicenses());
+        ..bloc<LicenseBloc>().add(ReloadLicenses())
+        ..bloc<PermissionBloc>().checkAll();
       _jumpToActivity();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final controller = PageController(initialPage: DayPickerBloc.startIndex);
     return BlocProvider<ScrollPositionBloc>.value(
       value: _scrollPositionBloc,
       child: BlocBuilder<DayPickerBloc, DayPickerState>(
@@ -72,61 +72,26 @@ class _CalendarPageState extends State<CalendarPage>
                     pickedDay.day,
                     memoSettingsState.dayCaptionShowDayButtons,
                   ),
-                  body: BlocListener<DayPickerBloc, DayPickerState>(
-                    listener: (context, state) {
-                      controller.animateToPage(state.index,
-                          duration: Duration(milliseconds: 500),
-                          curve: Curves.easeOutQuad);
-                    },
-                    child: PageView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      controller: controller,
-                      itemBuilder: (context, index) {
-                        return BlocBuilder<ActivitiesOccasionBloc,
-                            ActivitiesOccasionState>(
-                          buildWhen: (oldState, newState) {
-                            return (oldState is ActivitiesOccasionLoaded &&
-                                    newState is ActivitiesOccasionLoaded &&
-                                    oldState.day == newState.day) ||
-                                oldState.runtimeType != newState.runtimeType;
-                          },
-                          builder: (context, state) {
-                            if (state is ActivitiesOccasionLoaded) {
-                              if (!state.isToday) {
-                                BlocProvider.of<ScrollPositionBloc>(context)
-                                    .add(WrongDaySelected());
-                              }
-                              final fullDayActivities = state.fullDayActivities;
-                              return Column(
-                                children: <Widget>[
-                                  if (fullDayActivities.isNotEmpty)
-                                    FullDayContainer(
-                                      fullDayActivities: fullDayActivities,
-                                      day: state.day,
-                                    ),
-                                  if (calendarViewState.currentView ==
-                                      CalendarViewType.LIST)
-                                    Expanded(
-                                      child: Agenda(
-                                        state: state,
-                                        calendarViewState: calendarViewState,
-                                      ),
-                                    )
-                                  else
-                                    Expanded(
-                                      child: TimePillarCalendar(
-                                        state: state,
-                                        now: context.bloc<ClockBloc>().state,
-                                        calendarViewState: calendarViewState,
-                                      ),
-                                    ),
-                                ],
-                              );
-                            }
-                            return Center(child: CircularProgressIndicator());
-                          },
-                        );
-                      },
+                  body: BlocBuilder<PermissionBloc, PermissionState>(
+                    builder: (context, state) => Stack(
+                      children: [
+                        Calendars(calendarViewState: calendarViewState),
+                        if (state.notificationDenied)
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0, vertical: 28.0),
+                              child: ErrorMessage(
+                                text: Text(
+                                  Translator.of(context)
+                                      .translate
+                                      .notificationsWarningText,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                   bottomNavigationBar: CalendarBottomBar(
@@ -174,6 +139,75 @@ class _CalendarPageState extends State<CalendarPage>
     } else if (scrollState is WrongDay) {
       _dayPickerBloc.add(CurrentDay());
     }
+  }
+}
+
+class Calendars extends StatelessWidget {
+  const Calendars({
+    Key key,
+    @required this.calendarViewState,
+  }) : super(key: key);
+
+  final CalendarViewState calendarViewState;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = PageController(initialPage: DayPickerBloc.startIndex);
+    return BlocListener<DayPickerBloc, DayPickerState>(
+      listener: (context, state) {
+        controller.animateToPage(state.index,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeOutQuad);
+      },
+      child: PageView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: controller,
+        itemBuilder: (context, index) {
+          return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
+            buildWhen: (oldState, newState) {
+              return (oldState is ActivitiesOccasionLoaded &&
+                      newState is ActivitiesOccasionLoaded &&
+                      oldState.day == newState.day) ||
+                  oldState.runtimeType != newState.runtimeType;
+            },
+            builder: (context, state) {
+              if (state is ActivitiesOccasionLoaded) {
+                if (!state.isToday) {
+                  BlocProvider.of<ScrollPositionBloc>(context)
+                      .add(WrongDaySelected());
+                }
+                final fullDayActivities = state.fullDayActivities;
+                return Column(
+                  children: <Widget>[
+                    if (fullDayActivities.isNotEmpty)
+                      FullDayContainer(
+                        fullDayActivities: fullDayActivities,
+                        day: state.day,
+                      ),
+                    if (calendarViewState.currentView == CalendarViewType.LIST)
+                      Expanded(
+                        child: Agenda(
+                          state: state,
+                          calendarViewState: calendarViewState,
+                        ),
+                      )
+                    else
+                      Expanded(
+                        child: TimePillarCalendar(
+                          state: state,
+                          now: context.bloc<ClockBloc>().state,
+                          calendarViewState: calendarViewState,
+                        ),
+                      ),
+                  ],
+                );
+              }
+              return Center(child: CircularProgressIndicator());
+            },
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -235,20 +269,46 @@ class CalendarBottomBar extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.centerRight,
-                child: ActionButton(
-                  child: Icon(AbiliaIcons.menu),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => MenuPage(),
-                      settings: RouteSettings(name: 'MenuPage'),
-                    ),
-                  ),
-                ),
+                child: MenuButton(),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class MenuButton extends StatelessWidget {
+  const MenuButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PermissionBloc, PermissionState>(
+      builder: (context, state) {
+        return Stack(
+          overflow: Overflow.visible,
+          children: [
+            ActionButton(
+              child: const Icon(AbiliaIcons.menu),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MenuPage(),
+                  settings: RouteSettings(name: 'MenuPage'),
+                ),
+              ),
+            ),
+            if (state.notificationDenied)
+              const Positioned(
+                top: -3,
+                right: -3,
+                child: OrangeDot(),
+              ),
+          ],
+        );
+      },
     );
   }
 }

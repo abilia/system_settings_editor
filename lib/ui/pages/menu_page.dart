@@ -15,6 +15,7 @@ class MenuPage extends StatelessWidget {
   const MenuPage({Key key}) : super(key: key);
   final widgets = const <Widget>[
     TextToSpeechSwitch(),
+    PermissionPickField(),
     LogoutPickField(),
   ];
   @override
@@ -36,7 +37,6 @@ class LogoutPickField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PickField(
-      key: TestKey.availibleFor,
       leading: Icon(AbiliaIcons.power_off_on),
       text: Text(Translator.of(context).translate.logout),
       onTap: () => Navigator.of(context).push(
@@ -170,4 +170,36 @@ class LongPressInfoDialog extends StatelessWidget {
       preview: true,
     );
   }
+}
+
+class PermissionPickField extends StatelessWidget {
+  const PermissionPickField({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocBuilder<PermissionBloc, PermissionState>(
+        builder: (context, state) => Stack(
+          children: [
+            PickField(
+              leading: Icon(AbiliaIcons.menu_setup),
+              text: Text(Translator.of(context).translate.permissions),
+              onTap: () async {
+                context.bloc<PermissionBloc>().checkAll();
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => PermissionsPage(),
+                    settings: RouteSettings(name: 'PermissionPage'),
+                  ),
+                );
+              },
+            ),
+            if (state.notificationDenied)
+              Positioned(
+                top: 8.0,
+                right: 8.0,
+                child: OrangeDot(),
+              ),
+          ],
+        ),
+      );
 }

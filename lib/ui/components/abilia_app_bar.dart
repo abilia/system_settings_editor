@@ -79,10 +79,8 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Future _pop(BuildContext context) async {
-    if (Navigator.canPop(context)) {
-      await Navigator.pop(context);
-    } else {
-      return SystemNavigator.pop();
+    if (!await Navigator.of(context).maybePop()) {
+      await SystemNavigator.pop();
     }
   }
 }

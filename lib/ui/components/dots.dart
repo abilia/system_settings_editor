@@ -343,3 +343,18 @@ class MiniDot extends StatelessWidget {
       height: miniDotSize,
       decoration: visible ? futureDotShape : transparantDotShape);
 }
+
+class OrangeDot extends StatelessWidget {
+  const OrangeDot({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 12,
+      height: 12,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(6)),
+        color: AbiliaColors.orange40,
+      ),
+    );
+  }
+}

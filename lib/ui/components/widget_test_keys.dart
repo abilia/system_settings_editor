@@ -65,6 +65,8 @@ class TestKey {
       errorViewDialog = Key('errorViewDialog'),
       ttsInfoButton = Key('ttsInfoButton'),
       animatedTheme = Key('animatedTheme'),
+      cameraPickField = Key('cameraPickField'),
+      photosPickField = Key('photosPickField'),
       newActivityButton = Key('newActivityButton'),
       selectBasicActivityButton = Key('selectBasicActivityButton');
 }

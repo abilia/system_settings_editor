@@ -13,3 +13,5 @@ export 'edit_note.dart';
 export 'edit_question.dart';
 export 'settings/all.dart';
 export 'license_expired.dart';
+export 'permission_warning.dart';
+export 'warning.dart';

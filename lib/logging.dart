@@ -247,15 +247,15 @@ class BlocLoggingObserver extends BlocObserver {
     final event = transition.event;
     if (event is Silent || bloc is Silent) return;
     final log = _log(bloc);
-    if (event is Shout) {
+    if (bloc is Shout) {
       log.shout(transition);
-    } else if (event is Warning) {
+    } else if (bloc is Warning) {
       log.warning(transition);
-    } else if (event is Info) {
+    } else if (bloc is Info) {
       log.info(transition);
-    } else if (event is Fine) {
+    } else if (bloc is Fine) {
       log.fine(transition);
-    } else if (event is Finest) {
+    } else if (bloc is Finest) {
       log.finest(transition);
     } else {
       log.finer(transition);

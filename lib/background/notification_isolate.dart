@@ -35,7 +35,11 @@ void ensureNotificationPluginInitialized() {
     notificationsPluginInstance.initialize(
       InitializationSettings(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-        iOS: IOSInitializationSettings(),
+        iOS: IOSInitializationSettings(
+          requestSoundPermission: false,
+          requestBadgePermission: false,
+          requestAlertPermission: false,
+        ),
       ),
       onSelectNotification: (String payload) async {
         if (payload != null) {
