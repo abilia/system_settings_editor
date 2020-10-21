@@ -12,7 +12,7 @@ export PATH=`pwd`/flutter/bin:$PATH
 
 flutter channel stable
 sudo gem uninstall cocoapods
-sudo gem install cocoapods --pre
+sudo gem install cocoapods -v 1.10.0
 pod setup
 flutter doctor
 
