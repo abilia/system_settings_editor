@@ -138,25 +138,22 @@ class MeasureSize extends StatefulWidget {
 
 class _MeasureSizeState extends State<MeasureSize> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     SchedulerBinding.instance.addPostFrameCallback(postFrameCallback);
-    return Container(
-      key: widgetKey,
-      child: widget.child,
-    );
+    super.initState();
   }
 
-  var widgetKey = GlobalKey();
-  var oldSize;
+  @override
+  Widget build(BuildContext context) => widget.child;
+  Size oldSize;
 
   void postFrameCallback(_) {
-    var context = widgetKey.currentContext;
-    if (context == null) return;
-    final box = context.findRenderObject() as RenderBox;
-    final pos = box.localToGlobal(Offset.zero);
-    var newSize = context.size;
+    final newSize = context.size;
     if (oldSize == newSize) return;
+    final renderObject = context.findRenderObject();
+    if (renderObject is! RenderBox) return;
     oldSize = newSize;
+    final pos = (renderObject as RenderBox).localToGlobal(Offset.zero);
     widget.onChange(newSize, pos);
   }
 }
@@ -210,9 +207,11 @@ class ActivityContainer extends StatelessWidget {
   const ActivityContainer({
     Key key,
     @required this.activityDay,
+    this.preview = false,
   }) : super(key: key);
 
   final ActivityDay activityDay;
+  final bool preview;
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +253,10 @@ class ActivityContainer extends StatelessWidget {
                     height: 1,
                   ),
                   Expanded(
-                    child: Attachment(activityDay: activityDay),
+                    child: Attachment(
+                      activityDay: activityDay,
+                      preview: preview,
+                    ),
                   ),
                 ],
               ),
@@ -280,9 +282,11 @@ class ActivityContainer extends StatelessWidget {
 class Attachment extends StatelessWidget with Checker {
   static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 14.0, 24.0);
   final ActivityDay activityDay;
+  final bool preview;
   const Attachment({
     Key key,
     @required this.activityDay,
+    this.preview = false,
   }) : super(key: key);
 
   @override
@@ -299,6 +303,7 @@ class Attachment extends StatelessWidget with Checker {
       return CheckListView(
         item,
         day: activityDay.day,
+        preview: preview,
         padding: Attachment.padding.subtract(QuestionView.padding),
         onTap: (question) async {
           final signedOff = item.signOff(question, activityDay.day);

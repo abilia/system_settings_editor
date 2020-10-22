@@ -119,6 +119,7 @@ class _ConfirmCheckDialogOverlayState extends State<ConfirmCheckDialogOverlay> {
                             width: widget.activityContainerSize.width,
                             child: ActivityContainer(
                               activityDay: activityOccasion,
+                              preview: true,
                             ),
                           ),
                           SizedBox(
