@@ -206,6 +206,31 @@ void main() {
       expect(result3Day3, [ActivityDay(yesterdayFullday, yesterday)]);
     });
 
+    test('Fullday with duration should be ignored', () {
+      // Arrange
+      final initialMinutes = DateTime(2006, 06, 06, 06, 06, 06, 06);
+      final fullDayActivity = Activity.createNew(
+        title: 'Full day',
+        fullDay: true,
+        startTime: initialMinutes,
+        duration: 24.hours(),
+      );
+
+      final today = initialMinutes.onlyDays();
+      final tomorrow = initialMinutes.nextDay().onlyDays();
+      final dayAfterTomorrow = initialMinutes.nextDay().onlyDays();
+
+      // Act
+      final resultDay1 = fullDayActivity.dayActivitiesForDay(today);
+      final resultDay2 = fullDayActivity.dayActivitiesForDay(tomorrow);
+      final resultDay3 = fullDayActivity.dayActivitiesForDay(dayAfterTomorrow);
+
+      // Assert
+      expect(resultDay1, [ActivityDay(fullDayActivity, today)]);
+      expect(resultDay2, isEmpty);
+      expect(resultDay3, isEmpty);
+    });
+
     group('dayActivitiesForDay with longer than 24h duration', () {
       test('weekly recurrance past midnight is true for next day', () {
         final startTime = DateTime(2010, 01, 01, 22, 00);
