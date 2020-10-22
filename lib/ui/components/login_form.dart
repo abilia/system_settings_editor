@@ -94,7 +94,6 @@ class _LoginFormState extends State<LoginForm> {
                       key: TestKey.loginError,
                       text: Text(
                         _errorMessageFromState(loginState, i18n),
-                        style: theme.textTheme.bodyText2,
                       ),
                     ),
                   flexPadding(errorState),

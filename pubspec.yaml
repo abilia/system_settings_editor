@@ -48,6 +48,7 @@ dependencies:
   flutter_archive: ^1.0.2
   flutter_tts: ^1.2.7
   flutter_native_timezone: ^1.0.4
+  permission_handler: ^5.0.1+1
 
 dev_dependencies:
   flutter_test:

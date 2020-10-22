@@ -67,5 +67,9 @@ class TestKey {
       animatedTheme = Key('animatedTheme'),
       checkDialogCheckButton = Key('checkDialogCheckButton'),
       checkDialogUncheckButton = Key('checkDialogUncheckButton'),
-      checkDialogCancelButton = Key('checkDialogCancelButton');
+      checkDialogCancelButton = Key('checkDialogCancelButton'),
+      cameraPickField = Key('cameraPickField'),
+      photosPickField = Key('photosPickField'),
+      newActivityButton = Key('newActivityButton'),
+      selectBasicActivityButton = Key('selectBasicActivityButton');
 }

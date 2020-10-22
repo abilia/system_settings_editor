@@ -340,26 +340,27 @@ class AlarmWidget extends StatelessWidget {
         children: <Widget>[
           SubHeading(translator.alarm),
           PickField(
-            disabled: !memoSettingsState.abilityToSelectAlarm,
             key: TestKey.selectAlarm,
             leading: Icon(
               alarm.iconData(),
               size: smallIconSize,
             ),
             text: Text(alarm.text(translator)),
-            onTap: () async {
-              final result = await showViewDialog<Alarm>(
-                context: context,
-                builder: (context) => SelectAlarmTypeDialog(
-                  alarm: alarm.type,
-                ),
-              );
-              if (result != null) {
-                BlocProvider.of<EditActivityBloc>(context).add(ReplaceActivity(
-                    activity.copyWith(
-                        alarm: activity.alarm.copyWith(type: result))));
-              }
-            },
+            onTap: memoSettingsState.abilityToSelectAlarm
+                ? () async {
+                    final result = await showViewDialog<Alarm>(
+                      context: context,
+                      builder: (context) => SelectAlarmTypeDialog(
+                        alarm: alarm.type,
+                      ),
+                    );
+                    if (result != null) {
+                      BlocProvider.of<EditActivityBloc>(context).add(
+                          ReplaceActivity(activity.copyWith(
+                              alarm: activity.alarm.copyWith(type: result))));
+                    }
+                  }
+                : null,
           ),
           const SizedBox(height: 8.0),
           AlarmOnlyAtStartSwitch(

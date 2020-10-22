@@ -266,6 +266,40 @@ abstract class Translated {
   final String lunch = 'Lunch';
 
   final String cancel = 'Cancel';
+
+  final String permissions = 'Permissions';
+
+  final String notifications = 'Notifications';
+
+  final String accessToPhotos = 'Access to Photos';
+
+  final String accessToCamera = 'Access to Camera';
+
+  final String allowNotifications = 'Allow notifications';
+
+  final String allowNotificationsDescription1 =
+      'Allow notifications to be able to get alarms and reminders from activities. You can do that from the ';
+
+  final String allowNotificationsDescriptionSettingsLink = 'settings';
+
+  final String allowNotificationsDescription2 = '.';
+
+  final String turnOffNotifications = 'Turn off notifications?';
+
+  final String turnOffNotificationsBody =
+      'You will no longer be able to get alarms and reminders from activities.';
+
+  final String notificationsWarningHintText =
+      'Allow notifications to be able to get alarms and reminders from activities.';
+
+  final String notificationsWarningText =
+      'Allow notifications from the settings to be able to receive alarms and reminders.';
+
+  final String fromBasicActivity = 'From basic activity';
+
+  final String createActivity = 'Create activity';
+
+  final String basicActivities = 'Basic activities';
 }
 
 class EN extends Translated {}
@@ -645,4 +679,53 @@ class SV extends Translated {
 
   @override
   final String cancel = 'Avbryt';
+
+  @override
+  final String permissions = 'Behörigheter';
+
+  @override
+  final String notifications = 'Notiser';
+
+  @override
+  final String accessToPhotos = 'Tillgång till bilder';
+
+  @override
+  final String accessToCamera = 'Tillgång till kameran';
+
+  @override
+  final String allowNotifications = 'Tillåt notiser';
+
+  @override
+  final String allowNotificationsDescription1 =
+      'Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån ';
+
+  @override
+  final String allowNotificationsDescriptionSettingsLink = 'inställningar';
+
+  @override
+  final String allowNotificationsDescription2 = '.';
+
+  @override
+  final String turnOffNotifications = 'Stäng av notiser?';
+
+  @override
+  final String turnOffNotificationsBody =
+      'Du kommer inte längre kunna få alarm och notiser för aktiviteter.';
+
+  @override
+  final String notificationsWarningHintText =
+      'Tillåt notiser för att få larm och påminnelser för aktiviteter.';
+
+  @override
+  final String notificationsWarningText =
+      'Tillåt notiser från inställningar för att få larm och påminnelser.';
+
+  @override
+  final String fromBasicActivity = 'Från basaktivitet';
+
+  @override
+  final String createActivity = 'Skapa aktivitet';
+
+  @override
+  final String basicActivities = 'Basaktiviteter';
 }

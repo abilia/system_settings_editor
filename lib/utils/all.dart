@@ -11,3 +11,4 @@ export 'image_processing.dart';
 export 'strings.dart';
 export 'licenses.dart';
 export 'recurs_extensions.dart';
+export 'permission.dart';

@@ -114,26 +114,27 @@ class DatePicker extends StatelessWidget {
 
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, time) => PickField(
-        disabled: disabled,
         key: TestKey.datePicker,
-        onTap: () async {
-          final newDate = await showDatePicker(
-              context: context,
-              initialDate: date,
-              firstDate: _firstDate,
-              lastDate: _lastDate,
-              builder: (context, child) => Theme(
-                  data: abiliaTheme.copyWith(
-                    colorScheme: abiliaTheme.colorScheme.copyWith(
-                      primary: color,
-                      surface: color,
-                    ),
-                  ),
-                  child: child));
-          if (newDate != null) {
-            onChange(newDate);
-          }
-        },
+        onTap: disabled
+            ? null
+            : () async {
+                final newDate = await showDatePicker(
+                    context: context,
+                    initialDate: date,
+                    firstDate: _firstDate,
+                    lastDate: _lastDate,
+                    builder: (context, child) => Theme(
+                        data: abiliaTheme.copyWith(
+                          colorScheme: abiliaTheme.colorScheme.copyWith(
+                            primary: color,
+                            surface: color,
+                          ),
+                        ),
+                        child: child));
+                if (newDate != null) {
+                  onChange(newDate);
+                }
+              },
         leading: Icon(
           AbiliaIcons.calendar,
           size: smallIconSize,

@@ -15,10 +15,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
   final Authenticated authenticatedState;
   final Widget child;
   final MemoplannerSettingBloc memoplannerSettingBloc;
+  final SortableBloc sortableBloc;
   AuthenticatedBlocsProvider({
     @required this.authenticatedState,
     @required this.child,
     this.memoplannerSettingBloc,
+    this.sortableBloc,
   }) {
     ensureNotificationPluginInitialized();
   }
@@ -91,11 +93,13 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
           ),
           BlocProvider<SortableBloc>(
-            create: (context) => SortableBloc(
-              sortableRepository: context.repository<SortableRepository>(),
-              syncBloc: context.bloc<SyncBloc>(),
-              pushBloc: context.bloc<PushBloc>(),
-            )..add(LoadSortables()),
+            create: (context) => sortableBloc ??
+                SortableBloc(
+                  sortableRepository: context.repository<SortableRepository>(),
+                  syncBloc: context.bloc<SyncBloc>(),
+                  pushBloc: context.bloc<PushBloc>(),
+                )
+              ..add(LoadSortables()),
           ),
           BlocProvider<GenericBloc>(
             create: (context) => GenericBloc(
@@ -105,9 +109,11 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             )..add(LoadGenerics()),
           ),
           BlocProvider<MemoplannerSettingBloc>(
-            create: (context) => memoplannerSettingBloc ?? MemoplannerSettingBloc(
-              genericBloc: context.bloc<GenericBloc>(),
-            ),
+            create: (context) =>
+                memoplannerSettingBloc ??
+                MemoplannerSettingBloc(
+                  genericBloc: context.bloc<GenericBloc>(),
+                ),
           ),
           BlocProvider<DayPickerBloc>(
             create: (context) => DayPickerBloc(
@@ -147,7 +153,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               userRepository: authenticatedState.userRepository,
               authenticationBloc: context.repository<AuthenticationBloc>(),
             )..add(ReloadLicenses()),
-          )
+          ),
+          BlocProvider<PermissionBloc>(
+            create: (context) => PermissionBloc()
+              ..add(RequestPermissions([Permission.notification]))
+              ..checkAll(),
+          ),
         ],
         child: child,
       ),

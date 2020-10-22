@@ -18,6 +18,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '../../mocks.dart';
+import '../../utils/types.dart';
 
 void main() {
   final startTime = DateTime(2020, 02, 10, 15, 30);
@@ -96,12 +97,13 @@ void main() {
                 settingsDb: MockSettingsDb(),
               ),
             ),
+            BlocProvider<PermissionBloc>(
+              create: (context) => PermissionBloc()..checkAll(),
+            ),
           ], child: child)),
       home: widget,
     );
   }
-
-  Type typeOf<T>() => T;
 
   group('edit activity test', () {
     testWidgets('New activity shows', (WidgetTester tester) async {
@@ -153,16 +155,44 @@ void main() {
       expect(find.text(newActivtyTitle), findsOneWidget);
     });
 
-    testWidgets('Select picture dialog shows', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.addPicture));
-      await tester.pumpAndSettle();
-      expect(find.byType(SelectPictureDialog), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.closeDialog));
-      await tester.pumpAndSettle();
-      expect(find.byType(SelectPictureDialog), findsNothing);
+    group('picture dialog', () {
+      tearDown(() {
+        setupPermissions();
+      });
+      testWidgets('Select picture dialog shows', (WidgetTester tester) async {
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.addPicture));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectPictureDialog), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.closeDialog));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectPictureDialog), findsNothing);
+      });
+
+      testWidgets(
+          'Select picture dialog picker options are disabled when premission in denied',
+          (WidgetTester tester) async {
+        setupPermissions({
+          Permission.camera: PermissionStatus.denied,
+          Permission.photos: PermissionStatus.undetermined,
+        });
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.addPicture));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectPictureDialog), findsOneWidget);
+
+        final photoPickField =
+            tester.widget<PickField>(find.byKey(TestKey.photosPickField));
+        final cameraPickField =
+            tester.widget<PickField>(find.byKey(TestKey.cameraPickField));
+
+        expect(photoPickField.onTap, isNotNull);
+        expect(cameraPickField.onTap, isNull);
+      });
     });
 
     testWidgets(
@@ -1758,7 +1788,7 @@ text''';
       final alarmPicker =
           tester.widgetList(find.byType(PickField)).first as PickField;
 
-      expect(alarmPicker.disabled, true);
+      expect(alarmPicker.onTap, isNull);
     });
 
     final hourInputFinder = find.byKey(TestKey.hourTextInput);

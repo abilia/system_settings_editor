@@ -37,8 +37,9 @@ extension RecurringActivityExtension on Activity {
   List<ActivityDay> dayActivitiesForDay(DateTime day) {
     if (!isRecurring) {
       if (day.isAtSameDay(startTime) ||
-          day.inExclusiveRange(
-              startDate: startTime, endDate: noneRecurringEnd)) {
+          (!fullDay &&
+              day.inExclusiveRange(
+                  startDate: startTime, endDate: noneRecurringEnd))) {
         return [ActivityDay(this, startTime.onlyDays())];
       }
       return [];

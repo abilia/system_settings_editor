@@ -61,6 +61,28 @@ class DbSortable extends DbModel<Sortable> {
           isGroup: isGroup,
           visible: visible,
         );
+      case SortableType.basicactivity:
+        return isGroup
+            ? Sortable<BasicActivityDataFolder>._(
+                id: id,
+                type: SortableType.basicactivity,
+                data: BasicActivityDataFolder.fromJson(data),
+                groupId: groupId,
+                sortOrder: sortOrder,
+                deleted: deleted,
+                isGroup: isGroup,
+                visible: visible,
+              )
+            : Sortable<BasicActivityDataItem>._(
+                id: id,
+                type: SortableType.basicactivity,
+                data: BasicActivityDataItem.fromJson(data),
+                groupId: groupId,
+                sortOrder: sortOrder,
+                deleted: deleted,
+                isGroup: isGroup,
+                visible: visible,
+              );
       default:
         return Sortable<RawSortableData>._(
           id: id,

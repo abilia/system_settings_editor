@@ -1,0 +1,50 @@
+import 'dart:async';
+import 'dart:collection';
+import 'dart:io';
+
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import 'package:seagull/logging.dart';
+import 'package:seagull/utils/all.dart';
+
+export 'package:permission_handler/permission_handler.dart';
+
+part 'permission_event.dart';
+part 'permission_state.dart';
+
+class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
+  PermissionBloc() : super(PermissionState.empty());
+
+  @override
+  Stream<PermissionState> mapEventToState(
+    PermissionEvent event,
+  ) async* {
+    if (event is RequestPermissions) {
+      yield state.update(
+        await event.permissions.request(),
+      );
+    }
+    if (event is CheckStatusForPermissions) {
+      yield state.update(
+        await {for (final p in event.permissions) p: await p.status},
+      );
+    }
+  }
+
+  static final allPermissions = UnmodifiableListView(
+    [
+      Permission.notification,
+      if (Platform.isAndroid) ...[
+        Permission.storage,
+      ] else ...[
+        Permission.camera,
+        Permission.photos,
+      ]
+    ],
+  );
+
+  void checkAll() => add(CheckStatusForPermissions(allPermissions));
+}

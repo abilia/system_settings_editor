@@ -1,16 +1,17 @@
 import 'dart:io';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:equatable/equatable.dart';
+
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
-import 'package:uuid/uuid.dart';
 
 class SelectPictureDialog extends StatefulWidget {
   final String previousImage;
@@ -36,11 +37,11 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     if (imageArchiveView) {
       return buildImageArchiveDialog();
     } else {
-      return buildPictureSourceDialog(context);
+      return buildPictureSourceDialog();
     }
   }
 
-  ViewDialog buildPictureSourceDialog(BuildContext context) {
+  ViewDialog buildPictureSourceDialog() {
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
     return ViewDialog(
@@ -66,43 +67,54 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
           : null,
       heading: Text(translate.selectPicture, style: theme.textTheme.headline6),
       onOk: onOk,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          PickField(
-            key: TestKey.imageArchiveButton,
-            leading: Icon(AbiliaIcons.folder),
-            text: Text(
-              translate.imageArchive,
-              style: abiliaTheme.textTheme.bodyText1,
-            ),
-            onTap: () {
-              setState(() {
-                imageArchiveView = !imageArchiveView;
-              });
-            },
-          ),
-          SizedBox(height: 8.0),
-          PickField(
-            leading: Icon(AbiliaIcons.my_photos),
-            text: Text(
-              translate.myPhotos,
-              style: abiliaTheme.textTheme.bodyText1,
-            ),
-            onTap: () async =>
-                await _getExternalFile(source: ImageSource.gallery),
-          ),
-          SizedBox(height: 8.0),
-          PickField(
-            leading: Icon(AbiliaIcons.camera_photo),
-            text: Text(
-              translate.takeNewPhoto,
-              style: abiliaTheme.textTheme.bodyText1,
-            ),
-            onTap: () async =>
-                await _getExternalFile(source: ImageSource.camera),
-          ),
-        ],
+      child: BlocBuilder<PermissionBloc, PermissionState>(
+        builder: (context, permission) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              PickField(
+                key: TestKey.imageArchiveButton,
+                leading: const Icon(AbiliaIcons.folder),
+                text: Text(
+                  translate.imageArchive,
+                  style: abiliaTheme.textTheme.bodyText1,
+                ),
+                onTap: () {
+                  setState(() {
+                    imageArchiveView = !imageArchiveView;
+                  });
+                },
+              ),
+              const SizedBox(height: 8.0),
+              PickField(
+                key: TestKey.photosPickField,
+                leading: const Icon(AbiliaIcons.my_photos),
+                text: Text(
+                  translate.myPhotos,
+                  style: abiliaTheme.textTheme.bodyText1,
+                ),
+                onTap: permission.photosIsGrantedOrUndetermined
+                    ? () async =>
+                        await _getExternalFile(source: ImageSource.gallery)
+                    : null,
+              ),
+              const SizedBox(height: 8.0),
+              PickField(
+                key: TestKey.cameraPickField,
+                leading: const Icon(AbiliaIcons.camera_photo),
+                text: Text(
+                  translate.takeNewPhoto,
+                  style: abiliaTheme.textTheme.bodyText1,
+                ),
+                onTap:
+                    permission.status[Permission.camera].isGrantedOrUndetermined
+                        ? () async =>
+                            await _getExternalFile(source: ImageSource.camera)
+                        : null,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

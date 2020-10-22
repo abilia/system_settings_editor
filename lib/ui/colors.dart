@@ -187,20 +187,31 @@ class AbiliaColors {
   static const MaterialColor orange = MaterialColor(
     _orangePrimaryValue,
     <int, Color>{
-      0: Color(0xFFFDF5E8),
-      20: Color(0xFFFBE1BB),
-      40: Color(0xFFF9CE8E),
-      60: Color(0xFFF6BA61),
-      80: Color(0xFFF4A734),
-      100: Color(_orangePrimaryValue),
-      120: Color(0xFFC77A06),
-      140: Color(0xFF9B5F05),
-      160: Color(0xFF6E4404),
-      180: Color(0xFF422902),
-      200: Color(0xFF160E01),
+      0: orange0,
+      20: orange20,
+      40: orange40,
+      60: orange60,
+      80: orange80,
+      100: orange100,
+      120: orange120,
+      140: orange140,
+      160: orange160,
+      180: orange180,
+      200: orange200,
     },
   );
   static const int _orangePrimaryValue = 0xFFF29407;
+  static const orange0 = Color(0xFFFDF5E8),
+      orange20 = Color(0xFFFBE1BB),
+      orange40 = Color(0xFFF9CE8E),
+      orange60 = Color(0xFFF6BA61),
+      orange80 = Color(0xFFF4A734),
+      orange100 = Color(_orangePrimaryValue),
+      orange120 = Color(0xFFC77A06),
+      orange140 = Color(0xFF9B5F05),
+      orange160 = Color(0xFF6E4404),
+      orange180 = Color(0xFF422902),
+      orange200 = Color(0xFF160E01);
 
   static const MaterialColor brown = MaterialColor(
     _brownPrimaryValue,

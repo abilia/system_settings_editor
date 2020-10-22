@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/file_storage.dart';
+import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class SeagullListeners extends StatefulWidget {
@@ -61,6 +62,13 @@ class _SeagullListenersState extends State<SeagullListeners>
           listener: _alarmListener,
           listenWhen: widget.listenWhen,
         ),
+        BlocListener<PermissionBloc, PermissionState>(
+          listenWhen: _currentDeniedLastNot,
+          listener: (context, state) => showViewDialog(
+            context: context,
+            builder: (context) => NotificationPermissionWarningDialog(),
+          ),
+        ),
       ],
       child: widget.child,
     );
@@ -71,4 +79,9 @@ class _SeagullListenersState extends State<SeagullListeners>
       await GetIt.I<AlarmNavigator>().pushAlarm(context, state.alarm);
     }
   }
+
+  bool _currentDeniedLastNot(
+          PermissionState previous, PermissionState current) =>
+      current.status[Permission.notification].isDeniedOrPermenantlyDenied &&
+      !previous.status[Permission.notification].isDeniedOrPermenantlyDenied;
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -20,6 +21,7 @@ import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
+import '../../utils/types.dart';
 
 void main() {
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page),
@@ -33,15 +35,53 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  final userRepository = UserRepository(
+    httpClient: Fakes.client(),
+    tokenDb: MockTokenDb(),
+    userDb: MockUserDb(),
+    licenseDb: MockLicenseDb(),
+  );
+
+  final defaultMemoSettingsBloc = MockMemoplannerSettingsBloc();
+  when(defaultMemoSettingsBloc.state)
+      .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
+
+  Widget wrapWithMaterialApp(
+    Widget widget, {
+    MemoplannerSettingBloc memoplannerSettingBloc,
+    SortableBloc sortableBloc,
+  }) =>
+      TopLevelBlocsProvider(
+        baseUrl: 'test',
+        child: AuthenticatedBlocsProvider(
+          memoplannerSettingBloc:
+              memoplannerSettingBloc ?? defaultMemoSettingsBloc,
+          sortableBloc: sortableBloc,
+          authenticatedState: Authenticated(
+            token: '',
+            userId: 1,
+            userRepository: userRepository,
+          ),
+          child: MaterialApp(
+            supportedLocales: Translator.supportedLocals,
+            localizationsDelegates: [Translator.delegate],
+            localeResolutionCallback: (locale, supportedLocales) =>
+                supportedLocales.firstWhere(
+                    (l) => l.languageCode == locale?.languageCode,
+                    orElse: () => supportedLocales.first),
+            home: Material(child: widget),
+          ),
+        ),
+      );
+
   group('calendar page', () {
     MockActivityDb mockActivityDb;
     StreamController<DateTime> mockTicker;
     ActivityResponse activityResponse = () => [];
     final initialDay = DateTime(2020, 08, 05);
 
-    setUp(() {
+    setUp(() async {
       tz.initializeTimeZones();
-
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
       mockTicker = StreamController<DateTime>();
@@ -68,6 +108,7 @@ void main() {
         ..syncDelay = SyncDelays.zero
         ..alarmScheduler = noAlarmScheduler
         ..database = MockDatabase()
+        ..flutterTts = MockFlutterTts()
         ..init();
     });
 
@@ -76,7 +117,41 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.addActivity));
       await tester.pumpAndSettle();
+      expect(find.byType(CreateActivityDialog), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.newActivityButton));
+      await tester.pumpAndSettle();
       expect(find.byType(EditActivityPage), findsOneWidget);
+    });
+
+    testWidgets('New activity from basic activity gets correct title',
+        (WidgetTester tester) async {
+      await initializeDateFormatting();
+      final sortableBlocMock = MockSortableBloc();
+      final title = 'testtitle';
+      when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
+        Sortable.createNew<BasicActivityData>(
+          data: BasicActivityDataItem.createNew(title: title),
+        ),
+      ]));
+      await tester.pumpWidget(
+          wrapWithMaterialApp(CalendarPage(), sortableBloc: sortableBlocMock));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.addActivity));
+      await tester.pumpAndSettle();
+      expect(find.byType(CreateActivityDialog), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.selectBasicActivityButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(typeOf<SortableLibrary<BasicActivityData>>()),
+          findsOneWidget);
+      expect(find.text(title), findsOneWidget);
+      await tester.tap(find.text(title));
+      await tester.pumpAndSettle();
+      expect(find.byType(EditActivityPage), findsOneWidget);
+      final nameAndPicture = find.byType(NameAndPictureWidget);
+      expect(nameAndPicture, findsOneWidget);
+      final nameAndPictureWidget =
+          tester.firstWidget(nameAndPicture) as NameAndPictureWidget;
+      expect(nameAndPictureWidget.text, title);
     });
 
     testWidgets('navigation', (WidgetTester tester) async {
@@ -96,38 +171,94 @@ void main() {
 
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
     });
+
+    group('Premissions', () {
+      final translate = Locales.language.values.first;
+
+      tearDown(() {
+        setupPermissions();
+      });
+      testWidgets('Notification permission is requested at start up',
+          (WidgetTester tester) async {
+        setupPermissions();
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(requestedPermissions, {Permission.notification});
+      });
+
+      testWidgets('Denied notifications shows popup and warnings',
+          (WidgetTester tester) async {
+        setupPermissions({Permission.notification: PermissionStatus.denied});
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(
+            find.byType(NotificationPermissionWarningDialog), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.closeDialog));
+        expect(find.byType(OrangeDot), findsOneWidget);
+        expect(find.byType(ErrorMessage), findsOneWidget);
+      });
+
+      testWidgets('Granted premission shows nothing',
+          (WidgetTester tester) async {
+        setupPermissions({Permission.notification: PermissionStatus.granted});
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(NotificationPermissionWarningDialog), findsNothing);
+        expect(find.byType(OrangeDot), findsNothing);
+        expect(find.byType(ErrorMessage), findsNothing);
+      });
+
+      testWidgets('Denied notifications tts', (WidgetTester tester) async {
+        setupPermissions({Permission.notification: PermissionStatus.denied});
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.verifyTts(find.text(translate.allowNotifications),
+            exact: translate.allowNotifications);
+        final compound = translate.allowNotificationsDescription1 +
+            translate.allowNotificationsDescriptionSettingsLink +
+            translate.allowNotificationsDescription2;
+        await tester.verifyTts(find.byType(NotificationBodyTextWarning),
+            exact: compound);
+        await tester.tap(find.byKey(TestKey.closeDialog));
+        await tester.pumpAndSettle();
+        await tester.verifyTts(find.byType(ErrorMessage),
+            exact: translate.notificationsWarningText);
+      });
+
+      testWidgets('Denied notifications link to permission settings',
+          (WidgetTester tester) async {
+        bool tapTextSpan(RichText richText, String text) {
+          return !richText.text.visitChildren(
+            (InlineSpan visitor) {
+              if (visitor is TextSpan && visitor.text == text) {
+                (visitor.recognizer as TapGestureRecognizer).onTap();
+                return false;
+              }
+              return true;
+            },
+          );
+        }
+
+        setupPermissions({Permission.notification: PermissionStatus.denied});
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(
+            find.byWidgetPredicate(
+              (widget) =>
+                  widget is RichText &&
+                  tapTextSpan(widget,
+                      translate.allowNotificationsDescriptionSettingsLink),
+            ),
+            findsOneWidget);
+        await tester.pumpAndSettle();
+        expect(find.byType(PermissionsPage), findsOneWidget);
+      });
+    });
   });
 
   group('MemoPlanner settings', () {
-    final userRepository = UserRepository(
-      httpClient: Fakes.client(),
-      tokenDb: MockTokenDb(),
-      userDb: MockUserDb(),
-      licenseDb: MockLicenseDb(),
-    );
-
     MemoplannerSettingBloc memoplannerSettingBlocMock;
 
-    Widget wrapWithMaterialApp(Widget widget) => TopLevelBlocsProvider(
-          baseUrl: 'test',
-          child: AuthenticatedBlocsProvider(
-            memoplannerSettingBloc: memoplannerSettingBlocMock,
-            authenticatedState: Authenticated(
-              token: '',
-              userId: 1,
-              userRepository: userRepository,
-            ),
-            child: MaterialApp(
-              supportedLocales: Translator.supportedLocals,
-              localizationsDelegates: [Translator.delegate],
-              localeResolutionCallback: (locale, supportedLocales) =>
-                  supportedLocales.firstWhere(
-                      (l) => l.languageCode == locale?.languageCode,
-                      orElse: () => supportedLocales.first),
-              home: Material(child: widget),
-            ),
-          ),
-        );
     MockActivityDb mockActivityDb;
 
     StreamController<DateTime> mockTicker;
@@ -181,7 +312,10 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(calendarDayColor: DayColors.ALL_DAYS),
         ));
-        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+        await tester.pumpWidget(wrapWithMaterialApp(
+          CalendarPage(),
+          memoplannerSettingBloc: memoplannerSettingBlocMock,
+        ));
         await tester.pumpAndSettle();
         _expectCorrectColor(tester, weekDayColor[DateTime.wednesday]);
         await tester.tap(nextDayButtonFinder);
@@ -210,7 +344,10 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(calendarDayColor: DayColors.SATURDAY_AND_SUNDAY),
         ));
-        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+        await tester.pumpWidget(wrapWithMaterialApp(
+          CalendarPage(),
+          memoplannerSettingBloc: memoplannerSettingBlocMock,
+        ));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
         _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
@@ -239,7 +376,10 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(calendarDayColor: DayColors.NO_COLORS),
         ));
-        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+        await tester.pumpWidget(wrapWithMaterialApp(
+          CalendarPage(),
+          memoplannerSettingBloc: memoplannerSettingBlocMock,
+        ));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
         _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
@@ -271,7 +411,10 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(dayCaptionShowDayButtons: true),
         ));
-        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+        await tester.pumpWidget(wrapWithMaterialApp(
+          CalendarPage(),
+          memoplannerSettingBloc: memoplannerSettingBlocMock,
+        ));
         await tester.pumpAndSettle();
 
         expect(nextDayButtonFinder, findsOneWidget);
@@ -289,7 +432,10 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(dayCaptionShowDayButtons: false),
         ));
-        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage()));
+        await tester.pumpWidget(wrapWithMaterialApp(
+          CalendarPage(),
+          memoplannerSettingBloc: memoplannerSettingBlocMock,
+        ));
         await tester.pumpAndSettle();
 
         expect(nextDayButtonFinder, findsNothing);

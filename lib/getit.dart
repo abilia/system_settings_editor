@@ -8,6 +8,7 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/repository/default_http_client.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -88,7 +89,7 @@ class GetItInitializer {
     final userDb = _userDb ?? UserDb();
     GetIt.I
       ..reset()
-      ..registerSingleton<BaseClient>(_baseClient ?? Client())
+      ..registerSingleton<BaseClient>(_baseClient ?? ClientWithDefaultHeaders())
       ..registerSingleton<TokenDb>(_tokenDb ?? TokenDb())
       ..registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb())
       ..registerSingleton<FirebasePushService>(

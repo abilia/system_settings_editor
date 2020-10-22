@@ -70,10 +70,7 @@ Future showErrorViewDialog(String text, {@required BuildContext context}) {
             padding:
                 const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
             child: ErrorMessage(
-              text: Text(
-                text,
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
+              text: Text(text),
             ),
           ),
         ),
