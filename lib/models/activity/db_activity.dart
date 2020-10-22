@@ -24,8 +24,7 @@ class DbActivity extends DbModel<Activity> {
           id: json['id'],
           seriesId: json['seriesId'],
           title: json['title'],
-          startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime'])
-              .onlyMinutes(),
+          startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime']),
           duration: Duration(milliseconds: json['duration']),
           fileId: _nullIfEmpty(json['fileId']),
           icon: _nullIfEmpty(json['icon']),
