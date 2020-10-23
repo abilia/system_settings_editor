@@ -19,7 +19,7 @@ dependencies:
   firebase_messaging:
     git:
       url: git://github.com/abilia/flutterfire.git
-      ref: ios-background-support
+      ref: e31f2cdb7a33208ad5c6d9ae4028cb0a20b338db
       path: packages/firebase_messaging/
   sqflite: ^1.2.2
   get_it: ^4.0.2
