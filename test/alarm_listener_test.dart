@@ -221,8 +221,8 @@ void main() {
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.okDialog));
-      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.checkDialogCheckButton));
+      await tester.pumpAndSettle(2.seconds());
 
       // Assert -- Alarm is checked
       expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
@@ -231,8 +231,8 @@ void main() {
       // Act -- Tap the uncheck button
       await tester.tap(find.byKey(TestKey.activityUncheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.okDialog));
-      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.checkDialogUncheckButton));
+      await tester.pumpAndSettle(2.seconds());
 
       // Assert -- Alarm is unchecked again
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
@@ -256,8 +256,8 @@ void main() {
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.okDialog));
-      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.checkDialogCheckButton));
+      await tester.pumpAndSettle(2.seconds());
 
       // Assert -- Check button not showing and uncheck button showing
       expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
@@ -266,8 +266,8 @@ void main() {
       // Act -- Tap the uncheck button
       await tester.tap(find.byKey(TestKey.activityUncheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.okDialog));
-      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.checkDialogUncheckButton));
+      await tester.pumpAndSettle(2.seconds());
 
       // Assert -- Check button showing and uncheck not showing
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);

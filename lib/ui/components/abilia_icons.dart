@@ -491,5 +491,6 @@ class AbiliaIcons {
       repeat = IconData(0xeafa, fontFamily: fontFamily),
       show = IconData(0xeafe, fontFamily: fontFamily),
       hide = IconData(0xeaff, fontFamily: fontFamily),
-      flarp = IconData(0xeb12, fontFamily: fontFamily);
+      flarp = IconData(0xeb12, fontFamily: fontFamily),
+      handi_uncheck = IconData(0xEB28, fontFamily: fontFamily);
 }

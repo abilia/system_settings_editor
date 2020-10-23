@@ -265,6 +265,8 @@ abstract class Translated {
 
   final String lunch = 'Lunch';
 
+  final String cancel = 'Cancel';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -674,6 +676,9 @@ class SV extends Translated {
 
   @override
   final String lunch = 'Lunch';
+
+  @override
+  final String cancel = 'Avbryt';
 
   @override
   final String permissions = 'Behörigheter';

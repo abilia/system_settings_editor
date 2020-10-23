@@ -51,6 +51,12 @@ void main() {
 
   final checkButtonFinder = find.byKey(TestKey.activityCheckButton);
   final unCheckButtonFinder = find.byKey(TestKey.activityUncheckButton);
+  final checkDialogCheckButtonFinder =
+      find.byKey(TestKey.checkDialogCheckButton);
+  final checkDialogCancelButtonFinder =
+      find.byKey(TestKey.checkDialogCancelButton);
+  final checkDialogUncheckButtonFinder =
+      find.byKey(TestKey.checkDialogUncheckButton);
 
   final activityInfoSideDotsFinder = find.byType(ActivityInfoSideDots);
 
@@ -1131,8 +1137,8 @@ void main() {
     await tester.tap(checkButtonFinder);
     await tester.pumpAndSettle();
 
-    expect(closeButtonFinder, findsOneWidget);
-    await tester.tap(closeButtonFinder);
+    expect(checkDialogCancelButtonFinder, findsOneWidget);
+    await tester.tap(checkDialogCancelButtonFinder);
     await tester.pumpAndSettle();
 
     expect(checkButtonFinder, findsOneWidget);
@@ -1140,16 +1146,16 @@ void main() {
 
     await tester.tap(checkButtonFinder);
     await tester.pumpAndSettle();
-    await tester.tap(okInkWellFinder);
-    await tester.pumpAndSettle();
+    await tester.tap(checkDialogCheckButtonFinder);
+    await tester.pumpAndSettle(2.seconds());
 
     expect(checkButtonFinder, findsNothing);
     expect(unCheckButtonFinder, findsOneWidget);
 
     await tester.tap(unCheckButtonFinder);
     await tester.pumpAndSettle();
-    await tester.tap(okInkWellFinder);
-    await tester.pumpAndSettle();
+    await tester.tap(checkDialogUncheckButtonFinder);
+    await tester.pumpAndSettle(2.seconds());
 
     expect(checkButtonFinder, findsOneWidget);
     expect(unCheckButtonFinder, findsNothing);
@@ -1328,14 +1334,12 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
           ],
         ),
       );
-
       await navigateToActivityPage(tester);
       await tester.verifyTts(checkButtonFinder, exact: translate.check);
       await tester.tap(checkButtonFinder);
       await tester.pumpAndSettle();
-      await tester.verifyTts(find.byType(ActivityCard), contains: title);
-      await tester.tap(okInkWellFinder);
-      await tester.pumpAndSettle();
+      await tester.tap(checkDialogCheckButtonFinder);
+      await tester.pumpAndSettle(Duration(seconds: 2));
       await tester.verifyTts(unCheckButtonFinder, exact: translate.uncheck);
     });
 

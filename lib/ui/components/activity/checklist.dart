@@ -14,6 +14,7 @@ class CheckListView extends StatelessWidget {
   final Function(Question) onTap;
   final EdgeInsetsGeometry padding;
   final UnmodifiableMapView<int, File> tempImageFiles;
+  final bool preview;
 
   CheckListView(
     this.checklist, {
@@ -22,6 +23,7 @@ class CheckListView extends StatelessWidget {
     Key key,
     this.padding = EdgeInsets.zero,
     Map<int, File> tempImageFiles = const {},
+    this.preview = false,
   })  : tempImageFiles = UnmodifiableMapView(tempImageFiles),
         super(key: key);
 
@@ -41,8 +43,9 @@ class CheckListView extends StatelessWidget {
               final question = checklist.questions[i];
               return QuestionView(
                 question,
+                inactive: preview,
                 signedOff: day != null && checklist.isSignedOff(question, day),
-                onTap: onTap != null ? () => onTap(question) : null,
+                onTap: onTap != null && !preview ? () => onTap(question) : null,
                 tempImageFile: tempImageFiles[question.id],
               );
             },
@@ -60,6 +63,7 @@ class QuestionView extends StatelessWidget {
   final bool signedOff;
   final GestureTapCallback onTap;
   final File tempImageFile;
+  final bool inactive;
 
   const QuestionView(
     this.question, {
@@ -67,6 +71,7 @@ class QuestionView extends StatelessWidget {
     this.signedOff = false,
     key,
     this.tempImageFile,
+    this.inactive = false,
   }) : super(key: key);
 
   static const duration = Duration(milliseconds: 400);
@@ -154,9 +159,16 @@ class QuestionView extends StatelessWidget {
                         child: AnimatedCrossFade(
                           firstChild: Icon(
                             AbiliaIcons.checkbox_selected,
-                            color: AbiliaColors.green,
+                            color: inactive
+                                ? AbiliaColors.green40
+                                : AbiliaColors.green,
                           ),
-                          secondChild: Icon(AbiliaIcons.checkbox_unselected),
+                          secondChild: Icon(
+                            AbiliaIcons.checkbox_unselected,
+                            color: inactive
+                                ? AbiliaColors.white140
+                                : AbiliaColors.black,
+                          ),
                           crossFadeState: signedOff
                               ? CrossFadeState.showFirst
                               : CrossFadeState.showSecond,
