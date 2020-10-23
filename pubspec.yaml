@@ -48,7 +48,12 @@ dependencies:
   flutter_archive: ^1.0.2
   flutter_tts: ^1.2.7
   flutter_native_timezone: ^1.0.4
-  permission_handler: ^5.0.1+1
+  permission_handler:
+    git:
+      url: git://github.com/abilia/flutter-permission-handler.git
+      ref: 3b6267acdc3102984e3a0457043f7e9ee691abc8
+      path: permission_handler/
+  provider: ^4.3.2+2
 
 dev_dependencies:
   flutter_test:

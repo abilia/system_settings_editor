@@ -25,6 +25,10 @@ class PermissionState extends Equatable {
   bool get notificationDenied =>
       status[Permission.notification].isDeniedOrPermenantlyDenied;
 
+  bool get importantPermissionMissing =>
+      notificationDenied ||
+      (Platform.isAndroid && !status[Permission.systemAlertWindow].isGranted);
+
   @override
   List<Object> get props => [status];
 

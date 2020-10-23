@@ -14,6 +14,8 @@ extension PermissionExtension on Permission {
         return translate.accessToPhotos;
       case Permission.notification:
         return translate.notifications;
+      case Permission.systemAlertWindow:
+        return translate.fullScreenAlarm;
       default:
         return toString();
     }
@@ -30,6 +32,11 @@ extension PermissionExtension on Permission {
       case Permission.storage:
         return const Icon(
           AbiliaIcons.camera_photo,
+          size: smallIconSize,
+        );
+      case Permission.systemAlertWindow:
+        return const Icon(
+          AbiliaIcons.resize_higher,
           size: smallIconSize,
         );
       default:
