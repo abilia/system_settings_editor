@@ -43,8 +43,7 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
         builder: (context, AsyncSnapshot<User> userSnapshot) => Column(
           children: <Widget>[
             GestureDetector(
-              onDoubleTap: () =>
-                  DatabaseRepository.logAll(GetIt.I<Database>()),
+              onDoubleTap: () => DatabaseRepository.logAll(GetIt.I<Database>()),
               child: ProfilePicture(
                   state is AuthenticationInitialized
                       ? state.userRepository.baseUrl
@@ -91,8 +90,7 @@ class LogoutButton extends StatelessWidget {
           key: TestKey.loggInButton,
           child: Text(
             text,
-            style:
-                theme.textTheme.subtitle1.copyWith(color: AbiliaColors.white),
+            style: theme.textTheme.button,
           ),
           onPressed: () {
             BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());

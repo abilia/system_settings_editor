@@ -300,7 +300,7 @@ class MenuButton extends StatelessWidget {
                 ),
               ),
             ),
-            if (state.notificationDenied)
+            if (state.importantPermissionMissing)
               const Positioned(
                 top: -3,
                 right: -3,

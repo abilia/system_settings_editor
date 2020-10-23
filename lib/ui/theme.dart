@@ -158,6 +158,13 @@ ButtonThemeData redButtonThemeData = baseButtonTheme.copyWith(
   highlightColor: AbiliaColors.red120,
 );
 
+ButtonThemeData greenButtonThemeData = baseButtonTheme.copyWith(
+  minWidth: double.infinity,
+  buttonColor: AbiliaColors.green,
+  disabledColor: AbiliaColors.green40,
+  highlightColor: AbiliaColors.green120,
+);
+
 const ButtonThemeData checkButtonThemeData = ButtonThemeData(
   height: 48,
   minWidth: 111,
@@ -206,6 +213,16 @@ ThemeData lightButtonTheme = abiliaTheme.copyWith(
 ThemeData redButtonTheme = abiliaTheme.copyWith(
   buttonTheme: redButtonThemeData,
   buttonColor: AbiliaColors.red,
+  textTheme: abiliaTheme.textTheme.copyWith(
+    button: abiliaTheme.textTheme.subtitle1.copyWith(
+      color: AbiliaColors.white,
+    ),
+  ),
+);
+
+ThemeData greenButtonTheme = abiliaTheme.copyWith(
+  buttonTheme: greenButtonThemeData,
+  buttonColor: AbiliaColors.green,
   textTheme: abiliaTheme.textTheme.copyWith(
     button: abiliaTheme.textTheme.subtitle1.copyWith(
       color: AbiliaColors.white,

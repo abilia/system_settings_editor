@@ -300,6 +300,18 @@ abstract class Translated {
   final String createActivity = 'Create activity';
 
   final String basicActivities = 'Basic activities';
+
+  final String fullScreenAlarm = 'Full screen alarm';
+
+  final String redirectToAndroidSettings =
+      'You will be redirect to the Android settings.';
+
+  final String fullScreenAlarmInfo =
+      'Allow this permission to be able to get full screen alarm of activities';
+
+  final String allow = 'Allow';
+
+  final String previewActivityTitle = "Erik's birthday party";
 }
 
 class EN extends Translated {}
@@ -728,4 +740,21 @@ class SV extends Translated {
 
   @override
   final String basicActivities = 'Basaktiviteter';
+
+  @override
+  final String fullScreenAlarm = 'Helskärmslarm';
+
+  @override
+  final String redirectToAndroidSettings =
+      'Du kommer att omdirigeras till Android-inställningarna.';
+
+  @override
+  final String fullScreenAlarmInfo =
+      'Tillåt denna behörighet för att kunna få helskärmslarm om aktiviteter';
+
+  @override
+  final String allow = 'Tillåt';
+
+  @override
+  final String previewActivityTitle = 'Eriks födelsedagskalas';
 }

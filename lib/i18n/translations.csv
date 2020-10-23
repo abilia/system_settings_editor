@@ -136,3 +136,8 @@ notificationsWarningText;Allow notifications from the settings to be able to rec
 fromBasicActivity;From basic activity;Från basaktivitet
 createActivity;Create activity;Skapa aktivitet
 basicActivities;Basic activities;Basaktiviteter
+fullScreenAlarm;Full screen alarm;Helskärmslarm
+redirectToAndroidSettings;You will be redirect to the Android settings.;Du kommer att omdirigeras till Android-inställningarna.
+fullScreenAlarmInfo;Allow this permission to be able to get full screen alarm of activities;Tillåt denna behörighet för att kunna få helskärmslarm om aktiviteter
+allow;Allow;Tillåt
+previewActivityTitle;Erik's birthday party;Eriks födelsedagskalas

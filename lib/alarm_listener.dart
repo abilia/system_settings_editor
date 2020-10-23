@@ -63,12 +63,13 @@ class _SeagullListenersState extends State<SeagullListeners>
           listenWhen: widget.listenWhen,
         ),
         BlocListener<PermissionBloc, PermissionState>(
-          listenWhen: _currentDeniedLastNot,
+          listenWhen: _notificationsDenied,
           listener: (context, state) => showViewDialog(
             context: context,
             builder: (context) => NotificationPermissionWarningDialog(),
           ),
         ),
+        fullScreenAlarmPremissionListener(context),
       ],
       child: widget.child,
     );
@@ -80,7 +81,30 @@ class _SeagullListenersState extends State<SeagullListeners>
     }
   }
 
-  bool _currentDeniedLastNot(
+  BlocListener<PermissionBloc, PermissionState>
+      fullScreenAlarmPremissionListener(BuildContext context) {
+    return BlocListener<PermissionBloc, PermissionState>(
+      listenWhen: (previous, current) {
+        if (!previous.status.containsKey(Permission.systemAlertWindow) &&
+            current.status.containsKey(Permission.systemAlertWindow) &&
+            !current.status[Permission.systemAlertWindow].isGranted) {
+          final authState = context.bloc<AuthenticationBloc>().state;
+          if (authState is Authenticated) {
+            return authState.newlyLoggedIn;
+          } 
+        }
+        return false;
+      },
+      listener: (context, state) => showViewDialog(
+        context: context,
+        builder: (context) => FullscreenAlarmInfoDialog(
+          showRedirect: true,
+        ),
+      ),
+    );
+  }
+
+  bool _notificationsDenied(
           PermissionState previous, PermissionState current) =>
       current.status[Permission.notification].isDeniedOrPermenantlyDenied &&
       !previous.status[Permission.notification].isDeniedOrPermenantlyDenied;

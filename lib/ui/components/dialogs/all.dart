@@ -15,3 +15,4 @@ export 'settings/all.dart';
 export 'license_expired.dart';
 export 'permission_warning.dart';
 export 'warning.dart';
+export 'fullscreen_alarm_info.dart';

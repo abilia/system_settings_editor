@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
@@ -215,8 +217,9 @@ class ActivityContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final previewImage = _tryGetPreview(context);
     final activity = activityDay.activity;
-    final hasImage = activity.hasImage;
+    final hasImage = activity.hasImage || previewImage != null;
     final hasAttachment = activity.hasAttachment;
     final hasTopInfo = !(hasImage && !hasAttachment && !activity.hasTitle);
     return Container(
@@ -267,15 +270,24 @@ class ActivityContainer extends StatelessWidget {
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                  child: CheckedImageWithImagePopup(
-                    activityDay: activityDay,
-                  ),
+                  child: previewImage ??
+                      CheckedImageWithImagePopup(
+                        activityDay: activityDay,
+                      ),
                 ),
               ),
             )
         ],
       ),
     );
+  }
+
+  Widget _tryGetPreview(BuildContext context) {
+    try {
+      return Provider.of<ExampleCalendarImage>(context, listen: false)?.widget;
+    } catch (_) {
+      return null;
+    }
   }
 }
 
