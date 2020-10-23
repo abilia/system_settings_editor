@@ -232,6 +232,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.2.1"
+  firebase:
+    dependency: transitive
+    description:
+      name: firebase
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.3.2"
   firebase_analytics:
     dependency: "direct main"
     description:
@@ -239,6 +246,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.14"
+  firebase_core:
+    dependency: transitive
+    description:
+      name: firebase_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.0+1"
+  firebase_core_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_core_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  firebase_core_web:
+    dependency: transitive
+    description:
+      name: firebase_core_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   firebase_crashlytics:
     dependency: "direct main"
     description:
@@ -250,11 +278,11 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/firebase_messaging/"
-      ref: ios-background-support
-      resolved-ref: afcb41b3f0708be9eebe8bc405a0ed5cf63b14ad
+      ref: e31f2cdb7a33208ad5c6d9ae4028cb0a20b338db
+      resolved-ref: e31f2cdb7a33208ad5c6d9ae4028cb0a20b338db
       url: "git://github.com/abilia/flutterfire.git"
     source: git
-    version: "6.0.15"
+    version: "7.0.4"
   fixnum:
     dependency: transitive
     description:
