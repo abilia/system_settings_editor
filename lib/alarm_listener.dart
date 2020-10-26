@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
@@ -69,7 +71,7 @@ class _SeagullListenersState extends State<SeagullListeners>
             builder: (context) => NotificationPermissionWarningDialog(),
           ),
         ),
-        fullScreenAlarmPremissionListener(context),
+        if (!Platform.isIOS) fullscreenAlarmPremissionListener(context),
       ],
       child: widget.child,
     );
@@ -82,7 +84,7 @@ class _SeagullListenersState extends State<SeagullListeners>
   }
 
   BlocListener<PermissionBloc, PermissionState>
-      fullScreenAlarmPremissionListener(BuildContext context) {
+      fullscreenAlarmPremissionListener(BuildContext context) {
     return BlocListener<PermissionBloc, PermissionState>(
       listenWhen: (previous, current) {
         if (!previous.status.containsKey(Permission.systemAlertWindow) &&
@@ -91,7 +93,7 @@ class _SeagullListenersState extends State<SeagullListeners>
           final authState = context.bloc<AuthenticationBloc>().state;
           if (authState is Authenticated) {
             return authState.newlyLoggedIn;
-          } 
+          }
         }
         return false;
       },

@@ -50,7 +50,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
           ),
           if (showRedirect) ...[
             const Spacer(flex: 67),
-            const RequestFullScreenNotificationButton(),
+            const RequestFullscreenNotificationButton(),
             const SizedBox(height: 8),
             Tts(
               child: Text(
@@ -99,8 +99,8 @@ class ActivityAlarmPreview extends StatelessWidget {
           fit: BoxFit.contain,
           alignment: Alignment.center,
           child: SizedBox(
-            width: 375.0,
-            height: 667.0,
+            width: 450.0,
+            height: 800.0,
             child: BlocProvider(
               create: (context) => ClockBloc(
                   StreamController<DateTime>().stream,
@@ -127,8 +127,8 @@ class ActivityAlarmPreview extends StatelessWidget {
   }
 }
 
-class RequestFullScreenNotificationButton extends StatelessWidget {
-  const RequestFullScreenNotificationButton();
+class RequestFullscreenNotificationButton extends StatelessWidget {
+  const RequestFullscreenNotificationButton();
   @override
   Widget build(BuildContext context) {
     final text = Translator.of(context).translate.allow;

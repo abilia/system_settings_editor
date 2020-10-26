@@ -16,7 +16,6 @@ class InfoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      key: TestKey.ttsInfoButton,
       onTap: onTap,
       borderRadius: radius,
       child: Container(
