@@ -3,11 +3,8 @@ import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 class LogoutPage extends StatelessWidget {
   @override

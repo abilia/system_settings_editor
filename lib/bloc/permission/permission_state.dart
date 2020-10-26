@@ -37,14 +37,12 @@ class PermissionState extends Equatable {
 }
 
 extension _PermissionStatusMapExtension on Map<Permission, PermissionStatus> {
-  Map<Permission, PermissionStatus> get _mapiOSDeniedToPermanentlyDenied =>
-      map((key, value) => MapEntry(key, value._iOSDeniedToPermanentlyDenied));
-}
-
-extension PermissionStatusExtension on PermissionStatus {
-  bool get isGrantedOrUndetermined =>
-      this == null || isGranted || isUndetermined;
-
-  PermissionStatus get _iOSDeniedToPermanentlyDenied =>
-      Platform.isIOS && isDenied ? PermissionStatus.permanentlyDenied : this;
+  Map<Permission, PermissionStatus> get _mapiOSDeniedToPermanentlyDenied => map(
+        (key, value) => MapEntry(
+          key,
+          Platform.isIOS && value.isDenied
+              ? PermissionStatus.permanentlyDenied
+              : value,
+        ),
+      );
 }

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class MenuPage extends StatelessWidget {

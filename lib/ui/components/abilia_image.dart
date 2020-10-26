@@ -3,13 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:photo_view/photo_view.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/file_storage.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:seagull/storage/all.dart';
+import 'package:seagull/ui/all.dart';
 
 class ActivityImage extends StatelessWidget {
   final ActivityDay activityDay;

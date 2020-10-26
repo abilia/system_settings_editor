@@ -14,7 +14,7 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
-import 'package:seagull/ui/components/widget_test_keys.dart';
+import 'package:seagull/ui/widget_test_keys.dart';
 import 'package:seagull/utils/all.dart';
 
 final AlarmScheduler noAlarmScheduler = ((a, b, c, d) async {});

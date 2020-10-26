@@ -1,8 +1,7 @@
-import 'package:flutter/widgets.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/abilia_icons.dart';
-import 'package:seagull/ui/theme.dart';
 import 'package:vector_math/vector_math_64.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:seagull/ui/all.dart';
 
 class ArrowLeft extends StatelessWidget {
   final ScrollController controller;
@@ -155,8 +154,16 @@ class _ArrowState extends State<_Arrow> {
     return ClipRect(
       child: AnimatedContainer(
         transform: condition ? widget.translation : widget.hiddenTranslation,
-        width: widget.width != null ? condition ? widget.width : 1 : null,
-        height: widget.heigth != null ? condition ? widget.heigth : 1 : null,
+        width: widget.width != null
+            ? condition
+                ? widget.width
+                : 1
+            : null,
+        height: widget.heigth != null
+            ? condition
+                ? widget.heigth
+                : 1
+            : null,
         decoration: BoxDecoration(
           borderRadius: widget.borderRadius,
           color: AbiliaColors.white135,

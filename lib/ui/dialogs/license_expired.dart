@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/i18n/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-
-import 'all.dart';
+import 'package:seagull/ui/all.dart';
 
 class LicenseExpiredDialog extends StatelessWidget {
   const LicenseExpiredDialog({

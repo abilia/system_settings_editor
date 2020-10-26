@@ -3,15 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
+import 'package:seagull/ui/all.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
@@ -185,10 +184,10 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(SelectPictureDialog), findsOneWidget);
 
-        final photoPickField =
-            tester.widget<PickField>(find.byKey(TestKey.photosPickField));
+        final photoPickField = tester
+            .widget<PickField>(find.byKey(ObjectKey(ImageSource.gallery)));
         final cameraPickField =
-            tester.widget<PickField>(find.byKey(TestKey.cameraPickField));
+            tester.widget<PickField>(find.byKey(ObjectKey(ImageSource.camera)));
 
         expect(photoPickField.onTap, isNotNull);
         expect(cameraPickField.onTap, isNull);

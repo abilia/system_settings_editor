@@ -6,12 +6,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/storage/file_storage.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/utils/all.dart';
+import 'package:seagull/storage/all.dart';
+import 'package:seagull/ui/all.dart';
 
 class SelectPictureDialog extends StatefulWidget {
   final String previousImage;
@@ -23,7 +21,6 @@ class SelectPictureDialog extends StatefulWidget {
 
 class _SelectPictureDialogState extends State<SelectPictureDialog> {
   bool imageArchiveView = false;
-  final _picker = ImagePicker();
   ImageArchiveData selectedImageData;
   Function get onOk => selectedImageData != null
       ? () => Navigator.of(context).maybePop(SelectedImage(
@@ -67,69 +64,38 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
           : null,
       heading: Text(translate.selectPicture, style: theme.textTheme.headline6),
       onOk: onOk,
-      child: BlocBuilder<PermissionBloc, PermissionState>(
-        builder: (context, permission) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              PickField(
-                key: TestKey.imageArchiveButton,
-                leading: const Icon(AbiliaIcons.folder),
-                text: Text(
-                  translate.imageArchive,
-                  style: abiliaTheme.textTheme.bodyText1,
-                ),
-                onTap: () {
-                  setState(() {
-                    imageArchiveView = !imageArchiveView;
-                  });
-                },
-              ),
-              const SizedBox(height: 8.0),
-              PickField(
-                key: TestKey.photosPickField,
-                leading: const Icon(AbiliaIcons.my_photos),
-                text: Text(
-                  translate.myPhotos,
-                  style: abiliaTheme.textTheme.bodyText1,
-                ),
-                onTap: permission.photosIsGrantedOrUndetermined
-                    ? () async =>
-                        await _getExternalFile(source: ImageSource.gallery)
-                    : null,
-              ),
-              const SizedBox(height: 8.0),
-              PickField(
-                key: TestKey.cameraPickField,
-                leading: const Icon(AbiliaIcons.camera_photo),
-                text: Text(
-                  translate.takeNewPhoto,
-                  style: abiliaTheme.textTheme.bodyText1,
-                ),
-                onTap:
-                    permission.status[Permission.camera].isGrantedOrUndetermined
-                        ? () async =>
-                            await _getExternalFile(source: ImageSource.camera)
-                        : null,
-              ),
-            ],
-          );
-        },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          PickField(
+            key: TestKey.imageArchiveButton,
+            leading: const Icon(AbiliaIcons.folder),
+            text: Text(
+              translate.imageArchive,
+              style: abiliaTheme.textTheme.bodyText1,
+            ),
+            onTap: () {
+              setState(() {
+                imageArchiveView = !imageArchiveView;
+              });
+            },
+          ),
+          const SizedBox(height: 8.0),
+          ImageSourceWidget(
+            text: translate.myPhotos,
+            imageSource: ImageSource.gallery,
+            permission:
+                Platform.isAndroid ? Permission.storage : Permission.photos,
+          ),
+          const SizedBox(height: 8.0),
+          ImageSourceWidget(
+            text: translate.takeNewPhoto,
+            imageSource: ImageSource.camera,
+            permission: Permission.camera,
+          ),
+        ],
       ),
     );
-  }
-
-  Future _getExternalFile({ImageSource source}) async {
-    final image = await _picker.getImage(source: source);
-    if (image != null) {
-      final id = Uuid().v4();
-      final path = '${FileStorage.folder}/$id';
-      await Navigator.of(context).maybePop(SelectedImage(
-        id: id,
-        path: path,
-        newImage: File(image.path),
-      ));
-    }
   }
 
   Widget buildImageArchiveDialog() {
@@ -164,6 +130,66 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
     final folderName = state.allById[state.currentFolderId]?.data?.title() ??
         Translator.of(context).translate.imageArchive;
     return Text(folderName, style: abiliaTheme.textTheme.headline6);
+  }
+}
+
+class ImageSourceWidget extends StatelessWidget {
+  ImageSourceWidget({
+    Key key,
+    @required this.imageSource,
+    @required this.permission,
+    @required this.text,
+  }) : super(key: key);
+
+  final ImageSource imageSource;
+  final Permission permission;
+    final String text;
+  final _picker = ImagePicker();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PermissionBloc, PermissionState>(
+      builder: (context, permissionState) {
+        return Row(
+          children: [
+            Expanded(
+              child: PickField(
+                key: ObjectKey(imageSource),
+                leading: permission.icon,
+                text: Text(
+                  text,
+                  style: abiliaTheme.textTheme.bodyText1,
+                ),
+                onTap:
+                    permissionState.status[permission].isGrantedOrUndetermined
+                        ? () async => await _getExternalFile(context)
+                        : null,
+              ),
+            ),
+            if (permissionState.status[permission].isPermanentlyDenied)
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: InfoButton(),
+              )
+          ],
+        );
+      },
+    );
+  }
+
+  Future _getExternalFile(BuildContext context) async {
+    final image = await _picker.getImage(source: imageSource);
+    if (image != null) {
+      final id = Uuid().v4();
+      final path = '${FileStorage.folder}/$id';
+      await Navigator.of(context).maybePop(
+        SelectedImage(
+          id: id,
+          path: path,
+          newImage: File(image.path),
+        ),
+      );
+    }
   }
 }
 

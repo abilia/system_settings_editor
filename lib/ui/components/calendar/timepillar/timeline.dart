@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/calendar/timepillar/all.dart';
+import 'package:seagull/ui/all.dart';
 
 class Timeline extends StatelessWidget {
   final double width;

@@ -47,4 +47,6 @@ extension PermissionExtension on Permission {
 
 extension PermissionStatusExtension on PermissionStatus {
   bool get isDeniedOrPermenantlyDenied => isDenied || isPermanentlyDenied;
+  bool get isGrantedOrUndetermined =>
+      this == null || isGranted || isUndetermined;
 }

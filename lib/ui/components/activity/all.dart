@@ -5,7 +5,7 @@ export 'components.dart';
 export 'activity_card.dart';
 export 'time_row.dart';
 export 'check_mark.dart';
-export 'timeformat.dart';
+export '../../../utils/timeformat.dart';
 export 'note_block.dart';
 export 'checklist.dart';
 export 'edit_info_item_tab.dart';

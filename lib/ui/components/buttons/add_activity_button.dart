@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/all.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
 
 class AddActivityButton extends StatelessWidget {
   const AddActivityButton({
@@ -19,16 +17,13 @@ class AddActivityButton extends StatelessWidget {
       key: TestKey.addActivity,
       child: Icon(AbiliaIcons.plus),
       onPressed: () async {
-        final response =
-            await showViewDialog<CreateActivityDialogResponse>(
+        final response = await showViewDialog<CreateActivityDialogResponse>(
           context: context,
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<SortableArchiveBloc<BasicActivityData>>(
-                create: (_) =>
-                    SortableArchiveBloc<BasicActivityData>(
-                  sortableBloc:
-                      BlocProvider.of<SortableBloc>(context),
+                create: (_) => SortableArchiveBloc<BasicActivityData>(
+                  sortableBloc: BlocProvider.of<SortableBloc>(context),
                 ),
               ),
               BlocProvider<UserFileBloc>.value(
@@ -44,25 +39,20 @@ class AddActivityButton extends StatelessWidget {
               builder: (_) {
                 return BlocProvider<EditActivityBloc>(
                   create: (_) => EditActivityBloc.newActivity(
-                    activitiesBloc:
-                        BlocProvider.of<ActivitiesBloc>(context),
+                    activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
                     clockBloc: BlocProvider.of<ClockBloc>(context),
                     memoplannerSettingBloc:
-                        BlocProvider.of<MemoplannerSettingBloc>(
-                            context),
+                        BlocProvider.of<MemoplannerSettingBloc>(context),
                     day: day,
                     basicActivityData: response.basicActivityData,
                   ),
                   child: EditActivityPage(
                     day: day,
-                    title: Translator.of(context)
-                        .translate
-                        .newActivity,
+                    title: Translator.of(context).translate.newActivity,
                   ),
                 );
               },
-              settings: RouteSettings(
-                  name: 'EditActivityPage new activity'),
+              settings: RouteSettings(name: 'EditActivityPage new activity'),
             ),
           );
         }

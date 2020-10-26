@@ -1,16 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 class FullscreenAlarmInfoDialog extends StatelessWidget {
   final bool showRedirect;
