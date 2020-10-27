@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:package_info/package_info.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -67,6 +68,43 @@ class BackEndButton extends StatelessWidget {
       onPressed: () => authBloc(context).add(AppStarted(
           userRepository.copyWith(httpClient: client, baseUrl: backEndUrl))),
       child: Text(text),
+    );
+  }
+}
+
+class VersionInfo extends StatelessWidget {
+  final bool showBackend;
+  const VersionInfo({
+    Key key,
+    this.showBackend = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          FutureBuilder(
+            future: PackageInfo.fromPlatform(),
+            builder: (context, AsyncSnapshot<PackageInfo> snapshot) => Text(
+              snapshot.hasData
+                  ? '${snapshot.data.version}(${snapshot.data.buildNumber})'
+                  : '',
+            ),
+          ),
+          if (showBackend)
+            BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              builder: (context, state) {
+                if (state is AuthenticationInitialized) {
+                  return Text(
+                    '${backEndEnviorments.map((key, value) => MapEntry(value, key))[state.userRepository.baseUrl]}',
+                  );
+                }
+                return Container();
+              },
+            ),
+        ],
+      ),
     );
   }
 }

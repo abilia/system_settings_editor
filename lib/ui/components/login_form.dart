@@ -4,7 +4,6 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
-import 'package:package_info/package_info.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -122,18 +121,10 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                   padding32,
-                  if (_showBackends) BackendSwitches(),
-                  if (_showBackends)
-                    Center(
-                      child: FutureBuilder(
-                        future: PackageInfo.fromPlatform(),
-                        builder: (context,
-                                AsyncSnapshot<PackageInfo> snapshot) =>
-                            Text(snapshot.hasData
-                                ? '${snapshot.data.version}(${snapshot.data.buildNumber})'
-                                : ''),
-                      ),
-                    ),
+                  if (_showBackends) ...[
+                    BackendSwitches(),
+                    VersionInfo(),
+                  ],
                 ],
               ),
             ),

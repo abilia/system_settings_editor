@@ -32,7 +32,15 @@ class LogoutPage extends StatelessWidget {
   }
 }
 
-class ProfilePictureNameAndEmail extends StatelessWidget {
+class ProfilePictureNameAndEmail extends StatefulWidget {
+  @override
+  _ProfilePictureNameAndEmailState createState() =>
+      _ProfilePictureNameAndEmailState();
+}
+
+class _ProfilePictureNameAndEmailState
+    extends State<ProfilePictureNameAndEmail> {
+  bool showVersion = false;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
@@ -43,8 +51,8 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
         builder: (context, AsyncSnapshot<User> userSnapshot) => Column(
           children: <Widget>[
             GestureDetector(
-              onDoubleTap: () =>
-                  DatabaseRepository.logAll(GetIt.I<Database>()),
+              onLongPress: () => DatabaseRepository.logAll(GetIt.I<Database>()),
+              onDoubleTap: () => setState(() => showVersion = !showVersion),
               child: ProfilePicture(
                   state is AuthenticationInitialized
                       ? state.userRepository.baseUrl
@@ -70,6 +78,7 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
                       .copyWith(color: AbiliaColors.black75),
                 ),
               ),
+            if (showVersion) VersionInfo(showBackend: true),
           ],
         ),
       ),
