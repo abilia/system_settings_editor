@@ -30,7 +30,7 @@ class ProfilePicture extends StatelessWidget {
               Icon(
                 AbiliaIcons.contact,
                 color: AbiliaColors.black75,
-                size: 96,
+                size: hugeIconSize,
               ),
               if (user != null &&
                   user.image != null &&

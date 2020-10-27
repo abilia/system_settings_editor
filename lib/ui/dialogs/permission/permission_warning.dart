@@ -19,7 +19,7 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
       },
       icon: const Icon(
         AbiliaIcons.ir_error,
-        size: 96.0,
+        size: hugeIconSize,
         color: AbiliaColors.orange,
       ),
       heading: Translator.of(context).translate.turnOffNotifications,
@@ -42,7 +42,7 @@ class NotificationPermissionWarningDialog extends StatelessWidget {
     return WarningDialog(
       icon: const Icon(
         AbiliaIcons.ir_error,
-        size: 96.0,
+        size: hugeIconSize,
         color: AbiliaColors.orange,
       ),
       heading: Translator.of(context).translate.allowNotifications,
@@ -66,34 +66,17 @@ class NotificationBodyTextWarning extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return Tts.fromSemantics(
       SemanticsProperties(
-          multiline: true,
-          label: translate.allowNotificationsDescription1 +
-              translate.allowNotificationsDescriptionSettingsLink +
-              translate.allowNotificationsDescription2),
+        multiline: true,
+        label:
+            translate.allowNotificationsDescription1 + translate.settingsLink,
+      ),
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
           style: b1,
           children: [
             TextSpan(text: translate.allowNotificationsDescription1),
-            TextSpan(
-              text: translate.allowNotificationsDescriptionSettingsLink,
-              style: b1.copyWith(decoration: TextDecoration.underline),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  Navigator.of(context).pop();
-                  return Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => PermissionsPage(),
-                      settings: RouteSettings(name: 'PermissionPage'),
-                    ),
-                  );
-                },
-            ),
-            TextSpan(
-              text: translate.allowNotificationsDescription2,
-              style: b1,
-            ),
+            buildSettingsLinkTextSpan(context),
           ],
         ),
       ),

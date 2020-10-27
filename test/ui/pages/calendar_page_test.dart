@@ -228,9 +228,8 @@ void main() {
         await tester.pumpAndSettle();
         await tester.verifyTts(find.text(translate.allowNotifications),
             exact: translate.allowNotifications);
-        final compound = translate.allowNotificationsDescription1 +
-            translate.allowNotificationsDescriptionSettingsLink +
-            translate.allowNotificationsDescription2;
+        final compound =
+            translate.allowNotificationsDescription1 + translate.settingsLink;
         await tester.verifyTts(find.byType(NotificationBodyTextWarning),
             exact: compound);
         await tester.tap(find.byKey(TestKey.closeDialog));
@@ -260,8 +259,7 @@ void main() {
             find.byWidgetPredicate(
               (widget) =>
                   widget is RichText &&
-                  tapTextSpan(widget,
-                      translate.allowNotificationsDescriptionSettingsLink),
+                  tapTextSpan(widget, translate.settingsLink),
             ),
             findsOneWidget);
         await tester.pumpAndSettle();

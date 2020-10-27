@@ -103,7 +103,7 @@ class LongPressInfoDialog extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 3.0),
                   child: Icon(
                     AbiliaIcons.speak_on_entry,
-                    size: 96,
+                    size: hugeIconSize,
                   ),
                 ),
               ),

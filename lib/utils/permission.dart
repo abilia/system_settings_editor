@@ -21,26 +21,24 @@ extension PermissionExtension on Permission {
     }
   }
 
-  Widget get icon {
+  Widget get icon => Icon(
+        iconData,
+        size: smallIconSize,
+      );
+
+  IconData get iconData {
     switch (this) {
       case Permission.camera:
-        return const Icon(
-          AbiliaIcons.camera_photo,
-          size: smallIconSize,
-        );
+        return AbiliaIcons.camera_photo;
       case Permission.photos:
       case Permission.storage:
-        return const Icon(
-          AbiliaIcons.camera_photo,
-          size: smallIconSize,
-        );
+        return AbiliaIcons.my_photos;
       case Permission.systemAlertWindow:
-        return const Icon(
-          AbiliaIcons.resize_higher,
-          size: smallIconSize,
-        );
+        return AbiliaIcons.resize_higher;
+      case Permission.notification:
+        return AbiliaIcons.notification;
       default:
-        return const SizedBox(width: smallIconSize);
+        return AbiliaIcons.empty1;
     }
   }
 }

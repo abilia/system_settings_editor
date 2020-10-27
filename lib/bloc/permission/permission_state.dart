@@ -18,10 +18,6 @@ class PermissionState extends Equatable {
         ),
       );
 
-  bool get photosIsGrantedOrUndetermined =>
-      status[Platform.isAndroid ? Permission.storage : Permission.photos]
-          .isGrantedOrUndetermined;
-
   bool get notificationDenied =>
       status[Permission.notification].isDeniedOrPermenantlyDenied;
 

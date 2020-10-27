@@ -113,7 +113,7 @@ void main() {
 
     final permissionButtonFinder = find.byType(PermissionPickField);
     final permissionPageFinder = find.byType(PermissionsPage);
-    final permissionSwitchFinder = find.byType(PermissionSwitch);
+    final permissionSwitchFinder = find.byType(PermissionSetting);
 
     testWidgets('Has permission button', (WidgetTester tester) async {
       await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));

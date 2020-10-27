@@ -4,8 +4,7 @@ import 'package:seagull/models/all.dart';
 
 import 'colors.dart';
 
-const double defaultIconSize = 32;
-const double smallIconSize = 24;
+const double smallIconSize = 24, defaultIconSize = 32, hugeIconSize = 96;
 
 ThemeData abiliaTheme = ThemeData(
   primaryColorBrightness: Brightness.light,

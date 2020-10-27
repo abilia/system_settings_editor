@@ -120,15 +120,14 @@ everyOtherWeek;Every other week;Varannan vecka
 recurringDataEmptyErrorMessage;You need to select at least one day;En återkommande aktivitet måste ha en vald upprepning
 longPressInfoText;Make a long press on any text or object with text to speak it loudly;Tryck länge på någon text för att få den uppläst
 lunch;Lunch;Lunch
-cancel;Cancel;Avbryt;
+cancel;Cancel;Avbryt
 permissions;Permissions;Behörigheter
 notifications;Notifications;Notiser
 accessToPhotos;Access to Photos;Tillgång till bilder
 accessToCamera;Access to Camera;Tillgång till kameran
 allowNotifications;Allow notifications;Tillåt notiser
 allowNotificationsDescription1;Allow notifications to be able to get alarms and reminders from activities. You can do that from the ;Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån 
-allowNotificationsDescriptionSettingsLink;settings;inställningar
-allowNotificationsDescription2;.;.
+settingsLink;settings;inställningar
 turnOffNotifications;Turn off notifications?;Stäng av notiser?
 turnOffNotificationsBody;You will no longer be able to get alarms and reminders from activities.;Du kommer inte längre kunna få alarm och notiser för aktiviteter.
 notificationsWarningHintText;Allow notifications to be able to get alarms and reminders from activities.;Tillåt notiser för att få larm och påminnelser för aktiviteter.
@@ -141,3 +140,6 @@ redirectToAndroidSettings;You will be redirect to the Android settings.;Du komme
 fullScreenAlarmInfo;Allow this permission to be able to get full screen alarm of activities;Tillåt denna behörighet för att kunna få helskärmslarm om aktiviteter
 allow;Allow;Tillåt
 previewActivityTitle;Erik's birthday party;Eriks födelsedagskalas
+allowAccessPhotosBody;Allow access to photos to be able to use photos from the device.;Tillåt behörighet till bilder för att ha möjlighet att använda bilder från enheten.
+allowAccessCameraBody;Allow access to camera to be able to take a photo from the device.;Tillåt behörighet till kameran för att ha möjlighet att ta bilder från enheten.
+allowAccessBody2; You can always do that later from the ; Du kan alltid göra det senare från 

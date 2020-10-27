@@ -12,7 +12,7 @@ class LicenseExpiredDialog extends StatelessWidget {
     return WarningDialog(
       icon: Icon(
         AbiliaIcons.gewa_radio_error,
-        size: 96,
+        size: hugeIconSize,
         color: AbiliaColors.red,
       ),
       heading: translator.licenseExpired,

@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:seagull/logging.dart';
 import 'package:uuid/uuid.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:equatable/equatable.dart';
@@ -10,6 +12,8 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
+
+final _log = Logger((SelectPictureDialog).toString());
 
 class SelectPictureDialog extends StatefulWidget {
   final String previousImage;
@@ -143,7 +147,7 @@ class ImageSourceWidget extends StatelessWidget {
 
   final ImageSource imageSource;
   final Permission permission;
-    final String text;
+  final String text;
   final _picker = ImagePicker();
 
   @override
@@ -160,16 +164,22 @@ class ImageSourceWidget extends StatelessWidget {
                   text,
                   style: abiliaTheme.textTheme.bodyText1,
                 ),
-                onTap:
-                    permissionState.status[permission].isGrantedOrUndetermined
-                        ? () async => await _getExternalFile(context)
-                        : null,
+                onTap: permissionState.status[permission].isPermanentlyDenied
+                    ? null
+                    : () async => await _getExternalFile(context),
               ),
             ),
             if (permissionState.status[permission].isPermanentlyDenied)
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: InfoButton(),
+                child: InfoButton(
+                  key: Key('$imageSource$permission'),
+                  onTap: () => showViewDialog(
+                    context: context,
+                    builder: (context) =>
+                        PermissionInfoDialog(permission: permission),
+                  ),
+                ),
               )
           ],
         );
@@ -178,17 +188,21 @@ class ImageSourceWidget extends StatelessWidget {
   }
 
   Future _getExternalFile(BuildContext context) async {
-    final image = await _picker.getImage(source: imageSource);
-    if (image != null) {
-      final id = Uuid().v4();
-      final path = '${FileStorage.folder}/$id';
-      await Navigator.of(context).maybePop(
-        SelectedImage(
-          id: id,
-          path: path,
-          newImage: File(image.path),
-        ),
-      );
+    try {
+      final image = await _picker.getImage(source: imageSource);
+      if (image != null) {
+        final id = Uuid().v4();
+        final path = '${FileStorage.folder}/$id';
+        await Navigator.of(context).maybePop(
+          SelectedImage(
+            id: id,
+            path: path,
+            newImage: File(image.path),
+          ),
+        );
+      }
+    } on PlatformException catch (e) {
+      _log.warning(e);
     }
   }
 }
