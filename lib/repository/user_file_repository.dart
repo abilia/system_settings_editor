@@ -8,10 +8,12 @@ import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
-import 'package:seagull/db/user_file_db.dart';
+
+import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/file_storage.dart';
+import 'package:seagull/storage/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
   static final _log = Logger((UserFileRepository).toString());
@@ -111,7 +113,7 @@ class UserFileRepository extends DataRepository<UserFile> {
         '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision',
         headers: authHeader(authToken));
     return (json.decode(response.body) as List)
-        .map((e) => DbUserFile.fromJson(e));
+        .exceptionSafeMap((e) => DbUserFile.fromJson(e), log: _log);
   }
 
   Future<Iterable<SyncResponse>> _postUserFiles(

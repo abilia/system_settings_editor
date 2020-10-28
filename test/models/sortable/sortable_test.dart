@@ -46,14 +46,17 @@ void main() {
     expect(s.deleted, false);
     expect(s.type, type);
     expect(s.data.toRaw(), expectedRawData);
-    expect(s.data, expectedData);
     expect(s.isGroup, false);
     expect(s.groupId, groupId);
     expect(s.sortOrder, sortOrder);
     expect(s.visible, true);
     expect(dbS.dirty, 0);
     expect(dbS.revision, revision);
-    expect(s, isA<Sortable<ImageArchiveData>>());
+    expect(s, isA<Sortable<RawSortableData>>());
+
+    final archive = ImageArchiveData.fromJson(s.data.toRaw());
+    expect(archive, expectedData);
+    expect(archive, isA<ImageArchiveData>());
   });
 
   test('To dbMap and back', () {

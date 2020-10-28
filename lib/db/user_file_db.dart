@@ -1,3 +1,4 @@
+import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/db/all.dart';
 
@@ -26,4 +27,8 @@ class UserFileDb extends DataDb<UserFile> {
   void setFileLoadedForId(String id) async {
     await db.rawQuery(SET_FILE_LOADED, [id]);
   }
+
+  final _log = Logger((UserFileDb).toString());
+  @override
+  Logger get log => _log;
 }
