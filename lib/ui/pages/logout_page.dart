@@ -78,7 +78,7 @@ class _ProfilePictureNameAndEmailState
                       .copyWith(color: AbiliaColors.black75),
                 ),
               ),
-            if (showVersion) VersionInfo(showBackend: true),
+            if (showVersion) VersionInfo(showUserId: true),
           ],
         ),
       ),

@@ -73,37 +73,32 @@ class BackEndButton extends StatelessWidget {
 }
 
 class VersionInfo extends StatelessWidget {
-  final bool showBackend;
+  final bool showUserId;
   const VersionInfo({
     Key key,
-    this.showBackend = false,
+    this.showUserId = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          FutureBuilder(
-            future: PackageInfo.fromPlatform(),
-            builder: (context, AsyncSnapshot<PackageInfo> snapshot) => Text(
-              snapshot.hasData
-                  ? '${snapshot.data.version}(${snapshot.data.buildNumber})'
-                  : '',
-            ),
-          ),
-          if (showBackend)
-            BlocBuilder<AuthenticationBloc, AuthenticationState>(
-              builder: (context, state) {
-                if (state is AuthenticationInitialized) {
-                  return Text(
-                    '${backEndEnviorments.map((key, value) => MapEntry(value, key))[state.userRepository.baseUrl]}',
-                  );
-                }
-                return Container();
-              },
-            ),
-        ],
+      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              FutureBuilder(
+                future: PackageInfo.fromPlatform(),
+                builder: (context, AsyncSnapshot<PackageInfo> snapshot) => Text(
+                  '${snapshot?.data?.version ?? ''} (${snapshot?.data?.buildNumber ?? ''})',
+                ),
+              ),
+              if (showUserId && state is Authenticated)
+                Text(
+                  '${state.userId} (${backEndEnviorments.map((key, value) => MapEntry(value, key))[state.userRepository.baseUrl]})',
+                ),
+            ],
+          );
+        },
       ),
     );
   }
