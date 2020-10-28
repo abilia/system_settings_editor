@@ -1,13 +1,17 @@
-import 'package:seagull/logging.dart';
+import 'package:meta/meta.dart';
 
 extension ThowsafeMap<E> on Iterable<E> {
-  Iterable exceptionSafeMap<T>(T Function(E e) function, {Logger log}) =>
-      map((t) {
+  Iterable<T> exceptionSafeMap<T>(
+    T Function(E) function, {
+    @required T Function(dynamic, E) onException,
+  }) =>
+      map((e) {
         try {
-          return function(t);
-        } catch (e) {
-          log?.severe('Corrupt data, could not apply $function to $t', e);
-          return null;
+          return function(e);
+        } catch (exception) {
+          return onException(exception, e);
         }
-      }).where((element) => element != null);
+      });
+
+  Iterable<E> filterNull() => where((element) => element != null);
 }

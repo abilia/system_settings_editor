@@ -27,7 +27,11 @@ abstract class DataDb<M extends DataModel> {
     final batch = db.batch();
 
     await dataModels
-        .exceptionSafeMap((dataModel) => dataModel.toMapForDb(), log: log)
+        .exceptionSafeMap(
+          (dataModel) => dataModel.toMapForDb(),
+          onException: log.logAndReturnNull,
+        )
+        .filterNull()
         .forEach(
           (value) => batch.insert(
             tableName,
@@ -41,12 +45,22 @@ abstract class DataDb<M extends DataModel> {
 
   Future<Iterable<DbModel<M>>> getAllDirty() async {
     final result = await db.rawQuery(GET_ALL_DIRTY);
-    return result.exceptionSafeMap(convertToDataModel, log: log);
+    return result
+        .exceptionSafeMap(
+          convertToDataModel,
+          onException: log.logAndReturnNull,
+        )
+        .filterNull();
   }
 
   Future<DbModel<M>> getById(String id) async {
     final result = await db.rawQuery(GET_BY_ID_SQL, [id]);
-    final userFiles = result.exceptionSafeMap(convertToDataModel, log: log);
+    final userFiles = result
+        .exceptionSafeMap(
+          convertToDataModel,
+          onException: log.logAndReturnNull,
+        )
+        .filterNull();
     if (userFiles.length == 1) {
       return userFiles.first;
     } else {
@@ -57,14 +71,22 @@ abstract class DataDb<M extends DataModel> {
   Future<Iterable<M>> getAll() async {
     final result = await db.rawQuery(GET_ALL_SQL);
     return result
-        .exceptionSafeMap(convertToDataModel, log: log)
+        .exceptionSafeMap(
+          convertToDataModel,
+          onException: log.logAndReturnNull,
+        )
+        .filterNull()
         .map((data) => data.model);
   }
 
   Future<Iterable<M>> getAllNonDeleted() async {
     final result = await db.rawQuery(GET_ALL_SQL_NON_DELETED);
     return result
-        .exceptionSafeMap(convertToDataModel, log: log)
+        .exceptionSafeMap(
+          convertToDataModel,
+          onException: log.logAndReturnNull,
+        )
+        .filterNull()
         .map((data) => data.model);
   }
 

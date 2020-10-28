@@ -46,7 +46,11 @@ class SortableRepository extends DataRepository<Sortable> {
         '$baseUrl/api/v1/data/$userId/sortableitems?revision=$revision',
         headers: authHeader(authToken));
     return (json.decode(response.body) as List)
-        .exceptionSafeMap((e) => DbSortable.fromJson(e), log: _log);
+        .exceptionSafeMap(
+          (e) => DbSortable.fromJson(e),
+          onException: _log.logAndReturnNull,
+        )
+        .filterNull();
   }
 
   @override

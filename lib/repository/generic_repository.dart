@@ -46,7 +46,11 @@ class GenericRepository extends DataRepository<Generic> {
         '$baseUrl/api/v1/data/$userId/generics?revision=$revision',
         headers: authHeader(authToken));
     return (json.decode(response.body) as List)
-        .exceptionSafeMap((e) => DbGeneric.fromJson(e), log: _log);
+        .exceptionSafeMap(
+          (e) => DbGeneric.fromJson(e),
+          onException: _log.logAndReturnNull,
+        )
+        .filterNull();
   }
 
   @override

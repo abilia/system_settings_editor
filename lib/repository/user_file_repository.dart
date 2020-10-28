@@ -113,7 +113,11 @@ class UserFileRepository extends DataRepository<UserFile> {
         '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision',
         headers: authHeader(authToken));
     return (json.decode(response.body) as List)
-        .exceptionSafeMap((e) => DbUserFile.fromJson(e), log: _log);
+        .exceptionSafeMap(
+          (e) => DbUserFile.fromJson(e),
+          onException: _log.logAndReturnNull,
+        )
+        .filterNull();
   }
 
   Future<Iterable<SyncResponse>> _postUserFiles(
