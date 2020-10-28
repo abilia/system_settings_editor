@@ -15,7 +15,7 @@ import 'all.dart';
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
   final userDb = UserDb();
   final logger = SeagullLogger(userDb: userDb);
-  await logger.initLogging();
+  await logger.initLogging(initAppcenter: false);
   final log = Logger('BackgroundMessageHandler');
 
   try {
