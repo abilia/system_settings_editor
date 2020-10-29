@@ -61,6 +61,7 @@ void main() {
         ..httpClient = Fakes.client(activityResponse: () => [])
         ..fileStorage = MockFileStorage()
         ..userFileDb = MockUserFileDb()
+        ..genericDb = MockGenericDb()
         ..settingsDb = mockSettingsDb
         ..database = mockDatabase
         ..flutterTts = MockFlutterTts()
@@ -228,7 +229,7 @@ void main() {
       await tester.tap(find.byType(LogoutPickField));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(LogoutButton));
-      await await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
       expect(find.byType(LoginPage), findsOneWidget);
 
       // Login

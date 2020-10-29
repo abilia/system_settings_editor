@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
@@ -16,14 +15,12 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final Database database;
   final BaseUrlDb baseUrlDb;
-  final CancelNotificationsFunction cancleAllNotificationsFunction;
-  final SeagullLogger seagullLogger;
+  final FutureOr<void> Function() onLogout;
 
   AuthenticationBloc({
     @required this.database,
     @required this.baseUrlDb,
-    @required this.cancleAllNotificationsFunction,
-    @required this.seagullLogger,
+    this.onLogout,
   }) : super(AuthenticationUninitialized());
 
   @override
@@ -78,13 +75,15 @@ class AuthenticationBloc
     String token,
     LoggedOutReason loggedOutReason = LoggedOutReason.LOG_OUT,
   }) async* {
-    await seagullLogger.sendLogsToBackend();
     await repo.logout(token);
     await DatabaseRepository.clearAll(database);
-    await cancleAllNotificationsFunction();
-    yield Unauthenticated.fromInitilized(
-      state,
-      loggedOutReason: loggedOutReason,
-    );
+    try {
+      await onLogout?.call();
+    } finally {
+      yield Unauthenticated.fromInitilized(
+        state,
+        loggedOutReason: loggedOutReason,
+      );
+    }
   }
 }

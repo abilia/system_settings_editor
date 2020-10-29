@@ -100,8 +100,8 @@ class GetItInitializer {
       ..registerSingleton<SeagullLogger>(
           _seagullLogger ?? SeagullLogger(userDb: userDb))
       ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb())
-      ..registerSingleton<ReplaySubject<String>>(
-          _selectedNotificationStreamGetter ?? selectNotificationSubject)
+      ..registerFactory<ReplaySubject<String>>(
+          () => _selectedNotificationStreamGetter ?? selectNotificationSubject)
       ..registerSingleton<AlarmScheduler>(
           _alarmScheduler ?? scheduleAlarmNotificationsIsolated)
       ..registerSingleton<Ticker>(_ticker ?? Ticker())

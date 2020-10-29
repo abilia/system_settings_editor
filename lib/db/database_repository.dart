@@ -140,13 +140,13 @@ class DatabaseRepository {
     logTable(sortables);
   }
 
-  static Future clearAll(Database db) async {
-    final batch = db.batch();
-    batch.delete(CALENDAR_TABLE_NAME);
-    batch.delete(SORTABLE_TABLE_NAME);
-    batch.delete(USER_FILE_TABLE_NAME);
-    batch.delete(GENERIC_TABLE_NAME);
-    await batch.commit();
+  static Future clearAll(Database db) {
+    final batch = db.batch()
+      ..delete(CALENDAR_TABLE_NAME)
+      ..delete(SORTABLE_TABLE_NAME)
+      ..delete(USER_FILE_TABLE_NAME)
+      ..delete(GENERIC_TABLE_NAME);
+    return batch.commit();
   }
 
   @visibleForTesting
