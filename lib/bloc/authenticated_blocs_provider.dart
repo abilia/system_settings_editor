@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
@@ -140,7 +139,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           ),
           BlocProvider<NotificationBloc>(
             create: (context) => NotificationBloc(
-              selectedNotificationSubject: GetIt.I<ReplaySubject<String>>(),
+              selectedNotificationSubject: selectNotificationSubject,
             ),
           ),
           BlocProvider<CalendarViewBloc>(
