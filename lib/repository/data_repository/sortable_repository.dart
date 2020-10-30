@@ -6,7 +6,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import 'all.dart';
+import '../all.dart';
 
 class SortableRepository extends DataRepository<Sortable> {
   SortableRepository({

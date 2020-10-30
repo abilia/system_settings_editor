@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 
-import 'all.dart';
+import '../all.dart';
 
 class GenericRepository extends DataRepository<Generic> {
   final GenericDb genericDb;
