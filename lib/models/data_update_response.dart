@@ -30,9 +30,9 @@ class DataUpdateResponse extends Equatable {
 class DataRevisionUpdates extends Equatable {
   final String id;
   final int revision;
-  const DataRevisionUpdates._(this.id, this.revision);
+  const DataRevisionUpdates(this.id, this.revision);
   static DataRevisionUpdates fromJson(Map<String, dynamic> json) =>
-      DataRevisionUpdates._(json['id'], json['newRevision']);
+      DataRevisionUpdates(json['id'], json['newRevision']);
 
   @override
   List<Object> get props => [id, revision];

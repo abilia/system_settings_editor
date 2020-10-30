@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
@@ -63,7 +62,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       try {
         final lastRevision = await db.getLastRevision();
         final syncResponses = await _postUserFiles(dirtyFiles, lastRevision);
-        await _handleSuccessfulSync(syncResponses, dirtyFiles);
+        await handleSuccessfullSync(syncResponses, dirtyFiles);
         return true;
       } on WrongRevisionException catch (_) {
         log.info('Wrong revision when posting user files');
@@ -73,22 +72,6 @@ class UserFileRepository extends DataRepository<UserFile> {
       }
       return false;
     });
-  }
-
-  Future<void> _handleSuccessfulSync(List<SyncResponse> syncResponses,
-      Iterable<DbModel<UserFile>> dirtyFiles) async {
-    final toUpdate = syncResponses.map((response) async {
-      final fileBeforeSync =
-          dirtyFiles.firstWhere((file) => file.model.id == response.id);
-      final currentFile = await db.getById(response.id);
-      final dirtyDiff = currentFile.dirty - fileBeforeSync.dirty;
-      return currentFile.copyWith(
-        revision: response.newRevision,
-        dirty: math.max(dirtyDiff,
-            0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
-      );
-    });
-    await db.insert(await Future.wait(toUpdate));
   }
 
   Future<void> _handleFailedSync() async {

@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -36,10 +34,10 @@ class SortableRepository extends DataRepository<Sortable> {
       final res = await postData(dirtySortables);
       try {
         if (res.succeded.isNotEmpty) {
-          await _handleSuccessfullSync(res.succeded, dirtySortables);
+          await handleSuccessfullSync(res.succeded, dirtySortables);
         }
         if (res.failed.isNotEmpty) {
-          await _handleFailedSync(res.failed);
+          await handleFailedSync(res.failed);
         }
       } catch (e) {
         log.warning('Failed to synchronize sortables with backend', e);
@@ -47,30 +45,6 @@ class SortableRepository extends DataRepository<Sortable> {
       }
       return true;
     });
-  }
-
-  Future _handleSuccessfullSync(Iterable<DataRevisionUpdates> succeeded,
-      Iterable<DbModel<Sortable>> dirtySortables) async {
-    final toUpdate = succeeded.map((success) async {
-      final sortableBeforeSync = dirtySortables
-          .firstWhere((sortable) => sortable.model.id == success.id);
-      final currentSortable = await db.getById(success.id);
-      final dirtyDiff = currentSortable.dirty - sortableBeforeSync.dirty;
-      return currentSortable.copyWith(
-        revision: success.revision,
-        dirty: math.max(dirtyDiff,
-            0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
-      );
-    });
-    await db.insert(await Future.wait(toUpdate));
-  }
-
-  Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
-    final minRevision = failed.map((f) => f.revision).reduce(math.min);
-    final latestRevision = await db.getLastRevision();
-    final fetchedSortables =
-        await fetchData(math.min(minRevision, latestRevision));
-    await db.insert(fetchedSortables);
   }
 
   Future<Sortable> generateUploadFolder() async {

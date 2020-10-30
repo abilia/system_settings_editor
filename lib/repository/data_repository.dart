@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -91,6 +92,37 @@ abstract class DataRepository<M extends DataModel> extends Repository {
       throw UnauthorizedException();
     }
     throw UnavailableException([response.statusCode]);
+  }
+
+  Future handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
+    final minRevision = failed.map((f) => f.revision).reduce(math.min);
+    final latestRevision = await db.getLastRevision();
+    final revision = math.min(minRevision, latestRevision);
+    final fetchedData = await fetchData(revision);
+    await db.insert(fetchedData);
+  }
+
+  Future handleSuccessfullSync(
+    Iterable<DataRevisionUpdates> succeeded,
+    Iterable<DbModel<M>> dirtyData,
+  ) async {
+    final toUpdate = succeeded.map(
+      (success) async {
+        final dataBeforeSync = dirtyData.firstWhere(
+          (data) => data.model.id == success.id,
+        );
+        final currentData = await db.getById(success.id);
+        final dirtyDiff = currentData.dirty - dataBeforeSync.dirty;
+        return currentData.copyWith(
+          revision: success.revision,
+          dirty: math.max(
+            dirtyDiff,
+            0,
+          ), // The data might have been fetched from backend during the sync and reset with dirty = 0.
+        );
+      },
+    );
+    await db.insert(await Future.wait(toUpdate));
   }
 
   @override

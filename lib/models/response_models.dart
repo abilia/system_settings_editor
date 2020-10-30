@@ -1,27 +1,23 @@
-import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/models/all.dart';
 
-class SyncResponse extends Equatable {
-  final String id;
+class SyncResponse extends DataRevisionUpdates {
   final int oldRevision;
-  final int newRevision;
 
   SyncResponse({
-    @required this.id,
+    @required String id,
+    @required int revision,
     @required this.oldRevision,
-    @required this.newRevision,
-  });
+  }) : super(id, revision);
 
   @override
-  List<Object> get props => [id, oldRevision, newRevision];
+  List<Object> get props => [id, oldRevision, revision];
 
-  static SyncResponse fromJson(Map<String, dynamic> data) {
-    return SyncResponse(
-      id: data['id'],
-      oldRevision: data['oldRevision'],
-      newRevision: data['newRevision'],
-    );
-  }
+  static SyncResponse fromJson(Map<String, dynamic> data) => SyncResponse(
+        id: data['id'],
+        oldRevision: data['oldRevision'],
+        revision: data['newRevision'],
+      );
 }
 
 class ResponseError {

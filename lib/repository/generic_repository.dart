@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -44,10 +42,10 @@ class GenericRepository extends DataRepository<Generic> {
       final res = await postData(dirtyGenerics);
       try {
         if (res.succeded.isNotEmpty) {
-          await _handleSuccessfullSync(res.succeded, dirtyGenerics);
+          await handleSuccessfullSync(res.succeded, dirtyGenerics);
         }
         if (res.failed.isNotEmpty) {
-          await _handleFailedSync(res.failed);
+          await handleFailedSync(res.failed);
         }
       } catch (e) {
         log.warning('Failed to synchronize generics with backend', e);
@@ -55,29 +53,5 @@ class GenericRepository extends DataRepository<Generic> {
       }
       return true;
     });
-  }
-
-  Future _handleSuccessfullSync(Iterable<DataRevisionUpdates> succeeded,
-      Iterable<DbModel<Generic>> dirtyGenerics) async {
-    final toUpdate = succeeded.map((success) async {
-      final genericBeforeSync =
-          dirtyGenerics.firstWhere((generic) => generic.model.id == success.id);
-      final currentGeneric = await db.getById(success.id);
-      final dirtyDiff = currentGeneric.dirty - genericBeforeSync.dirty;
-      return currentGeneric.copyWith(
-        revision: success.revision,
-        dirty: math.max(dirtyDiff,
-            0), // The generic might have been fetched from backend during the sync and reset with dirty = 0.
-      );
-    });
-    await db.insert(await Future.wait(toUpdate));
-  }
-
-  Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
-    final minRevision = failed.map((f) => f.revision).reduce(math.min);
-    final latestRevision = await db.getLastRevision();
-    final revision = math.min(minRevision, latestRevision);
-    final fetchedGenerics = await fetchData(revision);
-    await db.insert(fetchedGenerics);
   }
 }
