@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+import 'package:synchronized/extension.dart';
+
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -32,8 +34,28 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   final FromJson<M> fromJson;
 
   Future<void> save(Iterable<M> data) => db.insertAndAddDirty(data);
-  Future<Iterable<M>> load();
   Future<bool> synchronize();
+
+  Future<Iterable<M>> load() async {
+    await fetchIntoDatabase();
+    return db.getAllNonDeleted();
+  }
+
+  Future fetchIntoDatabase() {
+    log.fine('loadning $path...');
+    return synchronized(
+      () async {
+        try {
+          final revision = await db.getLastRevision();
+          final fetchedData = await fetchData(revision);
+          log.fine('${fetchedData.length} $path fetched');
+          await db.insert(fetchedData);
+        } catch (e) {
+          log.severe('Error when syncing $path, offline?', e);
+        }
+      },
+    );
+  }
 
   Future<Iterable<DbModel>> fetchData(int revision) async {
     final response = await client.get(

@@ -30,22 +30,6 @@ class SortableRepository extends DataRepository<Sortable> {
         );
 
   @override
-  Future<Iterable<Sortable>> load() async {
-    log.fine('loadning sortables...');
-    return synchronized(() async {
-      try {
-        final revision = await db.getLastRevision();
-        final fetchedSortables = await fetchData(revision);
-        log.fine('sortables ${fetchedSortables.length} loaded');
-        await db.insert(fetchedSortables);
-      } catch (e) {
-        log.severe('Error when loading sortables', e);
-      }
-      return db.getAllNonDeleted();
-    });
-  }
-
-  @override
   Future<bool> synchronize() async {
     return synchronized(() async {
       final dirtySortables = await db.getAllDirty();

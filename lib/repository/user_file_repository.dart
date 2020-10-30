@@ -40,19 +40,9 @@ class UserFileRepository extends DataRepository<UserFile> {
 
   @override
   Future<Iterable<UserFile>> load() async {
-    log.fine('loadning User Files...');
-    return synchronized(() async {
-      try {
-        final revision = await db.getLastRevision();
-        final fetchedUserFiles = await fetchData(revision);
-        log.fine('${fetchedUserFiles.length}  User Files fetched.');
-        await db.insert(fetchedUserFiles);
-        await getAndStoreFileData();
-      } catch (e) {
-        log.severe('Error when loading user files', e);
-      }
-      return db.getAll();
-    });
+    await fetchIntoDatabase();
+    await getAndStoreFileData();
+    return db.getAll();
   }
 
   @override
@@ -168,10 +158,10 @@ class UserFileRepository extends DataRepository<UserFile> {
     }
   }
 
-  Future<bool> getAndStoreFileData() async {
-    final missingFiles = await userFileDb.getAllWithMissingFiles();
-    log.fine('${missingFiles.length} missing files to fetch');
+  Future<void> getAndStoreFileData() async {
     try {
+      final missingFiles = await userFileDb.getAllWithMissingFiles();
+      log.fine('${missingFiles.length} missing files to fetch');
       for (final userFile in missingFiles) {
         if (userFile.isImage) {
           await handleImageFile(userFile);
@@ -182,7 +172,6 @@ class UserFileRepository extends DataRepository<UserFile> {
     } catch (e, stackTrace) {
       log.severe('Exception when getting and storing file data', e, stackTrace);
     }
-    return true;
   }
 
   Future<Response> getImageThumb(String id, int size) {

@@ -28,23 +28,6 @@ class ActivityRepository extends DataRepository<Activity> {
         );
 
   @override
-  Future<Iterable<Activity>> load() async {
-    log.fine('loadning acitivities...');
-    return synchronized(() async {
-      try {
-        final revision = await db.getLastRevision();
-        final fetchedActivities = await fetchData(revision);
-        log.fine('${fetchedActivities.length} acitivities fetched');
-        await db.insert(fetchedActivities);
-      } catch (e) {
-        // Error when syncing activities. Probably offline.
-        log.severe('Error when syncing activities', e);
-      }
-      return db.getAllNonDeleted();
-    });
-  }
-
-  @override
   Future<bool> synchronize() async {
     return synchronized(() async {
       final dirtyActivities = await db.getAllDirty();
@@ -110,7 +93,4 @@ class ActivityRepository extends DataRepository<Activity> {
     }
     throw UnavailableException([response.statusCode]);
   }
-
-  @override
-  String get path => 'activities';
 }

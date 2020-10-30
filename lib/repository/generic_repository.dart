@@ -32,18 +32,9 @@ class GenericRepository extends DataRepository<Generic> {
 
   @override
   Future<Iterable<Generic>> load() async {
-    log.fine('loadning generics...');
-    return synchronized(() async {
-      try {
-        final revision = await db.getLastRevision();
-        final fetchedGenerics = await fetchData(revision);
-        log.fine('generics ${fetchedGenerics.length} loaded');
-        await db.insert(fetchedGenerics);
-      } catch (e) {
-        log.severe('Error when loading generics', e);
-      }
-      return genericDb.getAllNonDeletedMaxRevision();
-    });
+    await fetchIntoDatabase();
+
+    return genericDb.getAllNonDeletedMaxRevision();
   }
 
   @override
