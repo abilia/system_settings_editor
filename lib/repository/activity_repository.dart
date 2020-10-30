@@ -17,12 +17,14 @@ class ActivityRepository extends DataRepository<Activity> {
     @required int userId,
     @required ActivityDb activityDb,
   }) : super(
-          client,
-          baseUrl,
-          authToken,
-          userId,
-          activityDb,
-          Logger((ActivityRepository).toString()),
+          client: client,
+          baseUrl: baseUrl,
+          path: 'activities',
+          authToken: authToken,
+          userId: userId,
+          db: activityDb,
+          fromJson: DbActivity.fromJson,
+          log: Logger((ActivityRepository).toString()),
         );
 
   @override
@@ -30,13 +32,13 @@ class ActivityRepository extends DataRepository<Activity> {
     log.fine('loadning acitivities...');
     return synchronized(() async {
       try {
-        final fetchedActivities =
-            await _fetchActivities(await db.getLastRevision());
+        final revision = await db.getLastRevision();
+        final fetchedActivities = await fetchData(revision);
         log.fine('${fetchedActivities.length} acitivities fetched');
         await db.insert(fetchedActivities);
       } catch (e) {
         // Error when syncing activities. Probably offline.
-        log.warning('Error when syncing activities', e);
+        log.severe('Error when syncing activities', e);
       }
       return db.getAllNonDeleted();
     });
@@ -84,24 +86,16 @@ class ActivityRepository extends DataRepository<Activity> {
   Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
     final minRevision = failed.map((f) => f.revision).reduce(math.min);
     final latestRevision = await db.getLastRevision();
-    final fetchedActivities =
-        await _fetchActivities(math.min(minRevision, latestRevision));
+    final revision = math.min(minRevision, latestRevision);
+    final fetchedActivities = await fetchData(revision);
     await db.insert(fetchedActivities);
-  }
-
-  Future<Iterable<DbActivity>> _fetchActivities(int revision) async {
-    final response = await httpClient.get(
-        '$baseUrl/api/v1/data/$userId/activities?revision=$revision',
-        headers: authHeader(authToken));
-    return (json.decode(response.body) as List)
-        .map((e) => DbActivity.fromJson(e));
   }
 
   @visibleForTesting
   Future<DataUpdateResponse> postActivities(
     Iterable<DbModel<Activity>> activities,
   ) async {
-    final response = await httpClient.post(
+    final response = await client.post(
       '$baseUrl/api/v2/data/$userId/activities',
       headers: jsonAuthHeader(authToken),
       body: jsonEncode(activities.toList()),
@@ -116,4 +110,7 @@ class ActivityRepository extends DataRepository<Activity> {
     }
     throw UnavailableException([response.statusCode]);
   }
+
+  @override
+  String get path => 'activities';
 }

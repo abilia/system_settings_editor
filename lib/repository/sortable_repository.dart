@@ -19,12 +19,14 @@ class SortableRepository extends DataRepository<Sortable> {
     @required int userId,
     @required SortableDb sortableDb,
   }) : super(
-          client,
-          baseUrl,
-          authToken,
-          userId,
-          sortableDb,
-          Logger((SortableRepository).toString()),
+          client: client,
+          baseUrl: baseUrl,
+          path: 'sortableitems',
+          authToken: authToken,
+          userId: userId,
+          db: sortableDb,
+          fromJson: DbSortable.fromJson,
+          log: Logger((SortableRepository).toString()),
         );
 
   @override
@@ -32,8 +34,8 @@ class SortableRepository extends DataRepository<Sortable> {
     log.fine('loadning sortables...');
     return synchronized(() async {
       try {
-        final fetchedSortables =
-            await _fetchSortables(await db.getLastRevision());
+        final revision = await db.getLastRevision();
+        final fetchedSortables = await fetchData(revision);
         log.fine('sortables ${fetchedSortables.length} loaded');
         await db.insert(fetchedSortables);
       } catch (e) {
@@ -41,18 +43,6 @@ class SortableRepository extends DataRepository<Sortable> {
       }
       return db.getAllNonDeleted();
     });
-  }
-
-  Future<Iterable<DbSortable>> _fetchSortables(int revision) async {
-    final response = await httpClient.get(
-        '$baseUrl/api/v1/data/$userId/sortableitems?revision=$revision',
-        headers: authHeader(authToken));
-    return (json.decode(response.body) as List)
-        .exceptionSafeMap(
-          (e) => DbSortable.fromJson(e),
-          onException: log.logAndReturnNull,
-        )
-        .filterNull();
   }
 
   @override
@@ -96,13 +86,13 @@ class SortableRepository extends DataRepository<Sortable> {
     final minRevision = failed.map((f) => f.revision).reduce(math.min);
     final latestRevision = await db.getLastRevision();
     final fetchedSortables =
-        await _fetchSortables(math.min(minRevision, latestRevision));
+        await fetchData(math.min(minRevision, latestRevision));
     await db.insert(fetchedSortables);
   }
 
   Future<DataUpdateResponse> _postSortables(
       Iterable<DbModel<Sortable>> sortables) async {
-    final response = await httpClient.post(
+    final response = await client.post(
       '$baseUrl/api/v1/data/$userId/sortableitems',
       headers: jsonAuthHeader(authToken),
       body: jsonEncode(sortables.toList()),

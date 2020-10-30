@@ -13,7 +13,6 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
   UserFileDb get userFileDb => db as UserFileDb;
@@ -29,12 +28,14 @@ class UserFileRepository extends DataRepository<UserFile> {
     @required this.fileStorage,
     @required this.multipartRequestBuilder,
   }) : super(
-          client,
-          baseUrl,
-          authToken,
-          userId,
-          userFileDb,
-          Logger((UserFileRepository).toString()),
+          client: client,
+          baseUrl: baseUrl,
+          path: 'storage/items',
+          authToken: authToken,
+          userId: userId,
+          db: userFileDb,
+          fromJson: DbUserFile.fromJson,
+          log: Logger((UserFileRepository).toString()),
         );
 
   @override
@@ -42,8 +43,8 @@ class UserFileRepository extends DataRepository<UserFile> {
     log.fine('loadning User Files...');
     return synchronized(() async {
       try {
-        final fetchedUserFiles =
-            await _fetchUserFiles(await db.getLastRevision());
+        final revision = await db.getLastRevision();
+        final fetchedUserFiles = await fetchData(revision);
         log.fine('${fetchedUserFiles.length}  User Files fetched.');
         await db.insert(fetchedUserFiles);
         await getAndStoreFileData();
@@ -102,28 +103,16 @@ class UserFileRepository extends DataRepository<UserFile> {
 
   Future<void> _handleFailedSync() async {
     final latestRevision = await db.getLastRevision();
-    final fetchedUserFiles = await _fetchUserFiles(latestRevision);
+    final fetchedUserFiles = await fetchData(latestRevision);
     await getAndStoreFileData();
     await db.insert(fetchedUserFiles);
-  }
-
-  Future<Iterable<DbUserFile>> _fetchUserFiles(int revision) async {
-    final response = await httpClient.get(
-        '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision',
-        headers: authHeader(authToken));
-    return (json.decode(response.body) as List)
-        .exceptionSafeMap(
-          (e) => DbUserFile.fromJson(e),
-          onException: log.logAndReturnNull,
-        )
-        .filterNull();
   }
 
   Future<Iterable<SyncResponse>> _postUserFiles(
     Iterable<DbModel<UserFile>> userFiles,
     int latestRevision,
   ) async {
-    final response = await httpClient.post(
+    final response = await client.post(
       '$baseUrl/api/v1/data/$userId/storage/items/$latestRevision',
       headers: jsonAuthHeader(authToken),
       body: jsonEncode(userFiles.toList()),
@@ -197,7 +186,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   }
 
   Future<Response> getImageThumb(String id, int size) {
-    return httpClient.get(
+    return client.get(
       imageThumbIdUrl(
         baseUrl: baseUrl,
         userId: userId,
@@ -209,7 +198,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   }
 
   Future<void> handleNonImage(UserFile userFile) async {
-    final originalFileResponse = await httpClient.get(
+    final originalFileResponse = await client.get(
       fileIdUrl(baseUrl, userId, userFile.id),
       headers: authHeader(authToken),
     );
@@ -222,7 +211,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   }
 
   Future<void> handleImageFile(UserFile userFile) async {
-    final originalFileResponse = httpClient.get(
+    final originalFileResponse = client.get(
       fileIdUrl(baseUrl, userId, userFile.id),
       headers: authHeader(authToken),
     );

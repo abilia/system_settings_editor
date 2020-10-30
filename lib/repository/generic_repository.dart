@@ -7,7 +7,6 @@ import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
 
 import 'all.dart';
 
@@ -20,16 +19,24 @@ class GenericRepository extends DataRepository<Generic> {
     @required String authToken,
     @required int userId,
     @required GenericDb genericDb,
-  }) : super(client, baseUrl, authToken, userId, genericDb,
-            Logger((GenericRepository).toString()));
+  }) : super(
+          client: client,
+          baseUrl: baseUrl,
+          path: 'generics',
+          authToken: authToken,
+          userId: userId,
+          db: genericDb,
+          fromJson: DbGeneric.fromJson,
+          log: Logger((GenericRepository).toString()),
+        );
 
   @override
   Future<Iterable<Generic>> load() async {
     log.fine('loadning generics...');
     return synchronized(() async {
       try {
-        final fetchedGenerics =
-            await _fetchGenerics(await db.getLastRevision());
+        final revision = await db.getLastRevision();
+        final fetchedGenerics = await fetchData(revision);
         log.fine('generics ${fetchedGenerics.length} loaded');
         await db.insert(fetchedGenerics);
       } catch (e) {
@@ -37,18 +44,6 @@ class GenericRepository extends DataRepository<Generic> {
       }
       return genericDb.getAllNonDeletedMaxRevision();
     });
-  }
-
-  Future<Iterable<DbGeneric>> _fetchGenerics(int revision) async {
-    final response = await httpClient.get(
-        '$baseUrl/api/v1/data/$userId/generics?revision=$revision',
-        headers: authHeader(authToken));
-    return (json.decode(response.body) as List)
-        .exceptionSafeMap(
-          (e) => DbGeneric.fromJson(e),
-          onException: log.logAndReturnNull,
-        )
-        .filterNull();
   }
 
   @override
@@ -91,14 +86,14 @@ class GenericRepository extends DataRepository<Generic> {
   Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
     final minRevision = failed.map((f) => f.revision).reduce(math.min);
     final latestRevision = await db.getLastRevision();
-    final fetchedGenerics =
-        await _fetchGenerics(math.min(minRevision, latestRevision));
+    final revision = math.min(minRevision, latestRevision);
+    final fetchedGenerics = await fetchData(revision);
     await db.insert(fetchedGenerics);
   }
 
   Future<DataUpdateResponse> _postGenerics(
       Iterable<DbModel<Generic>> generics) async {
-    final response = await httpClient.post(
+    final response = await client.post(
       '$baseUrl/api/v1/data/$userId/genericitems',
       headers: jsonAuthHeader(authToken),
       body: jsonEncode(generics.toList()),
