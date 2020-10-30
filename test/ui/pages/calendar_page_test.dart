@@ -36,7 +36,7 @@ void main() {
   }
 
   final userRepository = UserRepository(
-    httpClient: Fakes.client(),
+    client: Fakes.client(),
     tokenDb: MockTokenDb(),
     userDb: MockUserDb(),
     licenseDb: MockLicenseDb(),
@@ -101,7 +101,7 @@ void main() {
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
-        ..httpClient = Fakes.client(activityResponse: activityResponse)
+        ..client = Fakes.client(activityResponse: activityResponse)
         ..fileStorage = MockFileStorage()
         ..userFileDb = MockUserFileDb()
         ..settingsDb = MockSettingsDb()
@@ -287,7 +287,7 @@ void main() {
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
-        ..httpClient = Fakes.client(activityResponse: activityResponse)
+        ..client = Fakes.client(activityResponse: activityResponse)
         ..fileStorage = MockFileStorage()
         ..userFileDb = MockUserFileDb()
         ..settingsDb = MockSettingsDb()
@@ -500,7 +500,7 @@ void main() {
         ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = mockFirebasePushService
         ..tokenDb = mockTokenDb
-        ..httpClient = Fakes.client(activityResponse: () => fullDayActivities)
+        ..client = Fakes.client(activityResponse: () => fullDayActivities)
         ..fileStorage = MockFileStorage()
         ..userFileDb = MockUserFileDb()
         ..settingsDb = MockSettingsDb()

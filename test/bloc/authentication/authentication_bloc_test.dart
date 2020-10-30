@@ -16,7 +16,7 @@ void main() {
 
   setUp(() {
     userRepository = UserRepository(
-      httpClient: Fakes.client(),
+      client: Fakes.client(),
       tokenDb: MockTokenDb(),
       userDb: MockUserDb(),
       licenseDb: MockLicenseDb(),

@@ -23,14 +23,14 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
     message.forEach((key, value) => log.fine('$key: $value'));
     await configureLocalTimeZone();
     final baseUrl = await BaseUrlDb().getBaseUrl();
-    final httpClient = Client();
+    final client = Client();
     final user = await userDb.getUser();
     final token = await TokenDb().getToken();
     final database = await DatabaseRepository.createSqfliteDb();
 
     final activities = await ActivityRepository(
       baseUrl: baseUrl,
-      client: httpClient,
+      client: client,
       activityDb: ActivityDb(database),
       userId: user.id,
       authToken: token,
@@ -41,7 +41,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
 
     await UserFileRepository(
       baseUrl: baseUrl,
-      client: httpClient,
+      client: client,
       userFileDb: UserFileDb(database),
       fileStorage: fileStorage,
       userId: user.id,
@@ -63,7 +63,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
 
     await SortableRepository(
       baseUrl: baseUrl,
-      client: httpClient,
+      client: client,
       sortableDb: SortableDb(database),
       userId: user.id,
       authToken: token,

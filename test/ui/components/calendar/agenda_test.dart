@@ -60,7 +60,7 @@ void main() {
       ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
-      ..httpClient = Fakes.client()
+      ..client = Fakes.client()
       ..fileStorage = MockFileStorage()
       ..userFileDb = MockUserFileDb()
       ..settingsDb = MockSettingsDb()

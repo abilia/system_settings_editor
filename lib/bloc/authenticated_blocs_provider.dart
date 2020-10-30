@@ -30,7 +30,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
       providers: [
         RepositoryProvider<ActivityRepository>(
           create: (context) => ActivityRepository(
-            client: authenticatedState.userRepository.httpClient,
+            client: authenticatedState.userRepository.client,
             baseUrl: authenticatedState.userRepository.baseUrl,
             activityDb: GetIt.I<ActivityDb>(),
             userId: authenticatedState.userId,
@@ -39,7 +39,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
         ),
         RepositoryProvider<UserFileRepository>(
           create: (context) => UserFileRepository(
-            client: authenticatedState.userRepository.httpClient,
+            client: authenticatedState.userRepository.client,
             baseUrl: authenticatedState.userRepository.baseUrl,
             userFileDb: GetIt.I<UserFileDb>(),
             fileStorage: GetIt.I<FileStorage>(),
@@ -51,7 +51,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
         RepositoryProvider<SortableRepository>(
           create: (context) => SortableRepository(
             baseUrl: authenticatedState.userRepository.baseUrl,
-            client: authenticatedState.userRepository.httpClient,
+            client: authenticatedState.userRepository.client,
             sortableDb: GetIt.I<SortableDb>(),
             userId: authenticatedState.userId,
             authToken: authenticatedState.token,
@@ -60,7 +60,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
         RepositoryProvider<GenericRepository>(
           create: (context) => GenericRepository(
             baseUrl: authenticatedState.userRepository.baseUrl,
-            client: authenticatedState.userRepository.httpClient,
+            client: authenticatedState.userRepository.client,
             genericDb: GetIt.I<GenericDb>(),
             userId: authenticatedState.userId,
             authToken: authenticatedState.token,
@@ -182,7 +182,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
     return RepositoryProvider<UserRepository>(
       create: (context) => UserRepository(
         baseUrl: baseUrl,
-        httpClient: GetIt.I<BaseClient>(),
+        client: GetIt.I<BaseClient>(),
         tokenDb: GetIt.I<TokenDb>(),
         userDb: GetIt.I<UserDb>(),
         licenseDb: GetIt.I<LicenseDb>(),

@@ -58,7 +58,7 @@ void main() {
         ..baseUrlDb = MockBaseUrlDb()
         ..ticker = Ticker(stream: StreamController<DateTime>().stream)
         ..tokenDb = mockTokenDb
-        ..httpClient = Fakes.client(activityResponse: () => [])
+        ..client = Fakes.client(activityResponse: () => [])
         ..fileStorage = MockFileStorage()
         ..userFileDb = MockUserFileDb()
         ..settingsDb = mockSettingsDb
