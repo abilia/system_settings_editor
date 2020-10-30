@@ -17,7 +17,7 @@ import 'package:seagull/utils/all.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
   static final _log = Logger((UserFileRepository).toString());
-  final UserFileDb userFileDb;
+  UserFileDb get userFileDb => db as UserFileDb;
   final int userId;
   final String authToken;
   final FileStorage fileStorage;
@@ -26,12 +26,12 @@ class UserFileRepository extends DataRepository<UserFile> {
   UserFileRepository({
     @required BaseClient httpClient,
     @required String baseUrl,
-    @required this.userFileDb,
+    @required UserFileDb userFileDb,
     @required this.fileStorage,
     @required this.userId,
     @required this.authToken,
     @required this.multipartRequestBuilder,
-  }) : super(httpClient, baseUrl);
+  }) : super(httpClient, baseUrl, userFileDb);
 
   @override
   Future<Iterable<UserFile>> load() async {
@@ -39,26 +39,21 @@ class UserFileRepository extends DataRepository<UserFile> {
     return synchronized(() async {
       try {
         final fetchedUserFiles =
-            await _fetchUserFiles(await userFileDb.getLastRevision());
+            await _fetchUserFiles(await db.getLastRevision());
         _log.fine('${fetchedUserFiles.length}  User Files fetched.');
-        await userFileDb.insert(fetchedUserFiles);
+        await db.insert(fetchedUserFiles);
         await getAndStoreFileData();
       } catch (e) {
         _log.severe('Error when loading user files', e);
       }
-      return userFileDb.getAll();
+      return db.getAll();
     });
-  }
-
-  @override
-  Future<void> save(Iterable<UserFile> userFiles) async {
-    return userFileDb.insertAndAddDirty(userFiles);
   }
 
   @override
   Future<bool> synchronize() async {
     return synchronized(() async {
-      final dirtyFiles = await userFileDb.getAllDirty();
+      final dirtyFiles = await db.getAllDirty();
       if (dirtyFiles.isEmpty) return true;
       for (var dirtyFile in dirtyFiles.map((dirty) => dirty.model)) {
         final file = fileStorage.getFile(dirtyFile.id);
@@ -71,7 +66,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       }
 
       try {
-        final lastRevision = await userFileDb.getLastRevision();
+        final lastRevision = await db.getLastRevision();
         final syncResponses = await _postUserFiles(dirtyFiles, lastRevision);
         await _handleSuccessfulSync(syncResponses, dirtyFiles);
         return true;
@@ -90,7 +85,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     final toUpdate = syncResponses.map((response) async {
       final fileBeforeSync =
           dirtyFiles.firstWhere((file) => file.model.id == response.id);
-      final currentFile = await userFileDb.getById(response.id);
+      final currentFile = await db.getById(response.id);
       final dirtyDiff = currentFile.dirty - fileBeforeSync.dirty;
       return currentFile.copyWith(
         revision: response.newRevision,
@@ -98,14 +93,14 @@ class UserFileRepository extends DataRepository<UserFile> {
             0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
       );
     });
-    await userFileDb.insert(await Future.wait(toUpdate));
+    await db.insert(await Future.wait(toUpdate));
   }
 
   Future<void> _handleFailedSync() async {
-    final latestRevision = await userFileDb.getLastRevision();
+    final latestRevision = await db.getLastRevision();
     final fetchedUserFiles = await _fetchUserFiles(latestRevision);
     await getAndStoreFileData();
-    await userFileDb.insert(fetchedUserFiles);
+    await db.insert(fetchedUserFiles);
   }
 
   Future<Iterable<DbUserFile>> _fetchUserFiles(int revision) async {

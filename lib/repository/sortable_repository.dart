@@ -14,16 +14,15 @@ import 'all.dart';
 class SortableRepository extends DataRepository<Sortable> {
   static final _log = Logger((SortableRepository).toString());
   final int userId;
-  final SortableDb sortableDb;
   final String authToken;
 
   SortableRepository({
     String baseUrl,
     @required BaseClient client,
-    @required this.sortableDb,
+    @required SortableDb sortableDb,
     @required this.userId,
     @required this.authToken,
-  }) : super(client, baseUrl);
+  }) : super(client, baseUrl, sortableDb);
 
   @override
   Future<Iterable<Sortable>> load() async {
@@ -31,13 +30,13 @@ class SortableRepository extends DataRepository<Sortable> {
     return synchronized(() async {
       try {
         final fetchedSortables =
-            await _fetchSortables(await sortableDb.getLastRevision());
+            await _fetchSortables(await db.getLastRevision());
         _log.fine('sortables ${fetchedSortables.length} loaded');
-        await sortableDb.insert(fetchedSortables);
+        await db.insert(fetchedSortables);
       } catch (e) {
         _log.severe('Error when loading sortables', e);
       }
-      return sortableDb.getAllNonDeleted();
+      return db.getAllNonDeleted();
     });
   }
 
@@ -54,14 +53,9 @@ class SortableRepository extends DataRepository<Sortable> {
   }
 
   @override
-  Future<void> save(Iterable<Sortable> sortables) {
-    return sortableDb.insertAndAddDirty(sortables);
-  }
-
-  @override
   Future<bool> synchronize() async {
     return synchronized(() async {
-      final dirtySortables = await sortableDb.getAllDirty();
+      final dirtySortables = await db.getAllDirty();
       if (dirtySortables.isEmpty) return true;
       final res = await _postSortables(dirtySortables);
       try {
@@ -84,7 +78,7 @@ class SortableRepository extends DataRepository<Sortable> {
     final toUpdate = succeeded.map((success) async {
       final sortableBeforeSync = dirtySortables
           .firstWhere((sortable) => sortable.model.id == success.id);
-      final currentSortable = await sortableDb.getById(success.id);
+      final currentSortable = await db.getById(success.id);
       final dirtyDiff = currentSortable.dirty - sortableBeforeSync.dirty;
       return currentSortable.copyWith(
         revision: success.revision,
@@ -92,15 +86,15 @@ class SortableRepository extends DataRepository<Sortable> {
             0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
       );
     });
-    await sortableDb.insert(await Future.wait(toUpdate));
+    await db.insert(await Future.wait(toUpdate));
   }
 
   Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
     final minRevision = failed.map((f) => f.revision).reduce(min);
-    final latestRevision = await sortableDb.getLastRevision();
+    final latestRevision = await db.getLastRevision();
     final fetchedSortables =
         await _fetchSortables(min(minRevision, latestRevision));
-    await sortableDb.insert(fetchedSortables);
+    await db.insert(fetchedSortables);
   }
 
   Future<DataUpdateResponse> _postSortables(
@@ -121,7 +115,7 @@ class SortableRepository extends DataRepository<Sortable> {
 
   Future<Sortable> generateUploadFolder() async {
     return synchronized(() async {
-      final all = await sortableDb.getAllNonDeleted();
+      final all = await db.getAllNonDeleted();
       final root = all.where((s) => s.groupId == null).toList();
       root.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
       final sortOrder = root.isEmpty
@@ -140,7 +134,7 @@ class SortableRepository extends DataRepository<Sortable> {
         isGroup: true,
         sortOrder: sortOrder,
       );
-      await sortableDb.insertAndAddDirty([upload]);
+      await db.insertAndAddDirty([upload]);
       return upload;
     });
   }

@@ -45,19 +45,23 @@ class UserRepository extends Repository {
     @required String pushToken,
     @required DateTime time,
   }) async {
-    final response = await httpClient.post('$baseUrl/api/v1/auth/client/me',
-        headers: {
-          HttpHeaders.authorizationHeader:
-              'Basic ${base64Encode(utf8.encode('$username:$password'))}',
-          HttpHeaders.contentTypeHeader: 'application/json'
-        },
-        body: json.encode({
+    final response = await httpClient.post(
+      '$baseUrl/api/v1/auth/client/me',
+      headers: {
+        HttpHeaders.authorizationHeader:
+            'Basic ${base64Encode(utf8.encode('$username:$password'))}',
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+      body: json.encode(
+        {
           'clientId': Uuid().v4(),
           'type': 'flutter',
           'app': 'seagull',
           'name': 'seagull',
           'address': pushToken
-        }));
+        },
+      ),
+    );
     if (response.statusCode == 200) {
       var login = Login.fromJson(json.decode(response.body));
       return login.token;

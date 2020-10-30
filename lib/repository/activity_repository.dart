@@ -12,21 +12,15 @@ import 'package:synchronized/extension.dart';
 class ActivityRepository extends DataRepository<Activity> {
   static final _log = Logger((ActivityRepository).toString());
   final int userId;
-  final ActivityDb activityDb;
   final String authToken;
 
   ActivityRepository({
     String baseUrl,
     @required BaseClient client,
-    @required this.activityDb,
+    @required ActivityDb activityDb,
     @required this.userId,
     @required this.authToken,
-  }) : super(client, baseUrl);
-
-  @override
-  Future<void> save(Iterable<Activity> activities) {
-    return activityDb.insertAndAddDirty(activities);
-  }
+  }) : super(client, baseUrl, activityDb);
 
   @override
   Future<Iterable<Activity>> load() async {
@@ -34,21 +28,21 @@ class ActivityRepository extends DataRepository<Activity> {
     return synchronized(() async {
       try {
         final fetchedActivities =
-            await _fetchActivities(await activityDb.getLastRevision());
+            await _fetchActivities(await db.getLastRevision());
         _log.fine('${fetchedActivities.length} acitivities fetched');
-        await activityDb.insert(fetchedActivities);
+        await db.insert(fetchedActivities);
       } catch (e) {
         // Error when syncing activities. Probably offline.
         _log.warning('Error when syncing activities', e);
       }
-      return activityDb.getAllNonDeleted();
+      return db.getAllNonDeleted();
     });
   }
 
   @override
   Future<bool> synchronize() async {
     return synchronized(() async {
-      final dirtyActivities = await activityDb.getAllDirty();
+      final dirtyActivities = await db.getAllDirty();
       if (dirtyActivities.isEmpty) return true;
       try {
         final res = await postActivities(dirtyActivities);
@@ -73,7 +67,7 @@ class ActivityRepository extends DataRepository<Activity> {
     final toUpdate = succeeded.map((success) async {
       final activityBeforeSync = dirtyActivities
           .firstWhere((activity) => activity.model.id == success.id);
-      final currentActivity = await activityDb.getById(success.id);
+      final currentActivity = await db.getById(success.id);
       final dirtyDiff = currentActivity.dirty - activityBeforeSync.dirty;
       return currentActivity.copyWith(
         revision: success.revision,
@@ -81,15 +75,15 @@ class ActivityRepository extends DataRepository<Activity> {
             0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
       );
     });
-    await activityDb.insert(await Future.wait(toUpdate));
+    await db.insert(await Future.wait(toUpdate));
   }
 
   Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
     final minRevision = failed.map((f) => f.revision).reduce(min);
-    final latestRevision = await activityDb.getLastRevision();
+    final latestRevision = await db.getLastRevision();
     final fetchedActivities =
         await _fetchActivities(min(minRevision, latestRevision));
-    await activityDb.insert(fetchedActivities);
+    await db.insert(fetchedActivities);
   }
 
   Future<Iterable<DbActivity>> _fetchActivities(int revision) async {

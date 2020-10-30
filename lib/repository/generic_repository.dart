@@ -14,16 +14,16 @@ import 'all.dart';
 class GenericRepository extends DataRepository<Generic> {
   static final _log = Logger((GenericRepository).toString());
   final int userId;
-  final GenericDb genericDb;
+  GenericDb get genericDb => db as GenericDb;
   final String authToken;
 
   GenericRepository({
     String baseUrl,
     @required BaseClient client,
-    @required this.genericDb,
+    @required GenericDb genericDb,
     @required this.userId,
     @required this.authToken,
-  }) : super(client, baseUrl);
+  }) : super(client, baseUrl, genericDb);
 
   @override
   Future<Iterable<Generic>> load() async {
@@ -31,9 +31,9 @@ class GenericRepository extends DataRepository<Generic> {
     return synchronized(() async {
       try {
         final fetchedGenerics =
-            await _fetchGenerics(await genericDb.getLastRevision());
+            await _fetchGenerics(await db.getLastRevision());
         _log.fine('generics ${fetchedGenerics.length} loaded');
-        await genericDb.insert(fetchedGenerics);
+        await db.insert(fetchedGenerics);
       } catch (e) {
         _log.severe('Error when loading generics', e);
       }
@@ -54,14 +54,9 @@ class GenericRepository extends DataRepository<Generic> {
   }
 
   @override
-  Future<void> save(Iterable<Generic> generics) {
-    return genericDb.insertAndAddDirty(generics);
-  }
-
-  @override
   Future<bool> synchronize() async {
     return synchronized(() async {
-      final dirtyGenerics = await genericDb.getAllDirty();
+      final dirtyGenerics = await db.getAllDirty();
       if (dirtyGenerics.isEmpty) return true;
       final res = await _postGenerics(dirtyGenerics);
       try {
@@ -84,7 +79,7 @@ class GenericRepository extends DataRepository<Generic> {
     final toUpdate = succeeded.map((success) async {
       final genericBeforeSync =
           dirtyGenerics.firstWhere((generic) => generic.model.id == success.id);
-      final currentGeneric = await genericDb.getById(success.id);
+      final currentGeneric = await db.getById(success.id);
       final dirtyDiff = currentGeneric.dirty - genericBeforeSync.dirty;
       return currentGeneric.copyWith(
         revision: success.revision,
@@ -92,15 +87,15 @@ class GenericRepository extends DataRepository<Generic> {
             0), // The generic might have been fetched from backend during the sync and reset with dirty = 0.
       );
     });
-    await genericDb.insert(await Future.wait(toUpdate));
+    await db.insert(await Future.wait(toUpdate));
   }
 
   Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
     final minRevision = failed.map((f) => f.revision).reduce(min);
-    final latestRevision = await genericDb.getLastRevision();
+    final latestRevision = await db.getLastRevision();
     final fetchedGenerics =
         await _fetchGenerics(min(minRevision, latestRevision));
-    await genericDb.insert(fetchedGenerics);
+    await db.insert(fetchedGenerics);
   }
 
   Future<DataUpdateResponse> _postGenerics(
