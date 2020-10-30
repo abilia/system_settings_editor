@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
@@ -12,29 +12,32 @@ import 'package:seagull/utils/all.dart';
 import 'all.dart';
 
 class SortableRepository extends DataRepository<Sortable> {
-  static final _log = Logger((SortableRepository).toString());
-  final int userId;
-  final String authToken;
-
   SortableRepository({
-    String baseUrl,
+    @required String baseUrl,
     @required BaseClient client,
+    @required String authToken,
+    @required int userId,
     @required SortableDb sortableDb,
-    @required this.userId,
-    @required this.authToken,
-  }) : super(client, baseUrl, sortableDb);
+  }) : super(
+          client,
+          baseUrl,
+          authToken,
+          userId,
+          sortableDb,
+          Logger((SortableRepository).toString()),
+        );
 
   @override
   Future<Iterable<Sortable>> load() async {
-    _log.fine('loadning sortables...');
+    log.fine('loadning sortables...');
     return synchronized(() async {
       try {
         final fetchedSortables =
             await _fetchSortables(await db.getLastRevision());
-        _log.fine('sortables ${fetchedSortables.length} loaded');
+        log.fine('sortables ${fetchedSortables.length} loaded');
         await db.insert(fetchedSortables);
       } catch (e) {
-        _log.severe('Error when loading sortables', e);
+        log.severe('Error when loading sortables', e);
       }
       return db.getAllNonDeleted();
     });
@@ -47,7 +50,7 @@ class SortableRepository extends DataRepository<Sortable> {
     return (json.decode(response.body) as List)
         .exceptionSafeMap(
           (e) => DbSortable.fromJson(e),
-          onException: _log.logAndReturnNull,
+          onException: log.logAndReturnNull,
         )
         .filterNull();
   }
@@ -66,7 +69,7 @@ class SortableRepository extends DataRepository<Sortable> {
           await _handleFailedSync(res.failed);
         }
       } catch (e) {
-        _log.warning('Failed to synchronize sortables with backend', e);
+        log.warning('Failed to synchronize sortables with backend', e);
         return false;
       }
       return true;
@@ -82,7 +85,7 @@ class SortableRepository extends DataRepository<Sortable> {
       final dirtyDiff = currentSortable.dirty - sortableBeforeSync.dirty;
       return currentSortable.copyWith(
         revision: success.revision,
-        dirty: max(dirtyDiff,
+        dirty: math.max(dirtyDiff,
             0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
       );
     });
@@ -90,10 +93,10 @@ class SortableRepository extends DataRepository<Sortable> {
   }
 
   Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
-    final minRevision = failed.map((f) => f.revision).reduce(min);
+    final minRevision = failed.map((f) => f.revision).reduce(math.min);
     final latestRevision = await db.getLastRevision();
     final fetchedSortables =
-        await _fetchSortables(min(minRevision, latestRevision));
+        await _fetchSortables(math.min(minRevision, latestRevision));
     await db.insert(fetchedSortables);
   }
 

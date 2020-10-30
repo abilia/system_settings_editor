@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
@@ -16,35 +16,39 @@ import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
-  static final _log = Logger((UserFileRepository).toString());
   UserFileDb get userFileDb => db as UserFileDb;
-  final int userId;
-  final String authToken;
   final FileStorage fileStorage;
   final MultipartRequestBuilder multipartRequestBuilder;
 
   UserFileRepository({
-    @required BaseClient httpClient,
     @required String baseUrl,
+    @required BaseClient client,
+    @required String authToken,
+    @required int userId,
     @required UserFileDb userFileDb,
     @required this.fileStorage,
-    @required this.userId,
-    @required this.authToken,
     @required this.multipartRequestBuilder,
-  }) : super(httpClient, baseUrl, userFileDb);
+  }) : super(
+          client,
+          baseUrl,
+          authToken,
+          userId,
+          userFileDb,
+          Logger((UserFileRepository).toString()),
+        );
 
   @override
   Future<Iterable<UserFile>> load() async {
-    _log.fine('loadning User Files...');
+    log.fine('loadning User Files...');
     return synchronized(() async {
       try {
         final fetchedUserFiles =
             await _fetchUserFiles(await db.getLastRevision());
-        _log.fine('${fetchedUserFiles.length}  User Files fetched.');
+        log.fine('${fetchedUserFiles.length}  User Files fetched.');
         await db.insert(fetchedUserFiles);
         await getAndStoreFileData();
       } catch (e) {
-        _log.severe('Error when loading user files', e);
+        log.severe('Error when loading user files', e);
       }
       return db.getAll();
     });
@@ -71,10 +75,10 @@ class UserFileRepository extends DataRepository<UserFile> {
         await _handleSuccessfulSync(syncResponses, dirtyFiles);
         return true;
       } on WrongRevisionException catch (_) {
-        _log.info('Wrong revision when posting user files');
+        log.info('Wrong revision when posting user files');
         await _handleFailedSync();
       } catch (e) {
-        _log.warning('Cannot post user files to backend', e);
+        log.warning('Cannot post user files to backend', e);
       }
       return false;
     });
@@ -89,7 +93,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       final dirtyDiff = currentFile.dirty - fileBeforeSync.dirty;
       return currentFile.copyWith(
         revision: response.newRevision,
-        dirty: max(dirtyDiff,
+        dirty: math.max(dirtyDiff,
             0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
       );
     });
@@ -110,7 +114,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     return (json.decode(response.body) as List)
         .exceptionSafeMap(
           (e) => DbUserFile.fromJson(e),
-          onException: _log.logAndReturnNull,
+          onException: log.logAndReturnNull,
         )
         .filterNull();
   }
@@ -136,7 +140,7 @@ class UserFileRepository extends DataRepository<UserFile> {
         if (error.code == ErrorCodes.WRONG_REVISION) {
           throw WrongRevisionException();
         } else {
-          _log.warning('Unhandled error code: $error');
+          log.warning('Unhandled error code: $error');
         }
       });
     } else if (response.statusCode == 401) {
@@ -165,19 +169,19 @@ class UserFileRepository extends DataRepository<UserFile> {
         return true;
       } else {
         final response = await Response.fromStream(streamedResponse);
-        _log.warning(
+        log.warning(
             'Could not save file to backend ${streamedResponse.statusCode}, ${response.body}');
         return false;
       }
     } catch (e) {
-      _log.severe('Could not save file to backend', e);
+      log.severe('Could not save file to backend', e);
       return false;
     }
   }
 
   Future<bool> getAndStoreFileData() async {
     final missingFiles = await userFileDb.getAllWithMissingFiles();
-    _log.fine('${missingFiles.length} missing files to fetch');
+    log.fine('${missingFiles.length} missing files to fetch');
     try {
       for (final userFile in missingFiles) {
         if (userFile.isImage) {
@@ -187,8 +191,7 @@ class UserFileRepository extends DataRepository<UserFile> {
         }
       }
     } catch (e, stackTrace) {
-      _log.severe(
-          'Exception when getting and storing file data', e, stackTrace);
+      log.severe('Exception when getting and storing file data', e, stackTrace);
     }
     return true;
   }
@@ -229,7 +232,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       thumbResponse,
     ]);
     if (responses[0].statusCode == 200 && responses[1].statusCode == 200) {
-      _log.fine('Got file with id: ${userFile.id} successfully');
+      log.fine('Got file with id: ${userFile.id} successfully');
       await Future.wait([
         fileStorage.storeFile(responses[0].bodyBytes, userFile.id),
         fileStorage.storeImageThumb(
@@ -237,7 +240,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       ]);
       await userFileDb.setFileLoadedForId(userFile.id);
     } else {
-      _log.severe('Could not get image files for userFile: $userFile');
+      log.severe('Could not get image files for userFile: $userFile');
       throw UnavailableException(responses.map((e) => e.statusCode).toList());
     }
   }

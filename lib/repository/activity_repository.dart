@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -10,30 +10,33 @@ import 'package:seagull/repository/all.dart';
 import 'package:synchronized/extension.dart';
 
 class ActivityRepository extends DataRepository<Activity> {
-  static final _log = Logger((ActivityRepository).toString());
-  final int userId;
-  final String authToken;
-
   ActivityRepository({
-    String baseUrl,
+    @required String baseUrl,
     @required BaseClient client,
+    @required String authToken,
+    @required int userId,
     @required ActivityDb activityDb,
-    @required this.userId,
-    @required this.authToken,
-  }) : super(client, baseUrl, activityDb);
+  }) : super(
+          client,
+          baseUrl,
+          authToken,
+          userId,
+          activityDb,
+          Logger((ActivityRepository).toString()),
+        );
 
   @override
   Future<Iterable<Activity>> load() async {
-    _log.fine('loadning acitivities...');
+    log.fine('loadning acitivities...');
     return synchronized(() async {
       try {
         final fetchedActivities =
             await _fetchActivities(await db.getLastRevision());
-        _log.fine('${fetchedActivities.length} acitivities fetched');
+        log.fine('${fetchedActivities.length} acitivities fetched');
         await db.insert(fetchedActivities);
       } catch (e) {
         // Error when syncing activities. Probably offline.
-        _log.warning('Error when syncing activities', e);
+        log.warning('Error when syncing activities', e);
       }
       return db.getAllNonDeleted();
     });
@@ -55,7 +58,7 @@ class ActivityRepository extends DataRepository<Activity> {
           await _handleFailedSync(res.failed);
         }
       } catch (e) {
-        _log.warning('Failed to synchronize with backend', e);
+        log.warning('Failed to synchronize with backend', e);
         return false;
       }
       return true;
@@ -71,7 +74,7 @@ class ActivityRepository extends DataRepository<Activity> {
       final dirtyDiff = currentActivity.dirty - activityBeforeSync.dirty;
       return currentActivity.copyWith(
         revision: success.revision,
-        dirty: max(dirtyDiff,
+        dirty: math.max(dirtyDiff,
             0), // The activity might have been fetched from backend during the sync and reset with dirty = 0.
       );
     });
@@ -79,10 +82,10 @@ class ActivityRepository extends DataRepository<Activity> {
   }
 
   Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
-    final minRevision = failed.map((f) => f.revision).reduce(min);
+    final minRevision = failed.map((f) => f.revision).reduce(math.min);
     final latestRevision = await db.getLastRevision();
     final fetchedActivities =
-        await _fetchActivities(min(minRevision, latestRevision));
+        await _fetchActivities(math.min(minRevision, latestRevision));
     await db.insert(fetchedActivities);
   }
 

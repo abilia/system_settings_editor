@@ -39,7 +39,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
         ),
         RepositoryProvider<UserFileRepository>(
           create: (context) => UserFileRepository(
-            httpClient: authenticatedState.userRepository.httpClient,
+            client: authenticatedState.userRepository.httpClient,
             baseUrl: authenticatedState.userRepository.baseUrl,
             userFileDb: GetIt.I<UserFileDb>(),
             fileStorage: GetIt.I<FileStorage>(),

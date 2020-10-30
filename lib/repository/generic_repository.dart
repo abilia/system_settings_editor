@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
@@ -12,30 +12,28 @@ import 'package:seagull/utils/all.dart';
 import 'all.dart';
 
 class GenericRepository extends DataRepository<Generic> {
-  static final _log = Logger((GenericRepository).toString());
-  final int userId;
   GenericDb get genericDb => db as GenericDb;
-  final String authToken;
 
   GenericRepository({
-    String baseUrl,
+    @required String baseUrl,
     @required BaseClient client,
+    @required String authToken,
+    @required int userId,
     @required GenericDb genericDb,
-    @required this.userId,
-    @required this.authToken,
-  }) : super(client, baseUrl, genericDb);
+  }) : super(client, baseUrl, authToken, userId, genericDb,
+            Logger((GenericRepository).toString()));
 
   @override
   Future<Iterable<Generic>> load() async {
-    _log.fine('loadning generics...');
+    log.fine('loadning generics...');
     return synchronized(() async {
       try {
         final fetchedGenerics =
             await _fetchGenerics(await db.getLastRevision());
-        _log.fine('generics ${fetchedGenerics.length} loaded');
+        log.fine('generics ${fetchedGenerics.length} loaded');
         await db.insert(fetchedGenerics);
       } catch (e) {
-        _log.severe('Error when loading generics', e);
+        log.severe('Error when loading generics', e);
       }
       return genericDb.getAllNonDeletedMaxRevision();
     });
@@ -48,7 +46,7 @@ class GenericRepository extends DataRepository<Generic> {
     return (json.decode(response.body) as List)
         .exceptionSafeMap(
           (e) => DbGeneric.fromJson(e),
-          onException: _log.logAndReturnNull,
+          onException: log.logAndReturnNull,
         )
         .filterNull();
   }
@@ -67,7 +65,7 @@ class GenericRepository extends DataRepository<Generic> {
           await _handleFailedSync(res.failed);
         }
       } catch (e) {
-        _log.warning('Failed to synchronize generics with backend', e);
+        log.warning('Failed to synchronize generics with backend', e);
         return false;
       }
       return true;
@@ -83,7 +81,7 @@ class GenericRepository extends DataRepository<Generic> {
       final dirtyDiff = currentGeneric.dirty - genericBeforeSync.dirty;
       return currentGeneric.copyWith(
         revision: success.revision,
-        dirty: max(dirtyDiff,
+        dirty: math.max(dirtyDiff,
             0), // The generic might have been fetched from backend during the sync and reset with dirty = 0.
       );
     });
@@ -91,10 +89,10 @@ class GenericRepository extends DataRepository<Generic> {
   }
 
   Future _handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
-    final minRevision = failed.map((f) => f.revision).reduce(min);
+    final minRevision = failed.map((f) => f.revision).reduce(math.min);
     final latestRevision = await db.getLastRevision();
     final fetchedGenerics =
-        await _fetchGenerics(min(minRevision, latestRevision));
+        await _fetchGenerics(math.min(minRevision, latestRevision));
     await db.insert(fetchedGenerics);
   }
 

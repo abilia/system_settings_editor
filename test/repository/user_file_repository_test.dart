@@ -24,7 +24,7 @@ void main() {
       authToken: Fakes.token,
       baseUrl: baseUrl,
       fileStorage: mockFileStorage,
-      httpClient: mockClient,
+      client: mockClient,
       userFileDb: mockUserFileDb,
       userId: userId,
       multipartRequestBuilder: mockMultiRequestBuilder,

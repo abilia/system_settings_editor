@@ -41,7 +41,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
 
     await UserFileRepository(
       baseUrl: baseUrl,
-      httpClient: httpClient,
+      client: httpClient,
       userFileDb: UserFileDb(database),
       fileStorage: fileStorage,
       userId: user.id,
