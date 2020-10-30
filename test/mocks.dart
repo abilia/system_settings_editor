@@ -17,6 +17,8 @@ import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/components/widget_test_keys.dart';
 import 'package:seagull/utils/all.dart';
 
+Future log() => SeagullLogger().initLogging();
+
 final AlarmScheduler noAlarmScheduler = ((a, b, c, d) async {});
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}

@@ -22,30 +22,9 @@ class SortableRepository extends DataRepository<Sortable> {
           authToken: authToken,
           userId: userId,
           db: sortableDb,
-          fromJson: DbSortable.fromJson,
+          fromJsonToDataModel: DbSortable.fromJson,
           log: Logger((SortableRepository).toString()),
         );
-
-  @override
-  Future<bool> synchronize() async {
-    return synchronized(() async {
-      final dirtySortables = await db.getAllDirty();
-      if (dirtySortables.isEmpty) return true;
-      final res = await postData(dirtySortables);
-      try {
-        if (res.succeded.isNotEmpty) {
-          await handleSuccessfullSync(res.succeded, dirtySortables);
-        }
-        if (res.failed.isNotEmpty) {
-          await handleFailedSync(res.failed);
-        }
-      } catch (e) {
-        log.warning('Failed to synchronize sortables with backend', e);
-        return false;
-      }
-      return true;
-    });
-  }
 
   Future<Sortable> generateUploadFolder() async {
     return synchronized(() async {

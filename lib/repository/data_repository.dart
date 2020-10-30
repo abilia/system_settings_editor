@@ -9,10 +9,9 @@ import 'package:synchronized/extension.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:seagull/repository/all.dart';
 
-import 'all.dart';
-
-typedef FromJson<M extends DataModel> = DbModel<M> Function(
+typedef JsonToDataModel<M extends DataModel> = DbModel<M> Function(
     Map<String, dynamic> json);
 
 abstract class DataRepository<M extends DataModel> extends Repository {
@@ -23,7 +22,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     @required this.authToken,
     @required this.userId,
     @required this.db,
-    @required this.fromJson,
+    @required this.fromJsonToDataModel,
     @required this.log,
     this.postApiVersion = 1,
     String postPath,
@@ -36,10 +35,9 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   final Logger log;
   final String path, postPath;
   final int postApiVersion;
-  final FromJson<M> fromJson;
+  final JsonToDataModel<M> fromJsonToDataModel;
 
   Future<void> save(Iterable<M> data) => db.insertAndAddDirty(data);
-  Future<bool> synchronize();
 
   Future<Iterable<M>> load() async {
     await fetchIntoDatabase();
@@ -62,17 +60,41 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     );
   }
 
-  Future<Iterable<DbModel>> fetchData(int revision) async {
+  Future<Iterable<DbModel<M>>> fetchData(int revision) async {
+    log.fine('fetching $path for revision $revision');
     final response = await client.get(
-        '$baseUrl/api/v1/data/$userId/$path?revision=$revision',
-        headers: authHeader(authToken));
+      '$baseUrl/api/v1/data/$userId/$path?revision=$revision',
+      headers: authHeader(authToken),
+    );
     final decoded = (json.decode(response.body)) as List;
     return decoded
         .exceptionSafeMap(
-          (e) => fromJson(e),
+          (j) => fromJsonToDataModel(j),
           onException: log.logAndReturnNull,
         )
         .filterNull();
+  }
+
+  Future<bool> synchronize() async {
+    return synchronized(() async {
+      final dirtyData = await db.getAllDirty();
+      if (dirtyData.isEmpty) return true;
+      try {
+        final res = await postData(dirtyData);
+        if (res.succeded.isNotEmpty) {
+          // Update revision and dirty for all successful saves
+          await handleSuccessfullSync(res.succeded, dirtyData);
+        }
+        if (res.failed.isNotEmpty) {
+          // If we have failed a fetch from backend needs to be performed
+          await handleFailedSync(res.failed);
+        }
+      } catch (e) {
+        log.warning('Failed to synchronize $path with backend', e);
+        return false;
+      }
+      return true;
+    });
   }
 
   Future<DataUpdateResponse> postData(
@@ -94,7 +116,8 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     throw UnavailableException([response.statusCode]);
   }
 
-  Future handleFailedSync(Iterable<DataRevisionUpdates> failed) async {
+  Future handleFailedSync(Iterable<DataRevisionUpdate> failed) async {
+    log.warning('Sync contained ${failed.length} failed items');
     final minRevision = failed.map((f) => f.revision).reduce(math.min);
     final latestRevision = await db.getLastRevision();
     final revision = math.min(minRevision, latestRevision);
@@ -103,28 +126,32 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   }
 
   Future handleSuccessfullSync(
-    Iterable<DataRevisionUpdates> succeeded,
+    Iterable<DataRevisionUpdate> succeeded,
     Iterable<DbModel<M>> dirtyData,
   ) async {
-    final toUpdate = succeeded.map(
-      (success) async {
-        final dataBeforeSync = dirtyData.firstWhere(
-          (data) => data.model.id == success.id,
-        );
-        final currentData = await db.getById(success.id);
-        final dirtyDiff = currentData.dirty - dataBeforeSync.dirty;
-        return currentData.copyWith(
-          revision: success.revision,
-          dirty: math.max(
-            dirtyDiff,
-            0,
-          ), // The data might have been fetched from backend during the sync and reset with dirty = 0.
-        );
-      },
+    final dirtyDataMap = Map<String, DbModel<M>>.fromIterable(
+      dirtyData,
+      key: (data) => data.model.id,
     );
-    await db.insert(await Future.wait(toUpdate));
+    final toUpdate = await Future.wait(
+      succeeded.map(
+        (success) => updateDataItemWithNewRevision(success, dirtyDataMap),
+      ),
+    );
+    await db.insert(toUpdate);
   }
 
-  @override
-  String toString() => 'Repository: {baseUrl : $baseUrl, client: $client}';
+  Future<DbModel<M>> updateDataItemWithNewRevision(
+    DataRevisionUpdate dataRevisionUpdate,
+    Map<String, DbModel<M>> dirtyDataMap,
+  ) async {
+    final dataBeforeSync = dirtyDataMap[dataRevisionUpdate.id];
+    final currentData = await db.getById(dataRevisionUpdate.id);
+    final dirtyDiff = currentData.dirty - dataBeforeSync.dirty;
+    return currentData.copyWith(
+      revision: dataRevisionUpdate.revision,
+      // The data might have been fetched from backend during the sync and reset with dirty = 0.
+      dirty: math.max(dirtyDiff, 0),
+    );
+  }
 }

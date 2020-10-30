@@ -33,7 +33,7 @@ class UserFileRepository extends DataRepository<UserFile> {
           authToken: authToken,
           userId: userId,
           db: userFileDb,
-          fromJson: DbUserFile.fromJson,
+          fromJsonToDataModel: DbUserFile.fromJson,
           log: Logger((UserFileRepository).toString()),
         );
 
@@ -81,7 +81,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     await db.insert(fetchedUserFiles);
   }
 
-  Future<Iterable<SyncResponse>> _postUserFiles(
+  Future<Iterable<DataRevisionUpdate>> _postUserFiles(
     Iterable<DbModel<UserFile>> userFiles,
     int latestRevision,
   ) async {
@@ -93,7 +93,9 @@ class UserFileRepository extends DataRepository<UserFile> {
 
     if (response.statusCode == 200) {
       final syncResponseJson = json.decode(response.body) as List;
-      return syncResponseJson.map((r) => SyncResponse.fromJson(r)).toList();
+      return syncResponseJson
+          .map((r) => DataRevisionUpdate.fromJson(r))
+          .toList();
     } else if (response.statusCode == 400) {
       final errorResponse = json.decode(response.body);
       final errors = (errorResponse['errors'] as List)
