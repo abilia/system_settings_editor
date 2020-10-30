@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:http/http.dart';
@@ -20,6 +19,7 @@ class ActivityRepository extends DataRepository<Activity> {
           client: client,
           baseUrl: baseUrl,
           path: 'activities',
+          postApiVersion: 2,
           authToken: authToken,
           userId: userId,
           db: activityDb,
@@ -33,7 +33,7 @@ class ActivityRepository extends DataRepository<Activity> {
       final dirtyActivities = await db.getAllDirty();
       if (dirtyActivities.isEmpty) return true;
       try {
-        final res = await postActivities(dirtyActivities);
+        final res = await postData(dirtyActivities);
         if (res.succeded.isNotEmpty) {
           // Update revision and dirty for all successful saves
           await _handleSuccessfullSync(res.succeded, dirtyActivities);
@@ -72,25 +72,5 @@ class ActivityRepository extends DataRepository<Activity> {
     final revision = math.min(minRevision, latestRevision);
     final fetchedActivities = await fetchData(revision);
     await db.insert(fetchedActivities);
-  }
-
-  @visibleForTesting
-  Future<DataUpdateResponse> postActivities(
-    Iterable<DbModel<Activity>> activities,
-  ) async {
-    final response = await client.post(
-      '$baseUrl/api/v2/data/$userId/activities',
-      headers: jsonAuthHeader(authToken),
-      body: jsonEncode(activities.toList()),
-    );
-
-    if (response.statusCode == 200) {
-      final activityUpdateResponse =
-          DataUpdateResponse.fromJson(json.decode(response.body));
-      return activityUpdateResponse;
-    } else if (response.statusCode == 401) {
-      throw UnauthorizedException();
-    }
-    throw UnavailableException([response.statusCode]);
   }
 }

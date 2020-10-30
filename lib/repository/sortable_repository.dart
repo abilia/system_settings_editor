@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:http/src/base_client.dart';
@@ -34,7 +33,7 @@ class SortableRepository extends DataRepository<Sortable> {
     return synchronized(() async {
       final dirtySortables = await db.getAllDirty();
       if (dirtySortables.isEmpty) return true;
-      final res = await _postSortables(dirtySortables);
+      final res = await postData(dirtySortables);
       try {
         if (res.succeded.isNotEmpty) {
           await _handleSuccessfullSync(res.succeded, dirtySortables);
@@ -72,22 +71,6 @@ class SortableRepository extends DataRepository<Sortable> {
     final fetchedSortables =
         await fetchData(math.min(minRevision, latestRevision));
     await db.insert(fetchedSortables);
-  }
-
-  Future<DataUpdateResponse> _postSortables(
-      Iterable<DbModel<Sortable>> sortables) async {
-    final response = await client.post(
-      '$baseUrl/api/v1/data/$userId/sortableitems',
-      headers: jsonAuthHeader(authToken),
-      body: jsonEncode(sortables.toList()),
-    );
-
-    if (response.statusCode == 200) {
-      return DataUpdateResponse.fromJson(json.decode(response.body));
-    } else if (response.statusCode == 401) {
-      throw UnauthorizedException();
-    }
-    throw UnavailableException([response.statusCode]);
   }
 
   Future<Sortable> generateUploadFolder() async {

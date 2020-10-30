@@ -24,13 +24,17 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     @required this.db,
     @required this.fromJson,
     @required this.log,
-  }) : super(client, baseUrl);
+    this.postApiVersion = 1,
+    String postPath,
+  })  : postPath = postPath ?? path,
+        super(client, baseUrl);
 
   final DataDb<M> db;
   final String authToken;
   final int userId;
   final Logger log;
-  final String path;
+  final String path, postPath;
+  final int postApiVersion;
   final FromJson<M> fromJson;
 
   Future<void> save(Iterable<M> data) => db.insertAndAddDirty(data);
@@ -68,6 +72,25 @@ abstract class DataRepository<M extends DataModel> extends Repository {
           onException: log.logAndReturnNull,
         )
         .filterNull();
+  }
+
+  Future<DataUpdateResponse> postData(
+    Iterable<DbModel<M>> data,
+  ) async {
+    final response = await client.post(
+      '$baseUrl/api/v$postApiVersion/data/$userId/$postPath',
+      headers: jsonAuthHeader(authToken),
+      body: jsonEncode(data.toList()),
+    );
+
+    if (response.statusCode == 200) {
+      final dataUpdateResponse =
+          DataUpdateResponse.fromJson(json.decode(response.body));
+      return dataUpdateResponse;
+    } else if (response.statusCode == 401) {
+      throw UnauthorizedException();
+    }
+    throw UnavailableException([response.statusCode]);
   }
 
   @override

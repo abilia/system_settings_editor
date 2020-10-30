@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:http/src/base_client.dart';
@@ -11,18 +10,19 @@ import 'package:seagull/models/all.dart';
 import 'all.dart';
 
 class GenericRepository extends DataRepository<Generic> {
-  GenericDb get genericDb => db as GenericDb;
+  final GenericDb genericDb;
 
   GenericRepository({
     @required String baseUrl,
     @required BaseClient client,
     @required String authToken,
     @required int userId,
-    @required GenericDb genericDb,
+    @required this.genericDb,
   }) : super(
           client: client,
           baseUrl: baseUrl,
           path: 'generics',
+          postPath: 'genericitems',
           authToken: authToken,
           userId: userId,
           db: genericDb,
@@ -33,7 +33,6 @@ class GenericRepository extends DataRepository<Generic> {
   @override
   Future<Iterable<Generic>> load() async {
     await fetchIntoDatabase();
-
     return genericDb.getAllNonDeletedMaxRevision();
   }
 
@@ -42,7 +41,7 @@ class GenericRepository extends DataRepository<Generic> {
     return synchronized(() async {
       final dirtyGenerics = await db.getAllDirty();
       if (dirtyGenerics.isEmpty) return true;
-      final res = await _postGenerics(dirtyGenerics);
+      final res = await postData(dirtyGenerics);
       try {
         if (res.succeded.isNotEmpty) {
           await _handleSuccessfullSync(res.succeded, dirtyGenerics);
@@ -80,21 +79,5 @@ class GenericRepository extends DataRepository<Generic> {
     final revision = math.min(minRevision, latestRevision);
     final fetchedGenerics = await fetchData(revision);
     await db.insert(fetchedGenerics);
-  }
-
-  Future<DataUpdateResponse> _postGenerics(
-      Iterable<DbModel<Generic>> generics) async {
-    final response = await client.post(
-      '$baseUrl/api/v1/data/$userId/genericitems',
-      headers: jsonAuthHeader(authToken),
-      body: jsonEncode(generics.toList()),
-    );
-
-    if (response.statusCode == 200) {
-      return DataUpdateResponse.fromJson(json.decode(response.body));
-    } else if (response.statusCode == 401) {
-      throw UnauthorizedException();
-    }
-    throw UnavailableException([response.statusCode]);
   }
 }

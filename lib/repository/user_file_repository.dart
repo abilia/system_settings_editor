@@ -15,7 +15,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
-  UserFileDb get userFileDb => db as UserFileDb;
+  final UserFileDb userFileDb;
   final FileStorage fileStorage;
   final MultipartRequestBuilder multipartRequestBuilder;
 
@@ -24,7 +24,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     @required BaseClient client,
     @required String authToken,
     @required int userId,
-    @required UserFileDb userFileDb,
+    @required this.userFileDb,
     @required this.fileStorage,
     @required this.multipartRequestBuilder,
   }) : super(
