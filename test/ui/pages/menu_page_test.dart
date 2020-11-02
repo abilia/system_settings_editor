@@ -3,11 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import '../../mocks.dart';
@@ -93,7 +91,7 @@ void main() {
     when(mockSettingsDb.getTextToSpeech()).thenReturn(true);
     await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(TestKey.ttsInfoButton));
+    await tester.tap(find.byType(InfoButton));
     await tester.pumpAndSettle();
     expect(find.byType(LongPressInfoDialog), findsOneWidget);
     await tester.verifyTts(find.text(translate.longPressInfoText),
@@ -104,27 +102,48 @@ void main() {
     when(mockSettingsDb.getTextToSpeech()).thenReturn(false);
     await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(TestKey.ttsInfoButton));
+    await tester.tap(find.byType(InfoButton));
     await tester.pumpAndSettle();
     expect(find.byType(LongPressInfoDialog), findsOneWidget);
     await tester.verifyNoTts(find.text(translate.longPressInfoText));
   });
 
   group('permission page', () {
-    tearDown(() {
-      checkedPermissions.clear();
-      requestedPermissions.clear();
-      openAppSettingsCalls = 0;
-    });
+    tearDown(setupPermissions);
+
     final permissionButtonFinder = find.byType(PermissionPickField);
     final permissionPageFinder = find.byType(PermissionsPage);
-    final permissionSwitchFinder = find.byType(PermissionSwitch);
+    final permissionSwitchFinder = find.byType(PermissionSetting);
 
     testWidgets('Has permission button', (WidgetTester tester) async {
       await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
       await tester.pumpAndSettle();
 
       expect(permissionButtonFinder, findsOneWidget);
+    });
+
+    testWidgets('Permission button denied notification orange dot',
+        (WidgetTester tester) async {
+      setupPermissions({
+        Permission.notification: PermissionStatus.denied,
+        Permission.systemAlertWindow: PermissionStatus.granted,
+      });
+      await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(OrangeDot), findsOneWidget);
+    });
+
+    testWidgets('Permission button denied systemAlertWindow orange dot',
+        (WidgetTester tester) async {
+      setupPermissions({
+        Permission.notification: PermissionStatus.granted,
+        Permission.systemAlertWindow: PermissionStatus.denied,
+      });
+      await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(OrangeDot), findsOneWidget);
     });
 
     testWidgets('Can go to permission page', (WidgetTester tester) async {
@@ -202,12 +221,14 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
+      final allPermissions = PermissionBloc.allPermissions.toSet()
+        ..remove(Permission.systemAlertWindow);
 
-      for (final permission in PermissionBloc.allPermissions) {
+      for (final permission in allPermissions) {
         await tester.tap(find.byKey(ObjectKey(permission)));
         await tester.pumpAndSettle();
       }
-      expect(requestedPermissions, containsAll(PermissionBloc.allPermissions));
+      expect(requestedPermissions, containsAll(allPermissions));
     });
 
     testWidgets('Permission perma denied tapped opens settings',
@@ -226,7 +247,8 @@ void main() {
         await tester.pumpAndSettle();
       }
 
-      expect(openAppSettingsCalls, PermissionBloc.allPermissions.length);
+      expect(openAppSettingsCalls, PermissionBloc.allPermissions.length - 1);
+      expect(openSystemAlertSettingCalls, 1);
     });
 
     testWidgets('Permission granted, except notifcation, tapped calls settings',
@@ -240,8 +262,9 @@ void main() {
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
-      final allExceptNotifcation = PermissionBloc.allPermissions.toList()
-        ..remove(Permission.notification);
+      final allExceptNotifcation = PermissionBloc.allPermissions.toSet()
+        ..remove(Permission.notification)
+        ..remove(Permission.systemAlertWindow);
 
       for (final permission in allExceptNotifcation) {
         await tester.tap(find.byKey(ObjectKey(permission)));
@@ -279,6 +302,54 @@ void main() {
       expect(find.byIcon(AbiliaIcons.ir_error), findsOneWidget);
       expect(find.byType(ErrorMessage), findsOneWidget);
       expect(find.text(translate.notificationsWarningHintText), findsOneWidget);
+    });
+
+    testWidgets('systemAlertWindow granted tapped calls shows warning',
+        (WidgetTester tester) async {
+      setupPermissions(
+          {Permission.systemAlertWindow: PermissionStatus.granted});
+      await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
+      await tester.pumpAndSettle();
+      await tester.tap(permissionButtonFinder);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(FullscreenPermissionSwitch));
+      await tester.pumpAndSettle();
+
+      expect(
+          find.byType(NotificationPermissionOffWarningDialog), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.okDialog));
+      expect(openSystemAlertSettingCalls, 1);
+    });
+
+    testWidgets('systemAlertWindow denied shows warnings',
+        (WidgetTester tester) async {
+      setupPermissions({Permission.notification: PermissionStatus.denied});
+      await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
+      await tester.pumpAndSettle();
+      await tester.tap(permissionButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(AbiliaIcons.ir_error), findsOneWidget);
+      expect(find.byType(ErrorMessage), findsOneWidget);
+      expect(find.text(translate.notificationsWarningHintText), findsOneWidget);
+    });
+
+    testWidgets(
+        'Fullscreen Alarm Info button shows FullscreenAlarmInfoDialog without RequestFullScreenNotificationButton',
+        (WidgetTester tester) async {
+      setupPermissions({Permission.systemAlertWindow: PermissionStatus.denied});
+
+      await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
+      await tester.pumpAndSettle();
+      await tester.tap(permissionButtonFinder);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(InfoButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
+      expect(find.byType(RequestFullscreenNotificationButton), findsNothing);
     });
   });
 }

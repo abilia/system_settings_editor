@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/storage/file_storage.dart';
-import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/storage/all.dart';
+import 'package:seagull/ui/dialogs/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class SeagullListeners extends StatefulWidget {
@@ -63,12 +65,13 @@ class _SeagullListenersState extends State<SeagullListeners>
           listenWhen: widget.listenWhen,
         ),
         BlocListener<PermissionBloc, PermissionState>(
-          listenWhen: _currentDeniedLastNot,
+          listenWhen: _notificationsDenied,
           listener: (context, state) => showViewDialog(
             context: context,
             builder: (context) => NotificationPermissionWarningDialog(),
           ),
         ),
+        if (!Platform.isIOS) fullscreenAlarmPremissionListener(context),
       ],
       child: widget.child,
     );
@@ -80,7 +83,30 @@ class _SeagullListenersState extends State<SeagullListeners>
     }
   }
 
-  bool _currentDeniedLastNot(
+  BlocListener<PermissionBloc, PermissionState>
+      fullscreenAlarmPremissionListener(BuildContext context) {
+    return BlocListener<PermissionBloc, PermissionState>(
+      listenWhen: (previous, current) {
+        if (!previous.status.containsKey(Permission.systemAlertWindow) &&
+            current.status.containsKey(Permission.systemAlertWindow) &&
+            !current.status[Permission.systemAlertWindow].isGranted) {
+          final authState = context.bloc<AuthenticationBloc>().state;
+          if (authState is Authenticated) {
+            return authState.newlyLoggedIn;
+          }
+        }
+        return false;
+      },
+      listener: (context, state) => showViewDialog(
+        context: context,
+        builder: (context) => FullscreenAlarmInfoDialog(
+          showRedirect: true,
+        ),
+      ),
+    );
+  }
+
+  bool _notificationsDenied(
           PermissionState previous, PermissionState current) =>
       current.status[Permission.notification].isDeniedOrPermenantlyDenied &&
       !previous.status[Permission.notification].isDeniedOrPermenantlyDenied;

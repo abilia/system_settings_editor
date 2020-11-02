@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -34,17 +35,19 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
     }
   }
 
-  static final allPermissions = UnmodifiableListView(
-    [
+  static final allPermissions = UnmodifiableSetView(
+    {
       Permission.notification,
-      if (Platform.isAndroid) ...[
+      if (!Platform.isIOS) ...[
+        Permission.systemAlertWindow,
         Permission.storage,
-      ] else ...[
+      ],
+      if (!Platform.isAndroid) ...[
         Permission.camera,
         Permission.photos,
       ]
-    ],
+    },
   );
 
-  void checkAll() => add(CheckStatusForPermissions(allPermissions));
+  void checkAll() => add(CheckStatusForPermissions(allPermissions.toList()));
 }

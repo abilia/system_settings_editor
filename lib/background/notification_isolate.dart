@@ -241,7 +241,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
   );
 }
 
-NotificationChannel _notificationChannel(AlarmType alarm) => alarm.sound
+NotificationChannel _notificationChannel(Alarm alarm) => alarm.sound
     ? NotificationChannel('Sound + Vibration', 'Sound + Vibration',
         'Activities with Alarm + Vibration or Only Alarm')
     : NotificationChannel('Vibration', 'Vibration',

@@ -72,6 +72,7 @@ void main() {
             token: Fakes.token,
             userId: Fakes.userId,
             userRepository: userRepository,
+            newlyLoggedIn: true,
           ),
         ]),
       );
@@ -91,9 +92,11 @@ void main() {
           Unauthenticated(userRepository),
           AuthenticationLoading(userRepository),
           Authenticated(
-              token: Fakes.token,
-              userId: Fakes.userId,
-              userRepository: userRepository),
+            token: Fakes.token,
+            userId: Fakes.userId,
+            userRepository: userRepository,
+            newlyLoggedIn: true,
+          ),
           AuthenticationLoading(userRepository),
           Unauthenticated(userRepository),
         ]),

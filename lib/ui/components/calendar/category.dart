@@ -3,10 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 const _radius = Radius.circular(100);
 

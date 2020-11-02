@@ -1,11 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 const _rightPadding = EdgeInsets.only(right: 12.0),
     _ordinaryPadding = EdgeInsets.fromLTRB(12.0, 24.0, 4.0, 16.0),

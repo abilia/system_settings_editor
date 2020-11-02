@@ -3,15 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
+import 'package:seagull/ui/all.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
@@ -171,12 +170,18 @@ void main() {
         expect(find.byType(SelectPictureDialog), findsNothing);
       });
 
+      final cameraPickFieldFinder = find.byKey(ObjectKey(ImageSource.camera)),
+          photoPickFieldFinder = find.byKey(ObjectKey(ImageSource.gallery)),
+          photoInfoButtonFiner =
+              find.byKey(Key('${ImageSource.gallery}${Permission.photos}')),
+          cameraInfoButtonFiner =
+              find.byKey(Key('${ImageSource.camera}${Permission.camera}'));
       testWidgets(
-          'Select picture dialog picker options are disabled when premission in denied',
+          'Select picture dialog picker options are disabled and shows info button when permission denied',
           (WidgetTester tester) async {
         setupPermissions({
-          Permission.camera: PermissionStatus.denied,
-          Permission.photos: PermissionStatus.undetermined,
+          Permission.camera: PermissionStatus.permanentlyDenied,
+          Permission.photos: PermissionStatus.permanentlyDenied,
         });
         await tester
             .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
@@ -185,13 +190,57 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(SelectPictureDialog), findsOneWidget);
 
-        final photoPickField =
-            tester.widget<PickField>(find.byKey(TestKey.photosPickField));
-        final cameraPickField =
-            tester.widget<PickField>(find.byKey(TestKey.cameraPickField));
+        final photoPickField = tester.widget<PickField>(photoPickFieldFinder);
+        final cameraPickField = tester.widget<PickField>(cameraPickFieldFinder);
 
-        expect(photoPickField.onTap, isNotNull);
+        expect(photoPickField.onTap, isNull);
         expect(cameraPickField.onTap, isNull);
+        expect(find.byType(InfoButton), findsNWidgets(2));
+
+        expect(cameraInfoButtonFiner, findsOneWidget);
+        expect(photoInfoButtonFiner, findsOneWidget);
+      });
+
+      testWidgets('Image dialog picker options camera info button calls',
+          (WidgetTester tester) async {
+        setupPermissions({
+          Permission.camera: PermissionStatus.permanentlyDenied,
+        });
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.addPicture));
+        await tester.pumpAndSettle();
+        await tester.tap(cameraInfoButtonFiner);
+        await tester.pumpAndSettle();
+
+        final permissionDialog = tester
+            .widget<PermissionInfoDialog>(find.byType(PermissionInfoDialog));
+
+        expect(permissionDialog.permission, Permission.camera);
+        expect(find.byIcon(Permission.camera.iconData), findsWidgets);
+        expect(find.byType(PermissionSwitch), findsOneWidget);
+      });
+
+      testWidgets('Image dialog picker options photos info button calls',
+          (WidgetTester tester) async {
+        setupPermissions({
+          Permission.photos: PermissionStatus.permanentlyDenied,
+        });
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.addPicture));
+        await tester.pumpAndSettle();
+        await tester.tap(photoInfoButtonFiner);
+        await tester.pumpAndSettle();
+
+        final permissionDialog = tester
+            .widget<PermissionInfoDialog>(find.byType(PermissionInfoDialog));
+
+        expect(permissionDialog.permission, Permission.photos);
+        expect(find.byIcon(Permission.photos.iconData), findsWidgets);
+        expect(find.byType(PermissionSwitch), findsOneWidget);
       });
     });
 
@@ -341,43 +390,95 @@ void main() {
       // Assert -- Alarm tab not visible
       expect(find.byIcon(AbiliaIcons.attention), findsNothing);
     });
+    group('alarms', () {
+      testWidgets('alarm at start switch', (WidgetTester tester) async {
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await tester.goToAlarmTab();
+        expect(
+            tester
+                .widget<Switch>(
+                    find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
+                .value,
+            isFalse);
+        expect(find.byKey(TestKey.alarmAtStartSwitch), findsOneWidget);
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.alarmAtStartSwitch));
+        await tester.pumpAndSettle();
+        expect(
+            tester
+                .widget<Switch>(
+                    find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
+                .value,
+            isTrue);
+      });
 
-    testWidgets('alarm at start switch', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
-      await tester.pumpAndSettle();
-      await tester.goToAlarmTab();
-      expect(
-          tester
-              .widget<Switch>(find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
-              .value,
-          isFalse);
-      expect(find.byKey(TestKey.alarmAtStartSwitch), findsOneWidget);
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.alarmAtStartSwitch));
-      await tester.pumpAndSettle();
-      expect(
-          tester
-              .widget<Switch>(find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
-              .value,
-          isTrue);
-    });
+      testWidgets('Select alarm dialog', (WidgetTester tester) async {
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await tester.goToAlarmTab();
+        expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
+        expect(find.text(translate.vibration), findsNothing);
+        expect(find.byIcon(AbiliaIcons.handi_vibration), findsNothing);
+        await tester.tap(find.byKey(TestKey.selectAlarm));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+        await tester.tap(find.byKey(ObjectKey(AlarmType.Vibration)));
+        await tester.pumpAndSettle();
+        expect(find.text(translate.vibration), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
+      });
 
-    testWidgets('Select alarm dialog', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
-      await tester.pumpAndSettle();
-      await tester.goToAlarmTab();
-      expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
-      expect(find.text(translate.vibration), findsNothing);
-      expect(find.byIcon(AbiliaIcons.handi_vibration), findsNothing);
-      await tester.tap(find.byKey(TestKey.selectAlarm));
-      await tester.pumpAndSettle();
-      expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.vibrationAlarm));
-      await tester.pumpAndSettle();
-      expect(find.text(translate.vibration), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
+      testWidgets('SGC-359 Select alarm dialog silent alarms maps to vibration',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            EditActivityPage(day: today),
+            givenActivity: Activity.createNew(
+                title: 'null',
+                startTime: startTime,
+                alarmType: ALARM_SILENT_ONLY_ON_START),
+          ),
+        );
+        await tester.pumpAndSettle();
+        await tester.goToAlarmTab();
+        expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
+        expect(find.text(translate.vibration), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.selectAlarm));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+        final radio = tester
+            .widget<RadioField>(find.byKey(ObjectKey(AlarmType.Vibration)));
+        expect(radio.groupValue, AlarmType.Vibration);
+      });
+
+      testWidgets(
+          'SGC-359 Select alarm dialog only sound alarms maps to sound and vibration',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            EditActivityPage(day: today),
+            givenActivity: Activity.createNew(
+                title: 'null',
+                startTime: startTime,
+                alarmType: ALARM_SOUND_ONLY_ON_START),
+          ),
+        );
+        await tester.pumpAndSettle();
+        await tester.goToAlarmTab();
+        expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
+        expect(find.text(translate.alarmAndVibration), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.handi_alarm_vibration), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.selectAlarm));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+        final radio = tester
+            .widget<RadioField>(find.byKey(ObjectKey(AlarmType.Vibration)));
+        expect(radio.groupValue, AlarmType.SoundAndVibration);
+      });
     });
 
     testWidgets('checkable switch', (WidgetTester tester) async {
@@ -2158,7 +2259,7 @@ text''';
       await tester.tap(find.byKey(TestKey.selectAlarm));
       await tester.pumpAndSettle();
 
-      await tester.verifyTts(find.byKey(TestKey.vibrationAlarm),
+      await tester.verifyTts(find.byKey(ObjectKey(AlarmType.Vibration)),
           exact: translate.vibration);
     });
 

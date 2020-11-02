@@ -102,6 +102,7 @@ void main() {
             token: loginToken,
             userId: loggedInUserId,
             userRepository: mockUserRepository,
+            newlyLoggedIn: true,
           ),
         ),
       );

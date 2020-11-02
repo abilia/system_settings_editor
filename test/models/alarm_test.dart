@@ -1,11 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/models/alarm_type.dart';
+import 'package:seagull/models/alarm.dart';
 
 void main() {
-  void fromIntSameAsToInt(int value) {
-    final at = AlarmType.fromInt(value);
-    expect(at.toInt, value);
-  }
+  void fromIntSameAsToInt(int value) =>
+      expect(Alarm.fromInt(value).toInt, value);
 
   test('alarmType fromInt same as toInt', () {
     fromIntSameAsToInt(ALARM_SOUND_AND_VIBRATION);
@@ -20,14 +18,14 @@ void main() {
   });
 
   test('Changing on end time', () {
-    var at = AlarmType.fromInt(ALARM_SOUND_AND_VIBRATION);
+    var at = Alarm.fromInt(ALARM_SOUND_AND_VIBRATION);
     at = at.copyWith(onlyStart: true);
     expect(at.toInt, ALARM_SOUND_AND_VIBRATION_ONLY_ON_START);
   });
 
   test('Changing alarm type', () {
-    var at = AlarmType.fromInt(ALARM_SOUND_AND_VIBRATION);
-    at = at.copyWith(type: Alarm.Silent);
+    var at = Alarm.fromInt(ALARM_SOUND_AND_VIBRATION);
+    at = at.copyWith(type: AlarmType.Silent);
     expect(at.toInt, ALARM_SILENT);
   });
 }
