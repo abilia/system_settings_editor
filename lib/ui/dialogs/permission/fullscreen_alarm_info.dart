@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -74,36 +73,39 @@ class ActivityAlarmPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final startTime = DateTime(2010, 10, 10, 18, 00);
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(4),
+    return AbsorbPointer(
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(4),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AbiliaColors.transparentBlack50,
+              offset: Offset(0, 2),
+              blurRadius: 4,
+              spreadRadius: 0,
+            )
+          ],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: AbiliaColors.transparentBlack50,
-            offset: Offset(0, 2),
-            blurRadius: 4,
-            spreadRadius: 0,
-          )
-        ],
-      ),
-      child: SizedBox(
-        height: 256,
-        child: FittedBox(
-          fit: BoxFit.contain,
-          alignment: Alignment.center,
-          child: SizedBox(
-            width: 450.0,
-            height: 800.0,
-            child: BlocProvider(
-              create: (context) => ClockBloc(
-                  StreamController<DateTime>().stream,
-                  initialTime: startTime),
-              child: Provider<ExampleCalendarImage>(
-                create: (context) => const ExampleCalendarImage(),
+        child: SizedBox(
+          height: 256,
+          child: FittedBox(
+            fit: BoxFit.contain,
+            alignment: Alignment.center,
+            child: SizedBox(
+              width: 450.0,
+              height: 800.0,
+              child: BlocProvider(
+                create: (context) => ClockBloc(
+                    StreamController<DateTime>().stream,
+                    initialTime: startTime),
                 child: AlarmPage(
+                  previewImage: const Image(
+                    image: AssetImage('assets/graphics/cake.gif'),
+                    fit: BoxFit.cover,
+                  ),
                   alarm: StartAlarm(
                     Activity.createNew(
                       title:
@@ -146,12 +148,4 @@ class RequestFullscreenNotificationButton extends StatelessWidget {
       ),
     );
   }
-}
-
-class ExampleCalendarImage {
-  const ExampleCalendarImage();
-  final Widget widget = const Image(
-    image: AssetImage('assets/graphics/cake.gif'),
-    fit: BoxFit.cover,
-  );
 }

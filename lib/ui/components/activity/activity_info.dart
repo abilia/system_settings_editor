@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:provider/provider.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -36,7 +35,12 @@ class ActivityInfoWithDots extends StatelessWidget {
 class ActivityInfo extends StatefulWidget {
   static const margin = 12.0;
   final ActivityDay activityDay;
-  ActivityInfo(this.activityDay, {Key key}) : super(key: key);
+  final Widget previewImage;
+  ActivityInfo(
+    this.activityDay, {
+    Key key,
+    this.previewImage,
+  }) : super(key: key);
   factory ActivityInfo.from({Activity activity, DateTime day, Key key}) =>
       ActivityInfo(ActivityDay(activity, day), key: key);
 
@@ -81,13 +85,17 @@ class _ActivityInfoState extends State<ActivityInfo> with Checker {
               child: Container(
                 decoration: boxDecoration,
                 child: MeasureSize(
-                    onChange: (Size size, Offset offset) {
-                      setState(() {
-                        activityContainerSize = size;
-                        activityContainerPosition = offset;
-                      });
-                    },
-                    child: ActivityContainer(activityDay: widget.activityDay)),
+                  onChange: (Size size, Offset offset) {
+                    setState(() {
+                      activityContainerSize = size;
+                      activityContainerPosition = offset;
+                    });
+                  },
+                  child: ActivityContainer(
+                    activityDay: widget.activityDay,
+                    previewImage: widget.previewImage,
+                  ),
+                ),
               ),
             ),
             if (activity.checkable)
@@ -206,14 +214,15 @@ class ActivityContainer extends StatelessWidget {
     Key key,
     @required this.activityDay,
     this.preview = false,
+    this.previewImage,
   }) : super(key: key);
 
   final ActivityDay activityDay;
   final bool preview;
+  final Widget previewImage;
 
   @override
   Widget build(BuildContext context) {
-    final previewImage = _tryGetPreview(context);
     final activity = activityDay.activity;
     final hasImage = activity.hasImage || previewImage != null;
     final hasAttachment = activity.hasAttachment;
@@ -276,14 +285,6 @@ class ActivityContainer extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget _tryGetPreview(BuildContext context) {
-    try {
-      return Provider.of<ExampleCalendarImage>(context, listen: false)?.widget;
-    } catch (_) {
-      return null;
-    }
   }
 }
 

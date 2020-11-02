@@ -344,10 +344,10 @@ class AlarmWidget extends StatelessWidget {
             text: Text(alarm.text(translator)),
             onTap: memoSettingsState.abilityToSelectAlarm
                 ? () async {
-                    final result = await showViewDialog<Alarm>(
+                    final result = await showViewDialog<AlarmType>(
                       context: context,
                       builder: (context) => SelectAlarmTypeDialog(
-                        alarm: alarm.type,
+                        alarm: alarm.typeSeagull,
                       ),
                     );
                     if (result != null) {
@@ -380,7 +380,7 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
     @required this.onChanged,
   }) : super(key: key);
 
-  final AlarmType alarm;
+  final Alarm alarm;
   final ValueChanged<bool> onChanged;
 
   @override
