@@ -9,4 +9,3 @@ typedef AlarmScheduler = Future Function(
   bool alwaysUse24HourFormat,
   FileStorage fileStorage,
 );
-typedef CancelNotificationsFunction = Future Function();

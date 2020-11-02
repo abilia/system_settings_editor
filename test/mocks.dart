@@ -89,7 +89,11 @@ class MockMultipartRequest extends Mock implements MultipartRequest {}
 class MockedClient extends Mock implements BaseClient {}
 
 class MockFlutterLocalNotificationsPlugin extends Mock
-    implements FlutterLocalNotificationsPlugin {}
+    implements FlutterLocalNotificationsPlugin {
+  MockFlutterLocalNotificationsPlugin() {
+    when(cancelAll()).thenAnswer((realInvocation) => Future.value());
+  }
+}
 
 class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesState>
     implements ActivitiesBloc {}

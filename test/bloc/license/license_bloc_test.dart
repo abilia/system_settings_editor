@@ -8,7 +8,6 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
-import '../authentication/authentication_bloc_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +16,6 @@ void main() {
   final authenticationBloc = AuthenticationBloc(
     database: MockDatabase(),
     baseUrlDb: MockBaseUrlDb(),
-    seagullLogger: MockSeagullLogger(),
-    cancleAllNotificationsFunction: NotificationMock().mockCancleAll,
   );
 
   setUp(() {
