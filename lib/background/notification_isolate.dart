@@ -218,7 +218,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     notificationChannel.id,
     notificationChannel.name,
     notificationChannel.description,
-    groupKey: activity.id,
+    groupKey: activity.seriesId,
     playSound: alarm.sound,
     importance: Importance.max,
     priority: Priority.high,

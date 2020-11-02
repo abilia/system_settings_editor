@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
+import 'package:seagull/db/all.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -120,7 +121,8 @@ class DatabaseRepository {
 
   static Future logAll(Database db) async {
     void logTable(List<Map<String, dynamic>> calendar) {
-      _log.info(calendar.first.keys.join('\t'));
+      if (calendar.isEmpty) return;
+      _log.info(calendar.first.keys.join('\t\t'));
       calendar.forEach((element) {
         _log.info(element.values.join('\t'));
       });
