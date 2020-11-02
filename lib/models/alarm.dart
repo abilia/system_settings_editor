@@ -1,69 +1,70 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-class AlarmType extends Equatable {
-  final Alarm type;
+class Alarm extends Equatable {
+  final AlarmType type;
   final bool onlyStart;
-  AlarmType({@required this.type, this.onlyStart = false})
+  Alarm({@required this.type, this.onlyStart = false})
       : assert(onlyStart != null),
         assert(type != null);
-  AlarmType copyWith({Alarm type, bool onlyStart}) => AlarmType(
-      type: type ?? this.type, onlyStart: onlyStart ?? this.onlyStart);
-  factory AlarmType.fromInt(int value) {
+  Alarm copyWith({AlarmType type, bool onlyStart}) =>
+      Alarm(type: type ?? this.type, onlyStart: onlyStart ?? this.onlyStart);
+  factory Alarm.fromInt(int value) {
     switch (value) {
       case ALARM_SOUND_AND_VIBRATION:
-        return AlarmType(type: Alarm.SoundAndVibration);
+        return Alarm(type: AlarmType.SoundAndVibration);
       case ALARM_SOUND:
-        return AlarmType(type: Alarm.Sound);
+        return Alarm(type: AlarmType.Sound);
       case ALARM_VIBRATION:
-        return AlarmType(type: Alarm.Vibration);
+        return Alarm(type: AlarmType.Vibration);
       case ALARM_SILENT:
-        return AlarmType(type: Alarm.Silent);
+        return Alarm(type: AlarmType.Silent);
       case ALARM_SOUND_AND_VIBRATION_ONLY_ON_START:
-        return AlarmType(type: Alarm.SoundAndVibration, onlyStart: true);
+        return Alarm(type: AlarmType.SoundAndVibration, onlyStart: true);
       case ALARM_SOUND_ONLY_ON_START:
-        return AlarmType(type: Alarm.Sound, onlyStart: true);
+        return Alarm(type: AlarmType.Sound, onlyStart: true);
       case ALARM_VIBRATION_ONLY_ON_START:
-        return AlarmType(type: Alarm.Vibration, onlyStart: true);
+        return Alarm(type: AlarmType.Vibration, onlyStart: true);
       case ALARM_SILENT_ONLY_ON_START:
-        return AlarmType(type: Alarm.Silent, onlyStart: true);
+        return Alarm(type: AlarmType.Silent, onlyStart: true);
       case NO_ALARM:
       default:
-        return AlarmType(type: Alarm.NoAlarm, onlyStart: true);
+        return Alarm(type: AlarmType.NoAlarm, onlyStart: true);
     }
   }
   bool get vibrate =>
-      type == Alarm.SoundAndVibration ||
-      type == Alarm.Vibration ||
-      type == Alarm.Silent;
-  bool get sound => type == Alarm.SoundAndVibration || type == Alarm.Sound;
-  bool get shouldAlarm => type != Alarm.NoAlarm;
+      type == AlarmType.SoundAndVibration ||
+      type == AlarmType.Vibration ||
+      type == AlarmType.Silent;
+  bool get sound =>
+      type == AlarmType.SoundAndVibration || type == AlarmType.Sound;
+  bool get shouldAlarm => type != AlarmType.NoAlarm;
   bool get atEnd => !onlyStart;
   int get toInt {
     if (onlyStart) {
       switch (type) {
-        case Alarm.SoundAndVibration:
+        case AlarmType.SoundAndVibration:
           return ALARM_SOUND_AND_VIBRATION_ONLY_ON_START;
-        case Alarm.Sound:
+        case AlarmType.Sound:
           return ALARM_SOUND_ONLY_ON_START;
-        case Alarm.Vibration:
+        case AlarmType.Vibration:
           return ALARM_VIBRATION_ONLY_ON_START;
-        case Alarm.Silent:
+        case AlarmType.Silent:
           return ALARM_SILENT_ONLY_ON_START;
-        case Alarm.NoAlarm:
+        case AlarmType.NoAlarm:
           return NO_ALARM;
       }
     }
     switch (type) {
-      case Alarm.SoundAndVibration:
+      case AlarmType.SoundAndVibration:
         return ALARM_SOUND_AND_VIBRATION;
-      case Alarm.Sound:
+      case AlarmType.Sound:
         return ALARM_SOUND;
-      case Alarm.Vibration:
+      case AlarmType.Vibration:
         return ALARM_VIBRATION;
-      case Alarm.Silent:
+      case AlarmType.Silent:
         return ALARM_SILENT;
-      case Alarm.NoAlarm:
+      case AlarmType.NoAlarm:
         return NO_ALARM;
     }
     return NO_ALARM;
@@ -87,23 +88,23 @@ const int ALARM_SOUND_AND_VIBRATION = 100,
     ALARM_SILENT_ONLY_ON_START = 98,
     NO_ALARM_ONLY_ON_START = 97;
 
-String alarmEnumToString(Alarm type) {
+String alarmEnumToString(AlarmType type) {
   switch (type) {
-    case Alarm.SoundAndVibration:
+    case AlarmType.SoundAndVibration:
       return 'Sound and vibration';
-    case Alarm.Vibration:
+    case AlarmType.Vibration:
       return 'Vibration';
-    case Alarm.Silent:
+    case AlarmType.Silent:
       return 'Silent';
-    case Alarm.NoAlarm:
+    case AlarmType.NoAlarm:
       return 'No alarm';
-    case Alarm.Sound:
+    case AlarmType.Sound:
     default:
       return 'Sound';
   }
 }
 
-enum Alarm {
+enum AlarmType {
   SoundAndVibration,
   Sound,
   Vibration,

@@ -6,8 +6,8 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
 
 class _SelectAlarmTypeDialog extends StatelessWidget {
-  final Alarm alarm;
-  final ValueChanged<Alarm> onChanged;
+  final AlarmType alarm;
+  final ValueChanged<AlarmType> onChanged;
   final List<Widget> trailing;
   final GestureTapCallback onOk;
 
@@ -36,7 +36,7 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
               RadioField(
                 groupValue: alarm,
                 onChanged: onChanged,
-                value: Alarm.SoundAndVibration,
+                value: AlarmType.SoundAndVibration,
                 leading: Icon(AbiliaIcons.handi_alarm_vibration),
                 text: Text(translate.alarmAndVibration),
               ),
@@ -47,7 +47,7 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
                 key: TestKey.vibrationAlarm,
                 groupValue: alarm,
                 onChanged: onChanged,
-                value: Alarm.Vibration,
+                value: AlarmType.Vibration,
                 leading: Icon(AbiliaIcons.handi_vibration),
                 text: Text(translate.vibration),
               ),
@@ -57,7 +57,7 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
               RadioField(
                 groupValue: alarm,
                 onChanged: onChanged,
-                value: Alarm.NoAlarm,
+                value: AlarmType.NoAlarm,
                 leading: Icon(AbiliaIcons.handi_no_alarm_vibration),
                 text: Text(translate.noAlarm),
               ),
@@ -80,7 +80,7 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
 }
 
 class SelectAlarmTypeDialog extends StatelessWidget {
-  final Alarm alarm;
+  final AlarmType alarm;
 
   const SelectAlarmTypeDialog({Key key, @required this.alarm})
       : super(key: key);
@@ -90,7 +90,7 @@ class SelectAlarmTypeDialog extends StatelessWidget {
 }
 
 class SelectAlarmDialog extends StatefulWidget {
-  final AlarmType alarm;
+  final Alarm alarm;
 
   const SelectAlarmDialog({Key key, @required this.alarm}) : super(key: key);
 
@@ -99,7 +99,7 @@ class SelectAlarmDialog extends StatefulWidget {
 }
 
 class _SelectAlarmDialogState extends State<SelectAlarmDialog> {
-  AlarmType alarm;
+  Alarm alarm;
 
   _SelectAlarmDialogState(this.alarm);
   @override
@@ -122,7 +122,7 @@ class _SelectAlarmDialogState extends State<SelectAlarmDialog> {
     );
   }
 
-  void _changeType(Alarm type) =>
+  void _changeType(AlarmType type) =>
       setState(() => alarm = alarm.copyWith(type: type));
   void _changeStartTime(bool onStart) =>
       setState(() => alarm = alarm.copyWith(onlyStart: onStart));

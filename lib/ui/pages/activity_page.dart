@@ -98,7 +98,7 @@ class ActivityBottomAppBar extends StatelessWidget {
                         child: Icon(activity.alarm.iconData()),
                         onPressed: () async {
                           final alarm = activity.alarm;
-                          final result = await showViewDialog<AlarmType>(
+                          final result = await showViewDialog<Alarm>(
                             context: context,
                             builder: (context) => SelectAlarmDialog(
                               alarm: alarm,
