@@ -42,10 +42,10 @@ class SeagullLogger {
 
   Future<void> initLogging({
     bool initAppcenter = kReleaseMode,
-    Level level = kReleaseMode ? Level.INFO : Level.ALL,
+    Level level = kReleaseMode ? Level.FINE : Level.ALL,
   }) async {
     if (initAppcenter) {
-      FlutterError.onError = Crashlytics.instance.recordFlutterError;
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
       final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
       await AppCenter.startAsync(
         appSecretAndroid: appId,
