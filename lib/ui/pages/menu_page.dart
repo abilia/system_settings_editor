@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/settings/settings_bloc.dart';
 
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/i18n/translations.g.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -56,7 +53,6 @@ class TextToSpeechSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radius = BorderRadius.all(Radius.circular(24));
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, settingsState) => Row(children: [
         Expanded(
@@ -73,30 +69,13 @@ class TextToSpeechSwitch extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
-          child: InkWell(
-            key: TestKey.ttsInfoButton,
+          child: InfoButton(
             onTap: () => showViewDialog(
               context: context,
               builder: (context) => LongPressInfoDialog(),
             ),
-            borderRadius: radius,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: radius,
-                border: Border.fromBorderSide(BorderSide(
-                  color: AbiliaColors.transparentBlack30,
-                )),
-                color: AbiliaColors.transparentBlack20,
-              ),
-              child: Icon(
-                AbiliaIcons.handi_info,
-                size: smallIconSize,
-              ),
-            ),
           ),
-        )
+        ),
       ]),
     );
   }
@@ -193,7 +172,7 @@ class PermissionPickField extends StatelessWidget {
                 );
               },
             ),
-            if (state.notificationDenied)
+            if (state.importantPermissionMissing)
               Positioned(
                 top: 8.0,
                 right: 8.0,

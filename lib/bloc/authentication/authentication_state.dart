@@ -22,13 +22,15 @@ class AuthenticationInitialized extends AuthenticationState {
 class Authenticated extends AuthenticationInitialized {
   final String token;
   final int userId;
+  final bool newlyLoggedIn;
   Authenticated(
       {@required this.token,
       @required this.userId,
+      this.newlyLoggedIn = false,
       @required UserRepository userRepository})
       : super(userRepository);
   @override
-  List<Object> get props => [userRepository, token, userId];
+  List<Object> get props => [userRepository, token, userId, newlyLoggedIn];
   @override
   String toString() =>
       'Authenticated {userRepository: $userRepository, token: $token, userId: $userId}';

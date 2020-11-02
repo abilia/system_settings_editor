@@ -49,7 +49,7 @@ class AuthenticationBloc
       if (event is LoggedIn) {
         yield AuthenticationLoading.fromInitilized(state);
         await repo.persistToken(event.token);
-        yield* _tryGetUser(repo, event.token);
+        yield* _tryGetUser(repo, event.token, newlyLoggedIn: true);
       } else if (event is LoggedOut) {
         yield AuthenticationLoading.fromInitilized(state);
         yield* _logout(repo, loggedOutReason: event.loggedOutReason);
@@ -58,10 +58,18 @@ class AuthenticationBloc
   }
 
   Stream<AuthenticationState> _tryGetUser(
-      UserRepository repo, String token) async* {
+    UserRepository repo,
+    String token, {
+    bool newlyLoggedIn = false,
+  }) async* {
     try {
       final user = await repo.me(token);
-      yield Authenticated(token: token, userId: user.id, userRepository: repo);
+      yield Authenticated(
+        token: token,
+        userId: user.id,
+        userRepository: repo,
+        newlyLoggedIn: newlyLoggedIn,
+      );
     } on UnauthorizedException {
       yield* _logout(
         repo,

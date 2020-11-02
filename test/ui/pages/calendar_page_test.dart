@@ -188,7 +188,10 @@ void main() {
 
       testWidgets('Denied notifications shows popup and warnings',
           (WidgetTester tester) async {
-        setupPermissions({Permission.notification: PermissionStatus.denied});
+        setupPermissions({
+          Permission.notification: PermissionStatus.denied,
+          Permission.systemAlertWindow: PermissionStatus.granted,
+        });
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         expect(
@@ -200,12 +203,26 @@ void main() {
 
       testWidgets('Granted premission shows nothing',
           (WidgetTester tester) async {
-        setupPermissions({Permission.notification: PermissionStatus.granted});
+        setupPermissions({
+          Permission.notification: PermissionStatus.granted,
+          Permission.systemAlertWindow: PermissionStatus.granted,
+        });
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         expect(find.byType(NotificationPermissionWarningDialog), findsNothing);
         expect(find.byType(OrangeDot), findsNothing);
         expect(find.byType(ErrorMessage), findsNothing);
+      });
+
+      testWidgets('Denied systemAlertWindow shows warning dot',
+          (WidgetTester tester) async {
+        setupPermissions({
+          Permission.notification: PermissionStatus.granted,
+          Permission.systemAlertWindow: PermissionStatus.denied,
+        });
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(OrangeDot), findsOneWidget);
       });
 
       testWidgets('Denied notifications tts', (WidgetTester tester) async {

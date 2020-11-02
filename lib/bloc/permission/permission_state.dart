@@ -25,6 +25,13 @@ class PermissionState extends Equatable {
   bool get notificationDenied =>
       status[Permission.notification].isDeniedOrPermenantlyDenied;
 
+  bool get fullscreenNotGranted =>
+      !Platform.isIOS &&
+      !(status[Permission.systemAlertWindow]?.isGranted ?? false);
+
+  bool get importantPermissionMissing =>
+      notificationDenied || fullscreenNotGranted;
+
   @override
   List<Object> get props => [status];
 

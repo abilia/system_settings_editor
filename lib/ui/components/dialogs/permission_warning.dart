@@ -1,14 +1,16 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc/permission/permission_bloc.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 
 class NotificationPermissionOffWarningDialog extends StatelessWidget {
+  final GestureTapCallback onOk;
+
   const NotificationPermissionOffWarningDialog({
     Key key,
+    @required this.onOk,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
     return WarningDialog(
       onOk: () async {
         await Navigator.of(context).maybePop();
-        await openAppSettings();
+        await onOk();
       },
       icon: const Icon(
         AbiliaIcons.ir_error,

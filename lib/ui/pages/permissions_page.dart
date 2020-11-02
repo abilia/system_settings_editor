@@ -45,21 +45,24 @@ class PermissionSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) => permission == Permission.notification
       ? NotificationPermissionSwitch(status: status)
-      : SwitchField(
-          key: ObjectKey(permission),
-          text: Text(permission.translate(Translator.of(context).translate)),
-          leading: permission.icon,
-          value: status.isGranted,
-          onChanged: (v) async {
-            if (status.isPermanentlyDenied || status.isGranted) {
-              await openAppSettings();
-              return;
-            }
-            context
-                .bloc<PermissionBloc>()
-                .add(RequestPermissions([permission]));
-          },
-        );
+      : permission == Permission.systemAlertWindow
+          ? FullscreenPermissionSwitch(status: status)
+          : SwitchField(
+              key: ObjectKey(permission),
+              text:
+                  Text(permission.translate(Translator.of(context).translate)),
+              leading: permission.icon,
+              value: status.isGranted,
+              onChanged: (v) async {
+                if (status.isPermanentlyDenied || status.isGranted) {
+                  await openAppSettings();
+                  return;
+                }
+                context
+                    .bloc<PermissionBloc>()
+                    .add(RequestPermissions([permission]));
+              },
+            );
 }
 
 class NotificationPermissionSwitch extends StatelessWidget {
@@ -82,8 +85,8 @@ class NotificationPermissionSwitch extends StatelessWidget {
           children: [
             SwitchField(
               key: ObjectKey(permission),
-              text: Text(translate.notifications),
-              leading: SizedBox(width: smallIconSize),
+              text: Text(permission.translate(translate)),
+              leading: permission.icon,
               value: status.isGranted,
               decoration: denied ? warningBoxDecoration : whiteBoxDecoration,
               onChanged: (v) async {
@@ -93,7 +96,9 @@ class NotificationPermissionSwitch extends StatelessWidget {
                   await showViewDialog(
                     context: context,
                     builder: (context) =>
-                        NotificationPermissionOffWarningDialog(),
+                        NotificationPermissionOffWarningDialog(
+                      onOk: openAppSettings,
+                    ),
                   );
                 } else {
                   context
@@ -128,6 +133,101 @@ class NotificationPermissionSwitch extends StatelessWidget {
               text: Text(translate.notificationsWarningHintText),
             ),
           ),
+      ],
+    );
+  }
+}
+
+class FullscreenPermissionSwitch extends StatelessWidget {
+  final permission = Permission.systemAlertWindow;
+  final PermissionStatus status;
+
+  const FullscreenPermissionSwitch({
+    Key key,
+    this.status,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    final denied = status.isDeniedOrPermenantlyDenied;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Stack(
+                overflow: Overflow.visible,
+                children: [
+                  SwitchField(
+                    key: ObjectKey(permission),
+                    text: Text(permission.translate(translate)),
+                    leading: permission.icon,
+                    value: status.isGranted,
+                    decoration:
+                        denied ? warningBoxDecoration : whiteBoxDecoration,
+                    onChanged: (v) async {
+                      if (status.isGranted) {
+                        await showViewDialog(
+                          context: context,
+                          builder: (context) =>
+                              NotificationPermissionOffWarningDialog(
+                            onOk: openSystemAlertSetting,
+                          ),
+                        );
+                      } else {
+                        await openSystemAlertSetting();
+                      }
+                    },
+                  ),
+                  if (denied)
+                    Positioned(
+                      right: -10,
+                      top: -10,
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                          color: AbiliaColors.orange40,
+                        ),
+                        child: Icon(
+                          AbiliaIcons.ir_error,
+                          size: 20.0,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: InfoButton(
+                onTap: () => showViewDialog(
+                  context: context,
+                  builder: (context) => FullscreenAlarmInfoDialog(),
+                ),
+              ),
+            ),
+          ],
+        ),
+        if (denied) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: ErrorMessage(
+              text: Text(translate.notificationsWarningHintText),
+            ),
+          ),
+          Tts(
+            child: Text(
+              translate.redirectToAndroidSettings,
+              style: Theme.of(context).textTheme.caption.copyWith(
+                    color: AbiliaColors.black75,
+                  ),
+            ),
+          )
+        ]
       ],
     );
   }
