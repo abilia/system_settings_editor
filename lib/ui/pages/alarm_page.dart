@@ -19,7 +19,12 @@ class FullScreenAlarm extends StatelessWidget {
 
 class AlarmPage extends StatelessWidget {
   final NewAlarm alarm;
-  const AlarmPage({Key key, @required this.alarm});
+  final Widget previewImage;
+  const AlarmPage({
+    Key key,
+    @required this.alarm,
+    this.previewImage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +35,7 @@ class AlarmPage extends StatelessWidget {
         child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
           builder: (context, activitiesState) => ActivityInfo(
             alarm.activityDay.fromActivitiesState(activitiesState),
+            previewImage: previewImage,
           ),
         ),
       ),

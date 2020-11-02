@@ -53,7 +53,6 @@ dependencies:
       url: git://github.com/abilia/flutter-permission-handler.git
       ref: 3b6267acdc3102984e3a0457043f7e9ee691abc8
       path: permission_handler/
-  provider: ^4.3.2+2
 
 dev_dependencies:
   flutter_test:
