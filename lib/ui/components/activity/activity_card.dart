@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/activity/timeformat.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;

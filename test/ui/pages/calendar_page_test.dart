@@ -11,13 +11,10 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
@@ -231,9 +228,8 @@ void main() {
         await tester.pumpAndSettle();
         await tester.verifyTts(find.text(translate.allowNotifications),
             exact: translate.allowNotifications);
-        final compound = translate.allowNotificationsDescription1 +
-            translate.allowNotificationsDescriptionSettingsLink +
-            translate.allowNotificationsDescription2;
+        final compound =
+            translate.allowNotificationsDescription1 + translate.settingsLink;
         await tester.verifyTts(find.byType(NotificationBodyTextWarning),
             exact: compound);
         await tester.tap(find.byKey(TestKey.closeDialog));
@@ -263,8 +259,7 @@ void main() {
             find.byWidgetPredicate(
               (widget) =>
                   widget is RichText &&
-                  tapTextSpan(widget,
-                      translate.allowNotificationsDescriptionSettingsLink),
+                  tapTextSpan(widget, translate.settingsLink),
             ),
             findsOneWidget);
         await tester.pumpAndSettle();

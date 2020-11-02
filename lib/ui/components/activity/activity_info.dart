@@ -3,12 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/models/info_item.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityInfoWithDots extends StatelessWidget {
@@ -398,7 +394,7 @@ class TopInfo extends StatelessWidget {
 
     final checkableImage = CheckedImageWithImagePopup(
       activityDay: activityDay,
-      size: 96,
+      size: hugeIconSize,
     );
 
     return Row(

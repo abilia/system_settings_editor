@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/all.dart';
 
 class WarningDialog extends StatelessWidget {
   final Widget icon;

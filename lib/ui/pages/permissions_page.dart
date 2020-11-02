@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/all.dart';
 
 class PermissionsPage extends StatelessWidget {
   @override
@@ -21,7 +18,7 @@ class PermissionsPage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 0),
           child: Column(
             children: state.status.entries
-                .map((e) => PermissionSwitch(e))
+                .map((e) => PermissionSetting(e))
                 .expand((e) => [e, const SizedBox(height: 12.0)])
                 .toList(),
           ),
@@ -31,11 +28,11 @@ class PermissionsPage extends StatelessWidget {
   }
 }
 
-class PermissionSwitch extends StatelessWidget {
+class PermissionSetting extends StatelessWidget {
   final Permission permission;
   final PermissionStatus status;
 
-  PermissionSwitch(
+  PermissionSetting(
     MapEntry<Permission, PermissionStatus> entry, {
     Key key,
   })  : permission = entry.key,
@@ -47,22 +44,35 @@ class PermissionSwitch extends StatelessWidget {
       ? NotificationPermissionSwitch(status: status)
       : permission == Permission.systemAlertWindow
           ? FullscreenPermissionSwitch(status: status)
-          : SwitchField(
-              key: ObjectKey(permission),
-              text:
-                  Text(permission.translate(Translator.of(context).translate)),
-              leading: permission.icon,
-              value: status.isGranted,
-              onChanged: (v) async {
-                if (status.isPermanentlyDenied || status.isGranted) {
-                  await openAppSettings();
-                  return;
-                }
-                context
-                    .bloc<PermissionBloc>()
-                    .add(RequestPermissions([permission]));
-              },
-            );
+          : PermissionSwitch(permission: permission, status: status);
+}
+
+class PermissionSwitch extends StatelessWidget {
+  const PermissionSwitch({
+    Key key,
+    @required this.permission,
+    @required this.status,
+  }) : super(key: key);
+
+  final Permission permission;
+  final PermissionStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchField(
+      key: ObjectKey(permission),
+      text: Text(permission.translate(Translator.of(context).translate)),
+      leading: permission.icon,
+      value: status.isGranted,
+      onChanged: (v) async {
+        if (status.isPermanentlyDenied || status.isGranted) {
+          await openAppSettings();
+          return;
+        }
+        context.bloc<PermissionBloc>().add(RequestPermissions([permission]));
+      },
+    );
+  }
 }
 
 class NotificationPermissionSwitch extends StatelessWidget {
