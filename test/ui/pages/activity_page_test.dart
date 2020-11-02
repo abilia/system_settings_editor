@@ -201,7 +201,8 @@ void main() {
 
   group('Change alarm', () {
     final alarmDialogFinder = find.byType(SelectAlarmDialog);
-    final vibrationRadioButtonFinder = find.byKey(TestKey.vibrationAlarm);
+    final vibrationRadioButtonFinder =
+        find.byKey(ObjectKey(AlarmType.Vibration));
     final noAlarmIconFinder = find.byIcon(AbiliaIcons.handi_no_alarm_vibration);
     final vibrateAlarmIconFinder = find.byIcon(AbiliaIcons.handi_vibration);
     final soundVibrateAlarmIconFinder =
@@ -231,7 +232,8 @@ void main() {
       // Assert
       expect(vibrateAlarmIconFinder, findsOneWidget);
     });
-    testWidgets('Alarm button shows correct icon sound and vibratio',
+
+    testWidgets('Alarm button shows correct icon sound and vibration',
         (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted())
@@ -244,6 +246,7 @@ void main() {
       // Assert
       expect(soundVibrateAlarmIconFinder, findsOneWidget);
     });
+
     testWidgets('Alarm button shows correct icon no alarm',
         (WidgetTester tester) async {
       // Arrange
@@ -276,6 +279,66 @@ void main() {
       // Assert
       expect(noAlarmIconFinder, findsNothing);
       expect(vibrateAlarmIconFinder, findsOneWidget);
+    });
+
+    testWidgets('SGC-359 Alarm type maps Only alarm to SoundAndVibration',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+              title: 'null',
+              startTime: startTime,
+              alarmType: ALARM_SOUND,
+            )
+          ],
+        ),
+      );
+      await navigateToActivityPage(tester);
+      // Act
+      await tester.tap(alarmButtonFinder);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(alarmDialogFinder, findsOneWidget);
+
+      final alarm = tester.widget<RadioField>(
+        find.byKey(
+          ObjectKey(AlarmType.SoundAndVibration),
+        ),
+      );
+
+      expect(alarm.groupValue, AlarmType.SoundAndVibration);
+    });
+
+    testWidgets('SGC-359 Alarm type maps ALARM_SILENT to Vibration',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+              title: 'null',
+              startTime: startTime,
+              alarmType: ALARM_SILENT,
+            )
+          ],
+        ),
+      );
+      await navigateToActivityPage(tester);
+      // Act
+      await tester.tap(alarmButtonFinder);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(alarmDialogFinder, findsOneWidget);
+
+      final alarm = tester.widget<RadioField>(
+        find.byKey(
+          ObjectKey(AlarmType.Vibration),
+        ),
+      );
+
+      expect(alarm.groupValue, AlarmType.Vibration);
     });
 
     testWidgets('Alarm on start time is disabled when no alarm',
@@ -1388,7 +1451,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
         exact: translate.alarmAndVibration,
       );
       await tester.verifyTts(
-        find.byKey(TestKey.vibrationAlarm),
+        find.byKey(ObjectKey(AlarmType.Vibration)),
         exact: translate.vibration,
       );
       await tester.verifyTts(

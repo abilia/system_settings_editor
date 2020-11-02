@@ -341,43 +341,95 @@ void main() {
       // Assert -- Alarm tab not visible
       expect(find.byIcon(AbiliaIcons.attention), findsNothing);
     });
+    group('alarms', () {
+      testWidgets('alarm at start switch', (WidgetTester tester) async {
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await tester.goToAlarmTab();
+        expect(
+            tester
+                .widget<Switch>(
+                    find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
+                .value,
+            isFalse);
+        expect(find.byKey(TestKey.alarmAtStartSwitch), findsOneWidget);
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.alarmAtStartSwitch));
+        await tester.pumpAndSettle();
+        expect(
+            tester
+                .widget<Switch>(
+                    find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
+                .value,
+            isTrue);
+      });
 
-    testWidgets('alarm at start switch', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
-      await tester.pumpAndSettle();
-      await tester.goToAlarmTab();
-      expect(
-          tester
-              .widget<Switch>(find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
-              .value,
-          isFalse);
-      expect(find.byKey(TestKey.alarmAtStartSwitch), findsOneWidget);
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.alarmAtStartSwitch));
-      await tester.pumpAndSettle();
-      expect(
-          tester
-              .widget<Switch>(find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
-              .value,
-          isTrue);
-    });
+      testWidgets('Select alarm dialog', (WidgetTester tester) async {
+        await tester
+            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpAndSettle();
+        await tester.goToAlarmTab();
+        expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
+        expect(find.text(translate.vibration), findsNothing);
+        expect(find.byIcon(AbiliaIcons.handi_vibration), findsNothing);
+        await tester.tap(find.byKey(TestKey.selectAlarm));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+        await tester.tap(find.byKey(ObjectKey(AlarmType.Vibration)));
+        await tester.pumpAndSettle();
+        expect(find.text(translate.vibration), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
+      });
 
-    testWidgets('Select alarm dialog', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
-      await tester.pumpAndSettle();
-      await tester.goToAlarmTab();
-      expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
-      expect(find.text(translate.vibration), findsNothing);
-      expect(find.byIcon(AbiliaIcons.handi_vibration), findsNothing);
-      await tester.tap(find.byKey(TestKey.selectAlarm));
-      await tester.pumpAndSettle();
-      expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.vibrationAlarm));
-      await tester.pumpAndSettle();
-      expect(find.text(translate.vibration), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
+      testWidgets('SGC-359 Select alarm dialog silent alarms maps to vibration',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            EditActivityPage(day: today),
+            givenActivity: Activity.createNew(
+                title: 'null',
+                startTime: startTime,
+                alarmType: ALARM_SILENT_ONLY_ON_START),
+          ),
+        );
+        await tester.pumpAndSettle();
+        await tester.goToAlarmTab();
+        expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
+        expect(find.text(translate.vibration), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.selectAlarm));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+        final radio = tester
+            .widget<RadioField>(find.byKey(ObjectKey(AlarmType.Vibration)));
+        expect(radio.groupValue, AlarmType.Vibration);
+      });
+
+      testWidgets(
+          'SGC-359 Select alarm dialog only sound alarms maps to sound and vibration',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            EditActivityPage(day: today),
+            givenActivity: Activity.createNew(
+                title: 'null',
+                startTime: startTime,
+                alarmType: ALARM_SOUND_ONLY_ON_START),
+          ),
+        );
+        await tester.pumpAndSettle();
+        await tester.goToAlarmTab();
+        expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
+        expect(find.text(translate.alarmAndVibration), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.handi_alarm_vibration), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.selectAlarm));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+        final radio = tester
+            .widget<RadioField>(find.byKey(ObjectKey(AlarmType.Vibration)));
+        expect(radio.groupValue, AlarmType.SoundAndVibration);
+      });
     });
 
     testWidgets('checkable switch', (WidgetTester tester) async {
@@ -2158,7 +2210,7 @@ text''';
       await tester.tap(find.byKey(TestKey.selectAlarm));
       await tester.pumpAndSettle();
 
-      await tester.verifyTts(find.byKey(TestKey.vibrationAlarm),
+      await tester.verifyTts(find.byKey(ObjectKey(AlarmType.Vibration)),
           exact: translate.vibration);
     });
 
