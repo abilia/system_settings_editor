@@ -75,7 +75,7 @@ class PermissionInfoBodyText extends StatelessWidget {
   final String allowAccessBodyText;
   @override
   Widget build(BuildContext context) {
-    final b1 = Theme.of(context)
+    final bodyText2 = Theme.of(context)
         .textTheme
         .bodyText2
         .copyWith(color: AbiliaColors.black75);
@@ -91,7 +91,7 @@ class PermissionInfoBodyText extends StatelessWidget {
         child: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            style: b1,
+            style: bodyText2,
             children: [
               TextSpan(text: allowAccessBodyText),
               TextSpan(text: translate.allowAccessBody2),
