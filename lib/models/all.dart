@@ -2,7 +2,7 @@ export 'activity/activity.dart';
 export 'sortable/sortable.dart';
 export 'activity_occasion.dart';
 export 'data_update_response.dart';
-export 'alarm_type.dart';
+export 'alarm.dart';
 export 'category.dart';
 export 'login.dart';
 export 'user.dart';

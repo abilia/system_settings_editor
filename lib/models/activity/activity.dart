@@ -11,7 +11,7 @@ part 'recurs.dart';
 part 'db_activity.dart';
 
 class Activity extends DataModel {
-  AlarmType get alarm => AlarmType.fromInt(alarmType);
+  Alarm get alarm => Alarm.fromInt(alarmType);
   DateTime endClock(DateTime day) => startClock(day).add(duration);
   DateTime startClock(DateTime day) =>
       DateTime(day.year, day.month, day.day, startTime.hour, startTime.minute);
@@ -145,7 +145,7 @@ class Activity extends DataModel {
     bool secret,
     bool fullDay,
     int alarmType,
-    AlarmType alarm,
+    Alarm alarm,
     Recurs recurs,
     InfoItem infoItem,
     Iterable<DateTime> signedOffDates,

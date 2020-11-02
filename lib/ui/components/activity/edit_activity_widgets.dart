@@ -4,13 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/form/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
   final EditActivityState state;
@@ -348,10 +344,10 @@ class AlarmWidget extends StatelessWidget {
             text: Text(alarm.text(translator)),
             onTap: memoSettingsState.abilityToSelectAlarm
                 ? () async {
-                    final result = await showViewDialog<Alarm>(
+                    final result = await showViewDialog<AlarmType>(
                       context: context,
                       builder: (context) => SelectAlarmTypeDialog(
-                        alarm: alarm.type,
+                        alarm: alarm.typeSeagull,
                       ),
                     );
                     if (result != null) {
@@ -384,7 +380,7 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
     @required this.onChanged,
   }) : super(key: key);
 
-  final AlarmType alarm;
+  final Alarm alarm;
   final ValueChanged<bool> onChanged;
 
   @override

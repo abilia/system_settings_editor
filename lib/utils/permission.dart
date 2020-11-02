@@ -14,30 +14,37 @@ extension PermissionExtension on Permission {
         return translate.accessToPhotos;
       case Permission.notification:
         return translate.notifications;
+      case Permission.systemAlertWindow:
+        return translate.fullScreenAlarm;
       default:
         return toString();
     }
   }
 
-  Widget get icon {
+  Widget get icon => Icon(
+        iconData,
+        size: smallIconSize,
+      );
+
+  IconData get iconData {
     switch (this) {
       case Permission.camera:
-        return const Icon(
-          AbiliaIcons.camera_photo,
-          size: smallIconSize,
-        );
+        return AbiliaIcons.camera_photo;
       case Permission.photos:
       case Permission.storage:
-        return const Icon(
-          AbiliaIcons.camera_photo,
-          size: smallIconSize,
-        );
+        return AbiliaIcons.my_photos;
+      case Permission.systemAlertWindow:
+        return AbiliaIcons.resize_higher;
+      case Permission.notification:
+        return AbiliaIcons.notification;
       default:
-        return const SizedBox(width: smallIconSize);
+        return AbiliaIcons.empty1;
     }
   }
 }
 
 extension PermissionStatusExtension on PermissionStatus {
   bool get isDeniedOrPermenantlyDenied => isDenied || isPermanentlyDenied;
+  bool get isGrantedOrUndetermined =>
+      this == null || isGranted || isUndetermined;
 }

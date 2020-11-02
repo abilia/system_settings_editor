@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 class LibraryChecklist extends StatelessWidget {
   final Checklist checklist;

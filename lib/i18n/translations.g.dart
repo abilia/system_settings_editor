@@ -280,9 +280,7 @@ abstract class Translated {
   final String allowNotificationsDescription1 =
       'Allow notifications to be able to get alarms and reminders from activities. You can do that from the ';
 
-  final String allowNotificationsDescriptionSettingsLink = 'settings';
-
-  final String allowNotificationsDescription2 = '.';
+  final String settingsLink = 'settings';
 
   final String turnOffNotifications = 'Turn off notifications?';
 
@@ -300,6 +298,26 @@ abstract class Translated {
   final String createActivity = 'Create activity';
 
   final String basicActivities = 'Basic activities';
+
+  final String fullScreenAlarm = 'Full screen alarm';
+
+  final String redirectToAndroidSettings =
+      'You will be redirect to the Android settings.';
+
+  final String fullScreenAlarmInfo =
+      'Allow this permission to be able to get full screen alarm of activities';
+
+  final String allow = 'Allow';
+
+  final String previewActivityTitle = "Erik's birthday party";
+
+  final String allowAccessPhotosBody =
+      'Allow access to photos to be able to use photos from the device.';
+
+  final String allowAccessCameraBody =
+      'Allow access to camera to be able to take a photo from the device.';
+
+  final String allowAccessBody2 = ' You can always do that later from the ';
 }
 
 class EN extends Translated {}
@@ -700,10 +718,7 @@ class SV extends Translated {
       'Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån ';
 
   @override
-  final String allowNotificationsDescriptionSettingsLink = 'inställningar';
-
-  @override
-  final String allowNotificationsDescription2 = '.';
+  final String settingsLink = 'inställningar';
 
   @override
   final String turnOffNotifications = 'Stäng av notiser?';
@@ -728,4 +743,32 @@ class SV extends Translated {
 
   @override
   final String basicActivities = 'Basaktiviteter';
+
+  @override
+  final String fullScreenAlarm = 'Helskärmslarm';
+
+  @override
+  final String redirectToAndroidSettings =
+      'Du kommer att omdirigeras till Android-inställningarna.';
+
+  @override
+  final String fullScreenAlarmInfo =
+      'Tillåt denna behörighet för att kunna få helskärmslarm om aktiviteter';
+
+  @override
+  final String allow = 'Tillåt';
+
+  @override
+  final String previewActivityTitle = 'Eriks födelsedagskalas';
+
+  @override
+  final String allowAccessPhotosBody =
+      'Tillåt behörighet till bilder för att ha möjlighet att använda bilder från enheten.';
+
+  @override
+  final String allowAccessCameraBody =
+      'Tillåt behörighet till kameran för att ha möjlighet att ta bilder från enheten.';
+
+  @override
+  final String allowAccessBody2 = ' Du kan alltid göra det senare från ';
 }

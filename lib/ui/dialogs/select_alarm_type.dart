@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 class _SelectAlarmTypeDialog extends StatelessWidget {
-  final Alarm alarm;
-  final ValueChanged<Alarm> onChanged;
+  final AlarmType alarm;
+  final ValueChanged<AlarmType> onChanged;
   final List<Widget> trailing;
   final GestureTapCallback onOk;
 
@@ -34,9 +32,10 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
           children: <Widget>[
             if (memoSettingsState.activityDisplayAlarmOption)
               RadioField(
+                key: ObjectKey(AlarmType.SoundAndVibration),
                 groupValue: alarm,
                 onChanged: onChanged,
-                value: Alarm.SoundAndVibration,
+                value: AlarmType.SoundAndVibration,
                 leading: Icon(AbiliaIcons.handi_alarm_vibration),
                 text: Text(translate.alarmAndVibration),
               ),
@@ -44,10 +43,10 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
               const SizedBox(height: 8.0),
             if (memoSettingsState.activityDisplaySilentAlarmOption)
               RadioField(
-                key: TestKey.vibrationAlarm,
+                key: ObjectKey(AlarmType.Vibration),
                 groupValue: alarm,
                 onChanged: onChanged,
-                value: Alarm.Vibration,
+                value: AlarmType.Vibration,
                 leading: Icon(AbiliaIcons.handi_vibration),
                 text: Text(translate.vibration),
               ),
@@ -55,9 +54,10 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
               const SizedBox(height: 8.0),
             if (memoSettingsState.activityDisplayNoAlarmOption)
               RadioField(
+                key: ObjectKey(AlarmType.NoAlarm),
                 groupValue: alarm,
                 onChanged: onChanged,
-                value: Alarm.NoAlarm,
+                value: AlarmType.NoAlarm,
                 leading: Icon(AbiliaIcons.handi_no_alarm_vibration),
                 text: Text(translate.noAlarm),
               ),
@@ -80,7 +80,7 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
 }
 
 class SelectAlarmTypeDialog extends StatelessWidget {
-  final Alarm alarm;
+  final AlarmType alarm;
 
   const SelectAlarmTypeDialog({Key key, @required this.alarm})
       : super(key: key);
@@ -90,7 +90,7 @@ class SelectAlarmTypeDialog extends StatelessWidget {
 }
 
 class SelectAlarmDialog extends StatefulWidget {
-  final AlarmType alarm;
+  final Alarm alarm;
 
   const SelectAlarmDialog({Key key, @required this.alarm}) : super(key: key);
 
@@ -99,13 +99,13 @@ class SelectAlarmDialog extends StatefulWidget {
 }
 
 class _SelectAlarmDialogState extends State<SelectAlarmDialog> {
-  AlarmType alarm;
+  Alarm alarm;
 
   _SelectAlarmDialogState(this.alarm);
   @override
   Widget build(BuildContext context) {
     return _SelectAlarmTypeDialog(
-      alarm: alarm.type,
+      alarm: alarm.typeSeagull,
       onOk: alarm != widget.alarm
           ? () => Navigator.of(context).maybePop(alarm)
           : null,
@@ -122,7 +122,7 @@ class _SelectAlarmDialogState extends State<SelectAlarmDialog> {
     );
   }
 
-  void _changeType(Alarm type) =>
+  void _changeType(AlarmType type) =>
       setState(() => alarm = alarm.copyWith(type: type));
   void _changeStartTime(bool onStart) =>
       setState(() => alarm = alarm.copyWith(onlyStart: onStart));

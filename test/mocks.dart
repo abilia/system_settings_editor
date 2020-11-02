@@ -14,7 +14,7 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
-import 'package:seagull/ui/components/widget_test_keys.dart';
+import 'package:seagull/ui/widget_test_keys.dart';
 import 'package:seagull/utils/all.dart';
 
 Future log() => SeagullLogger().initLogging();
@@ -166,11 +166,13 @@ extension OurEnterText on WidgetTester {
 Set<Permission> checkedPermissions = {};
 Set<Permission> requestedPermissions = {};
 int openAppSettingsCalls = 0;
+int openSystemAlertSettingCalls = 0;
 void setupPermissions(
     [Map<Permission, PermissionStatus> permissions = const {}]) {
   checkedPermissions = {};
   requestedPermissions = {};
   openAppSettingsCalls = 0;
+  openSystemAlertSettingCalls = 0;
   MethodChannel('flutter.baseflow.com/permissions/methods')
       .setMockMethodCallHandler((MethodCall methodCall) async {
     switch (methodCall.method) {
@@ -189,6 +191,10 @@ void setupPermissions(
             .value;
       case 'openAppSettings':
         openAppSettingsCalls++;
+        break;
+      case 'openSystemAlertSetting':
+        openSystemAlertSettingCalls++;
+        break;
     }
   });
 }

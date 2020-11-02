@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
 import 'package:package_info/package_info.dart';
+
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/ui/all.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
