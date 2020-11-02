@@ -34,6 +34,7 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
           children: <Widget>[
             if (memoSettingsState.activityDisplayAlarmOption)
               RadioField(
+                key: ObjectKey(AlarmType.SoundAndVibration),
                 groupValue: alarm,
                 onChanged: onChanged,
                 value: AlarmType.SoundAndVibration,
@@ -44,7 +45,7 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
               const SizedBox(height: 8.0),
             if (memoSettingsState.activityDisplaySilentAlarmOption)
               RadioField(
-                key: TestKey.vibrationAlarm,
+                key: ObjectKey(AlarmType.Vibration),
                 groupValue: alarm,
                 onChanged: onChanged,
                 value: AlarmType.Vibration,
@@ -55,6 +56,7 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
               const SizedBox(height: 8.0),
             if (memoSettingsState.activityDisplayNoAlarmOption)
               RadioField(
+                key: ObjectKey(AlarmType.NoAlarm),
                 groupValue: alarm,
                 onChanged: onChanged,
                 value: AlarmType.NoAlarm,
@@ -105,7 +107,7 @@ class _SelectAlarmDialogState extends State<SelectAlarmDialog> {
   @override
   Widget build(BuildContext context) {
     return _SelectAlarmTypeDialog(
-      alarm: alarm.type,
+      alarm: alarm.typeSeagull,
       onOk: alarm != widget.alarm
           ? () => Navigator.of(context).maybePop(alarm)
           : null,

@@ -351,7 +351,7 @@ class AlarmWidget extends StatelessWidget {
                     final result = await showViewDialog<AlarmType>(
                       context: context,
                       builder: (context) => SelectAlarmTypeDialog(
-                        alarm: alarm.type,
+                        alarm: alarm.typeSeagull,
                       ),
                     );
                     if (result != null) {

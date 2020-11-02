@@ -35,7 +35,6 @@ class TestKey {
       deleteAfterSwitch = Key('deleteAfterSwitch'),
       addPicture = Key('addPicture'),
       selectAlarm = Key('selectAlarm'),
-      vibrationAlarm = Key('vibrationAlarm'),
       availibleFor = Key('availibleFor'),
       onlyMe = Key('onlyMe'),
       closeDialog = Key('closeDialog'),

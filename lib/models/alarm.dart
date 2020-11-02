@@ -70,8 +70,19 @@ class Alarm extends Equatable {
     return NO_ALARM;
   }
 
+  AlarmType get typeSeagull {
+    switch (type) {
+      case AlarmType.Sound:
+        return AlarmType.SoundAndVibration;
+      case AlarmType.Silent:
+        return AlarmType.Vibration;
+      default:
+        return type;
+    }
+  }
+
   @override
-  String toString() => alarmEnumToString(type) + (atEnd ? ' only start' : '');
+  String toString() => '$type + ${(atEnd ? ' only start' : '')}';
 
   @override
   List<Object> get props => [onlyStart, type];
@@ -87,22 +98,6 @@ const int ALARM_SOUND_AND_VIBRATION = 100,
     ALARM_VIBRATION_ONLY_ON_START = 96,
     ALARM_SILENT_ONLY_ON_START = 98,
     NO_ALARM_ONLY_ON_START = 97;
-
-String alarmEnumToString(AlarmType type) {
-  switch (type) {
-    case AlarmType.SoundAndVibration:
-      return 'Sound and vibration';
-    case AlarmType.Vibration:
-      return 'Vibration';
-    case AlarmType.Silent:
-      return 'Silent';
-    case AlarmType.NoAlarm:
-      return 'No alarm';
-    case AlarmType.Sound:
-    default:
-      return 'Sound';
-  }
-}
 
 enum AlarmType {
   SoundAndVibration,
