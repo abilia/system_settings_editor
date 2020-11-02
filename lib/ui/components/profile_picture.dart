@@ -1,10 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:transparent_image/transparent_image.dart';
 
-import 'package:seagull/models/user.dart';
-import 'package:seagull/repository/end_point.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/abilia_icons.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
+import 'package:seagull/ui/all.dart';
 
 class ProfilePicture extends StatelessWidget {
   final double radius;
@@ -32,7 +30,7 @@ class ProfilePicture extends StatelessWidget {
               Icon(
                 AbiliaIcons.contact,
                 color: AbiliaColors.black75,
-                size: 96,
+                size: hugeIconSize,
               ),
               if (user != null &&
                   user.image != null &&

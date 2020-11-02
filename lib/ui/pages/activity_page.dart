@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 class ActivityPage extends StatelessWidget {
   final ActivityOccasion occasion;
@@ -98,7 +96,7 @@ class ActivityBottomAppBar extends StatelessWidget {
                         child: Icon(activity.alarm.iconData()),
                         onPressed: () async {
                           final alarm = activity.alarm;
-                          final result = await showViewDialog<AlarmType>(
+                          final result = await showViewDialog<Alarm>(
                             context: context,
                             builder: (context) => SelectAlarmDialog(
                               alarm: alarm,

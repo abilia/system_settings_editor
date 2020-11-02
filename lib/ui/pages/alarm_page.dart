@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/colors.dart';
+import 'package:seagull/ui/all.dart';
 
 class FullScreenAlarm extends StatelessWidget {
   final NotificationAlarm alarm;
@@ -19,7 +17,12 @@ class FullScreenAlarm extends StatelessWidget {
 
 class AlarmPage extends StatelessWidget {
   final NewAlarm alarm;
-  const AlarmPage({Key key, @required this.alarm});
+  final Widget previewImage;
+  const AlarmPage({
+    Key key,
+    @required this.alarm,
+    this.previewImage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,7 @@ class AlarmPage extends StatelessWidget {
         child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
           builder: (context, activitiesState) => ActivityInfo(
             alarm.activityDay.fromActivitiesState(activitiesState),
+            previewImage: previewImage,
           ),
         ),
       ),

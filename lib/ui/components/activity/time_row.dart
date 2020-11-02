@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/activity/timeformat.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class TimeRow extends StatelessWidget {
@@ -138,8 +134,11 @@ class _TimeBox extends StatelessWidget {
     );
   }
 
-  BoxDecoration get _decoration =>
-      current ? currentBoxDecoration : past ? pastDecration : boxDecoration;
+  BoxDecoration get _decoration => current
+      ? currentBoxDecoration
+      : past
+          ? pastDecration
+          : boxDecoration;
   EdgeInsets get _padding => const EdgeInsets.fromLTRB(21.0, 14.0, 20.0, 14.0)
       .add(future ? const EdgeInsets.all(1.0) : EdgeInsets.zero);
 }

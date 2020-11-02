@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   const AbiliaTabBar({

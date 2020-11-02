@@ -11,13 +11,10 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
@@ -188,7 +185,10 @@ void main() {
 
       testWidgets('Denied notifications shows popup and warnings',
           (WidgetTester tester) async {
-        setupPermissions({Permission.notification: PermissionStatus.denied});
+        setupPermissions({
+          Permission.notification: PermissionStatus.denied,
+          Permission.systemAlertWindow: PermissionStatus.granted,
+        });
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         expect(
@@ -200,12 +200,26 @@ void main() {
 
       testWidgets('Granted premission shows nothing',
           (WidgetTester tester) async {
-        setupPermissions({Permission.notification: PermissionStatus.granted});
+        setupPermissions({
+          Permission.notification: PermissionStatus.granted,
+          Permission.systemAlertWindow: PermissionStatus.granted,
+        });
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         expect(find.byType(NotificationPermissionWarningDialog), findsNothing);
         expect(find.byType(OrangeDot), findsNothing);
         expect(find.byType(ErrorMessage), findsNothing);
+      });
+
+      testWidgets('Denied systemAlertWindow shows warning dot',
+          (WidgetTester tester) async {
+        setupPermissions({
+          Permission.notification: PermissionStatus.granted,
+          Permission.systemAlertWindow: PermissionStatus.denied,
+        });
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(OrangeDot), findsOneWidget);
       });
 
       testWidgets('Denied notifications tts', (WidgetTester tester) async {
@@ -214,9 +228,8 @@ void main() {
         await tester.pumpAndSettle();
         await tester.verifyTts(find.text(translate.allowNotifications),
             exact: translate.allowNotifications);
-        final compound = translate.allowNotificationsDescription1 +
-            translate.allowNotificationsDescriptionSettingsLink +
-            translate.allowNotificationsDescription2;
+        final compound =
+            translate.allowNotificationsDescription1 + translate.settingsLink;
         await tester.verifyTts(find.byType(NotificationBodyTextWarning),
             exact: compound);
         await tester.tap(find.byKey(TestKey.closeDialog));
@@ -246,8 +259,7 @@ void main() {
             find.byWidgetPredicate(
               (widget) =>
                   widget is RichText &&
-                  tapTextSpan(widget,
-                      translate.allowNotificationsDescriptionSettingsLink),
+                  tapTextSpan(widget, translate.settingsLink),
             ),
             findsOneWidget);
         await tester.pumpAndSettle();
