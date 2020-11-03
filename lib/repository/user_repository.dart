@@ -20,20 +20,20 @@ class UserRepository extends Repository {
 
   UserRepository({
     String baseUrl,
-    @required BaseClient httpClient,
+    @required BaseClient client,
     @required this.tokenDb,
     @required this.userDb,
     @required this.licenseDb,
   })  : assert(tokenDb != null),
-        super(httpClient, baseUrl);
+        super(client, baseUrl);
 
   UserRepository copyWith({
     String baseUrl,
-    BaseClient httpClient,
+    BaseClient client,
   }) =>
       UserRepository(
         baseUrl: baseUrl ?? this.baseUrl,
-        httpClient: httpClient ?? this.httpClient,
+        client: client ?? this.client,
         tokenDb: tokenDb,
         userDb: userDb,
         licenseDb: licenseDb,
@@ -45,19 +45,23 @@ class UserRepository extends Repository {
     @required String pushToken,
     @required DateTime time,
   }) async {
-    final response = await httpClient.post('$baseUrl/api/v1/auth/client/me',
-        headers: {
-          HttpHeaders.authorizationHeader:
-              'Basic ${base64Encode(utf8.encode('$username:$password'))}',
-          HttpHeaders.contentTypeHeader: 'application/json'
-        },
-        body: json.encode({
+    final response = await client.post(
+      '$baseUrl/api/v1/auth/client/me',
+      headers: {
+        HttpHeaders.authorizationHeader:
+            'Basic ${base64Encode(utf8.encode('$username:$password'))}',
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+      body: json.encode(
+        {
           'clientId': Uuid().v4(),
           'type': 'flutter',
           'app': 'seagull',
           'name': 'seagull',
           'address': pushToken
-        }));
+        },
+      ),
+    );
     if (response.statusCode == 200) {
       var login = Login.fromJson(json.decode(response.body));
       return login.token;
@@ -89,7 +93,7 @@ class UserRepository extends Repository {
   }
 
   Future<User> getUserFromApi(String token) async {
-    final response = await httpClient.get('$baseUrl/api/v1/entity/me',
+    final response = await client.get('$baseUrl/api/v1/entity/me',
         headers: authHeader(token));
 
     if (response.statusCode == 200) {
@@ -114,7 +118,7 @@ class UserRepository extends Repository {
   }
 
   Future<List<License>> getLicensesFromApi(String token) async {
-    final response = await httpClient.get('$baseUrl/api/v1/license/portal/me',
+    final response = await client.get('$baseUrl/api/v1/license/portal/me',
         headers: authHeader(token));
     if (response.statusCode == 200) {
       return (json.decode(response.body) as List)
@@ -143,7 +147,7 @@ class UserRepository extends Repository {
   Future<bool> _unregisterClient([String token]) async {
     token ??= await getToken();
     try {
-      final response = await httpClient.delete('$baseUrl/api/v1/auth/client',
+      final response = await client.delete('$baseUrl/api/v1/auth/client',
           headers: authHeader(token));
       return response.statusCode == 200;
     } catch (_) {

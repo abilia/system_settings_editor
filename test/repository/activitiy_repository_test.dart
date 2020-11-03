@@ -76,7 +76,7 @@ void main() {
     );
 
     // Act
-    final result = await activityRepo.postActivities(dbActivities);
+    final result = await activityRepo.postData(dbActivities);
     final expected = DataUpdateResponse.fromJson(json.decode(jsonString));
 
     // Assert
@@ -101,7 +101,7 @@ void main() {
     );
 
     // Act and expect
-    expect(() => activityRepo.postActivities(dbActivities), throwsException);
+    expect(() => activityRepo.postData(dbActivities), throwsException);
   });
 
   test('synchronizeLocalWithBackend updates revision from backend', () async {

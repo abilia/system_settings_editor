@@ -42,7 +42,7 @@ void main() {
       GetItInitializer()
         ..tokenDb = mockTokenDb
         ..activityDb = mockActivityDb
-        ..httpClient = Fakes.client(
+        ..client = Fakes.client(
             activityResponse: () => serverActivityAnswers.removeAt(0))
         ..userDb = MockUserDb()
         ..baseUrlDb = MockBaseUrlDb()

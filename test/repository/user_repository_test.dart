@@ -15,7 +15,7 @@ void main() {
   final mockTokenDb = MockTokenDb();
   final userRepo = UserRepository(
     baseUrl: url,
-    httpClient: mockClient,
+    client: mockClient,
     tokenDb: mockTokenDb,
     userDb: mockUserDb,
     licenseDb: MockLicenseDb(),
@@ -25,13 +25,12 @@ void main() {
     final newClient = Fakes.client();
     final newUrl = 'newrl';
     // Act
-    final newUserRepo =
-        userRepo.copyWith(baseUrl: newUrl, httpClient: newClient);
+    final newUserRepo = userRepo.copyWith(baseUrl: newUrl, client: newClient);
     // Assert
     expect(newUserRepo.baseUrl, isNot(userRepo.baseUrl));
     expect(newUserRepo.baseUrl, newUrl);
-    expect(newUserRepo.httpClient, isNot(userRepo.httpClient));
-    expect(newUserRepo.httpClient, newClient);
+    expect(newUserRepo.client, isNot(userRepo.client));
+    expect(newUserRepo.client, newClient);
     expect(newUserRepo.tokenDb, userRepo.tokenDb);
     expect(newUserRepo.userDb, userRepo.userDb);
   });
@@ -40,7 +39,7 @@ void main() {
     final newUserRepo = userRepo.copyWith();
     // Assert
     expect(newUserRepo.baseUrl, userRepo.baseUrl);
-    expect(newUserRepo.httpClient, userRepo.httpClient);
+    expect(newUserRepo.client, userRepo.client);
     expect(newUserRepo.tokenDb, userRepo.tokenDb);
     expect(newUserRepo.userDb, userRepo.userDb);
   });

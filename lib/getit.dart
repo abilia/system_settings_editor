@@ -39,7 +39,7 @@ class GetItInitializer {
   set baseUrlDb(BaseUrlDb baseUrlDb) => _baseUrlDb = baseUrlDb;
 
   BaseClient _baseClient;
-  set httpClient(BaseClient baseClient) => _baseClient = baseClient;
+  set client(BaseClient baseClient) => _baseClient = baseClient;
 
   SortableDb _sortableDb;
   set sortableDb(SortableDb sortableDb) => _sortableDb = sortableDb;

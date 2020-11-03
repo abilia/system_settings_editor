@@ -1,21 +1,22 @@
 import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 class DataUpdateResponse extends Equatable {
   final int previousRevision;
-  final UnmodifiableListView<DataRevisionUpdates> succeded, failed;
+  final UnmodifiableListView<DataRevisionUpdate> succeded, failed;
 
   DataUpdateResponse.fromJson(Map<String, dynamic> json)
       : previousRevision = json['previousRevision'],
         failed = _parseDataRevisionUpdates(json['failedUpdates']),
         succeded = _parseDataRevisionUpdates(json['dataRevisionUpdates']);
 
-  static UnmodifiableListView<DataRevisionUpdates> _parseDataRevisionUpdates(
+  static UnmodifiableListView<DataRevisionUpdate> _parseDataRevisionUpdates(
           List jsonList) =>
       UnmodifiableListView(jsonList
               ?.whereType<Map<String, dynamic>>()
-              ?.map(DataRevisionUpdates.fromJson) ??
+              ?.map(DataRevisionUpdate.fromJson) ??
           []);
   @override
   String toString() =>
@@ -27,15 +28,37 @@ class DataUpdateResponse extends Equatable {
   bool get stringify => true;
 }
 
-class DataRevisionUpdates extends Equatable {
+class DataRevisionUpdate extends Equatable {
   final String id;
-  final int revision;
-  const DataRevisionUpdates._(this.id, this.revision);
-  static DataRevisionUpdates fromJson(Map<String, dynamic> json) =>
-      DataRevisionUpdates._(json['id'], json['newRevision']);
+  final int revision, oldRevision;
+  const DataRevisionUpdate({this.id, this.revision, this.oldRevision});
+  static DataRevisionUpdate fromJson(Map<String, dynamic> json) =>
+      DataRevisionUpdate(
+        id: json['id'],
+        revision: json['newRevision'],
+        oldRevision: json['oldRevision'],
+      );
 
   @override
   List<Object> get props => [id, revision];
   @override
   bool get stringify => true;
+}
+
+class ResponseError {
+  final String code;
+  final String message;
+
+  ResponseError({
+    @required this.code,
+    @required this.message,
+  });
+
+  static ResponseError fromJson(Map<String, dynamic> data) {
+    return ResponseError(code: data['code'], message: data['message']);
+  }
+}
+
+class ErrorCodes {
+  static const String WRONG_REVISION = 'WHALE-0900';
 }
