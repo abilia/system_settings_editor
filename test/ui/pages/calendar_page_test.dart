@@ -8,6 +8,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/background/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
@@ -71,44 +72,45 @@ void main() {
         ),
       );
 
+  MockActivityDb mockActivityDb;
+  SettingsDb mockSettingsDb;
+  StreamController<DateTime> mockTicker;
+  ActivityResponse activityResponse = () => [];
+  final initialDay = DateTime(2020, 08, 05);
+
+  setUp(() {
+    tz.initializeTimeZones();
+    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
+    mockTicker = StreamController<DateTime>();
+    final mockTokenDb = MockTokenDb();
+    when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
+    final mockFirebasePushService = MockFirebasePushService();
+    when(mockFirebasePushService.initPushToken())
+        .thenAnswer((_) => Future.value('fakeToken'));
+    mockActivityDb = MockActivityDb();
+    when(mockActivityDb.getAllNonDeleted())
+        .thenAnswer((_) => Future.value(activityResponse()));
+    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    mockSettingsDb = MockSettingsDb();
+    GetItInitializer()
+      ..activityDb = mockActivityDb
+      ..userDb = MockUserDb()
+      ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialDay)
+      ..baseUrlDb = MockBaseUrlDb()
+      ..fireBasePushService = mockFirebasePushService
+      ..tokenDb = mockTokenDb
+      ..client = Fakes.client(activityResponse: activityResponse)
+      ..fileStorage = MockFileStorage()
+      ..userFileDb = MockUserFileDb()
+      ..settingsDb = mockSettingsDb
+      ..syncDelay = SyncDelays.zero
+      ..alarmScheduler = noAlarmScheduler
+      ..database = MockDatabase()
+      ..flutterTts = MockFlutterTts()
+      ..init();
+  });
   group('calendar page', () {
-    MockActivityDb mockActivityDb;
-    StreamController<DateTime> mockTicker;
-    ActivityResponse activityResponse = () => [];
-    final initialDay = DateTime(2020, 08, 05);
-
-    setUp(() async {
-      tz.initializeTimeZones();
-      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
-
-      mockTicker = StreamController<DateTime>();
-      final mockTokenDb = MockTokenDb();
-      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
-      final mockFirebasePushService = MockFirebasePushService();
-      when(mockFirebasePushService.initPushToken())
-          .thenAnswer((_) => Future.value('fakeToken'));
-      mockActivityDb = MockActivityDb();
-      when(mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(<Activity>[]));
-      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      GetItInitializer()
-        ..activityDb = mockActivityDb
-        ..userDb = MockUserDb()
-        ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialDay)
-        ..baseUrlDb = MockBaseUrlDb()
-        ..fireBasePushService = mockFirebasePushService
-        ..tokenDb = mockTokenDb
-        ..client = Fakes.client(activityResponse: activityResponse)
-        ..fileStorage = MockFileStorage()
-        ..userFileDb = MockUserFileDb()
-        ..settingsDb = MockSettingsDb()
-        ..syncDelay = SyncDelays.zero
-        ..alarmScheduler = noAlarmScheduler
-        ..database = MockDatabase()
-        ..flutterTts = MockFlutterTts()
-        ..init();
-    });
-
     testWidgets('New activity', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -268,46 +270,39 @@ void main() {
     });
   });
 
+  group('Choosen calendar setting', () {
+    testWidgets('no settings shows agenda', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byType(TimePillarCalendar), findsNothing);
+      expect(find.byType(Agenda), findsOneWidget);
+    });
+
+    testWidgets(
+        'timepillar is choosen in settings settings shows timepillar view',
+        (WidgetTester tester) async {
+      when(mockSettingsDb.preferedCalender).thenReturn(CalendarType.TIMEPILLAR);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byType(Agenda), findsNothing);
+      expect(find.byType(TimePillarCalendar), findsOneWidget);
+    });
+
+    testWidgets('when calendar is changed, settings i saved',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await goToTimePillar(tester);
+      verify(mockSettingsDb.setPreferedCalender(CalendarType.TIMEPILLAR));
+    });
+  });
+
   group('MemoPlanner settings', () {
     MemoplannerSettingBloc memoplannerSettingBlocMock;
 
-    MockActivityDb mockActivityDb;
-
-    StreamController<DateTime> mockTicker;
-    ActivityResponse activityResponse = () => [];
-    final initialDay = DateTime(2020, 08, 05);
-
     setUp(() {
       initializeDateFormatting();
-      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
-
-      mockTicker = StreamController<DateTime>();
-      final mockTokenDb = MockTokenDb();
-      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
-      final mockFirebasePushService = MockFirebasePushService();
-      when(mockFirebasePushService.initPushToken())
-          .thenAnswer((_) => Future.value('fakeToken'));
-      mockActivityDb = MockActivityDb();
-      when(mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(<Activity>[]));
-      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
       memoplannerSettingBlocMock = MockMemoplannerSettingsBloc();
-      GetItInitializer()
-        ..activityDb = mockActivityDb
-        ..userDb = MockUserDb()
-        ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialDay)
-        ..baseUrlDb = MockBaseUrlDb()
-        ..fireBasePushService = mockFirebasePushService
-        ..tokenDb = mockTokenDb
-        ..client = Fakes.client(activityResponse: activityResponse)
-        ..fileStorage = MockFileStorage()
-        ..userFileDb = MockUserFileDb()
-        ..settingsDb = MockSettingsDb()
-        ..genericDb = MockGenericDb()
-        ..syncDelay = SyncDelays.zero
-        ..alarmScheduler = noAlarmScheduler
-        ..database = MockDatabase()
-        ..init();
     });
 
     group('Color settings', () {
@@ -465,26 +460,19 @@ void main() {
     final title1 = 'fulldaytitle1';
     final title2 = 'fullday title 2';
     final title3 = 'full day title 3';
-    final date = DateTime(1994, 04, 04, 04, 04);
+    final date = initialDay.onlyDays();
 
     final day1Finder = find.text(title1);
     final day2Finder = find.text(title2);
     final day3Finder = find.text(title3);
     final cardFinder = find.byType(ActivityCard);
-    final infoFinder = find.byType(ActivityInfo);
     final showAllFullDayButtonFinder =
         find.byType(ShowAllFullDayActivitiesButton);
     final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
-    final editActivityPageFinder = find.byType(EditActivityPage);
     final editTitleFieldFinder = find.byKey(TestKey.editTitleTextFormField);
     final saveEditActivityButtonFinder =
         find.byKey(TestKey.finishEditActivityButton);
-    final activityBackButtonFinder = find.byKey(TestKey.activityBackButton);
-
     final editPictureFinder = find.byKey(TestKey.addPicture);
-    final selectPictureDialogFinder = find.byType(SelectPictureDialog);
-    final selectImageArchiveFinder = find.byIcon(AbiliaIcons.folder);
-    final imageArchiveFinder = find.byType(ImageArchive);
 
     setUp(() {
       final fullDayActivities = [
@@ -492,34 +480,10 @@ void main() {
         FakeActivity.fullday(date, title2),
         FakeActivity.fullday(date, title3),
       ];
-      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
-      final mockTokenDb = MockTokenDb();
-      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
-      final mockFirebasePushService = MockFirebasePushService();
-      when(mockFirebasePushService.initPushToken())
-          .thenAnswer((_) => Future.value('fakeToken'));
-      final mockActivityDb = MockActivityDb();
+      activityResponse = () => fullDayActivities;
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(fullDayActivities));
       when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      GetItInitializer()
-        ..activityDb = mockActivityDb
-        ..userDb = MockUserDb()
-        ..ticker = Ticker(
-          initialTime: date,
-          stream: StreamController<DateTime>().stream,
-        )
-        ..baseUrlDb = MockBaseUrlDb()
-        ..fireBasePushService = mockFirebasePushService
-        ..tokenDb = mockTokenDb
-        ..client = Fakes.client(activityResponse: () => fullDayActivities)
-        ..fileStorage = MockFileStorage()
-        ..userFileDb = MockUserFileDb()
-        ..settingsDb = MockSettingsDb()
-        ..syncDelay = SyncDelays.zero
-        ..alarmScheduler = noAlarmScheduler
-        ..database = MockDatabase()
-        ..init();
     });
 
     testWidgets('Show full days activity', (WidgetTester tester) async {
@@ -556,7 +520,7 @@ void main() {
       expect(day2Finder, findsNothing);
       expect(day3Finder, findsOneWidget);
       expect(cardFinder, findsNothing);
-      expect(infoFinder, findsOneWidget);
+      expect(find.byType(ActivityInfo), findsOneWidget);
     });
 
     testWidgets('Can show edit from full day list',
@@ -571,7 +535,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(day3Finder, findsOneWidget);
-      expect(editActivityPageFinder, findsOneWidget);
+      expect(find.byType(EditActivityPage), findsOneWidget);
     });
 
     testWidgets('Can edit from full day list', (WidgetTester tester) async {
@@ -605,7 +569,7 @@ void main() {
       await tester.enterText_(editTitleFieldFinder, newTitle);
       await tester.tap(saveEditActivityButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(activityBackButtonFinder);
+      await tester.tap(find.byKey(TestKey.activityBackButton));
       await tester.pumpAndSettle();
 
       expect(day1Finder, findsOneWidget);
@@ -627,7 +591,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(editPictureFinder);
       await tester.pumpAndSettle();
-      expect(selectPictureDialogFinder, findsOneWidget);
+      expect(find.byType(SelectPictureDialog), findsOneWidget);
     });
 
     testWidgets('Can show image archive from full day list',
@@ -642,9 +606,9 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(editPictureFinder);
       await tester.pumpAndSettle();
-      await tester.tap(selectImageArchiveFinder);
+      await tester.tap(find.byIcon(AbiliaIcons.folder));
       await tester.pumpAndSettle();
-      expect(imageArchiveFinder, findsOneWidget);
+      expect(find.byType(ImageArchive), findsOneWidget);
     });
   });
 }

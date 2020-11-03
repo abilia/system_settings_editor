@@ -180,7 +180,7 @@ class Calendars extends StatelessWidget {
                         fullDayActivities: fullDayActivities,
                         day: state.day,
                       ),
-                    if (calendarViewState.currentView == CalendarViewType.LIST)
+                    if (calendarViewState.currentView == CalendarType.LIST)
                       Expanded(
                         child: Agenda(
                           state: state,
@@ -208,7 +208,7 @@ class Calendars extends StatelessWidget {
 }
 
 class CalendarBottomBar extends StatelessWidget {
-  final CalendarViewType currentView;
+  final CalendarType currentView;
   final DateTime day;
   final Function goToNow;
   final barHeigt = 64.0, calendarSwitchButtonWidth = 72.0;
@@ -236,14 +236,14 @@ class CalendarBottomBar extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                 child: Row(children: <Widget>[
                   Icon(
-                    currentView == CalendarViewType.LIST
+                    currentView == CalendarType.LIST
                         ? AbiliaIcons.list_order
                         : AbiliaIcons.timeline,
                   ),
                   Icon(AbiliaIcons.navigation_down),
                 ]),
                 onPressed: () async {
-                  final result = await showViewDialog<CalendarViewType>(
+                  final result = await showViewDialog<CalendarType>(
                     context: context,
                     builder: (context) => ChangeCalendarDialog(
                       currentViewType: currentView,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ChangeCalendarDialog extends StatelessWidget {
-  final CalendarViewType currentViewType;
+  final CalendarType currentViewType;
 
   const ChangeCalendarDialog({Key key, @required this.currentViewType})
       : super(key: key);
@@ -29,9 +29,9 @@ class ChangeCalendarDialog extends StatelessWidget {
                       translate.timePillarView,
                       style: abiliaTheme.textTheme.bodyText1,
                     ),
-                    value: CalendarViewType.TIMEPILLAR,
+                    value: CalendarType.TIMEPILLAR,
                     groupValue: currentViewType,
-                    trailing: currentViewType != CalendarViewType.TIMEPILLAR
+                    trailing: currentViewType != CalendarType.TIMEPILLAR
                         ? PickField.trailingArrow
                         : null,
                     onChanged: Navigator.of(context).maybePop,
@@ -60,9 +60,9 @@ class ChangeCalendarDialog extends StatelessWidget {
                 translate.listView,
                 style: abiliaTheme.textTheme.bodyText1,
               ),
-              value: CalendarViewType.LIST,
+              value: CalendarType.LIST,
               groupValue: currentViewType,
-              trailing: currentViewType != CalendarViewType.LIST
+              trailing: currentViewType != CalendarType.LIST
                   ? PickField.trailingArrow
                   : null,
               onChanged: Navigator.of(context).maybePop,

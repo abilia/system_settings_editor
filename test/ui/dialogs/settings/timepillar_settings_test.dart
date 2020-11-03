@@ -40,7 +40,7 @@ void main() {
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
     mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
+    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
 
     GetItInitializer()
       ..activityDb = mockActivityDb
@@ -93,7 +93,7 @@ void main() {
 
   testWidgets('Edge preview shows', (WidgetTester tester) async {
     // Arrange - set Edge as default
-    when(mockSettingsDb.getDotsInTimepillar()).thenReturn(false);
+    when(mockSettingsDb.dotsInTimepillar).thenReturn(false);
 
     // Act - Go to TimeIllustation settings
     await tester.goToTimeIllustation();

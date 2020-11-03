@@ -45,7 +45,7 @@ void main() {
       );
 
   testWidgets('Menu page shows', (WidgetTester tester) async {
-    when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
+    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
     await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
     await tester.pumpAndSettle();
     expect(find.byType(LogoutPickField), findsOneWidget);
@@ -56,7 +56,7 @@ void main() {
   });
 
   testWidgets('tts', (WidgetTester tester) async {
-    when(mockSettingsDb.getTextToSpeech()).thenReturn(true);
+    when(mockSettingsDb.textToSpeech).thenReturn(true);
     final mockUserRepository = MockUserRepository();
     final name = 'Slartibartfast', username = 'Zaphod Beeblebrox';
     when(mockUserRepository.me(any)).thenAnswer((_) => Future.value(User(
@@ -67,7 +67,7 @@ void main() {
         type: '1',
         name: name)));
 
-    when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
+    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
     when(mockAuthenticationBloc.state).thenReturn(
       Authenticated(
         token: 'token',
@@ -88,7 +88,7 @@ void main() {
   });
 
   testWidgets('Tts info page', (WidgetTester tester) async {
-    when(mockSettingsDb.getTextToSpeech()).thenReturn(true);
+    when(mockSettingsDb.textToSpeech).thenReturn(true);
     await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(InfoButton));
@@ -99,7 +99,7 @@ void main() {
   });
 
   testWidgets('Tts switched off', (WidgetTester tester) async {
-    when(mockSettingsDb.getTextToSpeech()).thenReturn(false);
+    when(mockSettingsDb.textToSpeech).thenReturn(false);
     await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(InfoButton));

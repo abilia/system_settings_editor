@@ -55,8 +55,8 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
 
     await scheduleAlarmNotifications(
       activities,
-      settingsDb.getLanguage(),
-      settingsDb.getAlwaysUse24HourFormat(),
+      settingsDb.language,
+      settingsDb.alwaysUse24HourFormat,
       fileStorage,
     );
 
