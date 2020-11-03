@@ -19,20 +19,30 @@ import 'package:intl/intl.dart';
 
 export 'package:logging/logging.dart';
 
-enum LoggingType { File, Print }
+enum LoggingType { File, Print, Analytic }
 
 class SeagullLogger {
   final UserDb userDb;
   File _logFile;
   final _uploadLock = Lock();
   final _logFileLock = Lock();
-  final LoggingType loggingType;
-  StreamSubscription loggingSubscription;
+  final Set<LoggingType> loggingType;
+  List<StreamSubscription> loggingSubscriptions = [];
   final _log = Logger((SeagullLogger).toString());
+
+  bool get fileLogging => loggingType.contains(LoggingType.File);
+  bool get printLogging => loggingType.contains(LoggingType.Print);
+  bool get analyticLogging => loggingType.contains(LoggingType.Analytic);
 
   SeagullLogger({
     this.userDb,
-    this.loggingType = kReleaseMode ? LoggingType.File : LoggingType.Print,
+    this.loggingType = const {
+      if (kReleaseMode) ...{
+        LoggingType.File,
+        LoggingType.Analytic,
+      } else
+        LoggingType.Print
+    },
   });
 
   static const LATEST_UPLOAD_KEY = 'LATEST-LOG-UPLOAD-MILLIS';
@@ -41,10 +51,10 @@ class SeagullLogger {
   static const LOG_ARCHIVE_PATH = 'logarchive';
 
   Future<void> initLogging({
-    bool initAppcenter = kReleaseMode,
+    bool initAnalitics = kReleaseMode,
     Level level = kReleaseMode ? Level.FINE : Level.ALL,
   }) async {
-    if (initAppcenter) {
+    if (initAnalitics) {
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
       final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
       await AppCenter.startAsync(
@@ -52,37 +62,49 @@ class SeagullLogger {
         appSecretIOS: appId,
       );
       await AppCenter.configureDistributeDebugAsync(enabled: false);
+    } else {
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
     }
 
     Bloc.observer = BlocLoggingObserver();
     Logger.root.level = level;
-    if (loggingType == LoggingType.File) {
+
+    if (fileLogging) {
       await _initFileLogging();
-    } else {
+    }
+    if (printLogging) {
       _initPrintLogging();
+    }
+    if (analyticLogging) {
+      _initAnalyticsLogging();
     }
   }
 
   Future<void> cancelLogging() async {
-    if (loggingSubscription != null) {
-      await loggingSubscription.cancel();
+    if (loggingSubscriptions.isNotEmpty) {
+      await loggingSubscriptions.forEach(
+        (loggingSubscription) => loggingSubscription.cancel(),
+      );
     }
   }
 
   Future<void> maybeUploadLogs() async {
-    await _uploadLock.synchronized(() async {
-      if (loggingType == LoggingType.File &&
-          DateTime.now()
+    if (fileLogging) {
+      await _uploadLock.synchronized(
+        () async {
+          if (DateTime.now()
               .subtract(UPLOAD_INTERVAL)
               .isAfter(await _getLastUploadDate())) {
-        _log.info('Time to upload logs to backend');
-        await sendLogsToBackend();
-      }
-    });
+            _log.info('Time to upload logs to backend');
+            await sendLogsToBackend();
+          }
+        },
+      );
+    }
   }
 
   Future<void> sendLogsToBackend() async {
-    if (loggingType == LoggingType.File) {
+    if (fileLogging) {
       final time = DateFormat('yyyyMMddHHmm').format(DateTime.now());
       final logArchiveDir = Directory(await _logArchivePath);
       await logArchiveDir.create(recursive: true);
@@ -105,34 +127,64 @@ class SeagullLogger {
   }
 
   void _initPrintLogging() {
-    loggingSubscription = Logger.root.onRecord.listen((record) {
-      print(
-          '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
-      if (record?.error != null) {
-        print(record.error);
-      }
-      if (record?.stackTrace != null) {
-        print(record.stackTrace);
-      }
-    });
+    loggingSubscriptions.add(
+      Logger.root.onRecord.listen(
+        (record) {
+          print(
+              '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
+          if (record?.error != null) {
+            print(record.error);
+          }
+          if (record?.stackTrace != null) {
+            print(record.stackTrace);
+          }
+        },
+      ),
+    );
+  }
+
+  void _initAnalyticsLogging() {
+    loggingSubscriptions.add(
+      Logger.root.onRecord.listen(
+        (record) {
+          if (record.level > Level.WARNING) {
+            final message =
+                '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}';
+            if (record?.error != null) {
+              FirebaseCrashlytics.instance.recordError(
+                record.error,
+                record.stackTrace,
+                reason: message,
+              );
+            } else {
+              FirebaseCrashlytics.instance.log(message);
+            }
+          }
+        },
+      ),
+    );
   }
 
   Future<void> _initFileLogging() async {
     final path = await _documentsDir;
     _logFile = File('$path/$LOG_FILE_NAME');
 
-    loggingSubscription = Logger.root.onRecord.listen((record) async {
-      final stringBuffer = StringBuffer();
-      stringBuffer.writeln(
-          '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
-      if (record?.error != null) {
-        stringBuffer.writeln(record.error);
-      }
-      if (record?.stackTrace != null) {
-        stringBuffer.writeln(record.stackTrace);
-      }
-      await _writeToLogFile(stringBuffer.toString());
-    });
+    loggingSubscriptions.add(
+      Logger.root.onRecord.listen(
+        (record) async {
+          final stringBuffer = StringBuffer();
+          stringBuffer.writeln(
+              '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
+          if (record?.error != null) {
+            stringBuffer.writeln(record.error);
+          }
+          if (record?.stackTrace != null) {
+            stringBuffer.writeln(record.stackTrace);
+          }
+          await _writeToLogFile(stringBuffer.toString());
+        },
+      ),
+    );
   }
 
   Future<DateTime> _getLastUploadDate() async {
