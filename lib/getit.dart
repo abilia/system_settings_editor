@@ -1,7 +1,6 @@
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
@@ -31,12 +30,6 @@ class GetItInitializer {
 
   Ticker _ticker;
   set ticker(Ticker ticker) => _ticker = ticker;
-
-  ReplaySubject<String> _selectedNotificationStreamGetter;
-  set notificationStreamGetter(
-          ReplaySubject<String> selectedNotificationStreamGetterFunction) =>
-      _selectedNotificationStreamGetter =
-          selectedNotificationStreamGetterFunction;
 
   AlarmScheduler _alarmScheduler;
   set alarmScheduler(AlarmScheduler alarmScheduler) =>
@@ -100,8 +93,6 @@ class GetItInitializer {
       ..registerSingleton<SeagullLogger>(
           _seagullLogger ?? SeagullLogger(userDb: userDb))
       ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb())
-      ..registerSingleton<ReplaySubject<String>>(
-          _selectedNotificationStreamGetter ?? selectNotificationSubject)
       ..registerSingleton<AlarmScheduler>(
           _alarmScheduler ?? scheduleAlarmNotificationsIsolated)
       ..registerSingleton<Ticker>(_ticker ?? Ticker())

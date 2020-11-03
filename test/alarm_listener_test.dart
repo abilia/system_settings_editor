@@ -3,25 +3,21 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:rxdart/rxdart.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/pages/all.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import 'mocks.dart';
 
 void main() {
   StreamController<DateTime> mockTicker;
-  ReplaySubject<String> mockNotificationSelected;
   final mockActivityDb = MockActivityDb();
   final getItInitializer = GetItInitializer();
   final translater = Locales.language.values.first;
@@ -40,11 +36,11 @@ void main() {
     activityWithAlarmday,
   ).toJson());
 
-  setUp(() {
+  setUp(() async {
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
     mockTicker = StreamController<DateTime>();
-    mockNotificationSelected = ReplaySubject<String>();
+    await clearNotificationSubject();
 
     final mockTokenDb = MockTokenDb();
     when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
@@ -58,6 +54,11 @@ void main() {
         .thenAnswer((_) => Future.value(response));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
+    final db = MockDatabase();
+    final mockBatch = MockBatch();
+    when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
+    when(db.batch()).thenReturn(mockBatch);
+
     getItInitializer
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
@@ -66,14 +67,15 @@ void main() {
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
       ..httpClient = Fakes.client(activityResponse: () => response)
-      ..notificationStreamGetter = mockNotificationSelected
       ..fileStorage = MockFileStorage()
       ..userFileDb = MockUserFileDb()
       ..settingsDb = MockSettingsDb()
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
-      ..database = MockDatabase()
+      ..database = db
       ..alarmNavigator = AlarmNavigator()
+      ..sortableDb = MockSortableDb()
+      ..genericDb = MockGenericDb()
       ..init();
   });
 
@@ -186,7 +188,7 @@ void main() {
       // Assert
       expect(find.byType(NavigatableAlarmPage), findsNothing);
       // Act
-      mockNotificationSelected.add(payloadSerial);
+      selectNotificationSubject.add(payloadSerial);
       await tester.pumpAndSettle();
 
       // Assert
@@ -197,7 +199,7 @@ void main() {
         (WidgetTester tester) async {
       // Act
       mockTicker.add(twoHoursAfter);
-      mockNotificationSelected.add(payloadSerial);
+      selectNotificationSubject.add(payloadSerial);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
@@ -205,12 +207,51 @@ void main() {
       expect(find.byType(NavigatableAlarmPage), findsOneWidget);
     });
 
+    testWidgets('BUG-380 NotificationSubject is cleared on logout',
+        (WidgetTester tester) async {
+      // Act
+      mockTicker.add(twoHoursAfter);
+      selectNotificationSubject.add(payloadSerial);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+      expect(selectNotificationSubject, emits(payloadSerial));
+
+      // Act logout
+      await tester.tap(find.byKey(TestKey.appBarCloseButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.menu));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(LogoutPickField));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(LogoutButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(LoginPage), findsOneWidget);
+
+      expect(selectNotificationSubject.values, isEmpty);
+
+      // Act Login
+      await tester.enterText_(
+          find.byKey(TestKey.passwordInput), 'secretPassword');
+      await tester.enterText_(
+          find.byKey(TestKey.userNameInput), Fakes.username);
+      await tester.pump();
+      await tester.tap(find.byKey(TestKey.loggInButton));
+      await tester.pumpAndSettle();
+
+      // Assert no NavigatableAlarmPage
+      expect(find.byType(NavigatableAlarmPage), findsNothing);
+      expect(find.byType(CalendarPage), findsOneWidget);
+    });
+
     testWidgets('Alarms can be checked when notification selected',
         (WidgetTester tester) async {
       // Arrange
       mockTicker.add(twoHoursAfter);
       await tester.pumpWidget(App());
-      mockNotificationSelected.add(payloadSerial);
+      selectNotificationSubject.add(payloadSerial);
       await tester.pumpAndSettle();
 
       // Assert -- Alarm is on screen and alarm is checkable
@@ -332,7 +373,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm
-      mockNotificationSelected.add(startTimeActivity1NotificationPayload);
+      selectNotificationSubject.add(startTimeActivity1NotificationPayload);
       await tester.pumpAndSettle();
 
       expect(alarmScreenFinder, findsOneWidget);
@@ -361,7 +402,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm
-      mockNotificationSelected.add(startTimeActivity1NotificationPayload);
+      selectNotificationSubject.add(startTimeActivity1NotificationPayload);
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should now be the start time alarm for activity1
@@ -437,7 +478,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm
-      mockNotificationSelected.add(startTimeActivity1NotificationPayload);
+      selectNotificationSubject.add(startTimeActivity1NotificationPayload);
       await tester.pumpAndSettle();
 
       // Expect - the alarm should be the start time alarm for activity 1
@@ -566,7 +607,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Act
-        mockNotificationSelected.add(payload);
+        selectNotificationSubject.add(payload);
         await tester.pumpAndSettle();
 
         // Assert
@@ -602,7 +643,7 @@ void main() {
         expect(find.text(reminder.activity.title), findsOneWidget);
 
         // Act -- notification tapped
-        mockNotificationSelected.add(payload);
+        selectNotificationSubject.add(payload);
         await tester.pumpAndSettle();
 
         // Assert -- new alarm page
@@ -658,9 +699,9 @@ void main() {
         final payload4 = json.encode(alarm4Json);
 
         // Arrange
-        mockNotificationSelected.add(payload2);
-        mockNotificationSelected.add(payload3);
-        mockNotificationSelected.add(payload4);
+        selectNotificationSubject.add(payload2);
+        selectNotificationSubject.add(payload3);
+        selectNotificationSubject.add(payload4);
         await tester.pumpWidget(App(notificationPayload: alarm1));
         await tester.pumpAndSettle();
 

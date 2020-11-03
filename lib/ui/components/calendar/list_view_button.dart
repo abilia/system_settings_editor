@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 class ListViewButton extends StatelessWidget {
   final Function onPressed;

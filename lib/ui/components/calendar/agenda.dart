@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/all.dart';
 
 class Agenda extends StatefulWidget {
   static const topPadding = 60.0, bottomPadding = 125.0;

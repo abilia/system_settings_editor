@@ -3,11 +3,8 @@ import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 class LogoutPage extends StatelessWidget {
   @override
@@ -32,7 +29,15 @@ class LogoutPage extends StatelessWidget {
   }
 }
 
-class ProfilePictureNameAndEmail extends StatelessWidget {
+class ProfilePictureNameAndEmail extends StatefulWidget {
+  @override
+  _ProfilePictureNameAndEmailState createState() =>
+      _ProfilePictureNameAndEmailState();
+}
+
+class _ProfilePictureNameAndEmailState
+    extends State<ProfilePictureNameAndEmail> {
+  bool showVersion = false;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
@@ -43,8 +48,8 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
         builder: (context, AsyncSnapshot<User> userSnapshot) => Column(
           children: <Widget>[
             GestureDetector(
-              onDoubleTap: () =>
-                  DatabaseRepository.logAll(GetIt.I<Database>()),
+              onLongPress: () => DatabaseRepository.logAll(GetIt.I<Database>()),
+              onDoubleTap: () => setState(() => showVersion = !showVersion),
               child: ProfilePicture(
                   state is AuthenticationInitialized
                       ? state.userRepository.baseUrl
@@ -70,6 +75,7 @@ class ProfilePictureNameAndEmail extends StatelessWidget {
                       .copyWith(color: AbiliaColors.black75),
                 ),
               ),
+            if (showVersion) VersionInfo(showUserId: true),
           ],
         ),
       ),
@@ -91,8 +97,7 @@ class LogoutButton extends StatelessWidget {
           key: TestKey.loggInButton,
           child: Text(
             text,
-            style:
-                theme.textTheme.subtitle1.copyWith(color: AbiliaColors.white),
+            style: theme.textTheme.button,
           ),
           onPressed: () {
             BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());

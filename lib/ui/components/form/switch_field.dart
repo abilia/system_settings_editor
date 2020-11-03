@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 
 class SwitchField extends StatelessWidget {
   final ValueChanged<bool> onChanged;

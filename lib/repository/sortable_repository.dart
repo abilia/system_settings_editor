@@ -30,8 +30,8 @@ class SortableRepository extends DataRepository<Sortable> {
     _log.fine('loadning sortables...');
     return synchronized(() async {
       try {
-        final fetchedSortables =
-            await _fetchSortables(await sortableDb.getLastRevision());
+        final revision = await sortableDb.getLastRevision();
+        final fetchedSortables = await _fetchSortables(revision);
         _log.fine('sortables ${fetchedSortables.length} loaded');
         await sortableDb.insert(fetchedSortables);
       } catch (e) {

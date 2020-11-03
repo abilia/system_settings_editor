@@ -4,9 +4,7 @@ import 'package:flutter/rendering.dart';
 
 import 'dart:ui' show lerpDouble;
 
-import 'package:seagull/ui/colors.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class SubHeading extends StatelessWidget {

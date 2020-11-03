@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
@@ -16,14 +15,12 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final Database database;
   final BaseUrlDb baseUrlDb;
-  final CancelNotificationsFunction cancleAllNotificationsFunction;
-  final SeagullLogger seagullLogger;
+  final FutureOr<void> Function() onLogout;
 
   AuthenticationBloc({
     @required this.database,
     @required this.baseUrlDb,
-    @required this.cancleAllNotificationsFunction,
-    @required this.seagullLogger,
+    this.onLogout,
   }) : super(AuthenticationUninitialized());
 
   @override
@@ -49,7 +46,7 @@ class AuthenticationBloc
       if (event is LoggedIn) {
         yield AuthenticationLoading.fromInitilized(state);
         await repo.persistToken(event.token);
-        yield* _tryGetUser(repo, event.token);
+        yield* _tryGetUser(repo, event.token, newlyLoggedIn: true);
       } else if (event is LoggedOut) {
         yield AuthenticationLoading.fromInitilized(state);
         yield* _logout(repo, loggedOutReason: event.loggedOutReason);
@@ -58,10 +55,18 @@ class AuthenticationBloc
   }
 
   Stream<AuthenticationState> _tryGetUser(
-      UserRepository repo, String token) async* {
+    UserRepository repo,
+    String token, {
+    bool newlyLoggedIn = false,
+  }) async* {
     try {
       final user = await repo.me(token);
-      yield Authenticated(token: token, userId: user.id, userRepository: repo);
+      yield Authenticated(
+        token: token,
+        userId: user.id,
+        userRepository: repo,
+        newlyLoggedIn: newlyLoggedIn,
+      );
     } on UnauthorizedException {
       yield* _logout(
         repo,
@@ -78,13 +83,15 @@ class AuthenticationBloc
     String token,
     LoggedOutReason loggedOutReason = LoggedOutReason.LOG_OUT,
   }) async* {
-    await seagullLogger.sendLogsToBackend();
     await repo.logout(token);
     await DatabaseRepository.clearAll(database);
-    await cancleAllNotificationsFunction();
-    yield Unauthenticated.fromInitilized(
-      state,
-      loggedOutReason: loggedOutReason,
-    );
+    try {
+      await onLogout?.call();
+    } finally {
+      yield Unauthenticated.fromInitilized(
+        state,
+        loggedOutReason: loggedOutReason,
+      );
+    }
   }
 }

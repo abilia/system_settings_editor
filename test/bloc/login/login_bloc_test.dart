@@ -22,8 +22,6 @@ void main() {
       authenticationBloc = AuthenticationBloc(
         database: MockDatabase(),
         baseUrlDb: MockBaseUrlDb(),
-        seagullLogger: MockSeagullLogger(),
-        cancleAllNotificationsFunction: () => Future.value(),
       );
       mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
@@ -104,6 +102,7 @@ void main() {
             token: loginToken,
             userId: loggedInUserId,
             userRepository: mockUserRepository,
+            newlyLoggedIn: true,
           ),
         ),
       );
@@ -126,8 +125,6 @@ void main() {
       authenticationBloc = AuthenticationBloc(
         database: MockDatabase(),
         baseUrlDb: MockBaseUrlDb(),
-        seagullLogger: MockSeagullLogger(),
-        cancleAllNotificationsFunction: () => Future.value(),
       )..add(AppStarted(mockedUserRepository));
       mockFirebasePushService = MockFirebasePushService();
       loginBloc = LoginBloc(
