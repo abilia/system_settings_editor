@@ -131,9 +131,12 @@ class UserRepository extends Repository {
     }
   }
 
-  Future<void> logout([String token]) async {
+  Future logout([String token]) async {
+    _log.fine('unregister Client');
     await _unregisterClient(token);
+    _log.fine('deleting token');
     await tokenDb.delete();
+    _log.fine('deleting user');
     await userDb.deleteUser();
   }
 

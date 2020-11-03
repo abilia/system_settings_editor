@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
+import 'package:seagull/db/all.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -120,7 +121,8 @@ class DatabaseRepository {
 
   static Future logAll(Database db) async {
     void logTable(List<Map<String, dynamic>> calendar) {
-      _log.info(calendar.first.keys.join('\t'));
+      if (calendar.isEmpty) return;
+      _log.info(calendar.first.keys.join('\t\t'));
       calendar.forEach((element) {
         _log.info(element.values.join('\t'));
       });
@@ -140,13 +142,13 @@ class DatabaseRepository {
     logTable(sortables);
   }
 
-  static Future clearAll(Database db) async {
-    final batch = db.batch();
-    batch.delete(CALENDAR_TABLE_NAME);
-    batch.delete(SORTABLE_TABLE_NAME);
-    batch.delete(USER_FILE_TABLE_NAME);
-    batch.delete(GENERIC_TABLE_NAME);
-    await batch.commit();
+  static Future clearAll(Database db) {
+    final batch = db.batch()
+      ..delete(CALENDAR_TABLE_NAME)
+      ..delete(SORTABLE_TABLE_NAME)
+      ..delete(USER_FILE_TABLE_NAME)
+      ..delete(GENERIC_TABLE_NAME);
+    return batch.commit();
   }
 
   @visibleForTesting

@@ -17,7 +17,14 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
 // Stream is created so that app can respond to notification-selected events since the plugin is initialised in the main function
-final ReplaySubject<String> selectNotificationSubject = ReplaySubject<String>();
+ReplaySubject<String> get selectNotificationSubject =>
+    _selectNotificationSubject;
+ReplaySubject<String> _selectNotificationSubject = ReplaySubject<String>();
+
+Future<void> clearNotificationSubject() async {
+  await _selectNotificationSubject.close();
+  _selectNotificationSubject = ReplaySubject<String>();
+}
 
 final _log = Logger('NotificationIsolate');
 
@@ -218,7 +225,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     notificationChannel.id,
     notificationChannel.name,
     notificationChannel.description,
-    groupKey: activity.id,
+    groupKey: activity.seriesId,
     playSound: alarm.sound,
     importance: Importance.max,
     priority: Priority.high,

@@ -13,9 +13,8 @@ import 'all.dart';
 // Don't forget to register new plugin used in background
 // in android/app/src/main/kotlin/com/abilia/seagull/Application.kt
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
-  final userDb = UserDb();
-  final logger = SeagullLogger(userDb: userDb);
-  await logger.initLogging(initAppcenter: false);
+  final logger = SeagullLogger();
+  await logger.initLogging(initAnalitics: false);
   final log = Logger('BackgroundMessageHandler');
 
   try {
@@ -24,7 +23,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
     await configureLocalTimeZone();
     final baseUrl = await BaseUrlDb().getBaseUrl();
     final client = Client();
-    final user = await userDb.getUser();
+    final user = await UserDb().getUser();
     final token = await TokenDb().getToken();
     final database = await DatabaseRepository.createSqfliteDb();
 
