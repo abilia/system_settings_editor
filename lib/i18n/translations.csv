@@ -1,145 +1,167 @@
-_id_;en;sv
-userName;Username / Email;Användarnamn
-password;Password;Lösenord
-infoText1;Use your ;Använd ditt 
-infoText2; account to Log in;-konto för att logga in
-login;Log in;Logga in
-logout;Log out;Logga ut
-menu;Menu;Meny
-close;Close;Stäng
-wrongCredentials;Your username/email or password is not correct. Please, try another one.;Fel användarnamn eller lösenord
-noLicense;This account is missing a valid license. You're therefore unable to log in.;Det här kontot saknar giltig licens. Du kan därför inte logga in.
-noConnection;No contact with myAbilia. Check your Internet connection.;Ingen kontakt med myAbilia. Kontrollera din internetanslutning.
-now;now;nu
-fullDay;All day;Heldag
-reminders;Reminders;Påminnelser
-alarm;Alarm;Larm
-endsNow;Ends now;Slutar nu
-startsNow;Starts now;Börjar nu
-noActivities;No activities for today;Inga aktiviteter idag
-timePillarView;Timepillar view;Tidspelare
-listView;List view;Listvy
-left;Left;Vänster
-right;Right;Höger
-check;Check;Kvittera
-uncheck;Uncheck;Ångra
-newActivity;New activity;Ny aktivitet
-editActivity;Edit activity;Ändra aktivitet
-category;Category;Kategori
-noColor;No color;Ingen färg
-selectAlarmType;Select alarm type;Välj typ av larm
-alarmAndVibration;Alarm + vibration;Larm + vibration
-vibration;Vibration;Vibration
-noAlarm;No alarm;Inget larm
-alarmOnlyAtStartTime;Alarm only at Start time;Larm endast vid starttid
-checkable;Checkable;Kvittera
-deleteAfter;Delete after;Ta bort efteråt
-availableFor;Available for;Tillgänglig för
-activityAvailableFor;Activity available for;Aktivitet tillgänglig för
-meAndSupportPersons;Me and support persons;Mig och stödpersoner
-onlyMe;Only me;Bara mig
-name;Name;Namn
-picture;Picture;Bild
-date;Date;Datum
-today;Today;Idag
-startTime;Start time;Starttid
-endTime;End time;Sluttid
-noEndTime;No end time;Ingen sluttid
-calendarView;Calendar view;Kalendervy
-selectPicture;Select picture;Välj bild
-imageArchive;Image archive;Bildarkiv
-myPhotos;My photos;Mina bilder
-takeNewPhoto;Take new photo;Ta bild
-days;days;dagar
-day;day;dag
-hours;hours;timmar
-hour;hour;timme
-h;h;t
-minutes;minutes;minuter
-minute;minute;minut
-min;min;min
-am;AM;fm
-pm;PM;em
-remove;Remove;Ta bort
-deleteActivity;Delete activity?;Ta bort aktivitet?
-removePicture;Remove picture;Ta bort bild
-appyTo;Apply to;Ändra på
-onlyThisDay;Only this day;Endast denna dag
-allDays;All days;Alla dagar
-thisDayAndForward;This day and forward;Denna dag och framåt
-settings;Settings;Inställningar
-checkActivityQuestion;Completed?;Klar?
-unCheckActivityQuestion;Du you want to uncheck?;Ta bort klarmarkering?
-inTimePre;in;om
-timeAgoPre;&empty&;för
-timeAgoPost;ago;sen
-missingTitleOrImageAndStartTime;Your activity should contain an image or name and start time.;Aktiviteten måste ha ett namn eller en bild och en starttid.
-missingTitleOrImage;Your activity should contain an image or name.;Aktiviteten måste ha ett namn eller en bild.
-missingStartTime;Your activity should contain a start time.;Aktiviteten måste ha en starttid.
-startTimeBeforeNow;You've selected a start time that is before now. That is not allowed.;Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.
-infoType;Info type;Kopplade funktioner
-selectInfoType;Select info type;Välj typ av Info
-infoTypeNone;- None -;- Ingen -
-infoTypeChecklist;Checklist;Checklista
-infoTypeNote;Note;Anteckning
-typeSomething;Type something…;Skriv något…
-clear;Clear;Rensa
-timepillarSettings;Timepillar settings;Inställningar för tidspelare
-activityDuration;Activity duration;Visa tid som
-dots;Dots;Prickar
-selectFromLibrary;Select from library;Välj från bibliotek
-addNew;Add new;Lägg till ny
-task;Task;Uppgift
-edge;Edge;Flärp
-preview;Preview;Förhandsgranskning
-checklistDoneInfo;All checklist tasks in your activity are completed. Do you want to complete the activity?;Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?
-recurrence;Recurrence;Upprepning
-once;Once;Enstaka
-weekly;Weekly;Veckovis
-monthly;Monthly;Måndadsvis
-yearly;Yearly;Årsvis
-noEndDate;No end date;Inget slutdatum
-endDate;End date;Slutdatum
-mo;Mo;Må
-tu;Tu;Ti
-we;We;On
-th;Th;To
-fr;Fr;Fr
-sa;Sa;Lö
-su;Su;Sö
-licenseExpired;License is expired;Licensen har gått ut
-licenseExpiredMessage;You have been logged out because your MEMOplanner license expired. Please, extend your license to continue using this app.;Du har blivit utloggad eftersom din licens för MEMOplanner har gått ut. Du måste förlänga licensen för att fortsätta använda den här appen.
-morning;morning;morgon
-forenoon;forenoon;förmiddag
-afternoon;afternoon;eftermiddag
-evening;evening;kväll
-night;night;natt
-textToSpeech;Text to speech;Text till tal
-longpressToSpeak;Long press to speak;Tryck länge för tal
-everyOtherWeek;Every other week;Varannan vecka
-recurringDataEmptyErrorMessage;You need to select at least one day;En återkommande aktivitet måste ha en vald upprepning
-longPressInfoText;Make a long press on any text or object with text to speak it loudly;Tryck länge på någon text för att få den uppläst
-lunch;Lunch;Lunch
-cancel;Cancel;Avbryt
-permissions;Permissions;Behörigheter
-notifications;Notifications;Notiser
-accessToPhotos;Access to Photos;Tillgång till bilder
-accessToCamera;Access to Camera;Tillgång till kameran
-allowNotifications;Allow notifications;Tillåt notiser
-allowNotificationsDescription1;Allow notifications to be able to get alarms and reminders from activities. You can do that from the ;Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån 
-settingsLink;settings;inställningar
-turnOffNotifications;Turn off notifications?;Stäng av notiser?
-turnOffNotificationsBody;You will no longer be able to get alarms and reminders from activities.;Du kommer inte längre kunna få alarm och notiser för aktiviteter.
-notificationsWarningHintText;Allow notifications to be able to get alarms and reminders from activities.;Tillåt notiser för att få larm och påminnelser för aktiviteter.
-notificationsWarningText;Allow notifications from the settings to be able to receive alarms and reminders.;Tillåt notiser från inställningar för att få larm och påminnelser.
-fromBasicActivity;From basic activity;Från basaktivitet
-createActivity;Create activity;Skapa aktivitet
-basicActivities;Basic activities;Basaktiviteter
-fullScreenAlarm;Full screen alarm;Helskärmslarm
-redirectToAndroidSettings;You will be redirect to the Android settings.;Du kommer att omdirigeras till Android-inställningarna.
-fullScreenAlarmInfo;Allow this permission to be able to get full screen alarm of activities;Tillåt denna behörighet för att kunna få helskärmslarm om aktiviteter
-allow;Allow;Tillåt
-previewActivityTitle;Erik's birthday party;Eriks födelsedagskalas
-allowAccessPhotosBody;Allow access to photos to be able to use photos from the device.;Tillåt behörighet till bilder för att ha möjlighet att använda bilder från enheten.
-allowAccessCameraBody;Allow access to camera to be able to take a photo from the device.;Tillåt behörighet till kameran för att ha möjlighet att ta bilder från enheten.
-allowAccessBody2; You can always do that later from the ; Du kan alltid göra det senare från 
+_id_	en	sv
+### Login page
+userName	Username / Email	Användarnamn
+password	Password	Lösenord
+infoText1	Use your 	Använd ditt 
+infoText2	 account to Log in	-konto för att logga in
+login	Log in	Logga in
+logout	Log out	Logga ut
+wrongCredentials	Your username/email or password is not correct. Please, try another one.	Fel användarnamn eller lösenord
+noConnection	No contact with myAbilia. Check your Internet connection.	Ingen kontakt med myAbilia. Kontrollera din internetanslutning.
+
+### License
+noLicense	This account is missing a valid license. You're therefore unable to log in.	Det här kontot saknar giltig licens. Du kan därför inte logga in.
+licenseExpired	License is expired	Licensen har gått ut
+licenseExpiredMessage	You have been logged out because your MEMOplanner license expired. Please, extend your license to continue using this app.	Du har blivit utloggad eftersom din licens för MEMOplanner har gått ut. Du måste förlänga licensen för att fortsätta använda den här appen.
+
+### Time releted
+fullDay	All day	Heldag
+morning	morning	morgon
+forenoon	forenoon	förmiddag
+lunch	Lunch	Lunch
+afternoon	afternoon	eftermiddag
+evening	evening	kväll
+night	night	natt
+today	Today	Idag
+days	days	dagar
+day	day	dag
+hours	hours	timmar
+hour	hour	timme
+h	h	t
+minutes	minutes	minuter
+minute	minute	minut
+min	min	min
+am	AM	fm
+pm	PM	em
+
+### Activity related
+reminders	Reminders	Påminnelser
+alarm	Alarm	Larm
+endsNow	Ends now	Slutar nu
+startsNow	Starts now	Börjar nu
+noActivities	No activities for today	Inga aktiviteter idag
+left	Left	Vänster
+right	Right	Höger
+check	Check	Kvittera
+uncheck	Uncheck	Ångra
+fromBasicActivity	From basic activity	Från basaktivitet
+createActivity	Create activity	Skapa aktivitet
+basicActivities	Basic activities	Basaktiviteter
+deleteActivity	Delete activity?	Ta bort aktivitet?
+appyTo	Apply to	Ändra på
+onlyThisDay	Only this day	Endast denna dag
+allDays	All days	Alla dagar
+thisDayAndForward	This day and forward	Denna dag och framåt
+checkActivityQuestion	Completed?	Klar?
+unCheckActivityQuestion	Du you want to uncheck?	Ta bort klarmarkering?
+inTimePre	in	om
+timeAgoPre	&empty&	för
+timeAgoPost	ago	sen
+checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?
+
+### Miscellaneous
+menu	Menu	Meny
+cancel	Cancel	Avbryt
+
+### Edit activity
+newActivity	New activity	Ny aktivitet
+editActivity	Edit activity	Ändra aktivitet
+category	Category	Kategori
+checkable	Checkable	Kvittera
+deleteAfter	Delete after	Ta bort efterå
+name	Name	Namn
+picture	Picture	Bild
+date	Date	Datum
+startTime	Start time	Starttid
+endTime	End time	Sluttid
+noEndTime	No end time	Ingen sluttid
+# Errors
+missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.
+missingTitleOrImage	Your activity should contain an image or name.	Aktiviteten måste ha ett namn eller en bild.
+missingStartTime	Your activity should contain a start time.	Aktiviteten måste ha en starttid.
+startTimeBeforeNow	You've selected a start time that is before now. That is not allowed.	Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.
+
+### Privacy
+availableFor	Available for	Tillgänglig för
+activityAvailableFor	Activity available for	Aktivitet tillgänglig för
+meAndSupportPersons	Me and support persons	Mig och stödpersoner
+onlyMe	Only me	Bara mig
+
+### Alarm
+selectAlarmType	Select alarm type	Välj typ av larm
+alarmAndVibration	Alarm + vibration	Larm + vibration
+vibration	Vibration	Vibration
+noAlarm	No alarm	Inget larm
+alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid
+
+### Select picture
+selectPicture	Select picture	Välj bild
+removePicture	Remove picture	Ta bort bild
+imageArchive	Image archive	Bildarkiv
+myPhotos	My photos	Mina bilder
+takeNewPhoto	Take new photo	Ta bild
+
+### Recurrence
+recurrence	Recurrence	Upprepning
+once	Once	Enstaka
+weekly	Weekly	Veckovis
+monthly	Monthly	Måndadsvis
+yearly	Yearly	Årsvis
+noEndDate	No end date	Inget slutdatum
+endDate	End date	Slutdatum
+everyOtherWeek	Every other week	Varannan vecka
+recurringDataEmptyErrorMessage	You need to select at least one day	En återkommande aktivitet måste ha en vald upprepning
+mo	Mo	Må
+tu	Tu	Ti
+we	We	On
+th	Th	To
+fr	Fr	Fr
+sa	Sa	Lö
+su	Su	Sö
+
+### Info item
+infoType	Info type	Kopplade funktioner
+selectInfoType	Select info type	Välj typ av Info
+infoTypeNone	- None -	- Ingen -
+infoTypeChecklist	Checklist	Checklista
+infoTypeNote	Note	Anteckning
+typeSomething	Type something…	Skriv något…
+clear	Clear	Rensa
+selectFromLibrary	Select from library	Välj från bibliotek
+addNew	Add new	Lägg till ny
+task	Task	Uppgift
+remove	Remove	Ta bort
+
+### Settings
+calendarView	Calendar view	Kalendervy
+timePillarView	Timepillar view	Tidspelare
+listView	List view	Listvy
+timepillarSettings	Timepillar settings	Inställningar för tidspelare
+activityDuration	Activity duration	Visa tid som
+dots	Dots	Prickar
+edge	Edge	Flärp
+preview	Preview	Förhandsgranskning
+textToSpeech	Text to speech	Text till tal
+longpressToSpeak	Long press to speak	Tryck länge för tal
+longPressInfoText	Make a long press on any text or object with text to speak it loudly	Tryck länge på någon text för att få den uppläst
+
+### Permissions
+permissions	Permissions	Behörigheter
+notifications	Notifications	Notiser
+accessToPhotos	Access to Photos	Tillgång till bilder
+accessToCamera	Access to Camera	Tillgång till kameran
+allowNotifications	Allow notifications	Tillåt notiser
+allowNotificationsDescription1	Allow notifications to be able to get alarms and reminders from activities. You can do that from the 	Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån 
+settingsLink	settings	inställningar
+turnOffNotifications	Turn off notifications?	Stäng av notiser?
+turnOffNotificationsBody	You will no longer be able to get alarms and reminders from activities.	Du kommer inte längre kunna få alarm och notiser för aktiviteter.
+notificationsWarningHintText	Allow notifications to be able to get alarms and reminders from activities.	Tillåt notiser för att få larm och påminnelser för aktiviteter.
+notificationsWarningText	Allow notifications from the settings to be able to receive alarms and reminders.	Tillåt notiser från inställningar för att få larm och påminnelser.
+fullScreenAlarm	Full screen alarm	Helskärmslarm
+redirectToAndroidSettings	You will be redirect to the Android settings.	Du kommer att omdirigeras till Android-inställningarna.
+fullScreenAlarmInfo	Allow this permission to be able to get full screen alarm of activities	Tillåt denna behörighet för att kunna få helskärmslarm om aktiviteter
+allow	Allow	Tillåt
+previewActivityTitle	Erik's birthday party	Eriks födelsedagskalas
+allowAccessPhotosBody	Allow access to photos to be able to use photos from the device.	Tillåt behörighet till bilder för att ha möjlighet att använda bilder från enheten.
+allowAccessCameraBody	Allow access to camera to be able to take a photo from the device.	Tillåt behörighet till kameran för att ha möjlighet att ta bilder från enheten.
+allowAccessBody2	 You can always do that later from the 	 Du kan alltid göra det senare från 

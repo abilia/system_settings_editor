@@ -9,7 +9,8 @@ import 'package:dart_style/dart_style.dart';
 
 class TranslationBuilder extends Builder {
   final BuilderOptions options;
-  final deliminator = ';',
+  final deliminator = '\t',
+      comment = '#',
       dartExtension = '.g.dart',
       missingExtension = '.missing.csv',
       className = 'Translated',
@@ -92,7 +93,11 @@ class TranslationBuilder extends Builder {
   ) {
     final missing = <String>{};
     final lines = LineSplitter().convert(content);
-    final lineSplitted = lines.map((row) => row.split(deliminator)).toList();
+    final lineSplitted = lines
+        .where((line) => line.isNotEmpty) // ignore empty lines ands comments
+        .where((line) => !line.startsWith(comment)) // ignore comments
+        .map((row) => row.split(deliminator))
+        .toList();
 
     final dictionaries = lineSplitted.first // First heading row
         .sublist(1) // drop id heading
