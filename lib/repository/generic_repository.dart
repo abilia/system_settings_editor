@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import 'all.dart';
 
@@ -45,7 +46,11 @@ class GenericRepository extends DataRepository<Generic> {
         '$baseUrl/api/v1/data/$userId/generics?revision=$revision',
         headers: authHeader(authToken));
     return (json.decode(response.body) as List)
-        .map((e) => DbGeneric.fromJson(e));
+        .exceptionSafeMap(
+          (e) => DbGeneric.fromJson(e),
+          onException: _log.logAndReturnNull,
+        )
+        .filterNull();
   }
 
   @override

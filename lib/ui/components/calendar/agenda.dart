@@ -22,8 +22,6 @@ class Agenda extends StatefulWidget {
 }
 
 class _AgendaState extends State<Agenda> {
-  ActivitiesBloc _activitiesBloc;
-  ScrollPositionBloc _scrollPositionBloc;
   final center = GlobalKey();
   final todayScrollOffset = 10.0;
   var scrollController = ScrollController(
@@ -33,9 +31,6 @@ class _AgendaState extends State<Agenda> {
 
   @override
   void initState() {
-    _activitiesBloc = BlocProvider.of<ActivitiesBloc>(context);
-    _scrollPositionBloc = BlocProvider.of<ScrollPositionBloc>(context);
-
     if (widget.state.isToday) {
       if (widget.state.pastActivities.isNotEmpty) {
         scrollController = ScrollController(
@@ -126,13 +121,15 @@ class _AgendaState extends State<Agenda> {
   }
 
   Future<void> _refresh() {
-    _activitiesBloc.add(LoadActivities());
-    return _activitiesBloc
+    context.bloc<PushBloc>().add(PushEvent('refresh'));
+    return context
+        .bloc<ActivitiesBloc>()
         .firstWhere((s) => s is! ActivitiesReloadning && s is ActivitiesLoaded);
   }
 
   bool _onScrollNotification(ScrollNotification scrollNotification) {
-    _scrollPositionBloc
+    context
+        .bloc<ScrollPositionBloc>()
         .add(ScrollPositionUpdated(scrollNotification.metrics.pixels));
     return false;
   }

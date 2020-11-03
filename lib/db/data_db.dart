@@ -1,5 +1,8 @@
-import 'package:seagull/models/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:sqflite/sqlite_api.dart';
+
+import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 typedef DbMapTo<M extends DataModel> = DbModel<M> Function(
     Map<String, dynamic> map);
@@ -8,6 +11,7 @@ abstract class DataDb<M extends DataModel> {
   final Database db;
   String get tableName;
   DbMapTo<M> get convertToDataModel;
+  Logger get log;
 
   DataDb(this.db);
 
@@ -23,12 +27,17 @@ abstract class DataDb<M extends DataModel> {
     final batch = db.batch();
 
     await dataModels
-        .map(
+        .exceptionSafeMap(
           (dataModel) => dataModel.toMapForDb(),
+          onException: log.logAndReturnNull,
         )
+        .filterNull()
         .forEach(
-          (value) => batch.insert(tableName, value,
-              conflictAlgorithm: ConflictAlgorithm.replace),
+          (value) => batch.insert(
+            tableName,
+            value,
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          ),
         );
 
     return batch.commit();
@@ -36,12 +45,22 @@ abstract class DataDb<M extends DataModel> {
 
   Future<Iterable<DbModel<M>>> getAllDirty() async {
     final result = await db.rawQuery(GET_ALL_DIRTY);
-    return result.map(convertToDataModel);
+    return result
+        .exceptionSafeMap(
+          convertToDataModel,
+          onException: log.logAndReturnNull,
+        )
+        .filterNull();
   }
 
   Future<DbModel<M>> getById(String id) async {
     final result = await db.rawQuery(GET_BY_ID_SQL, [id]);
-    final userFiles = result.map(convertToDataModel);
+    final userFiles = result
+        .exceptionSafeMap(
+          convertToDataModel,
+          onException: log.logAndReturnNull,
+        )
+        .filterNull();
     if (userFiles.length == 1) {
       return userFiles.first;
     } else {
@@ -51,12 +70,24 @@ abstract class DataDb<M extends DataModel> {
 
   Future<Iterable<M>> getAll() async {
     final result = await db.rawQuery(GET_ALL_SQL);
-    return result.map(convertToDataModel).map((data) => data.model);
+    return result
+        .exceptionSafeMap(
+          convertToDataModel,
+          onException: log.logAndReturnNull,
+        )
+        .filterNull()
+        .map((data) => data.model);
   }
 
   Future<Iterable<M>> getAllNonDeleted() async {
     final result = await db.rawQuery(GET_ALL_SQL_NON_DELETED);
-    return result.map(convertToDataModel).map((data) => data.model);
+    return result
+        .exceptionSafeMap(
+          convertToDataModel,
+          onException: log.logAndReturnNull,
+        )
+        .filterNull()
+        .map((data) => data.model);
   }
 
   Future<int> getLastRevision() async {

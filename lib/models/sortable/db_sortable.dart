@@ -17,7 +17,8 @@ class DbSortable extends DbModel<Sortable> {
     );
   }
 
-  static Sortable _toType(
+  @visibleForTesting
+  static Sortable toType(
     String id,
     String type,
     String data,
@@ -98,15 +99,15 @@ class DbSortable extends DbModel<Sortable> {
   }
 
   static DbSortable fromJson(Map<String, dynamic> json) => DbSortable._(
-        sortable: DbSortable._toType(
-          json['id'],
-          json['type'],
-          json['data'],
-          json['groupId'],
-          json['sortOrder'],
-          json['deleted'],
-          json['group'],
-          json['visible'],
+        sortable: Sortable<RawSortableData>._(
+          id: json['id'],
+          type: json['type'],
+          data: RawSortableData(json['data']),
+          groupId: json['groupId'],
+          sortOrder: json['sortOrder'],
+          deleted: json['deleted'],
+          isGroup: json['group'],
+          visible: json['visible'],
         ),
         revision: json['revision'],
         dirty: 0,
@@ -126,7 +127,7 @@ class DbSortable extends DbModel<Sortable> {
       };
 
   static DbSortable fromDbMap(Map<String, dynamic> dbRow) => DbSortable._(
-        sortable: DbSortable._toType(
+        sortable: DbSortable.toType(
           dbRow['id'],
           dbRow['type'],
           dbRow['data'],
