@@ -12,14 +12,14 @@ class TranslationBuilder extends Builder {
   final deliminator = '\t',
       comment = '#',
       dartExtension = '.g.dart',
-      missingExtension = '.missing.csv',
+      missingExtension = '.missing.tsv',
       className = 'Translated',
       emptyToken = '&empty&';
   TranslationBuilder(this.options);
 
   @override
   Map<String, List<String>> get buildExtensions => {
-        '.csv': [dartExtension, missingExtension]
+        '.tsv': [dartExtension, missingExtension]
       };
   @override
   FutureOr<void> build(BuildStep buildStep) async {
