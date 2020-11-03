@@ -1,5 +1,5 @@
 _id_	en	sv
-### Login page
+### Login page		
 userName	Username / Email	Användarnamn
 password	Password	Lösenord
 infoText1	Use your 	Använd ditt 
@@ -8,13 +8,13 @@ login	Log in	Logga in
 logout	Log out	Logga ut
 wrongCredentials	Your username/email or password is not correct. Please, try another one.	Fel användarnamn eller lösenord
 noConnection	No contact with myAbilia. Check your Internet connection.	Ingen kontakt med myAbilia. Kontrollera din internetanslutning.
-
-### License
+		
+### License		
 noLicense	This account is missing a valid license. You're therefore unable to log in.	Det här kontot saknar giltig licens. Du kan därför inte logga in.
 licenseExpired	License is expired	Licensen har gått ut
 licenseExpiredMessage	You have been logged out because your MEMOplanner license expired. Please, extend your license to continue using this app.	Du har blivit utloggad eftersom din licens för MEMOplanner har gått ut. Du måste förlänga licensen för att fortsätta använda den här appen.
-
-### Time releted
+		
+### Time releted		
 fullDay	All day	Heldag
 morning	morning	morgon
 forenoon	forenoon	förmiddag
@@ -33,8 +33,8 @@ minute	minute	minut
 min	min	min
 am	AM	fm
 pm	PM	em
-
-### Activity related
+		
+### Activity related		
 reminders	Reminders	Påminnelser
 alarm	Alarm	Larm
 endsNow	Ends now	Slutar nu
@@ -58,12 +58,12 @@ inTimePre	in	om
 timeAgoPre	&empty&	för
 timeAgoPost	ago	sen
 checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?
-
-### Miscellaneous
+		
+### Miscellaneous		
 menu	Menu	Meny
 cancel	Cancel	Avbryt
-
-### Edit activity
+		
+### Edit activity		
 newActivity	New activity	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet
 category	Category	Kategori
@@ -75,33 +75,33 @@ date	Date	Datum
 startTime	Start time	Starttid
 endTime	End time	Sluttid
 noEndTime	No end time	Ingen sluttid
-# Errors
+# Errors		
 missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.
 missingTitleOrImage	Your activity should contain an image or name.	Aktiviteten måste ha ett namn eller en bild.
 missingStartTime	Your activity should contain a start time.	Aktiviteten måste ha en starttid.
 startTimeBeforeNow	You've selected a start time that is before now. That is not allowed.	Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.
-
-### Privacy
+		
+### Privacy		
 availableFor	Available for	Tillgänglig för
 activityAvailableFor	Activity available for	Aktivitet tillgänglig för
 meAndSupportPersons	Me and support persons	Mig och stödpersoner
 onlyMe	Only me	Bara mig
-
-### Alarm
+		
+### Alarm		
 selectAlarmType	Select alarm type	Välj typ av larm
 alarmAndVibration	Alarm + vibration	Larm + vibration
 vibration	Vibration	Vibration
 noAlarm	No alarm	Inget larm
 alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid
-
-### Select picture
+		
+### Select picture		
 selectPicture	Select picture	Välj bild
 removePicture	Remove picture	Ta bort bild
 imageArchive	Image archive	Bildarkiv
 myPhotos	My photos	Mina bilder
 takeNewPhoto	Take new photo	Ta bild
-
-### Recurrence
+		
+### Recurrence		
 recurrence	Recurrence	Upprepning
 once	Once	Enstaka
 weekly	Weekly	Veckovis
@@ -118,8 +118,8 @@ th	Th	To
 fr	Fr	Fr
 sa	Sa	Lö
 su	Su	Sö
-
-### Info item
+		
+### Info item		
 infoType	Info type	Kopplade funktioner
 selectInfoType	Select info type	Välj typ av Info
 infoTypeNone	- None -	- Ingen -
@@ -131,8 +131,8 @@ selectFromLibrary	Select from library	Välj från bibliotek
 addNew	Add new	Lägg till ny
 task	Task	Uppgift
 remove	Remove	Ta bort
-
-### Settings
+		
+### Settings		
 calendarView	Calendar view	Kalendervy
 timePillarView	Timepillar view	Tidspelare
 listView	List view	Listvy
@@ -144,8 +144,8 @@ preview	Preview	Förhandsgranskning
 textToSpeech	Text to speech	Text till tal
 longpressToSpeak	Long press to speak	Tryck länge för tal
 longPressInfoText	Make a long press on any text or object with text to speak it loudly	Tryck länge på någon text för att få den uppläst
-
-### Permissions
+		
+### Permissions		
 permissions	Permissions	Behörigheter
 notifications	Notifications	Notiser
 accessToPhotos	Access to Photos	Tillgång till bilder

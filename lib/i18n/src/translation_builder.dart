@@ -94,7 +94,8 @@ class TranslationBuilder extends Builder {
     final missing = <String>{};
     final lines = LineSplitter().convert(content);
     final lineSplitted = lines
-        .where((line) => line.isNotEmpty) // ignore empty lines ands comments
+        .where((line) =>
+            line.trim().isNotEmpty) // ignore empty lines ands comments
         .where((line) => !line.startsWith(comment)) // ignore comments
         .map((row) => row.split(deliminator))
         .toList();
