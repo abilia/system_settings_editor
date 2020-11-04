@@ -3,7 +3,7 @@ targets:
     builders:
       seagull:translatorBuilder:
         generate_for:
-            - lib/i18n/translations.csv
+            - lib/i18n/translations.tsv
         enabled: True
 
 builders:
@@ -11,8 +11,8 @@ builders:
     import: 'package:seagull/i18n/src/code_generators.dart'
     builder_factories: ['translationBuilder']
     build_extensions: 
-      .csv:
+      .tsv:
         - .g.dart
-        - .missing.csv
+        - .missing.tsv
     build_to: source
     auto_apply: root_package
