@@ -16,3 +16,4 @@ export 'time_interval.dart';
 export 'license.dart';
 export 'generic/generic.dart';
 export 'memoplanner_settings.dart';
+export 'calendar_type.dart';

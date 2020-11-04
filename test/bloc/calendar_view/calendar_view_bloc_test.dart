@@ -1,20 +1,25 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
+
+import '../../mocks.dart';
 
 void main() {
   CalendarViewBloc calendarViewBloc;
+  MockSettingsDb settingsDb;
   setUp(() {
-    calendarViewBloc = CalendarViewBloc();
+    settingsDb = MockSettingsDb();
+    calendarViewBloc = CalendarViewBloc(settingsDb);
   });
   test('initial state', () {
-    expect(calendarViewBloc.state, CalendarViewState(CalendarViewType.LIST));
+    expect(calendarViewBloc.state, CalendarViewState(CalendarType.LIST));
   });
 
   test('Change calendar view', () async {
-    calendarViewBloc.add(CalendarViewChanged(CalendarViewType.TIMEPILLAR));
+    calendarViewBloc.add(CalendarViewChanged(CalendarType.TIMEPILLAR));
     await expectLater(
       calendarViewBloc,
-      emits(CalendarViewState(CalendarViewType.TIMEPILLAR)),
+      emits(CalendarViewState(CalendarType.TIMEPILLAR)),
     );
   });
 
@@ -24,7 +29,7 @@ void main() {
       calendarViewBloc,
       emits(
         CalendarViewState(
-          CalendarViewType.LIST,
+          CalendarType.LIST,
           expandLeftCategory: false,
         ),
       ),
@@ -36,7 +41,7 @@ void main() {
       calendarViewBloc,
       emits(
         CalendarViewState(
-          CalendarViewType.LIST,
+          CalendarType.LIST,
           expandRightCategory: false,
         ),
       ),

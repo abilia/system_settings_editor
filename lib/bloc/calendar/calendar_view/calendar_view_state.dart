@@ -1,7 +1,7 @@
 part of 'calendar_view_bloc.dart';
 
 class CalendarViewState extends Equatable {
-  final CalendarViewType currentView;
+  final CalendarType currentView;
   final bool expandRightCategory, expandLeftCategory;
   const CalendarViewState(
     this.currentView, {
@@ -9,12 +9,17 @@ class CalendarViewState extends Equatable {
     this.expandLeftCategory = true,
   });
 
+  CalendarViewState.fromSettings(SettingsDb settingsDb)
+      : currentView = settingsDb?.preferedCalender ?? CalendarType.LIST,
+        expandLeftCategory = settingsDb?.leftCategoryExpanded ?? true,
+        expandRightCategory = settingsDb?.rightCategoryExpanded ?? true;
+
   @override
   List<Object> get props =>
       [currentView, expandLeftCategory, expandRightCategory];
 
   CalendarViewState copyWith({
-    CalendarViewType currentView,
+    CalendarType currentView,
     bool expandLeftCategory,
     bool expandRightCategory,
   }) =>
@@ -27,5 +32,3 @@ class CalendarViewState extends Equatable {
   String toString() =>
       'CalendarViewState { $currentView,${expandLeftCategory ? ', left expanded' : ''}${expandRightCategory ? ', rigth expanded' : ''} }';
 }
-
-enum CalendarViewType { TIMEPILLAR, LIST }

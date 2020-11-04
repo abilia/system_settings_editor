@@ -7,7 +7,7 @@ abstract class CalendarViewEvent extends Equatable {
 }
 
 class CalendarViewChanged extends CalendarViewEvent {
-  final CalendarViewType calendarView;
+  final CalendarType calendarView;
 
   const CalendarViewChanged(this.calendarView);
 

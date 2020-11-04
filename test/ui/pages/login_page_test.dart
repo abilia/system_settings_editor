@@ -31,7 +31,7 @@ void main() {
     when(mockDatabase.batch()).thenReturn(MockBatch());
 
     final mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
+    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
 
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())
@@ -60,6 +60,7 @@ void main() {
       ..database = mockDatabase
       ..flutterTts = MockFlutterTts()
       ..licenseDb = mockLicenseDb
+      ..genericDb = MockGenericDb()
       ..init();
   });
   tearDown(setupPermissions);

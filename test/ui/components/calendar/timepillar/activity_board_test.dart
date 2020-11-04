@@ -25,7 +25,7 @@ void main() {
     streamController = StreamController<DateTime>();
     stream = streamController.stream;
     mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
+    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
       ..init();

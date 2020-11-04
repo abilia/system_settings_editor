@@ -14,8 +14,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc({
     @required this.settingsDb,
   }) : super(SettingsState(
-          dotsInTimepillar: settingsDb.getDotsInTimepillar() ?? true,
-          textToSpeech: settingsDb.getTextToSpeech() ?? true,
+          dotsInTimepillar: settingsDb.dotsInTimepillar ?? true,
+          textToSpeech: settingsDb.textToSpeech ?? true,
         ));
 
   @override

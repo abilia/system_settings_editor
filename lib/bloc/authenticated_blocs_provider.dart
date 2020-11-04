@@ -143,7 +143,9 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
           ),
           BlocProvider<CalendarViewBloc>(
-            create: (context) => CalendarViewBloc(),
+            create: (context) => CalendarViewBloc(
+              GetIt.I<SettingsDb>(),
+            ),
           ),
           BlocProvider<LicenseBloc>(
             create: (context) => LicenseBloc(

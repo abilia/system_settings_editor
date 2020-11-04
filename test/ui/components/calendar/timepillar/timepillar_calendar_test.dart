@@ -50,7 +50,7 @@ void main() {
         .thenAnswer((_) => Future.value(givenActivities));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.getDotsInTimepillar()).thenReturn(true);
+    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
     GetItInitializer()
       ..activityDb = mockActivityDb
       ..userDb = MockUserDb()
@@ -335,7 +335,7 @@ void main() {
 
     testWidgets('setting no dots shows SideTime', (WidgetTester tester) async {
       // Arrange
-      when(mockSettingsDb.getDotsInTimepillar()).thenReturn(false);
+      when(mockSettingsDb.dotsInTimepillar).thenReturn(false);
       await goToTimePillar(tester);
       // Act
       await tester.pumpAndSettle();
