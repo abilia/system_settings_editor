@@ -293,7 +293,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await goToTimePillar(tester);
-      verify(mockSettingsDb.setPreferedCalender(CalendarType.TIMEPILLAR));
+      verify(mockSettingsDb.setPreferredCalendar(CalendarType.TIMEPILLAR));
     });
   });
 

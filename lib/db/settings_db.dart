@@ -42,7 +42,7 @@ class SettingsDb {
 
   bool get textToSpeech => _tryGetBool(_TEXT_TO_SPEECH_RECORD, true);
 
-  Future setPreferedCalender(CalendarType calendarType) =>
+  Future setPreferredCalendar(CalendarType calendarType) =>
       preferences.setInt(_CALENDAR_TYPE_RECORD, calendarType.index);
 
   CalendarType get preferedCalender {

@@ -18,7 +18,7 @@ class CalendarViewBloc extends Bloc<CalendarViewEvent, CalendarViewState> {
   ) async* {
     if (event is CalendarViewChanged) {
       yield state.copyWith(currentView: event.calendarView);
-      await settingsDb.setPreferedCalender(event.calendarView);
+      await settingsDb.setPreferredCalendar(event.calendarView);
     }
     if (event is ToggleLeft) {
       yield state.copyWith(expandLeftCategory: !state.expandLeftCategory);
