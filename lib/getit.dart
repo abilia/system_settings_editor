@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
@@ -12,6 +14,10 @@ import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
 
 class GetItInitializer {
+  Directory _documentsDirectory;
+  set documentsDirectory(Directory documentsDirectory) =>
+      _documentsDirectory = documentsDirectory;
+
   ActivityDb _activityDb;
   set activityDb(ActivityDb activityDb) => _activityDb = activityDb;
 
@@ -91,7 +97,12 @@ class GetItInitializer {
       ..registerSingleton<UserDb>(userDb)
       ..registerSingleton<Database>(_database)
       ..registerSingleton<SeagullLogger>(
-          _seagullLogger ?? SeagullLogger(userDb: userDb))
+        _seagullLogger ??
+            SeagullLogger(
+              userDb: userDb,
+              documentsDir: _documentsDirectory?.path,
+            ),
+      )
       ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb())
       ..registerSingleton<AlarmScheduler>(
           _alarmScheduler ?? scheduleAlarmNotificationsIsolated)
@@ -101,7 +112,8 @@ class GetItInitializer {
       ..registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database))
       ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
       ..registerSingleton<SettingsDb>(_settingsDb ?? SettingsDb(null))
-      ..registerSingleton<FileStorage>(_fileStorage ?? FileStorage(''))
+      ..registerSingleton<FileStorage>(
+          _fileStorage ?? FileStorage(_documentsDirectory?.path))
       ..registerSingleton<MultipartRequestBuilder>(
           _multipartRequestBuilder ?? MultipartRequestBuilder())
       ..registerSingleton<SyncDelays>(_syncDelay ?? const SyncDelays())
