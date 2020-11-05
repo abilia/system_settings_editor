@@ -10,14 +10,16 @@ import 'package:seagull/ui/all.dart';
 const transitionDuration = Duration(seconds: 1);
 
 class TimePillarCalendar extends StatefulWidget {
-  final ActivitiesOccasionLoaded state;
+  final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
+  final MemoplannerSettingsState memoplannerSettingsState;
   final DateTime now;
 
   const TimePillarCalendar({
     Key key,
-    @required this.state,
+    @required this.activityState,
     @required this.calendarViewState,
+    @required this.memoplannerSettingsState,
     @required this.now,
   }) : super(key: key);
 
@@ -34,14 +36,14 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
   @override
   void initState() {
     _scrollPositionBloc = BlocProvider.of<ScrollPositionBloc>(context);
-    final scrollOffset = widget.state.isToday
+    final scrollOffset = widget.activityState.isToday
         ? timeToPixelDistanceHour(widget.now) - hourHeigt * 2
         : hourHeigt * 8; // 8th hour
     verticalScrollController =
         ScrollController(initialScrollOffset: scrollOffset);
 
     horizontalScrollController = SnapToCenterScrollController();
-    if (widget.state.isToday) {
+    if (widget.activityState.isToday) {
       WidgetsBinding.instance.addPostFrameCallback((_) =>
           BlocProvider.of<ScrollPositionBloc>(context)
               .add(ScrollViewRenderComplete(verticalScrollController)));
@@ -58,20 +60,20 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
     final textStyle = Theme.of(context).textTheme.caption;
     final textScaleFactor = mediaData.textScaleFactor;
     final leftBoardData = ActivityBoard.positionTimepillarCards(
-      widget.state.activities
+      widget.activityState.activities
           .where((ao) => ao.activity.category != Category.right)
           .toList(),
       textStyle,
       textScaleFactor,
-      widget.state.day,
+      widget.activityState.day,
     );
     final rightBoardData = ActivityBoard.positionTimepillarCards(
-      widget.state.activities
+      widget.activityState.activities
           .where((ao) => ao.activity.category == Category.right)
           .toList(),
       textStyle,
       textScaleFactor,
-      widget.state.day,
+      widget.activityState.day,
     );
     final calendarHeight =
         max(timePillarHeight, max(leftBoardData.heigth, rightBoardData.heigth));
@@ -87,7 +89,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
           children: <Widget>[
             NotificationListener<ScrollNotification>(
               onNotification:
-                  widget.state.isToday ? _onScrollNotification : null,
+                  widget.activityState.isToday ? _onScrollNotification : null,
               child: SingleChildScrollView(
                 controller: verticalScrollController,
                 child: LimitedBox(
@@ -95,7 +97,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                   child: BlocBuilder<ClockBloc, DateTime>(
                     builder: (context, now) => Stack(
                       children: <Widget>[
-                        if (widget.state.isToday)
+                        if (widget.activityState.isToday)
                           Timeline(
                             width: boxConstraints.maxWidth,
                           ),
@@ -105,37 +107,45 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                           scrollDirection: Axis.horizontal,
                           controller: horizontalScrollController,
                           slivers: <Widget>[
-                            category(
-                              CategoryLeft(
+                            if (widget.memoplannerSettingsState.showCategories)
+                              category(
+                                CategoryLeft(
                                   expanded: widget
-                                      .calendarViewState.expandLeftCategory),
-                              height: boxConstraints.maxHeight,
-                              sliver: SliverToBoxAdapter(
-                                child: ActivityBoard(
-                                  leftBoardData,
-                                  categoryMinWidth: categoryMinWidth,
+                                      .calendarViewState.expandLeftCategory,
+                                  settingsState:
+                                      widget.memoplannerSettingsState,
+                                ),
+                                height: boxConstraints.maxHeight,
+                                sliver: SliverToBoxAdapter(
+                                  child: ActivityBoard(
+                                    leftBoardData,
+                                    categoryMinWidth: categoryMinWidth,
+                                  ),
                                 ),
                               ),
-                            ),
                             SliverTimePillar(
                               key: center,
                               child: TimePillar(
-                                day: widget.state.day,
-                                dayOccasion: widget.state.occasion,
+                                day: widget.activityState.day,
+                                dayOccasion: widget.activityState.occasion,
                               ),
                             ),
-                            category(
-                              CategoryRight(
+                            if (widget.memoplannerSettingsState.showCategories)
+                              category(
+                                CategoryRight(
                                   expanded: widget
-                                      .calendarViewState.expandRightCategory),
-                              height: boxConstraints.maxHeight,
-                              sliver: SliverToBoxAdapter(
-                                child: ActivityBoard(
-                                  rightBoardData,
-                                  categoryMinWidth: categoryMinWidth,
+                                      .calendarViewState.expandRightCategory,
+                                  settingsState:
+                                      widget.memoplannerSettingsState,
+                                ),
+                                height: boxConstraints.maxHeight,
+                                sliver: SliverToBoxAdapter(
+                                  child: ActivityBoard(
+                                    rightBoardData,
+                                    categoryMinWidth: categoryMinWidth,
+                                  ),
                                 ),
                               ),
-                            ),
                           ],
                         ),
                       ],

@@ -7,49 +7,64 @@ import 'package:seagull/ui/all.dart';
 
 const _radius = Radius.circular(100);
 
-class CategoryLeft extends StatelessWidget {
+abstract class _CategoryWidget extends StatelessWidget {
   final bool expanded;
+  final MemoplannerSettingsState settingsState;
   final double maxWidth;
 
-  const CategoryLeft({
+  const _CategoryWidget({
     Key key,
     @required this.expanded,
-    this.maxWidth = double.infinity,
+    @required this.settingsState,
+    @required this.maxWidth,
   }) : super(key: key);
-  @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, state) => _Category(
-          text: state.leftCategoryName ?? Translator.of(context).translate.left,
+}
+
+class CategoryLeft extends _CategoryWidget {
+  const CategoryLeft({
+    Key key,
+    @required bool expanded,
+    @required MemoplannerSettingsState settingsState,
+    double maxWidth = double.infinity,
+  }) : super(
+          key: key,
           expanded: expanded,
           maxWidth: maxWidth,
-        ),
+          settingsState: settingsState,
+        );
+  @override
+  Widget build(BuildContext context) => _Category(
+        text: settingsState.leftCategoryName ??
+            Translator.of(context).translate.left,
+        expanded: expanded,
+        maxWidth: maxWidth,
       );
 }
 
-class CategoryRight extends StatelessWidget {
-  final bool expanded;
-  final double maxWidth;
+class CategoryRight extends _CategoryWidget {
   const CategoryRight({
     Key key,
-    @required this.expanded,
-    this.maxWidth = double.infinity,
-  }) : super(key: key);
-  @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, state) => _Category(
-          text:
-              state.rightCategoryName ?? Translator.of(context).translate.right,
+    @required bool expanded,
+    @required MemoplannerSettingsState settingsState,
+    double maxWidth = double.infinity,
+  }) : super(
+          key: key,
           expanded: expanded,
-          icon: AbiliaIcons.navigation_next,
-          alignment: const Alignment(1, 0),
-          borderRadius:
-              const BorderRadius.only(topLeft: _radius, bottomLeft: _radius),
-          textDirection: TextDirection.rtl,
-          toggleCategory: const ToggleRight(),
           maxWidth: maxWidth,
-        ),
+          settingsState: settingsState,
+        );
+  @override
+  Widget build(BuildContext context) => _Category(
+        text: settingsState.rightCategoryName ??
+            Translator.of(context).translate.right,
+        expanded: expanded,
+        icon: AbiliaIcons.navigation_next,
+        alignment: const Alignment(1, 0),
+        borderRadius:
+            const BorderRadius.only(topLeft: _radius, bottomLeft: _radius),
+        textDirection: TextDirection.rtl,
+        toggleCategory: const ToggleRight(),
+        maxWidth: maxWidth,
       );
 }
 

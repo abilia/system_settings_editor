@@ -8,13 +8,15 @@ import 'package:seagull/models/all.dart';
 class Agenda extends StatefulWidget {
   static const topPadding = 60.0, bottomPadding = 125.0;
 
-  final ActivitiesOccasionLoaded state;
+  final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
+  final MemoplannerSettingsState memoplannerSettingsState;
 
   const Agenda({
     Key key,
-    @required this.state,
+    @required this.activityState,
     @required this.calendarViewState,
+    @required this.memoplannerSettingsState,
   }) : super(key: key);
 
   @override
@@ -31,8 +33,8 @@ class _AgendaState extends State<Agenda> {
 
   @override
   void initState() {
-    if (widget.state.isToday) {
-      if (widget.state.pastActivities.isNotEmpty) {
+    if (widget.activityState.isToday) {
+      if (widget.activityState.pastActivities.isNotEmpty) {
         scrollController = ScrollController(
           initialScrollOffset: -todayScrollOffset - Agenda.topPadding,
           keepScrollOffset: false,
@@ -47,7 +49,7 @@ class _AgendaState extends State<Agenda> {
 
   @override
   Widget build(BuildContext context) {
-    final state = widget.state;
+    final state = widget.activityState;
     final todayFirstActivity = state.isToday && state.pastActivities.isEmpty;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
@@ -105,14 +107,18 @@ class _AgendaState extends State<Agenda> {
                 controller: scrollController,
                 collapseMargin: Agenda.bottomPadding + todayScrollOffset,
               ),
-              CategoryLeft(
-                maxWidth: categoryLabelWidth,
-                expanded: widget.calendarViewState.expandLeftCategory,
-              ),
-              CategoryRight(
-                maxWidth: categoryLabelWidth,
-                expanded: widget.calendarViewState.expandRightCategory,
-              ),
+              if (widget.memoplannerSettingsState.showCategories) ...[
+                CategoryLeft(
+                  maxWidth: categoryLabelWidth,
+                  settingsState: widget.memoplannerSettingsState,
+                  expanded: widget.calendarViewState.expandLeftCategory,
+                ),
+                CategoryRight(
+                  maxWidth: categoryLabelWidth,
+                  settingsState: widget.memoplannerSettingsState,
+                  expanded: widget.calendarViewState.expandRightCategory,
+                ),
+              ]
             ],
           ),
         );
