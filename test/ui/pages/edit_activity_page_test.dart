@@ -2012,6 +2012,25 @@ text''';
       expect(find.text(leftCategoryName), findsOneWidget);
       expect(find.text(rightCategoryName), findsOneWidget);
     });
+
+    testWidgets('calendarActivityTypeShowTypes false does not show categories',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            calendarActivityTypeShowTypes: false,
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(
+        wrapWithMaterialApp(EditActivityPage(day: today)),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(CategoryWidget), findsNothing);
+      await tester.scrollDown();
+      expect(find.byType(CategoryWidget), findsNothing);
+    });
   });
 
   group('tts', () {

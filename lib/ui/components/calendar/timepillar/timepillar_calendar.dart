@@ -107,22 +107,23 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                           scrollDirection: Axis.horizontal,
                           controller: horizontalScrollController,
                           slivers: <Widget>[
-                            if (widget.memoplannerSettingsState.showCategories)
-                              category(
-                                CategoryLeft(
-                                  expanded: widget
-                                      .calendarViewState.expandLeftCategory,
-                                  settingsState:
-                                      widget.memoplannerSettingsState,
-                                ),
-                                height: boxConstraints.maxHeight,
-                                sliver: SliverToBoxAdapter(
-                                  child: ActivityBoard(
-                                    leftBoardData,
-                                    categoryMinWidth: categoryMinWidth,
-                                  ),
+                            category(
+                              widget.memoplannerSettingsState.showCategories
+                                  ? CategoryLeft(
+                                      expanded: widget
+                                          .calendarViewState.expandLeftCategory,
+                                      settingsState:
+                                          widget.memoplannerSettingsState,
+                                    )
+                                  : null,
+                              height: boxConstraints.maxHeight,
+                              sliver: SliverToBoxAdapter(
+                                child: ActivityBoard(
+                                  leftBoardData,
+                                  categoryMinWidth: categoryMinWidth,
                                 ),
                               ),
+                            ),
                             SliverTimePillar(
                               key: center,
                               child: TimePillar(
@@ -130,22 +131,23 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
                                 dayOccasion: widget.activityState.occasion,
                               ),
                             ),
-                            if (widget.memoplannerSettingsState.showCategories)
-                              category(
-                                CategoryRight(
-                                  expanded: widget
-                                      .calendarViewState.expandRightCategory,
-                                  settingsState:
-                                      widget.memoplannerSettingsState,
-                                ),
-                                height: boxConstraints.maxHeight,
-                                sliver: SliverToBoxAdapter(
-                                  child: ActivityBoard(
-                                    rightBoardData,
-                                    categoryMinWidth: categoryMinWidth,
-                                  ),
+                            category(
+                              widget.memoplannerSettingsState.showCategories
+                                  ? CategoryRight(
+                                      expanded: widget.calendarViewState
+                                          .expandRightCategory,
+                                      settingsState:
+                                          widget.memoplannerSettingsState,
+                                    )
+                                  : null,
+                              height: boxConstraints.maxHeight,
+                              sliver: SliverToBoxAdapter(
+                                child: ActivityBoard(
+                                  rightBoardData,
+                                  categoryMinWidth: categoryMinWidth,
                                 ),
                               ),
+                            ),
                           ],
                         ),
                       ],
@@ -177,14 +179,16 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
   }
 
   Widget category(Widget category, {Widget sliver, double height}) =>
-      SliverOverlay(
-        height: height,
-        overlay: ScrollTranslated(
-          controller: verticalScrollController,
-          child: category,
-        ),
-        sliver: sliver,
-      );
+      category != null
+          ? SliverOverlay(
+              height: height,
+              overlay: ScrollTranslated(
+                controller: verticalScrollController,
+                child: category,
+              ),
+              sliver: sliver,
+            )
+          : sliver;
 }
 
 class SnapToCenterScrollController extends ScrollController {
