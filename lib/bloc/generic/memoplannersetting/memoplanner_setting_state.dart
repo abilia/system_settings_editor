@@ -22,6 +22,10 @@ abstract class MemoplannerSettingsState {
   bool get activityDisplayDayPeriod => settings.activityDisplayDayPeriod;
   bool get activityDisplayWeekDay => settings.activityDisplayWeekDay;
   bool get activityDisplayDate => settings.activityDisplayDate;
+  bool get showCategories => settings.calendarActivityTypeShowTypes;
+  bool get timeline12hTime => settings.setting12hTimeFormatTimeline;
+  bool get displayHourLines => settings.settingDisplayHourLines;
+  bool get displayTimeline => settings.settingDisplayTimeline;
 
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;

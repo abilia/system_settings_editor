@@ -29,7 +29,11 @@ class MemoplannerSettings {
       nightIntervalStartKey = 'night_interval_start',
       calendarActivityTypeLeftKey = 'calendar_activity_type_left',
       calendarActivityTypeRightKey = 'calendar_activity_type_right',
-      calendarDayColorKey = 'calendar_daycolor';
+      calendarActivityTypeShowTypesKey = 'calendar_activity_type_show_types',
+      calendarDayColorKey = 'calendar_daycolor',
+      setting12hTimeFormatTimelineKey = 'setting_12h_time_format_timeline',
+      settingDisplayHourLinesKey = 'setting_display_hour_lines',
+      settingDisplayTimelineKey = 'setting_display_line_timeline';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -47,7 +51,11 @@ class MemoplannerSettings {
       activityDisplayNoAlarmOption,
       activityDisplayDayPeriod,
       activityDisplayWeekDay,
-      activityDisplayDate;
+      activityDisplayDate,
+      calendarActivityTypeShowTypes,
+      setting12hTimeFormatTimeline,
+      settingDisplayHourLines,
+      settingDisplayTimeline;
 
   final int morningIntervalStart,
       forenoonIntervalStart,
@@ -76,6 +84,10 @@ class MemoplannerSettings {
     this.activityDisplayDayPeriod = true,
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
+    this.calendarActivityTypeShowTypes = true,
+    this.setting12hTimeFormatTimeline = true,
+    this.settingDisplayHourLines = true,
+    this.settingDisplayTimeline = true,
     this.morningIntervalStart = 21600000,
     this.forenoonIntervalStart = 36000000,
     this.afternoonIntervalStart = 43200000,
@@ -144,6 +156,18 @@ class MemoplannerSettings {
       ),
       activityDisplayDate: settings.getBool(
         activityDisplayDateKey,
+      ),
+      calendarActivityTypeShowTypes: settings.getBool(
+        calendarActivityTypeShowTypesKey,
+      ),
+      setting12hTimeFormatTimeline: settings.getBool(
+        setting12hTimeFormatTimelineKey,
+      ),
+      settingDisplayHourLines: settings.getBool(
+        settingDisplayHourLinesKey,
+      ),
+      settingDisplayTimeline: settings.getBool(
+        settingDisplayTimelineKey,
       ),
       morningIntervalStart: settings.parse(
         morningIntervalStartKey,
