@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:intl/intl.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -24,7 +25,7 @@ void main() {
   StreamController<DateTime> mockTicker;
   final changeViewButtonFinder = find.byKey(TestKey.changeView);
   final timePillarButtonFinder = find.byKey(TestKey.timePillarButton);
-  final time = DateTime(2007, 08, 09, 10, 11);
+  final time = DateTime(2007, 08, 09, 13, 11);
   final leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
 
@@ -129,8 +130,23 @@ void main() {
 
     testWidgets('tts', (WidgetTester tester) async {
       await goToTimePillar(tester);
-      final hour = '${time.hour}';
-      await tester.verifyTts(find.text(hour).first, contains: hour);
+      final hour = DateFormat('h').format(time);
+      await tester.verifyTts(find.text(hour).at(1), contains: hour);
+    });
+
+    testWidgets('tts on 24 h', (WidgetTester tester) async {
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: 'false',
+                type: 'Bool',
+                identifier: MemoplannerSettings.setting12hTimeFormatTimelineKey,
+              ),
+            ),
+          ];
+      await goToTimePillar(tester);
+      final hour = DateFormat('H').format(time);
+      await tester.verifyTts(find.text(hour), contains: hour);
     });
 
     testWidgets('Shows timepillar when scrolled in x',

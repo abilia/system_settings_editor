@@ -85,7 +85,7 @@ class MemoplannerSettings {
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
     this.calendarActivityTypeShowTypes = true,
-    this.setting12hTimeFormatTimeline = true,
+    this.setting12hTimeFormatTimeline,
     this.settingDisplayHourLines = true,
     this.settingDisplayTimeline = true,
     this.morningIntervalStart = 21600000,
@@ -162,6 +162,7 @@ class MemoplannerSettings {
       ),
       setting12hTimeFormatTimeline: settings.getBool(
         setting12hTimeFormatTimelineKey,
+        defaultValue: null,
       ),
       settingDisplayHourLines: settings.getBool(
         settingDisplayHourLinesKey,
@@ -251,3 +252,5 @@ enum DayPart { morning, forenoon, afternoon, evening, night }
 class DayColors {
   static const int ALL_DAYS = 0, SATURDAY_AND_SUNDAY = 1, NO_COLORS = 2;
 }
+
+enum HourClockType { use12, use24, useSystem }

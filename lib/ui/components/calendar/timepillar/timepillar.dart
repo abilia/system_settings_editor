@@ -21,6 +21,7 @@ class TimePillar extends StatelessWidget {
   final DateTime day;
   final Occasion dayOccasion;
   final bool showTimeLine;
+  final HourClockType hourClockType;
   bool get today => dayOccasion == Occasion.current;
 
   const TimePillar({
@@ -28,6 +29,7 @@ class TimePillar extends StatelessWidget {
     @required this.day,
     @required this.dayOccasion,
     @required this.showTimeLine,
+    @required this.hourClockType,
   }) : super(key: key);
 
   @override
@@ -38,7 +40,7 @@ class TimePillar extends StatelessWidget {
             ? (_) => const PastDots()
             : (_) => const FutureDots();
 
-    final formatHour = onlyHourFormat(context);
+    final formatHour = onlyHourFormat(context, clockType: hourClockType);
     final theme = Theme.of(context);
     return DefaultTextStyle(
       style: theme.textTheme.headline6.copyWith(color: AbiliaColors.black),

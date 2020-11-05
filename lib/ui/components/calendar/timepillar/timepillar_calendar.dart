@@ -132,6 +132,8 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                   day: day,
                                   dayOccasion: widget.activityState.occasion,
                                   showTimeLine: showTimeLine,
+                                  hourClockType:
+                                      memoSettings.timepillarHourClockType,
                                 ),
                               ),
                               category(
