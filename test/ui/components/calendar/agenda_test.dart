@@ -508,6 +508,26 @@ void main() {
       expect(rightFinder, findsNothing);
     });
 
+    testWidgets('memoplanner settings - show categories ',
+        (WidgetTester tester) async {
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: 'false',
+                type: 'Bool',
+                identifier:
+                    MemoplannerSettings.calendarActivityTypeShowTypesKey,
+              ),
+            ),
+          ];
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CategoryLeft), findsNothing);
+      expect(find.byType(CategoryRight), findsNothing);
+    });
+
     testWidgets(' memoplanner settings - category name push update ',
         (WidgetTester tester) async {
       final leftCategoryName = 'Something unique',
@@ -546,6 +566,37 @@ void main() {
       expect(find.text(rightCategoryName), findsOneWidget);
       expect(leftFinder, findsNothing);
       expect(rightFinder, findsNothing);
+    });
+
+    testWidgets(' memoplanner settings - show category push update ',
+        (WidgetTester tester) async {
+      final pushBloc = PushBloc();
+      await tester.pumpWidget(App(pushBloc: pushBloc));
+      await tester.pumpAndSettle();
+
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsOneWidget);
+      expect(find.byType(CategoryRight), findsOneWidget);
+      expect(find.byType(CategoryLeft), findsOneWidget);
+
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: 'false',
+                type: 'Bool',
+                identifier:
+                    MemoplannerSettings.calendarActivityTypeShowTypesKey,
+              ),
+            ),
+          ];
+      pushBloc.add(PushEvent('collapse_key'));
+
+      await tester.pumpAndSettle();
+
+      expect(leftFinder, findsNothing);
+      expect(rightFinder, findsNothing);
+      expect(find.byType(CategoryRight), findsNothing);
+      expect(find.byType(CategoryLeft), findsNothing);
     });
   });
 }

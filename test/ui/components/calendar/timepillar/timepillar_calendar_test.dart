@@ -28,9 +28,8 @@ void main() {
   final leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
 
-  var givenActivities = <Activity>[];
-
-  ActivityResponse activityResponse = () => givenActivities;
+  ActivityResponse activityResponse = () => [];
+  GenericResponse genericResponse = () => [];
 
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
   final previusDayButtonFinder =
@@ -47,18 +46,25 @@ void main() {
         .thenAnswer((_) => Future.value('fakeToken'));
     mockActivityDb = MockActivityDb();
     when(mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(givenActivities));
+        .thenAnswer((_) => Future.value(activityResponse()));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     mockSettingsDb = MockSettingsDb();
     when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
+    final mockGenericDb = MockGenericDb();
+    when(mockGenericDb.getAllNonDeletedMaxRevision())
+        .thenAnswer((_) => Future.value(genericResponse()));
     GetItInitializer()
       ..activityDb = mockActivityDb
+      ..genericDb = mockGenericDb
       ..userDb = MockUserDb()
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: time)
       ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
       ..tokenDb = mockTokenDb
-      ..client = Fakes.client(activityResponse: activityResponse)
+      ..client = Fakes.client(
+        activityResponse: activityResponse,
+        genericResponse: genericResponse,
+      )
       ..fileStorage = MockFileStorage()
       ..userFileDb = MockUserFileDb()
       ..settingsDb = mockSettingsDb
@@ -68,11 +74,16 @@ void main() {
       ..flutterTts = MockFlutterTts()
       ..init();
   });
+
   tearDown(() {
-    givenActivities = [];
+    activityResponse = () => [];
+    genericResponse = () => [];
   });
-  Future goToTimePillar(WidgetTester tester) async {
-    await tester.pumpWidget(App());
+
+  Future goToTimePillar(WidgetTester tester, {PushBloc pushBloc}) async {
+    await tester.pumpWidget(App(
+      pushBloc: pushBloc,
+    ));
     await tester.pumpAndSettle();
     await tester.tap(changeViewButtonFinder);
     await tester.pumpAndSettle();
@@ -103,7 +114,7 @@ void main() {
         fullDay: true,
         reminderBefore: [60 * 60 * 1000],
         alarmType: NO_ALARM);
-    givenActivities = [activity];
+    activityResponse = () => [activity];
     await goToTimePillar(tester);
     expect(find.byType(FullDayContainer), findsOneWidget);
     await tester.verifyTts(find.byType(FullDayContainer),
@@ -176,8 +187,6 @@ void main() {
     });
 
     testWidgets('Only one current dot', (WidgetTester tester) async {
-      givenActivities = [];
-
       await goToTimePillar(tester);
       expect(
           tester
@@ -187,8 +196,6 @@ void main() {
     });
 
     testWidgets('Alwasy only one current dots', (WidgetTester tester) async {
-      givenActivities = [];
-
       await goToTimePillar(tester);
       for (var i = 0; i < 20; i++) {
         mockTicker.add(time.add(1.minutes()));
@@ -240,10 +247,59 @@ void main() {
     });
   });
 
-  testWidgets('Categories Exists', (WidgetTester tester) async {
-    await goToTimePillar(tester);
-    expect(find.byType(CategoryLeft), findsOneWidget);
-    expect(find.byType(CategoryRight), findsOneWidget);
+  group('categories', () {
+    final leftFinder = find.byType(CategoryLeft),
+        rightFinder = find.byType(CategoryRight);
+
+    testWidgets('Categories Exists', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsOneWidget);
+    });
+
+    testWidgets('Categories dont Exists if settings say so',
+        (WidgetTester tester) async {
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: 'false',
+                type: 'Bool',
+                identifier:
+                    MemoplannerSettings.calendarActivityTypeShowTypesKey,
+              ),
+            ),
+          ];
+      await goToTimePillar(tester);
+      expect(find.byType(CategoryLeft), findsNothing);
+      expect(find.byType(CategoryRight), findsNothing);
+    });
+
+    testWidgets(' memoplanner settings - show category push update ',
+        (WidgetTester tester) async {
+      final pushBloc = PushBloc();
+
+      await goToTimePillar(tester, pushBloc: pushBloc);
+
+      expect(leftFinder, findsOneWidget);
+      expect(rightFinder, findsOneWidget);
+
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: 'false',
+                type: 'Bool',
+                identifier:
+                    MemoplannerSettings.calendarActivityTypeShowTypesKey,
+              ),
+            ),
+          ];
+      pushBloc.add(PushEvent('collapse_key'));
+
+      await tester.pumpAndSettle();
+
+      expect(leftFinder, findsNothing);
+      expect(rightFinder, findsNothing);
+    });
   });
 
   group('Activities', () {
@@ -251,20 +307,20 @@ void main() {
     final rightActivityFinder = find.text(rightTitle);
     final cardFinder = find.byType(ActivityTimepillarCard);
     setUp(() {
-      givenActivities = [
-        FakeActivity.starts(
-          time,
-          title: rightTitle,
-        ).copyWith(
-          checkable: true,
-        ),
-        FakeActivity.starts(
-          time,
-          title: leftTitle,
-        ).copyWith(
-          category: Category.left,
-        ),
-      ];
+      activityResponse = () => [
+            FakeActivity.starts(
+              time,
+              title: rightTitle,
+            ).copyWith(
+              checkable: true,
+            ),
+            FakeActivity.starts(
+              time,
+              title: leftTitle,
+            ).copyWith(
+              category: Category.left,
+            ),
+          ];
     });
 
     testWidgets('Shows activity', (WidgetTester tester) async {
@@ -346,7 +402,8 @@ void main() {
     testWidgets('current activity shows no CrossOver',
         (WidgetTester tester) async {
       // Arrange
-      givenActivities = [Activity.createNew(title: 'title', startTime: time)];
+      activityResponse =
+          () => [Activity.createNew(title: 'title', startTime: time)];
       await goToTimePillar(tester);
       // Act
       await tester.pumpAndSettle();
@@ -356,10 +413,10 @@ void main() {
 
     testWidgets('past activity shows CrossOver', (WidgetTester tester) async {
       // Arrange
-      givenActivities = [
-        Activity.createNew(
-            title: 'title', startTime: time.subtract(10.minutes()))
-      ];
+      activityResponse = () => [
+            Activity.createNew(
+                title: 'title', startTime: time.subtract(10.minutes()))
+          ];
       await goToTimePillar(tester);
       // Act
       await tester.pumpAndSettle();
@@ -370,13 +427,13 @@ void main() {
     testWidgets('past activity with endtime shows CrossOver',
         (WidgetTester tester) async {
       // Arrange
-      givenActivities = [
-        Activity.createNew(
-          title: 'title',
-          startTime: time.subtract(9.hours()),
-          duration: 8.hours(),
-        )
-      ];
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: time.subtract(9.hours()),
+              duration: 8.hours(),
+            )
+          ];
       await goToTimePillar(tester);
       // Act
       await tester.pumpAndSettle();
@@ -387,13 +444,13 @@ void main() {
     testWidgets('past activity with endtime shows CrossOver',
         (WidgetTester tester) async {
       // Arrange
-      givenActivities = [
-        Activity.createNew(
-          title: 'title',
-          startTime: time.subtract(2.hours()),
-          duration: 1.hours(),
-        )
-      ];
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: time.subtract(2.hours()),
+              duration: 1.hours(),
+            )
+          ];
       await goToTimePillar(tester);
       // Act
       await tester.pumpAndSettle();
@@ -404,13 +461,13 @@ void main() {
     testWidgets('sigend off past activity shows no CrossOver',
         (WidgetTester tester) async {
       // Arrange
-      givenActivities = [
-        Activity.createNew(
-            title: 'title',
-            startTime: time.subtract(40.minutes()),
-            checkable: true,
-            signedOffDates: [time.onlyDays()])
-      ];
+      activityResponse = () => [
+            Activity.createNew(
+                title: 'title',
+                startTime: time.subtract(40.minutes()),
+                checkable: true,
+                signedOffDates: [time.onlyDays()])
+          ];
       await goToTimePillar(tester);
       // Act
       await tester.pumpAndSettle();

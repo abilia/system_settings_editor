@@ -35,7 +35,12 @@ abstract class MemoplannerSettingsState {
   int get calendarDayColor => settings.calendarDayColor;
 
   DayParts get dayParts => DayParts(
-      morningStart, forenoonStart, afternoonStart, eveningStart, nightStart);
+        morningStart,
+        forenoonStart,
+        afternoonStart,
+        eveningStart,
+        nightStart,
+      );
 
   String get leftCategoryName => settings.calendarActivityTypeLeft;
   String get rightCategoryName => settings.calendarActivityTypeRight;
