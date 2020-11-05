@@ -27,15 +27,14 @@ class TimePillarCalendar extends StatefulWidget {
   _TimePillarCalendarState createState() => _TimePillarCalendarState();
 }
 
-class _TimePillarCalendarState extends State<TimePillarCalendar> {
-  ScrollPositionBloc _scrollPositionBloc;
+class _TimePillarCalendarState extends State<TimePillarCalendar>
+    with CalendarStateMixin {
   ScrollController verticalScrollController;
   ScrollController horizontalScrollController;
   final Key center = Key('center');
 
   @override
   void initState() {
-    _scrollPositionBloc = BlocProvider.of<ScrollPositionBloc>(context);
     final scrollOffset = widget.activityState.isToday
         ? timeToPixelDistanceHour(widget.now) - hourHeigt * 2
         : hourHeigt * 8; // 8th hour
@@ -85,97 +84,94 @@ class _TimePillarCalendarState extends State<TimePillarCalendar> {
     final horizontalAnchor = 0.5 - timePillarPercentOfTotalScreen;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
-        return Stack(
-          children: <Widget>[
-            NotificationListener<ScrollNotification>(
-              onNotification:
-                  widget.activityState.isToday ? _onScrollNotification : null,
-              child: SingleChildScrollView(
-                controller: verticalScrollController,
-                child: LimitedBox(
-                  maxHeight: calendarHeight,
-                  child: BlocBuilder<ClockBloc, DateTime>(
-                    builder: (context, now) => Stack(
-                      children: <Widget>[
-                        if (widget.activityState.isToday)
-                          Timeline(
-                            width: boxConstraints.maxWidth,
+        return RefreshIndicator(
+          onRefresh: refresh,
+          child: Stack(
+            children: <Widget>[
+              NotificationListener<ScrollNotification>(
+                onNotification:
+                    widget.activityState.isToday ? onScrollNotification : null,
+                child: SingleChildScrollView(
+                  controller: verticalScrollController,
+                  child: LimitedBox(
+                    maxHeight: calendarHeight,
+                    child: BlocBuilder<ClockBloc, DateTime>(
+                      builder: (context, now) => Stack(
+                        children: <Widget>[
+                          if (widget.activityState.isToday)
+                            Timeline(
+                              width: boxConstraints.maxWidth,
+                            ),
+                          CustomScrollView(
+                            anchor: horizontalAnchor,
+                            center: center,
+                            scrollDirection: Axis.horizontal,
+                            controller: horizontalScrollController,
+                            slivers: <Widget>[
+                              category(
+                                widget.memoplannerSettingsState.showCategories
+                                    ? CategoryLeft(
+                                        expanded: widget.calendarViewState
+                                            .expandLeftCategory,
+                                        settingsState:
+                                            widget.memoplannerSettingsState,
+                                      )
+                                    : null,
+                                height: boxConstraints.maxHeight,
+                                sliver: SliverToBoxAdapter(
+                                  child: ActivityBoard(
+                                    leftBoardData,
+                                    categoryMinWidth: categoryMinWidth,
+                                  ),
+                                ),
+                              ),
+                              SliverTimePillar(
+                                key: center,
+                                child: TimePillar(
+                                  day: widget.activityState.day,
+                                  dayOccasion: widget.activityState.occasion,
+                                ),
+                              ),
+                              category(
+                                widget.memoplannerSettingsState.showCategories
+                                    ? CategoryRight(
+                                        expanded: widget.calendarViewState
+                                            .expandRightCategory,
+                                        settingsState:
+                                            widget.memoplannerSettingsState,
+                                      )
+                                    : null,
+                                height: boxConstraints.maxHeight,
+                                sliver: SliverToBoxAdapter(
+                                  child: ActivityBoard(
+                                    rightBoardData,
+                                    categoryMinWidth: categoryMinWidth,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        CustomScrollView(
-                          anchor: horizontalAnchor,
-                          center: center,
-                          scrollDirection: Axis.horizontal,
-                          controller: horizontalScrollController,
-                          slivers: <Widget>[
-                            category(
-                              widget.memoplannerSettingsState.showCategories
-                                  ? CategoryLeft(
-                                      expanded: widget
-                                          .calendarViewState.expandLeftCategory,
-                                      settingsState:
-                                          widget.memoplannerSettingsState,
-                                    )
-                                  : null,
-                              height: boxConstraints.maxHeight,
-                              sliver: SliverToBoxAdapter(
-                                child: ActivityBoard(
-                                  leftBoardData,
-                                  categoryMinWidth: categoryMinWidth,
-                                ),
-                              ),
-                            ),
-                            SliverTimePillar(
-                              key: center,
-                              child: TimePillar(
-                                day: widget.activityState.day,
-                                dayOccasion: widget.activityState.occasion,
-                              ),
-                            ),
-                            category(
-                              widget.memoplannerSettingsState.showCategories
-                                  ? CategoryRight(
-                                      expanded: widget.calendarViewState
-                                          .expandRightCategory,
-                                      settingsState:
-                                          widget.memoplannerSettingsState,
-                                    )
-                                  : null,
-                              height: boxConstraints.maxHeight,
-                              sliver: SliverToBoxAdapter(
-                                child: ActivityBoard(
-                                  rightBoardData,
-                                  categoryMinWidth: categoryMinWidth,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            ArrowLeft(
-              controller: horizontalScrollController,
-              collapseMargin: ActivityTimepillarCard.padding,
-            ),
-            ArrowUp(controller: verticalScrollController),
-            ArrowRight(
-              controller: horizontalScrollController,
-              collapseMargin: ActivityTimepillarCard.padding,
-            ),
-            ArrowDown(controller: verticalScrollController),
-          ],
+              ArrowLeft(
+                controller: horizontalScrollController,
+                collapseMargin: ActivityTimepillarCard.padding,
+              ),
+              ArrowUp(controller: verticalScrollController),
+              ArrowRight(
+                controller: horizontalScrollController,
+                collapseMargin: ActivityTimepillarCard.padding,
+              ),
+              ArrowDown(controller: verticalScrollController),
+            ],
+          ),
         );
       },
     );
-  }
-
-  bool _onScrollNotification(ScrollNotification scrollNotification) {
-    _scrollPositionBloc
-        .add(ScrollPositionUpdated(scrollNotification.metrics.pixels));
-    return false;
   }
 
   Widget category(Widget category, {Widget sliver, double height}) =>

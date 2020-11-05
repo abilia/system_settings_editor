@@ -23,7 +23,7 @@ class Agenda extends StatefulWidget {
   _AgendaState createState() => _AgendaState();
 }
 
-class _AgendaState extends State<Agenda> {
+class _AgendaState extends State<Agenda> with CalendarStateMixin {
   final center = GlobalKey();
   final todayScrollOffset = 10.0;
   var scrollController = ScrollController(
@@ -56,11 +56,11 @@ class _AgendaState extends State<Agenda> {
         final categoryLabelWidth =
             (boxConstraints.maxWidth - timePillarWidth) / 2;
         return RefreshIndicator(
-          onRefresh: _refresh,
+          onRefresh: refresh,
           child: Stack(
             children: <Widget>[
               NotificationListener<ScrollNotification>(
-                onNotification: state.isToday ? _onScrollNotification : null,
+                onNotification: state.isToday ? onScrollNotification : null,
                 child: CupertinoScrollbar(
                   controller: scrollController,
                   child: CustomScrollView(
@@ -124,20 +124,6 @@ class _AgendaState extends State<Agenda> {
         );
       },
     );
-  }
-
-  Future<void> _refresh() {
-    context.bloc<PushBloc>().add(PushEvent('refresh'));
-    return context
-        .bloc<ActivitiesBloc>()
-        .firstWhere((s) => s is! ActivitiesReloadning && s is ActivitiesLoaded);
-  }
-
-  bool _onScrollNotification(ScrollNotification scrollNotification) {
-    context
-        .bloc<ScrollPositionBloc>()
-        .add(ScrollPositionUpdated(scrollNotification.metrics.pixels));
-    return false;
   }
 }
 
