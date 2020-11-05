@@ -215,6 +215,41 @@ void main() {
       expect(find.byType(Timeline), findsWidgets);
     });
 
+    testWidgets('Dont Exists if settings say so', (WidgetTester tester) async {
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: 'false',
+                type: 'Bool',
+                identifier: MemoplannerSettings.settingDisplayTimelineKey,
+              ),
+            ),
+          ];
+      await goToTimePillar(tester);
+      expect(find.byType(Timeline), findsNothing);
+    });
+
+    testWidgets(' hides timelien after push update ',
+        (WidgetTester tester) async {
+      final pushBloc = PushBloc();
+
+      await goToTimePillar(tester, pushBloc: pushBloc);
+      expect(find.byType(Timeline), findsWidgets);
+
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: 'false',
+                type: 'Bool',
+                identifier: MemoplannerSettings.settingDisplayTimelineKey,
+              ),
+            ),
+          ];
+      pushBloc.add(PushEvent('collapse_key'));
+      await tester.pumpAndSettle();
+      expect(find.byType(Timeline), findsNothing);
+    });
+
     testWidgets('Tomorrow does not show timeline', (WidgetTester tester) async {
       await goToTimePillar(tester);
       await tester.tap(nextDayButtonFinder);

@@ -33,11 +33,19 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
   ScrollController horizontalScrollController;
   final Key center = Key('center');
 
+  MemoplannerSettingsState get memoSettings => widget.memoplannerSettingsState;
+  bool get isToday => widget.activityState.isToday;
+  bool get showTimeLine => isToday && memoSettings.displayTimeline;
+  bool get showCategories => memoSettings.showCategories;
+  DateTime get day => widget.activityState.day;
+  List<ActivityOccasion> get activities => widget.activityState.activities;
+  CalendarViewState get viewState => widget.calendarViewState;
+
   @override
   void initState() {
     final scrollOffset = widget.activityState.isToday
         ? timeToPixelDistanceHour(widget.now) - hourHeigt * 2
-        : hourHeigt * 8; // 8th hour
+        : hourHeigt * memoSettings.dayParts.morning.inHours;
     verticalScrollController =
         ScrollController(initialScrollOffset: scrollOffset);
 
@@ -59,20 +67,16 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
     final textStyle = Theme.of(context).textTheme.caption;
     final textScaleFactor = mediaData.textScaleFactor;
     final leftBoardData = ActivityBoard.positionTimepillarCards(
-      widget.activityState.activities
-          .where((ao) => ao.activity.category != Category.right)
-          .toList(),
+      activities.where((ao) => ao.activity.category != Category.right).toList(),
       textStyle,
       textScaleFactor,
-      widget.activityState.day,
+      day,
     );
     final rightBoardData = ActivityBoard.positionTimepillarCards(
-      widget.activityState.activities
-          .where((ao) => ao.activity.category == Category.right)
-          .toList(),
+      activities.where((ao) => ao.activity.category == Category.right).toList(),
       textStyle,
       textScaleFactor,
-      widget.activityState.day,
+      day,
     );
     final calendarHeight =
         max(timePillarHeight, max(leftBoardData.heigth, rightBoardData.heigth));
@@ -89,8 +93,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
           child: Stack(
             children: <Widget>[
               NotificationListener<ScrollNotification>(
-                onNotification:
-                    widget.activityState.isToday ? onScrollNotification : null,
+                onNotification: isToday ? onScrollNotification : null,
                 child: SingleChildScrollView(
                   controller: verticalScrollController,
                   child: LimitedBox(
@@ -98,7 +101,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                     child: BlocBuilder<ClockBloc, DateTime>(
                       builder: (context, now) => Stack(
                         children: <Widget>[
-                          if (widget.activityState.isToday)
+                          if (showTimeLine)
                             Timeline(
                               width: boxConstraints.maxWidth,
                             ),
@@ -109,12 +112,10 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                             controller: horizontalScrollController,
                             slivers: <Widget>[
                               category(
-                                widget.memoplannerSettingsState.showCategories
+                                showCategories
                                     ? CategoryLeft(
-                                        expanded: widget.calendarViewState
-                                            .expandLeftCategory,
-                                        settingsState:
-                                            widget.memoplannerSettingsState,
+                                        expanded: viewState.expandLeftCategory,
+                                        settingsState: memoSettings,
                                       )
                                     : null,
                                 height: boxConstraints.maxHeight,
@@ -128,17 +129,16 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                               SliverTimePillar(
                                 key: center,
                                 child: TimePillar(
-                                  day: widget.activityState.day,
+                                  day: day,
                                   dayOccasion: widget.activityState.occasion,
+                                  showTimeLine: showTimeLine,
                                 ),
                               ),
                               category(
-                                widget.memoplannerSettingsState.showCategories
+                                showCategories
                                     ? CategoryRight(
-                                        expanded: widget.calendarViewState
-                                            .expandRightCategory,
-                                        settingsState:
-                                            widget.memoplannerSettingsState,
+                                        expanded: viewState.expandRightCategory,
+                                        settingsState: memoSettings,
                                       )
                                     : null,
                                 height: boxConstraints.maxHeight,

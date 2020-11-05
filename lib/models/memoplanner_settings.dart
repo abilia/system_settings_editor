@@ -229,6 +229,8 @@ extension _Parsing on List<MemoplannerSettingData> {
 }
 
 class DayParts {
+  Duration get morning => Duration(milliseconds: morningStart);
+
   final int morningStart,
       forenoonStart,
       afternoonStart,

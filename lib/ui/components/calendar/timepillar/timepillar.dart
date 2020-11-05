@@ -20,12 +20,14 @@ const double timePillarPadding = 4.0,
 class TimePillar extends StatelessWidget {
   final DateTime day;
   final Occasion dayOccasion;
+  final bool showTimeLine;
   bool get today => dayOccasion == Occasion.current;
 
   const TimePillar({
     Key key,
     @required this.day,
     @required this.dayOccasion,
+    @required this.showTimeLine,
   }) : super(key: key);
 
   @override
@@ -45,7 +47,7 @@ class TimePillar extends StatelessWidget {
         child: Stack(
           overflow: Overflow.visible,
           children: <Widget>[
-            if (today)
+            if (today && showTimeLine)
               Timeline(
                 width: timePillarTotalWidth,
               ),
