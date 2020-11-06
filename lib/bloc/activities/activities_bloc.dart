@@ -126,13 +126,13 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     UpdateRecurringActivity event,
     Set<Activity> activities,
   ) async* {
-    final activity = event.activity;
     switch (event.applyTo) {
       case ApplyTo.thisDayAndForward:
         yield* _handleResult(
           updateThisDayAndForward(
-            activity: activity,
+            activity: event.activity,
             activities: activities,
+            day: event.day,
           ),
         );
         break;
@@ -140,7 +140,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
         yield* _handleResult(
           updateOnlyThisDay(
             activities: activities,
-            activity: activity,
+            activity: event.activity,
             day: event.day,
           ),
         );
