@@ -88,89 +88,86 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
     final horizontalAnchor = 0.5 - timePillarPercentOfTotalScreen;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
-        return RefreshIndicator(
-          onRefresh: refresh,
-          child: Stack(
-            children: <Widget>[
-              NotificationListener<ScrollNotification>(
-                onNotification: isToday ? onScrollNotification : null,
-                child: SingleChildScrollView(
-                  controller: verticalScrollController,
-                  child: LimitedBox(
-                    maxHeight: calendarHeight,
-                    child: BlocBuilder<ClockBloc, DateTime>(
-                      builder: (context, now) => Stack(
-                        children: <Widget>[
-                          if (showTimeLine)
-                            Timeline(
-                              width: boxConstraints.maxWidth,
-                            ),
-                          CustomScrollView(
-                            anchor: horizontalAnchor,
-                            center: center,
-                            scrollDirection: Axis.horizontal,
-                            controller: horizontalScrollController,
-                            slivers: <Widget>[
-                              category(
-                                showCategories
-                                    ? CategoryLeft(
-                                        expanded: viewState.expandLeftCategory,
-                                        settingsState: memoSettings,
-                                      )
-                                    : null,
-                                height: boxConstraints.maxHeight,
-                                sliver: SliverToBoxAdapter(
-                                  child: ActivityBoard(
-                                    leftBoardData,
-                                    categoryMinWidth: categoryMinWidth,
-                                  ),
-                                ),
-                              ),
-                              SliverTimePillar(
-                                key: center,
-                                child: TimePillar(
-                                  day: day,
-                                  dayOccasion: widget.activityState.occasion,
-                                  showTimeLine: showTimeLine,
-                                  hourClockType:
-                                      memoSettings.timepillarHourClockType,
-                                ),
-                              ),
-                              category(
-                                showCategories
-                                    ? CategoryRight(
-                                        expanded: viewState.expandRightCategory,
-                                        settingsState: memoSettings,
-                                      )
-                                    : null,
-                                height: boxConstraints.maxHeight,
-                                sliver: SliverToBoxAdapter(
-                                  child: ActivityBoard(
-                                    rightBoardData,
-                                    categoryMinWidth: categoryMinWidth,
-                                  ),
-                                ),
-                              ),
-                            ],
+        return Stack(
+          children: <Widget>[
+            NotificationListener<ScrollNotification>(
+              onNotification: isToday ? onScrollNotification : null,
+              child: SingleChildScrollView(
+                controller: verticalScrollController,
+                child: LimitedBox(
+                  maxHeight: calendarHeight,
+                  child: BlocBuilder<ClockBloc, DateTime>(
+                    builder: (context, now) => Stack(
+                      children: <Widget>[
+                        if (showTimeLine)
+                          Timeline(
+                            width: boxConstraints.maxWidth,
                           ),
-                        ],
-                      ),
+                        CustomScrollView(
+                          anchor: horizontalAnchor,
+                          center: center,
+                          scrollDirection: Axis.horizontal,
+                          controller: horizontalScrollController,
+                          slivers: <Widget>[
+                            category(
+                              showCategories
+                                  ? CategoryLeft(
+                                      expanded: viewState.expandLeftCategory,
+                                      settingsState: memoSettings,
+                                    )
+                                  : null,
+                              height: boxConstraints.maxHeight,
+                              sliver: SliverToBoxAdapter(
+                                child: ActivityBoard(
+                                  leftBoardData,
+                                  categoryMinWidth: categoryMinWidth,
+                                ),
+                              ),
+                            ),
+                            SliverTimePillar(
+                              key: center,
+                              child: TimePillar(
+                                day: day,
+                                dayOccasion: widget.activityState.occasion,
+                                showTimeLine: showTimeLine,
+                                hourClockType:
+                                    memoSettings.timepillarHourClockType,
+                              ),
+                            ),
+                            category(
+                              showCategories
+                                  ? CategoryRight(
+                                      expanded: viewState.expandRightCategory,
+                                      settingsState: memoSettings,
+                                    )
+                                  : null,
+                              height: boxConstraints.maxHeight,
+                              sliver: SliverToBoxAdapter(
+                                child: ActivityBoard(
+                                  rightBoardData,
+                                  categoryMinWidth: categoryMinWidth,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-              ArrowLeft(
-                controller: horizontalScrollController,
-                collapseMargin: ActivityTimepillarCard.padding,
-              ),
-              ArrowUp(controller: verticalScrollController),
-              ArrowRight(
-                controller: horizontalScrollController,
-                collapseMargin: ActivityTimepillarCard.padding,
-              ),
-              ArrowDown(controller: verticalScrollController),
-            ],
-          ),
+            ),
+            ArrowLeft(
+              controller: horizontalScrollController,
+              collapseMargin: ActivityTimepillarCard.padding,
+            ),
+            ArrowUp(controller: verticalScrollController),
+            ArrowRight(
+              controller: horizontalScrollController,
+              collapseMargin: ActivityTimepillarCard.padding,
+            ),
+            ArrowDown(controller: verticalScrollController),
+          ],
         );
       },
     );
