@@ -101,6 +101,7 @@ class GetItInitializer {
             SeagullLogger(
               userDb: userDb,
               documentsDir: _documentsDirectory?.path,
+              loggingType: {},
             ),
       )
       ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb())
