@@ -37,6 +37,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
   bool get isToday => widget.activityState.isToday;
   bool get showTimeLine => isToday && memoSettings.displayTimeline;
   bool get showCategories => memoSettings.showCategories;
+  bool get showHourLines => memoSettings.displayHourLines;
   DateTime get day => widget.activityState.day;
   List<ActivityOccasion> get activities => widget.activityState.activities;
   CalendarViewState get viewState => widget.calendarViewState;
@@ -99,6 +100,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                   child: BlocBuilder<ClockBloc, DateTime>(
                     builder: (context, now) => Stack(
                       children: <Widget>[
+                        if (showHourLines) const HourLines(),
                         if (showTimeLine)
                           Timeline(
                             width: boxConstraints.maxWidth,

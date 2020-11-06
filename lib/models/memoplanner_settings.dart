@@ -86,7 +86,7 @@ class MemoplannerSettings {
     this.activityDisplayDate = true,
     this.calendarActivityTypeShowTypes = true,
     this.setting12hTimeFormatTimeline,
-    this.settingDisplayHourLines = true,
+    this.settingDisplayHourLines = false,
     this.settingDisplayTimeline = true,
     this.morningIntervalStart = 21600000,
     this.forenoonIntervalStart = 36000000,
@@ -166,6 +166,7 @@ class MemoplannerSettings {
       ),
       settingDisplayHourLines: settings.getBool(
         settingDisplayHourLinesKey,
+        defaultValue: false,
       ),
       settingDisplayTimeline: settings.getBool(
         settingDisplayTimelineKey,

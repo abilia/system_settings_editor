@@ -296,6 +296,46 @@ void main() {
         expect(timeLinePostion.dy, closeTo(currentDotPosition.dy, 0.0001));
       }
     });
+
+    testWidgets('hourTimeline hidden by default', (WidgetTester tester) async {
+      await goToTimePillar(tester);
+      expect(find.byType(HourLines), findsNothing);
+    });
+
+    testWidgets('hourTimeline shows if setting is set',
+        (WidgetTester tester) async {
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: 'true',
+                type: 'Bool',
+                identifier: MemoplannerSettings.settingDisplayHourLinesKey,
+              ),
+            ),
+          ];
+      await goToTimePillar(tester);
+      await tester.pumpAndSettle();
+      expect(find.byType(HourLines), findsOneWidget);
+    });
+
+    testWidgets('hourTimeline shows on push', (WidgetTester tester) async {
+      final pushBloc = PushBloc();
+      await goToTimePillar(tester, pushBloc: pushBloc);
+      expect(find.byType(HourLines), findsNothing);
+
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: 'true',
+                type: 'Bool',
+                identifier: MemoplannerSettings.settingDisplayHourLinesKey,
+              ),
+            ),
+          ];
+      pushBloc.add(PushEvent('collapse_key'));
+      await tester.pumpAndSettle();
+      expect(find.byType(HourLines), findsOneWidget);
+    });
   });
 
   group('categories', () {
