@@ -21,7 +21,6 @@ import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/all.dart';
 import 'package:seagull/tts/flutter_tts.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/ui/theme.dart';
@@ -41,17 +40,22 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  final documentDirectory = await getApplicationDocumentsDirectory();
   final userDb = UserDb();
-  final seagullLogger = SeagullLogger(userDb: userDb);
-  await seagullLogger.initLogging();
+  final seagullLogger = SeagullLogger(
+    userDb: userDb,
+    documentsDir: documentDirectory.path,
+  );
+  if (kReleaseMode) {
+    await seagullLogger.initAnalytics();
+  }
   _log.fine('Initializing services');
   await configureLocalTimeZone();
   final currentLocale = await Devicelocale.currentLocale;
   final settingsDb = SettingsDb(await SharedPreferences.getInstance());
   await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
-  final documentDirectory = await getApplicationDocumentsDirectory();
   GetItInitializer()
-    ..fileStorage = FileStorage(documentDirectory.path)
+    ..documentsDirectory = documentDirectory
     ..settingsDb = settingsDb
     ..userDb = userDb
     ..seagullLogger = seagullLogger

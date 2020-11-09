@@ -9,7 +9,7 @@ import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:bloc/bloc.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
@@ -29,6 +29,7 @@ class SeagullLogger {
   final Set<LoggingType> loggingType;
   List<StreamSubscription> loggingSubscriptions = [];
   final _log = Logger((SeagullLogger).toString());
+  final String documentsDir;
 
   bool get fileLogging => loggingType.contains(LoggingType.File);
   bool get printLogging => loggingType.contains(LoggingType.Print);
@@ -36,41 +37,23 @@ class SeagullLogger {
 
   SeagullLogger({
     this.userDb,
+    @required this.documentsDir,
     this.loggingType = const {
       if (kReleaseMode) ...{
         LoggingType.File,
         LoggingType.Analytic,
       } else
-        LoggingType.Print
+        LoggingType.Print,
     },
-  });
-
-  static const LATEST_UPLOAD_KEY = 'LATEST-LOG-UPLOAD-MILLIS';
-  static const UPLOAD_INTERVAL = Duration(hours: 24);
-  static const LOG_FILE_NAME = 'seagull.log';
-  static const LOG_ARCHIVE_PATH = 'logarchive';
-
-  Future<void> initLogging({
-    bool initAnalitics = kReleaseMode,
     Level level = kReleaseMode ? Level.FINE : Level.ALL,
-  }) async {
-    if (initAnalitics) {
-      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-      final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
-      await AppCenter.startAsync(
-        appSecretAndroid: appId,
-        appSecretIOS: appId,
-      );
-      await AppCenter.configureDistributeDebugAsync(enabled: false);
-    } else {
-      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
-    }
-
+  }) {
+    // Careful about adding any new plugin calls
+    // as it needs to work in background on android as well
+    // see [myBackgroundMessageHandler]
     Bloc.observer = BlocLoggingObserver();
     Logger.root.level = level;
-
     if (fileLogging) {
-      await _initFileLogging();
+      _initFileLogging();
     }
     if (printLogging) {
       _initPrintLogging();
@@ -80,11 +63,29 @@ class SeagullLogger {
     }
   }
 
+  static const LATEST_UPLOAD_KEY = 'LATEST-LOG-UPLOAD-MILLIS';
+  static const UPLOAD_INTERVAL = Duration(hours: 24);
+  static const LOG_FILE_NAME = 'seagull.log';
+  static const LOG_ARCHIVE_PATH = 'logarchive';
+
+  Future<void> initAnalytics() async {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
+    await AppCenter.startAsync(
+      appSecretAndroid: appId,
+      appSecretIOS: appId,
+    );
+    await AppCenter.configureDistributeDebugAsync(enabled: false);
+  }
+
   Future<void> cancelLogging() async {
     if (loggingSubscriptions.isNotEmpty) {
-      await loggingSubscriptions.forEach(
-        (loggingSubscription) => loggingSubscription.cancel(),
+      await Future.wait(
+        loggingSubscriptions.map(
+          (loggingSubscription) => loggingSubscription.cancel(),
+        ),
       );
+      ;
     }
   }
 
@@ -106,17 +107,21 @@ class SeagullLogger {
   Future<void> sendLogsToBackend() async {
     if (fileLogging) {
       final time = DateFormat('yyyyMMddHHmm').format(DateTime.now());
-      final logArchiveDir = Directory(await _logArchivePath);
+      final _logArchivePath = '$documentsDir/$LOG_ARCHIVE_PATH';
+      final logArchiveDir = Directory(_logArchivePath);
       await logArchiveDir.create(recursive: true);
-      final archiveFilePath = '${await _logArchivePath}/seagull_log_$time.log';
+      final archiveFilePath = '$_logArchivePath/seagull_log_$time.log';
       await _logFileLock.synchronized(() async {
         await _logFile.copy(archiveFilePath);
         await _logFile.writeAsString('');
       });
 
-      final zipFile = File('${await _documentsDir}/tmp_log_zip.zip');
+      final zipFile = File('$documentsDir/tmp_log_zip.zip');
       await ZipFile.createFromDirectory(
-          sourceDir: logArchiveDir, zipFile: zipFile, recurseSubDirs: true);
+        sourceDir: logArchiveDir,
+        zipFile: zipFile,
+        recurseSubDirs: true,
+      );
       final uploadSuccess = await _postLogFile(zipFile);
       if (uploadSuccess) {
         await _setLastUploadDateToNow();
@@ -130,8 +135,7 @@ class SeagullLogger {
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
         (record) {
-          print(
-              '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
+          print(format(record));
           if (record?.error != null) {
             print(record.error);
           }
@@ -148,16 +152,14 @@ class SeagullLogger {
       Logger.root.onRecord.listen(
         (record) {
           if (record.level > Level.WARNING) {
-            final message =
-                '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}';
             if (record?.error != null) {
               FirebaseCrashlytics.instance.recordError(
                 record.error,
                 record.stackTrace,
-                reason: message,
+                reason: format(record),
               );
             } else {
-              FirebaseCrashlytics.instance.log(message);
+              FirebaseCrashlytics.instance.log(format(record));
             }
           }
         },
@@ -165,16 +167,13 @@ class SeagullLogger {
     );
   }
 
-  Future<void> _initFileLogging() async {
-    final path = await _documentsDir;
-    _logFile = File('$path/$LOG_FILE_NAME');
-
+  void _initFileLogging() {
+    _logFile = File('$documentsDir/$LOG_FILE_NAME');
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
         (record) async {
           final stringBuffer = StringBuffer();
-          stringBuffer.writeln(
-              '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}');
+          stringBuffer.writeln(format(record));
           if (record?.error != null) {
             stringBuffer.writeln(record.error);
           }
@@ -186,6 +185,9 @@ class SeagullLogger {
       ),
     );
   }
+
+  String format(LogRecord record) =>
+      '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}';
 
   Future<DateTime> _getLastUploadDate() async {
     final preferences = await SharedPreferences.getInstance();
@@ -203,15 +205,6 @@ class SeagullLogger {
     final preferences = await SharedPreferences.getInstance();
     return await preferences.setInt(
         LATEST_UPLOAD_KEY, DateTime.now().millisecondsSinceEpoch);
-  }
-
-  Future<String> get _documentsDir async {
-    final directory = await getApplicationDocumentsDirectory();
-    return directory.path;
-  }
-
-  Future<String> get _logArchivePath async {
-    return '${await _documentsDir}/$LOG_ARCHIVE_PATH';
   }
 
   Future<File> _writeToLogFile(String log) async {

@@ -13,8 +13,8 @@ import 'all.dart';
 // Don't forget to register new plugin used in background
 // in android/app/src/main/kotlin/com/abilia/seagull/Application.kt
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
-  final logger = SeagullLogger();
-  await logger.initLogging(initAnalitics: false);
+  final documentDirectory = await getApplicationDocumentsDirectory();
+  final logger = SeagullLogger(documentsDir: documentDirectory.path);
   final log = Logger('BackgroundMessageHandler');
 
   try {
@@ -35,7 +35,6 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
       authToken: token,
     ).load();
 
-    final documentDirectory = await getApplicationDocumentsDirectory();
     final fileStorage = FileStorage(documentDirectory.path);
 
     await UserFileRepository(

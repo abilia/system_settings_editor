@@ -207,7 +207,7 @@ void main() {
       expect(find.byType(NavigatableAlarmPage), findsOneWidget);
     });
 
-    testWidgets('BUG-380 NotificationSubject is cleared on logout',
+    testWidgets('BUG SGC-380 NotificationSubject is cleared on logout',
         (WidgetTester tester) async {
       // Act
       mockTicker.add(twoHoursAfter);
