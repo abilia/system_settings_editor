@@ -81,6 +81,11 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
 
     hourFocusNode = FocusNode()..addListener(onHourFocusChanged);
     minuteFocusNode = FocusNode()..addListener(onMinFocusChanged);
+    if (widget.time != null) {
+      minuteFocusNode.requestFocus();
+    } else {
+      hourFocusNode.requestFocus();
+    }
     minuteInputController = TextEditingController(text: oldMinute)
       ..addListener(minuteInputListener);
     hourInputController = TextEditingController(text: oldHour)
@@ -97,11 +102,17 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
       widget.time != null ? pad0('${widget.time.minute}') : null;
 
   TimeOfDay get inputTime {
-    final hour = int.tryParse(hourInputController.text);
-    final minute = int.tryParse(minuteInputController.text);
     if (minute == null || hour == null) return null;
     return TimeOfDay(hour: in24HourClock(hour), minute: minute);
   }
+
+  int get hour => int.tryParse(hourInputController.text);
+  int get minute => int.tryParse(minuteInputController.text);
+  bool get validHour => hour != null;
+  bool get validMinute => minute != null;
+  bool get savable => validHour && validMinute;
+
+  void save() => Navigator.of(context).maybePop(TimeInputResult(inputTime));
 
   int in24HourClock(int hour) {
     if (widget.is24HoursFormat) return hour;
@@ -125,9 +136,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
 
     return ViewDialog(
       heading: Text(widget.heading, style: theme.textTheme.headline6),
-      onOk: inputTime != null
-          ? () => Navigator.of(context).maybePop(TimeInputResult(inputTime))
-          : null,
+      onOk: savable ? save : null,
       deleteButton: widget.deleteButton,
       child: Theme(
         data: theme.copyWith(
@@ -142,13 +151,17 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               _InputField(
-                key: TestKey.hourTextInput,
+                textFieldKey: TestKey.hourTextInput,
                 controller: hourInputController,
+                onEditingComplete: savable
+                    ? save
+                    : validHour
+                        ? minuteFocusNode.requestFocus
+                        : () {},
                 extraFormatter: [
                   HourInputFormatter(maxValue: twelveHourClock ? 12 : 23),
                   if (twelveHourClock) NoZeroInputFormatter(),
                 ],
-                autoFocus: true,
                 focusNode: hourFocusNode,
               ),
               Padding(
@@ -160,8 +173,13 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
                 ),
               ),
               _InputField(
-                key: TestKey.minTextInput,
+                textFieldKey: TestKey.minTextInput,
                 controller: minuteInputController,
+                onEditingComplete: savable
+                    ? save
+                    : validMinute
+                        ? hourFocusNode.requestFocus
+                        : () {},
                 extraFormatter: [
                   MinuteInputFormatter(),
                 ],
@@ -280,9 +298,13 @@ class _InputField extends StatelessWidget {
     @required this.focusNode,
     this.autoFocus = false,
     this.extraFormatter = const [],
+    this.onEditingComplete,
+    this.textFieldKey,
   }) : super(key: key);
 
+  final Key textFieldKey;
   final TextEditingController controller;
+  final VoidCallback onEditingComplete;
   final FocusNode focusNode;
   final List<TextInputFormatter> extraFormatter;
   final bool autoFocus;
@@ -292,6 +314,7 @@ class _InputField extends StatelessWidget {
     return SizedBox(
       width: 82.0,
       child: TextField(
+        key: textFieldKey,
         focusNode: focusNode,
         textAlign: TextAlign.center,
         textAlignVertical: TextAlignVertical.center,
@@ -305,6 +328,7 @@ class _InputField extends StatelessWidget {
         showCursor: false,
         controller: controller,
         autofocus: autoFocus,
+        onEditingComplete: onEditingComplete,
         keyboardType: TextInputType.number,
         inputFormatters: <TextInputFormatter>[
           FilteringTextInputFormatter.digitsOnly,
