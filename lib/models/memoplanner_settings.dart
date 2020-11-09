@@ -29,7 +29,11 @@ class MemoplannerSettings {
       nightIntervalStartKey = 'night_interval_start',
       calendarActivityTypeLeftKey = 'calendar_activity_type_left',
       calendarActivityTypeRightKey = 'calendar_activity_type_right',
-      calendarDayColorKey = 'calendar_daycolor';
+      calendarActivityTypeShowTypesKey = 'calendar_activity_type_show_types',
+      calendarDayColorKey = 'calendar_daycolor',
+      setting12hTimeFormatTimelineKey = 'setting_12h_time_format_timeline',
+      settingDisplayHourLinesKey = 'setting_display_hour_lines',
+      settingDisplayTimelineKey = 'setting_display_line_timeline';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -47,7 +51,11 @@ class MemoplannerSettings {
       activityDisplayNoAlarmOption,
       activityDisplayDayPeriod,
       activityDisplayWeekDay,
-      activityDisplayDate;
+      activityDisplayDate,
+      calendarActivityTypeShowTypes,
+      setting12hTimeFormatTimeline,
+      settingDisplayHourLines,
+      settingDisplayTimeline;
 
   final int morningIntervalStart,
       forenoonIntervalStart,
@@ -76,6 +84,10 @@ class MemoplannerSettings {
     this.activityDisplayDayPeriod = true,
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
+    this.calendarActivityTypeShowTypes = true,
+    this.setting12hTimeFormatTimeline,
+    this.settingDisplayHourLines = false,
+    this.settingDisplayTimeline = true,
     this.morningIntervalStart = 21600000,
     this.forenoonIntervalStart = 36000000,
     this.afternoonIntervalStart = 43200000,
@@ -145,6 +157,20 @@ class MemoplannerSettings {
       activityDisplayDate: settings.getBool(
         activityDisplayDateKey,
       ),
+      calendarActivityTypeShowTypes: settings.getBool(
+        calendarActivityTypeShowTypesKey,
+      ),
+      setting12hTimeFormatTimeline: settings.getBool(
+        setting12hTimeFormatTimelineKey,
+        defaultValue: null,
+      ),
+      settingDisplayHourLines: settings.getBool(
+        settingDisplayHourLinesKey,
+        defaultValue: false,
+      ),
+      settingDisplayTimeline: settings.getBool(
+        settingDisplayTimelineKey,
+      ),
       morningIntervalStart: settings.parse(
         morningIntervalStartKey,
         21600000,
@@ -205,6 +231,8 @@ extension _Parsing on List<MemoplannerSettingData> {
 }
 
 class DayParts {
+  Duration get morning => Duration(milliseconds: morningStart);
+
   final int morningStart,
       forenoonStart,
       afternoonStart,
@@ -225,3 +253,5 @@ enum DayPart { morning, forenoon, afternoon, evening, night }
 class DayColors {
   static const int ALL_DAYS = 0, SATURDAY_AND_SUNDAY = 1, NO_COLORS = 2;
 }
+
+enum HourClockType { use12, use24, useSystem }

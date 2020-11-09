@@ -22,6 +22,11 @@ abstract class MemoplannerSettingsState {
   bool get activityDisplayDayPeriod => settings.activityDisplayDayPeriod;
   bool get activityDisplayWeekDay => settings.activityDisplayWeekDay;
   bool get activityDisplayDate => settings.activityDisplayDate;
+  bool get showCategories => settings.calendarActivityTypeShowTypes;
+  HourClockType get timepillarHourClockType =>
+      _hourClockTypeFromNullBool(settings.setting12hTimeFormatTimeline);
+  bool get displayHourLines => settings.settingDisplayHourLines;
+  bool get displayTimeline => settings.settingDisplayTimeline;
 
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;
@@ -31,7 +36,12 @@ abstract class MemoplannerSettingsState {
   int get calendarDayColor => settings.calendarDayColor;
 
   DayParts get dayParts => DayParts(
-      morningStart, forenoonStart, afternoonStart, eveningStart, nightStart);
+        morningStart,
+        forenoonStart,
+        afternoonStart,
+        eveningStart,
+        nightStart,
+      );
 
   String get leftCategoryName => settings.calendarActivityTypeLeft;
   String get rightCategoryName => settings.calendarActivityTypeRight;
@@ -58,6 +68,12 @@ abstract class MemoplannerSettingsState {
     return ALARM_SOUND_AND_VIBRATION;
   }
 }
+
+HourClockType _hourClockTypeFromNullBool(bool value) => value == null
+    ? HourClockType.useSystem
+    : value
+        ? HourClockType.use12
+        : HourClockType.use24;
 
 class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
   MemoplannerSettingsLoaded(MemoplannerSettings settings) : super(settings);

@@ -55,50 +55,50 @@ class _CalendarPageState extends State<CalendarPage>
       child: BlocBuilder<DayPickerBloc, DayPickerState>(
         builder: (context, pickedDay) =>
             BlocBuilder<CalendarViewBloc, CalendarViewState>(
-          builder: (context, calendarViewState) {
-            return BlocBuilder<MemoplannerSettingBloc,
-                    MemoplannerSettingsState>(
-                builder: (context, memoSettingsState) {
-              return AnimatedTheme(
-                key: TestKey.animatedTheme,
-                data: weekDayThemes[memoSettingsState.calendarDayColor]
-                    [pickedDay.day.weekday],
-                child: Scaffold(
-                  appBar: buildAppBar(
-                    pickedDay.day,
-                    memoSettingsState.dayCaptionShowDayButtons,
-                  ),
-                  body: BlocBuilder<PermissionBloc, PermissionState>(
-                    builder: (context, state) => Stack(
-                      children: [
-                        Calendars(calendarViewState: calendarViewState),
-                        if (state.notificationDenied)
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 28.0),
-                              child: ErrorMessage(
-                                text: Text(
-                                  Translator.of(context)
-                                      .translate
-                                      .notificationsWarningText,
-                                ),
+          builder: (context, calendarViewState) =>
+              BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+            builder: (context, memoSettingsState) => AnimatedTheme(
+              key: TestKey.animatedTheme,
+              data: weekDayThemes[memoSettingsState.calendarDayColor]
+                  [pickedDay.day.weekday],
+              child: Scaffold(
+                appBar: buildAppBar(
+                  pickedDay.day,
+                  memoSettingsState.dayCaptionShowDayButtons,
+                ),
+                body: BlocBuilder<PermissionBloc, PermissionState>(
+                  builder: (context, state) => Stack(
+                    children: [
+                      Calendars(
+                        calendarViewState: calendarViewState,
+                        memoplannerSettingsState: memoSettingsState,
+                      ),
+                      if (state.notificationDenied)
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 28.0),
+                            child: ErrorMessage(
+                              text: Text(
+                                Translator.of(context)
+                                    .translate
+                                    .notificationsWarningText,
                               ),
                             ),
                           ),
-                      ],
-                    ),
-                  ),
-                  bottomNavigationBar: CalendarBottomBar(
-                    currentView: calendarViewState.currentView,
-                    day: pickedDay.day,
-                    goToNow: _jumpToActivity,
+                        ),
+                    ],
                   ),
                 ),
-              );
-            });
-          },
+                bottomNavigationBar: CalendarBottomBar(
+                  currentView: calendarViewState.currentView,
+                  day: pickedDay.day,
+                  goToNow: _jumpToActivity,
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -142,9 +142,11 @@ class Calendars extends StatelessWidget {
   const Calendars({
     Key key,
     @required this.calendarViewState,
+    @required this.memoplannerSettingsState,
   }) : super(key: key);
 
   final CalendarViewState calendarViewState;
+  final MemoplannerSettingsState memoplannerSettingsState;
 
   @override
   Widget build(BuildContext context) {
@@ -166,33 +168,35 @@ class Calendars extends StatelessWidget {
                       oldState.day == newState.day) ||
                   oldState.runtimeType != newState.runtimeType;
             },
-            builder: (context, state) {
-              if (state is ActivitiesOccasionLoaded) {
-                if (!state.isToday) {
+            builder: (context, activityState) {
+              if (activityState is ActivitiesOccasionLoaded) {
+                if (!activityState.isToday) {
                   BlocProvider.of<ScrollPositionBloc>(context)
                       .add(WrongDaySelected());
                 }
-                final fullDayActivities = state.fullDayActivities;
+                final fullDayActivities = activityState.fullDayActivities;
                 return Column(
                   children: <Widget>[
                     if (fullDayActivities.isNotEmpty)
                       FullDayContainer(
                         fullDayActivities: fullDayActivities,
-                        day: state.day,
+                        day: activityState.day,
                       ),
                     if (calendarViewState.currentView == CalendarType.LIST)
                       Expanded(
                         child: Agenda(
-                          state: state,
+                          activityState: activityState,
                           calendarViewState: calendarViewState,
+                          memoplannerSettingsState: memoplannerSettingsState,
                         ),
                       )
                     else
                       Expanded(
                         child: TimePillarCalendar(
-                          state: state,
+                          activityState: activityState,
                           now: context.bloc<ClockBloc>().state,
                           calendarViewState: calendarViewState,
+                          memoplannerSettingsState: memoplannerSettingsState,
                         ),
                       ),
                   ],

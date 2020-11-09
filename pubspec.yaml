@@ -33,7 +33,8 @@ dependencies:
       path: flutter_local_notifications/
   transparent_image: ^1.0.0
   rxdart: ^0.24.1
-  dotted_border: ^1.0.5
+  dotted_border: ^1.0.6
+  dotted_line: ^2.0.2
   synchronized: ^2.2.0
   image_picker: ^0.6.3+4
   mime: ^0.9.6+3

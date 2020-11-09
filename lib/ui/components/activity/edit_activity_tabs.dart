@@ -46,10 +46,12 @@ class MainTab extends StatelessWidget with EditActivityTab {
   const MainTab({
     Key key,
     @required this.editActivityState,
+    @required this.memoplannerSettingsState,
     @required this.day,
   }) : super(key: key);
 
   final EditActivityState editActivityState;
+  final MemoplannerSettingsState memoplannerSettingsState;
   final DateTime day;
 
   @override
@@ -61,11 +63,12 @@ class MainTab extends StatelessWidget with EditActivityTab {
         children: <Widget>[
           separatedAndPadded(ActivityNameAndPictureWidget(editActivityState)),
           separatedAndPadded(DateAndTimeWidget(editActivityState)),
-          CollapsableWidget(
-            child: separatedAndPadded(CategoryWidget(activity)),
-            collapsed:
-                activity.fullDay || !memoSettingsState.activityTypeEditable,
-          ),
+          if (memoplannerSettingsState.showCategories)
+            CollapsableWidget(
+              child: separatedAndPadded(CategoryWidget(activity)),
+              collapsed:
+                  activity.fullDay || !memoSettingsState.activityTypeEditable,
+            ),
           separatedAndPadded(CheckableAndDeleteAfterWidget(activity)),
           padded(AvailibleForWidget(activity)),
         ],
