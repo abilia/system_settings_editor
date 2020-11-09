@@ -756,7 +756,7 @@ void main() {
         // Assert
         expect(res.state.expand((e) => e.dayActivitiesForDay(dayToMove)), []);
         expect(
-            res.state.expand((e) => e.dayActivitiesForDay(newStartTime)).length,
+            res.state.expand((e) => e.dayActivitiesForDay(newStartTime.onlyDays())).length,
             1);
       });
     });

@@ -83,7 +83,9 @@ mixin EditRecurringMixin {
 
     final activityBeforeSplit = overlappingInSeries
         .map((a) => a.copyWithRecurringEnd(
-              day.onlyDays().millisecondBefore(),
+              a.recurs.yearly
+                  ? day.onlyDays().millisecondBefore()
+                  : newStart.onlyDays().millisecondBefore(),
               newId: true,
             ))
         .toSet();
