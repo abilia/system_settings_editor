@@ -108,7 +108,7 @@ class UserRepository extends Repository {
 
   Future<List<License>> getLicenses() async {
     try {
-      final token = await tokenDb.getToken();
+      final token = getToken();
       final fromApi = await getLicensesFromApi(token);
       await licenseDb.persistLicenses(fromApi);
     } catch (e) {
@@ -142,10 +142,10 @@ class UserRepository extends Repository {
 
   Future<void> persistToken(String token) => tokenDb.persistToken(token);
 
-  Future<String> getToken() => tokenDb.getToken();
+  String getToken() => tokenDb.getToken();
 
   Future<bool> _unregisterClient([String token]) async {
-    token ??= await getToken();
+    token ??= getToken();
     try {
       final response = await client.delete('$baseUrl/api/v1/auth/client',
           headers: authHeader(token));

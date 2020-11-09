@@ -10,12 +10,23 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/fakes/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/widget_test_keys.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+extension MockSharedPreferences on SharedPreferences {
+  static Future<SharedPreferences> getInstance({bool loggedIn = true}) {
+    SharedPreferences.setMockInitialValues({
+      if (loggedIn) TokenDb.tokenKey: Fakes.token,
+    });
+    return SharedPreferences.getInstance();
+  }
+}
 
 final AlarmScheduler noAlarmScheduler = ((a, b, c, d) async {});
 

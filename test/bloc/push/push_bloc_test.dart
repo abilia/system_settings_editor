@@ -18,11 +18,9 @@ void main() {
   group('Push integration test', () {
     final fakeUrl = 'SomeUrl';
 
-    setUp(() {
+    setUp(() async {
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
-      final mockTokenDb = MockTokenDb();
-      when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
       final time = DateTime(2020, 06, 05, 13, 23);
 
       final dbActivityAnswers = [
@@ -40,14 +38,11 @@ void main() {
           .thenAnswer((_) => Future.value(dbActivityAnswers.removeAt(0)));
 
       GetItInitializer()
-        ..tokenDb = mockTokenDb
+        ..sharedPreferences = await MockSharedPreferences.getInstance()
         ..activityDb = mockActivityDb
         ..client = Fakes.client(
             activityResponse: () => serverActivityAnswers.removeAt(0))
-        ..userDb = MockUserDb()
-        ..baseUrlDb = MockBaseUrlDb()
         ..fireBasePushService = MockFirebasePushService()
-        ..settingsDb = MockSettingsDb()
         ..userFileDb = MockUserFileDb()
         ..ticker = Ticker(
             stream: StreamController<DateTime>().stream, initialTime: time)

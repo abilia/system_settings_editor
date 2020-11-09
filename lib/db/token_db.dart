@@ -1,27 +1,25 @@
+import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Handles storage of auth token used when accessing backend.
 // NOTE: there was a problem when accessing secure storage when app in background.
 // Therefore shared preferences is used instead.
 class TokenDb {
-  final String _tokenKey = 'tokenKey';
+  @visibleForTesting
+  static const String tokenKey = 'tokenKey';
+  final SharedPreferences prefs;
 
-  Future persistToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_tokenKey, token);
-  }
+  const TokenDb(this.prefs);
 
-  Future<String> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
+  Future persistToken(String token) => prefs.setString(tokenKey, token);
+
+  String getToken() {
     try {
-      return prefs.getString(_tokenKey);
+      return prefs.getString(tokenKey);
     } catch (_) {
       return null;
     }
   }
 
-  Future delete() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_tokenKey);
-  }
+  Future delete() => prefs.remove(tokenKey);
 }

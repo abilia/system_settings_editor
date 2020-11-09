@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/user.dart';
@@ -14,24 +15,24 @@ void main() {
   NotificationMock notificationMock;
   UserRepository userRepository;
 
-  setUp(() {
+  setUp(() async {
+    final prefs = await MockSharedPreferences.getInstance(loggedIn: false);
     userRepository = UserRepository(
       client: Fakes.client(),
-      tokenDb: MockTokenDb(),
-      userDb: MockUserDb(),
-      licenseDb: MockLicenseDb(),
+      tokenDb: TokenDb(prefs),
+      userDb: UserDb(prefs),
+      licenseDb: LicenseDb(prefs),
     );
     final mockDb = MockDatabase();
     when(mockDb.batch()).thenReturn(MockBatch());
     mockedUserRepository = MockUserRepository();
     notificationMock = NotificationMock();
-    when(mockedUserRepository.getToken())
-        .thenAnswer((_) => Future.value(Fakes.token));
+    when(mockedUserRepository.getToken()).thenReturn(Fakes.token);
     when(mockedUserRepository.me(any))
         .thenAnswer((_) => Future.value(User(id: 0, type: '', name: '')));
     authenticationBloc = AuthenticationBloc(
       database: mockDb,
-      baseUrlDb: MockBaseUrlDb(),
+      baseUrlDb: BaseUrlDb(prefs),
       onLogout: notificationMock.mockCancleAll,
     );
   });

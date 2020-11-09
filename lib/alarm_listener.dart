@@ -25,6 +25,18 @@ class SeagullListeners extends StatefulWidget {
 class _SeagullListenersState extends State<SeagullListeners>
     with WidgetsBindingObserver {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       BlocProvider.of<LicenseBloc>(context).add(ReloadLicenses());

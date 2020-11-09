@@ -82,7 +82,7 @@ void main() {
             headers: authHeader(Fakes.token)))
         .thenAnswer((_) => Future.value(Response('body', 400)));
 
-    when(mockUserDb.getUser()).thenAnswer((_) => Future.value(userInDb));
+    when(mockUserDb.getUser()).thenReturn(userInDb);
     // Act
     final user = await userRepo.me(Fakes.token);
     // Assert
@@ -95,7 +95,7 @@ void main() {
             headers: authHeader(Fakes.token)))
         .thenAnswer((_) => Future.value(Response('body', 400)));
 
-    when(mockUserDb.getUser()).thenAnswer((_) => Future.value(null));
+    when(mockUserDb.getUser()).thenReturn(null);
     // Assert
     try {
       await userRepo.me(Fakes.token);
