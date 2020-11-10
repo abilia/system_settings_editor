@@ -11,9 +11,6 @@ import Flutter
       UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
     }
     GeneratedPluginRegistrant.register(with: self)
-    FLTFirebaseMessagingPlugin.setPluginRegistrantCallback({ (registry: FlutterPluginRegistry) -> Void in
-      GeneratedPluginRegistrant.register(with: registry);
-    });
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
   
