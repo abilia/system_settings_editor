@@ -15,16 +15,21 @@ import 'all.dart';
 // in android/app/src/main/kotlin/com/abilia/seagull/Application.kt
 Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   final documentDirectory = await getApplicationDocumentsDirectory();
-  final logger = SeagullLogger(documentsDir: documentDirectory.path);
+  final preferences = await SharedPreferences.getInstance();
+
+  final logger = SeagullLogger(
+    documentsDir: documentDirectory.path,
+    preferences: preferences,
+  );
   final log = Logger('BackgroundMessageHandler');
 
   try {
     log.info('Handling background message...');
     await configureLocalTimeZone();
-    final baseUrl = await BaseUrlDb().getBaseUrl();
+    final baseUrl = BaseUrlDb(preferences).getBaseUrl();
     final client = Client();
-    final user = await UserDb().getUser();
-    final token = await TokenDb().getToken();
+    final user = UserDb(preferences).getUser();
+    final token = TokenDb(preferences).getToken();
     final database = await DatabaseRepository.createSqfliteDb();
 
     final activities = await ActivityRepository(
@@ -47,7 +52,6 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       multipartRequestBuilder: MultipartRequestBuilder(),
     ).load();
 
-    final preferences = await SharedPreferences.getInstance();
     final settingsDb = SettingsDb(preferences);
 
     log.fine('finding alarms from ${activities.length} activities');

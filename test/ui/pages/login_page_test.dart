@@ -5,33 +5,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/db/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/fakes/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
 
 void main() {
   final secretPassword = 'pwfafawfa';
   final translate = Locales.language.values.first;
-  LicenseDb mockLicenseDb;
 
-  setUp(() {
+  final time = DateTime(2020, 11, 11, 11, 11);
+  DateTime licensExpireTime;
+
+  setUp(() async {
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
-
-    final mockTokenDb = MockTokenDb();
-    when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(null));
-    when(mockTokenDb.delete()).thenAnswer((_) => Future.value(null));
+    licensExpireTime = time.add(10.days());
 
     final mockDatabase = MockDatabase();
     when(mockDatabase.batch()).thenReturn(MockBatch());
-
-    final mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
 
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())
@@ -39,30 +34,28 @@ void main() {
     final mockActivityDb = MockActivityDb();
     when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
     when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([]));
-    mockLicenseDb = MockLicenseDb();
-    when(mockLicenseDb.getLicenses()).thenAnswer((_) => Future.value([
-          License(
-              endTime: DateTime.now().add(Duration(hours: 24)),
-              id: 1,
-              product: MEMOPLANNER_LICENSE_NAME)
-        ]));
+
     GetItInitializer()
+      ..sharedPreferences =
+          await MockSharedPreferences.getInstance(loggedIn: false)
       ..activityDb = mockActivityDb
       ..fireBasePushService = mockFirebasePushService
-      ..userDb = MockUserDb()
-      ..baseUrlDb = MockBaseUrlDb()
-      ..ticker = Ticker(stream: StreamController<DateTime>().stream)
-      ..tokenDb = mockTokenDb
-      ..client = Fakes.client(activityResponse: () => [])
+      ..ticker = Ticker(
+        stream: StreamController<DateTime>().stream,
+        initialTime: time,
+      )
+      ..client = Fakes.client(
+        activityResponse: () => [],
+        licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),
+      )
       ..fileStorage = MockFileStorage()
       ..userFileDb = MockUserFileDb()
-      ..settingsDb = mockSettingsDb
       ..database = mockDatabase
       ..flutterTts = MockFlutterTts()
-      ..licenseDb = mockLicenseDb
       ..genericDb = MockGenericDb()
       ..init();
   });
+
   tearDown(setupPermissions);
   testWidgets('Application starts', (WidgetTester tester) async {
     await tester.pumpWidget(App());
@@ -256,15 +249,8 @@ void main() {
 
   testWidgets('Gets no valid license dialog when no valid license',
       (WidgetTester tester) async {
-    when(mockLicenseDb.getLicenses()).thenAnswer(
-      (_) => Future.value([
-        License(
-          endTime: DateTime.now().subtract(Duration(hours: 24)),
-          id: 1,
-          product: MEMOPLANNER_LICENSE_NAME,
-        ),
-      ]),
-    );
+    licensExpireTime = time.subtract(10.days());
+
     await tester.pumpWidget(App());
 
     await tester.pumpAndSettle();
@@ -291,15 +277,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
 
-    when(mockLicenseDb.getLicenses()).thenAnswer(
-      (_) => Future.value([
-        License(
-          endTime: DateTime.now().subtract(Duration(hours: 24)),
-          id: 1,
-          product: MEMOPLANNER_LICENSE_NAME,
-        ),
-      ]),
-    );
+    licensExpireTime = time.subtract(10.days());
 
     pushBloc.add(PushEvent('license'));
     await tester.pumpAndSettle();

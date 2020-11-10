@@ -68,6 +68,7 @@ mixin EditRecurringMixin {
   ActivityMappingResult updateThisDayAndForward({
     @required Activity activity,
     @required Set<Activity> activities,
+    @required DateTime day,
   }) {
     final newStart = activity.startTime;
     final series = activities.where((a) => a.seriesId == activity.seriesId);
@@ -82,7 +83,9 @@ mixin EditRecurringMixin {
 
     final activityBeforeSplit = overlappingInSeries
         .map((a) => a.copyWithRecurringEnd(
-              newStart.onlyDays().millisecondBefore(),
+              a.recurs.yearly
+                  ? day.onlyDays().millisecondBefore()
+                  : newStart.onlyDays().millisecondBefore(),
               newId: true,
             ))
         .toSet();

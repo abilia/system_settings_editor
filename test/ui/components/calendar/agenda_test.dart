@@ -35,11 +35,9 @@ void main() {
       forthFullDay =
           FakeActivity.fullday(now).copyWith(title: forthFullDayTitle);
 
-  setUp(() {
+  setUp(() async {
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
-    final mockTokenDb = MockTokenDb();
-    when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
@@ -51,18 +49,16 @@ void main() {
         .thenAnswer((_) => Future.value(genericResponse()));
 
     GetItInitializer()
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
-      ..userDb = MockUserDb()
       ..ticker =
           Ticker(stream: StreamController<DateTime>().stream, initialTime: now)
       ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
-      ..tokenDb = mockTokenDb
       ..client = Fakes.client()
       ..fileStorage = MockFileStorage()
       ..userFileDb = MockUserFileDb()
-      ..settingsDb = MockSettingsDb()
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
       ..flutterTts = MockFlutterTts()

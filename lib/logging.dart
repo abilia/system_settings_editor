@@ -22,7 +22,6 @@ export 'package:logging/logging.dart';
 enum LoggingType { File, Print, Analytic }
 
 class SeagullLogger {
-  final UserDb userDb;
   File _logFile;
   final _uploadLock = Lock();
   final _logFileLock = Lock();
@@ -30,14 +29,15 @@ class SeagullLogger {
   List<StreamSubscription> loggingSubscriptions = [];
   final _log = Logger((SeagullLogger).toString());
   final String documentsDir;
+  final SharedPreferences preferences;
 
   bool get fileLogging => loggingType.contains(LoggingType.File);
   bool get printLogging => loggingType.contains(LoggingType.Print);
   bool get analyticLogging => loggingType.contains(LoggingType.Analytic);
 
   SeagullLogger({
-    this.userDb,
-    @required this.documentsDir,
+    this.documentsDir,
+    this.preferences,
     this.loggingType = const {
       if (kReleaseMode) ...{
         LoggingType.File,
@@ -46,7 +46,10 @@ class SeagullLogger {
         LoggingType.Print,
     },
     Level level = kReleaseMode ? Level.FINE : Level.ALL,
-  }) {
+  }) : assert(
+          !loggingType.contains(LoggingType.File) ||
+              (documentsDir != null && preferences != null),
+        ) {
     // Careful about adding any new plugin calls
     // as it needs to work in background on android as well
     // see [myBackgroundMessageHandler]
@@ -190,7 +193,6 @@ class SeagullLogger {
       '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}';
 
   Future<DateTime> _getLastUploadDate() async {
-    final preferences = await SharedPreferences.getInstance();
     final lastUploadMillis = preferences.getInt(LATEST_UPLOAD_KEY);
     if (lastUploadMillis == null) {
       final now = DateTime.now();
@@ -202,7 +204,6 @@ class SeagullLogger {
   }
 
   Future<bool> _setLastUploadDateToNow() async {
-    final preferences = await SharedPreferences.getInstance();
     return await preferences.setInt(
         LATEST_UPLOAD_KEY, DateTime.now().millisecondsSinceEpoch);
   }
@@ -218,9 +219,9 @@ class SeagullLogger {
   ) async {
     final _log = Logger('postLogFile');
     try {
-      final user = await userDb.getUser();
+      final user = UserDb(preferences).getUser();
       final bytes = await file.readAsBytes();
-      final baseUrl = await BaseUrlDb().getBaseUrl();
+      final baseUrl = BaseUrlDb(preferences).getBaseUrl();
 
       final uri = Uri.parse('$baseUrl/open/v1/logs/');
       final request = MultipartRequest('POST', uri)

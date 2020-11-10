@@ -983,4 +983,41 @@ void main() {
       ),
     );
   });
+
+  test('Changing date on recurring yearly should update recurring data',
+      () async {
+    // Arrange
+    final activity = Activity.createNew(
+      title: 'title',
+      startTime: aTime,
+    );
+
+    final editActivityBloc = EditActivityBloc(
+      ActivityDay(activity, aDay),
+      activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+    );
+
+    final nextDay = aTime.add(1.days());
+    final expectedActivity = activity.copyWith(
+      startTime: nextDay,
+      recurs: Recurs.yearly(nextDay),
+    );
+
+    // Act
+    editActivityBloc.add(ReplaceActivity(
+        activity.copyWith(recurs: Recurs.yearly(activity.startTime))));
+    editActivityBloc.add(ChangeDate(nextDay));
+    editActivityBloc.add(SaveRecurringActivity(ApplyTo.onlyThisDay, aDay));
+
+    await untilCalled(mockActivitiesBloc.add(any));
+    expect(
+      verify(mockActivitiesBloc.add(captureAny)).captured.single,
+      UpdateRecurringActivity(
+        ActivityDay(expectedActivity, aDay),
+        ApplyTo.onlyThisDay,
+      ),
+    );
+  });
 }

@@ -398,8 +398,10 @@ void main() {
 
         // Act
         final res = editRecurringMixin.updateThisDayAndForward(
-            activity: updatedRecurrringActivity,
-            activities: {recurrringActivity});
+          activity: updatedRecurrringActivity,
+          activities: {recurrringActivity},
+          day: anyDay,
+        );
 
         // Assert
         expect(res.state, [updatedRecurrringActivity]);
@@ -425,6 +427,7 @@ void main() {
         final res = editRecurringMixin.updateThisDayAndForward(
           activity: updatedRecurrringActivity,
           activities: {recurrringActivity},
+          day: anyDay,
         );
 
         final matcher = MatchActivitiesWithoutId(exptected);
@@ -449,8 +452,10 @@ void main() {
 
         // Act
         final res = editRecurringMixin.updateThisDayAndForward(
-            activity: updatedRecurrringActivity,
-            activities: {recurrringActivity});
+          activity: updatedRecurrringActivity,
+          activities: {recurrringActivity},
+          day: anyDay,
+        );
         final matcher = MatchActivitiesWithoutId(exptectedList);
 
         // Assert
@@ -479,6 +484,7 @@ void main() {
         final res = editRecurringMixin.updateThisDayAndForward(
           activity: updatedRecurrringActivity,
           activities: {recurrringActivity},
+          day: anyDay,
         );
         final matcher = MatchActivitiesWithoutId(exptectedList);
 
@@ -502,6 +508,7 @@ void main() {
         final res = editRecurringMixin.updateThisDayAndForward(
           activity: updatedRecurrringActivity,
           activities: {recurrringActivity},
+          day: anyDay,
         );
         final matcher = [recurrringActivity];
 
@@ -611,6 +618,7 @@ void main() {
         final res = editRecurringMixin.updateThisDayAndForward(
           activity: updatedRecurrringActivity,
           activities: currentActivities,
+          day: anyDay,
         );
         final matcher = MatchActivitiesWithoutId(exptectedList);
 
@@ -661,7 +669,10 @@ void main() {
 
         // Act
         final res = editRecurringMixin.updateThisDayAndForward(
-            activity: updatedA2, activities: {a1, a2, a3});
+          activity: updatedA2,
+          activities: {a1, a2, a3},
+          day: anyDay,
+        );
 
         // Assert
         expect(
@@ -679,6 +690,74 @@ void main() {
               updatedA2,
               expectedA3,
             ]));
+      });
+
+      test('Moving yearly forward', () async {
+        final start = DateTime(2020, 11, 06, 12, 00);
+        final dayToMove = DateTime(2021, 11, 06);
+        final newStartTime = DateTime(2021, 11, 09, 12, 00);
+        final original = Activity.createNew(
+          title: 'asdf',
+          startTime: start,
+          recurs: Recurs.raw(
+            Recurs.TYPE_YEARLY,
+            1006,
+            Recurs.NO_END,
+          ),
+        );
+        final updated = original.copyWith(
+            startTime: newStartTime,
+            recurs: Recurs.yearly(
+              newStartTime.onlyDays(),
+            ));
+
+        // Act
+        final res = editRecurringMixin.updateThisDayAndForward(
+          activity: updated,
+          activities: {original},
+          day: dayToMove,
+        );
+
+        // Assert
+        expect(res.state.expand((e) => e.dayActivitiesForDay(dayToMove)), []);
+        expect(
+            res.state
+                .expand((e) => e.dayActivitiesForDay(newStartTime.onlyDays()))
+                .length,
+            1);
+      });
+
+      test('Moving yearly backwards', () async {
+        // Arrange
+        final start = DateTime(2020, 11, 06, 12, 00);
+        final dayToMove = DateTime(2021, 11, 06);
+        final newStartTime = DateTime(2021, 11, 02, 12, 00);
+        final original = Activity.createNew(
+          title: 'asdf',
+          startTime: start,
+          recurs: Recurs.raw(
+            Recurs.TYPE_YEARLY,
+            1006,
+            Recurs.NO_END,
+          ),
+        );
+        final updated = original.copyWith(
+          startTime: newStartTime,
+          recurs: Recurs.yearly(newStartTime.onlyDays()),
+        );
+
+        // Act
+        final res = editRecurringMixin.updateThisDayAndForward(
+          activity: updated,
+          activities: {original},
+          day: dayToMove,
+        );
+
+        // Assert
+        expect(res.state.expand((e) => e.dayActivitiesForDay(dayToMove)), []);
+        expect(
+            res.state.expand((e) => e.dayActivitiesForDay(newStartTime.onlyDays())).length,
+            1);
       });
     });
 
@@ -738,6 +817,7 @@ void main() {
       final res2 = editRecurringMixin.updateThisDayAndForward(
         activity: recurringAUpdated2,
         activities: res1.state.toSet(),
+        day: anyDay,
       );
 
       // Assert
@@ -781,6 +861,7 @@ void main() {
       final res2 = editRecurringMixin.updateThisDayAndForward(
         activity: recurringUpdated,
         activities: {onlyThis, recurring},
+        day: anyDay,
       );
 
       // Assert

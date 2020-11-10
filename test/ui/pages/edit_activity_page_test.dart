@@ -1495,6 +1495,66 @@ text''';
       expect(find.text('24'), findsNothing);
     });
 
+    testWidgets('pressing keyboard ok changes focus or saves',
+        (WidgetTester tester) async {
+      // Arrange
+      final acivity = Activity.createNew(
+        title: '',
+        startTime: DateTime(2000, 11, 22, 3, 04),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          givenActivity: acivity,
+        ),
+      );
+      await tester.pump();
+      // Assert -- start time set but not end time endTime
+      expect(find.text('3:04 AM'), findsOneWidget);
+      expect(find.text('1:02 PM'), findsNothing);
+
+      // Act -- open end time
+      await tester.tap(endTimeFieldFinder);
+      await tester.pump();
+
+      // Assert hour TextField has focus
+      expect(
+        tester.widget<TextField>(hourInputFinder).focusNode.hasFocus,
+        isTrue,
+      );
+      expect(
+        tester.widget<TextField>(minInputFinder).focusNode.hasFocus,
+        isFalse,
+      );
+
+      // Act -- type 1 -> done
+      await tester.enterText(hourInputFinder, '1');
+      await tester.pump();
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pump();
+
+      // Assert minute TextField has focus
+      expect(
+        tester.widget<TextField>(minInputFinder).focusNode.hasFocus,
+        isTrue,
+      );
+      expect(
+        tester.widget<TextField>(hourInputFinder).focusNode.hasFocus,
+        isFalse,
+      );
+
+      // Act -- type 2 -> done
+      await tester.enterText(minInputFinder, '2');
+      await tester.pump();
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pump();
+
+      // Assert -- no more EndTimeInputDialog, end time now set
+      expect(find.byType(EndTimeInputDialog), findsNothing);
+      expect(find.text('3:04 AM'), findsOneWidget);
+      expect(find.text('1:02 PM'), findsOneWidget);
+    });
+
     testWidgets('24h clock', (WidgetTester tester) async {
       // Arrange
       Intl.defaultLocale = 'sv_SE';

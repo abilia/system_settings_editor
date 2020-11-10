@@ -178,10 +178,17 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   }
 
   Stream<EditActivityState> _mapChangeDateToState(ChangeDate event) async* {
-    yield state.copyWith(
-      state.activity,
-      timeInterval: state.timeInterval.copyWith(startDate: event.date),
-    );
+    if (state.activity.recurs.yearly) {
+      yield state.copyWith(
+        state.activity.copyWith(recurs: Recurs.yearly(event.date)),
+        timeInterval: state.timeInterval.copyWith(startDate: event.date),
+      );
+    } else {
+      yield state.copyWith(
+        state.activity,
+        timeInterval: state.timeInterval.copyWith(startDate: event.date),
+      );
+    }
   }
 
   Stream<EditActivityState> _mapChangeStartTimeToState(

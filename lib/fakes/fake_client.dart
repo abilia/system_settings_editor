@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import 'fake_activities.dart';
 
@@ -24,6 +25,7 @@ class Fakes {
     ActivityResponse activityResponse,
     SortableResponse sortableResponse,
     GenericResponse genericResponse,
+    Response Function() licenseResponse,
   }) =>
       MockClient(
         (r) {
@@ -66,7 +68,8 @@ class Fakes {
                 200);
           }
           if (pathSegments.containsAll(['license', 'portal', 'me'])) {
-            response = licenseSuccessResponse;
+            response = licenseResponse?.call() ??
+                licenseResponseExpires(DateTime.now().add(10.days()));
           }
 
           return Future.value(response ?? Response('not found', 404));
@@ -111,11 +114,11 @@ class Fakes {
       }
     }''', 200);
 
-  static final Response licenseSuccessResponse = Response('''
+  static Response licenseResponseExpires(DateTime expires) => Response('''
     [
       {
         "id":125,
-        "endTime":${DateTime.now().add(Duration(days: 10)).millisecondsSinceEpoch},
+        "endTime":${expires.millisecondsSinceEpoch},
         "product":"$MEMOPLANNER_LICENSE_NAME"
       }
     ]

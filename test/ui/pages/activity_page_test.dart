@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,10 +20,8 @@ import '../../mocks.dart';
 void main() {
   MockActivityDb mockActivityDb;
   MockGenericDb mockGenericDb;
-  StreamController<DateTime> mockTicker;
 
-  final locale = Locale('en');
-  final translate = Translator(locale).translate;
+  final translate = Locales.language.values.first;
   final startTime = DateTime(2111, 11, 11, 11, 11);
   final tenDaysAgo = DateTime(2111, 11, 01, 11, 11);
 
@@ -61,12 +58,9 @@ void main() {
 
   ActivityResponse activityResponse = () => [];
 
-  setUp(() {
+  setUp(() async {
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
-    mockTicker = StreamController<DateTime>();
-    final mockTokenDb = MockTokenDb();
-    when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
@@ -76,17 +70,19 @@ void main() {
     when(mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(<DbActivity>[]));
     GetItInitializer()
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..userDb = MockUserDb()
-      ..ticker = Ticker(initialTime: startTime, stream: mockTicker.stream)
-      ..baseUrlDb = MockBaseUrlDb()
+      ..ticker = Ticker(
+          initialTime: startTime, stream: StreamController<DateTime>().stream)
       ..fireBasePushService = mockFirebasePushService
-      ..tokenDb = mockTokenDb
-      ..client = Fakes.client(activityResponse: activityResponse)
+      ..client = Fakes.client(
+        activityResponse: activityResponse,
+        licenseResponse: () =>
+            Fakes.licenseResponseExpires(startTime.add(5.days())),
+      )
       ..fileStorage = MockFileStorage()
       ..genericDb = mockGenericDb
       ..userFileDb = MockUserFileDb()
-      ..settingsDb = MockSettingsDb()
       ..sortableDb = MockSortableDb()
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
