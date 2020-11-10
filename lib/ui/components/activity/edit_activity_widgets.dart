@@ -546,6 +546,7 @@ class RecurrenceWidget extends StatelessWidget {
 
 class EndDateWidget extends StatelessWidget {
   final EditActivityState state;
+  bool get disabled => state.storedRecurring;
 
   const EndDateWidget(this.state, {Key key}) : super(key: key);
   @override
@@ -564,13 +565,16 @@ class EndDateWidget extends StatelessWidget {
               DatePicker(
                 activity.recurs.end,
                 firstDate: state.timeInterval.startDate,
-                onChange: (newDate) =>
-                    BlocProvider.of<EditActivityBloc>(context).add(
-                  ReplaceActivity(
-                    activity.copyWith(
-                        recurs: activity.recurs.changeEnd(newDate)),
-                  ),
-                ),
+                onChange: disabled
+                    ? null
+                    : (newDate) =>
+                        BlocProvider.of<EditActivityBloc>(context).add(
+                          ReplaceActivity(
+                            activity.copyWith(
+                              recurs: activity.recurs.changeEnd(newDate),
+                            ),
+                          ),
+                        ),
               ),
               SizedBox(
                 height: 16.0,
@@ -586,15 +590,17 @@ class EndDateWidget extends StatelessWidget {
           ),
           text: Text(translate.noEndDate),
           value: activity.recurs.hasNoEnd,
-          onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
-            ReplaceActivity(
-              activity.copyWith(
-                recurs: activity.recurs.changeEnd(
-                  v ? Recurs.noEndDate : activity.startTime,
-                ),
-              ),
-            ),
-          ),
+          onChanged: disabled
+              ? null
+              : (v) => BlocProvider.of<EditActivityBloc>(context).add(
+                    ReplaceActivity(
+                      activity.copyWith(
+                        recurs: activity.recurs.changeEnd(
+                          v ? Recurs.noEndDate : activity.startTime,
+                        ),
+                      ),
+                    ),
+                  ),
         ),
       ],
     );

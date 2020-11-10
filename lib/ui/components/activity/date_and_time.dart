@@ -25,11 +25,11 @@ class DateAndTimeWidget extends StatelessWidget {
             SubHeading(translator.date),
             DatePicker(
               editActivityState.timeInterval.startDate,
-              onChange: (newDate) =>
-                  BlocProvider.of<EditActivityBloc>(context).add(
-                ChangeDate(newDate),
-              ),
-              disabled: !memoSettingsState.activityDateEditable,
+              onChange: memoSettingsState.activityDateEditable
+                  ? (newDate) => BlocProvider.of<EditActivityBloc>(context).add(
+                        ChangeDate(newDate),
+                      )
+                  : null,
             ),
             const SizedBox(height: 24.0),
             CollapsableWidget(
@@ -87,14 +87,12 @@ class ReminderSwitch extends StatelessWidget {
 
 class DatePicker extends StatelessWidget {
   final DateTime date;
-  final bool disabled;
   final Function(DateTime) onChange;
   final DateTime firstDate;
   final DateTime lastDate;
   const DatePicker(
     this.date, {
     @required this.onChange,
-    this.disabled = false,
     this.firstDate,
     this.lastDate,
   });
@@ -112,7 +110,7 @@ class DatePicker extends StatelessWidget {
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, time) => PickField(
         key: TestKey.datePicker,
-        onTap: disabled
+        onTap: onChange == null
             ? null
             : () async {
                 final newDate = await showDatePicker(

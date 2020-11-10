@@ -1821,6 +1821,45 @@ text''';
       expect(find.text(translate.endDate), findsOneWidget);
     });
 
+    testWidgets('end date disabled if edit recurring (Bug SGC-354)',
+        (WidgetTester tester) async {
+      final activity = Activity.createNew(
+        title: 'recurring',
+        startTime: startTime,
+        recurs: Recurs.raw(
+          Recurs.TYPE_WEEKLY,
+          Recurs.allDaysOfWeek,
+          startTime.add(30.days()).millisecondsSinceEpoch,
+        ),
+      );
+      // Arrange
+      await tester.pumpWidget(wrapWithMaterialApp(
+        EditActivityPage(day: today),
+        givenActivity: activity,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Act -- Change to weekly
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+
+      // Assert -- date picker visible
+      expect(find.byKey(TestKey.noEndDate), findsOneWidget);
+      expect(find.byType(EndDateWidget), findsOneWidget);
+      expect(find.byType(DatePicker), findsOneWidget);
+      expect(
+        tester.widget<DatePicker>(find.byType(DatePicker)).onChange,
+        isNull,
+      );
+      expect(
+        tester.widget<SwitchField>(find.byKey(TestKey.noEndDate)).onChanged,
+        isNull,
+      );
+    });
+
     testWidgets(
         'add activity without recurance data tab scrolls back to recurance tab',
         (WidgetTester tester) async {
@@ -1893,7 +1932,7 @@ text''';
       expect(find.byType(DatePicker), findsOneWidget);
       final datePicker =
           tester.widgetList(find.byType(DatePicker)).first as DatePicker;
-      expect(datePicker.disabled, true);
+      expect(datePicker.onChange, isNull);
     });
 
     testWidgets('Right/left not visible', (WidgetTester tester) async {
