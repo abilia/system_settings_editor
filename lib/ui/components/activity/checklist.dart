@@ -113,7 +113,7 @@ class QuestionView extends StatelessWidget {
                           border: Border.all(style: BorderStyle.none))
                       : boxDecoration,
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     textBaseline: TextBaseline.ideographic,
                     children: <Widget>[
                       if (question.hasImage)
@@ -150,7 +150,6 @@ class QuestionView extends StatelessWidget {
                             child: Text(
                               question.name,
                               overflow: TextOverflow.fade,
-                              softWrap: false,
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
