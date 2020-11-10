@@ -110,7 +110,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
   int get minute => int.tryParse(minuteInputController.text);
   bool get validHour => hour != null;
   bool get validMinute => minute != null;
-  bool get savable => validHour && validMinute;
+  bool get saveable => validHour && validMinute;
 
   void save() => Navigator.of(context).maybePop(TimeInputResult(inputTime));
 
@@ -136,7 +136,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
 
     return ViewDialog(
       heading: Text(widget.heading, style: theme.textTheme.headline6),
-      onOk: savable ? save : null,
+      onOk: saveable ? save : null,
       deleteButton: widget.deleteButton,
       child: Theme(
         data: theme.copyWith(
@@ -153,7 +153,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
               _InputField(
                 textFieldKey: TestKey.hourTextInput,
                 controller: hourInputController,
-                onEditingComplete: savable
+                onEditingComplete: saveable
                     ? save
                     : validHour
                         ? minuteFocusNode.requestFocus
@@ -175,7 +175,7 @@ class _TimeInputDialogState extends State<_TimeInputDialog> {
               _InputField(
                 textFieldKey: TestKey.minTextInput,
                 controller: minuteInputController,
-                onEditingComplete: savable
+                onEditingComplete: saveable
                     ? save
                     : validMinute
                         ? hourFocusNode.requestFocus
