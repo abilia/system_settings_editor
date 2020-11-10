@@ -363,6 +363,25 @@ void main() {
     expect(find.text('shorts'), findsOneWidget);
   });
 
+  testWidgets('Checklist with long item still shows checkbox (bug SGC-387)',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(wrapWithMaterialApp(ActivityInfo.from(
+        activity: Activity.createNew(
+            title: 'title',
+            startTime: startTime,
+            infoItem: Checklist(questions: [
+              Question(
+                id: 1,
+                name:
+                    'Long long long long long long long long long long long long long long long long',
+              ),
+            ])),
+        day: day)));
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(AbiliaIcons.checkbox_unselected), findsOneWidget);
+  });
+
   testWidgets('Test open checklist image in fullscreen',
       (WidgetTester tester) async {
     final infoItem = Checklist(questions: [

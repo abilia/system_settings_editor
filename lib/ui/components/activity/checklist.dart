@@ -113,7 +113,7 @@ class QuestionView extends StatelessWidget {
                           border: Border.all(style: BorderStyle.none))
                       : boxDecoration,
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     textBaseline: TextBaseline.ideographic,
                     children: <Widget>[
                       if (question.hasImage)
@@ -143,15 +143,17 @@ class QuestionView extends StatelessWidget {
                           ),
                         ),
                       if (question.hasTitle)
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 10.0),
-                          child: Text(
-                            question.name,
-                            style: Theme.of(context).textTheme.bodyText1,
+                        Flexible(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 10.0),
+                            child: Text(
+                              question.name,
+                              overflow: TextOverflow.fade,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
                           ),
                         ),
-                      Spacer(),
                       Padding(
                         padding:
                             const EdgeInsets.fromLTRB(0.0, 12.0, 12.0, 12.0),
