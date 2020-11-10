@@ -58,7 +58,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.7.4
+  flutter_launcher_icons: ^0.8.1
   mockito: ^4.1.1
   # flutter_driver:
   #   sdk: flutter
@@ -68,8 +68,9 @@ dev_dependencies:
   sqflite_common_ffi: ^1.1.0+1
 
 flutter_icons:
-  android: true
+  android: 'ic_launcher'
   ios: true
+  image_path_android: 'assets/MEMOplannerGO_logo(res).png'
   image_path: 'assets/ic_launcher.png'
 
 flutter:
