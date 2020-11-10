@@ -78,13 +78,11 @@ void main() {
   ActivityResponse activityResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
 
-  setUp(() {
+  setUp(() async {
     tz.initializeTimeZones();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
     mockTicker = StreamController<DateTime>();
-    final mockTokenDb = MockTokenDb();
-    when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
@@ -93,13 +91,12 @@ void main() {
         .thenAnswer((_) => Future.value(activityResponse()));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     mockSettingsDb = MockSettingsDb();
+
     GetItInitializer()
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..userDb = MockUserDb()
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialDay)
-      ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
-      ..tokenDb = mockTokenDb
       ..client = Fakes.client(activityResponse: activityResponse)
       ..fileStorage = MockFileStorage()
       ..userFileDb = MockUserFileDb()

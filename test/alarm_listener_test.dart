@@ -42,8 +42,6 @@ void main() {
     mockTicker = StreamController<DateTime>();
     await clearNotificationSubject();
 
-    final mockTokenDb = MockTokenDb();
-    when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
@@ -60,16 +58,13 @@ void main() {
     when(db.batch()).thenReturn(mockBatch);
 
     getItInitializer
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..userDb = MockUserDb()
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialTime)
-      ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
-      ..tokenDb = mockTokenDb
       ..client = Fakes.client(activityResponse: () => response)
       ..fileStorage = MockFileStorage()
       ..userFileDb = MockUserFileDb()
-      ..settingsDb = MockSettingsDb()
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = db

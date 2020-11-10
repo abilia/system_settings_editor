@@ -12,11 +12,16 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/repository/default_http_client.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GetItInitializer {
   Directory _documentsDirectory;
   set documentsDirectory(Directory documentsDirectory) =>
       _documentsDirectory = documentsDirectory;
+
+  SharedPreferences _sharedPreferences;
+  set sharedPreferences(SharedPreferences sharedPreferences) =>
+      _sharedPreferences = sharedPreferences;
 
   ActivityDb _activityDb;
   set activityDb(ActivityDb activityDb) => _activityDb = activityDb;
@@ -85,26 +90,27 @@ class GetItInitializer {
   set flutterTts(FlutterTts flutterTts) => _flutterTts = flutterTts;
 
   void init() {
-    final userDb = _userDb ?? UserDb();
     GetIt.I
       ..reset()
       ..registerSingleton<BaseClient>(_baseClient ?? ClientWithDefaultHeaders())
-      ..registerSingleton<TokenDb>(_tokenDb ?? TokenDb())
-      ..registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb())
+      ..registerSingleton<TokenDb>(_tokenDb ?? TokenDb(_sharedPreferences))
+      ..registerSingleton<LicenseDb>(
+          _licenseDb ?? LicenseDb(_sharedPreferences))
       ..registerSingleton<FirebasePushService>(
           _firebasePushService ?? FirebasePushService())
       ..registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database))
-      ..registerSingleton<UserDb>(userDb)
+      ..registerSingleton<UserDb>(_userDb ?? UserDb(_sharedPreferences))
       ..registerSingleton<Database>(_database)
       ..registerSingleton<SeagullLogger>(
         _seagullLogger ??
             SeagullLogger(
-              userDb: userDb,
               documentsDir: _documentsDirectory?.path,
+              preferences: _sharedPreferences,
               loggingType: {},
             ),
       )
-      ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb())
+      ..registerSingleton<BaseUrlDb>(
+          _baseUrlDb ?? BaseUrlDb(_sharedPreferences))
       ..registerSingleton<AlarmScheduler>(
           _alarmScheduler ?? scheduleAlarmNotificationsIsolated)
       ..registerSingleton<Ticker>(_ticker ?? Ticker())
@@ -112,7 +118,9 @@ class GetItInitializer {
       ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
       ..registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database))
       ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
-      ..registerSingleton<SettingsDb>(_settingsDb ?? SettingsDb(null))
+      ..registerSingleton<SettingsDb>(
+        _settingsDb ?? SettingsDb(_sharedPreferences),
+      )
       ..registerSingleton<FileStorage>(
           _fileStorage ?? FileStorage(_documentsDirectory?.path))
       ..registerSingleton<MultipartRequestBuilder>(

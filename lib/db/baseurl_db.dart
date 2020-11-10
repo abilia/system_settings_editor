@@ -2,14 +2,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class BaseUrlDb {
   static const String _BASE_URL_RECORD = 'base-url';
+  final SharedPreferences prefs;
 
-  Future setBaseUrl(String baseUrl) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_BASE_URL_RECORD, baseUrl);
-  }
+  const BaseUrlDb(this.prefs);
 
-  Future<String> getBaseUrl() async {
-    final prefs = await SharedPreferences.getInstance();
+  Future setBaseUrl(String baseUrl) =>
+      prefs.setString(_BASE_URL_RECORD, baseUrl);
+
+  String getBaseUrl() {
     try {
       return prefs.getString(_BASE_URL_RECORD);
     } catch (_) {
@@ -17,13 +17,10 @@ class BaseUrlDb {
     }
   }
 
-  Future deleteBaseUrl() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_BASE_URL_RECORD);
-  }
+  Future deleteBaseUrl() => prefs.remove(_BASE_URL_RECORD);
 
   Future<String> initialize(String defaultUrl) async {
-    final currentUrl = await getBaseUrl();
+    final currentUrl = getBaseUrl();
     if (currentUrl == null) {
       await setBaseUrl(defaultUrl);
       return defaultUrl;

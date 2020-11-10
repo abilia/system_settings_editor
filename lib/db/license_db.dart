@@ -5,15 +5,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LicenseDb {
   final String _licenseKey = 'licenseKey';
+  final SharedPreferences prefs;
 
-  Future persistLicenses(List<License> licenses) async {
-    final prefs = await SharedPreferences.getInstance();
-    final encoded = json.encode(licenses);
-    await prefs.setString(_licenseKey, encoded);
-  }
+  const LicenseDb(this.prefs);
 
-  Future<List<License>> getLicenses() async {
-    final prefs = await SharedPreferences.getInstance();
+  Future persistLicenses(List<License> licenses) =>
+      prefs.setString(_licenseKey, json.encode(licenses));
+
+  List<License> getLicenses() {
     try {
       final licensesString = prefs.getString(_licenseKey);
       return (json.decode(licensesString) as List)
@@ -24,8 +23,5 @@ class LicenseDb {
     }
   }
 
-  Future delete() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_licenseKey);
-  }
+  Future delete() => prefs.remove(_licenseKey);
 }

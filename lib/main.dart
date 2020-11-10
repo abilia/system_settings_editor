@@ -31,20 +31,19 @@ import 'package:seagull/utils/all.dart';
 final _log = Logger('main');
 
 void main() async {
-  await initServices();
-  final baseUrl = await BaseUrlDb().initialize(kReleaseMode ? PROD : WHALE);
+  final baseUrl = await initServices();
   final payload = await _payload;
   runApp(App(baseUrl: baseUrl, notificationPayload: payload));
 }
 
-Future<void> initServices() async {
+Future<String> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final documentDirectory = await getApplicationDocumentsDirectory();
-  final userDb = UserDb();
+  final preferences = await SharedPreferences.getInstance();
   final seagullLogger = SeagullLogger(
-    userDb: userDb,
     documentsDir: documentDirectory.path,
+    preferences: preferences,
   );
   if (kReleaseMode) {
     await seagullLogger.initAnalytics();
@@ -52,16 +51,20 @@ Future<void> initServices() async {
   _log.fine('Initializing services');
   await configureLocalTimeZone();
   final currentLocale = await Devicelocale.currentLocale;
-  final settingsDb = SettingsDb(await SharedPreferences.getInstance());
+  final settingsDb = SettingsDb(preferences);
   await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
+  final baseUrlDb = BaseUrlDb(preferences);
   GetItInitializer()
     ..documentsDirectory = documentDirectory
+    ..sharedPreferences = preferences
     ..settingsDb = settingsDb
-    ..userDb = userDb
+    ..baseUrlDb = baseUrlDb
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
     ..flutterTts = await flutterTts(currentLocale)
     ..init();
+
+  return baseUrlDb.initialize(kReleaseMode ? PROD : WHALE);
 }
 
 Future<NotificationAlarm> get _payload async {

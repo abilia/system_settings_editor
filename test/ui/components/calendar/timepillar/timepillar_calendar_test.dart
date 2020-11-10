@@ -36,12 +36,10 @@ void main() {
   final previusDayButtonFinder =
       find.byIcon(AbiliaIcons.return_to_previous_page);
 
-  setUp(() {
+  setUp(() async {
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
     mockTicker = StreamController<DateTime>();
-    final mockTokenDb = MockTokenDb();
-    when(mockTokenDb.getToken()).thenAnswer((_) => Future.value(Fakes.token));
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
@@ -54,14 +52,13 @@ void main() {
     final mockGenericDb = MockGenericDb();
     when(mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
+
     GetItInitializer()
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
-      ..userDb = MockUserDb()
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: time)
-      ..baseUrlDb = MockBaseUrlDb()
       ..fireBasePushService = mockFirebasePushService
-      ..tokenDb = mockTokenDb
       ..client = Fakes.client(
         activityResponse: activityResponse,
         genericResponse: genericResponse,
