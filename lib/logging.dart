@@ -50,9 +50,6 @@ class SeagullLogger {
           !loggingType.contains(LoggingType.File) ||
               (documentsDir != null && preferences != null),
         ) {
-    // Careful about adding any new plugin calls
-    // as it needs to work in background on android as well
-    // see [myBackgroundMessageHandler]
     Bloc.observer = BlocLoggingObserver();
     Logger.root.level = level;
     if (fileLogging) {

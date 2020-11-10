@@ -11,8 +11,6 @@ import 'package:seagull/storage/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'all.dart';
 
-// Don't forget to register new plugin used in background
-// in android/app/src/main/kotlin/com/abilia/seagull/Application.kt
 Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   final documentDirectory = await getApplicationDocumentsDirectory();
   final preferences = await SharedPreferences.getInstance();
