@@ -18,21 +18,10 @@ class PushBloc extends Bloc<PushEvent, PushState> {
   }
 
   void _initFirebaseListener() {
-    final firebaseMessaging = FirebaseMessaging();
-    firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        add(PushEvent(message['collapse_key']));
-        _log.fine('onMessage push: $message');
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        add(PushEvent(message['collapse_key']));
-        _log.fine('onLaunch push: $message');
-      },
-      onResume: (Map<String, dynamic> message) async {
-        add(PushEvent(message['collapse_key']));
-        _log.fine('onResume push: $message');
-      },
-      onBackgroundMessage: myBackgroundMessageHandler,
-    );
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      add(PushEvent(message.collapseKey));
+      _log.fine('onMessage push: ${message.collapseKey}');
+    });
+    FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
   }
 }
