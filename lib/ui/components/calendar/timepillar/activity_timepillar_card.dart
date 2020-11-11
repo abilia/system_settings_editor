@@ -61,9 +61,8 @@ class ActivityTimepillarCard extends StatelessWidget {
             SemanticsProperties(
               button: true,
               image: hasImage,
-              label: hasTitle
-                  ? activity.title
-                  : hourAndMinuteFormat(context)(activityOccasion.start),
+              label:
+                  '${hasTitle ? activity.title : ''} ${hourAndMinuteFormat(context)(activityOccasion.start)}',
             ),
             child: Stack(
               textDirection: right ? TextDirection.ltr : TextDirection.rtl,

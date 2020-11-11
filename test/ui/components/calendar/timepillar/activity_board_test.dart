@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -33,9 +35,8 @@ void main() {
 
   Widget multiWrap(List<ActivityOccasion> activityOccasions,
       {DateTime initialTime}) {
-    return MediaQuery(
-      data: MediaQueryData(),
-      child: Directionality(
+    return MaterialApp(
+      home: Directionality(
         textDirection: TextDirection.ltr,
         child: MultiBlocProvider(
           providers: [
@@ -83,6 +84,7 @@ void main() {
   });
 
   testWidgets('tts', (WidgetTester tester) async {
+    await initializeDateFormatting();
     await tester.pumpWidget(
       wrap(
         ActivityOccasion.forTest(
@@ -93,7 +95,8 @@ void main() {
         ),
       ),
     );
-    await tester.verifyTts(find.text(title), exact: title);
+    await tester.verifyTts(find.text(title),
+        exact: '$title ${hourAndMinuteFromUse24(false, 'en')(startTime)}');
   });
 
   group('position', () {
