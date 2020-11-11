@@ -158,7 +158,7 @@ class SeagullApp extends StatelessWidget {
           child: child,
         );
       },
-      title: 'Seagull',
+      title: 'MEMOplanner Go',
       theme: abiliaTheme,
       darkTheme: abiliaTheme.copyWith(
         primaryColorBrightness: Brightness.dark,
