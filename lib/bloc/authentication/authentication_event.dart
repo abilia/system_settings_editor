@@ -5,12 +5,20 @@ abstract class AuthenticationEvent extends Equatable {
 
   @override
   List<Object> get props => [];
+
+  @override
+  bool get stringify => true;
 }
 
-class AppStarted extends AuthenticationEvent {
+class ChangeRepository extends AuthenticationEvent {
   final UserRepository repository;
-  AppStarted(this.repository);
+  const ChangeRepository(this.repository);
+
+  @override
+  List<Object> get props => [repository];
 }
+
+class CheckAuthentication extends AuthenticationEvent {}
 
 class LoggedIn extends AuthenticationEvent {
   final String token;
@@ -19,9 +27,6 @@ class LoggedIn extends AuthenticationEvent {
 
   @override
   List<Object> get props => [token];
-
-  @override
-  String toString() => 'LoggedIn { token: $token }';
 }
 
 enum LoggedOutReason {
@@ -32,5 +37,5 @@ enum LoggedOutReason {
 class LoggedOut extends AuthenticationEvent {
   final LoggedOutReason loggedOutReason;
 
-  LoggedOut({this.loggedOutReason = LoggedOutReason.LOG_OUT});
+  const LoggedOut({this.loggedOutReason = LoggedOutReason.LOG_OUT});
 }

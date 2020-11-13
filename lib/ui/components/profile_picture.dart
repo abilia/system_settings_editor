@@ -32,10 +32,7 @@ class ProfilePicture extends StatelessWidget {
                 color: AbiliaColors.black75,
                 size: hugeIconSize,
               ),
-              if (user != null &&
-                  user.image != null &&
-                  user.image.isNotEmpty &&
-                  baseUrl != null)
+              if (user?.image?.isNotEmpty == true && baseUrl != null)
                 FadeInImage.memoryNetwork(
                   fit: BoxFit.cover,
                   placeholder: kTransparentImage,

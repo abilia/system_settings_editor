@@ -3,26 +3,55 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/dialogs/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class SeagullListeners extends StatefulWidget {
-  const SeagullListeners({
+class TopLevelListeners extends StatelessWidget {
+  final Widget child;
+
+  const TopLevelListeners({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => MultiBlocListener(
+        listeners: [
+          BlocListener<ClockBloc, DateTime>(
+            listener: (context, state) =>
+                GetIt.I<SeagullLogger>().maybeUploadLogs(),
+          ),
+          BlocListener<AuthenticationBloc, AuthenticationState>(
+            listenWhen: (last, current) =>
+                GetIt.I<BaseUrlDb>().getBaseUrl() !=
+                current.userRepository.baseUrl,
+            listener: (context, state) => GetIt.I<BaseUrlDb>().setBaseUrl(
+              state.userRepository.baseUrl,
+            ),
+          ),
+        ],
+        child: child,
+      );
+}
+
+class AuthenticatedListeners extends StatefulWidget {
+  const AuthenticatedListeners({
     Key key,
     @required this.child,
-    this.listenWhen,
+    this.alarm,
   }) : super(key: key);
 
   final Widget child;
-  final BlocListenerCondition<AlarmStateBase> listenWhen;
-
+  final NotificationAlarm alarm;
+  BlocListenerCondition<AlarmStateBase> get listenWhen => alarm != null
+      ? (_, current) => current is AlarmState && current.alarm != alarm
+      : null;
   @override
-  _SeagullListenersState createState() => _SeagullListenersState();
+  _AuthenticatedListenersState createState() => _AuthenticatedListenersState();
 }
 
-class _SeagullListenersState extends State<SeagullListeners>
+class _AuthenticatedListenersState extends State<AuthenticatedListeners>
     with WidgetsBindingObserver {
   @override
   void initState() {
