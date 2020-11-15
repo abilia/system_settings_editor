@@ -1,0 +1,71 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/utils/all.dart';
+
+part 'timepillar_event.dart';
+part 'timepillar_state.dart';
+
+class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
+  final ClockBloc clockBloc;
+  final MemoplannerSettingBloc memoSettingsBloc;
+  final DayPickerBloc dayPickerBloc;
+  StreamSubscription _clockSubscription;
+  StreamSubscription _memoSettingsSubscription;
+  StreamSubscription _dayPickerSubscription;
+
+  TimepillarBloc({
+    @required this.clockBloc,
+    @required this.memoSettingsBloc,
+    @required this.dayPickerBloc,
+  }) : super(TimepillarState(generateInterval(clockBloc.state,
+            dayPickerBloc.state.day, memoSettingsBloc.state))) {
+    _clockSubscription = clockBloc.listen((state) {
+      add(TimepillarConditionsChangedEvent());
+    });
+    _memoSettingsSubscription = memoSettingsBloc.listen((state) {
+      add(TimepillarConditionsChangedEvent());
+    });
+    _dayPickerSubscription = dayPickerBloc.listen((state) {
+      add(TimepillarConditionsChangedEvent());
+    });
+  }
+
+  @override
+  Stream<TimepillarState> mapEventToState(
+    TimepillarEvent event,
+  ) async* {
+    if (event is TimepillarConditionsChangedEvent) {
+      yield TimepillarState(generateInterval(
+          clockBloc.state, dayPickerBloc.state.day, memoSettingsBloc.state));
+    }
+  }
+
+  static TimepillarInterval generateInterval(
+      DateTime now, DateTime day, MemoplannerSettingsState memoSettings) {
+    final isToday = day.isAtSameDay(now);
+    return isToday
+        ? memoSettings.todayTimepillarInterval(now)
+        : TimepillarInterval(
+            startTime: day.onlyDays(),
+            endTime: day.onlyDays().add(1.days()),
+          );
+  }
+
+  @override
+  Future<void> close() async {
+    if (_clockSubscription != null) {
+      await _clockSubscription.cancel();
+    }
+    if (_memoSettingsSubscription != null) {
+      await _memoSettingsSubscription.cancel();
+    }
+    if (_dayPickerSubscription != null) {
+      await _dayPickerSubscription.cancel();
+    }
+    return super.close();
+  }
+}

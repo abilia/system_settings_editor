@@ -35,6 +35,11 @@ void main() {
 
   Widget multiWrap(List<ActivityOccasion> activityOccasions,
       {DateTime initialTime}) {
+    final startInterval = (initialTime ?? startTime).onlyDays();
+    final interval = TimepillarInterval(
+      startTime: startInterval,
+      endTime: startInterval.add(1.days()),
+    );
     return MaterialApp(
       home: Directionality(
         textDirection: TextDirection.ltr,
@@ -50,13 +55,16 @@ void main() {
           ],
           child: Stack(
             children: <Widget>[
-              Timeline(width: 40),
+              Timeline(
+                width: 40,
+                offset: -TimePillarCalendar.topMargin,
+              ),
               ActivityBoard(
                 ActivityBoard.positionTimepillarCards(
                   activityOccasions,
                   textStyle,
                   1.0,
-                  (initialTime ?? startTime).onlyDays(),
+                  interval,
                 ),
                 categoryMinWidth: 400,
               ),
@@ -100,7 +108,7 @@ void main() {
   });
 
   group('position', () {
-    testWidgets('Has same horizontal position', (WidgetTester tester) async {
+    testWidgets('Has same vertical position', (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);
 
       final activities = [
@@ -132,8 +140,7 @@ void main() {
       }
     });
 
-    testWidgets('Has not same horizontal position',
-        (WidgetTester tester) async {
+    testWidgets('Has not same vertical position', (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);
       final activities = [
         time.subtract(8.minutes()),
@@ -149,17 +156,19 @@ void main() {
           )
           .toList();
 
-      await tester.pumpWidget(multiWrap(activities));
+      await tester.pumpWidget(multiWrap(activities, initialTime: time));
       expect(find.byType(Timeline), findsOneWidget);
 
       final timelineYPostion =
           await tester.getTopLeft(find.byType(Timeline).first).dy;
+      final timelineMidPos = timelineYPostion + (Timeline.timelineHeight / 2);
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
 
       for (final y in activityYPos) {
-        expect((y - timelineYPostion).abs(), greaterThan(dotDistance));
+        final activityDotMidPos = y + dotSize / 2;
+        expect((activityDotMidPos - timelineMidPos).abs(), equals(dotDistance));
       }
     });
     testWidgets(
@@ -207,7 +216,8 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(multiWrap([activityA, activityB]));
+      await tester
+          .pumpWidget(multiWrap([activityA, activityB], initialTime: time));
       expect(find.byType(Timeline), findsOneWidget);
 
       final activityAXPos =
@@ -236,7 +246,8 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(multiWrap([activityA, activityB]));
+      await tester
+          .pumpWidget(multiWrap([activityA, activityB], initialTime: time));
       expect(find.byType(Timeline), findsOneWidget);
 
       final activityAXPos =
@@ -272,6 +283,10 @@ void main() {
 
     test('all position are unique', () async {
       final time = DateTime(2020, 04, 23);
+      final interval = TimepillarInterval(
+        startTime: time,
+        endTime: time.add(1.days()),
+      );
       final activities = List.generate(
         12 * 60,
         (i) => ActivityOccasion.forTest(
@@ -285,7 +300,7 @@ void main() {
         activities,
         textStyle,
         1.0,
-        time,
+        interval,
       );
       final uniques = boardData.cards.map((f) => {f.top, f.column});
 

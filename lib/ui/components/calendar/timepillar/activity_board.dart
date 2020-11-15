@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -31,9 +32,9 @@ class ActivityBoard extends StatelessWidget {
     List<ActivityOccasion> activities,
     TextStyle textStyle,
     double scaleFactor,
-    DateTime day,
+    TimepillarInterval interval,
   ) {
-    final maxEndPos = timePillarHeight +
+    final maxEndPos = timePillarHeight(interval) +
         dotDistance +
         ActivityTimepillarCard.imageHeigth +
         ActivityTimepillarCard.padding * 2 +
@@ -47,15 +48,19 @@ class ActivityBoard extends StatelessWidget {
     for (final ao in activities) {
       final a = ao.activity;
 
-      final minutePosition =
+      final minuteStartPosition =
           ao.start.roundToMinute(minutesPerDot, roundingMinute);
+      final minuteEndPosition =
+          ao.end.roundToMinute(minutesPerDot, roundingMinute);
 
-      final startsBefore00 = minutePosition.isDayBefore(day);
-      final startsAfter00 = minutePosition.isDayAfter(day);
+      final startsBeforeInterval =
+          minuteStartPosition.isBefore(interval.startTime);
+      final endsAfterInterval = minuteEndPosition.isAfter(interval.endTime);
+      final startTime = startsBeforeInterval ? interval.startTime : ao.start;
+      final endTime = endsAfterInterval ? interval.endTime : ao.end;
 
       final dots =
-          (startsBefore00 ? a.duration - day.difference(ao.start) : a.duration)
-              .inDots(minutesPerDot, roundingMinute);
+          endTime.difference(startTime).inDots(minutesPerDot, roundingMinute);
 
       final dotHeight = dots * dotDistance;
 
@@ -71,11 +76,10 @@ class ActivityBoard extends StatelessWidget {
       final renderedHeight =
           max(textHeight + imageHeight, ActivityTimepillarCard.minHeight);
 
-      final topOffset = startsAfter00
-          ? timeToPixelDistance(24, 0)
-          : startsBefore00
-              ? dotPadding
-              : timeToPixelDistanceHour(minutePosition);
+      final topOffset = startsBeforeInterval
+          ? 0
+          : timeToPixels(minuteStartPosition.hour, minuteStartPosition.minute) -
+              timeToPixels(interval.startTime.hour, 0);
 
       var height = max(dotHeight, renderedHeight);
 
@@ -83,20 +87,24 @@ class ActivityBoard extends StatelessWidget {
         height = maxEndPos - topOffset;
       }
 
+      final top = topOffset +
+          TimePillarCalendar.topMargin +
+          TimePillarCalendar.topPadding;
+
       Widget card(int col) => ActivityTimepillarCard(
             key: ObjectKey(ao),
             activityOccasion: ao,
             dots: dots,
-            top: topOffset,
+            top: top,
             column: col,
             height: height,
             textStyle: textStyle,
-            currentDay: day,
+            timepillarInterval: interval,
           );
 
       for (var i = 0; i < scheduled.length; i++) {
         final row = scheduled[i];
-        if (topOffset > row.last.endPos) {
+        if (top > row.last.endPos) {
           row.add(card(i));
           continue ActivityLoop;
         }

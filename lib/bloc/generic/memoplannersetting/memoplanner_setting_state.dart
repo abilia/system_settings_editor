@@ -34,6 +34,67 @@ abstract class MemoplannerSettingsState {
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
   int get calendarDayColor => settings.calendarDayColor;
+  TimepillarIntervalType get timepillarIntervalType =>
+      TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
+
+  TimepillarInterval todayTimepillarInterval(DateTime now) {
+    switch (timepillarIntervalType) {
+      case TimepillarIntervalType.DAY_AND_NIGHT:
+        return TimepillarInterval(
+          startTime: now.onlyDays(),
+          endTime: now.onlyDays().add(24.hours()),
+        );
+      case TimepillarIntervalType.INTERVAL:
+        final dayPart = now.dayPart(dayParts);
+        return dayPartInterval(dayPart, now);
+      case TimepillarIntervalType.DAY:
+        return TimepillarInterval(
+          startTime: now.onlyDays().add(6.hours()),
+          endTime: now.onlyDays().add(23.days()),
+        );
+    }
+    return TimepillarInterval(
+        startTime: now.onlyDays(), endTime: now.onlyDays().add(1.days()));
+  }
+
+  TimepillarInterval dayPartInterval(DayPart part, DateTime now) {
+    final base = now.onlyDays();
+    switch (part) {
+      case DayPart.morning:
+        return TimepillarInterval(
+          startTime: base.add(morningStart.milliseconds()),
+          endTime: base.add(forenoonStart.milliseconds()),
+        );
+      case DayPart.forenoon:
+        return TimepillarInterval(
+          startTime: base.add(forenoonStart.milliseconds()),
+          endTime: base.add(afternoonStart.milliseconds()),
+        );
+      case DayPart.afternoon:
+        return TimepillarInterval(
+          startTime: base.add(afternoonStart.milliseconds()),
+          endTime: base.add(eveningStart.milliseconds()),
+        );
+      case DayPart.evening:
+        return TimepillarInterval(
+          startTime: base.add(eveningStart.milliseconds()),
+          endTime: base.add(nightStart.milliseconds()),
+        );
+      case DayPart.night:
+        if (now.isBefore(base.add(morningStart.milliseconds()))) {
+          return TimepillarInterval(
+            startTime: base,
+            endTime: base.add(morningStart.milliseconds()),
+          );
+        } else {
+          return TimepillarInterval(
+            startTime: base.add(nightStart.milliseconds()),
+            endTime: base.add(25.hours()).onlyDays(),
+          );
+        }
+    }
+    throw ArgumentError();
+  }
 
   DayParts get dayParts => DayParts(
         morningStart,
@@ -81,4 +142,34 @@ class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
 
 class MemoplannerSettingsNotLoaded extends MemoplannerSettingsState {
   MemoplannerSettingsNotLoaded() : super(MemoplannerSettings());
+}
+
+enum TimepillarIntervalType {
+  DAY_AND_NIGHT,
+  INTERVAL,
+  DAY,
+}
+
+class TimepillarInterval extends Equatable {
+  final DateTime startTime, endTime;
+
+  TimepillarInterval({
+    this.startTime,
+    this.endTime,
+  });
+
+  int get lengthInHours =>
+      (endTime.difference(startTime).inMinutes / 60).ceil();
+
+  List<ActivityOccasion> getForInterval(List<ActivityOccasion> activities) {
+    return activities
+        .where((a) =>
+            a.start.inInclusiveRange(startDate: startTime, endDate: endTime) ||
+            a.end.inInclusiveRange(startDate: startTime, endDate: endTime) ||
+            (a.start.isBefore(startTime) && a.end.isAfter(endTime)))
+        .toList();
+  }
+
+  @override
+  List<Object> get props => [startTime, endTime];
 }
