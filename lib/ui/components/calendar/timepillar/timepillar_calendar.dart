@@ -110,7 +110,10 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                   child: BlocBuilder<ClockBloc, DateTime>(
                     builder: (context, now) => Stack(
                       children: <Widget>[
-                        if (showHourLines) const HourLines(),
+                        if (showHourLines)
+                          HourLines(
+                            numberOfLines: interval.lengthInHours,
+                          ),
                         if (showTimeLine)
                           Timeline(
                             width: boxConstraints.maxWidth,

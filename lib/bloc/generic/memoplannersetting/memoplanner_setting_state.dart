@@ -38,26 +38,25 @@ abstract class MemoplannerSettingsState {
       TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
 
   TimepillarInterval todayTimepillarInterval(DateTime now) {
+    final day = now.onlyDays();
     switch (timepillarIntervalType) {
-      case TimepillarIntervalType.DAY_AND_NIGHT:
-        return TimepillarInterval(
-          startTime: now.onlyDays(),
-          endTime: now.onlyDays().add(24.hours()),
-        );
       case TimepillarIntervalType.INTERVAL:
-        final dayPart = now.dayPart(dayParts);
-        return dayPartInterval(dayPart, now);
+        return dayPartInterval(now);
       case TimepillarIntervalType.DAY:
         return TimepillarInterval(
-          startTime: now.onlyDays().add(6.hours()),
-          endTime: now.onlyDays().add(23.days()),
+          startTime: day.add(morningStart.milliseconds()),
+          endTime: day.add(nightStart.milliseconds()),
+        );
+      default:
+        return TimepillarInterval(
+          startTime: day,
+          endTime: day.nextDay(),
         );
     }
-    return TimepillarInterval(
-        startTime: now.onlyDays(), endTime: now.onlyDays().add(1.days()));
   }
 
-  TimepillarInterval dayPartInterval(DayPart part, DateTime now) {
+  TimepillarInterval dayPartInterval(DateTime now) {
+    final part = now.dayPart(dayParts);
     final base = now.onlyDays();
     switch (part) {
       case DayPart.morning:
@@ -89,7 +88,7 @@ abstract class MemoplannerSettingsState {
         } else {
           return TimepillarInterval(
             startTime: base.add(nightStart.milliseconds()),
-            endTime: base.add(25.hours()).onlyDays(),
+            endTime: base.nextDay(),
           );
         }
     }

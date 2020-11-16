@@ -3,12 +3,16 @@ import 'package:flutter/widgets.dart';
 import 'package:seagull/ui/all.dart';
 
 class HourLines extends StatelessWidget {
-  const HourLines({Key key}) : super(key: key);
+  final numberOfLines;
+  const HourLines({
+    Key key,
+    this.numberOfLines = 24,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(
         children: List.generate(
-          24,
+          numberOfLines,
           (_) => Container(
             height: hourHeigt,
             child: const DottedLine(
