@@ -7,12 +7,14 @@ extension AlarmTypeExtensions on Alarm {
   IconData iconData() {
     if (sound) return AbiliaIcons.handi_alarm_vibration;
     if (vibrate) return AbiliaIcons.handi_vibration;
+    if (silent) return AbiliaIcons.handi_alarm;
     return AbiliaIcons.handi_no_alarm_vibration;
   }
 
   String text(Translated translator) {
     if (sound) return translator.alarmAndVibration;
     if (vibrate) return translator.vibration;
+    if (silent) return translator.silentAlarm;
     return translator.noAlarm;
   }
 }

@@ -92,6 +92,7 @@ selectAlarmType	Select alarm type	Välj typ av larm
 alarmAndVibration	Alarm + vibration	Larm + vibration
 vibration	Vibration	Vibration
 noAlarm	No alarm	Inget larm
+silentAlarm	Silent alarm	Tyst larm
 alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid
 		
 ### Select picture		

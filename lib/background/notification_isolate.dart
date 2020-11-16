@@ -227,6 +227,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     notificationChannel.description,
     groupKey: activity.seriesId,
     playSound: alarm.sound,
+    enableVibration: alarm.vibrate,
     importance: Importance.max,
     priority: Priority.high,
     fullScreenIntent: true,
@@ -244,8 +245,11 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
 NotificationChannel _notificationChannel(Alarm alarm) => alarm.sound
     ? NotificationChannel('Sound + Vibration', 'Sound + Vibration',
         'Activities with Alarm + Vibration or Only Alarm')
-    : NotificationChannel('Vibration', 'Vibration',
-        'Activities with Only vibration or Silent Alarm');
+    : alarm.vibrate
+        ? NotificationChannel(
+            'Vibration', 'Vibration', 'Activities with Only vibration ')
+        : NotificationChannel(
+            'Silent', 'Silent', 'Activities with Silent Alarm');
 
 class NotificationChannel {
   final String id, name, description;

@@ -50,7 +50,8 @@ abstract class MemoplannerSettingsState {
   bool get abilityToSelectAlarm =>
       [
         settings.activityDisplayAlarmOption,
-        settings.activityDisplaySilentAlarmOption,
+        settings.activityDisplaySilentAlarmOption, // for Vibration
+        settings.activityDisplaySilentAlarmOption, // and Silent
         settings.activityDisplayNoAlarmOption
       ].where((e) => e).length >=
       2;

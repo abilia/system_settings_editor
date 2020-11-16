@@ -306,7 +306,7 @@ void main() {
       expect(alarm.groupValue, AlarmType.SoundAndVibration);
     });
 
-    testWidgets('SGC-359 Alarm type maps ALARM_SILENT to Vibration',
+    testWidgets('SGC-359 Alarm type maps ALARM_SILENT to Silent',
         (WidgetTester tester) async {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
@@ -329,11 +329,11 @@ void main() {
 
       final alarm = tester.widget<RadioField>(
         find.byKey(
-          ObjectKey(AlarmType.Vibration),
+          ObjectKey(AlarmType.Silent),
         ),
       );
 
-      expect(alarm.groupValue, AlarmType.Vibration);
+      expect(alarm.groupValue, AlarmType.Silent);
     });
 
     testWidgets('Alarm on start time is disabled when no alarm',

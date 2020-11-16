@@ -431,7 +431,7 @@ void main() {
         expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
       });
 
-      testWidgets('SGC-359 Select alarm dialog silent alarms maps to vibration',
+      testWidgets('SGC-359 Select alarm dialog silent alarms maps to Silent',
           (WidgetTester tester) async {
         await tester.pumpWidget(
           wrapWithMaterialApp(
@@ -445,14 +445,14 @@ void main() {
         await tester.pumpAndSettle();
         await tester.goToAlarmTab();
         expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
-        expect(find.text(translate.vibration), findsOneWidget);
-        expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
+        expect(find.text(translate.silentAlarm), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.handi_alarm), findsNWidgets(2));
         await tester.tap(find.byKey(TestKey.selectAlarm));
         await tester.pumpAndSettle();
         expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
-        final radio = tester
-            .widget<RadioField>(find.byKey(ObjectKey(AlarmType.Vibration)));
-        expect(radio.groupValue, AlarmType.Vibration);
+        final radio =
+            tester.widget<RadioField>(find.byKey(ObjectKey(AlarmType.Silent)));
+        expect(radio.groupValue, AlarmType.Silent);
       });
 
       testWidgets(
@@ -1989,6 +1989,33 @@ text''';
           tester.widgetList(find.byType(PickField)).first as PickField;
 
       expect(alarmPicker.onTap, isNull);
+    });
+
+    testWidgets('Alarm options - silent option alarm and vibration',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        activityDisplayAlarmOption: false,
+        activityDisplayNoAlarmOption: false,
+      )));
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(PickField), findsOneWidget);
+      final alarmPicker =
+          tester.widgetList(find.byType(PickField)).first as PickField;
+
+      expect(alarmPicker.onTap, isNotNull);
+      await tester.tap(find.byType(AlarmWidget));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+
+      expect(find.text(translate.silentAlarm), findsOneWidget);
+      expect(find.text(translate.vibration), findsOneWidget);
     });
 
     final hourInputFinder = find.byKey(TestKey.hourTextInput);

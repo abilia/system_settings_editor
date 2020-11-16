@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class _SelectAlarmTypeDialog extends StatelessWidget {
   final AlarmType alarm;
@@ -30,37 +31,28 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
         builder: (context, memoSettingsState) => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            if (memoSettingsState.activityDisplayAlarmOption)
-              RadioField(
-                key: ObjectKey(AlarmType.SoundAndVibration),
-                groupValue: alarm,
-                onChanged: onChanged,
-                value: AlarmType.SoundAndVibration,
-                leading: Icon(AbiliaIcons.handi_alarm_vibration),
-                text: Text(translate.alarmAndVibration),
-              ),
-            if (memoSettingsState.activityDisplayAlarmOption)
-              const SizedBox(height: 8.0),
-            if (memoSettingsState.activityDisplaySilentAlarmOption)
-              RadioField(
-                key: ObjectKey(AlarmType.Vibration),
-                groupValue: alarm,
-                onChanged: onChanged,
-                value: AlarmType.Vibration,
-                leading: Icon(AbiliaIcons.handi_vibration),
-                text: Text(translate.vibration),
-              ),
-            if (memoSettingsState.activityDisplaySilentAlarmOption)
-              const SizedBox(height: 8.0),
-            if (memoSettingsState.activityDisplayNoAlarmOption)
-              RadioField(
-                key: ObjectKey(AlarmType.NoAlarm),
-                groupValue: alarm,
-                onChanged: onChanged,
-                value: AlarmType.NoAlarm,
-                leading: Icon(AbiliaIcons.handi_no_alarm_vibration),
-                text: Text(translate.noAlarm),
-              ),
+            ...[
+              if (memoSettingsState.activityDisplayAlarmOption)
+                AlarmType.SoundAndVibration,
+              if (memoSettingsState.activityDisplaySilentAlarmOption) ...[
+                AlarmType.Vibration,
+                AlarmType.Silent,
+              ],
+              if (memoSettingsState.activityDisplayNoAlarmOption)
+                AlarmType.NoAlarm,
+            ].map((type) => Alarm(type: type)).map(
+                  (alarmType) => RadioField(
+                    key: ObjectKey(alarmType.typeSeagull),
+                    groupValue: alarm,
+                    onChanged: onChanged,
+                    value: alarmType.typeSeagull,
+                    leading: Icon(
+                      alarmType.iconData(),
+                      size: smallIconSize,
+                    ),
+                    text: Text(alarmType.text(translate)),
+                  ),
+                ),
             ...trailing
           ]
               .map((widget) => widget is Divider
@@ -69,6 +61,7 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
                       padding: const EdgeInsets.only(
                         left: ViewDialog.leftPadding,
                         right: ViewDialog.rightPadding,
+                        bottom: 8.0,
                       ),
                       child: widget,
                     ))
