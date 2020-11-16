@@ -53,7 +53,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
         ? timeToPixels(widget.now.hour, widget.now.minute) - hourHeigt * 2
         : hourHeigt * memoSettings.dayParts.morning.inHours;
     verticalScrollController =
-        ScrollController(initialScrollOffset: scrollOffset);
+        ScrollController(initialScrollOffset: max(scrollOffset, 0));
 
     horizontalScrollController = SnapToCenterScrollController();
     if (widget.activityState.isToday) {
