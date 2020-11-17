@@ -10,10 +10,13 @@ import 'package:seagull/ui/all.dart';
 const transitionDuration = Duration(seconds: 1);
 
 class TimePillarCalendar extends StatefulWidget {
+  static const topMargin = 30.0;
+  static const topPadding = 2 * hourPadding;
   final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
   final MemoplannerSettingsState memoplannerSettingsState;
   final DateTime now;
+  final TimepillarInterval timepillarInterval;
 
   const TimePillarCalendar({
     Key key,
@@ -21,6 +24,7 @@ class TimePillarCalendar extends StatefulWidget {
     @required this.calendarViewState,
     @required this.memoplannerSettingsState,
     @required this.now,
+    @required this.timepillarInterval,
   }) : super(key: key);
 
   @override
@@ -41,14 +45,15 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
   DateTime get day => widget.activityState.day;
   List<ActivityOccasion> get activities => widget.activityState.activities;
   CalendarViewState get viewState => widget.calendarViewState;
+  TimepillarInterval get interval => widget.timepillarInterval;
 
   @override
   void initState() {
     final scrollOffset = widget.activityState.isToday
-        ? timeToPixelDistanceHour(widget.now) - hourHeigt * 2
+        ? timeToPixels(widget.now.hour, widget.now.minute) - hourHeigt * 2
         : hourHeigt * memoSettings.dayParts.morning.inHours;
     verticalScrollController =
-        ScrollController(initialScrollOffset: scrollOffset);
+        ScrollController(initialScrollOffset: max(scrollOffset, 0));
 
     horizontalScrollController = SnapToCenterScrollController();
     if (widget.activityState.isToday) {
@@ -67,20 +72,25 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
 
     final textStyle = Theme.of(context).textTheme.caption;
     final textScaleFactor = mediaData.textScaleFactor;
+    final timepillarActivities = interval.getForInterval(activities);
     final leftBoardData = ActivityBoard.positionTimepillarCards(
-      activities.where((ao) => ao.activity.category != Category.right).toList(),
+      timepillarActivities
+          .where((ao) => ao.activity.category != Category.right)
+          .toList(),
       textStyle,
       textScaleFactor,
-      day,
+      interval,
     );
     final rightBoardData = ActivityBoard.positionTimepillarCards(
-      activities.where((ao) => ao.activity.category == Category.right).toList(),
+      timepillarActivities
+          .where((ao) => ao.activity.category == Category.right)
+          .toList(),
       textStyle,
       textScaleFactor,
-      day,
+      interval,
     );
-    final calendarHeight =
-        max(timePillarHeight, max(leftBoardData.heigth, rightBoardData.heigth));
+    final calendarHeight = max(timePillarHeight(interval),
+        max(leftBoardData.heigth, rightBoardData.heigth));
 
     // Anchor is the starting point of the central sliver (timepillar).
     // horizontalAnchor is where the left side of the timepillar needs to be in parts of the screen to make it centralized.
@@ -96,14 +106,23 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
               child: SingleChildScrollView(
                 controller: verticalScrollController,
                 child: LimitedBox(
-                  maxHeight: calendarHeight,
+                  maxHeight: max(calendarHeight, boxConstraints.maxHeight),
                   child: BlocBuilder<ClockBloc, DateTime>(
                     builder: (context, now) => Stack(
                       children: <Widget>[
-                        if (showHourLines) const HourLines(),
+                        if (showHourLines)
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: TimePillarCalendar.topMargin),
+                            child: HourLines(
+                              numberOfLines: interval.lengthInHours,
+                            ),
+                          ),
                         if (showTimeLine)
                           Timeline(
                             width: boxConstraints.maxWidth,
+                            offset: timeToPixels(interval.startTime.hour, 0) -
+                                TimePillarCalendar.topMargin,
                           ),
                         CustomScrollView(
                           anchor: horizontalAnchor,
@@ -129,7 +148,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                             SliverTimePillar(
                               key: center,
                               child: TimePillar(
-                                day: day,
+                                interval: interval,
                                 dayOccasion: widget.activityState.occasion,
                                 showTimeLine: showTimeLine,
                                 hourClockType:

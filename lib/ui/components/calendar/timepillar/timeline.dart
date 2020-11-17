@@ -4,9 +4,12 @@ import 'package:seagull/ui/all.dart';
 
 class Timeline extends StatelessWidget {
   final double width;
+  final double offset;
+  static const double timelineHeight = 2;
   const Timeline({
     Key key,
     @required this.width,
+    this.offset = 0,
   }) : super(key: key);
 
   @override
@@ -16,10 +19,10 @@ class Timeline extends StatelessWidget {
         duration: transitionDuration,
         child: Container(
           width: width,
-          height: 2,
+          height: timelineHeight,
           decoration: const BoxDecoration(color: AbiliaColors.red),
         ),
-        top: timeToMidDotPixelDistance(now),
+        top: timeToMidDotPixelDistance(now) - offset + TimePillarCalendar.topPadding - timelineHeight / 2,
       ),
     );
   }

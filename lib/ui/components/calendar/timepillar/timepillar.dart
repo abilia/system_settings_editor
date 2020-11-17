@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-double timeToPixelDistance(int hours, int minutes) =>
-    (hours * dotsPerHour + minutes ~/ minutesPerDot) * dotDistance +
-    hourPadding;
 double timeToMidDotPixelDistance(DateTime now) =>
-    timeToPixelDistance(now.hour, now.minute) + dotSize / 2;
-double timeToPixelDistanceHour(DateTime now) =>
-    timeToPixelDistance(now.hour, now.minute) + hourPadding;
+    timeToPixels(now.hour, now.minute) + dotSize / 2;
+double timeToPixels(int hours, int minutes) =>
+    (hours * dotsPerHour + minutes ~/ minutesPerDot) * dotDistance;
 
 const double timePillarPadding = 4.0,
     timePillarWidth = 42.0,
-    timePillarTotalWidth = timePillarWidth + timePillarPadding * 2,
-    timePillarHeight = hourHeigt * 24;
+    timePillarTotalWidth = timePillarWidth + timePillarPadding * 2;
+
+double timePillarHeight(TimepillarInterval interval) =>
+    interval.lengthInHours * hourHeigt + TimePillarCalendar.topMargin;
 
 class TimePillar extends StatelessWidget {
-  final DateTime day;
+  final TimepillarInterval interval;
   final Occasion dayOccasion;
   final bool showTimeLine;
   final HourClockType hourClockType;
@@ -26,7 +26,7 @@ class TimePillar extends StatelessWidget {
 
   const TimePillar({
     Key key,
-    @required this.day,
+    @required this.interval,
     @required this.dayOccasion,
     @required this.showTimeLine,
     @required this.hourClockType,
@@ -46,60 +46,69 @@ class TimePillar extends StatelessWidget {
       style: theme.textTheme.headline6.copyWith(color: AbiliaColors.black),
       child: Container(
         color: theme.scaffoldBackgroundColor,
-        child: Stack(
-          overflow: Overflow.visible,
-          children: <Widget>[
-            if (today && showTimeLine)
-              Timeline(
-                width: timePillarTotalWidth,
-              ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: timePillarPadding),
-              child: SizedBox(
-                width: timePillarWidth,
-                child: Column(
-                  children: List.generate(
-                    24,
-                    (hourIndex) {
-                      final hour = day.copyWith(hour: hourIndex);
-                      return Container(
-                        height: hourHeigt,
-                        padding:
-                            const EdgeInsets.symmetric(vertical: hourPadding),
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            top: BorderSide(
-                              color: AbiliaColors.black,
-                              width: hourPadding,
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              width: 25.0,
-                              child: Tts(
-                                child: Text(
-                                  formatHour(hour).removeLeadingZeros(),
-                                  softWrap: false,
-                                  overflow: TextOverflow.visible,
-                                  textAlign: TextAlign.end,
-                                ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: TimePillarCalendar.topMargin,
+          ),
+          child: Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+              if (today && showTimeLine)
+                Timeline(
+                  width: timePillarTotalWidth,
+                  offset: timeToPixels(interval.startTime.hour, 0),
+                ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: timePillarPadding),
+                child: SizedBox(
+                  width: timePillarWidth,
+                  child: Column(
+                    children: List.generate(
+                      interval.lengthInHours,
+                      (index) {
+                        final hourIndex = index + interval.startTime.hour;
+                        final hour = interval.startTime
+                            .onlyDays()
+                            .copyWith(hour: hourIndex);
+                        return Container(
+                          height: hourHeigt,
+                          padding:
+                              const EdgeInsets.symmetric(vertical: hourPadding),
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                color: AbiliaColors.black,
+                                width: hourPadding,
                               ),
                             ),
-                            dots(hour),
-                          ],
-                        ),
-                      );
-                    },
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                width: 25.0,
+                                child: Tts(
+                                  child: Text(
+                                    formatHour(hour).removeLeadingZeros(),
+                                    softWrap: false,
+                                    overflow: TextOverflow.visible,
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                              ),
+                              dots(hour),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

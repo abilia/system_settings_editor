@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ActivityTimepillarCard extends StatelessWidget {
@@ -20,7 +19,7 @@ class ActivityTimepillarCard extends StatelessWidget {
   final TextStyle textStyle;
   final int dots, column;
   final double top, endPos, height;
-  final DateTime currentDay;
+  final TimepillarInterval timepillarInterval;
 
   const ActivityTimepillarCard({
     Key key,
@@ -30,7 +29,7 @@ class ActivityTimepillarCard extends StatelessWidget {
     @required this.column,
     @required this.height,
     @required this.textStyle,
-    @required this.currentDay,
+    @required this.timepillarInterval,
   })  : assert(activityOccasion != null),
         endPos = top + height,
         super(key: key);
@@ -69,10 +68,11 @@ class ActivityTimepillarCard extends StatelessWidget {
               children: <Widget>[
                 if (settings.dotsInTimepillar)
                   SideDots(
-                    startTime:
-                        startTime.isBefore(currentDay) ? currentDay : startTime,
-                    endTime: endTime.isAfter(currentDay.nextDay())
-                        ? currentDay.nextDay()
+                    startTime: startTime.isBefore(timepillarInterval.startTime)
+                        ? timepillarInterval.startTime
+                        : startTime,
+                    endTime: endTime.isAfter(timepillarInterval.endTime)
+                        ? timepillarInterval.endTime
                         : endTime,
                     dots: dots,
                   )

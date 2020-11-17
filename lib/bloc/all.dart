@@ -25,3 +25,4 @@ export 'generic/generic_bloc.dart';
 export 'generic/memoplannersetting/memoplanner_setting_bloc.dart';
 export 'license/license_bloc.dart';
 export 'permission/permission_bloc.dart';
+export 'calendar/timepillar/timepillar_bloc.dart';

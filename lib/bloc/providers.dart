@@ -160,6 +160,13 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               ..add(RequestPermissions([Permission.notification]))
               ..checkAll(),
           ),
+          BlocProvider<TimepillarBloc>(
+            create: (context) => TimepillarBloc(
+              clockBloc: context.bloc<ClockBloc>(),
+              dayPickerBloc: context.bloc<DayPickerBloc>(),
+              memoSettingsBloc: context.bloc<MemoplannerSettingBloc>(),
+            ),
+          )
         ],
         child: child,
       ),

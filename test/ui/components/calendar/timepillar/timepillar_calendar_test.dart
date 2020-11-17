@@ -78,7 +78,11 @@ void main() {
     genericResponse = () => [];
   });
 
-  Future goToTimePillar(WidgetTester tester, {PushBloc pushBloc}) async {
+  Future goToTimePillar(
+    WidgetTester tester, {
+    PushBloc pushBloc,
+    MemoplannerSettingBloc memoplannerSettingBloc,
+  }) async {
     await tester.pumpWidget(App(
       pushBloc: pushBloc,
     ));
@@ -561,6 +565,54 @@ void main() {
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(CrossOver), findsNothing);
+    });
+  });
+
+  group('Timepillar intervals', () {
+    testWidgets('Activity outside interval is not visible',
+        (WidgetTester tester) async {
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: time.copyWith(hour: 8, minute: 0),
+            )
+          ];
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: TimepillarIntervalType.INTERVAL.index.toString(),
+                type: 'int',
+                identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+              ),
+              type: GenericType.memoPlannerSettings,
+            )
+          ];
+      final memoSettingsBloc = MockMemoplannerSettingsBloc();
+      when(memoSettingsBloc.state).thenReturn(MemoplannerSettingsLoaded(
+        MemoplannerSettings(
+            viewOptionsTimeInterval: TimepillarIntervalType.INTERVAL.index),
+      ));
+      await goToTimePillar(tester, memoplannerSettingBloc: memoSettingsBloc);
+      await tester.pumpAndSettle();
+      expect(find.byType(ActivityTimepillarCard), findsNothing);
+    });
+
+    testWidgets('Activity inside interval is visible',
+        (WidgetTester tester) async {
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: time,
+            )
+          ];
+      final memoSettingsBloc = MockMemoplannerSettingsBloc();
+      when(memoSettingsBloc.state).thenReturn(MemoplannerSettingsLoaded(
+        MemoplannerSettings(
+            viewOptionsTimeInterval: TimepillarIntervalType.INTERVAL.index),
+      ));
+      await goToTimePillar(tester, memoplannerSettingBloc: memoSettingsBloc);
+      await tester.pumpAndSettle();
+      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
     });
   });
 }
