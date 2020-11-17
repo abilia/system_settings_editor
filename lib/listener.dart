@@ -68,7 +68,10 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      BlocProvider.of<LicenseBloc>(context).add(ReloadLicenses());
+      context
+        ..bloc<ClockBloc>().add(DateTime.now().onlyMinutes())
+        ..bloc<PushBloc>().add(PushEvent('app-resumed'))
+        ..bloc<PermissionBloc>().checkAll();
     }
   }
 
