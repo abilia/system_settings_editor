@@ -86,14 +86,12 @@ Future<NotificationAlarm> get _payload async {
 
 class App extends StatelessWidget {
   final PushBloc pushBloc;
-  final MemoplannerSettingBloc memoplannerSettingBloc;
   final String baseUrl;
   final NotificationAlarm notificationPayload;
   bool get wasAlarmStart => notificationPayload != null && !Platform.isIOS;
 
   App({
     Key key,
-    this.memoplannerSettingBloc,
     this.baseUrl,
     this.pushBloc,
     this.notificationPayload,
@@ -112,7 +110,6 @@ class App extends StatelessWidget {
           builder: (context, state) {
             if (state is Authenticated) {
               return AuthenticatedBlocsProvider(
-                memoplannerSettingBloc: memoplannerSettingBloc,
                 authenticatedState: state,
                 child: SeagullApp(
                   home: wasAlarmStart
