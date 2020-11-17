@@ -175,6 +175,8 @@ abstract class Translated {
 
   final String noAlarm = 'No alarm';
 
+  final String silentAlarm = 'Silent alarm';
+
   final String alarmOnlyAtStartTime = 'Alarm only at Start time';
 
   final String selectPicture = 'Select picture';
@@ -552,6 +554,9 @@ class SV extends Translated {
 
   @override
   final String noAlarm = 'Inget larm';
+
+  @override
+  final String silentAlarm = 'Tyst larm';
 
   @override
   final String alarmOnlyAtStartTime = 'Larm endast vid starttid';
