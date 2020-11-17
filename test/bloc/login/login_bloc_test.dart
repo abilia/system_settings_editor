@@ -15,14 +15,12 @@ void main() {
     LoginBloc loginBloc;
     AuthenticationBloc authenticationBloc;
     MockFirebasePushService mockFirebasePushService;
+    final mockUserRepository = MockUserRepository();
 
     final pushToken = 'pushToken';
 
     setUp(() {
-      authenticationBloc = AuthenticationBloc(
-        database: MockDatabase(),
-        baseUrlDb: MockBaseUrlDb(),
-      );
+      authenticationBloc = AuthenticationBloc(mockUserRepository);
       mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value(pushToken));
@@ -35,12 +33,11 @@ void main() {
     });
 
     test('initial state is LoginInitial', () {
-      expect(loginBloc.state, LoginSucceeded());
+      expect(loginBloc.state, LoginInitial());
     });
 
     test('LoginState and AuthenticationState in correct order', () async {
       // Arrange
-      final mockUserRepository = MockUserRepository();
       final loginToken = 'loginToken';
       final loggedInUserId = 1;
 
@@ -70,15 +67,14 @@ void main() {
       );
 
       // Act
-      authenticationBloc.add(AppStarted(mockUserRepository));
+      authenticationBloc.add(CheckAuthentication());
 
       // Assert
       await expectLater(
         authenticationBloc,
-        emitsInOrder([
-          AuthenticationLoading(mockUserRepository),
+        emits(
           Unauthenticated(mockUserRepository),
-        ]),
+        ),
       );
 
       // Act
@@ -122,10 +118,8 @@ void main() {
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc = AuthenticationBloc(
-        database: MockDatabase(),
-        baseUrlDb: MockBaseUrlDb(),
-      )..add(AppStarted(mockedUserRepository));
+      authenticationBloc = AuthenticationBloc(mockedUserRepository)
+        ..add(CheckAuthentication());
       mockFirebasePushService = MockFirebasePushService();
       loginBloc = LoginBloc(
         authenticationBloc: authenticationBloc,

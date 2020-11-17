@@ -26,7 +26,9 @@ void main() {
     licensExpireTime = time.add(10.days());
 
     final mockDatabase = MockDatabase();
-    when(mockDatabase.batch()).thenReturn(MockBatch());
+    final batch = MockBatch();
+    when(batch.commit()).thenAnswer((_) => Future.value([]));
+    when(mockDatabase.batch()).thenReturn(batch);
 
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())

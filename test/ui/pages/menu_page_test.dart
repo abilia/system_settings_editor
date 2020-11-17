@@ -13,13 +13,22 @@ import '../../mocks.dart';
 void main() {
   MockSettingsDb mockSettingsDb;
   MockAuthenticationBloc mockAuthenticationBloc;
+  final user = User(
+      id: 1,
+      name: 'Slartibartfast',
+      username: 'Zaphod Beeblebrox',
+      type: 'type');
+
   final translate = Locales.language.values.first;
   setUp(() async {
     await initializeDateFormatting();
     mockSettingsDb = MockSettingsDb();
     mockAuthenticationBloc = MockAuthenticationBloc();
+    final userDb = MockUserDb();
+    when(userDb.getUser()).thenReturn(user);
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
+      ..userDb = userDb
       ..init();
   });
 
@@ -57,24 +66,7 @@ void main() {
 
   testWidgets('tts', (WidgetTester tester) async {
     when(mockSettingsDb.textToSpeech).thenReturn(true);
-    final mockUserRepository = MockUserRepository();
-    final name = 'Slartibartfast', username = 'Zaphod Beeblebrox';
-    when(mockUserRepository.me(any)).thenAnswer((_) => Future.value(User(
-        username: username,
-        language: 'en',
-        image: 'img',
-        id: 0,
-        type: '1',
-        name: name)));
-
     when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
-    when(mockAuthenticationBloc.state).thenReturn(
-      Authenticated(
-        token: 'token',
-        userId: 0,
-        userRepository: mockUserRepository,
-      ),
-    );
 
     await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
     await tester.pumpAndSettle();
@@ -83,8 +75,8 @@ void main() {
     await tester.tap(find.byType(LogoutPickField));
     await tester.pumpAndSettle();
     await tester.verifyTts(find.byType(LogoutButton), exact: translate.logout);
-    await tester.verifyTts(find.text(name), exact: name);
-    await tester.verifyTts(find.text(username), exact: username);
+    await tester.verifyTts(find.text(user.name), exact: user.name);
+    await tester.verifyTts(find.text(user.username), exact: user.username);
   });
 
   testWidgets('Tts info page', (WidgetTester tester) async {

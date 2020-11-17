@@ -13,7 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'package:seagull/alarm_listener.dart';
+import 'package:seagull/listener.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
@@ -31,12 +31,17 @@ import 'package:seagull/utils/all.dart';
 final _log = Logger('main');
 
 void main() async {
-  final baseUrl = await initServices();
-  final payload = await _payload;
-  runApp(App(baseUrl: baseUrl, notificationPayload: payload));
+  runApp(App(initialization: initServices()));
 }
 
-Future<String> initServices() async {
+@visibleForTesting
+class InitValues {
+  final String baseUrl;
+  final NotificationAlarm payload;
+  const InitValues(this.baseUrl, this.payload);
+}
+
+Future<InitValues> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final documentDirectory = await getApplicationDocumentsDirectory();
@@ -64,7 +69,9 @@ Future<String> initServices() async {
     ..flutterTts = await flutterTts(currentLocale)
     ..init();
 
-  return baseUrlDb.initialize(kReleaseMode ? PROD : WHALE);
+  final baseUrl = await baseUrlDb.initialize(kReleaseMode ? PROD : WHALE);
+  final payload = Platform.isIOS ? null : await _payload;
+  return InitValues(baseUrl, payload);
 }
 
 Future<NotificationAlarm> get _payload async {
@@ -86,101 +93,96 @@ Future<NotificationAlarm> get _payload async {
 
 class App extends StatelessWidget {
   final PushBloc pushBloc;
-  final String baseUrl;
-  final NotificationAlarm notificationPayload;
-  bool get wasAlarmStart => notificationPayload != null && !Platform.isIOS;
+  final Future<InitValues> initialization;
 
   App({
     Key key,
-    this.baseUrl,
     this.pushBloc,
-    this.notificationPayload,
+    this.initialization,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TopLevelBlocsProvider(
-      pushBloc: pushBloc,
-      baseUrl: baseUrl,
-      child: BlocListener<ClockBloc, DateTime>(
-        listener: (context, state) async {
-          await GetIt.I<SeagullLogger>().maybeUploadLogs();
-        },
-        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, state) {
-            if (state is Authenticated) {
-              return AuthenticatedBlocsProvider(
-                authenticatedState: state,
-                child: SeagullApp(
-                  home: wasAlarmStart
-                      ? SeagullListeners(
-                          child: FullScreenAlarm(alarm: notificationPayload),
-                          listenWhen: (_, current) =>
-                              current is AlarmState &&
-                              current.alarm != notificationPayload,
-                        )
-                      : SeagullListeners(child: CalendarPage()),
-                ),
-              );
-            }
-            return SeagullApp(
-              home: (state is Unauthenticated)
-                  ? LoginPage(
-                      userRepository: context.repository<UserRepository>(),
-                      push: GetIt.I<FirebasePushService>(),
-                    )
-                  : SplashPage(),
-            );
-          },
-        ),
-      ),
+    return FutureBuilder(
+      future: initialization ?? Future.value(InitValues('mock', null)),
+      builder: (context, AsyncSnapshot<InitValues> snapshot) {
+        if (snapshot.hasData) {
+          return TopLevelBlocsProvider(
+            pushBloc: pushBloc,
+            baseUrl: snapshot.data.baseUrl,
+            child: TopLevelListeners(
+              child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                builder: (context, state) {
+                  if (state is Authenticated) {
+                    return AuthenticatedBlocsProvider(
+                      authenticatedState: state,
+                      child: SeagullApp(
+                        child: AuthenticatedListeners(
+                          alarm: snapshot.data.payload,
+                          child: snapshot.data.payload != null
+                              ? FullScreenAlarm(alarm: snapshot.data.payload)
+                              : CalendarPage(),
+                        ),
+                      ),
+                    );
+                  } else if (state is Unauthenticated) {
+                    return SeagullApp(
+                      child: LoginPage(
+                        userRepository: context.repository<UserRepository>(),
+                        push: GetIt.I<FirebasePushService>(),
+                      ),
+                    );
+                  }
+                  return const SplashPage();
+                },
+              ),
+            ),
+          );
+        }
+        return const SplashPage();
+      },
     );
   }
 }
 
-class SeagullApp extends StatelessWidget {
-  final Widget home;
-
-  const SeagullApp({
+class SeagullApp extends MaterialApp {
+  SeagullApp({
     Key key,
-    @required this.home,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      builder: (context, child) {
-        final deviceData = MediaQuery.of(context);
-        GetIt.I<SettingsDb>()
-            .setAlwaysUse24HourFormat(deviceData.alwaysUse24HourFormat);
-        return MediaQuery(
-          data: deviceData.copyWith(textScaleFactor: 1.0),
-          child: child,
+    Widget child,
+  }) : super(
+          key: key,
+          builder: (context, child) {
+            final deviceData = MediaQuery.of(context);
+            GetIt.I<SettingsDb>()
+                .setAlwaysUse24HourFormat(deviceData.alwaysUse24HourFormat);
+            return MediaQuery(
+              data: deviceData.copyWith(textScaleFactor: 1.0),
+              child: child,
+            );
+          },
+          title: 'MEMOplanner Go',
+          theme: abiliaTheme,
+          darkTheme: abiliaTheme.copyWith(
+            primaryColorBrightness: Brightness.dark,
+          ),
+          navigatorObservers: [
+            AnalyticsService.observer,
+            GetIt.I<AlarmNavigator>().alarmRouteObserver,
+            RouteLoggingObserver(),
+          ],
+          supportedLocales: Translator.supportedLocals,
+          localizationsDelegates: [
+            Translator.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            DefaultCupertinoLocalizations.delegate,
+          ],
+          localeResolutionCallback: (locale, supportedLocales) =>
+              supportedLocales.firstWhere(
+                  (l) => l.languageCode == locale?.languageCode,
+                  // English should be the first one and also the default.
+                  orElse: () => supportedLocales.first),
+          home: child,
         );
-      },
-      title: 'MEMOplanner Go',
-      theme: abiliaTheme,
-      darkTheme: abiliaTheme.copyWith(
-        primaryColorBrightness: Brightness.dark,
-      ),
-      navigatorObservers: [
-        AnalyticsService.observer,
-        GetIt.I<AlarmNavigator>().alarmRouteObserver,
-        RouteLoggingObserver(),
-      ],
-      supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: [
-        Translator.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        DefaultCupertinoLocalizations.delegate,
-      ],
-      localeResolutionCallback: (locale, supportedLocales) => supportedLocales
-          .firstWhere((l) => l.languageCode == locale?.languageCode,
-              // English should be the first one and also the default.
-              orElse: () => supportedLocales.first),
-      home: home,
-    );
-  }
 }
