@@ -85,7 +85,6 @@ void main() {
   }) async {
     await tester.pumpWidget(App(
       pushBloc: pushBloc,
-      memoplannerSettingBloc: memoplannerSettingBloc,
     ));
     await tester.pumpAndSettle();
     await tester.tap(changeViewButtonFinder);
@@ -576,6 +575,16 @@ void main() {
             Activity.createNew(
               title: 'title',
               startTime: time.copyWith(hour: 8, minute: 0),
+            )
+          ];
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: TimepillarIntervalType.INTERVAL.index.toString(),
+                type: 'int',
+                identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+              ),
+              type: GenericType.memoPlannerSettings,
             )
           ];
       final memoSettingsBloc = MockMemoplannerSettingsBloc();

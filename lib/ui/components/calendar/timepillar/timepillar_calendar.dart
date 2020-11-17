@@ -111,8 +111,12 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                     builder: (context, now) => Stack(
                       children: <Widget>[
                         if (showHourLines)
-                          HourLines(
-                            numberOfLines: interval.lengthInHours,
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: TimePillarCalendar.topMargin),
+                            child: HourLines(
+                              numberOfLines: interval.lengthInHours,
+                            ),
                           ),
                         if (showTimeLine)
                           Timeline(
