@@ -9,6 +9,8 @@ abstract class LoginState extends Equatable {
   bool get stringify => true;
 }
 
+class LoginInitial extends LoginState {}
+
 class LoginSucceeded extends LoginState {}
 
 class LoginLoading extends LoginState {}

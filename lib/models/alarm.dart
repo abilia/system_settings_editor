@@ -33,11 +33,10 @@ class Alarm extends Equatable {
     }
   }
   bool get vibrate =>
-      type == AlarmType.SoundAndVibration ||
-      type == AlarmType.Vibration ||
-      type == AlarmType.Silent;
+      type == AlarmType.SoundAndVibration || type == AlarmType.Vibration;
   bool get sound =>
       type == AlarmType.SoundAndVibration || type == AlarmType.Sound;
+  bool get silent => type == AlarmType.Silent;
   bool get shouldAlarm => type != AlarmType.NoAlarm;
   bool get atEnd => !onlyStart;
   int get toInt {
@@ -74,8 +73,6 @@ class Alarm extends Equatable {
     switch (type) {
       case AlarmType.Sound:
         return AlarmType.SoundAndVibration;
-      case AlarmType.Silent:
-        return AlarmType.Vibration;
       default:
         return type;
     }

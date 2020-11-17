@@ -13,13 +13,11 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   LicenseBloc licenseBloc;
   UserRepository userRepository;
-  final authenticationBloc = AuthenticationBloc(
-    database: MockDatabase(),
-    baseUrlDb: MockBaseUrlDb(),
-  );
+  AuthenticationBloc authenticationBloc;
 
   setUp(() {
     userRepository = MockUserRepository();
+    authenticationBloc = AuthenticationBloc(userRepository);
     licenseBloc = LicenseBloc(
         userRepository: userRepository,
         clockBloc: ClockBloc(StreamController<DateTime>().stream),

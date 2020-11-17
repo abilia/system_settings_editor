@@ -50,7 +50,7 @@ class SeagullLogger {
           !loggingType.contains(LoggingType.File) ||
               (documentsDir != null && preferences != null),
         ) {
-    Bloc.observer = BlocLoggingObserver();
+    Bloc.observer = BlocLoggingObserver(analyticsLogging: analyticLogging);
     Logger.root.level = level;
     if (fileLogging) {
       _initFileLogging();
@@ -260,7 +260,11 @@ mixin Warning implements Info {}
 mixin Shout implements Warning {}
 
 class BlocLoggingObserver extends BlocObserver {
+  BlocLoggingObserver({this.analyticsLogging = false});
+
+  final bool analyticsLogging;
   final _loggers = <Bloc, Logger>{};
+
   Logger _log(Bloc bloc) =>
       _loggers[bloc] ??= Logger(bloc.runtimeType.toString());
   @override
@@ -286,7 +290,7 @@ class BlocLoggingObserver extends BlocObserver {
   @override
   void onTransition(Bloc bloc, Transition transition) async {
     super.onTransition(bloc, transition);
-    await logEventToAnalytics(transition);
+    if (analyticsLogging) await logEventToAnalytics(transition);
     final event = transition.event;
     if (event is Silent || bloc is Silent) return;
     final log = _log(bloc);

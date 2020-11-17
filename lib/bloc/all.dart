@@ -19,7 +19,7 @@ export 'sortable/sortable_bloc.dart';
 export 'sortable/sortable_archive/sortable_archive_bloc.dart';
 export 'user_file/user_file_bloc.dart';
 export 'sync/sync_bloc.dart';
-export 'authenticated_blocs_provider.dart';
+export 'providers.dart';
 export 'settings/settings_bloc.dart';
 export 'generic/generic_bloc.dart';
 export 'generic/memoplannersetting/memoplanner_setting_bloc.dart';

@@ -73,6 +73,9 @@ void main() {
       ..genericDb = MockGenericDb()
       ..init();
   });
+  tearDown(() {
+    notificationsPluginInstance = null;
+  });
 
   group('alarms and reminder test', () {
     testWidgets('Alarms shows', (WidgetTester tester) async {
@@ -562,14 +565,21 @@ void main() {
 
     group('fullscreen alarms', () {
       testWidgets('Full screen shows', (WidgetTester tester) async {
+        // Arrange
         final reminder = ReminderBefore(
             Activity.createNew(
                 title: 'one reminder title', startTime: activity1StartTime),
             activity1StartTime.onlyDays(),
             reminder: 15.minutes());
 
-        // Arrange
-        await tester.pumpWidget(App(notificationPayload: reminder));
+        // Act
+        await tester.pumpWidget(
+          App(
+            initialization: Future.value(
+              InitValues('url', reminder),
+            ),
+          ),
+        );
         await tester.pumpAndSettle();
 
         // Assert
@@ -598,7 +608,14 @@ void main() {
 
         final reminderJson = reminder.toJson();
         final payload = json.encode(reminderJson);
-        await tester.pumpWidget(App(notificationPayload: reminder));
+
+        await tester.pumpWidget(
+          App(
+            initialization: Future.value(
+              InitValues('url', reminder),
+            ),
+          ),
+        );
         await tester.pumpAndSettle();
 
         // Act
@@ -612,6 +629,7 @@ void main() {
       });
 
       testWidgets('Fullscreen alarms stack ', (WidgetTester tester) async {
+        // Arrange
         final reminder = ReminderBefore(
             Activity.createNew(
               title: 'one reminder title',
@@ -626,11 +644,16 @@ void main() {
           ),
           activity1StartTime.onlyDays(),
         );
-        final alarmJson = alarm.toJson();
-        final payload = json.encode(alarmJson);
+        final alarmPayload = json.encode(alarm.toJson());
 
-        // Arrange
-        await tester.pumpWidget(App(notificationPayload: reminder));
+        // Act
+        await tester.pumpWidget(
+          App(
+            initialization: Future.value(
+              InitValues('url', reminder),
+            ),
+          ),
+        );
         await tester.pumpAndSettle();
 
         // Assert -- Fullscreen alarm shows
@@ -638,7 +661,7 @@ void main() {
         expect(find.text(reminder.activity.title), findsOneWidget);
 
         // Act -- notification tapped
-        selectNotificationSubject.add(payload);
+        selectNotificationSubject.add(alarmPayload);
         await tester.pumpAndSettle();
 
         // Assert -- new alarm page
@@ -697,7 +720,14 @@ void main() {
         selectNotificationSubject.add(payload2);
         selectNotificationSubject.add(payload3);
         selectNotificationSubject.add(payload4);
-        await tester.pumpWidget(App(notificationPayload: alarm1));
+
+        await tester.pumpWidget(
+          App(
+            initialization: Future.value(
+              InitValues('url', alarm1),
+            ),
+          ),
+        );
         await tester.pumpAndSettle();
 
         // Assert -- Fullscreen alarm shows

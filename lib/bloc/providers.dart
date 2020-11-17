@@ -199,16 +199,16 @@ class TopLevelBlocsProvider extends StatelessWidget {
         providers: [
           BlocProvider<AuthenticationBloc>(
             create: (context) => AuthenticationBloc(
-              database: GetIt.I<Database>(),
-              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              context.repository<UserRepository>(),
               onLogout: () => Future.wait<void>(
                 [
+                  DatabaseRepository.clearAll(GetIt.I<Database>()),
                   GetIt.I<SeagullLogger>().sendLogsToBackend(),
                   clearNotificationSubject(),
                   notificationPlugin.cancelAll(),
                 ],
               ),
-            )..add(AppStarted(context.repository<UserRepository>())),
+            )..add(CheckAuthentication()),
           ),
           BlocProvider<PushBloc>(
             create: (context) => pushBloc ?? PushBloc(),

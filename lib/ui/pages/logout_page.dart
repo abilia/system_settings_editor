@@ -32,53 +32,46 @@ class LogoutPage extends StatelessWidget {
 class ProfilePictureNameAndEmail extends StatefulWidget {
   @override
   _ProfilePictureNameAndEmailState createState() =>
-      _ProfilePictureNameAndEmailState();
+      _ProfilePictureNameAndEmailState(GetIt.I<UserDb>().getUser());
 }
 
 class _ProfilePictureNameAndEmailState
     extends State<ProfilePictureNameAndEmail> {
   bool showVersion = false;
+  final User user;
+  _ProfilePictureNameAndEmailState(this.user);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      builder: (context, state) => FutureBuilder(
-        future: state is Authenticated
-            ? state.userRepository.me(state.token)
-            : null,
-        builder: (context, AsyncSnapshot<User> userSnapshot) => Column(
-          children: <Widget>[
-            GestureDetector(
-              onLongPress: () => DatabaseRepository.logAll(GetIt.I<Database>()),
-              onDoubleTap: () => setState(() => showVersion = !showVersion),
-              child: ProfilePicture(
-                  state is AuthenticationInitialized
-                      ? state.userRepository.baseUrl
-                      : null,
-                  userSnapshot.data),
-            ),
-            SizedBox(height: 24.0),
-            if (userSnapshot.data?.name?.isNotEmpty == true)
-              Tts(
-                child: Text(
-                  userSnapshot.data.name,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-              ),
-            SizedBox(height: 4.0),
-            if (userSnapshot.data?.username?.isNotEmpty == true)
-              Tts(
-                child: Text(
-                  userSnapshot.data.username,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      .copyWith(color: AbiliaColors.black75),
-                ),
-              ),
-            if (showVersion) VersionInfo(showUserId: true),
-          ],
+    return Column(
+      children: <Widget>[
+        GestureDetector(
+          onLongPress: () => DatabaseRepository.logAll(GetIt.I<Database>()),
+          onDoubleTap: () => setState(() => showVersion = !showVersion),
+          child: ProfilePicture(
+            GetIt.I<BaseUrlDb>().getBaseUrl(),
+            user,
+          ),
         ),
-      ),
+        SizedBox(height: 24.0),
+        Tts(
+          child: Text(
+            user.name,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ),
+        SizedBox(height: 4.0),
+        if (user.username != null)
+          Tts(
+            child: Text(
+              user.username,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: AbiliaColors.black75),
+            ),
+          ),
+        if (showVersion) VersionInfo(showUserId: true),
+      ],
     );
   }
 }

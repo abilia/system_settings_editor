@@ -16,8 +16,6 @@ import '../../mocks.dart';
 
 void main() {
   group('Push integration test', () {
-    final fakeUrl = 'SomeUrl';
-
     setUp(() async {
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
@@ -55,7 +53,6 @@ void main() {
       final pushBloc = PushBloc();
 
       await tester.pumpWidget(App(
-        baseUrl: fakeUrl,
         pushBloc: pushBloc,
       ));
 

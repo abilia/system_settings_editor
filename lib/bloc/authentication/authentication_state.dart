@@ -1,25 +1,19 @@
 part of 'authentication_bloc.dart';
 
 abstract class AuthenticationState extends Equatable {
+  final UserRepository userRepository;
+  AuthenticationState(this.userRepository);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [userRepository];
   @override
   bool get stringify => true;
 }
 
-class AuthenticationUninitialized extends AuthenticationState {}
-
-class AuthenticationInitialized extends AuthenticationState {
-  final UserRepository userRepository;
-  AuthenticationInitialized(this.userRepository);
-  @override
-  List<Object> get props => [userRepository];
-  @override
-  String toString() =>
-      'AuthenticationInitialized {userRepository: $userRepository}';
+class AuthenticationLoading extends AuthenticationState {
+  AuthenticationLoading(UserRepository userRepository) : super(userRepository);
 }
 
-class Authenticated extends AuthenticationInitialized {
+class Authenticated extends AuthenticationState {
   final String token;
   final int userId;
   final bool newlyLoggedIn;
@@ -31,35 +25,15 @@ class Authenticated extends AuthenticationInitialized {
       : super(userRepository);
   @override
   List<Object> get props => [userRepository, token, userId, newlyLoggedIn];
-  @override
-  String toString() =>
-      'Authenticated {userRepository: $userRepository, token: $token, userId: $userId}';
 }
 
-class Unauthenticated extends AuthenticationInitialized {
+class Unauthenticated extends AuthenticationState {
   final LoggedOutReason loggedOutReason;
   Unauthenticated(
     UserRepository userRepository, {
     this.loggedOutReason = LoggedOutReason.LOG_OUT,
   }) : super(userRepository);
-  factory Unauthenticated.fromInitilized(
-    AuthenticationInitialized state, {
-    LoggedOutReason loggedOutReason = LoggedOutReason.LOG_OUT,
-  }) =>
-      Unauthenticated(
-        state.userRepository,
-        loggedOutReason: loggedOutReason,
-      );
-  @override
-  String toString() => 'Unauthenticated {userRepository: $userRepository}';
-}
 
-class AuthenticationLoading extends AuthenticationInitialized {
-  AuthenticationLoading(UserRepository userRepository) : super(userRepository);
-  factory AuthenticationLoading.fromInitilized(
-          AuthenticationInitialized state) =>
-      AuthenticationLoading(state.userRepository);
   @override
-  String toString() =>
-      'AuthenticationLoading {userRepository: $userRepository}';
+  List<Object> get props => [userRepository, loggedOutReason];
 }

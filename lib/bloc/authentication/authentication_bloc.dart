@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
@@ -13,44 +12,35 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final Database database;
-  final BaseUrlDb baseUrlDb;
   final FutureOr<void> Function() onLogout;
 
-  AuthenticationBloc({
-    @required this.database,
-    @required this.baseUrlDb,
+  AuthenticationBloc(
+    UserRepository userRepository, {
     this.onLogout,
-  }) : super(AuthenticationUninitialized());
+  }) : super(AuthenticationLoading(userRepository));
 
   @override
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
-    if (event is AppStarted) {
-      final repo = event.repository;
-      yield AuthenticationLoading(repo);
-      await baseUrlDb.setBaseUrl(repo.baseUrl);
-      final token = repo.getToken();
+    final repo = state.userRepository;
+
+    if (event is ChangeRepository) {
+      yield Unauthenticated(event.repository);
+    } else if (event is CheckAuthentication) {
+      final token = state.userRepository.getToken();
       if (token != null) {
         yield* _tryGetUser(repo, token);
       } else {
         yield Unauthenticated(repo);
       }
-    }
-
-    final thisState = state;
-    if (thisState is AuthenticationInitialized) {
-      final repo = thisState.userRepository;
-
-      if (event is LoggedIn) {
-        yield AuthenticationLoading.fromInitilized(state);
-        await repo.persistToken(event.token);
-        yield* _tryGetUser(repo, event.token, newlyLoggedIn: true);
-      } else if (event is LoggedOut) {
-        yield AuthenticationLoading.fromInitilized(state);
-        yield* _logout(repo, loggedOutReason: event.loggedOutReason);
-      }
+    } else if (event is LoggedIn) {
+      yield AuthenticationLoading(repo);
+      await repo.persistToken(event.token);
+      yield* _tryGetUser(repo, event.token, newlyLoggedIn: true);
+    } else if (event is LoggedOut) {
+      yield AuthenticationLoading(repo);
+      yield* _logout(repo, loggedOutReason: event.loggedOutReason);
     }
   }
 
@@ -84,12 +74,11 @@ class AuthenticationBloc
     LoggedOutReason loggedOutReason = LoggedOutReason.LOG_OUT,
   }) async* {
     await repo.logout(token);
-    await DatabaseRepository.clearAll(database);
     try {
       await onLogout?.call();
     } finally {
-      yield Unauthenticated.fromInitilized(
-        state,
+      yield Unauthenticated(
+        state.userRepository,
         loggedOutReason: loggedOutReason,
       );
     }

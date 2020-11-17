@@ -1,44 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:package_info/package_info.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/fakes/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/ui/colors.dart';
 
 class BackendSwitches extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-      if (state is AuthenticationInitialized) {
-        return Center(
-          child: Wrap(
-            children: [
-              ...backEndEnviorments.entries.map(
+      return Center(
+        child: Wrap(
+          spacing: 16.0,
+          children: backEndEnviorments.entries
+              .map(
                 (kvp) => BackEndButton(
                   kvp.key,
                   userRepository: state.userRepository,
-                  client: Client(),
+                  client: GetIt.I<BaseClient>(),
                   backEndUrl: kvp.value,
                 ),
-              ),
-              _alarms(state.userRepository, DateTime.now()),
-            ],
-          ),
-        );
-      }
-      return Container();
+              )
+              .toList(),
+        ),
+      );
     });
   }
-
-  BackEndButton _alarms(UserRepository repository, DateTime when) =>
-      BackEndButton(
-        'Mock',
-        userRepository: repository,
-        backEndUrl: 'https://via.placeholder.com/190/09CDDA/FFFFFF&',
-        client: Fakes.client(activityResponse: () => []),
-      );
 }
 
 class BackEndButton extends StatelessWidget {
@@ -55,27 +43,25 @@ class BackEndButton extends StatelessWidget {
     @required this.client,
     Key key,
   }) : super(key: key);
-  AuthenticationBloc authBloc(BuildContext context) =>
-      BlocProvider.of<AuthenticationBloc>(context);
 
   @override
-  Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.zero,
-      textColor: userRepository.baseUrl == backEndUrl
-          ? AbiliaColors.green
-          : AbiliaColors.blue,
-      onPressed: () => authBloc(context).add(
-        AppStarted(
-          userRepository.copyWith(
-            client: client,
-            baseUrl: backEndUrl,
+  Widget build(BuildContext context) => Column(
+        children: [
+          Text(text),
+          Radio(
+            groupValue: userRepository.baseUrl,
+            value: backEndUrl,
+            onChanged: (url) => context.bloc<AuthenticationBloc>().add(
+                  ChangeRepository(
+                    userRepository.copyWith(
+                      client: client,
+                      baseUrl: url,
+                    ),
+                  ),
+                ),
           ),
-        ),
-      ),
-      child: Text(text),
-    );
-  }
+        ],
+      );
 }
 
 class VersionInfo extends StatelessWidget {
