@@ -26,7 +26,7 @@ dependencies:
   flutter_local_notifications:
     git:
       url: git://github.com/abilia/flutter_local_notifications.git
-      ref: flutter_local_notifications-v2.0.1-fork-1.5
+      ref: flutter_local_notifications-v3.0.1+4-fork-1.6
       path: flutter_local_notifications/
   transparent_image: ^1.0.0
   rxdart: ^0.24.1
