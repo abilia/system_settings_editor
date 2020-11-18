@@ -70,71 +70,71 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
         providers: [
           BlocProvider<SyncBloc>(
             create: (context) => SyncBloc(
-              activityRepository: context.repository<ActivityRepository>(),
-              userFileRepository: context.repository<UserFileRepository>(),
-              sortableRepository: context.repository<SortableRepository>(),
+              activityRepository: context.read<ActivityRepository>(),
+              userFileRepository: context.read<UserFileRepository>(),
+              sortableRepository: context.read<SortableRepository>(),
               syncDelay: GetIt.I<SyncDelays>(),
             ),
           ),
           BlocProvider<ActivitiesBloc>(
             create: (context) => ActivitiesBloc(
-              activityRepository: context.repository<ActivityRepository>(),
-              syncBloc: context.bloc<SyncBloc>(),
-              pushBloc: context.bloc<PushBloc>(),
+              activityRepository: context.read<ActivityRepository>(),
+              syncBloc: context.read<SyncBloc>(),
+              pushBloc: context.read<PushBloc>(),
             )..add(LoadActivities()),
           ),
           BlocProvider<UserFileBloc>(
             create: (context) => UserFileBloc(
-              userFileRepository: context.repository<UserFileRepository>(),
-              syncBloc: context.bloc<SyncBloc>(),
+              userFileRepository: context.read<UserFileRepository>(),
+              syncBloc: context.read<SyncBloc>(),
               fileStorage: GetIt.I<FileStorage>(),
-              pushBloc: context.bloc<PushBloc>(),
+              pushBloc: context.read<PushBloc>(),
             ),
           ),
           BlocProvider<SortableBloc>(
             create: (context) => sortableBloc ??
                 SortableBloc(
-                  sortableRepository: context.repository<SortableRepository>(),
-                  syncBloc: context.bloc<SyncBloc>(),
-                  pushBloc: context.bloc<PushBloc>(),
+                  sortableRepository: context.read<SortableRepository>(),
+                  syncBloc: context.read<SyncBloc>(),
+                  pushBloc: context.read<PushBloc>(),
                 )
               ..add(LoadSortables()),
           ),
           BlocProvider<GenericBloc>(
             create: (context) => GenericBloc(
-              genericRepository: context.repository<GenericRepository>(),
-              syncBloc: context.bloc<SyncBloc>(),
-              pushBloc: context.bloc<PushBloc>(),
+              genericRepository: context.read<GenericRepository>(),
+              syncBloc: context.read<SyncBloc>(),
+              pushBloc: context.read<PushBloc>(),
             )..add(LoadGenerics()),
           ),
           BlocProvider<MemoplannerSettingBloc>(
             create: (context) =>
                 memoplannerSettingBloc ??
                 MemoplannerSettingBloc(
-                  genericBloc: context.bloc<GenericBloc>(),
+                  genericBloc: context.read<GenericBloc>(),
                 ),
           ),
           BlocProvider<DayPickerBloc>(
             create: (context) => DayPickerBloc(
-              clockBloc: context.bloc<ClockBloc>(),
+              clockBloc: context.read<ClockBloc>(),
             ),
           ),
           BlocProvider<DayActivitiesBloc>(
             create: (context) => DayActivitiesBloc(
-              activitiesBloc: context.bloc<ActivitiesBloc>(),
-              dayPickerBloc: context.bloc<DayPickerBloc>(),
+              activitiesBloc: context.read<ActivitiesBloc>(),
+              dayPickerBloc: context.read<DayPickerBloc>(),
             ),
           ),
           BlocProvider<ActivitiesOccasionBloc>(
             create: (context) => ActivitiesOccasionBloc(
-              clockBloc: context.bloc<ClockBloc>(),
-              dayActivitiesBloc: context.bloc<DayActivitiesBloc>(),
+              clockBloc: context.read<ClockBloc>(),
+              dayActivitiesBloc: context.read<DayActivitiesBloc>(),
             ),
           ),
           BlocProvider<AlarmBloc>(
             create: (context) => AlarmBloc(
-              clockBloc: context.bloc<ClockBloc>(),
-              activitiesBloc: context.bloc<ActivitiesBloc>(),
+              clockBloc: context.read<ClockBloc>(),
+              activitiesBloc: context.read<ActivitiesBloc>(),
             ),
           ),
           BlocProvider<NotificationBloc>(
@@ -149,10 +149,10 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           ),
           BlocProvider<LicenseBloc>(
             create: (context) => LicenseBloc(
-              clockBloc: context.bloc<ClockBloc>(),
-              pushBloc: context.bloc<PushBloc>(),
+              clockBloc: context.read<ClockBloc>(),
+              pushBloc: context.read<PushBloc>(),
               userRepository: authenticatedState.userRepository,
-              authenticationBloc: context.repository<AuthenticationBloc>(),
+              authenticationBloc: context.read<AuthenticationBloc>(),
             )..add(ReloadLicenses()),
           ),
           BlocProvider<PermissionBloc>(
@@ -162,9 +162,9 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           ),
           BlocProvider<TimepillarBloc>(
             create: (context) => TimepillarBloc(
-              clockBloc: context.bloc<ClockBloc>(),
-              dayPickerBloc: context.bloc<DayPickerBloc>(),
-              memoSettingsBloc: context.bloc<MemoplannerSettingBloc>(),
+              clockBloc: context.read<ClockBloc>(),
+              dayPickerBloc: context.read<DayPickerBloc>(),
+              memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
             ),
           )
         ],
@@ -199,7 +199,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
         providers: [
           BlocProvider<AuthenticationBloc>(
             create: (context) => AuthenticationBloc(
-              context.repository<UserRepository>(),
+              context.read<UserRepository>(),
               onLogout: () => Future.wait<void>(
                 [
                   DatabaseRepository.clearAll(GetIt.I<Database>()),

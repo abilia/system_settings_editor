@@ -128,8 +128,8 @@ class App extends StatelessWidget {
                   } else if (state is Unauthenticated) {
                     return SeagullApp(
                       child: LoginPage(
-                        userRepository: context.repository<UserRepository>(),
                         push: GetIt.I<FirebasePushService>(),
+                        authState: state,
                       ),
                     );
                   }

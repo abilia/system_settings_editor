@@ -67,7 +67,9 @@ void main() {
     await _tick();
     await _tick();
     await _tick();
-    await alarmBloc.close();
+    // https://github.com/felangel/bloc/issues/1943
+    // ignore: unawaited_futures
+    alarmBloc.close();
     // Assert
     await expectLater(
       alarmBloc,
@@ -84,7 +86,8 @@ void main() {
     await _tick();
     activitiesBloc.add(LoadActivities());
     await activitiesBloc.any((s) => s is ActivitiesLoaded);
-    await alarmBloc.close();
+    // ignore: unawaited_futures
+    alarmBloc.close();
     // Assert
     await expectLater(
       alarmBloc,
@@ -100,7 +103,8 @@ void main() {
     // Act
     activitiesBloc.add(LoadActivities());
     await activitiesBloc.any((s) => s is ActivitiesLoaded);
-    await alarmBloc.close();
+    // ignore: unawaited_futures
+    alarmBloc.close();
     // Assert
     await expectLater(
       alarmBloc,

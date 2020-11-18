@@ -4,15 +4,27 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class LoginPage extends StatelessWidget {
-  final UserRepository userRepository;
   final FirebasePushService push;
+  final Unauthenticated authState;
 
-  const LoginPage({Key key, @required this.userRepository, @required this.push})
-      : assert(userRepository != null),
-        super(key: key);
+  const LoginPage({
+    Key key,
+    @required this.push,
+    @required this.authState,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    /// TODO add this to [TopLevelListeners] when [SeagullApp] is parent to [TopLevelBlocsProvider]
+    if (authState?.loggedOutReason == LoggedOutReason.LICENSE_EXPIRED) {
+      Future.delayed(
+        Duration.zero,
+        () => showViewDialog(
+          context: context,
+          builder: (_) => LicenseExpiredDialog(),
+        ),
+      );
+    }
     return MultiBlocProvider(
       providers: [
         BlocProvider<LoginBloc>(
@@ -24,25 +36,22 @@ class LoginPage extends StatelessWidget {
         ),
         BlocProvider<LoginFormBloc>(create: (context) => LoginFormBloc()),
       ],
-      child: Scaffold(
-        body: SafeArea(
-            child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, state) {
-            if (state is Unauthenticated &&
-                state.loggedOutReason == LoggedOutReason.LICENSE_EXPIRED) {
-              Future.delayed(
-                Duration.zero,
-                () => showViewDialog(
-                  context: context,
-                  builder: (context) {
-                    return LicenseExpiredDialog();
-                  },
-                ),
-              );
-            }
-            return LoginForm();
-          },
-        )),
+      child: BlocListener<LoginBloc, LoginState>(
+        listenWhen: (_, state) =>
+            state is LoginFailure &&
+            state.loginFailureCause == LoginFailureCause.License,
+        listener: (context, state) async {
+          context.read<LoginFormBloc>().add(ResetForm());
+          await showViewDialog(
+            context: context,
+            builder: (_) => LicenseExpiredDialog(),
+          );
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: LoginForm(),
+          ),
+        ),
       ),
     );
   }

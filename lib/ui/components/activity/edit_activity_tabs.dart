@@ -199,7 +199,7 @@ class Weekly extends StatelessWidget with EditActivityTab {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RecurringWeekBloc(context.bloc<EditActivityBloc>()),
+      create: (context) => RecurringWeekBloc(context.read<EditActivityBloc>()),
       child: BlocBuilder<RecurringWeekBloc, RecurringWeekState>(
         builder: (context, state) {
           return Column(
@@ -230,7 +230,7 @@ class Weekly extends StatelessWidget with EditActivityTab {
                       ),
                       value: state.everyOtherWeek,
                       onChanged: (v) => context
-                          .bloc<RecurringWeekBloc>()
+                          .read<RecurringWeekBloc>()
                           .add(ChangeEveryOtherWeek(v)),
                     ),
                   ),

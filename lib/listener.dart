@@ -69,9 +69,9 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       context
-        ..bloc<ClockBloc>().add(DateTime.now().onlyMinutes())
-        ..bloc<PushBloc>().add(PushEvent('app-resumed'))
-        ..bloc<PermissionBloc>().checkAll();
+        ..read<ClockBloc>().add(DateTime.now().onlyMinutes())
+        ..read<PushBloc>().add(PushEvent('app-resumed'))
+        ..read<PermissionBloc>().checkAll();
     }
   }
 
@@ -134,7 +134,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
         if (!previous.status.containsKey(Permission.systemAlertWindow) &&
             current.status.containsKey(Permission.systemAlertWindow) &&
             !current.status[Permission.systemAlertWindow].isGranted) {
-          final authState = context.bloc<AuthenticationBloc>().state;
+          final authState = context.read<AuthenticationBloc>().state;
           if (authState is Authenticated) {
             return authState.newlyLoggedIn;
           }

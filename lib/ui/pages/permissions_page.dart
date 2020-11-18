@@ -69,7 +69,7 @@ class PermissionSwitch extends StatelessWidget {
           await openAppSettings();
           return;
         }
-        context.bloc<PermissionBloc>().add(RequestPermissions([permission]));
+        context.read<PermissionBloc>().add(RequestPermissions([permission]));
       },
     );
   }
@@ -112,7 +112,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
                   );
                 } else {
                   context
-                      .bloc<PermissionBloc>()
+                      .read<PermissionBloc>()
                       .add(RequestPermissions([permission]));
                 }
               },

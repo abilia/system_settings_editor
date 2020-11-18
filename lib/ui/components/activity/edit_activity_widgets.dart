@@ -627,7 +627,7 @@ class WeekDays extends StatelessWidget {
           ),
           selected: selectedWeekDays.contains(d),
           onTap: () =>
-              context.bloc<RecurringWeekBloc>().add(AddOrRemoveWeekday(d)),
+              context.read<RecurringWeekBloc>().add(AddOrRemoveWeekday(d)),
         );
       }),
     );
