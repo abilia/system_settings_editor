@@ -28,9 +28,6 @@ class ActivityCard extends StatelessWidget {
     final textTheme = abiliaTheme.textTheme;
     final occasion = activityOccasion.occasion;
     final activity = activityOccasion.activity;
-    final timeFormat = hourAndMinuteFormat(context);
-    final hasImage = activity.hasImage;
-    final hasTitle = activity.hasTitle;
     final signedOff = activityOccasion.isSignedOff && !preview;
     final current = occasion == Occasion.current && !preview;
     final past = occasion == Occasion.past && !preview;
@@ -44,11 +41,6 @@ class ActivityCard extends StatelessWidget {
             iconTheme:
                 abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white140))
         : abiliaTheme;
-    final subtitle = activity.fullDay
-        ? Translator.of(context).translate.fullDay
-        : activity.hasEndTime
-            ? '${timeFormat(activity.startTime)} - ${timeFormat(activity.noneRecurringEnd)}'
-            : '${timeFormat(activity.startTime)}';
     return AnimatedTheme(
       duration: duration,
       data: themeData,
@@ -56,8 +48,7 @@ class ActivityCard extends StatelessWidget {
         builder: (context) => Padding(
           padding: EdgeInsets.symmetric(vertical: margin),
           child: Tts.fromSemantics(
-            SemanticsProperties(
-                label: !hasTitle ? subtitle : '${activity.title}, $subtitle '),
+            activity.semanticsProperties(context),
             child: AnimatedContainer(
               duration: duration,
               height: cardHeight,
@@ -92,7 +83,7 @@ class ActivityCard extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            if (hasImage || signedOff || past)
+                            if (activity.hasImage || signedOff || past)
                               ActivityImage.fromActivityOccasion(
                                 activityOccasion: activityOccasion,
                                 size: imageSize,
@@ -103,7 +94,7 @@ class ActivityCard extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.only(left: cardPadding),
                                 child: Stack(children: <Widget>[
-                                  if (hasTitle)
+                                  if (activity.hasTitle)
                                     Text(
                                       activity.title,
                                       style:
@@ -113,7 +104,7 @@ class ActivityCard extends StatelessWidget {
                                   Align(
                                     alignment: Alignment.bottomLeft,
                                     child: Text(
-                                      subtitle,
+                                      activity.subtitle(context),
                                       style:
                                           Theme.of(context).textTheme.bodyText1,
                                     ),
