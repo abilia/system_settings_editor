@@ -246,7 +246,8 @@ void main() {
 
     await tester.verifyTts(find.byKey(TestKey.loginError),
         exact: translate.wrongCredentials);
-    await tester.verifyTts(find.byType(WebLink), contains: 'myAbilia');
+    await tester.verifyTts(find.byKey(TestKey.loginHint),
+        exact: translate.loginHint);
   });
 
   testWidgets('Gets no valid license dialog when no valid license',

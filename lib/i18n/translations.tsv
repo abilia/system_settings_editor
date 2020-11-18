@@ -2,8 +2,7 @@ _id_	en	sv
 ### Login page		
 userName	Username / Email	Användarnamn
 password	Password	Lösenord
-infoText1	Use your 	Använd ditt 
-infoText2	 account to Log in	-konto för att logga in
+loginHint	Use your MEMOplanner username and password to login	Logga in med samma användarnamn och lösenord som till din MEMOplanner
 login	Log in	Logga in
 logout	Log out	Logga ut
 wrongCredentials	Your username/email or password is not correct. Please, try another one.	Fel användarnamn eller lösenord

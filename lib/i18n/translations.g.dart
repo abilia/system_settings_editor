@@ -17,9 +17,8 @@ abstract class Translated {
 
   final String password = 'Password';
 
-  final String infoText1 = 'Use your ';
-
-  final String infoText2 = ' account to Log in';
+  final String loginHint =
+      'Use your MEMOplanner username and password to login';
 
   final String login = 'Log in';
 
@@ -324,10 +323,8 @@ class SV extends Translated {
   final String password = 'Lösenord';
 
   @override
-  final String infoText1 = 'Använd ditt ';
-
-  @override
-  final String infoText2 = '-konto för att logga in';
+  final String loginHint =
+      'Logga in med samma användarnamn och lösenord som till din MEMOplanner';
 
   @override
   final String login = 'Logga in';
