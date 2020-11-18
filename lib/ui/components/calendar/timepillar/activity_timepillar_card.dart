@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class ActivityTimepillarCard extends StatelessWidget {
   static const double imageSize = 56.0,
@@ -57,12 +58,7 @@ class ActivityTimepillarCard extends StatelessWidget {
           left: right ? column * totalWith : null,
           top: top,
           child: Tts.fromSemantics(
-            SemanticsProperties(
-              button: true,
-              image: hasImage,
-              label:
-                  '${hasTitle ? activity.title : ''} ${hourAndMinuteFormat(context)(activityOccasion.start)}',
-            ),
+            activity.semanticsProperties(context),
             child: Stack(
               textDirection: right ? TextDirection.ltr : TextDirection.rtl,
               children: <Widget>[

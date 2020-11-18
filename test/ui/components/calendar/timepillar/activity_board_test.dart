@@ -92,19 +92,23 @@ void main() {
   });
 
   testWidgets('tts', (WidgetTester tester) async {
+    final duration = 30.minutes();
+    final endTime = startTime.add(duration);
     await initializeDateFormatting();
+    final dateFormat = hourAndMinuteFromUse24(false, 'en');
     await tester.pumpWidget(
       wrap(
         ActivityOccasion.forTest(
           Activity.createNew(
             title: title,
             startTime: startTime,
+            duration: duration,
           ),
         ),
       ),
     );
     await tester.verifyTts(find.text(title),
-        exact: '$title ${hourAndMinuteFromUse24(false, 'en')(startTime)}');
+        exact: '$title, ${dateFormat(startTime)} - ${dateFormat(endTime)}');
   });
 
   group('position', () {

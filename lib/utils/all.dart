@@ -14,3 +14,4 @@ export 'recurs_extensions.dart';
 export 'permission.dart';
 export 'iterable.dart';
 export 'logger.dart';
+export 'activity_extension.dart';
