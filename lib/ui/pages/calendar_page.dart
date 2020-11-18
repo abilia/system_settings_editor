@@ -6,7 +6,6 @@ import 'package:flutter/rendering.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class CalendarPage extends StatefulWidget {
   @override
@@ -37,13 +36,6 @@ class _CalendarPageState extends State<CalendarPage>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      context
-        ..bloc<ClockBloc>().add(DateTime.now().onlyMinutes())
-        ..bloc<ActivitiesBloc>().add(LoadActivities())
-        ..bloc<SortableBloc>().add(LoadSortables())
-        ..bloc<GenericBloc>().add(LoadGenerics())
-        ..bloc<LicenseBloc>().add(ReloadLicenses())
-        ..bloc<PermissionBloc>().checkAll();
       _jumpToActivity();
     }
   }

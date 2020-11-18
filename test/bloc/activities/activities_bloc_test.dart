@@ -52,23 +52,6 @@ void main() {
       );
     });
 
-    test('LoadActivities on ActivitiesLoaded state yields ActivitiesReloadning',
-        () async {
-      when(mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(<Activity>[]));
-      activitiesBloc.add(LoadActivities());
-      activitiesBloc.add(LoadActivities());
-
-      await expectLater(
-        activitiesBloc,
-        emitsInOrder([
-          ActivitiesLoaded([]),
-          ActivitiesReloadning([]),
-          ActivitiesLoaded([]),
-        ]),
-      );
-    });
-
     test('LoadActivities event returns ActivitiesLoaded state with Activity',
         () {
       final exptectedActivity = Activity.createNew(
