@@ -26,7 +26,6 @@ void main() {
   final tenDaysAgo = DateTime(2111, 11, 01, 11, 11);
 
   final activityBackButtonFinder = find.byKey(TestKey.activityBackButton);
-  final selectReminderDialogFinder = find.byType(SelectReminderDialog);
   final activityCardFinder = find.byType(ActivityCard);
   final activityPageFinder = find.byType(ActivityPage);
   final agendaFinder = find.byType(Agenda);
@@ -36,8 +35,6 @@ void main() {
 
   final alarmButtonFinder = find.byKey(TestKey.editAlarm);
   final alarmAtStartSwichFinder = find.byKey(TestKey.alarmAtStartSwitch);
-  final reminderButtonFinder = find.byKey(TestKey.editReminder);
-  final reminderSwitchFinder = find.byType(ReminderSwitch);
 
   final okInkWellFinder = find.byKey(ObjectKey(TestKey.okDialog));
   final closeButtonFinder = find.byKey(TestKey.closeDialog);
@@ -90,6 +87,7 @@ void main() {
       ..flutterTts = MockFlutterTts()
       ..init();
   });
+
   Future<void> navigateToActivityPage(WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -109,13 +107,12 @@ void main() {
       expect(activityCardFinder, findsOneWidget);
     });
 
-    testWidgets('Full day activity page does not show edit alarm or reminders',
+    testWidgets('Full day activity page does not show edit alarm',
         (WidgetTester tester) async {
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.fullday(startTime)]));
       await navigateToActivityPage(tester);
       expect(alarmButtonFinder, findsNothing);
-      expect(reminderButtonFinder, findsNothing);
     });
   });
 
@@ -378,240 +375,6 @@ void main() {
     });
   });
 
-  final reminder5MinText = 5.minutes().toReminderString(translate);
-  final reminder5MinFinder = find.text(reminder5MinText);
-  final reminderDayText = 1.days().toReminderString(translate);
-  final reminderDayFinder = find.text(reminderDayText);
-  group('Change reminder', () {
-    final remindersAllSelected =
-        find.byIcon(AbiliaIcons.radiocheckbox_selected);
-    final reminderField = find.byType(Reminders);
-    final remindersAll = find.byType(SelectableField);
-    testWidgets('Reminder button shows', (WidgetTester tester) async {
-      // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
-      // Act
-      await navigateToActivityPage(tester);
-      // Assert
-      expect(reminderButtonFinder, findsOneWidget);
-    });
-
-    testWidgets('Reminder alarm shows', (WidgetTester tester) async {
-      // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
-      await navigateToActivityPage(tester);
-
-      // Act -- tap reminder button
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert -- finds reminder dialog
-      expect(selectReminderDialogFinder, findsOneWidget);
-      //  reminder switch shows
-      expect(reminderSwitchFinder, findsOneWidget);
-      // reminder field show
-      expect(reminderField, findsOneWidget);
-      // no reminders selected
-      expect(remindersAllSelected, findsNothing);
-      // 6 reminders shows
-      expect(remindersAll, findsNWidgets(6));
-      // close button shows
-      expect(closeButtonFinder, findsOneWidget);
-      // ok button is disabled
-      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNull);
-    });
-    testWidgets('Tapping reminder switch adds 15 min alarm',
-        (WidgetTester tester) async {
-      // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
-      await navigateToActivityPage(tester);
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Act
-      await tester.tap(reminderSwitchFinder);
-      await tester.pumpAndSettle();
-
-      // Assert
-      // one reminders selected
-      expect(remindersAllSelected, findsOneWidget);
-      // ok button is enabled
-      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNotNull);
-    });
-
-    testWidgets(
-        'Tapping reminder switch adds 15 min alarm, tapping it again deselects',
-        (WidgetTester tester) async {
-      // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
-      await navigateToActivityPage(tester);
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Act -- tap reminders switch
-      await tester.tap(reminderSwitchFinder);
-      await tester.pumpAndSettle();
-
-      // Assert -- one reminder selected
-      expect(remindersAllSelected, findsOneWidget);
-      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNotNull);
-
-      // Act -- tap reminders switch
-      await tester.tap(reminderSwitchFinder);
-      await tester.pumpAndSettle();
-
-      // Assert -- no reminders selected
-      expect(remindersAllSelected, findsNothing);
-      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNull);
-    });
-
-    testWidgets('Tapping reminder switch and two alarms shows three alarms',
-        (WidgetTester tester) async {
-      // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
-      await navigateToActivityPage(tester);
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-      // Act
-      await tester.tap(reminderSwitchFinder);
-      await tester.tap(reminder5MinFinder);
-      await tester.tap(reminderDayFinder);
-      await tester.pumpAndSettle();
-
-      // Assert
-      expect(remindersAllSelected, findsNWidgets(3));
-      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNotNull);
-    });
-
-    testWidgets('Alarms are not saved if close is pressed',
-        (WidgetTester tester) async {
-      // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
-      await navigateToActivityPage(tester);
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Act -- select three reminders, then tap close, then tap reminder button
-      await tester.tap(reminderSwitchFinder);
-      await tester.tap(reminder5MinFinder);
-      await tester.tap(reminderDayFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(closeButtonFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert
-      expect(selectReminderDialogFinder, findsOneWidget);
-      expect(remindersAllSelected, findsNothing);
-      expect(reminderField, findsOneWidget);
-      expect(remindersAll, findsNWidgets(6));
-      expect(reminderSwitchFinder, findsOneWidget);
-      expect(closeButtonFinder, findsOneWidget);
-      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNull);
-    });
-
-    testWidgets('Activity that already has reminders shows',
-        (WidgetTester tester) async {
-      // Arrange
-      when(mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(<Activity>[
-                FakeActivity.starts(startTime).copyWith(reminderBefore: [
-                  5.minutes().inMilliseconds,
-                  15.minutes().inMilliseconds,
-                  1.hours().inMilliseconds,
-                  1.days().inMilliseconds,
-                ])
-              ]));
-      await navigateToActivityPage(tester);
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Act -- select three reminders, then tap close, then tap reminder button
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert
-      expect(selectReminderDialogFinder, findsOneWidget);
-      expect(remindersAllSelected, findsNWidgets(4));
-      expect(reminderField, findsOneWidget);
-      expect(remindersAll, findsNWidgets(6));
-      expect(reminderSwitchFinder, findsOneWidget);
-      expect(closeButtonFinder, findsOneWidget);
-      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNull);
-    });
-    testWidgets(
-        'Activity that already has reminders where deselected are saved shows',
-        (WidgetTester tester) async {
-      // Arrange
-      when(mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(<Activity>[
-                FakeActivity.starts(startTime).copyWith(reminderBefore: [
-                  5.minutes().inMilliseconds,
-                  15.minutes().inMilliseconds,
-                  1.hours().inMilliseconds,
-                  1.days().inMilliseconds,
-                ])
-              ]));
-
-      await navigateToActivityPage(tester);
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Act -- deselect one reminder, then tap ok, then tap reminder button
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(reminder5MinFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(okInkWellFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert -- three reminders are selected
-      expect(selectReminderDialogFinder, findsOneWidget);
-      expect(remindersAllSelected, findsNWidgets(3));
-      expect(reminderField, findsOneWidget);
-      expect(remindersAll, findsNWidgets(6));
-      expect(reminderSwitchFinder, findsOneWidget);
-      expect(closeButtonFinder, findsOneWidget);
-      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNull);
-    });
-    testWidgets('Reminders can be saved', (WidgetTester tester) async {
-      // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
-
-      await navigateToActivityPage(tester);
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Act -- select one reminder, then tap ok, then tap reminder button
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(reminder5MinFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(okInkWellFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert -- one reminder is selected
-      expect(selectReminderDialogFinder, findsOneWidget);
-      expect(remindersAllSelected, findsOneWidget);
-      expect(reminderField, findsOneWidget);
-      expect(remindersAll, findsNWidgets(6));
-      expect(reminderSwitchFinder, findsOneWidget);
-      expect(closeButtonFinder, findsOneWidget);
-      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNull);
-    });
-  });
   group('Delete activity', () {
     testWidgets('Finds delete button and no delete app bar',
         (WidgetTester tester) async {
@@ -1000,26 +763,6 @@ void main() {
       });
     });
 
-    group('Edit recurring reminder', () {
-      testWidgets('Changing reminder on recurring should show apply to dialog',
-          (WidgetTester tester) async {
-        // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
-        await navigateToActivityPage(tester);
-
-        // Act
-        await tester.tap(reminderButtonFinder);
-        await tester.pumpAndSettle();
-        await tester.tap(reminderSwitchFinder);
-        await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
-        await tester.pumpAndSettle();
-
-        // Assert
-        expect(editRecurrentFinder, findsOneWidget);
-      });
-    });
     group('Edit recurring Activity', () {
       final titleTextFormFieldFinder =
           find.byKey(TestKey.editTitleTextFormField);
@@ -1235,7 +978,6 @@ void main() {
       await navigateToActivityPage(tester);
       expect(deleteButtonFinder, findsNothing);
       expect(editActivityButtonFinder, findsOneWidget);
-      expect(reminderButtonFinder, findsOneWidget);
       expect(alarmButtonFinder, findsOneWidget);
     });
 
@@ -1257,7 +999,6 @@ void main() {
       await navigateToActivityPage(tester);
       expect(deleteButtonFinder, findsNothing);
       expect(editActivityButtonFinder, findsNothing);
-      expect(reminderButtonFinder, findsNothing);
       expect(alarmButtonFinder, findsNothing);
     });
 
@@ -1458,33 +1199,6 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
         find.byKey(TestKey.alarmAtStartSwitch),
         exact: translate.alarmOnlyAtStartTime,
       );
-    });
-
-    testWidgets('reminders', (WidgetTester tester) async {
-      final title = 'just some title';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-              title: title,
-              startTime: startTime,
-              checkable: true,
-              alarmType: ALARM_VIBRATION,
-            ),
-          ],
-        ),
-      );
-
-      await navigateToActivityPage(tester);
-      // Act -- tap reminder button
-      // Act -- tap reminder button
-      await tester.tap(reminderButtonFinder);
-      await tester.pumpAndSettle();
-
-      await tester.verifyTts(reminderSwitchFinder, exact: translate.reminders);
-
-      await tester.verifyTts(reminder5MinFinder, exact: reminder5MinText);
-      await tester.verifyTts(reminderDayFinder, exact: reminderDayText);
     });
   });
 }

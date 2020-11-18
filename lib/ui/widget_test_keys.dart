@@ -39,7 +39,6 @@ class TestKey {
       onlyMe = Key('onlyMe'),
       closeDialog = Key('closeDialog'),
       okDialog = Key('okDialog'),
-      editReminder = Key('editReminder'),
       editAlarm = Key('editAlarm'),
       removePicture = Key('removePicture'),
       imageArchiveButton = Key('imageArchiveButton'),

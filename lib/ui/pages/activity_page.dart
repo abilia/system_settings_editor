@@ -71,15 +71,13 @@ class ActivityBottomAppBar extends StatelessWidget {
           final displayEditButton = memoSettingsState.displayEditButton;
           final displayAlarmButton =
               memoSettingsState.displayAlarmButton && !activity.fullDay;
-          final displayReminderButton = displayAlarmButton;
           final numberOfButtons = [
             displayDeleteButton,
             displayEditButton,
             displayAlarmButton,
-            displayReminderButton
           ].where((b) => b).length;
-          final paddings = [0.0, 0.0, 70.0, 39.0, 23.0];
-          final padding = paddings[numberOfButtons];
+
+          final padding = [0.0, 0.0, 70.0, 39.0][numberOfButtons];
           return BottomAppBar(
             child: SizedBox(
               height: numberOfButtons == 0 ? 0 : 64,
@@ -126,27 +124,6 @@ class ActivityBottomAppBar extends StatelessWidget {
                             }
                           }
                         },
-                      ),
-                    if (displayReminderButton)
-                      ActionButton(
-                        key: TestKey.editReminder,
-                        child: Icon(AbiliaIcons.handi_reminder),
-                        onPressed: () => showViewDialog<bool>(
-                          context: context,
-                          builder: (_) => BlocProvider<EditActivityBloc>.value(
-                            value: EditActivityBloc(
-                              activityOccasion,
-                              activitiesBloc:
-                                  BlocProvider.of<ActivitiesBloc>(context),
-                              clockBloc: BlocProvider.of<ClockBloc>(context),
-                              memoplannerSettingBloc:
-                                  BlocProvider.of<MemoplannerSettingBloc>(
-                                      context),
-                            ),
-                            child: SelectReminderDialog(
-                                activityDay: activityOccasion),
-                          ),
-                        ),
                       ),
                     if (displayEditButton)
                       ActionButton(
