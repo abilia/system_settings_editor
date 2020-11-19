@@ -493,7 +493,7 @@ class SV extends Translated {
   final String checkable = 'Kvittera';
 
   @override
-  final String deleteAfter = 'Ta bort efterå';
+  final String deleteAfter = 'Ta bort efteråt';
 
   @override
   final String name = 'Namn';
