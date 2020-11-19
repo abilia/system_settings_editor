@@ -55,7 +55,7 @@ void main() {
           memoplannerSettingBloc:
               memoplannerSettingBloc ?? defaultMemoSettingsBloc,
           sortableBloc: sortableBloc,
-          authenticatedState: Authenticated(
+          authenticationState: Authenticated(
             token: '',
             userId: 1,
             userRepository: userRepository,

@@ -112,29 +112,24 @@ class App extends StatelessWidget {
             baseUrl: snapshot.data.baseUrl,
             child: TopLevelListeners(
               child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                builder: (context, state) {
-                  if (state is Authenticated) {
-                    return AuthenticatedBlocsProvider(
-                      authenticatedState: state,
-                      child: SeagullApp(
-                        child: AuthenticatedListeners(
-                          alarm: snapshot.data.payload,
-                          child: snapshot.data.payload != null
-                              ? FullScreenAlarm(alarm: snapshot.data.payload)
-                              : CalendarPage(),
-                        ),
-                      ),
-                    );
-                  } else if (state is Unauthenticated) {
-                    return SeagullApp(
-                      child: LoginPage(
-                        push: GetIt.I<FirebasePushService>(),
-                        authState: state,
-                      ),
-                    );
-                  }
-                  return const SplashPage();
-                },
+                builder: (context, state) => AuthenticatedBlocsProvider(
+                  authenticationState: state,
+                  child: SeagullApp(
+                    child: (state is Authenticated)
+                        ? AuthenticatedListeners(
+                            alarm: snapshot.data.payload,
+                            child: snapshot.data.payload != null
+                                ? FullScreenAlarm(alarm: snapshot.data.payload)
+                                : CalendarPage(),
+                          )
+                        : (state is Unauthenticated)
+                            ? LoginPage(
+                                push: GetIt.I<FirebasePushService>(),
+                                authState: state,
+                              )
+                            : const SplashPage(),
+                  ),
+                ),
               ),
             ),
           );

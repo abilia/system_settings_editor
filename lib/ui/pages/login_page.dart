@@ -15,7 +15,6 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// TODO add this to [TopLevelListeners] when [SeagullApp] is parent to [TopLevelBlocsProvider]
     if (authState?.loggedOutReason == LoggedOutReason.LICENSE_EXPIRED) {
       Future.delayed(
         Duration.zero,
