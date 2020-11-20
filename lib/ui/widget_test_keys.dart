@@ -4,6 +4,7 @@ class TestKey {
   static const Key input = Key('input'),
       userNameInput = Key('userName'),
       passwordInput = Key('password'),
+      loginHint = Key('loginHint'),
       hidePassword = Key('hidePw'),
       loggInButton = Key('loggIn'),
       loginError = Key('loginError'),

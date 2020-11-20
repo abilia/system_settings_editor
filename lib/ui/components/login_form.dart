@@ -32,7 +32,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final i18n = Translator.of(context);
+    final translate = Translator.of(context).translate;
     final theme = Theme.of(context);
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       builder: (context, formState) => BlocBuilder<LoginBloc, LoginState>(
@@ -65,19 +65,20 @@ class _LoginFormState extends State<LoginForm> {
                 children: <Widget>[
                   padding56,
                   Center(
-                      child: loginState is LoginLoading
-                          ? CircularProgressIndicator()
-                          : GestureDetector(
-                              child: SeagullIcon(),
-                              onDoubleTap: () => setState(
-                                  () => _showBackends = !_showBackends),
-                            )),
+                    child: loginState is LoginLoading
+                        ? CircularProgressIndicator()
+                        : GestureDetector(
+                            child: SeagullIcon(),
+                            onDoubleTap: () =>
+                                setState(() => _showBackends = !_showBackends),
+                          ),
+                  ),
                   padding32,
                   AbiliaTextInput(
                     formKey: TestKey.userNameInput,
                     controller: _usernameController,
                     keyboardType: TextInputType.emailAddress,
-                    heading: i18n.translate.userName,
+                    heading: translate.userName,
                     errorState: credentialsError,
                   ),
                   padding16,
@@ -88,13 +89,21 @@ class _LoginFormState extends State<LoginForm> {
                     errorState: credentialsError,
                   ),
                   padding32,
-                  _LoginHint(),
+                  Tts(
+                    key: TestKey.loginHint,
+                    child: Text(
+                      translate.loginHint,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodyText1
+                          .copyWith(color: AbiliaColors.black75),
+                    ),
+                  ),
                   padding16,
                   if (errorState && !licenseError)
                     ErrorMessage(
                       key: TestKey.loginError,
                       text: Text(
-                        _errorMessageFromState(loginState, i18n),
+                        _errorMessageFromState(loginState, translate),
                       ),
                     ),
                   flexPadding(errorState),
@@ -103,13 +112,13 @@ class _LoginFormState extends State<LoginForm> {
                     child: Theme(
                       data: redButtonTheme,
                       child: Tts(
-                        data: i18n.translate.login,
+                        data: translate.login,
                         child: FlatButton(
                           color: AbiliaColors.red,
                           disabledColor: AbiliaColors.red40,
                           key: TestKey.loggInButton,
                           child: Text(
-                            i18n.translate.login,
+                            translate.login,
                             style: theme.textTheme.subtitle1
                                 .copyWith(color: AbiliaColors.white),
                           ),
@@ -169,56 +178,16 @@ class _LoginFormState extends State<LoginForm> {
     _loginFormBloc.add(PasswordChanged(password: _passwordController.text));
   }
 
-  String _errorMessageFromState(LoginFailure loginState, Translator i18n) {
+  String _errorMessageFromState(LoginFailure loginState, Translated translate) {
     switch (loginState.loginFailureCause) {
       case LoginFailureCause.Credentials:
-        return i18n.translate.wrongCredentials;
+        return translate.wrongCredentials;
       case LoginFailureCause.NoConnection:
-        return i18n.translate.noConnection;
+        return translate.noConnection;
       case LoginFailureCause.License:
-        return i18n.translate.noLicense;
+        return translate.noLicense;
       default:
-        throw '';
+        return loginState.error;
     }
-  }
-}
-
-class _LoginHint extends StatelessWidget {
-  const _LoginHint({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final bodyText12Grey = Theme.of(context)
-        .textTheme
-        .bodyText1
-        .copyWith(color: AbiliaColors.black75);
-    final translate = Translator.of(context).translate;
-    ;
-    final infoText1 = translate.infoText1,
-        ling = 'myAbilia',
-        infoText2 = translate.infoText2;
-
-    return Tts(
-      data: '$infoText1$ling$infoText2',
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            translate.infoText1,
-            style: bodyText12Grey,
-          ),
-          WebLink(
-            text: 'myAbilia',
-            urlString: 'https://myabilia.com/user-create',
-          ),
-          Text(
-            translate.infoText2,
-            style: bodyText12Grey,
-          )
-        ],
-      ),
-    );
   }
 }
