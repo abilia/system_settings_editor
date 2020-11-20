@@ -3,7 +3,6 @@ export 'select_picture.dart';
 export 'select_alarm_type.dart';
 export 'change_calendar.dart';
 export 'select_available_for.dart';
-export 'select_reminders.dart';
 export 'select_recurrence.dart';
 export 'confirm_activity_action.dart';
 export 'time_input.dart';

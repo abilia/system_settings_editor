@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,8 @@ class InitValues {
 Future<InitValues> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging.instance
+      .isAutoInitEnabled; // Dummy call to make the FirebaseMessaging instance connection initiated. No push will arrive otherwise. Will try to find another way.
   final documentDirectory = await getApplicationDocumentsDirectory();
   final preferences = await SharedPreferences.getInstance();
   final seagullLogger = SeagullLogger(
