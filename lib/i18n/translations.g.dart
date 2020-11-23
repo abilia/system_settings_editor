@@ -13,7 +13,7 @@ class Locales {
 }
 
 abstract class Translated {
-  final String userName = 'Username / Email';
+  final String userName = 'Username or email';
 
   final String password = 'Password';
 
@@ -25,18 +25,17 @@ abstract class Translated {
   final String logout = 'Log out';
 
   final String wrongCredentials =
-      'Your username/email or password is not correct. Please, try another one.';
+      "Username or password doesn\'t match.\n\nVerify your credentials and try again.";
 
   final String noConnection =
-      'No contact with myAbilia. Check your Internet connection.';
+      'The device is not connected to the Internet. Check your Internet connection.';
 
-  final String noLicense =
-      "This account is missing a valid license. You're therefore unable to log in.";
+  final String noLicense = 'This account has no valid license.';
 
-  final String licenseExpired = 'License is expired';
+  final String licenseExpired = 'License expired';
 
   final String licenseExpiredMessage =
-      'You have been logged out because your MEMOplanner license expired. Please, extend your license to continue using this app.';
+      'Your license has expired and Memoplanner can no longer be used. Contact your supplier to extend the license.';
 
   final String fullDay = 'All day';
 
@@ -90,17 +89,17 @@ abstract class Translated {
 
   final String check = 'Check';
 
-  final String uncheck = 'Uncheck';
+  final String uncheck = 'Undo';
 
-  final String fromBasicActivity = 'From basic activity';
+  final String fromBasicActivity = 'From Basic Activity';
 
-  final String createActivity = 'Create activity';
+  final String createActivity = 'New activity';
 
-  final String basicActivities = 'Basic activities';
+  final String basicActivities = 'Select Basic Activity';
 
-  final String deleteActivity = 'Delete activity?';
+  final String deleteActivity = 'Do you want to delete this activity?';
 
-  final String appyTo = 'Apply to';
+  final String appyTo = 'Edit recurring activity';
 
   final String onlyThisDay = 'Only this day';
 
@@ -110,7 +109,8 @@ abstract class Translated {
 
   final String checkActivityQuestion = 'Completed?';
 
-  final String unCheckActivityQuestion = 'Du you want to uncheck?';
+  final String unCheckActivityQuestion =
+      'Do you want to uncheck the activity? ';
 
   final String inTimePre = 'in';
 
@@ -125,11 +125,11 @@ abstract class Translated {
 
   final String cancel = 'Cancel';
 
-  final String newActivity = 'New activity';
+  final String newActivity = 'New';
 
   final String editActivity = 'Edit activity';
 
-  final String category = 'Category';
+  final String category = 'Category (left or right)';
 
   final String checkable = 'Checkable';
 
@@ -137,7 +137,7 @@ abstract class Translated {
 
   final String name = 'Name';
 
-  final String picture = 'Picture';
+  final String picture = 'Image';
 
   final String date = 'Date';
 
@@ -150,23 +150,22 @@ abstract class Translated {
   final String missingTitleOrImageAndStartTime =
       'Your activity should contain an image or name and start time.';
 
-  final String missingTitleOrImage =
-      'Your activity should contain an image or name.';
+  final String missingTitleOrImage = 'An activity needs an image or a name.';
 
-  final String missingStartTime = 'Your activity should contain a start time.';
+  final String missingStartTime = 'You must enter a start time.';
 
   final String startTimeBeforeNow =
-      "You've selected a start time that is before now. That is not allowed.";
+      'You have selected a start time which has already passed. This is not allowed.';
 
   final String availableFor = 'Available for';
 
-  final String activityAvailableFor = 'Activity available for';
+  final String activityAvailableFor = 'Available for';
 
   final String meAndSupportPersons = 'Me and support persons';
 
   final String onlyMe = 'Only me';
 
-  final String selectAlarmType = 'Select alarm type';
+  final String selectAlarmType = 'Select alarm';
 
   final String alarmAndVibration = 'Alarm + vibration';
 
@@ -178,11 +177,11 @@ abstract class Translated {
 
   final String alarmOnlyAtStartTime = 'Alarm only at Start time';
 
-  final String selectPicture = 'Select picture';
+  final String selectPicture = 'Select image';
 
-  final String removePicture = 'Remove picture';
+  final String removePicture = 'Remove image';
 
-  final String imageArchive = 'Image archive';
+  final String imageArchive = 'Image Archive';
 
   final String myPhotos = 'My photos';
 
@@ -204,32 +203,31 @@ abstract class Translated {
 
   final String everyOtherWeek = 'Every other week';
 
-  final String recurringDataEmptyErrorMessage =
-      'You need to select at least one day';
+  final String recurringDataEmptyErrorMessage = 'Select at least on day.';
 
-  final String mo = 'Mo';
+  final String mo = 'Mon';
 
-  final String tu = 'Tu';
+  final String tu = 'Tue';
 
-  final String we = 'We';
+  final String we = 'Wed';
 
-  final String th = 'Th';
+  final String th = 'Thu';
 
-  final String fr = 'Fr';
+  final String fr = 'Fri';
 
-  final String sa = 'Sa';
+  final String sa = 'Sat';
 
-  final String su = 'Su';
+  final String su = 'Sun';
 
-  final String infoType = 'Info type';
+  final String infoType = 'Select extra function';
 
-  final String selectInfoType = 'Select info type';
+  final String selectInfoType = 'Select extra function';
 
-  final String infoTypeNone = '- None -';
+  final String infoTypeNone = 'No extra function selected';
 
-  final String infoTypeChecklist = 'Checklist';
+  final String infoTypeChecklist = 'Add checklist';
 
-  final String infoTypeNote = 'Note';
+  final String infoTypeNote = 'Add note';
 
   final String typeSomething = 'Type something…';
 
@@ -239,15 +237,15 @@ abstract class Translated {
 
   final String addNew = 'Add new';
 
-  final String task = 'Task';
+  final String task = 'Enter task';
 
-  final String remove = 'Remove';
+  final String remove = 'Delete';
 
-  final String calendarView = 'Calendar view';
+  final String calendarView = 'Day Calendar';
 
-  final String timePillarView = 'Timepillar view';
+  final String timePillarView = '1 timepillar';
 
-  final String listView = 'List view';
+  final String listView = 'List';
 
   final String timepillarSettings = 'Timepillar settings';
 
@@ -259,7 +257,7 @@ abstract class Translated {
 
   final String preview = 'Preview';
 
-  final String textToSpeech = 'Text to speech';
+  final String textToSpeech = 'Speech support';
 
   final String longpressToSpeak = 'Long press to speak';
 
@@ -333,11 +331,12 @@ class SV extends Translated {
   final String logout = 'Logga ut';
 
   @override
-  final String wrongCredentials = 'Fel användarnamn eller lösenord';
+  final String wrongCredentials =
+      'Användarnamn eller lösenord stämmer inte.\n\nKontrollera att du har skrivit rätt och försök igen.';
 
   @override
   final String noConnection =
-      'Ingen kontakt med myAbilia. Kontrollera din internetanslutning.';
+      'Enheten är inte ansluten till internet. Kontrollera din internetanslutning.';
 
   @override
   final String noLicense =
@@ -348,7 +347,7 @@ class SV extends Translated {
 
   @override
   final String licenseExpiredMessage =
-      'Du har blivit utloggad eftersom din licens för MEMOplanner har gått ut. Du måste förlänga licensen för att fortsätta använda den här appen.';
+      'Licensen har gått ut och Memoplanner kan därför inte längre användas. Kontakta din förskrivare om du vill förlänga licensen.';
 
   @override
   final String fullDay = 'Heldag';
@@ -435,16 +434,17 @@ class SV extends Translated {
   final String fromBasicActivity = 'Från basaktivitet';
 
   @override
-  final String createActivity = 'Skapa aktivitet';
+  final String createActivity = 'Ny aktivitet';
 
   @override
-  final String basicActivities = 'Basaktiviteter';
+  final String basicActivities = 'Välj basaktivitet';
 
   @override
-  final String deleteActivity = 'Ta bort aktivitet?';
+  final String deleteActivity =
+      'Är du säker på att du vill ta bort aktiviteten?';
 
   @override
-  final String appyTo = 'Ändra på';
+  final String appyTo = 'Ändra återkommande aktivitet';
 
   @override
   final String onlyThisDay = 'Endast denna dag';
@@ -459,7 +459,8 @@ class SV extends Translated {
   final String checkActivityQuestion = 'Klar?';
 
   @override
-  final String unCheckActivityQuestion = 'Ta bort klarmarkering?';
+  final String unCheckActivityQuestion =
+      'Vill du ångra kvitteringen av aktiviteten?';
 
   @override
   final String inTimePre = 'om';
@@ -481,16 +482,16 @@ class SV extends Translated {
   final String cancel = 'Avbryt';
 
   @override
-  final String newActivity = 'Ny aktivitet';
+  final String newActivity = 'Ny';
 
   @override
   final String editActivity = 'Ändra aktivitet';
 
   @override
-  final String category = 'Kategori';
+  final String category = 'Kategori (vänster eller höger)';
 
   @override
-  final String checkable = 'Kvittera';
+  final String checkable = 'Kvitterbar';
 
   @override
   final String deleteAfter = 'Ta bort efteråt';
@@ -519,10 +520,10 @@ class SV extends Translated {
 
   @override
   final String missingTitleOrImage =
-      'Aktiviteten måste ha ett namn eller en bild.';
+      'En aktivitet måste ha antingen en bild eller ett namn.';
 
   @override
-  final String missingStartTime = 'Aktiviteten måste ha en starttid.';
+  final String missingStartTime = 'Du måste ange en starttid.';
 
   @override
   final String startTimeBeforeNow =
@@ -541,7 +542,7 @@ class SV extends Translated {
   final String onlyMe = 'Bara mig';
 
   @override
-  final String selectAlarmType = 'Välj typ av larm';
+  final String selectAlarmType = 'Ange larm';
 
   @override
   final String alarmAndVibration = 'Larm + vibration';
@@ -568,10 +569,10 @@ class SV extends Translated {
   final String imageArchive = 'Bildarkiv';
 
   @override
-  final String myPhotos = 'Mina bilder';
+  final String myPhotos = 'Mina foton';
 
   @override
-  final String takeNewPhoto = 'Ta bild';
+  final String takeNewPhoto = 'Ta ny bild';
 
   @override
   final String recurrence = 'Upprepning';
@@ -583,7 +584,7 @@ class SV extends Translated {
   final String weekly = 'Veckovis';
 
   @override
-  final String monthly = 'Måndadsvis';
+  final String monthly = 'Månadsvis';
 
   @override
   final String yearly = 'Årsvis';
@@ -598,44 +599,43 @@ class SV extends Translated {
   final String everyOtherWeek = 'Varannan vecka';
 
   @override
-  final String recurringDataEmptyErrorMessage =
-      'En återkommande aktivitet måste ha en vald upprepning';
+  final String recurringDataEmptyErrorMessage = 'Välj minst en dag.';
 
   @override
-  final String mo = 'Må';
+  final String mo = 'mån';
 
   @override
-  final String tu = 'Ti';
+  final String tu = 'tis';
 
   @override
-  final String we = 'On';
+  final String we = 'ons';
 
   @override
-  final String th = 'To';
+  final String th = 'tor';
 
   @override
-  final String fr = 'Fr';
+  final String fr = 'fre';
 
   @override
-  final String sa = 'Lö';
+  final String sa = 'lör';
 
   @override
-  final String su = 'Sö';
+  final String su = 'sön';
 
   @override
-  final String infoType = 'Kopplade funktioner';
+  final String infoType = 'Välj extra funktion';
 
   @override
-  final String selectInfoType = 'Välj typ av Info';
+  final String selectInfoType = 'Välj extra funktion';
 
   @override
-  final String infoTypeNone = '- Ingen -';
+  final String infoTypeNone = 'Ingen extra funktion vald';
 
   @override
-  final String infoTypeChecklist = 'Checklista';
+  final String infoTypeChecklist = 'Lägg till checklista';
 
   @override
-  final String infoTypeNote = 'Anteckning';
+  final String infoTypeNote = 'Lägg till anteckning';
 
   @override
   final String typeSomething = 'Skriv något…';
@@ -650,22 +650,22 @@ class SV extends Translated {
   final String addNew = 'Lägg till ny';
 
   @override
-  final String task = 'Uppgift';
+  final String task = 'Skriv in uppgift';
 
   @override
   final String remove = 'Ta bort';
 
   @override
-  final String calendarView = 'Kalendervy';
+  final String calendarView = 'Dagkalender';
 
   @override
-  final String timePillarView = 'Tidspelare';
+  final String timePillarView = '1 tidpelare';
 
   @override
-  final String listView = 'Listvy';
+  final String listView = 'Lista';
 
   @override
-  final String timepillarSettings = 'Inställningar för tidspelare';
+  final String timepillarSettings = 'Inställningar för tidpelare';
 
   @override
   final String activityDuration = 'Visa tid som';
@@ -680,7 +680,7 @@ class SV extends Translated {
   final String preview = 'Förhandsgranskning';
 
   @override
-  final String textToSpeech = 'Text till tal';
+  final String textToSpeech = 'Talstöd';
 
   @override
   final String longpressToSpeak = 'Tryck länge för tal';
