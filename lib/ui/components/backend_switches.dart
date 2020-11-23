@@ -51,7 +51,7 @@ class BackEndButton extends StatelessWidget {
           Radio(
             groupValue: userRepository.baseUrl,
             value: backEndUrl,
-            onChanged: (url) => context.bloc<AuthenticationBloc>().add(
+            onChanged: (url) => context.read<AuthenticationBloc>().add(
                   ChangeRepository(
                     userRepository.copyWith(
                       client: client,

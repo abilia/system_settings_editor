@@ -61,7 +61,7 @@ class TextToSpeechSwitch extends StatelessWidget {
             ),
             text: Text(Translator.of(context).translate.textToSpeech),
             onChanged: (v) =>
-                context.bloc<SettingsBloc>().add(TextToSpeechUpdated(v)),
+                context.read<SettingsBloc>().add(TextToSpeechUpdated(v)),
           ),
         ),
         Padding(
@@ -160,7 +160,7 @@ class PermissionPickField extends StatelessWidget {
               leading: Icon(AbiliaIcons.menu_setup),
               text: Text(Translator.of(context).translate.permissions),
               onTap: () async {
-                context.bloc<PermissionBloc>().checkAll();
+                context.read<PermissionBloc>().checkAll();
                 await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => PermissionsPage(),

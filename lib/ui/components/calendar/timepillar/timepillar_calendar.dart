@@ -15,7 +15,6 @@ class TimePillarCalendar extends StatefulWidget {
   final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
   final MemoplannerSettingsState memoplannerSettingsState;
-  final DateTime now;
   final TimepillarInterval timepillarInterval;
 
   const TimePillarCalendar({
@@ -23,7 +22,6 @@ class TimePillarCalendar extends StatefulWidget {
     @required this.activityState,
     @required this.calendarViewState,
     @required this.memoplannerSettingsState,
-    @required this.now,
     @required this.timepillarInterval,
   }) : super(key: key);
 
@@ -49,8 +47,9 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
 
   @override
   void initState() {
+    final now = context.read<ClockBloc>().state;
     final scrollOffset = widget.activityState.isToday
-        ? timeToPixels(widget.now.hour, widget.now.minute) - hourHeigt * 2
+        ? timeToPixels(now.hour, now.minute) - hourHeigt * 2
         : hourHeigt * memoSettings.dayParts.morning.inHours;
     verticalScrollController =
         ScrollController(initialScrollOffset: max(scrollOffset, 0));

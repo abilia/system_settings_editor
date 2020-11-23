@@ -45,18 +45,6 @@ class _LoginFormState extends State<LoginForm> {
           final licenseError = errorState &&
               (loginState as LoginFailure).loginFailureCause ==
                   LoginFailureCause.License;
-          if (licenseError) {
-            context.bloc<LoginFormBloc>().add(ResetForm());
-            Future.delayed(
-              Duration.zero,
-              () => showViewDialog(
-                context: context,
-                builder: (context) {
-                  return LicenseExpiredDialog();
-                },
-              ),
-            );
-          }
           return Form(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -123,8 +111,7 @@ class _LoginFormState extends State<LoginForm> {
                                 .copyWith(color: AbiliaColors.white),
                           ),
                           onPressed: loginState is! LoginLoading &&
-                                  formState.isFormValid &&
-                                  !(errorState)
+                                  formState.isFormValid
                               ? _onLoginButtonPressed
                               : null,
                         ),
