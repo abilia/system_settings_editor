@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -60,12 +61,16 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             PageRouteBuilder(
-              pageBuilder: (_, animation, secondaryAnimation) => FadeTransition(
-                opacity: CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOut,
+              pageBuilder: (_, animation, secondaryAnimation) =>
+                  CopiedAuthProviders(
+                blocContext: context,
+                child: FadeTransition(
+                  opacity: CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOut,
+                  ),
+                  child: AllDayList(),
                 ),
-                child: AllDayList(),
               ),
               settings: RouteSettings(name: 'AllDayList $day'),
             ),

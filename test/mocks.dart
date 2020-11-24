@@ -52,11 +52,54 @@ class MockSyncBloc extends Mock implements SyncBloc {}
 
 class MockSortableBloc extends Mock implements SortableBloc {}
 
+class MockGenericBloc extends Mock implements GenericBloc {}
+
 class MockUserFileBloc extends Mock implements UserFileBloc {}
+
+class MockAlarmBloc extends Mock implements AlarmBloc {}
+
+class MockNotificationBloc extends Mock implements NotificationBloc {}
+
+class MockCalendarViewBloc extends Mock implements CalendarViewBloc {}
+
+class MockLicenseBloc extends Mock implements LicenseBloc {}
 
 class MockImageArchiveBloc extends MockBloc<SortableArchiveEvent,
         SortableArchiveState<ImageArchiveData>>
     implements SortableArchiveBloc<ImageArchiveData> {}
+
+class MockAuthenticatedBlocsProvider extends StatelessWidget {
+  final Widget child;
+
+  const MockAuthenticatedBlocsProvider({Key key, this.child}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(providers: [
+      BlocProvider<AuthenticationBloc>(
+          create: (context) => MockAuthenticationBloc()),
+      BlocProvider<ActivitiesBloc>(create: (context) => MockActivitiesBloc()),
+      BlocProvider<SettingsBloc>(create: (context) => MockSettingsBloc()),
+      BlocProvider<PermissionBloc>(create: (context) => PermissionBloc()),
+      BlocProvider<SyncBloc>(create: (context) => MockSyncBloc()),
+      BlocProvider<UserFileBloc>(create: (context) => MockUserFileBloc()),
+      BlocProvider<SortableBloc>(create: (context) => MockSortableBloc()),
+      BlocProvider<GenericBloc>(create: (context) => MockGenericBloc()),
+      BlocProvider<MemoplannerSettingBloc>(
+          create: (context) => MockMemoplannerSettingsBloc()),
+      BlocProvider<DayPickerBloc>(create: (context) => MockDayPickerBloc()),
+      BlocProvider<DayActivitiesBloc>(
+          create: (context) => MockDayActivitiesBloc()),
+      BlocProvider<ActivitiesOccasionBloc>(
+          create: (context) => MockActivitiesOccasionBloc()),
+      BlocProvider<AlarmBloc>(create: (context) => MockAlarmBloc()),
+      BlocProvider<NotificationBloc>(
+          create: (context) => MockNotificationBloc()),
+      BlocProvider<CalendarViewBloc>(
+          create: (context) => MockCalendarViewBloc()),
+      BlocProvider<LicenseBloc>(create: (context) => MockLicenseBloc()),
+    ], child: child);
+  }
+}
 
 class MockFirebasePushService extends Mock implements FirebasePushService {}
 

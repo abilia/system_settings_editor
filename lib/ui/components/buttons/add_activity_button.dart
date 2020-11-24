@@ -36,8 +36,9 @@ class AddActivityButton extends StatelessWidget {
         if (response != null) {
           await Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (_) {
-                return BlocProvider<EditActivityBloc>(
+              builder: (_) => CopiedAuthProviders(
+                blocContext: context,
+                child: BlocProvider<EditActivityBloc>(
                   create: (_) => EditActivityBloc.newActivity(
                     activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
                     clockBloc: BlocProvider.of<ClockBloc>(context),
@@ -50,8 +51,8 @@ class AddActivityButton extends StatelessWidget {
                     day: day,
                     title: Translator.of(context).translate.newActivity,
                   ),
-                );
-              },
+                ),
+              ),
               settings: RouteSettings(name: 'EditActivityPage new activity'),
             ),
           );

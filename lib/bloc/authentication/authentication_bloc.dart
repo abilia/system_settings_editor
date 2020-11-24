@@ -25,7 +25,10 @@ class AuthenticationBloc
   ) async* {
     final repo = state.userRepository;
 
-    if (event is ChangeRepository) {
+    if (event is NotReady) {
+      await Future.delayed(const Duration(milliseconds: 50));
+      yield state._forceNew();
+    } else if (event is ChangeRepository) {
       yield Unauthenticated(event.repository);
     } else if (event is CheckAuthentication) {
       final token = state.userRepository.getToken();

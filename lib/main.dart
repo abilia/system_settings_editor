@@ -32,17 +32,17 @@ import 'package:seagull/utils/all.dart';
 final _log = Logger('main');
 
 void main() async {
-  runApp(App(initialization: initServices()));
+  final initValues = await initServices();
+  final payload = Platform.isIOS ? null : await _payload;
+  runApp(
+    App(
+      baseUrl: initValues,
+      payload: payload,
+    ),
+  );
 }
 
-@visibleForTesting
-class InitValues {
-  final String baseUrl;
-  final NotificationAlarm payload;
-  const InitValues(this.baseUrl, this.payload);
-}
-
-Future<InitValues> initServices() async {
+Future<String> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.instance
@@ -72,9 +72,7 @@ Future<InitValues> initServices() async {
     ..flutterTts = await flutterTts(currentLocale)
     ..init();
 
-  final baseUrl = await baseUrlDb.initialize(kReleaseMode ? PROD : WHALE);
-  final payload = Platform.isIOS ? null : await _payload;
-  return InitValues(baseUrl, payload);
+  return await baseUrlDb.initialize(kReleaseMode ? PROD : WHALE);
 }
 
 Future<NotificationAlarm> get _payload async {
@@ -96,91 +94,68 @@ Future<NotificationAlarm> get _payload async {
 
 class App extends StatelessWidget {
   final PushBloc pushBloc;
-  final Future<InitValues> initialization;
+  final String baseUrl;
+  final NotificationAlarm payload;
+  final _navigatorKey = GlobalKey<NavigatorState>();
 
   App({
     Key key,
+    this.baseUrl = 'mock',
+    this.payload,
     this.pushBloc,
-    this.initialization,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: initialization ?? Future.value(InitValues('mock', null)),
-      builder: (context, AsyncSnapshot<InitValues> snapshot) {
-        if (snapshot.hasData) {
-          return TopLevelBlocsProvider(
-            pushBloc: pushBloc,
-            baseUrl: snapshot.data.baseUrl,
-            child: TopLevelListeners(
-              child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                builder: (context, state) => AuthenticatedBlocsProvider(
-                  authenticationState: state,
-                  child: SeagullApp(
-                    child: (state is Authenticated)
-                        ? AuthenticatedListeners(
-                            alarm: snapshot.data.payload,
-                            child: snapshot.data.payload != null
-                                ? FullScreenAlarm(alarm: snapshot.data.payload)
-                                : CalendarPage(),
-                          )
-                        : (state is Unauthenticated)
-                            ? LoginPage(
-                                push: GetIt.I<FirebasePushService>(),
-                                authState: state,
-                              )
-                            : const SplashPage(),
-                  ),
-                ),
-              ),
-            ),
-          );
-        }
-        return const SplashPage();
-      },
-    );
-  }
+  Widget build(BuildContext context) => TopLevelBlocsProvider(
+        pushBloc: pushBloc,
+        baseUrl: baseUrl,
+        child: TopLevelListeners(
+          navigatorKey: _navigatorKey,
+          payload: payload,
+          child: SeagullApp(
+            navigatorKey: _navigatorKey,
+          ),
+        ),
+      );
 }
 
-class SeagullApp extends MaterialApp {
-  SeagullApp({
+class SeagullApp extends StatelessWidget {
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  const SeagullApp({
     Key key,
-    Widget child,
-  }) : super(
-          key: key,
-          builder: (context, child) {
-            final deviceData = MediaQuery.of(context);
-            GetIt.I<SettingsDb>()
-                .setAlwaysUse24HourFormat(deviceData.alwaysUse24HourFormat);
-            return MediaQuery(
-              data: deviceData.copyWith(textScaleFactor: 1.0),
-              child: child,
-            );
-          },
-          title: 'MEMOplanner Go',
-          theme: abiliaTheme,
-          darkTheme: abiliaTheme.copyWith(
-            primaryColorBrightness: Brightness.dark,
-          ),
-          navigatorObservers: [
-            AnalyticsService.observer,
-            GetIt.I<AlarmNavigator>().alarmRouteObserver,
-            RouteLoggingObserver(),
-          ],
-          supportedLocales: Translator.supportedLocals,
-          localizationsDelegates: [
-            Translator.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            DefaultCupertinoLocalizations.delegate,
-          ],
-          localeResolutionCallback: (locale, supportedLocales) =>
-              supportedLocales.firstWhere(
-                  (l) => l.languageCode == locale?.languageCode,
-                  // English should be the first one and also the default.
-                  orElse: () => supportedLocales.first),
-          home: child,
-        );
+    @required this.navigatorKey,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+        navigatorKey: navigatorKey,
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: child,
+        ),
+        title: 'MEMOplanner Go',
+        theme: abiliaTheme,
+        darkTheme: abiliaTheme.copyWith(
+          primaryColorBrightness: Brightness.dark,
+        ),
+        navigatorObservers: [
+          AnalyticsService.observer,
+          GetIt.I<AlarmNavigator>().alarmRouteObserver,
+          RouteLoggingObserver(),
+        ],
+        supportedLocales: Translator.supportedLocals,
+        localizationsDelegates: [
+          Translator.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
+            .firstWhere((l) => l.languageCode == locale?.languageCode,
+                // English should be the first one and also the default.
+                orElse: () => supportedLocales.first),
+        home: const SplashPage(),
+      );
 }

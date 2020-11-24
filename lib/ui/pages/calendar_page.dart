@@ -289,7 +289,10 @@ class MenuButton extends StatelessWidget {
               child: const Icon(AbiliaIcons.menu),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => MenuPage(),
+                  builder: (_) => CopiedAuthProviders(
+                    blocContext: context,
+                    child: MenuPage(),
+                  ),
                   settings: RouteSettings(name: 'MenuPage'),
                 ),
               ),

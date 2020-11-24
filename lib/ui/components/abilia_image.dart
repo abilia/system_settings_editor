@@ -67,44 +67,84 @@ class ActivityImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
-    final hasImage = activity.hasImage,
-        signedOff = activityDay.isSignedOff,
-        inactive = past || signedOff;
-    return Hero(
-      tag: activityDay,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          if (hasImage)
-            AnimatedOpacity(
-              duration: duration,
-              opacity: inactive ? 0.5 : 1.0,
-              child: FadeInCalendarImage(
-                imageFileId: activity.fileId,
-                imageFilePath: activity.icon,
-                width: size,
-                height: size,
-                imageSize: imageSize,
-                imageFile: imageFile,
+    final signedOff = activityDay.isSignedOff, inactive = past || signedOff;
+    final image = activity.hasImage
+        ? getImage(
+            context,
+            activity.fileId,
+            activity.icon,
+          ) // all calls to blocs needs to be outside of Hero
+        : null;
+    final activityImage = Stack(
+      alignment: Alignment.center,
+      children: [
+        if (image != null)
+          AnimatedOpacity(
+            duration: duration,
+            opacity: inactive ? 0.5 : 1.0,
+            child: SizedBox(
+              height: size,
+              width: size,
+              child: ClipRRect(
+                borderRadius: borderRadius,
+                child: FadeInImage(
+                  fit: fit,
+                  image: image.image,
+                  placeholder: MemoryImage(kTransparentImage),
+                ),
               ),
             ),
-          if (past || activity.checkable)
-            Center(
-              child: SizedBox(
-                height: size != null ? size - crossPadding : null,
-                width: size != null ? size - crossPadding : null,
-                child: past && !signedOff
-                    ? CrossOver()
-                    : AnimatedOpacity(
-                        opacity: signedOff ? 1.0 : 0.0,
-                        duration: duration,
-                        child: checkmark,
-                      ),
-              ),
+          ),
+        if (past || activity.checkable)
+          Center(
+            child: SizedBox(
+              height: size != null ? size - crossPadding : null,
+              width: size != null ? size - crossPadding : null,
+              child: past && !signedOff
+                  ? CrossOver()
+                  : AnimatedOpacity(
+                      opacity: signedOff ? 1.0 : 0.0,
+                      duration: duration,
+                      child: checkmark,
+                    ),
             ),
-        ],
-      ),
+          ),
+      ],
     );
+    if (image != null) {
+      return Hero(
+        tag: activityDay,
+        child: activityImage,
+      );
+    } else {
+      return activityImage;
+    }
+  }
+
+  Image getImage(BuildContext context, String fileId, String filePath) {
+    if (imageFile != null) return Image.file(imageFile);
+    final userFileState = context.watch<UserFileBloc>().state;
+    final userFile = userFileState.getLoadedByIdOrPath(
+      fileId,
+      filePath,
+    );
+    if (userFile != null) {
+      return Image.file(GetIt.I<FileStorage>().getFile(userFile.id));
+    }
+    final authenicatedState = context.watch<AuthenticationBloc>().state;
+    if (authenicatedState is Authenticated) {
+      return Image.network(
+        imageThumbUrl(
+          baseUrl: authenicatedState.userRepository.baseUrl,
+          userId: authenicatedState.userId,
+          imageFileId: fileId,
+          imagePath: filePath,
+          size: ImageThumb.THUMB_SIZE,
+        ),
+        headers: authHeader(authenicatedState.token),
+      );
+    }
+    return Image.memory(kTransparentImage);
   }
 }
 

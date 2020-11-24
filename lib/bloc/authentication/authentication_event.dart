@@ -39,3 +39,5 @@ class LoggedOut extends AuthenticationEvent {
 
   const LoggedOut({this.loggedOutReason = LoggedOutReason.LOG_OUT});
 }
+
+class NotReady extends AuthenticationEvent {}

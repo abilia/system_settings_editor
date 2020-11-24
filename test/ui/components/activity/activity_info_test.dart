@@ -24,38 +24,38 @@ void main() {
       as NoteInfoItem;
   final translate = Locales.language.values.first;
 
-  Widget wrapWithMaterialApp(Widget widget) => MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthenticationBloc>(
-              create: (context) => mockedAuthenticationBloc),
-          BlocProvider<ActivitiesBloc>(
-            create: (context) => MockActivitiesBloc(),
-          ),
-          BlocProvider<UserFileBloc>(
-            create: (context) => UserFileBloc(
-              fileStorage: MockFileStorage(),
-              pushBloc: MockPushBloc(),
-              syncBloc: MockSyncBloc(),
-              userFileRepository: MockUserFileRepository(),
+  Widget wrapWithMaterialApp(Widget widget) => MockAuthenticatedBlocsProvider(
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<AuthenticationBloc>(
+                create: (context) => mockedAuthenticationBloc),
+            BlocProvider<UserFileBloc>(
+              create: (context) => UserFileBloc(
+                fileStorage: MockFileStorage(),
+                pushBloc: MockPushBloc(),
+                syncBloc: MockSyncBloc(),
+                userFileRepository: MockUserFileRepository(),
+              ),
             ),
-          ),
-          BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc(StreamController<DateTime>().stream),
-          ),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
-              settingsDb: MockSettingsDb(),
+            BlocProvider<ClockBloc>(
+              create: (context) =>
+                  ClockBloc(StreamController<DateTime>().stream),
             ),
+            BlocProvider<SettingsBloc>(
+              create: (context) => SettingsBloc(
+                settingsDb: MockSettingsDb(),
+              ),
+            ),
+          ],
+          child: MaterialApp(
+            supportedLocales: Translator.supportedLocals,
+            localizationsDelegates: [Translator.delegate],
+            localeResolutionCallback: (locale, supportedLocales) =>
+                supportedLocales.firstWhere(
+                    (l) => l.languageCode == locale?.languageCode,
+                    orElse: () => supportedLocales.first),
+            home: Material(child: widget),
           ),
-        ],
-        child: MaterialApp(
-          supportedLocales: Translator.supportedLocals,
-          localizationsDelegates: [Translator.delegate],
-          localeResolutionCallback: (locale, supportedLocales) =>
-              supportedLocales.firstWhere(
-                  (l) => l.languageCode == locale?.languageCode,
-                  orElse: () => supportedLocales.first),
-          home: Material(child: widget),
         ),
       );
 

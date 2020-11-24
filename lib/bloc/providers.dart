@@ -11,12 +11,12 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {
-  final AuthenticationState authenticationState;
+  final Authenticated authenticatedState;
   final Widget child;
   final MemoplannerSettingBloc memoplannerSettingBloc;
   final SortableBloc sortableBloc;
   AuthenticatedBlocsProvider({
-    @required this.authenticationState,
+    @required this.authenticatedState,
     @required this.child,
     this.memoplannerSettingBloc,
     this.sortableBloc,
@@ -24,10 +24,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
     ensureNotificationPluginInitialized();
   }
   @override
-  Widget build(BuildContext context) {
-    final authenticatedState = authenticationState;
-    if (authenticatedState is Authenticated) {
-      return MultiRepositoryProvider(
+  Widget build(BuildContext context) => MultiRepositoryProvider(
         providers: [
           RepositoryProvider<ActivityRepository>(
             create: (context) => ActivityRepository(
@@ -173,9 +170,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           child: child,
         ),
       );
-    }
-    return child;
-  }
 }
 
 class TopLevelBlocsProvider extends StatelessWidget {
@@ -228,6 +222,70 @@ class TopLevelBlocsProvider extends StatelessWidget {
         ],
         child: child,
       ),
+    );
+  }
+}
+
+class CopiedAuthProviders extends StatelessWidget {
+  final Widget child;
+  final BuildContext blocContext;
+
+  const CopiedAuthProviders({
+    Key key,
+    @required this.child,
+    @required this.blocContext,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SyncBloc>.value(
+          value: blocContext.read<SyncBloc>(),
+        ),
+        BlocProvider<ActivitiesBloc>.value(
+          value: blocContext.read<ActivitiesBloc>(),
+        ),
+        BlocProvider<UserFileBloc>.value(
+          value: blocContext.read<UserFileBloc>(),
+        ),
+        BlocProvider<SortableBloc>.value(
+          value: blocContext.read<SortableBloc>(),
+        ),
+        BlocProvider<GenericBloc>.value(
+          value: blocContext.read<GenericBloc>(),
+        ),
+        BlocProvider<MemoplannerSettingBloc>.value(
+          value: blocContext.read<MemoplannerSettingBloc>(),
+        ),
+        BlocProvider<DayPickerBloc>.value(
+          value: blocContext.read<DayPickerBloc>(),
+        ),
+        BlocProvider<DayActivitiesBloc>.value(
+          value: blocContext.read<DayActivitiesBloc>(),
+        ),
+        BlocProvider<ActivitiesOccasionBloc>.value(
+          value: blocContext.read<ActivitiesOccasionBloc>(),
+        ),
+        BlocProvider<AlarmBloc>.value(
+          value: blocContext.read<AlarmBloc>(),
+        ),
+        BlocProvider<NotificationBloc>.value(
+          value: blocContext.read<NotificationBloc>(),
+        ),
+        BlocProvider<CalendarViewBloc>.value(
+          value: blocContext.read<CalendarViewBloc>(),
+        ),
+        BlocProvider<LicenseBloc>.value(
+          value: blocContext.read<LicenseBloc>(),
+        ),
+        BlocProvider<PermissionBloc>.value(
+          value: blocContext.read<PermissionBloc>(),
+        ),
+        BlocProvider<PermissionBloc>.value(
+          value: blocContext.read<PermissionBloc>(),
+        ),
+      ],
+      child: child,
     );
   }
 }
