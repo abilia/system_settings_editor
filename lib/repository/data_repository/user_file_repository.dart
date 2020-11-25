@@ -39,7 +39,7 @@ class UserFileRepository extends DataRepository<UserFile> {
 
   @override
   Future<Iterable<UserFile>> load() async {
-    await fetchIntoDatabase();
+    await fetchIntoDatabaseSynchronized();
     await getAndStoreFileData();
     return db.getAll();
   }
@@ -47,6 +47,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   @override
   Future<bool> synchronize() async {
     return synchronized(() async {
+      await fetchIntoDatabase();
       final dirtyFiles = await db.getAllDirty();
       if (dirtyFiles.isEmpty) return true;
       for (var dirtyFile in dirtyFiles.map((dirty) => dirty.model)) {

@@ -7,7 +7,7 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
-import '../mocks.dart';
+import '../../mocks.dart';
 
 void main() {
   final baseUrl = 'oneUrl';
@@ -202,5 +202,24 @@ void main() {
     // Expect/Verify
     verify(mockActivityDb
         .insert([failedActivity.copyWith(revision: failedRevision)]));
+  });
+
+  test('synchronize - calls fetch before posting', () async {
+    // Arrange
+    when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(1));
+    when(mockClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) => Future.value(Response('[]', 200)));
+    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+
+    // Act
+    await activityRepo.synchronize();
+
+    // Verify
+    verifyInOrder([
+      mockActivityDb.getLastRevision(),
+      mockClient.get(any, headers: anyNamed('headers')),
+      mockActivityDb.insert([]),
+      mockActivityDb.getAllDirty(),
+    ]);
   });
 }
