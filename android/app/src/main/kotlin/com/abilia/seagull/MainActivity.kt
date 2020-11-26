@@ -1,4 +1,4 @@
-package com.abilia.seagull
+package com.abilia.memoplannergo
 
 import android.os.Build
 import android.os.Bundle

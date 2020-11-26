@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>340774293730-435dsfklmtassmd285cke6eeb39abtho.apps.googleusercontent.com</string>
+	<string>340774293730-q6b73loqrdbc42aif27gacsd5ib4640q.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.340774293730-435dsfklmtassmd285cke6eeb39abtho</string>
+	<string>com.googleusercontent.apps.340774293730-q6b73loqrdbc42aif27gacsd5ib4640q</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>340774293730-o8jjlvkp863d10vprf0hvmi202ctino4.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.abilia.seagull</string>
+	<string>com.abilia.memoplannergo</string>
 	<key>PROJECT_ID</key>
 	<string>whalewhale2013</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:340774293730:ios:6caee5dc1d41fd5a198ebb</string>
+	<string>1:340774293730:ios:b746b675d6032844198ebb</string>
 	<key>DATABASE_URL</key>
 	<string>https://whalewhale2013.firebaseio.com</string>
 </dict>
