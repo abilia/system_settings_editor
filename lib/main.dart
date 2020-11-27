@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,12 +13,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'package:seagull/config.dart';
 import 'package:seagull/listener.dart';
-import 'package:seagull/analytics/analytics_service.dart';
+import 'package:seagull/analytics/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/tts/flutter_tts.dart';
@@ -53,7 +53,7 @@ Future<InitValues> initServices() async {
     documentsDir: documentDirectory.path,
     preferences: preferences,
   );
-  if (kReleaseMode) {
+  if (Config.release) {
     await seagullLogger.initAnalytics();
   }
   _log.fine('Initializing services');
@@ -72,7 +72,7 @@ Future<InitValues> initServices() async {
     ..flutterTts = await flutterTts(currentLocale)
     ..init();
 
-  final baseUrl = await baseUrlDb.initialize(kReleaseMode ? PROD : WHALE);
+  final baseUrl = await baseUrlDb.initialize();
   final payload = Platform.isIOS ? null : await _payload;
   return InitValues(baseUrl, payload);
 }

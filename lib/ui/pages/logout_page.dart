@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -45,7 +47,9 @@ class _ProfilePictureNameAndEmailState
     return Column(
       children: <Widget>[
         GestureDetector(
-          onLongPress: () => DatabaseRepository.logAll(GetIt.I<Database>()),
+          onLongPress: () => Config.beta
+              ? DatabaseRepository.logAll(GetIt.I<Database>())
+              : GetIt.I<SeagullLogger>().sendLogsToBackend(),
           onDoubleTap: () => setState(() => showVersion = !showVersion),
           child: ProfilePicture(
             GetIt.I<BaseUrlDb>().getBaseUrl(),

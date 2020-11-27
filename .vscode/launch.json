@@ -13,7 +13,10 @@
     {
       "name": "Flutter",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "args": [
+        "--dart-define=beta=true"
+      ]
     },
     {
       "name": "Profile Seagull",

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/ui/colors.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -59,6 +62,9 @@ class _LoginFormState extends State<LoginForm> {
                             child: SeagullIcon(),
                             onDoubleTap: () =>
                                 setState(() => _showBackends = !_showBackends),
+                            onLongPress: Config.release
+                                ? GetIt.I<SeagullLogger>().sendLogsToBackend
+                                : null,
                           ),
                   ),
                   padding32,
@@ -120,7 +126,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   padding32,
                   if (_showBackends) ...[
-                    BackendSwitches(),
+                    if (Config.beta) BackendSwitches(),
                     VersionInfo(),
                   ],
                 ],
