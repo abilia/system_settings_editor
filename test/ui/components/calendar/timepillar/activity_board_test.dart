@@ -37,8 +37,8 @@ void main() {
       {DateTime initialTime}) {
     final startInterval = (initialTime ?? startTime).onlyDays();
     final interval = TimepillarInterval(
-      startTime: startInterval,
-      endTime: startInterval.add(1.days()),
+      start: startInterval,
+      end: startInterval.add(1.days()),
     );
     return MaterialApp(
       home: Directionality(
@@ -65,6 +65,7 @@ void main() {
                   textStyle,
                   1.0,
                   interval,
+                  MemoplannerSettingsLoaded(MemoplannerSettings()).dayParts,
                 ),
                 categoryMinWidth: 400,
               ),
@@ -288,8 +289,8 @@ void main() {
     test('all position are unique', () async {
       final time = DateTime(2020, 04, 23);
       final interval = TimepillarInterval(
-        startTime: time,
-        endTime: time.add(1.days()),
+        start: time,
+        end: time.add(1.days()),
       );
       final activities = List.generate(
         12 * 60,
@@ -305,6 +306,7 @@ void main() {
         textStyle,
         1.0,
         interval,
+        DayParts(0, 0, 0, 0, 0),
       );
       final uniques = boardData.cards.map((f) => {f.top, f.column});
 
@@ -382,7 +384,39 @@ void main() {
       );
       expect(find.byType(AnimatedDot), findsNWidgets(2));
     });
-    testWidgets('All different dots', (WidgetTester tester) async {
+    testWidgets('All different dots (day)', (WidgetTester tester) async {
+      final start = DateTime(1987, 05, 22, 12, 04);
+      await tester.pumpWidget(
+        wrap(
+          ActivityOccasion.forTest(
+            Activity.createNew(
+              title: title,
+              startTime: start.subtract(30.minutes()),
+              duration: 60.minutes(),
+            ),
+          ),
+          initialTime: start,
+        ),
+      );
+      expect(find.byType(AnimatedDot), findsNWidgets(4));
+      expect(
+          tester
+              .widgetList<AnimatedDot>(find.byType(AnimatedDot))
+              .where((d) => d.decoration == currentDotShape),
+          hasLength(1));
+      expect(
+          tester
+              .widgetList<AnimatedDot>(find.byType(AnimatedDot))
+              .where((d) => d.decoration == pastSideDotShape),
+          hasLength(2));
+      expect(
+          tester
+              .widgetList<AnimatedDot>(find.byType(AnimatedDot))
+              .where((d) => d.decoration == futureSideDotShape),
+          hasLength(1));
+    });
+
+    testWidgets('All different dots (night)', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
           ActivityOccasion.forTest(
@@ -403,12 +437,12 @@ void main() {
       expect(
           tester
               .widgetList<AnimatedDot>(find.byType(AnimatedDot))
-              .where((d) => d.decoration == pastSideDotShape),
+              .where((d) => d.decoration == pastNightDotShape),
           hasLength(2));
       expect(
           tester
               .widgetList<AnimatedDot>(find.byType(AnimatedDot))
-              .where((d) => d.decoration == futureSideDotShape),
+              .where((d) => d.decoration == futureNightDotShape),
           hasLength(1));
     });
   });

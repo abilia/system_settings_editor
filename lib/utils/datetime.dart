@@ -118,6 +118,10 @@ extension DateTimeExtensions on DateTime {
 
     return DayPart.night;
   }
+
+  bool isNight(DayParts dayParts) {
+    return DayPart.night == dayPart(dayParts);
+  }
 }
 
 extension IntDateTimeExtensions on int {

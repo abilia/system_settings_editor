@@ -185,13 +185,17 @@ class Calendars extends StatelessWidget {
                     else
                       Expanded(
                         child: BlocBuilder<TimepillarBloc, TimepillarState>(
-                          builder: (context, state) => TimePillarCalendar(
+                            builder: (context, state) {
+                          if (state is ActivitiesNotLoaded) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return TimePillarCalendar(
                             activityState: activityState,
                             calendarViewState: calendarViewState,
                             memoplannerSettingsState: memoplannerSettingsState,
                             timepillarInterval: state.timepillarInterval,
-                          ),
-                        ),
+                          );
+                        }),
                       ),
                   ],
                 );

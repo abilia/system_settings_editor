@@ -33,6 +33,7 @@ class ActivityBoard extends StatelessWidget {
     TextStyle textStyle,
     double scaleFactor,
     TimepillarInterval interval,
+    DayParts dayParts,
   ) {
     final maxEndPos = timePillarHeight(interval) +
         dotDistance +
@@ -79,7 +80,7 @@ class ActivityBoard extends StatelessWidget {
       final topOffset = startsBeforeInterval
           ? 0
           : timeToPixels(minuteStartPosition.hour, minuteStartPosition.minute) -
-              timeToPixels(interval.startTime.hour, 0);
+              hoursToPixels(interval.startTime.hour);
 
       var height = max(dotHeight, renderedHeight);
 
@@ -100,6 +101,7 @@ class ActivityBoard extends StatelessWidget {
             height: height,
             textStyle: textStyle,
             timepillarInterval: interval,
+            dayParts: dayParts,
           );
 
       for (var i = 0; i < scheduled.length; i++) {

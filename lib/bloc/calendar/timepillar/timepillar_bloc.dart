@@ -50,8 +50,9 @@ class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
     return isToday
         ? memoSettings.todayTimepillarInterval(now)
         : TimepillarInterval(
-            startTime: day.onlyDays(),
-            endTime: day.onlyDays().add(1.days()),
+            start: day.onlyDays(),
+            end: day.onlyDays().add(1.days()),
+            intervalPart: IntervalPart.DAY_AND_NIGHT,
           );
   }
 

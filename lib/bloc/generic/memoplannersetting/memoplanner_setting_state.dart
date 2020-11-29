@@ -43,14 +43,29 @@ abstract class MemoplannerSettingsState {
       case TimepillarIntervalType.INTERVAL:
         return dayPartInterval(now);
       case TimepillarIntervalType.DAY:
+        if (now.isBefore(day.add(morningStart.milliseconds()))) {
+          return TimepillarInterval(
+            start: day,
+            end: day.add(morningStart.milliseconds()),
+            intervalPart: IntervalPart.NIGHT,
+          );
+        } else if (now
+            .isAtSameMomentOrAfter(day.add(nightStart.milliseconds()))) {
+          return TimepillarInterval(
+            start: day.add(nightStart.milliseconds()),
+            end: day.nextDay(),
+            intervalPart: IntervalPart.NIGHT,
+          );
+        }
         return TimepillarInterval(
-          startTime: day.add(morningStart.milliseconds()),
-          endTime: day.add(nightStart.milliseconds()),
+          start: day.add(morningStart.milliseconds()),
+          end: day.add(nightStart.milliseconds()),
         );
       default:
         return TimepillarInterval(
-          startTime: day,
-          endTime: day.nextDay(),
+          start: day,
+          end: day.nextDay(),
+          intervalPart: IntervalPart.DAY_AND_NIGHT,
         );
     }
   }
@@ -61,34 +76,36 @@ abstract class MemoplannerSettingsState {
     switch (part) {
       case DayPart.morning:
         return TimepillarInterval(
-          startTime: base.add(morningStart.milliseconds()),
-          endTime: base.add(forenoonStart.milliseconds()),
+          start: base.add(morningStart.milliseconds()),
+          end: base.add(forenoonStart.milliseconds()),
         );
       case DayPart.forenoon:
         return TimepillarInterval(
-          startTime: base.add(forenoonStart.milliseconds()),
-          endTime: base.add(afternoonStart.milliseconds()),
+          start: base.add(forenoonStart.milliseconds()),
+          end: base.add(afternoonStart.milliseconds()),
         );
       case DayPart.afternoon:
         return TimepillarInterval(
-          startTime: base.add(afternoonStart.milliseconds()),
-          endTime: base.add(eveningStart.milliseconds()),
+          start: base.add(afternoonStart.milliseconds()),
+          end: base.add(eveningStart.milliseconds()),
         );
       case DayPart.evening:
         return TimepillarInterval(
-          startTime: base.add(eveningStart.milliseconds()),
-          endTime: base.add(nightStart.milliseconds()),
+          start: base.add(eveningStart.milliseconds()),
+          end: base.add(nightStart.milliseconds()),
         );
       case DayPart.night:
         if (now.isBefore(base.add(morningStart.milliseconds()))) {
           return TimepillarInterval(
-            startTime: base,
-            endTime: base.add(morningStart.milliseconds()),
+            start: base,
+            end: base.add(morningStart.milliseconds()),
+            intervalPart: IntervalPart.NIGHT,
           );
         } else {
           return TimepillarInterval(
-            startTime: base.add(nightStart.milliseconds()),
-            endTime: base.nextDay(),
+            start: base.add(nightStart.milliseconds()),
+            end: base.nextDay(),
+            intervalPart: IntervalPart.NIGHT,
           );
         }
     }
@@ -144,19 +161,32 @@ class MemoplannerSettingsNotLoaded extends MemoplannerSettingsState {
   MemoplannerSettingsNotLoaded() : super(MemoplannerSettings());
 }
 
+class MemoplannerSettingsFailed extends MemoplannerSettingsState {
+  MemoplannerSettingsFailed() : super(MemoplannerSettings());
+}
+
 enum TimepillarIntervalType {
-  DAY_AND_NIGHT,
   INTERVAL,
+  DAY_AND_NIGHT,
   DAY,
+}
+
+enum IntervalPart {
+  DAY,
+  NIGHT,
+  DAY_AND_NIGHT,
 }
 
 class TimepillarInterval extends Equatable {
   final DateTime startTime, endTime;
+  final IntervalPart intervalPart;
 
   TimepillarInterval({
-    this.startTime,
-    this.endTime,
-  });
+    DateTime start,
+    DateTime end,
+    this.intervalPart = IntervalPart.DAY,
+  })  : startTime = start.copyWith(minute: 0),
+        endTime = end.copyWith(minute: 0);
 
   int get lengthInHours =>
       (endTime.difference(startTime).inMinutes / 60).ceil();

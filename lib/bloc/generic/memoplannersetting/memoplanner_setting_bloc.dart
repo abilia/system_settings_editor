@@ -25,6 +25,8 @@ class MemoplannerSettingBloc
     _genericSubscription = genericBloc.listen((state) {
       if (state is GenericsLoaded) {
         add(UpdateMemoplannerSettings(state.generics));
+      } else if (state is GenericsLoadedFailed) {
+        add(GenericsFailedEvent());
       }
     });
   }
@@ -35,6 +37,9 @@ class MemoplannerSettingBloc
     if (event is UpdateMemoplannerSettings) {
       yield MemoplannerSettingsLoaded(
           MemoplannerSettings.fromSettingsList(_filter(event.generics)));
+    }
+    if (event is GenericsLoadedFailed) {
+      yield MemoplannerSettingsFailed();
     }
   }
 

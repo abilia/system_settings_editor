@@ -28,26 +28,36 @@ const pastDotShape = ShapeDecoration(shape: CircleBorder(side: BorderSide())),
         ShapeDecoration(color: Colors.transparent, shape: CircleBorder()),
     currentDotShape =
         ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder()),
+    pastNightDotShape =
+        ShapeDecoration(color: AbiliaColors.white140, shape: CircleBorder()),
+    futureNightDotShape =
+        ShapeDecoration(color: AbiliaColors.blue, shape: CircleBorder()),
     futureSideDotShape =
         ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder()),
     pastSideDotShape = ShapeDecoration(
         shape: CircleBorder(side: BorderSide(color: AbiliaColors.black)));
 
 class PastDots extends StatelessWidget {
+  final bool isNight;
   const PastDots({
     Key key,
+    @required this.isNight,
   }) : super(key: key);
   @override
-  Widget build(BuildContext context) => const Dots(decoration: pastDotShape);
+  Widget build(BuildContext context) => isNight
+      ? const Dots(decoration: pastNightDotShape)
+      : const Dots(decoration: pastDotShape);
 }
 
 class TodayDots extends StatelessWidget {
   const TodayDots({
     Key key,
     @required this.hour,
+    @required this.isNight,
   }) : super(key: key);
 
   final DateTime hour;
+  final bool isNight;
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +69,17 @@ class TodayDots extends StatelessWidget {
           (q) {
             final dotTime = hour.copyWith(minute: q * minutesPerDot);
             if (dotTime.isAfter(now)) {
+              if (isNight) {
+                return const AnimatedDot(
+                  decoration: futureNightDotShape,
+                );
+              }
               return const AnimatedDot(decoration: futureDotShape);
             } else if (now.isBefore(dotTime.add(minutesPerDot.minutes()))) {
               return const AnimatedDot(decoration: currentDotShape);
+            }
+            if (isNight) {
+              return const AnimatedDot(decoration: pastNightDotShape);
             }
             return const AnimatedDot(decoration: pastDotShape);
           },
@@ -72,9 +90,15 @@ class TodayDots extends StatelessWidget {
 }
 
 class FutureDots extends StatelessWidget {
-  const FutureDots({Key key}) : super(key: key);
+  final bool isNight;
+  const FutureDots({
+    Key key,
+    @required this.isNight,
+  }) : super(key: key);
   @override
-  Widget build(BuildContext context) => const Dots(decoration: futureDotShape);
+  Widget build(BuildContext context) => isNight
+      ? const Dots(decoration: futureNightDotShape)
+      : const Dots(decoration: futureDotShape);
 }
 
 class Dots extends StatelessWidget {
@@ -114,11 +138,13 @@ class SideDots extends StatelessWidget {
   final DateTime startTime;
   final DateTime endTime;
   final int dots;
+  final DayParts dayParts;
   const SideDots({
     Key key,
     @required this.startTime,
     @required this.endTime,
     @required this.dots,
+    @required this.dayParts,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -136,9 +162,15 @@ class SideDots extends StatelessWidget {
                 ? flat.add(((dot + 1) * minutesPerDot).minutes())
                 : endTime.add(1.minutes());
             if (dotStartTime.isAfter(now)) {
+              if (dotStartTime.isNight(dayParts)) {
+                return const AnimatedDot(decoration: futureNightDotShape);
+              }
               return const AnimatedDot(decoration: futureSideDotShape);
             } else if (now.isBefore(nextDotStart)) {
               return const AnimatedDot(decoration: currentDotShape);
+            }
+            if (dotStartTime.isNight(dayParts)) {
+              return const AnimatedDot(decoration: pastNightDotShape);
             }
             return const AnimatedDot(decoration: pastSideDotShape);
           },
