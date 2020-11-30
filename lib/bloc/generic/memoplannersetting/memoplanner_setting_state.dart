@@ -194,9 +194,9 @@ class TimepillarInterval extends Equatable {
   List<ActivityOccasion> getForInterval(List<ActivityOccasion> activities) {
     return activities
         .where((a) =>
-            a.start.inInclusiveRange(startDate: startTime, endDate: endTime) ||
-            a.end.inInclusiveRange(startDate: startTime, endDate: endTime) ||
-            (a.start.isBefore(startTime) && a.end.isAfter(endTime)))
+            a.start.inRangeWithInclusiveStart(
+                startDate: startTime, endDate: endTime) ||
+            (a.start.isBefore(startTime) && a.end.isAfter(startTime)))
         .toList();
   }
 

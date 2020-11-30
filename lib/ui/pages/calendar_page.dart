@@ -190,6 +190,7 @@ class Calendars extends StatelessWidget {
                             return Center(child: CircularProgressIndicator());
                           }
                           return TimePillarCalendar(
+                            key: ValueKey(state.timepillarInterval),
                             activityState: activityState,
                             calendarViewState: calendarViewState,
                             memoplannerSettingsState: memoplannerSettingsState,

@@ -14,6 +14,7 @@ class TimePillarCalendar extends StatefulWidget {
   static const topMargin = 30.0;
   static const bottomMargin = 10.0;
   static const topPadding = 2 * hourPadding;
+  static const nightBackgroundColor = AbiliaColors.black90;
   final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
   final MemoplannerSettingsState memoplannerSettingsState;
@@ -58,12 +59,6 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
     }
     super.initState();
   }
-
-  // @override
-  // void didUpdateWidget(TimePillarCalendar tpc) {
-  //   super.didUpdateWidget(tpc);
-  //   initVerticalScroll();
-  // }
 
   void initVerticalScroll() {
     final now = context.read<ClockBloc>().state;
@@ -120,7 +115,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
         final height = max(calendarHeight, boxConstraints.maxHeight);
         return Container(
           color: interval.intervalPart == IntervalPart.NIGHT
-              ? AbiliaColors.black90
+              ? TimePillarCalendar.nightBackgroundColor
               : Theme.of(context).scaffoldBackgroundColor,
           child: Stack(
             children: <Widget>[
@@ -141,7 +136,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                 height: p.length,
                                 child: const DecoratedBox(
                                   decoration: BoxDecoration(
-                                      color: AbiliaColors.black90),
+                                      color: TimePillarCalendar.nightBackgroundColor),
                                 ),
                               ),
                             );

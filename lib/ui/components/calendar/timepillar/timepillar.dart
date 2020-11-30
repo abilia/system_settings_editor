@@ -55,7 +55,7 @@ class TimePillar extends StatelessWidget {
       style: theme.textTheme.headline6.copyWith(color: AbiliaColors.black),
       child: Container(
         color: interval.intervalPart == IntervalPart.NIGHT
-            ? AbiliaColors.black90
+            ? TimePillarCalendar.nightBackgroundColor
             : theme.scaffoldBackgroundColor,
         child: Stack(
           overflow: Overflow.visible,
@@ -67,7 +67,8 @@ class TimePillar extends StatelessWidget {
                   width: timePillarTotalWidth,
                   height: p.length,
                   child: const DecoratedBox(
-                    decoration: BoxDecoration(color: AbiliaColors.black90),
+                    decoration: BoxDecoration(
+                        color: TimePillarCalendar.nightBackgroundColor),
                   ),
                 ),
               );
