@@ -652,5 +652,66 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
     });
+
+    testWidgets('Activity is shown when interval is whole day',
+        (WidgetTester tester) async {
+      final activityStartTime = DateTime(2020, 12, 01, 10, 00);
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: activityStartTime,
+            )
+          ];
+
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: TimepillarIntervalType.DAY_AND_NIGHT.index.toString(),
+                type: 'int',
+                identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+              ),
+              type: GenericType.memoPlannerSettings,
+            )
+          ];
+
+      mockTicker.add(DateTime(2020, 12, 01, 01, 01));
+      await goToTimePillar(tester);
+      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+    });
+
+    testWidgets(
+        'Day activity is only shown in day interval when interval is DAY',
+        (WidgetTester tester) async {
+      final activityStartTime = DateTime(2020, 12, 01, 10, 00);
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: activityStartTime,
+            )
+          ];
+
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: TimepillarIntervalType.DAY.index.toString(),
+                type: 'int',
+                identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+              ),
+              type: GenericType.memoPlannerSettings,
+            )
+          ];
+
+      mockTicker.add(DateTime(2020, 12, 01, 01, 00));
+      await goToTimePillar(tester);
+      expect(find.byType(ActivityTimepillarCard), findsNothing);
+
+      mockTicker.add(DateTime(2020, 12, 01, 07, 00));
+      await goToTimePillar(tester);
+      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+
+      mockTicker.add(DateTime(2020, 12, 01, 23, 30));
+      await goToTimePillar(tester);
+      expect(find.byType(ActivityTimepillarCard), findsNothing);
+    });
   });
 }
