@@ -20,4 +20,4 @@ echo "Installed flutter to `pwd`/flutter"
 
 flutter test
 
-flutter build ios --release --no-codesign --build-name=$(date "+%Y.%m.%d")
+flutter build ios --release --no-codesign --build-name=$(date "+%Y.%m.%d") --build-number=$APPCENTER_BUILD_ID --dart-define=release=$release
