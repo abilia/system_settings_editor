@@ -8,43 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:340774293730:android:8ed06a039f80384d",
-        "android_client_info": {
-          "package_name": "com.abilia.gewa"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDL3FquIzdCRq22J56lYdhR-RUA-DtITHI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "340774293730-7vtp3r1hg0fo9r7o7gpg380e9bfjdp5h.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.abilia.rocky",
-                "app_store_id": "1480683363"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:340774293730:android:ca2fa22ca317366c",
         "android_client_info": {
           "package_name": "com.abilia.handicalendar"
@@ -77,11 +40,11 @@
               "client_type": 3
             },
             {
-              "client_id": "340774293730-7vtp3r1hg0fo9r7o7gpg380e9bfjdp5h.apps.googleusercontent.com",
+              "client_id": "340774293730-435dsfklmtassmd285cke6eeb39abtho.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.abilia.rocky",
-                "app_store_id": "1480683363"
+                "bundle_id": "com.abilia.seagull",
+                "app_store_id": "1484328424"
               }
             }
           ]
@@ -90,9 +53,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:340774293730:android:74cecd4344444371198ebb",
+        "mobilesdk_app_id": "1:340774293730:android:ae0eea2d101ee529198ebb",
         "android_client_info": {
-          "package_name": "com.abilia.rocky"
+          "package_name": "com.abilia.memoplannergo"
         }
       },
       "oauth_client": [
@@ -114,11 +77,11 @@
               "client_type": 3
             },
             {
-              "client_id": "340774293730-7vtp3r1hg0fo9r7o7gpg380e9bfjdp5h.apps.googleusercontent.com",
+              "client_id": "340774293730-435dsfklmtassmd285cke6eeb39abtho.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.abilia.rocky",
-                "app_store_id": "1480683363"
+                "bundle_id": "com.abilia.seagull",
+                "app_store_id": "1484328424"
               }
             }
           ]
@@ -151,11 +114,11 @@
               "client_type": 3
             },
             {
-              "client_id": "340774293730-7vtp3r1hg0fo9r7o7gpg380e9bfjdp5h.apps.googleusercontent.com",
+              "client_id": "340774293730-435dsfklmtassmd285cke6eeb39abtho.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.abilia.rocky",
-                "app_store_id": "1480683363"
+                "bundle_id": "com.abilia.seagull",
+                "app_store_id": "1484328424"
               }
             }
           ]
@@ -188,11 +151,11 @@
               "client_type": 3
             },
             {
-              "client_id": "340774293730-7vtp3r1hg0fo9r7o7gpg380e9bfjdp5h.apps.googleusercontent.com",
+              "client_id": "340774293730-435dsfklmtassmd285cke6eeb39abtho.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.abilia.rocky",
-                "app_store_id": "1480683363"
+                "bundle_id": "com.abilia.seagull",
+                "app_store_id": "1484328424"
               }
             }
           ]
@@ -233,11 +196,11 @@
               "client_type": 3
             },
             {
-              "client_id": "340774293730-7vtp3r1hg0fo9r7o7gpg380e9bfjdp5h.apps.googleusercontent.com",
+              "client_id": "340774293730-435dsfklmtassmd285cke6eeb39abtho.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.abilia.rocky",
-                "app_store_id": "1480683363"
+                "bundle_id": "com.abilia.seagull",
+                "app_store_id": "1484328424"
               }
             }
           ]

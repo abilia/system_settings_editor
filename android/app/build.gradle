@@ -39,8 +39,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.abilia.seagull"
+        applicationId "com.abilia.memoplannergo"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
@@ -49,10 +48,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile rootProject.file("app/android.keystore")
-            storePassword System.getenv("APPCENTER_KEYSTORE_PASSWORD")
-            keyAlias System.getenv("APPCENTER_KEY_ALIAS")
-            keyPassword System.getenv("APPCENTER_KEY_PASSWORD")
+            storeFile rootProject.file("app/se-handi-release-key.keystore")
+            storePassword System.getenv("storePassword")
+            keyAlias System.getenv("keyAlias")
+            keyPassword System.getenv("keyPassword")
         }
     }
     buildTypes {

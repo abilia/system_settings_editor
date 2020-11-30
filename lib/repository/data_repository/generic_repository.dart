@@ -29,7 +29,7 @@ class GenericRepository extends DataRepository<Generic> {
 
   @override
   Future<Iterable<Generic>> load() async {
-    await fetchIntoDatabase();
+    await fetchIntoDatabaseSynchronized();
     return genericDb.getAllNonDeletedMaxRevision();
   }
 }

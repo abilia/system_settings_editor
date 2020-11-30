@@ -35,23 +35,15 @@ class DatabaseRepository {
         revision int,
         alarm_type int,
         checkable int default 0,
-        signed_off_dates text
+        signed_off_dates text,
+        dirty int default 0,
+        remove_after int default 0,
+        secret int default 0,
+        timezone text
       )
     ''',
-  ];
-  @visibleForTesting
-  static final migrations = <String>[
     '''
-      ALTER TABLE $CALENDAR_TABLE_NAME ADD COLUMN dirty int default 0
-    ''',
-    '''
-      ALTER TABLE $CALENDAR_TABLE_NAME ADD COLUMN remove_after int default 0
-    ''',
-    '''
-      ALTER TABLE $CALENDAR_TABLE_NAME ADD COLUMN secret int default 0
-    ''',
-    '''
-      CREATE TABLE $SORTABLE_TABLE_NAME (
+      create table $SORTABLE_TABLE_NAME (
         id text primary key not null,
         revision int,
         deleted int,
@@ -63,9 +55,9 @@ class DatabaseRepository {
         visible int,
         dirty int
       )
-    ''',
+''',
     '''
-      CREATE TABLE $USER_FILE_TABLE_NAME (
+      create table $USER_FILE_TABLE_NAME (
         id text primary key not null,
         revision int,
         deleted int,
@@ -74,17 +66,12 @@ class DatabaseRepository {
         path text,
         content_type text,
         file_size int,
-        dirty int
+        dirty int,
+        file_loaded int default 0
       )
-    ''',
+''',
     '''
-      ALTER TABLE $USER_FILE_TABLE_NAME ADD COLUMN file_loaded int default 0
-    ''',
-    '''
-      ALTER TABLE $CALENDAR_TABLE_NAME ADD COLUMN timezone text
-    ''',
-    '''
-      CREATE TABLE $GENERIC_TABLE_NAME (
+      create table $GENERIC_TABLE_NAME (
         id text primary key not null,
         revision int,
         deleted int,
@@ -93,8 +80,11 @@ class DatabaseRepository {
         data text,
         dirty int
       )
-    ''',
+'''
   ];
+
+  @visibleForTesting
+  static final migrations = <String>[];
 
   static Future<Database> createSqfliteDb() async {
     final databasesPath = await getDatabasesPath();

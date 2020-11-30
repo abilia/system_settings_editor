@@ -40,26 +40,27 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   Future<void> save(Iterable<M> data) => db.insertAndAddDirty(data);
 
   Future<Iterable<M>> load() async {
-    await fetchIntoDatabase();
+    await fetchIntoDatabaseSynchronized();
     return db.getAllNonDeleted();
   }
 
-  Future fetchIntoDatabase() {
+  @protected
+  Future fetchIntoDatabaseSynchronized() => synchronized(fetchIntoDatabase);
+
+  @protected
+  Future fetchIntoDatabase() async {
     log.fine('loadning $path...');
-    return synchronized(
-      () async {
-        try {
-          final revision = await db.getLastRevision();
-          final fetchedData = await fetchData(revision);
-          log.fine('${fetchedData.length} $path fetched');
-          await db.insert(fetchedData);
-        } catch (e) {
-          log.severe('Error when syncing $path, offline?', e);
-        }
-      },
-    );
+    try {
+      final revision = await db.getLastRevision();
+      final fetchedData = await fetchData(revision);
+      log.fine('${fetchedData.length} $path fetched');
+      await db.insert(fetchedData);
+    } catch (e) {
+      log.severe('Error when syncing $path, offline?', e);
+    }
   }
 
+  @protected
   Future<Iterable<DbModel<M>>> fetchData(int revision) async {
     log.fine('fetching $path for revision $revision');
     final response = await client.get(
@@ -77,6 +78,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
 
   Future<bool> synchronize() async {
     return synchronized(() async {
+      await fetchIntoDatabase();
       final dirtyData = await db.getAllDirty();
       if (dirtyData.isEmpty) return true;
       try {
@@ -97,6 +99,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     });
   }
 
+  @visibleForTesting
   Future<DataUpdateResponse> postData(
     Iterable<DbModel<M>> data,
   ) async {
@@ -116,6 +119,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     throw UnavailableException([response.statusCode]);
   }
 
+  @protected
   Future handleFailedSync(Iterable<DataRevisionUpdate> failed) async {
     log.warning('Sync contained ${failed.length} failed items');
     final minRevision = failed.map((f) => f.revision).reduce(math.min);
@@ -125,6 +129,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     await db.insert(fetchedData);
   }
 
+  @protected
   Future handleSuccessfullSync(
     Iterable<DataRevisionUpdate> succeeded,
     Iterable<DbModel<M>> dirtyData,
@@ -135,13 +140,13 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     );
     final toUpdate = await Future.wait(
       succeeded.map(
-        (success) => updateDataItemWithNewRevision(success, dirtyDataMap),
+        (success) => _updateDataItemWithNewRevision(success, dirtyDataMap),
       ),
     );
     await db.insert(toUpdate);
   }
 
-  Future<DbModel<M>> updateDataItemWithNewRevision(
+  Future<DbModel<M>> _updateDataItemWithNewRevision(
     DataRevisionUpdate dataRevisionUpdate,
     Map<String, DbModel<M>> dirtyDataMap,
   ) async {
