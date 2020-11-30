@@ -7,7 +7,7 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
-import '../mocks.dart';
+import '../../mocks.dart';
 
 void main() {
   SortableDb sortableDb;
@@ -100,5 +100,17 @@ void main() {
 
     // Verify
     expect(res, expectedFiles);
+  });
+
+  test('synchronize - calls get before posting', () async {
+    // Arrange
+    when(mockClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) => Future.value(Response('[]', 200)));
+
+    // Act
+    await sortableRepository.synchronize();
+
+    // Verify
+    verify(mockClient.get(any, headers: anyNamed('headers')));
   });
 }
