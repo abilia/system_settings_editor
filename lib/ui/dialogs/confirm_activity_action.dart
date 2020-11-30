@@ -19,7 +19,10 @@ class ConfirmActivityActionDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = abiliaTheme;
     return ViewDialog(
-      heading: Text(title, style: theme.textTheme.headline6),
+      heading: Text(
+        title,
+        style: theme.textTheme.headline6,
+      ),
       onOk: () => Navigator.of(context).maybePop(true),
       child: Column(
         children: [
@@ -67,9 +70,15 @@ class _ConfirmCheckDialogOverlayState extends State<ConfirmCheckDialogOverlay> {
     return BlocBuilder<ActivitiesBloc, ActivitiesState>(
       builder: (context, state) {
         final activityOccasion = widget.occasion.fromActivitiesState(state);
-        final headingPadding = 18.0;
-        final headingFont = abiliaTextTheme.headline5;
-        final headingHeight = headingFont.fontSize;
+        final headingFont =
+            abiliaTextTheme.headline5.copyWith(color: AbiliaColors.white);
+        final textRenderSize = widget.title.calulcateTextRenderSize(
+          constraints: BoxConstraints(
+            maxWidth: widget.activityContainerSize.width,
+            maxHeight: 0.0,
+          ),
+          textStyle: headingFont,
+        );
         final theme = activityOccasion.isSignedOff
             ? Theme.of(context).copyWith(
                 buttonTheme: uncheckButtonThemeData,
@@ -92,55 +101,48 @@ class _ConfirmCheckDialogOverlayState extends State<ConfirmCheckDialogOverlay> {
                   Positioned(
                     left: widget.activityContainerPosition.dx,
                     top: widget.activityContainerPosition.dy -
-                        headingPadding -
-                        headingHeight,
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Opacity(
-                            opacity: stateChanged ? 0.0 : 1.0,
-                            child: Padding(
-                              padding: EdgeInsets.only(bottom: headingPadding),
-                              child: Center(
-                                child: Text(
-                                  widget.title,
-                                  style: abiliaTextTheme.headline5
-                                      .copyWith(color: AbiliaColors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: widget.activityContainerSize.height,
-                            width: widget.activityContainerSize.width,
-                            child: ActivityContainer(
-                              activityDay: activityOccasion,
-                              preview: true,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          if (!stateChanged)
-                            BottomCheckRow(
-                              activityOccasion: activityOccasion,
-                              checkButtonPressed: () async {
-                                setState(() {
-                                  stateChanged = true;
-                                });
-                                BlocProvider.of<ActivitiesBloc>(context).add(
-                                    UpdateActivity(activityOccasion.activity
-                                        .signOff(activityOccasion.day)));
-                                await Future.delayed(1.seconds(), () async {
-                                  await Navigator.of(context).maybePop();
-                                });
-                              },
-                            ),
-                        ],
+                        textRenderSize.scaledLineHeight *
+                            textRenderSize.numberOfLines -
+                        18.0,
+                    width: widget.activityContainerSize.width,
+                    child: Opacity(
+                      opacity: stateChanged ? 0.0 : 1.0,
+                      child: Text(
+                        widget.title,
+                        textAlign: TextAlign.center,
+                        style: headingFont,
                       ),
                     ),
                   ),
+                  Positioned(
+                    left: widget.activityContainerPosition.dx,
+                    top: widget.activityContainerPosition.dy,
+                    width: widget.activityContainerSize.width,
+                    height: widget.activityContainerSize.height,
+                    child: ActivityContainer(
+                      activityDay: activityOccasion,
+                      preview: true,
+                    ),
+                  ),
+                  if (!stateChanged)
+                    Positioned(
+                      left: widget.activityContainerPosition.dx,
+                      top: widget.activityContainerPosition.dy +
+                          widget.activityContainerSize.height +
+                          10.0,
+                      width: widget.activityContainerSize.width,
+                      child: BottomCheckRow(
+                        activityOccasion: activityOccasion,
+                        checkButtonPressed: () async {
+                          setState(() => stateChanged = true);
+                          BlocProvider.of<ActivitiesBloc>(context).add(
+                              UpdateActivity(activityOccasion.activity
+                                  .signOff(activityOccasion.day)));
+                          await Future.delayed(
+                              1.seconds(), Navigator.of(context).maybePop);
+                        },
+                      ),
+                    ),
                 ],
               ),
             ),
