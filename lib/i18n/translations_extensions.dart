@@ -24,4 +24,10 @@ extension TranslatedExtensions on Translated {
         return '';
     }
   }
+
+  String get allowNotificationsDescription =>
+      '${allowNotificationsDescription1} ${settingsLink}';
+
+  String allowAccess(String accessTypeBodyText1) =>
+      '$accessTypeBodyText1 $allowAccessBody2 $settingsLink';
 }

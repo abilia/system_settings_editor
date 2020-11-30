@@ -227,8 +227,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.verifyTts(find.text(translate.allowNotifications),
             exact: translate.allowNotifications);
-        final compound =
-            translate.allowNotificationsDescription1 + translate.settingsLink;
+        final compound = translate.allowNotificationsDescription;
         await tester.verifyTts(find.byType(NotificationBodyTextWarning),
             exact: compound);
         await tester.tap(find.byKey(TestKey.closeDialog));
