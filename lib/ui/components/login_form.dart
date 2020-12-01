@@ -56,7 +56,11 @@ class _LoginFormState extends State<LoginForm> {
                     child: loginState is LoginLoading
                         ? CircularProgressIndicator()
                         : GestureDetector(
-                            child: SeagullIcon(),
+                            child: Image(
+                              image: AssetImage(
+                                'assets/graphics/memOplannerGoLogo.png',
+                              ),
+                            ),
                             onDoubleTap: () =>
                                 setState(() => _showBackends = !_showBackends),
                           ),
