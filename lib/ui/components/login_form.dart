@@ -53,17 +53,29 @@ class _LoginFormState extends State<LoginForm> {
                 children: <Widget>[
                   padding56,
                   Center(
-                    child: loginState is LoginLoading
-                        ? CircularProgressIndicator()
-                        : GestureDetector(
-                            child: Image(
-                              image: AssetImage(
-                                'assets/graphics/memOplannerGoLogo.png',
+                    child: SizedBox(
+                      width: 64.0,
+                      height: 64.0,
+                      child: loginState is LoginLoading
+                          ? const CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation(AbiliaColors.red),
+                              strokeWidth: 6.0,
+                            )
+                          : GestureDetector(
+                              child: FadeInImage(
+                                fadeInDuration:
+                                    const Duration(milliseconds: 100),
+                                fadeInCurve: Curves.linear,
+                                placeholder: MemoryImage(kTransparentImage),
+                                image: AssetImage(
+                                  'assets/graphics/memOplannerGoLogo.png',
+                                ),
                               ),
+                              onDoubleTap: () => setState(
+                                  () => _showBackends = !_showBackends),
                             ),
-                            onDoubleTap: () =>
-                                setState(() => _showBackends = !_showBackends),
-                          ),
+                    ),
                   ),
                   padding32,
                   AbiliaTextInput(
