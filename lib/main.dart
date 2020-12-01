@@ -32,11 +32,11 @@ import 'package:seagull/utils/all.dart';
 final _log = Logger('main');
 
 void main() async {
-  final initValues = await initServices();
+  final baseUrl = await initServices();
   final payload = Platform.isIOS ? null : await _payload;
   runApp(
     App(
-      baseUrl: initValues,
+      baseUrl: baseUrl,
       payload: payload,
     ),
   );
