@@ -168,6 +168,7 @@ class TimeIntervallPicker extends StatelessWidget {
                   context: context,
                   builder: (context) =>
                       StartTimeInputDialog(time: timeInterval.startTime),
+                  wrapWithAuthProviders: false,
                 );
                 if (newStartTime != null) {
                   BlocProvider.of<EditActivityBloc>(context)
@@ -201,6 +202,7 @@ class TimeIntervallPicker extends StatelessWidget {
                     builder: (context) => EndTimeInputDialog(
                       timeInterval: timeInterval,
                     ),
+                    wrapWithAuthProviders: false,
                   );
                   if (newEndTime != null) {
                     BlocProvider.of<EditActivityBloc>(context)

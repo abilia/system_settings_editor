@@ -47,25 +47,25 @@ void main() {
               supportedLocales.firstWhere(
                   (l) => l.languageCode == locale?.languageCode,
                   orElse: () => supportedLocales.first),
-          builder: (context, child) => MultiBlocProvider(providers: [
-            BlocProvider<AuthenticationBloc>(
-                create: (context) => MockAuthenticationBloc()),
-            BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
-                create: (context) => imageArchiveBlocMock),
-            BlocProvider<UserFileBloc>(
-              create: (context) => UserFileBloc(
-                fileStorage: MockFileStorage(),
-                pushBloc: MockPushBloc(),
-                syncBloc: MockSyncBloc(),
-                userFileRepository: MockUserFileRepository(),
+          builder: (context, child) => MockAuthenticatedBlocsProvider(
+            child: MultiBlocProvider(providers: [
+              BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
+                  create: (context) => imageArchiveBlocMock),
+              BlocProvider<UserFileBloc>(
+                create: (context) => UserFileBloc(
+                  fileStorage: MockFileStorage(),
+                  pushBloc: MockPushBloc(),
+                  syncBloc: MockSyncBloc(),
+                  userFileRepository: MockUserFileRepository(),
+                ),
               ),
-            ),
-            BlocProvider<SettingsBloc>(
-              create: (context) => SettingsBloc(
-                settingsDb: MockSettingsDb(),
+              BlocProvider<SettingsBloc>(
+                create: (context) => SettingsBloc(
+                  settingsDb: MockSettingsDb(),
+                ),
               ),
-            ),
-          ], child: child),
+            ], child: child),
+          ),
           home: widget,
         );
 

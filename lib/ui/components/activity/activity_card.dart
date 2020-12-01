@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -69,8 +70,10 @@ class ActivityCard extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (innerContext) =>
-                                  ActivityPage(occasion: activityOccasion),
+                              builder: (_) => CopiedAuthProviders(
+                                blocContext: context,
+                                child: ActivityPage(occasion: activityOccasion),
+                              ),
                               settings: RouteSettings(
                                   name: 'ActivityPage $activityOccasion'),
                             ),

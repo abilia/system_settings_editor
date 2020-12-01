@@ -39,7 +39,10 @@ class LogoutPickField extends StatelessWidget {
       text: Text(Translator.of(context).translate.logout),
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => LogoutPage(),
+          builder: (_) => CopiedAuthProviders(
+            blocContext: context,
+            child: LogoutPage(),
+          ),
           settings: RouteSettings(name: 'LogoutPage'),
         ),
       ),
@@ -167,7 +170,10 @@ class PermissionPickField extends StatelessWidget {
                 context.read<PermissionBloc>().checkAll();
                 await Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => PermissionsPage(),
+                    builder: (_) => CopiedAuthProviders(
+                      blocContext: context,
+                      child: PermissionsPage(),
+                    ),
                     settings: RouteSettings(name: 'PermissionPage'),
                   ),
                 );

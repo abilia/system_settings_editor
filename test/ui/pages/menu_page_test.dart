@@ -38,18 +38,18 @@ void main() {
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
-        builder: (context, child) => MultiBlocProvider(providers: [
-          BlocProvider<AuthenticationBloc>(
-              create: (context) => mockAuthenticationBloc),
-          BlocProvider<ActivitiesBloc>(
-              create: (context) => MockActivitiesBloc()),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(settingsDb: mockSettingsDb),
+        builder: (context, child) => MockAuthenticatedBlocsProvider(
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<AuthenticationBloc>(
+                  create: (context) => mockAuthenticationBloc),
+              BlocProvider<SettingsBloc>(
+                create: (context) => SettingsBloc(settingsDb: mockSettingsDb),
+              ),
+            ],
+            child: child,
           ),
-          BlocProvider<PermissionBloc>(
-            create: (context) => PermissionBloc(),
-          ),
-        ], child: child),
+        ),
         home: widget,
       );
 

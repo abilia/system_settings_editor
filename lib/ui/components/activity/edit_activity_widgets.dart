@@ -166,17 +166,10 @@ class _SelectPictureWidgetState extends State<SelectPictureWidget> {
   void imageClick() async {
     final selectedImage = await showViewDialog<SelectedImage>(
       context: context,
-      builder: (_) => MultiBlocProvider(
-        providers: [
-          BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
-            create: (_) => SortableArchiveBloc<ImageArchiveData>(
-              sortableBloc: BlocProvider.of<SortableBloc>(context),
-            ),
-          ),
-          BlocProvider<UserFileBloc>.value(
-            value: BlocProvider.of<UserFileBloc>(context),
-          ),
-        ],
+      builder: (_) => BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
+        create: (_) => SortableArchiveBloc<ImageArchiveData>(
+          sortableBloc: BlocProvider.of<SortableBloc>(context),
+        ),
         child: SelectPictureDialog(previousImage: widget.imageFileId),
       ),
     );

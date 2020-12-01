@@ -131,8 +131,9 @@ class ActivityBottomAppBar extends StatelessWidget {
                         onPressed: () async {
                           await Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) {
-                                return BlocProvider<EditActivityBloc>(
+                              builder: (_) => CopiedAuthProviders(
+                                blocContext: context,
+                                child: BlocProvider<EditActivityBloc>(
                                   create: (_) => EditActivityBloc(
                                     activityOccasion,
                                     activitiesBloc:
@@ -150,8 +151,8 @@ class ActivityBottomAppBar extends StatelessWidget {
                                         .translate
                                         .editActivity,
                                   ),
-                                );
-                              },
+                                ),
+                              ),
                               settings: RouteSettings(
                                   name: 'EditActivityPage ${activityOccasion}'),
                             ),

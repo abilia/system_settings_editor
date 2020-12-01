@@ -575,9 +575,7 @@ void main() {
         // Act
         await tester.pumpWidget(
           App(
-            initialization: Future.value(
-              InitValues('url', reminder),
-            ),
+            payload: reminder,
           ),
         );
         await tester.pumpAndSettle();
@@ -611,9 +609,7 @@ void main() {
 
         await tester.pumpWidget(
           App(
-            initialization: Future.value(
-              InitValues('url', reminder),
-            ),
+            payload: reminder,
           ),
         );
         await tester.pumpAndSettle();
@@ -649,9 +645,7 @@ void main() {
         // Act
         await tester.pumpWidget(
           App(
-            initialization: Future.value(
-              InitValues('url', reminder),
-            ),
+            payload: reminder,
           ),
         );
         await tester.pumpAndSettle();
@@ -723,9 +717,7 @@ void main() {
 
         await tester.pumpWidget(
           App(
-            initialization: Future.value(
-              InitValues('url', alarm1),
-            ),
+            payload: alarm1,
           ),
         );
         await tester.pumpAndSettle();

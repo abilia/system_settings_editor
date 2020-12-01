@@ -96,10 +96,8 @@ class LogoutButton extends StatelessWidget {
             text,
             style: theme.textTheme.button,
           ),
-          onPressed: () {
-            BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
-            Navigator.of(context).maybePop();
-          },
+          onPressed: () =>
+              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut()),
         ),
       ),
     );
