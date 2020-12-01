@@ -167,8 +167,8 @@ class MemoplannerSettingsFailed extends MemoplannerSettingsState {
 
 enum TimepillarIntervalType {
   INTERVAL,
-  DAY_AND_NIGHT,
   DAY,
+  DAY_AND_NIGHT,
 }
 
 enum IntervalPart {

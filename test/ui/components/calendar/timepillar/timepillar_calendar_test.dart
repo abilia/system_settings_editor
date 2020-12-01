@@ -131,7 +131,7 @@ void main() {
     testWidgets('tts', (WidgetTester tester) async {
       await goToTimePillar(tester);
       final hour = DateFormat('h').format(time);
-      await tester.verifyTts(find.text(hour).at(1), contains: hour);
+      await tester.verifyTts(find.text(hour).at(0), contains: hour);
     });
 
     testWidgets('tts on 24 h', (WidgetTester tester) async {

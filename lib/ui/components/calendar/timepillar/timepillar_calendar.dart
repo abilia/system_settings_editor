@@ -136,7 +136,8 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                 height: p.length,
                                 child: const DecoratedBox(
                                   decoration: BoxDecoration(
-                                      color: TimePillarCalendar.nightBackgroundColor),
+                                      color: TimePillarCalendar
+                                          .nightBackgroundColor),
                                 ),
                               ),
                             );
@@ -230,21 +231,19 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
 
   List<NightPart> nightParts(DayParts dayParts, TimepillarInterval interval) {
     final intervalDay = interval.startTime.onlyDays();
-    final p = <NightPart>[];
-    if (interval.startTime.isBefore(intervalDay.add(dayParts.morning))) {
-      p.add(NightPart(
-          0,
-          hoursToPixels(intervalDay.add(dayParts.morning).hour) +
-              TimePillarCalendar.topMargin));
-    }
-    if (interval.endTime.isAfter(intervalDay.add(dayParts.night))) {
-      p.add(NightPart(
-          hoursToPixels(intervalDay.add(dayParts.night).hour) +
-              TimePillarCalendar.topMargin,
-          hoursToPixels(
-              interval.endTime.hour == 0 ? 24 : interval.endTime.hour)));
-    }
-    return p;
+    return <NightPart>[
+      if (interval.startTime.isBefore(intervalDay.add(dayParts.morning)))
+        NightPart(
+            0,
+            hoursToPixels(intervalDay.add(dayParts.morning).hour) +
+                TimePillarCalendar.topMargin),
+      if (interval.endTime.isAfter(intervalDay.add(dayParts.night)))
+        NightPart(
+            hoursToPixels(intervalDay.add(dayParts.night).hour) +
+                TimePillarCalendar.topMargin,
+            hoursToPixels(
+                interval.endTime.hour == 0 ? 24 : interval.endTime.hour))
+    ];
   }
 
   Widget category(Widget category, {Widget sliver, double height}) =>
