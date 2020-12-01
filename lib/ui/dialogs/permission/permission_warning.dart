@@ -67,15 +67,14 @@ class NotificationBodyTextWarning extends StatelessWidget {
     return Tts.fromSemantics(
       SemanticsProperties(
         multiline: true,
-        label:
-            translate.allowNotificationsDescription1 + translate.settingsLink,
+        label: translate.allowNotificationsDescription,
       ),
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
           style: b1,
           children: [
-            TextSpan(text: translate.allowNotificationsDescription1),
+            TextSpan(text: '${translate.allowNotificationsDescription1} '),
             buildSettingsLinkTextSpan(context),
           ],
         ),

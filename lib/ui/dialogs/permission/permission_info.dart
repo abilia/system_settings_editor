@@ -84,17 +84,16 @@ class PermissionInfoBodyText extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Tts.fromSemantics(
         SemanticsProperties(
-            multiline: true,
-            label: allowAccessBodyText +
-                translate.allowAccessBody2 +
-                translate.settingsLink),
+          multiline: true,
+          label: translate.allowAccess(allowAccessBodyText),
+        ),
         child: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
             style: bodyText2,
             children: [
-              TextSpan(text: allowAccessBodyText),
-              TextSpan(text: translate.allowAccessBody2),
+              TextSpan(text: '$allowAccessBodyText '),
+              TextSpan(text: '${translate.allowAccessBody2} '),
               buildSettingsLinkTextSpan(context),
             ],
           ),
