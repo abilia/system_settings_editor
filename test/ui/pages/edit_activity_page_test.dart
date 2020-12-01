@@ -55,51 +55,55 @@ void main() {
           .firstWhere((l) => l.languageCode == locale.languageCode,
               orElse: () => supportedLocales.first),
       builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24H),
-          child: MultiBlocProvider(providers: [
-            BlocProvider<ClockBloc>(
-              create: (context) => ClockBloc(
-                  StreamController<DateTime>().stream,
-                  initialTime: startTime),
-            ),
-            BlocProvider<AuthenticationBloc>(
-                create: (context) => MockAuthenticationBloc()),
-            BlocProvider<ActivitiesBloc>(
-                create: (context) => MockActivitiesBloc()),
-            BlocProvider<MemoplannerSettingBloc>(
-              create: (context) => mockMemoplannerSettingsBloc,
-            ),
-            BlocProvider<EditActivityBloc>(
-              create: (context) => newActivity
-                  ? EditActivityBloc.newActivity(
-                      activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-                      clockBloc: BlocProvider.of<ClockBloc>(context),
-                      memoplannerSettingBloc:
-                          BlocProvider.of<MemoplannerSettingBloc>(context),
-                      day: today)
-                  : EditActivityBloc(
-                      ActivityDay(activity, today),
-                      activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-                      clockBloc: BlocProvider.of<ClockBloc>(context),
-                      memoplannerSettingBloc:
-                          BlocProvider.of<MemoplannerSettingBloc>(context),
-                    ),
-            ),
-            BlocProvider<SortableBloc>(
-              create: (context) => mockSortableBloc,
-            ),
-            BlocProvider<UserFileBloc>(
-              create: (context) => mockUserFileBloc,
-            ),
-            BlocProvider<SettingsBloc>(
-              create: (context) => SettingsBloc(
-                settingsDb: MockSettingsDb(),
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24H),
+        child: MockAuthenticatedBlocsProvider(
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<ClockBloc>(
+                create: (context) => ClockBloc(
+                    StreamController<DateTime>().stream,
+                    initialTime: startTime),
               ),
-            ),
-            BlocProvider<PermissionBloc>(
-              create: (context) => PermissionBloc()..checkAll(),
-            ),
-          ], child: child)),
+              BlocProvider<MemoplannerSettingBloc>(
+                create: (context) => mockMemoplannerSettingsBloc,
+              ),
+              BlocProvider<EditActivityBloc>(
+                create: (context) => newActivity
+                    ? EditActivityBloc.newActivity(
+                        activitiesBloc:
+                            BlocProvider.of<ActivitiesBloc>(context),
+                        clockBloc: BlocProvider.of<ClockBloc>(context),
+                        memoplannerSettingBloc:
+                            BlocProvider.of<MemoplannerSettingBloc>(context),
+                        day: today)
+                    : EditActivityBloc(
+                        ActivityDay(activity, today),
+                        activitiesBloc:
+                            BlocProvider.of<ActivitiesBloc>(context),
+                        clockBloc: BlocProvider.of<ClockBloc>(context),
+                        memoplannerSettingBloc:
+                            BlocProvider.of<MemoplannerSettingBloc>(context),
+                      ),
+              ),
+              BlocProvider<SortableBloc>(
+                create: (context) => mockSortableBloc,
+              ),
+              BlocProvider<UserFileBloc>(
+                create: (context) => mockUserFileBloc,
+              ),
+              BlocProvider<SettingsBloc>(
+                create: (context) => SettingsBloc(
+                  settingsDb: MockSettingsDb(),
+                ),
+              ),
+              BlocProvider<PermissionBloc>(
+                create: (context) => PermissionBloc()..checkAll(),
+              ),
+            ],
+            child: child,
+          ),
+        ),
+      ),
       home: widget,
     );
   }

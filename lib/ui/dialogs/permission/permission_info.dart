@@ -116,7 +116,10 @@ TextSpan buildSettingsLinkTextSpan(BuildContext context) => TextSpan(
               Navigator.of(context).pop();
               return Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => PermissionsPage(),
+                  builder: (_) => CopiedAuthProviders(
+                    blocContext: context,
+                    child: PermissionsPage(),
+                  ),
                   settings: RouteSettings(name: 'PermissionPage'),
                 ),
               );

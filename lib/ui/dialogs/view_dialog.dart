@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -11,6 +12,7 @@ Future<T> showViewDialog<T>({
   Color barrierColor = AbiliaColors.transparentBlack90,
   bool useSafeArea = true,
   bool useRootNavigator = true,
+  bool wrapWithAuthProviders = true,
   RouteSettings routeSettings,
   RouteTransitionsBuilder transitionBuilder = buildMaterialDialogTransitions,
 }) {
@@ -34,6 +36,9 @@ Future<T> showViewDialog<T>({
       });
       if (useSafeArea) {
         dialog = SafeArea(child: dialog);
+      }
+      if (wrapWithAuthProviders) {
+        dialog = CopiedAuthProviders(blocContext: context, child: dialog);
       }
       return dialog;
     },

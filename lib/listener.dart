@@ -1,19 +1,30 @@
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+
 import 'package:get_it/get_it.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/dialogs/all.dart';
+import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class TopLevelListeners extends StatelessWidget {
   final Widget child;
+  final GlobalKey<NavigatorState> navigatorKey;
+  final NotificationAlarm payload;
 
-  const TopLevelListeners({Key key, this.child}) : super(key: key);
+  NavigatorState get _navigator => navigatorKey.currentState;
+  const TopLevelListeners({
+    Key key,
+    this.child,
+    @required this.navigatorKey,
+    this.payload,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => MultiBlocListener(
@@ -29,6 +40,38 @@ class TopLevelListeners extends StatelessWidget {
             listener: (context, state) => GetIt.I<BaseUrlDb>().setBaseUrl(
               state.userRepository.baseUrl,
             ),
+          ),
+          BlocListener<AuthenticationBloc, AuthenticationState>(
+            listenWhen: (previous, current) =>
+                previous.runtimeType != current.runtimeType ||
+                previous.forcedNewState != current.forcedNewState,
+            listener: (context, state) {
+              if (_navigator == null) {
+                context.read<AuthenticationBloc>().add(NotReady());
+                return;
+              }
+              _navigator.pushAndRemoveUntil<void>(
+                MaterialPageRoute<void>(
+                  builder: (_) {
+                    if (state is Authenticated) {
+                      return AuthenticatedBlocsProvider(
+                        authenticatedState: state,
+                        child: AuthenticatedListeners(
+                          alarm: payload,
+                          child: payload != null
+                              ? FullScreenAlarm(alarm: payload)
+                              : CalendarPage(),
+                        ),
+                      );
+                    } else if (state is Unauthenticated) {
+                      return LoginPage(authState: state);
+                    }
+                    return const SplashPage();
+                  },
+                ),
+                (_) => false,
+              );
+            },
           ),
         ],
         child: child,
@@ -68,6 +111,8 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
+      GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
+          MediaQuery.of(context).alwaysUse24HourFormat);
       context
         ..read<ClockBloc>().add(DateTime.now().onlyMinutes())
         ..read<PushBloc>().add(PushEvent('app-resumed'))

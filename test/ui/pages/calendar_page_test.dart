@@ -33,11 +33,12 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  final licenseDb = MockLicenseDb();
   final userRepository = UserRepository(
     client: Fakes.client(),
     tokenDb: MockTokenDb(),
     userDb: MockUserDb(),
-    licenseDb: MockLicenseDb(),
+    licenseDb: licenseDb,
   );
 
   final defaultMemoSettingsBloc = MockMemoplannerSettingsBloc();
@@ -55,7 +56,7 @@ void main() {
           memoplannerSettingBloc:
               memoplannerSettingBloc ?? defaultMemoSettingsBloc,
           sortableBloc: sortableBloc,
-          authenticationState: Authenticated(
+          authenticatedState: Authenticated(
             token: '',
             userId: 1,
             userRepository: userRepository,
@@ -92,6 +93,15 @@ void main() {
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     mockSettingsDb = MockSettingsDb();
 
+    when(licenseDb.getLicenses()).thenReturn([
+      License(
+          id: 1,
+          product: MEMOPLANNER_LICENSE_NAME,
+          endTime: initialDay.add(100.days()))
+    ]);
+
+    final db = MockDatabase();
+    when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -103,7 +113,7 @@ void main() {
       ..settingsDb = mockSettingsDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
-      ..database = MockDatabase()
+      ..database = db
       ..flutterTts = MockFlutterTts()
       ..init();
   });

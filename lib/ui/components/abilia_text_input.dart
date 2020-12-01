@@ -37,8 +37,11 @@ class AbiliaTextInput extends StatelessWidget {
         Tts(
           data: controller.text.isNotEmpty ? controller.text : heading,
           child: GestureDetector(
-            onTap: () =>
-                showViewDialog(context: context, builder: buildViewDialog),
+            onTap: () => showViewDialog(
+              context: context,
+              builder: buildViewDialog,
+              wrapWithAuthProviders: false,
+            ),
             child: Container(
               color: Colors.transparent,
               child: IgnorePointer(
@@ -135,14 +138,20 @@ class PasswordInput extends StatelessWidget {
                 ),
                 child: GestureDetector(
                   onTap: () => showViewDialog(
-                      context: context, builder: buildViewDialog),
+                    context: context,
+                    builder: buildViewDialog,
+                    wrapWithAuthProviders: false,
+                  ),
                   child: Container(
                     color: Colors.transparent,
                     child: IgnorePointer(
                       child: TextFormField(
                         readOnly: true,
                         onTap: () => showViewDialog(
-                            context: context, builder: buildViewDialog),
+                          context: context,
+                          builder: buildViewDialog,
+                          wrapWithAuthProviders: false,
+                        ),
                         key: TestKey.passwordInput,
                         controller: controller,
                         obscureText: obscureText,

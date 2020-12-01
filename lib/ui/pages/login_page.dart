@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class LoginPage extends StatelessWidget {
-  final FirebasePushService push;
   final Unauthenticated authState;
 
   const LoginPage({
     Key key,
-    @required this.push,
     @required this.authState,
   }) : super(key: key);
 
@@ -21,6 +20,7 @@ class LoginPage extends StatelessWidget {
         () => showViewDialog(
           context: context,
           builder: (_) => LicenseExpiredDialog(),
+          wrapWithAuthProviders: false,
         ),
       );
     }
@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
         BlocProvider<LoginBloc>(
           create: (context) => LoginBloc(
             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-            pushService: push,
+            pushService: GetIt.I<FirebasePushService>(),
             clockBloc: BlocProvider.of<ClockBloc>(context),
           ),
         ),
@@ -44,6 +44,7 @@ class LoginPage extends StatelessWidget {
           await showViewDialog(
             context: context,
             builder: (_) => LicenseExpiredDialog(),
+            wrapWithAuthProviders: false,
           );
         },
         child: Scaffold(

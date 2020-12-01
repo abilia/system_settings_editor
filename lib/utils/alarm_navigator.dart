@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 
@@ -12,9 +13,12 @@ class AlarmNavigator {
   ) async {
     final route = AlarmPageRoute(
       alarm,
-      builder: (context) => (alarm is NewAlarm)
-          ? NavigatableAlarmPage(alarm: alarm, alarmNavigator: this)
-          : NavigatableReminderPage(reminder: alarm, alarmNavigator: this),
+      builder: (_) => CopiedAuthProviders(
+        child: (alarm is NewAlarm)
+            ? NavigatableAlarmPage(alarm: alarm, alarmNavigator: this)
+            : NavigatableReminderPage(reminder: alarm, alarmNavigator: this),
+        blocContext: context,
+      ),
       fullscreenDialog: true,
     );
 
