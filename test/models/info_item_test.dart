@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/info_item.dart';
 
@@ -49,6 +51,47 @@ void main() {
         checked: false,
       ),
     );
+  });
+
+  test('BUG SGC-439 JSON without checked map checklist test', () {
+    final testJson =
+        '{"info-item":[{"type":"checklist","data":{"name":"Remember","fileId":"17c463bb-344b-4fef-b84b-afa8809d600b","image":"/Handi/User/Picture/remember.gif","questions":[{"name":"key","fileId":"aef629ce-dbc1-4e8d-b3a8-0c4499a39b0e","id":0,"image":"/Handi/User/Picture/key.gif"},{"name":"purse","fileId":"e119ccd3-8949-4d82-8249-f4bdf1423afb","id":1,"image":"/Handi/User/Picture/purse.gif"},{"name":"mobile phone","fileId":"289fadbd-df10-4bb9-b9e0-692b343932b7","id":2,"image":"/Handi/User/Picture/mobile phone.gif"},{"name":"fruit","fileId":"9965aa32-3be0-46b6-bf12-53c7b33842a6","id":3,"image":"/Handi/User/Picture/fruit.gif"}]}}]}';
+    final infoItem = InfoItem.fromJsonString(testJson);
+    expect(infoItem, isInstanceOf<Checklist>());
+    final checklist = infoItem as Checklist;
+    expect(checklist.checked, isEmpty);
+    expect(checklist.questions, hasLength(4));
+    expect(
+      checklist.questions.first,
+      Question(
+        id: 0,
+        fileId: 'aef629ce-dbc1-4e8d-b3a8-0c4499a39b0e',
+        image: '/Handi/User/Picture/key.gif',
+        name: 'key',
+        checked: null,
+      ),
+    );
+  });
+
+  test('BUG SGC-439 JSON without checked map checklist test, check test', () {
+    final testJson =
+        '{"info-item":[{"type":"checklist","data":{"name":"Remember","fileId":"17c463bb-344b-4fef-b84b-afa8809d600b","image":"/Handi/User/Picture/remember.gif","questions":[{"name":"key","fileId":"aef629ce-dbc1-4e8d-b3a8-0c4499a39b0e","id":0,"image":"/Handi/User/Picture/key.gif"},{"name":"purse","fileId":"e119ccd3-8949-4d82-8249-f4bdf1423afb","id":1,"image":"/Handi/User/Picture/purse.gif"},{"name":"mobile phone","fileId":"289fadbd-df10-4bb9-b9e0-692b343932b7","id":2,"image":"/Handi/User/Picture/mobile phone.gif"},{"name":"fruit","fileId":"9965aa32-3be0-46b6-bf12-53c7b33842a6","id":3,"image":"/Handi/User/Picture/fruit.gif"}]}}]}';
+    final decoded = jsonDecode(testJson)['info-item'][0]['data'];
+
+    final infoItem = InfoItem.fromJsonString(testJson);
+    final day = DateTime(2002, 11, 30);
+    final checklist = (infoItem as Checklist);
+    final checkedList = checklist.signOff(checklist.questions.first, day);
+    final json = checkedList.toJson();
+    expect(json['name'], decoded['name']);
+    expect(json['fileId'], decoded['fileId']);
+    expect(json['image'], decoded['image']);
+
+    final jQ = (json['questions'] as List).map((j) => Question.fromJson(j));
+    final dQ = (decoded['questions'] as List).map((j) => Question.fromJson(j));
+    expect(dQ, jQ);
+
+    expect(json['checked'], hasLength(1));
   });
 
   test('serialize and deserialize minimal checklist', () {
