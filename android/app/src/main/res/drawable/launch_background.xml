@@ -4,9 +4,11 @@
     <item android:drawable="@color/background_color" />
 
     <!-- You can insert your own image assets here -->
-    <item>
+    <item
+        android:top="208dp"
+        android:bottom="363dp">
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/memoplannergologo" />
     </item>
 </layer-list>
