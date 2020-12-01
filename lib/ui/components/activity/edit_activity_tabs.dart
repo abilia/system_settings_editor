@@ -92,6 +92,9 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
       child: Column(
         children: <Widget>[
           separatedAndPadded(
+            AlarmWidget(activity),
+          ),
+          padded(
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -105,9 +108,6 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
                 ),
               ],
             ),
-          ),
-          padded(
-            AlarmWidget(activity),
           ),
         ],
       ),
