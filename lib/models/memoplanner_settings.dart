@@ -98,7 +98,7 @@ class MemoplannerSettings {
     this.calendarActivityTypeLeft,
     this.calendarActivityTypeRight,
     this.calendarDayColor = 0,
-    this.viewOptionsTimeInterval = 0,
+    this.viewOptionsTimeInterval = 1,
   });
 
   factory MemoplannerSettings.fromSettingsList(
@@ -201,7 +201,7 @@ class MemoplannerSettings {
         calendarActivityTypeRightKey,
       ),
       calendarDayColor: settings.parse(calendarDayColorKey, 0),
-      viewOptionsTimeInterval: settings.parse(viewOptionsTimeIntervalKey, 0),
+      viewOptionsTimeInterval: settings.parse(viewOptionsTimeIntervalKey, 1),
     );
   }
 }
@@ -236,6 +236,7 @@ extension _Parsing on List<MemoplannerSettingData> {
 
 class DayParts {
   Duration get morning => Duration(milliseconds: morningStart);
+  Duration get night => Duration(milliseconds: nightStart);
 
   final int morningStart,
       forenoonStart,

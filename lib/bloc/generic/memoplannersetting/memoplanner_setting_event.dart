@@ -7,3 +7,5 @@ class UpdateMemoplannerSettings extends MemoplannerSettingsEvent {
 
   UpdateMemoplannerSettings(this.generics);
 }
+
+class GenericsFailedEvent extends MemoplannerSettingsEvent {}

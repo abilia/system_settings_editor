@@ -81,7 +81,6 @@ void main() {
   Future goToTimePillar(
     WidgetTester tester, {
     PushBloc pushBloc,
-    MemoplannerSettingBloc memoplannerSettingBloc,
   }) async {
     await tester.pumpWidget(App(
       pushBloc: pushBloc,
@@ -132,7 +131,7 @@ void main() {
     testWidgets('tts', (WidgetTester tester) async {
       await goToTimePillar(tester);
       final hour = DateFormat('h').format(time);
-      await tester.verifyTts(find.text(hour).at(1), contains: hour);
+      await tester.verifyTts(find.text(hour).at(0), contains: hour);
     });
 
     testWidgets('tts on 24 h', (WidgetTester tester) async {
@@ -215,7 +214,7 @@ void main() {
     testWidgets('Alwasy only one current dots', (WidgetTester tester) async {
       await goToTimePillar(tester);
       for (var i = 0; i < 20; i++) {
-        mockTicker.add(time.add(1.minutes()));
+        mockTicker.add(time.add(i.minutes()));
         await tester.pumpAndSettle();
         expect(
             tester
@@ -569,14 +568,7 @@ void main() {
   });
 
   group('Timepillar intervals', () {
-    testWidgets('Activity outside interval is not visible',
-        (WidgetTester tester) async {
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: time.copyWith(hour: 8, minute: 0),
-            )
-          ];
+    setUp(() {
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData(
@@ -587,13 +579,16 @@ void main() {
               type: GenericType.memoPlannerSettings,
             )
           ];
-      final memoSettingsBloc = MockMemoplannerSettingsBloc();
-      when(memoSettingsBloc.state).thenReturn(MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-            viewOptionsTimeInterval: TimepillarIntervalType.INTERVAL.index),
-      ));
-      await goToTimePillar(tester, memoplannerSettingBloc: memoSettingsBloc);
-      await tester.pumpAndSettle();
+    });
+    testWidgets('Activity outside interval is not visible',
+        (WidgetTester tester) async {
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: time.copyWith(hour: 8, minute: 0),
+            )
+          ];
+      await goToTimePillar(tester);
       expect(find.byType(ActivityTimepillarCard), findsNothing);
     });
 
@@ -605,14 +600,118 @@ void main() {
               startTime: time,
             )
           ];
-      final memoSettingsBloc = MockMemoplannerSettingsBloc();
-      when(memoSettingsBloc.state).thenReturn(MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-            viewOptionsTimeInterval: TimepillarIntervalType.INTERVAL.index),
-      ));
-      await goToTimePillar(tester, memoplannerSettingBloc: memoSettingsBloc);
+      await goToTimePillar(tester);
+      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+    });
+
+    testWidgets('Activity spanning two intervals', (WidgetTester tester) async {
+      final activityTime = DateTime(2020, 12, 01, 01, 00);
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: activityTime,
+              duration: 6.hours(),
+            )
+          ];
+
+      mockTicker.add(
+          activityTime); // Shows night interval. Activity should be visible here.
+      await goToTimePillar(tester);
+      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+
+      mockTicker.add(DateTime(2020, 12, 01, 08,
+          00)); // Morning starts at 6. Activity should be visible here.
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+
+      mockTicker.add(DateTime(2020, 12, 01, 10,
+          00)); // Forenoon interval starts at 10. Acitivity should not be visible here
+      await tester.pumpAndSettle();
+      expect(find.byType(ActivityTimepillarCard), findsNothing);
+    });
+
+    testWidgets('Activity without duration starts on interval',
+        (WidgetTester tester) async {
+      final activityStartTime = DateTime(2020, 12, 01, 10, 00);
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: activityStartTime,
+            )
+          ];
+
+      mockTicker.add(DateTime(2020, 12, 01, 01, 01));
+      await goToTimePillar(tester);
+      expect(find.byType(ActivityTimepillarCard), findsNothing);
+
+      mockTicker.add(DateTime(2020, 12, 01, 09, 59));
+      await tester.pumpAndSettle();
+      expect(find.byType(ActivityTimepillarCard), findsNothing);
+
+      mockTicker.add(DateTime(2020, 12, 01, 10, 00, 01));
+      await tester.pumpAndSettle();
+      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+    });
+
+    testWidgets('Activity is shown when interval is whole day',
+        (WidgetTester tester) async {
+      final activityStartTime = DateTime(2020, 12, 01, 10, 00);
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: activityStartTime,
+            )
+          ];
+
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: TimepillarIntervalType.DAY_AND_NIGHT.index.toString(),
+                type: 'int',
+                identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+              ),
+              type: GenericType.memoPlannerSettings,
+            )
+          ];
+
+      mockTicker.add(DateTime(2020, 12, 01, 01, 01));
+      await goToTimePillar(tester);
+      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+    });
+
+    testWidgets(
+        'Day activity is only shown in day interval when interval is DAY',
+        (WidgetTester tester) async {
+      final activityStartTime = DateTime(2020, 12, 01, 10, 00);
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: activityStartTime,
+            )
+          ];
+
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData(
+                data: TimepillarIntervalType.DAY.index.toString(),
+                type: 'int',
+                identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+              ),
+              type: GenericType.memoPlannerSettings,
+            )
+          ];
+
+      mockTicker.add(DateTime(2020, 12, 01, 01, 00));
+      await goToTimePillar(tester);
+      expect(find.byType(ActivityTimepillarCard), findsNothing);
+
+      mockTicker.add(DateTime(2020, 12, 01, 07, 00));
+      await goToTimePillar(tester);
+      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+
+      mockTicker.add(DateTime(2020, 12, 01, 23, 30));
+      await goToTimePillar(tester);
+      expect(find.byType(ActivityTimepillarCard), findsNothing);
     });
   });
 }

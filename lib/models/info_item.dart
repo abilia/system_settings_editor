@@ -170,7 +170,7 @@ class Checklist extends InfoItem {
           json['questions'].map((x) => Question.fromJson(x)),
         ),
         checked: Map.from(json['checked']
-            .map((k, v) => MapEntry<String, Set<int>>(k, Set<int>.from(v)))),
+           ?.map((k, v) => MapEntry<String, Set<int>>(k, Set<int>.from(v))) ?? {}),
       );
 
   @override

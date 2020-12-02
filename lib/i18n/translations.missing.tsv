@@ -1,0 +1,38 @@
+_id_	en	sv	da	nl	fi	de	nb
+lunch	Lunch	Lunch					
+h	h	t					
+min	min	min					
+am	AM	fm					
+pm	PM	em					
+endsNow	Ends now	Slutar nu					
+startsNow	Starts now	Börjar nu					
+inTimePre	in	om					
+timeAgoPre	&empty&	för					
+timeAgoPost	ago	sen					
+checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?					
+missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.					
+clear	Clear	Rensa					
+timepillarSettings	Timepillar settings	Inställningar för tidpelare					
+activityDuration	Activity duration	Visa tid som					
+dots	Dots	Prickar					
+edge	Edge	Flärp					
+preview	Preview	Förhandsgranskning					
+permissions	Permissions	Behörigheter					
+notifications	Notifications	Notiser					
+accessToPhotos	Access to Photos	Tillgång till bilder					
+accessToCamera	Access to Camera	Tillgång till kameran					
+allowNotifications	Allow notifications	Tillåt notiser					
+allowNotificationsDescription1	Allow notifications to be able to get alarms and reminders from activities. You can do that from the	Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån					
+settingsLink	settings	inställningar					
+turnOffNotifications	Turn off notifications?	Stäng av notiser?					
+turnOffNotificationsBody	You will no longer be able to get alarms and reminders from activities.	Du kommer inte längre kunna få alarm och notiser för aktiviteter.					
+notificationsWarningHintText	Allow notifications to be able to get alarms and reminders from activities.	Tillåt notiser för att få larm och påminnelser för aktiviteter.					
+notificationsWarningText	Allow notifications from the settings to be able to receive alarms and reminders.	Tillåt notiser från inställningar för att få larm och påminnelser.					
+fullScreenAlarm	Full screen alarm	Helskärmslarm					
+redirectToAndroidSettings	You will be redirect to the Android settings.	Du kommer att omdirigeras till Android-inställningarna.					
+fullScreenAlarmInfo	Allow this permission to be able to get full screen alarm of activities	Tillåt denna behörighet för att kunna få helskärmslarm om aktiviteter					
+allow	Allow	Tillåt					
+previewActivityTitle	Erik's birthday party	Eriks födelsedagskalas					
+allowAccessPhotosBody	Allow access to photos to be able to use photos from the device.	Tillåt behörighet till bilder för att ha möjlighet att använda bilder från enheten.					
+allowAccessCameraBody	Allow access to camera to be able to take a photo from the device.	Tillåt behörighet till kameran för att ha möjlighet att ta bilder från enheten.					
+allowAccessBody2	You can always do that later from the	Du kan alltid göra det senare från					
