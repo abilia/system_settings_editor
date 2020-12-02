@@ -10,7 +10,7 @@ class StartTimeInputDialog extends StatelessWidget {
   const StartTimeInputDialog({Key key, this.time}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return _TimeInputDialog(
+    return TimeInputDialog(
       time: time,
       heading: Translator.of(context).translate.startTime,
       is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
@@ -24,7 +24,7 @@ class EndTimeInputDialog extends StatelessWidget {
   const EndTimeInputDialog({Key key, this.timeInterval}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return _TimeInputDialog(
+    return TimeInputDialog(
       time: timeInterval.endTime,
       heading: Translator.of(context).translate.endTime,
       is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
@@ -44,13 +44,13 @@ class EndTimeInputDialog extends StatelessWidget {
   }
 }
 
-class _TimeInputDialog extends StatefulWidget {
+class TimeInputDialog extends StatefulWidget {
   final TimeOfDay time;
   final Widget deleteButton;
   final String heading;
   final bool is24HoursFormat;
 
-  const _TimeInputDialog({
+  const TimeInputDialog({
     Key key,
     @required this.time,
     @required this.heading,
@@ -65,7 +65,7 @@ class _TimeInputDialog extends StatefulWidget {
 
 String pad0(String s) => s.padLeft(2, '0');
 
-class _TimeInputDialogState extends State<_TimeInputDialog> {
+class _TimeInputDialogState extends State<TimeInputDialog> {
   final bool twelveHourClock;
   TextEditingController minuteInputController;
   TextEditingController hourInputController;

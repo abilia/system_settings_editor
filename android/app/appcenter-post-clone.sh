@@ -22,7 +22,7 @@ flutter test
 
 buildName=$(date "+%Y-%m-%d-%H%M")
 # build APK
-flutter build apk --release --build-number=$APPCENTER_BUILD_ID --build-name=$buildName
+flutter build apk --release --build-number=$APPCENTER_BUILD_ID --build-name=$buildName --dart-define=release=$release
 
 # if you need build bundle (AAB) in addition to your APK, uncomment line below and last line of this script.
 #flutter build appbundle

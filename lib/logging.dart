@@ -12,6 +12,7 @@ import 'package:bloc/bloc.dart';
 
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
@@ -39,13 +40,13 @@ class SeagullLogger {
     this.documentsDir,
     this.preferences,
     this.loggingType = const {
-      if (kReleaseMode) ...{
+      if (Config.release) ...{
         LoggingType.File,
         LoggingType.Analytic,
       } else
         LoggingType.Print,
     },
-    Level level = kReleaseMode ? Level.FINE : Level.ALL,
+    Level level = Config.release ? Level.FINE : Level.ALL,
   }) : assert(
           !loggingType.contains(LoggingType.File) ||
               (documentsDir != null && preferences != null),
