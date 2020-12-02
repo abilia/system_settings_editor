@@ -706,11 +706,11 @@ void main() {
       expect(find.byType(ActivityTimepillarCard), findsNothing);
 
       mockTicker.add(DateTime(2020, 12, 01, 07, 00));
-      await goToTimePillar(tester);
+      await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
 
       mockTicker.add(DateTime(2020, 12, 01, 23, 30));
-      await goToTimePillar(tester);
+      await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
     });
   });
