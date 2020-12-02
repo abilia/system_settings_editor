@@ -21,6 +21,7 @@ class ActivityTimepillarCard extends StatelessWidget {
   final int dots, column;
   final double top, endPos, height;
   final TimepillarInterval timepillarInterval;
+  final DayParts dayParts;
 
   const ActivityTimepillarCard({
     Key key,
@@ -31,6 +32,7 @@ class ActivityTimepillarCard extends StatelessWidget {
     @required this.height,
     @required this.textStyle,
     @required this.timepillarInterval,
+    @required this.dayParts,
   })  : assert(activityOccasion != null),
         endPos = top + height,
         super(key: key);
@@ -71,6 +73,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                         ? timepillarInterval.endTime
                         : endTime,
                     dots: dots,
+                    dayParts: dayParts,
                   )
                 else
                   SideTime(
@@ -173,9 +176,9 @@ class SideTime extends StatelessWidget {
       case Occasion.current:
         return AbiliaColors.red;
       case Occasion.past:
-        return AbiliaColors.transparentBlack20;
+        return AbiliaColors.white140;
       default:
-        return AbiliaColors.black;
+        return AbiliaColors.black60;
     }
   }
 }
