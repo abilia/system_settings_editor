@@ -1,6 +1,6 @@
 name: seagull
 description: The seagull app.
-version: 1.0.0+1
+version: 1.0.0
 
 environment:
   sdk: '>=2.8.0 <3.0.0'
