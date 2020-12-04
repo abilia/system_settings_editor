@@ -24,7 +24,7 @@ class BaseUrlDb {
   Future<String> initialize() async {
     final defaultUrl = Config.beta ? WHALE : PROD;
     final currentUrl = getBaseUrl();
-    if (currentUrl == null || Config.release && currentUrl != defaultUrl) {
+    if (currentUrl == null) {
       await setBaseUrl(defaultUrl);
       return defaultUrl;
     }
