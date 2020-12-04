@@ -20,7 +20,6 @@ class TimePillarSettings extends StatelessWidget {
                 translate.activityDuration,
                 style: abiliaTheme.textTheme.bodyText1,
               ),
-              active: false,
               onTap: () async {
                 await Navigator.of(context).maybePop();
                 await showViewDialog(
