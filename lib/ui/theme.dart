@@ -71,11 +71,6 @@ const BoxDecoration boxDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: border,
 );
-const BoxDecoration offBoxDecoration = BoxDecoration(
-  borderRadius: borderRadius,
-  color: AbiliaColors.transparentWhite40,
-  border: border,
-);
 const BoxDecoration disabledBoxDecoration = BoxDecoration(
   borderRadius: borderRadius,
   color: AbiliaColors.transparentWhite40,
@@ -127,7 +122,7 @@ BoxDecoration getBoxDecoration(bool current, bool inactive) => inactive
         : whiteBoxDecoration;
 
 BoxDecoration selectedBoxDecoration(bool selected) =>
-    selected ? greenBoarderWhiteBoxDecoration : offBoxDecoration;
+    selected ? greenBoarderWhiteBoxDecoration : whiteBoxDecoration;
 
 const OutlineInputBorder inputBorder = OutlineInputBorder(
   borderSide: borderSide,

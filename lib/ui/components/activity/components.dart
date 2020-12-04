@@ -79,7 +79,6 @@ class PickField extends StatelessWidget {
   final Widget leading, trailing;
   final Text text;
   final double heigth;
-  final bool active;
   final bool errorState;
   final String semanticsLabel;
 
@@ -90,7 +89,6 @@ class PickField extends StatelessWidget {
     this.trailing = trailingArrow,
     this.onTap,
     this.heigth = 56,
-    this.active = true,
     this.errorState = false,
     this.semanticsLabel,
   }) : super(key: key);
@@ -112,9 +110,7 @@ class PickField extends StatelessWidget {
                 ? whiteErrorBoxDecoration
                 : onTap == null
                     ? disabledBoxDecoration
-                    : active
-                        ? whiteBoxDecoration
-                        : offBoxDecoration,
+                    : whiteBoxDecoration,
             padding: const EdgeInsets.all(12),
             child: Stack(
               children: <Widget>[
