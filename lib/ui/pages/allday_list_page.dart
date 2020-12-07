@@ -15,13 +15,12 @@ class AllDayList extends StatelessWidget {
       if (state is ActivitiesOccasionLoaded) {
         return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
             builder: (context, memoSettingsState) {
-          final theme = weekDayThemes[memoSettingsState.calendarDayColor]
-                  [state.day.weekday]
-              .copyWith(
-                  scaffoldBackgroundColor: weekDayColor[state.day.weekday]
-                      [120]);
           return Theme(
-            data: theme,
+            data: weekdayTheme(
+                    dayColor: memoSettingsState.calendarDayColor,
+                    languageCode: Localizations.localeOf(context).languageCode,
+                    weekday: state.day.weekday)
+                .withScaffoldBackgroundColor,
             child: Scaffold(
               body: Scrollbar(
                 child: ListView.builder(

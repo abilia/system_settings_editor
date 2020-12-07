@@ -99,46 +99,57 @@ class DatePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat =
-        DateFormat.yMMMMd(Localizations.localeOf(context).toLanguageTag());
+    final locale = Localizations.localeOf(context);
+    final timeFormat = DateFormat.yMMMMd(locale.toLanguageTag());
     final translator = Translator.of(context).translate;
-    final dayColor = weekDayColor[date.weekday];
-    final color = dayColor == AbiliaColors.white ? dayColor[120] : dayColor;
     final _firstDate = firstDate ?? DateTime(date.year - 20);
     final _lastDate = lastDate ?? DateTime(date.year + 20);
 
-    return BlocBuilder<ClockBloc, DateTime>(
-      builder: (context, time) => PickField(
-        key: TestKey.datePicker,
-        onTap: onChange == null
-            ? null
-            : () async {
-                final newDate = await showDatePicker(
-                    context: context,
-                    initialDate: date,
-                    firstDate: _firstDate,
-                    lastDate: _lastDate,
-                    builder: (context, child) => Theme(
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, state) {
+        final dayColor = weekdayTheme(
+                dayColor: state.calendarDayColor,
+                languageCode: locale.languageCode,
+                weekday: date.weekday)
+            .color;
+        final color =
+            dayColor == AbiliaColors.white ? AbiliaColors.white120 : dayColor;
+        return BlocBuilder<ClockBloc, DateTime>(
+          builder: (context, time) => PickField(
+            key: TestKey.datePicker,
+            onTap: onChange == null
+                ? null
+                : () async {
+                    final newDate = await showDatePicker(
+                      context: context,
+                      initialDate: date,
+                      firstDate: _firstDate,
+                      lastDate: _lastDate,
+                      builder: (context, child) => Theme(
                         data: abiliaTheme.copyWith(
                           colorScheme: abiliaTheme.colorScheme.copyWith(
                             primary: color,
                             surface: color,
                           ),
                         ),
-                        child: child));
-                if (newDate != null) {
-                  onChange(newDate);
-                }
-              },
-        leading: Icon(
-          AbiliaIcons.calendar,
-          size: smallIconSize,
-        ),
-        text: Text(
-          (time.isAtSameDay(date) ? '(${translator.today}) ' : '') +
-              '${timeFormat.format(date)}',
-        ),
-      ),
+                        child: child,
+                      ),
+                    );
+                    if (newDate != null) {
+                      onChange(newDate);
+                    }
+                  },
+            leading: Icon(
+              AbiliaIcons.calendar,
+              size: smallIconSize,
+            ),
+            text: Text(
+              (time.isAtSameDay(date) ? '(${translator.today}) ' : '') +
+                  '${timeFormat.format(date)}',
+            ),
+          ),
+        );
+      },
     );
   }
 }

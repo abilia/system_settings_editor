@@ -18,8 +18,11 @@ class ActivityPage extends StatelessWidget {
         final activityOccasion = occasion.fromActivitiesState(state);
         return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           builder: (context, memoSettingsState) => AnimatedTheme(
-            data: weekDayThemes[memoSettingsState.calendarDayColor]
-                [occasion.day.weekday],
+            data: weekdayTheme(
+                    dayColor: memoSettingsState.calendarDayColor,
+                    languageCode: Localizations.localeOf(context).languageCode,
+                    weekday: occasion.day.weekday)
+                .theme,
             child: Scaffold(
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(68),

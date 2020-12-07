@@ -320,43 +320,53 @@ void main() {
         expect(theme.data.appBarTheme.color, color);
       }
 
+      final noDayColor = AbiliaColors.black80,
+          mondayColor = AbiliaColors.green,
+          tuesdayColor = AbiliaColors.blue,
+          wednesdayColor = AbiliaColors.white,
+          thursdayColor = AbiliaColors.thursdayBrown,
+          fridayColor = AbiliaColors.yellow,
+          saturdayColor = AbiliaColors.pink,
+          sundayColor = AbiliaColors.sundayRed;
+
       testWidgets('Color settings with colors on all days',
           (WidgetTester tester) async {
         when(memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarDayColor: DayColors.ALL_DAYS),
+          MemoplannerSettings(calendarDayColor: DayColor.allDays.index),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, weekDayColor[DateTime.wednesday]);
+        _expectCorrectColor(tester, wednesdayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, weekDayColor[DateTime.thursday]);
+        _expectCorrectColor(tester, thursdayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, weekDayColor[DateTime.friday]);
+        _expectCorrectColor(tester, fridayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, weekDayColor[DateTime.saturday]);
+        _expectCorrectColor(tester, saturdayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, weekDayColor[DateTime.sunday]);
+        _expectCorrectColor(tester, sundayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, weekDayColor[DateTime.monday]);
+        _expectCorrectColor(tester, mondayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, weekDayColor[DateTime.tuesday]);
+        _expectCorrectColor(tester, tuesdayColor);
       });
 
       testWidgets('Color settings with colors only on weekends',
           (WidgetTester tester) async {
         when(memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarDayColor: DayColors.SATURDAY_AND_SUNDAY),
+          MemoplannerSettings(
+              calendarDayColor: DayColor.saturdayAndSunday.index),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
@@ -364,31 +374,31 @@ void main() {
         ));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, weekDayColor[DateTime.saturday]);
+        _expectCorrectColor(tester, saturdayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, weekDayColor[DateTime.sunday]);
+        _expectCorrectColor(tester, sundayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
       });
 
       testWidgets('Color settings with no colors', (WidgetTester tester) async {
         when(memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarDayColor: DayColors.NO_COLORS),
+          MemoplannerSettings(calendarDayColor: DayColor.noColors.index),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
@@ -396,25 +406,25 @@ void main() {
         ));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, neutralThemeData.appBarTheme.color);
+        _expectCorrectColor(tester, noDayColor);
       });
     });
 
