@@ -80,6 +80,7 @@ void main() {
   final initialDay = DateTime(2020, 08, 05);
 
   setUp(() async {
+    setupPermissions();
     tz.initializeTimeZones();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 

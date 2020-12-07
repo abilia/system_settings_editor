@@ -37,6 +37,7 @@ void main() {
   ).toJson());
 
   setUp(() async {
+    setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
     mockTicker = StreamController<DateTime>();

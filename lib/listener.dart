@@ -45,15 +45,16 @@ class TopLevelListeners extends StatelessWidget {
             listenWhen: (previous, current) =>
                 previous.runtimeType != current.runtimeType ||
                 previous.forcedNewState != current.forcedNewState,
-            listener: (context, state) {
+            listener: (context, state) async {
               if (_navigator == null) {
                 context.read<AuthenticationBloc>().add(NotReady());
                 return;
               }
-              _navigator.pushAndRemoveUntil<void>(
-                MaterialPageRoute<void>(
-                  builder: (_) {
-                    if (state is Authenticated) {
+              if (state is Authenticated) {
+                await Permission.notification.request();
+                await _navigator.pushAndRemoveUntil<void>(
+                  MaterialPageRoute<void>(
+                    builder: (_) {
                       return AuthenticatedBlocsProvider(
                         authenticatedState: state,
                         child: AuthenticatedListeners(
@@ -63,14 +64,20 @@ class TopLevelListeners extends StatelessWidget {
                               : CalendarPage(),
                         ),
                       );
-                    } else if (state is Unauthenticated) {
+                    },
+                  ),
+                  (_) => false,
+                );
+              } else if (state is Unauthenticated) {
+                await _navigator.pushAndRemoveUntil<void>(
+                  MaterialPageRoute<void>(
+                    builder: (_) {
                       return LoginPage(authState: state);
-                    }
-                    return const SplashPage();
-                  },
-                ),
-                (_) => false,
-              );
+                    },
+                  ),
+                  (_) => false,
+                );
+              }
             },
           ),
         ],

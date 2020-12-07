@@ -36,6 +36,7 @@ void main() {
           FakeActivity.fullday(now).copyWith(title: forthFullDayTitle);
 
   setUp(() async {
+    setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
     final mockFirebasePushService = MockFirebasePushService();

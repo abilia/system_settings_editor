@@ -23,6 +23,7 @@ void main() {
   final translate = Locales.language.values.first;
 
   setUp(() async {
+    setupPermissions();
     final initTime = DateTime(2020, 07, 23, 11, 29);
     ActivityResponse activityResponse = () => [];
 

@@ -56,6 +56,7 @@ void main() {
   ActivityResponse activityResponse = () => [];
 
   setUp(() async {
+    setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
     final mockFirebasePushService = MockFirebasePushService();
