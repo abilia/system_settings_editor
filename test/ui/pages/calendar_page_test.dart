@@ -365,7 +365,7 @@ void main() {
         when(memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
-              calendarDayColor: DayColor.saturedayAndSunday.index),
+              calendarDayColor: DayColor.saturdayAndSunday.index),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),

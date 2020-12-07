@@ -43,7 +43,7 @@ DayTheme weekdayTheme({
   @required int weekday,
 }) {
   final noColors = dayColor == DayColor.noColors ||
-      dayColor == DayColor.saturedayAndSunday && weekday < DateTime.saturday;
+      dayColor == DayColor.saturdayAndSunday && weekday < DateTime.saturday;
 
   if (noColors) return _noColor;
 

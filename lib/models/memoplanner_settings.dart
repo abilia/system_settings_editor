@@ -255,6 +255,6 @@ class DayParts {
 
 enum DayPart { morning, forenoon, afternoon, evening, night }
 
-enum DayColor { allDays, saturedayAndSunday, noColors }
+enum DayColor { allDays, saturdayAndSunday, noColors }
 
 enum HourClockType { use12, use24, useSystem }
