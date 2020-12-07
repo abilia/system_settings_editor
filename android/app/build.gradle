@@ -48,7 +48,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile rootProject.file("app/se-handi-release-key.keystore")
+            storeFile rootProject.file(System.getenv("APPCENTER_KEYSTORE_PATH"))
             storePassword System.getenv("APPCENTER_KEYSTORE_PASSWORD")
             keyAlias System.getenv("APPCENTER_KEY_ALIAS")
             keyPassword System.getenv("APPCENTER_KEY_PASSWORD")
