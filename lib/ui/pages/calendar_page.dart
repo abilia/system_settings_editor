@@ -51,8 +51,12 @@ class _CalendarPageState extends State<CalendarPage>
               BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
             builder: (context, memoSettingsState) => AnimatedTheme(
               key: TestKey.animatedTheme,
-              data: weekDayThemes[memoSettingsState.calendarDayColor]
-                  [pickedDay.day.weekday],
+              data: weekdayTheme(
+                      dayColor: memoSettingsState.calendarDayColor,
+                      languageCode:
+                          Localizations.localeOf(context).languageCode,
+                      weekday: pickedDay.day.weekday)
+                  .theme,
               child: Scaffold(
                 appBar: buildAppBar(
                   pickedDay.day,

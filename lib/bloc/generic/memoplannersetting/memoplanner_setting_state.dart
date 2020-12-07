@@ -33,7 +33,7 @@ abstract class MemoplannerSettingsState {
   int get afternoonStart => settings.afternoonIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
-  int get calendarDayColor => settings.calendarDayColor;
+  DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>
       TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
 

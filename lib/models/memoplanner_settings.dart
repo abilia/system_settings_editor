@@ -255,8 +255,6 @@ class DayParts {
 
 enum DayPart { morning, forenoon, afternoon, evening, night }
 
-class DayColors {
-  static const int ALL_DAYS = 0, SATURDAY_AND_SUNDAY = 1, NO_COLORS = 2;
-}
+enum DayColor { allDays, saturedayAndSunday, noColors }
 
 enum HourClockType { use12, use24, useSystem }

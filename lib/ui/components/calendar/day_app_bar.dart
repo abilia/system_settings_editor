@@ -25,13 +25,9 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final langCode = Localizations.localeOf(context).toLanguageTag();
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) {
-        final textStyle = weekDayThemes[memoSettingsState.calendarDayColor]
-                [day.weekday]
-            .textTheme
-            .headline6;
+        final textStyle = Theme.of(context).textTheme.headline6;
         return AppBar(
           elevation: 0.0,
           automaticallyImplyLeading: false,
@@ -53,7 +49,6 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
                         Align(
                           alignment: Alignment.center,
                           child: DayAppBarTitle(
-                              langCode: langCode,
                               currentTime: time,
                               day: day,
                               textStyle: textStyle),
@@ -134,13 +129,11 @@ class DayAppBarTitleRows {
 class DayAppBarTitle extends StatelessWidget {
   const DayAppBarTitle({
     Key key,
-    @required this.langCode,
     @required this.currentTime,
     @required this.day,
     @required this.textStyle,
   }) : super(key: key);
 
-  final String langCode;
   final DateTime currentTime, day;
   final TextStyle textStyle;
 
@@ -155,7 +148,7 @@ class DayAppBarTitle extends StatelessWidget {
         currentTime: currentTime,
         day: day,
         dayParts: memoSettingsState.dayParts,
-        langCode: langCode,
+        langCode: Localizations.localeOf(context).toLanguageTag(),
         translator: Translator.of(context).translate,
       );
       return Tts(
