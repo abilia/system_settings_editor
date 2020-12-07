@@ -37,6 +37,7 @@ void main() {
       find.byIcon(AbiliaIcons.return_to_previous_page);
 
   setUp(() async {
+    setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
     mockTicker = StreamController<DateTime>();

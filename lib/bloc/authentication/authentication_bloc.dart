@@ -38,11 +38,9 @@ class AuthenticationBloc
         yield Unauthenticated(repo);
       }
     } else if (event is LoggedIn) {
-      yield AuthenticationLoading(repo);
       await repo.persistToken(event.token);
       yield* _tryGetUser(repo, event.token, newlyLoggedIn: true);
     } else if (event is LoggedOut) {
-      yield AuthenticationLoading(repo);
       yield* _logout(repo, loggedOutReason: event.loggedOutReason);
     }
   }

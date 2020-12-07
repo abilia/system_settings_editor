@@ -54,7 +54,6 @@ void main() {
         authenticationBloc,
         emitsInOrder([
           Unauthenticated(userRepository),
-          AuthenticationLoading(userRepository),
           Authenticated(
             token: Fakes.token,
             userId: Fakes.userId,
@@ -76,14 +75,12 @@ void main() {
         authenticationBloc,
         emitsInOrder([
           Unauthenticated(userRepository),
-          AuthenticationLoading(userRepository),
           Authenticated(
             token: Fakes.token,
             userId: Fakes.userId,
             userRepository: userRepository,
             newlyLoggedIn: true,
           ),
-          AuthenticationLoading(userRepository),
           Unauthenticated(userRepository),
         ]),
       );

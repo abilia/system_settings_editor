@@ -17,6 +17,7 @@ import '../../mocks.dart';
 void main() {
   group('Push integration test', () {
     setUp(() async {
+      setupPermissions();
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
       final time = DateTime(2020, 06, 05, 13, 23);
