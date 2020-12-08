@@ -195,14 +195,16 @@ class ViewDialog extends StatelessWidget {
                               child: backButton,
                             ),
                           if (heading != null)
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                leftPadding,
-                                20.0,
-                                rightPadding,
-                                seperatorPadding,
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                  leftPadding,
+                                  20.0,
+                                  rightPadding,
+                                  seperatorPadding,
+                                ),
+                                child: Tts(child: heading),
                               ),
-                              child: Tts(child: heading),
                             ),
                         ],
                       ),
