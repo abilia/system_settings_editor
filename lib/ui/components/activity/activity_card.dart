@@ -110,6 +110,7 @@ class ActivityCard extends StatelessWidget {
                                       activity.subtitle(context),
                                       style:
                                           Theme.of(context).textTheme.bodyText1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ]),
