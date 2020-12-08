@@ -68,7 +68,10 @@ void main() {
     expect(result.duration, 3600000.milliseconds());
     expect(result.category, 0);
     expect(result.startTime, 1570105439424.fromMillisecondsSinceEpoch());
-    expect(result.recurs.endTime, 1570109039424);
+    expect(
+        result.recurs.endTime,
+        Recurs
+            .NO_END); // Non recurring activities should not use endTime and therefore set default to NO_END
     expect(result.fullDay, false);
     expect(result.checkable, true);
     expect(result.removeAfter, false);
