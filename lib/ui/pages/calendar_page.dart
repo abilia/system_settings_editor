@@ -382,7 +382,7 @@ class _CreateActivityDialogState extends State<CreateActivityDialog>
               size: smallIconSize,
             ),
             text: Text(
-              translate.newActivity,
+              translate.newActivityChoice,
               style: abiliaTheme.textTheme.bodyText1,
             ),
             onTap: () async => await Navigator.of(context)

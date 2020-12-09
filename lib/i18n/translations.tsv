@@ -52,7 +52,7 @@ onlyThisDay	Only this day	Endast denna dag	Kun denne dag	Alleen deze dag	Vain t�
 allDays	All days	Alla dagar	Alle dage	Alle dagen	Kaikki päivät	Alle Tage	Alle dager
 thisDayAndForward	This day and forward	Denna dag och framåt	Denne dag og frem	Deze dag en verder	Tästä päivästä lähtien	Von diesem Tag an	Denne dagen og fremover
 checkActivityQuestion	Completed?	Klar?	Færdig?	Afgerond?	Valmis?	Bist Du fertig?	Ferdig?
-unCheckActivityQuestion	Do you want to uncheck the activity? 	Vill du ångra kvitteringen av aktiviteten?	Vil du fjerne markeringen af aktiviteten?	Wilt u de activiteit uitvinken?	Haluatko poistaa valinnan aktiviteetista?	Möchten Sie die Auswahl rückgängig machen?	Vil du fjerne merket for aktiviteten?
+unCheckActivityQuestion	Do you want to uncheck the activity?	Vill du ångra kvitteringen av aktiviteten?	Vil du fjerne markeringen af aktiviteten?	Wilt u de activiteit uitvinken?	Haluatko poistaa valinnan aktiviteetista?	Möchten Sie die Auswahl rückgängig machen?	Vil du fjerne merket for aktiviteten?
 inTimePre	in	om					
 timeAgoPre	&empty&	för					
 timeAgoPost	ago	sen					
@@ -63,7 +63,8 @@ menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
 cancel	Cancel	Avbryt	Annuller	Annuleren	Peruuta	Abbrechen	Avbryt
 							
 ### Edit activity							
-newActivity	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
+newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
+newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Ændre aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
 category	Category	Kategori	Kategori	Categorie	Kategoria	Kategorie	Kategori
 checkable	Checkable	Kvitterbar	Kvitterbar	Afvinkbaar	Tarkistettava	Kontrollabfrage	Kvitterbar
