@@ -114,8 +114,7 @@ abstract class Translated {
 
   final String checkActivityQuestion = 'Completed?';
 
-  final String unCheckActivityQuestion =
-      'Do you want to uncheck the activity? ';
+  final String unCheckActivityQuestion = 'Do you want to uncheck the activity?';
 
   final String inTimePre = 'in';
 
@@ -130,7 +129,9 @@ abstract class Translated {
 
   final String cancel = 'Cancel';
 
-  final String newActivity = 'New';
+  final String newActivityChoice = 'New';
+
+  final String newActivity = 'New activity';
 
   final String editActivity = 'Edit activity';
 
@@ -487,7 +488,10 @@ class SV extends Translated {
   final String cancel = 'Avbryt';
 
   @override
-  final String newActivity = 'Helt ny';
+  final String newActivityChoice = 'Helt ny';
+
+  @override
+  final String newActivity = 'Ny aktivitet';
 
   @override
   final String editActivity = 'Ändra aktivitet';
@@ -895,7 +899,10 @@ class DA extends Translated {
   final String cancel = 'Annuller';
 
   @override
-  final String newActivity = 'Helt ny';
+  final String newActivityChoice = 'Helt ny';
+
+  @override
+  final String newActivity = 'Ny aktivitet';
 
   @override
   final String editActivity = 'Ændre aktivitet';
@@ -1213,7 +1220,10 @@ class NL extends Translated {
   final String cancel = 'Annuleren';
 
   @override
-  final String newActivity = 'Nieuw';
+  final String newActivityChoice = 'Nieuw';
+
+  @override
+  final String newActivity = 'Nieuw activiteit';
 
   @override
   final String editActivity = 'Activiteit bewerken';
@@ -1532,7 +1542,10 @@ class FI extends Translated {
   final String cancel = 'Peruuta';
 
   @override
-  final String newActivity = 'Uusi';
+  final String newActivityChoice = 'Uusi';
+
+  @override
+  final String newActivity = 'Uusi aktiviteettia';
 
   @override
   final String editActivity = 'Muokkaa aktiviteettia';
@@ -1851,7 +1864,10 @@ class DE extends Translated {
   final String cancel = 'Abbrechen';
 
   @override
-  final String newActivity = 'Neu';
+  final String newActivityChoice = 'Neu';
+
+  @override
+  final String newActivity = 'Neu Aktivität';
 
   @override
   final String editActivity = 'Aktivität bearbeiten';
@@ -2173,7 +2189,10 @@ class NB extends Translated {
   final String cancel = 'Avbryt';
 
   @override
-  final String newActivity = 'Helt ny';
+  final String newActivityChoice = 'Helt ny';
+
+  @override
+  final String newActivity = 'Ny aktivitet';
 
   @override
   final String editActivity = 'Endre aktivitet';
