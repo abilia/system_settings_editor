@@ -342,6 +342,7 @@ class _CreateActivityDialogState extends State<CreateActivityDialog>
   }
 
   Widget buildPickBasicActivity() {
+    final translate = Translator.of(context).translate;
     return BlocBuilder<SortableArchiveBloc<BasicActivityData>,
         SortableArchiveState<BasicActivityData>>(
       builder: (innerContext, sortableArchiveState) => ViewDialog(
@@ -354,6 +355,7 @@ class _CreateActivityDialogState extends State<CreateActivityDialog>
           (Sortable<BasicActivityData> s) => BasicActivityLibraryItem(
             basicActivityData: s.data,
           ),
+          translate.noBasicActivities,
         ),
       ),
     );

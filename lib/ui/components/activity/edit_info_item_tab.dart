@@ -93,6 +93,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     return Expanded(
       child: Column(children: [
         Row(
@@ -104,7 +105,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                   AbiliaIcons.ok,
                   size: smallIconSize,
                 ),
-                text: Text(Translator.of(context).translate.infoTypeChecklist),
+                text: Text(translate.infoTypeChecklist),
                 onTap: widget.onTap,
               ),
             ),
@@ -123,6 +124,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                         LibraryChecklist(
                       checklist: s.data.checklist,
                     ),
+                    emptyLibraryMessage: translate.noChecklists,
                   ),
                 );
                 if (selectedChecklist != null &&
@@ -269,6 +271,7 @@ class EditNoteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     return Expanded(
       child: Column(children: [
         Row(
@@ -280,7 +283,7 @@ class EditNoteWidget extends StatelessWidget {
                   AbiliaIcons.edit,
                   size: smallIconSize,
                 ),
-                text: Text(Translator.of(context).translate.infoTypeNote),
+                text: Text(translate.infoTypeNote),
                 onTap: onTap,
               ),
             ),
@@ -298,6 +301,7 @@ class EditNoteWidget extends StatelessWidget {
                     libraryItemGenerator: (Sortable<NoteData> s) => LibraryNote(
                       content: s.data.text,
                     ),
+                    emptyLibraryMessage: translate.noNotes,
                   ),
                 );
                 if (result != null && result != infoItem.text) {
