@@ -25,7 +25,6 @@ class Agenda extends StatefulWidget {
 
 class _AgendaState extends State<Agenda> with CalendarStateMixin {
   final center = GlobalKey();
-  final todayScrollOffset = 10.0;
   var scrollController = ScrollController(
     initialScrollOffset: 0,
     keepScrollOffset: false,
@@ -36,7 +35,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
     if (widget.activityState.isToday) {
       if (widget.activityState.pastActivities.isNotEmpty) {
         scrollController = ScrollController(
-          initialScrollOffset: -todayScrollOffset - Agenda.topPadding,
+          initialScrollOffset: -Agenda.topPadding,
           keepScrollOffset: false,
         );
       }
@@ -77,11 +76,12 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                             padding:
                                 const EdgeInsets.only(top: Agenda.topPadding),
                             sliver: SliverActivityList(
-                              state.isToday
-                                  ? state.pastActivities
-                                      .reversed // Reversed because slivers before center are called in reverse order
-                                      .toList()
-                                  : state.pastActivities,
+                              state.pastActivities,
+                              reversed: state.isToday,
+                              lastMargin: _lastPastPadding(
+                                state.pastActivities,
+                                state.notPastActivities,
+                              ),
                             ),
                           ),
                         SliverPadding(
@@ -105,7 +105,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
               ),
               ArrowDown(
                 controller: scrollController,
-                collapseMargin: Agenda.bottomPadding + todayScrollOffset,
+                collapseMargin: Agenda.bottomPadding,
               ),
               if (widget.memoplannerSettingsState.showCategories) ...[
                 CategoryLeft(
@@ -125,6 +125,17 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
       },
     );
   }
+
+  double _lastPastPadding(
+    List<ActivityOccasion> notPastActivities,
+    List<ActivityOccasion> pastActivities,
+  ) =>
+      pastActivities.isEmpty || notPastActivities.isEmpty
+          ? 0.0
+          : pastActivities.first.activity.category ==
+                  notPastActivities.first.activity.category
+              ? ActivityCard.cardMarginSmall
+              : ActivityCard.cardMarginLarge;
 }
 
 class SliverNoActivities extends StatelessWidget {
@@ -150,25 +161,41 @@ class SliverNoActivities extends StatelessWidget {
 
 class SliverActivityList extends StatelessWidget {
   final List<ActivityOccasion> activities;
+  // Reversed because slivers before center are called in reverse order
+  final bool reversed;
+  final double lastMargin;
+  final int _maxIndex;
   const SliverActivityList(
     this.activities, {
+    this.reversed = false,
+    this.lastMargin = 0.0,
     Key key,
-  }) : super(key: key);
+  })  : _maxIndex = activities.length - 1,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      sliver: SliverFixedExtentList(
-        itemExtent: ActivityCard.cardHeight + ActivityCard.cardMargin,
+      sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
-          (context, index) => ActivityCard(
-            activityOccasion: activities[index],
-            margin: ActivityCard.cardMargin / 2,
-          ),
+          (context, index) {
+            if (reversed) index = _maxIndex - index;
+            return ActivityCard(
+              activityOccasion: activities[index],
+              bottomPadding: _padding(index),
+            );
+          },
           childCount: activities.length,
         ),
       ),
     );
   }
+
+  double _padding(int index) => index >= _maxIndex
+      ? lastMargin
+      : activities[index].activity.category ==
+              activities[index + 1].activity.category
+          ? ActivityCard.cardMarginSmall
+          : ActivityCard.cardMarginLarge;
 }

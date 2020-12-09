@@ -24,7 +24,9 @@ class FullDayContainer extends StatelessWidget {
                 (fd) => Flexible(
                   flex: 2,
                   child: Padding(
-                    padding: EdgeInsets.only(right: ActivityCard.cardMargin),
+                    padding: const EdgeInsets.only(
+                      right: ActivityCard.cardMarginSmall,
+                    ),
                     child: ActivityCard(activityOccasion: fd),
                   ),
                 ),

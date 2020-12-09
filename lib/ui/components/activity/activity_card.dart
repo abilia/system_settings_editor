@@ -6,11 +6,12 @@ import 'package:seagull/ui/all.dart';
 
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
-  final double margin;
+  final double bottomPadding;
   final bool preview;
   static const double cardHeight = 56.0,
       cardPadding = 4.0,
-      cardMargin = 4.0,
+      cardMarginSmall = 6.0,
+      cardMarginLarge = 10.0,
       imageSize = 48.0,
       categorySideOffset = 56.0;
 
@@ -19,7 +20,7 @@ class ActivityCard extends StatelessWidget {
   const ActivityCard({
     Key key,
     @required this.activityOccasion,
-    this.margin = 0.0,
+    this.bottomPadding = 0.0,
     this.preview = false,
   })  : assert(activityOccasion != null),
         super(key: key);
@@ -47,7 +48,7 @@ class ActivityCard extends StatelessWidget {
       data: themeData,
       child: Builder(
         builder: (context) => Padding(
-          padding: EdgeInsets.symmetric(vertical: margin),
+          padding: EdgeInsets.only(bottom: bottomPadding),
           child: Tts.fromSemantics(
             activity.semanticsProperties(context),
             child: AnimatedContainer(
