@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:intl/intl.dart';
 
@@ -74,9 +75,10 @@ void main() {
       ..init();
   });
 
-  tearDown(() {
+  tearDown(() async {
     activityResponse = () => [];
     genericResponse = () => [];
+    await GetIt.I.reset();
   });
 
   Future goToTimePillar(

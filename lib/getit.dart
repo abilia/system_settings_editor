@@ -89,43 +89,38 @@ class GetItInitializer {
   FlutterTts _flutterTts;
   set flutterTts(FlutterTts flutterTts) => _flutterTts = flutterTts;
 
-  void init() {
-    GetIt.I
-      ..reset()
-      ..registerSingleton<BaseClient>(_baseClient ?? ClientWithDefaultHeaders())
-      ..registerSingleton<TokenDb>(_tokenDb ?? TokenDb(_sharedPreferences))
-      ..registerSingleton<LicenseDb>(
-          _licenseDb ?? LicenseDb(_sharedPreferences))
-      ..registerSingleton<FirebasePushService>(
-          _firebasePushService ?? FirebasePushService())
-      ..registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database))
-      ..registerSingleton<UserDb>(_userDb ?? UserDb(_sharedPreferences))
-      ..registerSingleton<Database>(_database)
-      ..registerSingleton<SeagullLogger>(
-        _seagullLogger ??
-            SeagullLogger(
-              documentsDir: _documentsDirectory?.path,
-              preferences: _sharedPreferences,
-              loggingType: {},
-            ),
-      )
-      ..registerSingleton<BaseUrlDb>(
-          _baseUrlDb ?? BaseUrlDb(_sharedPreferences))
-      ..registerSingleton<AlarmScheduler>(
-          _alarmScheduler ?? scheduleAlarmNotificationsIsolated)
-      ..registerSingleton<Ticker>(_ticker ?? Ticker())
-      ..registerSingleton<AlarmNavigator>(_alarmNavigator ?? AlarmNavigator())
-      ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
-      ..registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database))
-      ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
-      ..registerSingleton<SettingsDb>(
-        _settingsDb ?? SettingsDb(_sharedPreferences),
-      )
-      ..registerSingleton<FileStorage>(
-          _fileStorage ?? FileStorage(_documentsDirectory?.path))
-      ..registerSingleton<MultipartRequestBuilder>(
-          _multipartRequestBuilder ?? MultipartRequestBuilder())
-      ..registerSingleton<SyncDelays>(_syncDelay ?? const SyncDelays())
-      ..registerSingleton<FlutterTts>(_flutterTts);
-  }
+  void init() => GetIt.I
+    ..registerSingleton<BaseClient>(_baseClient ?? ClientWithDefaultHeaders())
+    ..registerSingleton<TokenDb>(_tokenDb ?? TokenDb(_sharedPreferences))
+    ..registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb(_sharedPreferences))
+    ..registerSingleton<FirebasePushService>(
+        _firebasePushService ?? FirebasePushService())
+    ..registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database))
+    ..registerSingleton<UserDb>(_userDb ?? UserDb(_sharedPreferences))
+    ..registerSingleton<Database>(_database)
+    ..registerSingleton<SeagullLogger>(
+      _seagullLogger ??
+          SeagullLogger(
+            documentsDir: _documentsDirectory?.path,
+            preferences: _sharedPreferences,
+            loggingType: {},
+          ),
+    )
+    ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb(_sharedPreferences))
+    ..registerSingleton<AlarmScheduler>(
+        _alarmScheduler ?? scheduleAlarmNotificationsIsolated)
+    ..registerSingleton<Ticker>(_ticker ?? Ticker())
+    ..registerSingleton<AlarmNavigator>(_alarmNavigator ?? AlarmNavigator())
+    ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
+    ..registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database))
+    ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
+    ..registerSingleton<SettingsDb>(
+      _settingsDb ?? SettingsDb(_sharedPreferences),
+    )
+    ..registerSingleton<FileStorage>(
+        _fileStorage ?? FileStorage(_documentsDirectory?.path))
+    ..registerSingleton<MultipartRequestBuilder>(
+        _multipartRequestBuilder ?? MultipartRequestBuilder())
+    ..registerSingleton<SyncDelays>(_syncDelay ?? const SyncDelays())
+    ..registerSingleton<FlutterTts>(_flutterTts);
 }

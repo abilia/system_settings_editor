@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -19,6 +20,9 @@ void main() {
         ..flutterTts = MockFlutterTts()
         ..init();
     });
+
+    tearDown(GetIt.I.reset);
+
     final fileId = '351d5e7d-0d87-4037-9829-538a14936128',
         path = '/images/Basic/Basic/bingo.gif';
 

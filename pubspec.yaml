@@ -15,35 +15,35 @@ dependencies:
   equatable: ^1.2.5
   http: ^0.12.0+4
   uuid: ^2.0.4
-  firebase_core: ^0.5.2
-  firebase_messaging: ^8.0.0-dev.8
+  firebase_core: ^0.6.0
+  firebase_messaging: ^8.0.0-dev.12
+  firebase_analytics: ^7.0.0
+  firebase_crashlytics: ^0.3.0
   sqflite: ^1.2.2
-  get_it: ^4.0.2
+  get_it: ^5.0.2
   shared_preferences: ^0.5.6+2
   path_provider: ^1.6.5
   package_info: ^0.4.0+14
   flutter_local_notifications:
     git:
       url: git://github.com/abilia/flutter_local_notifications.git
-      ref: flutter_local_notifications-v3.0.1+4-fork-1.6
+      ref: flutter_local_notifications-v3.0.3-fork-1.8
       path: flutter_local_notifications/
   transparent_image: ^1.0.0
-  rxdart: ^0.24.1
+  rxdart: ^0.25.0
   dotted_border: ^1.0.6
   dotted_line: ^2.0.2
   synchronized: ^2.2.0
   image_picker: ^0.6.3+4
   mime: ^0.9.6+3
   exif: ^1.0.2
-  devicelocale: ^0.2.3
-  firebase_analytics: ^6.2.0
-  firebase_crashlytics: ^0.2.1+1
+  devicelocale: ^0.3.3
   collection: ^1.14.12
   flutter_appcenter_bundle: 3.2.0+2
   logging: ^0.11.4
-  photo_view: ^0.9.2
-  flutter_archive: ^1.0.2
-  flutter_tts: ^1.2.7
+  photo_view: ^0.10.3
+  flutter_archive: ^2.0.1
+  flutter_tts: ^2.0.0
   flutter_native_timezone: ^1.0.4
   permission_handler:
     git:
@@ -58,10 +58,10 @@ dev_dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.8.1
   mockito: ^4.1.1
-  # flutter_driver:
-  #   sdk: flutter
+  flutter_driver:
+    sdk: flutter
   test: any
-  file: ^5.1.0
+  file: ^6.0.0-nullsafety.2
   build_runner: ^1.10.0
   sqflite_common_ffi: ^1.1.0+1
 
