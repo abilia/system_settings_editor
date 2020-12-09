@@ -91,11 +91,13 @@ class SortableLibrary<T extends SortableData> extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Padding(
               padding: const EdgeInsets.only(top: 20.0),
-              child: Text(
-                archiveState.currentFolderId == null
-                    ? emptyLibraryMessage
-                    : Translator.of(context).translate.emptyFolder,
-                style: Theme.of(context).textTheme.bodyText1,
+              child: Tts(
+                child: Text(
+                  archiveState.currentFolderId == null
+                      ? emptyLibraryMessage
+                      : Translator.of(context).translate.emptyFolder,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
               ),
             ),
           );

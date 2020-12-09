@@ -6,12 +6,29 @@ import 'package:seagull/ui/all.dart';
 class ImageArchive extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     return BlocBuilder<SortableArchiveBloc<ImageArchiveData>,
         SortableArchiveState<ImageArchiveData>>(
       builder: (context, archiveState) {
         final List<Sortable<ImageArchiveData>> currentFolderContent =
             archiveState.allByFolder[archiveState.currentFolderId] ?? [];
         currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+        if (currentFolderContent.isEmpty) {
+          return Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Tts(
+                child: Text(
+                  archiveState.currentFolderId == null
+                      ? translate.noImages
+                      : translate.emptyFolder,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+            ),
+          );
+        }
         return GridView.count(
           padding: EdgeInsets.symmetric(vertical: ViewDialog.verticalPadding),
           crossAxisCount: 3,

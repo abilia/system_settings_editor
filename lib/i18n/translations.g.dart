@@ -160,6 +160,8 @@ abstract class Translated {
 
   final String noNotes = 'You have no notes';
 
+  final String noImages = 'You have no images';
+
   final String missingTitleOrImageAndStartTime =
       'Your activity should contain an image or name and start time.';
 
@@ -538,6 +540,9 @@ class SV extends Translated {
 
   @override
   final String noNotes = 'Du har inga anteckningar';
+
+  @override
+  final String noImages = 'Du har inga bilder';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -960,6 +965,9 @@ class DA extends Translated {
   final String noNotes = 'Du har ingen noter';
 
   @override
+  final String noImages = 'Du har ingen billeder';
+
+  @override
   final String missingTitleOrImage =
       'En aktivitet skal have enten et billede eller et navn.';
 
@@ -1288,6 +1296,9 @@ class NL extends Translated {
 
   @override
   final String noNotes = 'Je hebt geen aantekeningen';
+
+  @override
+  final String noImages = 'Je hebt geen afbeeldingen';
 
   @override
   final String missingTitleOrImage =
@@ -1621,6 +1632,9 @@ class FI extends Translated {
   final String noNotes = 'Sinulla ei ole muistiinpanoja';
 
   @override
+  final String noImages = 'Sinulla ei ole kuvia';
+
+  @override
   final String missingTitleOrImage =
       'Tämä aktiviteetti tarvitsee kuvan tai nimen.';
 
@@ -1950,6 +1964,9 @@ class DE extends Translated {
 
   @override
   final String noNotes = 'Sie haben keine Notizen';
+
+  @override
+  final String noImages = 'Sie haben keine Bilder';
 
   @override
   final String missingTitleOrImage =
@@ -2284,6 +2301,9 @@ class NB extends Translated {
 
   @override
   final String noNotes = 'Du har ingen notater';
+
+  @override
+  final String noImages = 'Du har ingen bilder';
 
   @override
   final String missingTitleOrImage =
