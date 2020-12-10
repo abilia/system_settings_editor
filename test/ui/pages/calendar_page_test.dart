@@ -26,6 +26,8 @@ void main() {
       previousDayButtonFinder =
           find.byIcon(AbiliaIcons.return_to_previous_page);
 
+  final translate = Locales.language.values.first;
+
   Future goToTimePillar(WidgetTester tester) async {
     await tester.tap(find.byKey(TestKey.changeView));
     await tester.pumpAndSettle();
@@ -128,6 +130,18 @@ void main() {
       await tester.tap(find.byKey(TestKey.newActivityButton));
       await tester.pumpAndSettle();
       expect(find.byType(EditActivityPage), findsOneWidget);
+    });
+
+    testWidgets('Empty message when no basic activities',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.addActivity));
+      await tester.pumpAndSettle();
+      expect(find.byType(CreateActivityDialog), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.selectBasicActivityButton));
+      await tester.pumpAndSettle();
+      expect(find.text(translate.noBasicActivities), findsOneWidget);
     });
 
     testWidgets('New activity from basic activity gets correct title',

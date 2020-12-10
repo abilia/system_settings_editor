@@ -5,10 +5,12 @@ import 'package:seagull/ui/all.dart';
 
 class SortableLibraryDialog<T extends SortableData> extends StatelessWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
+  final String emptyLibraryMessage;
 
   const SortableLibraryDialog({
     Key key,
     @required this.libraryItemGenerator,
+    @required this.emptyLibraryMessage,
   }) : super(key: key);
 
   @override
@@ -31,7 +33,10 @@ class SortableLibraryDialog<T extends SortableData> extends StatelessWidget {
               ? null
               : SortableLibraryBackButton<T>(),
           heading: _getArchiveHeading(sortableArchiveState, context),
-          child: SortableLibrary<T>(libraryItemGenerator),
+          child: SortableLibrary<T>(
+            libraryItemGenerator,
+            emptyLibraryMessage,
+          ),
         ),
       ),
     );
@@ -70,8 +75,9 @@ typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
 
 class SortableLibrary<T extends SortableData> extends StatelessWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
+  final String emptyLibraryMessage;
 
-  const SortableLibrary(this.libraryItemGenerator);
+  const SortableLibrary(this.libraryItemGenerator, this.emptyLibraryMessage);
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +86,22 @@ class SortableLibrary<T extends SortableData> extends StatelessWidget {
         final List<Sortable<T>> currentFolderContent =
             archiveState.allByFolder[archiveState.currentFolderId] ?? [];
         currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+        if (currentFolderContent.isEmpty) {
+          return Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Tts(
+                child: Text(
+                  archiveState.currentFolderId == null
+                      ? emptyLibraryMessage
+                      : Translator.of(context).translate.emptyFolder,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+            ),
+          );
+        }
         return GridView.count(
           padding: EdgeInsets.symmetric(vertical: ViewDialog.verticalPadding),
           crossAxisCount: 3,

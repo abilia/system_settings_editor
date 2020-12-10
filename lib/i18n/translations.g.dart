@@ -153,6 +153,16 @@ abstract class Translated {
 
   final String noEndTime = 'No end time';
 
+  final String emptyFolder = 'The folder is empty';
+
+  final String noBasicActivities = 'You have no basic activities';
+
+  final String noChecklists = 'You have no checklists';
+
+  final String noNotes = 'You have no notes';
+
+  final String noImages = 'You have no images';
+
   final String missingTitleOrImageAndStartTime =
       'Your activity should contain an image or name and start time.';
 
@@ -522,6 +532,21 @@ class SV extends Translated {
 
   @override
   final String noEndTime = 'Ingen sluttid';
+
+  @override
+  final String emptyFolder = 'Mappen är tom';
+
+  @override
+  final String noBasicActivities = 'Du har inga basaktiviteter';
+
+  @override
+  final String noChecklists = 'Du har inga checklistor';
+
+  @override
+  final String noNotes = 'Du har inga anteckningar';
+
+  @override
+  final String noImages = 'Du har inga bilder';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -935,6 +960,21 @@ class DA extends Translated {
   final String noEndTime = 'Ingen sluttid';
 
   @override
+  final String emptyFolder = 'Mappen er tom';
+
+  @override
+  final String noBasicActivities = 'Du har ingen standardaktiviteter';
+
+  @override
+  final String noChecklists = 'Du har ingen tjeklister';
+
+  @override
+  final String noNotes = 'Du har ingen noter';
+
+  @override
+  final String noImages = 'Du har ingen billeder';
+
+  @override
   final String missingTitleOrImage =
       'En aktivitet skal have enten et billede eller et navn.';
 
@@ -1254,6 +1294,21 @@ class NL extends Translated {
 
   @override
   final String noEndTime = 'Geen eindtijd';
+
+  @override
+  final String emptyFolder = 'De map is leeg';
+
+  @override
+  final String noBasicActivities = 'Je hebt geen standaardactiviteiten';
+
+  @override
+  final String noChecklists = 'Je hebt geen checklists';
+
+  @override
+  final String noNotes = 'Je hebt geen aantekeningen';
+
+  @override
+  final String noImages = 'Je hebt geen afbeeldingen';
 
   @override
   final String missingTitleOrImage =
@@ -1578,6 +1633,21 @@ class FI extends Translated {
   final String noEndTime = 'Ei loppuaikaa';
 
   @override
+  final String emptyFolder = 'Kansio on tyhjä';
+
+  @override
+  final String noBasicActivities = 'Sinulla ei ole perusaktiviteettit';
+
+  @override
+  final String noChecklists = 'Sinulla ei ole tarkistuslistoja';
+
+  @override
+  final String noNotes = 'Sinulla ei ole muistiinpanoja';
+
+  @override
+  final String noImages = 'Sinulla ei ole kuvia';
+
+  @override
   final String missingTitleOrImage =
       'Tämä aktiviteetti tarvitsee kuvan tai nimen.';
 
@@ -1898,6 +1968,21 @@ class DE extends Translated {
 
   @override
   final String noEndTime = 'Keine Endezeit';
+
+  @override
+  final String emptyFolder = 'Der Ordner leer ist';
+
+  @override
+  final String noBasicActivities = 'Sie haben keine Standardaktivitäten';
+
+  @override
+  final String noChecklists = 'Sie haben keine Checklisten';
+
+  @override
+  final String noNotes = 'Sie haben keine Notizen';
+
+  @override
+  final String noImages = 'Sie haben keine Bilder';
 
   @override
   final String missingTitleOrImage =
@@ -2223,6 +2308,21 @@ class NB extends Translated {
 
   @override
   final String noEndTime = 'Ingen sluttid';
+
+  @override
+  final String emptyFolder = 'Mappen er tom';
+
+  @override
+  final String noBasicActivities = 'Du har ingen standardaktiviteter';
+
+  @override
+  final String noChecklists = 'Du har ingen sjekklister';
+
+  @override
+  final String noNotes = 'Du har ingen notater';
+
+  @override
+  final String noImages = 'Du har ingen bilder';
 
   @override
   final String missingTitleOrImage =

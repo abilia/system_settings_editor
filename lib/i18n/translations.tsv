@@ -13,7 +13,7 @@ noLicense	This account has no valid license.	Det här kontot saknar giltig licen
 licenseExpired	License is expired	Licensen har gått ut	Licensen er udløbet	Licentie verlopen	Lisenssi on vanhentunut	Lizenz abgelaufen	Lisensen har utløpt
 licenseExpiredMessage	Your license has expired and MEMOplanner Go can no longer be used. Contact your supplier to extend the license.	Licensen har gått ut och Memoplanner kan därför inte längre användas. Kontakta din förskrivare om du vill förlänga licensen.	Licensen er udløbet, og MEMOplanner Go kan ikke længere bruges. Kontakt din bevilgende kontaktperson, hvis du ønsker at forlænge licensen.	De licentie is verlopen en MEMOplanner Go kan niet langer worden gebruikt. Neem contact op met uw aanbieder om de licentie te verlengen.	Lisenssisi on vanhentunut, eikä Memoplanneria voi enää käyttää. Jatka lisenssiä ottamalla yhteyttä jälleenmyyjään.	Ihre Lizenz ist abgelaufen und MEMOplanner Go kann nicht mehr genutzt werden. Wenden Sie sich an Ihre Bezugsquelle, um die Lizenz zu verlängern.	Lisensen er utløpt og MEMOplanner Go kan ikke lenger brukes. Kontakt din forskriver hvis du ønsker å forlenge lisensen.
 							
-### Time releted							
+### Time related							
 fullDay	All day	Heldag	Hele dagen	Hele dag	Koko päivä	Ganztägig	Hele dagen
 morning	morning	morgon	morgen	ochtend	aamu	frühmorgens	morgen
 forenoon	forenoon	förmiddag	formiddag	midden-ochtend	aamupäivän puolivälissä	Vormittag	formiddag
@@ -75,7 +75,13 @@ date	Date	Datum	Dato	Datum	Päivämäärä	Datum	Dato
 startTime	Start time	Starttid	Starttid	Starttijd	Aloitusaika	Startzeit	Starttid
 endTime	End time	Sluttid	Sluttid	Eindtijd	Päättymisaika	Endezeit	Sluttid
 noEndTime	No end time	Ingen sluttid	Ingen sluttid	Geen eindtijd	Ei loppuaikaa	Keine Endezeit	Ingen sluttid
-# Errors							
+emptyFolder	The folder is empty	Mappen är tom	Mappen er tom	De map is leeg	Kansio on tyhjä	Der Ordner leer ist	Mappen er tom
+noBasicActivities	You have no basic activities	Du har inga basaktiviteter	Du har ingen standardaktiviteter	Je hebt geen standaardactiviteiten	Sinulla ei ole perusaktiviteettit	Sie haben keine Standardaktivitäten	Du har ingen standardaktiviteter
+noChecklists	You have no checklists	Du har inga checklistor	Du har ingen tjeklister	Je hebt geen checklists	Sinulla ei ole tarkistuslistoja	Sie haben keine Checklisten	Du har ingen sjekklister
+noNotes	You have no notes	Du har inga anteckningar	Du har ingen noter	Je hebt geen aantekeningen	Sinulla ei ole muistiinpanoja	Sie haben keine Notizen	Du har ingen notater
+noImages	You have no images	Du har inga bilder	Du har ingen billeder	Je hebt geen afbeeldingen	Sinulla ei ole kuvia	Sie haben keine Bilder	Du har ingen bilder
+
+### Errors							
 missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.					
 missingTitleOrImage	An activity needs an image or a name.	En aktivitet måste ha antingen en bild eller ett namn.	En aktivitet skal have enten et billede eller et navn.	Deze activiteit heeft een afbeelding of een naam nodig.	Tämä aktiviteetti tarvitsee kuvan tai nimen.	Diese Aktivität braucht ein Bild oder einen Namen.	En aktivitet må ha enten et bilde eller et navn.
 missingStartTime	You must enter a start time.	Du måste ange en starttid.	Du skal angive en starttid.	U moet een starttijd instellen.	Anna aloitusaika.	Sie müssen eine Startzeit eingeben:	En aktivitet må ha en starttid.
