@@ -796,6 +796,15 @@ class SV extends Translated {
 
   @override
   final String allowAccessBody2 = 'Du kan alltid göra det senare från';
+
+  @override
+  final String about = 'Information';
+
+  @override
+  final String version = 'Version';
+
+  @override
+  final String producer = 'Producent';
 }
 
 class DA extends Translated {
@@ -1135,6 +1144,15 @@ class DA extends Translated {
   @override
   final String longPressInfoText =
       'Tryk og hold ca. 1½ sekund på enhver funktion for at få den læst til ved talesyntese';
+
+  @override
+  final String about = 'Information';
+
+  @override
+  final String version = 'Version';
+
+  @override
+  final String producer = 'Producent';
 }
 
 class NL extends Translated {
@@ -1471,6 +1489,15 @@ class NL extends Translated {
   @override
   final String longPressInfoText =
       'Tik en houd ongeveer 1½ seconde vast op een functie om deze te laten voorlezen door spraaksynthese';
+
+  @override
+  final String about = 'Informatie';
+
+  @override
+  final String version = 'Versie';
+
+  @override
+  final String producer = 'Producent';
 }
 
 class FI extends Translated {
@@ -1808,6 +1835,15 @@ class FI extends Translated {
   @override
   final String longPressInfoText =
       'Napauta ja pidä painettuna noin 1,5 sekuntia mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla';
+
+  @override
+  final String about = 'Tiedot';
+
+  @override
+  final String version = 'Versio';
+
+  @override
+  final String producer = 'Valmistaja';
 }
 
 class DE extends Translated {
@@ -2147,6 +2183,15 @@ class DE extends Translated {
   @override
   final String longPressInfoText =
       'Tippen und halten Sie etwa 1½ Sekunden lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen';
+
+  @override
+  final String about = 'Information';
+
+  @override
+  final String version = 'Version';
+
+  @override
+  final String producer = 'Hersteller';
 }
 
 class NB extends Translated {
@@ -2485,4 +2530,13 @@ class NB extends Translated {
   @override
   final String longPressInfoText =
       'Trykk og hold i ca. 1½ sekund på en funksjon for å få den lest opp ved talesyntese';
+
+  @override
+  final String about = 'Informasjon';
+
+  @override
+  final String version = 'Versjon';
+
+  @override
+  final String producer = 'Produsent';
 }

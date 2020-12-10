@@ -174,7 +174,7 @@ allowAccessCameraBody	Allow access to camera to be able to take a photo from the
 allowAccessBody2	You can always do that later from the	Du kan alltid göra det senare från					
 							
 ### About							
-about	About						
-version	Version						
-producer	Producer						
+about	About	Information	Information	Informatie	Tiedot	Information	Informasjon
+version	Version	Version	Version	Versie	Versio	Version	Versjon
+producer	Producer	Producent	Producent	Producent	Valmistaja	Hersteller	Produsent
 aboutText	This product is developed in accordance with and complies to all necessary requirements, regulations and directives for medical devices.						
