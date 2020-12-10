@@ -24,13 +24,13 @@ class AllDayList extends StatelessWidget {
             child: Scaffold(
               body: Scrollbar(
                 child: ListView.builder(
-                  itemExtent: ActivityCard.cardHeight + ActivityCard.cardMargin,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  itemExtent:
+                      ActivityCard.cardHeight + ActivityCard.cardMarginSmall,
+                  padding: const EdgeInsets.all(12),
                   itemCount: state.fullDayActivities.length,
                   itemBuilder: (context, index) => ActivityCard(
                     activityOccasion: state.fullDayActivities[index],
-                    margin: ActivityCard.cardMargin / 2,
+                    bottomPadding: ActivityCard.cardMarginSmall,
                   ),
                 ),
               ),
