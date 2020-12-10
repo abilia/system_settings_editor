@@ -29,7 +29,7 @@ void main() {
   final translate = Locales.language.values.first;
 
   Future goToTimePillar(WidgetTester tester) async {
-    await tester.tap(find.byKey(TestKey.changeView));
+    await tester.tap(find.byType(EyeButton));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(TestKey.timePillarButton));
     await tester.pumpAndSettle();

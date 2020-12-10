@@ -10,7 +10,6 @@ class TestKey {
       loginError = Key('loginError'),
       goToNowButton = Key('goToNow'),
       appBarCloseButton = Key('appBarCloseButton'),
-      changeView = Key('changeView'),
       timePillarButton = Key('timePillarButton'),
       timePillarSettingsButton = Key('timePillarSettingsButton'),
       agendaListButton = Key('agendaListButton  '),

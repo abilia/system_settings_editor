@@ -215,7 +215,7 @@ class CalendarBottomBar extends StatelessWidget {
   final CalendarType currentView;
   final DateTime day;
   final Function goToNow;
-  final barHeigt = 64.0, calendarSwitchButtonWidth = 72.0;
+  final barHeigt = 64.0;
 
   const CalendarBottomBar({
     Key key,
@@ -231,41 +231,25 @@ class CalendarBottomBar extends StatelessWidget {
       child: BottomAppBar(
         child: Container(
           height: barHeigt,
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Stack(
             children: <Widget>[
-              ActionButton(
-                key: TestKey.changeView,
-                width: calendarSwitchButtonWidth,
-                padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
-                child: Row(children: <Widget>[
-                  Icon(
-                    currentView == CalendarType.LIST
-                        ? AbiliaIcons.list_order
-                        : AbiliaIcons.timeline,
-                  ),
-                  Icon(AbiliaIcons.navigation_down),
-                ]),
-                onPressed: () async {
-                  final result = await showViewDialog<CalendarType>(
-                    context: context,
-                    builder: (context) => ChangeCalendarDialog(
-                      currentViewType: currentView,
-                    ),
-                  );
-                  if (result != null) {
-                    BlocProvider.of<CalendarViewBloc>(context)
-                        .add(CalendarViewChanged(result));
-                  }
-                },
+              Align(
+                alignment: Alignment.centerLeft,
+                child: EyeButton(currentView: currentView),
               ),
               Positioned(
-                left: calendarSwitchButtonWidth + 14.0,
-                child: GoToNowButton(onPressed: goToNow),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: AddActivityButton(day: day),
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GoToNowButton(onPressed: goToNow),
+                      const SizedBox(width: 14.0),
+                      AddActivityButton(day: day),
+                      const SizedBox(width: 14.0 + ActionButton.size),
+                    ],
+                  ),
+                ),
               ),
               Align(
                 alignment: Alignment.centerRight,
@@ -275,6 +259,34 @@ class CalendarBottomBar extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class EyeButton extends StatelessWidget {
+  const EyeButton({
+    Key key,
+    @required this.currentView,
+  }) : super(key: key);
+
+  final CalendarType currentView;
+
+  @override
+  Widget build(BuildContext context) {
+    return ActionButton(
+      child: Icon(AbiliaIcons.show),
+      onPressed: () async {
+        final result = await showViewDialog<CalendarType>(
+          context: context,
+          builder: (context) => ChangeCalendarDialog(
+            currentViewType: currentView,
+          ),
+        );
+        if (result != null) {
+          BlocProvider.of<CalendarViewBloc>(context)
+              .add(CalendarViewChanged(result));
+        }
+      },
     );
   }
 }
@@ -312,100 +324,6 @@ class MenuButton extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class CreateActivityDialogResponse {
-  final BasicActivityDataItem basicActivityData;
-
-  CreateActivityDialogResponse({this.basicActivityData});
-}
-
-class CreateActivityDialog extends StatefulWidget {
-  const CreateActivityDialog({Key key}) : super(key: key);
-
-  @override
-  _CreateActivityDialogState createState() => _CreateActivityDialogState(false);
-}
-
-class _CreateActivityDialogState extends State<CreateActivityDialog>
-    with SingleTickerProviderStateMixin {
-  bool pickBasicActivityView;
-
-  _CreateActivityDialogState(this.pickBasicActivityView);
-  @override
-  Widget build(BuildContext context) {
-    return pickBasicActivityView
-        ? buildPickBasicActivity()
-        : buildSelectNewOrBase();
-  }
-
-  Widget buildPickBasicActivity() {
-    final translate = Translator.of(context).translate;
-    return BlocBuilder<SortableArchiveBloc<BasicActivityData>,
-        SortableArchiveState<BasicActivityData>>(
-      builder: (innerContext, sortableArchiveState) => ViewDialog(
-        verticalPadding: 0,
-        backButton: sortableArchiveState.currentFolderId == null
-            ? null
-            : SortableLibraryBackButton<BasicActivityData>(),
-        heading: getSortableArchiveHeading(sortableArchiveState),
-        child: SortableLibrary<BasicActivityData>(
-          (Sortable<BasicActivityData> s) => BasicActivityLibraryItem(
-            basicActivityData: s.data,
-          ),
-          translate.noBasicActivities,
-        ),
-      ),
-    );
-  }
-
-  Text getSortableArchiveHeading(SortableArchiveState state) {
-    final folderName = state.allById[state.currentFolderId]?.data?.title() ??
-        Translator.of(context).translate.basicActivities;
-    return Text(folderName, style: abiliaTheme.textTheme.headline6);
-  }
-
-  Widget buildSelectNewOrBase() {
-    final translate = Translator.of(context).translate;
-    return ViewDialog(
-      heading: Text(
-        translate.createActivity,
-        style: abiliaTextTheme.headline6,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          PickField(
-            key: TestKey.newActivityButton,
-            leading: Icon(
-              AbiliaIcons.new_icon,
-              size: smallIconSize,
-            ),
-            text: Text(
-              translate.newActivityChoice,
-              style: abiliaTheme.textTheme.bodyText1,
-            ),
-            onTap: () async => await Navigator.of(context)
-                .maybePop(CreateActivityDialogResponse()),
-          ),
-          SizedBox(height: 8.0),
-          PickField(
-            key: TestKey.selectBasicActivityButton,
-            leading: Icon(AbiliaIcons.day, size: smallIconSize),
-            text: Text(
-              translate.fromBasicActivity,
-              style: abiliaTheme.textTheme.bodyText1,
-            ),
-            onTap: () async => setState(
-              () {
-                pickBasicActivityView = true;
-              },
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
