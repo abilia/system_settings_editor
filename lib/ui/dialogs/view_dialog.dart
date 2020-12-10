@@ -125,11 +125,6 @@ class ViewDialog extends StatelessWidget {
   final GestureTapCallback onOk;
   final GestureTapCallback onCancle;
 
-  static const divider = Divider(
-    color: AbiliaColors.white120,
-    endIndent: leftPadding,
-    height: 0,
-  );
   static const double verticalPadding = 24.0,
       leftPadding = 12.0,
       rightPadding = 16.0,
@@ -208,7 +203,7 @@ class ViewDialog extends StatelessWidget {
                             ),
                         ],
                       ),
-                    if (backButton != null || heading != null) divider,
+                    if (backButton != null || heading != null) const Divider(),
                     Flexible(
                       flex: expanded ? 1 : 0,
                       child: Padding(

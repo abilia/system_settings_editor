@@ -325,6 +325,15 @@ abstract class Translated {
       'Allow access to camera to be able to take a photo from the device.';
 
   final String allowAccessBody2 = 'You can always do that later from the';
+
+  final String about = 'About';
+
+  final String version = 'Version';
+
+  final String producer = 'Producer';
+
+  final String aboutText =
+      'This product is developed in accordance with and complies to all necessary requirements, regulations and directives for medical devices.';
 }
 
 class EN extends Translated {}

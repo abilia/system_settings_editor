@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
-import 'package:package_info/package_info.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
 
@@ -62,36 +61,4 @@ class BackEndButton extends StatelessWidget {
           ),
         ],
       );
-}
-
-class VersionInfo extends StatelessWidget {
-  final bool showUserId;
-  const VersionInfo({
-    Key key,
-    this.showUserId = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        builder: (context, state) {
-          return Column(
-            children: [
-              FutureBuilder(
-                future: PackageInfo.fromPlatform(),
-                builder: (context, AsyncSnapshot<PackageInfo> snapshot) => Text(
-                  '${snapshot?.data?.version ?? ''} (${snapshot?.data?.buildNumber ?? ''})',
-                ),
-              ),
-              if (showUserId && state is Authenticated)
-                Text(
-                  '${state.userId} (${backEndEnviorments.map((key, value) => MapEntry(value, key))[state.userRepository.baseUrl]})',
-                ),
-            ],
-          );
-        },
-      ),
-    );
-  }
 }

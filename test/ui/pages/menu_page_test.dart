@@ -100,6 +100,27 @@ void main() {
     await tester.verifyNoTts(find.text(translate.longPressInfoText));
   });
 
+  testWidgets('About page', (WidgetTester tester) async {
+    when(mockSettingsDb.textToSpeech).thenReturn(true);
+    await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
+    await tester.pumpAndSettle();
+    expect(find.byType(AboutPickField), findsOneWidget);
+    await tester.tap(find.byType(AboutPickField));
+    await tester.pumpAndSettle();
+    expect(find.byType(AboutPage), findsOneWidget);
+    final textWidgets = find
+        .byType(Text)
+        .evaluate()
+        .whereType<StatelessElement>()
+        .map((e) => e.widget)
+        .whereType<Text>()
+        .map((t) => t.data)
+        .where((s) => s.isNotEmpty);
+    for (var text in textWidgets) {
+      await tester.verifyTts(find.text(text), exact: text);
+    }
+  });
+
   group('permission page', () {
     tearDown(setupPermissions);
 

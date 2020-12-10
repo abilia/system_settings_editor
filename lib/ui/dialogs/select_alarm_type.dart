@@ -105,7 +105,7 @@ class _SelectAlarmDialogState extends State<SelectAlarmDialog> {
       onChanged: _changeType,
       trailing: [
         const SizedBox(height: ViewDialog.seperatorPadding),
-        ViewDialog.divider,
+        const Divider(),
         const SizedBox(height: ViewDialog.seperatorPadding),
         AlarmOnlyAtStartSwitch(
           alarm: alarm,

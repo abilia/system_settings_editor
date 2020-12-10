@@ -6,6 +6,8 @@ import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
+import 'package:seagull/repository/end_point.dart';
 import 'package:seagull/ui/all.dart';
 
 class LogoutPage extends StatelessWidget {
@@ -34,14 +36,21 @@ class LogoutPage extends StatelessWidget {
 class ProfilePictureNameAndEmail extends StatefulWidget {
   @override
   _ProfilePictureNameAndEmailState createState() =>
-      _ProfilePictureNameAndEmailState(GetIt.I<UserDb>().getUser());
+      _ProfilePictureNameAndEmailState(
+        user: GetIt.I<UserDb>().getUser(),
+        baseUrl: GetIt.I<BaseUrlDb>().getBaseUrl(),
+      );
 }
 
 class _ProfilePictureNameAndEmailState
     extends State<ProfilePictureNameAndEmail> {
   bool showVersion = false;
   final User user;
-  _ProfilePictureNameAndEmailState(this.user);
+  final String enviorment;
+  _ProfilePictureNameAndEmailState({
+    this.user,
+    String baseUrl,
+  }) : enviorment = backEndEnviorments.map((k, v) => MapEntry(v, k))[baseUrl];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -74,7 +83,7 @@ class _ProfilePictureNameAndEmailState
                   .copyWith(color: AbiliaColors.black75),
             ),
           ),
-        if (showVersion) VersionInfo(showUserId: true),
+        if (showVersion) Text('${user.id} ($enviorment)'),
       ],
     );
   }
