@@ -13,6 +13,7 @@ class MenuPage extends StatelessWidget {
   final widgets = const <Widget>[
     TextToSpeechSwitch(),
     PermissionPickField(),
+    AboutPickField(),
     LogoutPickField(),
     if (Config.alpha) FakeTicker(),
   ];
@@ -48,6 +49,24 @@ class LogoutPickField extends StatelessWidget {
       ),
     );
   }
+}
+
+class AboutPickField extends StatelessWidget {
+  const AboutPickField({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) => PickField(
+        leading: Icon(AbiliaIcons.information),
+        text: Text(Translator.of(context).translate.about),
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => CopiedAuthProviders(
+              blocContext: context,
+              child: AboutPage(),
+            ),
+            settings: RouteSettings(name: 'AboutPage'),
+          ),
+        ),
+      );
 }
 
 class TextToSpeechSwitch extends StatelessWidget {

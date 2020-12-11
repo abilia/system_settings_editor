@@ -137,7 +137,7 @@ class _LoginFormState extends State<LoginForm> {
                   padding32,
                   if (_showBackends) ...[
                     BackendSwitches(),
-                    VersionInfo(),
+                    const Center(child: Version()),
                   ],
                 ],
               ),

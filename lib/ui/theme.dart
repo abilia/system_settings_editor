@@ -27,6 +27,12 @@ ThemeData abiliaTheme = ThemeData(
   bottomAppBarTheme: BottomAppBarTheme(color: AbiliaColors.black80),
   cupertinoOverrideTheme: CupertinoThemeData(primaryColor: AbiliaColors.black),
   toggleableActiveColor: AbiliaColors.green,
+  dividerTheme: const DividerThemeData(
+    color: AbiliaColors.white120,
+    endIndent: 12.0,
+    thickness: 1.0,
+    space: 0.0,
+  ),
 );
 
 const InputDecorationTheme inputDecorationTheme = InputDecorationTheme(

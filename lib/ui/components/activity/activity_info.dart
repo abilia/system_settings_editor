@@ -255,10 +255,9 @@ class ActivityContainer extends StatelessWidget {
               flex: activity.checkable ? 236 : 298,
               child: Column(
                 children: <Widget>[
-                  Divider(
-                    color: AbiliaColors.white120,
-                    indent: ActivityInfo.margin,
+                  const Divider(
                     height: 1,
+                    endIndent: 0.0,
                   ),
                   Expanded(
                     child: Attachment(
