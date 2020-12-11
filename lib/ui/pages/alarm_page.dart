@@ -74,7 +74,7 @@ class ReminderPage extends StatelessWidget {
     final text = reminder.reminder
         .toReminderHeading(translate, reminder is ReminderBefore);
     return Scaffold(
-      appBar: AbiliaAppBar(title: translate.reminders),
+      appBar: AbiliaAppBar(title: translate.reminder),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(

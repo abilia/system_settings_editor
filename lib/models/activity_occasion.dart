@@ -64,7 +64,9 @@ class ActivityDay extends Equatable implements Comparable {
       day,
       end.isBefore(now)
           ? Occasion.past
-          : start.isAfter(now) ? Occasion.future : Occasion.current);
+          : start.isAfter(now)
+              ? Occasion.future
+              : Occasion.current);
   ActivityOccasion toPast() => ActivityOccasion(activity, day, Occasion.past);
   ActivityOccasion toFuture() =>
       ActivityOccasion(activity, day, Occasion.future);

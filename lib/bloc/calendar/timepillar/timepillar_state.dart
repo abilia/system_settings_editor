@@ -8,4 +8,3 @@ class TimepillarState extends Equatable {
   @override
   List<Object> get props => [timepillarInterval];
 }
-

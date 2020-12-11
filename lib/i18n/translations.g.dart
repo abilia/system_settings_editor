@@ -80,6 +80,8 @@ abstract class Translated {
 
   final String reminders = 'Reminders';
 
+  final String reminder = 'Reminder';
+
   final String alarm = 'Alarm';
 
   final String endsNow = 'Ends now';
@@ -432,6 +434,9 @@ class SV extends Translated {
 
   @override
   final String reminders = 'Påminnelser';
+
+  @override
+  final String reminder = 'Påminnelse';
 
   @override
   final String alarm = 'Larm';
@@ -891,6 +896,9 @@ class DA extends Translated {
   final String reminders = 'Påmindelser';
 
   @override
+  final String reminder = 'Påmindelse';
+
+  @override
   final String alarm = 'Alarm';
 
   @override
@@ -1241,6 +1249,9 @@ class NL extends Translated {
   final String reminders = 'Herinneringen';
 
   @override
+  final String reminder = 'Herinnering';
+
+  @override
   final String alarm = 'Alarm';
 
   @override
@@ -1587,6 +1598,9 @@ class FI extends Translated {
 
   @override
   final String reminders = 'Muistutukset';
+
+  @override
+  final String reminder = 'Muistutus';
 
   @override
   final String alarm = 'Hälytys';
@@ -1936,6 +1950,9 @@ class DE extends Translated {
 
   @override
   final String reminders = 'Erinnerungen';
+
+  @override
+  final String reminder = 'Erinnerung';
 
   @override
   final String alarm = 'Alarm';
@@ -2288,6 +2305,9 @@ class NB extends Translated {
 
   @override
   final String reminders = 'Påminnelser';
+
+  @override
+  final String reminder = 'Påminnelse';
 
   @override
   final String alarm = 'Alarm';
