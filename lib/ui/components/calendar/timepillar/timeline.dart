@@ -22,7 +22,10 @@ class Timeline extends StatelessWidget {
           height: timelineHeight,
           decoration: const BoxDecoration(color: AbiliaColors.red),
         ),
-        top: timeToMidDotPixelDistance(now) - offset + TimePillarCalendar.topPadding - timelineHeight / 2,
+        top: timeToMidDotPixelDistance(now) -
+            offset +
+            TimePillarCalendar.topPadding -
+            timelineHeight / 2,
       ),
     );
   }
