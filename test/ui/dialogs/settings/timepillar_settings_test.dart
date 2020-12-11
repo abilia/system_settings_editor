@@ -137,7 +137,7 @@ void main() {
     // Act - go to timepillar
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(TestKey.changeView));
+    await tester.tap(find.byType(EyeButton));
     await tester.pump();
     await tester.tap(find.byKey(TestKey.timePillarButton));
     await tester.pump();
@@ -182,7 +182,7 @@ extension on WidgetTester {
   Future<void> goToTimePillarSettings({bool pumpApp = true}) async {
     if (pumpApp) await pumpWidget(App());
     await pumpAndSettle();
-    await tap(find.byKey(TestKey.changeView));
+    await tap(find.byType(EyeButton));
     await pump();
     await tap(find.byKey(TestKey.timePillarSettingsButton));
     await pump();

@@ -23,7 +23,7 @@ void main() {
   MockActivityDb mockActivityDb;
   MockSettingsDb mockSettingsDb;
   StreamController<DateTime> mockTicker;
-  final changeViewButtonFinder = find.byKey(TestKey.changeView);
+  final changeViewButtonFinder = find.byType(EyeButton);
   final timePillarButtonFinder = find.byKey(TestKey.timePillarButton);
   final time = DateTime(2007, 08, 09, 13, 11);
   final leftTitle = 'LeftCategoryActivity',
