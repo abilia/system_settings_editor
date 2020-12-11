@@ -80,6 +80,7 @@ noBasicActivities	You have no basic activities	Du har inga basaktiviteter	Du har
 noChecklists	You have no checklists	Du har inga checklistor	Du har ingen tjeklister	Je hebt geen checklists	Sinulla ei ole tarkistuslistoja	Sie haben keine Checklisten	Du har ingen sjekklister
 noNotes	You have no notes	Du har inga anteckningar	Du har ingen noter	Je hebt geen aantekeningen	Sinulla ei ole muistiinpanoja	Sie haben keine Notizen	Du har ingen notater
 noImages	You have no images	Du har inga bilder	Du har ingen billeder	Je hebt geen afbeeldingen	Sinulla ei ole kuvia	Sie haben keine Bilder	Du har ingen bilder
+setTime	Set time	Välj tid	Vælg tid	Tijd instellen	Aseta aika	Zeit einstellen	Velg tid
 
 ### Errors							
 missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.					

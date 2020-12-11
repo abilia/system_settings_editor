@@ -163,6 +163,8 @@ abstract class Translated {
 
   final String noImages = 'You have no images';
 
+  final String setTime = 'Set time';
+
   final String missingTitleOrImageAndStartTime =
       'Your activity should contain an image or name and start time.';
 
@@ -556,6 +558,9 @@ class SV extends Translated {
 
   @override
   final String noImages = 'Du har inga bilder';
+
+  @override
+  final String setTime = 'Välj tid';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -993,6 +998,9 @@ class DA extends Translated {
   final String noImages = 'Du har ingen billeder';
 
   @override
+  final String setTime = 'Vælg tid';
+
+  @override
   final String missingTitleOrImage =
       'En aktivitet skal have enten et billede eller et navn.';
 
@@ -1336,6 +1344,9 @@ class NL extends Translated {
 
   @override
   final String noImages = 'Je hebt geen afbeeldingen';
+
+  @override
+  final String setTime = 'Tijd instellen';
 
   @override
   final String missingTitleOrImage =
@@ -1684,6 +1695,9 @@ class FI extends Translated {
   final String noImages = 'Sinulla ei ole kuvia';
 
   @override
+  final String setTime = 'Aseta aika';
+
+  @override
   final String missingTitleOrImage =
       'Tämä aktiviteetti tarvitsee kuvan tai nimen.';
 
@@ -2028,6 +2042,9 @@ class DE extends Translated {
 
   @override
   final String noImages = 'Sie haben keine Bilder';
+
+  @override
+  final String setTime = 'Zeit einstellen';
 
   @override
   final String missingTitleOrImage =
@@ -2377,6 +2394,9 @@ class NB extends Translated {
 
   @override
   final String noImages = 'Du har ingen bilder';
+
+  @override
+  final String setTime = 'Velg tid';
 
   @override
   final String missingTitleOrImage =

@@ -170,17 +170,26 @@ class TimeIntervallPicker extends StatelessWidget {
           Expanded(
             flex: 148,
             child: TimePicker(
-              translator.startTime,
+              'Tid',
               timeInterval.startTime,
               key: TestKey.startTimePicker,
               errorState: startTimeError,
               onTap: () async {
-                final newStartTime = await showViewDialog<TimeInputResult>(
-                  context: context,
-                  builder: (context) =>
-                      StartTimeInputDialog(time: timeInterval.startTime),
-                  wrapWithAuthProviders: false,
+                final newStartTime = await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => CopiedAuthProviders(
+                      blocContext: context,
+                      child: StartTimeInputDialog(time: timeInterval.startTime),
+                    ),
+                    settings: RouteSettings(name: 'AboutPage'),
+                  ),
                 );
+                // final newStartTime = await showViewDialog<TimeInputResult>(
+                //   context: context,
+                //   builder: (context) =>
+                //       StartTimeInputDialog(time: timeInterval.startTime),
+                //   wrapWithAuthProviders: false,
+                // );
                 if (newStartTime != null) {
                   BlocProvider.of<EditActivityBloc>(context)
                       .add(ChangeStartTime(newStartTime.time));
@@ -188,40 +197,6 @@ class TimeIntervallPicker extends StatelessWidget {
               },
             ),
           ),
-          if (memoSettingsState.activityEndTimeEditable)
-            Expanded(
-              flex: 48,
-              child: Transform.translate(
-                offset: Offset(0, -20),
-                child: const Divider(
-                  thickness: 2,
-                  indent: 4,
-                  endIndent: 4,
-                ),
-              ),
-            ),
-          if (memoSettingsState.activityEndTimeEditable)
-            Expanded(
-              flex: 148,
-              child: TimePicker(
-                translator.endTime,
-                timeInterval.endTime,
-                key: TestKey.endTimePicker,
-                onTap: () async {
-                  final newEndTime = await showViewDialog<TimeInputResult>(
-                    context: context,
-                    builder: (context) => EndTimeInputDialog(
-                      timeInterval: timeInterval,
-                    ),
-                    wrapWithAuthProviders: false,
-                  );
-                  if (newEndTime != null) {
-                    BlocProvider.of<EditActivityBloc>(context)
-                        .add(ChangeEndTime(newEndTime.time));
-                  }
-                },
-              ),
-            ),
         ],
       ),
     );
