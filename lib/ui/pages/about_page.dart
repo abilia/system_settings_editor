@@ -3,6 +3,7 @@ import 'package:package_info/package_info.dart';
 import 'package:seagull/config.dart';
 
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/version.dart';
 
 class AboutPage extends StatelessWidget {
   @override
@@ -76,5 +77,8 @@ class Version extends StatelessWidget {
 
   String _versionText(PackageInfo packageInfo) =>
       '${packageInfo.version}' +
+      (VERSION_SUFFIX == 'release' || VERSION_SUFFIX.isEmpty
+          ? ''
+          : '-$VERSION_SUFFIX') +
       (Config.beta ? ' (${packageInfo.buildNumber})' : '');
 }
