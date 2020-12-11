@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class Login extends Equatable{
+class Login extends Equatable {
   final String token;
   final int endDate;
   final String renewToken;

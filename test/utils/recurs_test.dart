@@ -1081,7 +1081,8 @@ void main() {
       });
       test('wrong type week return empty list', () {
         // arrange
-        final weekly = Recurs.raw(Recurs.TYPE_WEEKLY, Recurs.allDaysOfWeek, null);
+        final weekly =
+            Recurs.raw(Recurs.TYPE_WEEKLY, Recurs.allDaysOfWeek, null);
         // assert
         expect(weekly.monthDays, []);
       });
