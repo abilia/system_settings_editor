@@ -167,6 +167,8 @@ abstract class Translated {
 
   final String setTime = 'Set time';
 
+  final String time = 'Time';
+
   final String missingTitleOrImageAndStartTime =
       'Your activity should contain an image or name and start time.';
 
@@ -566,6 +568,9 @@ class SV extends Translated {
 
   @override
   final String setTime = 'Välj tid';
+
+  @override
+  final String time = 'Tid';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -1009,6 +1014,9 @@ class DA extends Translated {
   final String setTime = 'Vælg tid';
 
   @override
+  final String time = 'Tid';
+
+  @override
   final String missingTitleOrImage =
       'En aktivitet skal have enten et billede eller et navn.';
 
@@ -1358,6 +1366,9 @@ class NL extends Translated {
 
   @override
   final String setTime = 'Tijd instellen';
+
+  @override
+  final String time = 'Tijd';
 
   @override
   final String missingTitleOrImage =
@@ -1712,6 +1723,9 @@ class FI extends Translated {
   final String setTime = 'Aseta aika';
 
   @override
+  final String time = 'Aika';
+
+  @override
   final String missingTitleOrImage =
       'Tämä aktiviteetti tarvitsee kuvan tai nimen.';
 
@@ -2062,6 +2076,9 @@ class DE extends Translated {
 
   @override
   final String setTime = 'Zeit einstellen';
+
+  @override
+  final String time = 'Zeit';
 
   @override
   final String missingTitleOrImage =
@@ -2417,6 +2434,9 @@ class NB extends Translated {
 
   @override
   final String setTime = 'Velg tid';
+
+  @override
+  final String time = 'Tid';
 
   @override
   final String missingTitleOrImage =

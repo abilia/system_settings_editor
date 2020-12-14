@@ -4,55 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class StartTimeInputDialog extends StatelessWidget {
-  final TimeOfDay time;
-
-  const StartTimeInputDialog({Key key, this.time}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return TimeInputDialog(
-      time: time,
-      heading: Translator.of(context).translate.startTime,
-      is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-    );
-  }
-}
-
-class EndTimeInputDialog extends StatelessWidget {
-  final TimeInterval timeInterval;
-
-  const EndTimeInputDialog({Key key, this.timeInterval}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return TimeInputDialog(
-      time: timeInterval.endTime,
-      heading: Translator.of(context).translate.endTime,
-      is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-      deleteButton: !timeInterval.sameTime
-          ? RemoveButton(
-              icon: Icon(
-                AbiliaIcons.delete_all_clear,
-                color: AbiliaColors.white,
-                size: smallIconSize,
-              ),
-              onTap: () =>
-                  Navigator.of(context).maybePop(TimeInputResult(null)),
-              text: Translator.of(context).translate.noEndTime,
-            )
-          : null,
-    );
-  }
-}
-
 class TimeInputDialog extends StatefulWidget {
-  final TimeOfDay time;
+  final TimeInterval timeInterval;
   final Widget deleteButton;
   final String heading;
   final bool is24HoursFormat;
 
   const TimeInputDialog({
     Key key,
-    @required this.time,
+    @required this.timeInterval,
     @required this.heading,
     @required this.is24HoursFormat,
     this.deleteButton,
@@ -75,13 +35,18 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
 
   _TimeInputDialogState({@required this.twelveHourClock});
 
+  bool get hasStartTime => widget.timeInterval?.startTime != null;
+  bool get hasEndTime => widget.timeInterval?.endTime != null;
+  TimeOfDay get startTime => widget.timeInterval?.startTime;
+  TimeOfDay get endTime => widget.timeInterval.endTime;
+
   @override
   void initState() {
-    period = widget.time != null ? widget.time.period : DayPeriod.pm;
+    period = hasStartTime ? widget.timeInterval.startTime.period : DayPeriod.pm;
 
     hourFocusNode = FocusNode()..addListener(onHourFocusChanged);
     minuteFocusNode = FocusNode()..addListener(onMinFocusChanged);
-    if (widget.time != null) {
+    if (widget.timeInterval != null) {
       minuteFocusNode.requestFocus();
     } else {
       hourFocusNode.requestFocus();
@@ -93,13 +58,13 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
     super.initState();
   }
 
-  String get oldHour => widget.time != null
+  String get oldHour => widget.timeInterval != null
       ? twelveHourClock
-          ? '${widget.time.hourOfPeriod == 0 ? TimeOfDay.hoursPerPeriod : widget.time.hourOfPeriod}'
-          : pad0('${widget.time.hour}')
+          ? '${startTime.hourOfPeriod == 0 ? TimeOfDay.hoursPerPeriod : startTime.hourOfPeriod}'
+          : pad0('${startTime.hour}')
       : null;
   String get oldMinute =>
-      widget.time != null ? pad0('${widget.time.minute}') : null;
+      widget.timeInterval != null ? pad0('${startTime.minute}') : null;
 
   TimeOfDay get inputTime {
     if (minute == null || hour == null) return null;

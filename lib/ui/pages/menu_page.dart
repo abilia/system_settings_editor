@@ -259,7 +259,7 @@ class _FakeTickerState extends State<FakeTicker> {
                             context: context,
                             builder: (context) => TimeInputDialog(
                               heading: 'Fake Time',
-                              time: time,
+                              timeInterval: time,
                               is24HoursFormat:
                                   MediaQuery.of(context).alwaysUse24HourFormat,
                             ),
