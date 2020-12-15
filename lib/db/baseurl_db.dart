@@ -1,4 +1,3 @@
-import 'package:seagull/config.dart';
 import 'package:seagull/repository/end_point.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,13 +20,6 @@ class BaseUrlDb {
 
   Future deleteBaseUrl() => prefs.remove(_BASE_URL_RECORD);
 
-  Future<String> initialize() async {
-    final defaultUrl = Config.beta ? WHALE : PROD;
-    final currentUrl = getBaseUrl();
-    if (currentUrl == null) {
-      await setBaseUrl(defaultUrl);
-      return defaultUrl;
-    }
-    return currentUrl;
-  }
+  Future<String> initialize() async =>
+      await getBaseUrl() ?? setBaseUrl(PROD).then((_) => PROD);
 }
