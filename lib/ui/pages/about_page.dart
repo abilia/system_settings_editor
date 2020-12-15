@@ -47,7 +47,11 @@ class AboutPage extends StatelessWidget {
             Text('info@abilia.com'),
             Text('www.abilia.com'),
             const SizedBox(height: 32.0),
-            Text(translate.aboutText),
+            Text(
+              'This product is developed in accordance with and complies to '
+              'all necessary requirements, regulations and directives for '
+              'medical devices.',
+            ),
           ].map(_textToTts).map(_addPadding),
         ],
       ),
