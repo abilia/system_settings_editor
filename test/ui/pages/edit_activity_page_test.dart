@@ -1299,7 +1299,7 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- Start time dialog shows with correct time
-      expect(find.byType(StartTimeInputDialog), findsOneWidget);
+      expect(find.byType(TimeInputDialog), findsOneWidget);
       expect(find.text('11'), findsOneWidget);
       expect(find.text('55'), findsOneWidget);
     });
@@ -1554,7 +1554,7 @@ text''';
       await tester.pump();
 
       // Assert -- no more EndTimeInputDialog, end time now set
-      expect(find.byType(EndTimeInputDialog), findsNothing);
+      expect(find.byType(TimeInputDialog), findsNothing);
       expect(find.text('3:04 AM'), findsOneWidget);
       expect(find.text('1:02 PM'), findsOneWidget);
     });

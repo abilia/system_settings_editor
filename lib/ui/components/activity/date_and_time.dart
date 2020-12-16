@@ -175,12 +175,13 @@ class TimeIntervallPicker extends StatelessWidget {
               key: TestKey.startTimePicker,
               errorState: startTimeError,
               onTap: () async {
-                final newTimeInterval = await Navigator.of(context).push<TimeInterval>(
+                final newTimeInterval =
+                    await Navigator.of(context).push<TimeInput>(
                   MaterialPageRoute(
                     builder: (_) => CopiedAuthProviders(
                       blocContext: context,
                       child: TimeInputDialog(
-                        timeInterval: timeInterval,
+                        timeInput: TimeInput(timeInterval.startTime, null),
                         heading: translator.setTime,
                         is24HoursFormat:
                             MediaQuery.of(context).alwaysUse24HourFormat,
@@ -188,12 +189,6 @@ class TimeIntervallPicker extends StatelessWidget {
                     ),
                   ),
                 );
-                // final newStartTime = await showViewDialog<TimeInputResult>(
-                //   context: context,
-                //   builder: (context) =>
-                //       StartTimeInputDialog(time: timeInterval.startTime),
-                //   wrapWithAuthProviders: false,
-                // );
                 if (newTimeInterval != null) {
                   BlocProvider.of<EditActivityBloc>(context)
                       .add(ChangeStartTime(newTimeInterval.startTime));
