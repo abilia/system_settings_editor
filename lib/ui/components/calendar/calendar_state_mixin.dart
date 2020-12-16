@@ -8,10 +8,8 @@ mixin CalendarStateMixin<T extends StatefulWidget> on State<T> {
     return pushBloc.firstWhere((s) => s is PushReceived);
   }
 
-  bool onScrollNotification(ScrollNotification scrollNotification) {
-    context
-        .read<ScrollPositionBloc>()
-        .add(ScrollPositionUpdated(scrollNotification.metrics.pixels));
+  bool onScrollNotification(_) {
+    context.read<ScrollPositionBloc>().add(const ScrollPositionUpdated());
     return false;
   }
 }
