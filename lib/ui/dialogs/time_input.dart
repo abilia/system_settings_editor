@@ -126,6 +126,7 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
                     ),
                   ),
                   _TimeInputStack(
+                    inputKey: TestKey.startTimeInput,
                     timeInput: widget.timeInput.rawStartTime(twelveHourClock),
                     editingController: startTimeController,
                     editFocus: startTimeFocus,
@@ -174,6 +175,7 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
                     ),
                   ),
                   _TimeInputStack(
+                    inputKey: TestKey.endTimeInput,
                     timeInput: widget.timeInput.rawEndTime(twelveHourClock),
                     editingController: endTimeController,
                     editFocus: endTimeFocus,
@@ -211,8 +213,10 @@ class _TimeInputStack extends StatefulWidget {
   final FocusNode editFocus;
   final ValueChanged<String> onTimeChanged;
   final bool twelveHourClock;
+  final Key inputKey;
 
   _TimeInputStack({
+    this.inputKey,
     @required this.timeInput,
     @required this.editingController,
     @required this.editFocus,
@@ -269,6 +273,7 @@ class _TimeInputStackState extends State<_TimeInputStack> {
       child: Stack(
         children: [
           TextField(
+            key: widget.inputKey,
             focusNode: editFocus,
             keyboardType: TextInputType.number,
             showCursor: false,

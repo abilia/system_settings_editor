@@ -175,7 +175,7 @@ class TimeIntervallPicker extends StatelessWidget {
                 timeInterval.startTime,
                 timeInterval.sameTime ? null : timeInterval.endTime,
               ),
-              key: TestKey.startTimePicker,
+              key: TestKey.timePicker,
               errorState: startTimeError,
               onTap: () async {
                 final newTimeInterval =
