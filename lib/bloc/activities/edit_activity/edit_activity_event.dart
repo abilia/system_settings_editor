@@ -50,6 +50,14 @@ class ChangeStartTime extends ChangeTime {
   const ChangeStartTime(TimeOfDay time) : super(time);
 }
 
+class ChangeTimeInterval extends ActivityChangedEvent {
+  final TimeInput timeInput;
+  const ChangeTimeInterval(this.timeInput);
+
+  @override
+  List<Object> get props => [timeInput];
+}
+
 class ChangeEndTime extends ChangeTime {
   const ChangeEndTime(TimeOfDay time) : super(time);
 }

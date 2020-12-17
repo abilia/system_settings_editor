@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import 'package:seagull/repository/timezone.dart' as tz;
@@ -97,6 +98,15 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     }
     if (event is SaveActivity) {
       yield* _mapSaveActivityToState(state, event);
+    }
+    if (event is ChangeTimeInterval) {
+      yield state.copyWith(
+        state.activity,
+        timeInterval: state.timeInterval.copyWith(
+          startTime: event.timeInput.startTime,
+          endTime: event.timeInput.endTime ?? event.timeInput.startTime,
+        ),
+      );
     }
     if (event is ImageSelected) {
       yield state.copyWith(

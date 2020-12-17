@@ -253,7 +253,7 @@ class _FakeTickerState extends State<FakeTicker> {
                       final time = TimeOfDay.fromDateTime(state);
                       return TimePicker(
                         '${minPerMin?.toInt() ?? 1} min/min',
-                        time,
+                        TimeInput(time, null),
                         onTap: () async {
                           final newTime = await showViewDialog<TimeInput>(
                             context: context,

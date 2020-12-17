@@ -171,7 +171,10 @@ class TimeIntervallPicker extends StatelessWidget {
             flex: 148,
             child: TimePicker(
               translator.time,
-              timeInterval.startTime,
+              TimeInput(
+                timeInterval.startTime,
+                timeInterval.sameTime ? null : timeInterval.endTime,
+              ),
               key: TestKey.startTimePicker,
               errorState: startTimeError,
               onTap: () async {
@@ -181,7 +184,11 @@ class TimeIntervallPicker extends StatelessWidget {
                     builder: (_) => CopiedAuthProviders(
                       blocContext: context,
                       child: TimeInputDialog(
-                        timeInput: TimeInput(timeInterval.startTime, null),
+                        timeInput: TimeInput(
+                            timeInterval.startTime,
+                            timeInterval.sameTime
+                                ? null
+                                : timeInterval.endTime),
                         heading: translator.setTime,
                         is24HoursFormat:
                             MediaQuery.of(context).alwaysUse24HourFormat,
@@ -191,7 +198,7 @@ class TimeIntervallPicker extends StatelessWidget {
                 );
                 if (newTimeInterval != null) {
                   BlocProvider.of<EditActivityBloc>(context)
-                      .add(ChangeStartTime(newTimeInterval.startTime));
+                      .add(ChangeTimeInterval(newTimeInterval));
                 }
               },
             ),
@@ -204,13 +211,13 @@ class TimeIntervallPicker extends StatelessWidget {
 
 class TimePicker extends StatelessWidget {
   final String text;
-  final TimeOfDay time;
+  final TimeInput timeInput;
   final GestureTapCallback onTap;
   final double heigth = 56;
   final bool errorState;
   const TimePicker(
     this.text,
-    this.time, {
+    this.timeInput, {
     Key key,
     @required this.onTap,
     this.errorState = false,
@@ -218,7 +225,16 @@ class TimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeSet = time != null;
+    final timeFormat = hourAndMinuteFormat(context);
+    final time = timeInput.startTime == null
+        ? ''
+        : timeFormat(DateTime(0, 0, 0, timeInput.startTime.hour,
+                timeInput.startTime.minute)) +
+            (timeInput.endTime == null
+                ? ''
+                : ' - ' +
+                    timeFormat(DateTime(0, 0, 0, timeInput.endTime.hour,
+                        timeInput.endTime.minute)));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -232,7 +248,7 @@ class TimePicker extends StatelessWidget {
             AbiliaIcons.clock,
             size: smallIconSize,
           ),
-          text: Text(timeSet ? time.format(context) : ''),
+          text: Text(time),
           trailing: errorState
               ? const Icon(
                   AbiliaIcons.ir_error,
