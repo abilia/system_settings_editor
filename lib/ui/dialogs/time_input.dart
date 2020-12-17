@@ -129,6 +129,7 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
                     timeInput: widget.timeInput.rawStartTime(twelveHourClock),
                     editingController: startTimeController,
                     editFocus: startTimeFocus,
+                    twelveHourClock: twelveHourClock,
                     onTimeChanged: onStartTimeChanged,
                   ),
                   if (!widget.is24HoursFormat)
@@ -176,6 +177,7 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
                     timeInput: widget.timeInput.rawEndTime(twelveHourClock),
                     editingController: endTimeController,
                     editFocus: endTimeFocus,
+                    twelveHourClock: twelveHourClock,
                   ),
                   if (!widget.is24HoursFormat)
                     Padding(
@@ -208,11 +210,13 @@ class _TimeInputStack extends StatefulWidget {
   final TextEditingController editingController;
   final FocusNode editFocus;
   final ValueChanged<String> onTimeChanged;
+  final bool twelveHourClock;
 
   _TimeInputStack({
     @required this.timeInput,
     @required this.editingController,
     @required this.editFocus,
+    @required this.twelveHourClock,
     this.onTimeChanged,
   });
   @override
@@ -277,7 +281,7 @@ class _TimeInputStackState extends State<_TimeInputStack> {
             },
             inputFormatters: [
               LengthLimitingTextInputFormatter(4),
-              TimeInputFormatter(),
+              TimeInputFormatter(widget.twelveHourClock),
             ],
           ),
           GestureDetector(
@@ -330,6 +334,10 @@ class _TimeInputStackState extends State<_TimeInputStack> {
 }
 
 class TimeInputFormatter extends TextInputFormatter {
+  final bool twelveHourClock;
+
+  TimeInputFormatter(this.twelveHourClock);
+
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
@@ -343,11 +351,12 @@ class TimeInputFormatter extends TextInputFormatter {
     if (input.isEmpty) {
       return true;
     }
+    final intVal = int.tryParse(input);
     if (input.length == 1) {
-      return int.tryParse(input) <= 2;
+      return twelveHourClock ? intVal <= 1 : intVal <= 2;
     }
     if (input.length == 2) {
-      return int.tryParse(input) <= 23;
+      return twelveHourClock ? intVal >= 1 && intVal <= 12 : intVal <= 23;
     }
     if (input.length == 3) {
       return int.tryParse(input.substring(2, 3)) <= 5;
@@ -377,7 +386,8 @@ class TimeInput {
     return tod == null
         ? ''
         : ((twelveHourClock
-                ? pad0('${tod.hourOfPeriod == 0 ? TimeOfDay.hoursPerPeriod : tod.hourOfPeriod}')
+                ? pad0(
+                    '${tod.hourOfPeriod == 0 ? TimeOfDay.hoursPerPeriod : tod.hourOfPeriod}')
                 : pad0('${tod.hour}')) +
             pad0('${tod.minute}'));
   }
