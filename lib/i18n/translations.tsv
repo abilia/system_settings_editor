@@ -75,7 +75,6 @@ picture	Image	Bild	Billede	Afbeelding	Kuva	Bild	Bilde
 date	Date	Datum	Dato	Datum	Päivämäärä	Datum	Dato
 startTime	Start time	Starttid	Starttid	Starttijd	Aloitusaika	Startzeit	Starttid
 endTime	End time	Sluttid	Sluttid	Eindtijd	Päättymisaika	Endezeit	Sluttid
-noEndTime	No end time	Ingen sluttid	Ingen sluttid	Geen eindtijd	Ei loppuaikaa	Keine Endezeit	Ingen sluttid
 emptyFolder	The folder is empty	Mappen är tom	Mappen er tom	De map is leeg	Kansio on tyhjä	Der Ordner leer ist	Mappen er tom
 noBasicActivities	You have no basic activities	Du har inga basaktiviteter	Du har ingen standardaktiviteter	Je hebt geen standaardactiviteiten	Sinulla ei ole perusaktiviteettit	Sie haben keine Standardaktivitäten	Du har ingen standardaktiviteter
 noChecklists	You have no checklists	Du har inga checklistor	Du har ingen tjeklister	Je hebt geen checklists	Sinulla ei ole tarkistuslistoja	Sie haben keine Checklisten	Du har ingen sjekklister

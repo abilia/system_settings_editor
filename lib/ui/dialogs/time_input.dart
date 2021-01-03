@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/ui/all.dart';
 
@@ -37,7 +39,6 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
   bool get hasEndTime => widget.timeInput?.endTime != null;
   TimeOfDay get startTime => widget.timeInput?.startTime;
   TimeOfDay get endTime => widget.timeInput.endTime;
-  final String emptyPattern = '--:--';
   FocusNode startTimeFocus;
   FocusNode endTimeFocus;
   ValueChanged<String> onStartTimeChanged;
@@ -101,98 +102,106 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
-    return ViewDialog(
-      heading: Text(widget.heading, style: theme.textTheme.headline6),
-      onOk: save,
-      deleteButton: widget.deleteButton,
-      child: Theme(
-        data: theme.copyWith(
-            textSelectionColor: AbiliaColors.white,
-            textTheme: theme.textTheme.copyWith(subtitle1: textStyle)),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 56.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      translate.startTime,
-                      style: abiliaTextTheme.bodyText2,
-                    ),
-                  ),
-                  _TimeInputStack(
-                    inputKey: TestKey.startTimeInput,
-                    timeInput: widget.timeInput.rawStartTime(twelveHourClock),
-                    editingController: startTimeController,
-                    editFocus: startTimeFocus,
-                    twelveHourClock: twelveHourClock,
-                    onTimeChanged: onStartTimeChanged,
-                  ),
-                  if (!widget.is24HoursFormat)
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, memoSettingsState) => ViewDialog(
+        heading: Text(widget.heading, style: theme.textTheme.headline6),
+        onOk: save,
+        deleteButton: widget.deleteButton,
+        child: Theme(
+          data: theme.copyWith(
+              textSelectionColor: AbiliaColors.white,
+              textTheme: theme.textTheme.copyWith(subtitle1: textStyle)),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 56.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: AmPmSelector(
-                        groupValue: startTimePeriod,
-                        onChanged: (period) => setState(() {
-                          startTimePeriod = period;
-                        }),
-                      ),
-                    ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 28,
-                  ),
-                  SizedBox(
-                    height: 64,
-                    child: Center(
-                        child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.only(bottom: 8.0),
                       child: Text(
-                        '—',
-                        style: abiliaTextTheme.headline5,
+                        translate.startTime,
+                        style: abiliaTextTheme.bodyText2,
                       ),
-                    )),
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      translate.endTime,
-                      style: abiliaTextTheme.bodyText2,
                     ),
-                  ),
-                  _TimeInputStack(
-                    inputKey: TestKey.endTimeInput,
-                    timeInput: widget.timeInput.rawEndTime(twelveHourClock),
-                    editingController: endTimeController,
-                    editFocus: endTimeFocus,
-                    twelveHourClock: twelveHourClock,
-                  ),
-                  if (!widget.is24HoursFormat)
-                    Padding(
+                    _TimeInputStack(
+                      inputKey: TestKey.startTimeInput,
+                      timeInput: widget.timeInput.rawStartTime(twelveHourClock),
+                      editingController: startTimeController,
+                      editFocus: startTimeFocus,
+                      twelveHourClock: twelveHourClock,
+                      onTimeChanged: onStartTimeChanged,
+                    ),
+                    if (!widget.is24HoursFormat)
+                      Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: AmPmSelector(
-                          groupValue: endTimePeriod,
+                          amRadioFieldKey: TestKey.startTimeAmRadioField,
+                          pmRadioFieldKey: TestKey.startTimePmRadioField,
+                          groupValue: startTimePeriod,
                           onChanged: (period) => setState(() {
-                            endTimePeriod = period;
+                            startTimePeriod = period;
                           }),
+                        ),
+                      ),
+                  ],
+                ),
+                if (memoSettingsState.activityEndTimeEditable)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 28,
+                      ),
+                      SizedBox(
+                        height: 64,
+                        child: Center(
+                            child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            '—',
+                            style: abiliaTextTheme.headline5,
+                          ),
                         )),
-                ],
-              ),
-            ],
+                      )
+                    ],
+                  ),
+                if (memoSettingsState.activityEndTimeEditable)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          translate.endTime,
+                          style: abiliaTextTheme.bodyText2,
+                        ),
+                      ),
+                      _TimeInputStack(
+                        inputKey: TestKey.endTimeInput,
+                        timeInput: widget.timeInput.rawEndTime(twelveHourClock),
+                        editingController: endTimeController,
+                        editFocus: endTimeFocus,
+                        twelveHourClock: twelveHourClock,
+                      ),
+                      if (!widget.is24HoursFormat)
+                        Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: AmPmSelector(
+                              amRadioFieldKey: TestKey.endTimeAmRadioField,
+                              pmRadioFieldKey: TestKey.endTimePmRadioField,
+                              groupValue: endTimePeriod,
+                              onChanged: (period) => setState(() {
+                                endTimePeriod = period;
+                              }),
+                            )),
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -285,6 +294,7 @@ class _TimeInputStackState extends State<_TimeInputStack> {
               }
             },
             inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter(4),
               TimeInputFormatter(widget.twelveHourClock),
             ],
@@ -401,11 +411,15 @@ class TimeInput {
 class AmPmSelector extends StatelessWidget {
   final DayPeriod groupValue;
   final ValueChanged<DayPeriod> onChanged;
+  final Key amRadioFieldKey;
+  final Key pmRadioFieldKey;
 
   const AmPmSelector({
     Key key,
     @required this.groupValue,
     @required this.onChanged,
+    this.amRadioFieldKey,
+    this.pmRadioFieldKey,
   }) : super(key: key);
 
   @override
@@ -414,6 +428,7 @@ class AmPmSelector extends StatelessWidget {
       child: Row(
         children: [
           RadioField(
+            key: amRadioFieldKey,
             width: 59.0,
             heigth: 48.0,
             text: Text(
@@ -427,11 +442,13 @@ class AmPmSelector extends StatelessWidget {
           ),
           SizedBox(width: 2),
           RadioField(
+            key: pmRadioFieldKey,
             width: 59.0,
             heigth: 48.0,
             text: Text(
               Translator.of(context).translate.pm,
               style: abiliaTextTheme.bodyText1,
+              textAlign: TextAlign.center,
             ),
             value: DayPeriod.pm,
             groupValue: groupValue,

@@ -1277,8 +1277,10 @@ text''';
 
   final startTimeInputFinder = find.byKey(TestKey.startTimeInput);
   final endTimeInputFinder = find.byKey(TestKey.endTimeInput);
-  final pmRadioFinder = find.byKey(ObjectKey(TestKey.pmRadioField));
-  final amRadioFinder = find.byKey(ObjectKey(TestKey.amRadioField));
+  final startTimePmRadioFinder =
+      find.byKey(ObjectKey(TestKey.startTimePmRadioField));
+  final startTimeAmRadioFinder =
+      find.byKey(ObjectKey(TestKey.startTimeAmRadioField));
   group('Edit time', () {
     testWidgets('Start time shows start time', (WidgetTester tester) async {
       // Arrange
@@ -1352,7 +1354,8 @@ text''';
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       await tester.tap(endTimeInputFinder);
-      await tester.enterText(endTimeInputFinder, '');
+      await tester.showKeyboard(endTimeInputFinder);
+      await tester.sendKeyEvent(LogicalKeyboardKey.delete);
       await tester.pumpAndSettle();
       await tester.tap(okFinder);
       await tester.pumpAndSettle();
@@ -1381,15 +1384,15 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- Am is selected
-      final pmRadio = tester.widget<AbiliaRadio>(pmRadioFinder);
-      final amRadio = tester.widget<AbiliaRadio>(amRadioFinder);
+      final pmRadio = tester.widget<AbiliaRadio>(startTimePmRadioFinder);
+      final amRadio = tester.widget<AbiliaRadio>(startTimeAmRadioFinder);
       expect(amRadio.groupValue, DayPeriod.am);
       expect(amRadio.value, DayPeriod.am);
       expect(pmRadio.groupValue, DayPeriod.am);
       expect(pmRadio.value, DayPeriod.pm);
 
       // Act -- switch to pm
-      await tester.tap(pmRadioFinder);
+      await tester.tap(startTimePmRadioFinder);
       await tester.pumpAndSettle();
       await tester.tap(okFinder);
       await tester.pumpAndSettle();
@@ -1416,7 +1419,7 @@ text''';
       // Act -- switch to pm
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.tap(amRadioFinder);
+      await tester.tap(startTimeAmRadioFinder);
       await tester.pumpAndSettle();
       await tester.tap(okFinder);
       await tester.pumpAndSettle();
@@ -1455,50 +1458,7 @@ text''';
       expect(find.text('3:44 AM'), findsOneWidget);
     });
 
-    testWidgets('removing minute change focus to hours',
-        (WidgetTester tester) async {
-      // Arrange
-      final acivity = Activity.createNew(
-        title: '',
-        startTime: DateTime(2000, 11, 22, 3, 04),
-        duration: 20.minutes(),
-      );
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
-          givenActivity: acivity,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Act -- open end time
-      await tester.tap(timeFieldFinder);
-      await tester.pumpAndSettle();
-
-      // Assert -- end time is correct
-      expect(find.text('3'), findsOneWidget);
-      expect(find.text('24'), findsOneWidget);
-
-      // Act -- erase minute
-      await tester.tap(endTimeInputFinder);
-      await tester.showKeyboard(endTimeInputFinder);
-      await tester.sendKeyEvent(LogicalKeyboardKey.delete);
-      await tester.pump();
-
-      // Assert -- minute gone
-      expect(find.text('3'), findsOneWidget);
-      expect(find.text('24'), findsNothing);
-
-      // Act -- erase should erase hour
-      await tester.sendKeyEvent(LogicalKeyboardKey.delete);
-      await tester.pump();
-
-      // Assert -- hour gone
-      expect(find.text('3'), findsNothing);
-      expect(find.text('24'), findsNothing);
-    });
-
-    testWidgets('pressing keyboard ok changes focus or saves',
+    testWidgets('Changes focus to endTime when startTime is filled in',
         (WidgetTester tester) async {
       // Arrange
       final acivity = Activity.createNew(
@@ -1514,13 +1474,11 @@ text''';
       await tester.pump();
       // Assert -- start time set but not end time endTime
       expect(find.text('3:04 AM'), findsOneWidget);
-      expect(find.text('1:02 PM'), findsNothing);
+      expect(find.text('11:11 AM - 11:12 PM'), findsNothing);
 
-      // Act -- open end time
       await tester.tap(timeFieldFinder);
-      await tester.pump();
+      await tester.pumpAndSettle();
 
-      // Assert hour TextField has focus
       expect(
         tester.widget<TextField>(startTimeInputFinder).focusNode.hasFocus,
         isTrue,
@@ -1530,13 +1488,9 @@ text''';
         isFalse,
       );
 
-      // Act -- type 1 -> done
-      await tester.enterText(startTimeInputFinder, '1');
-      await tester.pump();
-      await tester.testTextInput.receiveAction(TextInputAction.done);
-      await tester.pump();
+      await tester.enterText(startTimeInputFinder, '1111');
+      await tester.pumpAndSettle();
 
-      // Assert minute TextField has focus
       expect(
         tester.widget<TextField>(endTimeInputFinder).focusNode.hasFocus,
         isTrue,
@@ -1546,16 +1500,15 @@ text''';
         isFalse,
       );
 
-      // Act -- type 2 -> done
-      await tester.enterText(endTimeInputFinder, '2');
-      await tester.pump();
-      await tester.testTextInput.receiveAction(TextInputAction.done);
-      await tester.pump();
+      await tester.enterText(endTimeInputFinder, '1112');
+      await tester.pumpAndSettle();
 
-      // Assert -- no more EndTimeInputDialog, end time now set
+      await tester.tap(okFinder);
+      await tester.pumpAndSettle();
+
       expect(find.byType(TimeInputDialog), findsNothing);
-      expect(find.text('3:04 AM'), findsOneWidget);
-      expect(find.text('1:02 PM'), findsOneWidget);
+      expect(find.text('3:04 AM'), findsNothing);
+      expect(find.text('11:11 AM - 11:12 PM'), findsOneWidget);
     });
 
     testWidgets('24h clock', (WidgetTester tester) async {
@@ -1581,35 +1534,33 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- no am/pm radio buttons
-      expect(amRadioFinder, findsNothing);
-      expect(pmRadioFinder, findsNothing);
+      expect(startTimeAmRadioFinder, findsNothing);
+      expect(startTimePmRadioFinder, findsNothing);
 
       // Act -- change time to 01:01
-      expect(find.text('13'), findsOneWidget);
-      expect(find.text('44'), findsOneWidget);
+      expect(find.text('13:44'), findsOneWidget);
 
       await tester.enterText(startTimeInputFinder, '0');
       expect(find.text('0'), findsOneWidget);
 
       await tester.tap(endTimeInputFinder);
-      expect(find.text('00'), findsOneWidget);
-      expect(find.text('44'), findsOneWidget);
+      await tester.pumpAndSettle();
+      expect(find.text('13:44'),
+          findsOneWidget); // Time resets when no valid time is entered
 
-      await tester.enterText(endTimeInputFinder, '1');
-      expect(find.text('00'), findsOneWidget);
-      expect(find.text('1'), findsOneWidget);
+      await tester.enterText(endTimeInputFinder, '1111');
+      expect(find.text('11:11'), findsOneWidget);
 
       await tester.tap(startTimeInputFinder);
-      expect(find.text('00'), findsOneWidget);
-      expect(find.text('01'), findsOneWidget);
+      await tester.enterText(startTimeInputFinder, '0001');
+      expect(find.text('00:01'), findsOneWidget);
       await tester.pumpAndSettle();
 
       await tester.tap(okFinder);
       await tester.pumpAndSettle();
 
       // Assert -- time is now 00:01
-      expect(find.text('13:44'), findsNothing);
-      expect(find.text('00:01'), findsOneWidget);
+      expect(find.text('00:01 - 13:44'), findsNothing);
     });
   });
 
@@ -1868,8 +1819,6 @@ text''';
         (WidgetTester tester) async {
       // Arrange
       final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
-      final hourInputFinder = find.byKey(TestKey.startTimeInput);
-      final minInputFinder = find.byKey(TestKey.endTimeInput);
 
       await tester.pumpWidget(
           wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
@@ -1882,8 +1831,7 @@ text''';
       // Arrange -- enter start time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(hourInputFinder, '9');
-      await tester.enterText(minInputFinder, '33');
+      await tester.enterText(startTimeInputFinder, '0933');
       await tester.pumpAndSettle();
       await tester.tap(okFinder);
       await tester.pumpAndSettle();
@@ -1959,8 +1907,9 @@ text''';
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-
-      expect(timeFieldFinder, findsNothing);
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+      expect(endTimeInputFinder, findsNothing);
     });
 
     testWidgets('No recurring option', (WidgetTester tester) async {
@@ -2021,8 +1970,6 @@ text''';
       expect(find.text(translate.vibration), findsOneWidget);
     });
 
-    final hourInputFinder = find.byKey(TestKey.startTimeInput);
-    final minInputFinder = find.byKey(TestKey.endTimeInput);
     final finishActivityFinder = find.byKey(TestKey.finishEditActivityButton);
     testWidgets(
         'activityTimeBeforeCurrent true - Cant save when start time is past',
@@ -2034,6 +1981,7 @@ text''';
       await tester.pumpWidget(
         wrapWithMaterialApp(
           EditActivityPage(day: today),
+          use24H: true,
           givenActivity:
               Activity.createNew(title: 't i t l e', startTime: startTime),
         ),
@@ -2043,14 +1991,18 @@ text''';
 
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(hourInputFinder, '${startTime.hour}');
-      await tester.enterText(minInputFinder, '${startTime.minute - 1}');
+      final startTimeBefore = '${startTime.hour}${startTime.minute - 1}';
+      await tester.enterText(
+        startTimeInputFinder,
+        startTimeBefore,
+      );
       await tester.pumpAndSettle();
       await tester.tap(okFinder);
       await tester.pumpAndSettle();
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
 
+      expect(find.text('15:29'), findsOneWidget);
       expect(find.text(translate.startTimeBeforeNow), findsOneWidget);
     });
 
@@ -2073,8 +2025,8 @@ text''';
 
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(hourInputFinder, '${startTime.hour}');
-      await tester.enterText(minInputFinder, '${startTime.minute + 1}');
+      await tester.enterText(
+          startTimeInputFinder, '${startTime.hour}${startTime.minute + 1}');
       await tester.pumpAndSettle();
       await tester.tap(okFinder);
       await tester.pumpAndSettle();
@@ -2107,8 +2059,8 @@ text''';
 
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(hourInputFinder, '${startTime.hour + 1}');
-      await tester.enterText(minInputFinder, '${startTime.minute + 1}');
+      await tester.enterText(
+          startTimeInputFinder, '${startTime.hour + 1}${startTime.minute + 1}');
       await tester.pumpAndSettle();
       await tester.tap(okFinder);
       await tester.pumpAndSettle();
@@ -2201,7 +2153,7 @@ text''';
           contains: translate.today);
     });
 
-    testWidgets('start time', (WidgetTester tester) async {
+    testWidgets('time', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
         wrapWithMaterialApp(
@@ -2211,23 +2163,22 @@ text''';
       );
       await tester.pumpAndSettle();
 
-      // Assert -- that the activities start time shows
-      await tester.verifyTts(timeFieldFinder, exact: translate.startTime);
+      // Assert -- that the activities time shows
+      await tester.verifyTts(timeFieldFinder, exact: translate.time);
 
-      // Act -- Change  start time
+      // Act -- Change time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(startTimeInputFinder, '9');
-      await tester.enterText(endTimeInputFinder, '33');
-      await tester.tap(amRadioFinder);
+      await tester.enterText(startTimeInputFinder, '0933');
+      await tester.tap(startTimeAmRadioFinder);
       await tester.pumpAndSettle();
 
       await tester.verifyTts(
-        amRadioFinder,
+        startTimeAmRadioFinder,
         exact: translate.am,
       );
       await tester.verifyTts(
-        pmRadioFinder,
+        startTimePmRadioFinder,
         exact: translate.pm,
       );
       await tester.tap(okFinder);
@@ -2238,41 +2189,6 @@ text''';
         timeFieldFinder,
         exact: '9:33 AM',
       );
-    });
-
-    testWidgets('end time', (WidgetTester tester) async {
-      // Arrange
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
-          newActivity: true,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Assert -- that the activities endtime time tts
-      await tester.verifyTts(timeFieldFinder, exact: translate.endTime);
-
-      // Act -- Change  start time
-      await tester.tap(timeFieldFinder);
-      await tester.pumpAndSettle();
-      await tester.enterText(startTimeInputFinder, '11');
-      await tester.enterText(endTimeInputFinder, '22');
-      await tester.tap(pmRadioFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(okFinder);
-      await tester.pumpAndSettle();
-
-      // Assert -- that the activities new start tts
-      await tester.verifyTts(
-        timeFieldFinder,
-        exact: '11:22 PM',
-      );
-
-      // Act -- remove end time tts
-      await tester.tap(timeFieldFinder);
-      await tester.pumpAndSettle();
-      // await tester.verifyTts(removeEndTimeFinder, exact: translate.noEndTime);
     });
 
     testWidgets('fullday', (WidgetTester tester) async {

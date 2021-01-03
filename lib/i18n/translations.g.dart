@@ -153,8 +153,6 @@ abstract class Translated {
 
   final String endTime = 'End time';
 
-  final String noEndTime = 'No end time';
-
   final String emptyFolder = 'The folder is empty';
 
   final String noBasicActivities = 'You have no basic activities';
@@ -547,9 +545,6 @@ class SV extends Translated {
 
   @override
   final String endTime = 'Sluttid';
-
-  @override
-  final String noEndTime = 'Ingen sluttid';
 
   @override
   final String emptyFolder = 'Mappen är tom';
@@ -993,9 +988,6 @@ class DA extends Translated {
   final String endTime = 'Sluttid';
 
   @override
-  final String noEndTime = 'Ingen sluttid';
-
-  @override
   final String emptyFolder = 'Mappen er tom';
 
   @override
@@ -1345,9 +1337,6 @@ class NL extends Translated {
 
   @override
   final String endTime = 'Eindtijd';
-
-  @override
-  final String noEndTime = 'Geen eindtijd';
 
   @override
   final String emptyFolder = 'De map is leeg';
@@ -1702,9 +1691,6 @@ class FI extends Translated {
   final String endTime = 'Päättymisaika';
 
   @override
-  final String noEndTime = 'Ei loppuaikaa';
-
-  @override
   final String emptyFolder = 'Kansio on tyhjä';
 
   @override
@@ -2055,9 +2041,6 @@ class DE extends Translated {
 
   @override
   final String endTime = 'Endezeit';
-
-  @override
-  final String noEndTime = 'Keine Endezeit';
 
   @override
   final String emptyFolder = 'Der Ordner leer ist';
@@ -2413,9 +2396,6 @@ class NB extends Translated {
 
   @override
   final String endTime = 'Sluttid';
-
-  @override
-  final String noEndTime = 'Ingen sluttid';
 
   @override
   final String emptyFolder = 'Mappen er tom';
