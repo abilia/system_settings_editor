@@ -198,7 +198,10 @@ class TimeIntervallPicker extends StatelessWidget {
                 );
                 if (newTimeInterval != null) {
                   BlocProvider.of<EditActivityBloc>(context)
-                      .add(ChangeTimeInterval(newTimeInterval));
+                      .add(ChangeTimeInterval(
+                    startTime: newTimeInterval.startTime,
+                    endTime: newTimeInterval.endTime,
+                  ));
                 }
               },
             ),

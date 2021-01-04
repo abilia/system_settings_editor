@@ -7,7 +7,6 @@ import 'package:seagull/ui/all.dart';
 
 class TimeInputDialog extends StatefulWidget {
   final TimeInput timeInput;
-  final Widget deleteButton;
   final String heading;
   final bool is24HoursFormat;
 
@@ -16,7 +15,6 @@ class TimeInputDialog extends StatefulWidget {
     @required this.timeInput,
     @required this.heading,
     @required this.is24HoursFormat,
-    this.deleteButton,
   }) : super(key: key);
 
   @override
@@ -106,7 +104,6 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
       builder: (context, memoSettingsState) => ViewDialog(
         heading: Text(widget.heading, style: theme.textTheme.headline6),
         onOk: save,
-        deleteButton: widget.deleteButton,
         child: Theme(
           data: theme.copyWith(
               textSelectionColor: AbiliaColors.white,
