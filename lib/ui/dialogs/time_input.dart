@@ -32,6 +32,8 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
   DayPeriod endTimePeriod;
   FocusNode startTimeFocus;
   FocusNode endTimeFocus;
+  String validatedNewStartTime;
+  String valiedatedNewEndTime;
 
   _TimeInputDialogState({@required this.twelveHourClock});
 
@@ -40,10 +42,42 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
     startTimePeriod = widget.timeInput.startTime?.period ?? DayPeriod.pm;
     endTimePeriod = widget.timeInput.endTime?.period ?? DayPeriod.pm;
     startTimeFocus = FocusNode();
+    startTimeFocus.addListener(() {
+      if (startTimeFocus.hasFocus) {
+        startTimeController.selection = TextSelection(
+            baseOffset: 0, extentOffset: startTimeController.text.length);
+        final validEndTime = (endTimeController.text.length == 4 ||
+            endTimeController.text.isEmpty);
+        final validatedEndTime =
+            validEndTime ? endTimeController.text : valiedatedNewEndTime;
+        endTimeController.text = validatedEndTime;
+        setState(() {
+          valiedatedNewEndTime = validatedEndTime;
+        });
+      }
+    });
     endTimeFocus = FocusNode();
+    endTimeFocus.addListener(() {
+      if (endTimeFocus.hasFocus) {
+        endTimeController.selection = TextSelection(
+            baseOffset: 0, extentOffset: endTimeController.text.length);
+        final validStartTime = (startTimeController.text.length == 4 ||
+            startTimeController.text.isEmpty);
+        final validatedStartTime =
+            validStartTime ? startTimeController.text : validatedNewStartTime;
+        startTimeController.text = validatedStartTime;
+        setState(() {
+          validatedNewStartTime = validatedStartTime;
+        });
+      }
+    });
     startTimeFocus.requestFocus();
     startTimeController = TextEditingController();
     endTimeController = TextEditingController();
+    startTimeController.text = widget.timeInput.rawStartTime(twelveHourClock);
+    validatedNewStartTime = widget.timeInput.rawStartTime(twelveHourClock);
+    endTimeController.text = widget.timeInput.rawEndTime(twelveHourClock);
+    valiedatedNewEndTime = widget.timeInput.rawEndTime(twelveHourClock);
     super.initState();
   }
 
@@ -113,7 +147,6 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
                     ),
                     _TimeInputStack(
                       inputKey: TestKey.startTimeInput,
-                      timeInput: widget.timeInput.rawStartTime(twelveHourClock),
                       editingController: startTimeController,
                       editFocus: startTimeFocus,
                       twelveHourClock: twelveHourClock,
@@ -170,7 +203,6 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
                       ),
                       _TimeInputStack(
                         inputKey: TestKey.endTimeInput,
-                        timeInput: widget.timeInput.rawEndTime(twelveHourClock),
                         editingController: endTimeController,
                         editFocus: endTimeFocus,
                         twelveHourClock: twelveHourClock,
@@ -205,7 +237,6 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
 }
 
 class _TimeInputStack extends StatefulWidget {
-  final String timeInput;
   final TextEditingController editingController;
   final FocusNode editFocus;
   final ValueChanged<String> onTimeChanged;
@@ -214,26 +245,23 @@ class _TimeInputStack extends StatefulWidget {
 
   _TimeInputStack({
     this.inputKey,
-    @required this.timeInput,
     @required this.editingController,
     @required this.editFocus,
     @required this.twelveHourClock,
     this.onTimeChanged,
   });
   @override
-  _TimeInputStackState createState() => _TimeInputStackState(timeInput);
+  _TimeInputStackState createState() => _TimeInputStackState();
 }
 
 class _TimeInputStackState extends State<_TimeInputStack> {
-  _TimeInputStackState(this.timeInput);
+  _TimeInputStackState();
 
   static final emptyPattern = '--:--';
   final displayFocus = FocusNode(
     canRequestFocus: false,
   );
 
-  bool hasFocus = false;
-  String timeInput;
   TextEditingController displayController;
 
   TextEditingController get editController => widget.editingController;
@@ -243,27 +271,14 @@ class _TimeInputStackState extends State<_TimeInputStack> {
   void initState() {
     super.initState();
     displayController = TextEditingController();
-    editFocus.addListener(() {
-      if (hasFocus != editFocus.hasFocus) {
-        if (!editFocus.hasFocus &&
-            (editController.text.length == 4 || editController.text.isEmpty)) {
-          setState(() {
-            timeInput = editController.text;
-          });
-        }
-        setState(() {
-          hasFocus = editFocus.hasFocus;
-        });
-      }
+    displayController.text = formatTimeToDisplay(widget.editingController.text);
+    editController.addListener(() {
+      displayController.text = formatTimeToDisplay(editController.text);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    editController.text = timeInput;
-    editController.selection =
-        TextSelection(baseOffset: 0, extentOffset: editController.text.length);
-    displayController.text = formatTimeToDisplay(timeInput);
     return Container(
       width: 120,
       height: 64,
@@ -276,7 +291,6 @@ class _TimeInputStackState extends State<_TimeInputStack> {
             showCursor: false,
             controller: editController,
             onChanged: (value) {
-              displayController.text = formatTimeToDisplay(value);
               if (widget.onTimeChanged != null) {
                 widget.onTimeChanged(value);
               }
