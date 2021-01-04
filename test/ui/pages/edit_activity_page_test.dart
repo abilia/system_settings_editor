@@ -1538,7 +1538,10 @@ text''';
       expect(startTimePmRadioFinder, findsNothing);
 
       // Act -- change time to 01:01
-      expect(find.text('13:44'), findsOneWidget);
+      expect(
+          find.text('13:44'),
+          findsNWidgets(
+              2)); // One in the dialog and one in the edit activity view
 
       await tester.enterText(startTimeInputFinder, '0');
       expect(find.text('0'), findsOneWidget);
@@ -1546,7 +1549,7 @@ text''';
       await tester.tap(endTimeInputFinder);
       await tester.pumpAndSettle();
       expect(find.text('13:44'),
-          findsOneWidget); // Time resets when no valid time is entered
+          findsNWidgets(2)); // Time resets when no valid time is entered
 
       await tester.enterText(endTimeInputFinder, '1111');
       expect(find.text('11:11'), findsOneWidget);
