@@ -139,10 +139,7 @@ class DatePicker extends StatelessWidget {
                       onChange(newDate);
                     }
                   },
-            leading: Icon(
-              AbiliaIcons.calendar,
-              size: smallIconSize,
-            ),
+            leading: Icon(AbiliaIcons.calendar),
             text: Text(
               (time.isAtSameDay(date) ? '(${translator.today}) ' : '') +
                   '${timeFormat.format(date)}',
@@ -254,10 +251,7 @@ class TimePicker extends StatelessWidget {
           onTap: onTap,
           heigth: heigth,
           errorState: errorState,
-          leading: Icon(
-            AbiliaIcons.clock,
-            size: smallIconSize,
-          ),
+          leading: Icon(AbiliaIcons.clock),
           text: Text(timeSet ? time.format(context) : ''),
           trailing: errorState
               ? const Icon(

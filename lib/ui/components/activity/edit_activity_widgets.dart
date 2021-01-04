@@ -295,15 +295,10 @@ class CategoryWidget extends StatelessWidget {
     return Expanded(
       child: RadioField(
         key: key,
+        margin: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16.0),
         onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
             .add(ReplaceActivity(activity.copyWith(category: v))),
-        leading: Row(children: <Widget>[
-          const SizedBox(width: 6),
-          Icon(
-            icon,
-            size: smallIconSize,
-          ),
-        ]),
+        leading: Icon(icon),
         text: Text(
           text,
           overflow: TextOverflow.ellipsis,
@@ -330,10 +325,7 @@ class AlarmWidget extends StatelessWidget {
           SubHeading(translator.alarm),
           PickField(
             key: TestKey.selectAlarm,
-            leading: Icon(
-              alarm.iconData(),
-              size: smallIconSize,
-            ),
+            leading: Icon(alarm.iconData()),
             text: Text(alarm.text(translator)),
             onTap: memoSettingsState.abilityToSelectAlarm
                 ? () async {
@@ -445,7 +437,6 @@ class AvailibleForWidget extends StatelessWidget {
           key: TestKey.availibleFor,
           leading: Icon(
             secret ? AbiliaIcons.password_protection : AbiliaIcons.user_group,
-            size: smallIconSize,
           ),
           text:
               Text(secret ? translator.onlyMe : translator.meAndSupportPersons),
@@ -482,10 +473,7 @@ class RecurrenceWidget extends StatelessWidget {
         SubHeading(translator.recurrence),
         PickField(
           key: TestKey.changeRecurrence,
-          leading: Icon(
-            recurrentType.iconData(),
-            size: smallIconSize,
-          ),
+          leading: Icon(recurrentType.iconData()),
           text: Text(recurrentType.text(translator)),
           onTap: () async {
             final result = await showViewDialog<RecurrentType>(

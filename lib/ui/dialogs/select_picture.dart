@@ -74,10 +74,7 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
           PickField(
             key: TestKey.imageArchiveButton,
             leading: const Icon(AbiliaIcons.folder),
-            text: Text(
-              translate.imageArchive,
-              style: abiliaTheme.textTheme.bodyText1,
-            ),
+            text: Text(translate.imageArchive),
             onTap: () {
               setState(() {
                 imageArchiveView = !imageArchiveView;
@@ -160,10 +157,7 @@ class ImageSourceWidget extends StatelessWidget {
               child: PickField(
                 key: ObjectKey(imageSource),
                 leading: permission.icon,
-                text: Text(
-                  text,
-                  style: abiliaTheme.textTheme.bodyText1,
-                ),
+                text: Text(text),
                 onTap: permissionState.status[permission].isPermanentlyDenied
                     ? null
                     : () async => await _getExternalFile(context),

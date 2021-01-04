@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -124,7 +125,8 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
     return hour;
   }
 
-  TextStyle get textStyle => baseTextStyle.copyWith(
+  TextStyle get textStyle => GoogleFonts.roboto(
+        color: AbiliaColors.black,
         fontWeight: regular,
         fontSize: 56.0,
         height: 82.0 / 56.0,

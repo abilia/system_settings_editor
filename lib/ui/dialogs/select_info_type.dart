@@ -33,10 +33,7 @@ class SelectInfoTypeDialog extends StatelessWidget {
             groupValue: infoItemType,
             onChanged: Navigator.of(context).maybePop,
             value: Checklist,
-            leading: const Icon(
-              AbiliaIcons.ok,
-              size: smallIconSize,
-            ),
+            leading: const Icon(AbiliaIcons.ok),
             text: Text(translate.infoTypeChecklist),
           ),
           SizedBox(height: 8.0),
@@ -45,10 +42,7 @@ class SelectInfoTypeDialog extends StatelessWidget {
             groupValue: infoItemType,
             onChanged: Navigator.of(context).maybePop,
             value: NoteInfoItem,
-            leading: const Icon(
-              AbiliaIcons.edit,
-              size: smallIconSize,
-            ),
+            leading: const Icon(AbiliaIcons.edit),
             text: Text(translate.infoTypeNote),
           ),
         ],
