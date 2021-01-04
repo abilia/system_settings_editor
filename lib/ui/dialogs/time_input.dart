@@ -30,32 +30,20 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
   TextEditingController endTimeController;
   DayPeriod startTimePeriod;
   DayPeriod endTimePeriod;
+  FocusNode startTimeFocus;
+  FocusNode endTimeFocus;
 
   _TimeInputDialogState({@required this.twelveHourClock});
 
-  bool get hasStartTime => widget.timeInput?.startTime != null;
-  bool get hasEndTime => widget.timeInput?.endTime != null;
-  TimeOfDay get startTime => widget.timeInput?.startTime;
-  TimeOfDay get endTime => widget.timeInput.endTime;
-  FocusNode startTimeFocus;
-  FocusNode endTimeFocus;
-  ValueChanged<String> onStartTimeChanged;
-
   @override
   void initState() {
-    startTimePeriod =
-        hasStartTime ? widget.timeInput.startTime.period : DayPeriod.pm;
-    endTimePeriod = hasEndTime ? widget.timeInput.endTime.period : DayPeriod.pm;
+    startTimePeriod = widget.timeInput.startTime?.period ?? DayPeriod.pm;
+    endTimePeriod = widget.timeInput.endTime?.period ?? DayPeriod.pm;
     startTimeFocus = FocusNode();
     endTimeFocus = FocusNode();
     startTimeFocus.requestFocus();
     startTimeController = TextEditingController();
     endTimeController = TextEditingController();
-    onStartTimeChanged = (value) {
-      if (value.length == 4) {
-        endTimeFocus.requestFocus();
-      }
-    };
     super.initState();
   }
 
@@ -91,7 +79,6 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
   }
 
   TextStyle get textStyle => baseTextStyle.copyWith(
-        fontFamily: 'Roboto',
         fontWeight: regular,
         fontSize: 34.0,
       );
@@ -130,7 +117,11 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
                       editingController: startTimeController,
                       editFocus: startTimeFocus,
                       twelveHourClock: twelveHourClock,
-                      onTimeChanged: onStartTimeChanged,
+                      onTimeChanged: (value) {
+                        if (value.length == 4) {
+                          endTimeFocus.requestFocus();
+                        }
+                      },
                     ),
                     if (!widget.is24HoursFormat)
                       Padding(
@@ -311,7 +302,7 @@ class _TimeInputStackState extends State<_TimeInputStack> {
                 disabledBorder: OutlineInputBorder(
                   borderRadius: borderRadius,
                   borderSide: BorderSide(
-                    color: hasFocus ? Colors.black : Colors.grey,
+                    color: editFocus.hasFocus ? Colors.black : Colors.grey,
                     width: 2,
                   ),
                 ),
