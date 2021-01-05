@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 
 void main() {
   DayPickerBloc dayPickerBloc;
@@ -21,14 +22,23 @@ void main() {
 
   test('initial state', () {
     expect(
-        dayPickerBloc.state, DayPickerState(theDay, DayPickerBloc.startIndex));
+        dayPickerBloc.state,
+        DayPickerState.forTest(
+          theDay,
+          DayPickerBloc.startIndex,
+          Occasion.current,
+        ));
   });
 
   test('Next day should yeild next day', () async {
     dayPickerBloc.add(NextDay());
     await expectLater(
       dayPickerBloc,
-      emits(DayPickerState(theDayAfter, DayPickerBloc.startIndex + 1)),
+      emits(DayPickerState.forTest(
+        theDayAfter,
+        DayPickerBloc.startIndex + 1,
+        Occasion.future,
+      )),
     );
   });
 
@@ -36,7 +46,11 @@ void main() {
     dayPickerBloc.add(PreviousDay());
     await expectLater(
       dayPickerBloc,
-      emits(DayPickerState(thedayBefore, DayPickerBloc.startIndex - 1)),
+      emits(DayPickerState.forTest(
+        thedayBefore,
+        DayPickerBloc.startIndex - 1,
+        Occasion.past,
+      )),
     );
   });
 
@@ -46,8 +60,16 @@ void main() {
     await expectLater(
       dayPickerBloc,
       emitsInOrder([
-        DayPickerState(theDayAfter, DayPickerBloc.startIndex + 1),
-        DayPickerState(theDay, DayPickerBloc.startIndex)
+        DayPickerState.forTest(
+          theDayAfter,
+          DayPickerBloc.startIndex + 1,
+          Occasion.future,
+        ),
+        DayPickerState.forTest(
+          theDay,
+          DayPickerBloc.startIndex,
+          Occasion.current,
+        )
       ]),
     );
   });
@@ -59,9 +81,21 @@ void main() {
     await expectLater(
       dayPickerBloc,
       emitsInOrder([
-        DayPickerState(theDayAfter, DayPickerBloc.startIndex + 1),
-        DayPickerState(theDayAfterTomorrow, DayPickerBloc.startIndex + 2),
-        DayPickerState(theDay, DayPickerBloc.startIndex)
+        DayPickerState.forTest(
+          theDayAfter,
+          DayPickerBloc.startIndex + 1,
+          Occasion.future,
+        ),
+        DayPickerState.forTest(
+          theDayAfterTomorrow,
+          DayPickerBloc.startIndex + 2,
+          Occasion.future,
+        ),
+        DayPickerState.forTest(
+          theDay,
+          DayPickerBloc.startIndex,
+          Occasion.current,
+        ),
       ]),
     );
   });
@@ -84,8 +118,16 @@ void main() {
     await expectLater(
       dayPickerBloc,
       emitsInOrder([
-        DayPickerState(dayLightSavingTime, DayPickerBloc.startIndex + 1),
-        DayPickerState(daysAfterDST, DayPickerBloc.startIndex + 2)
+        DayPickerState.forTest(
+          dayLightSavingTime,
+          DayPickerBloc.startIndex + 1,
+          Occasion.future,
+        ),
+        DayPickerState.forTest(
+          daysAfterDST,
+          DayPickerBloc.startIndex + 2,
+          Occasion.future,
+        )
       ]),
     );
   });
@@ -107,8 +149,16 @@ void main() {
     await expectLater(
       dayPickerBloc,
       emitsInOrder([
-        DayPickerState(daysAfterDST, DayPickerBloc.startIndex - 1),
-        DayPickerState(dayLightSavingTime, DayPickerBloc.startIndex - 2)
+        DayPickerState.forTest(
+          daysAfterDST,
+          DayPickerBloc.startIndex - 1,
+          Occasion.past,
+        ),
+        DayPickerState.forTest(
+          dayLightSavingTime,
+          DayPickerBloc.startIndex - 2,
+          Occasion.past,
+        )
       ]),
     );
   });
@@ -131,8 +181,16 @@ void main() {
     await expectLater(
       dayPickerBloc,
       emitsInOrder([
-        DayPickerState(dayLightSavingTime, DayPickerBloc.startIndex + 1),
-        DayPickerState(daysAfterDST, DayPickerBloc.startIndex + 2)
+        DayPickerState.forTest(
+          dayLightSavingTime,
+          DayPickerBloc.startIndex + 1,
+          Occasion.future,
+        ),
+        DayPickerState.forTest(
+          daysAfterDST,
+          DayPickerBloc.startIndex + 2,
+          Occasion.future,
+        ),
       ]),
     );
   });
@@ -154,8 +212,16 @@ void main() {
     await expectLater(
       dayPickerBloc,
       emitsInOrder([
-        DayPickerState(daysAfterDST, DayPickerBloc.startIndex - 1),
-        DayPickerState(dayLightSavingTime, DayPickerBloc.startIndex - 2)
+        DayPickerState.forTest(
+          daysAfterDST,
+          DayPickerBloc.startIndex - 1,
+          Occasion.past,
+        ),
+        DayPickerState.forTest(
+          dayLightSavingTime,
+          DayPickerBloc.startIndex - 2,
+          Occasion.past,
+        ),
       ]),
     );
   });
@@ -165,10 +231,22 @@ void main() {
       streamController.add(theDay.add(Duration(minutes: i)));
     }
     await Future.delayed(Duration(milliseconds: 100));
+    dayPickerBloc.add(NextDay());
     dayPickerBloc.add(CurrentDay());
-    await expectLater(
+    expect(
       dayPickerBloc,
-      emits(DayPickerState(theDay, DayPickerBloc.startIndex)),
+      emitsInOrder([
+        DayPickerState.forTest(
+          theDayAfter,
+          DayPickerBloc.startIndex + 1,
+          Occasion.future,
+        ),
+        DayPickerState.forTest(
+          theDay,
+          DayPickerBloc.startIndex,
+          Occasion.current,
+        ),
+      ]),
     );
   });
 
@@ -179,7 +257,13 @@ void main() {
     dayPickerBloc.add(CurrentDay());
     await expectLater(
       dayPickerBloc,
-      emits(DayPickerState(theDayAfter, DayPickerBloc.startIndex + 1)),
+      emits(
+        DayPickerState.forTest(
+          theDayAfter,
+          DayPickerBloc.startIndex + 1,
+          Occasion.current,
+        ),
+      ),
     );
     await dayPickerBloc.close();
     await expectLater(dayPickerBloc, emitsDone);
@@ -192,7 +276,13 @@ void main() {
     dayPickerBloc.add(CurrentDay());
     await expectLater(
       dayPickerBloc,
-      emits(DayPickerState(theDayAfterTomorrow, DayPickerBloc.startIndex + 2)),
+      emits(
+        DayPickerState.forTest(
+          theDayAfterTomorrow,
+          DayPickerBloc.startIndex + 2,
+          Occasion.current,
+        ),
+      ),
     );
   });
 
@@ -203,8 +293,16 @@ void main() {
     }
     await Future.delayed(Duration(milliseconds: 100));
     dayPickerBloc.add(CurrentDay());
-    await expectLater(dayPickerBloc,
-        emits(DayPickerState(theDayAfter, DayPickerBloc.startIndex + 1)));
+    await expectLater(
+      dayPickerBloc,
+      emits(
+        DayPickerState.forTest(
+          theDayAfter,
+          DayPickerBloc.startIndex + 1,
+          Occasion.current,
+        ),
+      ),
+    );
     await dayPickerBloc.close();
     await expectLater(dayPickerBloc, emitsDone);
   });

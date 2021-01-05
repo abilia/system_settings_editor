@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class Timeline extends StatelessWidget {
   final double width;

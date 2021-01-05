@@ -17,7 +17,7 @@ licenseExpiredMessage	Your license has expired and MEMOplanner Go can no longer 
 fullDay	All day	Heldag	Hele dagen	Hele dag	Koko päivä	Ganztägig	Hele dagen
 morning	morning	morgon	morgen	ochtend	aamu	frühmorgens	morgen
 forenoon	forenoon	förmiddag	formiddag	midden-ochtend	aamupäivän puolivälissä	Vormittag	formiddag
-lunch	Lunch	Lunch					
+lunch	Lunch	Lunch	Frokost	Lunch	Lounas	Mittagessen	Lunsj
 afternoon	afternoon	eftermiddag	eftermiddag	middag	iltapäivä	Nachmittag	ettermiddag
 evening	evening	kväll	aften	avond	ilta	Abend	kveld
 night	night	natt	nat	nacht	yö	Nacht	natt
@@ -26,19 +26,23 @@ days	days	dagar	dage	dagen	päivää	Tage	dager
 day	day	dag	dag	dag	päivä	Tag	dag
 hours	hours	timmar	timer	uur	tunnit	Stunden	timer
 hour	hour	timme	time	uur	tunti	Stunde	time
-h	h	t					
+h	h	t	t	u	t	S	t
 minutes	minutes	minuter	minutter	minuten	minuuttia	Minuten	minutter
 minute	minute	minut	minut	minuut	minuutti	Minute	minutt
-min	min	min					
-am	AM	fm					
-pm	PM	em					
+min	min	min	min	min	min	Min	min
+am	AM	fm	am	am	am	am	am
+pm	PM	em	pm	pm	pm	pm	pm
+# https://en.wikipedia.org/wiki/Inessive_case
+dayInessive	&empty&	&empty&	&empty&	&empty&	päivässä	&empty&	&empty&
+hourInessive	&empty&	&empty&	&empty&	&empty&	tunnissa	&empty&	&empty&
+minuteInessive	&empty&	&empty&	&empty&	&empty&	minuutissa	&empty&	&empty&
 							
 ### Activity related							
 reminders	Reminders	Påminnelser	Påmindelser	Herinneringen	Muistutukset	Erinnerungen	Påminnelser
 reminder	Reminder	Påminnelse	Påmindelse	Herinnering	Muistutus	Erinnerung	Påminnelse
 alarm	Alarm	Larm	Alarm	Alarm	Hälytys	Alarm	Alarm
-endsNow	Ends now	Slutar nu					
-startsNow	Starts now	Börjar nu					
+endsNow	Ends now	Slutar nu	Ënder nå	Eindigt nu	Päättyy nyt	Endet jetzt	Slutter nå
+startsNow	Starts now	Börjar nu	Starter nå	Begint nu	Alkaa nyt	Beginnt jetzt	Starter nå
 noActivities	No activities today	Inga aktiviteter idag	Ingen aktiviteter i dag	Geen activiteiten vandaag	Ei toimintaa tänään	Keine Aktivitäten heute	Ingen aktiviteter i dag
 left	Left	Vänster	Venstre	Links	Vasen	Links	Venstre
 right	Right	Höger	Højre	Rechts	Oikea	Rechts	Høyre
@@ -54,10 +58,10 @@ allDays	All days	Alla dagar	Alle dage	Alle dagen	Kaikki päivät	Alle Tage	Alle 
 thisDayAndForward	This day and forward	Denna dag och framåt	Denne dag og frem	Deze dag en verder	Tästä päivästä lähtien	Von diesem Tag an	Denne dagen og fremover
 checkActivityQuestion	Completed?	Klar?	Færdig?	Afgerond?	Valmis?	Bist Du fertig?	Ferdig?
 unCheckActivityQuestion	Do you want to uncheck the activity?	Vill du ångra kvitteringen av aktiviteten?	Vil du fjerne markeringen af aktiviteten?	Wilt u de activiteit uitvinken?	Haluatko poistaa valinnan aktiviteetista?	Möchten Sie die Auswahl rückgängig machen?	Vil du fjerne merket for aktiviteten?
-inTimePre	in	om					
-timeAgoPre	&empty&	för					
-timeAgoPost	ago	sen					
-checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?					
+inTimePre	in	om	om	in	&empty&	in	om
+timeAgoPre	&empty&	för	for	&empty&	&empty&	vor	for
+timeAgoPost	ago	sen	siden	geleden	sitten	&empty&	siden
+checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?	Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
@@ -82,9 +86,9 @@ noNotes	You have no notes	Du har inga anteckningar	Du har ingen noter	Je hebt ge
 noImages	You have no images	Du har inga bilder	Du har ingen billeder	Je hebt geen afbeeldingen	Sinulla ei ole kuvia	Sie haben keine Bilder	Du har ingen bilder
 setTime	Set time	Välj tid	Vælg tid	Tijd instellen	Aseta aika	Zeit einstellen	Velg tid
 time	Time	Tid	Tid	Tijd	Aika	Zeit	Tid
-
+							
 ### Errors							
-missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.					
+missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.	Aktiviteten skal have et navn eller et billede og et starttidspunkt.	Je activiteit moet een afbeelding of naam en starttijd bevatten.	Toimintasi tulisi sisältää kuva tai nimi ja aloitusaika.	Ihre Aktivität sollte ein Bild oder einen Namen und eine Startzeit enthalten.	Aktiviteten må ha et navn ellet et bilde og en starttid.
 missingTitleOrImage	An activity needs an image or a name.	En aktivitet måste ha antingen en bild eller ett namn.	En aktivitet skal have enten et billede eller et navn.	Deze activiteit heeft een afbeelding of een naam nodig.	Tämä aktiviteetti tarvitsee kuvan tai nimen.	Diese Aktivität braucht ein Bild oder einen Namen.	En aktivitet må ha enten et bilde eller et navn.
 missingStartTime	You must enter a start time.	Du måste ange en starttid.	Du skal angive en starttid.	U moet een starttijd instellen.	Anna aloitusaika.	Sie müssen eine Startzeit eingeben:	En aktivitet må ha en starttid.
 startTimeBeforeNow	You have selected a start time which has already passed. This is not allowed.	Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.	Starttiden er allerede passeret. Det er ikke tilladt.	U heeft een starttijd geselecteerd die al voorbij is. Dit is niet toegestaan.	Valitsit aloitusajan, joka on jo mennyt. Tätä ei sallita.	Die gewählte Startzeit liegt in der Vergangenheit. Dies ist nicht zulässig.	Starttiden er allerede passert. Det er ikke tillatt.
@@ -135,7 +139,7 @@ infoTypeNone	No extra function selected	Ingen extra funktion vald	Ingen yderlige
 infoTypeChecklist	Add checklist	Lägg till checklista	Tilføj tjekliste	Checklist toevoegen	Lisää tarkistusluettelo	Checkliste hinzufügen	Legg til sjekkliste
 infoTypeNote	Add note	Lägg till anteckning	Tilføj note	Notitie toevoegen	Lisää muistiinpano	Hinweis hinzufügen	Legg til notat
 typeSomething	Type something…	Skriv något…	Skriv noget…	Typ iets	Kirjoita jotain	Geben Sie etwas ein…	Skriv noe…
-clear	Clear	Rensa					
+clear	Clear	Rensa	Slet	Verwijderen	Poista	Entfernen	Slette
 selectFromLibrary	Select from library	Välj från bibliotek	Vælg fra bibliotek	Selecteren uit bibliotheek	Valitse kirjastosa	Aus Bibliothek wählen	Velg fra bibliotek
 addNew	Add new	Lägg till ny	Tilføj	Toevoegen	Lisää	Hinzufügen	Legg til
 task	Enter task	Skriv in uppgift	Indsæt opgave	Taak invoeren	Anna tehtävä	Aufgabe eingeben	Skriv inn oppgave
@@ -145,38 +149,37 @@ remove	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
 timePillarView	1 timepillar	1 tidpelare	1 tidslinje	1 tijdlijn	1 aikajana	1 Zeitstrahl	1 tidslinje
 listView	List	Lista	Liste	Lijst	Luettelo	Liste	Liste
-timepillarSettings	Timepillar settings	Inställningar för tidpelare					
-activityDuration	Activity duration	Visa tid som					
-dots	Dots	Prickar					
-edge	Edge	Flärp					
-preview	Preview	Förhandsgranskning					
+timepillarSettings	Timepillar settings	Inställningar för tidpelare	Tidslinjeindstillinger	Tijdlijn instellingen	Aikajanan asetukset	Zeitstrahl einstellungen	Innstillinger for tidslinje
+activityDuration	Activity duration	Visa tid som	Vis tiden som	Laat de tijd zien als	Näytä aika muodossa	Zeit anzeigen als	Vise tiden som
+dots	Dots	Prickar	Prikker	Stippen	Pisteet	Punkte	Prikker
+edge	Edge	Flärp	Flik	Rand	Reuna	Kante	Flik
+preview	Preview	Förhandsgranskning	Forhåndsvisning	Voorbeeld	Esikatselu	Vorschau	Forhåndsvisning
 textToSpeech	Speech support	Talstöd	Talestøtte	Spraakondersteuning	Puhetuki	Sprachausgabe	Talesyntese
 longpressToSpeak	Tap and hold for speech support	Tryck och håll ned för talstöd	Tryk og hold nede for talestøtte	Tik en houd vast voor spraakondersteuning	Napauta ja pidä painettuna puhetukea varten	Tippen und halten Sie für die Sprachunterstützung	Trykk og hold for talestøtte
 longPressInfoText	Tap and hold about 1½ seconds on any function to get it read to by speech synthesis	Tryck länge på någon text för att få den uppläst	Tryk og hold ca. 1½ sekund på enhver funktion for at få den læst til ved talesyntese	Tik en houd ongeveer 1½ seconde vast op een functie om deze te laten voorlezen door spraaksynthese	Napauta ja pidä painettuna noin 1,5 sekuntia mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla	Tippen und halten Sie etwa 1½ Sekunden lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen	Trykk og hold i ca. 1½ sekund på en funksjon for å få den lest opp ved talesyntese
 							
 ### Permissions							
-permissions	Permissions	Behörigheter					
-notifications	Notifications	Notiser					
-accessToPhotos	Access to Photos	Tillgång till bilder					
-accessToCamera	Access to Camera	Tillgång till kameran					
-allowNotifications	Allow notifications	Tillåt notiser					
-allowNotificationsDescription1	Allow notifications to be able to get alarms and reminders from activities. You can do that from the	Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån					
-settingsLink	settings	inställningar					
-turnOffNotifications	Turn off notifications?	Stäng av notiser?					
-turnOffNotificationsBody	You will no longer be able to get alarms and reminders from activities.	Du kommer inte längre kunna få alarm och notiser för aktiviteter.					
-notificationsWarningHintText	Allow notifications to be able to get alarms and reminders from activities.	Tillåt notiser för att få larm och påminnelser för aktiviteter.					
-notificationsWarningText	Allow notifications from the settings to be able to receive alarms and reminders.	Tillåt notiser från inställningar för att få larm och påminnelser.					
-fullScreenAlarm	Full screen alarm	Helskärmslarm					
-redirectToAndroidSettings	You will be redirect to the Android settings.	Du kommer att omdirigeras till Android-inställningarna.					
-fullScreenAlarmInfo	Allow this permission to be able to get full screen alarm of activities	Tillåt denna behörighet för att kunna få helskärmslarm om aktiviteter					
-allow	Allow	Tillåt					
-previewActivityTitle	Erik's birthday party	Eriks födelsedagskalas					
-allowAccessPhotosBody	Allow access to photos to be able to use photos from the device.	Tillåt behörighet till bilder för att ha möjlighet att använda bilder från enheten.					
-allowAccessCameraBody	Allow access to camera to be able to take a photo from the device.	Tillåt behörighet till kameran för att ha möjlighet att ta bilder från enheten.					
-allowAccessBody2	You can always do that later from the	Du kan alltid göra det senare från					
+permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser
+notifications	Notifications	Notiser	Notifikationer	Meldingen	Ilmoitukset	Benachrichtigungen	Notifikasjoner
+accessToPhotos	Access to Photos	Tillgång till bilder	Adgang til fotos	Toegang tot foto's	Pääsy valokuviin	Zugang zu Fotos	Tilgang til bilder
+accessToCamera	Access to Camera	Tillgång till kameran	Adgang til kamera	Toegang tot camera	Kameran käyttöoikeus	Zugang zur Kamera	Tilgang til kamera
+allowNotifications	Allow notifications	Tillåt notiser	Tillad notifikationer	Meldingen toestaan	Salli ilmoitukset	Benachrichtigungen zulassen	Tillat notifikasjoner
+allowNotificationsDescription1	Allow notifications to be able to get alarms and reminders from activities. You can do that from the	Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån	Tillad notifikationer for at kunne modtage alarmer og påmindelser fra aktiviteter. Du kan gøre det fra	Sta meldingen toe om alarmen en herinneringen van activiteiten te kunnen ontvangen. U kunt dat doen vanaf de	Salli ilmoitusten saada hälytyksiä ja muistutuksia toiminnasta. Voit tehdä sen	Ermöglichen Sie Benachrichtigungen, Alarme und Erinnerungen von Aktivitäten zu erhalten. Sie können das von der tun	Tillat notifikasjoner for å få alarm og påminnelser fra aktiviteter. Du kan gjøre det fra
+settingsLink	settings	inställningar	indstillinger	instellingen	asetukset	die Einstellungen	innstillinger
+turnOffNotifications	Turn off notifications?	Stäng av notiser?	Slå notifikationer fra	Zet de meldingen uit?	Laita ilmoitukset pois päältä?	Benachrichtigungen abschalten?	Slå av notifikasjoner?
+turnOffNotificationsBody	You will no longer be able to get alarms and reminders from activities.	Du kommer inte längre kunna få alarm och notiser för aktiviteter.	Du kan ikke længere modtage alarmer og notifikationer fra aktiviteter.	U kunt geen alarmen en herinneringen meer ontvangen van activiteiten.	Et voi enää saada hälytyksiä ja muistutuksia toiminnasta.	Sie können keine Alarme und Erinnerungen mehr an Aktivitäten erhalten.	Du vil ikke lengre få alarm og notifikasjoner fra aktiviteter
+notificationsWarningHintText	Allow notifications to be able to get alarms and reminders from activities.	Tillåt notiser för att få larm och påminnelser för aktiviteter.	Tillad notifikationer for at kunne modtage alarmer og påmindelser for aktiviteter.	Sta meldingen toe om alarmen en herinneringen van activiteiten te kunnen ontvangen.	Salli ilmoitusten saada hälytyksiä ja muistutuksia toiminnasta.	Ermöglichen Sie Benachrichtigungen, Alarme und Erinnerungen von Aktivitäten zu erhalten.	Tillat notifikasjoner for å få alarm og påminnelser for aktiviteter
+notificationsWarningText	Allow notifications from the settings to be able to receive alarms and reminders.	Tillåt notiser från inställningar för att få larm och påminnelser.	Tillad notifikationer fra indstillingerne for at kunne modtage alarmer og påmindelser.	Sta meldingen van de instellingen toe om alarmen en herinneringen te kunnen ontvangen.	Salli asetusten ilmoitusten vastaanottaa hälytyksiä ja muistutuksia.	Sta meldingen van de instellingen toe om alarmen en herinneringen te kunnen ontvangen.	Tillat notifikasjoner fra innstillinger for å få alarm og påminnelser
+fullScreenAlarm	Full screen alarm	Helskärmslarm	Alarm i fuld skærm	Alarm op volledig scherm	Koko näytön hälytys	Vollbildalarm	Alarm i fullskjerm
+redirectToAndroidSettings	You will be redirect to the Android settings.	Du kommer att omdirigeras till Android-inställningarna.	Du omdirigeres til Android-indstillingerne.	U wordt doorgestuurd naar de Android-instellingen.	Sinut ohjataan Android-asetuksiin.	Sie werden zu den Android-Einstellungen weitergeleitet.	Du vil bli omdirrigert til Android-innstillinger
+fullScreenAlarmInfo	Allow this permission to be able to get full screen alarm of activities	Tillåt denna behörighet för att kunna få helskärmslarm om aktiviteter	Accepter denne tilladelse for at kunne få alarm i fuld skærm til aktiviteter	Sta deze toestemming toe om een alarm op volledig scherm van activiteiten te krijgen	Anna tämän oikeuden saada koko näytön hälytys toiminnoista	Ermöglichen Sie dieser Berechtigung, einen Vollbildalarm für Aktivitäten zu erhalten	Godta denne tillatelsen for å få alarm i fullskjerm for aktiviteter
+allow	Allow	Tillåt	Tillad	Toestaan	Sallia	ermöglichen	Tillat
+previewActivityTitle	Erik's birthday party	Eriks födelsedagskalas	Eriks fødselsdagsfest	Erik's verjaardagsfeestje	Erikin syntymäpäiväjuhlat	Eriks Geburtstagsfeier	Eiriks bursdagsselskap
+allowAccessPhotosBody	Allow access to photos to be able to use photos from the device.	Tillåt behörighet till bilder för att ha möjlighet att använda bilder från enheten.	Tillad adgang til fotos for at kunne bruge fotos fra enheden.	Sta toegang tot foto's toe om foto's van het apparaat te kunnen gebruiken.	Salli valokuvien käyttö, jotta voit käyttää valokuvia laitteesta.	Ermöglichen Sie den Zugriff auf Fotos, um Fotos vom Gerät verwenden zu können.	Tillat tilgang til bilder for å ha mulighet til å bruke bilder fra enheten
+allowAccessCameraBody	Allow access to camera to be able to take a photo from the device.	Tillåt behörighet till kameran för att ha möjlighet att ta bilder från enheten.	Tillad adgang til kameraet for at kunne tage et billede fra enheden.	Sta toegang tot de camera toe om een foto te kunnen maken vanaf het apparaat.	Salli kameran käyttö, jotta voit ottaa valokuvan laitteesta.	Ermöglichen Sie den Zugriff auf die Kamera, um ein Foto vom Gerät aufnehmen zu können.	Tillat tilgang til kamera for å ha mulighet til å ta bilder fra enheten
+allowAccessBody2	You can always do that later from the	Du kan alltid göra det senare från	Du kan altid gøre det senere fra	U kunt dat later altijd doen vanuit het	Voit aina tehdä sen myöhemmin	Das können Sie später immer noch von der	Du kan alltids gjøre det senere fra
 							
 ### About							
 about	About	Information	Information	Informatie	Tiedot	Information	Informasjon
 version	Version	Version	Version	Versie	Versio	Version	Versjon
 producer	Producer	Producent	Producent	Producent	Valmistaja	Hersteller	Produsent
-aboutText	This product is developed in accordance with and complies to all necessary requirements, regulations and directives for medical devices.						

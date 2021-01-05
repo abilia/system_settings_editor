@@ -1,7 +1,7 @@
 import 'package:seagull/i18n/all.dart';
 
 extension TranslatedExtensions on Translated {
-  String inTime(String time) => '$inTimePre $time';
+  String inTime(String time) => '$inTimePre $time'.trim();
   String timeAgo(String time) => '$timeAgoPre $time $timeAgoPost'.trim();
 
   String shortWeekday(int weekday) {

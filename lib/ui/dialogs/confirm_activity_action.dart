@@ -107,10 +107,12 @@ class _ConfirmCheckDialogOverlayState extends State<ConfirmCheckDialogOverlay> {
                     width: widget.activityContainerSize.width,
                     child: Opacity(
                       opacity: stateChanged ? 0.0 : 1.0,
-                      child: Text(
-                        widget.title,
-                        textAlign: TextAlign.center,
-                        style: headingFont,
+                      child: Tts(
+                        child: Text(
+                          widget.title,
+                          textAlign: TextAlign.center,
+                          style: headingFont,
+                        ),
                       ),
                     ),
                   ),
@@ -169,23 +171,25 @@ class BottomCheckRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CancelButton(
-          key: TestKey.checkDialogCancelButton,
-          iconData: AbiliaIcons.close_program,
-          text: translate.cancel,
-          onPressed: () async {
-            await Navigator.of(context).maybePop();
-          },
+        Flexible(
+          child: CancelButton(
+            key: TestKey.checkDialogCancelButton,
+            iconData: AbiliaIcons.close_program,
+            text: translate.cancel,
+            onPressed: () async {
+              await Navigator.of(context).maybePop();
+            },
+          ),
         ),
-        SizedBox(
-          width: 16,
-        ),
-        CheckitButton(
-          key: activityOccasion.isSignedOff
-              ? TestKey.checkDialogUncheckButton
-              : TestKey.checkDialogCheckButton,
-          activityOccasion: activityOccasion,
-          onPressed: checkButtonPressed,
+        const SizedBox(width: 16),
+        Flexible(
+          child: CheckitButton(
+            key: activityOccasion.isSignedOff
+                ? TestKey.checkDialogUncheckButton
+                : TestKey.checkDialogCheckButton,
+            activityOccasion: activityOccasion,
+            onPressed: checkButtonPressed,
+          ),
         ),
       ],
     );
@@ -210,17 +214,18 @@ class CheckitButton extends StatelessWidget {
     final text = signedOff ? translate.uncheck : translate.check;
     return Tts(
       data: text,
-      child: Container(
-        child: FlatButton.icon(
-          icon: Icon(
-              signedOff ? AbiliaIcons.handi_uncheck : AbiliaIcons.handi_check),
-          label: Text(
+      child: FlatButton.icon(
+        icon: Icon(
+            signedOff ? AbiliaIcons.handi_uncheck : AbiliaIcons.handi_check),
+        label: Flexible(
+          child: Text(
             text,
             style: theme.textTheme.bodyText1.copyWith(height: 1),
+            overflow: TextOverflow.ellipsis,
           ),
-          color: signedOff ? AbiliaColors.white : AbiliaColors.green,
-          onPressed: onPressed,
         ),
+        color: signedOff ? AbiliaColors.white : AbiliaColors.green,
+        onPressed: onPressed,
       ),
     );
   }
@@ -249,11 +254,14 @@ class CancelButton extends StatelessWidget {
             iconData,
             color: AbiliaColors.white,
           ),
-          label: Text(
-            text,
-            style: theme.textTheme.bodyText1.copyWith(
-              height: 1,
-              color: AbiliaColors.white,
+          label: Flexible(
+            child: Text(
+              text,
+              style: theme.textTheme.bodyText1.copyWith(
+                height: 1,
+                color: AbiliaColors.white,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           color: AbiliaColors.black60,

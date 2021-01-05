@@ -78,6 +78,12 @@ abstract class Translated {
 
   final String pm = 'PM';
 
+  final String dayInessive = '';
+
+  final String hourInessive = '';
+
+  final String minuteInessive = '';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -335,9 +341,6 @@ abstract class Translated {
   final String version = 'Version';
 
   final String producer = 'Producer';
-
-  final String aboutText =
-      'This product is developed in accordance with and complies to all necessary requirements, regulations and directives for medical devices.';
 }
 
 class EN extends Translated {}
@@ -431,6 +434,15 @@ class SV extends Translated {
 
   @override
   final String pm = 'em';
+
+  @override
+  final String dayInessive = '';
+
+  @override
+  final String hourInessive = '';
+
+  @override
+  final String minuteInessive = '';
 
   @override
   final String reminders = 'Påminnelser';
@@ -863,6 +875,9 @@ class DA extends Translated {
   final String forenoon = 'formiddag';
 
   @override
+  final String lunch = 'Frokost';
+
+  @override
   final String afternoon = 'eftermiddag';
 
   @override
@@ -887,10 +902,31 @@ class DA extends Translated {
   final String hour = 'time';
 
   @override
+  final String h = 't';
+
+  @override
   final String minutes = 'minutter';
 
   @override
   final String minute = 'minut';
+
+  @override
+  final String min = 'min';
+
+  @override
+  final String am = 'am';
+
+  @override
+  final String pm = 'pm';
+
+  @override
+  final String dayInessive = '';
+
+  @override
+  final String hourInessive = '';
+
+  @override
+  final String minuteInessive = '';
 
   @override
   final String reminders = 'Påmindelser';
@@ -900,6 +936,12 @@ class DA extends Translated {
 
   @override
   final String alarm = 'Alarm';
+
+  @override
+  final String endsNow = 'Ënder nå';
+
+  @override
+  final String startsNow = 'Starter nå';
 
   @override
   final String noActivities = 'Ingen aktiviteter i dag';
@@ -947,6 +989,19 @@ class DA extends Translated {
   @override
   final String unCheckActivityQuestion =
       'Vil du fjerne markeringen af aktiviteten?';
+
+  @override
+  final String inTimePre = 'om';
+
+  @override
+  final String timeAgoPre = 'for';
+
+  @override
+  final String timeAgoPost = 'siden';
+
+  @override
+  final String checklistDoneInfo =
+      'Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?';
 
   @override
   final String menu = 'Menu';
@@ -1007,6 +1062,10 @@ class DA extends Translated {
 
   @override
   final String time = 'Tid';
+
+  @override
+  final String missingTitleOrImageAndStartTime =
+      'Aktiviteten skal have et navn eller et billede og et starttidspunkt.';
 
   @override
   final String missingTitleOrImage =
@@ -1131,6 +1190,9 @@ class DA extends Translated {
   final String typeSomething = 'Skriv noget…';
 
   @override
+  final String clear = 'Slet';
+
+  @override
   final String selectFromLibrary = 'Vælg fra bibliotek';
 
   @override
@@ -1152,6 +1214,21 @@ class DA extends Translated {
   final String listView = 'Liste';
 
   @override
+  final String timepillarSettings = 'Tidslinjeindstillinger';
+
+  @override
+  final String activityDuration = 'Vis tiden som';
+
+  @override
+  final String dots = 'Prikker';
+
+  @override
+  final String edge = 'Flik';
+
+  @override
+  final String preview = 'Forhåndsvisning';
+
+  @override
   final String textToSpeech = 'Talestøtte';
 
   @override
@@ -1160,6 +1237,71 @@ class DA extends Translated {
   @override
   final String longPressInfoText =
       'Tryk og hold ca. 1½ sekund på enhver funktion for at få den læst til ved talesyntese';
+
+  @override
+  final String permissions = 'Tilladelser';
+
+  @override
+  final String notifications = 'Notifikationer';
+
+  @override
+  final String accessToPhotos = 'Adgang til fotos';
+
+  @override
+  final String accessToCamera = 'Adgang til kamera';
+
+  @override
+  final String allowNotifications = 'Tillad notifikationer';
+
+  @override
+  final String allowNotificationsDescription1 =
+      'Tillad notifikationer for at kunne modtage alarmer og påmindelser fra aktiviteter. Du kan gøre det fra';
+
+  @override
+  final String settingsLink = 'indstillinger';
+
+  @override
+  final String turnOffNotifications = 'Slå notifikationer fra';
+
+  @override
+  final String turnOffNotificationsBody =
+      'Du kan ikke længere modtage alarmer og notifikationer fra aktiviteter.';
+
+  @override
+  final String notificationsWarningHintText =
+      'Tillad notifikationer for at kunne modtage alarmer og påmindelser for aktiviteter.';
+
+  @override
+  final String notificationsWarningText =
+      'Tillad notifikationer fra indstillingerne for at kunne modtage alarmer og påmindelser.';
+
+  @override
+  final String fullScreenAlarm = 'Alarm i fuld skærm';
+
+  @override
+  final String redirectToAndroidSettings =
+      'Du omdirigeres til Android-indstillingerne.';
+
+  @override
+  final String fullScreenAlarmInfo =
+      'Accepter denne tilladelse for at kunne få alarm i fuld skærm til aktiviteter';
+
+  @override
+  final String allow = 'Tillad';
+
+  @override
+  final String previewActivityTitle = 'Eriks fødselsdagsfest';
+
+  @override
+  final String allowAccessPhotosBody =
+      'Tillad adgang til fotos for at kunne bruge fotos fra enheden.';
+
+  @override
+  final String allowAccessCameraBody =
+      'Tillad adgang til kameraet for at kunne tage et billede fra enheden.';
+
+  @override
+  final String allowAccessBody2 = 'Du kan altid gøre det senere fra';
 
   @override
   final String about = 'Information';
@@ -1216,6 +1358,9 @@ class NL extends Translated {
   final String forenoon = 'midden-ochtend';
 
   @override
+  final String lunch = 'Lunch';
+
+  @override
   final String afternoon = 'middag';
 
   @override
@@ -1240,10 +1385,31 @@ class NL extends Translated {
   final String hour = 'uur';
 
   @override
+  final String h = 'u';
+
+  @override
   final String minutes = 'minuten';
 
   @override
   final String minute = 'minuut';
+
+  @override
+  final String min = 'min';
+
+  @override
+  final String am = 'am';
+
+  @override
+  final String pm = 'pm';
+
+  @override
+  final String dayInessive = '';
+
+  @override
+  final String hourInessive = '';
+
+  @override
+  final String minuteInessive = '';
 
   @override
   final String reminders = 'Herinneringen';
@@ -1253,6 +1419,12 @@ class NL extends Translated {
 
   @override
   final String alarm = 'Alarm';
+
+  @override
+  final String endsNow = 'Eindigt nu';
+
+  @override
+  final String startsNow = 'Begint nu';
 
   @override
   final String noActivities = 'Geen activiteiten vandaag';
@@ -1298,6 +1470,19 @@ class NL extends Translated {
 
   @override
   final String unCheckActivityQuestion = 'Wilt u de activiteit uitvinken?';
+
+  @override
+  final String inTimePre = 'in';
+
+  @override
+  final String timeAgoPre = '';
+
+  @override
+  final String timeAgoPost = 'geleden';
+
+  @override
+  final String checklistDoneInfo =
+      'Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?';
 
   @override
   final String menu = 'Menu';
@@ -1358,6 +1543,10 @@ class NL extends Translated {
 
   @override
   final String time = 'Tijd';
+
+  @override
+  final String missingTitleOrImageAndStartTime =
+      'Je activiteit moet een afbeelding of naam en starttijd bevatten.';
 
   @override
   final String missingTitleOrImage =
@@ -1482,6 +1671,9 @@ class NL extends Translated {
   final String typeSomething = 'Typ iets';
 
   @override
+  final String clear = 'Verwijderen';
+
+  @override
   final String selectFromLibrary = 'Selecteren uit bibliotheek';
 
   @override
@@ -1503,6 +1695,21 @@ class NL extends Translated {
   final String listView = 'Lijst';
 
   @override
+  final String timepillarSettings = 'Tijdlijn instellingen';
+
+  @override
+  final String activityDuration = 'Laat de tijd zien als';
+
+  @override
+  final String dots = 'Stippen';
+
+  @override
+  final String edge = 'Rand';
+
+  @override
+  final String preview = 'Voorbeeld';
+
+  @override
   final String textToSpeech = 'Spraakondersteuning';
 
   @override
@@ -1511,6 +1718,71 @@ class NL extends Translated {
   @override
   final String longPressInfoText =
       'Tik en houd ongeveer 1½ seconde vast op een functie om deze te laten voorlezen door spraaksynthese';
+
+  @override
+  final String permissions = 'Rechten';
+
+  @override
+  final String notifications = 'Meldingen';
+
+  @override
+  final String accessToPhotos = "Toegang tot foto's";
+
+  @override
+  final String accessToCamera = 'Toegang tot camera';
+
+  @override
+  final String allowNotifications = 'Meldingen toestaan';
+
+  @override
+  final String allowNotificationsDescription1 =
+      'Sta meldingen toe om alarmen en herinneringen van activiteiten te kunnen ontvangen. U kunt dat doen vanaf de';
+
+  @override
+  final String settingsLink = 'instellingen';
+
+  @override
+  final String turnOffNotifications = 'Zet de meldingen uit?';
+
+  @override
+  final String turnOffNotificationsBody =
+      'U kunt geen alarmen en herinneringen meer ontvangen van activiteiten.';
+
+  @override
+  final String notificationsWarningHintText =
+      'Sta meldingen toe om alarmen en herinneringen van activiteiten te kunnen ontvangen.';
+
+  @override
+  final String notificationsWarningText =
+      'Sta meldingen van de instellingen toe om alarmen en herinneringen te kunnen ontvangen.';
+
+  @override
+  final String fullScreenAlarm = 'Alarm op volledig scherm';
+
+  @override
+  final String redirectToAndroidSettings =
+      'U wordt doorgestuurd naar de Android-instellingen.';
+
+  @override
+  final String fullScreenAlarmInfo =
+      'Sta deze toestemming toe om een alarm op volledig scherm van activiteiten te krijgen';
+
+  @override
+  final String allow = 'Toestaan';
+
+  @override
+  final String previewActivityTitle = "Erik's verjaardagsfeestje";
+
+  @override
+  final String allowAccessPhotosBody =
+      "Sta toegang tot foto's toe om foto's van het apparaat te kunnen gebruiken.";
+
+  @override
+  final String allowAccessCameraBody =
+      'Sta toegang tot de camera toe om een foto te kunnen maken vanaf het apparaat.';
+
+  @override
+  final String allowAccessBody2 = 'U kunt dat later altijd doen vanuit het';
 
   @override
   final String about = 'Informatie';
@@ -1567,6 +1839,9 @@ class FI extends Translated {
   final String forenoon = 'aamupäivän puolivälissä';
 
   @override
+  final String lunch = 'Lounas';
+
+  @override
   final String afternoon = 'iltapäivä';
 
   @override
@@ -1591,10 +1866,31 @@ class FI extends Translated {
   final String hour = 'tunti';
 
   @override
+  final String h = 't';
+
+  @override
   final String minutes = 'minuuttia';
 
   @override
   final String minute = 'minuutti';
+
+  @override
+  final String min = 'min';
+
+  @override
+  final String am = 'am';
+
+  @override
+  final String pm = 'pm';
+
+  @override
+  final String dayInessive = 'päivässä';
+
+  @override
+  final String hourInessive = 'tunnissa';
+
+  @override
+  final String minuteInessive = 'minuutissa';
 
   @override
   final String reminders = 'Muistutukset';
@@ -1604,6 +1900,12 @@ class FI extends Translated {
 
   @override
   final String alarm = 'Hälytys';
+
+  @override
+  final String endsNow = 'Päättyy nyt';
+
+  @override
+  final String startsNow = 'Alkaa nyt';
 
   @override
   final String noActivities = 'Ei toimintaa tänään';
@@ -1650,6 +1952,19 @@ class FI extends Translated {
   @override
   final String unCheckActivityQuestion =
       'Haluatko poistaa valinnan aktiviteetista?';
+
+  @override
+  final String inTimePre = '';
+
+  @override
+  final String timeAgoPre = '';
+
+  @override
+  final String timeAgoPost = 'sitten';
+
+  @override
+  final String checklistDoneInfo =
+      'Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?';
 
   @override
   final String menu = 'Valikko';
@@ -1710,6 +2025,10 @@ class FI extends Translated {
 
   @override
   final String time = 'Aika';
+
+  @override
+  final String missingTitleOrImageAndStartTime =
+      'Toimintasi tulisi sisältää kuva tai nimi ja aloitusaika.';
 
   @override
   final String missingTitleOrImage =
@@ -1834,6 +2153,9 @@ class FI extends Translated {
   final String typeSomething = 'Kirjoita jotain';
 
   @override
+  final String clear = 'Poista';
+
+  @override
   final String selectFromLibrary = 'Valitse kirjastosa';
 
   @override
@@ -1855,6 +2177,21 @@ class FI extends Translated {
   final String listView = 'Luettelo';
 
   @override
+  final String timepillarSettings = 'Aikajanan asetukset';
+
+  @override
+  final String activityDuration = 'Näytä aika muodossa';
+
+  @override
+  final String dots = 'Pisteet';
+
+  @override
+  final String edge = 'Reuna';
+
+  @override
+  final String preview = 'Esikatselu';
+
+  @override
   final String textToSpeech = 'Puhetuki';
 
   @override
@@ -1863,6 +2200,70 @@ class FI extends Translated {
   @override
   final String longPressInfoText =
       'Napauta ja pidä painettuna noin 1,5 sekuntia mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla';
+
+  @override
+  final String permissions = 'Käyttöoikeudet';
+
+  @override
+  final String notifications = 'Ilmoitukset';
+
+  @override
+  final String accessToPhotos = 'Pääsy valokuviin';
+
+  @override
+  final String accessToCamera = 'Kameran käyttöoikeus';
+
+  @override
+  final String allowNotifications = 'Salli ilmoitukset';
+
+  @override
+  final String allowNotificationsDescription1 =
+      'Salli ilmoitusten saada hälytyksiä ja muistutuksia toiminnasta. Voit tehdä sen';
+
+  @override
+  final String settingsLink = 'asetukset';
+
+  @override
+  final String turnOffNotifications = 'Laita ilmoitukset pois päältä?';
+
+  @override
+  final String turnOffNotificationsBody =
+      'Et voi enää saada hälytyksiä ja muistutuksia toiminnasta.';
+
+  @override
+  final String notificationsWarningHintText =
+      'Salli ilmoitusten saada hälytyksiä ja muistutuksia toiminnasta.';
+
+  @override
+  final String notificationsWarningText =
+      'Salli asetusten ilmoitusten vastaanottaa hälytyksiä ja muistutuksia.';
+
+  @override
+  final String fullScreenAlarm = 'Koko näytön hälytys';
+
+  @override
+  final String redirectToAndroidSettings = 'Sinut ohjataan Android-asetuksiin.';
+
+  @override
+  final String fullScreenAlarmInfo =
+      'Anna tämän oikeuden saada koko näytön hälytys toiminnoista';
+
+  @override
+  final String allow = 'Sallia';
+
+  @override
+  final String previewActivityTitle = 'Erikin syntymäpäiväjuhlat';
+
+  @override
+  final String allowAccessPhotosBody =
+      'Salli valokuvien käyttö, jotta voit käyttää valokuvia laitteesta.';
+
+  @override
+  final String allowAccessCameraBody =
+      'Salli kameran käyttö, jotta voit ottaa valokuvan laitteesta.';
+
+  @override
+  final String allowAccessBody2 = 'Voit aina tehdä sen myöhemmin';
 
   @override
   final String about = 'Tiedot';
@@ -1919,6 +2320,9 @@ class DE extends Translated {
   final String forenoon = 'Vormittag';
 
   @override
+  final String lunch = 'Mittagessen';
+
+  @override
   final String afternoon = 'Nachmittag';
 
   @override
@@ -1943,10 +2347,31 @@ class DE extends Translated {
   final String hour = 'Stunde';
 
   @override
+  final String h = 'S';
+
+  @override
   final String minutes = 'Minuten';
 
   @override
   final String minute = 'Minute';
+
+  @override
+  final String min = 'Min';
+
+  @override
+  final String am = 'am';
+
+  @override
+  final String pm = 'pm';
+
+  @override
+  final String dayInessive = '';
+
+  @override
+  final String hourInessive = '';
+
+  @override
+  final String minuteInessive = '';
 
   @override
   final String reminders = 'Erinnerungen';
@@ -1956,6 +2381,12 @@ class DE extends Translated {
 
   @override
   final String alarm = 'Alarm';
+
+  @override
+  final String endsNow = 'Endet jetzt';
+
+  @override
+  final String startsNow = 'Beginnt jetzt';
 
   @override
   final String noActivities = 'Keine Aktivitäten heute';
@@ -2002,6 +2433,19 @@ class DE extends Translated {
   @override
   final String unCheckActivityQuestion =
       'Möchten Sie die Auswahl rückgängig machen?';
+
+  @override
+  final String inTimePre = 'in';
+
+  @override
+  final String timeAgoPre = 'vor';
+
+  @override
+  final String timeAgoPost = '';
+
+  @override
+  final String checklistDoneInfo =
+      'Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?';
 
   @override
   final String menu = 'Menü';
@@ -2062,6 +2506,10 @@ class DE extends Translated {
 
   @override
   final String time = 'Zeit';
+
+  @override
+  final String missingTitleOrImageAndStartTime =
+      'Ihre Aktivität sollte ein Bild oder einen Namen und eine Startzeit enthalten.';
 
   @override
   final String missingTitleOrImage =
@@ -2187,6 +2635,9 @@ class DE extends Translated {
   final String typeSomething = 'Geben Sie etwas ein…';
 
   @override
+  final String clear = 'Entfernen';
+
+  @override
   final String selectFromLibrary = 'Aus Bibliothek wählen';
 
   @override
@@ -2208,6 +2659,21 @@ class DE extends Translated {
   final String listView = 'Liste';
 
   @override
+  final String timepillarSettings = 'Zeitstrahl einstellungen';
+
+  @override
+  final String activityDuration = 'Zeit anzeigen als';
+
+  @override
+  final String dots = 'Punkte';
+
+  @override
+  final String edge = 'Kante';
+
+  @override
+  final String preview = 'Vorschau';
+
+  @override
   final String textToSpeech = 'Sprachausgabe';
 
   @override
@@ -2217,6 +2683,71 @@ class DE extends Translated {
   @override
   final String longPressInfoText =
       'Tippen und halten Sie etwa 1½ Sekunden lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen';
+
+  @override
+  final String permissions = 'Berechtigungen';
+
+  @override
+  final String notifications = 'Benachrichtigungen';
+
+  @override
+  final String accessToPhotos = 'Zugang zu Fotos';
+
+  @override
+  final String accessToCamera = 'Zugang zur Kamera';
+
+  @override
+  final String allowNotifications = 'Benachrichtigungen zulassen';
+
+  @override
+  final String allowNotificationsDescription1 =
+      'Ermöglichen Sie Benachrichtigungen, Alarme und Erinnerungen von Aktivitäten zu erhalten. Sie können das von der tun';
+
+  @override
+  final String settingsLink = 'die Einstellungen';
+
+  @override
+  final String turnOffNotifications = 'Benachrichtigungen abschalten?';
+
+  @override
+  final String turnOffNotificationsBody =
+      'Sie können keine Alarme und Erinnerungen mehr an Aktivitäten erhalten.';
+
+  @override
+  final String notificationsWarningHintText =
+      'Ermöglichen Sie Benachrichtigungen, Alarme und Erinnerungen von Aktivitäten zu erhalten.';
+
+  @override
+  final String notificationsWarningText =
+      'Sta meldingen van de instellingen toe om alarmen en herinneringen te kunnen ontvangen.';
+
+  @override
+  final String fullScreenAlarm = 'Vollbildalarm';
+
+  @override
+  final String redirectToAndroidSettings =
+      'Sie werden zu den Android-Einstellungen weitergeleitet.';
+
+  @override
+  final String fullScreenAlarmInfo =
+      'Ermöglichen Sie dieser Berechtigung, einen Vollbildalarm für Aktivitäten zu erhalten';
+
+  @override
+  final String allow = 'ermöglichen';
+
+  @override
+  final String previewActivityTitle = 'Eriks Geburtstagsfeier';
+
+  @override
+  final String allowAccessPhotosBody =
+      'Ermöglichen Sie den Zugriff auf Fotos, um Fotos vom Gerät verwenden zu können.';
+
+  @override
+  final String allowAccessCameraBody =
+      'Ermöglichen Sie den Zugriff auf die Kamera, um ein Foto vom Gerät aufnehmen zu können.';
+
+  @override
+  final String allowAccessBody2 = 'Das können Sie später immer noch von der';
 
   @override
   final String about = 'Information';
@@ -2274,6 +2805,9 @@ class NB extends Translated {
   final String forenoon = 'formiddag';
 
   @override
+  final String lunch = 'Lunsj';
+
+  @override
   final String afternoon = 'ettermiddag';
 
   @override
@@ -2298,10 +2832,31 @@ class NB extends Translated {
   final String hour = 'time';
 
   @override
+  final String h = 't';
+
+  @override
   final String minutes = 'minutter';
 
   @override
   final String minute = 'minutt';
+
+  @override
+  final String min = 'min';
+
+  @override
+  final String am = 'am';
+
+  @override
+  final String pm = 'pm';
+
+  @override
+  final String dayInessive = '';
+
+  @override
+  final String hourInessive = '';
+
+  @override
+  final String minuteInessive = '';
 
   @override
   final String reminders = 'Påminnelser';
@@ -2311,6 +2866,12 @@ class NB extends Translated {
 
   @override
   final String alarm = 'Alarm';
+
+  @override
+  final String endsNow = 'Slutter nå';
+
+  @override
+  final String startsNow = 'Starter nå';
 
   @override
   final String noActivities = 'Ingen aktiviteter i dag';
@@ -2357,6 +2918,19 @@ class NB extends Translated {
   @override
   final String unCheckActivityQuestion =
       'Vil du fjerne merket for aktiviteten?';
+
+  @override
+  final String inTimePre = 'om';
+
+  @override
+  final String timeAgoPre = 'for';
+
+  @override
+  final String timeAgoPost = 'siden';
+
+  @override
+  final String checklistDoneInfo =
+      'Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?';
 
   @override
   final String menu = 'Meny';
@@ -2417,6 +2991,10 @@ class NB extends Translated {
 
   @override
   final String time = 'Tid';
+
+  @override
+  final String missingTitleOrImageAndStartTime =
+      'Aktiviteten må ha et navn ellet et bilde og en starttid.';
 
   @override
   final String missingTitleOrImage =
@@ -2541,6 +3119,9 @@ class NB extends Translated {
   final String typeSomething = 'Skriv noe…';
 
   @override
+  final String clear = 'Slette';
+
+  @override
   final String selectFromLibrary = 'Velg fra bibliotek';
 
   @override
@@ -2562,6 +3143,21 @@ class NB extends Translated {
   final String listView = 'Liste';
 
   @override
+  final String timepillarSettings = 'Innstillinger for tidslinje';
+
+  @override
+  final String activityDuration = 'Vise tiden som';
+
+  @override
+  final String dots = 'Prikker';
+
+  @override
+  final String edge = 'Flik';
+
+  @override
+  final String preview = 'Forhåndsvisning';
+
+  @override
   final String textToSpeech = 'Talesyntese';
 
   @override
@@ -2570,6 +3166,71 @@ class NB extends Translated {
   @override
   final String longPressInfoText =
       'Trykk og hold i ca. 1½ sekund på en funksjon for å få den lest opp ved talesyntese';
+
+  @override
+  final String permissions = 'Tillatelser';
+
+  @override
+  final String notifications = 'Notifikasjoner';
+
+  @override
+  final String accessToPhotos = 'Tilgang til bilder';
+
+  @override
+  final String accessToCamera = 'Tilgang til kamera';
+
+  @override
+  final String allowNotifications = 'Tillat notifikasjoner';
+
+  @override
+  final String allowNotificationsDescription1 =
+      'Tillat notifikasjoner for å få alarm og påminnelser fra aktiviteter. Du kan gjøre det fra';
+
+  @override
+  final String settingsLink = 'innstillinger';
+
+  @override
+  final String turnOffNotifications = 'Slå av notifikasjoner?';
+
+  @override
+  final String turnOffNotificationsBody =
+      'Du vil ikke lengre få alarm og notifikasjoner fra aktiviteter';
+
+  @override
+  final String notificationsWarningHintText =
+      'Tillat notifikasjoner for å få alarm og påminnelser for aktiviteter';
+
+  @override
+  final String notificationsWarningText =
+      'Tillat notifikasjoner fra innstillinger for å få alarm og påminnelser';
+
+  @override
+  final String fullScreenAlarm = 'Alarm i fullskjerm';
+
+  @override
+  final String redirectToAndroidSettings =
+      'Du vil bli omdirrigert til Android-innstillinger';
+
+  @override
+  final String fullScreenAlarmInfo =
+      'Godta denne tillatelsen for å få alarm i fullskjerm for aktiviteter';
+
+  @override
+  final String allow = 'Tillat';
+
+  @override
+  final String previewActivityTitle = 'Eiriks bursdagsselskap';
+
+  @override
+  final String allowAccessPhotosBody =
+      'Tillat tilgang til bilder for å ha mulighet til å bruke bilder fra enheten';
+
+  @override
+  final String allowAccessCameraBody =
+      'Tillat tilgang til kamera for å ha mulighet til å ta bilder fra enheten';
+
+  @override
+  final String allowAccessBody2 = 'Du kan alltids gjøre det senere fra';
 
   @override
   final String about = 'Informasjon';

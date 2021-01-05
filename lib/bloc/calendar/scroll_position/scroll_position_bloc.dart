@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
+import 'package:seagull/utils/all.dart';
 
 part 'scroll_position_event.dart';
 part 'scroll_position_state.dart';
@@ -13,8 +16,23 @@ class ScrollPositionBloc
   final double nowMarginTop;
   final double nowMarginBottom;
 
-  ScrollPositionBloc({this.nowMarginTop = 8, this.nowMarginBottom = 8})
-      : super(Unready());
+  final DayPickerBloc dayPickerBloc;
+  final ClockBloc clockBloc;
+  StreamSubscription dayPickerBlocSubscription;
+  StreamSubscription clockBlocSubscription;
+
+  ScrollPositionBloc({
+    @required this.dayPickerBloc,
+    @required this.clockBloc,
+    this.nowMarginTop = 8,
+    this.nowMarginBottom = 8,
+  }) : super(Unready()) {
+    dayPickerBlocSubscription = dayPickerBloc
+        .where((state) => !state.isToday)
+        .listen((_) => add(WrongDaySelected()));
+    clockBlocSubscription =
+        clockBloc.listen((now) => add(ScrollPositionUpdated()));
+  }
 
   @override
   Stream<ScrollPositionState> mapEventToState(
@@ -24,32 +42,58 @@ class ScrollPositionBloc
     if (event is WrongDaySelected) {
       yield WrongDay();
     } else if (event is ScrollViewRenderComplete) {
-      yield* _isActivityInView(event.scrollController);
+      if (dayPickerBloc.state.isToday) {
+        yield* _isActivityInView(
+          event.scrollController,
+          event.createdTime,
+        );
+      }
     } else if (event is ScrollPositionUpdated &&
         s is ScrollPositionReadyState) {
-      yield* _isActivityInView(s.scrollController);
+      yield* _isActivityInView(
+        s.scrollController,
+        s.scrollControllerCreatedTime,
+      );
+    }
+    if (event is GoToNow) {
+      await _jumpToActivity(s);
     }
   }
 
   Stream<ScrollPositionState> _isActivityInView(
-      ScrollController scrollController) async* {
+      ScrollController scrollController,
+      DateTime scrollControllerCreatedTime) async* {
     if (!scrollController.hasClients) {
       yield Unready();
       return;
     }
     final scrollPosition = scrollController.offset;
     final maxScrollExtent = scrollController.position.maxScrollExtent;
-    final nowPosition = scrollController.initialScrollOffset;
+    var nowPosition = scrollController.initialScrollOffset +
+        timeFromCreation(scrollControllerCreatedTime);
+
     if (_atBottomOfList(
-        scrollPosition: scrollPosition,
-        maxScrollExtent: maxScrollExtent,
-        nowPosition: nowPosition)) {
-      yield InView(scrollController);
+      scrollPosition: scrollPosition,
+      maxScrollExtent: maxScrollExtent,
+      nowPosition: nowPosition,
+    )) {
+      yield InView(
+        scrollController,
+        scrollControllerCreatedTime,
+      );
     } else if (_inView(
-        scrollPosition: scrollPosition, nowPosition: nowPosition)) {
-      yield InView(scrollController);
+      scrollPosition: scrollPosition,
+      nowPosition: nowPosition,
+    )) {
+      yield InView(
+        scrollController,
+        scrollControllerCreatedTime,
+      );
     } else {
-      yield OutOfView(scrollController);
+      yield OutOfView(
+        scrollController,
+        scrollControllerCreatedTime,
+      );
     }
   }
 
@@ -66,4 +110,39 @@ class ScrollPositionBloc
   }) =>
       nowPosition - scrollPosition <= nowMarginBottom &&
       scrollPosition - nowPosition <= nowMarginTop;
+
+  double timeFromCreation(DateTime scrollControllerCreatedTime) {
+    if (scrollControllerCreatedTime != null) {
+      final now = clockBloc.state;
+      final diff = now.difference(scrollControllerCreatedTime);
+      final hours = diff.inHours;
+      final minutes = diff.inMinutes % Duration.minutesPerHour;
+      return timeToPixels(hours, minutes);
+    }
+    return 0.0;
+  }
+
+  Future _jumpToActivity(ScrollPositionState state) async {
+    if (state is OutOfView) {
+      final sc = state.scrollController;
+      var nowPos = sc.initialScrollOffset +
+          timeFromCreation(state.scrollControllerCreatedTime);
+
+      final offset = min(nowPos, sc.position.maxScrollExtent);
+      await sc.animateTo(
+        offset,
+        duration: const Duration(milliseconds: 50),
+        curve: Curves.easeInOut,
+      );
+    } else if (state is WrongDay) {
+      dayPickerBloc.add(CurrentDay());
+    }
+  }
+
+  @override
+  Future<void> close() async {
+    await dayPickerBlocSubscription.cancel();
+    await clockBlocSubscription.cancel();
+    return super.close();
+  }
 }

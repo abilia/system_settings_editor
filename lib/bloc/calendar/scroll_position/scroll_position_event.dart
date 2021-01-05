@@ -1,26 +1,30 @@
 part of 'scroll_position_bloc.dart';
 
 abstract class ScrollPositionEvent extends Equatable with Silent {
+  const ScrollPositionEvent();
   @override
   bool get stringify => true;
-}
-
-class WrongDaySelected extends ScrollPositionEvent {
   @override
   List<Object> get props => [];
 }
 
+class WrongDaySelected extends ScrollPositionEvent {
+  const WrongDaySelected();
+}
+
 class ScrollPositionUpdated extends ScrollPositionEvent {
-  final double scrollPosition;
-  ScrollPositionUpdated(this.scrollPosition);
-  @override
-  List<Object> get props => [scrollPosition];
+  const ScrollPositionUpdated();
 }
 
 class ScrollViewRenderComplete extends ScrollPositionEvent {
   final ScrollController scrollController;
+  final DateTime createdTime;
 
-  ScrollViewRenderComplete(this.scrollController);
+  const ScrollViewRenderComplete(this.scrollController, {this.createdTime});
   @override
-  List<Object> get props => [scrollController];
+  List<Object> get props => [scrollController, createdTime];
+}
+
+class GoToNow extends ScrollPositionEvent {
+  const GoToNow();
 }

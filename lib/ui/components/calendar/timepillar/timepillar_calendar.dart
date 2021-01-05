@@ -52,11 +52,14 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
   void initState() {
     initVerticalScroll();
     horizontalScrollController = SnapToCenterScrollController();
-    if (widget.activityState.isToday) {
-      WidgetsBinding.instance.addPostFrameCallback((_) =>
-          BlocProvider.of<ScrollPositionBloc>(context)
-              .add(ScrollViewRenderComplete(verticalScrollController)));
-    }
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => BlocProvider.of<ScrollPositionBloc>(context).add(
+        ScrollViewRenderComplete(
+          verticalScrollController,
+          createdTime: context.read<ClockBloc>().state,
+        ),
+      ),
+    );
     super.initState();
   }
 

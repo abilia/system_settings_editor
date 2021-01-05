@@ -8,19 +8,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-const int dotsPerHour = 4,
-    minutesPerDot = 60 ~/ dotsPerHour,
-    minutePerSubDot = minutesPerDot ~/ 5,
-    roundingMinute = minutesPerDot ~/ 2;
-const double dotSize = 10.0,
-    bigDotSize = 28.0,
-    miniDotSize = 4.0,
-    hourPadding = 1.0,
-    dotPadding = hourPadding * 3,
-    bigDotPadding = 6.0,
-    dotDistance = dotSize + dotPadding,
-    hourHeigt = dotDistance * dotsPerHour;
-
 const pastDotShape = ShapeDecoration(shape: CircleBorder(side: BorderSide())),
     futureDotShape =
         ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder()),

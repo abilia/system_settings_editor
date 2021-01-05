@@ -20,7 +20,9 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
       : super(activitiesBloc.state is ActivitiesLoaded
             ? DayActivitiesLoaded(
                 (activitiesBloc.state as ActivitiesLoaded).activities,
-                dayPickerBloc.state.day)
+                dayPickerBloc.state.day,
+                dayPickerBloc.state.occasion,
+              )
             : DayActivitiesUninitialized()) {
     _activitiesSubscription = activitiesBloc.listen((state) {
       final activityState = state;
@@ -28,8 +30,8 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
         add(UpdateActivities(activityState.activities));
       }
     });
-    _dayPickerSubscription =
-        dayPickerBloc.listen((state) => add(UpdateDay(state.day)));
+    _dayPickerSubscription = dayPickerBloc
+        .listen((state) => add(UpdateDay(state.day, state.occasion)));
   }
 
   @override
@@ -37,10 +39,18 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
     if (event is UpdateDay) {
       final activityState = activitiesBloc.state;
       if (activityState is ActivitiesLoaded) {
-        yield DayActivitiesLoaded(activityState.activities, event.dayFilter);
+        yield DayActivitiesLoaded(
+          activityState.activities,
+          event.dayFilter,
+          event.occasion,
+        );
       }
     } else if (event is UpdateActivities) {
-      yield DayActivitiesLoaded(event.activities, dayPickerBloc.state.day);
+      yield DayActivitiesLoaded(
+        event.activities,
+        dayPickerBloc.state.day,
+        dayPickerBloc.state.occasion,
+      );
     }
   }
 

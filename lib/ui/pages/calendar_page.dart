@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -20,8 +18,10 @@ class _CalendarPageState extends State<CalendarPage>
   @override
   void initState() {
     _dayPickerBloc = BlocProvider.of<DayPickerBloc>(context);
-    _scrollPositionBloc = ScrollPositionBloc();
-    BlocProvider.of<UserFileBloc>(context).add(LoadUserFiles());
+    _scrollPositionBloc = ScrollPositionBloc(
+      dayPickerBloc: _dayPickerBloc,
+      clockBloc: context.read<ClockBloc>(),
+    );
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -36,7 +36,7 @@ class _CalendarPageState extends State<CalendarPage>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      _jumpToActivity();
+      _scrollPositionBloc.add(GoToNow());
     }
   }
 
@@ -90,7 +90,6 @@ class _CalendarPageState extends State<CalendarPage>
                 bottomNavigationBar: CalendarBottomBar(
                   currentView: calendarViewState.currentView,
                   day: pickedDay.day,
-                  goToNow: _jumpToActivity,
                 ),
               ),
             ),
@@ -122,16 +121,6 @@ class _CalendarPageState extends State<CalendarPage>
                 onPressed: () => _dayPickerBloc.add(NextDay()),
               ))
           : DayAppBar(day: pickedDay);
-
-  void _jumpToActivity() {
-    final scrollState = _scrollPositionBloc.state;
-    if (scrollState is OutOfView) {
-      final sc = scrollState.scrollController;
-      sc.jumpTo(min(sc.initialScrollOffset, sc.position.maxScrollExtent));
-    } else if (scrollState is WrongDay) {
-      _dayPickerBloc.add(CurrentDay());
-    }
-  }
 }
 
 class Calendars extends StatelessWidget {
@@ -166,10 +155,6 @@ class Calendars extends StatelessWidget {
             },
             builder: (context, activityState) {
               if (activityState is ActivitiesOccasionLoaded) {
-                if (!activityState.isToday) {
-                  BlocProvider.of<ScrollPositionBloc>(context)
-                      .add(WrongDaySelected());
-                }
                 final fullDayActivities = activityState.fullDayActivities;
                 return Column(
                   children: <Widget>[
@@ -214,14 +199,12 @@ class Calendars extends StatelessWidget {
 class CalendarBottomBar extends StatelessWidget {
   final CalendarType currentView;
   final DateTime day;
-  final Function goToNow;
   final barHeigt = 64.0;
 
   const CalendarBottomBar({
     Key key,
     @required this.currentView,
     @required this.day,
-    @required this.goToNow,
   }) : super(key: key);
 
   @override
@@ -243,7 +226,7 @@ class CalendarBottomBar extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      GoToNowButton(onPressed: goToNow),
+                      const GoToNowButton(),
                       const SizedBox(width: 14.0),
                       AddActivityButton(day: day),
                       const SizedBox(width: 14.0 + ActionButton.size),
