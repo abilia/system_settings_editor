@@ -15,15 +15,16 @@ class DayActivitiesLoading extends DayActivitiesState {}
 class DayActivitiesLoaded extends DayActivitiesState {
   final Iterable<ActivityDay> activities;
   final DateTime day;
+  final Occasion occasion;
 
-  DayActivitiesLoaded(Iterable<Activity> activities, this.day)
+  DayActivitiesLoaded(Iterable<Activity> activities, this.day, this.occasion)
       : activities =
             activities.expand((activity) => activity.dayActivitiesForDay(day));
 
   @override
-  List<Object> get props => [activities, day];
+  List<Object> get props => [activities, day, occasion];
 
   @override
   String toString() =>
-      'DayActivitiesLoaded { ${activities.length} activities, day: ${yMd(day)} }';
+      'DayActivitiesLoaded { ${activities.length} activities, day: ${yMd(day)}, $occasion }';
 }

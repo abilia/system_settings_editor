@@ -6,22 +6,15 @@ abstract class DayActivitiesEvent extends Equatable {
 
 class UpdateDay extends DayActivitiesEvent {
   final DateTime dayFilter;
+  final Occasion occasion;
 
-  const UpdateDay(this.dayFilter);
-
-  @override
-  List<Object> get props => [dayFilter];
+  const UpdateDay(this.dayFilter, this.occasion);
 
   @override
-  String toString() => 'UpdateDay { ${[
-        'Mon',
-        'Tue',
-        'Wed',
-        'Thu',
-        'Fri',
-        'Sat',
-        'Sun'
-      ][dayFilter.weekday - 1]}, ${yMd(dayFilter)} }';
+  List<Object> get props => [dayFilter, occasion];
+
+  @override
+  String toString() => 'UpdateDay { ${yMd(dayFilter)}, $occasion }';
 }
 
 class UpdateActivities extends DayActivitiesEvent {

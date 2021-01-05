@@ -1,7 +1,9 @@
 part of 'day_picker_bloc.dart';
 
-abstract class DayPickerEvent {
+abstract class DayPickerEvent extends Equatable {
   const DayPickerEvent();
+  @override
+  List<Object> get props => [];
 }
 
 class NextDay extends DayPickerEvent {
@@ -24,4 +26,11 @@ class GoTo extends DayPickerEvent {
   GoTo({@required this.day});
   @override
   String toString() => 'GoTo $day';
+}
+
+class TimeChanged extends DayPickerEvent {
+  final DateTime now;
+  TimeChanged(this.now);
+  @override
+  List<Object> get props => [now];
 }

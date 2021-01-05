@@ -55,12 +55,7 @@ class ActivitiesOccasionBloc
       {@required DateTime now}) {
     final day = dayActivitiesLoadedState.day;
     final activities = dayActivitiesLoadedState.activities;
-
-    final occasion = day.isAtSameDay(now)
-        ? Occasion.current
-        : day.isAfter(now)
-            ? Occasion.future
-            : Occasion.past;
+    final occasion = dayActivitiesLoadedState.occasion;
 
     switch (occasion) {
       case Occasion.past:

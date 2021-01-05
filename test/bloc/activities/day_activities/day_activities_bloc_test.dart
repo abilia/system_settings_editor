@@ -12,8 +12,8 @@ void main() {
   DayPickerBloc dayPickerBloc;
   ActivitiesBloc activitiesBloc;
   final today = DateTime(2020, 01, 01);
-  final yesterday = today.subtract(Duration(days: 1));
-  final tomorrow = today.add(Duration(days: 1));
+  final yesterday = today.previousDay();
+  final tomorrow = today.nextDay();
   MockActivityRepository mockActivityRepository;
   group('DayActivitiesBloc', () {
     setUp(() {
@@ -45,8 +45,10 @@ void main() {
       await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
 
       // Assert
-      expect(dayActivitiesBloc.state,
-          DayActivitiesLoaded(Iterable<Activity>.empty(), today));
+      expect(
+          dayActivitiesBloc.state,
+          DayActivitiesLoaded(
+              Iterable<Activity>.empty(), today, Occasion.current));
     });
 
     test('state is DayActivitiesLoaded when ActivitiesBloc loadeds activities',
@@ -60,7 +62,7 @@ void main() {
       // Assert
       expectLater(
         dayActivitiesBloc,
-        emits(DayActivitiesLoaded(activities, today)),
+        emits(DayActivitiesLoaded(activities, today, Occasion.current)),
       );
     });
 
@@ -80,7 +82,7 @@ void main() {
       // Assert
       expectLater(
         dayActivitiesBloc,
-        emits(DayActivitiesLoaded(activitiesNow, today)),
+        emits(DayActivitiesLoaded(activitiesNow, today, Occasion.current)),
       );
     });
 
@@ -88,9 +90,8 @@ void main() {
       // Arrange
       final activitiesNow =
           <Activity>[FakeActivity.starts(today)].followedBy({});
-      final activitiesTomorrow = <Activity>[
-        FakeActivity.starts(today.subtract(1.days()))
-      ].followedBy({});
+      final activitiesTomorrow =
+          <Activity>[FakeActivity.starts(tomorrow)].followedBy({});
       when(mockActivityRepository.load()).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
 
@@ -103,8 +104,8 @@ void main() {
       await expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesLoaded(activitiesNow, today),
-          DayActivitiesLoaded(activitiesTomorrow, tomorrow),
+          DayActivitiesLoaded(activitiesNow, today, Occasion.current),
+          DayActivitiesLoaded(activitiesTomorrow, tomorrow, Occasion.future),
         ]),
       );
     });
@@ -128,8 +129,8 @@ void main() {
       await expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesLoaded(activitiesNow, today),
-          DayActivitiesLoaded(activitiesYesterDay, yesterday),
+          DayActivitiesLoaded(activitiesNow, today, Occasion.current),
+          DayActivitiesLoaded(activitiesYesterDay, yesterday, Occasion.past),
         ]),
       );
     });
@@ -156,10 +157,10 @@ void main() {
       await expectLater(
         dayActivitiesBloc,
         emitsInOrder([
-          DayActivitiesLoaded(Iterable.empty(), today),
-          DayActivitiesLoaded(Iterable.empty(), tomorrow),
-          DayActivitiesLoaded(Iterable.empty(), today),
-          DayActivitiesLoaded(Iterable.empty(), yesterday),
+          DayActivitiesLoaded(Iterable.empty(), today, Occasion.current),
+          DayActivitiesLoaded(Iterable.empty(), tomorrow, Occasion.future),
+          DayActivitiesLoaded(Iterable.empty(), today, Occasion.current),
+          DayActivitiesLoaded(Iterable.empty(), yesterday, Occasion.past),
         ]),
       );
     });
@@ -181,7 +182,7 @@ void main() {
       // Assert
       await expectLater(
         dayActivitiesBloc,
-        emits(DayActivitiesLoaded(Iterable.empty(), today)),
+        emits(DayActivitiesLoaded(Iterable.empty(), today, Occasion.current)),
       );
 
       // Arrange
@@ -194,7 +195,7 @@ void main() {
       // Assert
       await expectLater(
         dayActivitiesBloc,
-        emits(DayActivitiesLoaded(todayActivity, today)),
+        emits(DayActivitiesLoaded(todayActivity, today, Occasion.current)),
       );
     });
 
@@ -238,13 +239,25 @@ void main() {
           dayActivitiesBloc,
           emitsInOrder([
             DayActivitiesLoaded(
-                Iterable.empty(), firstDay.add(Duration(days: 1))), // friday
+              Iterable.empty(),
+              firstDay.add(Duration(days: 1)),
+              Occasion.future,
+            ), // friday
             DayActivitiesLoaded(
-                weekendActivity, firstDay.add(Duration(days: 2))), // saturday
+              weekendActivity,
+              firstDay.add(Duration(days: 2)),
+              Occasion.future,
+            ), // saturday
             DayActivitiesLoaded(
-                weekendActivity, firstDay.add(Duration(days: 3))), // sunday
+              weekendActivity,
+              firstDay.add(Duration(days: 3)),
+              Occasion.future,
+            ), // sunday
             DayActivitiesLoaded(
-                Iterable.empty(), firstDay.add(Duration(days: 4))), // monday
+              Iterable.empty(),
+              firstDay.add(Duration(days: 4)),
+              Occasion.future,
+            ), // monday
           ]));
     });
 
@@ -267,9 +280,21 @@ void main() {
       await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
-            DayActivitiesLoaded(Iterable.empty(), boxingDay),
-            DayActivitiesLoaded(christmas, chrismasEve),
-            DayActivitiesLoaded(Iterable.empty(), chrismasDay),
+            DayActivitiesLoaded(
+              Iterable.empty(),
+              boxingDay,
+              Occasion.past,
+            ),
+            DayActivitiesLoaded(
+              christmas,
+              chrismasEve,
+              Occasion.past,
+            ),
+            DayActivitiesLoaded(
+              Iterable.empty(),
+              chrismasDay,
+              Occasion.past,
+            ),
           ]));
     });
 
@@ -294,9 +319,21 @@ void main() {
       await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
-            DayActivitiesLoaded(Iterable.empty(), boxingDay),
-            DayActivitiesLoaded(Iterable.empty(), chrismasEve),
-            DayActivitiesLoaded(Iterable.empty(), chrismasDay),
+            DayActivitiesLoaded(
+              Iterable.empty(),
+              boxingDay,
+              Occasion.future,
+            ),
+            DayActivitiesLoaded(
+              Iterable.empty(),
+              chrismasEve,
+              Occasion.future,
+            ),
+            DayActivitiesLoaded(
+              Iterable.empty(),
+              chrismasDay,
+              Occasion.future,
+            ),
           ]));
     });
 
@@ -321,9 +358,21 @@ void main() {
       await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
-            DayActivitiesLoaded(Iterable.empty(), boxingDay),
-            DayActivitiesLoaded(Iterable.empty(), chrismasEve),
-            DayActivitiesLoaded(Iterable.empty(), chrismasDay),
+            DayActivitiesLoaded(
+              Iterable.empty(),
+              boxingDay,
+              Occasion.future,
+            ),
+            DayActivitiesLoaded(
+              Iterable.empty(),
+              chrismasEve,
+              Occasion.future,
+            ),
+            DayActivitiesLoaded(
+              Iterable.empty(),
+              chrismasDay,
+              Occasion.future,
+            ),
           ]));
     });
 
@@ -350,7 +399,10 @@ void main() {
         emitsInOrder(
           allOtherDays.map(
             (day) => DayActivitiesLoaded(
-                day.day == 1 ? weekendActivity : Iterable.empty(), day),
+              day.day == 1 ? weekendActivity : Iterable.empty(),
+              day,
+              Occasion.future,
+            ),
           ),
         ),
       );
@@ -411,16 +463,26 @@ void main() {
       await expectLater(
           dayActivitiesBloc,
           emitsInOrder([
-            DayActivitiesLoaded(Iterable.empty(), firstDay),
             DayActivitiesLoaded(
-                Iterable<Activity>.empty().followedBy([preSplitRecurring]),
-                dayBeforeSplit),
+              Iterable.empty(),
+              firstDay,
+              Occasion.current,
+            ),
             DayActivitiesLoaded(
-                Iterable<Activity>.empty().followedBy([splitRecurring]),
-                dayOnSplit),
+              Iterable<Activity>.empty().followedBy([preSplitRecurring]),
+              dayBeforeSplit,
+              Occasion.future,
+            ),
             DayActivitiesLoaded(
-                Iterable<Activity>.empty().followedBy([splitRecurring]),
-                dayOnSplit.add(Duration(days: 1))),
+              Iterable<Activity>.empty().followedBy([splitRecurring]),
+              dayOnSplit,
+              Occasion.future,
+            ),
+            DayActivitiesLoaded(
+              Iterable<Activity>.empty().followedBy([splitRecurring]),
+              dayOnSplit.add(Duration(days: 1)),
+              Occasion.future,
+            ),
           ]));
     });
 
