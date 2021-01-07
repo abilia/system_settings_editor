@@ -86,17 +86,20 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     if (event is ChangeDate) {
       yield* _mapChangeDateToState(event);
     }
-    if (event is ChangeStartTime) {
-      yield* _mapChangeStartTimeToState(event);
-    }
-    if (event is ChangeEndTime) {
-      yield* _mapChangeEndTimeToState(event);
-    }
     if (event is AddOrRemoveReminder) {
       yield* _mapAddOrRemoveReminderToState(event.reminder.inMilliseconds);
     }
     if (event is SaveActivity) {
       yield* _mapSaveActivityToState(state, event);
+    }
+    if (event is ChangeTimeInterval) {
+      yield state.copyWith(
+        state.activity,
+        timeInterval: state.timeInterval.copyWith(
+          startTime: event.startTime,
+          endTime: event.endTime ?? event.startTime,
+        ),
+      );
     }
     if (event is ImageSelected) {
       yield state.copyWith(
@@ -191,28 +194,6 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     }
   }
 
-  Stream<EditActivityState> _mapChangeStartTimeToState(
-      ChangeStartTime event) async* {
-    // Move end time if start time changes
-    if (state.timeInterval.startTimeSet && state.timeInterval.endTimeSet) {
-      final newEndTime = _calculateNewEndTime(event);
-      yield state.copyWith(
-        state.activity,
-        timeInterval: state.timeInterval.copyWith(
-          startTime: event.time,
-          endTime: TimeOfDay.fromDateTime(newEndTime),
-        ),
-      );
-    } else {
-      yield state.copyWith(
-        state.activity,
-        timeInterval: state.timeInterval.copyWith(
-          startTime: event.time,
-        ),
-      );
-    }
-  }
-
   Stream<EditActivityState> _mapChangeInfoItemTypeToState(
       ChangeInfoItemType event) async* {
     final oldInfoItem = state.activity.infoItem;
@@ -239,27 +220,6 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       default:
         return InfoItem.none;
     }
-  }
-
-  DateTime _calculateNewEndTime(ChangeStartTime event) {
-    final activityStartTime = state.activity.startTime;
-    final oldStart = activityStartTime.withTime(state.timeInterval.startTime);
-    final newStart = activityStartTime.withTime(event.time);
-    final diff = newStart.difference(oldStart);
-    final endDate = activityStartTime.withTime(state.timeInterval.endTime);
-    return endDate.add(diff);
-  }
-
-  Stream<EditActivityState> _mapChangeEndTimeToState(
-      ChangeEndTime event) async* {
-    yield state.copyWith(
-      state.activity,
-      timeInterval: TimeInterval(
-        startTime: state.timeInterval.startTime,
-        endTime: event.time,
-        startDate: state.timeInterval.startDate,
-      ),
-    );
   }
 
   Duration _getDuration(DateTime startTime, TimeOfDay endTime) {

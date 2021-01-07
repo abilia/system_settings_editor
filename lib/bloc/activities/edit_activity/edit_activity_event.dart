@@ -46,12 +46,13 @@ abstract class ChangeTime extends ActivityChangedEvent {
   List<Object> get props => [time];
 }
 
-class ChangeStartTime extends ChangeTime {
-  const ChangeStartTime(TimeOfDay time) : super(time);
-}
+class ChangeTimeInterval extends ActivityChangedEvent {
+  final TimeOfDay startTime;
+  final TimeOfDay endTime;
+  const ChangeTimeInterval({this.startTime, this.endTime});
 
-class ChangeEndTime extends ChangeTime {
-  const ChangeEndTime(TimeOfDay time) : super(time);
+  @override
+  List<Object> get props => [startTime, endTime];
 }
 
 class AddOrRemoveReminder extends ActivityChangedEvent {
