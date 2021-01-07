@@ -55,9 +55,6 @@ class _ActivityInfoState extends State<ActivityInfo> with Checker {
 
   DateTime get day => widget.activityDay.day;
 
-  var activityContainerSize = Size.zero;
-  var activityContainerPosition = Offset.zero;
-
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -84,17 +81,9 @@ class _ActivityInfoState extends State<ActivityInfo> with Checker {
             Expanded(
               child: Container(
                 decoration: boxDecoration,
-                child: MeasureSize(
-                  onChange: (Size size, Offset offset) {
-                    setState(() {
-                      activityContainerSize = size;
-                      activityContainerPosition = offset;
-                    });
-                  },
-                  child: ActivityContainer(
-                    activityDay: widget.activityDay,
-                    previewImage: widget.previewImage,
-                  ),
+                child: ActivityContainer(
+                  activityDay: widget.activityDay,
+                  previewImage: widget.previewImage,
                 ),
               ),
             ),
@@ -110,13 +99,12 @@ class _ActivityInfoState extends State<ActivityInfo> with Checker {
                       : AbiliaIcons.handi_check,
                   text: signedOff ? translate.uncheck : translate.check,
                   onPressed: () async {
-                    await checkConfirmationOverlay(
+                    await checkConfirmation(
                       context,
                       widget.activityDay.toOccasion(now),
-                      activityContainerSize,
-                      activityContainerPosition,
                     );
                   },
+                  themeData: signedOff ? greyButtonTheme : greenButtonTheme,
                 ),
               ),
           ],
@@ -126,79 +114,23 @@ class _ActivityInfoState extends State<ActivityInfo> with Checker {
   }
 }
 
-typedef OnWidgetSizeChange = void Function(Size size, Offset offset);
-
-class MeasureSize extends StatefulWidget {
-  final Widget child;
-  final OnWidgetSizeChange onChange;
-
-  const MeasureSize({
-    Key key,
-    @required this.onChange,
-    @required this.child,
-  }) : super(key: key);
-
-  @override
-  _MeasureSizeState createState() => _MeasureSizeState();
-}
-
-class _MeasureSizeState extends State<MeasureSize> {
-  @override
-  void initState() {
-    SchedulerBinding.instance.addPostFrameCallback(postFrameCallback);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) => widget.child;
-  Size oldSize;
-
-  void postFrameCallback(_) {
-    final newSize = context.size;
-    if (oldSize == newSize) return;
-    final renderObject = context.findRenderObject();
-    if (renderObject is! RenderBox) return;
-    oldSize = newSize;
-    final pos = (renderObject as RenderBox).localToGlobal(Offset.zero);
-    widget.onChange(newSize, pos);
-  }
-}
-
 mixin Checker {
   Future checkConfirmation(
     BuildContext context,
     ActivityOccasion activityOccasion, {
-    String extraMessage,
+    String message,
   }) async {
-    final translate = Translator.of(context).translate;
-    final shouldCheck = await showViewDialog<bool>(
-      context: context,
-      builder: (_) => ConfirmActivityActionDialog(
-        activityOccasion: activityOccasion,
-        title: activityOccasion.isSignedOff
-            ? translate.unCheckActivityQuestion
-            : translate.checkActivityQuestion,
-        extraMessage: extraMessage,
-      ),
-    );
-    if (shouldCheck == true) {
-      BlocProvider.of<ActivitiesBloc>(context).add(UpdateActivity(
-          activityOccasion.activity.signOff(activityOccasion.day)));
-    }
-  }
-
-  Future checkConfirmationOverlay(
-    BuildContext context,
-    ActivityOccasion activityOccasion,
-    Size size,
-    Offset offset,
-  ) async {
-    await showViewDialog<void>(
+    final check = await showViewDialog<bool>(
       context: context,
       builder: (_) => CheckActivityConfirmDialog(
         activityOccasion: activityOccasion,
+        message: message,
       ),
     );
+    if (check == true) {
+      BlocProvider.of<ActivitiesBloc>(context).add(UpdateActivity(
+          activityOccasion.activity.signOff(activityOccasion.day)));
+    }
   }
 }
 
@@ -322,7 +254,7 @@ class Attachment extends StatelessWidget with Checker {
               context,
               ActivityDay(updatedActivity, activityDay.day)
                   .toOccasion(DateTime.now()),
-              extraMessage: translate.checklistDoneInfo,
+              message: translate.checklistDoneInfo,
             );
           }
         },
@@ -336,13 +268,15 @@ class CheckButton extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData iconData;
   final String text;
+  final ThemeData themeData;
 
-  const CheckButton({Key key, this.onPressed, this.iconData, this.text})
+  const CheckButton(
+      {Key key, this.onPressed, this.iconData, this.text, this.themeData})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = greenButtonTheme;
+    final theme = themeData ?? abiliaTheme;
     return Tts(
       data: text,
       child: Container(

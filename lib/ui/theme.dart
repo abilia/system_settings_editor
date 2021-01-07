@@ -237,6 +237,14 @@ ThemeData greenButtonTheme = abiliaTheme.copyWith(
   ),
 );
 
+ThemeData greyButtonTheme = abiliaTheme.copyWith(
+  buttonColor: AbiliaColors.transparentWhite20,
+  iconTheme: IconThemeData(
+    size: buttonIconSize,
+    color: AbiliaColors.white,
+  ),
+);
+
 ThemeData nowButtonTheme = redButtonTheme.copyWith(
   buttonTheme: redButtonThemeData.copyWith(
     shape: const RoundedRectangleBorder(
@@ -337,7 +345,8 @@ final abiliaTextTheme = GoogleFonts.robotoTextTheme(
     button: TextStyle(
       color: AbiliaColors.white,
       fontSize: 16.0,
-      fontWeight: medium,
+      fontWeight: regular,
+      height: 1,
     ),
     overline: TextStyle(
       fontSize: 10.0,
