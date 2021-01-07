@@ -66,6 +66,8 @@ checklistDoneInfo	All checklist tasks in your activity are completed. Do you wan
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
 cancel	Cancel	Avbryt	Annuller	Annuleren	Peruuta	Abbrechen	Avbryt
+yes	Yes	Ja	Ja	Ja	Joo	Ja	Ja
+no	No	Nej	Nej	Nee	Ei	Nein	Nei
 							
 ### Edit activity							
 newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny

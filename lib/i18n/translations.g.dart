@@ -137,6 +137,10 @@ abstract class Translated {
 
   final String cancel = 'Cancel';
 
+  final String yes = 'Yes';
+
+  final String no = 'No';
+
   final String newActivityChoice = 'New';
 
   final String newActivity = 'New activity';
@@ -522,6 +526,12 @@ class SV extends Translated {
 
   @override
   final String cancel = 'Avbryt';
+
+  @override
+  final String yes = 'Ja';
+
+  @override
+  final String no = 'Nej';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -1005,6 +1015,12 @@ class DA extends Translated {
   final String cancel = 'Annuller';
 
   @override
+  final String yes = 'Ja';
+
+  @override
+  final String no = 'Nej';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -1481,6 +1497,12 @@ class NL extends Translated {
 
   @override
   final String cancel = 'Annuleren';
+
+  @override
+  final String yes = 'Ja';
+
+  @override
+  final String no = 'Nee';
 
   @override
   final String newActivityChoice = 'Nieuw';
@@ -1962,6 +1984,12 @@ class FI extends Translated {
   final String cancel = 'Peruuta';
 
   @override
+  final String yes = 'Joo';
+
+  @override
+  final String no = 'Ei';
+
+  @override
   final String newActivityChoice = 'Uusi';
 
   @override
@@ -2438,6 +2466,12 @@ class DE extends Translated {
 
   @override
   final String cancel = 'Abbrechen';
+
+  @override
+  final String yes = 'Ja';
+
+  @override
+  final String no = 'Nein';
 
   @override
   final String newActivityChoice = 'Neu';
@@ -2920,6 +2954,12 @@ class NB extends Translated {
 
   @override
   final String cancel = 'Avbryt';
+
+  @override
+  final String yes = 'Ja';
+
+  @override
+  final String no = 'Nei';
 
   @override
   final String newActivityChoice = 'Helt ny';

@@ -44,6 +44,220 @@ class ConfirmActivityActionDialog extends StatelessWidget {
   }
 }
 
+class CheckActivityConfirmDialog extends StatelessWidget {
+  final ActivityOccasion activityOccasion;
+
+  const CheckActivityConfirmDialog({
+    Key key,
+    @required this.activityOccasion,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    final heading = activityOccasion.isSignedOff
+        ? IconHeading(
+            icon: AbiliaIcons.handi_uncheck,
+            text: translate.uncheck,
+          )
+        : IconHeading(
+            icon: AbiliaIcons.handi_check,
+            text: translate.check,
+          );
+    final bodyText = activityOccasion.isSignedOff
+        ? translate.unCheckActivityQuestion
+        : translate.checkActivityQuestion;
+    return ConfirmDialog(
+      onNoPressed: () => Navigator.of(context).maybePop(false),
+      onYesPressed: () {
+        BlocProvider.of<ActivitiesBloc>(context).add(UpdateActivity(
+            activityOccasion.activity.signOff(activityOccasion.day)));
+        Navigator.of(context).maybePop(true);
+      },
+      heading: IconTheme(
+        data: Theme.of(context).iconTheme.copyWith(
+              color: AbiliaColors.white,
+            ),
+        child: DefaultTextStyle(
+            style: abiliaTextTheme.headline5.copyWith(
+              color: AbiliaColors.white,
+            ),
+            child: heading),
+      ),
+      bodyText: bodyText,
+    );
+  }
+}
+
+class IconHeading extends StatelessWidget {
+  final String text;
+  final IconData icon;
+  const IconHeading({
+    Key key,
+    this.text,
+    this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon),
+        SizedBox(
+          width: 8,
+        ),
+        Text(text)
+      ],
+    );
+  }
+}
+
+class ConfirmDialog extends StatelessWidget {
+  final VoidCallback onNoPressed;
+  final VoidCallback onYesPressed;
+  final Widget heading;
+  final String bodyText;
+  const ConfirmDialog({
+    Key key,
+    this.heading,
+    this.bodyText,
+    this.onNoPressed,
+    this.onYesPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      type: MaterialType.transparency,
+      child: Align(
+        alignment: Alignment.center,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: ClipRRect(
+            borderRadius: borderRadius,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  height: 68,
+                  color: AbiliaColors.black80,
+                  child: Center(child: heading),
+                ),
+                Container(
+                  color: AbiliaColors.white110,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 64,
+                    ),
+                    child: Center(
+                        child: Text(
+                      bodyText,
+                      style: abiliaTextTheme.bodyText1,
+                    )),
+                  ),
+                ),
+                Container(
+                  color: AbiliaColors.black80,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        NoButton(
+                          onPressed: onNoPressed,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        YesButton(
+                          onPressed: onYesPressed,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class NoButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const NoButton({
+    Key key,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    final theme = Theme.of(context);
+    final text = translate.no;
+    return Expanded(
+      child: Tts(
+        data: text,
+        child: FlatButton.icon(
+          height: 64,
+          icon: Icon(
+            AbiliaIcons.close_program,
+            color: AbiliaColors.white,
+          ),
+          label: Text(
+            text,
+            style: theme.textTheme.bodyText1
+                .copyWith(height: 1, color: AbiliaColors.white),
+          ),
+          color: AbiliaColors.transparentWhite20,
+          onPressed: onPressed,
+        ),
+      ),
+    );
+  }
+}
+
+class YesButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const YesButton({
+    Key key,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    final theme = Theme.of(context);
+    final text = translate.yes;
+    return Expanded(
+      child: Tts(
+        data: text,
+        child: FlatButton.icon(
+          height: 64,
+          icon: Icon(
+            AbiliaIcons.ok,
+            color: AbiliaColors.white,
+          ),
+          label: Text(text,
+              style: theme.textTheme.bodyText1.copyWith(
+                height: 1,
+                color: AbiliaColors.white,
+              )),
+          color: AbiliaColors.green,
+          onPressed: onPressed,
+        ),
+      ),
+    );
+  }
+}
+
 class ConfirmCheckDialogOverlay extends StatefulWidget {
   final ActivityOccasion occasion;
   final String title;

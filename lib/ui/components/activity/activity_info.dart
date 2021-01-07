@@ -193,17 +193,10 @@ mixin Checker {
     Size size,
     Offset offset,
   ) async {
-    final translate = Translator.of(context).translate;
     await showViewDialog<void>(
-      useSafeArea: false,
       context: context,
-      builder: (_) => ConfirmCheckDialogOverlay(
-        occasion: activityOccasion,
-        title: activityOccasion.isSignedOff
-            ? translate.unCheckActivityQuestion
-            : translate.checkActivityQuestion,
-        activityContainerSize: size,
-        activityContainerPosition: offset,
+      builder: (_) => CheckActivityConfirmDialog(
+        activityOccasion: activityOccasion,
       ),
     );
   }
@@ -349,7 +342,7 @@ class CheckButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = greenButtonTheme;
     return Tts(
       data: text,
       child: Container(
@@ -359,10 +352,13 @@ class CheckButton extends StatelessWidget {
           borderRadius: borderRadius,
         ),
         child: FlatButton.icon(
-          icon: Icon(iconData),
+          icon: IconTheme(
+            data: theme.iconTheme,
+            child: Icon(iconData),
+          ),
           label: Text(
             text,
-            style: theme.textTheme.bodyText1.copyWith(height: 1),
+            style: theme.textTheme.button,
           ),
           color: theme.buttonColor,
           onPressed: onPressed,

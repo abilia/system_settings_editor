@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
-const double smallIconSize = 24, defaultIconSize = 32, hugeIconSize = 96;
+const double smallIconSize = 24,
+    buttonIconSize = 28,
+    defaultIconSize = 32,
+    hugeIconSize = 96;
 
 ThemeData abiliaTheme = ThemeData(
   primaryColorBrightness: Brightness.light,
@@ -222,10 +225,9 @@ ThemeData redButtonTheme = abiliaTheme.copyWith(
 ThemeData greenButtonTheme = abiliaTheme.copyWith(
   buttonTheme: greenButtonThemeData,
   buttonColor: AbiliaColors.green,
-  textTheme: abiliaTheme.textTheme.copyWith(
-    button: abiliaTheme.textTheme.subtitle1.copyWith(
-      color: AbiliaColors.white,
-    ),
+  iconTheme: IconThemeData(
+    size: buttonIconSize,
+    color: AbiliaColors.white,
   ),
 );
 
@@ -320,7 +322,7 @@ TextTheme abiliaTextTheme = TextTheme(
   ),
   button: baseTextStyle.copyWith(
     color: AbiliaColors.white,
-    fontSize: 14.0,
+    fontSize: 16.0,
     fontWeight: medium,
     height: 1.0,
   ),
