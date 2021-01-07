@@ -9,13 +9,14 @@ extension RemoveLeading on String {
 }
 
 extension SizeOfText on String {
-  Size textSize(TextStyle style, double width, {double scaleFactor = 1.0}) {
+  TextPainter textPainter(TextStyle style, double width,
+      {double scaleFactor = 1.0}) {
     final textPainter = TextPainter(
         text: TextSpan(text: this, style: style),
         textScaleFactor: scaleFactor,
         textDirection: TextDirection.ltr)
       ..layout(maxWidth: width);
-    return textPainter.size;
+    return textPainter;
   }
 
   TextRenderingSize calulcateTextRenderSize({
@@ -26,10 +27,13 @@ extension SizeOfText on String {
   }) {
     final width = constraints.maxWidth - padding.vertical;
     final height = constraints.maxHeight - padding.horizontal;
-    final sizeOfText = textSize(textStyle, width);
-    final scaledTextHeight = sizeOfText.height * textScaleFactor;
-    final scaledLineHeight =
-        textStyle.fontSize * textStyle.height * textScaleFactor;
+    final painter = textPainter(
+      textStyle,
+      width,
+      scaleFactor: textScaleFactor,
+    );
+    final scaledTextHeight = painter.height;
+    final scaledLineHeight = painter.preferredLineHeight;
     final numberOfLines =
         max(height ~/ scaledLineHeight, scaledTextHeight ~/ scaledLineHeight);
     return TextRenderingSize(numberOfLines, scaledLineHeight, scaledTextHeight);

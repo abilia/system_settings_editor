@@ -30,7 +30,7 @@ abstract class Translated {
   final String logout = 'Log out';
 
   final String wrongCredentials =
-      "Username or password doesn\'t match.\n\nVerify your credentials and try again.";
+      "Username or password doesn\'t match.\nVerify your credentials and try again.";
 
   final String noConnection =
       'No contact with myAbilia. Check your Internet connection.';
@@ -163,8 +163,6 @@ abstract class Translated {
 
   final String endTime = 'End time';
 
-  final String noEndTime = 'No end time';
-
   final String emptyFolder = 'The folder is empty';
 
   final String noBasicActivities = 'You have no basic activities';
@@ -174,6 +172,10 @@ abstract class Translated {
   final String noNotes = 'You have no notes';
 
   final String noImages = 'You have no images';
+
+  final String setTime = 'Set time';
+
+  final String time = 'Time';
 
   final String missingTitleOrImageAndStartTime =
       'Your activity should contain an image or name and start time.';
@@ -366,7 +368,7 @@ class SV extends Translated {
 
   @override
   final String wrongCredentials =
-      'Användarnamn eller lösenord stämmer inte.\n\nKontrollera att du har skrivit rätt och försök igen.';
+      'Användarnamn eller lösenord stämmer inte.\nKontrollera att du har skrivit rätt och försök igen.';
 
   @override
   final String noConnection =
@@ -567,9 +569,6 @@ class SV extends Translated {
   final String endTime = 'Sluttid';
 
   @override
-  final String noEndTime = 'Ingen sluttid';
-
-  @override
   final String emptyFolder = 'Mappen är tom';
 
   @override
@@ -583,6 +582,12 @@ class SV extends Translated {
 
   @override
   final String noImages = 'Du har inga bilder';
+
+  @override
+  final String setTime = 'Välj tid';
+
+  @override
+  final String time = 'Tid';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -853,7 +858,7 @@ class DA extends Translated {
 
   @override
   final String wrongCredentials =
-      'Brugernavn eller adgangskode er ikke korrekt.\n\nKontroller at du har skrevet det rigtigt og forsøg igen.';
+      'Brugernavn eller adgangskode er ikke korrekt.\nKontroller at du har skrevet det rigtigt og forsøg igen.';
 
   @override
   final String noConnection =
@@ -861,7 +866,7 @@ class DA extends Translated {
 
   @override
   final String noLicense =
-      'Problemer med at logge ind!\n\nDu har ikke en gyldig licens.';
+      'Problemer med at logge ind!\nDu har ikke en gyldig licens.';
 
   @override
   final String licenseExpired = 'Licensen er udløbet';
@@ -1054,9 +1059,6 @@ class DA extends Translated {
   final String endTime = 'Sluttid';
 
   @override
-  final String noEndTime = 'Ingen sluttid';
-
-  @override
   final String emptyFolder = 'Mappen er tom';
 
   @override
@@ -1070,6 +1072,12 @@ class DA extends Translated {
 
   @override
   final String noImages = 'Du har ingen billeder';
+
+  @override
+  final String setTime = 'Vælg tid';
+
+  @override
+  final String time = 'Tid';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -1340,7 +1348,7 @@ class NL extends Translated {
 
   @override
   final String wrongCredentials =
-      'Gebruikersnaam of wachtwoord komt niet overeen.\n\nControleer uw gegevens en probeer opnieuw.';
+      'Gebruikersnaam of wachtwoord komt niet overeen.\nControleer uw gegevens en probeer opnieuw.';
 
   @override
   final String noConnection =
@@ -1538,9 +1546,6 @@ class NL extends Translated {
   final String endTime = 'Eindtijd';
 
   @override
-  final String noEndTime = 'Geen eindtijd';
-
-  @override
   final String emptyFolder = 'De map is leeg';
 
   @override
@@ -1554,6 +1559,12 @@ class NL extends Translated {
 
   @override
   final String noImages = 'Je hebt geen afbeeldingen';
+
+  @override
+  final String setTime = 'Tijd instellen';
+
+  @override
+  final String time = 'Tijd';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -1824,7 +1835,7 @@ class FI extends Translated {
 
   @override
   final String wrongCredentials =
-      'Käyttäjätunnus tai salasana ei täsmää.\n\nVahvista tunnistetiedot ja yritä uudelleen.';
+      'Käyttäjätunnus tai salasana ei täsmää.\nVahvista tunnistetiedot ja yritä uudelleen.';
 
   @override
   final String noConnection =
@@ -2023,9 +2034,6 @@ class FI extends Translated {
   final String endTime = 'Päättymisaika';
 
   @override
-  final String noEndTime = 'Ei loppuaikaa';
-
-  @override
   final String emptyFolder = 'Kansio on tyhjä';
 
   @override
@@ -2039,6 +2047,12 @@ class FI extends Translated {
 
   @override
   final String noImages = 'Sinulla ei ole kuvia';
+
+  @override
+  final String setTime = 'Aseta aika';
+
+  @override
+  final String time = 'Aika';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -2308,7 +2322,7 @@ class DE extends Translated {
 
   @override
   final String wrongCredentials =
-      'Benutzername oder Passwort unkorrekt.\n\nBitte Anmeldedaten prüfen und nochmals versuchen.';
+      'Benutzername oder Passwort unkorrekt.\nBitte Anmeldedaten prüfen und nochmals versuchen.';
 
   @override
   final String noConnection =
@@ -2507,9 +2521,6 @@ class DE extends Translated {
   final String endTime = 'Endezeit';
 
   @override
-  final String noEndTime = 'Keine Endezeit';
-
-  @override
   final String emptyFolder = 'Der Ordner leer ist';
 
   @override
@@ -2523,6 +2534,12 @@ class DE extends Translated {
 
   @override
   final String noImages = 'Sie haben keine Bilder';
+
+  @override
+  final String setTime = 'Zeit einstellen';
+
+  @override
+  final String time = 'Zeit';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -2795,7 +2812,7 @@ class NB extends Translated {
 
   @override
   final String wrongCredentials =
-      'Brukernavn eller passord er ikke riktig.\n\nKontroller at du har skrevet riktig og prøv igjen.';
+      'Brukernavn eller passord er ikke riktig.\nKontroller at du har skrevet riktig og prøv igjen.';
 
   @override
   final String noConnection =
@@ -2803,7 +2820,7 @@ class NB extends Translated {
 
   @override
   final String noLicense =
-      'Problemer med å logge inn!\n\nDu har ikke en gyldig lisens.';
+      'Problemer med å logge inn!\nDu har ikke en gyldig lisens.';
 
   @override
   final String licenseExpired = 'Lisensen har utløpt';
@@ -2995,9 +3012,6 @@ class NB extends Translated {
   final String endTime = 'Sluttid';
 
   @override
-  final String noEndTime = 'Ingen sluttid';
-
-  @override
   final String emptyFolder = 'Mappen er tom';
 
   @override
@@ -3011,6 +3025,12 @@ class NB extends Translated {
 
   @override
   final String noImages = 'Du har ingen bilder';
+
+  @override
+  final String setTime = 'Velg tid';
+
+  @override
+  final String time = 'Tid';
 
   @override
   final String missingTitleOrImageAndStartTime =

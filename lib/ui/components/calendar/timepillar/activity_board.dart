@@ -67,7 +67,7 @@ class ActivityBoard extends StatelessWidget {
 
       final textHeight = (a.hasTitle
           ? a.title
-              .textSize(textStyle, ActivityTimepillarCard.width,
+              .textPainter(textStyle, ActivityTimepillarCard.width,
                   scaleFactor: scaleFactor)
               .height
           : 0.0);

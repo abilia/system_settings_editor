@@ -46,10 +46,7 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
                     groupValue: alarm,
                     onChanged: onChanged,
                     value: alarmType.typeSeagull,
-                    leading: Icon(
-                      alarmType.iconData(),
-                      size: smallIconSize,
-                    ),
+                    leading: Icon(alarmType.iconData()),
                     text: Text(alarmType.text(translate)),
                   ),
                 ),

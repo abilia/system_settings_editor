@@ -49,9 +49,19 @@ class SwitchField extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    if (leading != null) leading,
-                    const SizedBox(width: 12),
-                    text,
+                    if (leading != null) ...[
+                      IconTheme(
+                          data: Theme.of(context)
+                              .iconTheme
+                              .copyWith(size: smallIconSize),
+                          child: leading),
+                      const SizedBox(width: 12),
+                    ],
+                    if (text != null)
+                      DefaultTextStyle(
+                        style: abiliaTextTheme.bodyText1.copyWith(height: 1.0),
+                        child: text,
+                      ),
                   ],
                 ),
                 switchToggle,

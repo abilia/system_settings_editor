@@ -81,10 +81,7 @@ class TextToSpeechSwitch extends StatelessWidget {
         Expanded(
           child: SwitchField(
             value: settingsState.textToSpeech,
-            leading: Icon(
-              AbiliaIcons.speak_text,
-              size: smallIconSize,
-            ),
+            leading: Icon(AbiliaIcons.speak_text),
             text: Text(Translator.of(context).translate.textToSpeech),
             onChanged: (v) =>
                 context.read<SettingsBloc>().add(TextToSpeechUpdated(v)),
@@ -253,20 +250,20 @@ class _FakeTickerState extends State<FakeTicker> {
                       final time = TimeOfDay.fromDateTime(state);
                       return TimePicker(
                         '${minPerMin?.toInt() ?? 1} min/min',
-                        time,
+                        TimeInput(time, null),
                         onTap: () async {
-                          final newTime = await showViewDialog<TimeInputResult>(
+                          final newTime = await showViewDialog<TimeInput>(
                             context: context,
                             builder: (context) => TimeInputDialog(
                               heading: 'Fake Time',
-                              time: time,
+                              timeInput: TimeInput(time, null),
                               is24HoursFormat:
                                   MediaQuery.of(context).alwaysUse24HourFormat,
                             ),
                           );
                           if (newTime != null) {
                             context.read<ClockBloc>().setFakeTicker(
-                                  initTime: state.withTime(newTime.time),
+                                  initTime: state.withTime(newTime.startTime),
                                 );
                           }
                         },

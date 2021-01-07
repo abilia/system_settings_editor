@@ -25,10 +25,7 @@ class ChangeCalendarDialog extends StatelessWidget {
                   child: RadioField(
                     key: TestKey.timePillarButton,
                     leading: Icon(AbiliaIcons.timeline),
-                    text: Text(
-                      translate.timePillarView,
-                      style: abiliaTheme.textTheme.bodyText1,
-                    ),
+                    text: Text(translate.timePillarView),
                     value: CalendarType.TIMEPILLAR,
                     groupValue: currentViewType,
                     trailing: currentViewType != CalendarType.TIMEPILLAR
@@ -56,10 +53,7 @@ class ChangeCalendarDialog extends StatelessWidget {
             RadioField(
               key: TestKey.agendaListButton,
               leading: Icon(AbiliaIcons.list_order),
-              text: Text(
-                translate.listView,
-                style: abiliaTheme.textTheme.bodyText1,
-              ),
+              text: Text(translate.listView),
               value: CalendarType.LIST,
               groupValue: currentViewType,
               trailing: currentViewType != CalendarType.LIST

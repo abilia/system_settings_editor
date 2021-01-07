@@ -66,25 +66,16 @@ class _CreateActivityDialogState extends State<CreateActivityDialog>
         children: <Widget>[
           PickField(
             key: TestKey.newActivityButton,
-            leading: Icon(
-              AbiliaIcons.new_icon,
-              size: smallIconSize,
-            ),
-            text: Text(
-              translate.newActivityChoice,
-              style: abiliaTheme.textTheme.bodyText1,
-            ),
+            leading: Icon(AbiliaIcons.new_icon),
+            text: Text(translate.newActivityChoice),
             onTap: () async => await Navigator.of(context)
                 .maybePop(CreateActivityDialogResponse()),
           ),
           SizedBox(height: 8.0),
           PickField(
             key: TestKey.selectBasicActivityButton,
-            leading: Icon(AbiliaIcons.day, size: smallIconSize),
-            text: Text(
-              translate.fromBasicActivity,
-              style: abiliaTheme.textTheme.bodyText1,
-            ),
+            leading: Icon(AbiliaIcons.day),
+            text: Text(translate.fromBasicActivity),
             onTap: () async => setState(
               () {
                 pickBasicActivityView = true;

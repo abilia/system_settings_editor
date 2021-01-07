@@ -1,61 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:seagull/bloc/all.dart';
 
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class StartTimeInputDialog extends StatelessWidget {
-  final TimeOfDay time;
-
-  const StartTimeInputDialog({Key key, this.time}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return TimeInputDialog(
-      time: time,
-      heading: Translator.of(context).translate.startTime,
-      is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-    );
-  }
-}
-
-class EndTimeInputDialog extends StatelessWidget {
-  final TimeInterval timeInterval;
-
-  const EndTimeInputDialog({Key key, this.timeInterval}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return TimeInputDialog(
-      time: timeInterval.endTime,
-      heading: Translator.of(context).translate.endTime,
-      is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-      deleteButton: !timeInterval.sameTime
-          ? RemoveButton(
-              icon: Icon(
-                AbiliaIcons.delete_all_clear,
-                color: AbiliaColors.white,
-                size: smallIconSize,
-              ),
-              onTap: () =>
-                  Navigator.of(context).maybePop(TimeInputResult(null)),
-              text: Translator.of(context).translate.noEndTime,
-            )
-          : null,
-    );
-  }
-}
-
 class TimeInputDialog extends StatefulWidget {
-  final TimeOfDay time;
-  final Widget deleteButton;
+  final TimeInput timeInput;
   final String heading;
   final bool is24HoursFormat;
 
   const TimeInputDialog({
     Key key,
-    @required this.time,
+    @required this.timeInput,
     @required this.heading,
     @required this.is24HoursFormat,
-    this.deleteButton,
   }) : super(key: key);
 
   @override
@@ -67,54 +26,83 @@ String pad0(String s) => s.padLeft(2, '0');
 
 class _TimeInputDialogState extends State<TimeInputDialog> {
   final bool twelveHourClock;
-  TextEditingController minuteInputController;
-  TextEditingController hourInputController;
-  FocusNode hourFocusNode;
-  FocusNode minuteFocusNode;
-  DayPeriod period;
+  TextEditingController startTimeController;
+  TextEditingController endTimeController;
+  DayPeriod startTimePeriod;
+  DayPeriod endTimePeriod;
+  FocusNode startTimeFocus;
+  FocusNode endTimeFocus;
+  String validatedNewStartTime;
+  String valiedatedNewEndTime;
 
   _TimeInputDialogState({@required this.twelveHourClock});
 
   @override
   void initState() {
-    period = widget.time != null ? widget.time.period : DayPeriod.pm;
-
-    hourFocusNode = FocusNode()..addListener(onHourFocusChanged);
-    minuteFocusNode = FocusNode()..addListener(onMinFocusChanged);
-    if (widget.time != null) {
-      minuteFocusNode.requestFocus();
-    } else {
-      hourFocusNode.requestFocus();
-    }
-    minuteInputController = TextEditingController(text: oldMinute)
-      ..addListener(minuteInputListener);
-    hourInputController = TextEditingController(text: oldHour)
-      ..addListener(hourInputListener);
+    startTimePeriod = widget.timeInput.startTime?.period ?? DayPeriod.pm;
+    endTimePeriod = widget.timeInput.endTime?.period ?? DayPeriod.pm;
+    startTimeFocus = FocusNode();
+    startTimeFocus.addListener(() {
+      if (startTimeFocus.hasFocus) {
+        startTimeController.selection = TextSelection(
+            baseOffset: 0, extentOffset: startTimeController.text.length);
+        final validEndTime = (endTimeController.text.length == 4 ||
+            endTimeController.text.isEmpty);
+        final validatedEndTime =
+            validEndTime ? endTimeController.text : valiedatedNewEndTime;
+        endTimeController.text = validatedEndTime;
+        setState(() {
+          valiedatedNewEndTime = validatedEndTime;
+        });
+      }
+    });
+    endTimeFocus = FocusNode();
+    endTimeFocus.addListener(() {
+      if (endTimeFocus.hasFocus) {
+        endTimeController.selection = TextSelection(
+            baseOffset: 0, extentOffset: endTimeController.text.length);
+        final validStartTime = (startTimeController.text.length == 4 ||
+            startTimeController.text.isEmpty);
+        final validatedStartTime =
+            validStartTime ? startTimeController.text : validatedNewStartTime;
+        startTimeController.text = validatedStartTime;
+        setState(() {
+          validatedNewStartTime = validatedStartTime;
+        });
+      }
+    });
+    startTimeFocus.requestFocus();
+    startTimeController = TextEditingController();
+    endTimeController = TextEditingController();
+    startTimeController.text = widget.timeInput.rawStartTime(twelveHourClock);
+    validatedNewStartTime = widget.timeInput.rawStartTime(twelveHourClock);
+    endTimeController.text = widget.timeInput.rawEndTime(twelveHourClock);
+    valiedatedNewEndTime = widget.timeInput.rawEndTime(twelveHourClock);
     super.initState();
   }
 
-  String get oldHour => widget.time != null
-      ? twelveHourClock
-          ? '${widget.time.hourOfPeriod == 0 ? TimeOfDay.hoursPerPeriod : widget.time.hourOfPeriod}'
-          : pad0('${widget.time.hour}')
+  bool get validStartTime => startTimeController.text.length == 4;
+  bool get validEndTime => endTimeController.text.length == 4;
+  bool get saveable => validStartTime;
+  TimeOfDay get newStartTime => validStartTime
+      ? TimeOfDay(
+          hour: in24HourClock(
+              int.tryParse(startTimeController.text.substring(0, 2)),
+              startTimePeriod),
+          minute: int.tryParse(startTimeController.text.substring(2, 4)))
       : null;
-  String get oldMinute =>
-      widget.time != null ? pad0('${widget.time.minute}') : null;
+  TimeOfDay get newEndTime => validEndTime
+      ? TimeOfDay(
+          hour: in24HourClock(
+              int.tryParse(endTimeController.text.substring(0, 2)),
+              endTimePeriod),
+          minute: int.tryParse(endTimeController.text.substring(2, 4)))
+      : null;
+  TimeInput get newTimeInput => TimeInput(newStartTime, newEndTime);
 
-  TimeOfDay get inputTime {
-    if (minute == null || hour == null) return null;
-    return TimeOfDay(hour: in24HourClock(hour), minute: minute);
-  }
+  void save() => Navigator.of(context).maybePop(newTimeInput);
 
-  int get hour => int.tryParse(hourInputController.text);
-  int get minute => int.tryParse(minuteInputController.text);
-  bool get validHour => hour != null;
-  bool get validMinute => minute != null;
-  bool get saveable => validHour && validMinute;
-
-  void save() => Navigator.of(context).maybePop(TimeInputResult(inputTime));
-
-  int in24HourClock(int hour) {
+  int in24HourClock(int hour, DayPeriod period) {
     if (widget.is24HoursFormat) return hour;
     final twelveOClock = hour == 12,
         pm = period == DayPeriod.pm,
@@ -124,269 +112,347 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
     return hour;
   }
 
-  TextStyle get textStyle => baseTextStyle.copyWith(
-        fontWeight: regular,
-        fontSize: 56.0,
-        height: 82.0 / 56.0,
-      );
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
-    return ViewDialog(
-      heading: Text(widget.heading, style: theme.textTheme.headline6),
-      onOk: saveable ? save : null,
-      deleteButton: widget.deleteButton,
-      child: Theme(
-        data: theme.copyWith(
-            textSelectionColor: AbiliaColors.white,
-            textTheme: theme.textTheme.copyWith(subtitle1: textStyle)),
-        child: Padding(
-          padding: twelveHourClock
-              ? const EdgeInsets.only(top: 45.0, left: 16.0)
-              : const EdgeInsets.only(top: 66.0, left: 4.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              _InputField(
-                textFieldKey: TestKey.hourTextInput,
-                controller: hourInputController,
-                onEditingComplete: saveable
-                    ? save
-                    : validHour
-                        ? minuteFocusNode.requestFocus
-                        : () {},
-                extraFormatter: [
-                  HourInputFormatter(maxValue: twelveHourClock ? 12 : 23),
-                  if (twelveHourClock) NoZeroInputFormatter(),
-                ],
-                focusNode: hourFocusNode,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Text(
-                  ':',
-                  style: textStyle,
-                  textAlign: TextAlign.end,
+    final translate = Translator.of(context).translate;
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, memoSettingsState) => ViewDialog(
+        heading: Text(widget.heading, style: theme.textTheme.headline6),
+        onOk: save,
+        child: Theme(
+          data: theme.copyWith(
+              textSelectionColor: AbiliaColors.white,
+              textTheme: theme.textTheme
+                  .copyWith(subtitle1: abiliaTextTheme.headline4)),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 56.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Text(
+                        translate.startTime,
+                        style: abiliaTextTheme.bodyText2,
+                      ),
+                    ),
+                    _TimeInputStack(
+                      inputKey: TestKey.startTimeInput,
+                      editingController: startTimeController,
+                      editFocus: startTimeFocus,
+                      twelveHourClock: twelveHourClock,
+                      onTimeChanged: (value) {
+                        if (value.length == 4) {
+                          endTimeFocus.requestFocus();
+                        }
+                      },
+                    ),
+                    if (!widget.is24HoursFormat)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: AmPmSelector(
+                          amRadioFieldKey: TestKey.startTimeAmRadioField,
+                          pmRadioFieldKey: TestKey.startTimePmRadioField,
+                          groupValue: startTimePeriod,
+                          onChanged: (period) => setState(() {
+                            startTimePeriod = period;
+                          }),
+                        ),
+                      ),
+                  ],
                 ),
-              ),
-              _InputField(
-                textFieldKey: TestKey.minTextInput,
-                controller: minuteInputController,
-                onEditingComplete: saveable
-                    ? save
-                    : validMinute
-                        ? hourFocusNode.requestFocus
-                        : () {},
-                extraFormatter: [
-                  MinuteInputFormatter(),
-                ],
-                focusNode: minuteFocusNode,
-              ),
-              if (twelveHourClock)
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      RadioField(
-                        width: 63.0,
-                        heigth: 48.0,
-                        key: TestKey.amRadioField,
-                        text: Text(
-                          Translator.of(context).translate.am,
-                          style: theme.textTheme.bodyText1,
-                          textAlign: TextAlign.center,
-                        ),
-                        value: DayPeriod.am,
-                        groupValue: period,
-                        onChanged: (p) => setState(() => period = p),
+                if (memoSettingsState.activityEndTimeEditable)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 28,
                       ),
-                      SizedBox(height: 6),
-                      RadioField(
-                        width: 63.0,
-                        heigth: 48.0,
-                        key: TestKey.pmRadioField,
-                        text: Text(
-                          Translator.of(context).translate.pm,
-                          style: theme.textTheme.bodyText1,
-                        ),
-                        value: DayPeriod.pm,
-                        groupValue: period,
-                        onChanged: (p) => setState(() => period = p),
-                      ),
+                      SizedBox(
+                        height: 64,
+                        child: Center(
+                            child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            '—',
+                            style: abiliaTextTheme.headline5,
+                          ),
+                        )),
+                      )
                     ],
                   ),
-                ),
-            ],
+                if (memoSettingsState.activityEndTimeEditable)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          translate.endTime,
+                          style: abiliaTextTheme.bodyText2,
+                        ),
+                      ),
+                      _TimeInputStack(
+                        inputKey: TestKey.endTimeInput,
+                        editingController: endTimeController,
+                        editFocus: endTimeFocus,
+                        twelveHourClock: twelveHourClock,
+                      ),
+                      if (!widget.is24HoursFormat)
+                        Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: AmPmSelector(
+                              amRadioFieldKey: TestKey.endTimeAmRadioField,
+                              pmRadioFieldKey: TestKey.endTimePmRadioField,
+                              groupValue: endTimePeriod,
+                              onChanged: (period) => setState(() {
+                                endTimePeriod = period;
+                              }),
+                            )),
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  void onHourFocusChanged() {
-    if (hourFocusNode.hasFocus) {
-      _selectAllText(hourInputController);
-    } else {
-      if (hourInputController.text.isEmpty) {
-        hourInputController.text = oldHour;
-      } else if (widget.is24HoursFormat) {
-        hourInputController.text = pad0(hourInputController.text);
-      }
-    }
-    setState(() {});
-  }
-
-  void onMinFocusChanged() {
-    if (minuteFocusNode.hasFocus) {
-      _selectAllText(minuteInputController);
-    } else if (minuteInputController.text.isNotEmpty) {
-      minuteInputController.text = pad0(minuteInputController.text);
-    }
-    setState(() {});
-  }
-
-  void _selectAllText(TextEditingController controller) =>
-      controller.selection =
-          TextSelection(baseOffset: 0, extentOffset: controller.text.length);
-
-  void hourInputListener() {
-    final noTextSelected = hourInputController.selection.extentOffset ==
-        hourInputController.selection.baseOffset;
-
-    if (noTextSelected) {
-      final text = hourInputController.text;
-      if (text.length >= 2) minuteFocusNode.requestFocus();
-      final parsed = int.tryParse(text);
-      final highestPossibleTenDigit = twelveHourClock ? 1 : 2;
-      if (parsed != null && parsed > highestPossibleTenDigit) {
-        minuteFocusNode.requestFocus();
-      }
-    }
-    setState(() {});
-  }
-
-  var _lastMinText = '';
-  void minuteInputListener() {
-    final lastMinDigitDeleted = minuteInputController.text.isEmpty &&
-        minuteInputController.text != _lastMinText;
-    if (lastMinDigitDeleted) {
-      hourFocusNode.requestFocus();
-    }
-    _lastMinText = minuteInputController.text;
-    setState(() {});
-  }
-
   @override
   void dispose() {
-    hourFocusNode.dispose();
-    minuteFocusNode.dispose();
-    minuteInputController.dispose();
-    hourInputController.dispose();
+    startTimeController.dispose();
+    endTimeController.dispose();
     super.dispose();
   }
 }
 
-class _InputField extends StatelessWidget {
-  const _InputField({
-    Key key,
-    @required this.controller,
-    @required this.focusNode,
-    this.autoFocus = false,
-    this.extraFormatter = const [],
-    this.onEditingComplete,
-    this.textFieldKey,
-  }) : super(key: key);
+class _TimeInputStack extends StatefulWidget {
+  final TextEditingController editingController;
+  final FocusNode editFocus;
+  final ValueChanged<String> onTimeChanged;
+  final bool twelveHourClock;
+  final Key inputKey;
 
-  final Key textFieldKey;
-  final TextEditingController controller;
-  final VoidCallback onEditingComplete;
-  final FocusNode focusNode;
-  final List<TextInputFormatter> extraFormatter;
-  final bool autoFocus;
+  _TimeInputStack({
+    this.inputKey,
+    @required this.editingController,
+    @required this.editFocus,
+    @required this.twelveHourClock,
+    this.onTimeChanged,
+  });
+  @override
+  _TimeInputStackState createState() => _TimeInputStackState();
+}
+
+class _TimeInputStackState extends State<_TimeInputStack> {
+  _TimeInputStackState();
+
+  static final emptyPattern = '--:--';
+  final displayFocus = FocusNode(
+    canRequestFocus: false,
+  );
+
+  TextEditingController displayController;
+
+  TextEditingController get editController => widget.editingController;
+  FocusNode get editFocus => widget.editFocus;
+
+  @override
+  void initState() {
+    super.initState();
+    displayController = TextEditingController();
+    displayController.text = formatTimeToDisplay(widget.editingController.text);
+    editController.addListener(() {
+      displayController.text = formatTimeToDisplay(editController.text);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 82.0,
-      child: TextField(
-        key: textFieldKey,
-        focusNode: focusNode,
-        textAlign: TextAlign.center,
-        textAlignVertical: TextAlignVertical.center,
-        decoration: InputDecoration(
-          fillColor: focusNode.hasFocus
-              ? Theme.of(context).inputDecorationTheme.fillColor
-              : Colors.transparent,
-          contentPadding: EdgeInsets.zero,
-        ),
-        enableInteractiveSelection: false,
-        showCursor: false,
-        controller: controller,
-        autofocus: autoFocus,
-        onEditingComplete: onEditingComplete,
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.digitsOnly,
-          LengthLimitingTextInputFormatter(2),
-          ...extraFormatter,
+    return Container(
+      width: 120,
+      height: 64,
+      child: Stack(
+        children: [
+          TextField(
+            key: widget.inputKey,
+            focusNode: editFocus,
+            keyboardType: TextInputType.number,
+            showCursor: false,
+            controller: editController,
+            onChanged: (value) {
+              if (widget.onTimeChanged != null) {
+                widget.onTimeChanged(value);
+              }
+            },
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(4),
+              TimeInputFormatter(widget.twelveHourClock),
+            ],
+          ),
+          GestureDetector(
+            onTap: () => editFocus.requestFocus(),
+            child: TextField(
+              readOnly: true,
+              enabled: false,
+              focusNode: displayFocus,
+              keyboardType: TextInputType.number,
+              showCursor: false,
+              controller: displayController,
+              textAlign: TextAlign.center,
+              textAlignVertical: TextAlignVertical.center,
+              decoration: InputDecoration(
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: borderRadius,
+                  borderSide: BorderSide(
+                    color: editFocus.hasFocus ? Colors.black : Colors.grey,
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
-}
 
-class HourInputFormatter extends TextInputFormatter {
-  final int maxValue;
-
-  HourInputFormatter({@required this.maxValue});
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    if (newValue.text.isEmpty) return newValue;
-    final parsed = int.tryParse(newValue.text);
-    if (parsed == null || parsed > maxValue) return oldValue;
-    return newValue;
-  }
-}
-
-class MinuteInputFormatter extends TextInputFormatter {
-  final int highestPossibleTenDigit = 5;
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    if (newValue.text.isEmpty) return newValue;
-    final parsed = int.tryParse(newValue.text);
-    if (parsed == null) return oldValue;
-    if (parsed > highestPossibleTenDigit) {
-      return newValue.copyWith(
-          text: pad0(newValue.text),
-          selection:
-              newValue.selection.copyWith(baseOffset: 2, extentOffset: 2));
+  String formatTimeToDisplay(String input) {
+    if (input.isEmpty) {
+      return emptyPattern;
+    } else if (input.length == 1) {
+      return input + emptyPattern.substring(1);
+    } else if (input.length == 2) {
+      return input + emptyPattern.substring(2);
+    } else if (input.length == 3) {
+      return input.substring(0, 2) +
+          emptyPattern.substring(2, 3) +
+          input.substring(2) +
+          emptyPattern.substring(4, 5);
+    } else if (input.length == 4) {
+      return input.substring(0, 2) +
+          emptyPattern.substring(2, 3) +
+          input.substring(2);
+    } else {
+      return emptyPattern;
     }
-    return newValue;
   }
 }
 
-class NoZeroInputFormatter extends TextInputFormatter {
+class TimeInputFormatter extends TextInputFormatter {
+  final bool twelveHourClock;
+
+  TimeInputFormatter(this.twelveHourClock);
+
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,
-  ) =>
-      int.tryParse(newValue.text) == 0 ? oldValue : newValue;
+  ) {
+    final newText = newValue.text;
+    return validTimeInput(newText) ? newValue : oldValue;
+  }
+
+  bool validTimeInput(String input) {
+    if (input.isEmpty) {
+      return true;
+    }
+    final intVal = int.tryParse(input);
+    if (input.length == 1) {
+      return twelveHourClock ? intVal <= 1 : intVal <= 2;
+    }
+    if (input.length == 2) {
+      return twelveHourClock ? intVal >= 1 && intVal <= 12 : intVal <= 23;
+    }
+    if (input.length == 3) {
+      return int.tryParse(input.substring(2, 3)) <= 5;
+    }
+    if (input.length == 4) {
+      return int.tryParse(input.substring(2, 4)) <= 59;
+    }
+    return false;
+  }
 }
 
-class TimeInputResult {
-  final TimeOfDay time;
+class TimeInput {
+  final TimeOfDay startTime;
+  final TimeOfDay endTime;
 
-  TimeInputResult(this.time);
+  TimeInput(this.startTime, this.endTime);
+
+  String rawStartTime(bool twelveHourClock) {
+    return rawTimeOfDay(startTime, twelveHourClock);
+  }
+
+  String rawEndTime(bool twelveHourClock) {
+    return rawTimeOfDay(endTime, twelveHourClock);
+  }
+
+  String rawTimeOfDay(TimeOfDay tod, bool twelveHourClock) {
+    return tod == null
+        ? ''
+        : ((twelveHourClock
+                ? pad0(
+                    '${tod.hourOfPeriod == 0 ? TimeOfDay.hoursPerPeriod : tod.hourOfPeriod}')
+                : pad0('${tod.hour}')) +
+            pad0('${tod.minute}'));
+  }
+}
+
+class AmPmSelector extends StatelessWidget {
+  final DayPeriod groupValue;
+  final ValueChanged<DayPeriod> onChanged;
+  final Key amRadioFieldKey;
+  final Key pmRadioFieldKey;
+
+  const AmPmSelector({
+    Key key,
+    @required this.groupValue,
+    @required this.onChanged,
+    this.amRadioFieldKey,
+    this.pmRadioFieldKey,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: [
+          _buildPeriodRadioField(
+            key: amRadioFieldKey,
+            text: Translator.of(context).translate.am,
+            period: DayPeriod.am,
+          ),
+          const SizedBox(width: 2),
+          _buildPeriodRadioField(
+            key: pmRadioFieldKey,
+            text: Translator.of(context).translate.pm,
+            period: DayPeriod.pm,
+          ),
+        ],
+      ),
+    );
+  }
+
+  RadioField<DayPeriod> _buildPeriodRadioField({
+    Key key,
+    String text,
+    DayPeriod period,
+  }) =>
+      RadioField(
+        key: key,
+        width: 59.0,
+        heigth: 48.0,
+        text: Text(text),
+        value: period,
+        groupValue: groupValue,
+        onChanged: onChanged,
+      );
 }

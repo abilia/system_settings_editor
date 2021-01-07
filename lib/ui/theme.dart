@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 
@@ -8,7 +9,7 @@ const double smallIconSize = 24,
     defaultIconSize = 32,
     hugeIconSize = 96;
 
-ThemeData abiliaTheme = ThemeData(
+final abiliaTheme = ThemeData(
   primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: AbiliaColors.white110,
   primaryColor: AbiliaColors.black,
@@ -20,15 +21,20 @@ ThemeData abiliaTheme = ThemeData(
   buttonTheme: baseButtonTheme,
   buttonColor: AbiliaColors.transparentBlack20,
   highlightColor: AbiliaColors.transparentBlack40,
-  iconTheme: IconThemeData(size: defaultIconSize, color: AbiliaColors.black),
+  iconTheme: const IconThemeData(
+    size: defaultIconSize,
+    color: AbiliaColors.black,
+  ),
   cursorColor: AbiliaColors.black,
   textSelectionHandleColor: AbiliaColors.black,
-  appBarTheme: AppBarTheme(color: AbiliaColors.black80),
+  appBarTheme: const AppBarTheme(color: AbiliaColors.black80),
   disabledColor: AbiliaColors.red40,
   errorColor: AbiliaColors.red,
   textSelectionColor: AbiliaColors.white120,
-  bottomAppBarTheme: BottomAppBarTheme(color: AbiliaColors.black80),
-  cupertinoOverrideTheme: CupertinoThemeData(primaryColor: AbiliaColors.black),
+  bottomAppBarTheme: const BottomAppBarTheme(color: AbiliaColors.black80),
+  cupertinoOverrideTheme: const CupertinoThemeData(
+    primaryColor: AbiliaColors.black,
+  ),
   toggleableActiveColor: AbiliaColors.green,
   dividerTheme: const DividerThemeData(
     color: AbiliaColors.white120,
@@ -264,80 +270,81 @@ ThemeData bottomNavigationBarTheme = abiliaTheme.copyWith(
   iconTheme: IconThemeData(size: defaultIconSize),
 );
 
-TextTheme abiliaTextTheme = TextTheme(
-  headline1: baseTextStyle.copyWith(
-    fontSize: 96.0,
-    fontWeight: light,
-    height: 1.0,
+final abiliaTextTheme = GoogleFonts.robotoTextTheme(
+  TextTheme(
+    headline1: TextStyle(
+      color: AbiliaColors.black,
+      fontSize: 96.0,
+      fontWeight: light,
+    ),
+    headline2: TextStyle(
+      color: AbiliaColors.black,
+      fontSize: 60.0,
+      fontWeight: light,
+      height: 72.0 / 60.0,
+    ),
+    headline3: TextStyle(
+      color: AbiliaColors.black,
+      fontSize: 48.0,
+      fontWeight: regular,
+      height: 56.0 / 48.0,
+    ),
+    headline4: TextStyle(
+      color: AbiliaColors.black,
+      fontSize: 34.0,
+      fontWeight: regular,
+    ),
+    headline5: TextStyle(
+      color: AbiliaColors.black,
+      fontSize: 24.0,
+      fontWeight: regular,
+    ),
+    headline6: TextStyle(
+      color: AbiliaColors.black,
+      fontSize: 20.0,
+      fontWeight: medium,
+    ),
+    subtitle1: TextStyle(
+      color: AbiliaColors.black,
+      fontSize: 16.0,
+      fontWeight: medium,
+      height: 24.0 / 16.0,
+    ),
+    subtitle2: TextStyle(
+      color: AbiliaColors.black,
+      fontSize: 14.0,
+      fontWeight: medium,
+      height: 24.0 / 14.0,
+    ),
+    bodyText1: TextStyle(
+      color: AbiliaColors.black,
+      fontSize: 16.0,
+      fontWeight: regular,
+      height: 28.0 / 16.0,
+    ),
+    bodyText2: TextStyle(
+      color: AbiliaColors.black,
+      fontSize: 14.0,
+      fontWeight: regular,
+      height: 20.0 / 14.0,
+    ),
+    caption: TextStyle(
+      color: AbiliaColors.black,
+      fontSize: 12.0,
+      fontWeight: regular,
+      height: 16.0 / 12.0,
+    ),
+    button: TextStyle(
+      color: AbiliaColors.white,
+      fontSize: 16.0,
+      fontWeight: medium,
+    ),
+    overline: TextStyle(
+      fontSize: 10.0,
+      fontWeight: medium,
+      height: 16.0 / 10.0,
+    ),
   ),
-  headline2: baseTextStyle.copyWith(
-    fontSize: 60.0,
-    fontWeight: light,
-    height: 72.0 / 60.0,
-  ),
-  headline3: baseTextStyle.copyWith(
-    fontSize: 48.0,
-    fontWeight: regular,
-    height: 56.0 / 48.0,
-  ),
-  headline4: baseTextStyle.copyWith(
-    fontSize: 34.0,
-    fontWeight: regular,
-    height: 1.0,
-  ),
-  headline5: baseTextStyle.copyWith(
-    fontSize: 24.0,
-    fontWeight: regular,
-    height: 1.0,
-  ),
-  headline6: baseTextStyle.copyWith(
-    fontSize: 20.0,
-    fontWeight: medium,
-    height: 1.0,
-  ),
-  subtitle1: baseTextStyle.copyWith(
-    fontSize: 16.0,
-    fontWeight: medium,
-    height: 24.0 / 16.0,
-  ),
-  subtitle2: baseTextStyle.copyWith(
-    fontSize: 14.0,
-    fontWeight: medium,
-    height: 20.0 / 14.0,
-  ),
-  bodyText1: baseTextStyle.copyWith(
-    fontSize: 16.0,
-    fontWeight: regular,
-    height: 28.0 / 16.0,
-  ),
-  bodyText2: baseTextStyle.copyWith(
-    fontSize: 14.0,
-    fontWeight: regular,
-    height: 20.0 / 14.0,
-  ),
-  caption: baseTextStyle.copyWith(
-    fontSize: 12.0,
-    fontWeight: regular,
-    height: 16.0 / 12.0,
-  ),
-  button: baseTextStyle.copyWith(
-    color: AbiliaColors.white,
-    fontSize: 16.0,
-    fontWeight: medium,
-    height: 1.0,
-  ),
-  overline: baseTextStyle.copyWith(
-    fontSize: 10.0,
-    fontWeight: medium,
-    height: 16.0 / 10.0,
-  ),
-);
-
-const TextStyle baseTextStyle = TextStyle(
-  fontFamily: 'Roboto',
-  color: AbiliaColors.black,
-  fontStyle: FontStyle.normal,
-  letterSpacing: 0.0,
 );
 
 const FontWeight light = FontWeight.w300;
