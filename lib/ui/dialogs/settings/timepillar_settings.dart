@@ -16,10 +16,7 @@ class TimePillarSettings extends StatelessWidget {
           children: <Widget>[
             PickField(
               leading: Icon(AbiliaIcons.options),
-              text: Text(
-                translate.activityDuration,
-                style: abiliaTheme.textTheme.bodyText1,
-              ),
+              text: Text(translate.activityDuration),
               onTap: () async {
                 await Navigator.of(context).maybePop();
                 await showViewDialog(

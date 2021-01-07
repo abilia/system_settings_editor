@@ -112,11 +112,6 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
     return hour;
   }
 
-  TextStyle get textStyle => baseTextStyle.copyWith(
-        fontWeight: regular,
-        fontSize: 34.0,
-      );
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -128,7 +123,8 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
         child: Theme(
           data: theme.copyWith(
               textSelectionColor: AbiliaColors.white,
-              textTheme: theme.textTheme.copyWith(subtitle1: textStyle)),
+              textTheme: theme.textTheme
+                  .copyWith(subtitle1: abiliaTextTheme.headline4)),
           child: Padding(
             padding: const EdgeInsets.only(top: 56.0),
             child: Row(
@@ -429,35 +425,34 @@ class AmPmSelector extends StatelessWidget {
     return Container(
       child: Row(
         children: [
-          RadioField(
+          _buildPeriodRadioField(
             key: amRadioFieldKey,
-            width: 59.0,
-            heigth: 48.0,
-            text: Text(
-              Translator.of(context).translate.am,
-              style: abiliaTextTheme.bodyText1,
-              textAlign: TextAlign.center,
-            ),
-            value: DayPeriod.am,
-            groupValue: groupValue,
-            onChanged: onChanged,
+            text: Translator.of(context).translate.am,
+            period: DayPeriod.am,
           ),
-          SizedBox(width: 2),
-          RadioField(
+          const SizedBox(width: 2),
+          _buildPeriodRadioField(
             key: pmRadioFieldKey,
-            width: 59.0,
-            heigth: 48.0,
-            text: Text(
-              Translator.of(context).translate.pm,
-              style: abiliaTextTheme.bodyText1,
-              textAlign: TextAlign.center,
-            ),
-            value: DayPeriod.pm,
-            groupValue: groupValue,
-            onChanged: onChanged,
+            text: Translator.of(context).translate.pm,
+            period: DayPeriod.pm,
           ),
         ],
       ),
     );
   }
+
+  RadioField<DayPeriod> _buildPeriodRadioField({
+    Key key,
+    String text,
+    DayPeriod period,
+  }) =>
+      RadioField(
+        key: key,
+        width: 59.0,
+        heigth: 48.0,
+        text: Text(text),
+        value: period,
+        groupValue: groupValue,
+        onChanged: onChanged,
+      );
 }

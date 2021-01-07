@@ -30,7 +30,7 @@ abstract class Translated {
   final String logout = 'Log out';
 
   final String wrongCredentials =
-      "Username or password doesn\'t match.\n\nVerify your credentials and try again.";
+      "Username or password doesn\'t match.\nVerify your credentials and try again.";
 
   final String noConnection =
       'No contact with myAbilia. Check your Internet connection.';
@@ -364,7 +364,7 @@ class SV extends Translated {
 
   @override
   final String wrongCredentials =
-      'Användarnamn eller lösenord stämmer inte.\n\nKontrollera att du har skrivit rätt och försök igen.';
+      'Användarnamn eller lösenord stämmer inte.\nKontrollera att du har skrivit rätt och försök igen.';
 
   @override
   final String noConnection =
@@ -848,7 +848,7 @@ class DA extends Translated {
 
   @override
   final String wrongCredentials =
-      'Brugernavn eller adgangskode er ikke korrekt.\n\nKontroller at du har skrevet det rigtigt og forsøg igen.';
+      'Brugernavn eller adgangskode er ikke korrekt.\nKontroller at du har skrevet det rigtigt og forsøg igen.';
 
   @override
   final String noConnection =
@@ -856,7 +856,7 @@ class DA extends Translated {
 
   @override
   final String noLicense =
-      'Problemer med at logge ind!\n\nDu har ikke en gyldig licens.';
+      'Problemer med at logge ind!\nDu har ikke en gyldig licens.';
 
   @override
   final String licenseExpired = 'Licensen er udløbet';
@@ -1332,7 +1332,7 @@ class NL extends Translated {
 
   @override
   final String wrongCredentials =
-      'Gebruikersnaam of wachtwoord komt niet overeen.\n\nControleer uw gegevens en probeer opnieuw.';
+      'Gebruikersnaam of wachtwoord komt niet overeen.\nControleer uw gegevens en probeer opnieuw.';
 
   @override
   final String noConnection =
@@ -1813,7 +1813,7 @@ class FI extends Translated {
 
   @override
   final String wrongCredentials =
-      'Käyttäjätunnus tai salasana ei täsmää.\n\nVahvista tunnistetiedot ja yritä uudelleen.';
+      'Käyttäjätunnus tai salasana ei täsmää.\nVahvista tunnistetiedot ja yritä uudelleen.';
 
   @override
   final String noConnection =
@@ -2294,7 +2294,7 @@ class DE extends Translated {
 
   @override
   final String wrongCredentials =
-      'Benutzername oder Passwort unkorrekt.\n\nBitte Anmeldedaten prüfen und nochmals versuchen.';
+      'Benutzername oder Passwort unkorrekt.\nBitte Anmeldedaten prüfen und nochmals versuchen.';
 
   @override
   final String noConnection =
@@ -2778,7 +2778,7 @@ class NB extends Translated {
 
   @override
   final String wrongCredentials =
-      'Brukernavn eller passord er ikke riktig.\n\nKontroller at du har skrevet riktig og prøv igjen.';
+      'Brukernavn eller passord er ikke riktig.\nKontroller at du har skrevet riktig og prøv igjen.';
 
   @override
   final String noConnection =
@@ -2786,7 +2786,7 @@ class NB extends Translated {
 
   @override
   final String noLicense =
-      'Problemer med å logge inn!\n\nDu har ikke en gyldig lisens.';
+      'Problemer med å logge inn!\nDu har ikke en gyldig lisens.';
 
   @override
   final String licenseExpired = 'Lisensen har utløpt';

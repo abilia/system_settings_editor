@@ -20,13 +20,7 @@ class ErrorMessage extends StatelessWidget {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            child: DefaultTextStyle(
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  .copyWith(color: AbiliaColors.black75),
-              child: text,
-            ),
+            child: text,
           ),
         ),
       );

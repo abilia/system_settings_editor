@@ -150,7 +150,8 @@ class SliverNoActivities extends StatelessWidget {
           child: Tts(
             child: Text(
               Translator.of(context).translate.noActivities,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: abiliaTextTheme.bodyText1
+                  .copyWith(color: AbiliaColors.black75),
             ),
           ),
         ),

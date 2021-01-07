@@ -51,6 +51,7 @@ dependencies:
       ref: 3b6267acdc3102984e3a0457043f7e9ee691abc8
       path: permission_handler/
   flare_flutter: ^2.0.6
+  google_fonts: ^1.1.1
 
 dev_dependencies:
   flutter_test:

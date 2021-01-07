@@ -117,9 +117,20 @@ class PickField extends StatelessWidget {
                 Center(
                   child: Row(
                     children: <Widget>[
-                      if (leading != null) leading,
+                      if (leading != null)
+                        IconTheme(
+                          data: Theme.of(context)
+                              .iconTheme
+                              .copyWith(size: smallIconSize),
+                          child: leading,
+                        ),
                       const SizedBox(width: 12),
-                      if (text != null) text,
+                      if (text != null)
+                        DefaultTextStyle(
+                          style:
+                              abiliaTextTheme.bodyText1.copyWith(height: 1.0),
+                          child: text,
+                        ),
                     ],
                   ),
                 ),
@@ -155,12 +166,13 @@ class RadioField<T> extends StatelessWidget {
     this.text,
     this.heigth = 56,
     this.width,
-    this.margin = const EdgeInsets.all(8.0),
+    this.margin = const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final decoration = selectedBoxDecoration(value == groupValue);
+    final left = margin.resolve(text.textDirection).left;
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data,
@@ -184,13 +196,22 @@ class RadioField<T> extends StatelessWidget {
                 child: Row(
                   children: [
                     if (leading != null) ...[
-                      leading,
-                      const SizedBox(width: 12),
+                      IconTheme(
+                          data: Theme.of(context)
+                              .iconTheme
+                              .copyWith(size: smallIconSize),
+                          child: leading),
+                      SizedBox(width: left),
                     ],
-                    Expanded(child: text),
+                    Expanded(
+                      child: DefaultTextStyle(
+                        style: abiliaTextTheme.bodyText1.copyWith(height: 1.0),
+                        child: text,
+                      ),
+                    ),
                     if (trailing != null) ...[
                       trailing,
-                      const SizedBox(width: 12),
+                      SizedBox(width: left),
                     ],
                   ],
                 ),
@@ -301,7 +322,7 @@ class SelectableField extends StatelessWidget {
                 width: width,
                 decoration: decoration,
                 padding: EdgeInsets.fromLTRB(
-                        12.0, 10.0, 24.0, decoration.border.bottom.width)
+                        12.0, 10.0, 26.0, decoration.border.bottom.width)
                     .subtract(decoration.border.dimensions),
                 child: text,
               ),
