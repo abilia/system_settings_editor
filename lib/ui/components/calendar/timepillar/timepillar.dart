@@ -5,12 +5,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-double timeToMidDotPixelDistance(DateTime now) =>
-    timeToPixels(now.hour, now.minute) + dotSize / 2;
-double timeToPixels(int hours, int minutes) =>
-    (hours * dotsPerHour + minutes ~/ minutesPerDot) * dotDistance;
-double hoursToPixels(int hours) => timeToPixels(hours, 0);
-
 const double timePillarPadding = 4.0,
     timePillarWidth = 42.0,
     timePillarTotalWidth = timePillarWidth + timePillarPadding * 2;

@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class MockScrollController extends Mock implements ScrollController {}
 
@@ -11,11 +14,19 @@ void main() {
   ScrollPositionBloc scrollPositionBloc;
   MockScrollController mockScrollController;
   MockScrollPosition mockScrollPosition;
+  StreamController<DateTime> ticker;
+  final initialTime = DateTime(2020, 12, 24, 15, 00);
 
   setUp(() {
+    ticker = StreamController<DateTime>();
+    final clockBloc = ClockBloc(ticker.stream, initialTime: initialTime);
+    final dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     mockScrollController = MockScrollController();
     mockScrollPosition = MockScrollPosition();
-    scrollPositionBloc = ScrollPositionBloc();
+    scrollPositionBloc = ScrollPositionBloc(
+      dayPickerBloc: dayPickerBloc,
+      clockBloc: clockBloc,
+    );
     when(mockScrollController.position).thenReturn(mockScrollPosition);
     when(mockScrollController.hasClients).thenReturn(true);
   });
@@ -158,7 +169,7 @@ void main() {
       // Act
       for (var i = activityAt; i < max; i++) {
         when(mockScrollController.offset).thenReturn(i);
-        scrollPositionBloc.add(ScrollPositionUpdated(i));
+        scrollPositionBloc.add(ScrollPositionUpdated());
       }
 
       // Assert
@@ -188,7 +199,7 @@ void main() {
     // Act
     for (var i = activityAt; i > 0; i--) {
       when(mockScrollController.offset).thenReturn(i);
-      scrollPositionBloc.add(ScrollPositionUpdated(i));
+      scrollPositionBloc.add(ScrollPositionUpdated());
     }
 
     // Assert
@@ -196,5 +207,95 @@ void main() {
       scrollPositionBloc,
       emits(OutOfView(mockScrollController)),
     );
+  });
+
+  test('Scrolls back', () async {
+    // Arrange
+    final initialOffset = 100.0;
+    when(mockScrollController.initialScrollOffset).thenReturn(initialOffset);
+    when(mockScrollController.offset).thenReturn(200);
+    when(mockScrollPosition.maxScrollExtent).thenReturn(400);
+
+    // Act
+    scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
+    scrollPositionBloc.add(GoToNow());
+
+    // Assert
+    await untilCalled(mockScrollController.animateTo(initialOffset,
+        duration: anyNamed('duration'), curve: anyNamed('curve')));
+  });
+
+  group('go to now follows now', () {
+    test('createdTime', () async {
+      // Arrange
+      when(mockScrollController.offset).thenReturn(0);
+      when(mockScrollController.initialScrollOffset).thenReturn(0);
+      when(mockScrollPosition.maxScrollExtent).thenReturn(400);
+
+      // Act
+      scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController,
+          createdTime: initialTime));
+      // ticker.add(createdTime.add(1.minutes()));
+
+      // Assert
+      await expectLater(
+        scrollPositionBloc,
+        emits(InView(mockScrollController, initialTime)),
+      );
+    });
+
+    test('after one hour', () async {
+      // Arrange
+      when(mockScrollController.offset).thenReturn(0);
+      when(mockScrollController.initialScrollOffset).thenReturn(0);
+      when(mockScrollPosition.maxScrollExtent).thenReturn(400);
+
+      // Act
+      scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController,
+          createdTime: initialTime));
+      ticker.add(initialTime.add(1.hours()));
+
+      // Assert
+      await expectLater(
+        scrollPositionBloc,
+        emitsInOrder([
+          InView(mockScrollController, initialTime),
+          OutOfView(mockScrollController, initialTime),
+        ]),
+      );
+    });
+
+    test('Scrolls to correct offset', () async {
+      // Arrange
+      final initialOffset = 100.0;
+      when(mockScrollController.initialScrollOffset).thenReturn(initialOffset);
+      when(mockScrollController.offset).thenReturn(initialOffset);
+      when(mockScrollPosition.maxScrollExtent).thenReturn(400);
+      final timePixelOffset = timeToPixels(1, 30);
+      final nowPos = initialOffset + timePixelOffset;
+
+      // Act
+      scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController,
+          createdTime: initialTime));
+      // Assert
+      await expectLater(
+        scrollPositionBloc,
+        emits(InView(mockScrollController, initialTime)),
+      );
+
+      // Act
+      ticker.add(initialTime.add(1.hours() + 30.minutes()));
+      // Assert
+      await expectLater(
+        scrollPositionBloc,
+        emits(OutOfView(mockScrollController, initialTime)),
+      );
+
+      // Act
+      scrollPositionBloc.add(GoToNow());
+      // Assert
+      await untilCalled(mockScrollController.animateTo(nowPos,
+          duration: anyNamed('duration'), curve: anyNamed('curve')));
+    });
   });
 }

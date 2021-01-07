@@ -117,6 +117,7 @@ void main() {
     );
     final newTimeInterval = TimeInterval(
       startTime: newStartTime,
+      endTime: newStartTime,
       startDate: aTime,
     );
 
@@ -125,7 +126,7 @@ void main() {
     editActivityBloc.add(SaveActivity());
     editActivityBloc.add(ReplaceActivity(activityWithTitle));
     editActivityBloc.add(SaveActivity());
-    editActivityBloc.add(ChangeStartTime(newStartTime));
+    editActivityBloc.add(ChangeTimeInterval(startTime: newStartTime));
     editActivityBloc.add(SaveActivity());
 
     // Assert
@@ -237,10 +238,12 @@ void main() {
     final newActivity = activity.copyWith(title: 'newTile');
     final expectedTimeInterval1 = TimeInterval(
       startTime: newTime,
+      endTime: newTime,
       startDate: aDate,
     );
     final expectedTimeInterval2 = TimeInterval(
       startTime: newTime,
+      endTime: newTime,
       startDate: newDate,
     );
     final expectedFinalStartTime = DateTime(
@@ -255,7 +258,8 @@ void main() {
     );
 
     // Act
-    editActivityBloc.add(ChangeStartTime(TimeOfDay(hour: 1, minute: 1)));
+    editActivityBloc
+        .add(ChangeTimeInterval(startTime: TimeOfDay(hour: 1, minute: 1)));
     editActivityBloc.add(ChangeDate(newDate));
     editActivityBloc.add(ReplaceActivity(newActivity));
     editActivityBloc.add(SaveActivity());
@@ -276,56 +280,6 @@ void main() {
         ],
       ),
     );
-  });
-
-  test('Changing start time changes start time but not duration', () async {
-    // Arrange
-    final aDate = DateTime(2022, 02, 22, 22, 30);
-    final day = DateTime(2022, 02, 22);
-    final activity = Activity.createNew(
-      title: 'test',
-      startTime: aDate,
-      duration: 30.minutes(),
-    );
-    final newStartTime = TimeOfDay(hour: 11, minute: 00);
-    final expectedNewDate = DateTime(2022, 02, 22, 11, 00);
-    final expectedTimeInterval = TimeInterval(
-      startTime: TimeOfDay.fromDateTime(activity.startTime),
-      endTime: TimeOfDay.fromDateTime(activity.noneRecurringEnd),
-      startDate: aDate,
-    );
-
-    final expetedNewActivity = activity.copyWith(startTime: expectedNewDate);
-    final expectedNewTimeInterval = TimeInterval(
-      startTime: TimeOfDay.fromDateTime(expectedNewDate),
-      endTime: TimeOfDay.fromDateTime(expectedNewDate.add(activity.duration)),
-      startDate: aDate,
-    );
-
-    final editActivityBloc = EditActivityBloc(
-      ActivityDay(activity, day),
-      activitiesBloc: mockActivitiesBloc,
-      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
-      clockBloc: clockBloc,
-    );
-
-    final orignalState =
-        StoredActivityState(activity, expectedTimeInterval, day);
-    // Assert
-    expect(editActivityBloc.state, orignalState);
-
-    // Act
-    editActivityBloc.add(ChangeStartTime(newStartTime));
-    editActivityBloc.add(SaveActivity());
-
-    // Assert
-    await expectLater(
-        editActivityBloc,
-        emitsInOrder([
-          StoredActivityState(activity, expectedNewTimeInterval, day),
-          StoredActivityState(expetedNewActivity, expectedNewTimeInterval, day)
-              .saveSucess(),
-        ]));
   });
 
   test('Changing end time changes duration but not start or end time',
@@ -366,7 +320,7 @@ void main() {
         StoredActivityState(activity, expectedTimeInterval, aDay));
 
     // Act
-    editActivityBloc.add(ChangeEndTime(newEndTime));
+    editActivityBloc.add(ChangeTimeInterval(endTime: newEndTime));
     editActivityBloc.add(SaveActivity());
 
     // Assert
@@ -421,7 +375,7 @@ void main() {
         StoredActivityState(activity, expectedTimeInterval, aDay));
 
     // Act
-    editActivityBloc.add(ChangeEndTime(newEndTime));
+    editActivityBloc.add(ChangeTimeInterval(endTime: newEndTime));
     editActivityBloc.add(SaveActivity());
 
     // Assert
@@ -484,7 +438,9 @@ void main() {
     );
   });
 
-  test('set empty end time sets duration to 0 and end time to empty', () async {
+  test(
+      'set empty end time sets duration to 0 and end time to same as start time',
+      () async {
     // Arrange
     final aDate = DateTime(2001, 01, 01, 01, 01);
     final aDay = DateTime(2001, 01, 01);
@@ -504,6 +460,7 @@ void main() {
     final expectedNewActivity = activity.copyWith(duration: expectedDuration);
     final expectedNewTimeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(activity.startTime),
+      endTime: TimeOfDay.fromDateTime(activity.startTime),
       startDate: aDate,
     );
 
@@ -519,7 +476,8 @@ void main() {
         StoredActivityState(activity, expectedTimeInterval, aDay));
 
     // Act
-    editActivityBloc.add(ChangeEndTime(null));
+    editActivityBloc.add(ChangeTimeInterval(
+        startTime: TimeOfDay.fromDateTime(activity.startTime), endTime: null));
     editActivityBloc.add(SaveActivity());
 
     // Assert
@@ -528,53 +486,6 @@ void main() {
       emitsInOrder([
         StoredActivityState(activity, expectedNewTimeInterval, aDay),
         StoredActivityState(expectedNewActivity, expectedNewTimeInterval, aDay)
-            .saveSucess(),
-      ]),
-    );
-  });
-
-  test('first set end time and then start time should give correct duration',
-      () async {
-    // Arrange
-    final aDay = DateTime(2001, 01, 01);
-
-    final editActivityBloc = EditActivityBloc.newActivity(
-      activitiesBloc: mockActivitiesBloc,
-      day: aDay,
-      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
-      clockBloc: clockBloc,
-    );
-    final activity = editActivityBloc.state.activity;
-    final activityWithTitle = activity.copyWith(title: 'title');
-
-    final expectedActivity = activityWithTitle.copyWith(
-        startTime: aDay.copyWith(hour: 8, minute: 0), duration: 2.hours());
-    final expectedTimeInterval = TimeInterval(
-      startTime: TimeOfDay.fromDateTime(aDay.copyWith(hour: 8, minute: 0)),
-      endTime: TimeOfDay.fromDateTime(aDay.copyWith(hour: 10, minute: 0)),
-      startDate: aDay,
-    );
-
-    // Act
-    editActivityBloc.add(ChangeEndTime(TimeOfDay(hour: 10, minute: 0)));
-    editActivityBloc.add(ChangeStartTime(TimeOfDay(hour: 8, minute: 0)));
-    editActivityBloc.add(ReplaceActivity(activityWithTitle));
-    editActivityBloc.add(SaveActivity());
-
-    // Assert
-    await expectLater(
-      editActivityBloc,
-      emitsInOrder([
-        UnstoredActivityState(
-          activity,
-          TimeInterval(
-            endTime: TimeOfDay.fromDateTime(aDay.copyWith(hour: 10, minute: 0)),
-            startDate: aDay,
-          ),
-        ),
-        UnstoredActivityState(activity, expectedTimeInterval),
-        UnstoredActivityState(activityWithTitle, expectedTimeInterval),
-        StoredActivityState(expectedActivity, expectedTimeInterval, aDay)
             .saveSucess(),
       ]),
     );
@@ -602,8 +513,11 @@ void main() {
     );
 
     // Act
-    editActivityBloc.add(ChangeEndTime(TimeOfDay(hour: 10, minute: 0)));
-    editActivityBloc.add(ChangeStartTime(TimeOfDay(hour: 12, minute: 0)));
+    editActivityBloc
+        .add(ChangeTimeInterval(endTime: TimeOfDay(hour: 10, minute: 0)));
+    editActivityBloc.add(ChangeTimeInterval(
+        startTime: TimeOfDay(hour: 12, minute: 0),
+        endTime: TimeOfDay(hour: 10, minute: 0)));
     editActivityBloc.add(ReplaceActivity(activityWithTitle));
     editActivityBloc.add(SaveActivity());
 
@@ -634,71 +548,6 @@ void main() {
           ).saveSucess(),
         ],
       ),
-    );
-  });
-
-  test('Changing start time changes end time equally', () async {
-    // Arrange
-    final editActivityBloc = EditActivityBloc.newActivity(
-      activitiesBloc: mockActivitiesBloc,
-      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
-      clockBloc: clockBloc,
-      day: aDay,
-    );
-
-    final activity = editActivityBloc.state.activity;
-
-    final startTime1 = TimeOfDay(hour: 10, minute: 0);
-    final endTime1 = TimeOfDay(hour: 11, minute: 0);
-
-    final endTime2 = TimeOfDay(hour: 16, minute: 15);
-    final startTime2 = TimeOfDay(hour: 15, minute: 15);
-
-    final startTime3 = TimeOfDay(hour: 23, minute: 30);
-    final endTime3 = TimeOfDay(hour: 0, minute: 30);
-
-    // Act
-    editActivityBloc.add(ChangeStartTime(startTime1));
-    editActivityBloc.add(ChangeEndTime(endTime1));
-    editActivityBloc.add(ChangeStartTime(startTime2));
-    editActivityBloc.add(ChangeStartTime(startTime3));
-
-    // Assert
-    await expectLater(
-      editActivityBloc,
-      emitsInOrder([
-        UnstoredActivityState(
-          activity,
-          TimeInterval(
-            startTime: startTime1,
-            startDate: aDay,
-          ),
-        ),
-        UnstoredActivityState(
-          activity,
-          TimeInterval(
-            startTime: startTime1,
-            endTime: endTime1,
-            startDate: aDay,
-          ),
-        ),
-        UnstoredActivityState(
-          activity,
-          TimeInterval(
-            startTime: startTime2,
-            endTime: endTime2,
-            startDate: aDay,
-          ),
-        ),
-        UnstoredActivityState(
-          activity,
-          TimeInterval(
-            startTime: startTime3,
-            endTime: endTime3,
-            startDate: aDay,
-          ),
-        ),
-      ]),
     );
   });
 
@@ -864,9 +713,10 @@ void main() {
     final time = TimeOfDay.fromDateTime(aTime);
     final expectedTimeIntervall = TimeInterval(
       startTime: time,
+      endTime: time,
       startDate: aDay,
     );
-    editActivityBloc.add(ChangeStartTime(time));
+    editActivityBloc.add(ChangeTimeInterval(startTime: time));
     editActivityBloc.add(ReplaceActivity(activity));
     editActivityBloc.add(SaveActivity());
 

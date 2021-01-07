@@ -167,58 +167,35 @@ class TimeIntervallPicker extends StatelessWidget {
           Expanded(
             flex: 148,
             child: TimePicker(
-              translator.startTime,
-              timeInterval.startTime,
-              key: TestKey.startTimePicker,
+              translator.time,
+              TimeInput(
+                timeInterval.startTime,
+                timeInterval.sameTime ? null : timeInterval.endTime,
+              ),
+              key: TestKey.timePicker,
               errorState: startTimeError,
               onTap: () async {
-                final newStartTime = await showViewDialog<TimeInputResult>(
+                final newTimeInterval = await showViewDialog<TimeInput>(
                   context: context,
-                  builder: (context) =>
-                      StartTimeInputDialog(time: timeInterval.startTime),
-                  wrapWithAuthProviders: false,
+                  builder: (context) => TimeInputDialog(
+                    timeInput: TimeInput(timeInterval.startTime,
+                        timeInterval.sameTime ? null : timeInterval.endTime),
+                    heading: translator.setTime,
+                    is24HoursFormat:
+                        MediaQuery.of(context).alwaysUse24HourFormat,
+                  ),
                 );
-                if (newStartTime != null) {
+
+                if (newTimeInterval != null) {
                   BlocProvider.of<EditActivityBloc>(context)
-                      .add(ChangeStartTime(newStartTime.time));
+                      .add(ChangeTimeInterval(
+                    startTime: newTimeInterval.startTime,
+                    endTime: newTimeInterval.endTime,
+                  ));
                 }
               },
             ),
           ),
-          if (memoSettingsState.activityEndTimeEditable)
-            Expanded(
-              flex: 48,
-              child: Transform.translate(
-                offset: Offset(0, -20),
-                child: const Divider(
-                  thickness: 2,
-                  indent: 4,
-                  endIndent: 4,
-                ),
-              ),
-            ),
-          if (memoSettingsState.activityEndTimeEditable)
-            Expanded(
-              flex: 148,
-              child: TimePicker(
-                translator.endTime,
-                timeInterval.endTime,
-                key: TestKey.endTimePicker,
-                onTap: () async {
-                  final newEndTime = await showViewDialog<TimeInputResult>(
-                    context: context,
-                    builder: (context) => EndTimeInputDialog(
-                      timeInterval: timeInterval,
-                    ),
-                    wrapWithAuthProviders: false,
-                  );
-                  if (newEndTime != null) {
-                    BlocProvider.of<EditActivityBloc>(context)
-                        .add(ChangeEndTime(newEndTime.time));
-                  }
-                },
-              ),
-            ),
         ],
       ),
     );
@@ -227,13 +204,13 @@ class TimeIntervallPicker extends StatelessWidget {
 
 class TimePicker extends StatelessWidget {
   final String text;
-  final TimeOfDay time;
+  final TimeInput timeInput;
   final GestureTapCallback onTap;
   final double heigth = 56;
   final bool errorState;
   const TimePicker(
     this.text,
-    this.time, {
+    this.timeInput, {
     Key key,
     @required this.onTap,
     this.errorState = false,
@@ -241,7 +218,16 @@ class TimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeSet = time != null;
+    final timeFormat = hourAndMinuteFormat(context);
+    final time = timeInput.startTime == null
+        ? ''
+        : timeFormat(DateTime(0, 0, 0, timeInput.startTime.hour,
+                timeInput.startTime.minute)) +
+            (timeInput.endTime == null
+                ? ''
+                : ' - ' +
+                    timeFormat(DateTime(0, 0, 0, timeInput.endTime.hour,
+                        timeInput.endTime.minute)));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -252,7 +238,7 @@ class TimePicker extends StatelessWidget {
           heigth: heigth,
           errorState: errorState,
           leading: Icon(AbiliaIcons.clock),
-          text: Text(timeSet ? time.format(context) : ''),
+          text: Text(time),
           trailing: errorState
               ? const Icon(
                   AbiliaIcons.ir_error,
