@@ -42,20 +42,22 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   leftAction,
-                  BlocBuilder<ClockBloc, DateTime>(
-                    builder: (context, time) => Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.center,
-                          child: DayAppBarTitle(
-                              currentTime: time,
-                              day: day,
-                              textStyle: textStyle),
-                        ),
-                        if (day.isDayBefore(time))
-                          CrossOver(color: textStyle.color),
-                      ],
+                  Flexible(
+                    child: BlocBuilder<ClockBloc, DateTime>(
+                      builder: (context, time) => Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.center,
+                            child: DayAppBarTitle(
+                                currentTime: time,
+                                day: day,
+                                textStyle: textStyle),
+                          ),
+                          if (day.isDayBefore(time))
+                            CrossOver(color: textStyle.color),
+                        ],
+                      ),
                     ),
                   ),
                   rightAction,
@@ -161,11 +163,13 @@ class DayAppBarTitle extends StatelessWidget {
               Text(
                 rows.row1,
                 style: textStyle,
+                overflow: TextOverflow.ellipsis,
               ),
             if (rows.row2.isNotEmpty)
               Text(
                 rows.row2,
                 style: textStyle,
+                overflow: TextOverflow.ellipsis,
               ),
           ],
         ),
