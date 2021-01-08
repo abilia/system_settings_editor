@@ -26,6 +26,6 @@ flutter build apk --release --build-number=$APPCENTER_BUILD_ID --dart-define=rel
 mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/apk/release/app-release.apk $_/memoplannergo-$APPCENTER_BUILD_ID-$release.apk
 
 echo "Building AAB"
-flutter build appbundle --build-number=$APPCENTER_BUILD_ID
+flutter build appbundle --build-number=$APPCENTER_BUILD_ID --dart-define=release=$release
 # copy the AAB where AppCenter will find it
-mkdir -p android/app/build/outputs/bundle/; mv build/app/outputs/bundle/release/app-release.aab $_/memoplannergo-$APPCENTER_BUILD_ID.aab
+mkdir -p android/app/build/outputs/bundle/; mv build/app/outputs/bundle/release/app-release.aab $_/memoplannergo-$APPCENTER_BUILD_ID-$release.aab
