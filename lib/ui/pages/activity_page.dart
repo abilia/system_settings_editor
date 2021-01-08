@@ -55,7 +55,7 @@ class ActivityPage extends StatelessWidget {
   }
 }
 
-class ActivityBottomAppBar extends StatelessWidget {
+class ActivityBottomAppBar extends StatelessWidget with Checker {
   const ActivityBottomAppBar({
     Key key,
     @required this.activityOccasion,
@@ -91,6 +91,17 @@ class ActivityBottomAppBar extends StatelessWidget {
                       ? MainAxisAlignment.center
                       : MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    if (activityOccasion.isSignedOff)
+                      ActionButton(
+                        key: TestKey.uncheckButton,
+                        onPressed: () async {
+                          await checkConfirmation(
+                            context,
+                            activityOccasion,
+                          );
+                        },
+                        child: Icon(AbiliaIcons.handi_uncheck),
+                      ),
                     if (displayAlarmButton)
                       ActionButton(
                         key: TestKey.editAlarm,
@@ -128,40 +139,6 @@ class ActivityBottomAppBar extends StatelessWidget {
                           }
                         },
                       ),
-                    if (displayEditButton)
-                      ActionButton(
-                        child: Icon(AbiliaIcons.edit),
-                        onPressed: () async {
-                          await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => CopiedAuthProviders(
-                                blocContext: context,
-                                child: BlocProvider<EditActivityBloc>(
-                                  create: (_) => EditActivityBloc(
-                                    activityOccasion,
-                                    activitiesBloc:
-                                        BlocProvider.of<ActivitiesBloc>(
-                                            context),
-                                    clockBloc:
-                                        BlocProvider.of<ClockBloc>(context),
-                                    memoplannerSettingBloc:
-                                        BlocProvider.of<MemoplannerSettingBloc>(
-                                            context),
-                                  ),
-                                  child: EditActivityPage(
-                                    day: activityOccasion.day,
-                                    title: Translator.of(context)
-                                        .translate
-                                        .editActivity,
-                                  ),
-                                ),
-                              ),
-                              settings: RouteSettings(
-                                  name: 'EditActivityPage ${activityOccasion}'),
-                            ),
-                          );
-                        },
-                      ),
                     if (displayDeleteButton)
                       ActionButton(
                         child: Icon(AbiliaIcons.delete_all_clear),
@@ -195,6 +172,40 @@ class ActivityBottomAppBar extends StatelessWidget {
                             }
                             await Navigator.of(context).maybePop();
                           }
+                        },
+                      ),
+                    if (displayEditButton)
+                      ActionButton(
+                        child: Icon(AbiliaIcons.edit),
+                        onPressed: () async {
+                          await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => CopiedAuthProviders(
+                                blocContext: context,
+                                child: BlocProvider<EditActivityBloc>(
+                                  create: (_) => EditActivityBloc(
+                                    activityOccasion,
+                                    activitiesBloc:
+                                        BlocProvider.of<ActivitiesBloc>(
+                                            context),
+                                    clockBloc:
+                                        BlocProvider.of<ClockBloc>(context),
+                                    memoplannerSettingBloc:
+                                        BlocProvider.of<MemoplannerSettingBloc>(
+                                            context),
+                                  ),
+                                  child: EditActivityPage(
+                                    day: activityOccasion.day,
+                                    title: Translator.of(context)
+                                        .translate
+                                        .editActivity,
+                                  ),
+                                ),
+                              ),
+                              settings: RouteSettings(
+                                  name: 'EditActivityPage ${activityOccasion}'),
+                            ),
+                          );
                         },
                       ),
                   ],

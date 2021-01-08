@@ -91,7 +91,7 @@ void main() {
 
     // Assert
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+    expect(find.byKey(TestKey.uncheckButton), findsNothing);
     expect(find.byKey(TestKey.activityCheckButton), findsNothing);
   });
 
@@ -117,7 +117,7 @@ void main() {
 
     // Assert
     expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
-    expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+    expect(find.byKey(TestKey.uncheckButton), findsNothing);
 
     await tester.verifyTts(find.byKey(TestKey.activityCheckButton));
   });
@@ -143,9 +143,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(TestKey.activityCheckButton), findsNothing);
-    expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
+    expect(find.byKey(TestKey.uncheckButton), findsOneWidget);
 
-    await tester.verifyTts(find.byKey(TestKey.activityUncheckButton));
+    await tester.verifyTts(find.byKey(TestKey.uncheckButton));
   });
 
   testWidgets('activity with null title', (WidgetTester tester) async {

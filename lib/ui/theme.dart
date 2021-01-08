@@ -239,6 +239,7 @@ ThemeData greenButtonTheme = abiliaTheme.copyWith(
 
 ThemeData greyButtonTheme = abiliaTheme.copyWith(
   buttonColor: AbiliaColors.transparentWhite20,
+  scaffoldBackgroundColor: AbiliaColors.black80,
   iconTheme: IconThemeData(
     size: buttonIconSize,
     color: AbiliaColors.white,

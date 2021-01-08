@@ -43,13 +43,9 @@ void main() {
   final deleteViewDialogFinder = find.byType(ConfirmActivityActionDialog);
 
   final checkButtonFinder = find.byKey(TestKey.activityCheckButton);
-  final unCheckButtonFinder = find.byKey(TestKey.activityUncheckButton);
-  final checkDialogCheckButtonFinder =
-      find.byKey(TestKey.checkDialogCheckButton);
-  final checkDialogCancelButtonFinder =
-      find.byKey(TestKey.checkDialogCancelButton);
-  final checkDialogUncheckButtonFinder =
-      find.byKey(TestKey.checkDialogUncheckButton);
+  final uncheckButtonFinder = find.byKey(TestKey.uncheckButton);
+  final yesButtonFinder = find.byKey(TestKey.yesButton);
+  final noButtonFinder = find.byKey(TestKey.noButton);
 
   final activityInfoSideDotsFinder = find.byType(ActivityInfoSideDots);
 
@@ -935,32 +931,32 @@ void main() {
         <Activity>[FakeActivity.starts(startTime).copyWith(checkable: true)]));
     await navigateToActivityPage(tester);
     expect(checkButtonFinder, findsOneWidget);
-    expect(unCheckButtonFinder, findsNothing);
+    expect(uncheckButtonFinder, findsNothing);
     await tester.tap(checkButtonFinder);
     await tester.pumpAndSettle();
 
-    expect(checkDialogCancelButtonFinder, findsOneWidget);
-    await tester.tap(checkDialogCancelButtonFinder);
+    expect(noButtonFinder, findsOneWidget);
+    await tester.tap(noButtonFinder);
     await tester.pumpAndSettle();
 
     expect(checkButtonFinder, findsOneWidget);
-    expect(unCheckButtonFinder, findsNothing);
+    expect(uncheckButtonFinder, findsNothing);
 
     await tester.tap(checkButtonFinder);
     await tester.pumpAndSettle();
-    await tester.tap(checkDialogCheckButtonFinder);
+    await tester.tap(yesButtonFinder);
     await tester.pumpAndSettle(2.seconds());
 
     expect(checkButtonFinder, findsNothing);
-    expect(unCheckButtonFinder, findsOneWidget);
+    expect(uncheckButtonFinder, findsOneWidget);
 
-    await tester.tap(unCheckButtonFinder);
+    await tester.tap(uncheckButtonFinder);
     await tester.pumpAndSettle();
-    await tester.tap(checkDialogUncheckButtonFinder);
+    await tester.tap(yesButtonFinder);
     await tester.pumpAndSettle(2.seconds());
 
     expect(checkButtonFinder, findsOneWidget);
-    expect(unCheckButtonFinder, findsNothing);
+    expect(uncheckButtonFinder, findsNothing);
   });
 
   group('Memoplanner settings', () {
@@ -1135,12 +1131,14 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
         ),
       );
       await navigateToActivityPage(tester);
+      expect(checkButtonFinder, findsOneWidget);
+      expect(uncheckButtonFinder, findsNothing);
       await tester.verifyTts(checkButtonFinder, exact: translate.check);
       await tester.tap(checkButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(checkDialogCheckButtonFinder);
+      await tester.tap(yesButtonFinder);
       await tester.pumpAndSettle(Duration(seconds: 2));
-      await tester.verifyTts(unCheckButtonFinder, exact: translate.uncheck);
+      expect(uncheckButtonFinder, findsOneWidget);
     });
 
     testWidgets('delete activity', (WidgetTester tester) async {

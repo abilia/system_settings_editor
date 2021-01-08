@@ -68,8 +68,9 @@ class _ActivityInfoState extends State<ActivityInfo> with Checker {
             buttonTheme: checkButtonThemeData,
             buttonColor: AbiliaColors.green,
           );
-    return BlocBuilder<ClockBloc, DateTime>(
-      builder: (context, now) => AnimatedTheme(
+    return BlocBuilder<ClockBloc, DateTime>(builder: (context, now) {
+      final occasion = widget.activityDay.toOccasion(now);
+      return AnimatedTheme(
         duration: ActivityInfo.animationDuration,
         data: theme.copyWith(
             cardColor: widget.activityDay.end.occasion(now) == Occasion.past
@@ -87,30 +88,25 @@ class _ActivityInfoState extends State<ActivityInfo> with Checker {
                 ),
               ),
             ),
-            if (activity.checkable)
+            if (activity.checkable && !occasion.isSignedOff)
               Padding(
                 padding: const EdgeInsets.only(top: 7.0),
                 child: CheckButton(
-                  key: signedOff
-                      ? TestKey.activityUncheckButton
-                      : TestKey.activityCheckButton,
-                  iconData: signedOff
-                      ? AbiliaIcons.close_program
-                      : AbiliaIcons.handi_check,
-                  text: signedOff ? translate.uncheck : translate.check,
+                  key: TestKey.activityCheckButton,
+                  iconData: AbiliaIcons.handi_check,
+                  text: translate.check,
                   onPressed: () async {
                     await checkConfirmation(
                       context,
-                      widget.activityDay.toOccasion(now),
+                      occasion,
                     );
                   },
-                  themeData: signedOff ? greyButtonTheme : greenButtonTheme,
                 ),
               ),
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -268,15 +264,14 @@ class CheckButton extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData iconData;
   final String text;
-  final ThemeData themeData;
 
   const CheckButton(
-      {Key key, this.onPressed, this.iconData, this.text, this.themeData})
+      {Key key, this.onPressed, this.iconData, this.text})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = themeData ?? abiliaTheme;
+    final theme = greenButtonTheme;
     return Tts(
       data: text,
       child: Container(

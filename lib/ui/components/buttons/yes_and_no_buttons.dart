@@ -14,6 +14,7 @@ class NoButton extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final text = translate.no;
     return IconAndTextButton(
+      key: TestKey.noButton,
       text: text,
       icon: AbiliaIcons.close_program,
       onPressed: onPressed,
@@ -35,6 +36,7 @@ class YesButton extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final text = translate.yes;
     return IconAndTextButton(
+      key: TestKey.yesButton,
       text: text,
       icon: AbiliaIcons.ok,
       onPressed: onPressed,

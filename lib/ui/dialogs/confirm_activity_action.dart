@@ -56,9 +56,13 @@ class CheckActivityConfirmDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     final signedOff = activityOccasion.isSignedOff;
-    final bodyText = activityOccasion.isSignedOff
-        ? translate.unCheckActivityQuestion
-        : translate.checkActivityQuestion;
+
+    final bodyText = message ??
+        (signedOff
+            ? translate.unCheckActivityQuestion
+            : translate.checkActivityQuestion);
+    final text = signedOff ? translate.uncheck : translate.check;
+
     return YesNoDialog(
       onNoPressed: () => Navigator.of(context).maybePop(false),
       onYesPressed: () => Navigator.of(context).maybePop(true),
@@ -79,8 +83,7 @@ class CheckActivityConfirmDialog extends StatelessWidget {
                 SizedBox(
                   width: 8,
                 ),
-                Text(
-                    message ?? signedOff ? translate.uncheck : translate.check),
+                Text(text),
               ],
             )),
       ),

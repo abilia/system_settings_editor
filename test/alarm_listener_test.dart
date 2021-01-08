@@ -256,27 +256,18 @@ void main() {
       // Assert -- Alarm is on screen and alarm is checkable
       expect(find.byType(NavigatableAlarmPage), findsOneWidget);
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
-      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+      expect(find.byKey(TestKey.uncheckButton), findsNothing);
 
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.checkDialogCheckButton));
+      await tester.tap(find.byKey(TestKey.yesButton));
       await tester.pumpAndSettle(2.seconds());
 
       // Assert -- Alarm is checked
-      expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
+      expect(find.byKey(TestKey.uncheckButton),
+          findsNothing); // Uncheck button only in bottom bar (not present in alarm view)
       expect(find.byKey(TestKey.activityCheckButton), findsNothing);
-
-      // Act -- Tap the uncheck button
-      await tester.tap(find.byKey(TestKey.activityUncheckButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.checkDialogUncheckButton));
-      await tester.pumpAndSettle(2.seconds());
-
-      // Assert -- Alarm is unchecked again
-      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
-      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
     });
 
     testWidgets('Popup Alarms can be signed off', (WidgetTester tester) async {
@@ -291,27 +282,17 @@ void main() {
       // Assert -- On screen alarm showing and check button showing
       expect(find.byType(NavigatableAlarmPage), findsOneWidget);
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
-      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+      expect(find.byKey(TestKey.uncheckButton), findsNothing);
 
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.checkDialogCheckButton));
+      await tester.tap(find.byKey(TestKey.yesButton));
       await tester.pumpAndSettle(2.seconds());
 
-      // Assert -- Check button not showing and uncheck button showing
-      expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
+      // Assert -- Check button not showing and uncheck button still not showing (only shown in activity bottom bar)
+      expect(find.byKey(TestKey.uncheckButton), findsNothing);
       expect(find.byKey(TestKey.activityCheckButton), findsNothing);
-
-      // Act -- Tap the uncheck button
-      await tester.tap(find.byKey(TestKey.activityUncheckButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.checkDialogUncheckButton));
-      await tester.pumpAndSettle(2.seconds());
-
-      // Assert -- Check button showing and uncheck not showing
-      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
-      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
     });
   });
 
