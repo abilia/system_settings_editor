@@ -20,7 +20,10 @@ class ErrorMessage extends StatelessWidget {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            child: text,
+            child: DefaultTextStyle(
+              style: Theme.of(context).textTheme.bodyText2,
+              child: text,
+            ),
           ),
         ),
       );
