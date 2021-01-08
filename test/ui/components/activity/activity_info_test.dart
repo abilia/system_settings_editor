@@ -143,9 +143,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(TestKey.activityCheckButton), findsNothing);
-    expect(find.byKey(TestKey.uncheckButton), findsOneWidget);
-
-    await tester.verifyTts(find.byKey(TestKey.uncheckButton));
+    expect(find.byKey(TestKey.uncheckButton),
+        findsNothing); // uncheck only in bottom bar
   });
 
   testWidgets('activity with null title', (WidgetTester tester) async {
@@ -549,7 +548,7 @@ void main() {
     expect(find.byType(QuestionView), findsNWidgets(2));
     await tester.tap(find.text('unchecked'));
     await tester.pumpAndSettle();
-    expect(find.byType(ConfirmActivityActionDialog), findsOneWidget);
+    expect(find.byType(CheckActivityConfirmDialog), findsOneWidget);
   });
 
   testWidgets('Tts with note', (WidgetTester tester) async {
