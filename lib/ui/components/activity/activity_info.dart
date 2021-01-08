@@ -265,9 +265,12 @@ class CheckButton extends StatelessWidget {
   final IconData iconData;
   final String text;
 
-  const CheckButton(
-      {Key key, this.onPressed, this.iconData, this.text})
-      : super(key: key);
+  const CheckButton({
+    Key key,
+    this.onPressed,
+    this.iconData,
+    this.text,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
