@@ -3,3 +3,5 @@ export 'add_activity_button.dart';
 export 'go_to_now_button.dart';
 export 'remove_button.dart';
 export 'info_button.dart';
+export 'icon_text_button.dart';
+export 'yes_and_no_buttons.dart';

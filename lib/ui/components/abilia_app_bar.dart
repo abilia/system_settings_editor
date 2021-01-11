@@ -5,10 +5,12 @@ import 'package:seagull/ui/all.dart';
 class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   final String title;
+  final IconData icon;
   final Widget trailing;
   final Function onClosedPressed;
   final IconData closeIcon;
   final PreferredSizeWidget bottom;
+  final bool closeButton;
 
   const AbiliaAppBar({
     Key key,
@@ -18,6 +20,8 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onClosedPressed,
     this.closeIcon = AbiliaIcons.close_program,
     this.bottom,
+    this.closeButton = true,
+    this.icon,
   }) : super(key: key);
 
   @override
@@ -41,23 +45,37 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Stack(
                     alignment: Alignment.center,
                     children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: ActionButton(
-                          key: TestKey.appBarCloseButton,
-                          child: Icon(closeIcon),
-                          onPressed: onClosedPressed ?? () => _pop(context),
-                        ),
-                      ),
-                      if (title != null)
-                        Tts(
-                          child: Text(
-                            title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                .copyWith(color: AbiliaColors.white),
+                      if (closeButton)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: ActionButton(
+                            key: TestKey.appBarCloseButton,
+                            child: Icon(closeIcon),
+                            onPressed: onClosedPressed ?? () => _pop(context),
                           ),
+                        ),
+                      if (title != null)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (icon != null) ...[
+                              IconTheme(
+                                  data: Theme.of(context)
+                                      .iconTheme
+                                      .copyWith(color: AbiliaColors.white),
+                                  child: Icon(icon)),
+                              const SizedBox(width: 8),
+                            ],
+                            Tts(
+                              child: Text(
+                                title,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    .copyWith(color: AbiliaColors.white),
+                              ),
+                            ),
+                          ],
                         ),
                       if (trailing != null)
                         Align(

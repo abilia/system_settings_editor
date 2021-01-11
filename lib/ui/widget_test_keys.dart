@@ -14,7 +14,6 @@ class TestKey {
       timePillarSettingsButton = Key('timePillarSettingsButton'),
       agendaListButton = Key('agendaListButton  '),
       activityBackButton = Key('activityBackButton'),
-      activityUncheckButton = Key('activityUncheckButton'),
       activityCheckButton = Key('activityCheckButton'),
       attachment = Key('attachment'),
       addActivity = Key('addActivity'),
@@ -64,10 +63,12 @@ class TestKey {
       errorViewDialog = Key('errorViewDialog'),
       animatedTheme = Key('animatedTheme'),
       checkDialogCheckButton = Key('checkDialogCheckButton'),
-      checkDialogUncheckButton = Key('checkDialogUncheckButton'),
+      uncheckButton = Key('uncheckButton'),
       checkDialogCancelButton = Key('checkDialogCancelButton'),
       cameraPickField = Key('cameraPickField'),
       photosPickField = Key('photosPickField'),
       newActivityButton = Key('newActivityButton'),
-      selectBasicActivityButton = Key('selectBasicActivityButton');
+      selectBasicActivityButton = Key('selectBasicActivityButton'),
+      noButton = Key('noButton'),
+      yesButton = Key('yesButton');
 }

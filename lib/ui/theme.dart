@@ -4,7 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 
-const double smallIconSize = 24, defaultIconSize = 32, hugeIconSize = 96;
+const double smallIconSize = 24,
+    buttonIconSize = 28,
+    defaultIconSize = 32,
+    hugeIconSize = 96;
 
 final abiliaTheme = ThemeData(
   primaryColorBrightness: Brightness.light,
@@ -228,10 +231,18 @@ ThemeData redButtonTheme = abiliaTheme.copyWith(
 ThemeData greenButtonTheme = abiliaTheme.copyWith(
   buttonTheme: greenButtonThemeData,
   buttonColor: AbiliaColors.green,
-  textTheme: abiliaTheme.textTheme.copyWith(
-    button: abiliaTheme.textTheme.subtitle1.copyWith(
-      color: AbiliaColors.white,
-    ),
+  iconTheme: IconThemeData(
+    size: buttonIconSize,
+    color: AbiliaColors.white,
+  ),
+);
+
+ThemeData greyButtonTheme = abiliaTheme.copyWith(
+  buttonColor: AbiliaColors.transparentWhite20,
+  scaffoldBackgroundColor: AbiliaColors.black80,
+  iconTheme: IconThemeData(
+    size: buttonIconSize,
+    color: AbiliaColors.white,
   ),
 );
 
@@ -334,8 +345,9 @@ final abiliaTextTheme = GoogleFonts.robotoTextTheme(
     ),
     button: TextStyle(
       color: AbiliaColors.white,
-      fontSize: 14.0,
-      fontWeight: medium,
+      fontSize: 16.0,
+      fontWeight: regular,
+      height: 1,
     ),
     overline: TextStyle(
       fontSize: 10.0,

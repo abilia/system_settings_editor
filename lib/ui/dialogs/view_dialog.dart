@@ -55,28 +55,31 @@ Future<T> showViewDialog<T>({
 Future showErrorViewDialog(String text, {@required BuildContext context}) {
   return showViewDialog(
     context: context,
-    builder: (context) => Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        Expanded(
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTapDown: Navigator.of(context).pop,
-          ),
-        ),
-        GestureDetector(
-          key: TestKey.errorViewDialog,
-          onTap: Navigator.of(context).pop,
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-            child: ErrorMessage(
-              text: Text(text),
+    builder: (context) => Material(
+      color: Colors.transparent,
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Expanded(
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTapDown: Navigator.of(context).pop,
             ),
           ),
-        ),
-      ],
+          GestureDetector(
+            key: TestKey.errorViewDialog,
+            onTap: Navigator.of(context).pop,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+              child: ErrorMessage(
+                text: Text(text),
+              ),
+            ),
+          ),
+        ],
+      ),
     ),
     barrierColor: const Color(0x01000000),
     transitionBuilder: buildSlideDialogTransitions,

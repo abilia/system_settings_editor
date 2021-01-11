@@ -219,7 +219,7 @@ void main() {
       expect(selectNotificationSubject, emits(payloadSerial));
 
       // Act logout
-      await tester.tap(find.byKey(TestKey.appBarCloseButton));
+      await tester.tap(find.byIcon(AbiliaIcons.close_program));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.menu));
       await tester.pumpAndSettle();
@@ -256,27 +256,19 @@ void main() {
       // Assert -- Alarm is on screen and alarm is checkable
       expect(find.byType(NavigatableAlarmPage), findsOneWidget);
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
-      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+      expect(find.byKey(TestKey.uncheckButton), findsNothing);
 
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.checkDialogCheckButton));
-      await tester.pumpAndSettle(2.seconds());
+      await tester.tap(find.byKey(TestKey.yesButton));
+      await tester.pumpAndSettle();
 
       // Assert -- Alarm is checked
-      expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
+      expect(find.byKey(TestKey.uncheckButton),
+          findsNothing); // Uncheck button only in bottom bar (not present in alarm view)
       expect(find.byKey(TestKey.activityCheckButton), findsNothing);
-
-      // Act -- Tap the uncheck button
-      await tester.tap(find.byKey(TestKey.activityUncheckButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.checkDialogUncheckButton));
-      await tester.pumpAndSettle(2.seconds());
-
-      // Assert -- Alarm is unchecked again
-      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
-      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+      expect(find.byType(NavigatableAlarmPage), findsNothing);
     });
 
     testWidgets('Popup Alarms can be signed off', (WidgetTester tester) async {
@@ -291,27 +283,16 @@ void main() {
       // Assert -- On screen alarm showing and check button showing
       expect(find.byType(NavigatableAlarmPage), findsOneWidget);
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
-      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+      expect(find.byKey(TestKey.uncheckButton), findsNothing);
 
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.checkDialogCheckButton));
-      await tester.pumpAndSettle(2.seconds());
-
-      // Assert -- Check button not showing and uncheck button showing
-      expect(find.byKey(TestKey.activityUncheckButton), findsOneWidget);
-      expect(find.byKey(TestKey.activityCheckButton), findsNothing);
-
-      // Act -- Tap the uncheck button
-      await tester.tap(find.byKey(TestKey.activityUncheckButton));
+      await tester.tap(find.byKey(TestKey.yesButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.checkDialogUncheckButton));
-      await tester.pumpAndSettle(2.seconds());
 
-      // Assert -- Check button showing and uncheck not showing
-      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
-      expect(find.byKey(TestKey.activityUncheckButton), findsNothing);
+      // Assert -- Check button not showing and uncheck button still not showing (only shown in activity bottom bar)
+      expect(find.byType(NavigatableAlarmPage), findsNothing);
     });
   });
 
@@ -351,7 +332,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byKey(TestKey.appBarCloseButton));
+      await tester.tap(find.byIcon(AbiliaIcons.close_program));
       await tester.pumpAndSettle();
 
       expect(alarmScreenFinder, findsNothing);
@@ -378,7 +359,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byKey(TestKey.appBarCloseButton));
+      await tester.tap(find.byIcon(AbiliaIcons.close_program));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown since the start time alarm should have been moved to top
@@ -416,7 +397,7 @@ void main() {
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byKey(TestKey.appBarCloseButton));
+      await tester.tap(find.byIcon(AbiliaIcons.close_program));
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should be the end time alarm for activity 2
@@ -432,7 +413,7 @@ void main() {
           equals(activity2.id));
 
       // Act - tap the alarm ok button
-      await tester.tap(find.byKey(TestKey.appBarCloseButton));
+      await tester.tap(find.byIcon(AbiliaIcons.close_program));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown
@@ -465,7 +446,7 @@ void main() {
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm, no more alarm
-      await tester.tap(find.byKey(TestKey.appBarCloseButton));
+      await tester.tap(find.byIcon(AbiliaIcons.close_program));
       await tester.pumpAndSettle();
       expect(alarmScreenFinder, findsNothing);
 
@@ -492,7 +473,7 @@ void main() {
           equals(activity1.id));
 
       // Act - tap the alarm ok button
-      await tester.tap(find.byKey(TestKey.appBarCloseButton));
+      await tester.tap(find.byIcon(AbiliaIcons.close_program));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown
