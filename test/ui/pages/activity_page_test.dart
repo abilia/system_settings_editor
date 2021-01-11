@@ -945,7 +945,7 @@ void main() {
     await tester.tap(checkButtonFinder);
     await tester.pumpAndSettle();
     await tester.tap(yesButtonFinder);
-    await tester.pumpAndSettle(2.seconds());
+    await tester.pumpAndSettle();
 
     expect(checkButtonFinder, findsNothing);
     expect(uncheckButtonFinder, findsOneWidget);
@@ -953,7 +953,7 @@ void main() {
     await tester.tap(uncheckButtonFinder);
     await tester.pumpAndSettle();
     await tester.tap(yesButtonFinder);
-    await tester.pumpAndSettle(2.seconds());
+    await tester.pumpAndSettle();
 
     expect(checkButtonFinder, findsOneWidget);
     expect(uncheckButtonFinder, findsNothing);

@@ -141,6 +141,8 @@ abstract class Translated {
 
   final String no = 'No';
 
+  final String close = 'Close';
+
   final String newActivityChoice = 'New';
 
   final String newActivity = 'New activity';
@@ -534,6 +536,9 @@ class SV extends Translated {
 
   @override
   final String no = 'Nej';
+
+  @override
+  final String close = 'Stäng';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -1026,6 +1031,9 @@ class DA extends Translated {
   final String no = 'Nej';
 
   @override
+  final String close = 'Tæt';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -1511,6 +1519,9 @@ class NL extends Translated {
 
   @override
   final String no = 'Nee';
+
+  @override
+  final String close = 'Dichtbij';
 
   @override
   final String newActivityChoice = 'Nieuw';
@@ -2001,6 +2012,9 @@ class FI extends Translated {
   final String no = 'Ei';
 
   @override
+  final String close = 'Kiinni';
+
+  @override
   final String newActivityChoice = 'Uusi';
 
   @override
@@ -2486,6 +2500,9 @@ class DE extends Translated {
 
   @override
   final String no = 'Nein';
+
+  @override
+  final String close = 'Schließen';
 
   @override
   final String newActivityChoice = 'Neu';
@@ -2977,6 +2994,9 @@ class NB extends Translated {
 
   @override
   final String no = 'Nei';
+
+  @override
+  final String close = 'Lukk';
 
   @override
   final String newActivityChoice = 'Helt ny';

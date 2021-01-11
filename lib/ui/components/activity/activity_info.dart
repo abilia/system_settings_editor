@@ -36,10 +36,12 @@ class ActivityInfo extends StatefulWidget {
   static const margin = 12.0;
   final ActivityDay activityDay;
   final Widget previewImage;
+  final bool checkButton;
   ActivityInfo(
     this.activityDay, {
     Key key,
     this.previewImage,
+    this.checkButton = true,
   }) : super(key: key);
   factory ActivityInfo.from({Activity activity, DateTime day, Key key}) =>
       ActivityInfo(ActivityDay(activity, day), key: key);
@@ -88,7 +90,9 @@ class _ActivityInfoState extends State<ActivityInfo> with Checker {
                 ),
               ),
             ),
-            if (activity.checkable && !occasion.isSignedOff)
+            if (activity.checkable &&
+                !occasion.isSignedOff &&
+                widget.checkButton)
               Padding(
                 padding: const EdgeInsets.only(top: 7.0),
                 child: CheckButton(
@@ -111,7 +115,7 @@ class _ActivityInfoState extends State<ActivityInfo> with Checker {
 }
 
 mixin Checker {
-  Future checkConfirmation(
+  Future<bool> checkConfirmation(
     BuildContext context,
     ActivityOccasion activityOccasion, {
     String message,
@@ -127,6 +131,7 @@ mixin Checker {
       BlocProvider.of<ActivitiesBloc>(context).add(UpdateActivity(
           activityOccasion.activity.signOff(activityOccasion.day)));
     }
+    return check;
   }
 }
 

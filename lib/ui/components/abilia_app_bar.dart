@@ -45,14 +45,15 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Stack(
                     alignment: Alignment.center,
                     children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: ActionButton(
-                          key: TestKey.appBarCloseButton,
-                          child: Icon(closeIcon),
-                          onPressed: onClosedPressed ?? () => _pop(context),
+                      if (closeButton)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: ActionButton(
+                            key: TestKey.appBarCloseButton,
+                            child: Icon(closeIcon),
+                            onPressed: onClosedPressed ?? () => _pop(context),
+                          ),
                         ),
-                      ),
                       if (title != null)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

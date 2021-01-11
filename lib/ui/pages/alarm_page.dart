@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -27,15 +28,22 @@ class AlarmPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AbiliaAppBar(title: Translator.of(context).translate.alarm),
+      appBar: AbiliaAppBar(
+        title: Translator.of(context).translate.alarm,
+        closeButton: false,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(ActivityInfo.margin),
         child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
           builder: (context, activitiesState) => ActivityInfo(
             alarm.activityDay.fromActivitiesState(activitiesState),
             previewImage: previewImage,
+            checkButton: false,
           ),
         ),
+      ),
+      bottomNavigationBar: ReminderBottomAppBar(
+        activityOccasion: alarm.activityDay.toOccasion(alarm.day),
       ),
     );
   }
@@ -64,9 +72,10 @@ class _NavigatableAlarmPageState
 
 class ReminderPage extends StatelessWidget {
   final NewReminder reminder;
-  final ActivityDay activityDay;
-  const ReminderPage({Key key, @required this.reminder, this.activityDay})
-      : super(key: key);
+  const ReminderPage({
+    Key key,
+    @required this.reminder,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +86,7 @@ class ReminderPage extends StatelessWidget {
       appBar: AbiliaAppBar(
         title: translate.reminder,
         icon: AbiliaIcons.handi_reminder,
+        closeButton: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -100,11 +110,15 @@ class ReminderPage extends StatelessWidget {
               child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
                 builder: (context, activitiesState) => ActivityInfo(
                   reminder.activityDay.fromActivitiesState(activitiesState),
+                  checkButton: false,
                 ),
               ),
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: ReminderBottomAppBar(
+        activityOccasion: reminder.activityDay.toOccasion(reminder.day),
       ),
     );
   }
@@ -154,5 +168,70 @@ abstract class AlarmAwareWidgetState<T extends StatefulWidget> extends State<T>
   void dispose() {
     alarmNavigator.alarmRouteObserver.unsubscribe(this);
     super.dispose();
+  }
+}
+
+class ReminderBottomAppBar extends StatelessWidget with Checker {
+  const ReminderBottomAppBar({
+    Key key,
+    @required this.activityOccasion,
+  }) : super(key: key);
+
+  final ActivityOccasion activityOccasion;
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    final displayCheckButton = !activityOccasion.isSignedOff;
+    return Theme(
+      data: bottomNavigationBarTheme,
+      child: BottomAppBar(
+        child: Container(
+          color: AbiliaColors.black80,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: IconAndTextButton(
+                    text: translate.close,
+                    icon: AbiliaIcons.close_program,
+                    onPressed: () => _pop(context),
+                    theme: greyButtonTheme,
+                  ),
+                ),
+                if (displayCheckButton)
+                  SizedBox(
+                    width: 8,
+                  ),
+                if (displayCheckButton)
+                  Expanded(
+                    child: IconAndTextButton(
+                      key: TestKey.activityCheckButton,
+                      text: translate.check,
+                      icon: AbiliaIcons.handi_check,
+                      onPressed: () async {
+                        final checked =
+                            await checkConfirmation(context, activityOccasion);
+                        if (checked) {
+                          await _pop(context);
+                        }
+                      },
+                      theme: greenButtonTheme,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future _pop(BuildContext context) async {
+    if (!await Navigator.of(context).maybePop()) {
+      await SystemNavigator.pop();
+    }
   }
 }
