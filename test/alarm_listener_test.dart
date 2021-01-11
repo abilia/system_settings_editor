@@ -268,6 +268,7 @@ void main() {
       expect(find.byKey(TestKey.uncheckButton),
           findsNothing); // Uncheck button only in bottom bar (not present in alarm view)
       expect(find.byKey(TestKey.activityCheckButton), findsNothing);
+      expect(find.byType(NavigatableAlarmPage), findsNothing);
     });
 
     testWidgets('Popup Alarms can be signed off', (WidgetTester tester) async {

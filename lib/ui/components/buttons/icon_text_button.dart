@@ -6,6 +6,7 @@ class IconAndTextButton extends StatelessWidget {
   final IconData icon;
   final ThemeData theme;
   final VoidCallback onPressed;
+  final double minWidth;
 
   const IconAndTextButton({
     Key key,
@@ -13,6 +14,7 @@ class IconAndTextButton extends StatelessWidget {
     @required this.icon,
     @required this.theme,
     @required this.onPressed,
+    this.minWidth,
   }) : super(key: key);
 
   @override
@@ -20,6 +22,7 @@ class IconAndTextButton extends StatelessWidget {
     return Tts(
       data: text,
       child: FlatButton.icon(
+        minWidth: minWidth,
         height: 64,
         icon: IconTheme(
           data: theme.iconTheme,

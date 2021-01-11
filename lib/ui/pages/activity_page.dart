@@ -74,13 +74,15 @@ class ActivityBottomAppBar extends StatelessWidget with Checker {
           final displayEditButton = memoSettingsState.displayEditButton;
           final displayAlarmButton =
               memoSettingsState.displayAlarmButton && !activity.fullDay;
+          final displayUncheckButton = activityOccasion.isSignedOff;
           final numberOfButtons = [
             displayDeleteButton,
             displayEditButton,
             displayAlarmButton,
+            displayUncheckButton,
           ].where((b) => b).length;
 
-          final padding = [0.0, 0.0, 70.0, 39.0][numberOfButtons];
+          final padding = [0.0, 0.0, 70.0, 39.0, 23.0][numberOfButtons];
           return BottomAppBar(
             child: SizedBox(
               height: numberOfButtons == 0 ? 0 : 64,
@@ -91,7 +93,7 @@ class ActivityBottomAppBar extends StatelessWidget with Checker {
                       ? MainAxisAlignment.center
                       : MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    if (activityOccasion.isSignedOff)
+                    if (displayUncheckButton)
                       ActionButton(
                         key: TestKey.uncheckButton,
                         onPressed: () async {

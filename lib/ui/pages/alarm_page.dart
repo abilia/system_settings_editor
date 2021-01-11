@@ -182,7 +182,15 @@ class ReminderBottomAppBar extends StatelessWidget with Checker {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final displayCheckButton = !activityOccasion.isSignedOff;
+    final displayCheckButton =
+        activityOccasion.activity.checkable && !activityOccasion.isSignedOff;
+    final closeButton = IconAndTextButton(
+      minWidth: 172.0,
+      text: translate.close,
+      icon: AbiliaIcons.close_program,
+      onPressed: () => _pop(context),
+      theme: greyButtonTheme,
+    );
     return Theme(
       data: bottomNavigationBarTheme,
       child: BottomAppBar(
@@ -191,21 +199,16 @@ class ReminderBottomAppBar extends StatelessWidget with Checker {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: displayCheckButton
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: IconAndTextButton(
-                    text: translate.close,
-                    icon: AbiliaIcons.close_program,
-                    onPressed: () => _pop(context),
-                    theme: greyButtonTheme,
-                  ),
-                ),
-                if (displayCheckButton)
+                if (!displayCheckButton) closeButton,
+                if (displayCheckButton) ...[
+                  Expanded(child: closeButton),
                   SizedBox(
                     width: 8,
                   ),
-                if (displayCheckButton)
                   Expanded(
                     child: IconAndTextButton(
                       key: TestKey.activityCheckButton,
@@ -221,6 +224,7 @@ class ReminderBottomAppBar extends StatelessWidget with Checker {
                       theme: greenButtonTheme,
                     ),
                   ),
+                ],
               ],
             ),
           ),

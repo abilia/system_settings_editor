@@ -58,16 +58,14 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (icon != null)
+                            if (icon != null) ...[
                               IconTheme(
-                                  data: Theme.of(context).iconTheme.copyWith(
-                                        color: AbiliaColors.white,
-                                      ),
+                                  data: Theme.of(context)
+                                      .iconTheme
+                                      .copyWith(color: AbiliaColors.white),
                                   child: Icon(icon)),
-                            if (icon != null)
-                              SizedBox(
-                                width: 8,
-                              ),
+                              const SizedBox(width: 8),
+                            ],
                             Tts(
                               child: Text(
                                 title,
