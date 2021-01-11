@@ -20,12 +20,16 @@ echo "Installed flutter to `pwd`/flutter"
 # run tests
 flutter test
 
-echo "Building APK"
-flutter build apk --release --build-number=$APPCENTER_BUILD_ID --dart-define=release=$release
-# copy the APK where AppCenter will find it
-mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/apk/release/app-release.apk $_/memoplannergo-$APPCENTER_BUILD_ID-$release.apk
 
-echo "Building AAB"
-flutter build appbundle --build-number=$APPCENTER_BUILD_ID --dart-define=release=$release
-# copy the AAB where AppCenter will find it
-mkdir -p android/app/build/outputs/bundle/; mv build/app/outputs/bundle/release/app-release.aab $_/memoplannergo-$APPCENTER_BUILD_ID-$release.aab
+if [ "$release" ]
+  then
+    echo "Building APK"
+    flutter build apk --release --build-number=$APPCENTER_BUILD_ID --dart-define=release=$release
+    # copy the APK where AppCenter will find it
+    mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/apk/release/app-release.apk $_/memoplannergo-$APPCENTER_BUILD_ID-$release.apk
+  else
+    echo "Building AAB"
+    flutter build appbundle --build-number=$APPCENTER_BUILD_ID
+    # copy the AAB where AppCenter will find it
+    mkdir -p android/app/build/outputs/bundle/; mv build/app/outputs/bundle/release/app-release.aab $_/memoplannergo-$APPCENTER_BUILD_ID.aab
+fi
