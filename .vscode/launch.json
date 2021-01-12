@@ -17,9 +17,6 @@
       "args": [
         "--dart-define=release=alpha"
       ],
-      "env": {
-        "APPCENTER_KEYSTORE_PATH": "/Users/tobiasjunsten/tmp/"
-      },
     },
     {
       "name": "Profile Seagull",
