@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/ui/components/buttons/ok_cancel_buttons.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -9,7 +10,9 @@ class AbiliaTextInput extends StatelessWidget {
   final bool errorState;
   final TextInputType keyboardType;
   final Key formKey;
+  final IconData icon;
   final String heading;
+  final String inputHeading;
   final TextCapitalization textCapitalization;
   final List<TextInputFormatter> inputFormatters;
   final int maxLines;
@@ -17,30 +20,33 @@ class AbiliaTextInput extends StatelessWidget {
   const AbiliaTextInput({
     Key key,
     this.formKey,
+    @required this.icon,
     @required this.heading,
+    @required this.inputHeading,
     @required this.controller,
     this.keyboardType,
     this.textCapitalization = TextCapitalization.none,
     this.inputFormatters = const <TextInputFormatter>[],
     this.errorState = false,
     this.maxLines = 1,
-  })  : assert(heading != null),
+  })  : assert(icon != null),
+        assert(heading != null),
+        assert(inputHeading != null),
         assert(controller != null),
         super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        if (heading != null) SubHeading(heading),
+        SubHeading(heading),
         Tts(
           data: controller.text.isNotEmpty ? controller.text : heading,
           child: GestureDetector(
-            onTap: () => showViewDialog(
-              context: context,
-              builder: buildViewDialog,
-              wrapWithAuthProviders: false,
+            onTap: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: buildViewDialog)
             ),
             child: Container(
               color: Colors.transparent,
@@ -71,34 +77,71 @@ class AbiliaTextInput extends StatelessWidget {
     );
   }
 
-  ViewDialog buildViewDialog(BuildContext context) {
+  Widget buildViewDialog(BuildContext context) {
     final theme = Theme.of(context);
     final onBuildValue = controller.value;
-    return ViewDialog(
-      onOk: Navigator.of(context).maybePop,
-      onCancle: () {
-        controller.value = onBuildValue;
-        Navigator.of(context).maybePop();
-      },
-      child: Tts.fromSemantics(
+    return Scaffold(
+      appBar: AbiliaAppBar(
+          title: inputHeading,
+          icon: icon,
+          closeButton: false,
+      ),
+      bottomSheet: BottomSheet(
+          builder: (ctx) {
+            return Container(
+              color: AbiliaColors.black80,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: CancelButton(
+                        onPressed: () {
+                          controller.value = onBuildValue;
+                          Navigator.of(context).maybePop();
+                        }
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Expanded(
+                      child: OkButton(
+                        onPressed: Navigator.of(context).maybePop
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        onClosing: () {
+          controller.value = onBuildValue;
+          Navigator.of(context).maybePop();
+        }
+      ),
+      body: Tts.fromSemantics(
         SemanticsProperties(label: heading),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            if (heading != null) SubHeading(heading),
-            TextField(
-              key: TestKey.input,
-              controller: controller,
-              keyboardType: keyboardType,
-              inputFormatters: inputFormatters,
-              textCapitalization: textCapitalization,
-              style: theme.textTheme.bodyText1,
-              autofocus: true,
-              onEditingComplete: Navigator.of(context).maybePop,
-              maxLines: maxLines,
-              minLines: 1,
-            ),
-          ],
+        child: Padding(padding: EdgeInsets.fromLTRB(12, 24, 16, 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SubHeading(heading),
+              TextField(
+                key: TestKey.input,
+                controller: controller,
+                keyboardType: keyboardType,
+                inputFormatters: inputFormatters,
+                textCapitalization: textCapitalization,
+                style: theme.textTheme.bodyText1,
+                autofocus: true,
+                onEditingComplete: Navigator.of(context).maybePop,
+                maxLines: maxLines,
+                minLines: 1,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -185,47 +228,84 @@ class PasswordInput extends StatelessWidget {
     final theme = Theme.of(context);
     final onBuildValue = controller.value;
     final heading = Translator.of(context).translate.password;
-    return ViewDialog(
-      onOk: Navigator.of(context).maybePop,
-      onCancle: () {
-        controller.value = onBuildValue;
-        Navigator.of(context).maybePop();
-      },
-      child: Tts.fromSemantics(
+    return Scaffold(
+      appBar: AbiliaAppBar(
+        title: heading,
+        icon: AbiliaIcons.lock,
+        closeButton: false,
+      ),
+      bottomSheet: BottomSheet(
+          builder: (ctx) {
+            return Container(
+              color: AbiliaColors.black80,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: CancelButton(
+                          onPressed: () {
+                            controller.value = onBuildValue;
+                            Navigator.of(context).maybePop();
+                          }
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Expanded(
+                      child: OkButton(
+                          onPressed: Navigator.of(context).maybePop
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+          onClosing: () {
+            controller.value = onBuildValue;
+            Navigator.of(context).maybePop();
+          }
+      ),
+      body: Tts.fromSemantics(
         SemanticsProperties(
           label: heading,
           value: controller.value.text,
           textField: true,
           obscured: true,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SubHeading(Translator.of(context).translate.password),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                BlocBuilder<LoginFormBloc, LoginFormState>(
-                  cubit: loginFormBloc,
-                  builder: (context, state) => Expanded(
-                    child: TextFormField(
-                      key: TestKey.input,
-                      controller: controller,
-                      obscureText: state.hidePassword,
-                      keyboardType: TextInputType.visiblePassword,
-                      style: theme.textTheme.bodyText1,
-                      autofocus: true,
-                      onEditingComplete: Navigator.of(context).maybePop,
+        child: Padding(padding: EdgeInsets.fromLTRB(12, 24, 16, 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SubHeading(Translator.of(context).translate.password),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  BlocBuilder<LoginFormBloc, LoginFormState>(
+                    cubit: loginFormBloc,
+                    builder: (context, state) => Expanded(
+                      child: TextFormField(
+                        key: TestKey.input,
+                        controller: controller,
+                        obscureText: state.hidePassword,
+                        keyboardType: TextInputType.visiblePassword,
+                        style: theme.textTheme.bodyText1,
+                        autofocus: true,
+                        onEditingComplete: Navigator.of(context).maybePop,
+                      ),
                     ),
                   ),
-                ),
-                HidePasswordButton(
-                  key: TestKey.hidePassword,
-                  loginFormBloc: loginFormBloc,
-                )
-              ],
-            ),
-          ],
+                  HidePasswordButton(
+                    key: TestKey.hidePassword,
+                    loginFormBloc: loginFormBloc,
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -268,5 +348,40 @@ class HidePasswordButton extends StatelessWidget {
 
   void _onHidePasswordChanged() {
     loginFormBloc.add(HidePasswordToggle());
+  }
+}
+
+class NewAbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final IconData iconData;
+
+  const NewAbiliaAppBar({
+    Key key,
+    @required this.title,
+    @required this.iconData,
+  }) : super(key: key);
+
+  @override
+  Size get preferredSize => const Size.fromHeight(68.0);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Theme(
+        data: lightButtonTheme,
+        child: Container(
+          decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
+          child: SafeArea(
+            child: Center(
+              child: AppBarHeading(
+                text: title,
+                iconData: iconData,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

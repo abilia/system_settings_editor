@@ -18,7 +18,9 @@ class Locales {
 }
 
 abstract class Translated {
-  final String userName = 'Username or email';
+  final String userNameTitle = 'Username or email';
+
+  final String userName = 'Username';
 
   final String password = 'Password';
 
@@ -138,6 +140,8 @@ abstract class Translated {
       'All checklist tasks in your activity are completed. Do you want to complete the activity?';
 
   final String menu = 'Menu';
+
+  final String ok = 'OK';
 
   final String cancel = 'Cancel';
 
@@ -373,7 +377,10 @@ class EN extends Translated {}
 
 class SV extends Translated {
   @override
-  final String userName = 'Användarnamn eller e-post';
+  final String userNameTitle = 'Användarnamn eller e-post';
+
+  @override
+  final String userName = 'Användarnamn';
 
   @override
   final String password = 'Lösenord';
@@ -896,7 +903,10 @@ class SV extends Translated {
 
 class DA extends Translated {
   @override
-  final String userName = 'Brugernavn eller e-mail';
+  final String userNameTitle = 'Brugernavn eller e-mail';
+
+  @override
+  final String userName = 'Brugernavn';
 
   @override
   final String password = 'Adgangskode';
@@ -1419,7 +1429,10 @@ class DA extends Translated {
 
 class NL extends Translated {
   @override
-  final String userName = 'Gebruikersnaam of e-mail';
+  final String userNameTitle = 'Gebruikersnaam of e-mail';
+
+  @override
+  final String userName = 'Gebruikersnaam';
 
   @override
   final String password = 'Wachtwoord';
@@ -1939,7 +1952,10 @@ class NL extends Translated {
 
 class FI extends Translated {
   @override
-  final String userName = 'Käyttäjätunnus tai sähköpostiosoite';
+  final String userNameTitle = 'Käyttäjätunnus tai sähköpostiosoite';
+
+  @override
+  final String userName = 'Käyttäjätunnus';
 
   @override
   final String password = 'Salasana';
@@ -2459,7 +2475,10 @@ class FI extends Translated {
 
 class DE extends Translated {
   @override
-  final String userName = 'Benutzername oder E-Mail';
+  final String userNameTitle = 'Benutzername oder E-Mail';
+
+  @override
+  final String userName = 'Benutzername';
 
   @override
   final String password = 'Passwort';
@@ -2982,7 +3001,10 @@ class DE extends Translated {
 
 class NB extends Translated {
   @override
-  final String userName = 'Brukernavn eller e-post';
+  final String userNameTitle = 'Brukernavn eller e-post';
+
+  @override
+  final String userName = 'Brukernavn';
 
   @override
   final String password = 'Passord';

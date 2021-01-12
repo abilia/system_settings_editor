@@ -144,9 +144,9 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
-      expect(find.byType(AvailibleForWidget), findsNothing);
+      expect(find.byType(AvailableForWidget), findsNothing);
       await tester.scrollDown();
-      expect(find.byType(AvailibleForWidget), findsOneWidget);
+      expect(find.byType(AvailableForWidget), findsOneWidget);
     });
 
     testWidgets('Can enter text', (WidgetTester tester) async {

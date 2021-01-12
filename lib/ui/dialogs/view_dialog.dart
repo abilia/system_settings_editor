@@ -92,7 +92,7 @@ class ViewDialog extends StatelessWidget {
   final Widget child;
   final Color backgroundColor;
   final GestureTapCallback onOk;
-  final GestureTapCallback onCancle;
+  final GestureTapCallback onCancel;
 
   static const double verticalPadding = 24.0,
       leftPadding = 12.0,
@@ -109,7 +109,7 @@ class ViewDialog extends StatelessWidget {
     @required this.child,
     this.heading,
     this.onOk,
-    this.onCancle,
+    this.onCancel,
     this.deleteButton,
     this.backButton,
     this.expanded = true,
@@ -137,7 +137,7 @@ class ViewDialog extends StatelessWidget {
             _TopFloatingButtons(
               deleteButton: deleteButton,
               onOk: onOk,
-              onCancle: onCancle,
+              onCancel: onCancel,
             ),
             if (preview != null) preview,
             Flexible(
@@ -201,12 +201,12 @@ class _TopFloatingButtons extends StatelessWidget {
     Key key,
     @required this.deleteButton,
     @required this.onOk,
-    this.onCancle,
+    this.onCancel,
   }) : super(key: key);
 
   final Widget deleteButton;
   final GestureTapCallback onOk;
-  final GestureTapCallback onCancle;
+  final GestureTapCallback onCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +236,7 @@ class _TopFloatingButtons extends StatelessWidget {
             child: RoundFloatingButton(
               AbiliaIcons.close_program,
               key: TestKey.closeDialog,
-              onTap: onCancle ?? Navigator.of(context).maybePop,
+              onTap: onCancel ?? Navigator.of(context).maybePop,
             ),
           ),
         ],
