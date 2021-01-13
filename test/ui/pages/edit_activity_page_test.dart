@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mockito/mockito.dart';
 
@@ -43,6 +44,8 @@ void main() {
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
   });
+
+  tearDown(GetIt.I.reset);
 
   Widget wrapWithMaterialApp(Widget widget,
       {Activity givenActivity, bool use24H = false, bool newActivity = false}) {

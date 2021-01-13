@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -66,9 +67,10 @@ void main() {
       ..init();
   });
 
-  tearDown(() {
+  tearDown(() async {
     activityResponse = () => [];
     genericResponse = () => [];
+    await GetIt.I.reset();
   });
 
   testWidgets('Application starts', (WidgetTester tester) async {

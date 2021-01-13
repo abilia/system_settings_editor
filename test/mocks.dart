@@ -181,7 +181,7 @@ class MockAlarmNavigator extends Mock implements AlarmNavigator {}
 
 class MockBloc<E, S> extends Mock {
   @override
-  dynamic noSuchMethod(Invocation invocation) {
+  dynamic noSuchMethod(Invocation invocation, [Object returnValue]) {
     final memberName = invocation.memberName.toString().split('"')[1];
     final result = super.noSuchMethod(invocation);
     return (memberName == 'skip' && result == null)

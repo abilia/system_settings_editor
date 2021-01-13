@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:seagull/background/all.dart';
@@ -74,7 +75,9 @@ void main() {
       ..genericDb = MockGenericDb()
       ..init();
   });
-  tearDown(() {
+
+  tearDown(() async {
+    await GetIt.I.reset();
     notificationsPluginInstance = null;
   });
 
@@ -575,6 +578,7 @@ void main() {
         when(mockAlarmNavigator.alarmRouteObserver)
             .thenReturn(alarmNavigator.alarmRouteObserver);
 
+        await GetIt.I.reset();
         getItInitializer
           ..alarmNavigator = mockAlarmNavigator
           ..init();

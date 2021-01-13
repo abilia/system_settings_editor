@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -84,6 +85,8 @@ void main() {
       ..flutterTts = MockFlutterTts()
       ..init();
   });
+
+  tearDown(GetIt.I.reset);
 
   Future<void> navigateToActivityPage(WidgetTester tester) async {
     await tester.pumpWidget(App());

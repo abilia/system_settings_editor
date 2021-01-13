@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -120,6 +121,9 @@ void main() {
       ..flutterTts = MockFlutterTts()
       ..init();
   });
+
+  tearDown(GetIt.I.reset);
+
   group('calendar page', () {
     testWidgets('New activity', (WidgetTester tester) async {
       await tester.pumpWidget(App());

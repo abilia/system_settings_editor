@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -90,6 +91,9 @@ void main() {
     when(memoplannerSettingsBlocMock.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
   });
+
+  tearDown(GetIt.I.reset);
+
   testWidgets('All DayList shows', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(AllDayList()));
     await tester.pumpAndSettle();
