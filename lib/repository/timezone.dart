@@ -5,10 +5,11 @@ import 'package:timezone/timezone.dart';
 
 export 'package:timezone/timezone.dart' show Location, TZDateTime, local;
 
-Future<void> configureLocalTimeZone() async {
+Future<void> configureLocalTimeZone({Logger log}) async {
   initializeTimeZones();
   final currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
-  setLocalLocation(getLocation(currentTimeZone));
+  final location = tryGetLocation(currentTimeZone, log: log);
+  setLocalLocation(location);
 }
 
 Location tryGetLocation(String timezone, {Logger log}) {

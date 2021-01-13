@@ -57,7 +57,7 @@ Future<String> initServices() async {
     await seagullLogger.initAnalytics();
   }
   _log.fine('Initializing services');
-  await configureLocalTimeZone();
+  await configureLocalTimeZone(log: _log);
   final currentLocale = await Devicelocale.currentLocale;
   final settingsDb = SettingsDb(preferences);
   await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
