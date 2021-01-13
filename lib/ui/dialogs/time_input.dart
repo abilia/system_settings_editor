@@ -146,6 +146,7 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
                       editingController: startTimeController,
                       editFocus: startTimeFocus,
                       twelveHourClock: twelveHourClock,
+                      onDone: save,
                       onTimeChanged: (value) {
                         if (value.length == 4) {
                           endTimeFocus.requestFocus();
@@ -202,6 +203,7 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
                         editingController: endTimeController,
                         editFocus: endTimeFocus,
                         twelveHourClock: twelveHourClock,
+                        onDone: save,
                       ),
                       if (!widget.is24HoursFormat)
                         Padding(
@@ -236,6 +238,7 @@ class _TimeInputStack extends StatefulWidget {
   final TextEditingController editingController;
   final FocusNode editFocus;
   final ValueChanged<String> onTimeChanged;
+  final VoidCallback onDone;
   final bool twelveHourClock;
   final Key inputKey;
 
@@ -244,6 +247,7 @@ class _TimeInputStack extends StatefulWidget {
     @required this.editingController,
     @required this.editFocus,
     @required this.twelveHourClock,
+    @required this.onDone,
     this.onTimeChanged,
   });
   @override
@@ -291,8 +295,12 @@ class _TimeInputStackState extends State<_TimeInputStack> {
                 widget.onTimeChanged(value);
               }
             },
+            onSubmitted: (v) => widget.onDone(),
+            textInputAction: TextInputAction.done,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
+              DeleteInputFormatter(),
+              LeadingZeroInputFormatter(widget.twelveHourClock),
               LengthLimitingTextInputFormatter(4),
               TimeInputFormatter(widget.twelveHourClock),
             ],
@@ -342,6 +350,41 @@ class _TimeInputStackState extends State<_TimeInputStack> {
           input.substring(2);
     } else {
       return emptyPattern;
+    }
+  }
+}
+
+class DeleteInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (oldValue.text.length == 4 && newValue.text.isEmpty) {
+      return TextEditingValue(
+        text: oldValue.text.substring(0, 3),
+        selection: TextSelection.collapsed(offset: 3),
+      );
+    } else {
+      return newValue;
+    }
+  }
+}
+
+class LeadingZeroInputFormatter extends TextInputFormatter {
+  final bool twelveHourClock;
+
+  LeadingZeroInputFormatter(this.twelveHourClock);
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final intVal = int.tryParse(newValue.text);
+    if (newValue.text.length == 1 && intVal > (twelveHourClock ? 1 : 2)) {
+      return TextEditingValue(
+        text: pad0(newValue.text),
+        selection: TextSelection.collapsed(offset: 2),
+      );
+    } else {
+      return newValue;
     }
   }
 }

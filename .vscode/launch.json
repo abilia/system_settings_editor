@@ -16,7 +16,7 @@
       "type": "dart",
       "args": [
         "--dart-define=release=alpha"
-      ]
+      ],
     },
     {
       "name": "Profile Seagull",

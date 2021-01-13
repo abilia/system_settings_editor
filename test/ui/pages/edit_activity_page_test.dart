@@ -1568,6 +1568,77 @@ text''';
       // Assert -- time is now 00:01
       expect(find.text('00:01 - 13:44'), findsNothing);
     });
+
+    testWidgets('Leading 0 for hour not necessary when entering time',
+        (WidgetTester tester) async {
+      final acivity = Activity.createNew(
+        title: '',
+        startTime: DateTime(2020, 2, 20, 10, 00),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          givenActivity: acivity,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+
+      await tester.enterText(startTimeInputFinder, '9');
+      await tester.pumpAndSettle();
+      expect(find.text('09:--'), findsOneWidget);
+    });
+
+    testWidgets('Keyboard done saves time', (WidgetTester tester) async {
+      final acivity = Activity.createNew(
+        title: '',
+        startTime: DateTime(2020, 2, 20, 10, 00),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          givenActivity: acivity,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+
+      await tester.enterText(startTimeInputFinder, '1033');
+      await tester.enterText(endTimeInputFinder, '1111');
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+
+      await tester.pumpAndSettle();
+      expect(startTimeInputFinder, findsNothing);
+      expect(find.text('10:33 AM - 11:11 PM'), findsOneWidget);
+    });
+
+    testWidgets('Delete key just deletes last digit',
+        (WidgetTester tester) async {
+      final acivity = Activity.createNew(
+        title: '',
+        startTime: DateTime(2020, 2, 20, 10, 00),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          givenActivity: acivity,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+
+      await tester.enterText(startTimeInputFinder, '1033');
+      await tester.enterText(endTimeInputFinder, '1111');
+
+      await tester.tap(startTimeInputFinder);
+      await tester.pumpAndSettle();
+      await tester.sendKeyEvent(LogicalKeyboardKey.delete);
+      await tester.pumpAndSettle();
+      expect(find.text('10:3-'), findsOneWidget);
+    });
   });
 
   group('Recurrence', () {
