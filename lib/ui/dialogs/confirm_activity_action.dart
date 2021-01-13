@@ -33,7 +33,9 @@ class ConfirmActivityActionDialog extends StatelessWidget {
               padding: const EdgeInsets.only(top: 16),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Tts(child: Text(extraMessage)),
+                child: Tts(
+                  child: Text(extraMessage),
+                ),
               ),
             ),
         ],
@@ -61,33 +63,29 @@ class CheckActivityConfirmDialog extends StatelessWidget {
         (signedOff
             ? translate.unCheckActivityQuestion
             : translate.checkActivityQuestion);
-    final text = signedOff ? translate.uncheck : translate.check;
-
-    return YesNoDialog(
-      onNoPressed: () => Navigator.of(context).maybePop(false),
-      onYesPressed: () => Navigator.of(context).maybePop(true),
-      heading: IconTheme(
-        data: Theme.of(context).iconTheme.copyWith(
-              color: AbiliaColors.white,
-            ),
-        child: DefaultTextStyle(
-            style: abiliaTextTheme.headline5.copyWith(
-              color: AbiliaColors.white,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(signedOff
-                    ? AbiliaIcons.handi_uncheck
-                    : AbiliaIcons.handi_check),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(text),
-              ],
-            )),
+    return SmallDialog(
+      heading: AppBarHeading(
+        text: signedOff ? translate.uncheck : translate.check,
+        iconData: signedOff ? AbiliaIcons.handi_uncheck : AbiliaIcons.handi_check,
       ),
-      bodyText: bodyText,
+      body: Tts(
+        child: Text(
+          bodyText,
+          style: abiliaTextTheme.bodyText1,
+        ),
+      ),
+      backNavigationWidget: GreyButton(
+        key: TestKey.noButton,
+        text: Translator.of(context).translate.no,
+        icon: AbiliaIcons.close_program,
+        onPressed: () => Navigator.of(context).maybePop(false),
+      ),
+      forwardNavigationWidget: GreenButton(
+        key: TestKey.yesButton,
+        text: Translator.of(context).translate.yes,
+        icon: AbiliaIcons.ok,
+        onPressed: () => Navigator.of(context).maybePop(true),
+      ),
     );
   }
 }

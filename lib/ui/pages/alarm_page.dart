@@ -184,12 +184,10 @@ class ReminderBottomAppBar extends StatelessWidget with Checker {
     final translate = Translator.of(context).translate;
     final displayCheckButton =
         activityOccasion.activity.checkable && !activityOccasion.isSignedOff;
-    final closeButton = IconAndTextButton(
-      minWidth: 172.0,
+    final closeButton = GreyButton(
       text: translate.close,
       icon: AbiliaIcons.close_program,
       onPressed: () => _pop(context),
-      theme: greyButtonTheme,
     );
     return Theme(
       data: bottomNavigationBarTheme,

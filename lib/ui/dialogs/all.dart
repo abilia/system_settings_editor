@@ -16,4 +16,4 @@ export 'warning.dart';
 export 'confirm_activity_action.dart';
 export 'create_activity_dialog.dart';
 export 'permission/all.dart';
-export 'yes_no_dialog.dart';
+export 'small_dialog.dart';

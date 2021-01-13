@@ -6,7 +6,6 @@ class IconAndTextButton extends StatelessWidget {
   final IconData icon;
   final ThemeData theme;
   final VoidCallback onPressed;
-  final double minWidth;
 
   const IconAndTextButton({
     Key key,
@@ -14,7 +13,6 @@ class IconAndTextButton extends StatelessWidget {
     @required this.icon,
     @required this.theme,
     @required this.onPressed,
-    this.minWidth,
   }) : super(key: key);
 
   @override
@@ -22,7 +20,7 @@ class IconAndTextButton extends StatelessWidget {
     return Tts(
       data: text,
       child: FlatButton.icon(
-        minWidth: minWidth,
+        minWidth: 172.0,
         height: 64,
         icon: IconTheme(
           data: theme.iconTheme,
@@ -37,4 +35,46 @@ class IconAndTextButton extends StatelessWidget {
       ),
     );
   }
+}
+
+class GreyButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+  final IconData icon;
+
+  const GreyButton({
+    Key key,
+    @required this.text,
+    @required this.icon,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => IconAndTextButton(
+        text: text,
+        icon: icon,
+        onPressed: onPressed,
+        theme: greyButtonTheme,
+      );
+}
+
+class GreenButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+  final IconData icon;
+
+  const GreenButton({
+    Key key,
+    @required this.text,
+    @required this.icon,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => IconAndTextButton(
+        text: text,
+        icon: icon,
+        onPressed: onPressed,
+        theme: greenButtonTheme,
+      );
 }
