@@ -145,6 +145,8 @@ abstract class Translated {
 
   final String close = 'Close';
 
+  final String back = 'Previous';
+
   final String newActivityChoice = 'New';
 
   final String newActivity = 'New activity';
@@ -180,6 +182,8 @@ abstract class Translated {
   final String setTime = 'Set time';
 
   final String time = 'Time';
+
+  final String error = 'Error';
 
   final String missingTitleOrImageAndStartTime =
       'Your activity should contain an image or name and start time.';
@@ -546,6 +550,9 @@ class SV extends Translated {
   final String close = 'Stäng';
 
   @override
+  final String back = 'Tillbaka';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -598,6 +605,9 @@ class SV extends Translated {
 
   @override
   final String time = 'Tid';
+
+  @override
+  final String error = 'Fel';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -1042,6 +1052,9 @@ class DA extends Translated {
   final String close = 'Tæt';
 
   @override
+  final String back = 'Tilbage';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -1094,6 +1107,9 @@ class DA extends Translated {
 
   @override
   final String time = 'Tid';
+
+  @override
+  final String error = 'Fejl';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -1535,6 +1551,9 @@ class NL extends Translated {
   final String close = 'Dichtbij';
 
   @override
+  final String back = 'Terug';
+
+  @override
   final String newActivityChoice = 'Nieuw';
 
   @override
@@ -1587,6 +1606,9 @@ class NL extends Translated {
 
   @override
   final String time = 'Tijd';
+
+  @override
+  final String error = 'Fout';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -2029,6 +2051,9 @@ class FI extends Translated {
   final String close = 'Kiinni';
 
   @override
+  final String back = 'Takaisin';
+
+  @override
   final String newActivityChoice = 'Uusi';
 
   @override
@@ -2081,6 +2106,9 @@ class FI extends Translated {
 
   @override
   final String time = 'Aika';
+
+  @override
+  final String error = 'Virhe';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -2522,6 +2550,9 @@ class DE extends Translated {
   final String close = 'Schließen';
 
   @override
+  final String back = 'Zurück';
+
+  @override
   final String newActivityChoice = 'Neu';
 
   @override
@@ -2574,6 +2605,9 @@ class DE extends Translated {
 
   @override
   final String time = 'Zeit';
+
+  @override
+  final String error = 'Error';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -3016,6 +3050,9 @@ class NB extends Translated {
   final String close = 'Lukk';
 
   @override
+  final String back = 'Tilbake';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -3068,6 +3105,9 @@ class NB extends Translated {
 
   @override
   final String time = 'Tid';
+
+  @override
+  final String error = 'Feil';
 
   @override
   final String missingTitleOrImageAndStartTime =

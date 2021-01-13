@@ -38,7 +38,12 @@ class SmallDialog extends StatelessWidget {
                     horizontal: 20,
                     vertical: 64,
                   ),
-                  child: Center(child: body),
+                  child: Center(
+                    child: DefaultTextStyle(
+                      style: abiliaTextTheme.bodyText1,
+                      child: body,
+                    ),
+                  ),
                 ),
                 BottomNavigation(
                   backNavigationWidget: backNavigationWidget,
@@ -51,4 +56,24 @@ class SmallDialog extends StatelessWidget {
       ),
     );
   }
+}
+
+class ErrorDialog extends StatelessWidget {
+  final String text;
+
+  const ErrorDialog({Key key, this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => SmallDialog(
+        heading: AppBarHeading(
+          text: Translator.of(context).translate.error,
+          iconData: AbiliaIcons.ir_error,
+        ),
+        body: Tts(child: Text(text)),
+        backNavigationWidget: GreyButton(
+          text: Translator.of(context).translate.back,
+          icon: AbiliaIcons.navigation_previous,
+          onPressed: Navigator.of(context).maybePop,
+        ),
+      );
 }
