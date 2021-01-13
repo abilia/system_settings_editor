@@ -252,18 +252,13 @@ class _FakeTickerState extends State<FakeTicker> {
                         '${minPerMin?.toInt() ?? 1} min/min',
                         TimeInput(time, null),
                         onTap: () async {
-                          final newTime = await showViewDialog<TimeInput>(
+                          final newTime = await showTimePicker(
                             context: context,
-                            builder: (context) => TimeInputDialog(
-                              heading: 'Fake Time',
-                              timeInput: TimeInput(time, null),
-                              is24HoursFormat:
-                                  MediaQuery.of(context).alwaysUse24HourFormat,
-                            ),
+                            initialTime: time,
                           );
                           if (newTime != null) {
                             context.read<ClockBloc>().setFakeTicker(
-                                  initTime: state.withTime(newTime.startTime),
+                                  initTime: state.withTime(newTime),
                                 );
                           }
                         },
