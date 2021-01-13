@@ -136,9 +136,11 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Text(
-                        translate.startTime,
-                        style: abiliaTextTheme.bodyText2,
+                      child: Tts(
+                        child: Text(
+                          translate.startTime,
+                          style: abiliaTextTheme.bodyText2,
+                        ),
                       ),
                     ),
                     _TimeInputStack(
@@ -193,9 +195,11 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(
-                          translate.endTime,
-                          style: abiliaTextTheme.bodyText2,
+                        child: Tts(
+                          child: Text(
+                            translate.endTime,
+                            style: abiliaTextTheme.bodyText2,
+                          ),
                         ),
                       ),
                       _TimeInputStack(
@@ -466,36 +470,75 @@ class AmPmSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Row(
-        children: [
-          _buildPeriodRadioField(
-            key: amRadioFieldKey,
-            text: Translator.of(context).translate.am,
-            period: DayPeriod.am,
+      child: Row(children: [
+        _AmPmButton(
+          buttonKey: amRadioFieldKey,
+          text: Translator.of(context).translate.am,
+          onPressed: () => onChanged(DayPeriod.am),
+          groupValue: groupValue,
+          value: DayPeriod.am,
+          borderRadius: borderRadiusLeft,
+        ),
+        SizedBox(
+          width: 2,
+        ),
+        _AmPmButton(
+          buttonKey: pmRadioFieldKey,
+          text: Translator.of(context).translate.pm,
+          onPressed: () => onChanged(DayPeriod.pm),
+          groupValue: groupValue,
+          value: DayPeriod.pm,
+          borderRadius: borderRadiusRight,
+        ),
+      ]),
+    );
+  }
+}
+
+class _AmPmButton extends StatelessWidget {
+  final DayPeriod value;
+  final DayPeriod groupValue;
+  final String text;
+  final BorderRadius borderRadius;
+  final VoidCallback onPressed;
+  final Key buttonKey;
+
+  const _AmPmButton({
+    @required this.buttonKey,
+    @required this.onPressed,
+    @required this.value,
+    @required this.groupValue,
+    @required this.text,
+    @required this.borderRadius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final width = 59.0;
+    final height = 48.0;
+    final isSelected = value == groupValue;
+    return Tts(
+      data: text,
+      child: FlatButton(
+        key: buttonKey,
+        height: height,
+        minWidth: width,
+        onPressed: onPressed,
+        child: Text(
+          text,
+          style: abiliaTextTheme.subtitle1.copyWith(
+            color: isSelected ? AbiliaColors.white : AbiliaColors.black,
           ),
-          const SizedBox(width: 2),
-          _buildPeriodRadioField(
-            key: pmRadioFieldKey,
-            text: Translator.of(context).translate.pm,
-            period: DayPeriod.pm,
-          ),
-        ],
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius,
+          side: isSelected
+              ? BorderSide.none
+              : BorderSide(color: AbiliaColors.transparentBlack30),
+        ),
+        color:
+            isSelected ? AbiliaColors.green : AbiliaColors.transparentBlack20,
       ),
     );
   }
-
-  RadioField<DayPeriod> _buildPeriodRadioField({
-    Key key,
-    String text,
-    DayPeriod period,
-  }) =>
-      RadioField(
-        key: key,
-        width: 59.0,
-        heigth: 48.0,
-        text: Text(text),
-        value: period,
-        groupValue: groupValue,
-        onChanged: onChanged,
-      );
 }

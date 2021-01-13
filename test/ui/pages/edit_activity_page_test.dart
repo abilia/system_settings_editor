@@ -1280,10 +1280,8 @@ text''';
 
   final startTimeInputFinder = find.byKey(TestKey.startTimeInput);
   final endTimeInputFinder = find.byKey(TestKey.endTimeInput);
-  final startTimePmRadioFinder =
-      find.byKey(ObjectKey(TestKey.startTimePmRadioField));
-  final startTimeAmRadioFinder =
-      find.byKey(ObjectKey(TestKey.startTimeAmRadioField));
+  final startTimePmRadioFinder = find.byKey(TestKey.startTimePmRadioField);
+  final startTimeAmRadioFinder = find.byKey(TestKey.startTimeAmRadioField);
   group('Edit time', () {
     testWidgets('Start time shows start time', (WidgetTester tester) async {
       // Arrange
@@ -1385,14 +1383,6 @@ text''';
 
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-
-      // Assert -- Am is selected
-      final pmRadio = tester.widget<AbiliaRadio>(startTimePmRadioFinder);
-      final amRadio = tester.widget<AbiliaRadio>(startTimeAmRadioFinder);
-      expect(amRadio.groupValue, DayPeriod.am);
-      expect(amRadio.value, DayPeriod.am);
-      expect(pmRadio.groupValue, DayPeriod.am);
-      expect(pmRadio.value, DayPeriod.pm);
 
       // Act -- switch to pm
       await tester.tap(startTimePmRadioFinder);
