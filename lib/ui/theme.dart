@@ -57,6 +57,14 @@ const InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
 
 const Radius radius = Radius.circular(12);
 const BorderRadius borderRadius = BorderRadius.all(radius);
+const BorderRadius borderRadiusRight = BorderRadius.only(
+  topRight: radius,
+  bottomRight: radius,
+);
+const BorderRadius borderRadiusLeft = BorderRadius.only(
+  topLeft: radius,
+  bottomLeft: radius,
+);
 const BorderRadius notUpperLeft = BorderRadius.only(
   topRight: radius,
   bottomRight: radius,
