@@ -36,12 +36,12 @@ class AllDayList extends StatelessWidget {
               ),
               appBar: DayAppBar(
                 day: state.day,
-                leftAction: ActionButton(
-                  child: Icon(
-                    AbiliaIcons.close_program,
-                    size: defaultIconSize,
-                  ),
-                  onPressed: () => Navigator.of(context).maybePop(),
+              ),
+              bottomNavigationBar: BottomNavigation(
+                backNavigationWidget: GreyButton(
+                  icon: AbiliaIcons.close_program,
+                  text: Translator.of(context).translate.close,
+                  onPressed: Navigator.of(context).maybePop,
                 ),
               ),
             ),
