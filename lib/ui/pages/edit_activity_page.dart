@@ -140,14 +140,17 @@ class EditActivityListners extends StatelessWidget {
                 SaveError.START_TIME_BEFORE_NOW,
               }.contains,
             )) {
-              return _mainPageError(errors, context);
+              return await _mainPageError(errors, context);
             } else if (errors.contains(SaveError.NO_RECURRING_DAYS)) {
               _scrollToTab(context, nrTabs - 2);
-              return showErrorViewDialog(
-                  Translator.of(context)
+              return await showViewDialog(
+                context: context,
+                builder: (context) => ErrorDialog(
+                  text: Translator.of(context)
                       .translate
                       .recurringDataEmptyErrorMessage,
-                  context: context);
+                ),
+              );
             } else if (errors.contains(SaveError.STORED_RECURRING)) {
               if (state is StoredActivityState) {
                 final applyTo = await showViewDialog<ApplyTo>(
@@ -186,7 +189,10 @@ class EditActivityListners extends StatelessWidget {
       text = translate.startTimeBeforeNow;
     }
     assert(text.isNotEmpty);
-    return showErrorViewDialog(text, context: context);
+    return showViewDialog(
+      context: context,
+      builder: (context) => ErrorDialog(text: text),
+    );
   }
 
   void _scrollToTab(BuildContext context, int tabIndex) {

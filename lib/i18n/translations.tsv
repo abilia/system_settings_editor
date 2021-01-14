@@ -70,6 +70,7 @@ cancel	Cancel	Avbryt	Annuller	Annuleren	Peruuta	Abbrechen	Avbryt
 yes	Yes	Ja	Ja	Ja	Joo	Ja	Ja
 no	No	Nej	Nej	Nee	Ei	Nein	Nei
 close	Close	Stäng	Tæt	Dichtbij	Kiinni	Schließen	Lukk
+back	Previous	Tillbaka	Tilbage	Terug	Takaisin	Zurück	Tilbake
 							
 ### Edit activity							
 newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
@@ -91,7 +92,8 @@ noImages	You have no images	Du har inga bilder	Du har ingen billeder	Je hebt gee
 setTime	Set time	Välj tid	Vælg tid	Tijd instellen	Aseta aika	Zeit einstellen	Velg tid
 time	Time	Tid	Tid	Tijd	Aika	Zeit	Tid
 							
-### Errors							
+### Errors
+error	Error	Fel	Fejl	Fout	Virhe	Error	Feil
 missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.	Aktiviteten skal have et navn eller et billede og et starttidspunkt.	Je activiteit moet een afbeelding of naam en starttijd bevatten.	Toimintasi tulisi sisältää kuva tai nimi ja aloitusaika.	Ihre Aktivität sollte ein Bild oder einen Namen und eine Startzeit enthalten.	Aktiviteten må ha et navn ellet et bilde og en starttid.
 missingTitleOrImage	An activity needs an image or a name.	En aktivitet måste ha antingen en bild eller ett namn.	En aktivitet skal have enten et billede eller et navn.	Deze activiteit heeft een afbeelding of een naam nodig.	Tämä aktiviteetti tarvitsee kuvan tai nimen.	Diese Aktivität braucht ein Bild oder einen Namen.	En aktivitet må ha enten et bilde eller et navn.
 missingStartTime	You must enter a start time.	Du måste ange en starttid.	Du skal angive en starttid.	U moet een starttijd instellen.	Anna aloitusaika.	Sie müssen eine Startzeit eingeben:	En aktivitet må ha en starttid.

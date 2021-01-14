@@ -1926,7 +1926,7 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert error message
-      expect(find.byType(ErrorMessage), findsOneWidget);
+      expect(find.byType(ErrorDialog), findsOneWidget);
       expect(
           find.text(translate.recurringDataEmptyErrorMessage), findsOneWidget);
 
@@ -2536,8 +2536,10 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert error message
-      await tester.verifyTts(find.byKey(TestKey.errorViewDialog),
-          exact: translate.missingTitleOrImageAndStartTime);
+      await tester.verifyTts(
+        find.text(translate.missingTitleOrImageAndStartTime),
+        exact: translate.missingTitleOrImageAndStartTime,
+      );
     });
 
     group('info items tts', () {
