@@ -89,21 +89,24 @@ class SortableLibrary<T extends SortableData> extends StatelessWidget {
         if (currentFolderContent.isEmpty) {
           return Align(
             alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Tts(
-                child: Text(
-                  archiveState.currentFolderId == null
-                      ? emptyLibraryMessage
-                      : Translator.of(context).translate.emptyFolder,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
+            child: Tts(
+              child: Text(
+                archiveState.currentFolderId == null
+                    ? emptyLibraryMessage
+                    : Translator.of(context).translate.emptyFolder,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
           );
         }
         return GridView.count(
-          padding: EdgeInsets.symmetric(vertical: ViewDialog.verticalPadding),
+          padding: const EdgeInsets.only(
+            top: ViewDialog.verticalPadding,
+            left: ViewDialog.leftPadding,
+            right: ViewDialog.rightPadding,
+          ),
+          mainAxisSpacing: 8.0,
+          crossAxisSpacing: 8.0,
           crossAxisCount: 3,
           childAspectRatio: 0.96,
           children: currentFolderContent
@@ -148,25 +151,23 @@ class LibraryFolder extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
+          borderRadius: borderRadius,
           child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: Column(
               children: <Widget>[
-                SizedBox(height: 4),
                 Text(
                   title,
                   style: abiliaTextTheme.caption,
                   overflow: TextOverflow.ellipsis,
                 ),
+                const SizedBox(height: 2),
                 Stack(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 2.0),
-                      child: Icon(
-                        AbiliaIcons.folder,
-                        size: 86,
-                        color: AbiliaColors.orange,
-                      ),
+                    const Icon(
+                      AbiliaIcons.folder,
+                      size: 86,
+                      color: AbiliaColors.orange,
                     ),
                     Positioned(
                       bottom: 16,

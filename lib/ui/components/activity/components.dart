@@ -216,28 +216,53 @@ class RadioField<T> extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(
-                top: -6,
-                right: -6,
-                child: Container(
-                  padding: const EdgeInsets.all(4.0),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    shape: BoxShape.circle,
-                  ),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: AbiliaRadio(
-                      key: ObjectKey(key),
-                      value: value,
-                      groupValue: groupValue,
-                      onChanged: onChanged,
-                    ),
-                  ),
-                ),
+              PositionedRadio<T>(
+                value: value,
+                groupValue: groupValue,
+                onChanged: onChanged,
+                radioKey: ObjectKey(key),
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PositionedRadio<T> extends StatelessWidget {
+  const PositionedRadio({
+    Key key,
+    @required this.value,
+    @required this.groupValue,
+    @required this.onChanged,
+    this.radioKey,
+  }) : super(key: key);
+
+  final T value;
+  final T groupValue;
+  final ValueChanged<T> onChanged;
+  final Key radioKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: -6,
+      right: -6,
+      child: Container(
+        padding: const EdgeInsets.all(4.0),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          shape: BoxShape.circle,
+        ),
+        child: SizedBox(
+          width: 24,
+          height: 24,
+          child: AbiliaRadio(
+            key: radioKey,
+            value: value,
+            groupValue: groupValue,
+            onChanged: onChanged,
           ),
         ),
       ),

@@ -78,3 +78,36 @@ class GreenButton extends StatelessWidget {
         theme: greenButtonTheme,
       );
 }
+
+class NextButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const NextButton({Key key, this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Tts(
+        data: Translator.of(context).translate.next,
+        child: FlatButton(
+          minWidth: 172.0,
+          height: 64,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Spacer(flex: 63),
+              Text(
+                Translator.of(context).translate.next,
+                style: greenButtonTheme.textTheme.button,
+              ),
+              IconTheme(
+                data: greenButtonTheme.iconTheme,
+                child: Icon(AbiliaIcons.navigation_next),
+              ),
+              const Spacer(flex: 47),
+            ],
+          ),
+          color: greenButtonTheme.buttonColor,
+          disabledColor: greenButtonTheme.disabledColor,
+          onPressed: onPressed,
+        ),
+      );
+}

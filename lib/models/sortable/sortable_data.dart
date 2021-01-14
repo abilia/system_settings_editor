@@ -309,6 +309,15 @@ class BasicActivityDataFolder extends BasicActivityData {
     );
   }
 
+  @visibleForTesting
+  factory BasicActivityDataFolder.createNew(
+          {String name, String icon, String fileId}) =>
+      BasicActivityDataFolder._(
+        name: name ?? '',
+        icon: icon ?? '',
+        fileId: fileId ?? '',
+      );
+
   @override
   String folderFileId() => fileId;
 

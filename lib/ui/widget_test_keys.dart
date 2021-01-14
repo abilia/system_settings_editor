@@ -67,8 +67,8 @@ class TestKey {
       checkDialogCancelButton = Key('checkDialogCancelButton'),
       cameraPickField = Key('cameraPickField'),
       photosPickField = Key('photosPickField'),
-      newActivityButton = Key('newActivityButton'),
-      selectBasicActivityButton = Key('selectBasicActivityButton'),
+      newActivityChoice = Key('newActivityChoice'),
+      basicActivityChoice = Key('basicActivityChoice'),
       noButton = Key('noButton'),
       yesButton = Key('yesButton');
 }
