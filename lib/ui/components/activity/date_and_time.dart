@@ -180,7 +180,6 @@ class TimeIntervallPicker extends StatelessWidget {
                   builder: (context) => TimeInputDialog(
                     timeInput: TimeInput(timeInterval.startTime,
                         timeInterval.sameTime ? null : timeInterval.endTime),
-                    heading: translator.setTime,
                     is24HoursFormat:
                         MediaQuery.of(context).alwaysUse24HourFormat,
                   ),

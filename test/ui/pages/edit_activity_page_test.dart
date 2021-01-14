@@ -1280,8 +1280,10 @@ text''';
 
   final startTimeInputFinder = find.byKey(TestKey.startTimeInput);
   final endTimeInputFinder = find.byKey(TestKey.endTimeInput);
+
   final startTimePmRadioFinder = find.byKey(TestKey.startTimePmRadioField);
   final startTimeAmRadioFinder = find.byKey(TestKey.startTimeAmRadioField);
+  final endTimeAmRadioFinder = find.byKey(TestKey.endTimeAmRadioField);
   group('Edit time', () {
     testWidgets('Start time shows start time', (WidgetTester tester) async {
       // Arrange
@@ -2256,6 +2258,104 @@ text''';
         timeFieldFinder,
         exact: '9:33 AM',
       );
+    });
+    group('time input tts', () {
+      testWidgets('start/endtime 12h', (WidgetTester tester) async {
+        // Arrange
+        final acivity = Activity.createNew(
+            title: '',
+            startTime: DateTime(2000, 11, 22, 11, 55),
+            duration: 3.hours());
+
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            EditActivityPage(day: today),
+            givenActivity: acivity,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Act -- remove end time
+        await tester.tap(timeFieldFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        await tester.verifyTts(endTimeInputFinder,
+            exact: '${translate.endTime} 02:55 PM');
+        await tester.verifyTts(startTimeInputFinder,
+            exact: '${translate.startTime} 11:55 AM');
+
+        // Act change to period
+        await tester.tap(startTimePmRadioFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(endTimeAmRadioFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        await tester.verifyTts(endTimeInputFinder,
+            exact: '${translate.endTime} 02:55 AM');
+        await tester.verifyTts(startTimeInputFinder,
+            exact: '${translate.startTime} 11:55 PM');
+      });
+
+      testWidgets('start/endtime 24h', (WidgetTester tester) async {
+        // Arrange
+        Intl.defaultLocale = 'sv_SE';
+        addTearDown(() => Intl.defaultLocale = null);
+        final acivity = Activity.createNew(
+            title: '',
+            startTime: DateTime(2000, 11, 22, 11, 55),
+            duration: 3.hours());
+
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            EditActivityPage(day: today),
+            givenActivity: acivity,
+            use24H: true,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Act -- remove end time
+        await tester.tap(timeFieldFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        await tester.verifyTts(startTimeInputFinder,
+            exact: '${translate.startTime} 11:55');
+        await tester.verifyTts(endTimeInputFinder,
+            exact: '${translate.endTime} 14:55');
+      });
+
+      testWidgets('invalid input tts', (WidgetTester tester) async {
+        // Arrange
+        final acivity = Activity.createNew(
+            title: '', startTime: DateTime(2000, 11, 22, 3, 44));
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            EditActivityPage(day: today),
+            givenActivity: acivity,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Act -- remove values
+        await tester.tap(timeFieldFinder);
+        await tester.pumpAndSettle();
+
+        await tester.enterText(startTimeInputFinder, '1');
+        await tester.pumpAndSettle();
+
+        // Assert
+        await tester.verifyTts(
+          startTimeInputFinder,
+          exact: translate.startTime,
+        );
+        await tester.verifyTts(
+          endTimeInputFinder,
+          exact: translate.endTime,
+        );
+      });
     });
 
     testWidgets('fullday', (WidgetTester tester) async {
