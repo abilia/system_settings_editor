@@ -16,6 +16,8 @@ export 'arrows.dart';
 export 'abilia_text_input.dart';
 export 'form/all.dart';
 export 'tts.dart';
+export 'appbar_heading.dart';
+export 'bottom_navigation.dart';
 export 'buttons/all.dart';
 
 export 'package:flutter/semantics.dart';

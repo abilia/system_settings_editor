@@ -29,7 +29,10 @@ class AuthenticationBloc
       await Future.delayed(const Duration(milliseconds: 50));
       yield state._forceNew();
     } else if (event is ChangeRepository) {
-      yield Unauthenticated(event.repository);
+      yield Unauthenticated(
+        event.repository,
+        forcedNewState: state.forcedNewState,
+      );
     } else if (event is CheckAuthentication) {
       final token = state.userRepository.getToken();
       if (token != null) {
