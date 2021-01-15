@@ -74,41 +74,35 @@ class _EditNoteDialogState extends State<EditNoteDialog> {
             padding: EditNoteDialog.padding,
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
           );
-          return Stack(
-            children: <Widget>[
-              CupertinoScrollbar(
-                isAlwaysShown: true,
-                controller: _scrollController,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  reverse: true,
-                  padding: EditNoteDialog.padding,
-                  child: Stack(
-                    children: <Widget>[
-                      Lines(
-                        lineHeight: textRenderSize.scaledLineHeight,
-                        numberOfLines: textRenderSize.numberOfLines,
-                      ),
-                      ConstrainedBox(
-                        constraints: constraints.copyWith(
-                            maxHeight: textRenderSize.scaledTextHeight),
-                        child: TextField(
-                          key: TestKey.input,
-                          style: abiliaTextTheme.bodyText1,
-                          controller: _textEditingController,
-                          autofocus: true,
-                          maxLines: null,
-                          expands: true,
-                          scrollPhysics: NeverScrollableScrollPhysics(),
-                        ),
-                      ),
-                    ],
+          return VerticalScrollArrows(
+            controller: _scrollController,
+            scrollbarAlwaysShown: true,
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              reverse: true,
+              padding: EditNoteDialog.padding,
+              child: Stack(
+                children: <Widget>[
+                  Lines(
+                    lineHeight: textRenderSize.scaledLineHeight,
+                    numberOfLines: textRenderSize.numberOfLines,
                   ),
-                ),
+                  ConstrainedBox(
+                    constraints: constraints.copyWith(
+                        maxHeight: textRenderSize.scaledTextHeight),
+                    child: TextField(
+                      key: TestKey.input,
+                      style: abiliaTextTheme.bodyText1,
+                      controller: _textEditingController,
+                      autofocus: true,
+                      maxLines: null,
+                      expands: true,
+                      scrollPhysics: NeverScrollableScrollPhysics(),
+                    ),
+                  ),
+                ],
               ),
-              ArrowUp(controller: _scrollController),
-              ArrowDown(controller: _scrollController),
-            ],
+            ),
           );
         }),
       ),

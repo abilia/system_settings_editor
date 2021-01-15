@@ -1,7 +1,35 @@
+import 'package:flutter/cupertino.dart';
 import 'package:vector_math/vector_math_64.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:seagull/ui/all.dart';
+
+class VerticalScrollArrows extends StatelessWidget {
+  final ScrollController controller;
+  final Widget child;
+  final bool scrollbarAlwaysShown;
+
+  const VerticalScrollArrows({
+    Key key,
+    @required this.controller,
+    @required this.child,
+    this.scrollbarAlwaysShown = false,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        CupertinoScrollbar(
+          isAlwaysShown: scrollbarAlwaysShown,
+          controller: controller,
+          child: child,
+        ),
+        ArrowUp(controller: controller),
+        ArrowDown(controller: controller),
+      ],
+    );
+  }
+}
 
 class ArrowLeft extends StatelessWidget {
   final ScrollController controller;

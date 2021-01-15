@@ -185,6 +185,8 @@ abstract class Translated {
 
   final String time = 'Time';
 
+  final String save = 'Save';
+
   final String error = 'Error';
 
   final String missingTitleOrImageAndStartTime =
@@ -610,6 +612,9 @@ class SV extends Translated {
 
   @override
   final String time = 'Tid';
+
+  @override
+  final String save = 'Spara';
 
   @override
   final String error = 'Fel';
@@ -1117,6 +1122,9 @@ class DA extends Translated {
   final String time = 'Tid';
 
   @override
+  final String save = 'Spare';
+
+  @override
   final String error = 'Fejl';
 
   @override
@@ -1617,6 +1625,9 @@ class NL extends Translated {
 
   @override
   final String time = 'Tijd';
+
+  @override
+  final String save = 'Sparen';
 
   @override
   final String error = 'Fout';
@@ -2122,6 +2133,9 @@ class FI extends Translated {
   final String time = 'Aika';
 
   @override
+  final String save = 'Tallentaa';
+
+  @override
   final String error = 'Virhe';
 
   @override
@@ -2622,6 +2636,9 @@ class DE extends Translated {
 
   @override
   final String time = 'Zeit';
+
+  @override
+  final String save = 'Sparen';
 
   @override
   final String error = 'Error';
@@ -3125,6 +3142,9 @@ class NB extends Translated {
 
   @override
   final String time = 'Tid';
+
+  @override
+  final String save = 'Spare';
 
   @override
   final String error = 'Feil';
