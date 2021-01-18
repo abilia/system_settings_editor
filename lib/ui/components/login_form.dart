@@ -42,9 +42,8 @@ class _LoginFormState extends State<LoginForm> {
           final credentialsError = errorState &&
               (loginState as LoginFailure).loginFailureCause ==
                   LoginFailureCause.Credentials;
-          final licenseError = errorState &&
-              (loginState as LoginFailure).loginFailureCause ==
-                  LoginFailureCause.License;
+          final licenseError =
+              errorState && (loginState as LoginFailure).licenseError;
           return Form(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -187,7 +186,9 @@ class _LoginFormState extends State<LoginForm> {
         return translate.wrongCredentials;
       case LoginFailureCause.NoConnection:
         return translate.noConnection;
-      case LoginFailureCause.License:
+      case LoginFailureCause.LicenseExpired:
+        return translate.licenseExpired;
+      case LoginFailureCause.NoLicense:
         return translate.noLicense;
       default:
         return loginState.error;

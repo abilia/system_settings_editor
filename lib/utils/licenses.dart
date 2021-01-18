@@ -5,4 +5,8 @@ extension LicensesExtension on Iterable<License> {
     return any(
         (l) => l.product == MEMOPLANNER_LICENSE_NAME && l.endTime.isAfter(now));
   }
+
+  bool anyMemoplannerLicense() {
+    return any((l) => l.product == MEMOPLANNER_LICENSE_NAME);
+  }
 }
