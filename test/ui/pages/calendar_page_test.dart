@@ -443,8 +443,10 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.addActivity));
       await tester.pumpAndSettle();
-      expect(find.byType(CreateActivityDialog), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.newActivityButton));
+      expect(find.byType(CreateActivityPage), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.newActivityChoice));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(EditActivityPage), findsOneWidget);
       expect(find.byType(CalendarPage), findsNothing);
@@ -479,7 +481,9 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.addActivity));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.newActivityButton));
+      await tester.tap(find.byKey(TestKey.newActivityChoice));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(EditActivityPage), findsOneWidget);
       expect(find.byType(CalendarPage), findsNothing);
