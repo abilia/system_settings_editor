@@ -6,7 +6,6 @@ export 'splash_page.dart';
 export 'alarm_page.dart';
 export 'allday_list_page.dart';
 export 'activity_page.dart';
-export 'edit_activity_page.dart';
 export 'permissions_page.dart';
 export 'about_page.dart';
-export 'create_activity_page.dart';
+export 'edit_activity/all.dart';

@@ -13,18 +13,17 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
 
-final _log = Logger((SelectPictureDialog).toString());
+final _log = Logger((SelectPicturePage).toString());
 
-class SelectPictureDialog extends StatefulWidget {
+class SelectPicturePage extends StatefulWidget {
   final String previousImage;
 
-  const SelectPictureDialog({Key key, this.previousImage}) : super(key: key);
+  const SelectPicturePage({Key key, this.previousImage}) : super(key: key);
   @override
-  _SelectPictureDialogState createState() => _SelectPictureDialogState();
+  _SelectPicturePageState createState() => _SelectPicturePageState();
 }
 
-class _SelectPictureDialogState extends State<SelectPictureDialog> {
-  bool imageArchiveView = false;
+class _SelectPicturePageState extends State<SelectPicturePage> {
   ImageArchiveData selectedImageData;
   Function get onOk => selectedImageData != null
       ? () => Navigator.of(context).maybePop(SelectedImage(
@@ -35,14 +34,6 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
 
   @override
   Widget build(BuildContext context) {
-    if (imageArchiveView) {
-      return buildImageArchiveDialog();
-    } else {
-      return buildPictureSourceDialog();
-    }
-  }
-
-  ViewDialog buildPictureSourceDialog() {
     final translate = Translator.of(context).translate;
     final theme = abiliaTheme;
     return ViewDialog(
@@ -52,10 +43,12 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
               child: RemoveButton(
                 key: TestKey.removePicture,
                 onTap: () {
-                  Navigator.of(context).maybePop(SelectedImage(
-                    id: '',
-                    path: '',
-                  ));
+                  Navigator.of(context).maybePop(
+                    SelectedImage(
+                      id: '',
+                      path: '',
+                    ),
+                  );
                 },
                 icon: Icon(
                   AbiliaIcons.delete_all_clear,
@@ -76,9 +69,19 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
             leading: const Icon(AbiliaIcons.folder),
             text: Text(translate.imageArchive),
             onTap: () {
-              setState(() {
-                imageArchiveView = !imageArchiveView;
-              });
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => CopiedAuthProviders(
+                    blocContext: context,
+                    child: BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
+                      create: (_) => SortableArchiveBloc<ImageArchiveData>(
+                        sortableBloc: BlocProvider.of<SortableBloc>(context),
+                      ),
+                      child: ImageArchivePage(),
+                    ),
+                  ),
+                ),
+              );
             },
           ),
           const SizedBox(height: 8.0),
@@ -97,40 +100,6 @@ class _SelectPictureDialogState extends State<SelectPictureDialog> {
         ],
       ),
     );
-  }
-
-  Widget buildImageArchiveDialog() {
-    return BlocBuilder<SortableArchiveBloc<ImageArchiveData>,
-        SortableArchiveState<ImageArchiveData>>(
-      builder: (innerContext, imageArchiveState) => ViewDialog(
-        verticalPadding: 0.0,
-        backButton: ActionButton(
-          onPressed: () {
-            if (imageArchiveState.currentFolderId == null) {
-              setState(() => imageArchiveView = false);
-            } else {
-              BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(
-                      innerContext)
-                  .add(NavigateUp());
-            }
-          },
-          themeData: darkButtonTheme,
-          child: Icon(
-            AbiliaIcons.navigation_previous,
-            size: defaultIconSize,
-          ),
-        ),
-        heading: getImageArchiveHeading(imageArchiveState),
-        onOk: onOk,
-        child: ImageArchive(),
-      ),
-    );
-  }
-
-  Text getImageArchiveHeading(SortableArchiveState state) {
-    final folderName = state.allById[state.currentFolderId]?.data?.title() ??
-        Translator.of(context).translate.imageArchive;
-    return Text(folderName, style: abiliaTheme.textTheme.headline6);
   }
 }
 

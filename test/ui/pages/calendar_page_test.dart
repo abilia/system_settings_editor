@@ -811,7 +811,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(editPictureFinder);
       await tester.pumpAndSettle();
-      expect(find.byType(SelectPictureDialog), findsOneWidget);
+      expect(find.byType(SelectPicturePage), findsOneWidget);
     });
 
     testWidgets('Can show image archive from full day list',

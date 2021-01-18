@@ -164,15 +164,15 @@ class _SelectPictureWidgetState extends State<SelectPictureWidget> {
   }
 
   void imageClick() async {
-    final selectedImage = await showViewDialog<SelectedImage>(
-      context: context,
-      builder: (_) => BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
-        create: (_) => SortableArchiveBloc<ImageArchiveData>(
-          sortableBloc: BlocProvider.of<SortableBloc>(context),
+    final selectedImage = await Navigator.of(context).push<SelectedImage>(
+      MaterialPageRoute(
+        builder: (_) => CopiedAuthProviders(
+          blocContext: context,
+          child: SelectPicturePage(previousImage: widget.imageFileId),
         ),
-        child: SelectPictureDialog(previousImage: widget.imageFileId),
       ),
     );
+
     if (selectedImage != null && widget.onImageSelected != null) {
       if (selectedImage.newImage != null) {
         BlocProvider.of<UserFileBloc>(context).add(

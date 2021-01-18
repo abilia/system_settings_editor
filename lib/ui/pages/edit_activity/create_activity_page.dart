@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/basic_activity_picker_page.dart';
+import 'package:seagull/ui/pages/edit_activity/basic_activity_picker_page.dart';
 
 class CreateActivityPage extends StatefulWidget {
   final DateTime day;
