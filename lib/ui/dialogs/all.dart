@@ -14,6 +14,5 @@ export 'settings/all.dart';
 export 'license_expired.dart';
 export 'warning.dart';
 export 'confirm_activity_action.dart';
-export 'create_activity_dialog.dart';
 export 'permission/all.dart';
 export 'small_dialog.dart';

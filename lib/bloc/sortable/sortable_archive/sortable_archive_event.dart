@@ -7,16 +7,25 @@ abstract class SortableArchiveEvent extends Equatable {
 class FolderChanged extends SortableArchiveEvent {
   final String folderId;
 
-  FolderChanged(this.folderId);
+  const FolderChanged(this.folderId);
 
   @override
   List<Object> get props => [folderId];
 }
 
+class SortableSelected<T extends SortableData> extends SortableArchiveEvent {
+  final Sortable<T> selected;
+
+  const SortableSelected(this.selected);
+
+  @override
+  List<Object> get props => [selected];
+}
+
 class SortablesUpdated extends SortableArchiveEvent {
   final Iterable<Sortable> sortables;
 
-  SortablesUpdated(this.sortables);
+  const SortablesUpdated(this.sortables);
 
   @override
   List<Object> get props => [sortables];

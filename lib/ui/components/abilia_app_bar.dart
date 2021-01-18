@@ -2,6 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/ui/all.dart';
 
+class NewAbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final IconData iconData;
+
+  const NewAbiliaAppBar({
+    Key key,
+    @required this.title,
+    @required this.iconData,
+  }) : super(key: key);
+
+  @override
+  Size get preferredSize => const Size.fromHeight(68.0);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Theme(
+        data: lightButtonTheme,
+        child: Container(
+          decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
+          child: SafeArea(
+            child: Center(
+              child: AppBarHeading(
+                text: title,
+                iconData: iconData,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   final String title;

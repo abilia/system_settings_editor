@@ -239,6 +239,7 @@ ThemeData redButtonTheme = abiliaTheme.copyWith(
 ThemeData greenButtonTheme = abiliaTheme.copyWith(
   buttonTheme: greenButtonThemeData,
   buttonColor: AbiliaColors.green,
+  disabledColor: AbiliaColors.green40,
   iconTheme: IconThemeData(
     size: buttonIconSize,
     color: AbiliaColors.white,

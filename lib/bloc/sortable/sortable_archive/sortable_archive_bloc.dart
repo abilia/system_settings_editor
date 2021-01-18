@@ -42,6 +42,7 @@ class SortableArchiveBloc<T extends SortableData>
         allByFolder,
         allById,
         currentFolder?.id,
+        selected: state.selected,
       );
     } else if (event is FolderChanged) {
       yield SortableArchiveState<T>(
@@ -55,6 +56,13 @@ class SortableArchiveBloc<T extends SortableData>
         state.allByFolder,
         state.allById,
         currentFolder.groupId,
+      );
+    } else if (event is SortableSelected<T>) {
+      yield SortableArchiveState<T>(
+        state.allByFolder,
+        state.allById,
+        state.currentFolderId,
+        selected: event.selected,
       );
     }
   }
