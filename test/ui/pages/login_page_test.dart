@@ -38,6 +38,7 @@ void main() {
     final mockActivityDb = MockActivityDb();
     when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
     when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([]));
+    setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
 
     GetItInitializer()
       ..sharedPreferences =
@@ -100,12 +101,6 @@ void main() {
     expect(textHidden(), isFalse);
     expect(find.byIcon(AbiliaIcons.show), findsNothing);
     expect(find.byIcon(AbiliaIcons.hide), findsOneWidget);
-
-    // Remove text then show/hide-button is not visible
-    await tester.enterText_(find.byKey(TestKey.passwordInput), '');
-    await tester.pump();
-    expect(find.byIcon(AbiliaIcons.hide), findsNothing);
-    expect(find.byIcon(AbiliaIcons.show), findsNothing);
   });
 
   testWidgets('Hide password button works in password edit dialog',
@@ -118,7 +113,7 @@ void main() {
 
     // Enter field password dialog
     await tester.tap(find.byKey(TestKey.passwordInput));
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     // No button shows at all
     expect(find.byIcon(AbiliaIcons.show), findsNothing);
@@ -143,7 +138,7 @@ void main() {
     expect(find.byIcon(AbiliaIcons.hide), findsWidgets);
 
     // Go back
-    await tester.tap(find.byKey(TestKey.okDialog));
+    await tester.tap(find.byKey(TestKey.cancelButton));
     await tester.pumpAndSettle();
 
     // Password still hidden
@@ -152,22 +147,23 @@ void main() {
     expect(find.byIcon(AbiliaIcons.hide), findsOneWidget);
   });
 
-  testWidgets('Cant login when no password or username',
-      (WidgetTester tester) async {
+  testWidgets('Cant press login when no username', (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
-    await tester.tap(find.byKey(TestKey.loggInButton));
-    await tester.pumpAndSettle();
-    expect(find.byType(CalendarPage), findsNothing);
+    await tester.enterText_(
+        find.byKey(TestKey.passwordInput), Fakes.incorrectPassword);
+    final button = tester.widget<FlatButton>(find.byKey(TestKey.loggInButton));
+    expect(button.onPressed, null);
+  });
 
-    await tester.enterText_(find.byKey(TestKey.passwordInput), '');
-    await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
-    await tester.pump();
-    await tester.tap(find.byKey(TestKey.loggInButton));
+  testWidgets('Cant press login when no password', (WidgetTester tester) async {
+    await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    expect(find.byType(CalendarPage), findsNothing);
+
+    await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
+    final button = tester.widget<FlatButton>(find.byKey(TestKey.loggInButton));
+    expect(button.onPressed, null);
   });
 
   testWidgets('Error message when incorrect username or password',
@@ -187,7 +183,6 @@ void main() {
 
   testWidgets('Can login', (WidgetTester tester) async {
     await tester.pumpWidget(App());
-
     await tester.pumpAndSettle();
 
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
@@ -199,13 +194,14 @@ void main() {
   });
 
   testWidgets('Can login, log out, then login', (WidgetTester tester) async {
-    setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
+
     // Login
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
     await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
     await tester.pump();
+    expect(find.byKey(TestKey.loggInButton), findsOneWidget);
     await tester.tap(find.byKey(TestKey.loggInButton));
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
@@ -281,7 +277,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
     await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
-    await tester.pump();
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(TestKey.loggInButton));
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
@@ -328,5 +324,38 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(FullscreenAlarmInfoDialog), findsNothing);
     });
+  });
+
+  testWidgets('Cant press OK with too short username',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    // await tester.enterText_(find.byKey(TestKey.userNameInput), 'a');
+    await tester.tap(find.byKey(TestKey.userNameInput));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(TestKey.input), 'a');
+    await tester.pumpAndSettle();
+    final button =
+        tester.widget<IconAndTextButton>(find.byKey(TestKey.okDialog));
+    expect(button.onPressed, null);
+    await tester.tap(find.byKey(TestKey.cancelButton));
+    await tester.pumpAndSettle();
+    expect(find.byType(LoginPage), findsOneWidget);
+  });
+
+  testWidgets('Cant press OK with too short password',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(TestKey.passwordInput));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(TestKey.input), '7seven7');
+    await tester.pumpAndSettle();
+    final button =
+        tester.widget<IconAndTextButton>(find.byKey(TestKey.okDialog));
+    expect(button.onPressed, null);
+    await tester.tap(find.byKey(TestKey.cancelButton));
+    await tester.pumpAndSettle();
+    expect(find.byType(LoginPage), findsOneWidget);
   });
 }

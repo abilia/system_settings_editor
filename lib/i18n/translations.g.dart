@@ -155,8 +155,6 @@ abstract class Translated {
 
   final String next = 'Next';
 
-  final String ok = 'Ok';
-
   final String newActivityChoice = 'New';
 
   final String newActivity = 'New activity';

@@ -195,7 +195,7 @@ extension OurEnterText on WidgetTester {
     await tap(finder);
     await pumpAndSettle();
     await enterText(find.byKey(TestKey.input), text);
-    await pump();
+    await pumpAndSettle();
     await tap(find.byKey(TestKey.okDialog).first);
     await pumpAndSettle();
   }

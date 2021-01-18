@@ -16,6 +16,7 @@ class AbiliaTextInput extends StatelessWidget {
   final TextCapitalization textCapitalization;
   final List<TextInputFormatter> inputFormatters;
   final int maxLines;
+  final bool Function(String) inputValid;
 
   const AbiliaTextInput({
     Key key,
@@ -29,6 +30,7 @@ class AbiliaTextInput extends StatelessWidget {
     this.inputFormatters = const <TextInputFormatter>[],
     this.errorState = false,
     this.maxLines = 1,
+    this.inputValid,
   })  : assert(icon != null),
         assert(heading != null),
         assert(inputHeading != null),
@@ -45,17 +47,29 @@ class AbiliaTextInput extends StatelessWidget {
         Tts(
           data: controller.text.isNotEmpty ? controller.text : heading,
           child: GestureDetector(
-            onTap: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: buildViewDialog)
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => DefaultTextInputPage(
+                  inputHeading: inputHeading,
+                  icon: icon,
+                  controller: controller,
+                  heading: heading,
+                  keyboardType: keyboardType,
+                  inputFormatters: inputFormatters,
+                  textCapitalization: textCapitalization,
+                  maxLines: maxLines,
+                  inputValid: inputValid ?? (s) => true,
+                ),
+              ),
             ),
             child: Container(
               color: Colors.transparent,
               child: IgnorePointer(
                 child: TextFormField(
+                  key: formKey,
                   maxLines: maxLines,
                   minLines: 1,
                   readOnly: true,
-                  key: formKey,
                   controller: controller,
                   style: theme.textTheme.bodyText1,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -76,68 +90,97 @@ class AbiliaTextInput extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget buildViewDialog(BuildContext context) {
-    final theme = Theme.of(context);
-    final onBuildValue = controller.value;
+class DefaultTextInputPage extends StatefulWidget {
+  DefaultTextInputPage({
+    Key key,
+    @required this.inputHeading,
+    @required this.icon,
+    @required this.controller,
+    @required this.heading,
+    @required this.keyboardType,
+    @required this.inputFormatters,
+    @required this.textCapitalization,
+    @required this.maxLines,
+    @required this.inputValid,
+  })  : onBuildValue = controller.value,
+        super(key: key);
+
+  final String inputHeading;
+  final IconData icon;
+  final TextEditingController controller;
+  final TextEditingValue onBuildValue;
+  final String heading;
+  final TextInputType keyboardType;
+  final List<TextInputFormatter> inputFormatters;
+  final TextCapitalization textCapitalization;
+  final int maxLines;
+  final bool Function(String) inputValid;
+
+  @override
+  _DefaultInputPageState createState() => _DefaultInputPageState();
+}
+
+class _DefaultInputPageState extends State<DefaultTextInputPage> {
+  bool _validInput = false;
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(onTextValueChanged);
+    _validInput = widget.inputValid(widget.controller.text);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(onTextValueChanged);
+    super.dispose();
+  }
+
+  void onTextValueChanged() {
+    final valid = widget.inputValid(widget.controller.text);
+    if (valid != _validInput) {
+      setState(() {
+        _validInput = valid;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AbiliaAppBar(
-          title: inputHeading,
-          icon: icon,
-          closeButton: false,
+      appBar: NewAbiliaAppBar(
+        title: widget.inputHeading,
+        iconData: widget.icon,
       ),
       bottomSheet: BottomSheet(
-          builder: (ctx) {
-            return Container(
-              color: AbiliaColors.black80,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: CancelButton(
-                        onPressed: () {
-                          controller.value = onBuildValue;
-                          Navigator.of(context).maybePop();
-                        }
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
-                      child: OkButton(
-                        onPressed: Navigator.of(context).maybePop
-                      ),
-                    ),
-                  ],
+          builder: (context) => BottomNavigation(
+                backNavigationWidget:
+                    CancelButton(onPressed: () => _onClose(context)),
+                forwardNavigationWidget: OkButton(
+                  onPressed:
+                      _validInput ? Navigator.of(context).maybePop : null,
                 ),
               ),
-            );
-          },
-        onClosing: () {
-          controller.value = onBuildValue;
-          Navigator.of(context).maybePop();
-        }
-      ),
+          onClosing: () => _onClose(context)),
       body: Tts.fromSemantics(
-        SemanticsProperties(label: heading),
-        child: Padding(padding: EdgeInsets.fromLTRB(12, 24, 16, 24),
+        SemanticsProperties(label: widget.heading),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(12, 24, 16, 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SubHeading(heading),
+              SubHeading(widget.heading),
               TextField(
                 key: TestKey.input,
-                controller: controller,
-                keyboardType: keyboardType,
-                inputFormatters: inputFormatters,
-                textCapitalization: textCapitalization,
-                style: theme.textTheme.bodyText1,
+                controller: widget.controller,
+                keyboardType: widget.keyboardType,
+                inputFormatters: widget.inputFormatters,
+                textCapitalization: widget.textCapitalization,
+                style: Theme.of(context).textTheme.bodyText1,
                 autofocus: true,
                 onEditingComplete: Navigator.of(context).maybePop,
-                maxLines: maxLines,
+                maxLines: widget.maxLines,
                 minLines: 1,
               ),
             ],
@@ -145,6 +188,11 @@ class AbiliaTextInput extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onClose(BuildContext context) {
+    widget.controller.value = widget.onBuildValue;
+    Navigator.of(context).maybePop();
   }
 }
 
@@ -160,6 +208,7 @@ class PasswordInput extends StatelessWidget {
     @required this.loginFormBloc,
     @required this.obscureText,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -180,22 +229,21 @@ class PasswordInput extends StatelessWidget {
                   obscured: true,
                 ),
                 child: GestureDetector(
-                  onTap: () => showViewDialog(
-                    context: context,
-                    builder: buildViewDialog,
-                    wrapWithAuthProviders: false,
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => PasswordInputPage(
+                        controller: controller,
+                        loginFormBloc: loginFormBloc,
+                        context: context,
+                      ),
+                    ),
                   ),
                   child: Container(
                     color: Colors.transparent,
                     child: IgnorePointer(
                       child: TextFormField(
-                        readOnly: true,
-                        onTap: () => showViewDialog(
-                          context: context,
-                          builder: buildViewDialog,
-                          wrapWithAuthProviders: false,
-                        ),
                         key: TestKey.passwordInput,
+                        readOnly: true,
                         controller: controller,
                         obscureText: obscureText,
                         style: theme.textTheme.bodyText1,
@@ -223,60 +271,100 @@ class PasswordInput extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget buildViewDialog(BuildContext context) {
+class PasswordInputPage extends StatefulWidget {
+  PasswordInputPage({
+    Key key,
+    @required this.controller,
+    @required this.loginFormBloc,
+    @required this.context,
+  })  : onBuildValue = controller.value,
+        super(key: key);
+
+  final TextEditingController controller;
+  final LoginFormBloc loginFormBloc;
+  final BuildContext context;
+  final TextEditingValue onBuildValue;
+
+  @override
+  _PasswordInputPageState createState() => _PasswordInputPageState();
+}
+
+class _PasswordInputPageState extends State<PasswordInputPage> {
+  bool _validInput = false;
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(onTextValueChanged);
+    _validInput = widget.loginFormBloc.isPasswordValid(widget.controller.text);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(onTextValueChanged);
+    super.dispose();
+  }
+
+  void onTextValueChanged() {
+    final valid = widget.loginFormBloc.isPasswordValid(widget.controller.text);
+    if (valid != _validInput) {
+      setState(() {
+        _validInput = valid;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final onBuildValue = controller.value;
     final heading = Translator.of(context).translate.password;
     return Scaffold(
-      appBar: AbiliaAppBar(
+      appBar: NewAbiliaAppBar(
         title: heading,
-        icon: AbiliaIcons.lock,
-        closeButton: false,
+        iconData: AbiliaIcons.lock,
       ),
-      bottomSheet: BottomSheet(
-          builder: (ctx) {
-            return Container(
-              color: AbiliaColors.black80,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: CancelButton(
-                          onPressed: () {
-                            controller.value = onBuildValue;
-                            Navigator.of(context).maybePop();
-                          }
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
-                      child: OkButton(
-                          onPressed: Navigator.of(context).maybePop
-                      ),
-                    ),
-                  ],
+      bottomSheet: BottomSheet(builder: (ctx) {
+        return Container(
+          color: AbiliaColors.black80,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: CancelButton(
+                    onPressed: () {
+                      widget.controller.value = widget.onBuildValue;
+                      Navigator.of(context).maybePop();
+                    },
+                  ),
                 ),
-              ),
-            );
-          },
-          onClosing: () {
-            controller.value = onBuildValue;
-            Navigator.of(context).maybePop();
-          }
-      ),
+                SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: OkButton(
+                      onPressed:
+                          _validInput ? Navigator.of(context).maybePop : null),
+                ),
+              ],
+            ),
+          ),
+        );
+      }, onClosing: () {
+        widget.controller.value = widget.onBuildValue;
+        Navigator.of(context).maybePop();
+      }),
       body: Tts.fromSemantics(
         SemanticsProperties(
           label: heading,
-          value: controller.value.text,
+          value: widget.controller.value.text,
           textField: true,
           obscured: true,
         ),
-        child: Padding(padding: EdgeInsets.fromLTRB(12, 24, 16, 24),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(12, 24, 16, 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -285,11 +373,11 @@ class PasswordInput extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   BlocBuilder<LoginFormBloc, LoginFormState>(
-                    cubit: loginFormBloc,
+                    cubit: widget.loginFormBloc,
                     builder: (context, state) => Expanded(
                       child: TextFormField(
                         key: TestKey.input,
-                        controller: controller,
+                        controller: widget.controller,
                         obscureText: state.hidePassword,
                         keyboardType: TextInputType.visiblePassword,
                         style: theme.textTheme.bodyText1,
@@ -300,7 +388,7 @@ class PasswordInput extends StatelessWidget {
                   ),
                   HidePasswordButton(
                     key: TestKey.hidePassword,
-                    loginFormBloc: loginFormBloc,
+                    loginFormBloc: widget.loginFormBloc,
                   )
                 ],
               ),
@@ -348,40 +436,5 @@ class HidePasswordButton extends StatelessWidget {
 
   void _onHidePasswordChanged() {
     loginFormBloc.add(HidePasswordToggle());
-  }
-}
-
-class NewAbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
-  final IconData iconData;
-
-  const NewAbiliaAppBar({
-    Key key,
-    @required this.title,
-    @required this.iconData,
-  }) : super(key: key);
-
-  @override
-  Size get preferredSize => const Size.fromHeight(68.0);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
-      child: Theme(
-        data: lightButtonTheme,
-        child: Container(
-          decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
-          child: SafeArea(
-            child: Center(
-              child: AppBarHeading(
-                text: title,
-                iconData: iconData,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

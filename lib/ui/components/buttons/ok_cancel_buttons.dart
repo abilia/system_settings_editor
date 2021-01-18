@@ -36,7 +36,7 @@ class OkButton extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final text = translate.ok;
     return IconAndTextButton(
-      key: TestKey.okButton,
+      key: TestKey.okDialog,
       text: text,
       icon: AbiliaIcons.ok,
       onPressed: onPressed,

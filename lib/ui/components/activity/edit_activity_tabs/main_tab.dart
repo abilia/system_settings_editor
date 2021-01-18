@@ -4,7 +4,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-
 class MainTab extends StatefulWidget {
   MainTab({
     Key key,
@@ -50,7 +49,7 @@ class _MainTabState extends State<MainTab> with EditActivityTab {
                     activity.fullDay || !memoSettingsState.activityTypeEditable,
               ),
             separatedAndPadded(CheckableAndDeleteAfterWidget(activity)),
-            padded(AvailibleForWidget(activity)),
+            padded(AvailableForWidget(activity)),
           ],
         ),
       ),

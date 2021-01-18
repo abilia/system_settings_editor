@@ -69,6 +69,5 @@ class TestKey {
       basicActivityChoice = Key('basicActivityChoice'),
       noButton = Key('noButton'),
       yesButton = Key('yesButton'),
-      cancelButton = Key('cancelButton'),
-      okButton = Key('okButton');
+      cancelButton = Key('cancelButton');
 }

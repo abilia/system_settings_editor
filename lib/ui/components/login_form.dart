@@ -86,6 +86,7 @@ class _LoginFormState extends State<LoginForm> {
                     heading: translate.userName,
                     inputHeading: translate.userNameTitle,
                     errorState: credentialsError,
+                    inputValid: (s) => _loginFormBloc.isUsernameValid(s),
                   ),
                   padding16,
                   PasswordInput(
