@@ -43,9 +43,10 @@ abstract class EditActivityState extends Equatable with Silent {
   bool get emptyRecurringData =>
       activity.isRecurring && activity.recurs.data <= 0;
 
-  bool startTimeBeforeNow(DateTime now) =>
-      hasStartTime &&
-      timeInterval.startDate.withTime(timeInterval.startTime).isBefore(now);
+  bool startTimeBeforeNow(DateTime now) => activity.fullDay
+      ? timeInterval.startDate.onlyDays().isBefore(now.onlyDays())
+      : hasStartTime &&
+          timeInterval.startDate.withTime(timeInterval.startTime).isBefore(now);
 
   @override
   List<Object> get props => [

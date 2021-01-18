@@ -426,6 +426,84 @@ void main() {
       memoplannerSettingBlocMock = MockMemoplannerSettingsBloc();
     });
 
+    testWidgets(
+        'SGC-533 Can save full day on current day when activityTimeBeforeCurrent is false',
+        (WidgetTester tester) async {
+      final testActivityTitle = 'fulldayactivity';
+      when(memoplannerSettingBlocMock.state)
+          .thenReturn(MemoplannerSettingsLoaded(
+        MemoplannerSettings(activityTimeBeforeCurrent: false),
+      ));
+      await tester.pumpWidget(wrapWithMaterialApp(
+        CalendarPage(),
+        memoplannerSettingBloc: memoplannerSettingBlocMock,
+      ));
+
+      // Navigate to EditActivityPage
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.addActivity));
+      await tester.pumpAndSettle();
+      expect(find.byType(CreateActivityDialog), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.newActivityButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(EditActivityPage), findsOneWidget);
+      expect(find.byType(CalendarPage), findsNothing);
+
+      await tester.enterText_(
+          find.byKey(TestKey.editTitleTextFormField), testActivityTitle);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.fullDaySwitch));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.finishEditActivityButton));
+      await tester.pumpAndSettle();
+      expect(find.text(translate.startTimeBeforeNow), findsNothing);
+      expect(find.byType(EditActivityPage), findsNothing);
+      expect(find.byType(CalendarPage), findsOneWidget);
+      expect(find.text(testActivityTitle), findsOneWidget);
+    });
+
+    testWidgets(
+        'SGC-533 Cannot save full day activity on yesterday when activityTimeBeforeCurrent is false',
+        (WidgetTester tester) async {
+      final testActivityTitle = 'fulldayactivity';
+      when(memoplannerSettingBlocMock.state)
+          .thenReturn(MemoplannerSettingsLoaded(
+        MemoplannerSettings(activityTimeBeforeCurrent: false),
+      ));
+      await tester.pumpWidget(wrapWithMaterialApp(
+        CalendarPage(),
+        memoplannerSettingBloc: memoplannerSettingBlocMock,
+      ));
+
+      // Navigate to EditActivityPage
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.addActivity));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.newActivityButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(EditActivityPage), findsOneWidget);
+      expect(find.byType(CalendarPage), findsNothing);
+
+      // Enter activity information
+      await tester.enterText_(
+          find.byKey(TestKey.editTitleTextFormField), testActivityTitle);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.datePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('${initialDay.subtract(1.days()).day}'));
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.fullDaySwitch));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.finishEditActivityButton));
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text(translate.startTimeBeforeNow), findsOneWidget);
+      expect(find.byType(EditActivityPage), findsOneWidget);
+      expect(find.byType(CalendarPage), findsNothing);
+    });
+
     group('Color settings', () {
       void _expectCorrectColor(WidgetTester tester, Color color) {
         final at = find.byKey(TestKey.animatedTheme);
