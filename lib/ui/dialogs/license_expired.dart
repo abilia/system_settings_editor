@@ -8,7 +8,7 @@ class LicenseErrorDialog extends StatelessWidget {
   const LicenseErrorDialog({
     Key key,
     this.heading,
-    this.message,
+    @required this.message,
   }) : super(key: key);
 
   @override
@@ -16,7 +16,7 @@ class LicenseErrorDialog extends StatelessWidget {
     final translator = Translator.of(context).translate;
     return SmallDialog(
       heading: AppBarHeading(
-        text: translator.licenseExpired,
+        text: heading ?? translator.error,
         iconData: AbiliaIcons.password_protection,
       ),
       body: Column(
@@ -31,7 +31,7 @@ class LicenseErrorDialog extends StatelessWidget {
           const SizedBox(height: 24.0),
           Tts(
             child: Text(
-              translator.licenseExpiredMessage,
+              message,
               textAlign: TextAlign.center,
             ),
           ),

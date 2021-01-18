@@ -5,13 +5,13 @@ extension LoginFailureErrorMessage on LoginFailureCause {
   String heading(Translated translate) {
     switch (this) {
       case LoginFailureCause.Credentials:
-        return translate.wrongCredentials;
+        return translate.error;
       case LoginFailureCause.NoConnection:
-        return translate.noConnection;
+        return translate.error;
       case LoginFailureCause.LicenseExpired:
         return translate.licenseExpired;
       case LoginFailureCause.NoLicense:
-        return translate.noLicense;
+        return translate.error;
       default:
         return '';
     }
@@ -24,7 +24,7 @@ extension LoginFailureErrorMessage on LoginFailureCause {
       case LoginFailureCause.NoConnection:
         return translate.noConnection;
       case LoginFailureCause.LicenseExpired:
-        return translate.licenseExpired;
+        return translate.licenseExpiredMessage;
       case LoginFailureCause.NoLicense:
         return translate.noLicense;
       default:

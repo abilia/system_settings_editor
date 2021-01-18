@@ -21,7 +21,9 @@ class LoginPage extends StatelessWidget {
         Duration.zero,
         () => showViewDialog(
           context: context,
-          builder: (_) => LicenseErrorDialog(),
+          builder: (_) => LicenseErrorDialog(
+            message: translate.licenseExpiredMessage,
+          ),
           wrapWithAuthProviders: false,
         ),
       );

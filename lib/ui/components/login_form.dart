@@ -4,6 +4,7 @@ import 'package:seagull/ui/colors.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/theme.dart';
+import 'package:seagull/utils/all.dart';
 
 import 'package:seagull/ui/all.dart';
 
@@ -106,7 +107,9 @@ class _LoginFormState extends State<LoginForm> {
                     ErrorMessage(
                       key: TestKey.loginError,
                       text: Text(
-                        _errorMessageFromState(loginState, translate),
+                        (loginState as LoginFailure)
+                            .loginFailureCause
+                            .message(translate),
                       ),
                     ),
                   flexPadding(errorState),
@@ -178,20 +181,5 @@ class _LoginFormState extends State<LoginForm> {
 
   void _onPasswordChanged() {
     _loginFormBloc.add(PasswordChanged(password: _passwordController.text));
-  }
-
-  String _errorMessageFromState(LoginFailure loginState, Translated translate) {
-    switch (loginState.loginFailureCause) {
-      case LoginFailureCause.Credentials:
-        return translate.wrongCredentials;
-      case LoginFailureCause.NoConnection:
-        return translate.noConnection;
-      case LoginFailureCause.LicenseExpired:
-        return translate.licenseExpired;
-      case LoginFailureCause.NoLicense:
-        return translate.noLicense;
-      default:
-        return loginState.error;
-    }
   }
 }
