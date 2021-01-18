@@ -5,18 +5,40 @@ import 'package:seagull/ui/all.dart';
 class NewAbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final IconData iconData;
+  final PreferredSizeWidget bottom;
 
-  const NewAbiliaAppBar({
+  @override
+  final Size preferredSize;
+
+  NewAbiliaAppBar({
     Key key,
     @required this.title,
     @required this.iconData,
-  }) : super(key: key);
-
-  @override
-  Size get preferredSize => const Size.fromHeight(68.0);
+    this.bottom,
+  })  : preferredSize =
+            Size.fromHeight(68.0 + (bottom?.preferredSize?.height ?? 0.0)),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Widget content = AppBarHeading(
+      text: title,
+      iconData: iconData,
+    );
+    if (bottom != null) {
+      content = Column(
+        children: [
+          Expanded(child: content),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: bottom,
+          ),
+        ],
+      );
+    } else {
+      content = Center(child: content);
+    }
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Theme(
@@ -24,12 +46,7 @@ class NewAbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Container(
           decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
           child: SafeArea(
-            child: Center(
-              child: AppBarHeading(
-                text: title,
-                iconData: iconData,
-              ),
-            ),
+            child: content,
           ),
         ),
       ),
@@ -38,30 +55,21 @@ class NewAbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final double height;
   final String title;
   final IconData icon;
-  final Widget trailing;
-  final Function onClosedPressed;
   final IconData closeIcon;
-  final PreferredSizeWidget bottom;
   final bool closeButton;
 
   const AbiliaAppBar({
     Key key,
     @required this.title,
-    this.height = 68.0,
-    this.trailing,
-    this.onClosedPressed,
     this.closeIcon = AbiliaIcons.close_program,
-    this.bottom,
     this.closeButton = true,
     this.icon,
   }) : super(key: key);
 
   @override
-  Size get preferredSize =>
-      Size.fromHeight(height + (bottom?.preferredSize?.height ?? 0.0));
+  Size get preferredSize => Size.fromHeight(68.0);
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -86,7 +94,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                           child: ActionButton(
                             key: TestKey.appBarCloseButton,
                             child: Icon(closeIcon),
-                            onPressed: onClosedPressed ?? () => _pop(context),
+                            onPressed: () => _pop(context),
                           ),
                         ),
                       if (title != null)
@@ -112,14 +120,8 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                             ),
                           ],
                         ),
-                      if (trailing != null)
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: trailing,
-                        ),
                     ],
                   ),
-                  if (bottom != null) bottom,
                 ],
               ),
             ),

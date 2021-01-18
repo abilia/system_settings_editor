@@ -151,7 +151,9 @@ class _Arrow extends StatefulWidget {
     this.heigth,
     @required this.controller,
     @required this.conditionFunction,
-  })  : translation = Matrix4.identity(),
+  })  : assert(controller != null),
+        assert(conditionFunction != null),
+        translation = Matrix4.identity(),
         hiddenTranslation = Matrix4.translation(vectorTranslation);
   @override
   _ArrowState createState() => _ArrowState();
@@ -203,7 +205,8 @@ class _ArrowState extends State<_Arrow> {
   }
 
   void listener() {
-    if (widget.conditionFunction(widget.controller) != condition) {
+    if (widget.controller.hasClients &&
+        widget.conditionFunction(widget.controller) != condition) {
       setState(() => condition = !condition);
     }
   }

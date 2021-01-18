@@ -13,7 +13,7 @@ import 'package:seagull/repository/timezone.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
-import 'package:seagull/ui/components/all.dart';
+
 import 'package:seagull/utils/all.dart';
 
 // Stream is created so that app can respond to notification-selected events since the plugin is initialised in the main function

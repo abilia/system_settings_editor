@@ -5,7 +5,7 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   const AbiliaTabBar({
     Key key,
     @required this.tabs,
-    this.size = const Size.fromHeight(64),
+    this.size = const Size.fromHeight(64.0),
     @required this.collapsedCondition,
   }) : super(key: key);
 
@@ -27,7 +27,10 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
         offset: offset,
         last: (tabs.length - 1) == i,
         collapsed: () => collapsedCondition(i),
-        child: tabs[i],
+        child: IconTheme(
+          data: Theme.of(context).iconTheme.copyWith(size: smallIconSize),
+          child: tabs[i],
+        ),
         controller: DefaultTabController.of(context),
       );
       if (collapsedCondition(i)) offset++;
