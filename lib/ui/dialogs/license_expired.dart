@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
-class LicenseExpiredDialog extends StatelessWidget {
-  const LicenseExpiredDialog({
+class LicenseErrorDialog extends StatelessWidget {
+  final String heading;
+  final String message;
+
+  const LicenseErrorDialog({
     Key key,
+    this.heading,
+    @required this.message,
   }) : super(key: key);
 
   @override
@@ -11,7 +16,7 @@ class LicenseExpiredDialog extends StatelessWidget {
     final translator = Translator.of(context).translate;
     return SmallDialog(
       heading: AppBarHeading(
-        text: translator.licenseExpired,
+        text: heading ?? translator.error,
         iconData: AbiliaIcons.password_protection,
       ),
       body: Column(
@@ -26,7 +31,7 @@ class LicenseExpiredDialog extends StatelessWidget {
           const SizedBox(height: 24.0),
           Tts(
             child: Text(
-              translator.licenseExpiredMessage,
+              message,
               textAlign: TextAlign.center,
             ),
           ),

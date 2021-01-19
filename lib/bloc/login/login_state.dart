@@ -18,7 +18,8 @@ class LoginLoading extends LoginState {}
 enum LoginFailureCause {
   Credentials,
   NoConnection,
-  License,
+  LicenseExpired,
+  NoLicense,
 }
 
 class LoginFailure extends LoginState {
@@ -29,6 +30,10 @@ class LoginFailure extends LoginState {
     @required this.error,
     @required this.loginFailureCause,
   });
+
+  bool get licenseError =>
+      loginFailureCause == LoginFailureCause.LicenseExpired ||
+      loginFailureCause == LoginFailureCause.NoLicense;
 
   @override
   List<Object> get props => [
