@@ -23,7 +23,6 @@ class WarningDialog extends StatelessWidget {
       onOk: onOk,
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(flex: 128),
           icon,

@@ -25,7 +25,6 @@ class AppBarHeading extends StatelessWidget {
             fontSize: 22.0,
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(flex: 100),
               if (iconData != null) ...[
