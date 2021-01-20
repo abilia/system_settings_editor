@@ -100,7 +100,6 @@ class LogoutButton extends StatelessWidget {
         data: text,
         child: FlatButton(
           color: theme.buttonColor,
-          key: TestKey.loggInButton,
           child: Text(
             text,
             style: theme.textTheme.button,

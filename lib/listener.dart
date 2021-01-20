@@ -13,6 +13,9 @@ import 'package:seagull/ui/dialogs/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
 
+final GlobalKey authedStateKey = GlobalKey(debugLabel: 'authedStateKey');
+BuildContext get authContext => authedStateKey.currentContext;
+
 class TopLevelListeners extends StatelessWidget {
   final Widget child;
   final GlobalKey<NavigatorState> navigatorKey;
@@ -58,6 +61,7 @@ class TopLevelListeners extends StatelessWidget {
                       return AuthenticatedBlocsProvider(
                         authenticatedState: state,
                         child: AuthenticatedListeners(
+                          key: authedStateKey,
                           alarm: payload,
                           child: payload != null
                               ? FullScreenAlarm(alarm: payload)
