@@ -65,6 +65,7 @@ void main() {
             userRepository: userRepository,
           ),
           child: MaterialApp(
+            key: authedStateKey,
             supportedLocales: Translator.supportedLocals,
             localizationsDelegates: [Translator.delegate],
             localeResolutionCallback: (locale, supportedLocales) =>
