@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,18 +13,14 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NameAndPictureWidget(
-      imageFileId: state.activity.fileId,
-      imageFilePath: state.activity.icon,
+      selectedImage: state.selectedImage,
       errorState: state.saveErrors.contains(SaveError.NO_TITLE_OR_IMAGE),
       text: state.activity.title,
-      newImage: state.newImage,
       inputFormatters: [LengthLimitingTextInputFormatter(50)],
       onImageSelected: (selectedImage) {
-        BlocProvider.of<EditActivityBloc>(context).add(ImageSelected(
-          selectedImage.id,
-          selectedImage.path,
-          selectedImage.newImage,
-        ));
+        BlocProvider.of<EditActivityBloc>(context).add(
+          ImageSelected(selectedImage),
+        );
       },
       onTextEdit: (text) {
         if (state.activity.title != text) {
@@ -39,9 +33,7 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
 }
 
 class NameAndPictureWidget extends StatelessWidget {
-  final String imageFileId;
-  final String imageFilePath;
-  final File newImage;
+  final SelectedImage selectedImage;
   final void Function(SelectedImage) onImageSelected;
   final void Function(String) onTextEdit;
   final bool errorState;
@@ -51,9 +43,7 @@ class NameAndPictureWidget extends StatelessWidget {
 
   const NameAndPictureWidget({
     Key key,
-    this.imageFileId,
-    this.imageFilePath,
-    this.newImage,
+    this.selectedImage,
     this.onImageSelected,
     this.onTextEdit,
     this.errorState = false,
@@ -69,9 +59,7 @@ class NameAndPictureWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SelectPictureWidget(
-            imageFileId: imageFileId,
-            imageFilePath: imageFilePath,
-            newImage: newImage,
+            selectedImage: selectedImage,
             onImageSelected: onImageSelected,
             errorState: errorState,
           ),
@@ -91,28 +79,20 @@ class NameAndPictureWidget extends StatelessWidget {
   }
 }
 
-class SelectPictureWidget extends StatefulWidget {
+class SelectPictureWidget extends StatelessWidget {
   static const imageSize = 84.0, padding = 4.0;
-  final String imageFileId;
-  final String imageFilePath;
-  final File newImage;
+  final SelectedImage selectedImage;
+
   final void Function(SelectedImage) onImageSelected;
   final bool errorState;
 
   const SelectPictureWidget({
     Key key,
-    @required this.imageFileId,
-    @required this.imageFilePath,
-    @required this.newImage,
+    @required this.selectedImage,
     @required this.onImageSelected,
     @required this.errorState,
   }) : super(key: key);
 
-  @override
-  _SelectPictureWidgetState createState() => _SelectPictureWidgetState();
-}
-
-class _SelectPictureWidgetState extends State<SelectPictureWidget> {
   @override
   Widget build(BuildContext context) {
     final heading = Translator.of(context).translate.picture;
@@ -123,74 +103,89 @@ class _SelectPictureWidgetState extends State<SelectPictureWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SubHeading(heading),
-          if ((widget.imageFileId?.isNotEmpty ?? false) ||
-              (widget.imageFilePath?.isNotEmpty ?? false))
-            InkWell(
-              onTap: imageClick,
-              child: FadeInCalendarImage(
-                height: SelectPictureWidget.imageSize,
-                width: SelectPictureWidget.imageSize,
-                imageFileId: widget.imageFileId,
-                imageFilePath: widget.imageFilePath,
-                imageFile: widget.newImage,
-              ),
-            )
-          else
-            SizedBox(
-              width: SelectPictureWidget.imageSize,
-              height: SelectPictureWidget.imageSize,
-              child: LinedBorder(
-                key: TestKey.addPicture,
-                padding: const EdgeInsets.all(SelectPictureWidget.padding),
-                errorState: widget.errorState,
-                child: Container(
-                  decoration: whiteNoBorderBoxDecoration,
-                  width: SelectPictureWidget.imageSize -
-                      SelectPictureWidget.padding,
-                  height: SelectPictureWidget.imageSize -
-                      SelectPictureWidget.padding,
-                  child: const Icon(
-                    AbiliaIcons.add_photo,
-                    size: defaultIconSize,
-                    color: AbiliaColors.black75,
-                  ),
-                ),
-                onTap: imageClick,
-              ),
-            ),
+          SelectedImageWidget(
+            errorState: errorState,
+            onTap: () => imageClick(context),
+            selectedImage: selectedImage,
+          ),
         ],
       ),
     );
   }
 
-  void imageClick() async {
-    final selectedImage = await Navigator.of(context).push<SelectedImage>(
+  void imageClick(BuildContext context) async {
+    final newSelectedImage = await Navigator.of(context).push<SelectedImage>(
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
-          child: SelectPicturePage(previousImage: widget.imageFileId),
+          child: SelectPicturePage(selectedImage: selectedImage),
         ),
       ),
     );
 
-    if (selectedImage != null && widget.onImageSelected != null) {
-      if (selectedImage.newImage != null) {
+    if (newSelectedImage != null) {
+      if (newSelectedImage.file != null) {
         BlocProvider.of<UserFileBloc>(context).add(
-          ImageAdded(
-            selectedImage.id,
-            selectedImage.path,
-            selectedImage.newImage,
-          ),
+          ImageAdded(newSelectedImage),
         );
         BlocProvider.of<SortableBloc>(context).add(
           ImageArchiveImageAdded(
-            selectedImage.id,
-            selectedImage.newImage.path,
+            newSelectedImage.id,
+            newSelectedImage.file.path,
           ),
         );
       }
-      widget.onImageSelected(selectedImage);
+      onImageSelected?.call(newSelectedImage);
     }
+  }
+}
+
+class SelectedImageWidget extends StatelessWidget {
+  final GestureTapCallback onTap;
+  final SelectedImage selectedImage;
+
+  final bool errorState;
+
+  static const innerSize =
+      SelectPictureWidget.imageSize - SelectPictureWidget.padding * 2;
+
+  const SelectedImageWidget({
+    Key key,
+    @required this.selectedImage,
+    this.errorState = false,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: SelectPictureWidget.imageSize,
+      height: SelectPictureWidget.imageSize,
+      child: LinedBorder(
+        key: TestKey.addPicture,
+        padding: const EdgeInsets.all(SelectPictureWidget.padding),
+        errorState: errorState,
+        onTap: onTap,
+        child: selectedImage.isNotEmpty
+            ? FadeInCalendarImage(
+                height: innerSize,
+                width: innerSize,
+                imageFileId: selectedImage.id,
+                imageFilePath: selectedImage.path,
+                imageFile: selectedImage.file,
+              )
+            : Container(
+                decoration: whiteNoBorderBoxDecoration,
+                width: innerSize,
+                height: innerSize,
+                child: const Icon(
+                  AbiliaIcons.add_photo,
+                  size: defaultIconSize,
+                  color: AbiliaColors.black75,
+                ),
+              ),
+      ),
+    );
   }
 }
 

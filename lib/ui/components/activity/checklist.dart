@@ -196,6 +196,7 @@ class QuestionView extends StatelessWidget {
         return FullScreenImage(
           fileId: fileId,
           filePath: filePath,
+          onTap: Navigator.of(context).maybePop,
         );
       },
     );

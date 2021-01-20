@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:seagull/logging.dart';
 import 'package:uuid/uuid.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:equatable/equatable.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -15,89 +14,111 @@ import 'package:seagull/ui/all.dart';
 
 final _log = Logger((SelectPicturePage).toString());
 
-class SelectPicturePage extends StatefulWidget {
-  final String previousImage;
+class SelectPicturePage extends StatelessWidget {
+  final SelectedImage selectedImage;
 
-  const SelectPicturePage({Key key, this.previousImage}) : super(key: key);
-  @override
-  _SelectPicturePageState createState() => _SelectPicturePageState();
-}
-
-class _SelectPicturePageState extends State<SelectPicturePage> {
-  ImageArchiveData selectedImageData;
-  Function get onOk => selectedImageData != null
-      ? () => Navigator.of(context).maybePop(SelectedImage(
-            id: selectedImageData.fileId,
-            path: selectedImageData.file,
-          ))
-      : null;
+  const SelectPicturePage({
+    Key key,
+    this.selectedImage,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final theme = abiliaTheme;
-    return ViewDialog(
-      deleteButton: widget.previousImage != null || selectedImageData != null
-          ? Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: RemoveButton(
-                key: TestKey.removePicture,
-                onTap: () {
-                  Navigator.of(context).maybePop(
-                    SelectedImage(
-                      id: '',
-                      path: '',
-                    ),
-                  );
-                },
-                icon: Icon(
-                  AbiliaIcons.delete_all_clear,
-                  color: AbiliaColors.white,
-                  size: smallIconSize,
-                ),
-                text: translate.removePicture,
-              ),
-            )
-          : null,
-      heading: Text(translate.selectPicture, style: theme.textTheme.headline6),
-      onOk: onOk,
-      child: Column(
+    return Scaffold(
+      appBar: NewAbiliaAppBar(
+        iconData: AbiliaIcons.past_picture_from_windows_clipboard,
+        title: translate.selectPicture,
+      ),
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          PickField(
-            key: TestKey.imageArchiveButton,
-            leading: const Icon(AbiliaIcons.folder),
-            text: Text(translate.imageArchive),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => CopiedAuthProviders(
-                    blocContext: context,
-                    child: BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
-                      create: (_) => SortableArchiveBloc<ImageArchiveData>(
-                        sortableBloc: BlocProvider.of<SortableBloc>(context),
+          if (selectedImage.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: Separated(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 12.0, top: 24.0, bottom: 18.0),
+                  child: Column(
+                    children: [
+                      SelectedImageWidget(selectedImage: selectedImage),
+                      const SizedBox(height: 10.0),
+                      RemoveButton(
+                        key: TestKey.removePicture,
+                        onTap: () {
+                          Navigator.of(context).maybePop(
+                            SelectedImage.none(),
+                          );
+                        },
+                        icon: Icon(
+                          AbiliaIcons.delete_all_clear,
+                          color: AbiliaColors.white,
+                          size: smallIconSize,
+                        ),
+                        text: translate.removePicture,
                       ),
-                      child: ImageArchivePage(),
-                    ),
+                    ],
                   ),
                 ),
-              );
-            },
-          ),
-          const SizedBox(height: 8.0),
-          ImageSourceWidget(
-            text: translate.myPhotos,
-            imageSource: ImageSource.gallery,
-            permission:
-                Platform.isAndroid ? Permission.storage : Permission.photos,
-          ),
-          const SizedBox(height: 8.0),
-          ImageSourceWidget(
-            text: translate.takeNewPhoto,
-            imageSource: ImageSource.camera,
-            permission: Permission.camera,
+              ),
+            ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12.0, 24.0, 16.0, 0.0),
+            child: Column(
+              children: [
+                PickField(
+                  key: TestKey.imageArchiveButton,
+                  leading: const Icon(AbiliaIcons.folder),
+                  text: Text(translate.imageArchive),
+                  onTap: () async {
+                    final selectedImage =
+                        await Navigator.of(context).push<SelectedImage>(
+                      MaterialPageRoute(
+                        builder: (_) => CopiedAuthProviders(
+                          blocContext: context,
+                          child: BlocProvider<
+                              SortableArchiveBloc<ImageArchiveData>>(
+                            create: (_) =>
+                                SortableArchiveBloc<ImageArchiveData>(
+                              sortableBloc:
+                                  BlocProvider.of<SortableBloc>(context),
+                            ),
+                            child: const ImageArchivePage(),
+                          ),
+                        ),
+                      ),
+                    );
+                    if (selectedImage != null) {
+                      await Navigator.of(context).maybePop(selectedImage);
+                    }
+                  },
+                ),
+                const SizedBox(height: 8.0),
+                ImageSourceWidget(
+                  text: translate.myPhotos,
+                  imageSource: ImageSource.gallery,
+                  permission: Platform.isAndroid
+                      ? Permission.storage
+                      : Permission.photos,
+                ),
+                const SizedBox(height: 8.0),
+                ImageSourceWidget(
+                  text: translate.takeNewPhoto,
+                  imageSource: ImageSource.camera,
+                  permission: Permission.camera,
+                ),
+              ],
+            ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: GreyButton(
+          icon: AbiliaIcons.close_program,
+          text: translate.cancel,
+          onPressed: Navigator.of(context).pop,
+        ),
       ),
     );
   }
@@ -160,7 +181,7 @@ class ImageSourceWidget extends StatelessWidget {
           SelectedImage(
             id: id,
             path: path,
-            newImage: File(image.path),
+            file: File(image.path),
           ),
         );
       }
@@ -168,19 +189,4 @@ class ImageSourceWidget extends StatelessWidget {
       _log.warning(e);
     }
   }
-}
-
-class SelectedImage extends Equatable {
-  final String id;
-  final String path;
-  final File newImage;
-
-  SelectedImage({
-    @required this.id,
-    @required this.path,
-    this.newImage,
-  });
-
-  @override
-  List<Object> get props => [id, path, newImage];
 }

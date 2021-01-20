@@ -15,7 +15,7 @@ class ActionButton extends StatelessWidget {
 
   final ThemeData themeData;
   final Widget child;
-  final Function onPressed;
+  final VoidCallback onPressed;
   final double width, height;
   final EdgeInsetsGeometry padding;
 

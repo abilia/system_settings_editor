@@ -205,7 +205,8 @@ class ActivityBottomAppBar extends StatelessWidget with Checker {
                                 ),
                               ),
                               settings: RouteSettings(
-                                  name: 'EditActivityPage ${activityOccasion}'),
+                                  name:
+                                      '$EditActivityPage ${activityOccasion}'),
                             ),
                           );
                         },

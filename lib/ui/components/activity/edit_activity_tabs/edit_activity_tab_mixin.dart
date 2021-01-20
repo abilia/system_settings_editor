@@ -23,9 +23,18 @@ mixin EditActivityTab {
     );
   }
 
-  Widget separatedAndPadded(Widget child) => separated(padded(child));
+  Widget separatedAndPadded(Widget child) => Separated(child: padded(child));
 
-  Widget separated(Widget child) {
+  Widget padded(Widget child) =>
+      Padding(padding: ordinaryPadding, child: child);
+}
+
+class Separated extends StatelessWidget {
+  final Widget child;
+
+  const Separated({Key key, this.child}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         border: Border(
@@ -35,7 +44,4 @@ mixin EditActivityTab {
       child: child,
     );
   }
-
-  Widget padded(Widget child) =>
-      Padding(padding: ordinaryPadding, child: child);
 }

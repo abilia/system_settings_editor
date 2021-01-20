@@ -191,17 +191,20 @@ class FullScreenImage extends StatelessWidget {
   final String fileId;
   final String filePath;
   final Decoration backgroundDecoration;
+  final GestureTapCallback onTap;
+
   const FullScreenImage({
     Key key,
     @required this.fileId,
     @required this.filePath,
     this.backgroundDecoration,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: Navigator.of(context).maybePop,
+      onTap: onTap,
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
         return BlocBuilder<UserFileBloc, UserFileState>(
@@ -210,18 +213,17 @@ class FullScreenImage extends StatelessWidget {
           return PhotoView(
             backgroundDecoration: backgroundDecoration,
             imageProvider: userFile != null
-                ? Image.file(GetIt.I<FileStorage>().getFile(userFile.id)).image
+                ? FileImage(GetIt.I<FileStorage>().getFile(userFile.id))
                 : (state is Authenticated)
-                    ? Image.network(
+                    ? NetworkImage(
                         imageThumbUrl(
                           baseUrl: state.userRepository.baseUrl,
                           userId: state.userId,
                           imageFileId: fileId,
                           imagePath: filePath,
-                          size: ImageThumb.THUMB_SIZE,
                         ),
                         headers: authHeader(state.token),
-                      ).image
+                      )
                     : MemoryImage(kTransparentImage),
           );
         });
