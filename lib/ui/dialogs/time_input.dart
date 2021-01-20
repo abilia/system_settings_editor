@@ -97,7 +97,18 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
         newTime(endTimeController, endTimePeriod),
       );
 
-  void save() => Navigator.of(context).maybePop(newTimeInput);
+  void save() {
+    if (valid(startTimeController)) {
+      Navigator.of(context).maybePop(newTimeInput);
+    } else {
+      showViewDialog(
+        context: context,
+        builder: (context) => ErrorDialog(
+          text: Translator.of(context).translate.missingStartTime,
+        ),
+      );
+    }
+  }
 
   int in24HourClock(int hour, DayPeriod period) {
     if (widget.is24HoursFormat) return hour;
