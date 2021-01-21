@@ -1311,6 +1311,28 @@ text''';
       expect(find.text('--:--'), findsOneWidget);
     });
 
+    testWidgets('Error message when no start time is entered',
+        (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(okFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- Error dialog is shown
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(find.text(translate.missingStartTime), findsOneWidget);
+    });
+
     testWidgets('can change start time', (WidgetTester tester) async {
       // Arrange
       final acivity = Activity.createNew(
