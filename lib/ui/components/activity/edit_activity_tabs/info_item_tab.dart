@@ -20,10 +20,11 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
     final infoItem = activity.infoItem;
 
     Future onTap() async {
-      final result = await showViewDialog<Type>(
-        context: context,
-        builder: (context) => SelectInfoTypeDialog(
-          infoItemType: activity.infoItem.runtimeType,
+      final result = await Navigator.of(context).push<Type>(
+        MaterialPageRoute(
+          builder: (context) => SelectInfoTypePage(
+            infoItemType: activity.infoItem.runtimeType,
+          ),
         ),
       );
       if (result != null) {
@@ -313,7 +314,7 @@ class EditNoteWidget extends StatelessWidget {
             onTap: () async {
               final result = await showViewDialog<String>(
                 context: context,
-                builder: (context) => EditNoteDialog(text: infoItem.text),
+                builder: (context) => EditNotePage(text: infoItem.text),
               );
               if (result != null && result != infoItem.text) {
                 BlocProvider.of<EditActivityBloc>(context).add(ReplaceActivity(
@@ -335,7 +336,6 @@ class EditNoteWidget extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 56.0),
       ]),
     );
   }

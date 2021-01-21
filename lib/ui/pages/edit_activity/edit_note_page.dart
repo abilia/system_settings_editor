@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class EditNoteDialog extends StatefulWidget {
+class EditNotePage extends StatefulWidget {
   final String text;
   static const padding = EdgeInsets.symmetric(vertical: 9.0, horizontal: 16.0);
-  const EditNoteDialog({
+  const EditNotePage({
     Key key,
     this.text,
   }) : super(key: key);
 
   @override
-  _EditNoteDialogState createState() => _EditNoteDialogState();
+  _EditNotePageState createState() => _EditNotePageState();
 }
 
-class _EditNoteDialogState extends State<EditNoteDialog> {
+class _EditNotePageState extends State<EditNotePage> {
   TextEditingController _textEditingController;
   ScrollController _scrollController;
 
@@ -71,7 +71,7 @@ class _EditNoteDialogState extends State<EditNoteDialog> {
               _textEditingController.text.calulcateTextRenderSize(
             constraints: constraints,
             textStyle: abiliaTextTheme.bodyText1,
-            padding: EditNoteDialog.padding,
+            padding: EditNotePage.padding,
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
           );
           return VerticalScrollArrows(
@@ -80,7 +80,7 @@ class _EditNoteDialogState extends State<EditNoteDialog> {
             child: SingleChildScrollView(
               controller: _scrollController,
               reverse: true,
-              padding: EditNoteDialog.padding,
+              padding: EditNotePage.padding,
               child: Stack(
                 children: <Widget>[
                   Lines(

@@ -693,7 +693,7 @@ void main() {
       expect(find.byType(InfoItemTab), findsOneWidget);
       await tester.tap(find.byKey(TestKey.changeInfoItem));
       await tester.pumpAndSettle();
-      expect(find.byType(SelectInfoTypeDialog), findsOneWidget);
+      expect(find.byType(SelectInfoTypePage), findsOneWidget);
       expect(find.byKey(TestKey.infoItemNoneRadio), findsOneWidget);
       expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
       expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
@@ -719,6 +719,8 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
       await tester.pumpAndSettle();
+      await tester.tap(find.byType(GreenButton));
+      await tester.pumpAndSettle();
 
       await tester.enterText_(find.byType(NoteBlock), noteText);
       await tester.pumpAndSettle();
@@ -729,6 +731,8 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
       await tester.pumpAndSettle();
+      await tester.tap(find.byType(GreenButton));
+      await tester.pumpAndSettle();
 
       expect(find.text(q1), findsOneWidget);
       expect(find.text(q2), findsOneWidget);
@@ -738,10 +742,14 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoneRadio));
       await tester.pumpAndSettle();
+      await tester.tap(find.byType(GreenButton));
+      await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(TestKey.changeInfoItem));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(GreenButton));
       await tester.pumpAndSettle();
 
       expect(find.text(noteText), findsOneWidget);
@@ -754,6 +762,8 @@ void main() {
         await tester.tap(find.byKey(TestKey.changeInfoItem));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
       }
 
@@ -796,14 +806,16 @@ that it is visible in the info item tab
         expect(find.text(aLongNote), findsOneWidget);
         await tester.tap(find.byIcon(AbiliaIcons.edit));
         await tester.pumpAndSettle();
-        expect(find.byType(SelectInfoTypeDialog), findsOneWidget);
+        expect(find.byType(SelectInfoTypePage), findsOneWidget);
         expect(find.byKey(TestKey.infoItemNoneRadio), findsOneWidget);
         expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
         expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
 
         await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
         await tester.pumpAndSettle();
-        expect(find.byType(SelectInfoTypeDialog), findsNothing);
+        await tester.tap(find.byType(GreenButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectInfoTypePage), findsNothing);
         expect(find.text(aLongNote), findsOneWidget);
       });
 
@@ -817,12 +829,14 @@ that it is visible in the info item tab
         await tester.tap(find.byKey(TestKey.changeInfoItem));
         await tester.pumpAndSettle();
 
-        expect(find.byType(SelectInfoTypeDialog), findsOneWidget);
+        expect(find.byType(SelectInfoTypePage), findsOneWidget);
 
         await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+        await tester.tap(find.byType(GreenButton));
+        await tester.pumpAndSettle();
 
         await tester.pumpAndSettle();
-        expect(find.byType(SelectInfoTypeDialog), findsNothing);
+        expect(find.byType(SelectInfoTypePage), findsNothing);
         expect(find.text(translate.infoType), findsOneWidget);
         expect(find.text(translate.infoTypeNote), findsOneWidget);
         expect(find.text(translate.typeSomething), findsOneWidget);
@@ -839,7 +853,7 @@ that it is visible in the info item tab
         await tester.tap(find.byType(NoteBlock));
         await tester.pumpAndSettle();
 
-        expect(find.byType(EditNoteDialog), findsOneWidget);
+        expect(find.byType(EditNotePage), findsOneWidget);
       });
 
       testWidgets('Info item note can be edited', (WidgetTester tester) async {
@@ -976,6 +990,8 @@ Internal improvements to tests and examples.''';
         await tester.tap(find.byKey(TestKey.changeInfoItem));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
       }
 
@@ -2613,6 +2629,8 @@ text''';
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
         await tester.pumpAndSettle();
+        await tester.tap(find.byType(GreenButton));
+        await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(AbiliaIcons.show_text));
         await tester.pumpAndSettle();
@@ -2649,6 +2667,8 @@ text''';
       await tester.tap(find.byKey(TestKey.changeInfoItem));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(GreenButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.show_text));
       await tester.pumpAndSettle();

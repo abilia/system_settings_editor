@@ -5,8 +5,6 @@ export 'select_recurrence.dart';
 export 'confirm_activity_action.dart';
 export 'time_input.dart';
 export 'edit_recurrant.dart';
-export 'select_info_type.dart';
-export 'edit_note.dart';
 export 'edit_question.dart';
 export 'license_expired.dart';
 export 'warning.dart';
