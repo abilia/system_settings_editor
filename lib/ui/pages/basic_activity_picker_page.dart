@@ -38,15 +38,18 @@ class BasicActivityPickerPage extends StatelessWidget {
                     .add(NavigateUp()),
           ),
           forwardNavigationWidget: NextButton(
-            onPressed:
-                state.isSelected ? () => b(context, state.selected.data) : null,
+            onPressed: state.isSelected
+                ? () =>
+                    _navigateToEditActivityPage(context, state.selected.data)
+                : null,
           ),
         ),
       ),
     );
   }
 
-  Future b(BuildContext context, BasicActivityData basicActivity) async =>
+  Future _navigateToEditActivityPage(
+          BuildContext context, BasicActivityData basicActivity) async =>
       await Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (_) => CopiedAuthProviders(

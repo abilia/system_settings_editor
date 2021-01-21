@@ -43,8 +43,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           yield LoginSucceeded();
         } else {
           yield LoginFailure(
-              error: 'No valid license',
-              loginFailureCause: LoginFailureCause.License);
+            error: 'No valid license',
+            loginFailureCause: licenses.anyMemoplannerLicense()
+                ? LoginFailureCause.LicenseExpired
+                : LoginFailureCause.NoLicense,
+          );
         }
       } on UnauthorizedException catch (error) {
         yield LoginFailure(

@@ -79,19 +79,20 @@ class _CreateActivityPageState extends State<CreateActivityPage>
               await Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (_) => CopiedAuthProviders(
-                    blocContext: context,
+                    blocContext: authContext,
                     child: BlocProvider<EditActivityBloc>(
                       create: (_) => EditActivityBloc.newActivity(
                         activitiesBloc:
-                            BlocProvider.of<ActivitiesBloc>(context),
-                        clockBloc: BlocProvider.of<ClockBloc>(context),
+                            BlocProvider.of<ActivitiesBloc>(authContext),
+                        clockBloc: BlocProvider.of<ClockBloc>(authContext),
                         memoplannerSettingBloc:
-                            BlocProvider.of<MemoplannerSettingBloc>(context),
+                            BlocProvider.of<MemoplannerSettingBloc>(
+                                authContext),
                         day: widget.day,
                       ),
                       child: EditActivityPage(
                         day: widget.day,
-                        title: Translator.of(context).translate.newActivity,
+                        title: translate.newActivity,
                       ),
                     ),
                   ),

@@ -268,7 +268,7 @@ void main() {
     await tester.pump();
     await tester.tap(find.byKey(TestKey.loggInButton));
     await tester.pumpAndSettle();
-    expect(find.byType(LicenseExpiredDialog), findsOneWidget);
+    expect(find.byType(LicenseErrorDialog), findsOneWidget);
   });
 
   testWidgets('Can login when valid license, but gets logged out when invalid',
@@ -289,7 +289,7 @@ void main() {
 
     pushBloc.add(PushEvent('license'));
     await tester.pumpAndSettle();
-    expect(find.byType(LicenseExpiredDialog), findsOneWidget);
+    expect(find.byType(LicenseErrorDialog), findsOneWidget);
     expect(find.byType(LoginPage), findsOneWidget);
   });
 
