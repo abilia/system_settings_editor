@@ -455,6 +455,9 @@ void main() {
       await tester.enterText_(
           find.byKey(TestKey.editTitleTextFormField), testActivityTitle);
       await tester.pumpAndSettle();
+      await tester.dragFrom(
+          tester.getCenter(find.byType(EditActivityPage)), Offset(0.0, -200));
+      await tester.pump();
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.finishEditActivityButton));
@@ -498,6 +501,9 @@ void main() {
       await tester.tap(find.text('${initialDay.subtract(1.days()).day}'));
       await tester.tap(find.text('OK'));
       await tester.pumpAndSettle();
+      await tester.dragFrom(
+          tester.getCenter(find.byType(EditActivityPage)), Offset(0.0, -200));
+      await tester.pump();
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.finishEditActivityButton));
