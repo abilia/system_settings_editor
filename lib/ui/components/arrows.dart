@@ -1,7 +1,35 @@
+import 'package:flutter/cupertino.dart';
 import 'package:vector_math/vector_math_64.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:seagull/ui/all.dart';
+
+class VerticalScrollArrows extends StatelessWidget {
+  final ScrollController controller;
+  final Widget child;
+  final bool scrollbarAlwaysShown;
+
+  const VerticalScrollArrows({
+    Key key,
+    @required this.controller,
+    @required this.child,
+    this.scrollbarAlwaysShown = false,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        CupertinoScrollbar(
+          isAlwaysShown: scrollbarAlwaysShown,
+          controller: controller,
+          child: child,
+        ),
+        ArrowUp(controller: controller),
+        ArrowDown(controller: controller),
+      ],
+    );
+  }
+}
 
 class ArrowLeft extends StatelessWidget {
   final ScrollController controller;
@@ -123,7 +151,9 @@ class _Arrow extends StatefulWidget {
     this.heigth,
     @required this.controller,
     @required this.conditionFunction,
-  })  : translation = Matrix4.identity(),
+  })  : assert(controller != null),
+        assert(conditionFunction != null),
+        translation = Matrix4.identity(),
         hiddenTranslation = Matrix4.translation(vectorTranslation);
   @override
   _ArrowState createState() => _ArrowState();
@@ -175,7 +205,8 @@ class _ArrowState extends State<_Arrow> {
   }
 
   void listener() {
-    if (widget.conditionFunction(widget.controller) != condition) {
+    if (widget.controller.hasClients &&
+        widget.conditionFunction(widget.controller) != condition) {
       setState(() => condition = !condition);
     }
   }

@@ -13,6 +13,7 @@ class EditActivityPage extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) =>
           BlocBuilder<EditActivityBloc, EditActivityState>(
@@ -34,7 +35,9 @@ class EditActivityPage extends StatelessWidget {
             initialIndex: 0,
             length: tabs.length,
             child: Scaffold(
-              appBar: AbiliaAppBar(
+              appBar: NewAbiliaAppBar(
+                iconData: AbiliaIcons.plus,
+                title: translate.newActivity,
                 bottom: AbiliaTabBar(
                   collapsedCondition: (i) {
                     switch (i) {
@@ -47,67 +50,36 @@ class EditActivityPage extends StatelessWidget {
                     }
                   },
                   tabs: <Widget>[
-                    Icon(
-                      AbiliaIcons.my_photos,
-                      size: smallIconSize,
-                    ),
-                    Icon(
-                      AbiliaIcons.attention,
-                      size: smallIconSize,
-                    ),
-                    Icon(
-                      AbiliaIcons.repeat,
-                      size: smallIconSize,
-                    ),
-                    Icon(
-                      AbiliaIcons.attachment,
-                      size: smallIconSize,
-                    ),
+                    Icon(AbiliaIcons.my_photos),
+                    Icon(AbiliaIcons.attention),
+                    Icon(AbiliaIcons.repeat),
+                    Icon(AbiliaIcons.attachment),
                   ],
                 ),
-                title: title,
-                trailing: OkButton(),
               ),
               body: EditActivityListners(
                 child: TabBarView(children: tabs),
                 nrTabs: tabs.length,
               ),
+              bottomNavigationBar: BottomNavigation(
+                backNavigationWidget: GreyButton(
+                  key: TestKey.appBarCloseButton,
+                  text: translate.back,
+                  icon: AbiliaIcons.navigation_previous,
+                  onPressed: Navigator.of(context).maybePop,
+                ),
+                forwardNavigationWidget: GreenButton(
+                  key: TestKey.finishEditActivityButton,
+                  icon: AbiliaIcons.ok,
+                  text: translate.save,
+                  onPressed: () => BlocProvider.of<EditActivityBloc>(context)
+                      .add(SaveActivity()),
+                ),
+              ),
             ),
           );
         },
       ),
-    );
-  }
-}
-
-class OkButton extends StatelessWidget {
-  const OkButton({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Builder(
-      builder: (context) => ActionButton(
-          themeData: theme.copyWith(
-            buttonColor: AbiliaColors.green,
-            textTheme: abiliaTextTheme.copyWith(
-              button: abiliaTextTheme.button.copyWith(
-                color: AbiliaColors.black,
-              ),
-            ),
-            buttonTheme: abiliaTheme.buttonTheme.copyWith(
-              shape: RoundedRectangleBorder(
-                borderRadius: borderRadius,
-                side: BorderSide(color: AbiliaColors.green140),
-              ),
-            ),
-          ),
-          key: TestKey.finishEditActivityButton,
-          child: Icon(AbiliaIcons.ok),
-          onPressed: () =>
-              BlocProvider.of<EditActivityBloc>(context).add(SaveActivity())),
     );
   }
 }
@@ -169,9 +141,9 @@ class EditActivityListners extends StatelessWidget {
     );
   }
 
-  Future _mainPageError(Set<SaveError> errors, BuildContext context) {
+  Future _mainPageError(Set<SaveError> errors, BuildContext context) async {
     final translate = Translator.of(context).translate;
-    _scrollToTab(context, 0);
+    await _scrollToTab(context, 0);
     var text = '';
 
     if (errors.containsAll(
@@ -200,8 +172,10 @@ class EditActivityListners extends StatelessWidget {
     if (tabController.index != tabIndex) {
       tabController.animateTo(tabIndex);
     } else {
-      PrimaryScrollController.of(context)
-          ?.animateTo(0.0, duration: kTabScrollDuration, curve: Curves.ease);
+      final sc = PrimaryScrollController.of(context);
+      if (sc?.hasClients == true) {
+        sc.animateTo(0.0, duration: kTabScrollDuration, curve: Curves.ease);
+      }
     }
   }
 }

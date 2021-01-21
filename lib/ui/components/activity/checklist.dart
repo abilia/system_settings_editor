@@ -30,29 +30,23 @@ class CheckListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        CupertinoScrollbar(
-          controller: controller,
-          child: ListView.builder(
-            controller: controller,
-            padding: padding,
-            itemCount: checklist.questions.length,
-            itemBuilder: (context, i) {
-              final question = checklist.questions[i];
-              return QuestionView(
-                question,
-                inactive: preview,
-                signedOff: day != null && checklist.isSignedOff(question, day),
-                onTap: onTap != null && !preview ? () => onTap(question) : null,
-                tempImageFile: tempImageFiles[question.id],
-              );
-            },
-          ),
-        ),
-        ArrowUp(controller: controller),
-        ArrowDown(controller: controller),
-      ],
+    return VerticalScrollArrows(
+      controller: controller,
+      child: ListView.builder(
+        controller: controller,
+        padding: padding,
+        itemCount: checklist.questions.length,
+        itemBuilder: (context, i) {
+          final question = checklist.questions[i];
+          return QuestionView(
+            question,
+            inactive: preview,
+            signedOff: day != null && checklist.isSignedOff(question, day),
+            onTap: onTap != null && !preview ? () => onTap(question) : null,
+            tempImageFile: tempImageFiles[question.id],
+          );
+        },
+      ),
     );
   }
 }

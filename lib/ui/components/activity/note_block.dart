@@ -42,27 +42,21 @@ class _NoteBlockState extends State<NoteBlock> {
           );
           return DefaultTextStyle(
             style: textStyle,
-            child: Stack(
-              children: <Widget>[
-                CupertinoScrollbar(
-                  controller: controller,
-                  child: SingleChildScrollView(
-                    padding: Attachment.padding,
-                    controller: controller,
-                    child: Stack(
-                      children: [
-                        if (widget.textWidget != null) widget.textWidget,
-                        Lines(
-                          lineHeight: textRenderingSize.scaledLineHeight,
-                          numberOfLines: textRenderingSize.numberOfLines,
-                        ),
-                      ],
+            child: VerticalScrollArrows(
+              controller: controller,
+              child: SingleChildScrollView(
+                padding: Attachment.padding,
+                controller: controller,
+                child: Stack(
+                  children: [
+                    if (widget.textWidget != null) widget.textWidget,
+                    Lines(
+                      lineHeight: textRenderingSize.scaledLineHeight,
+                      numberOfLines: textRenderingSize.numberOfLines,
                     ),
-                  ),
+                  ],
                 ),
-                ArrowUp(controller: controller),
-                ArrowDown(controller: controller),
-              ],
+              ),
             ),
           );
         },

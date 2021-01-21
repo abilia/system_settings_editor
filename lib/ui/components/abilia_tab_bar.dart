@@ -5,7 +5,7 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   const AbiliaTabBar({
     Key key,
     @required this.tabs,
-    this.size = const Size.fromHeight(64),
+    this.size = const Size.fromHeight(64.0),
     @required this.collapsedCondition,
   }) : super(key: key);
 
@@ -102,6 +102,7 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final iconTheme = IconTheme.of(context);
     return InkWell(
       onTap: () => widget.controller.animateTo(widget.index - widget.offset),
       child: Row(
@@ -116,9 +117,9 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
             offset: widget.offset,
             first: widget.index == 0,
             last: widget.last,
-            beginIconThemeData: IconTheme.of(context),
-            endIconThemeData:
-                IconTheme.of(context).copyWith(color: AbiliaColors.white),
+            beginIconThemeData: iconTheme.copyWith(size: smallIconSize),
+            endIconThemeData: iconTheme.copyWith(
+                color: AbiliaColors.white, size: smallIconSize),
           )
         ],
       ),

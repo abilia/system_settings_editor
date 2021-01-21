@@ -91,7 +91,6 @@ class NextButton extends StatelessWidget {
           minWidth: 172.0,
           height: 64,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(flex: 63),
               Text(

@@ -24,7 +24,6 @@ class PermissionInfoDialog extends StatelessWidget {
         leftPadding: 16.0,
         rightPadding: 16.0,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(flex: 72),
             Icon(

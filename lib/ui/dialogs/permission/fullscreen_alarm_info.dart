@@ -22,7 +22,6 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
       leftPadding: 32.0,
       rightPadding: 32.0,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(flex: 72),
           const ActivityAlarmPreview(),

@@ -310,6 +310,7 @@ void main() {
           wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
       await tester.pumpAndSettle();
       // Act press fullday
+      await tester.scrollDown(dy: -150);
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
 
@@ -361,6 +362,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -150);
       // Assert -- Fullday switch is off
       expect(
           tester
@@ -378,6 +380,7 @@ void main() {
       // Assert -- alarm tab contains reminders
       expect(find.byIcon(AbiliaIcons.handi_reminder), findsOneWidget);
       await tester.goToMainTab();
+      await tester.scrollDown(dy: -150);
 
       // Act -- set to full day
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
@@ -551,6 +554,7 @@ void main() {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -150);
       final leftCategoryRadio1 =
           tester.widget<AbiliaRadio>(find.byKey(leftRadioKey));
       final rightCategoryRadio1 =
@@ -561,7 +565,6 @@ void main() {
       expect(leftCategoryRadio1.groupValue, Category.right);
       expect(rightCategoryRadio1.groupValue, Category.right);
 
-      await tester.scrollDown(dy: -100);
       await tester.tap(find.byKey(TestKey.leftCategoryRadio));
       await tester.pumpAndSettle();
       final leftCategoryRadio2 =
@@ -1064,6 +1067,7 @@ Internal improvements to tests and examples.''';
         expect(find.text(questionName), findsWidgets);
         await tester.tap(find.byKey(TestKey.okDialog));
         await tester.pumpAndSettle();
+        await tester.scrollDown(dy: -150);
         expect(find.text(questionName), findsOneWidget);
       });
 
@@ -1636,17 +1640,6 @@ text''';
   group('Recurrence', () {
     testWidgets('Recurrence present', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(
-          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
-      await tester.pumpAndSettle();
-      // Act
-      await tester.goToRecurrenceTab();
-      // Assert
-      expect(find.byType(RecurrenceTab), findsOneWidget);
-    });
-
-    testWidgets('Recurrence present', (WidgetTester tester) async {
-      // Arrange
       await tester.pumpWidget(wrapWithMaterialApp(
         EditActivityPage(day: today),
         newActivity: true,
@@ -1835,6 +1828,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
       await tester.tap(find.byKey(TestKey.noEndDate));
       await tester.pumpAndSettle();
 
@@ -2157,7 +2151,7 @@ text''';
         wrapWithMaterialApp(EditActivityPage(day: today)),
       );
       await tester.pumpAndSettle();
-      await tester.scrollDown();
+      await tester.scrollDown(dy: -200);
 
       expect(find.text(leftCategoryName), findsOneWidget);
       expect(find.text(rightCategoryName), findsOneWidget);
@@ -2367,6 +2361,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -150);
 
       await tester.verifyTts(find.byKey(TestKey.fullDaySwitch),
           exact: translate.fullDay);
@@ -2381,7 +2376,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
-      await tester.scrollDown();
+      await tester.scrollDown(dy: -150);
 
       await tester.verifyTts(find.byKey(TestKey.rightCategoryRadio),
           exact: translate.right);
@@ -2398,7 +2393,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
-      await tester.scrollDown();
+      await tester.scrollDown(dy: -300);
 
       await tester.verifyTts(find.byKey(TestKey.checkableSwitch),
           exact: translate.checkable);
@@ -2413,7 +2408,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
-      await tester.scrollDown();
+      await tester.scrollDown(dy: -400);
 
       await tester.verifyTts(find.byKey(TestKey.deleteAfterSwitch),
           exact: translate.deleteAfter);
@@ -2428,7 +2423,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
-      await tester.scrollDown();
+      await tester.scrollDown(dy: -500);
 
       await tester.verifyTts(find.byKey(TestKey.availibleFor),
           exact: translate.meAndSupportPersons);
@@ -2519,6 +2514,7 @@ text''';
       await tester.tap(find.byIcon(AbiliaIcons.week));
 
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
 
       await tester.verifyTts(find.byType(EndDateWidget),
           exact: translate.noEndDate);
