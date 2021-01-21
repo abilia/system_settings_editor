@@ -149,6 +149,8 @@ abstract class Translated {
 
   final String next = 'Next';
 
+  final String ok = 'Ok';
+
   final String newActivityChoice = 'New';
 
   final String newActivity = 'New activity';
@@ -303,6 +305,10 @@ abstract class Translated {
 
   final String longPressInfoText =
       'Tap and hold about 1½ seconds on any function to get it read to by speech synthesis';
+
+  final String display = 'Display';
+
+  final String viewMode = 'View mode';
 
   final String permissions = 'Permissions';
 
@@ -558,6 +564,9 @@ class SV extends Translated {
   final String next = 'Nästa';
 
   @override
+  final String ok = 'Ok';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -788,6 +797,12 @@ class SV extends Translated {
   @override
   final String longPressInfoText =
       'Tryck länge på någon text för att få den uppläst';
+
+  @override
+  final String display = 'Visa';
+
+  @override
+  final String viewMode = 'Visningsläge';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1063,6 +1078,9 @@ class DA extends Translated {
   final String next = 'Næste';
 
   @override
+  final String ok = 'Okay';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -1293,6 +1311,12 @@ class DA extends Translated {
   @override
   final String longPressInfoText =
       'Tryk og hold ca. 1½ sekund på enhver funktion for at få den læst til ved talesyntese';
+
+  @override
+  final String display = 'Vise';
+
+  @override
+  final String viewMode = 'Visningstilstand';
 
   @override
   final String permissions = 'Tilladelser';
@@ -1565,6 +1589,9 @@ class NL extends Translated {
   final String next = 'Volgende';
 
   @override
+  final String ok = 'Ok';
+
+  @override
   final String newActivityChoice = 'Nieuw';
 
   @override
@@ -1795,6 +1822,12 @@ class NL extends Translated {
   @override
   final String longPressInfoText =
       'Tik en houd ongeveer 1½ seconde vast op een functie om deze te laten voorlezen door spraaksynthese';
+
+  @override
+  final String display = 'Tonen';
+
+  @override
+  final String viewMode = 'Weergavemodus';
 
   @override
   final String permissions = 'Rechten';
@@ -2068,6 +2101,9 @@ class FI extends Translated {
   final String next = 'Seuraava';
 
   @override
+  final String ok = 'Ok';
+
+  @override
   final String newActivityChoice = 'Uusi';
 
   @override
@@ -2298,6 +2334,12 @@ class FI extends Translated {
   @override
   final String longPressInfoText =
       'Napauta ja pidä painettuna noin 1,5 sekuntia mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla';
+
+  @override
+  final String display = 'Näytä';
+
+  @override
+  final String viewMode = 'Katselutila';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -2570,6 +2612,9 @@ class DE extends Translated {
   final String next = 'Nächster';
 
   @override
+  final String ok = 'Ok';
+
+  @override
   final String newActivityChoice = 'Neu';
 
   @override
@@ -2802,6 +2847,12 @@ class DE extends Translated {
   @override
   final String longPressInfoText =
       'Tippen und halten Sie etwa 1½ Sekunden lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen';
+
+  @override
+  final String display = 'Anzeige';
+
+  @override
+  final String viewMode = 'Ansichtsmodus';
 
   @override
   final String permissions = 'Berechtigungen';
@@ -3073,6 +3124,9 @@ class NB extends Translated {
   final String next = 'Neste';
 
   @override
+  final String ok = 'Ok';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -3303,6 +3357,12 @@ class NB extends Translated {
   @override
   final String longPressInfoText =
       'Trykk og hold i ca. 1½ sekund på en funksjon for å få den lest opp ved talesyntese';
+
+  @override
+  final String display = 'Vise';
+
+  @override
+  final String viewMode = 'Visningsmodus';
 
   @override
   final String permissions = 'Tillatelser';

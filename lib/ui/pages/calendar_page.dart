@@ -259,16 +259,21 @@ class EyeButton extends StatelessWidget {
     return ActionButton(
       child: Icon(AbiliaIcons.show),
       onPressed: () async {
-        final result = await showViewDialog<CalendarType>(
+        await showViewDialog(
+          useSafeArea: false,
           context: context,
-          builder: (context) => ChangeCalendarDialog(
-            currentViewType: currentView,
-          ),
+          builder: (context) => EyeButtonDialog(),
         );
-        if (result != null) {
-          BlocProvider.of<CalendarViewBloc>(context)
-              .add(CalendarViewChanged(result));
-        }
+        // final result = await showViewDialog<CalendarType>(
+        //   context: context,
+        //   builder: (context) => ChangeCalendarDialog(
+        //     currentViewType: currentView,
+        //   ),
+        // );
+        // if (result != null) {
+        //   BlocProvider.of<CalendarViewBloc>(context)
+        //       .add(CalendarViewChanged(result));
+        // }
       },
     );
   }
