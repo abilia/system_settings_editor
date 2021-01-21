@@ -1,13 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/models/eye_button_settings.dart';
 import 'package:seagull/ui/all.dart';
 
 import 'all.dart';
 
-class EyeButtonDialog extends StatelessWidget {
+class EyeButtonDialog extends StatefulWidget {
+  final CalendarType currentCalendarType;
+  final bool currentDotsInTimepillar;
   const EyeButtonDialog({
     Key key,
+    @required this.currentCalendarType,
+    @required this.currentDotsInTimepillar,
   }) : super(key: key);
+
+  @override
+  _EyeButtonDialogState createState() => _EyeButtonDialogState(
+        calendarType: currentCalendarType,
+        dotsInTimePillar: currentDotsInTimepillar,
+      );
+}
+
+class _EyeButtonDialogState extends State<EyeButtonDialog> {
+  bool dotsInTimePillar;
+  CalendarType calendarType;
+
+  _EyeButtonDialogState({
+    @required this.calendarType,
+    @required this.dotsInTimePillar,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +46,14 @@ class EyeButtonDialog extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(12, 24, 16, 8),
             child: DuoSelector<CalendarType>(
               heading: t.viewMode,
-              groupValue: CalendarType.LIST,
+              groupValue: calendarType,
               leftText: t.listView,
               leftValue: CalendarType.LIST,
-              onChanged: (t) {},
+              onChanged: (type) {
+                setState(() {
+                  calendarType = type;
+                });
+              },
               rightText: t.timePillarView,
               rightValue: CalendarType.TIMEPILLAR,
               leftIcon: AbiliaIcons.calendar,
@@ -40,10 +65,14 @@ class EyeButtonDialog extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(12, 16, 16, 8),
             child: DuoSelector<bool>(
               heading: t.activityDuration,
-              groupValue: true,
+              groupValue: dotsInTimePillar,
               leftText: t.dots,
               leftValue: true,
-              onChanged: (t) {},
+              onChanged: (dots) {
+                setState(() {
+                  dotsInTimePillar = dots;
+                });
+              },
               rightText: t.edge,
               rightValue: false,
               leftIcon: AbiliaIcons.options,
@@ -62,7 +91,12 @@ class EyeButtonDialog extends StatelessWidget {
       forwardNavigationWidget: GreenButton(
         icon: AbiliaIcons.ok,
         text: Translator.of(context).translate.ok,
-        onPressed: () {},
+        onPressed: () async {
+          await Navigator.of(context).maybePop(EyeButtonSettings(
+            calendarType: calendarType,
+            dotsInTimepillar: dotsInTimePillar,
+          ));
+        },
       ),
     );
   }
@@ -82,18 +116,6 @@ class Separator extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class TwoValueSelector extends StatelessWidget {
-  final String heading;
-  const TwoValueSelector({Key key, this.heading}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text(heading),
     );
   }
 }

@@ -32,7 +32,9 @@ void main() {
   Future goToTimePillar(WidgetTester tester) async {
     await tester.tap(find.byType(EyeButton));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(TestKey.timePillarButton));
+    await tester.tap(find.byIcon(AbiliaIcons.timeline));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.ok));
     await tester.pumpAndSettle();
   }
 
