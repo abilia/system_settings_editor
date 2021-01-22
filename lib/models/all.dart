@@ -17,3 +17,4 @@ export 'license.dart';
 export 'generic/generic.dart';
 export 'memoplanner_settings.dart';
 export 'calendar_type.dart';
+export 'eye_button_settings.dart';
