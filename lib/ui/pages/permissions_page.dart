@@ -9,9 +9,9 @@ class PermissionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return Scaffold(
-      appBar: AbiliaAppBar(
+      appBar: NewAbiliaAppBar(
         title: translate.permissions,
-        closeIcon: AbiliaIcons.navigation_previous,
+        iconData: AbiliaIcons.menu_setup,
       ),
       body: BlocBuilder<PermissionBloc, PermissionState>(
         builder: (context, state) => Padding(
@@ -23,6 +23,9 @@ class PermissionsPage extends StatelessWidget {
                 .toList(),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: PreviousButton(),
       ),
     );
   }
