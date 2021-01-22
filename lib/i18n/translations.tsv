@@ -72,7 +72,8 @@ no	No	Nej	Nej	Nee	Ei	Nein	Nei
 close	Close	Stäng	Tæt	Dichtbij	Kiinni	Schließen	Lukk
 back	Previous	Tillbaka	Tilbage	Terug	Takaisin	Zurück	Tilbake
 next	Next	Nästa	Næste	Volgende	Seuraava	Nächster	Neste
-							
+ok	Ok	Ok	Okay	Ok	Ok	Ok	Ok
+
 ### Edit activity							
 newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
 newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
@@ -165,6 +166,8 @@ preview	Preview	Förhandsgranskning	Forhåndsvisning	Voorbeeld	Esikatselu	Vorsch
 textToSpeech	Speech support	Talstöd	Talestøtte	Spraakondersteuning	Puhetuki	Sprachausgabe	Talesyntese
 longpressToSpeak	Tap and hold for speech support	Tryck och håll ned för talstöd	Tryk og hold nede for talestøtte	Tik en houd vast voor spraakondersteuning	Napauta ja pidä painettuna puhetukea varten	Tippen und halten Sie für die Sprachunterstützung	Trykk og hold for talestøtte
 longPressInfoText	Tap and hold about 1½ seconds on any function to get it read to by speech synthesis	Tryck länge på någon text för att få den uppläst	Tryk og hold ca. 1½ sekund på enhver funktion for at få den læst til ved talesyntese	Tik en houd ongeveer 1½ seconde vast op een functie om deze te laten voorlezen door spraaksynthese	Napauta ja pidä painettuna noin 1,5 sekuntia mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla	Tippen und halten Sie etwa 1½ Sekunden lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen	Trykk og hold i ca. 1½ sekund på en funksjon for å få den lest opp ved talesyntese
+display	Display	Visa	Vise	Tonen	Näytä	Anzeige	Vise
+viewMode	View mode	Visningsläge	Visningstilstand	Weergavemodus	Katselutila	Ansichtsmodus	Visningsmodus
 							
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser

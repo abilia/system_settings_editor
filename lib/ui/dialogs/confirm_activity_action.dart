@@ -66,7 +66,8 @@ class CheckActivityConfirmDialog extends StatelessWidget {
     return SmallDialog(
       heading: AppBarHeading(
         text: signedOff ? translate.uncheck : translate.check,
-        iconData: signedOff ? AbiliaIcons.handi_uncheck : AbiliaIcons.handi_check,
+        iconData:
+            signedOff ? AbiliaIcons.handi_uncheck : AbiliaIcons.handi_check,
       ),
       body: Tts(
         child: Text(

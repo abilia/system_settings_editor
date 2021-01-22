@@ -25,7 +25,8 @@ void main() {
   MockSettingsDb mockSettingsDb;
   StreamController<DateTime> mockTicker;
   final changeViewButtonFinder = find.byType(EyeButton);
-  final timePillarButtonFinder = find.byKey(TestKey.timePillarButton);
+  final timePillarButtonFinder = find.byIcon(AbiliaIcons.timeline);
+  final okButtonFinder = find.byIcon(AbiliaIcons.ok);
   final time = DateTime(2007, 08, 09, 13, 11);
   final leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
@@ -93,6 +94,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(timePillarButtonFinder);
     await tester.pumpAndSettle();
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();
   }
 
   testWidgets('Shows when selected', (WidgetTester tester) async {
@@ -104,7 +107,9 @@ void main() {
     await goToTimePillar(tester);
     await tester.tap(changeViewButtonFinder);
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(TestKey.agendaListButton));
+    await tester.tap(find.byIcon(AbiliaIcons.calendar));
+    await tester.pumpAndSettle();
+    await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();
     expect(find.byType(TimePillarCalendar), findsNothing);
     expect(find.byType(Agenda), findsOneWidget);
