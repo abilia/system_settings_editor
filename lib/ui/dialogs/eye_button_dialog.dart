@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/models/eye_button_settings.dart';
 import 'package:seagull/ui/all.dart';
 
 import 'all.dart';
@@ -60,7 +59,9 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
               rightIcon: AbiliaIcons.timeline,
             ),
           ),
-          Separator(),
+          Divider(
+            endIndent: 16,
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 16, 16, 8),
             child: DuoSelector<bool>(
@@ -81,7 +82,7 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
           ),
         ],
       ),
-      bodyPadding: EdgeInsets.all(0),
+      bodyPadding: EdgeInsets.zero,
       expanded: true,
       backNavigationWidget: GreyButton(
         text: Translator.of(context).translate.cancel,
@@ -97,24 +98,6 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
             dotsInTimepillar: dotsInTimePillar,
           ));
         },
-      ),
-    );
-  }
-}
-
-class Separator extends StatelessWidget {
-  const Separator({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16.0),
-      child: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: AbiliaColors.white120),
-          ),
-        ),
       ),
     );
   }
@@ -149,7 +132,14 @@ class DuoSelector<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Tts(child: Text(heading, style: abiliaTextTheme.bodyText2)),
+        Tts(
+          child: Text(
+            heading,
+            style: abiliaTextTheme.bodyText2.copyWith(
+              color: AbiliaColors.black75,
+            ),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Container(
