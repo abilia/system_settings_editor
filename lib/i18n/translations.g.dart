@@ -757,6 +757,9 @@ class SV extends Translated {
   final String typeSomething = 'Skriv något…';
 
   @override
+  final String enterText = 'Skriv text';
+
+  @override
   final String clear = 'Rensa';
 
   @override
@@ -1274,6 +1277,9 @@ class DA extends Translated {
   final String typeSomething = 'Skriv noget…';
 
   @override
+  final String enterText = 'Indtast tekst';
+
+  @override
   final String clear = 'Slet';
 
   @override
@@ -1786,6 +1792,9 @@ class NL extends Translated {
 
   @override
   final String typeSomething = 'Typ iets';
+
+  @override
+  final String enterText = 'Voer tekst in';
 
   @override
   final String clear = 'Verwijderen';
@@ -2303,6 +2312,9 @@ class FI extends Translated {
   final String typeSomething = 'Kirjoita jotain';
 
   @override
+  final String enterText = 'Kirjoita teksti';
+
+  @override
   final String clear = 'Poista';
 
   @override
@@ -2818,6 +2830,9 @@ class DE extends Translated {
   final String typeSomething = 'Geben Sie etwas ein…';
 
   @override
+  final String enterText = 'Text eingeben';
+
+  @override
   final String clear = 'Entfernen';
 
   @override
@@ -3330,6 +3345,9 @@ class NB extends Translated {
 
   @override
   final String typeSomething = 'Skriv noe…';
+
+  @override
+  final String enterText = 'Skriv inn tekst';
 
   @override
   final String clear = 'Slette';

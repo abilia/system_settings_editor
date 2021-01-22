@@ -63,7 +63,6 @@ class _EditNotePageState extends State<EditNotePage> {
             onPressed: Navigator.of(context).maybePop,
           ),
           forwardNavigationWidget: GreenButton(
-            key: TestKey.okDialog,
             icon: AbiliaIcons.ok,
             text: translate.ok,
             onPressed: _textEditingController.text.isNotEmpty

@@ -37,7 +37,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
             RadioField(
               key: TestKey.infoItemNoneRadio,
               groupValue: infoItemType,
-              onChanged: onChanged,
+              onChanged: setSelectedType,
               value: NoInfoItem,
               leading: const Icon(
                 AbiliaIcons.information,
@@ -45,20 +45,20 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
               ),
               text: Text(translate.infoTypeNone),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             RadioField(
               key: TestKey.infoItemChecklistRadio,
               groupValue: infoItemType,
-              onChanged: onChanged,
+              onChanged: setSelectedType,
               value: Checklist,
               leading: const Icon(AbiliaIcons.ok),
               text: Text(translate.infoTypeChecklist),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             RadioField(
               key: TestKey.infoItemNoteRadio,
               groupValue: infoItemType,
-              onChanged: onChanged,
+              onChanged: setSelectedType,
               value: NoteInfoItem,
               leading: const Icon(AbiliaIcons.edit),
               text: Text(translate.infoTypeNote),
@@ -81,5 +81,5 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
     );
   }
 
-  void onChanged(Type t) => setState(() => infoItemType = t);
+  void setSelectedType(Type t) => setState(() => infoItemType = t);
 }

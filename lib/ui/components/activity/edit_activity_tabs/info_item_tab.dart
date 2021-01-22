@@ -199,9 +199,13 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
   }
 
   void _handleEditQuestionResult(final Question oldQuestion) async {
-    final result = await showViewDialog<QuestionResult>(
-      context: context,
-      builder: (context) => EditQuestionDialog(question: oldQuestion),
+    final result = await Navigator.of(context).push<QuestionResult>(
+      MaterialPageRoute(
+        builder: (_) => CopiedAuthProviders(
+          blocContext: context,
+          child: EditQuestionPage(question: oldQuestion),
+        ),
+      ),
     );
 
     if (result != null && result.question != oldQuestion) {
@@ -224,9 +228,13 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
   }
 
   void _handleNewQuestion() async {
-    final result = await showViewDialog<QuestionResult>(
-      context: context,
-      builder: (context) => EditQuestionDialog(),
+    final result = await Navigator.of(context).push<QuestionResult>(
+      MaterialPageRoute(
+        builder: (_) => CopiedAuthProviders(
+          blocContext: context,
+          child: EditQuestionPage(),
+        ),
+      ),
     );
 
     if (result != null && result.isNotEmpty) {
