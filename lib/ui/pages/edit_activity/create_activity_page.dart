@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/basic_activity_picker_page.dart';
 
 class CreateActivityPage extends StatefulWidget {
   final DateTime day;
@@ -35,12 +34,13 @@ class _CreateActivityPageState extends State<CreateActivityPage>
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             RadioField(
-                key: TestKey.newActivityChoice,
-                leading: Icon(AbiliaIcons.new_icon),
-                text: Text(translate.newActivityChoice),
-                value: false,
-                groupValue: pickBasicActivityView,
-                onChanged: (v) => setState(() => pickBasicActivityView = v)),
+              key: TestKey.newActivityChoice,
+              leading: Icon(AbiliaIcons.new_icon),
+              text: Text(translate.newActivityChoice),
+              value: false,
+              groupValue: pickBasicActivityView,
+              onChanged: (v) => setState(() => pickBasicActivityView = v),
+            ),
             SizedBox(height: 8.0),
             RadioField(
               key: TestKey.basicActivityChoice,
@@ -97,7 +97,7 @@ class _CreateActivityPageState extends State<CreateActivityPage>
                     ),
                   ),
                   settings:
-                      RouteSettings(name: 'EditActivityPage new activity'),
+                      RouteSettings(name: '$EditActivityPage new activity'),
                 ),
               );
             }

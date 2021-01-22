@@ -1,5 +1,4 @@
 export 'view_dialog.dart';
-export 'select_picture.dart';
 export 'select_alarm_type.dart';
 export 'select_available_for.dart';
 export 'select_recurrence.dart';

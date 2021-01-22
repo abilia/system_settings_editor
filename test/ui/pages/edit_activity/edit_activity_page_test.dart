@@ -17,8 +17,8 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import '../../mocks.dart';
-import '../../utils/types.dart';
+import '../../../mocks.dart';
+import '../../../utils/types.dart';
 
 void main() {
   final startTime = DateTime(2020, 02, 10, 15, 30);
@@ -170,10 +170,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.addPicture));
         await tester.pumpAndSettle();
-        expect(find.byType(SelectPictureDialog), findsOneWidget);
-        await tester.tap(find.byKey(TestKey.closeDialog));
+        expect(find.byType(SelectPicturePage), findsOneWidget);
+        await tester.tap(find.byIcon(AbiliaIcons.close_program));
         await tester.pumpAndSettle();
-        expect(find.byType(SelectPictureDialog), findsNothing);
+        expect(find.byType(SelectPicturePage), findsNothing);
       });
 
       final cameraPickFieldFinder = find.byKey(ObjectKey(ImageSource.camera)),
@@ -194,7 +194,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.addPicture));
         await tester.pumpAndSettle();
-        expect(find.byType(SelectPictureDialog), findsOneWidget);
+        expect(find.byType(SelectPicturePage), findsOneWidget);
 
         final photoPickField = tester.widget<PickField>(photoPickFieldFinder);
         final cameraPickField = tester.widget<PickField>(cameraPickFieldFinder);

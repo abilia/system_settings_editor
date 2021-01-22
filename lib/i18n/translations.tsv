@@ -33,7 +33,7 @@ minute	minute	minut	minut	minuut	minuutti	Minute	minutt
 min	min	min	min	min	min	Min	min
 am	AM	fm	am	am	am	am	am
 pm	PM	em	pm	pm	pm	pm	pm
-# https://en.wikipedia.org/wiki/Inessive_case
+# https://en.wikipedia.org/wiki/Inessive_case							
 dayInessive	&empty&	&empty&	&empty&	&empty&	päivässä	&empty&	&empty&
 hourInessive	&empty&	&empty&	&empty&	&empty&	tunnissa	&empty&	&empty&
 minuteInessive	&empty&	&empty&	&empty&	&empty&	minuutissa	&empty&	&empty&
@@ -95,7 +95,7 @@ setTime	Set time	Välj tid	Vælg tid	Tijd instellen	Aseta aika	Zeit einstellen	V
 time	Time	Tid	Tid	Tijd	Aika	Zeit	Tid
 save	Save	Spara	Spare	Sparen	Tallentaa	Sparen	Spare
 							
-### Errors
+### Errors							
 error	Error	Fel	Fejl	Fout	Virhe	Error	Feil
 missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.	Aktiviteten skal have et navn eller et billede og et starttidspunkt.	Je activiteit moet een afbeelding of naam en starttijd bevatten.	Toimintasi tulisi sisältää kuva tai nimi ja aloitusaika.	Ihre Aktivität sollte ein Bild oder einen Namen und eine Startzeit enthalten.	Aktiviteten må ha et navn ellet et bilde og en starttid.
 missingTitleOrImage	An activity needs an image or a name.	En aktivitet måste ha antingen en bild eller ett namn.	En aktivitet skal have enten et billede eller et navn.	Deze activiteit heeft een afbeelding of een naam nodig.	Tämä aktiviteetti tarvitsee kuvan tai nimen.	Diese Aktivität braucht ein Bild oder einen Namen.	En aktivitet må ha enten et bilde eller et navn.

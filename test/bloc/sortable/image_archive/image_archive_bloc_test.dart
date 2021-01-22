@@ -1,9 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
 import '../../../mocks.dart';
-import '../../../ui/components/sortable/image_archive_test.dart';
 
 void main() {
   SortableArchiveBloc<ImageArchiveData> imageArchiveBloc;
@@ -73,4 +73,14 @@ void main() {
       ]),
     );
   });
+}
+
+SortableArchiveState stateFromSortables(
+  List<Sortable<ImageArchiveData>> sortables, {
+  String folderId,
+}) {
+  final allByFolder =
+      groupBy<Sortable<ImageArchiveData>, String>(sortables, (s) => s.groupId);
+  final allById = {for (var s in sortables) s.id: s};
+  return SortableArchiveState<ImageArchiveData>(allByFolder, allById, folderId);
 }

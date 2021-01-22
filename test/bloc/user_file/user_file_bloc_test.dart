@@ -70,7 +70,8 @@ void main() {
     final processedFile1 = await adjustImageSizeAndRotation(fileContent);
 
     // Act
-    userFileBloc.add(ImageAdded(fileId, filePath, file));
+    userFileBloc
+        .add(ImageAdded(SelectedImage(id: fileId, path: filePath, file: file)));
 
     final expectedFile = UserFile(
       id: fileId,
@@ -105,8 +106,12 @@ void main() {
     await file2.writeAsBytes(fileContent);
 
     // Act
-    userFileBloc.add(ImageAdded(fileId, filePath1, file));
-    userFileBloc.add(ImageAdded(fileId2, filePath2, file2));
+    userFileBloc.add(
+      ImageAdded(SelectedImage(id: fileId, path: filePath1, file: file)),
+    );
+    userFileBloc.add(
+      ImageAdded(SelectedImage(id: fileId2, path: filePath2, file: file2)),
+    );
 
     // Assert
     final expectedFile1 = UserFile(

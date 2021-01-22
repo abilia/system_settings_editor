@@ -64,8 +64,8 @@ class _RecurrenceTabState extends State<RecurrenceTab> with EditActivityTab {
                 if (recurs.weekly)
                   Weekly(errorState: recurringDataError)
                 else if (recurs.monthly)
-                  separated(
-                    Padding(
+                  Separated(
+                    child: Padding(
                       padding: EdgeInsets.only(
                         left: EditActivityTab.ordinaryPadding.left -
                             EditActivityTab.errorBorderPadding.left,
@@ -119,8 +119,8 @@ class Weekly extends StatelessWidget with EditActivityTab {
               ),
               Padding(
                 padding: EditActivityTab.errorBorderPaddingRight,
-                child: separated(
-                  Padding(
+                child: Separated(
+                  child: Padding(
                     padding: EditActivityTab.ordinaryPadding.subtract(
                       EdgeInsets.only(
                           top: EditActivityTab.errorBorderPadding.top),
@@ -148,4 +148,3 @@ class Weekly extends StatelessWidget with EditActivityTab {
     );
   }
 }
-

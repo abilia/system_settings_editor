@@ -69,7 +69,7 @@ class BasicActivityPickerPage extends StatelessWidget {
               ),
             ),
           ),
-          settings: RouteSettings(name: 'EditActivityPage new basic activity'),
+          settings: RouteSettings(name: '$EditActivityPage new basic activity'),
         ),
         (r) => r.isFirst,
       );

@@ -59,15 +59,17 @@ class _EditQuestionDialogState extends State<EditQuestionDialog> {
       child: Column(
         children: <Widget>[
           NameAndPictureWidget(
-            imageFileId: question.fileId,
-            imageFilePath: question.image,
-            newImage: newImage,
+            selectedImage: SelectedImage(
+              id: question.fileId,
+              path: question.image,
+              file: newImage,
+            ),
             text: question.name,
             onTextEdit: (text) =>
                 setState(() => question = question.copyWith(name: text)),
             onImageSelected: (selectedImage) => setState(
               () {
-                newImage = selectedImage.newImage;
+                newImage = selectedImage.file;
                 question = question.copyWith(
                     fileId: selectedImage.id, image: selectedImage.path);
               },

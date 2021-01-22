@@ -63,10 +63,12 @@ class AddOrRemoveReminder extends ActivityChangedEvent {
 }
 
 class ImageSelected extends ActivityChangedEvent {
-  final String imageId;
-  final String path;
-  final File newImage;
-  ImageSelected(this.imageId, this.path, this.newImage);
+  final SelectedImage selected;
+  String get imageId => selected.id;
+  String get path => selected.path;
+  File get newImage => selected.file;
+  const ImageSelected(this.selected);
+
   @override
   List<Object> get props => [imageId];
 }
