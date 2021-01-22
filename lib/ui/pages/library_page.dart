@@ -3,11 +3,11 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class SortableLibraryDialog<T extends SortableData> extends StatelessWidget {
+class SortableLibraryPage<T extends SortableData> extends StatelessWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
 
-  const SortableLibraryDialog({
+  const SortableLibraryPage({
     Key key,
     @required this.libraryItemGenerator,
     @required this.emptyLibraryMessage,

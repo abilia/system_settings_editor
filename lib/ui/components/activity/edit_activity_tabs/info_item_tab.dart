@@ -114,7 +114,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
               onPressed: () async {
                 final selectedChecklist = await showViewDialog<Checklist>(
                   context: context,
-                  builder: (context) => SortableLibraryDialog<ChecklistData>(
+                  builder: (context) => SortableLibraryPage<ChecklistData>(
                     libraryItemGenerator: (Sortable<ChecklistData> s) =>
                         LibraryChecklist(
                       checklist: s.data.checklist,
@@ -297,7 +297,7 @@ class EditNoteWidget extends StatelessWidget {
               onPressed: () async {
                 final result = await showViewDialog<String>(
                   context: context,
-                  builder: (context) => SortableLibraryDialog<NoteData>(
+                  builder: (context) => SortableLibraryPage<NoteData>(
                     libraryItemGenerator: (Sortable<NoteData> s) => LibraryNote(
                       content: s.data.text,
                     ),

@@ -9,3 +9,4 @@ export 'activity_page.dart';
 export 'permissions_page.dart';
 export 'about_page.dart';
 export 'edit_activity/all.dart';
+export 'library_page.dart';
