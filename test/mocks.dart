@@ -193,11 +193,11 @@ class MockBloc<E, S> extends Mock {
 extension OurEnterText on WidgetTester {
   Future<void> enterText_(Finder finder, String text) async {
     await tap(finder);
-    await pump();
+    await pumpAndSettle();
     await enterText(find.byKey(TestKey.input), text);
     await pump();
     await tap(find.byKey(TestKey.okDialog).first);
-    await pump();
+    await pumpAndSettle();
   }
 
   Future verifyTts(Finder finder, {String contains, String exact}) async {

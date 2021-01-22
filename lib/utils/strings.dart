@@ -4,20 +4,14 @@ import 'dart:ui';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-extension RemoveLeading on String {
-  String removeLeadingZeros() => replaceFirst(RegExp('^0+(?!\$)'), '');
-}
-
 extension SizeOfText on String {
   TextPainter textPainter(TextStyle style, double width,
-      {double scaleFactor = 1.0}) {
-    final textPainter = TextPainter(
-        text: TextSpan(text: this, style: style),
-        textScaleFactor: scaleFactor,
-        textDirection: TextDirection.ltr)
-      ..layout(maxWidth: width);
-    return textPainter;
-  }
+          {double scaleFactor = 1.0}) =>
+      TextPainter(
+          text: TextSpan(text: this, style: style),
+          textScaleFactor: scaleFactor,
+          textDirection: TextDirection.ltr)
+        ..layout(maxWidth: width);
 
   TextRenderingSize calulcateTextRenderSize({
     @required BoxConstraints constraints,
@@ -25,24 +19,31 @@ extension SizeOfText on String {
     EdgeInsets padding = EdgeInsets.zero,
     double textScaleFactor = 1.0,
   }) {
-    final width = constraints.maxWidth - padding.vertical;
-    final height = constraints.maxHeight - padding.horizontal;
+    final width = constraints.maxWidth - padding.horizontal;
+    final height = constraints.maxHeight - padding.vertical;
     final painter = textPainter(
       textStyle,
       width,
       scaleFactor: textScaleFactor,
     );
-    final scaledTextHeight = painter.height;
-    final scaledLineHeight = painter.preferredLineHeight;
-    final numberOfLines =
-        max(height ~/ scaledLineHeight, scaledTextHeight ~/ scaledLineHeight);
-    return TextRenderingSize(numberOfLines, scaledLineHeight, scaledTextHeight);
+    final numberOfLines = max(
+      height ~/ painter.preferredLineHeight,
+      painter.height ~/ painter.preferredLineHeight,
+    );
+    return TextRenderingSize(painter, numberOfLines);
   }
 }
 
 class TextRenderingSize {
   final int numberOfLines;
-  final double scaledLineHeight, scaledTextHeight;
+  final TextPainter textPainter;
+  double get scaledLineHeight => textPainter.preferredLineHeight;
+  double get scaledTextHeight => textPainter.height;
   const TextRenderingSize(
-      this.numberOfLines, this.scaledLineHeight, this.scaledTextHeight);
+    this.textPainter,
+    this.numberOfLines,
+  );
+  @override
+  String toString() =>
+      'TextRenderingSize: {numberOfLines: $numberOfLines, scaledTextHeight: $scaledTextHeight, scaledLineHeight: $scaledLineHeight}';
 }

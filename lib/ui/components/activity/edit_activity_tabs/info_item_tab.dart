@@ -20,10 +20,11 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
     final infoItem = activity.infoItem;
 
     Future onTap() async {
-      final result = await showViewDialog<Type>(
-        context: context,
-        builder: (context) => SelectInfoTypeDialog(
-          infoItemType: activity.infoItem.runtimeType,
+      final result = await Navigator.of(context).push<Type>(
+        MaterialPageRoute(
+          builder: (context) => SelectInfoTypePage(
+            infoItemType: activity.infoItem.runtimeType,
+          ),
         ),
       );
       if (result != null) {
@@ -198,9 +199,13 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
   }
 
   void _handleEditQuestionResult(final Question oldQuestion) async {
-    final result = await showViewDialog<QuestionResult>(
-      context: context,
-      builder: (context) => EditQuestionDialog(question: oldQuestion),
+    final result = await Navigator.of(context).push<QuestionResult>(
+      MaterialPageRoute(
+        builder: (_) => CopiedAuthProviders(
+          blocContext: context,
+          child: EditQuestionPage(question: oldQuestion),
+        ),
+      ),
     );
 
     if (result != null && result.question != oldQuestion) {
@@ -223,9 +228,13 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
   }
 
   void _handleNewQuestion() async {
-    final result = await showViewDialog<QuestionResult>(
-      context: context,
-      builder: (context) => EditQuestionDialog(),
+    final result = await Navigator.of(context).push<QuestionResult>(
+      MaterialPageRoute(
+        builder: (_) => CopiedAuthProviders(
+          blocContext: context,
+          child: EditQuestionPage(),
+        ),
+      ),
     );
 
     if (result != null && result.isNotEmpty) {
@@ -310,16 +319,7 @@ class EditNoteWidget extends StatelessWidget {
         const SizedBox(height: 16.0),
         Expanded(
           child: GestureDetector(
-            onTap: () async {
-              final result = await showViewDialog<String>(
-                context: context,
-                builder: (context) => EditNoteDialog(text: infoItem.text),
-              );
-              if (result != null && result != infoItem.text) {
-                BlocProvider.of<EditActivityBloc>(context).add(ReplaceActivity(
-                    activity.copyWith(infoItem: NoteInfoItem(result))));
-              }
-            },
+            onTap: () => editText(context, activity, infoItem),
             child: Container(
               decoration: whiteBoxDecoration,
               child: NoteBlock(
@@ -335,8 +335,39 @@ class EditNoteWidget extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 56.0),
       ]),
     );
+  }
+
+  Future editText(
+    BuildContext context,
+    Activity activity,
+    NoteInfoItem infoItem,
+  ) async {
+    final result = await Navigator.of(context).push<String>(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => CopiedAuthProviders(
+          blocContext: context,
+          child: EditNotePage(text: infoItem.text),
+        ),
+        settings: RouteSettings(name: 'EditNotePage'),
+        transitionsBuilder: (_, animation, __, child) => FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          ),
+          child: child,
+        ),
+      ),
+    );
+    if (result != null && result != infoItem.text) {
+      BlocProvider.of<EditActivityBloc>(context).add(
+        ReplaceActivity(
+          activity.copyWith(
+            infoItem: NoteInfoItem(result),
+          ),
+        ),
+      );
+    }
   }
 }

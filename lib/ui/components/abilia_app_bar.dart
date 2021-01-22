@@ -5,6 +5,7 @@ import 'package:seagull/ui/all.dart';
 class NewAbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final IconData iconData;
+  final Widget trailing;
   final PreferredSizeWidget bottom;
 
   @override
@@ -15,6 +16,7 @@ class NewAbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
     @required this.title,
     @required this.iconData,
     this.bottom,
+    this.trailing,
   })  : preferredSize =
             Size.fromHeight(68.0 + (bottom?.preferredSize?.height ?? 0.0)),
         super(key: key);
@@ -37,6 +39,17 @@ class NewAbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     } else {
       content = Center(child: content);
+    }
+    if (trailing != null) {
+      content = Stack(
+        children: [
+          content,
+          Align(
+            alignment: Alignment.centerRight,
+            child: trailing,
+          )
+        ],
+      );
     }
 
     return AnnotatedRegion<SystemUiOverlayStyle>(

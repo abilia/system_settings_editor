@@ -8,12 +8,14 @@ class VerticalScrollArrows extends StatelessWidget {
   final ScrollController controller;
   final Widget child;
   final bool scrollbarAlwaysShown;
+  final double downCollapseMargin;
 
   const VerticalScrollArrows({
     Key key,
     @required this.controller,
     @required this.child,
     this.scrollbarAlwaysShown = false,
+    this.downCollapseMargin = _Arrow.defaultCollapseMargin,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,10 @@ class VerticalScrollArrows extends StatelessWidget {
           child: child,
         ),
         ArrowUp(controller: controller),
-        ArrowDown(controller: controller),
+        ArrowDown(
+          controller: controller,
+          collapseMargin: downCollapseMargin,
+        ),
       ],
     );
   }
