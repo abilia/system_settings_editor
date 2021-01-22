@@ -1083,7 +1083,7 @@ class DA extends Translated {
   final String next = 'Næste';
 
   @override
-  final String ok = 'Ok';
+  final String ok = 'Okay';
 
   @override
   final String newActivityChoice = 'Helt ny';

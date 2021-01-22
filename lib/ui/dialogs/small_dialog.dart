@@ -49,11 +49,11 @@ class SmallDialog extends StatelessWidget {
                   color: AbiliaColors.black80,
                   child: Center(child: heading),
                 ),
-                if (expanded)
-                  Flexible(
-                    child: bodyContainer,
-                  ),
-                if (!expanded) bodyContainer,
+                expanded
+                    ? Flexible(
+                        child: bodyContainer,
+                      )
+                    : bodyContainer,
                 BottomNavigation(
                   backNavigationWidget: backNavigationWidget,
                   forwardNavigationWidget: forwardNavigationWidget,
