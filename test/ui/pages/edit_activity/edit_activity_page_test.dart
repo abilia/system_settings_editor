@@ -2679,8 +2679,6 @@ text''';
       await tester.verifyTts(find.text(content), exact: content);
       await tester.tap(find.text(content));
       await tester.pumpAndSettle();
-
-      await tester.verifyTts(find.byType(RemoveButton), exact: translate.clear);
     });
   });
 }

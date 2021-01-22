@@ -18,6 +18,9 @@ class EditNotePage extends StatefulWidget {
 class _EditNotePageState extends State<EditNotePage> {
   TextEditingController _textEditingController;
   ScrollController _scrollController;
+  static const _bottomBottomNavigationHeight = 84.0;
+  static const _bottomPadding =
+      EdgeInsets.only(bottom: _bottomBottomNavigationHeight);
 
   @override
   void initState() {
@@ -39,6 +42,7 @@ class _EditNotePageState extends State<EditNotePage> {
 
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     return Theme(
       data: abiliaTheme.copyWith(
         inputDecorationTheme: InputDecorationTheme(
@@ -47,64 +51,70 @@ class _EditNotePageState extends State<EditNotePage> {
           enabledBorder: transparentOutlineInputBorder,
         ),
       ),
-      child: ViewDialog(
-        leftPadding: 0.0,
-        rightPadding: 0.0,
-        verticalPadding: 0.0,
-        backgroundColor: AbiliaColors.white,
-        onOk: () => Navigator.of(context).maybePop(_textEditingController.text),
-        deleteButton: AnimatedPositioned(
-          duration: 200.milliseconds(),
-          left: _textEditingController.text.isEmpty ? -100.0 : 12.0,
-          child: RemoveButton(
-            onTap: () => _textEditingController.text = '',
-            icon: Icon(
-              AbiliaIcons.delete,
-              color: AbiliaColors.white,
-              size: smallIconSize,
-            ),
-            text: Translator.of(context).translate.clear,
+      child: Scaffold(
+        appBar: NewAbiliaAppBar(
+          iconData: AbiliaIcons.edit,
+          title: translate.enterText,
+        ),
+        bottomSheet: BottomNavigation(
+          backNavigationWidget: GreyButton(
+            icon: AbiliaIcons.close_program,
+            text: translate.cancel,
+            onPressed: Navigator.of(context).maybePop,
+          ),
+          forwardNavigationWidget: GreenButton(
+            key: TestKey.okDialog,
+            icon: AbiliaIcons.ok,
+            text: translate.ok,
+            onPressed: _textEditingController.text.isNotEmpty
+                ? () =>
+                    Navigator.of(context).maybePop(_textEditingController.text)
+                : null,
           ),
         ),
-        child: LayoutBuilder(builder: (context, constraints) {
-          final textRenderSize =
-              _textEditingController.text.calulcateTextRenderSize(
-            constraints: constraints,
-            textStyle: abiliaTextTheme.bodyText1,
-            padding: EditNotePage.padding,
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-          );
-          return VerticalScrollArrows(
-            controller: _scrollController,
-            scrollbarAlwaysShown: true,
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              reverse: true,
+        body: Padding(
+          padding: _bottomPadding,
+          child: LayoutBuilder(builder: (context, constraints) {
+            final textRenderSize =
+                _textEditingController.text.calulcateTextRenderSize(
+              constraints: constraints,
+              textStyle: abiliaTextTheme.bodyText1,
               padding: EditNotePage.padding,
-              child: Stack(
-                children: <Widget>[
-                  Lines(
-                    lineHeight: textRenderSize.scaledLineHeight,
-                    numberOfLines: textRenderSize.numberOfLines,
-                  ),
-                  ConstrainedBox(
-                    constraints: constraints.copyWith(
-                        maxHeight: textRenderSize.scaledTextHeight),
-                    child: TextField(
-                      key: TestKey.input,
-                      style: abiliaTextTheme.bodyText1,
-                      controller: _textEditingController,
-                      autofocus: true,
-                      maxLines: null,
-                      expands: true,
-                      scrollPhysics: NeverScrollableScrollPhysics(),
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            );
+            return VerticalScrollArrows(
+              controller: _scrollController,
+              scrollbarAlwaysShown: true,
+              downCollapseMargin: _bottomBottomNavigationHeight,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                padding: EditNotePage.padding.add(_bottomPadding),
+                child: Stack(
+                  children: <Widget>[
+                    Lines(
+                      lineHeight: textRenderSize.scaledLineHeight,
+                      numberOfLines: textRenderSize.numberOfLines,
                     ),
-                  ),
-                ],
+                    ConstrainedBox(
+                      constraints: constraints.copyWith(
+                        maxHeight: textRenderSize.scaledTextHeight,
+                      ),
+                      child: TextField(
+                        key: TestKey.input,
+                        style: abiliaTextTheme.bodyText1,
+                        controller: _textEditingController,
+                        autofocus: true,
+                        maxLines: null,
+                        expands: true,
+                        scrollPhysics: NeverScrollableScrollPhysics(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }

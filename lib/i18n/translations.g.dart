@@ -275,6 +275,8 @@ abstract class Translated {
 
   final String typeSomething = 'Type something…';
 
+  final String enterText = 'Enter text';
+
   final String clear = 'Clear';
 
   final String selectFromLibrary = 'Select from library';

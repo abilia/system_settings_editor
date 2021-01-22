@@ -8,12 +8,14 @@ class VerticalScrollArrows extends StatelessWidget {
   final ScrollController controller;
   final Widget child;
   final bool scrollbarAlwaysShown;
+  final double downCollapseMargin;
 
   const VerticalScrollArrows({
     Key key,
     @required this.controller,
     @required this.child,
     this.scrollbarAlwaysShown = false,
+    this.downCollapseMargin = _defaultCollapseMargin,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,10 @@ class VerticalScrollArrows extends StatelessWidget {
           child: child,
         ),
         ArrowUp(controller: controller),
-        ArrowDown(controller: controller),
+        ArrowDown(
+          controller: controller,
+          collapseMargin: downCollapseMargin,
+        ),
       ],
     );
   }
@@ -38,7 +43,7 @@ class ArrowLeft extends StatelessWidget {
   const ArrowLeft({
     Key key,
     this.controller,
-    this.collapseMargin = _Arrow.defaultCollapseMargin,
+    this.collapseMargin = _defaultCollapseMargin,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => Align(
@@ -63,7 +68,7 @@ class ArrowUp extends StatelessWidget {
   const ArrowUp({
     Key key,
     this.controller,
-    this.collapseMargin = _Arrow.defaultCollapseMargin,
+    this.collapseMargin = _defaultCollapseMargin,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => Align(
@@ -87,7 +92,7 @@ class ArrowRight extends StatelessWidget {
   const ArrowRight({
     Key key,
     this.controller,
-    this.collapseMargin = _Arrow.defaultCollapseMargin,
+    this.collapseMargin = _defaultCollapseMargin,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => Align(
@@ -112,7 +117,7 @@ class ArrowDown extends StatelessWidget {
   const ArrowDown({
     Key key,
     this.controller,
-    this.collapseMargin = _Arrow.defaultCollapseMargin,
+    this.collapseMargin = _defaultCollapseMargin,
   }) : super(key: key);
 
   @override
@@ -131,11 +136,12 @@ class ArrowDown extends StatelessWidget {
       );
 }
 
+const double _defaultCollapseMargin = 2;
+
 class _Arrow extends StatefulWidget {
   static const Radius radius = Radius.circular(100);
   static const double arrowSize = 48.0;
   static const double translationPixels = arrowSize / 2;
-  static const double defaultCollapseMargin = 2;
   final IconData icon;
   final BorderRadiusGeometry borderRadius;
   final double width, heigth;
