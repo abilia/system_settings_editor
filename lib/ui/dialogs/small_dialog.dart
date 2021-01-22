@@ -6,21 +6,38 @@ class SmallDialog extends StatelessWidget {
   final Widget forwardNavigationWidget;
   final Widget heading;
   final Widget body;
+  final EdgeInsets bodyPadding;
+  final bool expanded;
   const SmallDialog({
     Key key,
     this.heading,
     this.body,
+    this.expanded = false,
     @required this.backNavigationWidget,
     this.forwardNavigationWidget,
+    this.bodyPadding = const EdgeInsets.symmetric(
+      horizontal: 20,
+      vertical: 64,
+    ),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bodyContainer = Container(
+      color: AbiliaColors.white110,
+      padding: bodyPadding,
+      child: Center(
+        child: DefaultTextStyle(
+          style: abiliaTextTheme.bodyText1,
+          child: body,
+        ),
+      ),
+    );
     return Material(
       type: MaterialType.transparency,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 48),
           child: ClipRRect(
             borderRadius: borderRadius,
             child: Column(
@@ -32,19 +49,11 @@ class SmallDialog extends StatelessWidget {
                   color: AbiliaColors.black80,
                   child: Center(child: heading),
                 ),
-                Container(
-                  color: AbiliaColors.white110,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 64,
+                if (expanded)
+                  Flexible(
+                    child: bodyContainer,
                   ),
-                  child: Center(
-                    child: DefaultTextStyle(
-                      style: abiliaTextTheme.bodyText1,
-                      child: body,
-                    ),
-                  ),
-                ),
+                if (!expanded) bodyContainer,
                 BottomNavigation(
                   backNavigationWidget: backNavigationWidget,
                   forwardNavigationWidget: forwardNavigationWidget,

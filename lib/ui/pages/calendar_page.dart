@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/models/eye_button_settings.dart';
 import 'package:seagull/ui/all.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -219,7 +220,7 @@ class CalendarBottomBar extends StatelessWidget {
             children: <Widget>[
               Align(
                 alignment: Alignment.centerLeft,
-                child: EyeButton(currentView: currentView),
+                child: EyeButton(currentCalendarType: currentView),
               ),
               Positioned(
                 child: Center(
@@ -249,27 +250,37 @@ class CalendarBottomBar extends StatelessWidget {
 class EyeButton extends StatelessWidget {
   const EyeButton({
     Key key,
-    @required this.currentView,
+    @required this.currentCalendarType,
   }) : super(key: key);
 
-  final CalendarType currentView;
+  final CalendarType currentCalendarType;
 
   @override
   Widget build(BuildContext context) {
-    return ActionButton(
-      child: Icon(AbiliaIcons.show),
-      onPressed: () async {
-        final result = await showViewDialog<CalendarType>(
-          context: context,
-          builder: (context) => ChangeCalendarDialog(
-            currentViewType: currentView,
-          ),
-        );
-        if (result != null) {
-          BlocProvider.of<CalendarViewBloc>(context)
-              .add(CalendarViewChanged(result));
-        }
-      },
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (context, state) => ActionButton(
+        child: Icon(AbiliaIcons.show),
+        onPressed: () async {
+          final settings = await showViewDialog<EyeButtonSettings>(
+            useSafeArea: false,
+            context: context,
+            builder: (context) => EyeButtonDialog(
+              currentCalendarType: currentCalendarType,
+              currentDotsInTimepillar: state.dotsInTimepillar,
+            ),
+          );
+          if (settings != null) {
+            if (currentCalendarType != settings.calendarType) {
+              await BlocProvider.of<CalendarViewBloc>(context)
+                  .add(CalendarViewChanged(settings.calendarType));
+            }
+            if (state.dotsInTimepillar != settings.dotsInTimepillar) {
+              await BlocProvider.of<SettingsBloc>(context)
+                  .add(DotsInTimepillarUpdated(settings.dotsInTimepillar));
+            }
+          }
+        },
+      ),
     );
   }
 }
