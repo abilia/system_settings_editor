@@ -20,12 +20,23 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AbiliaAppBar(title: Translator.of(context).translate.menu),
+      appBar: NewAbiliaAppBar(
+        title: Translator.of(context).translate.menu,
+        iconData: AbiliaIcons.app_menu,
+      ),
       body: ListView.separated(
-          padding: const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 20.0),
-          itemBuilder: (context, i) => widgets[i],
-          itemCount: widgets.length,
-          separatorBuilder: (context, index) => const SizedBox(height: 8.0)),
+        padding: const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 20.0),
+        itemBuilder: (context, i) => widgets[i],
+        itemCount: widgets.length,
+        separatorBuilder: (context, index) => const SizedBox(height: 8.0),
+      ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: GreyButton(
+          icon: AbiliaIcons.close_program,
+          text: Translator.of(context).translate.close,
+          onPressed: Navigator.of(context).pop,
+        ),
+      ),
     );
   }
 }

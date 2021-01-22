@@ -13,21 +13,23 @@ import 'package:seagull/ui/all.dart';
 class LogoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     return Scaffold(
-      appBar: AbiliaAppBar(
+      appBar: NewAbiliaAppBar(
         title: Translator.of(context).translate.logout,
-        closeIcon: AbiliaIcons.navigation_previous,
+        iconData: AbiliaIcons.power_off_on,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 32.0),
-            ProfilePictureNameAndEmail(),
-            Spacer(),
-            LogoutButton(),
-          ],
+        padding: const EdgeInsets.only(top: 64.0),
+        child: Center(child: ProfilePictureNameAndEmail()),
+      ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: GreyButton(
+          icon: AbiliaIcons.close_program,
+          text: translate.cancel,
+          onPressed: Navigator.of(context).maybePop,
         ),
+        forwardNavigationWidget: LogoutButton(),
       ),
     );
   }
