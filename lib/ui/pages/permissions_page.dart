@@ -16,7 +16,7 @@ class PermissionsPage extends StatelessWidget {
       body: BlocBuilder<PermissionBloc, PermissionState>(
         builder: (context, state) => Padding(
           padding: const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 0),
-          child: Column(
+          child: ListView(
             children: state.status.entries
                 .map((e) => PermissionSetting(e))
                 .expand((e) => [e, const SizedBox(height: 12.0)])

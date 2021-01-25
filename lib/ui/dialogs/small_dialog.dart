@@ -44,11 +44,12 @@ class SmallDialog extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  height: 68,
-                  color: AbiliaColors.black80,
-                  child: Center(child: heading),
-                ),
+                if (heading != null)
+                  Container(
+                    height: 68,
+                    color: AbiliaColors.black80,
+                    child: Center(child: heading),
+                  ),
                 expanded
                     ? Flexible(
                         child: bodyContainer,
