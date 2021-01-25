@@ -11,9 +11,9 @@ class AboutPage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AbiliaAppBar(
+      appBar: NewAbiliaAppBar(
         title: translate.about,
-        closeIcon: AbiliaIcons.navigation_previous,
+        iconData: AbiliaIcons.information,
       ),
       body: DefaultTextStyle(
         style: textTheme.bodyText1,
@@ -59,6 +59,9 @@ class AboutPage extends StatelessWidget {
             ].map(_textToTts).map(_addPadding),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: PreviousButton(),
       ),
     );
   }

@@ -44,11 +44,12 @@ class SmallDialog extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  height: 68,
-                  color: AbiliaColors.black80,
-                  child: Center(child: heading),
-                ),
+                if (heading != null)
+                  Container(
+                    height: 68,
+                    color: AbiliaColors.black80,
+                    child: Center(child: heading),
+                  ),
                 expanded
                     ? Flexible(
                         child: bodyContainer,
@@ -79,10 +80,6 @@ class ErrorDialog extends StatelessWidget {
           iconData: AbiliaIcons.ir_error,
         ),
         body: Tts(child: Text(text)),
-        backNavigationWidget: GreyButton(
-          text: Translator.of(context).translate.back,
-          icon: AbiliaIcons.navigation_previous,
-          onPressed: Navigator.of(context).maybePop,
-        ),
+        backNavigationWidget: PreviousButton(),
       );
 }

@@ -129,7 +129,8 @@ void main() {
 
     final permissionButtonFinder = find.byType(PermissionPickField);
     final permissionPageFinder = find.byType(PermissionsPage);
-    final permissionSwitchFinder = find.byType(PermissionSetting);
+    final permissionSwitchFinder =
+        find.byType(PermissionSetting, skipOffstage: false);
 
     testWidgets('Has permission button', (WidgetTester tester) async {
       await tester.pumpWidget(wrapWithMaterialApp(MenuPage()));
@@ -258,12 +259,15 @@ void main() {
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
-      for (final permission in PermissionBloc.allPermissions) {
+      final perms = PermissionBloc.allPermissions;
+
+      for (final permission in perms) {
         await tester.tap(find.byKey(ObjectKey(permission)));
+        await tester.scrollDown();
         await tester.pumpAndSettle();
       }
 
-      expect(openAppSettingsCalls, PermissionBloc.allPermissions.length - 1);
+      expect(openAppSettingsCalls, perms.length - 1);
       expect(openSystemAlertSettingCalls, 1);
     });
 
@@ -368,4 +372,12 @@ void main() {
       expect(find.byType(RequestFullscreenNotificationButton), findsNothing);
     });
   });
+}
+
+extension on WidgetTester {
+  Future scrollDown({double dy = -30.0}) async {
+    final center = getCenter(find.byType(PermissionsPage));
+    await dragFrom(center, Offset(0.0, dy));
+    await pump();
+  }
 }

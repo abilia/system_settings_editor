@@ -20,12 +20,23 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AbiliaAppBar(title: Translator.of(context).translate.menu),
+      appBar: NewAbiliaAppBar(
+        title: Translator.of(context).translate.menu,
+        iconData: AbiliaIcons.app_menu,
+      ),
       body: ListView.separated(
-          padding: const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 20.0),
-          itemBuilder: (context, i) => widgets[i],
-          itemCount: widgets.length,
-          separatorBuilder: (context, index) => const SizedBox(height: 8.0)),
+        padding: const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 20.0),
+        itemBuilder: (context, i) => widgets[i],
+        itemCount: widgets.length,
+        separatorBuilder: (context, index) => const SizedBox(height: 8.0),
+      ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: GreyButton(
+          icon: AbiliaIcons.close_program,
+          text: Translator.of(context).translate.close,
+          onPressed: Navigator.of(context).pop,
+        ),
+      ),
     );
   }
 }
@@ -108,18 +119,15 @@ class LongPressInfoDialog extends StatelessWidget {
     final theme = darkButtonTheme;
     return Theme(
       data: theme,
-      child: ViewDialog(
-        child: Column(
+      child: SmallDialog(
+        bodyPadding: EdgeInsets.symmetric(horizontal: 28),
+        expanded: true,
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
-              height: 100,
-            ),
             Stack(children: [
-              Transform.scale(
-                scale: 0.85,
-                child: buildPreviewActivityCard(translate),
-              ),
+              buildPreviewActivityCard(translate),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
@@ -132,7 +140,7 @@ class LongPressInfoDialog extends StatelessWidget {
               ),
             ]),
             SizedBox(
-              height: 85,
+              height: 80,
             ),
             Tts(
               child: Text(
@@ -146,10 +154,18 @@ class LongPressInfoDialog extends StatelessWidget {
                 child: Text(
                   translate.longPressInfoText,
                   textAlign: TextAlign.center,
+                  style: abiliaTextTheme.bodyText2.copyWith(
+                    color: AbiliaColors.black75,
+                  ),
                 ),
               ),
             ),
           ],
+        ),
+        backNavigationWidget: GreyButton(
+          text: Translator.of(context).translate.close,
+          icon: AbiliaIcons.close_program,
+          onPressed: () => Navigator.of(context).maybePop(false),
         ),
       ),
     );
