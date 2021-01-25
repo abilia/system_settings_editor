@@ -99,7 +99,7 @@ class EditActivityListners extends StatelessWidget {
       listeners: [
         BlocListener<EditActivityBloc, EditActivityState>(
           listenWhen: (_, current) => current.sucessfullSave == true,
-          listener: (context, state) => Navigator.of(context).maybePop(),
+          listener: (context, state) => Navigator.of(context).maybePop(true),
         ),
         BlocListener<EditActivityBloc, EditActivityState>(
           listenWhen: (_, current) => current.saveErrors.isNotEmpty,
