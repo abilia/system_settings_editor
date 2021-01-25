@@ -80,10 +80,6 @@ class ErrorDialog extends StatelessWidget {
           iconData: AbiliaIcons.ir_error,
         ),
         body: Tts(child: Text(text)),
-        backNavigationWidget: GreyButton(
-          text: Translator.of(context).translate.back,
-          icon: AbiliaIcons.navigation_previous,
-          onPressed: Navigator.of(context).maybePop,
-        ),
+        backNavigationWidget: PreviousButton(),
       );
 }
