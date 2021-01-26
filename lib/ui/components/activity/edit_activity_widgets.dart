@@ -332,7 +332,7 @@ class AlarmWidget extends StatelessWidget {
                           alarm: alarm.typeSeagull,
                         ),
                       ),
-                      settings: RouteSettings(name: 'MenuPage'),
+                      settings: RouteSettings(name: 'SelectAlarmTypePage'),
                     ));
                     if (result != null) {
                       BlocProvider.of<EditActivityBloc>(context).add(
