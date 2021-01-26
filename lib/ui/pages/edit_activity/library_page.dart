@@ -9,14 +9,14 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     @required this.appBar,
     @required this.onOk,
     @required this.onCancel,
-    @required this.libraryfullPageGenerator,
+    @required this.selectedItemGenerator,
     @required this.libraryItemGenerator,
     @required this.emptyLibraryMessage,
   }) : super(key: key);
   final PreferredSizeWidget appBar;
   final Function(Sortable<T>) onOk;
   final VoidCallback onCancel;
-  final LibraryItemGenerator<T> libraryfullPageGenerator;
+  final LibraryItemGenerator<T> selectedItemGenerator;
   final LibraryItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
 
@@ -38,7 +38,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
               ),
               Expanded(
                 child: state.isSelected
-                    ? libraryfullPageGenerator(state.selected)
+                    ? selectedItemGenerator(state.selected)
                     : SortableLibrary<T>(
                         libraryItemGenerator,
                         emptyLibraryMessage,
@@ -210,16 +210,9 @@ class SortableLibrary<T extends SortableData> extends StatelessWidget {
             archiveState.allByFolder[archiveState.currentFolderId] ?? [];
         currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
         if (currentFolderContent.isEmpty) {
-          return Align(
-            alignment: Alignment.topCenter,
-            child: Tts(
-              child: Text(
-                archiveState.currentFolderId == null
-                    ? emptyLibraryMessage
-                    : Translator.of(context).translate.emptyFolder,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-            ),
+          return EmptyLibraryMessage(
+            emptyLibraryMessage: emptyLibraryMessage,
+            rootFolder: archiveState.currentFolderId == null,
           );
         }
         return GridView.count(
@@ -258,6 +251,38 @@ class SortableLibrary<T extends SortableData> extends StatelessWidget {
               .toList(),
         );
       },
+    );
+  }
+}
+
+class EmptyLibraryMessage extends StatelessWidget {
+  const EmptyLibraryMessage({
+    Key key,
+    @required this.emptyLibraryMessage,
+    @required this.rootFolder,
+  }) : super(key: key);
+
+  final String emptyLibraryMessage;
+  final bool rootFolder;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 60.0),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Tts(
+          child: Text(
+            rootFolder
+                ? emptyLibraryMessage
+                : Translator.of(context).translate.emptyFolder,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                .copyWith(color: AbiliaColors.black75),
+          ),
+        ),
+      ),
     );
   }
 }

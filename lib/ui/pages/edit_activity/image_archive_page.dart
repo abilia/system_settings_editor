@@ -15,7 +15,7 @@ class ImageArchivePage extends StatelessWidget {
       ),
       libraryItemGenerator: (Sortable<ImageArchiveData> imageArchive) =>
           ArchiveImage(sortable: imageArchive),
-      libraryfullPageGenerator: (Sortable<ImageArchiveData> imageArchive) =>
+      selectedItemGenerator: (Sortable<ImageArchiveData> imageArchive) =>
           FullScreenArchiveImage(
         selected: imageArchive.data,
       ),

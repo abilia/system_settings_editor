@@ -1,6 +1,29 @@
 import 'package:flutter/material.dart';
+
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+
+class ChecklistLibraryPage extends StatelessWidget {
+  const ChecklistLibraryPage({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    return LibraryPage<ChecklistData>(
+      appBar: NewAbiliaAppBar(
+        iconData: AbiliaIcons.past_picture_from_windows_clipboard,
+        title: translate.selectPicture,
+      ),
+      libraryItemGenerator: (Sortable<ChecklistData> note) =>
+          LibraryChecklist(checklist: note.data.checklist),
+      selectedItemGenerator: (Sortable<ChecklistData> note) =>
+          FullScreenCheckList(checklist: note.data.checklist),
+      emptyLibraryMessage: translate.noImages,
+      onCancel: Navigator.of(context).maybePop,
+      onOk: (selected) =>
+          Navigator.of(context).pop<Checklist>(selected.data.checklist),
+    );
+  }
+}
 
 class LibraryChecklist extends StatelessWidget {
   final Checklist checklist;
@@ -49,4 +72,24 @@ class LibraryChecklist extends StatelessWidget {
       ),
     );
   }
+}
+
+class FullScreenCheckList extends StatelessWidget {
+  const FullScreenCheckList({
+    Key key,
+    @required this.checklist,
+  }) : super(key: key);
+  final Checklist checklist;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        margin: const EdgeInsets.only(
+            left: 12.0, top: 24.0, right: 16.0, bottom: 12.0),
+        decoration: whiteBoxDecoration,
+        child: CheckListView(
+          checklist,
+          preview: true,
+          padding: const EdgeInsets.all(12.0),
+        ),
+      );
 }

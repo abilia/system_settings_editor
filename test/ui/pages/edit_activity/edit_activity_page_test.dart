@@ -1257,7 +1257,7 @@ text''';
         await tester.pumpAndSettle();
         expect(find.byType(typeOf<SortableLibrary<ChecklistData>>()),
             findsOneWidget);
-        expect(find.byType(LibraryChecklist), findsWidgets);
+        expect(find.byType(ChecklistLibraryPage), findsWidgets);
         expect(find.text(title1), findsOneWidget);
       });
 
@@ -2643,6 +2643,8 @@ text''';
         await tester.pumpAndSettle();
         await tester.verifyTts(find.byType(LibraryChecklist), exact: title1);
         await tester.tap(find.byType(LibraryChecklist));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
         await tester.verifyTts(find.text(item1Name), exact: item1Name);
         await tester.verifyTts(find.byIcon(AbiliaIcons.new_icon),

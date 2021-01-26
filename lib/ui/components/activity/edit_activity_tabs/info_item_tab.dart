@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/edit_activity/note_library_page.dart';
 
 class InfoItemTab extends StatelessWidget with EditActivityTab {
   InfoItemTab({
@@ -113,14 +112,13 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                 color: AbiliaColors.black,
               ),
               onPressed: () async {
-                final selectedChecklist = await showViewDialog<Checklist>(
-                  context: context,
-                  builder: (context) => SortableLibraryPage<ChecklistData>(
-                    libraryItemGenerator: (Sortable<ChecklistData> s) =>
-                        LibraryChecklist(
-                      checklist: s.data.checklist,
+                final selectedChecklist =
+                    await Navigator.of(context).push<Checklist>(
+                  MaterialPageRoute(
+                    builder: (_) => CopiedAuthProviders(
+                      blocContext: context,
+                      child: const ChecklistLibraryPage(),
                     ),
-                    emptyLibraryMessage: translate.noChecklists,
                   ),
                 );
                 if (selectedChecklist != null &&

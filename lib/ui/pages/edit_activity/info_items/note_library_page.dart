@@ -16,7 +16,7 @@ class NoteLibraryPage extends StatelessWidget {
       ),
       libraryItemGenerator: (Sortable<NoteData> note) =>
           LibraryNote(content: note.data.text),
-      libraryfullPageGenerator: (Sortable<NoteData> note) => FullScreenNote(
+      selectedItemGenerator: (Sortable<NoteData> note) => FullScreenNote(
         noteData: note.data,
       ),
       emptyLibraryMessage: translate.noImages,
