@@ -39,6 +39,7 @@ void main() {
 
   final okInkWellFinder = find.byKey(ObjectKey(TestKey.okDialog));
   final closeButtonFinder = find.byKey(TestKey.closeDialog);
+  final okButtonFinder = find.byType(OkButton);
 
   final deleteButtonFinder = find.byIcon(AbiliaIcons.delete_all_clear);
   final deleteViewDialogFinder = find.byType(ConfirmActivityActionDialog);
@@ -192,7 +193,7 @@ void main() {
   });
 
   group('Change alarm', () {
-    final alarmDialogFinder = find.byType(SelectAlarmDialog);
+    final alarmDialogFinder = find.byType(SelectAlarmPage);
     final vibrationRadioButtonFinder =
         find.byKey(ObjectKey(AlarmType.Vibration));
     final noAlarmIconFinder = find.byIcon(AbiliaIcons.handi_no_alarm_vibration);
@@ -207,7 +208,7 @@ void main() {
       await navigateToActivityPage(tester);
       // Act
       await tester.tap(alarmButtonFinder);
-      await tester.pump();
+      await tester.pumpAndSettle();
       // Assert
       expect(alarmDialogFinder, findsOneWidget);
     });
@@ -262,10 +263,10 @@ void main() {
       // Act
       await navigateToActivityPage(tester);
       await tester.tap(alarmButtonFinder);
-      await tester.pump();
+      await tester.pumpAndSettle();
       await tester.tap(vibrationRadioButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(okInkWellFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert
@@ -344,7 +345,7 @@ void main() {
       // Act
       await navigateToActivityPage(tester);
       await tester.tap(alarmButtonFinder);
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       // Assert -- alarm At Start Switch and ok button is disabled
       expect(
@@ -352,7 +353,7 @@ void main() {
               .widget<Switch>(find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
               .onChanged,
           isNull);
-      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNull);
+      expect(tester.widget<OkButton>(okButtonFinder).onPressed, isNull);
     });
 
     testWidgets('Alarm on start time changes', (WidgetTester tester) async {
@@ -366,12 +367,12 @@ void main() {
       // Act
       await navigateToActivityPage(tester);
       await tester.tap(alarmButtonFinder);
-      await tester.pump();
+      await tester.pumpAndSettle();
       await tester.tap(alarmAtStartSwichFinder);
       await tester.pumpAndSettle();
 
       // Assert -- ok button is enabled
-      expect(tester.widget<InkWell>(okInkWellFinder).onTap, isNotNull);
+      expect(tester.widget<OkButton>(okButtonFinder).onPressed, isNotNull);
     });
   });
 
@@ -755,7 +756,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(alarmAtStartSwichFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(okButtonFinder);
         await tester.pumpAndSettle();
 
         // Assert
@@ -1185,7 +1186,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
       // Assert -- tts
       await tester.verifyTts(
-        find.byIcon(AbiliaIcons.handi_alarm_vibration),
+        find.byKey(ObjectKey(AlarmType.SoundAndVibration)),
         exact: translate.alarmAndVibration,
       );
       await tester.verifyTts(

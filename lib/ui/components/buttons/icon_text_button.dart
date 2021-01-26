@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:seagull/ui/all.dart';
 
 class IconAndTextButton extends StatelessWidget {
@@ -110,4 +111,47 @@ class NextButton extends StatelessWidget {
           onPressed: onPressed,
         ),
       );
+}
+
+class OkButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  const OkButton({
+    Key key,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GreenButton(
+      icon: AbiliaIcons.ok,
+      text: Translator.of(context).translate.ok,
+      onPressed: onPressed,
+    );
+  }
+}
+
+class PreviousButton extends StatelessWidget {
+  const PreviousButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GreyButton(
+      text: Translator.of(context).translate.back,
+      icon: AbiliaIcons.navigation_previous,
+      onPressed: Navigator.of(context).maybePop,
+    );
+  }
+}
+
+class CancelButton extends StatelessWidget {
+  const CancelButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GreyButton(
+      text: Translator.of(context).translate.cancel,
+      icon: AbiliaIcons.close_program,
+      onPressed: Navigator.of(context).maybePop,
+    );
+  }
 }

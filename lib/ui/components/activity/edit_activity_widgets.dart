@@ -324,12 +324,16 @@ class AlarmWidget extends StatelessWidget {
             text: Text(alarm.text(translator)),
             onTap: memoSettingsState.abilityToSelectAlarm
                 ? () async {
-                    final result = await showViewDialog<AlarmType>(
-                      context: context,
-                      builder: (context) => SelectAlarmTypeDialog(
-                        alarm: alarm.typeSeagull,
+                    final result = await Navigator.of(context)
+                        .push<AlarmType>(MaterialPageRoute(
+                      builder: (_) => CopiedAuthProviders(
+                        blocContext: context,
+                        child: SelectAlarmTypePage(
+                          alarm: alarm.typeSeagull,
+                        ),
                       ),
-                    );
+                      settings: RouteSettings(name: 'MenuPage'),
+                    ));
                     if (result != null) {
                       BlocProvider.of<EditActivityBloc>(context).add(
                           ReplaceActivity(activity.copyWith(
@@ -471,11 +475,13 @@ class RecurrenceWidget extends StatelessWidget {
           leading: Icon(recurrentType.iconData()),
           text: Text(recurrentType.text(translator)),
           onTap: () async {
-            final result = await showViewDialog<RecurrentType>(
-              context: context,
-              builder: (context) =>
-                  SelectRecurrenceDialog(recurrentType: recurrentType),
-            );
+            final result = await Navigator.of(context)
+                .push<RecurrentType>(MaterialPageRoute(
+              builder: (_) => SelectRecurrencePage(
+                recurrentType: recurrentType,
+              ),
+              settings: RouteSettings(name: 'SelectRecurrencePage'),
+            ));
             if (result != null) {
               if (state.storedRecurring &&
                   result == state.originalActivity.recurs.recurrance) {

@@ -4,13 +4,13 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class _SelectAlarmTypeDialog extends StatelessWidget {
+class _SelectAlarmTypePage extends StatelessWidget {
   final AlarmType alarm;
   final ValueChanged<AlarmType> onChanged;
   final List<Widget> trailing;
   final GestureTapCallback onOk;
 
-  const _SelectAlarmTypeDialog(
+  const _SelectAlarmTypePage(
       {Key key,
       @required this.alarm,
       @required this.onChanged,
@@ -20,81 +20,105 @@ class _SelectAlarmTypeDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final theme = abiliaTheme;
-    return ViewDialog(
-      heading:
-          Text(translate.selectAlarmType, style: theme.textTheme.headline6),
-      onOk: onOk,
-      leftPadding: 0.0,
-      rightPadding: 0.0,
-      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) => Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            ...[
-              if (memoSettingsState.activityDisplayAlarmOption)
-                AlarmType.SoundAndVibration,
-              if (memoSettingsState.activityDisplaySilentAlarmOption) ...[
-                AlarmType.Vibration,
-                AlarmType.Silent,
-              ],
-              if (memoSettingsState.activityDisplayNoAlarmOption)
-                AlarmType.NoAlarm,
-            ].map((type) => Alarm(type: type)).map(
-                  (alarmType) => RadioField(
-                    key: ObjectKey(alarmType.typeSeagull),
-                    groupValue: alarm,
-                    onChanged: onChanged,
-                    value: alarmType.typeSeagull,
-                    leading: Icon(alarmType.iconData()),
-                    text: Text(alarmType.text(translate)),
+    return Scaffold(
+      appBar: NewAbiliaAppBar(
+        title: translate.selectAlarmType,
+        iconData: AbiliaIcons.handi_alarm_vibration,
+      ),
+      body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        builder: (context, memoSettingsState) => Padding(
+          padding: const EdgeInsets.only(top: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              ...[
+                if (memoSettingsState.activityDisplayAlarmOption)
+                  AlarmType.SoundAndVibration,
+                if (memoSettingsState.activityDisplaySilentAlarmOption) ...[
+                  AlarmType.Vibration,
+                  AlarmType.Silent,
+                ],
+                if (memoSettingsState.activityDisplayNoAlarmOption)
+                  AlarmType.NoAlarm,
+              ].map((type) => Alarm(type: type)).map(
+                    (alarmType) => RadioField(
+                      key: ObjectKey(alarmType.typeSeagull),
+                      groupValue: alarm,
+                      onChanged: onChanged,
+                      value: alarmType.typeSeagull,
+                      leading: Icon(alarmType.iconData()),
+                      text: Text(alarmType.text(translate)),
+                    ),
                   ),
-                ),
-            ...trailing
-          ]
-              .map((widget) => widget is Divider
-                  ? widget
-                  : Padding(
-                      padding: const EdgeInsets.only(
-                        left: ViewDialog.leftPadding,
-                        right: ViewDialog.rightPadding,
-                        bottom: 8.0,
-                      ),
-                      child: widget,
-                    ))
-              .toList(),
+              ...trailing
+            ]
+                .map((widget) => widget is Divider
+                    ? widget
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                          left: ViewDialog.leftPadding,
+                          right: ViewDialog.rightPadding,
+                          bottom: 8.0,
+                        ),
+                        child: widget,
+                      ))
+                .toList(),
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: CancelButton(),
+        forwardNavigationWidget: OkButton(
+          onPressed: onOk,
         ),
       ),
     );
   }
 }
 
-class SelectAlarmTypeDialog extends StatelessWidget {
+class SelectAlarmTypePage extends StatefulWidget {
   final AlarmType alarm;
 
-  const SelectAlarmTypeDialog({Key key, @required this.alarm})
-      : super(key: key);
+  const SelectAlarmTypePage({Key key, @required this.alarm}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) => _SelectAlarmTypeDialog(
-      alarm: alarm, onChanged: Navigator.of(context).maybePop);
+  _SelectAlarmTypePageState createState() => _SelectAlarmTypePageState(alarm);
 }
 
-class SelectAlarmDialog extends StatefulWidget {
+class _SelectAlarmTypePageState extends State<SelectAlarmTypePage> {
+  AlarmType newAlarm;
+
+  _SelectAlarmTypePageState(this.newAlarm);
+  @override
+  Widget build(BuildContext context) => _SelectAlarmTypePage(
+        alarm: newAlarm,
+        onOk: newAlarm != widget.alarm
+            ? () => Navigator.of(context).maybePop(newAlarm)
+            : null,
+        onChanged: (v) {
+          setState(() {
+            newAlarm = v;
+          });
+        },
+      );
+}
+
+class SelectAlarmPage extends StatefulWidget {
   final Alarm alarm;
 
-  const SelectAlarmDialog({Key key, @required this.alarm}) : super(key: key);
+  const SelectAlarmPage({Key key, @required this.alarm}) : super(key: key);
 
   @override
-  _SelectAlarmDialogState createState() => _SelectAlarmDialogState(alarm);
+  _SelectAlarmPageState createState() => _SelectAlarmPageState(alarm);
 }
 
-class _SelectAlarmDialogState extends State<SelectAlarmDialog> {
+class _SelectAlarmPageState extends State<SelectAlarmPage> {
   Alarm alarm;
 
-  _SelectAlarmDialogState(this.alarm);
+  _SelectAlarmPageState(this.alarm);
   @override
   Widget build(BuildContext context) {
-    return _SelectAlarmTypeDialog(
+    return _SelectAlarmTypePage(
       alarm: alarm.typeSeagull,
       onOk: alarm != widget.alarm
           ? () => Navigator.of(context).maybePop(alarm)

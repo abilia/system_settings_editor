@@ -433,7 +433,7 @@ void main() {
         expect(find.byIcon(AbiliaIcons.handi_vibration), findsNothing);
         await tester.tap(find.byKey(TestKey.selectAlarm));
         await tester.pumpAndSettle();
-        expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+        expect(find.byType(SelectAlarmTypePage), findsOneWidget);
         await tester.tap(find.byKey(ObjectKey(AlarmType.Vibration)));
         await tester.pumpAndSettle();
         expect(find.text(translate.vibration), findsOneWidget);
@@ -458,7 +458,7 @@ void main() {
         expect(find.byIcon(AbiliaIcons.handi_alarm), findsNWidgets(2));
         await tester.tap(find.byKey(TestKey.selectAlarm));
         await tester.pumpAndSettle();
-        expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+        expect(find.byType(SelectAlarmTypePage), findsOneWidget);
         final radio =
             tester.widget<RadioField>(find.byKey(ObjectKey(AlarmType.Silent)));
         expect(radio.groupValue, AlarmType.Silent);
@@ -483,7 +483,7 @@ void main() {
         expect(find.byIcon(AbiliaIcons.handi_alarm_vibration), findsOneWidget);
         await tester.tap(find.byKey(TestKey.selectAlarm));
         await tester.pumpAndSettle();
-        expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+        expect(find.byType(SelectAlarmTypePage), findsOneWidget);
         final radio = tester
             .widget<RadioField>(find.byKey(ObjectKey(AlarmType.Vibration)));
         expect(radio.groupValue, AlarmType.SoundAndVibration);
@@ -1751,10 +1751,10 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(SelectRecurrenceDialog), findsOneWidget);
-      expect(find.text(translate.recurrence), findsNWidgets(2));
-      expect(find.byIcon(AbiliaIcons.day), findsNWidgets(2));
-      expect(find.text(translate.once), findsNWidgets(2));
+      expect(find.byType(SelectRecurrencePage), findsOneWidget);
+      expect(find.text(translate.recurrence), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
+      expect(find.text(translate.once), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.week), findsOneWidget);
       expect(find.text(translate.weekly), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.month), findsOneWidget);
@@ -1783,6 +1783,8 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.basic_activity));
       await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
 
       // Assert -- Yearly selected, not Once
       expect(find.byIcon(AbiliaIcons.day), findsNothing);
@@ -1810,6 +1812,8 @@ text''';
       await tester.tap(find.byKey(TestKey.changeRecurrence));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
       // Assert -- monthly selected, not Once
@@ -1842,6 +1846,8 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
 
       // Assert -- Weekly selected, not Once
       expect(find.byIcon(AbiliaIcons.day), findsNothing);
@@ -1868,6 +1874,8 @@ text''';
       await tester.tap(find.byKey(TestKey.changeRecurrence));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
       await tester.tap(find.byKey(TestKey.noEndDate));
@@ -1899,10 +1907,6 @@ text''';
 
       // Act
       await tester.goToRecurrenceTab();
-
-      // Act -- Change to weekly
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
 
       // Assert -- date picker visible
       expect(find.byKey(TestKey.noEndDate), findsOneWidget);
@@ -1948,6 +1952,8 @@ text''';
       await tester.tap(find.byKey(TestKey.changeRecurrence));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       // Arrange -- deselect preselect
       await tester.tap(find.text(translate.shortWeekday(startTime.weekday)));
@@ -2068,7 +2074,7 @@ text''';
       await tester.tap(find.byType(AlarmWidget));
       await tester.pumpAndSettle();
 
-      expect(find.byType(SelectAlarmTypeDialog), findsOneWidget);
+      expect(find.byType(SelectAlarmTypePage), findsOneWidget);
 
       expect(find.text(translate.silentAlarm), findsOneWidget);
       expect(find.text(translate.vibration), findsOneWidget);
@@ -2553,7 +2559,8 @@ text''';
           exact: translate.yearly);
 
       await tester.tap(find.byIcon(AbiliaIcons.week));
-
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
 
