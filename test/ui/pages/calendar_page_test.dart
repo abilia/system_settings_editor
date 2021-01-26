@@ -761,6 +761,45 @@ void main() {
         expect(previousDayButtonFinder, findsNothing);
       });
     });
+
+    group('calendarActivityTypeShowTypes setting', () {
+      testWidgets('Timepillar is left when no categories',
+          (WidgetTester tester) async {
+        when(memoplannerSettingBlocMock.state)
+            .thenReturn(MemoplannerSettingsLoaded(
+          MemoplannerSettings(calendarActivityTypeShowTypes: false),
+        ));
+        await tester.pumpWidget(wrapWithMaterialApp(
+          CalendarPage(),
+          memoplannerSettingBloc: memoplannerSettingBlocMock,
+        ));
+        await tester.pumpAndSettle();
+        await goToTimePillar(tester);
+
+        final w = find.byType(TimePillar);
+        final topLeft = tester.getTopLeft(w);
+        expect(topLeft.dx, 0);
+      });
+
+      testWidgets(
+          'Center of timepillar is center of page when categories are on',
+          (WidgetTester tester) async {
+        when(memoplannerSettingBlocMock.state)
+            .thenReturn(MemoplannerSettingsLoaded(
+          MemoplannerSettings(calendarActivityTypeShowTypes: true),
+        ));
+        await tester.pumpWidget(wrapWithMaterialApp(
+          CalendarPage(),
+          memoplannerSettingBloc: memoplannerSettingBlocMock,
+        ));
+        await tester.pumpAndSettle();
+        await goToTimePillar(tester);
+
+        final timepillarCenter = tester.getCenter(find.byType(TimePillar));
+        final calendarCenter = tester.getCenter(find.byType(CalendarPage));
+        expect(timepillarCenter.dx, calendarCenter.dx);
+      });
+    });
   });
 
   group('edit all day', () {

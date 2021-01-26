@@ -84,22 +84,28 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
     final textScaleFactor = mediaData.textScaleFactor;
     final timepillarActivities = interval.getForInterval(activities);
     final leftBoardData = ActivityBoard.positionTimepillarCards(
-      timepillarActivities
-          .where((ao) => ao.activity.category != Category.right)
-          .toList(),
+      showCategories
+          ? timepillarActivities
+              .where((ao) => ao.activity.category != Category.right)
+              .toList()
+          : <ActivityOccasion>[],
       textStyle,
       textScaleFactor,
       interval,
       memoSettings.dayParts,
+      TimepillarSide.LEFT,
     );
     final rightBoardData = ActivityBoard.positionTimepillarCards(
-      timepillarActivities
-          .where((ao) => ao.activity.category == Category.right)
-          .toList(),
+      showCategories
+          ? timepillarActivities
+              .where((ao) => ao.activity.category == Category.right)
+              .toList()
+          : timepillarActivities,
       textStyle,
       textScaleFactor,
       interval,
       memoSettings.dayParts,
+      TimepillarSide.RIGHT,
     );
     final calendarHeight = max(timePillarHeight(interval),
         max(leftBoardData.heigth, rightBoardData.heigth));
@@ -112,7 +118,8 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
     // horizontalAnchor is where the left side of the timepillar needs to be in parts of the screen to make it centralized.
     final timePillarPercentOfTotalScreen =
         (timePillarTotalWidth / 2) / screenWidth;
-    final horizontalAnchor = 0.5 - timePillarPercentOfTotalScreen;
+    final horizontalAnchor =
+        showCategories ? 0.5 - timePillarPercentOfTotalScreen : 0.0;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final height = max(calendarHeight, boxConstraints.maxHeight);
@@ -168,22 +175,23 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                               scrollDirection: Axis.horizontal,
                               controller: horizontalScrollController,
                               slivers: <Widget>[
-                                category(
-                                  showCategories
-                                      ? CategoryLeft(
-                                          expanded:
-                                              viewState.expandLeftCategory,
-                                          settingsState: memoSettings,
-                                        )
-                                      : null,
-                                  height: boxConstraints.maxHeight,
-                                  sliver: SliverToBoxAdapter(
-                                    child: ActivityBoard(
-                                      leftBoardData,
-                                      categoryMinWidth: categoryMinWidth,
+                                if (showCategories)
+                                  category(
+                                    showCategories
+                                        ? CategoryLeft(
+                                            expanded:
+                                                viewState.expandLeftCategory,
+                                            settingsState: memoSettings,
+                                          )
+                                        : null,
+                                    height: boxConstraints.maxHeight,
+                                    sliver: SliverToBoxAdapter(
+                                      child: ActivityBoard(
+                                        leftBoardData,
+                                        categoryMinWidth: categoryMinWidth,
+                                      ),
                                     ),
                                   ),
-                                ),
                                 SliverTimePillar(
                                   key: center,
                                   child: TimePillar(

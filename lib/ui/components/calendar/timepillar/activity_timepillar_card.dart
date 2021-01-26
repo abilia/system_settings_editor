@@ -22,6 +22,7 @@ class ActivityTimepillarCard extends StatelessWidget {
   final double top, endPos, height;
   final TimepillarInterval timepillarInterval;
   final DayParts dayParts;
+  final TimepillarSide timepillarSide;
 
   const ActivityTimepillarCard({
     Key key,
@@ -33,6 +34,7 @@ class ActivityTimepillarCard extends StatelessWidget {
     @required this.textStyle,
     @required this.timepillarInterval,
     @required this.dayParts,
+    @required this.timepillarSide,
   })  : assert(activityOccasion != null),
         endPos = top + height,
         super(key: key);
@@ -40,8 +42,7 @@ class ActivityTimepillarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activity = activityOccasion.activity;
-    final right = activity.category == Category.right,
-        hasImage = activity.hasImage,
+    final hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
         signedOff = activityOccasion.isSignedOff,
         current = activityOccasion.occasion == Occasion.current,
@@ -51,6 +52,8 @@ class ActivityTimepillarCard extends StatelessWidget {
     final endTime = activityOccasion.end;
     final startTime = activityOccasion.start;
     final dotHeight = dots * dotDistance;
+
+    final right = TimepillarSide.RIGHT == timepillarSide;
 
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, settings) {

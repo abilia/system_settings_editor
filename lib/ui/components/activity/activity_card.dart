@@ -8,6 +8,8 @@ class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
   final double bottomPadding;
   final bool preview;
+  final bool showCategories;
+
   static const double cardHeight = 56.0,
       cardPadding = 4.0,
       cardMarginSmall = 6.0,
@@ -22,6 +24,7 @@ class ActivityCard extends StatelessWidget {
     @required this.activityOccasion,
     this.bottomPadding = 0.0,
     this.preview = false,
+    this.showCategories = true,
   })  : assert(activityOccasion != null),
         super(key: key);
 
@@ -55,7 +58,7 @@ class ActivityCard extends StatelessWidget {
               duration: duration,
               height: cardHeight,
               decoration: getBoxDecoration(current, inactive),
-              margin: preview || activity.fullDay
+              margin: preview || activity.fullDay || !showCategories
                   ? EdgeInsets.zero
                   : activity.category == Category.right
                       ? const EdgeInsets.only(left: categorySideOffset)

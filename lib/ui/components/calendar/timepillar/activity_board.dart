@@ -34,6 +34,7 @@ class ActivityBoard extends StatelessWidget {
     double scaleFactor,
     TimepillarInterval interval,
     DayParts dayParts,
+    TimepillarSide timepillarSide,
   ) {
     final maxEndPos = timePillarHeight(interval) +
         dotDistance +
@@ -102,6 +103,7 @@ class ActivityBoard extends StatelessWidget {
             textStyle: textStyle,
             timepillarInterval: interval,
             dayParts: dayParts,
+            timepillarSide: timepillarSide,
           );
 
       for (var i = 0; i < scheduled.length; i++) {
@@ -131,4 +133,9 @@ class ActivityBoardData {
     this.columns,
   }) : heigth = cards.fold(
             0.0, (previousValue, card) => max(card.endPos, previousValue));
+}
+
+enum TimepillarSide {
+  RIGHT,
+  LEFT,
 }

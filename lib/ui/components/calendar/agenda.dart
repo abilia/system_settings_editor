@@ -82,6 +82,8 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                                 state.pastActivities,
                                 state.notPastActivities,
                               ),
+                              showCategories: widget
+                                  .memoplannerSettingsState.showCategories,
                             ),
                           ),
                         SliverPadding(
@@ -92,6 +94,8 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                           ),
                           sliver: SliverActivityList(
                             state.notPastActivities,
+                            showCategories:
+                                widget.memoplannerSettingsState.showCategories,
                           ),
                         ),
                       ],
@@ -166,11 +170,13 @@ class SliverActivityList extends StatelessWidget {
   final bool reversed;
   final double lastMargin;
   final int _maxIndex;
+  final bool showCategories;
   const SliverActivityList(
     this.activities, {
     this.reversed = false,
     this.lastMargin = 0.0,
     Key key,
+    @required this.showCategories,
   })  : _maxIndex = activities.length - 1,
         super(key: key);
 
@@ -184,7 +190,10 @@ class SliverActivityList extends StatelessWidget {
             if (reversed) index = _maxIndex - index;
             return ActivityCard(
               activityOccasion: activities[index],
-              bottomPadding: _padding(index),
+              bottomPadding: showCategories
+                  ? _padding(index)
+                  : ActivityCard.cardMarginSmall,
+              showCategories: showCategories,
             );
           },
           childCount: activities.length,

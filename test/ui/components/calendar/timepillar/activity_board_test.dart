@@ -69,6 +69,7 @@ void main() {
                   1.0,
                   interval,
                   MemoplannerSettingsLoaded(MemoplannerSettings()).dayParts,
+                  TimepillarSide.RIGHT,
                 ),
                 categoryMinWidth: 400,
               ),
@@ -180,7 +181,7 @@ void main() {
       }
     });
     testWidgets(
-        'two activities with sufficient time distance has same vertical position',
+        'two activities with sufficient time distance has same horizonal position',
         (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);
       final activityA = ActivityOccasion.forTest(
@@ -208,7 +209,7 @@ void main() {
       expect(activityAXPos, activityBXPos);
     });
     testWidgets(
-        'two activities to small time distance does not has same vertical position',
+        'two activities to small time distance does not has same horizontal position',
         (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);
       final activityA = ActivityOccasion.forTest(
@@ -310,6 +311,7 @@ void main() {
         1.0,
         interval,
         DayParts(0, 0, 0, 0, 0),
+        TimepillarSide.RIGHT,
       );
       final uniques = boardData.cards.map((f) => {f.top, f.column});
 
