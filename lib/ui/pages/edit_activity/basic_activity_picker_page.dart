@@ -39,38 +39,12 @@ class BasicActivityPickerPage extends StatelessWidget {
           ),
           forwardNavigationWidget: NextButton(
             onPressed: state.isSelected
-                ? () =>
-                    _navigateToEditActivityPage(context, state.selected.data)
+                ? () => Navigator.of(context)
+                    .pop<BasicActivityData>(state.selected.data)
                 : null,
           ),
         ),
       ),
     );
   }
-
-  Future _navigateToEditActivityPage(
-          BuildContext context, BasicActivityData basicActivity) async =>
-      await Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (_) => CopiedAuthProviders(
-            blocContext: context,
-            child: BlocProvider<EditActivityBloc>(
-              create: (_) => EditActivityBloc.newActivity(
-                activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-                clockBloc: BlocProvider.of<ClockBloc>(context),
-                memoplannerSettingBloc:
-                    BlocProvider.of<MemoplannerSettingBloc>(context),
-                day: day,
-                basicActivityData: basicActivity,
-              ),
-              child: EditActivityPage(
-                day: day,
-                title: Translator.of(context).translate.newActivity,
-              ),
-            ),
-          ),
-          settings: RouteSettings(name: '$EditActivityPage new basic activity'),
-        ),
-        (r) => r.isFirst,
-      );
 }

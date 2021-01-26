@@ -276,6 +276,91 @@ void main() {
         expect(find.byType(CreateActivityPage), findsNothing);
         expect(find.byType(CalendarPage), findsOneWidget);
       });
+
+      testWidgets('basic activity library navigation SAVE from edit page',
+          (WidgetTester tester) async {
+        await initializeDateFormatting();
+        final sortableBlocMock = MockSortableBloc();
+        final title = 'testtitle';
+        when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
+          Sortable.createNew<BasicActivityDataItem>(
+            data: BasicActivityDataItem.createNew(title: title),
+          ),
+        ]));
+
+        //Act
+        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+            sortableBloc: sortableBlocMock));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.pumpAndSettle();
+
+        // Act Go to basic activity archive
+        await tester.tap(find.byKey(TestKey.basicActivityChoice));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(BasicActivityPickerPage), findsOneWidget);
+        // Act - choose basic activity
+        await tester.tap(find.text(title));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(EditActivityPage), findsOneWidget);
+
+        // Act - save
+        await tester.tap(find.byType(GreenButton));
+        await tester.pumpAndSettle();
+
+        // Assert - Back at picker page
+        expect(find.byType(CreateActivityPage), findsNothing);
+        expect(find.byType(BasicActivityPickerPage), findsNothing);
+        expect(find.byType(CalendarPage), findsOneWidget);
+      });
+
+      testWidgets('basic activity library navigation back from edit page',
+          (WidgetTester tester) async {
+        await initializeDateFormatting();
+        final sortableBlocMock = MockSortableBloc();
+        final title = 'testtitle';
+        when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
+          Sortable.createNew<BasicActivityDataItem>(
+            data: BasicActivityDataItem.createNew(title: title),
+          ),
+        ]));
+
+        //Act
+        await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+            sortableBloc: sortableBlocMock));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.pumpAndSettle();
+
+        // Act Go to basic activity archive
+        await tester.tap(find.byKey(TestKey.basicActivityChoice));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(BasicActivityPickerPage), findsOneWidget);
+        // Act - Select item
+        await tester.tap(find.text(title));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(EditActivityPage), findsOneWidget);
+
+        // Act - Go back
+        await tester.tap(find.byType(GreyButton));
+        await tester.pumpAndSettle();
+
+        // Assert - Back at picker page
+        expect(find.byType(CreateActivityPage), findsOneWidget);
+        expect(find.byType(BasicActivityPickerPage), findsNothing);
+      });
     });
 
     testWidgets('navigation', (WidgetTester tester) async {

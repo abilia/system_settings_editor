@@ -59,51 +59,59 @@ class _CreateActivityPageState extends State<CreateActivityPage>
           text: translate.cancel,
           onPressed: Navigator.of(context).maybePop,
         ),
-        forwardNavigationWidget: NextButton(
-          onPressed: () async {
-            if (pickBasicActivityView) {
-              await Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => CopiedAuthProviders(
-                    blocContext: context,
-                    child: BlocProvider<SortableArchiveBloc<BasicActivityData>>(
-                      create: (_) => SortableArchiveBloc<BasicActivityData>(
-                        sortableBloc: BlocProvider.of<SortableBloc>(context),
-                      ),
-                      child: BasicActivityPickerPage(day: widget.day),
-                    ),
-                  ),
-                ),
-              );
-            } else {
-              await Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => CopiedAuthProviders(
-                    blocContext: authContext,
-                    child: BlocProvider<EditActivityBloc>(
-                      create: (_) => EditActivityBloc.newActivity(
-                        activitiesBloc:
-                            BlocProvider.of<ActivitiesBloc>(authContext),
-                        clockBloc: BlocProvider.of<ClockBloc>(authContext),
-                        memoplannerSettingBloc:
-                            BlocProvider.of<MemoplannerSettingBloc>(
-                                authContext),
-                        day: widget.day,
-                      ),
-                      child: EditActivityPage(
-                        day: widget.day,
-                        title: translate.newActivity,
-                      ),
-                    ),
-                  ),
-                  settings:
-                      RouteSettings(name: '$EditActivityPage new activity'),
-                ),
-              );
-            }
-          },
-        ),
+        forwardNavigationWidget: NextButton(onPressed: nextButtonPressed),
       ),
     );
+  }
+
+  Future nextButtonPressed() async {
+    if (pickBasicActivityView) {
+      final basicActivity = await Navigator.of(context).push<BasicActivityData>(
+        MaterialPageRoute(
+          builder: (_) => CopiedAuthProviders(
+            blocContext: context,
+            child: BlocProvider<SortableArchiveBloc<BasicActivityData>>(
+              create: (_) => SortableArchiveBloc<BasicActivityData>(
+                sortableBloc: BlocProvider.of<SortableBloc>(context),
+              ),
+              child: BasicActivityPickerPage(day: widget.day),
+            ),
+          ),
+        ),
+      );
+      if (basicActivity != null) {
+        await navigateToEditActivityPage(basicActivity);
+      }
+    } else {
+      await navigateToEditActivityPage();
+    }
+  }
+
+  Future navigateToEditActivityPage([BasicActivityData basicActivity]) async {
+    final saved = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => CopiedAuthProviders(
+          blocContext: context,
+          child: BlocProvider<EditActivityBloc>(
+            create: (_) => EditActivityBloc.newActivity(
+              activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+              clockBloc: BlocProvider.of<ClockBloc>(context),
+              memoplannerSettingBloc:
+                  BlocProvider.of<MemoplannerSettingBloc>(context),
+              day: widget.day,
+              basicActivityData: basicActivity,
+            ),
+            child: EditActivityPage(
+              day: widget.day,
+              title: Translator.of(context).translate.newActivity,
+            ),
+          ),
+        ),
+        settings: RouteSettings(name: '$EditActivityPage new activity'),
+      ),
+    );
+    if (saved != null) {
+      await Navigator.of(context).maybePop();
+    }
   }
 }
