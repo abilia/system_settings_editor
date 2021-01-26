@@ -106,9 +106,7 @@ class _EditQuestionPageState extends State<EditQuestionPage> {
       ),
       bottomSheet: BottomNavigation(
         backNavigationWidget: CancelButton(),
-        forwardNavigationWidget: GreenButton(
-          icon: AbiliaIcons.ok,
-          text: translate.ok,
+        forwardNavigationWidget: OkButton(
           onPressed: canSave
               ? () => Navigator.of(context)
                   .maybePop(QuestionResult(question, newImage))

@@ -58,9 +58,7 @@ class _EditNotePageState extends State<EditNotePage> {
         ),
         bottomSheet: BottomNavigation(
           backNavigationWidget: CancelButton(),
-          forwardNavigationWidget: GreenButton(
-            icon: AbiliaIcons.ok,
-            text: translate.ok,
+          forwardNavigationWidget: OkButton(
             onPressed: _textEditingController.text.isNotEmpty
                 ? () =>
                     Navigator.of(context).maybePop(_textEditingController.text)
