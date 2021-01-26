@@ -54,11 +54,7 @@ class _CreateActivityPageState extends State<CreateActivityPage>
         ),
       ),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: GreyButton(
-          icon: AbiliaIcons.close_program,
-          text: translate.cancel,
-          onPressed: Navigator.of(context).maybePop,
-        ),
+        backNavigationWidget: CancelButton(),
         forwardNavigationWidget: NextButton(onPressed: nextButtonPressed),
       ),
     );

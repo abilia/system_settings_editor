@@ -114,11 +114,7 @@ class SelectPicturePage extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: GreyButton(
-          icon: AbiliaIcons.close_program,
-          text: translate.cancel,
-          onPressed: Navigator.of(context).pop,
-        ),
+        backNavigationWidget: CancelButton(),
       ),
     );
   }

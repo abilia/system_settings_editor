@@ -84,11 +84,7 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
       ),
       bodyPadding: EdgeInsets.zero,
       expanded: true,
-      backNavigationWidget: GreyButton(
-        text: Translator.of(context).translate.cancel,
-        icon: AbiliaIcons.close_program,
-        onPressed: Navigator.of(context).maybePop,
-      ),
+      backNavigationWidget: CancelButton(),
       forwardNavigationWidget: OkButton(
         onPressed: () async {
           await Navigator.of(context).maybePop(EyeButtonSettings(
