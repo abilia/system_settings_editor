@@ -3,6 +3,129 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
+class LibraryPage<T extends SortableData> extends StatelessWidget {
+  const LibraryPage({
+    Key key,
+    @required this.appBar,
+    @required this.onOk,
+    @required this.onCancel,
+    @required this.libraryfullPageGenerator,
+    @required this.libraryItemGenerator,
+    @required this.emptyLibraryMessage,
+  }) : super(key: key);
+  final PreferredSizeWidget appBar;
+  final Function(Sortable<T>) onOk;
+  final VoidCallback onCancel;
+  final LibraryItemGenerator<T> libraryfullPageGenerator;
+  final LibraryItemGenerator<T> libraryItemGenerator;
+  final String emptyLibraryMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    return BlocProvider<SortableArchiveBloc<T>>(
+      create: (_) => SortableArchiveBloc<T>(
+        sortableBloc: BlocProvider.of<SortableBloc>(context),
+      ),
+      child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
+        builder: (context, state) => Scaffold(
+          appBar: appBar,
+          body: Column(
+            children: [
+              LibraryHeading(
+                key: TestKey.libraryHeading,
+                sortableArchiveState: state,
+              ),
+              Expanded(
+                child: state.isSelected
+                    ? libraryfullPageGenerator(state.selected)
+                    : SortableLibrary<T>(
+                        libraryItemGenerator,
+                        emptyLibraryMessage,
+                      ),
+              ),
+            ],
+          ),
+          bottomNavigationBar: AnimatedBottomNavigation(
+            showForward: state.isSelected,
+            backNavigationWidget: GreyButton(
+              icon: AbiliaIcons.close_program,
+              text: translate.cancel,
+              onPressed: onCancel,
+            ),
+            forwardNavigationWidget: GreenButton(
+              text: translate.ok,
+              icon: AbiliaIcons.ok,
+              onPressed: () => onOk(state.selected),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class LibraryHeading<T extends SortableData> extends StatelessWidget {
+  const LibraryHeading({
+    Key key,
+    @required this.sortableArchiveState,
+  }) : super(key: key);
+  final SortableArchiveState<T> sortableArchiveState;
+
+  @override
+  Widget build(BuildContext context) {
+    final heading = getLibraryHeading(sortableArchiveState) ??
+        Translator.of(context).translate.imageArchive;
+    return Tts(
+      data: heading,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 12.0),
+        child: Separated(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 12.0, 0.0, 4.0),
+            child: Row(
+              children: [
+                ActionButton(
+                  onPressed: () => back(context, sortableArchiveState),
+                  themeData: darkButtonTheme,
+                  child: Icon(AbiliaIcons.navigation_previous),
+                ),
+                const SizedBox(width: 12.0),
+                Expanded(
+                  child: Text(
+                    heading,
+                    style: abiliaTheme.textTheme.headline6,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  String getLibraryHeading(SortableArchiveState state) {
+    if (state.isSelected) {
+      return state.selected.data.title() ?? '';
+    }
+    return state.allById[state.currentFolderId]?.data?.title();
+  }
+
+  Future back(BuildContext context, SortableArchiveState<T> state) async {
+    if (state.isSelected) {
+      BlocProvider.of<SortableArchiveBloc<T>>(context)
+          .add(SortableSelected(null));
+    } else if (state.currentFolderId != null) {
+      BlocProvider.of<SortableArchiveBloc<T>>(context).add(NavigateUp());
+    } else {
+      await Navigator.of(context).maybePop();
+    }
+  }
+}
+
 class SortableLibraryPage<T extends SortableData> extends StatelessWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
@@ -110,17 +233,28 @@ class SortableLibrary<T extends SortableData> extends StatelessWidget {
           crossAxisCount: 3,
           childAspectRatio: 0.96,
           children: currentFolderContent
-              .map((sortable) => sortable.isGroup
-                  ? LibraryFolder(
-                      title: sortable.data.title(),
-                      fileId: sortable.data.folderFileId(),
-                      filePath: sortable.data.folderFilePath(),
-                      onTap: () {
-                        BlocProvider.of<SortableArchiveBloc<T>>(context)
-                            .add(FolderChanged(sortable.id));
-                      },
-                    )
-                  : libraryItemGenerator(sortable))
+              .map(
+                (sortable) => sortable.isGroup
+                    ? LibraryFolder(
+                        title: sortable.data.title(),
+                        fileId: sortable.data.folderFileId(),
+                        filePath: sortable.data.folderFilePath(),
+                        onTap: () {
+                          BlocProvider.of<SortableArchiveBloc<T>>(context)
+                              .add(FolderChanged(sortable.id));
+                        },
+                      )
+                    : Material(
+                        type: MaterialType.transparency,
+                        child: InkWell(
+                          onTap: () =>
+                              BlocProvider.of<SortableArchiveBloc<T>>(context)
+                                  .add(SortableSelected(sortable)),
+                          borderRadius: borderRadius,
+                          child: libraryItemGenerator(sortable),
+                        ),
+                      ),
+              )
               .toList(),
         );
       },

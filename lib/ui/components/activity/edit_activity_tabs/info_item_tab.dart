@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/pages/edit_activity/note_library_page.dart';
 
 class InfoItemTab extends StatelessWidget with EditActivityTab {
   InfoItemTab({
@@ -275,67 +276,68 @@ class EditNoteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return Expanded(
-      child: Column(children: [
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: PickField(
-                key: TestKey.changeInfoItem,
-                leading: const Icon(AbiliaIcons.edit),
-                text: Text(translate.infoTypeNote),
-                onTap: onTap,
+    return Container(
+      child: Expanded(
+        child: Column(children: [
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: PickField(
+                  key: TestKey.changeInfoItem,
+                  leading: const Icon(AbiliaIcons.edit),
+                  text: Text(translate.infoTypeNote),
+                  onTap: onTap,
+                ),
               ),
-            ),
-            const SizedBox(width: 12.0),
-            ActionButton(
-              child: Icon(
-                AbiliaIcons.show_text,
-                size: defaultIconSize,
-                color: AbiliaColors.black,
-              ),
-              onPressed: () async {
-                final result = await showViewDialog<String>(
-                  context: context,
-                  builder: (context) => SortableLibraryPage<NoteData>(
-                    libraryItemGenerator: (Sortable<NoteData> s) => LibraryNote(
-                      content: s.data.text,
+              const SizedBox(width: 12.0),
+              ActionButton(
+                child: Icon(
+                  AbiliaIcons.show_text,
+                  size: defaultIconSize,
+                  color: AbiliaColors.black,
+                ),
+                onPressed: () async {
+                  final result = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => CopiedAuthProviders(
+                        blocContext: context,
+                        child: const NoteLibraryPage(),
+                      ),
                     ),
-                    emptyLibraryMessage: translate.noNotes,
-                  ),
-                );
-                if (result != null && result != infoItem.text) {
-                  BlocProvider.of<EditActivityBloc>(context).add(
-                    ReplaceActivity(activity.copyWith(
-                      infoItem: NoteInfoItem(result),
-                    )),
                   );
-                }
-              },
-              themeData: darkButtonTheme,
-            )
-          ],
-        ),
-        const SizedBox(height: 16.0),
-        Expanded(
-          child: GestureDetector(
-            onTap: () => editText(context, activity, infoItem),
-            child: Container(
-              decoration: whiteBoxDecoration,
-              child: NoteBlock(
-                text: infoItem.text,
-                textWidget: infoItem.text.isEmpty
-                    ? Text(
-                        Translator.of(context).translate.typeSomething,
-                        style: abiliaTextTheme.bodyText1
-                            .copyWith(color: const Color(0xff747474)),
-                      )
-                    : Text(infoItem.text),
+                  if (result != null && result != infoItem.text) {
+                    BlocProvider.of<EditActivityBloc>(context).add(
+                      ReplaceActivity(activity.copyWith(
+                        infoItem: NoteInfoItem(result),
+                      )),
+                    );
+                  }
+                },
+                themeData: darkButtonTheme,
+              )
+            ],
+          ),
+          const SizedBox(height: 16.0),
+          Expanded(
+            child: GestureDetector(
+              onTap: () => editText(context, activity, infoItem),
+              child: Container(
+                decoration: whiteBoxDecoration,
+                child: NoteBlock(
+                  text: infoItem.text,
+                  textWidget: infoItem.text.isEmpty
+                      ? Text(
+                          Translator.of(context).translate.typeSomething,
+                          style: abiliaTextTheme.bodyText1
+                              .copyWith(color: const Color(0xff747474)),
+                        )
+                      : Text(infoItem.text),
+                ),
               ),
             ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 

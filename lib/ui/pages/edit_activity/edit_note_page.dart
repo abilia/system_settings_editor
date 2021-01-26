@@ -52,6 +52,7 @@ class _EditNotePageState extends State<EditNotePage> {
         ),
       ),
       child: Scaffold(
+        backgroundColor: AbiliaColors.white,
         appBar: NewAbiliaAppBar(
           iconData: AbiliaIcons.edit,
           title: translate.enterText,

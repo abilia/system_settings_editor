@@ -59,10 +59,8 @@ void main() {
                   orElse: () => supportedLocales.first),
           builder: (context, child) => MockAuthenticatedBlocsProvider(
             child: MultiBlocProvider(providers: [
-              BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
-                create: (context) => SortableArchiveBloc<ImageArchiveData>(
-                  sortableBloc: mockSortableBloc,
-                ),
+              BlocProvider<SortableBloc>.value(
+                value: mockSortableBloc,
               ),
               BlocProvider<UserFileBloc>(
                 create: (context) => UserFileBloc(
@@ -87,7 +85,7 @@ void main() {
           .thenAnswer((_) => SortablesLoaded(sortables: []));
       await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
       await tester.pumpAndSettle();
-      expect(find.byType(ImageArchive), findsOneWidget);
+      expect(find.byType(ImageArchivePage), findsOneWidget);
       expect(find.byType(ArchiveImage), findsNothing);
     });
 
@@ -97,7 +95,7 @@ void main() {
           .thenAnswer((_) => SortablesLoaded(sortables: [image]));
       await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
       await tester.pumpAndSettle();
-      expect(find.byType(ImageArchive), findsOneWidget);
+      expect(find.byType(ImageArchivePage), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
     });
 
@@ -107,7 +105,7 @@ void main() {
           .thenAnswer((_) => SortablesLoaded(sortables: [image, folder]));
       await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
       await tester.pumpAndSettle();
-      expect(find.byType(ImageArchive), findsOneWidget);
+      expect(find.byType(ImageArchivePage), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
       expect(find.byType(LibraryFolder), findsOneWidget);
     });
@@ -140,7 +138,7 @@ void main() {
       await tester.verifyTts(find.byType(LibraryFolder), exact: folderName);
       await tester.verifyTts(find.byType(ArchiveImage), exact: imageName);
       await tester.verifyTts(
-        find.byType(LibraryHeading),
+        find.byKey(TestKey.libraryHeading),
         exact: translate.imageArchive,
       );
     });
@@ -153,7 +151,7 @@ void main() {
 
       // Assert - root heading
       await tester.verifyTts(
-        find.byType(LibraryHeading),
+        find.byKey(TestKey.libraryHeading),
         exact: translate.imageArchive,
       );
 
@@ -164,7 +162,7 @@ void main() {
 
       // Assert heading is folder tts
       await tester.verifyTts(
-        find.byType(LibraryHeading),
+        find.byKey(TestKey.libraryHeading),
         exact: folderName,
       );
       // Act -- go into image
@@ -173,7 +171,7 @@ void main() {
 
       // Assert - image name tts
       await tester.verifyTts(
-        find.byType(LibraryHeading),
+        find.byKey(TestKey.libraryHeading),
         exact: imageInFolderName,
       );
     });

@@ -954,7 +954,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.folder));
       await tester.pumpAndSettle();
-      expect(find.byType(ImageArchive), findsOneWidget);
+      expect(find.byType(ImageArchivePage), findsOneWidget);
     });
   });
 }

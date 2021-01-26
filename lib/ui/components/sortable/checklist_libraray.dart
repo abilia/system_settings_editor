@@ -15,45 +15,36 @@ class LibraryChecklist extends StatelessWidget {
     final iconPath = checklist.image;
     return Tts.fromSemantics(
       SemanticsProperties(label: name),
-      child: Padding(
+      child: Container(
+        decoration: boxDecoration,
         padding: const EdgeInsets.all(4.0),
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkWell(
-            onTap: () => Navigator.of(context).maybePop(checklist),
-            borderRadius: borderRadius,
-            child: Container(
-              decoration: boxDecoration,
-              padding: const EdgeInsets.all(4.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  if (name != null)
-                    Text(
-                      name,
-                      overflow: TextOverflow.ellipsis,
-                      style: abiliaTextTheme.caption,
-                    ),
-                  const SizedBox(height: 2),
-                  SizedBox(
-                    height: imageHeight,
-                    child: checklist.hasImage
-                        ? FadeInAbiliaImage(
-                            height: imageHeight,
-                            width: imageWidth,
-                            imageFileId: imageId,
-                            imageFilePath: iconPath,
-                          )
-                        : Icon(
-                            AbiliaIcons.check_button,
-                            size: 48,
-                            color: AbiliaColors.white140,
-                          ),
-                  ),
-                ],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            if (name != null)
+              Text(
+                name,
+                overflow: TextOverflow.ellipsis,
+                style: abiliaTextTheme.caption,
               ),
-            ),
-          ),
+            const SizedBox(height: 2),
+            if (checklist.hasImage)
+              FadeInAbiliaImage(
+                height: imageHeight,
+                width: imageWidth,
+                imageFileId: imageId,
+                imageFilePath: iconPath,
+              )
+            else
+              SizedBox(
+                height: imageHeight,
+                child: Icon(
+                  AbiliaIcons.check_button,
+                  size: 48.0,
+                  color: AbiliaColors.white140,
+                ),
+              ),
+          ],
         ),
       ),
     );
