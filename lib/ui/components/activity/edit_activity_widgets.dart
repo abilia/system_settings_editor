@@ -440,10 +440,10 @@ class AvailibleForWidget extends StatelessWidget {
           text:
               Text(secret ? translator.onlyMe : translator.meAndSupportPersons),
           onTap: () async {
-            final result = await showViewDialog<bool>(
-              context: context,
-              builder: (context) => SelectAvailableForDialog(
-                secret: activity.secret,
+            final result = await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) =>
+                    SelectAvailableForDialog(secret: activity.secret),
               ),
             );
             if (result != null) {
