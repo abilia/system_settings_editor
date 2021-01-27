@@ -6,3 +6,4 @@ export 'select_picture_page.dart';
 export 'select_info_type_page.dart';
 export 'edit_note_page.dart';
 export 'edit_question_page.dart';
+export 'time_input_page.dart';
