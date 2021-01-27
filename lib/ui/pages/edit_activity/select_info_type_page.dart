@@ -67,14 +67,8 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: GreyButton(
-          icon: AbiliaIcons.close_program,
-          text: translate.cancel,
-          onPressed: Navigator.of(context).maybePop,
-        ),
-        forwardNavigationWidget: GreenButton(
-          icon: AbiliaIcons.ok,
-          text: translate.ok,
+        backNavigationWidget: CancelButton(),
+        forwardNavigationWidget: OkButton(
           onPressed: () => Navigator.of(context).maybePop(infoItemType),
         ),
       ),

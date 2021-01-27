@@ -110,12 +110,20 @@ class ActivityBottomAppBar extends StatelessWidget with Checker {
                         child: Icon(activity.alarm.iconData()),
                         onPressed: () async {
                           final alarm = activity.alarm;
-                          final result = await showViewDialog<Alarm>(
-                            context: context,
-                            builder: (context) => SelectAlarmDialog(
-                              alarm: alarm,
+
+                          final result =
+                              await Navigator.of(context).push<Alarm>(
+                            MaterialPageRoute(
+                              builder: (_) => CopiedAuthProviders(
+                                blocContext: context,
+                                child: SelectAlarmPage(
+                                  alarm: alarm,
+                                ),
+                              ),
+                              settings: RouteSettings(name: 'SelectAlarmPage'),
                             ),
                           );
+
                           if (result != null) {
                             final changedActivity =
                                 activity.copyWith(alarm: result);

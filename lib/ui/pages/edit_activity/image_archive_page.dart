@@ -41,9 +41,7 @@ class _ImageArchivePageState extends State<ImageArchivePage> {
                   route.settings.name?.startsWith('$EditActivityPage') ??
                   false),
             ),
-            forwardNavigationWidget: GreenButton(
-              text: translate.ok,
-              icon: AbiliaIcons.ok,
+            forwardNavigationWidget: OkButton(
               onPressed: () => Navigator.of(context).pop<SelectedImage>(
                 SelectedImage(
                   id: state.selected?.data?.fileId,

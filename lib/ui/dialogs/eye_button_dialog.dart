@@ -84,14 +84,8 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
       ),
       bodyPadding: EdgeInsets.zero,
       expanded: true,
-      backNavigationWidget: GreyButton(
-        text: Translator.of(context).translate.cancel,
-        icon: AbiliaIcons.close_program,
-        onPressed: Navigator.of(context).maybePop,
-      ),
-      forwardNavigationWidget: GreenButton(
-        icon: AbiliaIcons.ok,
-        text: Translator.of(context).translate.ok,
+      backNavigationWidget: CancelButton(),
+      forwardNavigationWidget: OkButton(
         onPressed: () async {
           await Navigator.of(context).maybePop(EyeButtonSettings(
             calendarType: calendarType,
