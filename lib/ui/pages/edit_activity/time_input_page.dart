@@ -5,24 +5,24 @@ import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/ui/all.dart';
 
-class TimeInputDialog extends StatefulWidget {
+class TimeInputPage extends StatefulWidget {
   final TimeInput timeInput;
   final bool is24HoursFormat;
 
-  const TimeInputDialog({
+  const TimeInputPage({
     Key key,
     @required this.timeInput,
     @required this.is24HoursFormat,
   }) : super(key: key);
 
   @override
-  _TimeInputDialogState createState() =>
-      _TimeInputDialogState(twelveHourClock: !is24HoursFormat);
+  _TimeInputPageState createState() =>
+      _TimeInputPageState(twelveHourClock: !is24HoursFormat);
 }
 
 String pad0(String s) => s.padLeft(2, '0');
 
-class _TimeInputDialogState extends State<TimeInputDialog> {
+class _TimeInputPageState extends State<TimeInputPage> {
   final bool twelveHourClock;
   TextEditingController startTimeController;
   TextEditingController endTimeController;
@@ -33,7 +33,7 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
   String validatedNewStartTime;
   String valiedatedNewEndTime;
 
-  _TimeInputDialogState({@required this.twelveHourClock});
+  _TimeInputPageState({@required this.twelveHourClock});
 
   @override
   void initState() {
@@ -125,77 +125,95 @@ class _TimeInputDialogState extends State<TimeInputDialog> {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => ViewDialog(
-        heading: Text(translate.setTime, style: theme.textTheme.headline6),
-        onOk: save,
-        child: Theme(
-          data: theme.copyWith(
-              textSelectionColor: AbiliaColors.white,
-              textTheme: theme.textTheme
-                  .copyWith(subtitle1: abiliaTextTheme.headline4)),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 56.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                _TimeInput(
-                  inputKey: TestKey.startTimeInput,
-                  amRadioFieldKey: TestKey.startTimeAmRadioField,
-                  pmRadioFieldKey: TestKey.startTimePmRadioField,
-                  heading: translate.startTime,
-                  onTimeChanged: (value) {
-                    if (value.length == 4) {
-                      endTimeFocus.requestFocus();
-                    }
-                  },
-                  period: startTimePeriod,
-                  onDone: save,
-                  onPeriodChanged: (period) => setState(() {
-                    startTimePeriod = period;
-                  }),
-                  twelveHourClock: twelveHourClock,
-                  focusNode: startTimeFocus,
-                  controller: startTimeController,
-                ),
-                if (memoSettingsState.activityEndTimeEditable) ...[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 28,
-                      ),
-                      SizedBox(
-                        height: 64,
-                        child: Center(
-                            child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(
-                            '—',
-                            style: abiliaTextTheme.headline5,
+      builder: (context, memoSettingsState) => Scaffold(
+        appBar: NewAbiliaAppBar(
+          title: translate.setTime,
+          iconData: AbiliaIcons.clock,
+        ),
+        body: Stack(
+          children: [
+            Theme(
+              data: theme.copyWith(
+                  textSelectionColor: AbiliaColors.white,
+                  textTheme: theme.textTheme
+                      .copyWith(subtitle1: abiliaTextTheme.headline4)),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 56.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    _TimeInput(
+                      inputKey: TestKey.startTimeInput,
+                      amRadioFieldKey: TestKey.startTimeAmRadioField,
+                      pmRadioFieldKey: TestKey.startTimePmRadioField,
+                      heading: translate.startTime,
+                      onTimeChanged: (value) {
+                        if (value.length == 4) {
+                          endTimeFocus.requestFocus();
+                        }
+                      },
+                      period: startTimePeriod,
+                      onDone: save,
+                      onPeriodChanged: (period) => setState(() {
+                        startTimePeriod = period;
+                      }),
+                      twelveHourClock: twelveHourClock,
+                      focusNode: startTimeFocus,
+                      controller: startTimeController,
+                    ),
+                    if (memoSettingsState.activityEndTimeEditable) ...[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 28,
                           ),
-                        )),
-                      )
-                    ],
-                  ),
-                  _TimeInput(
-                    inputKey: TestKey.endTimeInput,
-                    amRadioFieldKey: TestKey.endTimeAmRadioField,
-                    pmRadioFieldKey: TestKey.endTimePmRadioField,
-                    heading: translate.endTime,
-                    period: endTimePeriod,
-                    onDone: save,
-                    onPeriodChanged: (period) => setState(() {
-                      endTimePeriod = period;
-                    }),
-                    twelveHourClock: twelveHourClock,
-                    focusNode: endTimeFocus,
-                    controller: endTimeController,
-                  ),
-                ]
-              ],
+                          SizedBox(
+                            height: 64,
+                            child: Center(
+                                child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Text(
+                                '—',
+                                style: abiliaTextTheme.headline5,
+                              ),
+                            )),
+                          )
+                        ],
+                      ),
+                      _TimeInput(
+                        inputKey: TestKey.endTimeInput,
+                        amRadioFieldKey: TestKey.endTimeAmRadioField,
+                        pmRadioFieldKey: TestKey.endTimePmRadioField,
+                        heading: translate.endTime,
+                        period: endTimePeriod,
+                        onDone: save,
+                        onPeriodChanged: (period) => setState(() {
+                          endTimePeriod = period;
+                        }),
+                        twelveHourClock: twelveHourClock,
+                        focusNode: endTimeFocus,
+                        controller: endTimeController,
+                      ),
+                    ]
+                  ],
+                ),
+              ),
             ),
-          ),
+            Positioned(
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: BottomNavigation(
+                backNavigationWidget: CancelButton(),
+                forwardNavigationWidget: OkButton(
+                  onPressed: save,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -266,7 +284,7 @@ class _TimeInput extends StatelessWidget {
   }
 
   String ttsText(BuildContext context) {
-    if (!_TimeInputDialogState.valid(controller)) return heading;
+    if (!_TimeInputPageState.valid(controller)) return heading;
     final clockTime = '$heading ${formatTimeToDisplay(controller.text)}';
     if (!twelveHourClock) return clockTime;
     return '$clockTime '

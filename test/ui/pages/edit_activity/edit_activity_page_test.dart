@@ -30,7 +30,7 @@ void main() {
   final translate = Locales.language.values.first;
 
   final timeFieldFinder = find.byKey(TestKey.timePicker);
-  final okFinder = find.byKey(TestKey.okDialog);
+  final okButtonFinder = find.byType(OkButton);
 
   MockSortableBloc mockSortableBloc;
   MockUserFileBloc mockUserFileBloc;
@@ -1325,7 +1325,7 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- Start time dialog shows with correct time
-      expect(find.byType(TimeInputDialog), findsOneWidget);
+      expect(find.byType(TimeInputPage), findsOneWidget);
       expect(find.text('11:55'), findsOneWidget);
       expect(find.text('--:--'), findsOneWidget);
     });
@@ -1344,7 +1344,7 @@ text''';
       // Act
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert -- Error dialog is shown
@@ -1373,7 +1373,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.enterText(startTimeInputFinder, '0933');
       await tester.pumpAndSettle();
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert -- that the activities new start time shows
@@ -1405,7 +1405,7 @@ text''';
       await tester.showKeyboard(endTimeInputFinder);
       await tester.sendKeyEvent(LogicalKeyboardKey.delete);
       await tester.pumpAndSettle();
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert -- old end time does not show
@@ -1434,7 +1434,7 @@ text''';
       // Act -- switch to pm
       await tester.tap(startTimePmRadioFinder);
       await tester.pumpAndSettle();
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert -- time now in pm
@@ -1461,7 +1461,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(startTimeAmRadioFinder);
       await tester.pumpAndSettle();
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert -- time now in pm
@@ -1491,7 +1491,7 @@ text''';
       await tester.tap(startTimeInputFinder);
 
       await tester.pumpAndSettle();
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert -- time is same
@@ -1543,10 +1543,10 @@ text''';
       await tester.enterText(endTimeInputFinder, '1112');
       await tester.pumpAndSettle();
 
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
-      expect(find.byType(TimeInputDialog), findsNothing);
+      expect(find.byType(TimeInputPage), findsNothing);
       expect(find.text('3:04 AM'), findsNothing);
       expect(find.text('11:11 AM - 11:12 PM'), findsOneWidget);
     });
@@ -1578,10 +1578,7 @@ text''';
       expect(startTimePmRadioFinder, findsNothing);
 
       // Act -- change time to 01:01
-      expect(
-          find.text('13:44'),
-          findsNWidgets(
-              2)); // One in the dialog and one in the edit activity view
+      expect(find.text('13:44'), findsOneWidget);
 
       await tester.enterText(startTimeInputFinder, '0');
       expect(find.text('0'), findsOneWidget);
@@ -1589,7 +1586,7 @@ text''';
       await tester.tap(endTimeInputFinder);
       await tester.pumpAndSettle();
       expect(find.text('13:44'),
-          findsNWidgets(2)); // Time resets when no valid time is entered
+          findsOneWidget); // Time resets when no valid time is entered
 
       await tester.enterText(endTimeInputFinder, '1111');
       expect(find.text('11:11'), findsOneWidget);
@@ -1599,7 +1596,7 @@ text''';
       expect(find.text('00:01'), findsOneWidget);
       await tester.pumpAndSettle();
 
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert -- time is now 00:01
@@ -1941,7 +1938,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.enterText(startTimeInputFinder, '0933');
       await tester.pumpAndSettle();
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
       // Arrange -- set full day
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
@@ -2107,7 +2104,7 @@ text''';
         startTimeBefore,
       );
       await tester.pumpAndSettle();
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
@@ -2138,7 +2135,7 @@ text''';
       await tester.enterText(
           startTimeInputFinder, '${startTime.hour}${startTime.minute + 1}');
       await tester.pumpAndSettle();
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
@@ -2172,7 +2169,7 @@ text''';
       await tester.enterText(
           startTimeInputFinder, '${startTime.hour + 1}${startTime.minute + 1}');
       await tester.pumpAndSettle();
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
@@ -2291,7 +2288,7 @@ text''';
         startTimePmRadioFinder,
         exact: translate.pm,
       );
-      await tester.tap(okFinder);
+      await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert -- that the activities new start tts
