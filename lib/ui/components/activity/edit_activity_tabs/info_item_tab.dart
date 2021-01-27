@@ -274,68 +274,66 @@ class EditNoteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return Container(
-      child: Expanded(
-        child: Column(children: [
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: PickField(
-                  key: TestKey.changeInfoItem,
-                  leading: const Icon(AbiliaIcons.edit),
-                  text: Text(translate.infoTypeNote),
-                  onTap: onTap,
-                ),
+    return Expanded(
+      child: Column(children: [
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: PickField(
+                key: TestKey.changeInfoItem,
+                leading: const Icon(AbiliaIcons.edit),
+                text: Text(translate.infoTypeNote),
+                onTap: onTap,
               ),
-              const SizedBox(width: 12.0),
-              ActionButton(
-                child: Icon(
-                  AbiliaIcons.show_text,
-                  size: defaultIconSize,
-                  color: AbiliaColors.black,
-                ),
-                onPressed: () async {
-                  final result = await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => CopiedAuthProviders(
-                        blocContext: context,
-                        child: const NoteLibraryPage(),
-                      ),
+            ),
+            const SizedBox(width: 12.0),
+            ActionButton(
+              child: Icon(
+                AbiliaIcons.show_text,
+                size: defaultIconSize,
+                color: AbiliaColors.black,
+              ),
+              onPressed: () async {
+                final result = await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => CopiedAuthProviders(
+                      blocContext: context,
+                      child: const NoteLibraryPage(),
                     ),
+                  ),
+                );
+                if (result != null && result != infoItem.text) {
+                  BlocProvider.of<EditActivityBloc>(context).add(
+                    ReplaceActivity(activity.copyWith(
+                      infoItem: NoteInfoItem(result),
+                    )),
                   );
-                  if (result != null && result != infoItem.text) {
-                    BlocProvider.of<EditActivityBloc>(context).add(
-                      ReplaceActivity(activity.copyWith(
-                        infoItem: NoteInfoItem(result),
-                      )),
-                    );
-                  }
-                },
-                themeData: darkButtonTheme,
-              )
-            ],
-          ),
-          const SizedBox(height: 16.0),
-          Expanded(
-            child: GestureDetector(
-              onTap: () => editText(context, activity, infoItem),
-              child: Container(
-                decoration: whiteBoxDecoration,
-                child: NoteBlock(
-                  text: infoItem.text,
-                  textWidget: infoItem.text.isEmpty
-                      ? Text(
-                          Translator.of(context).translate.typeSomething,
-                          style: abiliaTextTheme.bodyText1
-                              .copyWith(color: const Color(0xff747474)),
-                        )
-                      : Text(infoItem.text),
-                ),
+                }
+              },
+              themeData: darkButtonTheme,
+            )
+          ],
+        ),
+        const SizedBox(height: 16.0),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => editText(context, activity, infoItem),
+            child: Container(
+              decoration: whiteBoxDecoration,
+              child: NoteBlock(
+                text: infoItem.text,
+                textWidget: infoItem.text.isEmpty
+                    ? Text(
+                        Translator.of(context).translate.typeSomething,
+                        style: abiliaTextTheme.bodyText1
+                            .copyWith(color: const Color(0xff747474)),
+                      )
+                    : Text(infoItem.text),
               ),
             ),
           ),
-        ]),
-      ),
+        ),
+      ]),
     );
   }
 

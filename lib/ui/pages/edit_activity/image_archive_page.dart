@@ -20,10 +20,7 @@ class ImageArchivePage extends StatelessWidget {
         selected: imageArchive.data,
       ),
       emptyLibraryMessage: translate.noImages,
-      onCancel: () => Navigator.of(context).popUntil(
-        (route) =>
-            route.settings.name?.startsWith('$EditActivityPage') ?? false,
-      ),
+      onCancel: () => Navigator.of(context)..maybePop()..maybePop(),
       onOk: (selected) => Navigator.of(context).pop<SelectedImage>(
         SelectedImage(
           id: selected?.data?.fileId,

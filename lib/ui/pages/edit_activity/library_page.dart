@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -22,7 +21,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
     return BlocProvider<SortableArchiveBloc<T>>(
       create: (_) => SortableArchiveBloc<T>(
         sortableBloc: BlocProvider.of<SortableBloc>(context),
@@ -48,14 +46,8 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
           ),
           bottomNavigationBar: AnimatedBottomNavigation(
             showForward: state.isSelected,
-            backNavigationWidget: GreyButton(
-              icon: AbiliaIcons.close_program,
-              text: translate.cancel,
-              onPressed: onCancel,
-            ),
-            forwardNavigationWidget: GreenButton(
-              text: translate.ok,
-              icon: AbiliaIcons.ok,
+            backNavigationWidget: CloseButton(onPressed: onCancel),
+            forwardNavigationWidget: OkButton(
               onPressed: () => onOk(state.selected),
             ),
           ),

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -62,12 +61,7 @@ class EditActivityPage extends StatelessWidget {
                 nrTabs: tabs.length,
               ),
               bottomNavigationBar: BottomNavigation(
-                backNavigationWidget: GreyButton(
-                  key: TestKey.appBarCloseButton,
-                  text: translate.back,
-                  icon: AbiliaIcons.navigation_previous,
-                  onPressed: Navigator.of(context).maybePop,
-                ),
+                backNavigationWidget: const BackButton(),
                 forwardNavigationWidget: GreenButton(
                   key: TestKey.finishEditActivityButton,
                   icon: AbiliaIcons.ok,
