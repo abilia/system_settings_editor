@@ -75,11 +75,15 @@ class _BottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 84.0,
       color: AbiliaColors.black80,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-        child: child,
+      child: SafeArea(
+        child: Container(
+          height: 84.0,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+            child: child,
+          ),
+        ),
       ),
     );
   }
