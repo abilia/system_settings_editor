@@ -6,23 +6,15 @@ import 'package:seagull/ui/all.dart';
 class ChecklistLibraryPage extends StatelessWidget {
   const ChecklistLibraryPage({Key key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    return LibraryPage<ChecklistData>(
-      appBar: NewAbiliaAppBar(
-        iconData: AbiliaIcons.past_picture_from_windows_clipboard,
-        title: translate.selectPicture,
-      ),
-      libraryItemGenerator: (Sortable<ChecklistData> note) =>
-          LibraryChecklist(checklist: note.data.checklist),
-      selectedItemGenerator: (Sortable<ChecklistData> note) =>
-          FullScreenCheckList(checklist: note.data.checklist),
-      emptyLibraryMessage: translate.noImages,
-      onCancel: Navigator.of(context).maybePop,
-      onOk: (selected) =>
-          Navigator.of(context).pop<Checklist>(selected.data.checklist),
-    );
-  }
+  Widget build(BuildContext context) => LibraryPage<ChecklistData>(
+        libraryItemGenerator: (checklist) =>
+            LibraryChecklist(checklist: checklist.data.checklist),
+        selectedItemGenerator: (checklist) =>
+            FullScreenCheckList(checklist: checklist.data.checklist),
+        emptyLibraryMessage: Translator.of(context).translate.noChecklists,
+        onOk: (selected) =>
+            Navigator.of(context).pop<Checklist>(selected.data.checklist),
+      );
 }
 
 class LibraryChecklist extends StatelessWidget {

@@ -68,6 +68,5 @@ class TestKey {
       newActivityChoice = Key('newActivityChoice'),
       basicActivityChoice = Key('basicActivityChoice'),
       noButton = Key('noButton'),
-      yesButton = Key('yesButton'),
-      libraryHeading = Key('libraryHeading');
+      yesButton = Key('yesButton');
 }

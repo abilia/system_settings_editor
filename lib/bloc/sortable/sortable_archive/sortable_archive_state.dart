@@ -27,6 +27,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
       );
 
   bool get isSelected => selected != null;
+  bool get isAtRoot => currentFolderId == null;
 
   @override
   List<Object> get props => [

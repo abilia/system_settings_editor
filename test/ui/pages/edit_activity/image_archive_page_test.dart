@@ -9,6 +9,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../mocks.dart';
+import '../../../utils/types.dart';
 
 void main() {
   group('Image archive test', () {
@@ -138,7 +139,7 @@ void main() {
       await tester.verifyTts(find.byType(LibraryFolder), exact: folderName);
       await tester.verifyTts(find.byType(ArchiveImage), exact: imageName);
       await tester.verifyTts(
-        find.byKey(TestKey.libraryHeading),
+        find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
         exact: translate.imageArchive,
       );
     });
@@ -151,7 +152,7 @@ void main() {
 
       // Assert - root heading
       await tester.verifyTts(
-        find.byKey(TestKey.libraryHeading),
+        find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
         exact: translate.imageArchive,
       );
 
@@ -162,7 +163,7 @@ void main() {
 
       // Assert heading is folder tts
       await tester.verifyTts(
-        find.byKey(TestKey.libraryHeading),
+        find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
         exact: folderName,
       );
       // Act -- go into image
@@ -171,7 +172,7 @@ void main() {
 
       // Assert - image name tts
       await tester.verifyTts(
-        find.byKey(TestKey.libraryHeading),
+        find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
         exact: imageInFolderName,
       );
     });

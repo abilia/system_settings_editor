@@ -142,14 +142,15 @@ class PreviousButton extends StatelessWidget {
 }
 
 class CancelButton extends StatelessWidget {
-  const CancelButton({Key key}) : super(key: key);
+  const CancelButton({Key key, this.onPressed}) : super(key: key);
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return GreyButton(
       text: Translator.of(context).translate.cancel,
       icon: AbiliaIcons.close_program,
-      onPressed: Navigator.of(context).maybePop,
+      onPressed: onPressed ?? Navigator.of(context).maybePop,
     );
   }
 }

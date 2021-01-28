@@ -13,14 +13,15 @@ class ImageArchivePage extends StatelessWidget {
         iconData: AbiliaIcons.past_picture_from_windows_clipboard,
         title: translate.selectPicture,
       ),
-      libraryItemGenerator: (Sortable<ImageArchiveData> imageArchive) =>
+      rootHeading: translate.imageArchive,
+      libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),
-      selectedItemGenerator: (Sortable<ImageArchiveData> imageArchive) =>
-          FullScreenArchiveImage(
-        selected: imageArchive.data,
-      ),
+      selectedItemGenerator: (imageArchive) =>
+          FullScreenArchiveImage(selected: imageArchive.data),
       emptyLibraryMessage: translate.noImages,
-      onCancel: () => Navigator.of(context)..maybePop()..maybePop(),
+      onCancel: () => Navigator.of(context)
+        ..pop()
+        ..maybePop(),
       onOk: (selected) => Navigator.of(context).pop<SelectedImage>(
         SelectedImage(
           id: selected?.data?.fileId,

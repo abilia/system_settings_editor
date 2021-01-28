@@ -28,7 +28,7 @@ class BasicActivityPickerPage extends StatelessWidget {
         ),
         bottomNavigationBar: BottomNavigation(
           backNavigationWidget: BackButton(
-            onPressed: state.currentFolderId == null
+            onPressed: state.isAtRoot
                 ? Navigator.of(context).maybePop
                 : () => BlocProvider.of<SortableArchiveBloc<BasicActivityData>>(
                         context)

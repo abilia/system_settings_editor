@@ -7,23 +7,13 @@ import 'package:seagull/utils/all.dart';
 class NoteLibraryPage extends StatelessWidget {
   const NoteLibraryPage({Key key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    return LibraryPage<NoteData>(
-      appBar: NewAbiliaAppBar(
-        iconData: AbiliaIcons.past_picture_from_windows_clipboard,
-        title: translate.selectPicture,
-      ),
-      libraryItemGenerator: (Sortable<NoteData> note) =>
-          LibraryNote(content: note.data.text),
-      selectedItemGenerator: (Sortable<NoteData> note) => FullScreenNote(
-        noteData: note.data,
-      ),
-      emptyLibraryMessage: translate.noImages,
-      onCancel: Navigator.of(context).maybePop,
-      onOk: (selected) => Navigator.of(context).pop<String>(selected.data.text),
-    );
-  }
+  Widget build(BuildContext context) => LibraryPage<NoteData>(
+        libraryItemGenerator: (note) => LibraryNote(content: note.data.text),
+        selectedItemGenerator: (note) => FullScreenNote(noteData: note.data),
+        emptyLibraryMessage: Translator.of(context).translate.noNotes,
+        onOk: (selected) =>
+            Navigator.of(context).pop<String>(selected.data.text),
+      );
 }
 
 class LibraryNote extends StatelessWidget {
@@ -55,7 +45,7 @@ class LibraryNote extends StatelessWidget {
               ),
               Text(
                 content,
-                maxLines: 6,
+                maxLines: 7,
                 overflow: TextOverflow.fade,
                 style: abiliaTextTheme.caption,
               ),
