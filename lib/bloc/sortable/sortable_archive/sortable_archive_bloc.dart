@@ -57,7 +57,7 @@ class SortableArchiveBloc<T extends SortableData>
         state.allById,
         currentFolder.groupId,
       );
-    } else if (event is SortableSelected<T>) {
+    } else if (event is SortableSelected) {
       yield SortableArchiveState<T>(
         state.allByFolder,
         state.allById,

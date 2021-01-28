@@ -77,15 +77,7 @@ class SelectPicturePage extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (_) => CopiedAuthProviders(
                           blocContext: context,
-                          child: BlocProvider<
-                              SortableArchiveBloc<ImageArchiveData>>(
-                            create: (_) =>
-                                SortableArchiveBloc<ImageArchiveData>(
-                              sortableBloc:
-                                  BlocProvider.of<SortableBloc>(context),
-                            ),
-                            child: const ImageArchivePage(),
-                          ),
+                          child: const ImageArchivePage(),
                         ),
                       ),
                     );

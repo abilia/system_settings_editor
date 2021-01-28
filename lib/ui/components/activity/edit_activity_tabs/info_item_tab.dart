@@ -112,14 +112,13 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                 color: AbiliaColors.black,
               ),
               onPressed: () async {
-                final selectedChecklist = await showViewDialog<Checklist>(
-                  context: context,
-                  builder: (context) => SortableLibraryDialog<ChecklistData>(
-                    libraryItemGenerator: (Sortable<ChecklistData> s) =>
-                        LibraryChecklist(
-                      checklist: s.data.checklist,
+                final selectedChecklist =
+                    await Navigator.of(context).push<Checklist>(
+                  MaterialPageRoute(
+                    builder: (_) => CopiedAuthProviders(
+                      blocContext: context,
+                      child: const ChecklistLibraryPage(),
                     ),
-                    emptyLibraryMessage: translate.noChecklists,
                   ),
                 );
                 if (selectedChecklist != null &&
@@ -149,7 +148,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                           bottom: BorderSide(color: AbiliaColors.white120),
                         ),
                       ),
-                      child: CheckListView(
+                      child: ChecklistView(
                         widget.checklist,
                         padding:
                             const EdgeInsets.fromLTRB(0.0, 12.0, 16.0, 25.0),
@@ -295,13 +294,12 @@ class EditNoteWidget extends StatelessWidget {
                 color: AbiliaColors.black,
               ),
               onPressed: () async {
-                final result = await showViewDialog<String>(
-                  context: context,
-                  builder: (context) => SortableLibraryDialog<NoteData>(
-                    libraryItemGenerator: (Sortable<NoteData> s) => LibraryNote(
-                      content: s.data.text,
+                final result = await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => CopiedAuthProviders(
+                      blocContext: context,
+                      child: const NoteLibraryPage(),
                     ),
-                    emptyLibraryMessage: translate.noNotes,
                   ),
                 );
                 if (result != null && result != infoItem.text) {

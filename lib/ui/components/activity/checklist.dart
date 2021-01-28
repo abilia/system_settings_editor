@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/models/info_item.dart';
 import 'package:seagull/ui/all.dart';
 
-class CheckListView extends StatelessWidget {
+class ChecklistView extends StatelessWidget {
   final Checklist checklist;
   final DateTime day;
   final Function(Question) onTap;
@@ -15,7 +15,7 @@ class CheckListView extends StatelessWidget {
   final UnmodifiableMapView<int, File> tempImageFiles;
   final bool preview;
 
-  CheckListView(
+  ChecklistView(
     this.checklist, {
     this.day,
     this.onTap,

@@ -234,7 +234,7 @@ class Attachment extends StatelessWidget with Checker {
         textWidget: Text(item.text),
       );
     } else if (item is Checklist) {
-      return CheckListView(
+      return ChecklistView(
         item,
         day: activityDay.day,
         preview: preview,

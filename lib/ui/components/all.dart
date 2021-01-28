@@ -9,7 +9,6 @@ export 'abilia_tab_bar.dart';
 export 'full_day_container.dart';
 export 'calendar/all.dart';
 export 'activity/all.dart';
-export 'sortable/all.dart';
 export 'cross_over.dart';
 export 'dots.dart';
 export 'arrows.dart';

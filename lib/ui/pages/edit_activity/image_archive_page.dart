@@ -1,67 +1,88 @@
 import 'package:flutter/material.dart';
 
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class ImageArchivePage extends StatefulWidget {
+class ImageArchivePage extends StatelessWidget {
   const ImageArchivePage({Key key}) : super(key: key);
-  @override
-  _ImageArchivePageState createState() => _ImageArchivePageState();
-}
-
-class _ImageArchivePageState extends State<ImageArchivePage> {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocBuilder<SortableArchiveBloc<ImageArchiveData>,
-        SortableArchiveState<ImageArchiveData>>(
-      builder: (context, state) {
-        return Scaffold(
-          appBar: NewAbiliaAppBar(
-            iconData: AbiliaIcons.past_picture_from_windows_clipboard,
-            title: translate.selectPicture,
-          ),
-          body: Column(
-            children: [
-              LibraryHeading(sortableArchiveState: state),
-              Expanded(
-                child: state.isSelected
-                    ? FullScreenImageArchive(sortableArchiveState: state)
-                    : const ImageArchive(),
-              ),
-            ],
-          ),
-          bottomNavigationBar: AnimatedBottomNavigation(
-            showForward: state.isSelected,
-            backNavigationWidget: GreyButton(
-              icon: AbiliaIcons.close_program,
-              text: translate.cancel,
-              onPressed: () => Navigator.of(context).popUntil((route) =>
-                  route.settings.name?.startsWith('$EditActivityPage') ??
-                  false),
-            ),
-            forwardNavigationWidget: OkButton(
-              onPressed: () => Navigator.of(context).pop<SelectedImage>(
-                SelectedImage(
-                  id: state.selected?.data?.fileId,
-                  path: state.selected?.data?.file,
-                ),
-              ),
-            ),
-          ),
-        );
-      },
+    return LibraryPage<ImageArchiveData>(
+      appBar: NewAbiliaAppBar(
+        iconData: AbiliaIcons.past_picture_from_windows_clipboard,
+        title: translate.selectPicture,
+      ),
+      rootHeading: translate.imageArchive,
+      libraryItemGenerator: (imageArchive) =>
+          ArchiveImage(sortable: imageArchive),
+      selectedItemGenerator: (imageArchive) =>
+          FullScreenArchiveImage(selected: imageArchive.data),
+      emptyLibraryMessage: translate.noImages,
+      onCancel: () => Navigator.of(context)
+        ..pop()
+        ..maybePop(),
+      onOk: (selected) => Navigator.of(context).pop<SelectedImage>(
+        SelectedImage(
+          id: selected?.data?.fileId,
+          path: selected?.data?.file,
+        ),
+      ),
     );
   }
 }
 
-class FullScreenImageArchive extends StatelessWidget {
-  const FullScreenImageArchive({
+class ArchiveImage extends StatelessWidget {
+  final Sortable<ImageArchiveData> sortable;
+  const ArchiveImage({Key key, @required this.sortable}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final imageHeight = 84.0;
+    final imageWidth = 84.0;
+    final imageArchiveData = sortable.data;
+    final name = imageArchiveData.name;
+    final imageId = imageArchiveData.fileId;
+    final iconPath = imageArchiveData.file;
+    return Tts.fromSemantics(
+      SemanticsProperties(
+        label: imageArchiveData.name,
+        image: imageArchiveData.fileId != null || imageArchiveData.file != null,
+        button: true,
+      ),
+      child: Container(
+        decoration: boxDecoration,
+        padding: const EdgeInsets.all(4.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            if (name != null) ...[
+              Text(
+                name,
+                overflow: TextOverflow.ellipsis,
+                style: abiliaTextTheme.caption,
+              ),
+              const SizedBox(height: 2),
+            ],
+            FadeInAbiliaImage(
+              height: imageHeight,
+              width: imageWidth,
+              imageFileId: imageId,
+              imageFilePath: iconPath,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FullScreenArchiveImage extends StatelessWidget {
+  const FullScreenArchiveImage({
     Key key,
-    @required this.sortableArchiveState,
+    @required this.selected,
   }) : super(key: key);
-  final SortableArchiveState<ImageArchiveData> sortableArchiveState;
+  final ImageArchiveData selected;
 
   @override
   Widget build(BuildContext context) {
@@ -71,72 +92,10 @@ class FullScreenImageArchive extends StatelessWidget {
         borderRadius: borderRadius,
         child: FullScreenImage(
           backgroundDecoration: whiteNoBorderBoxDecoration,
-          fileId: sortableArchiveState.selected.data.fileId,
-          filePath: sortableArchiveState.selected.data.icon,
+          fileId: selected.fileId,
+          filePath: selected.icon,
         ),
       ),
     );
-  }
-}
-
-class LibraryHeading extends StatelessWidget {
-  const LibraryHeading({
-    Key key,
-    @required this.sortableArchiveState,
-  }) : super(key: key);
-  final SortableArchiveState<ImageArchiveData> sortableArchiveState;
-
-  @override
-  Widget build(BuildContext context) {
-    final heading = getImageArchiveHeading(sortableArchiveState) ??
-        Translator.of(context).translate.imageArchive;
-    return Tts(
-      data: heading,
-      child: Padding(
-        padding: const EdgeInsets.only(right: 12.0),
-        child: Separated(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 12.0, 0.0, 4.0),
-            child: Row(
-              children: [
-                ActionButton(
-                  onPressed: () => onBack(context, sortableArchiveState),
-                  themeData: darkButtonTheme,
-                  child: Icon(AbiliaIcons.navigation_previous),
-                ),
-                const SizedBox(width: 12.0),
-                Expanded(
-                  child: Text(
-                    heading,
-                    style: abiliaTheme.textTheme.headline6,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  String getImageArchiveHeading(SortableArchiveState state) {
-    if (state.isSelected) {
-      return state.selected.data.title() ?? '';
-    }
-    return state.allById[state.currentFolderId]?.data?.title();
-  }
-
-  Future onBack(BuildContext context,
-      SortableArchiveState<ImageArchiveData> state) async {
-    if (state.isSelected) {
-      BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(context)
-          .add(SortableSelected<ImageArchiveData>(null));
-    } else if (state.currentFolderId != null) {
-      BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(context)
-          .add(NavigateUp());
-    } else {
-      await Navigator.of(context).maybePop();
-    }
   }
 }
