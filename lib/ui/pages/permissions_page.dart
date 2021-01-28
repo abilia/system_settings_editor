@@ -219,7 +219,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
               child: InfoButton(
                 onTap: () => showViewDialog(
                   context: context,
-                  builder: (context) => FullscreenAlarmInfoDialog(),
+                  builder: (context) => const FullscreenAlarmInfoDialog(),
                 ),
               ),
             ),

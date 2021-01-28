@@ -17,13 +17,14 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return ViewDialog(
-      verticalPadding: 0.0,
-      leftPadding: 32.0,
-      rightPadding: 32.0,
-      child: Column(
+    return SmallDialog(
+      expanded: true,
+      backNavigationWidget: const CancelButton(),
+      forwardNavigationWidget:
+          showRedirect ? const RequestFullscreenNotificationButton() : null,
+      body: Column(
         children: [
-          const Spacer(flex: 72),
+          const Spacer(flex: 64),
           const ActivityAlarmPreview(),
           const SizedBox(height: 24),
           Tts(
@@ -43,9 +44,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
             ),
           ),
           if (showRedirect) ...[
-            const Spacer(flex: 67),
-            const RequestFullscreenNotificationButton(),
-            const SizedBox(height: 8),
+            const Spacer(flex: 43),
             Tts(
               child: Text(
                 translate.redirectToAndroidSettings,
@@ -55,9 +54,9 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
           ] else
-            const Spacer(flex: 171),
+            const Spacer(flex: 71),
         ],
       ),
     );
@@ -127,24 +126,12 @@ class ActivityAlarmPreview extends StatelessWidget {
 class RequestFullscreenNotificationButton extends StatelessWidget {
   const RequestFullscreenNotificationButton();
   @override
-  Widget build(BuildContext context) {
-    final text = Translator.of(context).translate.allow;
-    return Theme(
-      data: greenButtonTheme,
-      child: Tts(
-        data: text,
-        child: FlatButton(
-          color: greenButtonTheme.buttonColor,
-          child: Text(
-            text,
-            style: greenButtonTheme.textTheme.button,
-          ),
-          onPressed: () async {
-            await openSystemAlertSetting();
-            await Navigator.of(context).maybePop();
-          },
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => GreenButton(
+        icon: AbiliaIcons.ok,
+        text: Translator.of(context).translate.allow,
+        onPressed: () async {
+          await openSystemAlertSetting();
+          await Navigator.of(context).maybePop();
+        },
+      );
 }
