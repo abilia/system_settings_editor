@@ -148,7 +148,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                           bottom: BorderSide(color: AbiliaColors.white120),
                         ),
                       ),
-                      child: CheckListView(
+                      child: ChecklistView(
                         widget.checklist,
                         padding:
                             const EdgeInsets.fromLTRB(0.0, 12.0, 16.0, 25.0),

@@ -361,7 +361,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(CheckListView), findsOneWidget);
+    expect(find.byType(ChecklistView), findsOneWidget);
     expect(find.text('shorts'), findsOneWidget);
   });
 
@@ -412,7 +412,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.byType(CheckListView), findsOneWidget);
+    expect(find.byType(ChecklistView), findsOneWidget);
     expect(find.byType(QuestionView), findsOneWidget);
     expect(find.byKey(TestKey.checklistQuestionImageKey), findsOneWidget);
     await tester.tap(find.byKey(TestKey.checklistQuestionImageKey));
@@ -445,7 +445,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(CheckListView), findsOneWidget);
+    expect(find.byType(ChecklistView), findsOneWidget);
     expect(find.byType(QuestionView), findsNWidgets(2));
     expect(find.text('tag'), findsOneWidget);
     tester.widgetList(find.byType(QuestionView)).forEach((element) {
@@ -484,7 +484,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(CheckListView), findsOneWidget);
+    expect(find.byType(ChecklistView), findsOneWidget);
     expect(find.byType(QuestionView), findsNWidgets(2));
     expect(find.text('tag'), findsOneWidget);
     tester.widgetList(find.byType(QuestionView)).forEach((element) {
@@ -547,7 +547,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(CheckListView), findsOneWidget);
+    expect(find.byType(ChecklistView), findsOneWidget);
     expect(find.byType(QuestionView), findsNWidgets(2));
     await tester.tap(find.text('unchecked'));
     await tester.pumpAndSettle();

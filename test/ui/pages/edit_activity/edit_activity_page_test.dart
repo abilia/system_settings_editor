@@ -1296,7 +1296,7 @@ text''';
         await tester.pumpAndSettle();
         expect(find.text(checklisttitle1), findsOneWidget);
         expect(find.text(checklisttitle2), findsOneWidget);
-        expect(find.byType(CheckListView), findsOneWidget);
+        expect(find.byType(ChecklistView), findsOneWidget);
       });
     });
   });

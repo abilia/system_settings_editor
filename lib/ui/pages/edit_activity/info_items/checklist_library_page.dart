@@ -10,7 +10,7 @@ class ChecklistLibraryPage extends StatelessWidget {
         libraryItemGenerator: (checklist) =>
             LibraryChecklist(checklist: checklist.data.checklist),
         selectedItemGenerator: (checklist) =>
-            FullScreenCheckList(checklist: checklist.data.checklist),
+            FullScreenChecklist(checklist: checklist.data.checklist),
         emptyLibraryMessage: Translator.of(context).translate.noChecklists,
         onOk: (selected) =>
             Navigator.of(context).pop<Checklist>(selected.data.checklist),
@@ -66,8 +66,8 @@ class LibraryChecklist extends StatelessWidget {
   }
 }
 
-class FullScreenCheckList extends StatelessWidget {
-  const FullScreenCheckList({
+class FullScreenChecklist extends StatelessWidget {
+  const FullScreenChecklist({
     Key key,
     @required this.checklist,
   }) : super(key: key);
@@ -78,7 +78,7 @@ class FullScreenCheckList extends StatelessWidget {
         margin: const EdgeInsets.only(
             left: 12.0, top: 24.0, right: 16.0, bottom: 12.0),
         decoration: whiteBoxDecoration,
-        child: CheckListView(
+        child: ChecklistView(
           checklist,
           preview: true,
           padding: const EdgeInsets.all(12.0),
