@@ -128,10 +128,18 @@ class ActivityBottomAppBar extends StatelessWidget with Checker {
                             final changedActivity =
                                 activity.copyWith(alarm: result);
                             if (activity.isRecurring) {
-                              final applyTo = await showViewDialog<ApplyTo>(
-                                context: context,
-                                builder: (context) => EditRecurrentDialog(),
-                              );
+                              final applyTo = await Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                builder: (_) => CopiedAuthProviders(
+                                  blocContext: context,
+                                  child: SelectRecurrentTypePage(
+                                    heading: Translator.of(context)
+                                        .translate
+                                        .editRecurringActivity,
+                                    headingIcon: AbiliaIcons.edit,
+                                  ),
+                                ),
+                              ));
                               if (applyTo == null) return;
                               BlocProvider.of<ActivitiesBloc>(context).add(
                                 UpdateRecurringActivity(
@@ -155,20 +163,29 @@ class ActivityBottomAppBar extends StatelessWidget with Checker {
                         onPressed: () async {
                           final shouldDelete = await showViewDialog<bool>(
                             context: context,
-                            builder: (_) => ConfirmActivityActionDialog(
-                              activityOccasion: activityOccasion,
-                              title: Translator.of(context)
+                            builder: (_) => YesNoDialog(
+                              heading: Translator.of(context).translate.remove,
+                              headingIcon: AbiliaIcons.delete_all_clear,
+                              text: Translator.of(context)
                                   .translate
                                   .deleteActivity,
                             ),
                           );
                           if (shouldDelete == true) {
                             if (activity.isRecurring) {
-                              final applyTo = await showViewDialog<ApplyTo>(
-                                context: context,
-                                builder: (context) =>
-                                    EditRecurrentDialog(allDaysVisible: true),
-                              );
+                              final applyTo = await Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                builder: (_) => CopiedAuthProviders(
+                                  blocContext: context,
+                                  child: SelectRecurrentTypePage(
+                                    heading: Translator.of(context)
+                                        .translate
+                                        .deleteRecurringActivity,
+                                    allDaysVisible: true,
+                                    headingIcon: AbiliaIcons.delete_all_clear,
+                                  ),
+                                ),
+                              ));
                               if (applyTo == null) return;
                               BlocProvider.of<ActivitiesBloc>(context).add(
                                 DeleteRecurringActivity(

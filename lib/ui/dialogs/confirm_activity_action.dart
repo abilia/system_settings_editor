@@ -5,13 +5,11 @@ import 'package:seagull/ui/all.dart';
 class ConfirmActivityActionDialog extends StatelessWidget {
   final ActivityOccasion activityOccasion;
   final String title;
-  final String extraMessage;
 
   const ConfirmActivityActionDialog({
     Key key,
     @required this.activityOccasion,
     @required this.title,
-    this.extraMessage,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -28,16 +26,6 @@ class ConfirmActivityActionDialog extends StatelessWidget {
             activityOccasion: activityOccasion,
             preview: true,
           ),
-          if (extraMessage != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Tts(
-                  child: Text(extraMessage),
-                ),
-              ),
-            ),
         ],
       ),
     );

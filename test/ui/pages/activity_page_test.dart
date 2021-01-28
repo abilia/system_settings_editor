@@ -451,7 +451,7 @@ void main() {
     });
   });
   group('Edit recurring', () {
-    final editRecurrentFinder = find.byType(EditRecurrentDialog);
+    final editRecurrentFinder = find.byType(SelectRecurrentTypePage);
     final onlyThisDayRadioFinder = find.byKey(ObjectKey(TestKey.onlyThisDay));
     final allDaysRadioFinder = find.byKey(ObjectKey(TestKey.allDays));
     final thisDayAndForwardRadioFinder =
