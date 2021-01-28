@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -38,11 +37,7 @@ class AllDayList extends StatelessWidget {
                 day: state.day,
               ),
               bottomNavigationBar: BottomNavigation(
-                backNavigationWidget: GreyButton(
-                  icon: AbiliaIcons.close_program,
-                  text: Translator.of(context).translate.close,
-                  onPressed: Navigator.of(context).maybePop,
-                ),
+                backNavigationWidget: const CloseButton(),
               ),
             ),
           );

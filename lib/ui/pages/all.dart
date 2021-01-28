@@ -8,4 +8,5 @@ export 'allday_list_page.dart';
 export 'activity_page.dart';
 export 'permissions_page.dart';
 export 'about_page.dart';
+export 'available_for_page.dart';
 export 'edit_activity/all.dart';

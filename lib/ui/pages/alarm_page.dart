@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -184,11 +183,7 @@ class ReminderBottomAppBar extends StatelessWidget with Checker {
     final translate = Translator.of(context).translate;
     final displayCheckButton =
         activityOccasion.activity.checkable && !activityOccasion.isSignedOff;
-    final closeButton = GreyButton(
-      text: translate.close,
-      icon: AbiliaIcons.close_program,
-      onPressed: () => _pop(context),
-    );
+    final closeButton = CloseButton(onPressed: () => _pop(context));
     return Theme(
       data: bottomNavigationBarTheme,
       child: BottomAppBar(
@@ -201,12 +196,11 @@ class ReminderBottomAppBar extends StatelessWidget with Checker {
                   ? MainAxisAlignment.spaceBetween
                   : MainAxisAlignment.center,
               children: [
-                if (!displayCheckButton) closeButton,
-                if (displayCheckButton) ...[
+                if (!displayCheckButton)
+                  closeButton
+                else ...[
                   Expanded(child: closeButton),
-                  SizedBox(
-                    width: 8,
-                  ),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: IconAndTextButton(
                       key: TestKey.activityCheckButton,

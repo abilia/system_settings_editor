@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -52,6 +51,7 @@ class _EditNotePageState extends State<EditNotePage> {
         ),
       ),
       child: Scaffold(
+        backgroundColor: AbiliaColors.white,
         appBar: NewAbiliaAppBar(
           iconData: AbiliaIcons.edit,
           title: translate.enterText,
