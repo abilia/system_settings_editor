@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
-class SelectAvailableForDialog extends StatefulWidget {
+class AvailableForPage extends StatefulWidget {
   final bool secret;
 
-  const SelectAvailableForDialog({Key key, @required this.secret})
-      : super(key: key);
+  const AvailableForPage({Key key, @required this.secret}) : super(key: key);
 
   @override
-  _SelectAvailableForDialogState createState() =>
-      _SelectAvailableForDialogState(secret);
+  _AvailableForPageState createState() => _AvailableForPageState(secret);
 }
 
-class _SelectAvailableForDialogState extends State<SelectAvailableForDialog> {
-  _SelectAvailableForDialogState(this.secret);
+class _AvailableForPageState extends State<AvailableForPage> {
+  _AvailableForPageState(this.secret);
   bool secret;
   void _onSelected(bool value) => setState(() => secret = value);
 

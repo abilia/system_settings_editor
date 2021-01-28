@@ -443,7 +443,7 @@ class AvailibleForWidget extends StatelessWidget {
             final result = await Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) =>
-                    SelectAvailableForDialog(secret: activity.secret),
+                    AvailableForPage(secret: activity.secret),
               ),
             );
             if (result != null) {
