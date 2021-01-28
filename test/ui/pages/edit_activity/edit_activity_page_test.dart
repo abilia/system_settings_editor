@@ -598,7 +598,7 @@ void main() {
       expect(find.byIcon(AbiliaIcons.password_protection), findsNothing);
       await tester.tap(find.byKey(TestKey.availibleFor));
       await tester.pumpAndSettle();
-      expect(find.byType(SelectAvailableForDialog), findsOneWidget);
+      expect(find.byType(AvailableForPage), findsOneWidget);
       await tester.tap(find.byKey(TestKey.onlyMe));
       await tester.pumpAndSettle();
       expect(find.text(translate.onlyMe), findsOneWidget);
