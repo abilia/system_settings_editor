@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
@@ -405,7 +404,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(
             find.byType(NotificationPermissionWarningDialog), findsOneWidget);
-        await tester.tap(find.byKey(TestKey.closeDialog));
+        await tester.tap(find.byType(CloseButton));
         expect(find.byType(OrangeDot), findsOneWidget);
         expect(find.byType(ErrorMessage), findsOneWidget);
       });
@@ -443,7 +442,7 @@ void main() {
         final compound = translate.allowNotificationsDescription;
         await tester.verifyTts(find.byType(NotificationBodyTextWarning),
             exact: compound);
-        await tester.tap(find.byKey(TestKey.closeDialog));
+        await tester.tap(find.byType(CloseButton));
         await tester.pumpAndSettle();
         await tester.verifyTts(find.byType(ErrorMessage),
             exact: translate.notificationsWarningText);

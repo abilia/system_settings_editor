@@ -168,7 +168,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
           listenWhen: _notificationsDenied,
           listener: (context, state) => showViewDialog(
             context: context,
-            builder: (context) => NotificationPermissionWarningDialog(),
+            builder: (context) => const NotificationPermissionWarningDialog(),
           ),
         ),
         if (!Platform.isIOS) fullscreenAlarmPremissionListener(context),

@@ -38,7 +38,7 @@ void main() {
   ).toJson());
 
   setUp(() async {
-    setupPermissions();
+    setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
     mockTicker = StreamController<DateTime>();
@@ -79,6 +79,7 @@ void main() {
   tearDown(() async {
     await GetIt.I.reset();
     notificationsPluginInstance = null;
+    setupPermissions();
   });
 
   group('alarms and reminder test', () {

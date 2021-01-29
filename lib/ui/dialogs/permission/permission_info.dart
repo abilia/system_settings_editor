@@ -20,15 +20,16 @@ class PermissionInfoDialog extends StatelessWidget {
       listener: (context, state) => Navigator.of(context).maybePop(),
       child: SmallDialog(
         expanded: true,
+        bodyPadding: const EdgeInsets.symmetric(horizontal: 20),
         backNavigationWidget: const CloseButton(),
         body: Column(
           children: [
-            const SizedBox(height: 96.0),
+            const Spacer(flex: 96),
             Icon(
               permission.iconData,
               size: hugeIconSize,
             ),
-            const SizedBox(height: 80.0),
+            const Spacer(flex: 80),
             Tts(
               child: Text(
                 permission.translate(translate),
@@ -39,11 +40,12 @@ class PermissionInfoDialog extends StatelessWidget {
             PermissionInfoBodyText(
               allowAccessBodyText: body(translate),
             ),
-            const SizedBox(height: 32.0),
+            const Spacer(flex: 32),
             PermissionSwitch(
               permission: permission,
               status: PermissionStatus.permanentlyDenied,
             ),
+            const Spacer(flex: 51),
           ],
         ),
       ),

@@ -18,6 +18,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return SmallDialog(
+      bodyPadding: const EdgeInsets.symmetric(horizontal: 20),
       expanded: true,
       backNavigationWidget: const CancelButton(),
       forwardNavigationWidget:
@@ -26,7 +27,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
         children: [
           const Spacer(flex: 64),
           const ActivityAlarmPreview(),
-          const SizedBox(height: 24),
+          const Spacer(flex: 24),
           Tts(
             child: Text(
               translate.fullScreenAlarm,
@@ -75,9 +76,7 @@ class ActivityAlarmPreview extends StatelessWidget {
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(4),
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(4)),
           boxShadow: [
             BoxShadow(
               color: AbiliaColors.transparentBlack50,
@@ -88,7 +87,7 @@ class ActivityAlarmPreview extends StatelessWidget {
           ],
         ),
         child: SizedBox(
-          height: 256,
+          height: 256.0,
           child: FittedBox(
             fit: BoxFit.contain,
             alignment: Alignment.center,
