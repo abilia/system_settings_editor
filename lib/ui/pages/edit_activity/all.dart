@@ -8,3 +8,4 @@ export 'select_alarm_type_page.dart';
 export 'select_recurrence_page.dart';
 export 'info_items/all.dart';
 export 'library_page.dart';
+export 'select_recurrent_type_page.dart';

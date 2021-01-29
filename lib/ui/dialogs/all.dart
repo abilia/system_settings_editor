@@ -1,6 +1,5 @@
 export 'view_dialog.dart';
 export 'confirm_activity_action.dart';
-export '../pages/edit_activity/select_recurrent_type_page.dart';
 export 'license_expired.dart';
 export 'warning.dart';
 export 'confirm_activity_action.dart';

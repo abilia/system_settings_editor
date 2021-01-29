@@ -120,14 +120,10 @@ class EditActivityListners extends StatelessWidget {
               if (state is StoredActivityState) {
                 final applyTo =
                     await Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => CopiedAuthProviders(
-                    blocContext: context,
-                    child: SelectRecurrentTypePage(
-                      heading: Translator.of(context)
-                          .translate
-                          .editRecurringActivity,
-                      headingIcon: AbiliaIcons.edit,
-                    ),
+                  builder: (_) => SelectRecurrentTypePage(
+                    heading:
+                        Translator.of(context).translate.editRecurringActivity,
+                    headingIcon: AbiliaIcons.edit,
                   ),
                 ));
                 if (applyTo == null) return;

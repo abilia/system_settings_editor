@@ -130,14 +130,11 @@ class ActivityBottomAppBar extends StatelessWidget with Checker {
                             if (activity.isRecurring) {
                               final applyTo = await Navigator.of(context)
                                   .push(MaterialPageRoute(
-                                builder: (_) => CopiedAuthProviders(
-                                  blocContext: context,
-                                  child: SelectRecurrentTypePage(
-                                    heading: Translator.of(context)
-                                        .translate
-                                        .editRecurringActivity,
-                                    headingIcon: AbiliaIcons.edit,
-                                  ),
+                                builder: (_) => SelectRecurrentTypePage(
+                                  heading: Translator.of(context)
+                                      .translate
+                                      .editRecurringActivity,
+                                  headingIcon: AbiliaIcons.edit,
                                 ),
                               ));
                               if (applyTo == null) return;
@@ -175,15 +172,12 @@ class ActivityBottomAppBar extends StatelessWidget with Checker {
                             if (activity.isRecurring) {
                               final applyTo = await Navigator.of(context)
                                   .push(MaterialPageRoute(
-                                builder: (_) => CopiedAuthProviders(
-                                  blocContext: context,
-                                  child: SelectRecurrentTypePage(
-                                    heading: Translator.of(context)
-                                        .translate
-                                        .deleteRecurringActivity,
-                                    allDaysVisible: true,
-                                    headingIcon: AbiliaIcons.delete_all_clear,
-                                  ),
+                                builder: (_) => SelectRecurrentTypePage(
+                                  heading: Translator.of(context)
+                                      .translate
+                                      .deleteRecurringActivity,
+                                  allDaysVisible: true,
+                                  headingIcon: AbiliaIcons.delete_all_clear,
                                 ),
                               ));
                               if (applyTo == null) return;
