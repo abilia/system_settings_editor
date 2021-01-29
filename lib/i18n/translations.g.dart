@@ -114,7 +114,9 @@ abstract class Translated {
 
   final String deleteActivity = 'Do you want to delete this activity?';
 
-  final String appyTo = 'Edit recurring activity';
+  final String editRecurringActivity = 'Edit recurring activity';
+
+  final String deleteRecurringActivity = 'Delete recurring activity';
 
   final String onlyThisDay = 'Only this day';
 
@@ -515,7 +517,10 @@ class SV extends Translated {
       'Är du säker på att du vill ta bort aktiviteten?';
 
   @override
-  final String appyTo = 'Ändra återkommande aktivitet';
+  final String editRecurringActivity = 'Ändra återkommande aktivitet';
+
+  @override
+  final String deleteRecurringActivity = 'Ta bort återkommande aktivitet';
 
   @override
   final String onlyThisDay = 'Endast denna dag';
@@ -1035,7 +1040,10 @@ class DA extends Translated {
       'Er du sikker på, at du vil slette aktiviteten?';
 
   @override
-  final String appyTo = 'Ændre gentagende aktivitet';
+  final String editRecurringActivity = 'Ændre gentagende aktivitet';
+
+  @override
+  final String deleteRecurringActivity = 'Slet gentagende aktivitet';
 
   @override
   final String onlyThisDay = 'Kun denne dag';
@@ -1553,7 +1561,10 @@ class NL extends Translated {
   final String deleteActivity = 'Wilt u deze activiteit verwijderen?';
 
   @override
-  final String appyTo = 'Terugkerende activiteit bewerken';
+  final String editRecurringActivity = 'Terugkerende activiteit bewerken';
+
+  @override
+  final String deleteRecurringActivity = 'Terugkerende activiteit verwijder';
 
   @override
   final String onlyThisDay = 'Alleen deze dag';
@@ -2070,7 +2081,10 @@ class FI extends Translated {
   final String deleteActivity = 'Haluatko poistaa tämän aktiviteetin?';
 
   @override
-  final String appyTo = 'Muokkaa toistuvaa aktiviteettia';
+  final String editRecurringActivity = 'Muokkaa toistuvaa aktiviteettia';
+
+  @override
+  final String deleteRecurringActivity = 'Poista toistuva aktiviteettia';
 
   @override
   final String onlyThisDay = 'Vain tänä päivänä';
@@ -2587,7 +2601,10 @@ class DE extends Translated {
   final String deleteActivity = 'Möchten Sie diese Aktivität löschen?';
 
   @override
-  final String appyTo = 'Wiederkehrende Aktivität bearbeiten';
+  final String editRecurringActivity = 'Wiederkehrende Aktivität bearbeiten';
+
+  @override
+  final String deleteRecurringActivity = 'Wiederkehrende Aktivitäten löschen';
 
   @override
   final String onlyThisDay = 'Nur an diesem Tag';
@@ -3105,7 +3122,10 @@ class NB extends Translated {
   final String deleteActivity = 'Er du sikker på at du vil slette aktiviteten?';
 
   @override
-  final String appyTo = 'Endre gjentakende aktivitet';
+  final String editRecurringActivity = 'Endre gjentakende aktivitet';
+
+  @override
+  final String deleteRecurringActivity = 'Slett gjentakende aktivitet';
 
   @override
   final String onlyThisDay = 'Bare denne dagen';

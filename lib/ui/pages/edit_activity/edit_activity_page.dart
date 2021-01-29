@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EditActivityPage extends StatelessWidget {
@@ -119,10 +118,14 @@ class EditActivityListners extends StatelessWidget {
               );
             } else if (errors.contains(SaveError.STORED_RECURRING)) {
               if (state is StoredActivityState) {
-                final applyTo = await showViewDialog<ApplyTo>(
-                  context: context,
-                  builder: (context) => EditRecurrentDialog(),
-                );
+                final applyTo =
+                    await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => SelectRecurrentTypePage(
+                    heading:
+                        Translator.of(context).translate.editRecurringActivity,
+                    headingIcon: AbiliaIcons.edit,
+                  ),
+                ));
                 if (applyTo == null) return;
                 BlocProvider.of<EditActivityBloc>(context)
                     .add(SaveRecurringActivity(applyTo, state.day));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:seagull/ui/all.dart';
 
 class SmallDialog extends StatelessWidget {
@@ -82,4 +83,39 @@ class ErrorDialog extends StatelessWidget {
         body: Tts(child: Text(text)),
         backNavigationWidget: PreviousButton(),
       );
+}
+
+class YesNoDialog extends StatelessWidget {
+  final String text;
+  final String heading;
+  final IconData headingIcon;
+  const YesNoDialog({
+    Key key,
+    this.text,
+    this.heading,
+    this.headingIcon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SmallDialog(
+      heading: AppBarHeading(
+        text: heading,
+        iconData: headingIcon,
+      ),
+      body: Tts(child: Text(text)),
+      backNavigationWidget: GreyButton(
+        key: TestKey.noButton,
+        text: Translator.of(context).translate.no,
+        icon: AbiliaIcons.close_program,
+        onPressed: () => Navigator.of(context).maybePop(false),
+      ),
+      forwardNavigationWidget: GreenButton(
+        key: TestKey.yesButton,
+        text: Translator.of(context).translate.yes,
+        icon: AbiliaIcons.ok,
+        onPressed: () => Navigator.of(context).maybePop(true),
+      ),
+    );
+  }
 }

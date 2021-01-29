@@ -53,7 +53,8 @@ fromBasicActivity	From Basic Activity	Från basaktivitet	Fra standardaktivitet	U
 createActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuwe activiteit	Uusi aktiviteetti	Neue Aktivität	Ny aktivitet
 basicActivities	Select Basic Activity	Välj basaktivitet	Vælg standardaktivitet	Standaardactiviteit selecteren	Valitse perusaktiviteetti	Standardaktivität auswählen	Velg standardaktivitet
 deleteActivity	Do you want to delete this activity?	Är du säker på att du vill ta bort aktiviteten?	Er du sikker på, at du vil slette aktiviteten?	Wilt u deze activiteit verwijderen?	Haluatko poistaa tämän aktiviteetin?	Möchten Sie diese Aktivität löschen?	Er du sikker på at du vil slette aktiviteten?
-appyTo	Edit recurring activity	Ändra återkommande aktivitet	Ændre gentagende aktivitet	Terugkerende activiteit bewerken	Muokkaa toistuvaa aktiviteettia	Wiederkehrende Aktivität bearbeiten	Endre gjentakende aktivitet
+editRecurringActivity	Edit recurring activity	Ändra återkommande aktivitet	Ændre gentagende aktivitet	Terugkerende activiteit bewerken	Muokkaa toistuvaa aktiviteettia	Wiederkehrende Aktivität bearbeiten	Endre gjentakende aktivitet
+deleteRecurringActivity	Delete recurring activity	Ta bort återkommande aktivitet	Slet gentagende aktivitet	Terugkerende activiteit verwijder	Poista toistuva aktiviteettia	Wiederkehrende Aktivitäten löschen	Slett gjentakende aktivitet
 onlyThisDay	Only this day	Endast denna dag	Kun denne dag	Alleen deze dag	Vain tänä päivänä	Nur an diesem Tag	Bare denne dagen
 allDays	All days	Alla dagar	Alle dage	Alle dagen	Kaikki päivät	Alle Tage	Alle dager
 thisDayAndForward	This day and forward	Denna dag och framåt	Denne dag og frem	Deze dag en verder	Tästä päivästä lähtien	Von diesem Tag an	Denne dagen og fremover
