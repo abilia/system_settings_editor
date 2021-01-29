@@ -38,11 +38,11 @@ void main() {
   final alarmAtStartSwichFinder = find.byKey(TestKey.alarmAtStartSwitch);
 
   final okInkWellFinder = find.byKey(ObjectKey(TestKey.okDialog));
-  final closeButtonFinder = find.byKey(TestKey.closeDialog);
   final okButtonFinder = find.byType(OkButton);
+  final cancelButtonFinder = find.byType(CancelButton);
 
   final deleteButtonFinder = find.byIcon(AbiliaIcons.delete_all_clear);
-  final deleteViewDialogFinder = find.byType(ConfirmActivityActionDialog);
+  final yesNoDialogFinder = find.byType(YesNoDialog);
 
   final checkButtonFinder = find.byKey(TestKey.activityCheckButton);
   final uncheckButtonFinder = find.byKey(TestKey.uncheckButton);
@@ -387,7 +387,7 @@ void main() {
 
       // Assert
       expect(deleteButtonFinder, findsOneWidget);
-      expect(deleteViewDialogFinder, findsNothing);
+      expect(yesNoDialogFinder, findsNothing);
       expect(okInkWellFinder, findsNothing);
     });
 
@@ -403,9 +403,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(deleteViewDialogFinder, findsOneWidget);
-      expect(okInkWellFinder, findsOneWidget);
-      expect(find.byType(ActivityCard), findsOneWidget);
+      expect(yesNoDialogFinder, findsOneWidget);
+      expect(yesButtonFinder, findsOneWidget);
     });
 
     testWidgets('When cancel pressed, nothing happens',
@@ -418,12 +417,12 @@ void main() {
       // Act
       await tester.tap(deleteButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(closeButtonFinder);
+      await tester.tap(noButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert
       expect(deleteButtonFinder, findsOneWidget);
-      expect(deleteViewDialogFinder, findsNothing);
+      expect(yesNoDialogFinder, findsNothing);
       expect(okInkWellFinder, findsNothing);
     });
 
@@ -438,13 +437,13 @@ void main() {
       // Act
       await tester.tap(deleteButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(okInkWellFinder);
+      await tester.tap(yesButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert
       expect(deleteButtonFinder, findsNothing);
-      expect(deleteViewDialogFinder, findsNothing);
-      expect(okInkWellFinder, findsNothing);
+      expect(yesNoDialogFinder, findsNothing);
+      expect(yesButtonFinder, findsNothing);
       expect(activityCardFinder, findsNothing);
       expect(activityPageFinder, findsNothing);
       expect(agendaFinder, findsOneWidget);
@@ -468,7 +467,7 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(yesButtonFinder);
         await tester.pumpAndSettle();
 
         // Assert
@@ -486,9 +485,9 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(yesButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(closeButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Assert -- Still on activity page
@@ -506,7 +505,7 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(yesButtonFinder);
         await tester.pumpAndSettle();
 
         // Assert
@@ -525,7 +524,7 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(yesButtonFinder);
         await tester.pumpAndSettle();
 
         final onlyThisDayRadio1 =
@@ -554,7 +553,7 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(yesButtonFinder);
         await tester.pumpAndSettle();
         await tester.tap(allDaysRadioFinder);
         await tester.pumpAndSettle();
@@ -581,7 +580,7 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(yesButtonFinder);
         await tester.pumpAndSettle();
         await tester.tap(thisDayAndForwardRadioFinder);
         await tester.pumpAndSettle();
@@ -609,15 +608,15 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(yesButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(okButtonFinder);
         await tester.pumpAndSettle();
 
         // Assert
         expect(deleteButtonFinder, findsNothing);
-        expect(deleteViewDialogFinder, findsNothing);
-        expect(okInkWellFinder, findsNothing);
+        expect(yesNoDialogFinder, findsNothing);
+        expect(okButtonFinder, findsNothing);
         expect(activityCardFinder, findsNothing);
         expect(activityPageFinder, findsNothing);
         expect(agendaFinder, findsOneWidget);
@@ -640,9 +639,9 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(yesButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(okButtonFinder);
         await tester.pumpAndSettle();
         await tester.tap(goToNextPageFinder);
         await tester.pumpAndSettle();
@@ -675,11 +674,11 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(yesButtonFinder);
         await tester.pumpAndSettle();
         await tester.tap(allDaysRadioFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(okButtonFinder);
         await tester.pumpAndSettle();
         await tester.tap(goToPreviusPageFinder);
         await tester.pumpAndSettle();
@@ -712,11 +711,11 @@ void main() {
         // Act
         await tester.tap(deleteButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(yesButtonFinder);
         await tester.pumpAndSettle();
         await tester.tap(thisDayAndForwardRadioFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(okButtonFinder);
         await tester.pumpAndSettle();
 
         // Assert
@@ -801,7 +800,7 @@ void main() {
         await tester.enterText_(titleTextFormFieldFinder, newTitle);
         await tester.tap(finishActivityFinder);
         await tester.pumpAndSettle();
-        await tester.tap(okInkWellFinder);
+        await tester.tap(okButtonFinder);
         await tester.pumpAndSettle();
 
         // Assert
@@ -879,7 +878,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(thisDayAndForwardRadioFinder);
         await tester.pumpAndSettle();
-        await tester.tap(finishActivityFinder);
+        await tester.tap(okButtonFinder);
         await tester.pumpAndSettle();
 
         // Assert
@@ -1159,7 +1158,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
       await navigateToActivityPage(tester);
       await tester.tap(deleteButtonFinder);
       await tester.pumpAndSettle();
-      await tester.verifyTts(find.byType(ActivityCard), contains: title);
+      await tester.verifyTts(find.text(translate.remove), exact: translate.remove);
       await tester.verifyTts(find.text(translate.deleteActivity),
           exact: translate.deleteActivity);
     });
