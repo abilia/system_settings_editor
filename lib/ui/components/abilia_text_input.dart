@@ -323,38 +323,16 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
         title: heading,
         iconData: AbiliaIcons.lock,
       ),
-      bottomSheet: BottomSheet(builder: (ctx) {
-        return Container(
-          color: AbiliaColors.black80,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: CancelButton(
-                    onPressed: () {
-                      widget.controller.value = widget.onBuildValue;
-                      Navigator.of(context).maybePop();
-                    },
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: OkButton(
-                      onPressed:
-                          _validInput ? Navigator.of(context).maybePop : null),
-                ),
-              ],
-            ),
+      bottomSheet: BottomSheet(
+        builder: (context) => BottomNavigation(
+          backNavigationWidget:
+              CancelButton(onPressed: () => _onClose(context)),
+          forwardNavigationWidget: OkButton(
+            onPressed: _validInput ? Navigator.of(context).maybePop : null,
           ),
-        );
-      }, onClosing: () {
-        widget.controller.value = widget.onBuildValue;
-        Navigator.of(context).maybePop();
-      }),
+        ),
+        onClosing: () => _onClose(context),
+      ),
       body: Tts.fromSemantics(
         SemanticsProperties(
           label: heading,
@@ -396,6 +374,11 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
         ),
       ),
     );
+  }
+
+  void _onClose(BuildContext context) {
+    widget.controller.value = widget.onBuildValue;
+    Navigator.of(context).maybePop();
   }
 }
 

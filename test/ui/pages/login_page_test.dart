@@ -138,7 +138,7 @@ void main() {
     expect(find.byIcon(AbiliaIcons.hide), findsWidgets);
 
     // Go back
-    await tester.tap(find.byKey(TestKey.cancelButton));
+    await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
 
     // Password still hidden
@@ -330,15 +330,15 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    // await tester.enterText_(find.byKey(TestKey.userNameInput), 'a');
+
     await tester.tap(find.byKey(TestKey.userNameInput));
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(TestKey.input), 'a');
     await tester.pumpAndSettle();
-    final button =
-        tester.widget<IconAndTextButton>(find.byKey(TestKey.okDialog));
+    final button = tester.widget<OkButton>(find.byType(OkButton));
     expect(button.onPressed, null);
-    await tester.tap(find.byKey(TestKey.cancelButton));
+
+    await tester.tap(find.byType(CancelButton));
     await tester.pumpAndSettle();
     expect(find.byType(LoginPage), findsOneWidget);
   });
@@ -347,14 +347,15 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
+
     await tester.tap(find.byKey(TestKey.passwordInput));
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(TestKey.input), '7seven7');
     await tester.pumpAndSettle();
-    final button =
-        tester.widget<IconAndTextButton>(find.byKey(TestKey.okDialog));
+    final button = tester.widget<OkButton>(find.byType(OkButton));
     expect(button.onPressed, null);
-    await tester.tap(find.byKey(TestKey.cancelButton));
+
+    await tester.tap(find.byType(CancelButton));
     await tester.pumpAndSettle();
     expect(find.byType(LoginPage), findsOneWidget);
   });

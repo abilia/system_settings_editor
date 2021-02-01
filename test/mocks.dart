@@ -15,6 +15,7 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/widget_test_keys.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -196,7 +197,7 @@ extension OurEnterText on WidgetTester {
     await pumpAndSettle();
     await enterText(find.byKey(TestKey.input), text);
     await pumpAndSettle();
-    await tap(find.byKey(TestKey.okDialog).first);
+    await tap(find.byType(OkButton).first);
     await pumpAndSettle();
   }
 
