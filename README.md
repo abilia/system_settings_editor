@@ -34,3 +34,7 @@ All missing translations will be written to the file `lib/i18n/translation.missi
 ## Test coverage
 For test coverage run
 `$ flutter test --coverage && genhtml coverage/lcov.info -o coverage/html && open coverage/html/index.html`
+
+## Integration tests
+To run the tests:
+`$ flutter drive --driver=test_driver/integration_test.dart --target=integration_test/integration_tests.dart`
