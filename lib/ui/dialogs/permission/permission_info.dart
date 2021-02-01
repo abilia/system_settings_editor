@@ -1,5 +1,4 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:seagull/bloc/all.dart';
 
@@ -19,13 +18,13 @@ class PermissionInfoDialog extends StatelessWidget {
     return BlocListener<PermissionBloc, PermissionState>(
       listenWhen: (previous, current) => current.status[permission].isGranted,
       listener: (context, state) => Navigator.of(context).maybePop(),
-      child: ViewDialog(
-        verticalPadding: 0.0,
-        leftPadding: 16.0,
-        rightPadding: 16.0,
-        child: Column(
+      child: SmallDialog(
+        expanded: true,
+        bodyPadding: const EdgeInsets.symmetric(horizontal: 20),
+        backNavigationWidget: const CloseButton(),
+        body: Column(
           children: [
-            const Spacer(flex: 72),
+            const Spacer(flex: 96),
             Icon(
               permission.iconData,
               size: hugeIconSize,
@@ -41,12 +40,12 @@ class PermissionInfoDialog extends StatelessWidget {
             PermissionInfoBodyText(
               allowAccessBodyText: body(translate),
             ),
-            const Spacer(flex: 111),
+            const Spacer(flex: 32),
             PermissionSwitch(
               permission: permission,
               status: PermissionStatus.permanentlyDenied,
             ),
-            const SizedBox(height: 32),
+            const Spacer(flex: 51),
           ],
         ),
       ),

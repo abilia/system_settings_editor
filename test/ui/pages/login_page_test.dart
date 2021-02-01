@@ -23,6 +23,7 @@ void main() {
   DateTime licensExpireTime;
 
   setUp(() async {
+    setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     licensExpireTime = time.add(10.days());
 
@@ -316,8 +317,6 @@ void main() {
     testWidgets(
         'when fullscreen notification IS granted: show NO FullscreenAlarmInfoDialog',
         (WidgetTester tester) async {
-      setupPermissions(
-          {Permission.systemAlertWindow: PermissionStatus.granted});
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.enterText_(
