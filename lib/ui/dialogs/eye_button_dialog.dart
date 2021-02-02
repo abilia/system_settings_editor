@@ -59,11 +59,12 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
               rightIcon: AbiliaIcons.timeline,
             ),
           ),
-          if (calendarType == CalendarType.TIMEPILLAR) ...[
-            Divider(
-              endIndent: 16,
-            ),
-            Padding(
+          Divider(
+            endIndent: 16,
+          ),
+          CollapsableWidget(
+            collapsed: calendarType == CalendarType.LIST,
+            child: Padding(
               padding: const EdgeInsets.fromLTRB(12, 16, 16, 8),
               child: DuoSelector<bool>(
                 heading: t.activityDuration,
@@ -81,7 +82,7 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
                 rightIcon: AbiliaIcons.flarp,
               ),
             ),
-          ],
+          ),
         ],
       ),
       bodyPadding: EdgeInsets.zero,
