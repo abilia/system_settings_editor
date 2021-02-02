@@ -262,7 +262,6 @@ class EyeButton extends StatelessWidget {
         child: Icon(AbiliaIcons.show),
         onPressed: () async {
           final settings = await showViewDialog<EyeButtonSettings>(
-            useSafeArea: false,
             context: context,
             builder: (context) => EyeButtonDialog(
               currentCalendarType: currentCalendarType,
