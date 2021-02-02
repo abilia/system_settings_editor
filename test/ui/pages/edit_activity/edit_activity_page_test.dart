@@ -599,7 +599,7 @@ void main() {
       await tester.tap(find.byKey(TestKey.availibleFor));
       await tester.pumpAndSettle();
       expect(find.byType(AvailableForPage), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.onlyMe));
+      await tester.tap(find.byIcon(AbiliaIcons.password_protection));
       await tester.pumpAndSettle();
       expect(find.text(translate.onlyMe), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.password_protection), findsOneWidget);
@@ -2475,7 +2475,7 @@ text''';
       await tester.tap(find.byKey(TestKey.availibleFor));
       await tester.pumpAndSettle();
 
-      await tester.verifyTts(find.byKey(TestKey.onlyMe),
+      await tester.verifyTts(find.byIcon(AbiliaIcons.password_protection),
           exact: translate.onlyMe);
     });
 
