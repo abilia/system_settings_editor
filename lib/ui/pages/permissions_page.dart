@@ -19,7 +19,7 @@ class PermissionsPage extends StatelessWidget {
           child: ListView(
             children: state.status.entries
                 .map((e) => PermissionSetting(e))
-                .expand((e) => [e, const SizedBox(height: 12.0)])
+                .expand((e) => [e, const SizedBox(height: 8.0)])
                 .toList(),
           ),
         ),

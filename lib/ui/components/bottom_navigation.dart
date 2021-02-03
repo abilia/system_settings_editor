@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
 class BottomNavigation extends StatelessWidget {
+  final Widget backNavigationWidget;
+  final Widget forwardNavigationWidget;
+  final bool useSafeArea;
+
   const BottomNavigation({
     Key key,
     @required this.backNavigationWidget,
     this.forwardNavigationWidget,
+    this.useSafeArea = true,
   }) : super(key: key);
-
-  final Widget backNavigationWidget;
-  final Widget forwardNavigationWidget;
 
   @override
   Widget build(BuildContext context) {
     return _BottomNavigation(
+      useSafeArea: useSafeArea,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -65,26 +68,34 @@ class AnimatedBottomNavigation extends StatelessWidget {
 }
 
 class _BottomNavigation extends StatelessWidget {
+  final bool useSafeArea;
   const _BottomNavigation({
     Key key,
     @required this.child,
+    this.useSafeArea = true,
   }) : super(key: key);
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final bottom = Container(
       color: AbiliaColors.black80,
-      child: SafeArea(
-        child: Container(
-          height: 84.0,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-            child: child,
-          ),
-        ),
+      height: 84.0,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+        child: child,
       ),
     );
+
+    if (useSafeArea) {
+      return Container(
+        color: AbiliaColors.black80,
+        child: SafeArea(
+          child: bottom,
+        ),
+      );
+    }
+    return bottom;
   }
 }
