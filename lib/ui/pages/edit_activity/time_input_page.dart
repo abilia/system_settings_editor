@@ -138,7 +138,7 @@ class _TimeInputPageState extends State<TimeInputPage> {
                   textTheme: theme.textTheme
                       .copyWith(subtitle1: abiliaTextTheme.headline4)),
               child: Padding(
-                padding: const EdgeInsets.only(top: 56.0),
+                padding: const EdgeInsets.only(top: 64.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
