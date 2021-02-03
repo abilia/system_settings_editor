@@ -97,6 +97,7 @@ class TextToSpeechSwitch extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(8.0, 0, 4.0, 0),
           child: InfoButton(
             onTap: () => showViewDialog(
+              useSafeArea: false,
               context: context,
               builder: (context) => LongPressInfoDialog(),
             ),
@@ -115,45 +116,45 @@ class LongPressInfoDialog extends StatelessWidget {
     return Theme(
       data: theme,
       child: SmallDialog(
-        bodyPadding: EdgeInsets.symmetric(horizontal: 28),
+        bodyPadding: EdgeInsets.symmetric(horizontal: 20),
         expanded: true,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Spacer(
+              flex: 128,
+            ),
             Stack(children: [
               buildPreviewActivityCard(translate),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 3.0),
-                  child: Icon(
-                    AbiliaIcons.speak_on_entry,
-                    size: hugeIconSize,
-                  ),
+                child: Icon(
+                  AbiliaIcons.speak_on_entry,
+                  size: hugeIconSize,
                 ),
               ),
             ]),
-            SizedBox(
-              height: 80,
+            Spacer(
+              flex: 80,
             ),
             Tts(
               child: Text(
                 translate.longpressToSpeak,
+                textAlign: TextAlign.center,
                 style: abiliaTextTheme.headline6,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: Tts(
-                child: Text(
-                  translate.longPressInfoText,
-                  textAlign: TextAlign.center,
-                  style: abiliaTextTheme.bodyText2.copyWith(
-                    color: AbiliaColors.black75,
-                  ),
+            Tts(
+              child: Text(
+                'Tap and hold about 1½ seconds on any function to get it read to by speech synthesis',
+                textAlign: TextAlign.center,
+                style: abiliaTextTheme.bodyText2.copyWith(
+                  color: AbiliaColors.black75,
                 ),
               ),
+            ),
+            Spacer(
+              flex: 111,
             ),
           ],
         ),
@@ -164,18 +165,20 @@ class LongPressInfoDialog extends StatelessWidget {
     );
   }
 
-  ActivityCard buildPreviewActivityCard(Translated translate) {
-    return ActivityCard(
-      activityOccasion: ActivityOccasion(
-        Activity.createNew(
-          title: translate.lunch,
-          startTime: DateTime.now().withTime(TimeOfDay(hour: 12, minute: 0)),
-          duration: 1.hours(),
+  Widget buildPreviewActivityCard(Translated translate) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: ActivityCard(
+        activityOccasion: ActivityOccasion(
+          Activity.createNew(
+            title: translate.lunch,
+            startTime: DateTime.now().withTime(TimeOfDay(hour: 12, minute: 0)),
+          ),
+          DateTime.now(),
+          Occasion.future,
         ),
-        DateTime.now(),
-        Occasion.future,
+        preview: true,
       ),
-      preview: true,
     );
   }
 }

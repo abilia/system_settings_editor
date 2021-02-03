@@ -57,6 +57,7 @@ class SmallDialog extends StatelessWidget {
                       )
                     : bodyContainer,
                 BottomNavigation(
+                  useSafeArea: false,
                   backNavigationWidget: backNavigationWidget,
                   forwardNavigationWidget: forwardNavigationWidget,
                 )

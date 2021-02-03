@@ -88,23 +88,11 @@ class _ProfilePictureNameAndEmailState
 
 class LogoutButton extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    final theme = redButtonTheme;
-    final text = Translator.of(context).translate.logout;
-    return Theme(
-      data: theme,
-      child: Tts(
-        data: text,
-        child: FlatButton(
-          color: theme.buttonColor,
-          child: Text(
-            text,
-            style: theme.textTheme.button,
-          ),
-          onPressed: () =>
-              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut()),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => IconAndTextButton(
+        text: Translator.of(context).translate.logout,
+        icon: AbiliaIcons.power_off_on,
+        onPressed: () =>
+            BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut()),
+        theme: logoutButtonTheme,
+      );
 }
