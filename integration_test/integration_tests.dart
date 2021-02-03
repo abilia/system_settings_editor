@@ -31,7 +31,7 @@ void main() {
     await tester.tap(find.byKey(TestKey.loggInButton));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(TestKey.closeDialog));
+    await tester.tap(find.byType(CancelButton));
     await tester.pumpAndSettle();
   }
 
