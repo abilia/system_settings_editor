@@ -146,7 +146,7 @@ class LongPressInfoDialog extends StatelessWidget {
             ),
             Tts(
               child: Text(
-                'Tap and hold about 1½ seconds on any function to get it read to by speech synthesis',
+                translate.longPressInfoText,
                 textAlign: TextAlign.center,
                 style: abiliaTextTheme.bodyText2.copyWith(
                   color: AbiliaColors.black75,
