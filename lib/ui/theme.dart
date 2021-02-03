@@ -179,6 +179,7 @@ ButtonThemeData greenButtonThemeData = baseButtonTheme.copyWith(
   buttonColor: AbiliaColors.green,
   disabledColor: AbiliaColors.green40,
   highlightColor: AbiliaColors.green120,
+  shape: RoundedRectangleBorder(borderRadius: borderRadius),
 );
 
 const ButtonThemeData checkButtonThemeData = ButtonThemeData(

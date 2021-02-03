@@ -32,6 +32,7 @@ class IconAndTextButton extends StatelessWidget {
         color: theme.buttonColor,
         onPressed: onPressed,
         disabledColor: theme.disabledColor,
+        shape: theme.buttonTheme.shape,
       ),
     );
   }
