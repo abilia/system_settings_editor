@@ -107,7 +107,7 @@ void main() {
     await goToTimePillar(tester);
     await tester.tap(changeViewButtonFinder);
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.calendar));
+    await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
     await tester.pumpAndSettle();
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();

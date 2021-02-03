@@ -493,5 +493,6 @@ class AbiliaIcons {
       hide = IconData(0xeaff, fontFamily: fontFamily),
       flarp = IconData(0xeb12, fontFamily: fontFamily),
       handi_uncheck = IconData(0xEB28, fontFamily: fontFamily),
+      calendar_list = IconData(0xEB29, fontFamily: fontFamily),
       notification = IconData(0xEB31, fontFamily: fontFamily);
 }

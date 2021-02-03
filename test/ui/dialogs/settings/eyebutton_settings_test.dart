@@ -89,9 +89,12 @@ void main() {
   testWidgets('tts', (WidgetTester tester) async {
     await tester.goToEyeButtonSettings();
 
+    await tester.tap(find.byIcon(AbiliaIcons.timeline));
+    await tester.pumpAndSettle();
+
     await tester.verifyTts(find.text(translate.viewMode),
         exact: translate.viewMode);
-    await tester.verifyTts(find.byIcon(AbiliaIcons.calendar),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.calendar_list),
         exact: translate.listView);
     await tester.verifyTts(find.byIcon(AbiliaIcons.timeline),
         exact: translate.timePillarView);

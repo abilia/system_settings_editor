@@ -55,29 +55,32 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
               },
               rightText: t.timePillarView,
               rightValue: CalendarType.TIMEPILLAR,
-              leftIcon: AbiliaIcons.calendar,
+              leftIcon: AbiliaIcons.calendar_list,
               rightIcon: AbiliaIcons.timeline,
             ),
           ),
           Divider(
             endIndent: 16,
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 16, 16, 8),
-            child: DuoSelector<bool>(
-              heading: t.activityDuration,
-              groupValue: dotsInTimePillar,
-              leftText: t.dots,
-              leftValue: true,
-              onChanged: (dots) {
-                setState(() {
-                  dotsInTimePillar = dots;
-                });
-              },
-              rightText: t.edge,
-              rightValue: false,
-              leftIcon: AbiliaIcons.options,
-              rightIcon: AbiliaIcons.flarp,
+          CollapsableWidget(
+            collapsed: calendarType == CalendarType.LIST,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 16, 16, 8),
+              child: DuoSelector<bool>(
+                heading: t.activityDuration,
+                groupValue: dotsInTimePillar,
+                leftText: t.dots,
+                leftValue: true,
+                onChanged: (dots) {
+                  setState(() {
+                    dotsInTimePillar = dots;
+                  });
+                },
+                rightText: t.edge,
+                rightValue: false,
+                leftIcon: AbiliaIcons.options,
+                rightIcon: AbiliaIcons.flarp,
+              ),
             ),
           ),
         ],
