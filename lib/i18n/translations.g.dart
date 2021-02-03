@@ -151,7 +151,7 @@ abstract class Translated {
 
   final String next = 'Next';
 
-  final String ok = 'Ok';
+  final String ok = 'OK';
 
   final String newActivityChoice = 'New';
 
@@ -573,7 +573,7 @@ class SV extends Translated {
   final String next = 'Nästa';
 
   @override
-  final String ok = 'Ok';
+  final String ok = 'OK';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -1096,7 +1096,7 @@ class DA extends Translated {
   final String next = 'Næste';
 
   @override
-  final String ok = 'Okay';
+  final String ok = 'OK';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -1616,7 +1616,7 @@ class NL extends Translated {
   final String next = 'Volgende';
 
   @override
-  final String ok = 'Ok';
+  final String ok = 'OK';
 
   @override
   final String newActivityChoice = 'Nieuw';
@@ -2137,7 +2137,7 @@ class FI extends Translated {
   final String next = 'Seuraava';
 
   @override
-  final String ok = 'Ok';
+  final String ok = 'OK';
 
   @override
   final String newActivityChoice = 'Uusi';
@@ -2657,7 +2657,7 @@ class DE extends Translated {
   final String next = 'Nächster';
 
   @override
-  final String ok = 'Ok';
+  final String ok = 'OK';
 
   @override
   final String newActivityChoice = 'Neu';
@@ -3178,7 +3178,7 @@ class NB extends Translated {
   final String next = 'Neste';
 
   @override
-  final String ok = 'Ok';
+  final String ok = 'OK';
 
   @override
   final String newActivityChoice = 'Helt ny';

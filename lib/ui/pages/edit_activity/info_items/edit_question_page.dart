@@ -30,6 +30,12 @@ class _EditQuestionPageState extends State<EditQuestionPage> {
   Question question;
   bool get canSave => question.hasImage || question.hasTitle;
   File newImage;
+  TextEditingController txtEditController;
+  @override
+  void initState() {
+    super.initState();
+    txtEditController = TextEditingController(text: question.name);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +83,7 @@ class _EditQuestionPageState extends State<EditQuestionPage> {
                   ),
                   errorState: false,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 16.0),
                 Expanded(
                   child: Tts.fromSemantics(
                     SemanticsProperties(label: heading),
@@ -86,6 +92,7 @@ class _EditQuestionPageState extends State<EditQuestionPage> {
                       children: <Widget>[
                         SubHeading(heading),
                         TextField(
+                          controller: txtEditController,
                           textCapitalization: TextCapitalization.sentences,
                           style: Theme.of(context).textTheme.bodyText1,
                           autofocus: true,

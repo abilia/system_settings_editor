@@ -104,13 +104,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                 onTap: widget.onTap,
               ),
             ),
-            const SizedBox(width: 12.0),
-            ActionButton(
-              child: Icon(
-                AbiliaIcons.show_text,
-                size: defaultIconSize,
-                color: AbiliaColors.black,
-              ),
+            _LibraryButton(
               onPressed: () async {
                 final selectedChecklist =
                     await Navigator.of(context).push<Checklist>(
@@ -128,7 +122,6 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                           .copyWith(infoItem: selectedChecklist)));
                 }
               },
-              themeData: darkButtonTheme,
             )
           ],
         ),
@@ -154,36 +147,40 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                             const EdgeInsets.fromLTRB(0.0, 12.0, 16.0, 25.0),
                         onTap: _handleEditQuestionResult,
                         tempImageFiles: tempImageFiles,
+                        preview: true,
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 48.0,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Tts(
-                        data: Translator.of(context).translate.addNew,
-                        child: RawMaterialButton(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(color: AbiliaColors.green140),
-                            borderRadius: borderRadius,
-                          ),
-                          fillColor: AbiliaColors.green,
-                          elevation: 0.0,
-                          disabledElevation: 0.0,
-                          focusElevation: 0.0,
-                          highlightElevation: 0.0,
-                          hoverElevation: 0.0,
-                          onPressed: _handleNewQuestion,
-                          child: Row(
-                            children: [
-                              const SizedBox(width: 12.0),
-                              Icon(AbiliaIcons.new_icon),
-                              const SizedBox(width: 12.0),
-                              Text(Translator.of(context).translate.addNew),
-                            ],
-                          ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Tts(
+                      data: Translator.of(context).translate.addNew,
+                      child: RawMaterialButton(
+                        constraints: BoxConstraints(minHeight: 48.0),
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(color: AbiliaColors.green140),
+                          borderRadius: borderRadius,
+                        ),
+                        fillColor: AbiliaColors.green,
+                        elevation: 0.0,
+                        disabledElevation: 0.0,
+                        focusElevation: 0.0,
+                        highlightElevation: 0.0,
+                        hoverElevation: 0.0,
+                        onPressed: _handleNewQuestion,
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 12.0),
+                            Icon(AbiliaIcons.new_icon, size: smallIconSize),
+                            const SizedBox(width: 12.0),
+                            Text(
+                              Translator.of(context).translate.addNew,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(height: 1),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -286,13 +283,7 @@ class EditNoteWidget extends StatelessWidget {
                 onTap: onTap,
               ),
             ),
-            const SizedBox(width: 12.0),
-            ActionButton(
-              child: Icon(
-                AbiliaIcons.show_text,
-                size: defaultIconSize,
-                color: AbiliaColors.black,
-              ),
+            _LibraryButton(
               onPressed: () async {
                 final result = await Navigator.of(context).push(
                   MaterialPageRoute(
@@ -310,7 +301,6 @@ class EditNoteWidget extends StatelessWidget {
                   );
                 }
               },
-              themeData: darkButtonTheme,
             )
           ],
         ),
@@ -367,5 +357,26 @@ class EditNoteWidget extends StatelessWidget {
         ),
       );
     }
+  }
+}
+
+class _LibraryButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const _LibraryButton({Key key, this.onPressed}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12.0, 4.0, 4.0, 4.0),
+      child: ActionButton(
+        child: Icon(
+          AbiliaIcons.show_text,
+          size: defaultIconSize,
+          color: AbiliaColors.black,
+        ),
+        onPressed: onPressed,
+        themeData: darkButtonTheme,
+      ),
+    );
   }
 }
