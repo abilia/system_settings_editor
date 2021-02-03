@@ -74,9 +74,8 @@ android {
         }
         mp {
             dimension "flavors"
-            applicationIdSuffix ".memoplannergo"
+            applicationIdSuffix ".memoplanner"
             versionNameSuffix "-mp"
-            // applicationIdSuffix ".memoplanner"
         }
     }
 }
