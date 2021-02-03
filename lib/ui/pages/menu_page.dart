@@ -94,7 +94,7 @@ class TextToSpeechSwitch extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 8.0),
+          padding: const EdgeInsets.fromLTRB(8.0, 0, 4.0, 0),
           child: InfoButton(
             onTap: () => showViewDialog(
               context: context,
