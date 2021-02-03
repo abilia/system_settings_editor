@@ -34,7 +34,6 @@ class TestKey {
       addPicture = Key('addPicture'),
       selectAlarm = Key('selectAlarm'),
       availibleFor = Key('availibleFor'),
-      onlyMe = Key('onlyMe'),
       closeDialog = Key('closeDialog'),
       okDialog = Key('okDialog'),
       editAlarm = Key('editAlarm'),
