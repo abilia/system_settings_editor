@@ -1129,7 +1129,7 @@ Internal improvements to tests and examples.''';
         expect(find.text(questions[0]), findsOneWidget);
         expect(find.text(questions[1]), findsOneWidget);
         expect(find.text(questions[2]), findsOneWidget);
-        expect(find.text(questions[3]), findsOneWidget);
+        expect(find.text(questions[3], skipOffstage: false), findsOneWidget);
         await tester.tap(find.text(questions[0]));
         await tester.pumpAndSettle();
 
