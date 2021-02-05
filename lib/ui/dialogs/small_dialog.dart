@@ -31,6 +31,7 @@ class SmallDialog extends StatelessWidget {
         child: DefaultTextStyle(
           style: abiliaTextTheme.bodyText1,
           child: body,
+          textAlign: TextAlign.center,
         ),
       ),
     );

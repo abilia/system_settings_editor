@@ -191,12 +191,12 @@ class QuestionView extends StatelessWidget {
 
   void _showImage(String fileId, String filePath, BuildContext context) async {
     await showViewDialog<bool>(
+      useSafeArea: false,
       context: context,
       builder: (_) {
-        return FullScreenImage(
+        return FullscreenImageDialog(
           fileId: fileId,
           filePath: filePath,
-          onTap: Navigator.of(context).maybePop,
         );
       },
     );

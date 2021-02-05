@@ -125,9 +125,9 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
           : null,
       onChanged: _changeType,
       trailing: [
-        const SizedBox(height: ViewDialog.seperatorPadding),
+        const SizedBox(),
         const Divider(),
-        const SizedBox(height: ViewDialog.seperatorPadding),
+        const SizedBox(height: 8),
         AlarmOnlyAtStartSwitch(
           alarm: alarm,
           onChanged: _changeStartTime,
