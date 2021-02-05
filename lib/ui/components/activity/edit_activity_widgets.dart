@@ -442,8 +442,7 @@ class AvailibleForWidget extends StatelessWidget {
           onTap: () async {
             final result = await Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) =>
-                    AvailableForPage(secret: activity.secret),
+                builder: (context) => AvailableForPage(secret: activity.secret),
               ),
             );
             if (result != null) {

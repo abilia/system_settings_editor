@@ -14,7 +14,8 @@ class SelectRecurrentTypePage extends StatefulWidget {
     @required this.headingIcon,
   }) : super(key: key);
   @override
-  _SelectRecurrentTypePageState createState() => _SelectRecurrentTypePageState();
+  _SelectRecurrentTypePageState createState() =>
+      _SelectRecurrentTypePageState();
 }
 
 class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
