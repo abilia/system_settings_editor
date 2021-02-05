@@ -42,7 +42,7 @@ class ChecklistView extends StatelessWidget {
             question,
             inactive: preview,
             signedOff: day != null && checklist.isSignedOff(question, day),
-            onTap: onTap != null && !preview ? () => onTap(question) : null,
+            onTap: onTap != null ? () => onTap(question) : null,
             tempImageFile: tempImageFiles[question.id],
           );
         },
@@ -68,7 +68,7 @@ class QuestionView extends StatelessWidget {
   }) : super(key: key);
 
   static const duration = Duration(milliseconds: 400);
-  static const padding = EdgeInsets.only(bottom: 4.0);
+  static const padding = EdgeInsets.only(bottom: 6.0);
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class QuestionView extends StatelessWidget {
           builder: (context) => Padding(
             padding: padding,
             child: Material(
-              color: Colors.transparent,
+              type: MaterialType.transparency,
               borderRadius: borderRadius,
               child: InkWell(
                 borderRadius: borderRadius,

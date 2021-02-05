@@ -139,12 +139,10 @@ class ActivityContainer extends StatelessWidget {
   const ActivityContainer({
     Key key,
     @required this.activityDay,
-    this.preview = false,
     this.previewImage,
   }) : super(key: key);
 
   final ActivityDay activityDay;
-  final bool preview;
   final Widget previewImage;
 
   @override
@@ -188,7 +186,6 @@ class ActivityContainer extends StatelessWidget {
                   Expanded(
                     child: Attachment(
                       activityDay: activityDay,
-                      preview: preview,
                     ),
                   ),
                 ],
@@ -216,11 +213,9 @@ class ActivityContainer extends StatelessWidget {
 class Attachment extends StatelessWidget with Checker {
   static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 14.0, 24.0);
   final ActivityDay activityDay;
-  final bool preview;
   const Attachment({
     Key key,
     @required this.activityDay,
-    this.preview = false,
   }) : super(key: key);
 
   @override
@@ -237,7 +232,6 @@ class Attachment extends StatelessWidget with Checker {
       return ChecklistView(
         item,
         day: activityDay.day,
-        preview: preview,
         padding: Attachment.padding.subtract(QuestionView.padding),
         onTap: (question) async {
           final signedOff = item.signOff(question, activityDay.day);
