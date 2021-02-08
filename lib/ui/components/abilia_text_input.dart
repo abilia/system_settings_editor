@@ -46,21 +46,27 @@ class AbiliaTextInput extends StatelessWidget {
         Tts(
           data: controller.text.isNotEmpty ? controller.text : heading,
           child: GestureDetector(
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => DefaultTextInputPage(
-                  inputHeading: inputHeading,
-                  icon: icon,
-                  controller: controller,
-                  heading: heading,
-                  keyboardType: keyboardType,
-                  inputFormatters: inputFormatters,
-                  textCapitalization: textCapitalization,
-                  maxLines: maxLines,
-                  inputValid: inputValid ?? (s) => true,
+            onTap: () async {
+              final newText = await Navigator.of(context).push<String>(
+                MaterialPageRoute(
+                  builder: (context) => DefaultTextInputPage(
+                    inputHeading: inputHeading,
+                    icon: icon,
+                    text: controller.text,
+                    heading: heading,
+                    keyboardType: keyboardType,
+                    inputFormatters: inputFormatters,
+                    textCapitalization: textCapitalization,
+                    maxLines: maxLines,
+                    inputValid: inputValid ?? (s) => true,
+                  ),
                 ),
-              ),
-            ),
+              );
+
+              if (newText != null) {
+                controller.text = newText;
+              }
+            },
             child: Container(
               color: Colors.transparent,
               child: IgnorePointer(
@@ -96,20 +102,19 @@ class DefaultTextInputPage extends StatefulWidget {
     Key key,
     @required this.inputHeading,
     @required this.icon,
-    @required this.controller,
+    @required this.text,
     @required this.heading,
     @required this.keyboardType,
     @required this.inputFormatters,
     @required this.textCapitalization,
     @required this.maxLines,
     @required this.inputValid,
-  })  : onBuildValue = controller.value,
-        super(key: key);
+  }) : super(key: key);
 
   final String inputHeading;
   final IconData icon;
-  final TextEditingController controller;
-  final TextEditingValue onBuildValue;
+  final String text;
+  final TextEditingController controller = TextEditingController();
   final String heading;
   final TextInputType keyboardType;
   final List<TextInputFormatter> inputFormatters;
@@ -126,6 +131,7 @@ class _DefaultInputPageState extends State<DefaultTextInputPage> {
   @override
   void initState() {
     super.initState();
+    widget.controller.text = widget.text;
     widget.controller.addListener(onTextValueChanged);
     _validInput = widget.inputValid(widget.controller.text);
   }
@@ -133,6 +139,7 @@ class _DefaultInputPageState extends State<DefaultTextInputPage> {
   @override
   void dispose() {
     widget.controller.removeListener(onTextValueChanged);
+    widget.controller.dispose;
     super.dispose();
   }
 
@@ -153,15 +160,14 @@ class _DefaultInputPageState extends State<DefaultTextInputPage> {
         iconData: widget.icon,
       ),
       bottomSheet: BottomSheet(
-          builder: (context) => BottomNavigation(
-                backNavigationWidget:
-                    CancelButton(onPressed: () => _onClose(context)),
-                forwardNavigationWidget: OkButton(
-                  onPressed:
-                      _validInput ? Navigator.of(context).maybePop : null,
-                ),
-              ),
-          onClosing: () => _onClose(context)),
+        builder: (context) => BottomNavigation(
+          backNavigationWidget: CancelButton(),
+          forwardNavigationWidget: OkButton(
+            onPressed: _validInput ? _returnNewText : null,
+          ),
+        ),
+        onClosing: () => Navigator.of(context).maybePop(),
+      ),
       body: Tts.fromSemantics(
         SemanticsProperties(label: widget.heading),
         child: Padding(
@@ -189,9 +195,8 @@ class _DefaultInputPageState extends State<DefaultTextInputPage> {
     );
   }
 
-  void _onClose(BuildContext context) {
-    widget.controller.value = widget.onBuildValue;
-    Navigator.of(context).maybePop();
+  void _returnNewText() {
+    Navigator.of(context).maybePop(widget.controller.text);
   }
 }
 
@@ -228,15 +233,22 @@ class PasswordInput extends StatelessWidget {
                   obscured: true,
                 ),
                 child: GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => PasswordInputPage(
-                        controller: controller,
-                        loginFormBloc: loginFormBloc,
-                        context: context,
+                  onTap: () async {
+                    final newPassword =
+                        await Navigator.of(context).push<String>(
+                      MaterialPageRoute(
+                        builder: (context) => PasswordInputPage(
+                          password: controller.text,
+                          loginFormBloc: loginFormBloc,
+                          context: context,
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+
+                    if (newPassword != null) {
+                      controller.text = newPassword;
+                    }
+                  },
                   child: Container(
                     color: Colors.transparent,
                     child: IgnorePointer(
@@ -275,16 +287,15 @@ class PasswordInput extends StatelessWidget {
 class PasswordInputPage extends StatefulWidget {
   PasswordInputPage({
     Key key,
-    @required this.controller,
+    @required this.password,
     @required this.loginFormBloc,
     @required this.context,
-  })  : onBuildValue = controller.value,
-        super(key: key);
+  }) : super(key: key);
 
-  final TextEditingController controller;
+  final String password;
+  final TextEditingController controller = TextEditingController();
   final LoginFormBloc loginFormBloc;
   final BuildContext context;
-  final TextEditingValue onBuildValue;
 
   @override
   _PasswordInputPageState createState() => _PasswordInputPageState();
@@ -295,6 +306,7 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
   @override
   void initState() {
     super.initState();
+    widget.controller.text = widget.password;
     widget.controller.addListener(onTextValueChanged);
     _validInput = widget.loginFormBloc.isPasswordValid(widget.controller.text);
   }
@@ -302,6 +314,7 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
   @override
   void dispose() {
     widget.controller.removeListener(onTextValueChanged);
+    widget.controller.dispose;
     super.dispose();
   }
 
@@ -326,12 +339,11 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
       bottomSheet: BottomSheet(
         builder: (context) => BottomNavigation(
           backNavigationWidget:
-              CancelButton(onPressed: () => _onClose(context)),
-          forwardNavigationWidget: OkButton(
-            onPressed: _validInput ? Navigator.of(context).maybePop : null,
-          ),
+              CancelButton(onPressed: () => Navigator.of(context).maybePop()),
+          forwardNavigationWidget:
+              OkButton(onPressed: _validInput ? _returnNewPassword : null),
         ),
-        onClosing: () => _onClose(context),
+        onClosing: () => Navigator.of(context).maybePop(),
       ),
       body: Tts.fromSemantics(
         SemanticsProperties(
@@ -360,6 +372,8 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
                         style: theme.textTheme.bodyText1,
                         autofocus: true,
                         onEditingComplete: Navigator.of(context).maybePop,
+                        onChanged: (s) => widget.loginFormBloc
+                            .add(PasswordChanged(password: s)),
                       ),
                     ),
                   ),
@@ -376,9 +390,8 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
     );
   }
 
-  void _onClose(BuildContext context) {
-    widget.controller.value = widget.onBuildValue;
-    Navigator.of(context).maybePop();
+  void _returnNewPassword() {
+    Navigator.of(context).maybePop(widget.controller.text);
   }
 }
 
@@ -387,6 +400,7 @@ class HidePasswordButton extends StatelessWidget {
     Key key,
     @required this.loginFormBloc,
   }) : super(key: key);
+
   final LoginFormBloc loginFormBloc;
 
   @override
