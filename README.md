@@ -1,10 +1,19 @@
 # seagull
 
-A new calendar app.
 
-## Getting Started
+## Building for android
+The following enviormental varibles needs to be defined:
+- APPCENTER_KEYSTORE_PASSWORD
+- APPCENTER_KEY_PASSWORD
 
-The project is built with flutter.
+### Running MEMOplanner Go
+`$ flutter run --flavor mpgo`
+
+### Running MEMOplanner
+`$ flutter run --flavor mp`
+#### Setting Device admin for MEMOplanner
+`$ adb shell dpm set-device-owner com.abilia.memoplanner/.DeviceAdminReceiver`
+`$ adb shell am startservice -n com.abilia.memoplanner/.LockService`
 
 ## Working with translations strings
 The translations are written in `lib/i18n/translations.tsv` as tab **(	)** seperated values
