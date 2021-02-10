@@ -139,7 +139,7 @@ class _DefaultInputPageState extends State<DefaultTextInputPage> {
   @override
   void dispose() {
     controller.removeListener(onTextValueChanged);
-    controller.dispose;
+    controller.dispose();
     super.dispose();
   }
 
@@ -159,14 +159,11 @@ class _DefaultInputPageState extends State<DefaultTextInputPage> {
         title: widget.inputHeading,
         iconData: widget.icon,
       ),
-      bottomSheet: BottomSheet(
-        builder: (context) => BottomNavigation(
-          backNavigationWidget: CancelButton(),
-          forwardNavigationWidget: OkButton(
-            onPressed: _validInput ? _returnNewText : null,
-          ),
+      bottomSheet: BottomNavigation(
+        backNavigationWidget: CancelButton(),
+        forwardNavigationWidget: OkButton(
+          onPressed: _validInput ? _returnNewText : null,
         ),
-        onClosing: () => Navigator.of(context).maybePop(),
       ),
       body: Tts.fromSemantics(
         SemanticsProperties(label: widget.heading),
@@ -315,7 +312,7 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
   @override
   void dispose() {
     controller.removeListener(onTextValueChanged);
-    controller.dispose;
+    controller.dispose();
     super.dispose();
   }
 
@@ -337,14 +334,11 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
         title: heading,
         iconData: AbiliaIcons.lock,
       ),
-      bottomSheet: BottomSheet(
-        builder: (context) => BottomNavigation(
-          backNavigationWidget:
-              CancelButton(onPressed: () => Navigator.of(context).maybePop()),
-          forwardNavigationWidget:
-              OkButton(onPressed: _validInput ? _returnNewPassword : null),
-        ),
-        onClosing: () => Navigator.of(context).maybePop(),
+      bottomSheet: BottomNavigation(
+        backNavigationWidget:
+            CancelButton(onPressed: () => Navigator.of(context).maybePop()),
+        forwardNavigationWidget:
+            OkButton(onPressed: _validInput ? _returnNewPassword : null),
       ),
       body: Tts.fromSemantics(
         SemanticsProperties(
