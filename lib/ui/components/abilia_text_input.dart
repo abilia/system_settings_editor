@@ -114,7 +114,6 @@ class DefaultTextInputPage extends StatefulWidget {
   final String inputHeading;
   final IconData icon;
   final String text;
-  final TextEditingController controller = TextEditingController();
   final String heading;
   final TextInputType keyboardType;
   final List<TextInputFormatter> inputFormatters;
@@ -127,24 +126,25 @@ class DefaultTextInputPage extends StatefulWidget {
 }
 
 class _DefaultInputPageState extends State<DefaultTextInputPage> {
+  TextEditingController controller;
   bool _validInput = false;
   @override
   void initState() {
     super.initState();
-    widget.controller.text = widget.text;
-    widget.controller.addListener(onTextValueChanged);
-    _validInput = widget.inputValid(widget.controller.text);
+    controller = TextEditingController(text: widget.text);
+    controller.addListener(onTextValueChanged);
+    _validInput = widget.inputValid(controller.text);
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(onTextValueChanged);
-    widget.controller.dispose;
+    controller.removeListener(onTextValueChanged);
+    controller.dispose;
     super.dispose();
   }
 
   void onTextValueChanged() {
-    final valid = widget.inputValid(widget.controller.text);
+    final valid = widget.inputValid(controller.text);
     if (valid != _validInput) {
       setState(() {
         _validInput = valid;
@@ -178,7 +178,7 @@ class _DefaultInputPageState extends State<DefaultTextInputPage> {
               SubHeading(widget.heading),
               TextField(
                 key: TestKey.input,
-                controller: widget.controller,
+                controller: controller,
                 keyboardType: widget.keyboardType,
                 inputFormatters: widget.inputFormatters,
                 textCapitalization: widget.textCapitalization,
@@ -196,7 +196,7 @@ class _DefaultInputPageState extends State<DefaultTextInputPage> {
   }
 
   void _returnNewText() {
-    Navigator.of(context).maybePop(widget.controller.text);
+    Navigator.of(context).maybePop(controller.text);
   }
 }
 
@@ -293,7 +293,6 @@ class PasswordInputPage extends StatefulWidget {
   }) : super(key: key);
 
   final String password;
-  final TextEditingController controller = TextEditingController();
   final LoginFormBloc loginFormBloc;
   final BuildContext context;
 
@@ -302,24 +301,26 @@ class PasswordInputPage extends StatefulWidget {
 }
 
 class _PasswordInputPageState extends State<PasswordInputPage> {
+  TextEditingController controller;
   bool _validInput = false;
   @override
   void initState() {
     super.initState();
-    widget.controller.text = widget.password;
-    widget.controller.addListener(onTextValueChanged);
-    _validInput = widget.loginFormBloc.isPasswordValid(widget.controller.text);
+    controller = TextEditingController(text: widget.password);
+    controller.text = widget.password;
+    controller.addListener(onTextValueChanged);
+    _validInput = widget.loginFormBloc.isPasswordValid(controller.text);
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(onTextValueChanged);
-    widget.controller.dispose;
+    controller.removeListener(onTextValueChanged);
+    controller.dispose;
     super.dispose();
   }
 
   void onTextValueChanged() {
-    final valid = widget.loginFormBloc.isPasswordValid(widget.controller.text);
+    final valid = widget.loginFormBloc.isPasswordValid(controller.text);
     if (valid != _validInput) {
       setState(() {
         _validInput = valid;
@@ -348,7 +349,7 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
       body: Tts.fromSemantics(
         SemanticsProperties(
           label: heading,
-          value: widget.controller.value.text,
+          value: controller.value.text,
           textField: true,
           obscured: true,
         ),
@@ -366,7 +367,7 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
                     builder: (context, state) => Expanded(
                       child: TextFormField(
                         key: TestKey.input,
-                        controller: widget.controller,
+                        controller: controller,
                         obscureText: state.hidePassword,
                         keyboardType: TextInputType.visiblePassword,
                         style: theme.textTheme.bodyText1,
@@ -391,7 +392,7 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
   }
 
   void _returnNewPassword() {
-    Navigator.of(context).maybePop(widget.controller.text);
+    Navigator.of(context).maybePop(controller.text);
   }
 }
 

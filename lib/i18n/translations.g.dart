@@ -141,8 +141,6 @@ abstract class Translated {
 
   final String menu = 'Menu';
 
-  final String ok = 'OK';
-
   final String cancel = 'Cancel';
 
   final String yes = 'Yes';
@@ -154,6 +152,8 @@ abstract class Translated {
   final String back = 'Previous';
 
   final String next = 'Next';
+
+  final String ok = 'Ok';
 
   final String newActivityChoice = 'New';
 
