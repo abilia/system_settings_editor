@@ -14,7 +14,7 @@ class LicenseErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    return SmallDialog(
+    return ViewDialog(
       heading: AppBarHeading(
         text: heading ?? translator.error,
         iconData: AbiliaIcons.password_protection,

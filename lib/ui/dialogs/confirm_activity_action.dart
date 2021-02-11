@@ -21,7 +21,7 @@ class CheckActivityConfirmDialog extends StatelessWidget {
         (signedOff
             ? translate.unCheckActivityQuestion
             : translate.checkActivityQuestion);
-    return SmallDialog(
+    return ViewDialog(
       heading: AppBarHeading(
         text: signedOff ? translate.uncheck : translate.check,
         iconData:

@@ -14,7 +14,7 @@ class FullscreenImageDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SmallDialog(
+    return ViewDialog(
       expanded: true,
       bodyPadding: EdgeInsets.zero,
       body: FullScreenImage(
