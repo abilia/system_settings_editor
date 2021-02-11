@@ -24,7 +24,7 @@ class _SelectRecurrencePageState extends State<SelectRecurrencePage> {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         title: translate.recurrence,
         iconData: AbiliaIcons.repeat,
       ),

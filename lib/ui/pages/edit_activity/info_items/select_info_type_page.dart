@@ -25,7 +25,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         iconData: AbiliaIcons.add_attachment,
         title: translate.selectInfoType,
       ),

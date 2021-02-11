@@ -21,7 +21,7 @@ class _SelectAlarmTypePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         title: translate.selectAlarmType,
         iconData: AbiliaIcons.handi_alarm_vibration,
       ),
@@ -56,8 +56,8 @@ class _SelectAlarmTypePage extends StatelessWidget {
                     ? widget
                     : Padding(
                         padding: const EdgeInsets.only(
-                          left: ViewDialog.leftPadding,
-                          right: ViewDialog.rightPadding,
+                          left: leftPadding,
+                          right: rightPadding,
                           bottom: 8.0,
                         ),
                         child: widget,

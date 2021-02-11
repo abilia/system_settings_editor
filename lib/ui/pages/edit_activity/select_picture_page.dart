@@ -26,7 +26,7 @@ class SelectPicturePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         iconData: AbiliaIcons.past_picture_from_windows_clipboard,
         title: translate.selectPicture,
       ),

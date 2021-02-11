@@ -42,7 +42,7 @@ class _EditQuestionPageState extends State<EditQuestionPage> {
     final translate = Translator.of(context).translate;
     final heading = translate.name;
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         iconData: AbiliaIcons.phone_log,
         title: translate.task,
         trailing: widget.question != null

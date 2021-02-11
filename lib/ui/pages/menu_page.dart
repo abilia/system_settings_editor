@@ -19,7 +19,7 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         title: Translator.of(context).translate.menu,
         iconData: AbiliaIcons.app_menu,
       ),

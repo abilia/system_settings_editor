@@ -9,6 +9,11 @@ const double smallIconSize = 24,
     defaultIconSize = 32,
     hugeIconSize = 96;
 
+const double verticalPadding = 24.0,
+    leftPadding = 12.0,
+    rightPadding = 16.0,
+    seperatorPadding = 16.0;
+
 final abiliaTheme = ThemeData(
   primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: AbiliaColors.white110,

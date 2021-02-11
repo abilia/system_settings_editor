@@ -33,7 +33,7 @@ class EditActivityPage extends StatelessWidget {
             initialIndex: 0,
             length: tabs.length,
             child: Scaffold(
-              appBar: NewAbiliaAppBar(
+              appBar: AbiliaAppBar(
                 iconData: AbiliaIcons.plus,
                 title: translate.newActivity,
                 bottom: AbiliaTabBar(

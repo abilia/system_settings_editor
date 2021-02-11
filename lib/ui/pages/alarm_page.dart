@@ -29,7 +29,7 @@ class AlarmPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.alarm,
-        closeButton: false,
+        iconData: AbiliaIcons.alarm_bell,
       ),
       body: Padding(
         padding: const EdgeInsets.all(ActivityInfo.margin),
@@ -84,8 +84,7 @@ class ReminderPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.reminder,
-        icon: AbiliaIcons.handi_reminder,
-        closeButton: false,
+        iconData: AbiliaIcons.handi_reminder,
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
