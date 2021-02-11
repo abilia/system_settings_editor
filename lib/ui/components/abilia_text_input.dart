@@ -155,7 +155,7 @@ class _DefaultInputPageState extends State<DefaultTextInputPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         title: widget.inputHeading,
         iconData: widget.icon,
       ),
@@ -330,7 +330,7 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
     final theme = Theme.of(context);
     final heading = Translator.of(context).translate.password;
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         title: heading,
         iconData: AbiliaIcons.lock,
       ),

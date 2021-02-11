@@ -24,7 +24,7 @@ class _CreateActivityPageState extends State<CreateActivityPage>
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         title: translate.createActivity,
         iconData: AbiliaIcons.plus,
       ),

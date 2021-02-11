@@ -17,7 +17,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return SmallDialog(
+    return ViewDialog(
       bodyPadding: const EdgeInsets.symmetric(horizontal: 20),
       expanded: true,
       backNavigationWidget: const CancelButton(),

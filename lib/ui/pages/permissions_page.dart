@@ -9,7 +9,7 @@ class PermissionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         title: translate.permissions,
         iconData: AbiliaIcons.menu_setup,
       ),

@@ -32,7 +32,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
       child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
         builder: (context, state) => Scaffold(
           appBar: appBar ??
-              NewAbiliaAppBar(
+              AbiliaAppBar(
                 iconData: AbiliaIcons.documents,
                 title: Translator.of(context).translate.selectFromLibrary,
               ),
@@ -153,9 +153,9 @@ class SortableLibrary<T extends SortableData> extends StatelessWidget {
         }
         return GridView.count(
           padding: const EdgeInsets.only(
-            top: ViewDialog.verticalPadding,
-            left: ViewDialog.leftPadding,
-            right: ViewDialog.rightPadding,
+            top: verticalPadding,
+            left: leftPadding,
+            right: rightPadding,
           ),
           mainAxisSpacing: 8.0,
           crossAxisSpacing: 8.0,

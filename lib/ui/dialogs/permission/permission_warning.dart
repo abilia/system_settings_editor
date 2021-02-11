@@ -11,7 +11,7 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return SmallDialog(
+    return ViewDialog(
       expanded: true,
       bodyPadding: const EdgeInsets.symmetric(horizontal: 20),
       backNavigationWidget: GreyButton(
@@ -50,7 +50,7 @@ class NotificationPermissionWarningDialog extends StatelessWidget {
     Key key,
   }) : super(key: key);
   @override
-  Widget build(BuildContext context) => SmallDialog(
+  Widget build(BuildContext context) => ViewDialog(
         expanded: true,
         bodyPadding: const EdgeInsets.symmetric(horizontal: 20),
         backNavigationWidget: const CloseButton(),

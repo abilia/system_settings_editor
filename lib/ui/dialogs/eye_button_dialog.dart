@@ -32,7 +32,7 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return SmallDialog(
+    return ViewDialog(
       heading: AppBarHeading(
         text: t.display,
         iconData: AbiliaIcons.show,

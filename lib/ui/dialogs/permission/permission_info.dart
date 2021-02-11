@@ -18,7 +18,7 @@ class PermissionInfoDialog extends StatelessWidget {
     return BlocListener<PermissionBloc, PermissionState>(
       listenWhen: (previous, current) => current.status[permission].isGranted,
       listener: (context, state) => Navigator.of(context).maybePop(),
-      child: SmallDialog(
+      child: ViewDialog(
         expanded: true,
         bodyPadding: const EdgeInsets.symmetric(horizontal: 20),
         backNavigationWidget: const CloseButton(),

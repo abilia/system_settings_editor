@@ -19,7 +19,7 @@ class _AvailableForPageState extends State<AvailableForPage> {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         iconData: AbiliaIcons.unlock,
         title: translate.availableFor,
       ),

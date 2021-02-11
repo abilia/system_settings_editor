@@ -126,7 +126,7 @@ class _TimeInputPageState extends State<TimeInputPage> {
     final translate = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) => Scaffold(
-        appBar: NewAbiliaAppBar(
+        appBar: AbiliaAppBar(
           title: translate.setTime,
           iconData: AbiliaIcons.clock,
         ),

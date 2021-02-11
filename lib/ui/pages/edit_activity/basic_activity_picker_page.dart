@@ -16,7 +16,7 @@ class BasicActivityPickerPage extends StatelessWidget {
     return BlocBuilder<SortableArchiveBloc<BasicActivityData>,
         SortableArchiveState<BasicActivityData>>(
       builder: (innerContext, state) => Scaffold(
-        appBar: NewAbiliaAppBar(
+        appBar: AbiliaAppBar(
           iconData: AbiliaIcons.basic_activity,
           title: state.allById[state.currentFolderId]?.data?.title() ??
               translate.basicActivities,

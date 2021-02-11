@@ -11,7 +11,7 @@ class AboutPage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: NewAbiliaAppBar(
+      appBar: AbiliaAppBar(
         title: translate.about,
         iconData: AbiliaIcons.information,
       ),
