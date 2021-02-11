@@ -1,0 +1,4 @@
+flutter_icons:
+  android: 'ic_launcher'
+  ios: false
+  image_path: 'assets/MEMOplanner_logo(corners).png'
