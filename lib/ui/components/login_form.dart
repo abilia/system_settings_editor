@@ -26,6 +26,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     super.initState();
+
     _loginFormBloc = BlocProvider.of<LoginFormBloc>(context);
     _usernameController.addListener(_onEmailChanged);
     _passwordController.addListener(_onPasswordChanged);
@@ -140,10 +141,16 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                   padding32,
-                  if (_showBackends) ...[
-                    BackendSwitches(),
-                    const Center(child: Version()),
-                  ],
+                  CollapsableWidget(
+                    collapsed: _showBackends,
+                    child: Column(
+                      children: [
+                        BackendSwitches(),
+                        const Center(child: Version()),
+                        const SizedBox(height: 4.0),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
