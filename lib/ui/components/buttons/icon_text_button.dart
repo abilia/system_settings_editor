@@ -107,6 +107,7 @@ class NextButton extends StatelessWidget {
           ),
           color: greenButtonTheme.buttonColor,
           disabledColor: greenButtonTheme.disabledColor,
+          shape: greenButtonTheme.buttonTheme.shape,
           onPressed: onPressed,
         ),
       );
