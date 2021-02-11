@@ -147,6 +147,7 @@ class ImageSourceWidget extends StatelessWidget {
                 child: InfoButton(
                   key: Key('$imageSource$permission'),
                   onTap: () => showViewDialog(
+                    useSafeArea: false,
                     context: context,
                     builder: (context) =>
                         PermissionInfoDialog(permission: permission),

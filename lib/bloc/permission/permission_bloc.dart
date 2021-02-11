@@ -43,8 +43,8 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
         Permission.storage,
       ],
       if (!Platform.isAndroid) ...[
-        Permission.camera,
         Permission.photos,
+        Permission.camera,
       ]
     },
   );
