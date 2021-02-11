@@ -236,7 +236,9 @@ class _NameInputState extends State<NameInput> {
       formKey: TestKey.editTitleTextFormField,
       controller: _nameController,
       errorState: widget.errorState,
+      icon: AbiliaIcons.edit,
       heading: Translator.of(context).translate.name,
+      inputHeading: Translator.of(context).translate.name,
       textCapitalization: TextCapitalization.sentences,
       inputFormatters: widget.inputFormatters,
       maxLines: widget.maxLines,
@@ -420,10 +422,10 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
   }
 }
 
-class AvailibleForWidget extends StatelessWidget {
+class AvailableForWidget extends StatelessWidget {
   final Activity activity;
 
-  const AvailibleForWidget(this.activity, {Key key}) : super(key: key);
+  const AvailableForWidget(this.activity, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final secret = activity.secret;

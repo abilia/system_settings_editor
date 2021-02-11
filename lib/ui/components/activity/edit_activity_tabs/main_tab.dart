@@ -46,7 +46,7 @@ class _MainTabState extends State<MainTab> with EditActivityTab {
                     activity.fullDay || !memoSettingsState.activityTypeEditable,
               ),
             separatedAndPadded(CheckableAndDeleteAfterWidget(activity)),
-            padded(AvailibleForWidget(activity)),
+            padded(AvailableForWidget(activity)),
           ],
         ),
       ),

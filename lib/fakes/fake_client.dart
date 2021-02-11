@@ -19,7 +19,7 @@ class Fakes {
       name = 'Testcase user',
       username = 'username',
       type = 'testcase',
-      incorrectPassword = 'wrong';
+      incorrectPassword = 'wrongwrong';
 
   static MockClient client({
     ActivityResponse activityResponse,

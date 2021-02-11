@@ -82,8 +82,11 @@ class _LoginFormState extends State<LoginForm> {
                     formKey: TestKey.userNameInput,
                     controller: _usernameController,
                     keyboardType: TextInputType.emailAddress,
+                    icon: AbiliaIcons.contact,
                     heading: translate.userName,
+                    inputHeading: translate.userNameTitle,
                     errorState: credentialsError,
+                    inputValid: (s) => _loginFormBloc.isUsernameValid(s),
                   ),
                   padding16,
                   PasswordInput(

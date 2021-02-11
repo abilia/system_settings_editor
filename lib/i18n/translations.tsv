@@ -1,6 +1,7 @@
 _id_	en	sv	da	nl	fi	de	nb
 ### Login page							
-userName	Username or email	Användarnamn eller e-post	Brugernavn eller e-mail	Gebruikersnaam of e-mail	Käyttäjätunnus tai sähköpostiosoite	Benutzername oder E-Mail	Brukernavn eller e-post
+userNameTitle	Username or email	Användarnamn eller e-post	Brugernavn eller e-mail	Gebruikersnaam of e-mail	Käyttäjätunnus tai sähköpostiosoite	Benutzername oder E-Mail	Brukernavn eller e-post
+userName	Username	Användarnamn	Brugernavn	Gebruikersnaam	Käyttäjätunnus	Benutzername	Brukernavn
 password	Password	Lösenord	Adgangskode	Wachtwoord	Salasana	Passwort	Passord
 loginHint	Login with the same username and password as on your MEMOplanner	Logga in med samma användarnamn och lösenord som på din MEMOplanner	Log ind med samme brugernavn og adgangskode som på din MEMOplanner	Log in met dezelfde gebruikersnaam en hetzelfde wachtwoord als op uw MEMOplanner	Kirjaudu sisään samalla käyttäjänimellä ja salasanalla kuin MEMOplannerilla	Melden Sie sich mit demselben Benutzernamen und Passwort wie auf Ihrem MEMOplanner an	Logg inn med samme brukernavn og passord som på MEMOplanner
 login	Log in	Logga in	Log ind	Inloggen	Kirjaudu sisään	Anmelden	Logg inn

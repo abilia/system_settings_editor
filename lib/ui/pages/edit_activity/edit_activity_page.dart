@@ -55,7 +55,7 @@ class EditActivityPage extends StatelessWidget {
                   ],
                 ),
               ),
-              body: EditActivityListners(
+              body: EditActivityListeners(
                 child: TabBarView(children: tabs),
                 nrTabs: tabs.length,
               ),
@@ -77,11 +77,11 @@ class EditActivityPage extends StatelessWidget {
   }
 }
 
-class EditActivityListners extends StatelessWidget {
+class EditActivityListeners extends StatelessWidget {
   final Widget child;
   final int nrTabs;
 
-  const EditActivityListners({
+  const EditActivityListeners({
     Key key,
     @required this.child,
     @required this.nrTabs,

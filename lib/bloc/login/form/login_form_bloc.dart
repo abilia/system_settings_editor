@@ -18,14 +18,14 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
     if (event is UsernameChanged && event.username != state.username) {
       yield state.copyWith(
         username: event.username,
-        isUsernameValid: _isUsernameValid(event.username),
+        isUsernameValid: isUsernameValid(event.username),
         formSubmitted: false,
       );
     }
     if (event is PasswordChanged && event.password != state.password) {
       yield state.copyWith(
         password: event.password,
-        isPasswordValid: _isPasswordValid(event.password),
+        isPasswordValid: isPasswordValid(event.password),
         formSubmitted: false,
       );
     }
@@ -42,7 +42,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
     }
   }
 
-  bool _isUsernameValid(String username) => username.length > 2;
+  bool isUsernameValid(String username) => username.length > 2;
 
-  bool _isPasswordValid(String password) => password.length > 2;
+  bool isPasswordValid(String password) => password.length > 7;
 }
