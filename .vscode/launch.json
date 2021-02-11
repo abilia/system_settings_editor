@@ -5,15 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "MEMOplanner Go iOS",
-      "request": "launch",
-      "type": "dart",
-      "args": [
-        "--dart-define=release=alpha"
-      ],
-    },
-    {
-      "name": "MEMOplanner Go Android",
+      "name": "MEMOplanner Go",
       "request": "launch",
       "type": "dart",
       "args": [
