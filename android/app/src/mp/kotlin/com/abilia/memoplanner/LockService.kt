@@ -21,7 +21,7 @@ class LockService : Service() {
             if (!isLocked) {
 
                 devicePolicyManager.setLockTaskPackages(
-                        adminComponentName, arrayOf(packageName, "com.google.android.tts"))
+                        adminComponentName, arrayOf(packageName))
             } else {
 
                 devicePolicyManager.setLockTaskPackages(adminComponentName, arrayOf<String>())
