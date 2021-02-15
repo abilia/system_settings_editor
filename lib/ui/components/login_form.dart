@@ -142,7 +142,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   padding32,
                   CollapsableWidget(
-                    collapsed: _showBackends,
+                    collapsed: !_showBackends,
                     child: Column(
                       children: [
                         BackendSwitches(),
