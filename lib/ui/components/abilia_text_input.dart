@@ -181,7 +181,7 @@ class _DefaultInputPageState extends State<DefaultTextInputPage> {
                 textCapitalization: widget.textCapitalization,
                 style: Theme.of(context).textTheme.bodyText1,
                 autofocus: true,
-                onEditingComplete: Navigator.of(context).maybePop,
+                onEditingComplete: _validInput ? _returnNewText : () {},
                 maxLines: widget.maxLines,
                 minLines: 1,
               ),
@@ -244,6 +244,9 @@ class PasswordInput extends StatelessWidget {
 
                     if (newPassword != null) {
                       controller.text = newPassword;
+                    } else {
+                      loginFormBloc
+                          .add(PasswordChanged(password: controller.text));
                     }
                   },
                   child: Container(
@@ -335,8 +338,7 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
         iconData: AbiliaIcons.lock,
       ),
       bottomSheet: BottomNavigation(
-        backNavigationWidget:
-            CancelButton(onPressed: () => Navigator.of(context).maybePop()),
+        backNavigationWidget: CancelButton(),
         forwardNavigationWidget:
             OkButton(onPressed: _validInput ? _returnNewPassword : null),
       ),
@@ -366,7 +368,8 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
                         keyboardType: TextInputType.visiblePassword,
                         style: theme.textTheme.bodyText1,
                         autofocus: true,
-                        onEditingComplete: Navigator.of(context).maybePop,
+                        onEditingComplete:
+                            _validInput ? _returnNewPassword : () {},
                         onChanged: (s) => widget.loginFormBloc
                             .add(PasswordChanged(password: s)),
                       ),
