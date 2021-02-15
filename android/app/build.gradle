@@ -48,9 +48,9 @@ android {
     }
     signingConfigs {
         release {
-            storeFile rootProject.file(System.getenv("APPCENTER_KEYSTORE_PATH"))
+            storeFile rootProject.file("app/upload-keystore.jks")
             storePassword System.getenv("APPCENTER_KEYSTORE_PASSWORD")
-            keyAlias System.getenv("APPCENTER_KEY_ALIAS")
+            keyAlias System.getenv("upload")
             keyPassword System.getenv("APPCENTER_KEY_PASSWORD")
         }
     }

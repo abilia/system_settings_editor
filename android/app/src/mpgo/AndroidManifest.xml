@@ -1,4 +1,10 @@
 <manifest
   xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.abilia.memoplannergo">
+  package="com.abilia.memoplanner">
+  <application>
+    <activity
+      android:name=".MainActivity" 
+      android:launchMode="singleTop">
+    </activity>
+  </application>
 </manifest>

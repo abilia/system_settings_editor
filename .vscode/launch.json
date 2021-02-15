@@ -5,24 +5,30 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "MEMOplanner Go",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define=release=alpha",
+        "--flavor",
+        "mpgo"
+      ],
+    },
+    {
+      "name": "MEMOplanner",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define=release=alpha",
+        "--flavor",
+        "mp"
+      ],
+    },
+    {
       "name": "Flutter: Run all Tests",
       "type": "dart",
       "request": "launch",
       "program": "./test/"
-    },
-    {
-      "name": "Flutter",
-      "request": "launch",
-      "type": "dart",
-      "args": [
-        "--dart-define=release=alpha"
-      ],
-    },
-    {
-      "name": "Profile Seagull",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "profile"
     }
   ]
 }
