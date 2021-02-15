@@ -38,7 +38,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
               ),
           body: Column(
             children: [
-              if (!state.isAtRoot || rootHeading != null)
+              if (!state.isAtRootAndNoSelection || rootHeading != null)
                 LibraryHeading<T>(
                   sortableArchiveState: state,
                   rootHeading: rootHeading,
@@ -111,7 +111,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
   static String _getLibraryHeading(
       SortableArchiveState state, String rootHeading) {
-    if (state.isAtRoot) {
+    if (state.isAtRootAndNoSelection) {
       return rootHeading;
     }
     if (state.isSelected) {
