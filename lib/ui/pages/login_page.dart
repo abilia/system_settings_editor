@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -53,9 +54,12 @@ class LoginPage extends StatelessWidget {
             wrapWithAuthProviders: false,
           );
         },
-        child: Scaffold(
-          body: SafeArea(
-            child: LoginForm(),
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark,
+          child: Scaffold(
+            body: SafeArea(
+              child: LoginForm(),
+            ),
           ),
         ),
       ),
