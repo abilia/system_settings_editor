@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -36,12 +37,12 @@ class ActivityInfo extends StatefulWidget {
   static const margin = 12.0;
   final ActivityDay activityDay;
   final Widget previewImage;
-  final bool checkButton;
+  final bool isAlarm;
   ActivityInfo(
     this.activityDay, {
     Key key,
     this.previewImage,
-    this.checkButton = true,
+    this.isAlarm = false,
   }) : super(key: key);
   factory ActivityInfo.from({Activity activity, DateTime day, Key key}) =>
       ActivityInfo(ActivityDay(activity, day), key: key);
@@ -52,7 +53,7 @@ class ActivityInfo extends StatefulWidget {
   _ActivityInfoState createState() => _ActivityInfoState();
 }
 
-class _ActivityInfoState extends State<ActivityInfo> with Checker {
+class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
   Activity get activity => widget.activityDay.activity;
 
   DateTime get day => widget.activityDay.day;
@@ -87,12 +88,11 @@ class _ActivityInfoState extends State<ActivityInfo> with Checker {
                 child: ActivityContainer(
                   activityDay: widget.activityDay,
                   previewImage: widget.previewImage,
+                  isAlarm: widget.isAlarm,
                 ),
               ),
             ),
-            if (activity.checkable &&
-                !occasion.isSignedOff &&
-                widget.checkButton)
+            if (!widget.isAlarm && activity.checkable && !occasion.isSignedOff)
               Padding(
                 padding: const EdgeInsets.only(top: 7.0),
                 child: CheckButton(
@@ -114,7 +114,7 @@ class _ActivityInfoState extends State<ActivityInfo> with Checker {
   }
 }
 
-mixin Checker {
+mixin ActivityMixin {
   Future<bool> checkConfirmation(
     BuildContext context,
     ActivityOccasion activityOccasion, {
@@ -133,17 +133,25 @@ mixin Checker {
     }
     return check;
   }
+
+  Future popAlarm(BuildContext context) async {
+    if (!await Navigator.of(context).maybePop()) {
+      await SystemNavigator.pop();
+    }
+  }
 }
 
 class ActivityContainer extends StatelessWidget {
   const ActivityContainer({
     Key key,
     @required this.activityDay,
+    @required this.isAlarm,
     this.previewImage,
   }) : super(key: key);
 
   final ActivityDay activityDay;
   final Widget previewImage;
+  final bool isAlarm;
 
   @override
   Widget build(BuildContext context) {
@@ -186,6 +194,7 @@ class ActivityContainer extends StatelessWidget {
                   Expanded(
                     child: Attachment(
                       activityDay: activityDay,
+                      isAlarm: isAlarm,
                     ),
                   ),
                 ],
@@ -210,12 +219,14 @@ class ActivityContainer extends StatelessWidget {
   }
 }
 
-class Attachment extends StatelessWidget with Checker {
+class Attachment extends StatelessWidget with ActivityMixin {
   static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 14.0, 24.0);
   final ActivityDay activityDay;
+  final bool isAlarm;
   const Attachment({
     Key key,
     @required this.activityDay,
+    @required this.isAlarm,
   }) : super(key: key);
 
   @override
@@ -245,12 +256,15 @@ class Attachment extends StatelessWidget with Checker {
           if (signedOff.allSignedOff(activityDay.day) &&
               updatedActivity.checkable &&
               !activityDay.isSignedOff) {
-            await checkConfirmation(
+            final checked = await checkConfirmation(
               context,
               ActivityDay(updatedActivity, activityDay.day)
                   .toOccasion(DateTime.now()),
               message: translate.checklistDoneInfo,
             );
+            if (isAlarm && checked == true) {
+              await popAlarm(context);
+            }
           }
         },
       );
