@@ -134,7 +134,7 @@ class SeagullApp extends StatelessWidget {
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: child,
         ),
-        title: 'MEMOplanner Go',
+        title: Config.flavor.name,
         theme: abiliaTheme,
         darkTheme: abiliaTheme.copyWith(
           primaryColorBrightness: Brightness.dark,

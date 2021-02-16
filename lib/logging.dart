@@ -36,9 +36,11 @@ class SeagullLogger {
   bool get printLogging => loggingType.contains(LoggingType.Print);
   bool get analyticLogging => loggingType.contains(LoggingType.Analytic);
 
+  String get logFileName => '${Config.flavor.id}.log';
+
   SeagullLogger({
-    this.documentsDir,
-    this.preferences,
+    @required this.documentsDir,
+    @required this.preferences,
     this.loggingType = const {
       if (Config.release) ...{
         LoggingType.File,
@@ -66,7 +68,6 @@ class SeagullLogger {
 
   static const LATEST_UPLOAD_KEY = 'LATEST-LOG-UPLOAD-MILLIS';
   static const UPLOAD_INTERVAL = Duration(hours: 24);
-  static const LOG_FILE_NAME = 'seagull.log';
   static const LOG_ARCHIVE_PATH = 'logarchive';
 
   Future<void> initAnalytics() async {
@@ -111,7 +112,8 @@ class SeagullLogger {
       final _logArchivePath = '$documentsDir/$LOG_ARCHIVE_PATH';
       final logArchiveDir = Directory(_logArchivePath);
       await logArchiveDir.create(recursive: true);
-      final archiveFilePath = '$_logArchivePath/seagull_log_$time.log';
+      final archiveFilePath =
+          '$_logArchivePath/${Config.flavor.id}_log_$time.log';
       await _logFileLock.synchronized(() async {
         await _logFile.copy(archiveFilePath);
         await _logFile.writeAsString('');
@@ -169,7 +171,7 @@ class SeagullLogger {
   }
 
   void _initFileLogging() {
-    _logFile = File('$documentsDir/$LOG_FILE_NAME');
+    _logFile = File('$documentsDir/$logFileName');
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
         (record) async {
@@ -231,7 +233,7 @@ class SeagullLogger {
         ))
         ..fields.addAll({
           'owner': user == null ? 'NO_USER' : user.id.toString(),
-          'app': 'seagull',
+          'app': Config.flavor.id,
           'fileType': 'zip',
           'secret': 'Mkediq9Jjdn23jKfnKpqmfhkfjMfj',
         });

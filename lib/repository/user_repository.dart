@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/db/license_db.dart';
 import 'package:seagull/models/all.dart';
@@ -55,9 +56,9 @@ class UserRepository extends Repository {
       body: json.encode(
         {
           'clientId': Uuid().v4(),
-          'type': 'flutter',
-          'app': 'seagull',
-          'name': 'seagull',
+          'type': Platform.operatingSystem,
+          'app': Config.flavor.name,
+          'name': Config.flavor.name,
           'address': pushToken
         },
       ),
