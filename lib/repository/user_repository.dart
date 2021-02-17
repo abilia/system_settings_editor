@@ -1,17 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
+
 import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/db/license_db.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/end_point.dart';
-import 'package:seagull/repository/repository.dart';
-import 'package:uuid/uuid.dart';
+import 'package:seagull/repository/all.dart';
 
 class UserRepository extends Repository {
   static final _log = Logger((UserRepository).toString());
@@ -56,7 +54,7 @@ class UserRepository extends Repository {
       body: json.encode(
         {
           'clientId': Uuid().v4(),
-          'type': Platform.operatingSystem,
+          'type': 'flutter',
           'app': Config.flavor.id,
           'name': Config.flavor.id,
           'address': pushToken
