@@ -10,7 +10,7 @@ The following enviormental varibles needs to be defined:
 `$ flutter run --flavor mpgo`
 
 ### Running MEMOplanner
-`$ flutter run --flavor mp`
+`$ flutter run --flavor mp --dart-define flavor=mp`
 #### Setting Device admin for MEMOplanner
 `$ adb shell dpm set-device-owner com.abilia.memoplanner/.DeviceAdminReceiver`
 `$ adb shell am startservice -n com.abilia.memoplanner/.LockService`
