@@ -1,5 +1,3 @@
-import 'package:flutter/services.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -37,11 +35,11 @@ class AlarmPage extends StatelessWidget {
           builder: (context, activitiesState) => ActivityInfo(
             alarm.activityDay.fromActivitiesState(activitiesState),
             previewImage: previewImage,
-            checkButton: false,
+            isAlarm: true,
           ),
         ),
       ),
-      bottomNavigationBar: ReminderBottomAppBar(
+      bottomNavigationBar: AlarmBottomAppBar(
         activityOccasion: alarm.activityDay.toOccasion(alarm.day),
       ),
     );
@@ -108,14 +106,14 @@ class ReminderPage extends StatelessWidget {
               child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
                 builder: (context, activitiesState) => ActivityInfo(
                   reminder.activityDay.fromActivitiesState(activitiesState),
-                  checkButton: false,
+                  isAlarm: true,
                 ),
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: ReminderBottomAppBar(
+      bottomNavigationBar: AlarmBottomAppBar(
         activityOccasion: reminder.activityDay.toOccasion(reminder.day),
       ),
     );
@@ -169,8 +167,8 @@ abstract class AlarmAwareWidgetState<T extends StatefulWidget> extends State<T>
   }
 }
 
-class ReminderBottomAppBar extends StatelessWidget with Checker {
-  const ReminderBottomAppBar({
+class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
+  const AlarmBottomAppBar({
     Key key,
     @required this.activityOccasion,
   }) : super(key: key);
@@ -182,7 +180,7 @@ class ReminderBottomAppBar extends StatelessWidget with Checker {
     final translate = Translator.of(context).translate;
     final displayCheckButton =
         activityOccasion.activity.checkable && !activityOccasion.isSignedOff;
-    final closeButton = CloseButton(onPressed: () => _pop(context));
+    final closeButton = CloseButton(onPressed: () => popAlarm(context));
     return Theme(
       data: bottomNavigationBarTheme,
       child: BottomAppBar(
@@ -209,7 +207,7 @@ class ReminderBottomAppBar extends StatelessWidget with Checker {
                         final checked =
                             await checkConfirmation(context, activityOccasion);
                         if (checked) {
-                          await _pop(context);
+                          await popAlarm(context);
                         }
                       },
                       theme: greenButtonTheme,
@@ -222,11 +220,5 @@ class ReminderBottomAppBar extends StatelessWidget with Checker {
         ),
       ),
     );
-  }
-
-  Future _pop(BuildContext context) async {
-    if (!await Navigator.of(context).maybePop()) {
-      await SystemNavigator.pop();
-    }
   }
 }

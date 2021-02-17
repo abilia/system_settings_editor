@@ -298,6 +298,61 @@ void main() {
       // Assert -- Check button not showing and uncheck button still not showing (only shown in activity bottom bar)
       expect(find.byType(NavigatableAlarmPage), findsNothing);
     });
+
+    testWidgets('Checkable Popup Alarm with checklist',
+        (WidgetTester tester) async {
+      // Arrange
+      final startTime = DateTime(2021, 02, 16, 12, 00);
+      final startDay = startTime.onlyDays();
+      final unchecked = 'unchecked';
+      final checkableActivityWithChecklist = Activity.createNew(
+        title: 'checkableActivityWithChecklist',
+        startTime: startTime,
+        checkable: true,
+        infoItem: Checklist(
+          questions: [
+            Question(id: 0, name: 'checked'),
+            Question(id: 1, name: unchecked),
+          ],
+          checked: {
+            Checklist.dayKey(startDay): {0}
+          },
+        ),
+      );
+      final checkableActivityPayloadSerial = json.encode(StartAlarm(
+        checkableActivityWithChecklist,
+        startDay,
+      ).toJson());
+
+      selectNotificationSubject.add(checkableActivityPayloadSerial);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      // Act -- alarm time happend
+      mockTicker.add(startTime);
+      await tester.pumpAndSettle();
+
+      // Assert -- On screen alarm showing, check button and checklist showing
+      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
+      expect(find.byKey(TestKey.uncheckButton), findsNothing);
+      expect(find.byType(ChecklistView), findsOneWidget);
+      expect(find.byType(QuestionView), findsNWidgets(2));
+
+      // Act -- Check all questions
+      await tester.tap(find.text(unchecked));
+      await tester.pumpAndSettle();
+
+      // Assert -- Shows All items checked popup
+      expect(find.byType(CheckActivityConfirmDialog), findsOneWidget);
+
+      // Act -- Press affermative on check popup
+      await tester.tap(find.byKey(TestKey.yesButton));
+      await tester.pumpAndSettle();
+
+      // Assert -- Check button gone and AlarmPage gone
+      expect(find.byType(NavigatableAlarmPage), findsNothing);
+    });
   });
 
   group('Multiple alarms tests', () {

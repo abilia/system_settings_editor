@@ -55,7 +55,7 @@ class ActivityPage extends StatelessWidget {
   }
 }
 
-class ActivityBottomAppBar extends StatelessWidget with Checker {
+class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   const ActivityBottomAppBar({
     Key key,
     @required this.activityOccasion,
