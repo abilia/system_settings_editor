@@ -9,7 +9,8 @@
       "request": "launch",
       "type": "dart",
       "args": [
-        "--dart-define=release=alpha",
+        "--dart-define",
+        "release=alpha",
         "--flavor",
         "mpgo"
       ],
@@ -19,7 +20,10 @@
       "request": "launch",
       "type": "dart",
       "args": [
-        "--dart-define=release=alpha",
+        "--dart-define",
+        "release=alpha",
+        "--dart-define",
+        "flavor=mp",
         "--flavor",
         "mp"
       ],

@@ -64,15 +64,16 @@ dev_dependencies:
   integration_test: ^1.0.2+2
 
 flutter_icons:
-  android: 'ic_launcher'
+  android: false
   ios: true
-  image_path_android: 'assets/MEMOplannerGO_logo(corners).png'
-  image_path_ios: 'assets/MEMOplannerGO_logo.png'
+  image_path: 'assets/MEMOplannerGO_logo.png'
 
 flutter:
   uses-material-design: true
   assets:
     - assets/graphics/
+    - assets/graphics/memoplanner/
+    - assets/graphics/memoplannergo/
   fonts:
     - family: AbiliaFont
       fonts:
