@@ -57,8 +57,8 @@ class UserRepository extends Repository {
         {
           'clientId': Uuid().v4(),
           'type': Platform.operatingSystem,
-          'app': Config.flavor.name,
-          'name': Config.flavor.name,
+          'app': Config.flavor.id,
+          'name': Config.flavor.id,
           'address': pushToken
         },
       ),
