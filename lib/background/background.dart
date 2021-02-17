@@ -1,15 +1,14 @@
 import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:http/http.dart';
-import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:seagull/background/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'all.dart';
 
 Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   final documentDirectory = await getApplicationDocumentsDirectory();
@@ -25,7 +24,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     log.info('Handling background message...');
     await configureLocalTimeZone();
     final baseUrl = BaseUrlDb(preferences).getBaseUrl();
-    final client = Client();
+    final client = ClientWithDefaultHeaders();
     final user = UserDb(preferences).getUser();
     final token = TokenDb(preferences).getToken();
     final database = await DatabaseRepository.createSqfliteDb();
