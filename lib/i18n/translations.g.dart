@@ -88,6 +88,8 @@ abstract class Translated {
 
   final String minuteInessive = '';
 
+  final String now = 'Now';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -477,6 +479,9 @@ class SV extends Translated {
 
   @override
   final String minuteInessive = '';
+
+  @override
+  final String now = 'Nu';
 
   @override
   final String reminders = 'Påminnelser';
@@ -1005,6 +1010,9 @@ class DA extends Translated {
   final String minuteInessive = '';
 
   @override
+  final String now = 'Nu';
+
+  @override
   final String reminders = 'Påmindelser';
 
   @override
@@ -1530,6 +1538,9 @@ class NL extends Translated {
   final String minuteInessive = '';
 
   @override
+  final String now = 'Nu';
+
+  @override
   final String reminders = 'Herinneringen';
 
   @override
@@ -2051,6 +2062,9 @@ class FI extends Translated {
 
   @override
   final String minuteInessive = 'minuutissa';
+
+  @override
+  final String now = 'Nyt';
 
   @override
   final String reminders = 'Muistutukset';
@@ -2576,6 +2590,9 @@ class DE extends Translated {
   final String minuteInessive = '';
 
   @override
+  final String now = 'Jetzt';
+
+  @override
   final String reminders = 'Erinnerungen';
 
   @override
@@ -3098,6 +3115,9 @@ class NB extends Translated {
 
   @override
   final String minuteInessive = '';
+
+  @override
+  final String now = 'Nå';
 
   @override
   final String reminders = 'Påminnelser';

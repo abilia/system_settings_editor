@@ -143,55 +143,78 @@ class Calendars extends StatelessWidget {
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeOutQuad);
       },
-      child: PageView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: controller,
-        itemBuilder: (context, index) {
-          return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
-            buildWhen: (oldState, newState) {
-              return (oldState is ActivitiesOccasionLoaded &&
-                      newState is ActivitiesOccasionLoaded &&
-                      oldState.day == newState.day) ||
-                  oldState.runtimeType != newState.runtimeType;
+      child: Stack(
+        children: [
+          PageView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: controller,
+            itemBuilder: (context, index) {
+              return BlocBuilder<ActivitiesOccasionBloc,
+                  ActivitiesOccasionState>(
+                buildWhen: (oldState, newState) {
+                  return (oldState is ActivitiesOccasionLoaded &&
+                          newState is ActivitiesOccasionLoaded &&
+                          oldState.day == newState.day) ||
+                      oldState.runtimeType != newState.runtimeType;
+                },
+                builder: (context, activityState) {
+                  if (activityState is ActivitiesOccasionLoaded) {
+                    final fullDayActivities = activityState.fullDayActivities;
+                    return Column(
+                      children: <Widget>[
+                        if (fullDayActivities.isNotEmpty)
+                          FullDayContainer(
+                            fullDayActivities: fullDayActivities,
+                            day: activityState.day,
+                          ),
+                        if (calendarViewState.currentView == CalendarType.LIST)
+                          Expanded(
+                            child: Agenda(
+                              activityState: activityState,
+                              calendarViewState: calendarViewState,
+                              memoplannerSettingsState:
+                                  memoplannerSettingsState,
+                            ),
+                          )
+                        else
+                          Expanded(
+                            child: BlocBuilder<TimepillarBloc, TimepillarState>(
+                                builder: (context, state) {
+                              return TimePillarCalendar(
+                                key: ValueKey(state.timepillarInterval),
+                                activityState: activityState,
+                                calendarViewState: calendarViewState,
+                                memoplannerSettingsState:
+                                    memoplannerSettingsState,
+                                timepillarInterval: state.timepillarInterval,
+                              );
+                            }),
+                          ),
+                      ],
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator());
+                },
+              );
             },
-            builder: (context, activityState) {
-              if (activityState is ActivitiesOccasionLoaded) {
-                final fullDayActivities = activityState.fullDayActivities;
-                return Column(
-                  children: <Widget>[
-                    if (fullDayActivities.isNotEmpty)
-                      FullDayContainer(
-                        fullDayActivities: fullDayActivities,
-                        day: activityState.day,
-                      ),
-                    if (calendarViewState.currentView == CalendarType.LIST)
-                      Expanded(
-                        child: Agenda(
-                          activityState: activityState,
-                          calendarViewState: calendarViewState,
-                          memoplannerSettingsState: memoplannerSettingsState,
-                        ),
-                      )
-                    else
-                      Expanded(
-                        child: BlocBuilder<TimepillarBloc, TimepillarState>(
-                            builder: (context, state) {
-                          return TimePillarCalendar(
-                            key: ValueKey(state.timepillarInterval),
-                            activityState: activityState,
-                            calendarViewState: calendarViewState,
-                            memoplannerSettingsState: memoplannerSettingsState,
-                            timepillarInterval: state.timepillarInterval,
-                          );
-                        }),
-                      ),
-                  ],
-                );
-              }
-              return Center(child: CircularProgressIndicator());
-            },
-          );
-        },
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 32.0),
+              child: GoToNowButton(),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: EyeButton(
+                currentCalendarType: calendarViewState.currentView,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -216,29 +239,11 @@ class CalendarBottomBar extends StatelessWidget {
         child: Container(
           height: barHeigt,
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Stack(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: EyeButton(currentCalendarType: currentView),
-              ),
-              Positioned(
-                child: Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const GoToNowButton(),
-                      const SizedBox(width: 14.0),
-                      AddActivityButton(day: day),
-                      const SizedBox(width: 14.0 + ActionButton.size),
-                    ],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: MenuButton(),
-              ),
+              AddActivityButton(day: day),
+              MenuButton(),
             ],
           ),
         ),
@@ -259,6 +264,7 @@ class EyeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) => ActionButton(
+        themeData: blackButtonTheme,
         child: Icon(AbiliaIcons.show),
         onPressed: () async {
           final settings = await showViewDialog<EyeButtonSettings>(
@@ -297,7 +303,7 @@ class MenuButton extends StatelessWidget {
           overflow: Overflow.visible,
           children: [
             ActionButton(
-              child: const Icon(AbiliaIcons.menu),
+              child: const Icon(AbiliaIcons.app_menu),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => CopiedAuthProviders(

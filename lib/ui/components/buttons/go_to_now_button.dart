@@ -12,14 +12,15 @@ class GoToNowButton extends StatelessWidget {
             previous.runtimeType != current.runtimeType,
         builder: (context, scrollState) =>
             scrollState is WrongDay || scrollState is OutOfView
-                ? ActionButton(
+                ? IconAndTextButton(
+                    width: 99,
+                    height: 48,
                     key: TestKey.goToNowButton,
-                    child: Icon(
-                      AbiliaIcons.reset,
-                    ),
+                    text: Translator.of(context).translate.now,
+                    icon: AbiliaIcons.reset,
                     onPressed: () =>
                         context.read<ScrollPositionBloc>().add(GoToNow()),
-                    themeData: nowButtonTheme,
+                    theme: nowButtonTheme,
                   )
                 : const SizedBox(width: ActionButton.size),
       );
