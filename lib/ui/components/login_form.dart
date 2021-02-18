@@ -64,6 +64,7 @@ class _LoginFormState extends State<LoginForm> {
                               strokeWidth: 6.0,
                             )
                           : GestureDetector(
+                              key: TestKey.loginLogo,
                               child: FadeInImage(
                                 fadeInDuration:
                                     const Duration(milliseconds: 100),
@@ -73,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
                                   'assets/graphics/memOplannerGoLogo.png',
                                 ),
                               ),
-                              onDoubleTap: () => setState(
+                              onLongPress: () => setState(
                                   () => _showBackends = !_showBackends),
                             ),
                     ),

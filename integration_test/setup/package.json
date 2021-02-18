@@ -1,0 +1,15 @@
+{
+  "name": "myabilia-setup",
+  "version": "1.0.0",
+  "description": "Siple script to setup user on myabilia",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Abilia team",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "uuid": "^8.3.2"
+  }
+}

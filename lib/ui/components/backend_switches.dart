@@ -46,7 +46,17 @@ class BackEndButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          Text(text),
+          GestureDetector(
+            onTap: () => context.read<AuthenticationBloc>().add(
+                  ChangeRepository(
+                    userRepository.copyWith(
+                      client: client,
+                      baseUrl: backEndUrl,
+                    ),
+                  ),
+                ),
+            child: Text(text),
+          ),
           Radio(
             groupValue: userRepository.baseUrl,
             value: backEndUrl,
