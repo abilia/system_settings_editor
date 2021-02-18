@@ -110,7 +110,10 @@ class MockActivityDb extends Mock implements ActivityDb {}
 
 class MockGenericDb extends Mock implements GenericDb {}
 
-class MockUserFileDb extends Mock implements UserFileDb {}
+class MockUserFileDb extends Mock implements UserFileDb {
+  @override
+  Future<bool> allFilesLoaded() => Future.value(true);
+}
 
 class MockUserDb extends Mock implements UserDb {}
 

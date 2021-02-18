@@ -37,6 +37,11 @@ class UserFileRepository extends DataRepository<UserFile> {
           log: Logger((UserFileRepository).toString()),
         );
 
+  Future<bool> allFilesLoaded() => userFileDb.allFilesLoaded();
+
+  Future<Iterable<UserFile>> getAllLoadedFiles() =>
+      userFileDb.getAllLoadedFiles();
+
   @override
   Future<Iterable<UserFile>> load() async {
     await fetchIntoDatabaseSynchronized();
@@ -144,9 +149,9 @@ class UserFileRepository extends DataRepository<UserFile> {
     }
   }
 
-  Future<void> getAndStoreFileData() async {
+  Future<void> getAndStoreFileData({int limit}) async {
     try {
-      final missingFiles = await userFileDb.getAllWithMissingFiles();
+      final missingFiles = await userFileDb.getMissingFiles(limit: limit);
       log.fine('${missingFiles.length} missing files to fetch');
       for (final userFile in missingFiles) {
         if (userFile.isImage) {

@@ -72,7 +72,7 @@ void main() {
         .map((l) => DbUserFile.fromJson(l))
         .toList();
 
-    when(mockUserFileDb.getAllWithMissingFiles())
+    when(mockUserFileDb.getMissingFiles(limit: anyNamed('limit')))
         .thenAnswer((_) => Future.value(expectedFiles.map((f) => f.model)));
 
     when(

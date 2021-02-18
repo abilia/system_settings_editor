@@ -6,15 +6,14 @@ import 'package:seagull/models/image_thumb.dart';
 class FileStorage {
   final _log = Logger((FileStorage).toString());
 
-  final String _storageDirectory;
+  final String _dir;
 
   static const folder = 'seagull';
 
-  FileStorage(this._storageDirectory);
+  FileStorage(String storageDirectory) : _dir = '$storageDirectory/$folder/';
 
   Future<void> storeFile(List<int> fileBytes, String fileName) async {
-    final file = await File('${_storageDirectory}/$folder/$fileName')
-        .create(recursive: true);
+    final file = await File('$_dir$fileName').create(recursive: true);
     await file.writeAsBytes(fileBytes);
   }
 
@@ -24,13 +23,21 @@ class FileStorage {
   }
 
   File getFile(String id) {
-    final path = '$_storageDirectory/$folder/$id';
+    final path = '$_dir$id';
     return File(path);
   }
 
   File getImageThumb(ImageThumb imageThumb) {
     return getFile(imageThumb.thumbId);
   }
+
+  Future<bool> deleteUserFolder() =>
+      Directory(_dir).delete(recursive: true).then((_) => true).catchError(
+        (e) {
+          _log.severe('could not delete folder: $_dir');
+          return false;
+        },
+      );
 
   // For mocking purpose
   Future<bool> exists(File file) => file.exists();
@@ -54,6 +61,6 @@ class FileStorage {
       return null;
     }
 
-    return thumb.copy('$_storageDirectory/$folder/$id$fileEnding');
+    return thumb.copy('$_dir$id$fileEnding');
   }
 }

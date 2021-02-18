@@ -88,7 +88,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 syncBloc: context.read<SyncBloc>(),
                 fileStorage: GetIt.I<FileStorage>(),
                 pushBloc: context.read<PushBloc>(),
-              ),
+              )..add(LoadUserFiles()),
             ),
             BlocProvider<SortableBloc>(
               create: (context) => sortableBloc ??
@@ -204,6 +204,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
                   GetIt.I<SeagullLogger>().sendLogsToBackend(),
                   clearNotificationSubject(),
                   notificationPlugin.cancelAll(),
+                  GetIt.I<FileStorage>().deleteUserFolder(),
                 ],
               ),
             )..add(CheckAuthentication()),

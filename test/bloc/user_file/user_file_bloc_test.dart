@@ -29,10 +29,16 @@ void main() {
     fileLoaded: true,
   );
 
+  final fileId = 'file1';
+  final fileContent = base64.decode(FakeUserFile.ONE_PIXEL_PNG);
+  final filePath = 'test.dart';
+
   setUp(() {
     mockUserFileRepository = MockUserFileRepository();
     mockedFileStorage = MockFileStorage();
     when(mockUserFileRepository.save(any)).thenAnswer((_) => Future.value());
+    when(mockUserFileRepository.allFilesLoaded())
+        .thenAnswer((_) => Future.value(true));
     when(mockedFileStorage.storeFile(any, any))
         .thenAnswer((_) => Future.value());
     userFileBloc = UserFileBloc(
@@ -48,9 +54,17 @@ void main() {
   });
 
   test('User files loaded after successful loading of user files', () async {
-    when(mockUserFileRepository.load())
+    // Arrange
+    when(mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([userFile]));
+
+    // Act
     userFileBloc.add(LoadUserFiles());
+
+    // Assert
+    await untilCalled(mockUserFileRepository.fetchIntoDatabaseSynchronized());
+    await untilCalled(
+        mockUserFileRepository.getAndStoreFileData(limit: anyNamed('limit')));
     await expectLater(
       userFileBloc,
       emits(UserFilesLoaded([userFile])),
@@ -58,13 +72,89 @@ void main() {
   });
 
   test(
+      'SGC-583 LoadUserFiles repeatedly calls download and store untill no more files do download, but does not starve an image add call event',
+      () async {
+    // Arrange
+
+    File file = MemoryFileSystem().file(filePath);
+    await file.writeAsBytes(fileContent);
+    final processedFile1 = await adjustImageSizeAndRotation(fileContent);
+
+    final addedFile = UserFile(
+      id: fileId,
+      sha1: sha1.convert(processedFile1).toString(),
+      md5: md5.convert(processedFile1).toString(),
+      path: 'seagull/$fileId',
+      contentType: 'image/jpeg', // File is converted to jpeg
+      fileSize: processedFile1.length,
+      deleted: false,
+      fileLoaded: true,
+    );
+
+    final userFile2 = UserFile(
+      id: '1',
+      sha1: '2',
+      md5: '3',
+      path: '4',
+      contentType: '5',
+      fileSize: 1,
+      deleted: false,
+      fileLoaded: true,
+    );
+
+    when(mockUserFileRepository.getAllLoadedFiles())
+        .thenAnswer((_) => Future.value([userFile]));
+    when(mockUserFileRepository.allFilesLoaded())
+        .thenAnswer((_) => Future.value(false));
+
+    // Act -- Loadfiles
+    userFileBloc.add(LoadUserFiles());
+
+    // Assert -- that first calls to repository
+    await untilCalled(mockUserFileRepository.fetchIntoDatabaseSynchronized());
+    await untilCalled(
+        mockUserFileRepository.getAndStoreFileData(limit: anyNamed('limit')));
+    expect(
+      userFileBloc,
+      emits(
+        UserFilesLoaded([userFile]),
+      ),
+    );
+
+    // Act -- try add new image while downloadning
+    userFileBloc
+        .add(ImageAdded(SelectedImage(id: fileId, path: filePath, file: file)));
+    await untilCalled(mockedFileStorage.storeFile(any, any));
+    await untilCalled(mockedFileStorage.storeImageThumb(any, any));
+
+    // Assert -- Added file added
+    expect(
+      userFileBloc,
+      emits(UserFilesLoaded([userFile].followedBy([addedFile]))),
+    );
+
+    // Arrange -- next time download calls, return no more to download
+    when(mockUserFileRepository.getAllLoadedFiles())
+        .thenAnswer((_) => Future.value([userFile, addedFile, userFile2]));
+    when(mockUserFileRepository.allFilesLoaded())
+        .thenAnswer((_) => Future.value(true));
+
+    // Assert -- last file downloaded
+    await untilCalled(
+        mockUserFileRepository.getAndStoreFileData(limit: anyNamed('limit')));
+    await expectLater(
+      userFileBloc,
+      emitsInOrder([
+        UserFilesLoaded([userFile].followedBy([addedFile])),
+        UserFilesLoaded([userFile, addedFile, userFile2]),
+      ]),
+    );
+  });
+
+  test(
       'State contains UserFilesLoaded with correct user file when file is added',
       () async {
     // Arrange
-    final fileId = 'file1';
-    final fileContent = base64.decode(
-        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==');
-    final filePath = 'test.dart';
     File file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
     final processedFile1 = await adjustImageSizeAndRotation(fileContent);
@@ -93,8 +183,7 @@ void main() {
 
   test('State contains two files when two is added', () async {
     // Arrange
-    final fileId = 'file1';
-    final fileContent = base64.decode(FakeUserFile.ONE_PIXEL_PNG);
+
     final filePath1 = 'test';
     File file = MemoryFileSystem().file(filePath1);
     await file.writeAsBytes(fileContent);

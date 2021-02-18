@@ -8,6 +8,8 @@ abstract class UserFileEvent extends Equatable {
 
 class LoadUserFiles extends UserFileEvent {}
 
+class _DownloadUserFiles extends UserFileEvent {}
+
 class ImageAdded extends UserFileEvent {
   final SelectedImage selectedImage;
   String get id => selectedImage.id;

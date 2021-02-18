@@ -10,7 +10,7 @@ import 'package:mime/mime.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/file_storage.dart';
+import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
 part 'user_file_event.dart';
@@ -45,11 +45,23 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     if (event is LoadUserFiles) {
       yield* _mapLoadUserFilesToState();
     }
+    if (event is _DownloadUserFiles) {
+      yield* _mapDownloadUserFilesToState();
+    }
   }
 
   Stream<UserFileState> _mapLoadUserFilesToState() async* {
-    final userFiles = await userFileRepository.load();
+    await userFileRepository.fetchIntoDatabaseSynchronized();
+    add(_DownloadUserFiles());
+  }
+
+  Stream<UserFileState> _mapDownloadUserFilesToState() async* {
+    await userFileRepository.getAndStoreFileData(limit: 10);
+    final userFiles = await userFileRepository.getAllLoadedFiles();
     yield UserFilesLoaded(userFiles);
+    if (!await userFileRepository.allFilesLoaded()) {
+      add(_DownloadUserFiles());
+    }
   }
 
   Stream<UserFileState> _mapImageAddedToState(
