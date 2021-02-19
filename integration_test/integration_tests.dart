@@ -12,14 +12,17 @@ void main() {
 
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  tearDown(() async {
+    await sleep(Duration(seconds: 2));
+    await GetIt.I.reset();
+  });
+
   testWidgets('Login with wrong password', (WidgetTester tester) async {
     await app.main();
     await tester.pumpAndSettle();
     await tester.selectBackend(backend);
     await tester.login('IGT$testId', password: 'wrongpassword');
     expect(find.byType(ErrorMessage), findsOneWidget);
-    await sleep(Duration(seconds: 2));
-    await GetIt.I.reset();
   });
 
   testWidgets('Login with no license', (WidgetTester tester) async {
@@ -28,8 +31,6 @@ void main() {
     await tester.selectBackend(backend);
     await tester.login('IGT$testId');
     expect(find.byType(LicenseErrorDialog), findsOneWidget);
-    await sleep(Duration(seconds: 2));
-    await GetIt.I.reset();
   });
 
   testWidgets('Create activity with note SGC-502', (WidgetTester tester) async {
@@ -37,12 +38,17 @@ void main() {
     await tester.pumpAndSettle();
     await tester.selectBackend(backend);
     await tester.login('IGTWL$testId');
-    await tester.pressCancelButton();
+    if (Platform.isAndroid) {
+      await tester.pressCancelButton();
+    }
 
     final note =
         'Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok. Lorem ipsum har inte bara överlevt fem århundraden, utan även övergången till elektronisk typografi utan större förändringar. Det blev allmänt känt på 1960-talet i samband med lanseringen av Letraset-ark med avsnitt av Lorem Ipsum, och senare med mjukvaror som Aldus PageMaker.';
     await tester.createActivityWithNote(note);
 
+    final center = tester.getCenter(find.byType(CalendarPage));
+    await tester.dragFrom(center, Offset(center.dx, center.dy - 100));
+    await tester.pumpAndSettle();
     await tester.tap(find.byType(ActivityCard));
     await tester.pumpAndSettle();
     expect(find.text(note), findsOneWidget);
@@ -55,8 +61,6 @@ void main() {
     await tester.tap(find.byType(ActivityCard));
     await tester.pumpAndSettle();
     expect(find.text(newNote), findsOneWidget);
-    await sleep(Duration(seconds: 2));
-    await GetIt.I.reset();
   });
 }
 
@@ -113,7 +117,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await showKeyboard(find.byKey(TestKey.startTimeInput));
     await pumpAndSettle();
-    await enterText(find.byKey(TestKey.startTimeInput), '2300');
+    await enterText(find.byKey(TestKey.startTimeInput), '1000');
     await tap(find.byType(OkButton));
     await pumpAndSettle();
 

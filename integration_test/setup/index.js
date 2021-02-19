@@ -1,7 +1,7 @@
 const axios = require('axios').default;
 const { v4: uuidv4 } = require('uuid');
 
-const BASE_URL = 'https://whale.abilia-gbg.se';
+const BASE_URL = 'https://whale.abilia-gbg.se/';
 const supportUser = 'supportadmin';
 const supportPassword = 'password!';
 
