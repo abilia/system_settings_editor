@@ -12,14 +12,14 @@ void main() {
     calendarViewBloc = CalendarViewBloc(settingsDb);
   });
   test('initial state', () {
-    expect(calendarViewBloc.state, CalendarViewState(CalendarType.LIST));
+    expect(calendarViewBloc.state, CalendarViewState(DayCalendarType.LIST));
   });
 
   test('Change calendar view', () async {
-    calendarViewBloc.add(CalendarViewChanged(CalendarType.TIMEPILLAR));
+    calendarViewBloc.add(CalendarTypeChanged(DayCalendarType.TIMEPILLAR));
     await expectLater(
       calendarViewBloc,
-      emits(CalendarViewState(CalendarType.TIMEPILLAR)),
+      emits(CalendarViewState(DayCalendarType.TIMEPILLAR)),
     );
   });
 
@@ -29,7 +29,7 @@ void main() {
       calendarViewBloc,
       emits(
         CalendarViewState(
-          CalendarType.LIST,
+          DayCalendarType.LIST,
           expandLeftCategory: false,
         ),
       ),
@@ -41,7 +41,7 @@ void main() {
       calendarViewBloc,
       emits(
         CalendarViewState(
-          CalendarType.LIST,
+          DayCalendarType.LIST,
           expandRightCategory: false,
         ),
       ),

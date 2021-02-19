@@ -1,34 +1,45 @@
 part of 'calendar_view_bloc.dart';
 
 class CalendarViewState extends Equatable {
-  final CalendarType currentView;
+  final DayCalendarType currentDayCalendarType;
   final bool expandRightCategory, expandLeftCategory;
+  final CalendarPeriod currentCalendarPeriod;
+
   const CalendarViewState(
-    this.currentView, {
+    this.currentDayCalendarType, {
     this.expandRightCategory = true,
     this.expandLeftCategory = true,
+    this.currentCalendarPeriod = CalendarPeriod.DAY,
   });
 
   CalendarViewState.fromSettings(SettingsDb settingsDb)
-      : currentView = settingsDb?.preferedCalender ?? CalendarType.LIST,
+      : currentDayCalendarType =
+            settingsDb?.preferedCalendar ?? DayCalendarType.LIST,
         expandLeftCategory = settingsDb?.leftCategoryExpanded ?? true,
-        expandRightCategory = settingsDb?.rightCategoryExpanded ?? true;
+        expandRightCategory = settingsDb?.rightCategoryExpanded ?? true,
+        currentCalendarPeriod = CalendarPeriod.DAY;
 
   @override
-  List<Object> get props =>
-      [currentView, expandLeftCategory, expandRightCategory];
+  List<Object> get props => [
+        currentDayCalendarType,
+        expandLeftCategory,
+        expandRightCategory,
+        currentCalendarPeriod,
+      ];
 
   CalendarViewState copyWith({
-    CalendarType currentView,
+    DayCalendarType dayCalendarType,
     bool expandLeftCategory,
     bool expandRightCategory,
+    CalendarPeriod calendarPeriod,
   }) =>
       CalendarViewState(
-        currentView ?? this.currentView,
+        dayCalendarType ?? currentDayCalendarType,
         expandLeftCategory: expandLeftCategory ?? this.expandLeftCategory,
         expandRightCategory: expandRightCategory ?? this.expandRightCategory,
+        currentCalendarPeriod: calendarPeriod ?? currentCalendarPeriod,
       );
   @override
   String toString() =>
-      'CalendarViewState { $currentView,${expandLeftCategory ? ', left expanded' : ''}${expandRightCategory ? ', rigth expanded' : ''} }';
+      'CalendarViewState { $currentDayCalendarType,${expandLeftCategory ? ', left expanded' : ''}${expandRightCategory ? ', rigth expanded' : ''} }';
 }

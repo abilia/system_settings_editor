@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/models/eye_button_settings.dart';
 import 'package:seagull/ui/all.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -50,51 +49,113 @@ class _CalendarPageState extends State<CalendarPage>
             BlocBuilder<CalendarViewBloc, CalendarViewState>(
           builder: (context, calendarViewState) =>
               BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-            builder: (context, memoSettingsState) => AnimatedTheme(
-              key: TestKey.animatedTheme,
-              data: weekdayTheme(
-                      dayColor: memoSettingsState.calendarDayColor,
-                      languageCode:
-                          Localizations.localeOf(context).languageCode,
-                      weekday: pickedDay.day.weekday)
-                  .theme,
-              child: Scaffold(
-                appBar: buildAppBar(
-                  pickedDay.day,
-                  memoSettingsState.dayCaptionShowDayButtons,
-                ),
-                body: BlocBuilder<PermissionBloc, PermissionState>(
-                  builder: (context, state) => Stack(
-                    children: [
-                      Calendars(
-                        calendarViewState: calendarViewState,
-                        memoplannerSettingsState: memoSettingsState,
+            builder: (context, memoSettingsState) {
+              if (calendarViewState.currentCalendarPeriod ==
+                  CalendarPeriod.DAY) {
+                return DayCalendar(
+                  calendarViewState: calendarViewState,
+                  dayPickerBloc: _dayPickerBloc,
+                  memoSettingsState: memoSettingsState,
+                  pickedDay: pickedDay,
+                );
+              } else if (calendarViewState.currentCalendarPeriod ==
+                  CalendarPeriod.WEEK) {
+                return WeekCalendar();
+              } else {
+                return MonthCalendar();
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MonthCalendar extends StatelessWidget {
+  const MonthCalendar({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      bottomNavigationBar: CalendarBottomBar(
+        day: DateTime.now(),
+      ),
+    );
+  }
+}
+
+class WeekCalendar extends StatelessWidget {
+  const WeekCalendar({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      bottomNavigationBar: CalendarBottomBar(
+        day: DateTime.now(),
+      ),
+    );
+  }
+}
+
+class DayCalendar extends StatelessWidget {
+  final MemoplannerSettingsState memoSettingsState;
+  final DayPickerState pickedDay;
+  final DayPickerBloc dayPickerBloc;
+  final CalendarViewState calendarViewState;
+  const DayCalendar({
+    Key key,
+    @required this.memoSettingsState,
+    @required this.pickedDay,
+    @required this.dayPickerBloc,
+    @required this.calendarViewState,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedTheme(
+      key: TestKey.animatedTheme,
+      data: weekdayTheme(
+              dayColor: memoSettingsState.calendarDayColor,
+              languageCode: Localizations.localeOf(context).languageCode,
+              weekday: pickedDay.day.weekday)
+          .theme,
+      child: Scaffold(
+        appBar: buildAppBar(
+          pickedDay.day,
+          memoSettingsState.dayCaptionShowDayButtons,
+        ),
+        body: BlocBuilder<PermissionBloc, PermissionState>(
+          builder: (context, state) => Stack(
+            children: [
+              Calendars(
+                calendarViewState: calendarViewState,
+                memoplannerSettingsState: memoSettingsState,
+              ),
+              if (state.notificationDenied)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 28.0),
+                    child: ErrorMessage(
+                      text: Text(
+                        Translator.of(context)
+                            .translate
+                            .notificationsWarningText,
                       ),
-                      if (state.notificationDenied)
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 28.0),
-                            child: ErrorMessage(
-                              text: Text(
-                                Translator.of(context)
-                                    .translate
-                                    .notificationsWarningText,
-                              ),
-                            ),
-                          ),
-                        ),
-                    ],
+                    ),
                   ),
                 ),
-                bottomNavigationBar: CalendarBottomBar(
-                  currentView: calendarViewState.currentView,
-                  day: pickedDay.day,
-                ),
-              ),
-            ),
+            ],
           ),
+        ),
+        bottomNavigationBar: CalendarBottomBar(
+          day: pickedDay.day,
         ),
       ),
     );
@@ -112,14 +173,14 @@ class _CalendarPageState extends State<CalendarPage>
                   AbiliaIcons.return_to_previous_page,
                   size: defaultIconSize,
                 ),
-                onPressed: () => _dayPickerBloc.add(PreviousDay()),
+                onPressed: () => dayPickerBloc.add(PreviousDay()),
               ),
               rightAction: ActionButton(
                 child: Icon(
                   AbiliaIcons.go_to_next_page,
                   size: defaultIconSize,
                 ),
-                onPressed: () => _dayPickerBloc.add(NextDay()),
+                onPressed: () => dayPickerBloc.add(NextDay()),
               ))
           : DayAppBar(day: pickedDay);
 }
@@ -167,7 +228,8 @@ class Calendars extends StatelessWidget {
                             fullDayActivities: fullDayActivities,
                             day: activityState.day,
                           ),
-                        if (calendarViewState.currentView == CalendarType.LIST)
+                        if (calendarViewState.currentDayCalendarType ==
+                            DayCalendarType.LIST)
                           Expanded(
                             child: Agenda(
                               activityState: activityState,
@@ -210,119 +272,13 @@ class Calendars extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: EyeButton(
-                currentCalendarType: calendarViewState.currentView,
+                currentDayCalendarType:
+                    calendarViewState.currentDayCalendarType,
               ),
             ),
           )
         ],
       ),
-    );
-  }
-}
-
-class CalendarBottomBar extends StatelessWidget {
-  final CalendarType currentView;
-  final DateTime day;
-  final barHeigt = 64.0;
-
-  const CalendarBottomBar({
-    Key key,
-    @required this.currentView,
-    @required this.day,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: bottomNavigationBarTheme,
-      child: BottomAppBar(
-        child: Container(
-          height: barHeigt,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              AddActivityButton(day: day),
-              MenuButton(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class EyeButton extends StatelessWidget {
-  const EyeButton({
-    Key key,
-    @required this.currentCalendarType,
-  }) : super(key: key);
-
-  final CalendarType currentCalendarType;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SettingsBloc, SettingsState>(
-      builder: (context, state) => ActionButton(
-        themeData: blackButtonTheme,
-        child: Icon(AbiliaIcons.show),
-        onPressed: () async {
-          final settings = await showViewDialog<EyeButtonSettings>(
-            context: context,
-            builder: (context) => EyeButtonDialog(
-              currentCalendarType: currentCalendarType,
-              currentDotsInTimepillar: state.dotsInTimepillar,
-            ),
-          );
-          if (settings != null) {
-            if (currentCalendarType != settings.calendarType) {
-              await BlocProvider.of<CalendarViewBloc>(context)
-                  .add(CalendarViewChanged(settings.calendarType));
-            }
-            if (state.dotsInTimepillar != settings.dotsInTimepillar) {
-              await BlocProvider.of<SettingsBloc>(context)
-                  .add(DotsInTimepillarUpdated(settings.dotsInTimepillar));
-            }
-          }
-        },
-      ),
-    );
-  }
-}
-
-class MenuButton extends StatelessWidget {
-  const MenuButton({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<PermissionBloc, PermissionState>(
-      builder: (context, state) {
-        return Stack(
-          overflow: Overflow.visible,
-          children: [
-            ActionButton(
-              child: const Icon(AbiliaIcons.app_menu),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => CopiedAuthProviders(
-                    blocContext: context,
-                    child: MenuPage(),
-                  ),
-                  settings: RouteSettings(name: 'MenuPage'),
-                ),
-              ),
-            ),
-            if (state.importantPermissionMissing)
-              const Positioned(
-                top: -3,
-                right: -3,
-                child: OrangeDot(),
-              ),
-          ],
-        );
-      },
     );
   }
 }

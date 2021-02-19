@@ -5,7 +5,7 @@ import 'package:seagull/ui/all.dart';
 import 'all.dart';
 
 class EyeButtonDialog extends StatefulWidget {
-  final CalendarType currentCalendarType;
+  final DayCalendarType currentCalendarType;
   final bool currentDotsInTimepillar;
   const EyeButtonDialog({
     Key key,
@@ -22,7 +22,7 @@ class EyeButtonDialog extends StatefulWidget {
 
 class _EyeButtonDialogState extends State<EyeButtonDialog> {
   bool dotsInTimePillar;
-  CalendarType calendarType;
+  DayCalendarType calendarType;
 
   _EyeButtonDialogState({
     @required this.calendarType,
@@ -43,18 +43,18 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 24, 16, 8),
-            child: DuoSelector<CalendarType>(
+            child: DuoSelector<DayCalendarType>(
               heading: t.viewMode,
               groupValue: calendarType,
               leftText: t.listView,
-              leftValue: CalendarType.LIST,
+              leftValue: DayCalendarType.LIST,
               onChanged: (type) {
                 setState(() {
                   calendarType = type;
                 });
               },
               rightText: t.timePillarView,
-              rightValue: CalendarType.TIMEPILLAR,
+              rightValue: DayCalendarType.TIMEPILLAR,
               leftIcon: AbiliaIcons.calendar_list,
               rightIcon: AbiliaIcons.timeline,
             ),
@@ -63,7 +63,7 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
             endIndent: 16,
           ),
           CollapsableWidget(
-            collapsed: calendarType == CalendarType.LIST,
+            collapsed: calendarType == DayCalendarType.LIST,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(12, 16, 16, 8),
               child: DuoSelector<bool>(

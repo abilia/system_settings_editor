@@ -1,7 +1,7 @@
 import 'package:seagull/models/all.dart';
 
 class EyeButtonSettings {
-  final CalendarType calendarType;
+  final DayCalendarType calendarType;
   final bool dotsInTimepillar;
 
   EyeButtonSettings({
