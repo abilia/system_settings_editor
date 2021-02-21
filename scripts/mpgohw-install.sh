@@ -11,10 +11,10 @@ adb install $APK
 
 # Sets application as device owner
 adb shell dpm set-device-owner com.abilia.memoplanner/.DeviceAdminReceiver
-# Starts the application after install
+# Starts the application after install. Needed for the next step
 adb shell am start -n com.abilia.memoplanner/.MainActivity
 sleep 5
-# Starts the service which sets the locks for the 
+# Starts the service which locks the device to the application
 adb shell am startservice -n com.abilia.memoplanner/.LockService
 
 echo Done
