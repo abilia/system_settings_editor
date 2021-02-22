@@ -65,6 +65,14 @@ void main() {
     mockGenericDb = MockGenericDb();
     when(mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(<DbActivity>[]));
+
+    final mockUserFileDb = MockUserFileDb();
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (value) => Future.value([]),
+    );
+
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -78,7 +86,7 @@ void main() {
       )
       ..fileStorage = MockFileStorage()
       ..genericDb = mockGenericDb
-      ..userFileDb = MockUserFileDb()
+      ..userFileDb = mockUserFileDb
       ..sortableDb = MockSortableDb()
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler

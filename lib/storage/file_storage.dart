@@ -31,13 +31,16 @@ class FileStorage {
     return getFile(imageThumb.thumbId);
   }
 
-  Future<bool> deleteUserFolder() =>
-      Directory(_dir).delete(recursive: true).then((_) => true).catchError(
-        (e) {
-          _log.severe('could not delete folder: $_dir');
-          return false;
-        },
-      );
+  Future deleteUserFolder() async {
+    final userDirectory = Directory(_dir);
+    if (await userDirectory.exists()) {
+      try {
+        return userDirectory.delete(recursive: true);
+      } catch (e) {
+        _log.severe('could not delete folder: $_dir');
+      }
+    }
+  }
 
   // For mocking purpose
   Future<bool> exists(File file) => file.exists();

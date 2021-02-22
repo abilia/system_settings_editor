@@ -112,7 +112,7 @@ class MockGenericDb extends Mock implements GenericDb {}
 
 class MockUserFileDb extends Mock implements UserFileDb {
   @override
-  Future<bool> allFilesLoaded() => Future.value(true);
+  Future<Iterable<UserFile>> getAllLoadedFiles() => Future.value([]);
 }
 
 class MockUserDb extends Mock implements UserDb {}

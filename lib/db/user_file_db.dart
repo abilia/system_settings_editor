@@ -18,8 +18,6 @@ class UserFileDb extends DataDb<UserFile> {
   String missingFilesWithLimit(int limit) =>
       '$GET_ALL_WITH_MISSING_FILES LIMIT $limit';
 
-  String get ANY_NOT_LOADED => 'SELECT EXISTS($GET_ALL_WITH_MISSING_FILES)';
-
   String get GET_ALL_WITH_LOADED_FILES => '$_WHERE_file_loaded 1';
 
   String get SET_FILE_LOADED =>
@@ -43,10 +41,6 @@ class UserFileDb extends DataDb<UserFile> {
   void setFileLoadedForId(String id) async {
     await db.rawQuery(SET_FILE_LOADED, [id]);
   }
-
-  Future<bool> allFilesLoaded() => db
-      .rawQuery(ANY_NOT_LOADED)
-      .then((result) => result.single.values.single == 0);
 
   final _log = Logger((UserFileDb).toString());
   @override

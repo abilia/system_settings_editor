@@ -39,6 +39,13 @@ void main() {
     mockSettingsDb = MockSettingsDb();
     when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
 
+    final mockUserFileDb = MockUserFileDb();
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (value) => Future.value([]),
+    );
+
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -47,7 +54,7 @@ void main() {
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(activityResponse: activityResponse)
       ..fileStorage = MockFileStorage()
-      ..userFileDb = MockUserFileDb()
+      ..userFileDb = mockUserFileDb
       ..settingsDb = mockSettingsDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler

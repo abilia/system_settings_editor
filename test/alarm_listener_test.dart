@@ -59,6 +59,13 @@ void main() {
     when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
     when(db.batch()).thenReturn(mockBatch);
 
+    final mockUserFileDb = MockUserFileDb();
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (value) => Future.value([]),
+    );
+
     getItInitializer
       ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -66,7 +73,7 @@ void main() {
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(activityResponse: () => response)
       ..fileStorage = MockFileStorage()
-      ..userFileDb = MockUserFileDb()
+      ..userFileDb = mockUserFileDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = db

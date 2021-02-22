@@ -37,8 +37,8 @@ void main() {
     mockUserFileRepository = MockUserFileRepository();
     mockedFileStorage = MockFileStorage();
     when(mockUserFileRepository.save(any)).thenAnswer((_) => Future.value());
-    when(mockUserFileRepository.allFilesLoaded())
-        .thenAnswer((_) => Future.value(true));
+    when(mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')))
+        .thenAnswer((_) => Future.value([]));
     when(mockedFileStorage.storeFile(any, any))
         .thenAnswer((_) => Future.value());
     userFileBloc = UserFileBloc(
@@ -62,9 +62,6 @@ void main() {
     userFileBloc.add(LoadUserFiles());
 
     // Assert
-    await untilCalled(mockUserFileRepository.fetchIntoDatabaseSynchronized());
-    await untilCalled(
-        mockUserFileRepository.getAndStoreFileData(limit: anyNamed('limit')));
     await expectLater(
       userFileBloc,
       emits(UserFilesLoaded([userFile])),
@@ -75,7 +72,6 @@ void main() {
       'SGC-583 LoadUserFiles repeatedly calls download and store untill no more files do download, but does not starve an image add call event',
       () async {
     // Arrange
-
     File file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
     final processedFile1 = await adjustImageSizeAndRotation(fileContent);
@@ -102,53 +98,37 @@ void main() {
       fileLoaded: true,
     );
 
+    var dlCall = 0;
     when(mockUserFileRepository.getAllLoadedFiles())
-        .thenAnswer((_) => Future.value([userFile]));
-    when(mockUserFileRepository.allFilesLoaded())
-        .thenAnswer((_) => Future.value(false));
+        .thenAnswer((_) => Future.value([]));
+    when(mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')))
+        .thenAnswer((_) {
+      switch (dlCall++) {
+        case 0:
+          return Future.value([userFile]);
+        case 1:
+          return Future.value([userFile2]);
+        default:
+          return Future.value(<UserFile>[]);
+      }
+    });
 
     // Act -- Loadfiles
     userFileBloc.add(LoadUserFiles());
-
-    // Assert -- that first calls to repository
-    await untilCalled(mockUserFileRepository.fetchIntoDatabaseSynchronized());
+    // Act -- while downloadning files, user adds file
     await untilCalled(
-        mockUserFileRepository.getAndStoreFileData(limit: anyNamed('limit')));
-    expect(
-      userFileBloc,
-      emits(
-        UserFilesLoaded([userFile]),
-      ),
-    );
-
-    // Act -- try add new image while downloadning
+        mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')));
     userFileBloc
         .add(ImageAdded(SelectedImage(id: fileId, path: filePath, file: file)));
-    await untilCalled(mockedFileStorage.storeFile(any, any));
-    await untilCalled(mockedFileStorage.storeImageThumb(any, any));
 
-    // Assert -- Added file added
-    expect(
-      userFileBloc,
-      emits(UserFilesLoaded([userFile].followedBy([addedFile]))),
-    );
-
-    // Arrange -- next time download calls, return no more to download
-    when(mockUserFileRepository.getAllLoadedFiles())
-        .thenAnswer((_) => Future.value([userFile, addedFile, userFile2]));
-    when(mockUserFileRepository.allFilesLoaded())
-        .thenAnswer((_) => Future.value(true));
-
-    // Assert -- last file downloaded
-    await untilCalled(
-        mockUserFileRepository.getAndStoreFileData(limit: anyNamed('limit')));
+    // Assert --that added file is prioritized
     await expectLater(
-      userFileBloc,
-      emitsInOrder([
-        UserFilesLoaded([userFile].followedBy([addedFile])),
-        UserFilesLoaded([userFile, addedFile, userFile2]),
-      ]),
-    );
+        userFileBloc,
+        emitsInOrder([
+          UserFilesLoaded([userFile]),
+          UserFilesLoaded([userFile, addedFile]),
+          UserFilesLoaded([userFile, addedFile, userFile2]),
+        ]));
   });
 
   test(
@@ -229,7 +209,7 @@ void main() {
       userFileBloc,
       emitsInOrder([
         UserFilesLoaded([expectedFile1]),
-        UserFilesLoaded([expectedFile1].followedBy([expectedFile2])),
+        UserFilesLoaded([expectedFile1, expectedFile2]),
       ]),
     );
   });
