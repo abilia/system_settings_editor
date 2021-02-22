@@ -1,78 +1,172 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:seagull/main.dart' as app;
 import 'package:seagull/ui/all.dart';
 
 void main() {
+  const testId = String.fromEnvironment('testId');
+  const backend = 'Whale';
+
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  void login(WidgetTester tester) async {
-    await tester.tap(find.byKey(TestKey.userNameInput));
-    await tester.pumpAndSettle();
-    await tester.showKeyboard(find.byKey(TestKey.input));
-    await tester.pumpAndSettle();
-    await tester.enterText(
-        find.byKey(TestKey.input), 'tobias.junsten@abilia.se');
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(TestKey.okDialog));
-    await tester.pumpAndSettle();
+  tearDown(() async {
+    await sleep(Duration(seconds: 2));
+    await GetIt.I.reset();
+  });
 
-    await tester.tap(find.byKey(TestKey.passwordInput));
-    await tester.pumpAndSettle();
-    await tester.showKeyboard(find.byKey(TestKey.input));
-    await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.input), 'password!');
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(TestKey.okDialog));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byKey(TestKey.loggInButton));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byType(CancelButton));
-    await tester.pumpAndSettle();
-  }
-
-  void createActivity(WidgetTester tester) async {
-    await tester.tap(find.byKey(TestKey.addActivity));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byType(NextButton));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byType(NameInput));
-    await tester.pumpAndSettle();
-
-    await tester.showKeyboard(find.byKey(TestKey.input));
-    await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.input), 'Auto activity');
-    await tester.tap(find.byKey(TestKey.okDialog));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byType(TimeIntervallPicker));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byKey(TestKey.startTimeInput));
-    await tester.pumpAndSettle();
-    await tester.showKeyboard(find.byKey(TestKey.startTimeInput));
-    await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.startTimeInput), '1111');
-    await tester.tap(find.byType(OkButton));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byKey(TestKey.finishEditActivityButton));
-    await tester.pumpAndSettle();
-  }
-
-  testWidgets('Login and create activity', (WidgetTester tester) async {
+  testWidgets('Login with wrong password', (WidgetTester tester) async {
     await app.main();
     await tester.pumpAndSettle();
-    await login(tester);
-    await createActivity(tester);
-
-    await sleep(
-        Duration(seconds: 5)); // Just to see final result before closing
+    await tester.selectBackend(backend);
+    await tester.login('IGT$testId', password: 'wrongpassword');
+    expect(find.byType(ErrorMessage), findsOneWidget);
   });
+
+  testWidgets('Login with no license', (WidgetTester tester) async {
+    await app.main();
+    await tester.pumpAndSettle();
+    await tester.selectBackend(backend);
+    await tester.login('IGT$testId');
+    expect(find.byType(LicenseErrorDialog), findsOneWidget);
+  });
+
+  testWidgets('Create activity with note SGC-502', (WidgetTester tester) async {
+    await app.main();
+    await tester.pumpAndSettle();
+    await tester.selectBackend(backend);
+    await tester.login('IGTWL$testId');
+    if (Platform.isAndroid) {
+      await tester.pressCancelButton();
+    }
+
+    final note =
+        'Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok. Lorem ipsum har inte bara överlevt fem århundraden, utan även övergången till elektronisk typografi utan större förändringar. Det blev allmänt känt på 1960-talet i samband med lanseringen av Letraset-ark med avsnitt av Lorem Ipsum, och senare med mjukvaror som Aldus PageMaker.';
+    await tester.createActivityWithNote(note);
+
+    final center = tester.getCenter(find.byType(CalendarPage));
+    await tester.dragFrom(center, Offset(center.dx, center.dy - 100));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(ActivityCard));
+    await tester.pumpAndSettle();
+    expect(find.text(note), findsOneWidget);
+    await tester.tap(find.byKey(TestKey.activityBackButton));
+    await tester.pumpAndSettle();
+
+    final newNote = 'Ny information';
+    await tester.editNote(newNote);
+
+    await tester.tap(find.byType(ActivityCard));
+    await tester.pumpAndSettle();
+    expect(find.text(newNote), findsOneWidget);
+  });
+}
+
+extension on WidgetTester {
+  Future<void> selectBackend(String env) async {
+    await longPress(find.byKey(TestKey.loginLogo));
+    // await tester.tap(find.byKey(TestKey.loginLogo));
+    await pumpAndSettle();
+    await tap(find.text(env));
+    await pumpAndSettle();
+  }
+
+  Future<void> editNote(String extraNote) async {
+    await tap(find.byType(ActivityCard));
+    await pumpAndSettle();
+    await tap(find.byIcon(AbiliaIcons.edit));
+    await pumpAndSettle();
+    await tap(find.byIcon(AbiliaIcons.attachment));
+    await pumpAndSettle();
+    await tap(find.byType(NoteBlock));
+    await pumpAndSettle();
+    await showKeyboard(find.byKey(TestKey.input));
+    await pumpAndSettle();
+    await enterText(find.byKey(TestKey.input), extraNote);
+    await pumpAndSettle();
+    await tap(find.byType(OkButton));
+    await pumpAndSettle();
+    await tap(find.byKey(TestKey.finishEditActivityButton));
+    await pumpAndSettle();
+    await tap(find.byKey(TestKey.activityBackButton));
+    await pumpAndSettle();
+  }
+
+  Future<void> createActivityWithNote(String note) async {
+    await tap(find.byKey(TestKey.addActivity));
+    await pumpAndSettle();
+
+    await tap(find.byType(NextButton));
+    await pumpAndSettle();
+
+    await tap(find.byType(NameInput));
+    await pumpAndSettle();
+
+    await showKeyboard(find.byKey(TestKey.input));
+    await pumpAndSettle();
+    await enterText(find.byKey(TestKey.input), 'Activity with note');
+    await tap(find.byType(OkButton));
+    await pumpAndSettle();
+
+    await tap(find.byType(TimeIntervallPicker));
+    await pumpAndSettle();
+
+    await tap(find.byKey(TestKey.startTimeInput));
+    await pumpAndSettle();
+    await showKeyboard(find.byKey(TestKey.startTimeInput));
+    await pumpAndSettle();
+    await enterText(find.byKey(TestKey.startTimeInput), '1000');
+    await tap(find.byType(OkButton));
+    await pumpAndSettle();
+
+    await tap(find.byIcon(AbiliaIcons.attachment));
+    await pumpAndSettle();
+    await tap(find.byIcon(AbiliaIcons.information));
+    await pumpAndSettle();
+    await tap(find.byKey(TestKey.infoItemNoteRadio));
+    await pumpAndSettle();
+    await tap(find.byType(OkButton));
+    await pumpAndSettle();
+    await tap(find.byType(NoteBlock));
+    await pumpAndSettle();
+
+    await showKeyboard(find.byKey(TestKey.input));
+    await pumpAndSettle();
+    await enterText(find.byKey(TestKey.input), note);
+    await pumpAndSettle();
+    await tap(find.byType(OkButton));
+    await pumpAndSettle();
+    await tap(find.byKey(TestKey.finishEditActivityButton));
+    await pumpAndSettle();
+  }
+
+  Future<void> login(String userName, {String password = 'password'}) async {
+    await tap(find.byKey(TestKey.userNameInput));
+    await pumpAndSettle();
+    await showKeyboard(find.byKey(TestKey.input));
+    await pumpAndSettle();
+    await enterText(find.byKey(TestKey.input), userName);
+    await pumpAndSettle();
+    await tap(find.byType(OkButton));
+    await pumpAndSettle();
+
+    await tap(find.byKey(TestKey.passwordInput));
+    await pumpAndSettle();
+    await showKeyboard(find.byKey(TestKey.input));
+    await pumpAndSettle();
+    await enterText(find.byKey(TestKey.input), password ?? 'password');
+    await pumpAndSettle();
+    await tap(find.byType(OkButton));
+    await pumpAndSettle();
+
+    await tap(find.byKey(TestKey.loggInButton));
+    await pumpAndSettle();
+  }
+
+  Future<void> pressCancelButton() async {
+    await tap(find.byType(CancelButton));
+    await pumpAndSettle();
+  }
 }
