@@ -23,8 +23,13 @@ class CalendarBottomBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 AddActivityButton(day: day),
-                CalendarPeriodSelector(
-                  groupValue: state.currentCalendarPeriod,
+                AbiliaTabBar(
+                  collapsedCondition: (i) => false,
+                  tabs: <Widget>[
+                    Icon(AbiliaIcons.day),
+                    Icon(AbiliaIcons.week),
+                    Icon(AbiliaIcons.month),
+                  ],
                 ),
                 MenuButton(),
               ],

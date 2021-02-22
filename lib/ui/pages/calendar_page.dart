@@ -50,139 +50,31 @@ class _CalendarPageState extends State<CalendarPage>
           builder: (context, calendarViewState) =>
               BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
             builder: (context, memoSettingsState) {
-              if (calendarViewState.currentCalendarPeriod ==
-                  CalendarPeriod.DAY) {
-                return DayCalendar(
-                  calendarViewState: calendarViewState,
-                  dayPickerBloc: _dayPickerBloc,
-                  memoSettingsState: memoSettingsState,
-                  pickedDay: pickedDay,
-                );
-              } else if (calendarViewState.currentCalendarPeriod ==
-                  CalendarPeriod.WEEK) {
-                return WeekCalendar();
-              } else {
-                return MonthCalendar();
-              }
+              return DefaultTabController(
+                initialIndex: 0,
+                length: 3,
+                child: Scaffold(
+                  body: TabBarView(children: [
+                    DayCalendar(
+                      calendarViewState: calendarViewState,
+                      dayPickerBloc: _dayPickerBloc,
+                      memoSettingsState: memoSettingsState,
+                      pickedDay: pickedDay,
+                    ),
+                    WeekCalendar(),
+                    MonthCalendar()
+                  ]),
+                  bottomNavigationBar: CalendarBottomBar(
+                    day: pickedDay.day,
+                  ),
+                ),
+              );
             },
           ),
         ),
       ),
     );
   }
-}
-
-class MonthCalendar extends StatelessWidget {
-  const MonthCalendar({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      bottomNavigationBar: CalendarBottomBar(
-        day: DateTime.now(),
-      ),
-    );
-  }
-}
-
-class WeekCalendar extends StatelessWidget {
-  const WeekCalendar({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      bottomNavigationBar: CalendarBottomBar(
-        day: DateTime.now(),
-      ),
-    );
-  }
-}
-
-class DayCalendar extends StatelessWidget {
-  final MemoplannerSettingsState memoSettingsState;
-  final DayPickerState pickedDay;
-  final DayPickerBloc dayPickerBloc;
-  final CalendarViewState calendarViewState;
-  const DayCalendar({
-    Key key,
-    @required this.memoSettingsState,
-    @required this.pickedDay,
-    @required this.dayPickerBloc,
-    @required this.calendarViewState,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedTheme(
-      key: TestKey.animatedTheme,
-      data: weekdayTheme(
-              dayColor: memoSettingsState.calendarDayColor,
-              languageCode: Localizations.localeOf(context).languageCode,
-              weekday: pickedDay.day.weekday)
-          .theme,
-      child: Scaffold(
-        appBar: buildAppBar(
-          pickedDay.day,
-          memoSettingsState.dayCaptionShowDayButtons,
-        ),
-        body: BlocBuilder<PermissionBloc, PermissionState>(
-          builder: (context, state) => Stack(
-            children: [
-              Calendars(
-                calendarViewState: calendarViewState,
-                memoplannerSettingsState: memoSettingsState,
-              ),
-              if (state.notificationDenied)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 28.0),
-                    child: ErrorMessage(
-                      text: Text(
-                        Translator.of(context)
-                            .translate
-                            .notificationsWarningText,
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: CalendarBottomBar(
-          day: pickedDay.day,
-        ),
-      ),
-    );
-  }
-
-  Widget buildAppBar(
-    DateTime pickedDay,
-    bool dayCaptionShowDayButtons,
-  ) =>
-      dayCaptionShowDayButtons
-          ? DayAppBar(
-              day: pickedDay,
-              leftAction: ActionButton(
-                child: Icon(
-                  AbiliaIcons.return_to_previous_page,
-                  size: defaultIconSize,
-                ),
-                onPressed: () => dayPickerBloc.add(PreviousDay()),
-              ),
-              rightAction: ActionButton(
-                child: Icon(
-                  AbiliaIcons.go_to_next_page,
-                  size: defaultIconSize,
-                ),
-                onPressed: () => dayPickerBloc.add(NextDay()),
-              ))
-          : DayAppBar(day: pickedDay);
 }
 
 class Calendars extends StatelessWidget {
@@ -228,30 +120,51 @@ class Calendars extends StatelessWidget {
                             fullDayActivities: fullDayActivities,
                             day: activityState.day,
                           ),
-                        if (calendarViewState.currentDayCalendarType ==
-                            DayCalendarType.LIST)
-                          Expanded(
-                            child: Agenda(
-                              activityState: activityState,
-                              calendarViewState: calendarViewState,
-                              memoplannerSettingsState:
-                                  memoplannerSettingsState,
-                            ),
-                          )
-                        else
-                          Expanded(
-                            child: BlocBuilder<TimepillarBloc, TimepillarState>(
-                                builder: (context, state) {
-                              return TimePillarCalendar(
-                                key: ValueKey(state.timepillarInterval),
-                                activityState: activityState,
-                                calendarViewState: calendarViewState,
-                                memoplannerSettingsState:
-                                    memoplannerSettingsState,
-                                timepillarInterval: state.timepillarInterval,
-                              );
-                            }),
+                        Expanded(
+                          child: Stack(
+                            children: [
+                              if (calendarViewState.currentDayCalendarType ==
+                                  DayCalendarType.LIST)
+                                Agenda(
+                                  activityState: activityState,
+                                  calendarViewState: calendarViewState,
+                                  memoplannerSettingsState:
+                                      memoplannerSettingsState,
+                                )
+                              else
+                                BlocBuilder<TimepillarBloc, TimepillarState>(
+                                  builder: (context, state) {
+                                    return TimePillarCalendar(
+                                      key: ValueKey(state.timepillarInterval),
+                                      activityState: activityState,
+                                      calendarViewState: calendarViewState,
+                                      memoplannerSettingsState:
+                                          memoplannerSettingsState,
+                                      timepillarInterval:
+                                          state.timepillarInterval,
+                                    );
+                                  },
+                                ),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: EyeButton(
+                                    currentDayCalendarType: calendarViewState
+                                        .currentDayCalendarType,
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 32.0),
+                                  child: GoToNowButton(),
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
                       ],
                     );
                   }
@@ -260,23 +173,6 @@ class Calendars extends StatelessWidget {
               );
             },
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 32.0),
-              child: GoToNowButton(),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: EyeButton(
-                currentDayCalendarType:
-                    calendarViewState.currentDayCalendarType,
-              ),
-            ),
-          )
         ],
       ),
     );
