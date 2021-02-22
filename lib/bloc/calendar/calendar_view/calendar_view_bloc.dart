@@ -28,8 +28,5 @@ class CalendarViewBloc extends Bloc<CalendarViewEvent, CalendarViewState> {
       yield state.copyWith(expandRightCategory: !state.expandRightCategory);
       await settingsDb.setRightCategoryExpanded(!state.expandRightCategory);
     }
-    if (event is CalendarPeriodChanged) {
-      yield state.copyWith(calendarPeriod: event.calendarPeriod);
-    }
   }
 }

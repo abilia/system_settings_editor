@@ -15,15 +15,6 @@ class CalendarTypeChanged extends CalendarViewEvent {
   List<Object> get props => [calendarType];
 }
 
-class CalendarPeriodChanged extends CalendarViewEvent {
-  final CalendarPeriod calendarPeriod;
-
-  const CalendarPeriodChanged(this.calendarPeriod);
-
-  @override
-  List<Object> get props => [calendarPeriod];
-}
-
 abstract class ToggleCategory extends CalendarViewEvent {
   const ToggleCategory();
   @override
