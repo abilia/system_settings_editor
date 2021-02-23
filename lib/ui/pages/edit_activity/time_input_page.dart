@@ -1,8 +1,9 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/all.dart';
 
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class TimeInputPage extends StatefulWidget {
@@ -22,7 +23,8 @@ class TimeInputPage extends StatefulWidget {
 
 String pad0(String s) => s.padLeft(2, '0');
 
-class _TimeInputPageState extends State<TimeInputPage> {
+class _TimeInputPageState extends State<TimeInputPage>
+    with WidgetsBindingObserver {
   final bool twelveHourClock;
   TextEditingController startTimeController;
   TextEditingController endTimeController;
@@ -35,9 +37,27 @@ class _TimeInputPageState extends State<TimeInputPage> {
 
   _TimeInputPageState({@required this.twelveHourClock});
 
+  bool _startTimeFocus = true, _paused = false;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      if (_startTimeFocus) {
+        startTimeFocus.requestFocus();
+      } else {
+        endTimeFocus.requestFocus();
+      }
+      _paused = true;
+    } else if (state == AppLifecycleState.paused) {
+      startTimeFocus.unfocus();
+      endTimeFocus.unfocus();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    if (Platform.isAndroid) WidgetsBinding.instance.addObserver(this);
 
     startTimePeriod = widget.timeInput.startTime?.period ?? DayPeriod.pm;
     endTimePeriod = widget.timeInput.endTime?.period ?? DayPeriod.pm;
@@ -45,32 +65,43 @@ class _TimeInputPageState extends State<TimeInputPage> {
     startTimeFocus = FocusNode()
       ..addListener(() {
         if (startTimeFocus.hasFocus) {
-          startTimeController.selection = TextSelection(
-              baseOffset: 0, extentOffset: startTimeController.text.length);
-          final validEndTime =
-              valid(endTimeController) || endTimeController.text.isEmpty;
-          final validatedEndTime =
-              validEndTime ? endTimeController.text : valiedatedNewEndTime;
-          endTimeController.text = validatedEndTime;
-          setState(() {
-            valiedatedNewEndTime = validatedEndTime;
-          });
+          if (_paused) {
+            _paused = false;
+          } else {
+            _startTimeFocus = true;
+            startTimeController.selection = TextSelection(
+                baseOffset: 0, extentOffset: startTimeController.text.length);
+            final validEndTime =
+                valid(endTimeController) || endTimeController.text.isEmpty;
+            final validatedEndTime =
+                validEndTime ? endTimeController.text : valiedatedNewEndTime;
+            endTimeController.text = validatedEndTime;
+            setState(() {
+              valiedatedNewEndTime = validatedEndTime;
+            });
+          }
         }
       })
       ..requestFocus();
     endTimeFocus = FocusNode()
       ..addListener(() {
         if (endTimeFocus.hasFocus) {
-          endTimeController.selection = TextSelection(
-              baseOffset: 0, extentOffset: endTimeController.text.length);
-          final validStartTime =
-              valid(startTimeController) || startTimeController.text.isEmpty;
-          final validatedStartTime =
-              validStartTime ? startTimeController.text : validatedNewStartTime;
-          startTimeController.text = validatedStartTime;
-          setState(() {
-            validatedNewStartTime = validatedStartTime;
-          });
+          if (_paused) {
+            _paused = false;
+          } else {
+            _startTimeFocus = false;
+            endTimeController.selection = TextSelection(
+                baseOffset: 0, extentOffset: endTimeController.text.length);
+            final validStartTime =
+                valid(startTimeController) || startTimeController.text.isEmpty;
+            final validatedStartTime = validStartTime
+                ? startTimeController.text
+                : validatedNewStartTime;
+            startTimeController.text = validatedStartTime;
+            setState(() {
+              validatedNewStartTime = validatedStartTime;
+            });
+          }
         }
       });
 
@@ -79,6 +110,14 @@ class _TimeInputPageState extends State<TimeInputPage> {
 
     startTimeController = TextEditingController(text: validatedNewStartTime);
     endTimeController = TextEditingController(text: valiedatedNewEndTime);
+  }
+
+  @override
+  void dispose() {
+    if (Platform.isAndroid) WidgetsBinding.instance.removeObserver(this);
+    startTimeController.dispose();
+    endTimeController.dispose();
+    super.dispose();
   }
 
   static bool valid(TextEditingController controller) =>
@@ -217,13 +256,6 @@ class _TimeInputPageState extends State<TimeInputPage> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    startTimeController.dispose();
-    endTimeController.dispose();
-    super.dispose();
   }
 }
 

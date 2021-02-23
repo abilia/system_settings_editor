@@ -1,5 +1,8 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -125,7 +128,8 @@ class DefaultTextInputPage extends StatefulWidget {
   _DefaultInputPageState createState() => _DefaultInputPageState();
 }
 
-class _DefaultInputPageState extends State<DefaultTextInputPage> {
+class _DefaultInputPageState
+    extends _StateWithFocusOnResume<DefaultTextInputPage> {
   TextEditingController controller;
   bool _validInput = false;
   @override
@@ -181,6 +185,7 @@ class _DefaultInputPageState extends State<DefaultTextInputPage> {
                 textCapitalization: widget.textCapitalization,
                 style: Theme.of(context).textTheme.bodyText1,
                 autofocus: true,
+                focusNode: focusNode,
                 onEditingComplete: _validInput ? _returnNewText : () {},
                 maxLines: widget.maxLines,
                 minLines: 1,
@@ -300,7 +305,8 @@ class PasswordInputPage extends StatefulWidget {
   _PasswordInputPageState createState() => _PasswordInputPageState();
 }
 
-class _PasswordInputPageState extends State<PasswordInputPage> {
+class _PasswordInputPageState
+    extends _StateWithFocusOnResume<PasswordInputPage> {
   TextEditingController controller;
   bool _validInput = false;
   @override
@@ -368,6 +374,7 @@ class _PasswordInputPageState extends State<PasswordInputPage> {
                         keyboardType: TextInputType.visiblePassword,
                         style: theme.textTheme.bodyText1,
                         autofocus: true,
+                        focusNode: focusNode,
                         onEditingComplete:
                             _validInput ? _returnNewPassword : () {},
                         onChanged: (s) => widget.loginFormBloc
@@ -430,5 +437,31 @@ class HidePasswordButton extends StatelessWidget {
 
   void _onHidePasswordChanged() {
     loginFormBloc.add(HidePasswordToggle());
+  }
+}
+
+abstract class _StateWithFocusOnResume<T extends StatefulWidget>
+    extends State<T> with WidgetsBindingObserver {
+  FocusNode focusNode;
+  @override
+  void initState() {
+    super.initState();
+    focusNode = FocusNode();
+    if (Platform.isAndroid) WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    if (Platform.isAndroid) WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      focusNode.requestFocus();
+    } else if (state == AppLifecycleState.paused) {
+      focusNode.unfocus();
+    }
   }
 }
