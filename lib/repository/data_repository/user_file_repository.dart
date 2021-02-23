@@ -152,18 +152,19 @@ class UserFileRepository extends DataRepository<UserFile> {
     final missingFiles = await userFileDb.getMissingFiles(limit: limit);
     log.fine('${missingFiles.length} missing files to fetch');
     final fetchedFiles = await Future.wait(
-      missingFiles.exceptionSafeMap(
+      missingFiles.map(
         (userFile) async {
-          if (userFile.isImage) {
-            await _handleImageFile(userFile);
-          } else {
-            await _handleNonImage(userFile);
+          try {
+            if (userFile.isImage) {
+              await _handleImageFile(userFile);
+            } else {
+              await _handleNonImage(userFile);
+            }
+            return userFile;
+          } catch (e) {
+            log.severe('Exception when getting and storing user file', e);
+            return null;
           }
-          return userFile;
-        },
-        onException: (e, uf) {
-          log.severe('Exception when getting and storing user file: $uf', e);
-          return null;
         },
       ),
     );
