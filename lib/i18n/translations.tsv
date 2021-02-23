@@ -154,7 +154,7 @@ enterText	Enter text	Skriv text	Indtast tekst	Voer tekst in	Kirjoita teksti	Text
 clear	Clear	Rensa	Slet	Verwijderen	Poista	Entfernen	Slette
 selectFromLibrary	Select from library	Välj från bibliotek	Vælg fra bibliotek	Selecteren uit bibliotheek	Valitse kirjastosa	Aus Bibliothek wählen	Velg fra bibliotek
 addNew	Add new	Lägg till ny	Tilføj	Toevoegen	Lisää	Hinzufügen	Legg til
-task	Enter task	Skriv in uppgift	Indsæt opgave	Taak invoeren	Anna tehtävä	Aufgabe eingeben	Skriv inn oppgave
+task	Task	Uppgift	Opgave	Taak	Tehtävä	Aufgabe	Oppgave
 remove	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
 							
 ### Settings							

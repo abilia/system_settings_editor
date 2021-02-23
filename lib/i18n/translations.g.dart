@@ -287,7 +287,7 @@ abstract class Translated {
 
   final String addNew = 'Add new';
 
-  final String task = 'Enter task';
+  final String task = 'Task';
 
   final String remove = 'Delete';
 
@@ -779,7 +779,7 @@ class SV extends Translated {
   final String addNew = 'Lägg till ny';
 
   @override
-  final String task = 'Skriv in uppgift';
+  final String task = 'Uppgift';
 
   @override
   final String remove = 'Ta bort';
@@ -1305,7 +1305,7 @@ class DA extends Translated {
   final String addNew = 'Tilføj';
 
   @override
-  final String task = 'Indsæt opgave';
+  final String task = 'Opgave';
 
   @override
   final String remove = 'Slet';
@@ -1828,7 +1828,7 @@ class NL extends Translated {
   final String addNew = 'Toevoegen';
 
   @override
-  final String task = 'Taak invoeren';
+  final String task = 'Taak';
 
   @override
   final String remove = 'Verwijderen';
@@ -2352,7 +2352,7 @@ class FI extends Translated {
   final String addNew = 'Lisää';
 
   @override
-  final String task = 'Anna tehtävä';
+  final String task = 'Tehtävä';
 
   @override
   final String remove = 'Poista';
@@ -2876,7 +2876,7 @@ class DE extends Translated {
   final String addNew = 'Hinzufügen';
 
   @override
-  final String task = 'Aufgabe eingeben';
+  final String task = 'Aufgabe';
 
   @override
   final String remove = 'Löschen';
@@ -3399,7 +3399,7 @@ class NB extends Translated {
   final String addNew = 'Legg til';
 
   @override
-  final String task = 'Skriv inn oppgave';
+  final String task = 'Oppgave';
 
   @override
   final String remove = 'Slett';
