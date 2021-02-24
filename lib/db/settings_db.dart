@@ -42,18 +42,18 @@ class SettingsDb {
 
   bool get textToSpeech => _tryGetBool(_TEXT_TO_SPEECH_RECORD, true);
 
-  Future setPreferredCalendar(CalendarType calendarType) =>
+  Future setPreferredCalendar(DayCalendarType calendarType) =>
       preferences.setInt(_CALENDAR_TYPE_RECORD, calendarType.index);
 
-  CalendarType get preferedCalender {
+  DayCalendarType get preferedCalendar {
     try {
       final calendar =
-          preferences.getInt(_CALENDAR_TYPE_RECORD) ?? CalendarType.LIST.index;
-      return CalendarType.values[calendar] ?? CalendarType.LIST;
+          preferences.getInt(_CALENDAR_TYPE_RECORD) ?? DayCalendarType.LIST.index;
+      return DayCalendarType.values[calendar] ?? DayCalendarType.LIST;
     } catch (_) {
       _log.warning(
           'Could not get calendar type settings. Defaults to CalendarType.LIST.');
-      return CalendarType.LIST;
+      return DayCalendarType.LIST;
     }
   }
 

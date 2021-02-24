@@ -535,7 +535,8 @@ void main() {
     testWidgets(
         'timepillar is choosen in settings settings shows timepillar view',
         (WidgetTester tester) async {
-      when(mockSettingsDb.preferedCalender).thenReturn(CalendarType.TIMEPILLAR);
+      when(mockSettingsDb.preferedCalendar)
+          .thenReturn(DayCalendarType.TIMEPILLAR);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(Agenda), findsNothing);
@@ -547,7 +548,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await goToTimePillar(tester);
-      verify(mockSettingsDb.setPreferredCalendar(CalendarType.TIMEPILLAR));
+      verify(mockSettingsDb.setPreferredCalendar(DayCalendarType.TIMEPILLAR));
     });
   });
 

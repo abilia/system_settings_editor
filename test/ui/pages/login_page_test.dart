@@ -214,7 +214,7 @@ void main() {
     expect(find.byType(CalendarPage), findsOneWidget);
 
     // Logout
-    await tester.tap(find.byIcon(AbiliaIcons.menu));
+    await tester.tap(find.byIcon(AbiliaIcons.app_menu));
     await tester.pumpAndSettle();
     expect(find.byType(MenuPage), findsOneWidget);
     await tester.tap(find.byType(LogoutPickField));

@@ -232,7 +232,7 @@ void main() {
       // Act logout
       await tester.tap(find.byIcon(AbiliaIcons.close_program));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.menu));
+      await tester.tap(find.byIcon(AbiliaIcons.app_menu));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(LogoutPickField));
       await tester.pumpAndSettle();

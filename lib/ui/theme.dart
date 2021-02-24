@@ -252,35 +252,36 @@ ThemeData logoutButtonTheme = abiliaTheme.copyWith(
       color: AbiliaColors.white,
     ),
   ),
-  iconTheme: IconThemeData(
-    size: buttonIconSize,
-    color: AbiliaColors.white,
-  ),
+  iconTheme: whiteIconThemeData,
+);
+
+const IconThemeData whiteIconThemeData = IconThemeData(
+  size: buttonIconSize,
+  color: AbiliaColors.white,
 );
 
 ThemeData greenButtonTheme = abiliaTheme.copyWith(
   buttonTheme: greenButtonThemeData,
   buttonColor: AbiliaColors.green,
   disabledColor: AbiliaColors.green40,
-  iconTheme: IconThemeData(
-    size: buttonIconSize,
-    color: AbiliaColors.white,
-  ),
+  iconTheme: whiteIconThemeData,
 );
 
 ThemeData greyButtonTheme = abiliaTheme.copyWith(
   buttonColor: AbiliaColors.transparentWhite20,
   scaffoldBackgroundColor: AbiliaColors.black80,
-  iconTheme: IconThemeData(
-    size: buttonIconSize,
-    color: AbiliaColors.white,
-  ),
+  iconTheme: whiteIconThemeData,
+);
+
+ThemeData blackButtonTheme = abiliaTheme.copyWith(
+  buttonColor: AbiliaColors.black80,
+  iconTheme: whiteIconThemeData,
 );
 
 ThemeData nowButtonTheme = redButtonTheme.copyWith(
   buttonTheme: redButtonThemeData.copyWith(
     shape: const RoundedRectangleBorder(
-      side: BorderSide(color: AbiliaColors.red120),
+      side: BorderSide(color: AbiliaColors.red140),
       borderRadius: borderRadius,
     ),
   ),
@@ -290,6 +291,7 @@ ThemeData nowButtonTheme = redButtonTheme.copyWith(
   textTheme: abiliaTextTheme.copyWith(
     button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white),
   ),
+  iconTheme: whiteIconThemeData,
 );
 
 ThemeData alreadySelectedChoiceButtonTheme = abiliaTheme.copyWith(

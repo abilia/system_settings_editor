@@ -131,8 +131,8 @@ class ScrollPositionBloc
       final offset = min(nowPos, sc.position.maxScrollExtent);
       await sc.animateTo(
         offset,
-        duration: const Duration(milliseconds: 50),
-        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
       );
     } else if (state is WrongDay) {
       dayPickerBloc.add(CurrentDay());
