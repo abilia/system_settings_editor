@@ -4,4 +4,4 @@ abstract class TimepillarEvent {
   const TimepillarEvent();
 }
 
-class TimepillarConditionsChangedEvent extends TimepillarEvent {}
+class TimepillarConditionsChangedEvent extends TimepillarEvent with Silent {}
