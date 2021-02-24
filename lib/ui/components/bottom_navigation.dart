@@ -32,41 +32,6 @@ class BottomNavigation extends StatelessWidget {
   }
 }
 
-class AnimatedBottomNavigation extends StatelessWidget {
-  const AnimatedBottomNavigation({
-    Key key,
-    @required this.backNavigationWidget,
-    @required this.forwardNavigationWidget,
-    this.showForward = true,
-  }) : super(key: key);
-
-  final Widget backNavigationWidget;
-  final Widget forwardNavigationWidget;
-  final bool showForward;
-  static const _duration = Duration(milliseconds: 200);
-
-  @override
-  Widget build(BuildContext context) {
-    return _BottomNavigation(
-      child: Stack(
-        children: [
-          AnimatedAlign(
-            alignment:
-                showForward ? Alignment.centerRight : Alignment(4.0, 0.0),
-            duration: _duration,
-            child: forwardNavigationWidget,
-          ),
-          AnimatedAlign(
-            alignment: showForward ? Alignment.centerLeft : Alignment.center,
-            duration: _duration,
-            child: backNavigationWidget,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _BottomNavigation extends StatelessWidget {
   final bool useSafeArea;
   const _BottomNavigation({
