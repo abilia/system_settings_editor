@@ -29,10 +29,16 @@ void main() {
     fileLoaded: true,
   );
 
+  final fileId = 'file1';
+  final fileContent = base64.decode(FakeUserFile.ONE_PIXEL_PNG);
+  final filePath = 'test.dart';
+
   setUp(() {
     mockUserFileRepository = MockUserFileRepository();
     mockedFileStorage = MockFileStorage();
     when(mockUserFileRepository.save(any)).thenAnswer((_) => Future.value());
+    when(mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')))
+        .thenAnswer((_) => Future.value([]));
     when(mockedFileStorage.storeFile(any, any))
         .thenAnswer((_) => Future.value());
     userFileBloc = UserFileBloc(
@@ -48,9 +54,14 @@ void main() {
   });
 
   test('User files loaded after successful loading of user files', () async {
-    when(mockUserFileRepository.load())
+    // Arrange
+    when(mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([userFile]));
+
+    // Act
     userFileBloc.add(LoadUserFiles());
+
+    // Assert
     await expectLater(
       userFileBloc,
       emits(UserFilesLoaded([userFile])),
@@ -58,13 +69,72 @@ void main() {
   });
 
   test(
+      'SGC-583 LoadUserFiles repeatedly calls download and store untill no more files do download, but does not starve an image add call event',
+      () async {
+    // Arrange
+    File file = MemoryFileSystem().file(filePath);
+    await file.writeAsBytes(fileContent);
+    final processedFile1 = await adjustImageSizeAndRotation(fileContent);
+
+    final addedFile = UserFile(
+      id: fileId,
+      sha1: sha1.convert(processedFile1).toString(),
+      md5: md5.convert(processedFile1).toString(),
+      path: 'seagull/$fileId',
+      contentType: 'image/jpeg', // File is converted to jpeg
+      fileSize: processedFile1.length,
+      deleted: false,
+      fileLoaded: true,
+    );
+
+    final userFile2 = UserFile(
+      id: '1',
+      sha1: '2',
+      md5: '3',
+      path: '4',
+      contentType: '5',
+      fileSize: 1,
+      deleted: false,
+      fileLoaded: true,
+    );
+
+    var dlCall = 0;
+    when(mockUserFileRepository.getAllLoadedFiles())
+        .thenAnswer((_) => Future.value([]));
+    when(mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')))
+        .thenAnswer((_) {
+      switch (dlCall++) {
+        case 0:
+          return Future.value([userFile]);
+        case 1:
+          return Future.value([userFile2]);
+        default:
+          return Future.value(<UserFile>[]);
+      }
+    });
+
+    // Act -- Loadfiles
+    userFileBloc.add(LoadUserFiles());
+    // Act -- while downloadning files, user adds file
+    await untilCalled(
+        mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')));
+    userFileBloc
+        .add(ImageAdded(SelectedImage(id: fileId, path: filePath, file: file)));
+
+    // Assert --that added file is prioritized
+    await expectLater(
+        userFileBloc,
+        emitsInOrder([
+          UserFilesLoaded([userFile]),
+          UserFilesLoaded([userFile, addedFile]),
+          UserFilesLoaded([userFile, addedFile, userFile2]),
+        ]));
+  });
+
+  test(
       'State contains UserFilesLoaded with correct user file when file is added',
       () async {
     // Arrange
-    final fileId = 'file1';
-    final fileContent = base64.decode(
-        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==');
-    final filePath = 'test.dart';
     File file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
     final processedFile1 = await adjustImageSizeAndRotation(fileContent);
@@ -93,8 +163,7 @@ void main() {
 
   test('State contains two files when two is added', () async {
     // Arrange
-    final fileId = 'file1';
-    final fileContent = base64.decode(FakeUserFile.ONE_PIXEL_PNG);
+
     final filePath1 = 'test';
     File file = MemoryFileSystem().file(filePath1);
     await file.writeAsBytes(fileContent);
@@ -140,7 +209,7 @@ void main() {
       userFileBloc,
       emitsInOrder([
         UserFilesLoaded([expectedFile1]),
-        UserFilesLoaded([expectedFile1].followedBy([expectedFile2])),
+        UserFilesLoaded([expectedFile1, expectedFile2]),
       ]),
     );
   });

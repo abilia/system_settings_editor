@@ -28,6 +28,13 @@ void main() {
     userId: userId,
     multipartRequestBuilder: mockMultiRequestBuilder,
   );
+
+  tearDown(() {
+    reset(mockUserFileDb);
+    reset(mockClient);
+    reset(mockFileStorage);
+  });
+
   test('Save saves to db', () async {
     final userFile1 = FakeUserFile.createNew(id: 'fakeId1');
     await userFileRepository.save([userFile1]);
@@ -72,7 +79,7 @@ void main() {
         .map((l) => DbUserFile.fromJson(l))
         .toList();
 
-    when(mockUserFileDb.getAllWithMissingFiles())
+    when(mockUserFileDb.getMissingFiles(limit: anyNamed('limit')))
         .thenAnswer((_) => Future.value(expectedFiles.map((f) => f.model)));
 
     when(
@@ -183,5 +190,60 @@ void main() {
       mockUserFileDb.insert([]),
       mockUserFileDb.getAllDirty(),
     ]);
+  });
+
+  test('Missing continues download but does not return userFile', () async {
+    final failsOnId = {1, 5};
+    final userFiles = (int limit) => List.generate(
+          limit,
+          (index) => UserFile(
+            id: '$index',
+            contentType: index > (limit ~/ 2) ? 'contentType' : 'image/jpeg',
+            sha1: 'sha1',
+            md5: 'md5',
+            path: 'path/$index',
+            fileSize: 1,
+            fileLoaded: false,
+            deleted: false,
+          ),
+        );
+
+    // Arrange
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (invocation) =>
+          Future.value(userFiles(invocation.namedArguments.values.first)),
+    );
+
+    when(
+      mockClient.get(any, headers: anyNamed('headers')),
+    ).thenAnswer((r) {
+      final String url = r.positionalArguments[0];
+      final p = int.tryParse(url.split('?').first.split('/').last);
+      if (failsOnId.contains(p)) {
+        return Future.value(Response('not found', 400));
+      }
+      return Future.value(Response(FakeUserFile.ONE_PIXEL_PNG, 200));
+    });
+    when(mockFileStorage.storeFile(any, any)).thenAnswer((_) => Future.value());
+    when(mockFileStorage.storeImageThumb(any, any))
+        .thenAnswer((_) => Future.value());
+    when(mockUserFileDb.setFileLoadedForId(any))
+        .thenAnswer((_) => Future.value());
+
+    final lim = 12;
+    final expectedToSuccessed =
+        {for (var i = 0; i < lim; i++) i}.difference(failsOnId);
+    final expectedSuccesses = expectedToSuccessed.length;
+
+    // Act
+    final res = await userFileRepository.downloadUserFiles(limit: lim);
+
+    // Assert -- Set loaded, stores and returns all succeded
+
+    verify(mockUserFileDb.setFileLoadedForId(any)).called(expectedSuccesses);
+    verify(mockFileStorage.storeFile(any, any)).called(expectedSuccesses);
+    expect(res.length, expectedSuccesses);
   });
 }

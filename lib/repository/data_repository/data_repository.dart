@@ -44,7 +44,6 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     return db.getAllNonDeleted();
   }
 
-  @protected
   Future fetchIntoDatabaseSynchronized() => synchronized(fetchIntoDatabase);
 
   @protected

@@ -10,7 +10,7 @@ import 'package:mime/mime.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/file_storage.dart';
+import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
 part 'user_file_event.dart';
@@ -45,11 +45,27 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     if (event is LoadUserFiles) {
       yield* _mapLoadUserFilesToState();
     }
+    if (event is _DownloadUserFiles) {
+      yield* _mapDownloadUserFilesToState();
+    }
   }
 
   Stream<UserFileState> _mapLoadUserFilesToState() async* {
-    final userFiles = await userFileRepository.load();
-    yield UserFilesLoaded(userFiles);
+    await userFileRepository.fetchIntoDatabaseSynchronized();
+    final storedFiles = await userFileRepository.getAllLoadedFiles();
+    yield UserFilesLoaded(storedFiles);
+    add(_DownloadUserFiles());
+  }
+
+  Stream<UserFileState> _mapDownloadUserFilesToState() async* {
+    final downloadedUserFiles =
+        await userFileRepository.downloadUserFiles(limit: 10);
+    if (downloadedUserFiles.isNotEmpty) {
+      yield UserFilesLoaded(
+        state.userFiles.followedBy(downloadedUserFiles).toList(),
+      );
+      add(_DownloadUserFiles());
+    }
   }
 
   Stream<UserFileState> _mapImageAddedToState(
@@ -59,12 +75,9 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     final userFile =
         await handleImage(originalBytes, event.id, event.file.path);
     syncBloc.add(FileSaved());
-    final currentState = state;
-    if (currentState is UserFilesLoaded) {
-      yield UserFilesLoaded(currentState.userFiles.followedBy([userFile]));
-    } else {
-      yield UserFilesLoaded([userFile]);
-    }
+    yield UserFilesLoaded(
+      state.userFiles.followedBy([userFile]).toList(),
+    );
   }
 
   UserFile generateUserFile(

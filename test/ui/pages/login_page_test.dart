@@ -40,6 +40,13 @@ void main() {
     when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([]));
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
 
+    final mockUserFileDb = MockUserFileDb();
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (value) => Future.value([]),
+    );
+
     GetItInitializer()
       ..sharedPreferences =
           await MockSharedPreferences.getInstance(loggedIn: false)
@@ -54,7 +61,7 @@ void main() {
         licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),
       )
       ..fileStorage = MockFileStorage()
-      ..userFileDb = MockUserFileDb()
+      ..userFileDb = mockUserFileDb
       ..database = mockDatabase
       ..flutterTts = MockFlutterTts()
       ..genericDb = MockGenericDb()

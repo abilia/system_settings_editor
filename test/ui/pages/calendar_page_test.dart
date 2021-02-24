@@ -106,6 +106,13 @@ void main() {
           endTime: initialDay.add(100.days()))
     ]);
 
+    final mockUserFileDb = MockUserFileDb();
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (value) => Future.value([]),
+    );
+
     final db = MockDatabase();
     when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
     GetItInitializer()
@@ -115,7 +122,7 @@ void main() {
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(activityResponse: activityResponse)
       ..fileStorage = MockFileStorage()
-      ..userFileDb = MockUserFileDb()
+      ..userFileDb = mockUserFileDb
       ..settingsDb = mockSettingsDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler

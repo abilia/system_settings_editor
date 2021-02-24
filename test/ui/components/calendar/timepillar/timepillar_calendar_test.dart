@@ -56,6 +56,13 @@ void main() {
     when(mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
 
+    final mockUserFileDb = MockUserFileDb();
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (value) => Future.value([]),
+    );
+
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -67,7 +74,7 @@ void main() {
         genericResponse: genericResponse,
       )
       ..fileStorage = MockFileStorage()
-      ..userFileDb = MockUserFileDb()
+      ..userFileDb = mockUserFileDb
       ..settingsDb = mockSettingsDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
