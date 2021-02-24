@@ -114,15 +114,22 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
   }
 
   @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    await GetIt.I<SettingsDb>()
+        .setAlwaysUse24HourFormat(MediaQuery.of(context).alwaysUse24HourFormat);
+  }
+
+  @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
+      await GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
           MediaQuery.of(context).alwaysUse24HourFormat);
       context
         ..read<ClockBloc>().add(DateTime.now().onlyMinutes())
