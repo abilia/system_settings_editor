@@ -53,12 +53,13 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
               ),
             ],
           ),
-          bottomNavigationBar: AnimatedBottomNavigation(
-            showForward: state.isSelected,
+          bottomNavigationBar: BottomNavigation(
             backNavigationWidget: CancelButton(onPressed: onCancel),
-            forwardNavigationWidget: OkButton(
-              onPressed: () => onOk(state.selected),
-            ),
+            forwardNavigationWidget: state.isSelected
+                ? OkButton(
+                    onPressed: () => onOk(state.selected),
+                  )
+                : null,
           ),
         ),
       ),
