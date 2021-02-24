@@ -11,17 +11,25 @@ class GoToNowButton extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.runtimeType != current.runtimeType,
         builder: (context, scrollState) => AnimatedSwitcher(
-          duration: Duration(milliseconds: 400),
+          switchInCurve: Curves.easeOut,
+          switchOutCurve: Curves.easeOut,
+          duration: Duration(milliseconds: 300),
           child: scrollState is WrongDay || scrollState is OutOfView
-              ? IconAndTextButton(
-                  minWidth: 50,
-                  height: 48,
-                  key: TestKey.goToNowButton,
-                  text: Translator.of(context).translate.now,
-                  icon: AbiliaIcons.reset,
-                  onPressed: () =>
-                      context.read<ScrollPositionBloc>().add(GoToNow()),
-                  theme: nowButtonTheme,
+              ? Material(
+                  color: Colors.transparent,
+                  elevation: 3,
+                  shadowColor: AbiliaColors.black,
+                  borderRadius: borderRadius,
+                  child: IconAndTextButton(
+                    minWidth: 50,
+                    height: 48,
+                    key: TestKey.goToNowButton,
+                    text: Translator.of(context).translate.now,
+                    icon: AbiliaIcons.reset,
+                    onPressed: () =>
+                        context.read<ScrollPositionBloc>().add(GoToNow()),
+                    theme: nowButtonTheme,
+                  ),
                 )
               : null,
         ),

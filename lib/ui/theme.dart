@@ -281,7 +281,7 @@ ThemeData blackButtonTheme = abiliaTheme.copyWith(
 ThemeData nowButtonTheme = redButtonTheme.copyWith(
   buttonTheme: redButtonThemeData.copyWith(
     shape: const RoundedRectangleBorder(
-      side: BorderSide(color: AbiliaColors.red120),
+      side: BorderSide(color: AbiliaColors.red140),
       borderRadius: borderRadius,
     ),
   ),
