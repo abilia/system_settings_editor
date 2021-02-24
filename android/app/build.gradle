@@ -70,7 +70,6 @@ android {
         mpgo {
             dimension "flavors"
             applicationIdSuffix ".memoplannergo"
-            versionNameSuffix "-go"
         }
         mp {
             dimension "flavors"
