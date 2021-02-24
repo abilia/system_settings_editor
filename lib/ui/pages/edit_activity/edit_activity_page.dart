@@ -35,7 +35,7 @@ class EditActivityPage extends StatelessWidget {
             child: Scaffold(
               appBar: AbiliaAppBar(
                 iconData: AbiliaIcons.plus,
-                title: title,
+                title: title ?? translate.newActivity,
                 bottom: AbiliaTabBar(
                   collapsedCondition: (i) {
                     switch (i) {
