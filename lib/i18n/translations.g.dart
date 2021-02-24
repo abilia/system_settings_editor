@@ -1987,7 +1987,7 @@ class FI extends Translated {
       'Lisenssisi on vanhentunut, eikä Memoplanneria voi enää käyttää. Jatka lisenssiä ottamalla yhteyttä jälleenmyyjään.';
 
   @override
-  final String toLogin = 'zur Anmelden';
+  final String toLogin = 'kirjautumissivulle';
 
   @override
   final String fullDay = 'Koko päivä';
@@ -2510,7 +2510,7 @@ class DE extends Translated {
       'Ihre Lizenz ist abgelaufen und MEMOplanner Go kann nicht mehr genutzt werden. Wenden Sie sich an Ihre Bezugsquelle, um die Lizenz zu verlängern.';
 
   @override
-  final String toLogin = 'til Logg inn';
+  final String toLogin = 'zur Anmelden';
 
   @override
   final String fullDay = 'Ganztägig';
@@ -3035,6 +3035,9 @@ class NB extends Translated {
   @override
   final String licenseExpiredMessage =
       'Lisensen er utløpt og MEMOplanner Go kan ikke lenger brukes. Kontakt din forskriver hvis du ønsker å forlenge lisensen.';
+
+  @override
+  final String toLogin = 'til Logg inn';
 
   @override
   final String fullDay = 'Hele dagen';
