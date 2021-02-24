@@ -36,13 +36,17 @@ void main() {
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(dbActivityAnswers.removeAt(0)));
 
+      final mockUserFileDb = MockUserFileDb();
+      when(mockUserFileDb.getMissingFiles(limit: anyNamed('limit')))
+          .thenAnswer((_) => Future.value([]));
+
       GetItInitializer()
         ..sharedPreferences = await MockSharedPreferences.getInstance()
         ..activityDb = mockActivityDb
         ..client = Fakes.client(
             activityResponse: () => serverActivityAnswers.removeAt(0))
         ..fireBasePushService = MockFirebasePushService()
-        ..userFileDb = MockUserFileDb()
+        ..userFileDb = mockUserFileDb
         ..ticker = Ticker(
             stream: StreamController<DateTime>().stream, initialTime: time)
         ..alarmScheduler = noAlarmScheduler

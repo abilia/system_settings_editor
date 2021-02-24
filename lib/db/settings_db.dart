@@ -47,8 +47,8 @@ class SettingsDb {
 
   DayCalendarType get preferedCalendar {
     try {
-      final calendar =
-          preferences.getInt(_CALENDAR_TYPE_RECORD) ?? DayCalendarType.LIST.index;
+      final calendar = preferences.getInt(_CALENDAR_TYPE_RECORD) ??
+          DayCalendarType.LIST.index;
       return DayCalendarType.values[calendar] ?? DayCalendarType.LIST;
     } catch (_) {
       _log.warning(

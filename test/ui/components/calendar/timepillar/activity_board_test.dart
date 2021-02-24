@@ -16,6 +16,7 @@ import 'package:seagull/utils/all.dart';
 import '../../../../mocks.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   final title = 'title';
   final startTime = DateTime(1987, 05, 22, 04, 04);
 

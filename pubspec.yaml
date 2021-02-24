@@ -74,6 +74,7 @@ flutter:
     - assets/graphics/
     - assets/graphics/memoplanner/
     - assets/graphics/memoplannergo/
+    - google_fonts/
   fonts:
     - family: AbiliaFont
       fonts:
