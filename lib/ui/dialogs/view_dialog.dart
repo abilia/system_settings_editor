@@ -16,17 +16,18 @@ class ViewDialog extends StatelessWidget {
     this.expanded = false,
     @required this.backNavigationWidget,
     this.forwardNavigationWidget,
-    this.bodyPadding = const EdgeInsets.symmetric(
-      horizontal: 20,
-      vertical: 64,
-    ),
+    this.bodyPadding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final bodyContainer = Container(
       color: AbiliaColors.white110,
-      padding: bodyPadding,
+      padding: bodyPadding ??
+          EdgeInsets.symmetric(
+            horizontal: 20.s,
+            vertical: 64.s,
+          ),
       child: Center(
         child: DefaultTextStyle(
           style: abiliaTextTheme.bodyText1,
@@ -39,7 +40,7 @@ class ViewDialog extends StatelessWidget {
       type: MaterialType.transparency,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 48),
+          padding: EdgeInsets.symmetric(horizontal: 12.0.s, vertical: 48.s),
           child: ClipRRect(
             borderRadius: borderRadius,
             child: Column(
@@ -48,7 +49,7 @@ class ViewDialog extends StatelessWidget {
               children: [
                 if (heading != null)
                   Container(
-                    height: 68,
+                    height: 68.s,
                     color: AbiliaColors.black80,
                     child: Center(child: heading),
                   ),

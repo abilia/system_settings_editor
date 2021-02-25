@@ -28,7 +28,7 @@ class LicenseErrorDialog extends StatelessWidget {
             size: hugeIconSize,
             color: AbiliaColors.red,
           ),
-          const SizedBox(height: 24.0),
+          SizedBox(height: 24.0.s),
           Tts(
             child: Text(
               message,

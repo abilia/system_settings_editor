@@ -23,6 +23,7 @@ class LoginPage extends StatelessWidget {
         () => showViewDialog(
           context: context,
           builder: (_) => LicenseErrorDialog(
+            heading: translate.licenseExpired,
             message: translate.licenseExpiredMessage,
           ),
           wrapWithAuthProviders: false,
@@ -41,7 +42,7 @@ class LoginPage extends StatelessWidget {
         BlocProvider<LoginFormBloc>(create: (context) => LoginFormBloc()),
       ],
       child: BlocListener<LoginBloc, LoginState>(
-        listenWhen: (_, state) => state is LoginFailure && (state.licenseError),
+        listenWhen: (_, state) => state is LoginFailure && state.licenseError,
         listener: (context, state) async {
           final cause = (state as LoginFailure).loginFailureCause;
           context.read<LoginFormBloc>().add(ResetForm());
