@@ -275,9 +275,9 @@ abstract class Translated {
 
   final String infoTypeNone = 'No extra function selected';
 
-  final String infoTypeChecklist = 'Add checklist';
+  final String infoTypeChecklist = 'Checklist';
 
-  final String infoTypeNote = 'Add note';
+  final String infoTypeNote = 'Note';
 
   final String typeSomething = 'Type something…';
 
@@ -763,10 +763,10 @@ class SV extends Translated {
   final String infoTypeNone = 'Ingen extra funktion vald';
 
   @override
-  final String infoTypeChecklist = 'Lägg till checklista';
+  final String infoTypeChecklist = 'Checklista';
 
   @override
-  final String infoTypeNote = 'Lägg till anteckning';
+  final String infoTypeNote = 'Anteckning';
 
   @override
   final String typeSomething = 'Skriv något…';
@@ -1292,10 +1292,10 @@ class DA extends Translated {
   final String infoTypeNone = 'Ingen yderligere funktion er valgt';
 
   @override
-  final String infoTypeChecklist = 'Tilføj tjekliste';
+  final String infoTypeChecklist = 'Tjekliste';
 
   @override
-  final String infoTypeNote = 'Tilføj note';
+  final String infoTypeNote = 'Note';
 
   @override
   final String typeSomething = 'Skriv noget…';
@@ -1818,10 +1818,10 @@ class NL extends Translated {
   final String infoTypeNone = 'Geen extra functie geselecteerd';
 
   @override
-  final String infoTypeChecklist = 'Checklist toevoegen';
+  final String infoTypeChecklist = 'Checklist';
 
   @override
-  final String infoTypeNote = 'Notitie toevoegen';
+  final String infoTypeNote = 'Notitie';
 
   @override
   final String typeSomething = 'Typ iets';
@@ -2345,10 +2345,10 @@ class FI extends Translated {
   final String infoTypeNone = 'Lisätoimintoa ei ole valittu';
 
   @override
-  final String infoTypeChecklist = 'Lisää tarkistusluettelo';
+  final String infoTypeChecklist = 'Tarkistusluettelo';
 
   @override
-  final String infoTypeNote = 'Lisää muistiinpano';
+  final String infoTypeNote = 'Muistiinpano';
 
   @override
   final String typeSomething = 'Kirjoita jotain';
@@ -2872,10 +2872,10 @@ class DE extends Translated {
   final String infoTypeNone = 'Keine Extrafunktion ausgewählt';
 
   @override
-  final String infoTypeChecklist = 'Checkliste hinzufügen';
+  final String infoTypeChecklist = 'Checkliste';
 
   @override
-  final String infoTypeNote = 'Hinweis hinzufügen';
+  final String infoTypeNote = 'Hinweis';
 
   @override
   final String typeSomething = 'Geben Sie etwas ein…';
@@ -3401,10 +3401,10 @@ class NB extends Translated {
   final String infoTypeNone = 'Ingen ekstra funksjon valgt';
 
   @override
-  final String infoTypeChecklist = 'Legg til sjekkliste';
+  final String infoTypeChecklist = 'Sjekkliste';
 
   @override
-  final String infoTypeNote = 'Legg til notat';
+  final String infoTypeNote = 'Notat';
 
   @override
   final String typeSomething = 'Skriv noe…';
