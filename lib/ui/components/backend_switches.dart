@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class BackendSwitches extends StatelessWidget {
   @override
@@ -11,7 +13,7 @@ class BackendSwitches extends StatelessWidget {
         builder: (context, state) {
       return Center(
         child: Wrap(
-          spacing: 16.0,
+          spacing: 16.0.s,
           children: backEndEnviorments.entries
               .map(
                 (kvp) => BackEndButton(
@@ -44,31 +46,31 @@ class BackEndButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          GestureDetector(
-            onTap: () => context.read<AuthenticationBloc>().add(
-                  ChangeRepository(
-                    userRepository.copyWith(
-                      client: client,
-                      baseUrl: backEndUrl,
-                    ),
-                  ),
-                ),
-            child: Text(text),
+  Widget build(BuildContext context) {
+    final onTap = () => context.read<AuthenticationBloc>().add(
+          ChangeRepository(
+            userRepository.copyWith(
+              client: client,
+              baseUrl: backEndUrl,
+            ),
           ),
-          Radio(
+        );
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: onTap,
+          child: Text(text),
+        ),
+        SizedBox(height: 8.s),
+        Transform.scale(
+          scale: Device.scaleFactor,
+          child: Radio(
             groupValue: userRepository.baseUrl,
             value: backEndUrl,
-            onChanged: (url) => context.read<AuthenticationBloc>().add(
-                  ChangeRepository(
-                    userRepository.copyWith(
-                      client: client,
-                      baseUrl: url,
-                    ),
-                  ),
-                ),
+            onChanged: (url) => onTap(),
           ),
-        ],
-      );
+        ),
+      ],
+    );
+  }
 }

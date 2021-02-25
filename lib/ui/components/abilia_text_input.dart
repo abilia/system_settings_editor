@@ -7,6 +7,17 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
+final errorDecoration = InputDecoration(
+  suffixIcon: Padding(
+    padding: EdgeInsetsDirectional.only(end: 16.0.s),
+    child: Icon(
+      AbiliaIcons.ir_error,
+      color: AbiliaColors.red,
+      size: smallIconSize,
+    ),
+  ),
+);
+
 class AbiliaTextInput extends StatelessWidget {
   final TextEditingController controller;
   final bool errorState;
@@ -82,14 +93,7 @@ class AbiliaTextInput extends StatelessWidget {
                   style: theme.textTheme.bodyText1,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (_) => errorState ? '' : null,
-                  decoration: errorState
-                      ? InputDecoration(
-                          suffixIcon: Icon(
-                            AbiliaIcons.ir_error,
-                            color: theme.errorColor,
-                          ),
-                        )
-                      : null,
+                  decoration: errorState ? errorDecoration : null,
                 ),
               ),
             ),
@@ -172,7 +176,7 @@ class _DefaultInputPageState
       body: Tts.fromSemantics(
         SemanticsProperties(label: widget.heading),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(12, 24, 16, 24),
+          padding: ordinaryPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -265,14 +269,7 @@ class PasswordInput extends StatelessWidget {
                         style: theme.textTheme.bodyText1,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (_) => errorState ? '' : null,
-                        decoration: errorState
-                            ? InputDecoration(
-                                suffixIcon: Icon(
-                                  AbiliaIcons.ir_error,
-                                  color: theme.errorColor,
-                                ),
-                              )
-                            : null,
+                        decoration: errorState ? errorDecoration : null,
                       ),
                     ),
                   ),
@@ -356,7 +353,7 @@ class _PasswordInputPageState
           obscured: true,
         ),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(12, 24, 16, 24),
+          padding: ordinaryPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -414,16 +411,15 @@ class HidePasswordButton extends StatelessWidget {
       cubit: loginFormBloc,
       builder: (context, state) => Padding(
         padding: state.password.isNotEmpty
-            ? const EdgeInsets.only(left: 12)
+            ? EdgeInsets.only(left: 12.s)
             : EdgeInsets.zero,
         child: AnimatedContainer(
           duration: 150.milliseconds(),
-          width: state.password.isNotEmpty ? ActionButton.size : 0.0,
+          width: state.password.isNotEmpty ? ActionButton.size.s : 0.0,
           child: ActionButton(
             child: state.password.isNotEmpty
                 ? Icon(
                     state.hidePassword ? AbiliaIcons.show : AbiliaIcons.hide,
-                    size: defaultIconSize,
                     color: AbiliaColors.black,
                   )
                 : null,

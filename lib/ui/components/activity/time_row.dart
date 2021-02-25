@@ -143,7 +143,7 @@ class _TimeBox extends StatelessWidget {
       .add(future ? const EdgeInsets.all(1.0) : EdgeInsets.zero);
 }
 
-const pastDecration = BoxDecoration(
+final pastDecration = BoxDecoration(
   borderRadius: borderRadius,
   border: Border.fromBorderSide(
     BorderSide(style: BorderStyle.none, width: 2.0),

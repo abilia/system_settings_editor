@@ -69,7 +69,7 @@ class _WarningContent extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: [
           const SizedBox(height: 128.0),
-          const Icon(
+          Icon(
             AbiliaIcons.ir_error,
             size: hugeIconSize,
             color: AbiliaColors.orange,

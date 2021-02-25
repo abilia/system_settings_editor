@@ -1,18 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:seagull/utils/all.dart';
 
 import 'colors.dart';
 
-const double smallIconSize = 24,
-    buttonIconSize = 28,
-    defaultIconSize = 32,
-    hugeIconSize = 96;
+final smallIconSize = 24.s,
+    buttonIconSize = 28.s,
+    defaultIconSize = 32.s,
+    hugeIconSize = 96.s;
 
-const double verticalPadding = 24.0,
-    leftPadding = 12.0,
-    rightPadding = 16.0,
-    seperatorPadding = 16.0;
+final verticalPadding = 24.0.s,
+    horizontalPadding = 16.0.s,
+    rightPadding = horizontalPadding,
+    leftPadding = 12.0.s,
+    seperatorPadding = 16.0.s;
+final ordinaryPadding = EdgeInsets.fromLTRB(
+  leftPadding,
+  verticalPadding,
+  rightPadding,
+  verticalPadding,
+);
 
 final abiliaTheme = ThemeData(
   primaryColorBrightness: Brightness.light,
@@ -26,7 +34,7 @@ final abiliaTheme = ThemeData(
   buttonTheme: baseButtonTheme,
   buttonColor: AbiliaColors.transparentBlack20,
   highlightColor: AbiliaColors.transparentBlack40,
-  iconTheme: const IconThemeData(
+  iconTheme: IconThemeData(
     size: defaultIconSize,
     color: AbiliaColors.black,
   ),
@@ -41,16 +49,16 @@ final abiliaTheme = ThemeData(
     primaryColor: AbiliaColors.black,
   ),
   toggleableActiveColor: AbiliaColors.green,
-  dividerTheme: const DividerThemeData(
+  dividerTheme: DividerThemeData(
     color: AbiliaColors.white120,
-    endIndent: 12.0,
-    thickness: 1.0,
+    endIndent: 12.0.s,
+    thickness: 1.0.s,
     space: 0.0,
   ),
 );
 
-const InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
-    contentPadding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 16),
+final inputDecorationTheme = InputDecorationTheme(
+    contentPadding: EdgeInsets.symmetric(vertical: 14.0.s, horizontal: 16.s),
     focusedBorder: inputBorder,
     enabledBorder: inputBorder,
     errorBorder: redOutlineInputBorder,
@@ -60,83 +68,83 @@ const InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
     errorStyle: TextStyle(height: 0),
     fillColor: AbiliaColors.white);
 
-const Radius radius = Radius.circular(12);
-const BorderRadius borderRadius = BorderRadius.all(radius);
-const BorderRadius borderRadiusRight = BorderRadius.only(
+final radius = Radius.circular(12.s);
+final borderRadius = BorderRadius.all(radius);
+final borderRadiusRight = BorderRadius.only(
   topRight: radius,
   bottomRight: radius,
 );
-const BorderRadius borderRadiusLeft = BorderRadius.only(
+final borderRadiusLeft = BorderRadius.only(
   topLeft: radius,
   bottomLeft: radius,
 );
-const BorderRadius notUpperLeft = BorderRadius.only(
-  topRight: radius,
-  bottomRight: radius,
-  bottomLeft: radius,
-);
 
-const BorderSide borderSide = BorderSide(color: AbiliaColors.white140);
-const Border currentActivityBorder =
-    Border.fromBorderSide(BorderSide(color: AbiliaColors.red, width: 2.0));
-const Border errorBorder =
-    Border.fromBorderSide(BorderSide(color: AbiliaColors.red));
-const borderGreen =
-    Border.fromBorderSide(BorderSide(color: AbiliaColors.green, width: 2.0));
-const borderOrange =
-    Border.fromBorderSide(BorderSide(color: AbiliaColors.orange40, width: 2.0));
-const border = Border.fromBorderSide(borderSide);
-const ligthShapeBorder = RoundedRectangleBorder(
-  borderRadius: borderRadius,
-  side: BorderSide(color: AbiliaColors.transparentWhite30),
+final BorderSide borderSide =
+    BorderSide(color: AbiliaColors.white140, width: 1.0.s);
+final Border currentActivityBorder = Border.fromBorderSide(
+  BorderSide(color: AbiliaColors.red, width: 2.0.s),
 );
-const darkShapeBorder = RoundedRectangleBorder(
-  borderRadius: borderRadius,
-  side: BorderSide(color: AbiliaColors.transparentBlack30),
+final Border errorBorder = Border.fromBorderSide(
+  BorderSide(color: AbiliaColors.red, width: 1.0.s),
 );
-const BoxDecoration boxDecoration = BoxDecoration(
+final borderGreen = Border.fromBorderSide(
+  BorderSide(color: AbiliaColors.green, width: 2.0.s),
+);
+final borderOrange = Border.fromBorderSide(
+  BorderSide(color: AbiliaColors.orange40, width: 2.0.s),
+);
+final border = Border.fromBorderSide(borderSide);
+final ligthShapeBorder = RoundedRectangleBorder(
+  borderRadius: borderRadius,
+  side: BorderSide(color: AbiliaColors.transparentWhite30, width: 1.0.s),
+);
+final darkShapeBorder = RoundedRectangleBorder(
+  borderRadius: borderRadius,
+  side: BorderSide(color: AbiliaColors.transparentBlack30, width: 1.0.s),
+);
+final boxDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: border,
 );
-const BoxDecoration disabledBoxDecoration = BoxDecoration(
+final disabledBoxDecoration = BoxDecoration(
   borderRadius: borderRadius,
   color: AbiliaColors.transparentWhite40,
 );
-const BoxDecoration currentBoxDecoration = BoxDecoration(
+final currentBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: currentActivityBorder,
 );
-const BoxDecoration whiteBoxDecoration = BoxDecoration(
+final whiteBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: border,
 );
-const BoxDecoration greenBoarderWhiteBoxDecoration = BoxDecoration(
+final greenBoarderWhiteBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: borderGreen,
 );
-const BoxDecoration whiteNoBorderBoxDecoration = BoxDecoration(
+final whiteNoBorderBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
 );
-const BoxDecoration warningBoxDecoration = BoxDecoration(
+final warningBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: borderOrange,
 );
 const inactiveGrey = AbiliaColors.white110;
-const BoxDecoration inactiveBoxDecoration = BoxDecoration(
+final inactiveBoxDecoration = BoxDecoration(
   color: inactiveGrey,
   borderRadius: borderRadius,
   border: border,
 );
-const BoxDecoration errorBoxDecoration = BoxDecoration(
+final errorBoxDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: errorBorder,
 );
-const BoxDecoration whiteErrorBoxDecoration = BoxDecoration(
+final whiteErrorBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: errorBorder,
@@ -151,35 +159,35 @@ BoxDecoration getBoxDecoration(bool current, bool inactive) => inactive
 BoxDecoration selectedBoxDecoration(bool selected) =>
     selected ? greenBoarderWhiteBoxDecoration : whiteBoxDecoration;
 
-const OutlineInputBorder inputBorder = OutlineInputBorder(
+final inputBorder = OutlineInputBorder(
   borderSide: borderSide,
   borderRadius: borderRadius,
 );
 
-const OutlineInputBorder redOutlineInputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: AbiliaColors.red),
+final redOutlineInputBorder = OutlineInputBorder(
+  borderSide: BorderSide(color: AbiliaColors.red, width: 1.0.s),
   borderRadius: borderRadius,
 );
 
-const OutlineInputBorder transparentOutlineInputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: Colors.transparent),
+final transparentOutlineInputBorder = OutlineInputBorder(
+  borderSide: BorderSide(color: Colors.transparent, width: 1.0.s),
   borderRadius: borderRadius,
 );
 
-const ButtonThemeData baseButtonTheme = ButtonThemeData(
-  height: 64,
-  minWidth: 48,
+final baseButtonTheme = ButtonThemeData(
+  height: 64.0.s,
+  minWidth: 48.0.s,
   shape: ligthShapeBorder,
 );
 
-ButtonThemeData redButtonThemeData = baseButtonTheme.copyWith(
+final redButtonThemeData = baseButtonTheme.copyWith(
   minWidth: double.infinity,
   buttonColor: AbiliaColors.red,
   disabledColor: AbiliaColors.red40,
   highlightColor: AbiliaColors.red120,
 );
 
-ButtonThemeData greenButtonThemeData = baseButtonTheme.copyWith(
+final greenButtonThemeData = baseButtonTheme.copyWith(
   minWidth: double.infinity,
   buttonColor: AbiliaColors.green,
   disabledColor: AbiliaColors.green40,
@@ -187,52 +195,52 @@ ButtonThemeData greenButtonThemeData = baseButtonTheme.copyWith(
   shape: RoundedRectangleBorder(borderRadius: borderRadius),
 );
 
-const ButtonThemeData checkButtonThemeData = ButtonThemeData(
-  height: 48,
-  minWidth: 111,
+final checkButtonThemeData = ButtonThemeData(
+  height: 48.s,
+  minWidth: 111.s,
   shape: darkShapeBorder,
   buttonColor: AbiliaColors.green,
   disabledColor: AbiliaColors.green40,
   highlightColor: AbiliaColors.green120,
 );
 
-ButtonThemeData uncheckButtonThemeData = checkButtonThemeData.copyWith(
+final uncheckButtonThemeData = checkButtonThemeData.copyWith(
   buttonColor: AbiliaColors.transparentBlack20,
   highlightColor: AbiliaColors.transparentBlack40,
 );
 
-ButtonThemeData actionButtonThemeData = baseButtonTheme.copyWith(
+final actionButtonThemeData = baseButtonTheme.copyWith(
   disabledColor: Colors.transparent,
-  height: 48,
+  height: 48.s,
 );
 
-ButtonThemeData lightActionButtonThemeData = actionButtonThemeData.copyWith(
+final lightActionButtonThemeData = actionButtonThemeData.copyWith(
   buttonColor: AbiliaColors.white,
   highlightColor: AbiliaColors.transparentWhite40,
   disabledColor: Colors.transparent,
   shape: ligthShapeBorder,
 );
 
-ButtonThemeData darkActionButtonThemeData = baseButtonTheme.copyWith(
+final darkActionButtonThemeData = baseButtonTheme.copyWith(
   buttonColor: AbiliaColors.black,
   highlightColor: AbiliaColors.transparentBlack40,
   shape: darkShapeBorder,
 );
 
-ThemeData darkButtonTheme = abiliaTheme.copyWith(
+final darkButtonTheme = abiliaTheme.copyWith(
   buttonTheme: darkActionButtonThemeData,
   textTheme: abiliaTheme.textTheme.copyWith(
       button: abiliaTheme.textTheme.button.copyWith(color: AbiliaColors.black)),
   buttonColor: AbiliaColors.transparentBlack20,
 );
 
-ThemeData lightButtonTheme = abiliaTheme.copyWith(
+final lightButtonTheme = abiliaTheme.copyWith(
   buttonTheme: lightActionButtonThemeData,
   buttonColor: AbiliaColors.transparentWhite20,
   disabledColor: AbiliaColors.transparentWhite40,
 );
 
-ThemeData redButtonTheme = abiliaTheme.copyWith(
+final redButtonTheme = abiliaTheme.copyWith(
   buttonTheme: redButtonThemeData,
   buttonColor: AbiliaColors.red,
   textTheme: abiliaTheme.textTheme.copyWith(
@@ -242,7 +250,7 @@ ThemeData redButtonTheme = abiliaTheme.copyWith(
   ),
 );
 
-ThemeData logoutButtonTheme = abiliaTheme.copyWith(
+final logoutButtonTheme = abiliaTheme.copyWith(
   buttonTheme: redButtonThemeData.copyWith(
     shape: RoundedRectangleBorder(borderRadius: borderRadius),
   ),
@@ -255,32 +263,32 @@ ThemeData logoutButtonTheme = abiliaTheme.copyWith(
   iconTheme: whiteIconThemeData,
 );
 
-const IconThemeData whiteIconThemeData = IconThemeData(
+final whiteIconThemeData = IconThemeData(
   size: buttonIconSize,
   color: AbiliaColors.white,
 );
 
-ThemeData greenButtonTheme = abiliaTheme.copyWith(
+final greenButtonTheme = abiliaTheme.copyWith(
   buttonTheme: greenButtonThemeData,
   buttonColor: AbiliaColors.green,
   disabledColor: AbiliaColors.green40,
   iconTheme: whiteIconThemeData,
 );
 
-ThemeData greyButtonTheme = abiliaTheme.copyWith(
+final greyButtonTheme = abiliaTheme.copyWith(
   buttonColor: AbiliaColors.transparentWhite20,
   scaffoldBackgroundColor: AbiliaColors.black80,
   iconTheme: whiteIconThemeData,
 );
 
-ThemeData blackButtonTheme = abiliaTheme.copyWith(
+final blackButtonTheme = abiliaTheme.copyWith(
   buttonColor: AbiliaColors.black80,
   iconTheme: whiteIconThemeData,
 );
 
-ThemeData nowButtonTheme = redButtonTheme.copyWith(
+final nowButtonTheme = redButtonTheme.copyWith(
   buttonTheme: redButtonThemeData.copyWith(
-    shape: const RoundedRectangleBorder(
+    shape: RoundedRectangleBorder(
       side: BorderSide(color: AbiliaColors.red140),
       borderRadius: borderRadius,
     ),
@@ -294,19 +302,19 @@ ThemeData nowButtonTheme = redButtonTheme.copyWith(
   iconTheme: whiteIconThemeData,
 );
 
-ThemeData alreadySelectedChoiceButtonTheme = abiliaTheme.copyWith(
+final alreadySelectedChoiceButtonTheme = abiliaTheme.copyWith(
     buttonTheme: lightActionButtonThemeData,
     buttonColor: AbiliaColors.black,
     textTheme: abiliaTextTheme.copyWith(
         button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white)));
 
-ThemeData availableToSelectButtonTheme = abiliaTheme.copyWith(
+final availableToSelectButtonTheme = abiliaTheme.copyWith(
     buttonTheme: lightActionButtonThemeData,
     buttonColor: AbiliaColors.white,
     textTheme: abiliaTextTheme.copyWith(
         button: abiliaTextTheme.button.copyWith(color: AbiliaColors.black)));
 
-ThemeData bottomNavigationBarTheme = abiliaTheme.copyWith(
+final bottomNavigationBarTheme = abiliaTheme.copyWith(
   buttonTheme: lightActionButtonThemeData.copyWith(shape: ligthShapeBorder),
   buttonColor: AbiliaColors.transparentWhite20,
   iconTheme: IconThemeData(size: defaultIconSize),
@@ -316,74 +324,74 @@ final abiliaTextTheme = GoogleFonts.robotoTextTheme(
   TextTheme(
     headline1: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 96.0,
+      fontSize: 96.0.s,
       fontWeight: light,
     ),
     headline2: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 60.0,
+      fontSize: 60.0.s,
       fontWeight: light,
       height: 72.0 / 60.0,
     ),
     headline3: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 48.0,
+      fontSize: 48.0.s,
       fontWeight: regular,
       height: 56.0 / 48.0,
     ),
     headline4: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 34.0,
+      fontSize: 34.0.s,
       fontWeight: regular,
     ),
     headline5: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 24.0,
+      fontSize: 24.0.s,
       fontWeight: regular,
     ),
     headline6: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 20.0,
+      fontSize: 20.0.s,
       fontWeight: medium,
     ),
     subtitle1: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 16.0,
+      fontSize: 16.0.s,
       fontWeight: medium,
       height: 24.0 / 16.0,
     ),
     subtitle2: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 14.0,
+      fontSize: 14.0.s,
       fontWeight: medium,
       height: 24.0 / 14.0,
     ),
     bodyText1: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 16.0,
+      fontSize: 16.0.s,
       fontWeight: regular,
       height: 28.0 / 16.0,
     ),
     bodyText2: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 14.0,
+      fontSize: 14.0.s,
       fontWeight: regular,
       height: 20.0 / 14.0,
     ),
     caption: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 12.0,
+      fontSize: 12.0.s,
       fontWeight: regular,
       height: 16.0 / 12.0,
     ),
     button: TextStyle(
       color: AbiliaColors.white,
-      fontSize: 16.0,
+      fontSize: 16.0.s,
       fontWeight: regular,
       height: 1,
     ),
     overline: TextStyle(
-      fontSize: 10.0,
+      fontSize: 10.0.s,
       fontWeight: medium,
       height: 16.0 / 10.0,
     ),

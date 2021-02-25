@@ -132,9 +132,9 @@ class _AnimatedTab extends AnimatedWidget {
           Border.fromBorderSide(BorderSide(color: AbiliaColors.white)),
       endBorder = Border.fromBorderSide(
           BorderSide(color: AbiliaColors.transparentWhite30));
-  static const firstBorderRadius = BorderRadius.horizontal(left: radius),
+  static final firstBorderRadius = BorderRadius.horizontal(left: radius),
       lastBorderRadius = BorderRadius.horizontal(right: radius);
-  const _AnimatedTab({
+  _AnimatedTab({
     Key key,
     @required this.child,
     @required this.scaleAnimation,
@@ -147,27 +147,27 @@ class _AnimatedTab extends AnimatedWidget {
     @required this.last,
     @required this.first,
   })  : beginDecoration = first
-            ? const BoxDecoration(
+            ? BoxDecoration(
                 borderRadius: firstBorderRadius,
                 color: AbiliaColors.white,
                 border: beginBorder)
             : last
-                ? const BoxDecoration(
+                ? BoxDecoration(
                     borderRadius: lastBorderRadius,
                     color: AbiliaColors.white,
                     border: beginBorder,
                   )
-                : const BoxDecoration(
+                : BoxDecoration(
                     borderRadius: BorderRadius.zero,
                     color: AbiliaColors.white,
                     border: beginBorder),
         endDecoration = first
-            ? const BoxDecoration(
+            ? BoxDecoration(
                 borderRadius: firstBorderRadius,
                 color: AbiliaColors.transparentWhite20,
                 border: endBorder)
             : last
-                ? const BoxDecoration(
+                ? BoxDecoration(
                     borderRadius: lastBorderRadius,
                     color: AbiliaColors.transparentWhite20,
                     border: endBorder,

@@ -18,7 +18,7 @@ class SubHeading extends StatelessWidget {
         header: true,
       ),
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
+        padding: EdgeInsets.only(bottom: 8.0.s),
         child: Text(
           data,
           style: Theme.of(context)
@@ -70,7 +70,7 @@ class LinedBorder extends StatelessWidget {
 }
 
 class PickField extends StatelessWidget {
-  static const trailingArrow = Icon(
+  static final trailingArrow = Icon(
     AbiliaIcons.navigation_next,
     size: defaultIconSize,
     color: AbiliaColors.black60,
@@ -86,7 +86,7 @@ class PickField extends StatelessWidget {
     @required this.text,
     Key key,
     this.leading,
-    this.trailing = trailingArrow,
+    this.trailing,
     this.onTap,
     this.heigth = 56,
     this.errorState = false,
@@ -137,7 +137,7 @@ class PickField extends StatelessWidget {
                 if (trailing != null)
                   Align(
                     alignment: Alignment.centerRight,
-                    child: trailing,
+                    child: trailing ?? trailingArrow,
                   ),
               ],
             ),
@@ -376,13 +376,13 @@ class SelectableField extends StatelessWidget {
                                   ),
                                 ),
                       child: selected
-                          ? const Icon(
+                          ? Icon(
                               AbiliaIcons.radiocheckbox_selected,
                               color: AbiliaColors.green,
                               size: smallIconSize,
                             )
                           : Container(
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: border,
                               ),

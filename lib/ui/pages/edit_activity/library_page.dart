@@ -153,7 +153,7 @@ class SortableLibrary<T extends SortableData> extends StatelessWidget {
           );
         }
         return GridView.count(
-          padding: const EdgeInsets.only(
+          padding: EdgeInsets.only(
             top: verticalPadding,
             left: leftPadding,
             right: rightPadding,
