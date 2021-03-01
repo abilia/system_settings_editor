@@ -18,5 +18,6 @@ export 'tts.dart';
 export 'appbar_heading.dart';
 export 'bottom_navigation.dart';
 export 'buttons/all.dart';
+export 'abilia_scrollbar.dart';
 
 export 'package:flutter/semantics.dart';

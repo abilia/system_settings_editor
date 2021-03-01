@@ -60,7 +60,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
             children: <Widget>[
               NotificationListener<ScrollNotification>(
                 onNotification: state.isToday ? onScrollNotification : null,
-                child: CupertinoScrollbar(
+                child: AbiliaScrollBar(
                   controller: scrollController,
                   child: CustomScrollView(
                     center: state.isToday ? center : null,

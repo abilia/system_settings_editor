@@ -21,7 +21,7 @@ class VerticalScrollArrows extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        CupertinoScrollbar(
+        AbiliaScrollBar(
           isAlwaysShown: scrollbarAlwaysShown,
           controller: controller,
           child: child,
