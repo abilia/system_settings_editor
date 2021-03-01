@@ -5,8 +5,8 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-const double timePillarPadding = 4.0,
-    timePillarWidth = 42.0,
+final double timePillarPadding = 4.0.s,
+    timePillarWidth = 42.0.s,
     timePillarTotalWidth = timePillarWidth + timePillarPadding * 2;
 
 double timePillarHeight(TimepillarInterval interval) =>
@@ -74,7 +74,7 @@ class TimePillar extends StatelessWidget {
                     TimePillarCalendar.topMargin,
               ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(timePillarPadding,
+              padding: EdgeInsets.fromLTRB(timePillarPadding,
                   TimePillarCalendar.topMargin, timePillarPadding, 0),
               child: SizedBox(
                 width: timePillarWidth,
@@ -154,7 +154,7 @@ class Hour extends StatelessWidget {
         .copyWith(color: AbiliaColors.white);
     return Container(
       height: hourHeigt,
-      padding: const EdgeInsets.symmetric(vertical: hourPadding),
+      padding: EdgeInsets.symmetric(vertical: hourPadding),
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
@@ -168,7 +168,7 @@ class Hour extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            width: 25.0,
+            width: 25.0.s,
             child: Tts(
               child: Text(
                 hour,
