@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
 class ActionButton extends StatelessWidget {
-  static const size = 48.0;
+  static final size = 48.0.s;
   const ActionButton({
     Key key,
     @required this.child,
@@ -21,8 +21,8 @@ class ActionButton extends StatelessWidget {
       data: theme,
       child: Builder(
         builder: (context) => SizedBox(
-          width: size.s,
-          height: size.s,
+          width: size,
+          height: size,
           child: FlatButton(
             color: theme.buttonColor,
             shape: onPressed != null

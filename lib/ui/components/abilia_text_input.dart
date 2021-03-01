@@ -415,7 +415,7 @@ class HidePasswordButton extends StatelessWidget {
             : EdgeInsets.zero,
         child: AnimatedContainer(
           duration: 150.milliseconds(),
-          width: state.password.isNotEmpty ? ActionButton.size.s : 0.0,
+          width: state.password.isNotEmpty ? ActionButton.size : 0.0,
           child: ActionButton(
             child: state.password.isNotEmpty
                 ? Icon(
