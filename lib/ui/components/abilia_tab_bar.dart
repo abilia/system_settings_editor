@@ -5,17 +5,17 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   const AbiliaTabBar({
     Key key,
     @required this.tabs,
-    this.size = const Size.fromHeight(64.0),
+    this.height,
     @required this.collapsedCondition,
   }) : super(key: key);
 
   final List<Widget> tabs;
-  final Size size;
+  final double height;
 
   final bool Function(int index) collapsedCondition;
 
   @override
-  Size get preferredSize => size;
+  Size get preferredSize => Size.fromHeight(height ?? 64.0.s);
 
   @override
   Widget build(BuildContext context) {
@@ -193,13 +193,13 @@ class _AnimatedTab extends AnimatedWidget {
         (selectedTabAnimation.value - index + offset).abs().clamp(0.0, 1.0);
 
     return Container(
-      width: 64.0 * scaleAnimation.value,
-      height: 48.0,
+      width: 64.0.s * scaleAnimation.value,
+      height: 48.0.s,
       margin: last
-          ? const EdgeInsets.only(left: 1.0)
+          ? EdgeInsets.only(left: 1.0.s)
           : first
-              ? const EdgeInsets.only(right: 1.0)
-              : EdgeInsets.symmetric(horizontal: 1.0 * scaleAnimation.value),
+              ? EdgeInsets.only(right: 1.0.s)
+              : EdgeInsets.symmetric(horizontal: 1.0.s * scaleAnimation.value),
       child: scaleAnimation.value == 0.0
           ? null
           : IconTheme(

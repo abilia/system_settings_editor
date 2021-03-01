@@ -3,7 +3,7 @@ import 'package:seagull/ui/all.dart';
 
 class CalendarBottomBar extends StatelessWidget {
   final DateTime day;
-  final barHeigt = 64.0;
+  static final barHeigt = 64.0.s;
 
   const CalendarBottomBar({
     Key key,
@@ -18,7 +18,7 @@ class CalendarBottomBar extends StatelessWidget {
         child: BottomAppBar(
           child: Container(
             height: barHeigt,
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0.s),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[

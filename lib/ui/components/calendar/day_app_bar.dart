@@ -10,18 +10,18 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget leftAction;
   final Widget rightAction;
 
-  static const _emptyAction = SizedBox(width: 48);
+  static final _emptyAction = SizedBox(width: 48.s);
 
   final DateTime day;
-  const DayAppBar(
-      {Key key,
-      this.leftAction = _emptyAction,
-      this.rightAction = _emptyAction,
-      @required this.day})
-      : super(key: key);
+  const DayAppBar({
+    Key key,
+    this.leftAction,
+    this.rightAction,
+    @required this.day,
+  }) : super(key: key);
 
   @override
-  Size get preferredSize => Size.fromHeight(68);
+  Size get preferredSize => Size.fromHeight(68.s);
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +33,15 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
           automaticallyImplyLeading: false,
           flexibleSpace: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.0.s,
+                vertical: 8.0.s,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  leftAction,
+                  leftAction ?? _emptyAction,
                   Flexible(
                     child: BlocBuilder<ClockBloc, DateTime>(
                       builder: (context, time) => Stack(
@@ -60,7 +60,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                     ),
                   ),
-                  rightAction,
+                  rightAction ?? _emptyAction,
                 ],
               ),
             ),

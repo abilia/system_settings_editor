@@ -40,8 +40,8 @@ class DayCalendar extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 28.0),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 16.0.s, vertical: 28.0.s),
                     child: ErrorMessage(
                       text: Text(
                         Translator.of(context)
@@ -153,7 +153,7 @@ class Calendars extends StatelessWidget {
                               Align(
                                 alignment: Alignment.bottomLeft,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: EdgeInsets.all(16.0.s),
                                   child: EyeButton(
                                     currentDayCalendarType: calendarViewState
                                         .currentDayCalendarType,
@@ -163,7 +163,7 @@ class Calendars extends StatelessWidget {
                               Align(
                                 alignment: Alignment.topCenter,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(top: 32.0),
+                                  padding: EdgeInsets.only(top: 32.0.s),
                                   child: GoToNowButton(),
                                 ),
                               ),

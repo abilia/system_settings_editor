@@ -16,7 +16,7 @@ class FullDayContainer extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(12.s),
         child: Row(
           children: fullDayActivities
               .take(2)
@@ -24,7 +24,7 @@ class FullDayContainer extends StatelessWidget {
                 (fd) => Flexible(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.only(
+                    padding: EdgeInsets.only(
                       right: ActivityCard.cardMarginSmall,
                     ),
                     child: ActivityCard(activityOccasion: fd),
@@ -57,7 +57,7 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
+      padding: EdgeInsets.fromLTRB(10.s, 4.s, 4.s, 4.s),
       child: ActionButton(
         child: Text('+ ${fullDayActivities.length - 2}'),
         onPressed: () {

@@ -366,10 +366,10 @@ class OrangeDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 12,
-      height: 12,
+      width: 12.s,
+      height: 12.s,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(6)),
+        borderRadius: BorderRadius.all(Radius.circular(6.s)),
         color: AbiliaColors.orange40,
       ),
     );
