@@ -34,7 +34,7 @@ class ActivityInfoWithDots extends StatelessWidget {
 }
 
 class ActivityInfo extends StatefulWidget {
-  static const margin = 12.0;
+  static final margin = 12.0.s;
   final ActivityDay activityDay;
   final Widget previewImage;
   final bool isAlarm;
@@ -94,7 +94,7 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
             ),
             if (!widget.isAlarm && activity.checkable && !occasion.isSignedOff)
               Padding(
-                padding: const EdgeInsets.only(top: 7.0),
+                padding: EdgeInsets.only(top: 7.0.s),
                 child: CheckButton(
                   key: TestKey.activityCheckButton,
                   iconData: AbiliaIcons.handi_check,
@@ -205,7 +205,7 @@ class ActivityContainer extends StatelessWidget {
               flex: activity.checkable ? 236 : 298,
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                  padding: EdgeInsets.fromLTRB(12.s, 0, 12.s, 12.s),
                   child: previewImage ??
                       CheckedImageWithImagePopup(
                         activityDay: activityDay,
@@ -220,7 +220,7 @@ class ActivityContainer extends StatelessWidget {
 }
 
 class Attachment extends StatelessWidget with ActivityMixin {
-  static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 14.0, 24.0);
+  static final padding = EdgeInsets.fromLTRB(18.0.s, 10.0.s, 14.0.s, 24.0.s);
   final ActivityDay activityDay;
   final bool isAlarm;
   const Attachment({
@@ -343,7 +343,7 @@ class TopInfo extends StatelessWidget {
       children: <Widget>[
         if (imageToTheLeft)
           Padding(
-            padding: const EdgeInsets.only(right: ActivityInfo.margin),
+            padding: EdgeInsets.only(right: ActivityInfo.margin),
             child: checkableImage,
           ),
         Expanded(
@@ -354,7 +354,7 @@ class TopInfo extends StatelessWidget {
             children: <Widget>[
               if (hasTitle)
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
+                  padding: EdgeInsets.only(bottom: 8.0.s),
                   child: Tts(
                     child: Text(
                       activity.title,

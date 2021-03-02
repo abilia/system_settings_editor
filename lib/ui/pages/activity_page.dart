@@ -25,7 +25,7 @@ class ActivityPage extends StatelessWidget {
                 .theme,
             child: Scaffold(
               appBar: PreferredSize(
-                preferredSize: Size.fromHeight(68),
+                preferredSize: Size.fromHeight(68.s),
                 child: AnimatedSwitcher(
                   duration: 200.milliseconds(),
                   child: DayAppBar(
@@ -41,8 +41,8 @@ class ActivityPage extends StatelessWidget {
                 ),
               ),
               body: Padding(
-                padding: const EdgeInsets.all(ActivityInfo.margin)
-                    .subtract(const EdgeInsets.only(left: ActivityInfo.margin)),
+                padding: EdgeInsets.all(ActivityInfo.margin)
+                    .subtract(EdgeInsets.only(left: ActivityInfo.margin)),
                 child: ActivityInfoWithDots(activityOccasion),
               ),
               bottomNavigationBar:
@@ -82,10 +82,10 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
             displayUncheckButton,
           ].where((b) => b).length;
 
-          final padding = [0.0, 0.0, 70.0, 39.0, 23.0][numberOfButtons];
+          final padding = [0.0, 0.0, 70.0.s, 39.0.s, 23.0.s][numberOfButtons];
           return BottomAppBar(
             child: SizedBox(
-              height: numberOfButtons == 0 ? 0 : 64,
+              height: numberOfButtons == 0 ? 0 : 64.s,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: padding),
                 child: Row(

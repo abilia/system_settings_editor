@@ -248,8 +248,7 @@ class SideDotsLarge extends StatelessWidget {
           children: <Widget>[
             Spacer(),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: ActivityInfo.margin),
+              padding: EdgeInsets.symmetric(horizontal: ActivityInfo.margin),
               child: BigDots(
                 dots: max(dots, 1),
                 startTime: startTime,
