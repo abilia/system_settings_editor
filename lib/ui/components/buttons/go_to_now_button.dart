@@ -21,8 +21,8 @@ class GoToNowButton extends StatelessWidget {
                   shadowColor: AbiliaColors.black,
                   borderRadius: borderRadius,
                   child: IconAndTextButton(
-                    minWidth: 50,
-                    height: 48,
+                    minWidth: 50.s,
+                    height: 48.s,
                     key: TestKey.goToNowButton,
                     text: Translator.of(context).translate.now,
                     icon: AbiliaIcons.reset,
