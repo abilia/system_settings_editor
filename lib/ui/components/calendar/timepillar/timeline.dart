@@ -6,7 +6,7 @@ import 'package:seagull/utils/all.dart';
 class Timeline extends StatelessWidget {
   final double width;
   final double offset;
-  static const double timelineHeight = 2;
+  static final double timelineHeight = 2.s;
   const Timeline({
     Key key,
     @required this.width,

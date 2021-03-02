@@ -5,14 +5,14 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityTimepillarCard extends StatelessWidget {
-  static const double imageSize = 56.0,
-      imagePadding = 16.0,
+  static final double imageSize = 56.0.s,
+      imagePadding = 16.0.s,
       imageHeigth = imageSize + imagePadding,
-      crossWidth = 48.0,
-      crossVerticalPadding = 36.0,
-      width = 72.0,
-      padding = 12.0,
-      minHeight = 84.0,
+      crossWidth = 48.0.s,
+      crossVerticalPadding = 36.0.s,
+      width = 72.0.s,
+      padding = 12.0.s,
+      minHeight = 84.0.s,
       totalWith = dotSize + width + padding;
   static const int maxTitleLines = 5;
 
@@ -102,8 +102,8 @@ class ActivityTimepillarCard extends StatelessWidget {
                   },
                   child: Container(
                     margin: right
-                        ? const EdgeInsets.only(left: dotSize + hourPadding)
-                        : const EdgeInsets.only(right: dotSize + hourPadding),
+                        ? EdgeInsets.only(left: dotSize + hourPadding)
+                        : EdgeInsets.only(right: dotSize + hourPadding),
                     decoration: decoration,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
@@ -169,7 +169,7 @@ class SideTime extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
             color: colorFromOccasion(occasion),
-            borderRadius: const BorderRadius.all(Radius.circular(8.0))),
+            borderRadius: BorderRadius.all(Radius.circular(8.0.s))),
       ),
     );
   }

@@ -11,9 +11,9 @@ import 'package:seagull/utils/all.dart';
 const transitionDuration = Duration(seconds: 1);
 
 class TimePillarCalendar extends StatefulWidget {
-  static const topMargin = 30.0;
-  static const bottomMargin = 10.0;
-  static const topPadding = 2 * hourPadding;
+  static final topMargin = 30.0.s;
+  static final bottomMargin = 10.0.s;
+  static final topPadding = 2 * hourPadding;
   static const nightBackgroundColor = AbiliaColors.black90;
   final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
