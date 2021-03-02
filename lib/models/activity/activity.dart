@@ -12,7 +12,9 @@ part 'db_activity.dart';
 
 class Activity extends DataModel {
   Alarm get alarm => Alarm.fromInt(alarmType);
-  DateTime endClock(DateTime day) => startClock(day).add(duration);
+  DateTime endClock(DateTime day) => fullDay
+      ? day.nextDay().millisecondBefore()
+      : startClock(day).add(duration);
   DateTime startClock(DateTime day) =>
       DateTime(day.year, day.month, day.day, startTime.hour, startTime.minute);
   DateTime get noneRecurringEnd => startTime.add(duration);

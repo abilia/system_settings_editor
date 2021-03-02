@@ -17,7 +17,7 @@ class TimeRow extends StatelessWidget {
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) {
         return Padding(
-          padding: const EdgeInsets.only(top: 4, bottom: 8),
+          padding: EdgeInsets.only(top: 4.s, bottom: 8.s),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -115,7 +115,7 @@ class _TimeBox extends StatelessWidget {
           AnimatedContainer(
             duration: ActivityInfo.animationDuration,
             padding: _padding,
-            constraints: const BoxConstraints(minWidth: 92.0, minHeight: 52.0),
+            constraints: BoxConstraints(minWidth: 92.0.s, minHeight: 52.0.s),
             decoration: boxDecoration,
             child: Center(
               child: Text(
@@ -128,7 +128,7 @@ class _TimeBox extends StatelessWidget {
           AnimatedOpacity(
               opacity: past ? 1.0 : 0.0,
               duration: ActivityInfo.animationDuration,
-              child: const CrossOver(fallbackHeight: 38, fallbackWidth: 64)),
+              child: CrossOver(fallbackHeight: 38.s, fallbackWidth: 64.s)),
         ],
       ),
     );
@@ -139,13 +139,13 @@ class _TimeBox extends StatelessWidget {
       : past
           ? pastDecration
           : boxDecoration;
-  EdgeInsets get _padding => const EdgeInsets.fromLTRB(21.0, 14.0, 20.0, 14.0)
-      .add(future ? const EdgeInsets.all(1.0) : EdgeInsets.zero);
+  EdgeInsets get _padding => EdgeInsets.fromLTRB(21.0.s, 14.0.s, 20.0.s, 14.0.s)
+      .add(future ? EdgeInsets.all(1.0.s) : EdgeInsets.zero);
 }
 
 final pastDecration = BoxDecoration(
   borderRadius: borderRadius,
   border: Border.fromBorderSide(
-    BorderSide(style: BorderStyle.none, width: 2.0),
+    BorderSide(style: BorderStyle.none, width: 2.0.s),
   ),
 );
