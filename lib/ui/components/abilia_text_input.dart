@@ -29,6 +29,7 @@ class AbiliaTextInput extends StatelessWidget {
   final TextCapitalization textCapitalization;
   final List<TextInputFormatter> inputFormatters;
   final int maxLines;
+  final bool autoCorrect;
   final bool Function(String) inputValid;
 
   const AbiliaTextInput({
@@ -43,6 +44,7 @@ class AbiliaTextInput extends StatelessWidget {
     this.inputFormatters = const <TextInputFormatter>[],
     this.errorState = false,
     this.maxLines = 1,
+    this.autoCorrect = true,
     this.inputValid,
   })  : assert(icon != null),
         assert(heading != null),
@@ -72,6 +74,7 @@ class AbiliaTextInput extends StatelessWidget {
                     inputFormatters: inputFormatters,
                     textCapitalization: textCapitalization,
                     maxLines: maxLines,
+                    autocorrect: autoCorrect,
                     inputValid: inputValid ?? (s) => true,
                   ),
                 ),
@@ -116,6 +119,7 @@ class DefaultTextInputPage extends StatefulWidget {
     @required this.textCapitalization,
     @required this.maxLines,
     @required this.inputValid,
+    @required this.autocorrect,
   }) : super(key: key);
 
   final String inputHeading;
@@ -126,6 +130,7 @@ class DefaultTextInputPage extends StatefulWidget {
   final List<TextInputFormatter> inputFormatters;
   final TextCapitalization textCapitalization;
   final int maxLines;
+  final bool autocorrect;
   final bool Function(String) inputValid;
 
   @override
@@ -193,6 +198,9 @@ class _DefaultInputPageState
                 onEditingComplete: _validInput ? _returnNewText : () {},
                 maxLines: widget.maxLines,
                 minLines: 1,
+                smartDashesType: SmartDashesType.disabled,
+                smartQuotesType: SmartQuotesType.disabled,
+                autocorrect: widget.autocorrect,
               ),
             ],
           ),

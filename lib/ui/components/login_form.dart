@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/colors.dart';
@@ -89,7 +90,11 @@ class _LoginFormState extends State<LoginForm> {
                     heading: translate.userName,
                     inputHeading: translate.userNameTitle,
                     errorState: credentialsError,
+                    autoCorrect: false,
                     inputValid: (s) => _loginFormBloc.isUsernameValid(s),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(RegExp(r'\s'))
+                    ],
                   ),
                   padding16,
                   PasswordInput(
