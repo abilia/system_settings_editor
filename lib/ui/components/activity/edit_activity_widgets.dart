@@ -292,7 +292,7 @@ class CategoryWidget extends StatelessWidget {
     return Expanded(
       child: RadioField(
         key: key,
-        margin: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16.0),
+        margin: EdgeInsets.symmetric(horizontal: 14.0.s, vertical: 16.0.s),
         onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
             .add(ReplaceActivity(activity.copyWith(category: v))),
         leading: Icon(icon),
@@ -344,7 +344,7 @@ class AlarmWidget extends StatelessWidget {
                   }
                 : null,
           ),
-          const SizedBox(height: 8.0),
+          SizedBox(height: 8.0.s),
           AlarmOnlyAtStartSwitch(
             alarm: alarm,
             onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
