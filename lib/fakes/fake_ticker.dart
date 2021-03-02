@@ -23,7 +23,7 @@ class _FakeTickerState extends State<FakeTicker> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 32.0),
+      padding: EdgeInsets.only(top: 32.0.s),
       child: Column(
         children: [
           SwitchField(
@@ -40,13 +40,24 @@ class _FakeTickerState extends State<FakeTicker> {
           CollapsableWidget(
             collapsed: !useMockTime,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  BlocBuilder<ClockBloc, DateTime>(
-                    builder: (context, state) {
-                      final time = TimeOfDay.fromDateTime(state);
-                      return TimePicker(
+              padding: EdgeInsets.all(8.0.s),
+              child: BlocBuilder<ClockBloc, DateTime>(
+                builder: (context, state) {
+                  final time = TimeOfDay.fromDateTime(state);
+                  return Column(
+                    children: [
+                      DatePicker(
+                        state,
+                        onChange: (newDate) async {
+                          if (newDate != null) {
+                            context.read<ClockBloc>().setFakeTicker(
+                                  initTime: newDate
+                                      .withTime(TimeOfDay.fromDateTime(state)),
+                                );
+                          }
+                        },
+                      ),
+                      TimePicker(
                         '${minPerMin?.toInt() ?? 1} min/min',
                         TimeInput(time, null),
                         onTap: () async {
@@ -60,20 +71,22 @@ class _FakeTickerState extends State<FakeTicker> {
                                 );
                           }
                         },
-                      );
-                    },
-                  ),
-                  Slider(
-                    value: minPerMin ?? 1,
-                    divisions: 599,
-                    onChanged: (v) {
-                      setState(() => minPerMin = v);
-                      context.read<ClockBloc>().setFakeTicker(ticksPerMin: v);
-                    },
-                    max: 600,
-                    min: 1,
-                  ),
-                ],
+                      ),
+                      Slider(
+                        value: minPerMin ?? 1,
+                        divisions: 599,
+                        onChanged: (v) {
+                          setState(() => minPerMin = v);
+                          context
+                              .read<ClockBloc>()
+                              .setFakeTicker(ticksPerMin: v);
+                        },
+                        max: 600,
+                        min: 1,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           )

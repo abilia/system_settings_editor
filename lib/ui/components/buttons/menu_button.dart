@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({
@@ -26,9 +27,9 @@ class MenuButton extends StatelessWidget {
               ),
             ),
             if (state.importantPermissionMissing)
-              const Positioned(
-                top: -3,
-                right: -3,
+              Positioned(
+                top: -3.s,
+                right: -3.s,
                 child: OrangeDot(),
               ),
           ],

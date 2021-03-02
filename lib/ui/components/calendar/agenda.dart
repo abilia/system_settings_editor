@@ -6,7 +6,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
 
 class Agenda extends StatefulWidget {
-  static const topPadding = 60.0, bottomPadding = 125.0;
+  static final topPadding = 60.0.s, bottomPadding = 125.0.s;
 
   final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
@@ -53,14 +53,14 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final categoryLabelWidth =
-            (boxConstraints.maxWidth - timePillarWidth) / 2;
+            (boxConstraints.maxWidth.s - timePillarWidth) / 2;
         return RefreshIndicator(
           onRefresh: refresh,
           child: Stack(
             children: <Widget>[
               NotificationListener<ScrollNotification>(
                 onNotification: state.isToday ? onScrollNotification : null,
-                child: CupertinoScrollbar(
+                child: AbiliaScrollBar(
                   controller: scrollController,
                   child: CustomScrollView(
                     center: state.isToday ? center : null,
@@ -73,8 +73,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                       else ...[
                         if (!todayFirstActivity)
                           SliverPadding(
-                            padding:
-                                const EdgeInsets.only(top: Agenda.topPadding),
+                            padding: EdgeInsets.only(top: Agenda.topPadding),
                             sliver: SliverActivityList(
                               state.pastActivities,
                               reversed: state.isToday,
@@ -148,7 +147,7 @@ class SliverNoActivities extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.only(top: Agenda.topPadding),
+      padding: EdgeInsets.only(top: 96.s),
       sliver: SliverToBoxAdapter(
         child: Center(
           child: Tts(
@@ -183,7 +182,7 @@ class SliverActivityList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: EdgeInsets.symmetric(horizontal: 12.0.s),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {

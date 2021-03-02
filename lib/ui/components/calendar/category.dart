@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
-const _radius = Radius.circular(100);
+final _radius = Radius.circular(100.s);
 
 abstract class _CategoryWidget extends StatelessWidget {
   final bool expanded;
@@ -36,6 +36,8 @@ class CategoryLeft extends _CategoryWidget {
   Widget build(BuildContext context) => _Category(
         text: settingsState.leftCategoryName ??
             Translator.of(context).translate.left,
+        borderRadius:
+            BorderRadius.only(topRight: _radius, bottomRight: _radius),
         expanded: expanded,
         maxWidth: maxWidth,
       );
@@ -60,8 +62,7 @@ class CategoryRight extends _CategoryWidget {
         expanded: expanded,
         icon: AbiliaIcons.navigation_next,
         alignment: const Alignment(1, 0),
-        borderRadius:
-            const BorderRadius.only(topLeft: _radius, bottomLeft: _radius),
+        borderRadius: BorderRadius.only(topLeft: _radius, bottomLeft: _radius),
         textDirection: TextDirection.rtl,
         toggleCategory: const ToggleRight(),
         maxWidth: maxWidth,
@@ -82,8 +83,7 @@ class _Category extends StatefulWidget {
     Key key,
     @required this.text,
     @required this.expanded,
-    this.borderRadius =
-        const BorderRadius.only(topRight: _radius, bottomRight: _radius),
+    @required this.borderRadius,
     this.icon = AbiliaIcons.navigation_previous,
     this.alignment = const Alignment(-1, 0),
     this.textDirection = TextDirection.ltr,
@@ -144,8 +144,8 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: widget.maxWidth),
             child: Container(
-              margin: const EdgeInsets.only(top: 4.0),
-              padding: EdgeInsets.symmetric(vertical: 10),
+              margin: EdgeInsets.only(top: 4.0.s),
+              padding: EdgeInsets.symmetric(vertical: 10.s),
               decoration: BoxDecoration(
                 borderRadius: widget.borderRadius,
                 color: AbiliaColors.black80,
@@ -169,8 +169,8 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                   ),
                   Padding(
                     padding: widget.left
-                        ? const EdgeInsets.only(left: 22, right: 16)
-                        : const EdgeInsets.only(left: 16, right: 22),
+                        ? EdgeInsets.only(left: 22.s, right: 16.s)
+                        : EdgeInsets.only(left: 16.s, right: 22.s),
                     child: AnimatedBuilder(
                       animation: controller,
                       builder: (context, _) => Text(

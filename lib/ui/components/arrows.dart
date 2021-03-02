@@ -15,13 +15,13 @@ class VerticalScrollArrows extends StatelessWidget {
     @required this.controller,
     @required this.child,
     this.scrollbarAlwaysShown = false,
-    this.downCollapseMargin = _Arrow.defaultCollapseMargin,
+    this.downCollapseMargin,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        CupertinoScrollbar(
+        AbiliaScrollBar(
           isAlwaysShown: scrollbarAlwaysShown,
           controller: controller,
           child: child,
@@ -36,111 +36,120 @@ class VerticalScrollArrows extends StatelessWidget {
   }
 }
 
-class ArrowLeft extends StatelessWidget {
-  final ScrollController controller;
-  final double collapseMargin;
-
+class ArrowLeft extends _ArrowBase {
   const ArrowLeft({
     Key key,
-    this.controller,
-    this.collapseMargin = _Arrow.defaultCollapseMargin,
-  }) : super(key: key);
+    ScrollController controller,
+    double collapseMargin,
+  }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
+
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.centerLeft,
         child: _Arrow(
           icon: AbiliaIcons.navigation_previous,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
               topRight: _Arrow.radius, bottomRight: _Arrow.radius),
           vectorTranslation: Vector3(-_Arrow.translationPixels, 0, 0),
           heigth: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels - collapseMargin > sc.position.minScrollExtent,
+              sc.position.pixels - getCollapseMargin >
+              sc.position.minScrollExtent,
         ),
       );
 }
 
-class ArrowUp extends StatelessWidget {
-  final ScrollController controller;
-  final double collapseMargin;
-
+class ArrowUp extends _ArrowBase {
   const ArrowUp({
     Key key,
-    this.controller,
-    this.collapseMargin = _Arrow.defaultCollapseMargin,
-  }) : super(key: key);
+    ScrollController controller,
+    double collapseMargin,
+  }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
+
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.topCenter,
         child: _Arrow(
           icon: AbiliaIcons.navigation_up,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
               bottomLeft: _Arrow.radius, bottomRight: _Arrow.radius),
           vectorTranslation: Vector3(0, -_Arrow.translationPixels, 0),
           width: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels - collapseMargin > sc.position.minScrollExtent,
+              sc.position.pixels - getCollapseMargin >
+              sc.position.minScrollExtent,
         ),
       );
 }
 
-class ArrowRight extends StatelessWidget {
-  final ScrollController controller;
-  final double collapseMargin;
+class ArrowRight extends _ArrowBase {
   const ArrowRight({
     Key key,
-    this.controller,
-    this.collapseMargin = _Arrow.defaultCollapseMargin,
-  }) : super(key: key);
+    ScrollController controller,
+    double collapseMargin,
+  }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
+
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.centerRight,
         child: _Arrow(
           icon: AbiliaIcons.navigation_next,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
               topLeft: _Arrow.radius, bottomLeft: _Arrow.radius),
           vectorTranslation: Vector3(_Arrow.translationPixels, 0, 0),
           heigth: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels + collapseMargin < sc.position.maxScrollExtent,
+              sc.position.pixels + getCollapseMargin <
+              sc.position.maxScrollExtent,
         ),
       );
 }
 
-class ArrowDown extends StatelessWidget {
-  final ScrollController controller;
-  final double collapseMargin;
-
+class ArrowDown extends _ArrowBase {
   const ArrowDown({
     Key key,
-    this.controller,
-    this.collapseMargin = _Arrow.defaultCollapseMargin,
-  }) : super(key: key);
+    ScrollController controller,
+    double collapseMargin,
+  }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
 
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.bottomCenter,
         child: _Arrow(
           icon: AbiliaIcons.navigation_down,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
               topLeft: _Arrow.radius, topRight: _Arrow.radius),
           vectorTranslation: Vector3(0, _Arrow.translationPixels, 0),
           width: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels + collapseMargin < sc.position.maxScrollExtent,
+              sc.position.pixels + getCollapseMargin <
+              sc.position.maxScrollExtent,
         ),
       );
 }
 
+abstract class _ArrowBase extends StatelessWidget {
+  final ScrollController controller;
+  final double collapseMargin;
+  static final double defaultCollapseMargin = 2.0.s;
+  double get getCollapseMargin => collapseMargin ?? defaultCollapseMargin;
+
+  const _ArrowBase({
+    Key key,
+    this.controller,
+    this.collapseMargin,
+  }) : super(key: key);
+}
+
 class _Arrow extends StatefulWidget {
-  static const Radius radius = Radius.circular(100);
-  static const double arrowSize = 48.0;
-  static const double translationPixels = arrowSize / 2;
-  static const double defaultCollapseMargin = 2;
+  static final Radius radius = Radius.circular(100.s);
+  static final double arrowSize = 48.0.s;
+  static final double translationPixels = arrowSize / 2;
+
   final IconData icon;
   final BorderRadiusGeometry borderRadius;
   final double width, heigth;
