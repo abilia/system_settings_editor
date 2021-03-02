@@ -1,6 +1,6 @@
 export 'show_view_dialog.dart';
 export 'confirm_activity_action.dart';
-export 'license_expired.dart';
+export 'license_error_dialog.dart';
 export 'permission/all.dart';
 export 'view_dialog.dart';
 export 'eye_button_dialog.dart';

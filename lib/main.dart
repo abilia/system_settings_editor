@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:devicelocale/devicelocale.dart';
@@ -44,6 +45,7 @@ void main() async {
 
 Future<String> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (Config.isMP) await SystemChrome.setEnabledSystemUIOverlays([]);
   await Firebase.initializeApp();
   FirebaseMessaging.instance
       .isAutoInitEnabled; // Dummy call to make the FirebaseMessaging instance connection initiated. No push will arrive otherwise. Will try to find another way.
