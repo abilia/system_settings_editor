@@ -24,11 +24,11 @@ class IconAndTextButton extends StatelessWidget {
       data: text,
       child: FlatButton.icon(
         padding: EdgeInsets.only(
-          left: 10,
-          right: 20,
+          left: 10.s,
+          right: 20.s,
         ),
-        minWidth: minWidth,
-        height: height,
+        minWidth: minWidth.s,
+        height: height.s,
         icon: IconTheme(
           data: theme.iconTheme,
           child: Icon(icon),

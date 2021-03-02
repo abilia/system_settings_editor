@@ -178,7 +178,7 @@ class SelectedImageWidget extends StatelessWidget {
                 decoration: whiteNoBorderBoxDecoration,
                 width: innerSize,
                 height: innerSize,
-                child: const Icon(
+                child: Icon(
                   AbiliaIcons.add_photo,
                   size: defaultIconSize,
                   color: AbiliaColors.black75,

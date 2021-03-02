@@ -39,7 +39,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
               groupValue: infoItemType,
               onChanged: setSelectedType,
               value: NoInfoItem,
-              leading: const Icon(
+              leading: Icon(
                 AbiliaIcons.information,
                 size: smallIconSize,
               ),

@@ -2,22 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
 class ActionButton extends StatelessWidget {
-  static const size = 48.0;
+  static final size = 48.0.s;
   const ActionButton({
     Key key,
     @required this.child,
     @required this.onPressed,
-    this.width = size,
-    this.height = size,
     this.themeData,
-    this.padding = const EdgeInsets.all(8),
   }) : super(key: key);
 
   final ThemeData themeData;
   final Widget child;
   final VoidCallback onPressed;
-  final double width, height;
-  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +21,8 @@ class ActionButton extends StatelessWidget {
       data: theme,
       child: Builder(
         builder: (context) => SizedBox(
-          width: width,
-          height: height,
+          width: size,
+          height: size,
           child: FlatButton(
             color: theme.buttonColor,
             shape: onPressed != null
@@ -35,7 +30,7 @@ class ActionButton extends StatelessWidget {
                 : transparentOutlineInputBorder,
             disabledTextColor: theme.disabledColor,
             highlightColor: theme.highlightColor,
-            padding: padding,
+            padding: EdgeInsets.all(8.s),
             textColor: theme.textTheme.button.color,
             child: child,
             onPressed: onPressed,

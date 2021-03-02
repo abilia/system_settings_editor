@@ -22,14 +22,14 @@ class AppBarHeading extends StatelessWidget {
         child: DefaultTextStyle(
           style: abiliaTextTheme.headline5.copyWith(
             color: AbiliaColors.white,
-            fontSize: 22.0,
+            fontSize: 22.0.s,
           ),
           child: Row(
             children: [
               const Spacer(flex: 100),
               if (iconData != null) ...[
                 Icon(iconData),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.s),
               ],
               Text(text),
               const Spacer(flex: 114),

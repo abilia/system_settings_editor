@@ -49,26 +49,26 @@ class _LoginFormState extends State<LoginForm> {
               errorState && (loginState as LoginFailure).licenseError;
           return Form(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   padding56,
                   Center(
                     child: SizedBox(
-                      width: 64.0,
-                      height: 64.0,
+                      width: 64.0.s,
+                      height: 64.0.s,
                       child: loginState is LoginLoading
-                          ? const CircularProgressIndicator(
+                          ? CircularProgressIndicator(
                               valueColor:
                                   AlwaysStoppedAnimation(AbiliaColors.red),
-                              strokeWidth: 6.0,
+                              strokeWidth: 6.0.s,
                             )
                           : GestureDetector(
                               key: TestKey.loginLogo,
                               child: FadeInImage(
                                 fadeInDuration:
-                                    const Duration(milliseconds: 100),
+                                    const Duration(milliseconds: 50),
                                 fadeInCurve: Curves.linear,
                                 placeholder: MemoryImage(kTransparentImage),
                                 image: AssetImage(
@@ -98,18 +98,21 @@ class _LoginFormState extends State<LoginForm> {
                     obscureText: formState.hidePassword,
                     errorState: credentialsError,
                   ),
-                  padding32,
-                  Tts(
-                    key: TestKey.loginHint,
-                    child: Text(
-                      translate.loginHint,
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.bodyText1
-                          .copyWith(color: AbiliaColors.black75),
+                  if (Config.isMPGO) ...[
+                    padding32,
+                    Tts(
+                      key: TestKey.loginHint,
+                      child: Text(
+                        translate.loginHint,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyText1
+                            .copyWith(color: AbiliaColors.black75),
+                      ),
                     ),
-                  ),
-                  padding16,
-                  if (errorState && !licenseError)
+                    padding16,
+                  ] else
+                    const Spacer(flex: 92),
+                  if (errorState && !licenseError) ...[
                     ErrorMessage(
                       key: TestKey.loginError,
                       text: Text(
@@ -118,9 +121,11 @@ class _LoginFormState extends State<LoginForm> {
                             .message(translate),
                       ),
                     ),
-                  flexPadding(errorState),
+                    const Spacer(flex: 95),
+                  ] else
+                    const Spacer(flex: 191),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16.s),
                     child: Theme(
                       data: redButtonTheme,
                       child: Tts(
@@ -149,7 +154,7 @@ class _LoginFormState extends State<LoginForm> {
                       children: [
                         BackendSwitches(),
                         const Center(child: Version()),
-                        const SizedBox(height: 4.0),
+                        SizedBox(height: 4.0.s),
                       ],
                     ),
                   ),
@@ -162,12 +167,9 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  SizedBox get padding8 => const SizedBox(height: 8.0);
   Spacer get padding16 => const Spacer(flex: 16);
   Spacer get padding32 => const Spacer(flex: 32);
   Spacer get padding56 => const Spacer(flex: 56);
-  Spacer flexPadding(bool errorState) =>
-      errorState ? const Spacer(flex: 95) : const Spacer(flex: 191);
 
   @override
   void dispose() {

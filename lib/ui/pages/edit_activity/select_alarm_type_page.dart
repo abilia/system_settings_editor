@@ -55,7 +55,7 @@ class _SelectAlarmTypePage extends StatelessWidget {
                 .map((widget) => widget is Divider
                     ? widget
                     : Padding(
-                        padding: const EdgeInsets.only(
+                        padding: EdgeInsets.only(
                           left: leftPadding,
                           right: rightPadding,
                           bottom: 8.0,
