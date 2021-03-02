@@ -68,7 +68,7 @@ class QuestionView extends StatelessWidget {
   }) : super(key: key);
 
   static const duration = Duration(milliseconds: 400);
-  static const padding = EdgeInsets.only(bottom: 6.0);
+  static final padding = EdgeInsets.only(bottom: 6.0.s);
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +120,7 @@ class QuestionView extends StatelessWidget {
                           ),
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(6.0, 4.0, 0.0, 4.0),
+                                EdgeInsets.fromLTRB(6.0.s, 4.0.s, 0.0, 4.0.s),
                             child: AnimatedOpacity(
                               duration: duration,
                               opacity: signedOff ? 0.5 : 1.0,
@@ -129,8 +129,8 @@ class QuestionView extends StatelessWidget {
                                 imageFileId: question.fileId,
                                 imageFilePath: question.image,
                                 imageFile: tempImageFile,
-                                width: 40,
-                                height: 40,
+                                width: 40.s,
+                                height: 40.s,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -140,7 +140,7 @@ class QuestionView extends StatelessWidget {
                         Expanded(
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(8.0, 10.0, 0.0, 10.0),
+                                EdgeInsets.fromLTRB(8.0.s, 10.0.s, 0.0, 10.0.s),
                             child: Text(
                               question.name,
                               overflow: TextOverflow.fade,
@@ -157,7 +157,7 @@ class QuestionView extends StatelessWidget {
                             .copyWith(size: smallIconSize),
                         child: Padding(
                           padding:
-                              const EdgeInsets.fromLTRB(0.0, 12.0, 12.0, 12.0),
+                              EdgeInsets.fromLTRB(0.0, 12.0.s, 12.0.s, 12.0.s),
                           child: AnimatedCrossFade(
                             firstChild: Icon(
                               AbiliaIcons.checkbox_selected,

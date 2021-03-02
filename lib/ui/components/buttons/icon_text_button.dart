@@ -8,14 +8,16 @@ class IconAndTextButton extends StatelessWidget {
   final double minWidth;
   final double height;
 
+  static final defaultMinWidth = 172.s, defaultHeight = 64.s;
+
   const IconAndTextButton({
     Key key,
     @required this.text,
     @required this.icon,
     @required this.theme,
     @required this.onPressed,
-    this.minWidth = 172,
-    this.height = 64,
+    this.minWidth,
+    this.height,
   }) : super(key: key);
 
   @override
@@ -27,8 +29,8 @@ class IconAndTextButton extends StatelessWidget {
           left: 10.s,
           right: 20.s,
         ),
-        minWidth: minWidth.s,
-        height: height.s,
+        minWidth: minWidth ?? defaultMinWidth,
+        height: height ?? defaultHeight,
         icon: IconTheme(
           data: theme.iconTheme,
           child: Icon(icon),

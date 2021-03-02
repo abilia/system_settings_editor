@@ -30,7 +30,7 @@ class AlarmPage extends StatelessWidget {
         iconData: AbiliaIcons.alarm_bell,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(ActivityInfo.margin),
+        padding: EdgeInsets.all(ActivityInfo.margin),
         child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
           builder: (context, activitiesState) => ActivityInfo(
             alarm.activityDay.fromActivitiesState(activitiesState),
