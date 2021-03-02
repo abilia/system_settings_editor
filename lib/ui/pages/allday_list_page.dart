@@ -25,7 +25,7 @@ class AllDayList extends StatelessWidget {
                 child: ListView.builder(
                   itemExtent:
                       ActivityCard.cardHeight + ActivityCard.cardMarginSmall,
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(12.s),
                   itemCount: state.fullDayActivities.length,
                   itemBuilder: (context, index) => ActivityCard(
                     activityOccasion: state.fullDayActivities[index],
