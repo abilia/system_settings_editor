@@ -67,7 +67,7 @@ class SwitchField extends StatelessWidget {
                       ),
                   ],
                 ),
-                Container(
+                SizedBox(
                   height: 48.s,
                   child: FittedBox(
                     child: switchToggle,
