@@ -10,14 +10,12 @@ class LongPressInfoDialog extends StatelessWidget {
     return Theme(
       data: theme,
       child: ViewDialog(
-        bodyPadding: EdgeInsets.symmetric(horizontal: 20),
+        bodyPadding: EdgeInsets.symmetric(horizontal: 20.s),
         expanded: true,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Spacer(
-              flex: 128,
-            ),
+            Spacer(flex: 128),
             Stack(children: [
               buildPreviewActivityCard(translate),
               Align(
@@ -28,9 +26,7 @@ class LongPressInfoDialog extends StatelessWidget {
                 ),
               ),
             ]),
-            Spacer(
-              flex: 80,
-            ),
+            Spacer(flex: 80),
             Tts(
               child: Text(
                 translate.longpressToSpeak,
@@ -47,9 +43,7 @@ class LongPressInfoDialog extends StatelessWidget {
                 ),
               ),
             ),
-            Spacer(
-              flex: 111,
-            ),
+            Spacer(flex: 111),
           ],
         ),
         backNavigationWidget: CloseButton(
@@ -61,7 +55,7 @@ class LongPressInfoDialog extends StatelessWidget {
 
   Widget buildPreviewActivityCard(Translated translate) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: EdgeInsets.symmetric(horizontal: 8.0.s),
       child: ActivityCard(
         activityOccasion: ActivityOccasion(
           Activity.createNew(
