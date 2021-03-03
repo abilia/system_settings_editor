@@ -177,7 +177,7 @@ class _TimeInputPageState extends State<TimeInputPage>
                   textTheme: theme.textTheme
                       .copyWith(subtitle1: abiliaTextTheme.headline4)),
               child: Padding(
-                padding: const EdgeInsets.only(top: 64.0),
+                padding: EdgeInsets.only(top: 64.0.s),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -205,15 +205,12 @@ class _TimeInputPageState extends State<TimeInputPage>
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(height: 28.s),
                           SizedBox(
-                            height: 28,
-                          ),
-                          SizedBox(
-                            height: 64,
+                            height: 64.s,
                             child: Center(
                                 child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: EdgeInsets.symmetric(horizontal: 16.0.s),
                               child: Text(
                                 '—',
                                 style: abiliaTextTheme.headline5,
@@ -293,7 +290,7 @@ class _TimeInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(heading),
-          const SizedBox(height: 8.0),
+          SizedBox(height: 8.0.s),
           _TimeInputStack(
             inputKey: inputKey,
             editingController: controller,
@@ -302,7 +299,7 @@ class _TimeInput extends StatelessWidget {
             onTimeChanged: onTimeChanged,
             onDone: onDone,
           ),
-          const SizedBox(height: 8.0),
+          SizedBox(height: 8.0.s),
           if (twelveHourClock)
             AmPmSelector(
               amRadioFieldKey: amRadioFieldKey,
@@ -369,8 +366,8 @@ class _TimeInputStackState extends State<_TimeInputStack> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
-      height: 64,
+      width: 120.s,
+      height: 64.s,
       child: Stack(
         children: [
           TextField(
@@ -410,7 +407,7 @@ class _TimeInputStackState extends State<_TimeInputStack> {
                   borderRadius: borderRadius,
                   borderSide: BorderSide(
                     color: editFocus.hasFocus ? Colors.black : Colors.grey,
-                    width: 2,
+                    width: 2.s,
                   ),
                 ),
               ),
@@ -566,9 +563,7 @@ class AmPmSelector extends StatelessWidget {
           value: DayPeriod.am,
           borderRadius: borderRadiusLeft,
         ),
-        SizedBox(
-          width: 2,
-        ),
+        SizedBox(width: 2.s),
         _AmPmButton(
           buttonKey: pmRadioFieldKey,
           text: Translator.of(context).translate.pm,
@@ -601,8 +596,8 @@ class _AmPmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = 59.0;
-    final height = 48.0;
+    final width = 59.0.s;
+    final height = 48.0.s;
     final isSelected = value == groupValue;
     return Tts(
       data: text,

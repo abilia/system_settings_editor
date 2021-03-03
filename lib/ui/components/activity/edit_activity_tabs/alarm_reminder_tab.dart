@@ -29,7 +29,7 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
                 SubHeading(Translator.of(context).translate.reminders),
                 ReminderSwitch(activity: activity),
                 CollapsableWidget(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: EdgeInsets.only(top: 8.0.s),
                   collapsed:
                       activity.fullDay || activity.reminderBefore.isEmpty,
                   child: Reminders(activity: activity),

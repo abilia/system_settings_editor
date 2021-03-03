@@ -99,8 +99,8 @@ class NextButton extends StatelessWidget {
   Widget build(BuildContext context) => Tts(
         data: Translator.of(context).translate.next,
         child: FlatButton(
-          minWidth: 172.0,
-          height: 64,
+          minWidth: IconAndTextButton.defaultMinWidth,
+          height: IconAndTextButton.defaultHeight,
           child: Row(
             children: [
               const Spacer(flex: 63),

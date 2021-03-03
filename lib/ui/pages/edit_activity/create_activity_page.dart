@@ -29,7 +29,7 @@ class _CreateActivityPageState extends State<CreateActivityPage>
         iconData: AbiliaIcons.plus,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
+        padding: EdgeInsets.symmetric(vertical: 24.0.s, horizontal: 16.0.s),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -41,7 +41,7 @@ class _CreateActivityPageState extends State<CreateActivityPage>
               groupValue: pickBasicActivityView,
               onChanged: (v) => setState(() => pickBasicActivityView = v),
             ),
-            SizedBox(height: 8.0),
+            SizedBox(height: 8.0.s),
             RadioField(
               key: TestKey.basicActivityChoice,
               leading: Icon(AbiliaIcons.folder),

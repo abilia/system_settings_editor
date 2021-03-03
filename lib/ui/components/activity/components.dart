@@ -39,7 +39,7 @@ class LinedBorder extends StatelessWidget {
   const LinedBorder({
     Key key,
     @required this.child,
-    this.padding = const EdgeInsets.all(8),
+    this.padding,
     this.onTap,
     this.errorState = false,
   }) : super(key: key);
@@ -57,7 +57,8 @@ class LinedBorder extends StatelessWidget {
                 child: child,
               )
             : DottedBorder(
-                dashPattern: [4, 4],
+                dashPattern: [4.s, 4.s],
+                strokeWidth: 1.0.s,
                 borderType: BorderType.RRect,
                 color: AbiliaColors.white140,
                 radius: radius,
@@ -81,6 +82,7 @@ class PickField extends StatelessWidget {
   final double heigth;
   final bool errorState;
   final String semanticsLabel;
+  static final defaultHeigth = 56.s;
 
   const PickField({
     @required this.text,
@@ -88,7 +90,7 @@ class PickField extends StatelessWidget {
     this.leading,
     this.trailing,
     this.onTap,
-    this.heigth = 56,
+    this.heigth,
     this.errorState = false,
     this.semanticsLabel,
   }) : super(key: key);
@@ -105,13 +107,13 @@ class PickField extends StatelessWidget {
           onTap: onTap,
           borderRadius: borderRadius,
           child: Ink(
-            height: heigth,
+            height: heigth ?? defaultHeigth,
             decoration: errorState
                 ? whiteErrorBoxDecoration
                 : onTap == null
                     ? disabledBoxDecoration
                     : whiteBoxDecoration,
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12.s),
             child: Stack(
               children: <Widget>[
                 Center(
@@ -124,7 +126,7 @@ class PickField extends StatelessWidget {
                               .copyWith(size: smallIconSize),
                           child: leading,
                         ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12.s),
                       if (text != null)
                         DefaultTextStyle(
                           style:
@@ -319,12 +321,13 @@ class SelectableField extends StatelessWidget {
   final bool selected;
   final GestureTapCallback onTap;
 
+  static final defaultHeigth = 48.s;
   const SelectableField({
     Key key,
     @required this.selected,
     @required this.onTap,
     @required this.text,
-    this.heigth = 48,
+    this.heigth,
     this.width,
   }) : super(key: key);
 
@@ -347,26 +350,26 @@ class SelectableField extends StatelessWidget {
             overflow: Overflow.visible,
             children: <Widget>[
               Ink(
-                height: heigth,
+                height: heigth ?? defaultHeigth,
                 width: width,
                 decoration: decoration,
                 padding: EdgeInsets.fromLTRB(
-                        12.0, 10.0, 26.0, decoration.border.bottom.width)
+                        12.0.s, 10.0.s, 26.0.s, decoration.border.bottom.width)
                     .subtract(decoration.border.dimensions),
                 child: text,
               ),
               Positioned(
-                top: -6,
-                right: -6,
+                top: -6.s,
+                right: -6.s,
                 child: Container(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: EdgeInsets.all(4.0.s),
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     shape: BoxShape.circle,
                   ),
                   child: SizedBox(
-                    width: 24,
-                    height: 24,
+                    width: 24.s,
+                    height: 24.s,
                     child: AnimatedSwitcher(
                       duration: 300.milliseconds(),
                       transitionBuilder: (child, animation) =>
