@@ -83,10 +83,13 @@ class ActivityImage extends StatelessWidget {
               width: size,
               child: ClipRRect(
                 borderRadius: borderRadius,
-                child: FadeInImage(
-                  fit: fit,
-                  image: image.image,
-                  placeholder: MemoryImage(kTransparentImage),
+                child: Container(
+                  color: AbiliaColors.white,
+                  child: FadeInImage(
+                    fit: fit,
+                    image: image.image,
+                    placeholder: MemoryImage(kTransparentImage),
+                  ),
                 ),
               ),
             ),
@@ -166,6 +169,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
         activityDay: activityDay,
         imageSize: ImageSize.ORIGINAL,
         size: size,
+        fit: BoxFit.contain,
       ),
     );
   }
