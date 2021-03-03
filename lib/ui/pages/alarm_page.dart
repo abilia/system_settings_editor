@@ -184,6 +184,7 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
     return Theme(
       data: bottomNavigationBarTheme,
       child: BottomAppBar(
+        elevation: 0.0,
         child: Container(
           color: AbiliaColors.black80,
           child: Padding(
