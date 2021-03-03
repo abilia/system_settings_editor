@@ -155,6 +155,9 @@ class RadioField<T> extends StatelessWidget {
   final T value, groupValue;
   final ValueChanged<T> onChanged;
   final EdgeInsetsGeometry margin;
+  static final defaultHeight = 56.s;
+  static final defaultMargin =
+      EdgeInsets.symmetric(horizontal: 12.0.s, vertical: 16.0.s);
 
   const RadioField({
     Key key,
@@ -164,15 +167,16 @@ class RadioField<T> extends StatelessWidget {
     this.leading,
     this.trailing,
     this.text,
-    this.heigth = 56,
+    this.heigth,
     this.width,
-    this.margin = const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+    this.margin,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final decoration = selectedBoxDecoration(value == groupValue);
-    final left = margin.resolve(text.textDirection).left;
+    final marginToUse = margin ?? defaultMargin;
+    final left = marginToUse.resolve(text.textDirection).left;
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data,
@@ -189,10 +193,10 @@ class RadioField<T> extends StatelessWidget {
             overflow: Overflow.visible,
             children: <Widget>[
               Ink(
-                height: heigth,
+                height: heigth ?? defaultHeight,
                 width: width,
                 decoration: decoration,
-                padding: margin.subtract(decoration.border.dimensions),
+                padding: marginToUse.subtract(decoration.border.dimensions),
                 child: Row(
                   children: [
                     if (leading != null) ...[
@@ -247,17 +251,17 @@ class PositionedRadio<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: -6,
-      right: -6,
+      top: -6.s,
+      right: -6.s,
       child: Container(
-        padding: const EdgeInsets.all(4.0),
+        padding: EdgeInsets.all(4.0.s),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           shape: BoxShape.circle,
         ),
         child: SizedBox(
-          width: 24,
-          height: 24,
+          width: 24.s,
+          height: 24.s,
           child: AbiliaRadio(
             key: radioKey,
             value: value,
@@ -400,7 +404,9 @@ class SelectableField extends StatelessWidget {
 }
 
 class AbiliaRadio<T> extends StatefulWidget {
-  const AbiliaRadio({
+  static final defaultOuterRadius = 11.5.s;
+  static final defaultInnerRadius = 8.5.s;
+  AbiliaRadio({
     Key key,
     @required this.value,
     @required this.groupValue,
@@ -412,8 +418,8 @@ class AbiliaRadio<T> extends StatefulWidget {
     this.visualDensity,
     this.focusNode,
     this.autofocus = false,
-    this.outerRadius = 11.5,
-    this.innerRadius = 8.5,
+    this.outerRadius,
+    this.innerRadius,
   })  : assert(autofocus != null),
         super(key: key);
 
@@ -490,8 +496,8 @@ class _AbiliaRadioState<T> extends State<AbiliaRadio<T>>
     Size size;
     switch (widget.materialTapTargetSize ?? themeData.materialTapTargetSize) {
       case MaterialTapTargetSize.padded:
-        size = const Size(
-            2 * kRadialReactionRadius + 8.0, 2 * kRadialReactionRadius + 8.0);
+        size = Size(2 * kRadialReactionRadius + 8.0.s,
+            2 * kRadialReactionRadius + 8.0.s);
         break;
       case MaterialTapTargetSize.shrinkWrap:
         size = const Size(2 * kRadialReactionRadius, 2 * kRadialReactionRadius);
@@ -520,8 +526,8 @@ class _AbiliaRadioState<T> extends State<AbiliaRadio<T>>
             vsync: this,
             hasFocus: _focused,
             hovering: _hovering,
-            innerRadius: widget.innerRadius,
-            outerRadius: widget.outerRadius,
+            innerRadius: widget.innerRadius ?? AbiliaRadio.defaultInnerRadius,
+            outerRadius: widget.outerRadius ?? AbiliaRadio.defaultOuterRadius,
           );
         },
       ),
@@ -660,7 +666,7 @@ class _RenderRadio extends RenderToggleable {
     final paint = Paint()
       ..color = Color.lerp(inactiveColor, radioColor, position.value)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = lerpDouble(1.0, 2.0, position.value);
+      ..strokeWidth = lerpDouble(1.0.s, 2.0.s, position.value);
     canvas.drawCircle(center, outerRadius, paint);
 
     // Inner circle

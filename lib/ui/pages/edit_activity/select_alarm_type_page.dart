@@ -27,7 +27,7 @@ class _SelectAlarmTypePage extends StatelessWidget {
       ),
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         builder: (context, memoSettingsState) => Padding(
-          padding: const EdgeInsets.only(top: 24.0),
+          padding: EdgeInsets.only(top: 24.0.s),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -58,7 +58,7 @@ class _SelectAlarmTypePage extends StatelessWidget {
                         padding: EdgeInsets.only(
                           left: leftPadding,
                           right: rightPadding,
-                          bottom: 8.0,
+                          bottom: 8.0.s,
                         ),
                         child: widget,
                       ))
@@ -127,7 +127,7 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
       trailing: [
         const SizedBox(),
         const Divider(),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.s),
         AlarmOnlyAtStartSwitch(
           alarm: alarm,
           onChanged: _changeStartTime,

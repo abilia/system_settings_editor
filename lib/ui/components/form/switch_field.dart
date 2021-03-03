@@ -8,13 +8,14 @@ class SwitchField extends StatelessWidget {
   final double heigth, width;
   final bool value;
   final Decoration decoration;
+  static final defaultHeight = 56.s;
 
   const SwitchField({
     Key key,
     @required this.text,
     this.onChanged,
     this.leading,
-    this.heigth = 56,
+    this.heigth,
     this.width,
     this.value = false,
     this.decoration,
@@ -40,12 +41,12 @@ class SwitchField extends StatelessWidget {
               onChanged != null ? () => onChanged(!switchToggle.value) : null,
           borderRadius: borderRadius,
           child: Container(
-            height: heigth,
+            height: heigth ?? defaultHeight,
             width: width,
             decoration: onChanged == null
                 ? boxDecoration
                 : decoration ?? whiteBoxDecoration,
-            padding: const EdgeInsets.only(left: 12.0, right: 4.0),
+            padding: EdgeInsets.only(left: 12.0.s, right: 4.0.s),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -57,7 +58,7 @@ class SwitchField extends StatelessWidget {
                               .iconTheme
                               .copyWith(size: smallIconSize),
                           child: leading),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12.s),
                     ],
                     if (text != null)
                       DefaultTextStyle(
@@ -66,7 +67,12 @@ class SwitchField extends StatelessWidget {
                       ),
                   ],
                 ),
-                switchToggle,
+                SizedBox(
+                  height: 48.s,
+                  child: FittedBox(
+                    child: switchToggle,
+                  ),
+                ),
               ],
             ),
           ),
