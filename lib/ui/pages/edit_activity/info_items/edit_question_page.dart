@@ -47,14 +47,14 @@ class _EditQuestionPageState extends State<EditQuestionPage> {
         title: translate.task,
         trailing: widget.question != null
             ? Padding(
-                padding: const EdgeInsets.only(right: 12.0),
+                padding: EdgeInsets.only(right: 12.0.s),
                 child: RemoveButton(
                   onTap: () =>
                       Navigator.of(context).maybePop(QuestionResult.empty),
                   icon: Icon(
                     AbiliaIcons.delete_all_clear,
                     color: AbiliaColors.white,
-                    size: 24,
+                    size: 24.s,
                   ),
                   text: translate.remove,
                 ),
@@ -62,7 +62,7 @@ class _EditQuestionPageState extends State<EditQuestionPage> {
             : null,
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(12.0, 24.0, 16.0, 0.0),
+        padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
         child: Column(
           children: <Widget>[
             Row(
@@ -83,7 +83,7 @@ class _EditQuestionPageState extends State<EditQuestionPage> {
                   ),
                   errorState: false,
                 ),
-                const SizedBox(width: 16.0),
+                SizedBox(width: 16.0.s),
                 Expanded(
                   child: Tts.fromSemantics(
                     SemanticsProperties(label: heading),

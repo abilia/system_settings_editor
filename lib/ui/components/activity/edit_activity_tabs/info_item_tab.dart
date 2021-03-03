@@ -125,7 +125,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
             )
           ],
         ),
-        const SizedBox(height: 16.0),
+        SizedBox(height: 16.0.s),
         Expanded(
           child: GestureDetector(
             child: Container(
@@ -304,7 +304,7 @@ class EditNoteWidget extends StatelessWidget {
             )
           ],
         ),
-        const SizedBox(height: 16.0),
+        SizedBox(height: 16.0.s),
         Expanded(
           child: GestureDetector(
             onTap: () => editText(context, activity, infoItem),
@@ -367,7 +367,7 @@ class _LibraryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12.0, 4.0, 4.0, 4.0),
+      padding: EdgeInsets.fromLTRB(12.0.s, 4.0.s, 4.0.s, 4.0.s),
       child: ActionButton(
         child: Icon(
           AbiliaIcons.show_text,
