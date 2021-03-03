@@ -14,14 +14,12 @@ class PermissionsPage extends StatelessWidget {
         iconData: AbiliaIcons.menu_setup,
       ),
       body: BlocBuilder<PermissionBloc, PermissionState>(
-        builder: (context, state) => Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 0),
-          child: ListView(
-            children: state.status.entries
-                .map((e) => PermissionSetting(e))
-                .expand((e) => [e, const SizedBox(height: 8.0)])
-                .toList(),
-          ),
+        builder: (context, state) => ListView(
+          padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 0),
+          children: state.status.entries
+              .map((e) => PermissionSetting(e))
+              .expand((e) => [e, SizedBox(height: 8.0.s)])
+              .toList(),
         ),
       ),
       bottomNavigationBar: BottomNavigation(
@@ -122,18 +120,18 @@ class NotificationPermissionSwitch extends StatelessWidget {
             ),
             if (denied)
               Positioned(
-                right: -10,
-                top: -10,
+                right: -10.s,
+                top: -10.s,
                 child: Container(
-                  width: 32,
-                  height: 32,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  width: 32.s,
+                  height: 32.s,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(16.s)),
                     color: AbiliaColors.orange40,
                   ),
                   child: Icon(
                     AbiliaIcons.ir_error,
-                    size: 20.0,
+                    size: 20.0.s,
                   ),
                 ),
               ),
@@ -141,7 +139,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
         ),
         if (denied)
           Padding(
-            padding: const EdgeInsets.only(top: 4.0),
+            padding: EdgeInsets.only(top: 4.0.s),
             child: ErrorMessage(
               text: Text(translate.notificationsWarningHintText),
             ),
@@ -196,18 +194,18 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                   ),
                   if (denied)
                     Positioned(
-                      right: -10,
-                      top: -10,
+                      right: -10.s,
+                      top: -10.s,
                       child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        width: 32.s,
+                        height: 32.s,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(16.s)),
                           color: AbiliaColors.orange40,
                         ),
                         child: Icon(
                           AbiliaIcons.ir_error,
-                          size: 20.0,
+                          size: 20.0.s,
                         ),
                       ),
                     ),
@@ -215,7 +213,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 8.0),
+              padding: EdgeInsets.only(left: 8.0.s),
               child: InfoButton(
                 onTap: () => showViewDialog(
                   context: context,
@@ -227,7 +225,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
         ),
         if (denied) ...[
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            padding: EdgeInsets.symmetric(vertical: 4.0.s),
             child: ErrorMessage(
               text: Text(translate.notificationsWarningHintText),
             ),

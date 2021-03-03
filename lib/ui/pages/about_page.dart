@@ -21,36 +21,36 @@ class AboutPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ...[
-              const SizedBox(height: 24.0),
+              SizedBox(height: 24.0.s),
               Text(
                 translate.version,
                 style:
                     textTheme.bodyText2.copyWith(color: AbiliaColors.black75),
               ),
-              const SizedBox(height: 8.0),
+              SizedBox(height: 8.0.s),
               DefaultTextStyle(
                 style: textTheme.headline6,
                 child: Version(),
               ),
-              const Divider(height: 32.0),
-              const SizedBox(height: 8.0),
+              Divider(height: 32.0.s),
+              SizedBox(height: 8.0.s),
               Text(
                 translate.producer,
                 style:
                     textTheme.bodyText2.copyWith(color: AbiliaColors.black75),
               ),
-              const SizedBox(height: 8.0),
+              SizedBox(height: 8.0.s),
               Text(
                 'Abilia AB',
                 style: textTheme.headline6,
               ),
-              const SizedBox(height: 24.0),
+              SizedBox(height: 24.0.s),
               Text('Råsundavägen 6, 169 67 Solna, Sweden'),
-              const SizedBox(height: 8.0),
+              SizedBox(height: 8.0.s),
               Text('+46 (0)8- 594 694 00\n'
                   'info@abilia.com\n'
                   'www.abilia.com'),
-              const SizedBox(height: 32.0),
+              SizedBox(height: 32.0.s),
               Text(
                 'This product is developed in accordance with and complies to '
                 'all necessary requirements, regulations and directives for '
@@ -72,7 +72,7 @@ class AboutPage extends StatelessWidget {
   Widget _addPadding(Widget widget) => widget is Divider
       ? widget
       : Padding(
-          padding: const EdgeInsets.only(left: 12.0, right: 16.0),
+          padding: EdgeInsets.only(left: 12.0.s, right: 16.0.s),
           child: widget,
         );
 }

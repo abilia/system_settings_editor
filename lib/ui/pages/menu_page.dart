@@ -21,10 +21,10 @@ class MenuPage extends StatelessWidget {
         iconData: AbiliaIcons.app_menu,
       ),
       body: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(12.0, 20.0, 16.0, 20.0),
+        padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
         itemBuilder: (context, i) => widgets[i],
         itemCount: widgets.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 8.0),
+        separatorBuilder: (context, index) => SizedBox(height: 8.0.s),
       ),
       bottomNavigationBar: const BottomNavigation(
         backNavigationWidget: CloseButton(),
@@ -91,7 +91,7 @@ class TextToSpeechSwitch extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 0, 4.0, 0),
+          padding: EdgeInsets.fromLTRB(8.0.s, 0, 4.0.s, 0),
           child: InfoButton(
             onTap: () => showViewDialog(
               useSafeArea: false,
@@ -131,8 +131,8 @@ class PermissionPickField extends StatelessWidget {
             ),
             if (state.importantPermissionMissing)
               Positioned(
-                top: 8.0,
-                right: 8.0,
+                top: 8.0.s,
+                right: 8.0.s,
                 child: OrangeDot(),
               ),
           ],
