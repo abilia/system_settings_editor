@@ -16,7 +16,6 @@ class ActivityImage extends StatelessWidget {
   final ImageSize imageSize;
   final File imageFile;
   final BoxFit fit;
-  final Widget checkmark;
   final double size;
   static const duration = Duration(milliseconds: 400);
   static const crossPadding = 8.0;
@@ -29,10 +28,7 @@ class ActivityImage extends StatelessWidget {
     this.imageSize = ImageSize.THUMB,
     this.imageFile,
     this.fit = BoxFit.cover,
-  })  : checkmark = size != null && size < 100
-            ? const CheckMarkWithBorder()
-            : const CheckMark(),
-        super(key: key);
+  });
 
   static ActivityImage fromActivityOccasion({
     Key key,
@@ -105,7 +101,7 @@ class ActivityImage extends StatelessWidget {
                   : AnimatedOpacity(
                       opacity: signedOff ? 1.0 : 0.0,
                       duration: duration,
-                      child: checkmark,
+                      child: CheckMark(),
                     ),
             ),
           ),
