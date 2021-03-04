@@ -54,8 +54,7 @@ class ArrowLeft extends _ArrowBase {
           heigth: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels - getCollapseMargin >
-              sc.position.minScrollExtent,
+              sc.position.extentBefore > getCollapseMargin,
         ),
       );
 }
@@ -78,8 +77,7 @@ class ArrowUp extends _ArrowBase {
           width: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels - getCollapseMargin >
-              sc.position.minScrollExtent,
+              sc.position.extentBefore > getCollapseMargin,
         ),
       );
 }
@@ -102,8 +100,7 @@ class ArrowRight extends _ArrowBase {
           heigth: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels + getCollapseMargin <
-              sc.position.maxScrollExtent,
+              sc.position.extentAfter > getCollapseMargin,
         ),
       );
 }
@@ -126,8 +123,7 @@ class ArrowDown extends _ArrowBase {
           width: _Arrow.arrowSize,
           controller: controller,
           conditionFunction: (sc) =>
-              sc.position.pixels + getCollapseMargin <
-              sc.position.maxScrollExtent,
+              sc.position.extentAfter > getCollapseMargin,
         ),
       );
 }
@@ -178,7 +174,6 @@ class _ArrowState extends State<_Arrow> {
   @override
   void initState() {
     widget.controller.addListener(listener);
-    WidgetsBinding.instance.addPostFrameCallback((_) => listener());
     super.initState();
   }
 
@@ -190,11 +185,7 @@ class _ArrowState extends State<_Arrow> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.controller.hasClients &&
-        widget.controller.position.haveDimensions &&
-        condition != widget.conditionFunction(widget.controller)) {
-      condition = widget.conditionFunction(widget.controller);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) => listener());
     return ClipRect(
       child: AnimatedContainer(
         transform: condition ? widget.translation : widget.hiddenTranslation,
@@ -220,6 +211,7 @@ class _ArrowState extends State<_Arrow> {
 
   void listener() {
     if (widget.controller.hasClients &&
+        widget.controller.position.haveDimensions &&
         widget.conditionFunction(widget.controller) != condition) {
       setState(() => condition = !condition);
     }

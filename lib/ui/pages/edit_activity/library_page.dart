@@ -133,11 +133,25 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   }
 }
 
-class SortableLibrary<T extends SortableData> extends StatelessWidget {
+class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
 
-  const SortableLibrary(this.libraryItemGenerator, this.emptyLibraryMessage);
+  SortableLibrary(this.libraryItemGenerator, this.emptyLibraryMessage);
+
+  @override
+  _SortableLibraryState<T> createState() => _SortableLibraryState<T>();
+}
+
+class _SortableLibraryState<T extends SortableData>
+    extends State<SortableLibrary<T>> {
+  ScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,44 +162,48 @@ class SortableLibrary<T extends SortableData> extends StatelessWidget {
         currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
         if (currentFolderContent.isEmpty) {
           return EmptyLibraryMessage(
-            emptyLibraryMessage: emptyLibraryMessage,
+            emptyLibraryMessage: widget.emptyLibraryMessage,
             rootFolder: archiveState.isAtRoot,
           );
         }
-        return GridView.count(
-          padding: EdgeInsets.only(
-            top: verticalPadding,
-            left: leftPadding,
-            right: rightPadding,
-          ),
-          mainAxisSpacing: 8.0,
-          crossAxisSpacing: 8.0,
-          crossAxisCount: 3,
-          childAspectRatio: 0.96,
-          children: currentFolderContent
-              .map(
-                (sortable) => sortable.isGroup
-                    ? LibraryFolder(
-                        title: sortable.data.title(),
-                        fileId: sortable.data.folderFileId(),
-                        filePath: sortable.data.folderFilePath(),
-                        onTap: () {
-                          BlocProvider.of<SortableArchiveBloc<T>>(context)
-                              .add(FolderChanged(sortable.id));
-                        },
-                      )
-                    : Material(
-                        type: MaterialType.transparency,
-                        child: InkWell(
-                          onTap: () =>
-                              BlocProvider.of<SortableArchiveBloc<T>>(context)
-                                  .add(SortableSelected(sortable)),
-                          borderRadius: borderRadius,
-                          child: libraryItemGenerator(sortable),
+        return VerticalScrollArrows(
+          controller: _controller,
+          child: GridView.count(
+            controller: _controller,
+            padding: EdgeInsets.only(
+              top: verticalPadding,
+              left: leftPadding,
+              right: rightPadding,
+            ),
+            mainAxisSpacing: 8.0,
+            crossAxisSpacing: 8.0,
+            crossAxisCount: 3,
+            childAspectRatio: 0.96,
+            children: currentFolderContent
+                .map(
+                  (sortable) => sortable.isGroup
+                      ? LibraryFolder(
+                          title: sortable.data.title(),
+                          fileId: sortable.data.folderFileId(),
+                          filePath: sortable.data.folderFilePath(),
+                          onTap: () {
+                            BlocProvider.of<SortableArchiveBloc<T>>(context)
+                                .add(FolderChanged(sortable.id));
+                          },
+                        )
+                      : Material(
+                          type: MaterialType.transparency,
+                          child: InkWell(
+                            onTap: () =>
+                                BlocProvider.of<SortableArchiveBloc<T>>(context)
+                                    .add(SortableSelected(sortable)),
+                            borderRadius: borderRadius,
+                            child: widget.libraryItemGenerator(sortable),
+                          ),
                         ),
-                      ),
-              )
-              .toList(),
+                )
+                .toList(),
+          ),
         );
       },
     );

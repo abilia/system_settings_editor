@@ -208,6 +208,7 @@ class ActivityContainer extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(12.s, 0, 12.s, 12.s),
                   child: previewImage ??
                       CheckedImageWithImagePopup(
+                        size: double.infinity,
                         activityDay: activityDay,
                       ),
                 ),

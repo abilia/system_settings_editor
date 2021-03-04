@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:seagull/models/info_item.dart';
 import 'package:seagull/ui/all.dart';
 
-class ChecklistView extends StatelessWidget {
+class ChecklistView extends StatefulWidget {
   final Checklist checklist;
   final DateTime day;
   final Function(Question) onTap;
@@ -26,24 +26,35 @@ class ChecklistView extends StatelessWidget {
   })  : tempImageFiles = UnmodifiableMapView(tempImageFiles),
         super(key: key);
 
-  final ScrollController controller = ScrollController();
+  @override
+  _ChecklistViewState createState() => _ChecklistViewState();
+}
+
+class _ChecklistViewState extends State<ChecklistView> {
+  ScrollController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+  }
 
   @override
   Widget build(BuildContext context) {
     return VerticalScrollArrows(
-      controller: controller,
+      controller: _controller,
       child: ListView.builder(
-        controller: controller,
-        padding: padding,
-        itemCount: checklist.questions.length,
+        controller: _controller,
+        padding: widget.padding,
+        itemCount: widget.checklist.questions.length,
         itemBuilder: (context, i) {
-          final question = checklist.questions[i];
+          final question = widget.checklist.questions[i];
           return QuestionView(
             question,
-            inactive: preview,
-            signedOff: day != null && checklist.isSignedOff(question, day),
-            onTap: onTap != null ? () => onTap(question) : null,
-            tempImageFile: tempImageFiles[question.id],
+            inactive: widget.preview,
+            signedOff: widget.day != null &&
+                widget.checklist.isSignedOff(question, widget.day),
+            onTap: widget.onTap != null ? () => widget.onTap(question) : null,
+            tempImageFile: widget.tempImageFiles[question.id],
           );
         },
       ),

@@ -492,7 +492,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(CheckMarkWithBorder), findsOneWidget);
+      expect(find.byType(CheckMark), findsOneWidget);
     });
 
     testWidgets('setting no dots shows SideTime', (WidgetTester tester) async {

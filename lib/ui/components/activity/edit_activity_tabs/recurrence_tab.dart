@@ -16,7 +16,13 @@ class RecurrenceTab extends StatefulWidget {
 }
 
 class _RecurrenceTabState extends State<RecurrenceTab> with EditActivityTab {
-  final scrollController = ScrollController();
+  ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +31,9 @@ class _RecurrenceTabState extends State<RecurrenceTab> with EditActivityTab {
     final activity = widget.state.activity;
     final recurs = activity.recurs;
     return VerticalScrollArrows(
-      controller: scrollController,
+      controller: _scrollController,
       child: ListView(
-        controller: scrollController,
+        controller: _scrollController,
         padding: EditActivityTab.rightPadding
             .add(EditActivityTab.bottomPadding)
             .subtract(EditActivityTab.errorBorderPaddingRight),
