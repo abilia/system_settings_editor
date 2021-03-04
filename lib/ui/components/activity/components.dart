@@ -637,7 +637,7 @@ class _RenderRadio extends RenderToggleable {
           vsync: vsync,
           hasFocus: hasFocus,
           hovering: hovering,
-          // splashRadius: AbiliaRadio.defaultRadialReactionRadius,
+          splashRadius: AbiliaRadio.defaultRadialReactionRadius,
         );
 
   double _innerRadius;
