@@ -161,7 +161,7 @@ extension on WidgetTester {
     await tap(find.byType(OkButton));
     await pumpAndSettle();
 
-    await tap(find.byKey(TestKey.loggInButton));
+    await tap(find.byType(LoginButton));
     await pumpAndSettle();
   }
 

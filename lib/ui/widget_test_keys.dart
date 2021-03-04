@@ -6,7 +6,6 @@ class TestKey {
       passwordInput = Key('password'),
       loginHint = Key('loginHint'),
       hidePassword = Key('hidePw'),
-      loggInButton = Key('loggIn'),
       loginError = Key('loginError'),
       goToNowButton = Key('goToNow'),
       appBarCloseButton = Key('appBarCloseButton'),
