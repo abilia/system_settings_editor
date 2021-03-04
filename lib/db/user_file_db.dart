@@ -38,7 +38,7 @@ class UserFileDb extends DataDb<UserFile> {
     return result.map(convertToDataModel).map((data) => data.model);
   }
 
-  void setFileLoadedForId(String id) async {
+  Future setFileLoadedForId(String id) async {
     await db.rawQuery(SET_FILE_LOADED, [id]);
   }
 

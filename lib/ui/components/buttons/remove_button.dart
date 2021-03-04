@@ -25,6 +25,7 @@ class RemoveButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: borderRadius,
+          onTap: onTap,
           child: Container(
             decoration: BoxDecoration(
               color: AbiliaColors.transparentRed[80],
@@ -47,7 +48,6 @@ class RemoveButton extends StatelessWidget {
               ],
             ),
           ),
-          onTap: onTap,
         ),
       ),
     );

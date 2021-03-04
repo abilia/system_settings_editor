@@ -302,8 +302,7 @@ void main() {
           .widgetList<AnimatedDot>(find.byType(AnimatedDot))
           .firstWhere((d) => d.decoration == currentDotShape);
 
-      final currentDotPosition =
-          await tester.getCenter(find.byWidget(currentDot));
+      final currentDotPosition = tester.getCenter(find.byWidget(currentDot));
 
       for (final element in find.byType(Timeline).evaluate()) {
         final box = element.renderObject as RenderBox;
@@ -452,12 +451,9 @@ void main() {
       await goToTimePillar(tester);
 
       // Act
-      final timelineXPostion =
-          await tester.getCenter(find.byType(Timeline).first).dx;
-      final leftActivityXPostion =
-          await tester.getCenter(leftActivityFinder).dx;
-      final rightActivityXPostion =
-          await tester.getCenter(rightActivityFinder).dx;
+      final timelineXPostion = tester.getCenter(find.byType(Timeline).first).dx;
+      final leftActivityXPostion = tester.getCenter(leftActivityFinder).dx;
+      final rightActivityXPostion = tester.getCenter(rightActivityFinder).dx;
 
       // Assert
       expect(leftActivityXPostion, lessThan(timelineXPostion));

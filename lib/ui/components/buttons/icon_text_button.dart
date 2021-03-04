@@ -101,6 +101,10 @@ class NextButton extends StatelessWidget {
         child: FlatButton(
           minWidth: IconAndTextButton.defaultMinWidth,
           height: IconAndTextButton.defaultHeight,
+          color: greenButtonTheme.buttonColor,
+          disabledColor: greenButtonTheme.disabledColor,
+          shape: greenButtonTheme.buttonTheme.shape,
+          onPressed: onPressed,
           child: Row(
             children: [
               const Spacer(flex: 63),
@@ -115,10 +119,6 @@ class NextButton extends StatelessWidget {
               const Spacer(flex: 47),
             ],
           ),
-          color: greenButtonTheme.buttonColor,
-          disabledColor: greenButtonTheme.disabledColor,
-          shape: greenButtonTheme.buttonTheme.shape,
-          onPressed: onPressed,
         ),
       );
 }

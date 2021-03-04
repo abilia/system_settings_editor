@@ -18,6 +18,6 @@ extension ActivityExtensions on Activity {
       SemanticsProperties(
         button: true,
         image: hasImage,
-        label: !hasTitle ? subtitle(context) : '${title}, ${subtitle(context)}',
+        label: !hasTitle ? subtitle(context) : '$title, ${subtitle(context)}',
       );
 }

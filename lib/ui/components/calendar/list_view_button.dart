@@ -22,6 +22,7 @@ class ListViewButton extends StatelessWidget {
             color: AbiliaColors.transparentWhite10,
           ),
         ),
+        onPressed: onPressed,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -36,7 +37,6 @@ class ListViewButton extends StatelessWidget {
             ),
           ],
         ),
-        onPressed: onPressed,
       ),
     );
   }

@@ -26,7 +26,7 @@ abstract class DataDb<M extends DataModel> {
   Future insert(Iterable<DbModel<M>> dataModels) async {
     final batch = db.batch();
 
-    await dataModels
+    dataModels
         .exceptionSafeMap(
           (dataModel) => dataModel.toMapForDb(),
           onException: log.logAndReturnNull,
@@ -100,7 +100,7 @@ abstract class DataDb<M extends DataModel> {
   }
 
   Future insertAndAddDirty(Iterable<M> data) async {
-    final insertResult = await data.map((model) async {
+    final insertResult = data.map((model) async {
       List<Map> existingDirtyAndRevision = await db.query(tableName,
           columns: ['dirty', 'revision'],
           where: 'id = ?',

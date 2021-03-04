@@ -79,7 +79,7 @@ class BasicActivityLibraryItem extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.center,
                 fit: StackFit.expand,
-                overflow: Overflow.visible,
+                clipBehavior: Clip.none,
                 children: [
                   AnimatedContainer(
                     duration: const Duration(microseconds: 400),

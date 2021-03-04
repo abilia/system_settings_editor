@@ -182,16 +182,16 @@ class PrivateIcon extends StatelessWidget {
     return AnimatedContainer(
       margin: CardIcon.padding,
       duration: ActivityCard.duration,
-      child: Icon(
-        AbiliaIcons.password_protection,
-        size: CardIcon.iconSize,
-        color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
-      ),
       width: 24.s,
       height: 24.s,
       decoration: BoxDecoration(
         color: inactive ? AbiliaColors.white140 : AbiliaColors.black75,
         borderRadius: borderRadius,
+      ),
+      child: Icon(
+        AbiliaIcons.password_protection,
+        size: CardIcon.iconSize,
+        color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
       ),
     );
   }

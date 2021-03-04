@@ -7,7 +7,7 @@ class ImageThumb extends Equatable {
     this.id,
   });
 
-  String get thumbId => '${id}_${THUMB_SIZE}';
+  String get thumbId => '${id}_$THUMB_SIZE';
 
   @override
   List<Object> get props => [id];

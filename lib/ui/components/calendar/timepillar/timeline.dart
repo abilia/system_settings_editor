@@ -18,15 +18,15 @@ class Timeline extends StatelessWidget {
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) => AnimatedPositioned(
         duration: transitionDuration,
+        top: timeToMidDotPixelDistance(now) -
+            offset +
+            TimePillarCalendar.topPadding -
+            timelineHeight / 2,
         child: Container(
           width: width,
           height: timelineHeight,
           decoration: const BoxDecoration(color: AbiliaColors.red),
         ),
-        top: timeToMidDotPixelDistance(now) -
-            offset +
-            TimePillarCalendar.topPadding -
-            timelineHeight / 2,
       ),
     );
   }

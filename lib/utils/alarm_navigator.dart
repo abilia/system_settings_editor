@@ -14,10 +14,10 @@ class AlarmNavigator {
     final route = AlarmPageRoute(
       alarm,
       builder: (_) => CopiedAuthProviders(
+        blocContext: context,
         child: (alarm is NewAlarm)
             ? NavigatableAlarmPage(alarm: alarm, alarmNavigator: this)
             : NavigatableReminderPage(reminder: alarm, alarmNavigator: this),
-        blocContext: context,
       ),
       fullscreenDialog: true,
     );

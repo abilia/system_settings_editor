@@ -17,7 +17,7 @@ Location tryGetLocation(String timezone, {Logger log}) {
     return getLocation(timezone);
   } on LocationNotFoundException {
     log?.warning(
-      'could not find timezone named: $timezone, falls back to ${local}',
+      'could not find timezone named: $timezone, falls back to $local',
     );
     return local;
   }

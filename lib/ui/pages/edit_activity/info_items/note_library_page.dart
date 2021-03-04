@@ -32,7 +32,7 @@ class LibraryNote extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 0),
         child: LayoutBuilder(
           builder: (context, constraints) => Stack(
-            overflow: Overflow.clip,
+            clipBehavior: Clip.hardEdge,
             children: <Widget>[
               Lines(
                 lineHeight: content

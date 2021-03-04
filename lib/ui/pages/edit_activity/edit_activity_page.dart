@@ -56,8 +56,8 @@ class EditActivityPage extends StatelessWidget {
                 ),
               ),
               body: EditActivityListeners(
-                child: TabBarView(children: tabs),
                 nrTabs: tabs.length,
+                child: TabBarView(children: tabs),
               ),
               bottomNavigationBar: BottomNavigation(
                 backNavigationWidget: const BackButton(),
@@ -107,7 +107,7 @@ class EditActivityListeners extends StatelessWidget {
             )) {
               return await _mainPageError(errors, context);
             } else if (errors.contains(SaveError.NO_RECURRING_DAYS)) {
-              _scrollToTab(context, nrTabs - 2);
+              await _scrollToTab(context, nrTabs - 2);
               return await showViewDialog(
                 context: context,
                 builder: (context) => ErrorDialog(
@@ -164,14 +164,15 @@ class EditActivityListeners extends StatelessWidget {
     );
   }
 
-  void _scrollToTab(BuildContext context, int tabIndex) {
+  Future _scrollToTab(BuildContext context, int tabIndex) async {
     final tabController = DefaultTabController.of(context);
     if (tabController.index != tabIndex) {
       tabController.animateTo(tabIndex);
     } else {
       final sc = PrimaryScrollController.of(context);
       if (sc?.hasClients == true) {
-        sc.animateTo(0.0, duration: kTabScrollDuration, curve: Curves.ease);
+        await sc.animateTo(0.0,
+            duration: kTabScrollDuration, curve: Curves.ease);
       }
     }
   }
