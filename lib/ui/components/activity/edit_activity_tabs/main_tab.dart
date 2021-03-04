@@ -18,11 +18,11 @@ class MainTab extends StatefulWidget {
 }
 
 class _MainTabState extends State<MainTab> with EditActivityTab {
-  ScrollController scrollController;
+  ScrollController _scrollController;
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController();
+    _scrollController = ScrollController();
   }
 
   @override
@@ -30,9 +30,9 @@ class _MainTabState extends State<MainTab> with EditActivityTab {
     final activity = widget.editActivityState.activity;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) => VerticalScrollArrows(
-        controller: scrollController,
+        controller: _scrollController,
         child: ListView(
-          controller: scrollController,
+          controller: _scrollController,
           padding:
               EditActivityTab.rightPadding.add(EditActivityTab.bottomPadding),
           children: <Widget>[
