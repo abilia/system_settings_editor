@@ -3,11 +3,11 @@ import 'package:flutter/widgets.dart';
 import 'package:seagull/ui/all.dart';
 
 mixin EditActivityTab {
-  static const rightPadding = EdgeInsets.only(right: 12.0),
-      ordinaryPadding = EdgeInsets.fromLTRB(12.0, 24.0, 4.0, 16.0),
-      errorBorderPadding = EdgeInsets.all(4.0),
-      errorBorderPaddingRight = EdgeInsets.only(right: 5.0),
-      bottomPadding = EdgeInsets.only(bottom: 56.0);
+  static final rightPadding = EdgeInsets.only(right: 12.0.s),
+      ordinaryPadding = EdgeInsets.fromLTRB(12.0.s, 24.0.s, 4.0.s, 16.0.s),
+      errorBorderPadding = EdgeInsets.all(4.0.s),
+      errorBorderPaddingRight = EdgeInsets.only(right: 5.0.s),
+      bottomPadding = EdgeInsets.only(bottom: 56.0.s);
   Widget errorBordered(Widget child, {@required bool errorState}) {
     final decoration = errorState ? errorBoxDecoration : const BoxDecoration();
     return Container(
@@ -36,9 +36,9 @@ class Separated extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: AbiliaColors.white120),
+          bottom: BorderSide(color: AbiliaColors.white120, width: 1.0.s),
         ),
       ),
       child: child,

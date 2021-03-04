@@ -63,7 +63,7 @@ class NameAndPictureWidget extends StatelessWidget {
             onImageSelected: onImageSelected,
             errorState: errorState,
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.s),
           Expanded(
             child: NameInput(
               text: text,
@@ -80,7 +80,7 @@ class NameAndPictureWidget extends StatelessWidget {
 }
 
 class SelectPictureWidget extends StatelessWidget {
-  static const imageSize = 84.0, padding = 4.0;
+  static final imageSize = 84.0.s, padding = 4.0.s;
   final SelectedImage selectedImage;
 
   final void Function(SelectedImage) onImageSelected;
@@ -146,7 +146,7 @@ class SelectedImageWidget extends StatelessWidget {
 
   final bool errorState;
 
-  static const innerSize =
+  static final innerSize =
       SelectPictureWidget.imageSize - SelectPictureWidget.padding * 2;
 
   const SelectedImageWidget({
@@ -163,7 +163,7 @@ class SelectedImageWidget extends StatelessWidget {
       height: SelectPictureWidget.imageSize,
       child: LinedBorder(
         key: TestKey.addPicture,
-        padding: const EdgeInsets.all(SelectPictureWidget.padding),
+        padding: EdgeInsets.all(SelectPictureWidget.padding),
         errorState: errorState,
         onTap: onTap,
         child: selectedImage.isNotEmpty
@@ -268,7 +268,7 @@ class CategoryWidget extends StatelessWidget {
                   state.leftCategoryName ??
                       Translator.of(context).translate.left,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.s),
                 buildCategoryRadioField(
                   context,
                   Category.right,
@@ -405,7 +405,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
               .add(ReplaceActivity(activity.copyWith(checkable: v))),
         ),
-        const SizedBox(height: 8.0),
+        SizedBox(height: 8.0.s),
         SwitchField(
           key: TestKey.deleteAfterSwitch,
           leading: Icon(
@@ -599,8 +599,8 @@ class WeekDays extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 14.0,
-      runSpacing: 8.0,
+      spacing: 14.0.s,
+      runSpacing: 8.0.s,
       children: List.generate(DateTime.daysPerWeek, (i) {
         final d = i + 1;
         return SelectableField(
@@ -628,8 +628,8 @@ class MonthDays extends StatelessWidget {
   Widget build(BuildContext context) {
     final selectedMonthDays = activity.recurs.monthDays;
     return Wrap(
-      spacing: 14.0,
-      runSpacing: 8.0,
+      spacing: 14.0.s,
+      runSpacing: 8.0.s,
       children: List.generate(31, (i) {
         final d = i + 1;
         return SelectableField(

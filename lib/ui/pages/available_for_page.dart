@@ -24,7 +24,7 @@ class _AvailableForPageState extends State<AvailableForPage> {
         title: translate.availableFor,
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(12.0, 24.0, 16.0, 0),
+        padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -35,7 +35,7 @@ class _AvailableForPageState extends State<AvailableForPage> {
               leading: const Icon(AbiliaIcons.password_protection),
               text: Text(translate.onlyMe),
             ),
-            const SizedBox(height: 8.0),
+            SizedBox(height: 8.0.s),
             RadioField(
               groupValue: secret,
               onChanged: _onSelected,

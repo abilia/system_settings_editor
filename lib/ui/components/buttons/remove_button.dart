@@ -29,11 +29,9 @@ class RemoveButton extends StatelessWidget {
             decoration: BoxDecoration(
               color: AbiliaColors.transparentRed[80],
               borderRadius: borderRadius,
-              border: Border.all(
-                color: AbiliaColors.red,
-              ),
+              border: Border.all(color: AbiliaColors.red, width: 1.s),
             ),
-            padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+            padding: EdgeInsets.fromLTRB(8.s, 6.s, 8.s, 6.s),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[

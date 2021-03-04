@@ -31,10 +31,10 @@ class DateAndTimeWidget extends StatelessWidget {
                       )
                   : null,
             ),
-            const SizedBox(height: 24.0),
+            SizedBox(height: 24.0.s),
             CollapsableWidget(
               collapsed: activity.fullDay,
-              padding: const EdgeInsets.only(bottom: 12.0),
+              padding: EdgeInsets.only(bottom: 12.0.s),
               child: TimeIntervallPicker(editActivityState.timeInterval,
                   startTimeError: editActivityState.saveErrors.any({
                     SaveError.NO_START_TIME,
@@ -214,7 +214,6 @@ class TimePicker extends StatelessWidget {
   final String text;
   final TimeInput timeInput;
   final GestureTapCallback onTap;
-  final double heigth = 56;
   final bool errorState;
   const TimePicker(
     this.text,
@@ -243,7 +242,7 @@ class TimePicker extends StatelessWidget {
         PickField(
           semanticsLabel: text,
           onTap: onTap,
-          heigth: heigth,
+          heigth: 56.s,
           errorState: errorState,
           leading: Icon(AbiliaIcons.clock),
           text: Text(time),

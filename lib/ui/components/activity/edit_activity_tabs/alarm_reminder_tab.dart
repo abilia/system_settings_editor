@@ -41,7 +41,7 @@ class _AlarmAndReminderTabState extends State<AlarmAndReminderTab>
                 SubHeading(Translator.of(context).translate.reminders),
                 ReminderSwitch(activity: widget.activity),
                 CollapsableWidget(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: EdgeInsets.only(top: 8.0.s),
                   collapsed: widget.activity.fullDay ||
                       widget.activity.reminderBefore.isEmpty,
                   child: Reminders(activity: widget.activity),

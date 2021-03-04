@@ -35,15 +35,15 @@ class SelectPicturePage extends StatelessWidget {
         children: <Widget>[
           if (selectedImage.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.only(right: 12.0),
+              padding: EdgeInsets.only(right: 12.0.s),
               child: Separated(
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 12.0, top: 24.0, bottom: 18.0),
+                  padding: EdgeInsets.only(
+                      left: 12.0.s, top: 24.0.s, bottom: 18.0.s),
                   child: Column(
                     children: [
                       SelectedImageWidget(selectedImage: selectedImage),
-                      const SizedBox(height: 10.0),
+                      SizedBox(height: 10.0.s),
                       RemoveButton(
                         key: TestKey.removePicture,
                         onTap: () {
@@ -64,7 +64,7 @@ class SelectPicturePage extends StatelessWidget {
               ),
             ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 24.0, 16.0, 0.0),
+            padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
             child: Column(
               children: [
                 PickField(
@@ -86,7 +86,7 @@ class SelectPicturePage extends StatelessWidget {
                     }
                   },
                 ),
-                const SizedBox(height: 8.0),
+                SizedBox(height: 8.0.s),
                 ImageSourceWidget(
                   text: translate.myPhotos,
                   imageSource: ImageSource.gallery,
@@ -94,7 +94,7 @@ class SelectPicturePage extends StatelessWidget {
                       ? Permission.storage
                       : Permission.photos,
                 ),
-                const SizedBox(height: 8.0),
+                SizedBox(height: 8.0.s),
                 ImageSourceWidget(
                   text: translate.takeNewPhoto,
                   imageSource: ImageSource.camera,
@@ -143,7 +143,7 @@ class ImageSourceWidget extends StatelessWidget {
             ),
             if (permissionState.status[permission].isPermanentlyDenied)
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: EdgeInsets.only(left: 8.0.s),
                 child: InfoButton(
                   key: Key('$imageSource$permission'),
                   onTap: () => showViewDialog(

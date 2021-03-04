@@ -35,7 +35,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
 
     return padded(
       Padding(
-        padding: const EdgeInsets.only(right: 12.0),
+        padding: EdgeInsets.only(right: 12.0.s),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -125,17 +125,17 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
             )
           ],
         ),
-        const SizedBox(height: 16.0),
+        SizedBox(height: 16.0.s),
         Expanded(
           child: GestureDetector(
             child: Container(
               decoration: whiteBoxDecoration,
-              padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 12.0),
+              padding: EdgeInsets.fromLTRB(12.0.s, 0, 0, 12.0.s),
               child: Column(
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(bottom: 8.0),
+                      margin: EdgeInsets.only(bottom: 8.0.s),
                       decoration: const BoxDecoration(
                         border: Border(
                           bottom: BorderSide(color: AbiliaColors.white120),
@@ -144,7 +144,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                       child: ChecklistView(
                         widget.checklist,
                         padding:
-                            const EdgeInsets.fromLTRB(0.0, 12.0, 16.0, 25.0),
+                            EdgeInsets.fromLTRB(0.0, 12.0.s, 16.0.s, 25.0.s),
                         onTap: _handleEditQuestionResult,
                         tempImageFiles: tempImageFiles,
                         preview: true,
@@ -152,11 +152,11 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
+                    padding: EdgeInsets.only(right: 16.0.s),
                     child: Tts(
                       data: Translator.of(context).translate.addNew,
                       child: RawMaterialButton(
-                        constraints: BoxConstraints(minHeight: 48.0),
+                        constraints: BoxConstraints(minHeight: 48.0.s),
                         shape: RoundedRectangleBorder(
                           side: BorderSide(color: AbiliaColors.green140),
                           borderRadius: borderRadius,
@@ -170,9 +170,9 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                         onPressed: _handleNewQuestion,
                         child: Row(
                           children: [
-                            const SizedBox(width: 12.0),
+                            SizedBox(width: 12.0.s),
                             Icon(AbiliaIcons.new_icon, size: smallIconSize),
-                            const SizedBox(width: 12.0),
+                            SizedBox(width: 12.0.s),
                             Text(
                               Translator.of(context).translate.addNew,
                               style: Theme.of(context)
@@ -304,7 +304,7 @@ class EditNoteWidget extends StatelessWidget {
             )
           ],
         ),
-        const SizedBox(height: 16.0),
+        SizedBox(height: 16.0.s),
         Expanded(
           child: GestureDetector(
             onTap: () => editText(context, activity, infoItem),
@@ -367,7 +367,7 @@ class _LibraryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12.0, 4.0, 4.0, 4.0),
+      padding: EdgeInsets.fromLTRB(12.0.s, 4.0.s, 4.0.s, 4.0.s),
       child: ActionButton(
         child: Icon(
           AbiliaIcons.show_text,

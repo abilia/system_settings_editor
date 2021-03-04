@@ -30,7 +30,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
         title: translate.selectInfoType,
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(12.0, 24.0, 16.0, 0.0),
+        padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -45,7 +45,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
               ),
               text: Text(translate.infoTypeNone),
             ),
-            const SizedBox(height: 8.0),
+            SizedBox(height: 8.0.s),
             RadioField(
               key: TestKey.infoItemChecklistRadio,
               groupValue: infoItemType,
@@ -54,7 +54,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
               leading: const Icon(AbiliaIcons.ok),
               text: Text(translate.infoTypeChecklist),
             ),
-            const SizedBox(height: 8.0),
+            SizedBox(height: 8.0.s),
             RadioField(
               key: TestKey.infoItemNoteRadio,
               groupValue: infoItemType,

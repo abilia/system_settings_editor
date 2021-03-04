@@ -128,10 +128,12 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
 }
 
 class _AnimatedTab extends AnimatedWidget {
-  static const beginBorder =
-          Border.fromBorderSide(BorderSide(color: AbiliaColors.white)),
+  static final beginBorder = Border.fromBorderSide(
+        BorderSide(color: AbiliaColors.white, width: 1.0.s),
+      ),
       endBorder = Border.fromBorderSide(
-          BorderSide(color: AbiliaColors.transparentWhite30));
+        BorderSide(color: AbiliaColors.transparentWhite30, width: 1.0.s),
+      );
   static final firstBorderRadius = BorderRadius.horizontal(left: radius),
       lastBorderRadius = BorderRadius.horizontal(right: radius);
   _AnimatedTab({
@@ -172,7 +174,7 @@ class _AnimatedTab extends AnimatedWidget {
                     color: AbiliaColors.transparentWhite20,
                     border: endBorder,
                   )
-                : const BoxDecoration(
+                : BoxDecoration(
                     borderRadius: BorderRadius.zero,
                     color: AbiliaColors.transparentWhite20,
                     border: endBorder),
