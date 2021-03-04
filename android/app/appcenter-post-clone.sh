@@ -9,7 +9,7 @@ set -e
 set -x
 
 cd ..
-git clone -b beta https://github.com/flutter/flutter.git
+git clone --depth 1 --branch 1.22.6 https://github.com/flutter/flutter.git
 export PATH=`pwd`/flutter/bin:$PATH
 
 flutter channel stable
