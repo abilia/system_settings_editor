@@ -42,7 +42,7 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 24, 16, 8),
+            padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 8.s),
             child: DuoSelector<DayCalendarType>(
               heading: t.viewMode,
               groupValue: calendarType,
@@ -60,12 +60,12 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
             ),
           ),
           Divider(
-            endIndent: 16,
+            endIndent: 16.s,
           ),
           CollapsableWidget(
             collapsed: calendarType == DayCalendarType.LIST,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 16, 16, 8),
+              padding: EdgeInsets.fromLTRB(12.s, 16.s, 16.s, 8.s),
               child: DuoSelector<bool>(
                 heading: t.activityDuration,
                 groupValue: dotsInTimePillar,
@@ -138,7 +138,7 @@ class DuoSelector<T> extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: EdgeInsets.only(top: 8.0.s),
           child: Container(
             child: Row(children: [
               Expanded(
@@ -152,7 +152,7 @@ class DuoSelector<T> extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 2,
+                width: 2.s,
               ),
               Expanded(
                 child: _SelectButton<T>(
@@ -198,7 +198,7 @@ class _SelectButton<T> extends StatelessWidget {
       child: FlatButton(
         onPressed: onPressed,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
+          padding: EdgeInsets.only(bottom: 8.0.s),
           child: Column(
             children: [
               Text(

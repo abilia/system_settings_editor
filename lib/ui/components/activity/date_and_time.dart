@@ -266,8 +266,8 @@ class Reminders extends StatelessWidget {
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
     return Wrap(
-      spacing: 14.0,
-      runSpacing: 8.0,
+      spacing: 14.0.s,
+      runSpacing: 8.0.s,
       children: [
         5.minutes(),
         15.minutes(),

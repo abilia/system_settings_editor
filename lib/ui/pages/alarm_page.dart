@@ -188,7 +188,7 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
         child: Container(
           color: AbiliaColors.black80,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+            padding: EdgeInsets.fromLTRB(12.s, 8.s, 12.s, 12.s),
             child: Row(
               mainAxisAlignment: displayCheckButton
                   ? MainAxisAlignment.spaceBetween
@@ -198,7 +198,7 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
                   closeButton
                 else ...[
                   Expanded(child: closeButton),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.s),
                   Expanded(
                     child: IconAndTextButton(
                       key: TestKey.activityCheckButton,
