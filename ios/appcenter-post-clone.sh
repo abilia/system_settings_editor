@@ -10,7 +10,7 @@ cd ..
 git clone --depth 1 --branch 1.22.6 https://github.com/flutter/flutter.git
 export PATH=`pwd`/flutter/bin:$PATH
 
-flutter channel stable
+#flutter channel stable
 
 pod setup
 flutter doctor
