@@ -49,7 +49,7 @@ class TimeRow extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0.s),
                   child:
                       Text('-', style: Theme.of(context).textTheme.headline5),
                 ),
