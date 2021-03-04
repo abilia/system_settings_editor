@@ -13,7 +13,8 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return ViewDialog(
       expanded: true,
-      bodyPadding: const EdgeInsets.symmetric(horizontal: 20),
+      bodyPadding:
+          EdgeInsets.symmetric(horizontal: ViewDialog.horizontalPadding),
       backNavigationWidget: GreyButton(
         icon: AbiliaIcons.close_program,
         text: translate.no,
@@ -52,7 +53,8 @@ class NotificationPermissionWarningDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ViewDialog(
         expanded: true,
-        bodyPadding: const EdgeInsets.symmetric(horizontal: 20),
+        bodyPadding:
+            EdgeInsets.symmetric(horizontal: ViewDialog.horizontalPadding),
         backNavigationWidget: const CloseButton(),
         body: _WarningContent(
           heading: Translator.of(context).translate.allowNotifications,
@@ -68,20 +70,20 @@ class _WarningContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          const SizedBox(height: 128.0),
+          SizedBox(height: 128.0.s),
           Icon(
             AbiliaIcons.ir_error,
             size: hugeIconSize,
             color: AbiliaColors.orange,
           ),
-          const SizedBox(height: 80.0),
+          SizedBox(height: 80.0.s),
           Tts(
             child: Text(
               heading,
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
-          const SizedBox(height: 8.0),
+          SizedBox(height: 8.0.s),
           body,
         ],
       );

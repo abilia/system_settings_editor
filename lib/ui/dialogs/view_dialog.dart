@@ -9,6 +9,7 @@ class ViewDialog extends StatelessWidget {
   final Widget body;
   final EdgeInsets bodyPadding;
   final bool expanded;
+  static final horizontalPadding = 20.s;
   const ViewDialog({
     Key key,
     this.heading,
@@ -25,7 +26,7 @@ class ViewDialog extends StatelessWidget {
       color: AbiliaColors.white110,
       padding: bodyPadding ??
           EdgeInsets.symmetric(
-            horizontal: 20.s,
+            horizontal: horizontalPadding,
             vertical: 64.s,
           ),
       child: Center(
