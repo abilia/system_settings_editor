@@ -19,7 +19,7 @@ class LogoutPage extends StatelessWidget {
         iconData: AbiliaIcons.power_off_on,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 64.0),
+        padding: EdgeInsets.only(top: 64.0.s),
         child: Center(child: ProfilePictureNameAndEmail()),
       ),
       bottomNavigationBar: BottomNavigation(
@@ -62,14 +62,14 @@ class _ProfilePictureNameAndEmailState
             user,
           ),
         ),
-        SizedBox(height: 24.0),
+        SizedBox(height: 24.0.s),
         Tts(
           child: Text(
             user.name,
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        SizedBox(height: 4.0),
+        SizedBox(height: 4.0.s),
         if (user.username != null)
           Tts(
             child: Text(
