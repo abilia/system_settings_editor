@@ -30,7 +30,7 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
     }
     if (event is CheckStatusForPermissions) {
       yield state.update(
-        await {for (final p in event.permissions) p: await p.status},
+        {for (final p in event.permissions) p: await p.status},
       );
     }
   }

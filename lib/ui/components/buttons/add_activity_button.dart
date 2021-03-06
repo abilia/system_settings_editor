@@ -13,7 +13,6 @@ class AddActivityButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ActionButton(
         key: TestKey.addActivity,
-        child: Icon(AbiliaIcons.plus),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => CopiedAuthProviders(
@@ -23,5 +22,6 @@ class AddActivityButton extends StatelessWidget {
             settings: RouteSettings(name: 'CreateActivityPage'),
           ),
         ),
+        child: Icon(AbiliaIcons.plus),
       );
 }

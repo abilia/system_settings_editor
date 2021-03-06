@@ -192,7 +192,7 @@ class RadioField<T> extends StatelessWidget {
           onTap: () => onChanged(value),
           borderRadius: borderRadius,
           child: Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: <Widget>[
               Ink(
                 height: heigth ?? defaultHeight,
@@ -295,7 +295,6 @@ class CollapsableWidget extends StatelessWidget {
     return TweenAnimationBuilder(
       duration: 300.milliseconds(),
       tween: Tween<double>(begin: begin, end: begin),
-      child: child,
       builder: (context, value, widget) => ClipRect(
         child: Align(
           alignment: alignment,
@@ -311,6 +310,7 @@ class CollapsableWidget extends StatelessWidget {
               : Container(),
         ),
       ),
+      child: child,
     );
   }
 }
@@ -347,7 +347,7 @@ class SelectableField extends StatelessWidget {
           onTap: onTap,
           borderRadius: borderRadius,
           child: Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: <Widget>[
               Ink(
                 height: heigth ?? defaultHeigth,
@@ -378,8 +378,8 @@ class SelectableField extends StatelessWidget {
                               : RotationTransition(
                                   turns: animation,
                                   child: ScaleTransition(
-                                    child: child,
                                     scale: animation,
+                                    child: child,
                                   ),
                                 ),
                       child: selected
@@ -409,6 +409,7 @@ class SelectableField extends StatelessWidget {
 class AbiliaRadio<T> extends StatefulWidget {
   static final defaultOuterRadius = 11.5.s;
   static final defaultInnerRadius = 8.5.s;
+  static final defaultRadialReactionRadius = kRadialReactionRadius.s;
   AbiliaRadio({
     Key key,
     @required this.value,
@@ -636,6 +637,7 @@ class _RenderRadio extends RenderToggleable {
           vsync: vsync,
           hasFocus: hasFocus,
           hovering: hovering,
+          // splashRadius: AbiliaRadio.defaultRadialReactionRadius,
         );
 
   double _innerRadius;

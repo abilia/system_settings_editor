@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 
 @visibleForTesting
 String whaleDateFormat(DateTime date) {
-  String _twoDigits(int n) => (n >= 10) ? '${n}' : '0${n}';
+  String _twoDigits(int n) => (n >= 10) ? '$n' : '0$n';
   final year = _twoDigits(date.year % 100);
   final month = _twoDigits(date.month);
   final day = _twoDigits(date.day);

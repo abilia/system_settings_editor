@@ -21,5 +21,5 @@ class BaseUrlDb {
   Future deleteBaseUrl() => prefs.remove(_BASE_URL_RECORD);
 
   Future<String> initialize() async =>
-      await getBaseUrl() ?? setBaseUrl(PROD).then((_) => PROD);
+      getBaseUrl() ?? await setBaseUrl(PROD).then((_) => PROD);
 }

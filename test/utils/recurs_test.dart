@@ -846,7 +846,7 @@ void main() {
         expect(result, true);
       });
 
-      test('Odd fridays', () {
+      test('Odd fridays 2', () {
         // arrange
         final recurrentData = Recurs.ODD_FRIDAY;
         final rec =
@@ -997,16 +997,6 @@ void main() {
       });
     });
     group('Recurs weekly', () {
-      test('on mondays', () {
-        // arrange
-        final days = [DateTime.monday];
-        final monthDays = Recurs.weeklyOnDays(days);
-        final recurrentData = Recurs.onDaysOfWeek(days);
-
-        // assert
-        expect(monthDays.data, recurrentData);
-        expect(recurrentData, Recurs.MONDAY);
-      });
       test('on mondays', () {
         // arrange
         final days = [DateTime.monday];

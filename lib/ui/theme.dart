@@ -38,12 +38,14 @@ final abiliaTheme = ThemeData(
     size: defaultIconSize,
     color: AbiliaColors.black,
   ),
-  cursorColor: AbiliaColors.black,
-  textSelectionHandleColor: AbiliaColors.black,
+  textSelectionTheme: TextSelectionThemeData(
+    cursorColor: AbiliaColors.black,
+    selectionHandleColor: AbiliaColors.black,
+    selectionColor: AbiliaColors.white120,
+  ),
   appBarTheme: const AppBarTheme(color: AbiliaColors.black80),
   disabledColor: AbiliaColors.red40,
   errorColor: AbiliaColors.red,
-  textSelectionColor: AbiliaColors.white120,
   bottomAppBarTheme: const BottomAppBarTheme(color: AbiliaColors.black80),
   cupertinoOverrideTheme: const CupertinoThemeData(
     primaryColor: AbiliaColors.black,

@@ -20,7 +20,6 @@ class EyeButton extends StatelessWidget {
         borderRadius: borderRadius,
         child: ActionButton(
           themeData: blackButtonTheme,
-          child: Icon(AbiliaIcons.show),
           onPressed: () async {
             final settings = await showViewDialog<EyeButtonSettings>(
               context: context,
@@ -31,15 +30,16 @@ class EyeButton extends StatelessWidget {
             );
             if (settings != null) {
               if (currentDayCalendarType != settings.calendarType) {
-                await BlocProvider.of<CalendarViewBloc>(context)
+                BlocProvider.of<CalendarViewBloc>(context)
                     .add(CalendarTypeChanged(settings.calendarType));
               }
               if (state.dotsInTimepillar != settings.dotsInTimepillar) {
-                await BlocProvider.of<SettingsBloc>(context)
+                BlocProvider.of<SettingsBloc>(context)
                     .add(DotsInTimepillarUpdated(settings.dotsInTimepillar));
               }
             }
           },
+          child: Icon(AbiliaIcons.show),
         ),
       ),
     );

@@ -203,8 +203,8 @@ class _ArrowState extends State<_Arrow> {
           borderRadius: widget.borderRadius,
           color: AbiliaColors.white135,
         ),
-        child: Icon(widget.icon, size: smallIconSize),
         duration: const Duration(milliseconds: 200),
+        child: Icon(widget.icon, size: smallIconSize),
       ),
     );
   }

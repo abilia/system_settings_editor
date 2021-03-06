@@ -19,19 +19,18 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wrappedTabs = List<Widget>(tabs.length);
     var offset = 0;
-    for (var i = 0; i < tabs.length; i++) {
-      wrappedTabs[i] = _Tab(
-        index: i,
-        offset: offset,
-        last: (tabs.length - 1) == i,
-        collapsed: () => collapsedCondition(i),
-        child: tabs[i],
-        controller: DefaultTabController.of(context),
-      );
-      if (collapsedCondition(i)) offset++;
-    }
+    final wrappedTabs = [
+      for (var i = 0; i < tabs.length; i++)
+        _Tab(
+          index: i,
+          offset: collapsedCondition(i) ? offset++ : offset,
+          last: (tabs.length - 1) == i,
+          collapsed: () => collapsedCondition(i),
+          controller: DefaultTabController.of(context),
+          child: tabs[i],
+        )
+    ];
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +107,6 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
       child: Row(
         children: <Widget>[
           _AnimatedTab(
-            child: widget.child,
             selectedTabAnimation: widget.controller.animation,
             scaleAnimation: _scaleAnimation,
             listenable: Listenable.merge(
@@ -120,6 +118,7 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
             beginIconThemeData: iconTheme.copyWith(size: smallIconSize),
             endIconThemeData: iconTheme.copyWith(
                 color: AbiliaColors.white, size: smallIconSize),
+            child: widget.child,
           )
         ],
       ),
@@ -202,6 +201,8 @@ class _AnimatedTab extends AnimatedWidget {
           : first
               ? EdgeInsets.only(right: 1.0.s)
               : EdgeInsets.symmetric(horizontal: 1.0.s * scaleAnimation.value),
+      decoration: DecorationTween(begin: beginDecoration, end: endDecoration)
+          .lerp(lerpValue),
       child: scaleAnimation.value == 0.0
           ? null
           : IconTheme(
@@ -217,8 +218,6 @@ class _AnimatedTab extends AnimatedWidget {
                 ),
               ),
             ),
-      decoration: DecorationTween(begin: beginDecoration, end: endDecoration)
-          .lerp(lerpValue),
     );
   }
 }

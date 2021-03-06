@@ -92,7 +92,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
     return Column(
       children: [
         Stack(
-          overflow: Overflow.visible,
+          clipBehavior: Clip.none,
           children: [
             SwitchField(
               key: ObjectKey(permission),
@@ -169,7 +169,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
           children: [
             Expanded(
               child: Stack(
-                overflow: Overflow.visible,
+                clipBehavior: Clip.none,
                 children: [
                   SwitchField(
                     key: ObjectKey(permission),

@@ -13,12 +13,12 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   tearDown(() async {
-    await sleep(Duration(seconds: 2));
+    sleep(Duration(seconds: 2));
     await GetIt.I.reset();
   });
 
   testWidgets('Login with wrong password', (WidgetTester tester) async {
-    await app.main();
+    app.main();
     await tester.pumpAndSettle();
     await tester.selectBackend(backend);
     await tester.login('IGT$testId', password: 'wrongpassword');
@@ -26,7 +26,7 @@ void main() {
   });
 
   testWidgets('Login with no license', (WidgetTester tester) async {
-    await app.main();
+    app.main();
     await tester.pumpAndSettle();
     await tester.selectBackend(backend);
     await tester.login('IGT$testId');
@@ -34,7 +34,7 @@ void main() {
   });
 
   testWidgets('Create activity with note SGC-502', (WidgetTester tester) async {
-    await app.main();
+    app.main();
     await tester.pumpAndSettle();
     await tester.selectBackend(backend);
     await tester.login('IGTWL$testId');

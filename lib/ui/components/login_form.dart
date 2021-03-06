@@ -67,6 +67,8 @@ class _LoginFormState extends State<LoginForm> {
                             )
                           : GestureDetector(
                               key: TestKey.loginLogo,
+                              onLongPress: () => setState(
+                                  () => _showBackends = !_showBackends),
                               child: FadeInImage(
                                 fadeInDuration:
                                     const Duration(milliseconds: 50),
@@ -76,8 +78,6 @@ class _LoginFormState extends State<LoginForm> {
                                   'assets/graphics/${Config.flavor.id}/logo.png',
                                 ),
                               ),
-                              onLongPress: () => setState(
-                                  () => _showBackends = !_showBackends),
                             ),
                     ),
                   ),
@@ -139,15 +139,15 @@ class _LoginFormState extends State<LoginForm> {
                           color: AbiliaColors.red,
                           disabledColor: AbiliaColors.red40,
                           key: TestKey.loggInButton,
+                          onPressed: loginState is! LoginLoading &&
+                                  formState.isFormValid
+                              ? _onLoginButtonPressed
+                              : null,
                           child: Text(
                             translate.login,
                             style: theme.textTheme.subtitle1
                                 .copyWith(color: AbiliaColors.white),
                           ),
-                          onPressed: loginState is! LoginLoading &&
-                                  formState.isFormValid
-                              ? _onLoginButtonPressed
-                              : null,
                         ),
                       ),
                     ),

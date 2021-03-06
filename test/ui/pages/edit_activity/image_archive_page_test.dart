@@ -156,7 +156,7 @@ void main() {
         exact: translate.imageArchive,
       );
 
-      await expect(find.byType(LibraryFolder), findsOneWidget);
+      expect(find.byType(LibraryFolder), findsOneWidget);
       // Act - go into folder
       await tester.tap(find.byType(LibraryFolder));
       await tester.pumpAndSettle();

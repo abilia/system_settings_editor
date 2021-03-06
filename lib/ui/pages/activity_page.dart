@@ -32,10 +32,10 @@ class ActivityPage extends StatelessWidget {
                     day: activityOccasion.day,
                     leftAction: ActionButton(
                       key: TestKey.activityBackButton,
+                      onPressed: () => Navigator.of(context).maybePop(),
                       child: Icon(
                         AbiliaIcons.navigation_previous,
                       ),
-                      onPressed: () => Navigator.of(context).maybePop(),
                     ),
                   ),
                 ),
@@ -107,7 +107,6 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                     if (displayAlarmButton)
                       ActionButton(
                         key: TestKey.editAlarm,
-                        child: Icon(activity.alarm.iconData()),
                         onPressed: () async {
                           final alarm = activity.alarm;
 
@@ -153,10 +152,10 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                             }
                           }
                         },
+                        child: Icon(activity.alarm.iconData()),
                       ),
                     if (displayDeleteButton)
                       ActionButton(
-                        child: Icon(AbiliaIcons.delete_all_clear),
                         onPressed: () async {
                           final shouldDelete = await showViewDialog<bool>(
                             context: context,
@@ -194,10 +193,10 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                             await Navigator.of(context).maybePop();
                           }
                         },
+                        child: Icon(AbiliaIcons.delete_all_clear),
                       ),
                     if (displayEditButton)
                       ActionButton(
-                        child: Icon(AbiliaIcons.edit),
                         onPressed: () async {
                           await Navigator.of(context).push(
                             MaterialPageRoute(
@@ -224,11 +223,11 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                                 ),
                               ),
                               settings: RouteSettings(
-                                  name:
-                                      '$EditActivityPage ${activityOccasion}'),
+                                  name: '$EditActivityPage $activityOccasion'),
                             ),
                           );
                         },
+                        child: Icon(AbiliaIcons.edit),
                       ),
                   ],
                 ),

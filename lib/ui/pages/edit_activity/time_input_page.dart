@@ -173,7 +173,9 @@ class _TimeInputPageState extends State<TimeInputPage>
           children: [
             Theme(
               data: theme.copyWith(
-                  textSelectionColor: AbiliaColors.white,
+                  textSelectionTheme: theme.textSelectionTheme.copyWith(
+                    selectionColor: AbiliaColors.white,
+                  ),
                   textTheme: theme.textTheme
                       .copyWith(subtitle1: abiliaTextTheme.headline4)),
               child: Padding(
@@ -606,12 +608,6 @@ class _AmPmButton extends StatelessWidget {
         height: height,
         minWidth: width,
         onPressed: onPressed,
-        child: Text(
-          text,
-          style: abiliaTextTheme.subtitle1.copyWith(
-            color: isSelected ? AbiliaColors.white : AbiliaColors.black,
-          ),
-        ),
         shape: RoundedRectangleBorder(
           borderRadius: borderRadius,
           side: isSelected
@@ -620,6 +616,12 @@ class _AmPmButton extends StatelessWidget {
         ),
         color:
             isSelected ? AbiliaColors.green : AbiliaColors.transparentBlack20,
+        child: Text(
+          text,
+          style: abiliaTextTheme.subtitle1.copyWith(
+            color: isSelected ? AbiliaColors.white : AbiliaColors.black,
+          ),
+        ),
       ),
     );
   }
