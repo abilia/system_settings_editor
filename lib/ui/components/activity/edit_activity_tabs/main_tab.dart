@@ -41,9 +41,9 @@ class _MainTabState extends State<MainTab> with EditActivityTab {
             separatedAndPadded(DateAndTimeWidget(widget.editActivityState)),
             if (widget.memoplannerSettingsState.showCategories)
               CollapsableWidget(
-                child: separatedAndPadded(CategoryWidget(activity)),
                 collapsed:
                     activity.fullDay || !memoSettingsState.activityTypeEditable,
+                child: separatedAndPadded(CategoryWidget(activity)),
               ),
             separatedAndPadded(CheckableAndDeleteAfterWidget(activity)),
             padded(AvailableForWidget(activity)),

@@ -197,6 +197,14 @@ class _SelectButton<T> extends StatelessWidget {
       data: text,
       child: FlatButton(
         onPressed: onPressed,
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius,
+          side: isSelected
+              ? BorderSide.none
+              : BorderSide(color: AbiliaColors.transparentBlack30),
+        ),
+        color:
+            isSelected ? AbiliaColors.green : AbiliaColors.transparentBlack20,
         child: Padding(
           padding: EdgeInsets.only(bottom: 8.0.s),
           child: Column(
@@ -215,14 +223,6 @@ class _SelectButton<T> extends StatelessWidget {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: borderRadius,
-          side: isSelected
-              ? BorderSide.none
-              : BorderSide(color: AbiliaColors.transparentBlack30),
-        ),
-        color:
-            isSelected ? AbiliaColors.green : AbiliaColors.transparentBlack20,
       ),
     );
   }

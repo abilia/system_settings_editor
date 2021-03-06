@@ -133,7 +133,7 @@ void main() {
         ));
     when(mockActivityDb
             .insert([successActivity.copyWith(revision: newRevision)]))
-        .thenAnswer((_) => Future.value(List(1)));
+        .thenAnswer((_) => Future.value(List.filled(1, null)));
     final newDirty = 5;
     when(mockActivityDb.getById(successActivity.activity.id))
         .thenAnswer((_) => Future.value(successActivity.copyWith(dirty: 5)));

@@ -12,10 +12,9 @@ class MenuButton extends StatelessWidget {
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, state) {
         return Stack(
-          overflow: Overflow.visible,
+          clipBehavior: Clip.none,
           children: [
             ActionButton(
-              child: const Icon(AbiliaIcons.app_menu),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => CopiedAuthProviders(
@@ -25,6 +24,7 @@ class MenuButton extends StatelessWidget {
                   settings: RouteSettings(name: 'MenuPage'),
                 ),
               ),
+              child: const Icon(AbiliaIcons.app_menu),
             ),
             if (state.importantPermissionMissing)
               Positioned(

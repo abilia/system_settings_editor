@@ -59,7 +59,6 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(10.s, 4.s, 4.s, 4.s),
       child: ActionButton(
-        child: Text('+ ${fullDayActivities.length - 2}'),
         onPressed: () {
           Navigator.of(context).push(
             PageRouteBuilder(
@@ -78,6 +77,7 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
             ),
           );
         },
+        child: Text('+ ${fullDayActivities.length - 2}'),
       ),
     );
   }

@@ -52,7 +52,7 @@ class TimePillar extends StatelessWidget {
             ? TimePillarCalendar.nightBackgroundColor
             : theme.scaffoldBackgroundColor,
         child: Stack(
-          overflow: Overflow.visible,
+          clipBehavior: Clip.none,
           children: <Widget>[
             ...nightParts.map((p) {
               return Positioned(

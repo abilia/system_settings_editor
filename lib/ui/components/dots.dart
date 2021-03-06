@@ -195,6 +195,15 @@ class ActivityInfoSideDots extends StatelessWidget {
             !activity.fullDay && onSameDay && (notStarted || isCurrent);
         return AnimatedSwitcher(
           duration: ActivityInfo.animationDuration,
+          transitionBuilder: (child, animation) => SizeTransition(
+            axis: Axis.horizontal,
+            axisAlignment: -1,
+            sizeFactor: animation,
+            child: FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+          ),
           child: !shouldHaveSideDots
               ? const SizedBox()
               : now.isBefore(startTime)
@@ -210,17 +219,6 @@ class ActivityInfoSideDots extends StatelessWidget {
                       endTime: endTime,
                       now: now,
                     ),
-          transitionBuilder: (child, animation) {
-            return SizeTransition(
-              axis: Axis.horizontal,
-              axisAlignment: -1,
-              child: FadeTransition(
-                child: child,
-                opacity: animation,
-              ),
-              sizeFactor: animation,
-            );
-          },
         );
       }),
     );

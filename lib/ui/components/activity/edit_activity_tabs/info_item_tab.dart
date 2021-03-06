@@ -369,13 +369,13 @@ class _LibraryButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(12.0.s, 4.0.s, 4.0.s, 4.0.s),
       child: ActionButton(
+        onPressed: onPressed,
+        themeData: darkButtonTheme,
         child: Icon(
           AbiliaIcons.show_text,
           size: defaultIconSize,
           color: AbiliaColors.black,
         ),
-        onPressed: onPressed,
-        themeData: darkButtonTheme,
       ),
     );
   }

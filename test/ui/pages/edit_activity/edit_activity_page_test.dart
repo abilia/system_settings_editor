@@ -31,6 +31,7 @@ void main() {
 
   final timeFieldFinder = find.byKey(TestKey.timePicker);
   final okButtonFinder = find.byType(OkButton);
+  final cancelButtonFinder = find.byType(CancelButton);
 
   MockSortableBloc mockSortableBloc;
   MockUserFileBloc mockUserFileBloc;
@@ -1672,6 +1673,51 @@ text''';
       await tester.sendKeyEvent(LogicalKeyboardKey.delete);
       await tester.pumpAndSettle();
       expect(find.text('10:3-'), findsOneWidget);
+    });
+
+    testWidgets(
+        'edit activity time with both times and setting removes end time',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        activityEndTimeEditable: false,
+      )));
+
+      final acivity = Activity.createNew(
+          title: '',
+          startTime: DateTime(2000, 11, 22, 11, 55),
+          duration: 3.hours());
+
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          givenActivity: acivity,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert -- that correct start and end time shows
+      expect(find.text('11:55 AM - 2:55 PM'), findsOneWidget);
+
+      // Act -- enter time input and cancel
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(cancelButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- that start and end time is the same
+      expect(find.text('11:55 AM - 2:55 PM'), findsOneWidget);
+
+      // Act -- enter time input and save
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(okButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- old end time does not show
+      expect(find.text('11:55 AM - 2:55 PM'), findsNothing);
+      expect(find.text('11:55 AM'), findsOneWidget);
     });
   });
 

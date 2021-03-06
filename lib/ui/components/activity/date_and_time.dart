@@ -183,7 +183,8 @@ class TimeIntervallPicker extends StatelessWidget {
                       child: TimeInputPage(
                         timeInput: TimeInput(
                             timeInterval.startTime,
-                            timeInterval.sameTime
+                            timeInterval.sameTime ||
+                                    !memoSettingsState.activityEndTimeEditable
                                 ? null
                                 : timeInterval.endTime),
                         is24HoursFormat:

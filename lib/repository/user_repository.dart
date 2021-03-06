@@ -84,7 +84,7 @@ class UserRepository extends Repository {
   }
 
   Future<User> getUserFromDb() async {
-    final user = await userDb.getUser();
+    final user = userDb.getUser();
     if (user == null) {
       throw UnauthorizedException();
     }

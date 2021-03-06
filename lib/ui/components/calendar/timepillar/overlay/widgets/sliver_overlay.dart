@@ -56,7 +56,7 @@ class SliverOverlay extends RenderObjectWidget {
   @override
   void updateRenderObject(
       BuildContext context, RenderSliverOverlay renderObject) {
-    renderObject..height = height;
+    renderObject.height = height;
   }
 }
 

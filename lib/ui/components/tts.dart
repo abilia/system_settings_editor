@@ -21,8 +21,8 @@ class Tts extends StatelessWidget {
   Widget build(BuildContext context) {
     if (onLongPress != null) {
       return _Tts(
-        child: child,
         onLongPress: onLongPress,
+        child: child,
       );
     }
     final _text = (Text text) => text.semanticsLabel ?? text.data;

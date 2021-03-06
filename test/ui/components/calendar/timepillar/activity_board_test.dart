@@ -140,7 +140,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final timelineYPostion =
-          await tester.getTopLeft(find.byType(Timeline).first).dy;
+          tester.getTopLeft(find.byType(Timeline).first).dy;
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
@@ -170,7 +170,7 @@ void main() {
       expect(find.byType(Timeline), findsOneWidget);
 
       final timelineYPostion =
-          await tester.getTopLeft(find.byType(Timeline).first).dy;
+          tester.getTopLeft(find.byType(Timeline).first).dy;
       final timelineMidPos = timelineYPostion + (Timeline.timelineHeight / 2);
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,

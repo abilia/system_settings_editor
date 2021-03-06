@@ -26,7 +26,7 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
         text: translate.yes,
         onPressed: () async {
           await Navigator.of(context).maybePop();
-          await onOk();
+          onOk();
         },
       ),
       body: _WarningContent(

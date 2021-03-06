@@ -156,15 +156,15 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                 children: [
                   AnimatedBuilder(
                     animation: matrixAnimation,
-                    child: Icon(
-                      widget.icon,
-                      size: smallIconSize,
-                      color: AbiliaColors.black60,
-                    ),
                     builder: (context, child) => Transform(
                       alignment: Alignment.center,
                       transform: matrixAnimation.value,
                       child: child,
+                    ),
+                    child: Icon(
+                      widget.icon,
+                      size: smallIconSize,
+                      color: AbiliaColors.black60,
                     ),
                   ),
                   Padding(

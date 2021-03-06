@@ -32,8 +32,8 @@ class ViewDialog extends StatelessWidget {
       child: Center(
         child: DefaultTextStyle(
           style: abiliaTextTheme.bodyText1,
-          child: body,
           textAlign: TextAlign.center,
+          child: body,
         ),
       ),
     );

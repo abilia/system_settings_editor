@@ -425,14 +425,14 @@ class HidePasswordButton extends StatelessWidget {
           duration: 150.milliseconds(),
           width: state.password.isNotEmpty ? ActionButton.size : 0.0,
           child: ActionButton(
+            onPressed: _onHidePasswordChanged,
+            themeData: darkButtonTheme,
             child: state.password.isNotEmpty
                 ? Icon(
                     state.hidePassword ? AbiliaIcons.show : AbiliaIcons.hide,
                     color: AbiliaColors.black,
                   )
                 : null,
-            onPressed: _onHidePasswordChanged,
-            themeData: darkButtonTheme,
           ),
         ),
       ),
