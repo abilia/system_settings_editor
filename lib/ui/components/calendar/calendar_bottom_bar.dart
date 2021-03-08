@@ -13,27 +13,24 @@ class CalendarBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CalendarViewBloc, CalendarViewState>(
-      builder: (context, state) => Theme(
-        data: bottomNavigationBarTheme,
-        child: BottomAppBar(
-          child: Container(
-            height: barHeigt,
-            padding: EdgeInsets.symmetric(horizontal: 16.0.s),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                AddActivityButton(day: day),
-                AbiliaTabBar(
-                  collapsedCondition: (i) => false,
-                  tabs: <Widget>[
-                    Icon(AbiliaIcons.day),
-                    Icon(AbiliaIcons.week),
-                    Icon(AbiliaIcons.month),
-                  ],
-                ),
-                MenuButton(),
-              ],
-            ),
+      builder: (context, state) => BottomAppBar(
+        child: Container(
+          height: barHeigt,
+          padding: EdgeInsets.symmetric(horizontal: 16.0.s),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              AddActivityButton(day: day),
+              AbiliaTabBar(
+                collapsedCondition: (i) => false,
+                tabs: <Widget>[
+                  Icon(AbiliaIcons.day),
+                  Icon(AbiliaIcons.week),
+                  Icon(AbiliaIcons.month),
+                ],
+              ),
+              MenuButton(),
+            ],
           ),
         ),
       ),

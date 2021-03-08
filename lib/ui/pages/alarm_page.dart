@@ -181,42 +181,38 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
     final displayCheckButton =
         activityOccasion.activity.checkable && !activityOccasion.isSignedOff;
     final closeButton = CloseButton(onPressed: () => popAlarm(context));
-    return Theme(
-      data: bottomNavigationBarTheme,
-      child: BottomAppBar(
-        elevation: 0.0,
-        child: Container(
-          color: AbiliaColors.black80,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(12.s, 8.s, 12.s, 12.s),
-            child: Row(
-              mainAxisAlignment: displayCheckButton
-                  ? MainAxisAlignment.spaceBetween
-                  : MainAxisAlignment.center,
-              children: [
-                if (!displayCheckButton)
-                  closeButton
-                else ...[
-                  Expanded(child: closeButton),
-                  SizedBox(width: 8.s),
-                  Expanded(
-                    child: IconAndTextButton(
-                      key: TestKey.activityCheckButton,
-                      text: translate.check,
-                      icon: AbiliaIcons.handi_check,
-                      onPressed: () async {
-                        final checked =
-                            await checkConfirmation(context, activityOccasion);
-                        if (checked) {
-                          await popAlarm(context);
-                        }
-                      },
-                      theme: greenButtonTheme,
-                    ),
+    return BottomAppBar(
+      elevation: 0.0,
+      child: Container(
+        color: AbiliaColors.black80,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(12.s, 8.s, 12.s, 12.s),
+          child: Row(
+            mainAxisAlignment: displayCheckButton
+                ? MainAxisAlignment.spaceBetween
+                : MainAxisAlignment.center,
+            children: [
+              if (!displayCheckButton)
+                closeButton
+              else ...[
+                Expanded(child: closeButton),
+                SizedBox(width: 8.s),
+                Expanded(
+                  child: GreenButton(
+                    key: TestKey.activityCheckButton,
+                    text: translate.check,
+                    icon: AbiliaIcons.handi_check,
+                    onPressed: () async {
+                      final checked =
+                          await checkConfirmation(context, activityOccasion);
+                      if (checked) {
+                        await popAlarm(context);
+                      }
+                    },
                   ),
-                ],
+                ),
               ],
-            ),
+            ],
           ),
         ),
       ),

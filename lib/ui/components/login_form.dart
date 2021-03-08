@@ -199,20 +199,12 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final textTheme = Theme.of(context).textTheme;
-    return Theme(
-      data: redButtonTheme,
-      child: Tts(
-        data: translate.login,
-        child: FlatButton(
-          color: AbiliaColors.red,
-          disabledColor: AbiliaColors.red40,
-          onPressed: onPressed,
-          child: Text(
-            translate.login,
-            style: textTheme.subtitle1.copyWith(color: AbiliaColors.white),
-          ),
-        ),
+    return Tts(
+      data: translate.login,
+      child: TextButton(
+        style: textButtonStyleRed,
+        onPressed: onPressed,
+        child: Text(translate.login),
       ),
     );
   }

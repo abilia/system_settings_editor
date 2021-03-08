@@ -54,13 +54,10 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
-      child: Theme(
-        data: lightButtonTheme,
-        child: Container(
-          decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
-          child: SafeArea(
-            child: content,
-          ),
+      child: Container(
+        decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
+        child: SafeArea(
+          child: content,
         ),
       ),
     );

@@ -281,6 +281,7 @@ class CollapsableWidget extends StatelessWidget {
   final bool collapsed;
   final EdgeInsets padding;
   final AlignmentGeometry alignment;
+  final Axis axis;
 
   const CollapsableWidget({
     Key key,
@@ -288,17 +289,20 @@ class CollapsableWidget extends StatelessWidget {
     @required this.collapsed,
     this.padding = EdgeInsets.zero,
     this.alignment = Alignment.topLeft,
+    this.axis = Axis.vertical,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final begin = collapsed ? 0.0 : 1.0;
+    final verical = axis == Axis.vertical;
     return TweenAnimationBuilder(
       duration: 300.milliseconds(),
       tween: Tween<double>(begin: begin, end: begin),
       builder: (context, value, widget) => ClipRect(
         child: Align(
           alignment: alignment,
-          heightFactor: value,
+          heightFactor: verical ? value : null,
+          widthFactor: verical ? null : value,
           child: value > 0.0
               ? Padding(
                   padding: padding,

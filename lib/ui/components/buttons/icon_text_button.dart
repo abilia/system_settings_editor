@@ -3,46 +3,29 @@ import 'package:seagull/ui/all.dart';
 class IconAndTextButton extends StatelessWidget {
   final String text;
   final IconData icon;
-  final ThemeData theme;
+  final ButtonStyle style;
   final VoidCallback onPressed;
-  final double minWidth;
-  final double height;
-
-  static final defaultMinWidth = 172.s, defaultHeight = 64.s;
 
   const IconAndTextButton({
     Key key,
     @required this.text,
     @required this.icon,
-    @required this.theme,
+    @required this.style,
     @required this.onPressed,
-    this.minWidth,
-    this.height,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Tts(
       data: text,
-      child: FlatButton.icon(
-        padding: EdgeInsets.only(
-          left: 10.s,
-          right: 20.s,
+      child: IconTheme(
+        data: lightIconThemeData,
+        child: TextButton.icon(
+          style: style,
+          onPressed: onPressed,
+          icon: Icon(icon),
+          label: Text(text),
         ),
-        minWidth: minWidth ?? defaultMinWidth,
-        height: height ?? defaultHeight,
-        icon: IconTheme(
-          data: theme.iconTheme,
-          child: Icon(icon),
-        ),
-        label: Text(
-          text,
-          style: theme.textTheme.button,
-        ),
-        color: theme.buttonColor,
-        onPressed: onPressed,
-        disabledColor: theme.disabledColor,
-        shape: theme.buttonTheme.shape,
       ),
     );
   }
@@ -65,7 +48,7 @@ class GreyButton extends StatelessWidget {
         text: text,
         icon: icon,
         onPressed: onPressed,
-        theme: greyButtonTheme,
+        style: iconTextButtonStyleDarkGrey,
       );
 }
 
@@ -86,7 +69,7 @@ class GreenButton extends StatelessWidget {
         text: text,
         icon: icon,
         onPressed: onPressed,
-        theme: greenButtonTheme,
+        style: iconTextButtonStyleGreen,
       );
 }
 
@@ -98,24 +81,14 @@ class NextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Tts(
         data: Translator.of(context).translate.next,
-        child: FlatButton(
-          minWidth: IconAndTextButton.defaultMinWidth,
-          height: IconAndTextButton.defaultHeight,
-          color: greenButtonTheme.buttonColor,
-          disabledColor: greenButtonTheme.disabledColor,
-          shape: greenButtonTheme.buttonTheme.shape,
+        child: TextButton(
+          style: iconTextButtonStyleGreen,
           onPressed: onPressed,
           child: Row(
             children: [
               const Spacer(flex: 63),
-              Text(
-                Translator.of(context).translate.next,
-                style: greenButtonTheme.textTheme.button,
-              ),
-              IconTheme(
-                data: greenButtonTheme.iconTheme,
-                child: Icon(AbiliaIcons.navigation_next),
-              ),
+              Text(Translator.of(context).translate.next),
+              Icon(AbiliaIcons.navigation_next),
               const Spacer(flex: 47),
             ],
           ),

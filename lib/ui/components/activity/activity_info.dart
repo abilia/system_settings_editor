@@ -60,55 +60,34 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    final signedOff = widget.activityDay.isSignedOff;
-    final theme = signedOff
-        ? Theme.of(context).copyWith(
-            buttonTheme: uncheckButtonThemeData,
-            buttonColor: AbiliaColors.transparentBlack20,
-          )
-        : Theme.of(context).copyWith(
-            buttonTheme: checkButtonThemeData,
-            buttonColor: AbiliaColors.green,
-          );
     return BlocBuilder<ClockBloc, DateTime>(builder: (context, now) {
       final occasion = widget.activityDay.toOccasion(now);
-      return AnimatedTheme(
-        duration: ActivityInfo.animationDuration,
-        data: theme.copyWith(
-            cardColor: widget.activityDay.end.occasion(now) == Occasion.past
-                ? AbiliaColors.white110
-                : AbiliaColors.white),
-        child: Column(
-          children: <Widget>[
-            TimeRow(widget.activityDay),
-            Expanded(
-              child: Container(
-                decoration: boxDecoration,
-                child: ActivityContainer(
-                  activityDay: widget.activityDay,
-                  previewImage: widget.previewImage,
-                  isAlarm: widget.isAlarm,
-                ),
+      return Column(
+        children: <Widget>[
+          TimeRow(widget.activityDay),
+          Expanded(
+            child: Container(
+              decoration: boxDecoration,
+              child: ActivityContainer(
+                activityDay: widget.activityDay,
+                previewImage: widget.previewImage,
+                isAlarm: widget.isAlarm,
               ),
             ),
-            if (!widget.isAlarm && activity.checkable && !occasion.isSignedOff)
-              Padding(
-                padding: EdgeInsets.only(top: 7.0.s),
-                child: CheckButton(
-                  key: TestKey.activityCheckButton,
-                  iconData: AbiliaIcons.handi_check,
-                  text: translate.check,
-                  onPressed: () async {
-                    await checkConfirmation(
-                      context,
-                      occasion,
-                    );
-                  },
-                ),
+          ),
+          if (!widget.isAlarm && activity.checkable && !occasion.isSignedOff)
+            Padding(
+              padding: EdgeInsets.only(top: 7.0.s),
+              child: CheckButton(
+                onPressed: () async {
+                  await checkConfirmation(
+                    context,
+                    occasion,
+                  );
+                },
               ),
-          ],
-        ),
+            ),
+        ],
       );
     });
   }
@@ -276,38 +255,31 @@ class Attachment extends StatelessWidget with ActivityMixin {
 
 class CheckButton extends StatelessWidget {
   final VoidCallback onPressed;
-  final IconData iconData;
-  final String text;
 
   const CheckButton({
-    Key key,
     this.onPressed,
-    this.iconData,
-    this.text,
-  }) : super(key: key);
+  }) : super(key: TestKey.activityCheckButton);
 
   @override
   Widget build(BuildContext context) {
-    final theme = greenButtonTheme;
+    final text = Translator.of(context).translate.check;
     return Tts(
       data: text,
-      child: Container(
-        padding: const EdgeInsets.all(4.0),
-        decoration: BoxDecoration(
-          color: theme.scaffoldBackgroundColor,
-          borderRadius: borderRadius,
-        ),
-        child: FlatButton.icon(
-          icon: IconTheme(
-            data: theme.iconTheme,
-            child: Icon(iconData),
-          ),
-          label: Text(
-            text,
-            style: theme.textTheme.button,
-          ),
-          color: theme.buttonColor,
+      child: IconTheme(
+        data: lightIconThemeData,
+        child: TextButton.icon(
           onPressed: onPressed,
+          style: ButtonStyle(
+            textStyle: MaterialStateProperty.all(abiliaTextTheme.bodyText1),
+            minimumSize: MaterialStateProperty.all(Size(0.0, 48.0.s)),
+            padding: MaterialStateProperty.all(
+              EdgeInsets.fromLTRB(10.0.s, 10.0.s, 20.0.s, 10.0.s),
+            ),
+            backgroundColor: buttonBackgroundGreen,
+            foregroundColor: foregroundLight,
+          ),
+          icon: Icon(AbiliaIcons.handi_check),
+          label: Text(text),
         ),
       ),
     );
