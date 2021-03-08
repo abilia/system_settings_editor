@@ -189,3 +189,28 @@ final actionButtonStyleLight = _actionButtonStyle.copyWith(
     return ligthShapeBorder;
   }),
 );
+
+ButtonStyle tabButtonStyle({
+  BorderRadius borderRadius,
+  bool isSelected,
+}) =>
+    isSelected
+        ? ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                  borderRadius: borderRadius, side: BorderSide.none),
+            ),
+            backgroundColor: MaterialStateProperty.all(AbiliaColors.green),
+            foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
+          )
+        : ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: borderRadius,
+                side: BorderSide(color: AbiliaColors.transparentBlack30),
+              ),
+            ),
+            backgroundColor:
+                MaterialStateProperty.all(AbiliaColors.transparentBlack20),
+            foregroundColor: MaterialStateProperty.all(AbiliaColors.black),
+          );
