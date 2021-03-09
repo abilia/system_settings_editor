@@ -658,8 +658,8 @@ packages:
     dependency: "direct main"
     description:
       path: "permission_handler/"
-      ref: "3b6267acdc3102984e3a0457043f7e9ee691abc8"
-      resolved-ref: "3b6267acdc3102984e3a0457043f7e9ee691abc8"
+      ref: "permission_handler_v5.1.0+10+fork.2"
+      resolved-ref: "2a31e90e7c09af4d4ebd6812d15366cc2fe0f951"
       url: "git://github.com/abilia/flutter-permission-handler.git"
     source: git
     version: "5.0.1+1"

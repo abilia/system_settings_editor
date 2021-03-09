@@ -44,7 +44,7 @@ dependencies:
   permission_handler:
     git:
       url: git://github.com/abilia/flutter-permission-handler.git
-      ref: 3b6267acdc3102984e3a0457043f7e9ee691abc8 # fa480eb2a3de9bbe6a5f776575d8da823e821d3f
+      ref: permission_handler_v5.1.0+10+fork.2 # permission_handler_v6.0.1+fork
       path: permission_handler/
   photo_view: ^0.11.0
   rxdart: ^0.26.0
