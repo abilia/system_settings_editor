@@ -64,7 +64,7 @@ final textButtonStyleRed = baseButtonStyle.copyWith(
 
 final iconTextButtonStyle = baseButtonStyle.copyWith(
   padding: MaterialStateProperty.all(
-    EdgeInsets.fromLTRB(0.0, 20.s, 8.0.s, 20.0),
+    EdgeInsets.fromLTRB(0.0, 20.s, 8.0.s, 20.0.s),
   ),
   minimumSize: MaterialStateProperty.all(Size(172.0.s, 64.0.s)),
 );
