@@ -90,6 +90,8 @@ abstract class Translated {
 
   final String now = 'Now';
 
+  final String week = 'Week';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -482,6 +484,9 @@ class SV extends Translated {
 
   @override
   final String now = 'Nu';
+
+  @override
+  final String week = 'Vecka';
 
   @override
   final String reminders = 'Påminnelser';
@@ -1013,6 +1018,9 @@ class DA extends Translated {
   final String now = 'Nu';
 
   @override
+  final String week = 'Uge';
+
+  @override
   final String reminders = 'Påmindelser';
 
   @override
@@ -1541,6 +1549,9 @@ class NL extends Translated {
   final String now = 'Nu';
 
   @override
+  final String week = 'Week';
+
+  @override
   final String reminders = 'Herinneringen';
 
   @override
@@ -2067,6 +2078,9 @@ class FI extends Translated {
   final String now = 'Nyt';
 
   @override
+  final String week = 'Viikko';
+
+  @override
   final String reminders = 'Muistutukset';
 
   @override
@@ -2591,6 +2605,9 @@ class DE extends Translated {
 
   @override
   final String now = 'Jetzt';
+
+  @override
+  final String week = 'Woche';
 
   @override
   final String reminders = 'Erinnerungen';
@@ -3121,6 +3138,9 @@ class NB extends Translated {
 
   @override
   final String now = 'Nå';
+
+  @override
+  final String week = 'Uke';
 
   @override
   final String reminders = 'Påminnelser';

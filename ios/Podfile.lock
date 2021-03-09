@@ -238,7 +238,7 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 971df89b48ae5ee4cc2bf6935f3857a525d28550
   FirebaseInstanceID: 5ccdee6a84e6b4bb5316de0a8cd88bc749ba490d
   FirebaseMessaging: 68d1bcb14880189558a8ae57167abe0b7e417232
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_appcenter_bundle: bbf1dd726a7a090027c88201a62b83269a56f075
   flutter_archive: e7010a2779b4ff1483b00386bfb4e847f5836182
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743

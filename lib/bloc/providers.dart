@@ -82,6 +82,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 pushBloc: context.read<PushBloc>(),
               )..add(LoadActivities()),
             ),
+            BlocProvider<WeekCalendarBloc>(
+              create: (context) => WeekCalendarBloc(
+                activitiesBloc: context.read<ActivitiesBloc>(),
+                clockBloc: context.read<ClockBloc>(),
+              ),
+            ),
             BlocProvider<UserFileBloc>(
               create: (context) => UserFileBloc(
                 userFileRepository: context.read<UserFileRepository>(),

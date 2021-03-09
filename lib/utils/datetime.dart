@@ -12,6 +12,8 @@ extension DateTimeExtensions on DateTime {
   DateTime onlyMinutes() => DateTime(year, month, day, hour, minute);
 
   DateTime nextDay() => copyWith(day: day + 1);
+  DateTime nextWeek() => copyWith(day: day + 7);
+  DateTime previousWeek() => copyWith(day: day - 7);
   DateTime previousDay() => copyWith(day: day - 1);
   DateTime millisecondBefore() =>
       DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch - 1);
@@ -29,6 +31,8 @@ extension DateTimeExtensions on DateTime {
             ? ((minute ~/ minutesPerDot) + 1) * minutesPerDot
             : (minute ~/ minutesPerDot) * minutesPerDot,
       );
+
+  DateTime firstInWeek() => subtract(Duration(days: weekday - 1));
 
   DateTime copyWith(
           {int year,
