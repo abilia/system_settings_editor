@@ -136,7 +136,7 @@ void main() {
     expect(find.byIcon(AbiliaIcons.show), findsWidgets);
 
     // Tap show/hide-button
-    await tester.tap(find.byKey(TestKey.hidePassword));
+    await tester.tap(find.byType(HidePasswordButton));
     await tester.pumpAndSettle();
 
     // Text shows and show/hide-button visible with show icon
@@ -160,7 +160,7 @@ void main() {
 
     await tester.enterText_(
         find.byKey(TestKey.passwordInput), Fakes.incorrectPassword);
-    final button = tester.widget<FlatButton>(find.byKey(TestKey.loggInButton));
+    final button = tester.widget<LoginButton>(find.byType(LoginButton));
     expect(button.onPressed, null);
   });
 
@@ -169,7 +169,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
-    final button = tester.widget<FlatButton>(find.byKey(TestKey.loggInButton));
+    final button = tester.widget<LoginButton>(find.byType(LoginButton));
     expect(button.onPressed, null);
   });
 
@@ -182,7 +182,7 @@ void main() {
     await tester.enterText_(
         find.byKey(TestKey.passwordInput), Fakes.incorrectPassword);
     await tester.pump();
-    await tester.tap(find.byKey(TestKey.loggInButton));
+    await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsNothing);
     expect(find.byKey(TestKey.loginError), findsOneWidget);
@@ -195,7 +195,7 @@ void main() {
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
     await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
     await tester.pump();
-    await tester.tap(find.byKey(TestKey.loggInButton));
+    await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
   });
@@ -208,8 +208,8 @@ void main() {
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
     await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
     await tester.pump();
-    expect(find.byKey(TestKey.loggInButton), findsOneWidget);
-    await tester.tap(find.byKey(TestKey.loggInButton));
+    expect(find.byType(LoginButton), findsOneWidget);
+    await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
 
@@ -227,7 +227,7 @@ void main() {
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
     await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
     await tester.pump();
-    await tester.tap(find.byKey(TestKey.loggInButton));
+    await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
   });
@@ -247,10 +247,9 @@ void main() {
         find.byKey(TestKey.passwordInput), Fakes.incorrectPassword);
     await tester.verifyTts(find.byKey(TestKey.passwordInput),
         exact: translate.password);
-    await tester.verifyTts(find.byKey(TestKey.loggInButton),
-        exact: translate.login);
+    await tester.verifyTts(find.byType(LoginButton), exact: translate.login);
     await tester.pump();
-    await tester.tap(find.byKey(TestKey.loggInButton));
+    await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
 
     await tester.verifyTts(find.byKey(TestKey.loginError),
@@ -270,7 +269,7 @@ void main() {
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
     await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
     await tester.pump();
-    await tester.tap(find.byKey(TestKey.loggInButton));
+    await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(LicenseErrorDialog), findsOneWidget);
   });
@@ -285,7 +284,7 @@ void main() {
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
     await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(TestKey.loggInButton));
+    await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
 
@@ -309,7 +308,7 @@ void main() {
       await tester.enterText_(
           find.byKey(TestKey.userNameInput), Fakes.username);
       await tester.pump();
-      await tester.tap(find.byKey(TestKey.loggInButton));
+      await tester.tap(find.byType(LoginButton));
       await tester.pumpAndSettle();
       expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
       expect(find.byType(RequestFullscreenNotificationButton), findsOneWidget);
@@ -327,7 +326,7 @@ void main() {
       await tester.enterText_(
           find.byKey(TestKey.userNameInput), Fakes.username);
       await tester.pump();
-      await tester.tap(find.byKey(TestKey.loggInButton));
+      await tester.tap(find.byType(LoginButton));
       await tester.pumpAndSettle();
       expect(find.byType(FullscreenAlarmInfoDialog), findsNothing);
     });
@@ -382,7 +381,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(LoginPage), findsOneWidget);
 
-    final button = tester.widget<FlatButton>(find.byKey(TestKey.loggInButton));
+    final button = tester.widget<LoginButton>(find.byType(LoginButton));
     expect(button.onPressed, null);
   });
 
@@ -401,7 +400,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(LoginPage), findsOneWidget);
 
-    final button = tester.widget<FlatButton>(find.byKey(TestKey.loggInButton));
+    final button = tester.widget<LoginButton>(find.byType(LoginButton));
     expect(button.onPressed, null);
   });
 }

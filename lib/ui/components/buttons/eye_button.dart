@@ -18,8 +18,7 @@ class EyeButton extends StatelessWidget {
         elevation: 3,
         shadowColor: AbiliaColors.black,
         borderRadius: borderRadius,
-        child: ActionButton(
-          themeData: blackButtonTheme,
+        child: ActionButtonBlack(
           onPressed: () async {
             final settings = await showViewDialog<EyeButtonSettings>(
               context: context,

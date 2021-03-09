@@ -67,18 +67,13 @@ class DayCalendar extends StatelessWidget {
               day: pickedDay,
               leftAction: ActionButton(
                 onPressed: () => dayPickerBloc.add(PreviousDay()),
-                child: Icon(
-                  AbiliaIcons.return_to_previous_page,
-                  size: defaultIconSize,
-                ),
+                child: Icon(AbiliaIcons.return_to_previous_page),
               ),
               rightAction: ActionButton(
                 onPressed: () => dayPickerBloc.add(NextDay()),
-                child: Icon(
-                  AbiliaIcons.go_to_next_page,
-                  size: defaultIconSize,
-                ),
-              ))
+                child: Icon(AbiliaIcons.go_to_next_page),
+              ),
+            )
           : DayAppBar(day: pickedDay);
 }
 

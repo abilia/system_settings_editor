@@ -284,6 +284,7 @@ class PasswordInput extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(width: 12.s),
             HidePasswordButton(
               loginFormBloc: loginFormBloc,
             )
@@ -361,7 +362,12 @@ class _PasswordInputPageState
           obscured: true,
         ),
         child: Padding(
-          padding: ordinaryPadding,
+          padding: EdgeInsets.fromLTRB(
+            leftPadding,
+            verticalPadding,
+            0,
+            verticalPadding,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -387,10 +393,13 @@ class _PasswordInputPageState
                       ),
                     ),
                   ),
+                  SizedBox(width: 12.s),
                   HidePasswordButton(
-                    key: TestKey.hidePassword,
                     loginFormBloc: widget.loginFormBloc,
-                  )
+                    padding: EdgeInsets.only(
+                      right: horizontalPadding,
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -409,30 +418,24 @@ class HidePasswordButton extends StatelessWidget {
   const HidePasswordButton({
     Key key,
     @required this.loginFormBloc,
+    this.padding = EdgeInsets.zero,
   }) : super(key: key);
 
   final LoginFormBloc loginFormBloc;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       cubit: loginFormBloc,
-      builder: (context, state) => Padding(
-        padding: state.password.isNotEmpty
-            ? EdgeInsets.only(left: 12.s)
-            : EdgeInsets.zero,
-        child: AnimatedContainer(
-          duration: 150.milliseconds(),
-          width: state.password.isNotEmpty ? ActionButton.size : 0.0,
-          child: ActionButton(
-            onPressed: _onHidePasswordChanged,
-            themeData: darkButtonTheme,
-            child: state.password.isNotEmpty
-                ? Icon(
-                    state.hidePassword ? AbiliaIcons.show : AbiliaIcons.hide,
-                    color: AbiliaColors.black,
-                  )
-                : null,
+      builder: (context, state) => CollapsableWidget(
+        collapsed: state.password.isEmpty,
+        padding: padding,
+        axis: Axis.horizontal,
+        child: ActionButtonDark(
+          onPressed: _onHidePasswordChanged,
+          child: Icon(
+            state.hidePassword ? AbiliaIcons.show : AbiliaIcons.hide,
           ),
         ),
       ),
