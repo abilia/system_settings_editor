@@ -598,30 +598,19 @@ class _AmPmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = 59.0.s;
-    final height = 48.0.s;
-    final isSelected = value == groupValue;
     return Tts(
       data: text,
-      child: FlatButton(
+      child: TextButton(
         key: buttonKey,
-        height: height,
-        minWidth: width,
         onPressed: onPressed,
-        shape: RoundedRectangleBorder(
+        style: tabButtonStyle(
           borderRadius: borderRadius,
-          side: isSelected
-              ? BorderSide.none
-              : BorderSide(color: AbiliaColors.transparentBlack30),
+          isSelected: value == groupValue,
+        ).copyWith(
+          minimumSize: MaterialStateProperty.all(Size(59.0.s, 48.0.s)),
+          textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle1),
         ),
-        color:
-            isSelected ? AbiliaColors.green : AbiliaColors.transparentBlack20,
-        child: Text(
-          text,
-          style: abiliaTextTheme.subtitle1.copyWith(
-            color: isSelected ? AbiliaColors.white : AbiliaColors.black,
-          ),
-        ),
+        child: Text(text),
       ),
     );
   }

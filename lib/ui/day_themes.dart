@@ -94,7 +94,7 @@ DayTheme _danish(int weekday) {
   }
 }
 
-ThemeData _lightAppBarTheme = lightButtonTheme.copyWith(
+ThemeData _lightAppBarTheme = abiliaTheme.copyWith(
   appBarTheme: abiliaTheme.appBarTheme.copyWith(
     brightness: Brightness.dark,
   ),
@@ -103,11 +103,13 @@ ThemeData _lightAppBarTheme = lightButtonTheme.copyWith(
     button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white),
     subtitle1: abiliaTextTheme.subtitle1.copyWith(color: AbiliaColors.white),
   ),
+  textButtonTheme: TextButtonThemeData(style: actionButtonStyleLight),
 );
 
-ThemeData _darkAppBarTheme = darkButtonTheme.copyWith(
+ThemeData _darkAppBarTheme = abiliaTheme.copyWith(
   primaryColor: AbiliaColors.white,
   appBarTheme: abiliaTheme.appBarTheme.copyWith(
     brightness: Brightness.light,
   ),
+  textButtonTheme: TextButtonThemeData(style: actionButtonStyleDark),
 );

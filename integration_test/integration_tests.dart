@@ -95,7 +95,7 @@ extension on WidgetTester {
   }
 
   Future<void> createActivityWithNote(String note) async {
-    await tap(find.byKey(TestKey.addActivity));
+    await tap(find.byType(AddActivityButton));
     await pumpAndSettle();
 
     await tap(find.byType(NextButton));
@@ -161,7 +161,7 @@ extension on WidgetTester {
     await tap(find.byType(OkButton));
     await pumpAndSettle();
 
-    await tap(find.byKey(TestKey.loggInButton));
+    await tap(find.byType(LoginButton));
     await pumpAndSettle();
   }
 

@@ -21,14 +21,12 @@ class GoToNowButton extends StatelessWidget {
                   shadowColor: AbiliaColors.black,
                   borderRadius: borderRadius,
                   child: IconAndTextButton(
-                    minWidth: 50.s,
-                    height: 48.s,
                     key: TestKey.goToNowButton,
                     text: Translator.of(context).translate.now,
                     icon: AbiliaIcons.reset,
                     onPressed: () =>
                         context.read<ScrollPositionBloc>().add(GoToNow()),
-                    theme: nowButtonTheme,
+                    style: actionIconTextButtonStyleRed,
                   ),
                 )
               : null,

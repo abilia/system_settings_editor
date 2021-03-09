@@ -248,7 +248,7 @@ void main() {
       await tester.enterText_(
           find.byKey(TestKey.userNameInput), Fakes.username);
       await tester.pump();
-      await tester.tap(find.byKey(TestKey.loggInButton));
+      await tester.tap(find.byType(LoginButton));
       await tester.pumpAndSettle();
 
       // Assert no NavigatableAlarmPage

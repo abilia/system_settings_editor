@@ -131,25 +131,11 @@ class _LoginFormState extends State<LoginForm> {
                     const Spacer(flex: 191),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.s),
-                    child: Theme(
-                      data: redButtonTheme,
-                      child: Tts(
-                        data: translate.login,
-                        child: FlatButton(
-                          color: AbiliaColors.red,
-                          disabledColor: AbiliaColors.red40,
-                          key: TestKey.loggInButton,
-                          onPressed: loginState is! LoginLoading &&
-                                  formState.isFormValid
+                    child: LoginButton(
+                      onPressed:
+                          loginState is! LoginLoading && formState.isFormValid
                               ? _onLoginButtonPressed
                               : null,
-                          child: Text(
-                            translate.login,
-                            style: theme.textTheme.subtitle1
-                                .copyWith(color: AbiliaColors.white),
-                          ),
-                        ),
-                      ),
                     ),
                   ),
                   padding32,
@@ -200,5 +186,26 @@ class _LoginFormState extends State<LoginForm> {
 
   void _onPasswordChanged() {
     _loginFormBloc.add(PasswordChanged(password: _passwordController.text));
+  }
+}
+
+class LoginButton extends StatelessWidget {
+  const LoginButton({
+    Key key,
+    this.onPressed,
+  }) : super(key: key);
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    return Tts(
+      data: translate.login,
+      child: TextButton(
+        style: textButtonStyleRed,
+        onPressed: onPressed,
+        child: Text(translate.login),
+      ),
+    );
   }
 }

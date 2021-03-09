@@ -31,8 +31,6 @@ final abiliaTheme = ThemeData(
   fontFamily: 'Roboto',
   inputDecorationTheme: inputDecorationTheme,
   textTheme: abiliaTextTheme,
-  buttonTheme: baseButtonTheme,
-  buttonColor: AbiliaColors.transparentBlack20,
   highlightColor: AbiliaColors.transparentBlack40,
   iconTheme: IconThemeData(
     size: defaultIconSize,
@@ -44,7 +42,6 @@ final abiliaTheme = ThemeData(
     selectionColor: AbiliaColors.white120,
   ),
   appBarTheme: const AppBarTheme(color: AbiliaColors.black80),
-  disabledColor: AbiliaColors.red40,
   errorColor: AbiliaColors.red,
   bottomAppBarTheme: const BottomAppBarTheme(color: AbiliaColors.black80),
   cupertinoOverrideTheme: const CupertinoThemeData(
@@ -81,6 +78,7 @@ final borderRadiusLeft = BorderRadius.only(
   bottomLeft: radius,
 );
 
+// Borders
 final BorderSide borderSide =
     BorderSide(color: AbiliaColors.white140, width: 1.0.s);
 final Border currentActivityBorder = Border.fromBorderSide(
@@ -104,6 +102,20 @@ final darkShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
   side: BorderSide(color: AbiliaColors.transparentBlack30, width: 1.0.s),
 );
+final inputBorder = OutlineInputBorder(
+  borderSide: borderSide,
+  borderRadius: borderRadius,
+);
+final redOutlineInputBorder = OutlineInputBorder(
+  borderSide: BorderSide(color: AbiliaColors.red, width: 1.0.s),
+  borderRadius: borderRadius,
+);
+final transparentOutlineInputBorder = OutlineInputBorder(
+  borderSide: BorderSide(color: Colors.transparent, width: 1.0.s),
+  borderRadius: borderRadius,
+);
+
+// Box decorations
 final boxDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: border,
@@ -161,167 +173,13 @@ BoxDecoration getBoxDecoration(bool current, bool inactive) => inactive
 BoxDecoration selectedBoxDecoration(bool selected) =>
     selected ? greenBoarderWhiteBoxDecoration : whiteBoxDecoration;
 
-final inputBorder = OutlineInputBorder(
-  borderSide: borderSide,
-  borderRadius: borderRadius,
-);
-
-final redOutlineInputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: AbiliaColors.red, width: 1.0.s),
-  borderRadius: borderRadius,
-);
-
-final transparentOutlineInputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: Colors.transparent, width: 1.0.s),
-  borderRadius: borderRadius,
-);
-
-final baseButtonTheme = ButtonThemeData(
-  height: 64.0.s,
-  minWidth: 48.0.s,
-  shape: ligthShapeBorder,
-);
-
-final redButtonThemeData = baseButtonTheme.copyWith(
-  minWidth: double.infinity,
-  buttonColor: AbiliaColors.red,
-  disabledColor: AbiliaColors.red40,
-  highlightColor: AbiliaColors.red120,
-);
-
-final greenButtonThemeData = baseButtonTheme.copyWith(
-  minWidth: double.infinity,
-  buttonColor: AbiliaColors.green,
-  disabledColor: AbiliaColors.green40,
-  highlightColor: AbiliaColors.green120,
-  shape: RoundedRectangleBorder(borderRadius: borderRadius),
-);
-
-final checkButtonThemeData = ButtonThemeData(
-  height: 48.s,
-  minWidth: 111.s,
-  shape: darkShapeBorder,
-  buttonColor: AbiliaColors.green,
-  disabledColor: AbiliaColors.green40,
-  highlightColor: AbiliaColors.green120,
-);
-
-final uncheckButtonThemeData = checkButtonThemeData.copyWith(
-  buttonColor: AbiliaColors.transparentBlack20,
-  highlightColor: AbiliaColors.transparentBlack40,
-);
-
-final actionButtonThemeData = baseButtonTheme.copyWith(
-  disabledColor: Colors.transparent,
-  height: 48.s,
-);
-
-final lightActionButtonThemeData = actionButtonThemeData.copyWith(
-  buttonColor: AbiliaColors.white,
-  highlightColor: AbiliaColors.transparentWhite40,
-  disabledColor: Colors.transparent,
-  shape: ligthShapeBorder,
-);
-
-final darkActionButtonThemeData = baseButtonTheme.copyWith(
-  buttonColor: AbiliaColors.black,
-  highlightColor: AbiliaColors.transparentBlack40,
-  shape: darkShapeBorder,
-);
-
-final darkButtonTheme = abiliaTheme.copyWith(
-  buttonTheme: darkActionButtonThemeData,
-  textTheme: abiliaTheme.textTheme.copyWith(
-      button: abiliaTheme.textTheme.button.copyWith(color: AbiliaColors.black)),
-  buttonColor: AbiliaColors.transparentBlack20,
-);
-
-final lightButtonTheme = abiliaTheme.copyWith(
-  buttonTheme: lightActionButtonThemeData,
-  buttonColor: AbiliaColors.transparentWhite20,
-  disabledColor: AbiliaColors.transparentWhite40,
-);
-
-final redButtonTheme = abiliaTheme.copyWith(
-  buttonTheme: redButtonThemeData,
-  buttonColor: AbiliaColors.red,
-  textTheme: abiliaTheme.textTheme.copyWith(
-    button: abiliaTheme.textTheme.subtitle1.copyWith(
-      color: AbiliaColors.white,
-    ),
-  ),
-);
-
-final logoutButtonTheme = abiliaTheme.copyWith(
-  buttonTheme: redButtonThemeData.copyWith(
-    shape: RoundedRectangleBorder(borderRadius: borderRadius),
-  ),
-  buttonColor: AbiliaColors.red,
-  textTheme: abiliaTheme.textTheme.copyWith(
-    button: abiliaTheme.textTheme.subtitle1.copyWith(
-      color: AbiliaColors.white,
-    ),
-  ),
-  iconTheme: whiteIconThemeData,
-);
-
-final whiteIconThemeData = IconThemeData(
+// Icon theme
+final lightIconThemeData = IconThemeData(
   size: buttonIconSize,
   color: AbiliaColors.white,
 );
 
-final greenButtonTheme = abiliaTheme.copyWith(
-  buttonTheme: greenButtonThemeData,
-  buttonColor: AbiliaColors.green,
-  disabledColor: AbiliaColors.green40,
-  iconTheme: whiteIconThemeData,
-);
-
-final greyButtonTheme = abiliaTheme.copyWith(
-  buttonColor: AbiliaColors.transparentWhite20,
-  scaffoldBackgroundColor: AbiliaColors.black80,
-  iconTheme: whiteIconThemeData,
-);
-
-final blackButtonTheme = abiliaTheme.copyWith(
-  buttonColor: AbiliaColors.black80,
-  iconTheme: whiteIconThemeData,
-);
-
-final nowButtonTheme = redButtonTheme.copyWith(
-  buttonTheme: redButtonThemeData.copyWith(
-    shape: RoundedRectangleBorder(
-      side: BorderSide(color: AbiliaColors.red140),
-      borderRadius: borderRadius,
-    ),
-  ),
-  buttonColor: AbiliaColors.red,
-  disabledColor: AbiliaColors.red40,
-  highlightColor: AbiliaColors.red120,
-  textTheme: abiliaTextTheme.copyWith(
-    button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white),
-  ),
-  iconTheme: whiteIconThemeData,
-);
-
-final alreadySelectedChoiceButtonTheme = abiliaTheme.copyWith(
-    buttonTheme: lightActionButtonThemeData,
-    buttonColor: AbiliaColors.black,
-    textTheme: abiliaTextTheme.copyWith(
-        button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white)));
-
-final availableToSelectButtonTheme = abiliaTheme.copyWith(
-    buttonTheme: lightActionButtonThemeData,
-    buttonColor: AbiliaColors.white,
-    textTheme: abiliaTextTheme.copyWith(
-        button: abiliaTextTheme.button.copyWith(color: AbiliaColors.black)));
-
-final bottomNavigationBarTheme = abiliaTheme.copyWith(
-  buttonTheme: lightActionButtonThemeData.copyWith(shape: ligthShapeBorder),
-  buttonColor: AbiliaColors.transparentWhite20,
-  iconTheme: IconThemeData(size: defaultIconSize),
-);
-
+// Text theme
 final abiliaTextTheme = GoogleFonts.robotoTextTheme(
   TextTheme(
     headline1: TextStyle(

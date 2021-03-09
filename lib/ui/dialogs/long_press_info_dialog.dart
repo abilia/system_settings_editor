@@ -6,49 +6,45 @@ class LongPressInfoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final theme = darkButtonTheme;
-    return Theme(
-      data: theme,
-      child: ViewDialog(
-        bodyPadding: EdgeInsets.symmetric(horizontal: 20.s),
-        expanded: true,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Spacer(flex: 128),
-            Stack(children: [
-              buildPreviewActivityCard(translate),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Icon(
-                  AbiliaIcons.speak_on_entry,
-                  size: hugeIconSize,
-                ),
-              ),
-            ]),
-            Spacer(flex: 80),
-            Tts(
-              child: Text(
-                translate.longpressToSpeak,
-                textAlign: TextAlign.center,
-                style: abiliaTextTheme.headline6,
+    return ViewDialog(
+      bodyPadding: EdgeInsets.symmetric(horizontal: 20.s),
+      expanded: true,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Spacer(flex: 128),
+          Stack(children: [
+            buildPreviewActivityCard(translate),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Icon(
+                AbiliaIcons.speak_on_entry,
+                size: hugeIconSize,
               ),
             ),
-            Tts(
-              child: Text(
-                translate.longPressInfoText,
-                textAlign: TextAlign.center,
-                style: abiliaTextTheme.bodyText2.copyWith(
-                  color: AbiliaColors.black75,
-                ),
+          ]),
+          Spacer(flex: 80),
+          Tts(
+            child: Text(
+              translate.longpressToSpeak,
+              textAlign: TextAlign.center,
+              style: abiliaTextTheme.headline6,
+            ),
+          ),
+          Tts(
+            child: Text(
+              translate.longPressInfoText,
+              textAlign: TextAlign.center,
+              style: abiliaTextTheme.bodyText2.copyWith(
+                color: AbiliaColors.black75,
               ),
             ),
-            Spacer(flex: 111),
-          ],
-        ),
-        backNavigationWidget: CloseButton(
-          onPressed: () => Navigator.of(context).maybePop(false),
-        ),
+          ),
+          Spacer(flex: 111),
+        ],
+      ),
+      backNavigationWidget: CloseButton(
+        onPressed: () => Navigator.of(context).maybePop(false),
       ),
     );
   }

@@ -11,8 +11,7 @@ class AddActivityButton extends StatelessWidget {
   final DateTime day;
 
   @override
-  Widget build(BuildContext context) => ActionButton(
-        key: TestKey.addActivity,
+  Widget build(BuildContext context) => ActionButtonLight(
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => CopiedAuthProviders(

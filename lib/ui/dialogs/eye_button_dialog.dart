@@ -191,37 +191,22 @@ class _SelectButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSelected = value == groupValue;
-    final textColor = isSelected ? AbiliaColors.white : AbiliaColors.black;
     return Tts(
       data: text,
-      child: FlatButton(
+      child: TextButton(
         onPressed: onPressed,
-        shape: RoundedRectangleBorder(
+        style: tabButtonStyle(
           borderRadius: borderRadius,
-          side: isSelected
-              ? BorderSide.none
-              : BorderSide(color: AbiliaColors.transparentBlack30),
+          isSelected: value == groupValue,
+        ).copyWith(
+          textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle2),
+          padding: MaterialStateProperty.all(EdgeInsets.only(bottom: 8.0.s)),
         ),
-        color:
-            isSelected ? AbiliaColors.green : AbiliaColors.transparentBlack20,
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 8.0.s),
-          child: Column(
-            children: [
-              Text(
-                text,
-                style: abiliaTextTheme.subtitle2.copyWith(
-                  color: textColor,
-                ),
-              ),
-              IconTheme(
-                  data: Theme.of(context).iconTheme.copyWith(
-                        color: textColor,
-                      ),
-                  child: Icon(icon)),
-            ],
-          ),
+        child: Column(
+          children: [
+            Text(text),
+            Icon(icon),
+          ],
         ),
       ),
     );

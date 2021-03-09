@@ -14,7 +14,7 @@ class MenuButton extends StatelessWidget {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            ActionButton(
+            ActionButtonLight(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => CopiedAuthProviders(

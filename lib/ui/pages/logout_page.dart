@@ -93,6 +93,6 @@ class LogoutButton extends StatelessWidget {
         icon: AbiliaIcons.power_off_on,
         onPressed: () =>
             BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut()),
-        theme: logoutButtonTheme,
+        style: iconTextButtonStyleRed,
       );
 }

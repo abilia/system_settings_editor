@@ -138,7 +138,7 @@ void main() {
       testWidgets('New activity', (WidgetTester tester) async {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
         expect(find.byType(CreateActivityPage), findsOneWidget);
         await tester.tap(find.byKey(TestKey.newActivityChoice));
@@ -152,7 +152,7 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
         expect(find.byType(CreateActivityPage), findsOneWidget);
         await tester.tap(find.byKey(TestKey.basicActivityChoice));
@@ -175,7 +175,7 @@ void main() {
         await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
             sortableBloc: sortableBlocMock));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
         expect(find.byType(CreateActivityPage), findsOneWidget);
         await tester.tap(find.byKey(TestKey.basicActivityChoice));
@@ -219,7 +219,7 @@ void main() {
         await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
             sortableBloc: sortableBlocMock));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
 
         // Act Go to basic activity archive
@@ -298,7 +298,7 @@ void main() {
         await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
             sortableBloc: sortableBlocMock));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
 
         // Act Go to basic activity archive
@@ -341,7 +341,7 @@ void main() {
         await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
             sortableBloc: sortableBlocMock));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
 
         // Act Go to basic activity archive
@@ -384,7 +384,7 @@ void main() {
         await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
             sortableBloc: sortableBlocMock));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
 
         // Act Go to basic activity archive
@@ -575,7 +575,7 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.addActivity));
+      await tester.tap(find.byType(AddActivityButton));
       await tester.pumpAndSettle();
       expect(find.byType(CreateActivityPage), findsOneWidget);
       await tester.tap(find.byKey(TestKey.newActivityChoice));
@@ -616,7 +616,7 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.addActivity));
+      await tester.tap(find.byType(AddActivityButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.newActivityChoice));
       await tester.pumpAndSettle();
