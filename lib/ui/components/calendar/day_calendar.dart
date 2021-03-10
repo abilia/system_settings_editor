@@ -40,8 +40,8 @@ class DayCalendar extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16.0.s, vertical: 28.0.s),
+                    padding: EdgeInsets.only(
+                        left: 76.0.s, right: 16.0, bottom: 28.0.s),
                     child: ErrorMessage(
                       text: Text(
                         Translator.of(context)
@@ -96,84 +96,78 @@ class Calendars extends StatelessWidget {
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeOutQuad);
       },
-      child: Stack(
-        children: [
-          PageView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: controller,
-            itemBuilder: (context, index) {
-              return BlocBuilder<ActivitiesOccasionBloc,
-                  ActivitiesOccasionState>(
-                buildWhen: (oldState, newState) {
-                  return (oldState is ActivitiesOccasionLoaded &&
-                          newState is ActivitiesOccasionLoaded &&
-                          oldState.day == newState.day) ||
-                      oldState.runtimeType != newState.runtimeType;
-                },
-                builder: (context, activityState) {
-                  if (activityState is ActivitiesOccasionLoaded) {
-                    final fullDayActivities = activityState.fullDayActivities;
-                    return Column(
-                      children: <Widget>[
-                        if (fullDayActivities.isNotEmpty)
-                          FullDayContainer(
-                            fullDayActivities: fullDayActivities,
-                            day: activityState.day,
-                          ),
-                        Expanded(
-                          child: Stack(
-                            children: [
-                              if (calendarViewState.currentDayCalendarType ==
-                                  DayCalendarType.LIST)
-                                Agenda(
+      child: PageView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: controller,
+        itemBuilder: (context, index) {
+          return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
+            buildWhen: (oldState, newState) {
+              return (oldState is ActivitiesOccasionLoaded &&
+                      newState is ActivitiesOccasionLoaded &&
+                      oldState.day == newState.day) ||
+                  oldState.runtimeType != newState.runtimeType;
+            },
+            builder: (context, activityState) {
+              if (activityState is ActivitiesOccasionLoaded) {
+                final fullDayActivities = activityState.fullDayActivities;
+                return Column(
+                  children: <Widget>[
+                    if (fullDayActivities.isNotEmpty)
+                      FullDayContainer(
+                        fullDayActivities: fullDayActivities,
+                        day: activityState.day,
+                      ),
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          if (calendarViewState.currentDayCalendarType ==
+                              DayCalendarType.LIST)
+                            Agenda(
+                              activityState: activityState,
+                              calendarViewState: calendarViewState,
+                              memoplannerSettingsState:
+                                  memoplannerSettingsState,
+                            )
+                          else
+                            BlocBuilder<TimepillarBloc, TimepillarState>(
+                              builder: (context, state) {
+                                return TimePillarCalendar(
+                                  key: ValueKey(state.timepillarInterval),
                                   activityState: activityState,
                                   calendarViewState: calendarViewState,
                                   memoplannerSettingsState:
                                       memoplannerSettingsState,
-                                )
-                              else
-                                BlocBuilder<TimepillarBloc, TimepillarState>(
-                                  builder: (context, state) {
-                                    return TimePillarCalendar(
-                                      key: ValueKey(state.timepillarInterval),
-                                      activityState: activityState,
-                                      calendarViewState: calendarViewState,
-                                      memoplannerSettingsState:
-                                          memoplannerSettingsState,
-                                      timepillarInterval:
-                                          state.timepillarInterval,
-                                    );
-                                  },
-                                ),
-                              Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.all(16.0.s),
-                                  child: EyeButton(
-                                    currentDayCalendarType: calendarViewState
-                                        .currentDayCalendarType,
-                                  ),
-                                ),
+                                  timepillarInterval: state.timepillarInterval,
+                                );
+                              },
+                            ),
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Padding(
+                              padding: EdgeInsets.all(16.0.s),
+                              child: EyeButton(
+                                currentDayCalendarType:
+                                    calendarViewState.currentDayCalendarType,
                               ),
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 32.0.s),
-                                  child: GoToNowButton(),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  }
-                  return Center(child: CircularProgressIndicator());
-                },
-              );
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 32.0.s),
+                              child: GoToNowButton(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return Center(child: CircularProgressIndicator());
             },
-          ),
-        ],
+          );
+        },
       ),
     );
   }
