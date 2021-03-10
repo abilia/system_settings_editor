@@ -61,11 +61,11 @@ class _EditQuestionPageState extends State<EditQuestionPage> {
               )
             : null,
       ),
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
-        child: Column(
-          children: <Widget>[
-            Row(
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SelectPictureWidget(
@@ -99,7 +99,7 @@ class _EditQuestionPageState extends State<EditQuestionPage> {
                           onEditingComplete: Navigator.of(context).maybePop,
                           onChanged: (text) => setState(
                               () => question = question.copyWith(name: text)),
-                          maxLines: 12,
+                          maxLines: 8,
                           minLines: 1,
                         ),
                       ],
@@ -108,17 +108,19 @@ class _EditQuestionPageState extends State<EditQuestionPage> {
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-      bottomSheet: BottomNavigation(
-        backNavigationWidget: CancelButton(),
-        forwardNavigationWidget: OkButton(
-          onPressed: canSave
-              ? () => Navigator.of(context)
-                  .maybePop(QuestionResult(question, newImage))
-              : null,
-        ),
+          ),
+          const Spacer(),
+          BottomNavigation(
+            useSafeArea: false,
+            backNavigationWidget: CancelButton(),
+            forwardNavigationWidget: OkButton(
+              onPressed: canSave
+                  ? () => Navigator.of(context)
+                      .maybePop(QuestionResult(question, newImage))
+                  : null,
+            ),
+          ),
+        ],
       ),
     );
   }

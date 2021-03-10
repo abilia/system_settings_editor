@@ -172,38 +172,44 @@ class _DefaultInputPageState
         title: widget.inputHeading,
         iconData: widget.icon,
       ),
-      bottomSheet: BottomNavigation(
-        backNavigationWidget: CancelButton(),
-        forwardNavigationWidget: OkButton(
-          onPressed: _validInput ? _returnNewText : null,
-        ),
-      ),
       body: Tts.fromSemantics(
         SemanticsProperties(label: widget.heading),
-        child: Padding(
-          padding: ordinaryPadding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SubHeading(widget.heading),
-              TextField(
-                key: TestKey.input,
-                controller: controller,
-                keyboardType: widget.keyboardType,
-                inputFormatters: widget.inputFormatters,
-                textCapitalization: widget.textCapitalization,
-                style: Theme.of(context).textTheme.bodyText1,
-                autofocus: true,
-                focusNode: focusNode,
-                onEditingComplete: _validInput ? _returnNewText : () {},
-                maxLines: widget.maxLines,
-                minLines: 1,
-                smartDashesType: SmartDashesType.disabled,
-                smartQuotesType: SmartQuotesType.disabled,
-                autocorrect: widget.autocorrect,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: ordinaryPadding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SubHeading(widget.heading),
+                  TextField(
+                    key: TestKey.input,
+                    controller: controller,
+                    keyboardType: widget.keyboardType,
+                    inputFormatters: widget.inputFormatters,
+                    textCapitalization: widget.textCapitalization,
+                    style: Theme.of(context).textTheme.bodyText1,
+                    autofocus: true,
+                    focusNode: focusNode,
+                    onEditingComplete: _validInput ? _returnNewText : () {},
+                    maxLines: widget.maxLines,
+                    minLines: 1,
+                    smartDashesType: SmartDashesType.disabled,
+                    smartQuotesType: SmartQuotesType.disabled,
+                    autocorrect: widget.autocorrect,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            const Spacer(),
+            BottomNavigation(
+              backNavigationWidget: CancelButton(),
+              forwardNavigationWidget: OkButton(
+                onPressed: _validInput ? _returnNewText : null,
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -349,62 +355,67 @@ class _PasswordInputPageState
         title: heading,
         iconData: AbiliaIcons.lock,
       ),
-      bottomSheet: BottomNavigation(
-        backNavigationWidget: CancelButton(),
-        forwardNavigationWidget:
-            OkButton(onPressed: _validInput ? _returnNewPassword : null),
-      ),
-      body: Tts.fromSemantics(
-        SemanticsProperties(
-          label: heading,
-          value: controller.value.text,
-          textField: true,
-          obscured: true,
-        ),
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            leftPadding,
-            verticalPadding,
-            0,
-            verticalPadding,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SubHeading(Translator.of(context).translate.password),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+      body: Column(
+        children: [
+          Tts.fromSemantics(
+            SemanticsProperties(
+              label: heading,
+              value: controller.value.text,
+              textField: true,
+              obscured: true,
+            ),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                leftPadding,
+                verticalPadding,
+                0,
+                verticalPadding,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  BlocBuilder<LoginFormBloc, LoginFormState>(
-                    cubit: widget.loginFormBloc,
-                    builder: (context, state) => Expanded(
-                      child: TextFormField(
-                        key: TestKey.input,
-                        controller: controller,
-                        obscureText: state.hidePassword,
-                        keyboardType: TextInputType.visiblePassword,
-                        style: theme.textTheme.bodyText1,
-                        autofocus: true,
-                        focusNode: focusNode,
-                        onEditingComplete:
-                            _validInput ? _returnNewPassword : () {},
-                        onChanged: (s) => widget.loginFormBloc
-                            .add(PasswordChanged(password: s)),
+                  SubHeading(Translator.of(context).translate.password),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      BlocBuilder<LoginFormBloc, LoginFormState>(
+                        cubit: widget.loginFormBloc,
+                        builder: (context, state) => Expanded(
+                          child: TextFormField(
+                            key: TestKey.input,
+                            controller: controller,
+                            obscureText: state.hidePassword,
+                            keyboardType: TextInputType.visiblePassword,
+                            style: theme.textTheme.bodyText1,
+                            autofocus: true,
+                            focusNode: focusNode,
+                            onEditingComplete:
+                                _validInput ? _returnNewPassword : () {},
+                            onChanged: (s) => widget.loginFormBloc
+                                .add(PasswordChanged(password: s)),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(width: 12.s),
-                  HidePasswordButton(
-                    loginFormBloc: widget.loginFormBloc,
-                    padding: EdgeInsets.only(
-                      right: horizontalPadding,
-                    ),
+                      SizedBox(width: 12.s),
+                      HidePasswordButton(
+                        loginFormBloc: widget.loginFormBloc,
+                        padding: EdgeInsets.only(
+                          right: horizontalPadding,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+          const Spacer(),
+          BottomNavigation(
+            backNavigationWidget: CancelButton(),
+            forwardNavigationWidget:
+                OkButton(onPressed: _validInput ? _returnNewPassword : null),
+          ),
+        ],
       ),
     );
   }
