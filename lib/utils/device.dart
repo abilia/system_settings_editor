@@ -1,6 +1,8 @@
 import 'dart:ui' as ui;
 
 class Device {
+  static const minSupportedHeight = 540;
+
   static final double devicePixelRatio = ui.window.devicePixelRatio;
   static final ui.Size size = ui.window.physicalSize;
   static final double width = size.width;
@@ -22,6 +24,9 @@ class Device {
       if (devicePixelRatio < 1) {
         scale /= devicePixelRatio;
       }
+    }
+    if (max < minSupportedHeight) {
+      scale = 0.75;
     }
     return scale;
   }
