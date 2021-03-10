@@ -56,22 +56,11 @@ class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
     Iterable<Activity> activities,
     DateTime now,
   ) {
-    final as = {
-      1: occasionsForDay(activities, weekStart, now),
-      2: occasionsForDay(
-          activities, weekStart.copyWith(day: weekStart.day + 1), now),
-      3: occasionsForDay(
-          activities, weekStart.copyWith(day: weekStart.day + 2), now),
-      4: occasionsForDay(
-          activities, weekStart.copyWith(day: weekStart.day + 3), now),
-      5: occasionsForDay(
-          activities, weekStart.copyWith(day: weekStart.day + 4), now),
-      6: occasionsForDay(
-          activities, weekStart.copyWith(day: weekStart.day + 5), now),
-      7: occasionsForDay(
-          activities, weekStart.copyWith(day: weekStart.day + 6), now),
+    final weekActivityOccasions = {
+      for (final dayIndex in List<int>.generate(7, (i) => i))
+        dayIndex: occasionsForDay(activities, weekStart.addDays(dayIndex), now)
     };
-    return WeekCalendarLoaded(weekStart, as);
+    return WeekCalendarLoaded(weekStart, weekActivityOccasions);
   }
 
   static List<ActivityOccasion> occasionsForDay(
@@ -79,7 +68,10 @@ class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
     return activities
         .expand((activity) => activity.dayActivitiesForDay(weekStart))
         .map((e) => e.toOccasion(now))
-        .toList();
+        .toList()
+          ..sort((a, b) => a.activity
+              .startClock(a.day)
+              .compareTo(b.activity.startClock(b.day)));
   }
 
   @override

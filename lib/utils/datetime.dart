@@ -12,6 +12,7 @@ extension DateTimeExtensions on DateTime {
   DateTime onlyMinutes() => DateTime(year, month, day, hour, minute);
 
   DateTime nextDay() => copyWith(day: day + 1);
+  DateTime addDays(int days) => copyWith(day: day + days);
   DateTime nextWeek() => copyWith(day: day + 7);
   DateTime previousWeek() => copyWith(day: day - 7);
   DateTime previousDay() => copyWith(day: day - 1);
@@ -55,6 +56,9 @@ extension DateTimeExtensions on DateTime {
 
   bool isAtSameDay(DateTime otherDate) =>
       onlyDays().isAtSameMomentAs(otherDate.onlyDays());
+
+  bool isSameWeek(DateTime otherDate) =>
+      getWeekNumber() == otherDate.getWeekNumber();
 
   bool isDayBefore(DateTime otherDate) =>
       onlyDays().isBefore(otherDate.onlyDays());
