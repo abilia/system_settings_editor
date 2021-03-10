@@ -104,10 +104,11 @@ void main() {
       authenticationBloc = AuthenticationBloc(
         mockedUserRepository,
         onLogout: () {
-          notificationMock.mockCancleAll();
+          notificationMock.mockCancelAll();
         },
       );
     });
+
     test('loggedIn event saves token', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
@@ -129,7 +130,7 @@ void main() {
       authenticationBloc.add(CheckAuthentication());
       authenticationBloc.add(LoggedOut());
       // Assert
-      await untilCalled(notificationMock.mockCancleAll());
+      await untilCalled(notificationMock.mockCancelAll());
     });
 
     test('unauthed token gets deleted', () async {
@@ -161,6 +162,19 @@ void main() {
       );
     });
 
+    test('logged out cancel all on logout and repo in order', () async {
+      // Act
+      authenticationBloc.add(CheckAuthentication());
+      authenticationBloc.add(LoggedOut());
+      // Assert
+      await untilCalled(mockedUserRepository.logout());
+      await untilCalled(notificationMock.mockCancelAll());
+      verifyInOrder([
+        notificationMock.mockCancelAll(),
+        mockedUserRepository.logout(),
+      ]);
+    });
+
     tearDown(() {
       authenticationBloc.close();
     });
@@ -168,7 +182,7 @@ void main() {
 }
 
 class Notification {
-  Future mockCancleAll() => Future.value();
+  Future mockCancelAll() => Future.value();
 }
 
 class NotificationMock extends Mock implements Notification {}
