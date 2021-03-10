@@ -13,17 +13,17 @@ class BackendSwitches extends StatelessWidget {
         builder: (context, state) {
       return Center(
         child: Wrap(
-          spacing: 16.0.s,
-          children: backEndEnviorments.entries
-              .map(
-                (kvp) => BackEndButton(
-                  kvp.key,
-                  userRepository: state.userRepository,
-                  client: GetIt.I<BaseClient>(),
-                  backEndUrl: kvp.value,
-                ),
-              )
-              .toList(),
+          spacing: 8.s,
+          children: [
+            ...backEndEnviorments.entries.map(
+              (kvp) => BackEndButton(
+                kvp.key,
+                userRepository: state.userRepository,
+                client: GetIt.I<BaseClient>(),
+                backEndUrl: kvp.value,
+              ),
+            )
+          ],
         ),
       );
     });
@@ -55,22 +55,24 @@ class BackEndButton extends StatelessWidget {
             ),
           ),
         );
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Text(text),
-        ),
-        SizedBox(height: 8.s),
-        Transform.scale(
-          scale: Device.scaleFactor,
-          child: Radio(
-            groupValue: userRepository.baseUrl,
-            value: backEndUrl,
-            onChanged: (url) => onTap(),
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 24.s,
+            child: FittedBox(
+              child: Radio(
+                groupValue: userRepository.baseUrl,
+                value: backEndUrl,
+                onChanged: (url) => onTap(),
+              ),
+            ),
           ),
-        ),
-      ],
+          Text(text),
+        ],
+      ),
     );
   }
 }

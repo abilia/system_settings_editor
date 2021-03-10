@@ -284,8 +284,8 @@ class PasswordInput extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 12.s),
             HidePasswordButton(
+              padding: EdgeInsets.only(left: 12.s),
               loginFormBloc: loginFormBloc,
             )
           ],
