@@ -595,7 +595,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.finishEditActivityButton));
       await tester.pumpAndSettle();
-      expect(find.text(translate.startTimeBeforeNow), findsNothing);
+      expect(find.text(translate.startTimeBeforeNowError), findsNothing);
       expect(find.byType(EditActivityPage), findsNothing);
       expect(find.byType(CalendarPage), findsOneWidget);
       expect(find.text(testActivityTitle), findsOneWidget);
@@ -643,7 +643,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text(translate.startTimeBeforeNow), findsOneWidget);
+      expect(find.text(translate.startTimeBeforeNowError), findsOneWidget);
       expect(find.byType(EditActivityPage), findsOneWidget);
       expect(find.byType(CalendarPage), findsNothing);
     });

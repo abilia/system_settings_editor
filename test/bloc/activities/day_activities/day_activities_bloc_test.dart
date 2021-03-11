@@ -337,45 +337,6 @@ void main() {
           ]));
     });
 
-    test('Does not show recurring christmas after endTime', () async {
-      // Arrange
-      final boxingDay = DateTime(2022, 12, 23);
-      final chrismasEve = DateTime(2022, 12, 24);
-      final chrismasDay = DateTime(2022, 12, 25);
-      final weekendActivity = Iterable<Activity>.empty().followedBy([
-        FakeActivity.reocurrsOnDate(
-            chrismasEve, DateTime(2012, 01, 01), DateTime(2021, 01, 01))
-      ]);
-      when(mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(weekendActivity));
-      // Act
-      activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
-      dayPickerBloc.add(GoTo(day: boxingDay));
-      dayPickerBloc.add(NextDay());
-      dayPickerBloc.add(NextDay());
-      // Assert
-      await expectLater(
-          dayActivitiesBloc,
-          emitsInOrder([
-            DayActivitiesLoaded(
-              Iterable.empty(),
-              boxingDay,
-              Occasion.future,
-            ),
-            DayActivitiesLoaded(
-              Iterable.empty(),
-              chrismasEve,
-              Occasion.future,
-            ),
-            DayActivitiesLoaded(
-              Iterable.empty(),
-              chrismasDay,
-              Occasion.future,
-            ),
-          ]));
-    });
-
     test('Show first of month during one year', () async {
       // Arrange
       final startTime = DateTime(2031, 12, 31);
