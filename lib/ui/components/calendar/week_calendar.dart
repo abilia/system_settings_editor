@@ -27,14 +27,15 @@ class WeekCalendar extends StatelessWidget {
           );
         });
         return Scaffold(
+          backgroundColor: AbiliaColors.white,
           appBar: WeekAppBar(
             currentWeekStart: state.currentWeekStart,
             selectedDay: selectedDay,
           ),
           body: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: 6.0.s,
-              vertical: 8.s,
+              horizontal: 2.0.s,
+              vertical: 4.s,
             ),
             child: Row(
               children: [...weekColumns],
@@ -157,9 +158,13 @@ class WeekColumn extends StatelessWidget {
         weekday: day.weekday,
       );
       return Flexible(
-        flex: active ? 78 : 45,
+        flex: active
+            ? 78
+            : dayTheme.color == AbiliaColors.white
+                ? 47
+                : 45,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: active ? 4.0.s : 1.s),
+          padding: EdgeInsets.symmetric(horizontal: active ? 3.0.s : 1.s),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -193,21 +198,35 @@ class WeekColumn extends StatelessWidget {
                     child: DefaultTextStyle(
                       style: dayTheme.theme.textTheme.bodyText1
                           .copyWith(height: 18 / 16),
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: active ? 3.s : 4.s),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              '${day.day}',
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              t.shortWeekday(day.weekday),
-                              textAlign: TextAlign.center,
-                            )
-                          ],
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: dayTheme.color == AbiliaColors.white
+                              ? Border(
+                                  bottom: BorderSide(
+                                      width: 1.0.s,
+                                      color: AbiliaColors.white140),
+                                )
+                              : null,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical:
+                                  active || dayTheme.color == AbiliaColors.white
+                                      ? 3.s
+                                      : 4.s),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                '${day.day}',
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                t.shortWeekday(day.weekday),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
