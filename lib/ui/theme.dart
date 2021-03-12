@@ -67,7 +67,10 @@ final inputDecorationTheme = InputDecorationTheme(
     errorStyle: TextStyle(height: 0),
     fillColor: AbiliaColors.white);
 
-final radius = Radius.circular(12.s);
+final outerRadius = 12.s;
+Radius innerRadiusFromBorderSize(double borderSize) =>
+    Radius.circular(outerRadius - borderSize);
+final radius = Radius.circular(outerRadius);
 final borderRadius = BorderRadius.all(radius);
 final borderRadiusRight = BorderRadius.only(
   topRight: radius,
@@ -77,13 +80,18 @@ final borderRadiusLeft = BorderRadius.only(
   topLeft: radius,
   bottomLeft: radius,
 );
+final borderRadiusTop = BorderRadius.only(
+  topLeft: radius,
+  topRight: radius,
+);
 
 // Borders
 final BorderSide borderSide =
     BorderSide(color: AbiliaColors.white140, width: 1.0.s);
-final Border currentActivityBorder = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.red, width: 2.0.s),
-);
+final Border currentActivityBorder =
+    Border.fromBorderSide(currentAcrtivityBorderSide);
+final BorderSide currentAcrtivityBorderSide =
+    BorderSide(color: AbiliaColors.red, width: 2.0.s);
 final Border errorBorder = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.red, width: 1.0.s),
 );

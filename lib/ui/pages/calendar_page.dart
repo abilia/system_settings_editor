@@ -61,7 +61,7 @@ class _CalendarPageState extends State<CalendarPage>
                         memoSettingsState: memoSettingsState,
                         pickedDay: pickedDay,
                       ),
-                      WeekCalendar(),
+                      WeekCalendarTab(),
                       MonthCalendar()
                     ],
                   ),

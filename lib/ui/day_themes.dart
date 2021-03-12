@@ -4,14 +4,16 @@ import 'package:seagull/ui/all.dart';
 
 class DayTheme {
   final ThemeData theme;
-  final Color color, backgroundColor, secondaryColor;
+  final Color color, backgroundColor, secondaryColor, borderColor;
 
   DayTheme._(
     ThemeData theme,
     this.color,
     this.secondaryColor,
     bool background,
-  )   : backgroundColor = background
+  )   : borderColor =
+            color == AbiliaColors.white ? AbiliaColors.white110 : color,
+        backgroundColor = background
             ? Color.alphaBlend(const Color(0x33000000), color)
             : null,
         theme = theme.copyWith(
@@ -29,7 +31,7 @@ class DayTheme {
 
 final _noColor = DayTheme._light(AbiliaColors.black80, AbiliaColors.black80,
         background: false),
-    _white = DayTheme._dark(AbiliaColors.white, AbiliaColors.white,
+    _white = DayTheme._dark(AbiliaColors.white, AbiliaColors.white110,
         background: false),
     _red = DayTheme._light(AbiliaColors.sundayRed, AbiliaColors.sundayRed40),
     _monday = DayTheme._light(AbiliaColors.green, AbiliaColors.mondayGreen40),
