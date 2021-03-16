@@ -27,7 +27,7 @@ class WeekCalendarTab extends StatelessWidget {
           body: Padding(
             padding: EdgeInsets.fromLTRB(2.s, 4.s, 2.s, 0),
             child: WeekCalendar(
-              activities: state.as,
+              activities: state.currentWeekActivities,
               selectedDay: selectedDay,
               weekStart: weekStart,
             ),
@@ -187,43 +187,10 @@ class WeekCalendarDayHeading extends StatelessWidget {
                     ),
                     if (fullDayActivities.length == 1)
                       ...fullDayActivities
-                          .map((a) => WeekActivity(activityOccasion: a))
+                          .map((a) => FullDayActivity(activityOccasion: a))
                     else if (fullDayActivities.length > 1)
-                      Stack(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 2.s, left: 2.s),
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: AbiliaColors.white,
-                                  borderRadius: borderRadius,
-                                  border: border,
-                                ),
-                                width: double.infinity,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 2.s, right: 2.s),
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: AbiliaColors.white,
-                                  borderRadius: borderRadius,
-                                  border: border,
-                                ),
-                                width: double.infinity,
-                                child: Center(
-                                  child: Text('2+'),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      FullDayStack(
+                          numberOfActivities: fullDayActivities.length),
                   ],
                 ),
               ),
@@ -231,6 +198,53 @@ class WeekCalendarDayHeading extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class FullDayStack extends StatelessWidget {
+  final int numberOfActivities;
+  const FullDayStack({
+    Key key,
+    @required this.numberOfActivities,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          height: 36.s,
+          child: Padding(
+            padding: EdgeInsets.only(top: 2.s, left: 2.s),
+            child: Container(
+              decoration: BoxDecoration(
+                color: AbiliaColors.white,
+                borderRadius: borderRadius,
+                border: border,
+              ),
+              width: double.infinity,
+            ),
+          ),
+        ),
+        Container(
+          height: 36.s,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 2.s, right: 2.s),
+            child: Container(
+              decoration: BoxDecoration(
+                color: AbiliaColors.white,
+                borderRadius: borderRadius,
+                border: border,
+              ),
+              width: double.infinity,
+              child: Center(
+                child: Text('+$numberOfActivities'),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -362,7 +376,7 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final day = DateTime.now();
+    final goToNowWidth = actionButtonMinSize + 8.0.s;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) => AnimatedTheme(
         data: weekdayTheme(
@@ -382,21 +396,26 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
                 horizontal: 16.0.s,
                 vertical: 8.0.s,
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  ActionButton(
-                    onPressed: () => BlocProvider.of<WeekCalendarBloc>(context)
-                        .add(PreviousWeek()),
-                    child: Icon(
-                      AbiliaIcons.return_to_previous_page,
-                      size: defaultIconSize,
+              child: BlocBuilder<ClockBloc, DateTime>(
+                builder: (context, time) => Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    ActionButton(
+                      onPressed: () =>
+                          BlocProvider.of<WeekCalendarBloc>(context)
+                              .add(PreviousWeek()),
+                      child: Icon(
+                        AbiliaIcons.return_to_previous_page,
+                        size: defaultIconSize,
+                      ),
                     ),
-                  ),
-                  Flexible(
-                    child: BlocBuilder<ClockBloc, DateTime>(
-                      builder: (context, time) => Stack(
+                    if (!currentWeekStart.isSameWeek(time))
+                      SizedBox(
+                        width: goToNowWidth,
+                      ),
+                    Flexible(
+                      child: Stack(
                         alignment: Alignment.center,
                         children: <Widget>[
                           Align(
@@ -407,25 +426,31 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
                               selectedDay: selectedDay,
                             ),
                           ),
-                          if (day.isDayBefore(time))
+                          if (currentWeekStart.nextWeek().isBefore(time))
                             CrossOver(
                                 color: Theme.of(context)
                                     .textTheme
-                                    .headline1
+                                    .headline6
                                     .color),
                         ],
                       ),
                     ),
-                  ),
-                  ActionButton(
-                    onPressed: () => BlocProvider.of<WeekCalendarBloc>(context)
-                        .add(NextWeek()),
-                    child: Icon(
-                      AbiliaIcons.go_to_next_page,
-                      size: defaultIconSize,
+                    if (!currentWeekStart.isSameWeek(time))
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0.s),
+                        child: GoToCurrentWeekButton(),
+                      ),
+                    ActionButton(
+                      onPressed: () =>
+                          BlocProvider.of<WeekCalendarBloc>(context)
+                              .add(NextWeek()),
+                      child: Icon(
+                        AbiliaIcons.go_to_next_page,
+                        size: defaultIconSize,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -449,31 +474,63 @@ class WeekActivity extends StatelessWidget {
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
-      child: Container(
-        decoration: BoxDecoration(
-          border: border,
-          borderRadius: borderRadius,
-          color: AbiliaColors.white,
-        ),
-        child: Center(
-          child: activityOccasion.activity.hasImage
-              ? ActivityImage.fromActivityOccasion(
-                  activityOccasion: activityOccasion,
-                  size: double.infinity,
-                  fit: BoxFit.cover,
-                )
-              : Padding(
-                  padding: EdgeInsets.all(3.0.s),
-                  child: Tts(
-                    child: Text(
-                      activityOccasion.activity.title,
-                      overflow: TextOverflow.clip,
-                      style: abiliaTextTheme.caption.copyWith(height: 20 / 16),
-                      textAlign: TextAlign.center,
-                    ),
+      child: WeekActivityContent(activityOccasion: activityOccasion),
+    );
+  }
+}
+
+class WeekActivityContent extends StatelessWidget {
+  const WeekActivityContent({
+    Key key,
+    @required this.activityOccasion,
+  }) : super(key: key);
+
+  final ActivityOccasion activityOccasion;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: border,
+        borderRadius: borderRadius,
+        color: AbiliaColors.white,
+      ),
+      child: Center(
+        child: activityOccasion.activity.hasImage
+            ? ActivityImage.fromActivityOccasion(
+                activityOccasion: activityOccasion,
+                size: double.infinity,
+                fit: BoxFit.cover,
+              )
+            : Padding(
+                padding: EdgeInsets.all(3.0.s),
+                child: Tts(
+                  child: Text(
+                    activityOccasion.activity.title,
+                    overflow: TextOverflow.clip,
+                    style: abiliaTextTheme.caption.copyWith(height: 20 / 16),
+                    textAlign: TextAlign.center,
                   ),
                 ),
-        ),
+              ),
+      ),
+    );
+  }
+}
+
+class FullDayActivity extends StatelessWidget {
+  final ActivityOccasion activityOccasion;
+  const FullDayActivity({
+    Key key,
+    @required this.activityOccasion,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 36.s,
+      child: WeekActivityContent(
+        activityOccasion: activityOccasion,
       ),
     );
   }
@@ -494,35 +551,39 @@ class WeekAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) {
-      final rows = WeekAppBarTitleRows.fromSettings(
-        selectedWeekStart: selectedWeekStart,
-        selectedDay: selectedDay,
-        langCode: Localizations.localeOf(context).toLanguageTag(),
-        translator: Translator.of(context).translate,
-      );
-      return Tts(
-        data: rows.row1 + ';' + rows.row2,
-        child: Column(
-          key: TestKey.dayAppBarTitle,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (rows.row1.isNotEmpty)
-              Text(
-                rows.row1,
-                style: textStyle,
-                overflow: TextOverflow.ellipsis,
-              ),
-            if (rows.row2.isNotEmpty)
-              Text(
-                rows.row2,
-                style: textStyle,
-                overflow: TextOverflow.ellipsis,
-              ),
-          ],
-        ),
-      );
-    });
+      builder: (context, memoSettingsState) => BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, currentTime) {
+          final rows = WeekAppBarTitleRows.fromSettings(
+            currentTime: currentTime,
+            selectedWeekStart: selectedWeekStart,
+            selectedDay: selectedDay,
+            langCode: Localizations.localeOf(context).toLanguageTag(),
+            translator: Translator.of(context).translate,
+          );
+          return Tts(
+            data: rows.row1 + ';' + rows.row2,
+            child: Column(
+              key: TestKey.dayAppBarTitle,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (rows.row1.isNotEmpty)
+                  Text(
+                    rows.row1,
+                    style: textStyle,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                if (rows.row2.isNotEmpty)
+                  Text(
+                    rows.row2,
+                    style: textStyle,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -533,13 +594,15 @@ class WeekAppBarTitleRows {
   WeekAppBarTitleRows(this.row1, this.row2);
 
   factory WeekAppBarTitleRows.fromSettings({
+    DateTime currentTime,
     DateTime selectedWeekStart,
     DateTime selectedDay,
     String langCode,
     Translated translator,
   }) {
     final week = '${translator.week} ${selectedWeekStart.getWeekNumber()}';
-    final row1 = selectedDay.isSameWeek(selectedWeekStart)
+    final row1 = selectedDay.isSameWeek(selectedWeekStart) &&
+            currentTime.isSameWeek(selectedWeekStart)
         ? ' ${DateFormat('EEEE', langCode).format(selectedDay)}, $week'
         : week;
     final row2 = '${selectedWeekStart.year}';

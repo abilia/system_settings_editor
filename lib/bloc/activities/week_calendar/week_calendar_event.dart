@@ -11,6 +11,8 @@ class NextWeek extends WeekCalendarEvent {}
 
 class PreviousWeek extends WeekCalendarEvent {}
 
+class GoToCurrentWeek extends WeekCalendarEvent {}
+
 class UpdateWeekActivites extends WeekCalendarEvent {
   final Iterable<Activity> activities;
 

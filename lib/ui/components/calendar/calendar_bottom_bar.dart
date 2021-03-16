@@ -2,17 +2,15 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class CalendarBottomBar extends StatelessWidget {
-  final DateTime day;
   static final barHeigt = 64.0.s;
 
   const CalendarBottomBar({
     Key key,
-    @required this.day,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CalendarViewBloc, CalendarViewState>(
+    return BlocBuilder<DayPickerBloc, DayPickerState>(
       builder: (context, state) => BottomAppBar(
         child: Container(
           height: barHeigt,
@@ -20,7 +18,7 @@ class CalendarBottomBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              AddActivityButton(day: day),
+              AddActivityButton(day: state.day),
               AbiliaTabBar(
                 collapsedCondition: (i) => false,
                 tabs: <Widget>[

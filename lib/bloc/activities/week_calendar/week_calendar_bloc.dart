@@ -36,15 +36,18 @@ class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
     WeekCalendarEvent event,
   ) async* {
     final activityState = activitiesBloc.state;
-    final activities =
-        activityState is ActivitiesLoaded ? activityState.activities : [];
+    final activities = activityState is ActivitiesLoaded
+        ? activityState.activities
+        : <Activity>[];
     if (event is NextWeek) {
       yield _mapToState(
           state.currentWeekStart.nextWeek(), activities, clockBloc.state);
     } else if (event is PreviousWeek) {
-      final s = _mapToState(
+      yield _mapToState(
           state.currentWeekStart.previousWeek(), activities, clockBloc.state);
-      yield s;
+    } else if (event is GoToCurrentWeek) {
+      yield _mapToState(
+          clockBloc.state.firstInWeek(), activities, clockBloc.state);
     } else if (event is UpdateWeekActivites) {
       yield _mapToState(
           state.currentWeekStart, event.activities, clockBloc.state);

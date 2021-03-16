@@ -33,7 +33,7 @@ extension DateTimeExtensions on DateTime {
             : (minute ~/ minutesPerDot) * minutesPerDot,
       );
 
-  DateTime firstInWeek() => subtract(Duration(days: weekday - 1));
+  DateTime firstInWeek() => subtract(Duration(days: weekday - 1)).onlyDays();
 
   DateTime copyWith(
           {int year,

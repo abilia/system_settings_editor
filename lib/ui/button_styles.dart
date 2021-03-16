@@ -105,9 +105,27 @@ final actionIconTextButtonStyleRed = ButtonStyle(
   ),
 );
 
+final double actionButtonMinSize = 48.0.s;
+
 final _actionButtonStyle = ButtonStyle(
-  minimumSize: MaterialStateProperty.all(Size(48.0.s, 48.0.s)),
+  minimumSize:
+      MaterialStateProperty.all(Size(actionButtonMinSize, actionButtonMinSize)),
   padding: MaterialStateProperty.all(EdgeInsets.all(8.0.s)),
+);
+
+final actionButtonStyleRed = _actionButtonStyle.copyWith(
+  backgroundColor: buttonBackgroundRed,
+  shape: MaterialStateProperty.resolveWith(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return noBorderShape;
+      }
+      return RoundedRectangleBorder(
+        borderRadius: borderRadius,
+        side: BorderSide(color: AbiliaColors.red140, width: 1.0.s),
+      );
+    },
+  ),
 );
 
 final actionButtonStyleDark = _actionButtonStyle.copyWith(
