@@ -19,8 +19,9 @@ class ReplaceActivity extends ActivityChangedEvent {
 }
 
 class SaveActivity extends EditActivityEvent with Fine {
-  const SaveActivity({this.activityBeforeNowConfirmed = false});
-  final bool activityBeforeNowConfirmed;
+  const SaveActivity({this.warningConfirmed = false});
+  final bool warningConfirmed;
+
   @override
   List<Object> get props => [];
 }
@@ -29,8 +30,8 @@ class SaveRecurringActivity extends SaveActivity with Fine {
   final ApplyTo applyTo;
   final DateTime day;
   const SaveRecurringActivity(this.applyTo, this.day,
-      {bool activityBeforeNowConfirmed = false})
-      : super(activityBeforeNowConfirmed: activityBeforeNowConfirmed);
+      {bool warningConfirmed = false})
+      : super(warningConfirmed: warningConfirmed);
   @override
   List<Object> get props => [applyTo];
 }

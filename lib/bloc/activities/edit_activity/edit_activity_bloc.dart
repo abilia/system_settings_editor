@@ -78,11 +78,16 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
         if (state.startTimeBeforeNow(clockBloc.state))
           if (!memoplannerSettingBloc.state.activityTimeBeforeCurrent)
             SaveError.START_TIME_BEFORE_NOW
-          else if (!event.activityBeforeNowConfirmed)
+          else if (!event.warningConfirmed)
             SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
         if (state.emptyRecurringData) SaveError.NO_RECURRING_DAYS,
         if (state.storedRecurring && event is! SaveRecurringActivity)
           SaveError.STORED_RECURRING,
+        if (state.hasStartTime &&
+            !event.warningConfirmed &&
+            !state.unchangedTime &&
+            activitiesBloc.state.anyConflictWith(state._activityToStore()))
+          SaveError.UNCONFIRMED_ACTIVITY_CONFLICT,
       };
 
   @override
@@ -148,26 +153,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       return;
     }
 
-    var activity = state.activity;
-
-    if (activity.hasAttachment && activity.infoItem.isEmpty) {
-      activity = activity.copyWith(infoItem: InfoItem.none);
-    }
-
-    final timeInterval = state.timeInterval;
-    if (activity.fullDay) {
-      activity = activity.copyWith(
-        startTime: timeInterval.startDate.onlyDays(),
-        alarmType: NO_ALARM,
-        reminderBefore: const [],
-      );
-    } else {
-      final startTime = timeInterval.startDate.withTime(timeInterval.startTime);
-      activity = activity.copyWith(
-        startTime: startTime,
-        duration: _getDuration(startTime, timeInterval.endTime),
-      );
-    }
+    final activity = state._activityToStore();
 
     if (state is UnstoredActivityState) {
       activitiesBloc.add(AddActivity(activity));
@@ -184,7 +170,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
 
     yield StoredActivityState(
       activity,
-      timeInterval,
+      state.timeInterval,
       state is StoredActivityState ? state.day : activity.startTime.onlyDays(),
     ).saveSucess();
   }
@@ -229,23 +215,5 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       default:
         return InfoItem.none;
     }
-  }
-
-  Duration _getDuration(DateTime startTime, TimeOfDay endTime) {
-    if (startTime == null || endTime == null) return Duration.zero;
-    final pickedEndTimeBeforeStartTime = endTime.hour < startTime.hour ||
-        endTime.hour == startTime.hour && endTime.minute < startTime.minute;
-
-    return pickedEndTimeBeforeStartTime
-        ? startTime
-            .copyWith(
-                day: startTime.day + 1,
-                hour: endTime.hour,
-                minute: endTime.minute)
-            .difference(startTime)
-        : Duration(
-            hours: endTime.hour - startTime.hour,
-            minutes: endTime.minute - startTime.minute,
-          );
   }
 }

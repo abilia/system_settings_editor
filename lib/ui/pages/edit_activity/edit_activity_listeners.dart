@@ -108,19 +108,36 @@ class EditActivityListeners extends StatelessWidget {
         BlocProvider.of<EditActivityBloc>(context)
             .add(SaveRecurringActivity(applyTo, state.day));
       }
-    } else {
+    }
+    if (errors.any({
+      SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
+      SaveError.UNCONFIRMED_ACTIVITY_CONFLICT
+    }.contains)) {
       if (errors.contains(SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW)) {
-        final answer = await showViewDialog(
+        final confirmStartTimeBeforeNow = await showViewDialog(
           context: context,
           builder: (context) => WarningDialog(
             text: translate.startTimeBeforeNowWarning,
           ),
         );
-        if (answer == true) {
-          BlocProvider.of<EditActivityBloc>(context)
-              .add(SaveActivity(activityBeforeNowConfirmed: true));
-        }
+        if (confirmStartTimeBeforeNow != true) return;
       }
+
+      if (errors.contains(SaveError.UNCONFIRMED_ACTIVITY_CONFLICT)) {
+        final confirmConflict = await showViewDialog(
+          context: context,
+          builder: (context) => WarningDialog(
+            text: translate.conflictWarning,
+          ),
+        );
+        if (confirmConflict != true) return;
+      }
+
+      BlocProvider.of<EditActivityBloc>(context).add(
+        SaveActivity(
+          warningConfirmed: true,
+        ),
+      );
     }
   }
 }

@@ -14,6 +14,7 @@ import '../../mocks.dart';
 void main() {
   MockSettingsDb mockSettingsDb;
   MockAuthenticationBloc mockAuthenticationBloc;
+  MockActivitiesBloc mockActivitiesBloc;
   final user = User(
       id: 1,
       name: 'Slartibartfast',
@@ -25,6 +26,8 @@ void main() {
     await initializeDateFormatting();
     mockSettingsDb = MockSettingsDb();
     mockAuthenticationBloc = MockAuthenticationBloc();
+    mockActivitiesBloc = MockActivitiesBloc();
+    when(mockActivitiesBloc.state).thenReturn(ActivitiesNotLoaded());
     final userDb = MockUserDb();
     when(userDb.getUser()).thenReturn(user);
     GetItInitializer()
@@ -48,6 +51,9 @@ void main() {
                   create: (context) => mockAuthenticationBloc),
               BlocProvider<SettingsBloc>(
                 create: (context) => SettingsBloc(settingsDb: mockSettingsDb),
+              ),
+              BlocProvider<ActivitiesBloc>(
+                create: (context) => mockActivitiesBloc,
               ),
             ],
             child: child,
