@@ -65,12 +65,21 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
           ),
         );
 
+  static const NO_GO_ERRORS = {
+    SaveError.NO_START_TIME,
+    SaveError.NO_TITLE_OR_IMAGE,
+    SaveError.START_TIME_BEFORE_NOW,
+    SaveError.NO_RECURRING_DAYS,
+  };
+
   Set<SaveError> saveErrors(SaveActivity event) => {
         if (!state.hasTitleOrImage) SaveError.NO_TITLE_OR_IMAGE,
         if (!state.hasStartTime) SaveError.NO_START_TIME,
-        if (!memoplannerSettingBloc.state.activityTimeBeforeCurrent &&
-            state.startTimeBeforeNow(clockBloc.state))
-          SaveError.START_TIME_BEFORE_NOW,
+        if (state.startTimeBeforeNow(clockBloc.state))
+          if (!memoplannerSettingBloc.state.activityTimeBeforeCurrent)
+            SaveError.START_TIME_BEFORE_NOW
+          else if (!event.activityBeforeNowConfirmed)
+            SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
         if (state.emptyRecurringData) SaveError.NO_RECURRING_DAYS,
         if (state.storedRecurring && event is! SaveRecurringActivity)
           SaveError.STORED_RECURRING,

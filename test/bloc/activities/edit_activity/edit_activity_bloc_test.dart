@@ -18,6 +18,7 @@ void main() {
   ActivitiesBloc mockActivitiesBloc;
   MemoplannerSettingBloc mockMemoplannerSettingsBloc;
   ClockBloc clockBloc;
+  final nowTime = DateTime(2000, 02, 22, 22, 30);
   final aTime = DateTime(2022, 02, 22, 22, 30);
   final aDay = DateTime(2022, 02, 22);
 
@@ -25,7 +26,8 @@ void main() {
     tz.initializeTimeZones();
     mockActivitiesBloc = MockActivitiesBloc();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
-    clockBloc = ClockBloc(StreamController<DateTime>().stream);
+    clockBloc =
+        ClockBloc(StreamController<DateTime>().stream, initialTime: nowTime);
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
   });
@@ -737,6 +739,223 @@ void main() {
             expectedTimeIntervall,
           ).failSave({SaveError.NO_RECURRING_DAYS}),
         ]));
+  });
+
+  group('before now warning', () {
+    test('Trying to save before now yields warning', () async {
+      // Arrange
+      final editActivityBloc = EditActivityBloc.newActivity(
+        activitiesBloc: mockActivitiesBloc,
+        memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+        clockBloc: ClockBloc(StreamController<DateTime>().stream,
+            initialTime: aTime.add(1.hours())),
+        day: aDay,
+      );
+
+      // Act
+
+      final originalActivity = editActivityBloc.state.activity;
+      final activity = originalActivity.copyWith(title: 'null');
+      final time = TimeOfDay.fromDateTime(aTime);
+      final timeIntervall = TimeInterval(
+        startTime: time,
+        endTime: time,
+        startDate: aDay,
+      );
+      final expectedActivity = activity.copyWith(startTime: aTime);
+      editActivityBloc.add(ChangeTimeInterval(startTime: time));
+      editActivityBloc.add(ReplaceActivity(activity));
+      editActivityBloc.add(SaveActivity());
+      editActivityBloc.add(SaveActivity(activityBeforeNowConfirmed: true));
+
+      // Assert
+      await expectLater(
+          editActivityBloc,
+          emitsInOrder([
+            UnstoredActivityState(
+              originalActivity,
+              timeIntervall,
+            ),
+            UnstoredActivityState(
+              activity,
+              timeIntervall,
+            ),
+            UnstoredActivityState(
+              activity,
+              timeIntervall,
+            ).failSave({SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW}),
+            StoredActivityState(
+              expectedActivity,
+              timeIntervall,
+              aDay,
+            ).saveSucess()
+          ]));
+    });
+
+    test('Trying to save full day before now yields warning', () async {
+      // Arrange
+      final time = aTime.add(1.days());
+      final editActivityBloc = EditActivityBloc.newActivity(
+        activitiesBloc: mockActivitiesBloc,
+        memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+        clockBloc:
+            ClockBloc(StreamController<DateTime>().stream, initialTime: time),
+        day: aDay,
+      );
+
+      // Act
+
+      final originalActivity = editActivityBloc.state.activity;
+      final activity = originalActivity.copyWith(title: 'null', fullDay: true);
+
+      final saveTime = aDay.previousDay();
+      final timeIntervall = TimeInterval(
+        startDate: saveTime,
+      );
+
+      final expectedActivity =
+          activity.copyWith(startTime: saveTime, alarmType: NO_ALARM);
+      editActivityBloc.add(ChangeDate(saveTime));
+      editActivityBloc.add(ReplaceActivity(activity));
+      editActivityBloc.add(SaveActivity());
+      editActivityBloc.add(SaveActivity(activityBeforeNowConfirmed: true));
+
+      // Assert
+      await expectLater(
+          editActivityBloc,
+          emitsInOrder([
+            UnstoredActivityState(
+              originalActivity,
+              timeIntervall,
+            ),
+            UnstoredActivityState(
+              activity,
+              timeIntervall,
+            ),
+            UnstoredActivityState(
+              activity,
+              timeIntervall,
+            ).failSave({SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW}),
+            StoredActivityState(
+              expectedActivity,
+              timeIntervall,
+              saveTime,
+            ).saveSucess()
+          ]));
+    });
+
+    test('Trying to save new recurring before now yields warning', () async {
+      // Arrange
+      final editActivityBloc = EditActivityBloc.newActivity(
+        activitiesBloc: mockActivitiesBloc,
+        memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+        clockBloc: ClockBloc(StreamController<DateTime>().stream,
+            initialTime: aTime.add(1.hours())),
+        day: aDay,
+      );
+
+      // Act
+      final originalActivity = editActivityBloc.state.activity;
+      final activity1 = originalActivity.copyWith(title: 'null');
+      final activity2 = activity1.copyWith(recurs: Recurs.everyDay);
+      final time = TimeOfDay.fromDateTime(aTime);
+      final timeIntervall = TimeInterval(
+        startTime: time,
+        endTime: time,
+        startDate: aDay,
+      );
+
+      final expectedActivity = activity2.copyWith(startTime: aTime);
+
+      editActivityBloc.add(ChangeTimeInterval(startTime: time));
+      editActivityBloc.add(ReplaceActivity(activity1));
+      editActivityBloc.add(ReplaceActivity(activity2));
+      editActivityBloc.add(SaveActivity());
+      editActivityBloc.add(SaveActivity(activityBeforeNowConfirmed: true));
+
+      // Assert
+      await expectLater(
+          editActivityBloc,
+          emitsInOrder([
+            UnstoredActivityState(
+              originalActivity,
+              timeIntervall,
+            ),
+            UnstoredActivityState(
+              activity1,
+              timeIntervall,
+            ),
+            UnstoredActivityState(
+              activity2,
+              timeIntervall,
+            ),
+            UnstoredActivityState(
+              activity2,
+              timeIntervall,
+            ).failSave({SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW}),
+            StoredActivityState(
+              expectedActivity,
+              timeIntervall,
+              aDay,
+            ).saveSucess()
+          ]));
+    });
+
+    test('Trying to edit recurring THIS DAY ONLY before now yields warning',
+        () async {
+      // Arrange
+      final activity = Activity.createNew(
+        title: 'title',
+        startTime: aTime.subtract(
+          100.days(),
+        ),
+        recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+      );
+
+      final editActivityBloc = EditActivityBloc(
+        ActivityDay(activity, aDay),
+        activitiesBloc: mockActivitiesBloc,
+        memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+        clockBloc: ClockBloc(Stream.empty(), initialTime: aTime.add(1.hours())),
+      );
+
+      final expectedTimeIntervall = TimeInterval(
+        startTime: TimeOfDay.fromDateTime(aTime),
+        startDate: aDay,
+      );
+
+      final activityWithNewTitle = activity.copyWith(title: 'new title');
+
+      final expetedActivityToSave =
+          activityWithNewTitle.copyWith(startTime: activity.startClock(aDay));
+
+      // Act
+      editActivityBloc.add(ReplaceActivity(activityWithNewTitle));
+      editActivityBloc.add(SaveRecurringActivity(ApplyTo.onlyThisDay, aDay));
+      editActivityBloc.add(SaveRecurringActivity(ApplyTo.onlyThisDay, aDay,
+          activityBeforeNowConfirmed: true));
+
+      // Assert
+      await expectLater(
+          editActivityBloc,
+          emitsInOrder([
+            StoredActivityState(
+              activityWithNewTitle,
+              expectedTimeIntervall,
+              aDay,
+            ),
+            StoredActivityState(
+              activityWithNewTitle,
+              expectedTimeIntervall,
+              aDay,
+            ).failSave({SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW}),
+            StoredActivityState(
+              expetedActivityToSave,
+              expectedTimeIntervall,
+              aDay,
+            ).saveSucess()
+          ]));
+    });
   });
 
   test('BUG SGC-352 edit a none recurring activity to be recurring', () async {
