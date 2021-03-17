@@ -33,3 +33,18 @@ class GoToNowButton extends StatelessWidget {
         ),
       );
 }
+
+class GoToCurrentWeekButton extends StatelessWidget {
+  const GoToCurrentWeekButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ActionButton(
+      style: actionButtonStyleRed,
+      onPressed: () => context.read<WeekCalendarBloc>().add(GoToCurrentWeek()),
+      child: Icon(
+        AbiliaIcons.reset,
+      ),
+    );
+  }
+}

@@ -219,6 +219,21 @@ void main() {
     });
   });
 
+  group('First day in week', () {
+    test('Test', () {
+      final firstInWeek = DateTime(2021, 03, 01);
+      expect(DateTime(2021, 03, 01).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 02).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 03).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 04).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 05).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 06).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 07).firstInWeek(), firstInWeek);
+
+      expect(DateTime(2021, 01, 01).firstInWeek(), DateTime(2020, 12, 28));
+    });
+  });
+
   group('DayPart', () {
     test('Correct day part', () {
       final dayParts = DayParts(

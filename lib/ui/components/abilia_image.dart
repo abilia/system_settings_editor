@@ -17,6 +17,7 @@ class ActivityImage extends StatelessWidget {
   final File imageFile;
   final BoxFit fit;
   final double size;
+  final EdgeInsets crossOverPadding;
   static const duration = Duration(milliseconds: 400);
   static const crossPadding = 8.0;
 
@@ -28,6 +29,7 @@ class ActivityImage extends StatelessWidget {
     this.imageSize = ImageSize.THUMB,
     this.imageFile,
     this.fit = BoxFit.cover,
+    this.crossOverPadding = EdgeInsets.zero,
   });
 
   static ActivityImage fromActivityOccasion({
@@ -38,6 +40,7 @@ class ActivityImage extends StatelessWidget {
     File imageFile,
     BoxFit fit = BoxFit.cover,
     bool preview = false,
+    EdgeInsets crossOverPadding = EdgeInsets.zero,
   }) =>
       preview
           ? FadeInCalendarImage(
@@ -58,6 +61,7 @@ class ActivityImage extends StatelessWidget {
               imageSize: imageSize,
               imageFile: imageFile,
               fit: fit,
+              crossOverPadding: crossOverPadding,
             );
 
   @override
@@ -100,7 +104,10 @@ class ActivityImage extends StatelessWidget {
               height: size != null ? size - crossPadding : null,
               width: size != null ? size - crossPadding : null,
               child: past && !signedOff
-                  ? CrossOver()
+                  ? Padding(
+                      padding: crossOverPadding,
+                      child: CrossOver(),
+                    )
                   : AnimatedOpacity(
                       opacity: signedOff ? 1.0 : 0.0,
                       duration: duration,

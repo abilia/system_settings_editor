@@ -4,38 +4,46 @@ import 'package:seagull/ui/all.dart';
 
 class DayTheme {
   final ThemeData theme;
-  final Color color, backgroundColor;
+  final Color color, backgroundColor, secondaryColor, borderColor;
 
   DayTheme._(
     ThemeData theme,
     this.color,
+    this.secondaryColor,
     bool background,
-  )   : backgroundColor = background
+  )   : borderColor =
+            color == AbiliaColors.white ? AbiliaColors.white110 : color,
+        backgroundColor = background
             ? Color.alphaBlend(const Color(0x33000000), color)
             : null,
         theme = theme.copyWith(
             appBarTheme: theme.appBarTheme.copyWith(color: color));
 
-  DayTheme._light(Color color, {bool background = true})
-      : this._(_lightAppBarTheme, color, background);
+  DayTheme._light(Color color, Color secondaryColor, {bool background = true})
+      : this._(_lightAppBarTheme, color, secondaryColor, background);
 
-  DayTheme._dark(Color color, {bool background = true})
-      : this._(_darkAppBarTheme, color, background);
+  DayTheme._dark(Color color, Color secondaryColor, {bool background = true})
+      : this._(_darkAppBarTheme, color, secondaryColor, background);
 
   ThemeData get withScaffoldBackgroundColor =>
       theme.copyWith(scaffoldBackgroundColor: backgroundColor);
 }
 
-final _noColor = DayTheme._light(AbiliaColors.black80, background: false),
-    _white = DayTheme._dark(AbiliaColors.white, background: false),
-    _red = DayTheme._light(AbiliaColors.sundayRed),
-    _monday = DayTheme._light(AbiliaColors.green),
-    _blue = DayTheme._light(AbiliaColors.blue),
-    _thursday = DayTheme._light(AbiliaColors.thursdayBrown),
-    _friday = DayTheme._dark(AbiliaColors.yellow),
-    _saturday = DayTheme._light(AbiliaColors.pink),
-    _danishTuesday = DayTheme._light(AbiliaColors.purple60),
-    _danishWednesDay = DayTheme._light(AbiliaColors.orange120);
+final _noColor = DayTheme._light(AbiliaColors.black80, AbiliaColors.black80,
+        background: false),
+    _white = DayTheme._dark(AbiliaColors.white, AbiliaColors.white110,
+        background: false),
+    _red = DayTheme._light(AbiliaColors.sundayRed, AbiliaColors.sundayRed40),
+    _monday = DayTheme._light(AbiliaColors.green, AbiliaColors.mondayGreen40),
+    _blue = DayTheme._light(AbiliaColors.blue, AbiliaColors.tuesdayBlue40),
+    _thursday = DayTheme._light(
+        AbiliaColors.thursdayBrown, AbiliaColors.thursdayBrown40),
+    _friday = DayTheme._dark(AbiliaColors.yellow, AbiliaColors.fridayYellow40),
+    _saturday = DayTheme._light(AbiliaColors.pink, AbiliaColors.saturdayPink40),
+    _danishTuesday =
+        DayTheme._light(AbiliaColors.purple60, AbiliaColors.purple60),
+    _danishWednesDay =
+        DayTheme._light(AbiliaColors.orange120, AbiliaColors.orange120);
 
 DayTheme weekdayTheme({
   @required DayColor dayColor,
@@ -102,6 +110,7 @@ ThemeData _lightAppBarTheme = abiliaTheme.copyWith(
     headline6: abiliaTextTheme.headline6.copyWith(color: AbiliaColors.white),
     button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white),
     subtitle1: abiliaTextTheme.subtitle1.copyWith(color: AbiliaColors.white),
+    bodyText1: abiliaTextTheme.bodyText1.copyWith(color: AbiliaColors.white),
   ),
   textButtonTheme: TextButtonThemeData(style: actionButtonStyleLight),
 );

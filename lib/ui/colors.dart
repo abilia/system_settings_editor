@@ -412,5 +412,12 @@ class AbiliaColors {
     },
   );
 
-  static const thursdayBrown = Color(0xFFB35F36), sundayRed = Color(0xFFE83C3F);
+  static const thursdayBrown = Color(0xFFB35F36),
+      sundayRed = Color(0xFFE83C3F),
+      mondayGreen40 = Color(0xFFADD7AF),
+      tuesdayBlue40 = Color(0xFF9CCFF6),
+      thursdayBrown40 = Color(0xFFE1BFAF),
+      fridayYellow40 = Color(0xFFFAEA9C),
+      saturdayPink40 = Color(0xFFF4A5CF),
+      sundayRed40 = Color(0xFFF6B1B2);
 }

@@ -3,55 +3,55 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class DayCalendar extends StatelessWidget {
-  final MemoplannerSettingsState memoSettingsState;
-  final DayPickerState pickedDay;
-  final DayPickerBloc dayPickerBloc;
   final CalendarViewState calendarViewState;
   const DayCalendar({
     Key key,
-    @required this.memoSettingsState,
-    @required this.pickedDay,
-    @required this.dayPickerBloc,
     @required this.calendarViewState,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedTheme(
-      key: TestKey.animatedTheme,
-      data: weekdayTheme(
-              dayColor: memoSettingsState.calendarDayColor,
-              languageCode: Localizations.localeOf(context).languageCode,
-              weekday: pickedDay.day.weekday)
-          .theme,
-      child: Scaffold(
-        appBar: buildAppBar(
-          pickedDay.day,
-          memoSettingsState.dayCaptionShowDayButtons,
-        ),
-        body: BlocBuilder<PermissionBloc, PermissionState>(
-          builder: (context, state) => Stack(
-            children: [
-              Calendars(
-                calendarViewState: calendarViewState,
-                memoplannerSettingsState: memoSettingsState,
-              ),
-              if (state.notificationDenied)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 76.0.s, right: 16.0, bottom: 28.0.s),
-                    child: ErrorMessage(
-                      text: Text(
-                        Translator.of(context)
-                            .translate
-                            .notificationsWarningText,
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, memoSettingsState) =>
+          BlocBuilder<DayPickerBloc, DayPickerState>(
+        builder: (context, dayPickerState) => AnimatedTheme(
+          key: TestKey.animatedTheme,
+          data: weekdayTheme(
+                  dayColor: memoSettingsState.calendarDayColor,
+                  languageCode: Localizations.localeOf(context).languageCode,
+                  weekday: dayPickerState.day.weekday)
+              .theme,
+          child: Scaffold(
+            appBar: buildAppBar(
+              dayPickerState.day,
+              memoSettingsState.dayCaptionShowDayButtons,
+              BlocProvider.of<DayPickerBloc>(context),
+            ),
+            body: BlocBuilder<PermissionBloc, PermissionState>(
+              builder: (context, state) => Stack(
+                children: [
+                  Calendars(
+                    calendarViewState: calendarViewState,
+                    memoplannerSettingsState: memoSettingsState,
+                  ),
+                  if (state.notificationDenied)
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 76.0.s, right: 16.0, bottom: 28.0.s),
+                        child: ErrorMessage(
+                          text: Text(
+                            Translator.of(context)
+                                .translate
+                                .notificationsWarningText,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -61,6 +61,7 @@ class DayCalendar extends StatelessWidget {
   Widget buildAppBar(
     DateTime pickedDay,
     bool dayCaptionShowDayButtons,
+    DayPickerBloc dayPickerBloc,
   ) =>
       dayCaptionShowDayButtons
           ? DayAppBar(

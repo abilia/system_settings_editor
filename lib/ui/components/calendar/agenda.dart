@@ -39,11 +39,17 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
           keepScrollOffset: false,
         );
       }
-      WidgetsBinding.instance.addPostFrameCallback((_) =>
-          BlocProvider.of<ScrollPositionBloc>(context)
-              .add(ScrollViewRenderComplete(scrollController)));
     }
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<ScrollPositionBloc>(context)
+          .add(ScrollViewRenderComplete(scrollController));
+    });
   }
 
   @override

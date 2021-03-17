@@ -1003,4 +1003,44 @@ void main() {
       expect(find.byType(ImageArchivePage), findsOneWidget);
     });
   });
+
+  group('Week calendar', () {
+    final fridayTitle = 'Friday';
+    final nextWeekTitle = 'Next week';
+    final friday = initialDay.addDays(2);
+    final nextWeek = initialDay.nextWeek();
+    setUp(() {
+      final activities = [
+        FakeActivity.starts(friday, title: fridayTitle),
+        FakeActivity.starts(nextWeek, title: nextWeekTitle),
+      ];
+      activityResponse = () => activities;
+      when(mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activities));
+      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    });
+    testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
+    });
+
+    testWidgets('Activities are shown in week calendar',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
+      expect(find.text(fridayTitle), findsOneWidget);
+      expect(find.text(nextWeekTitle), findsNothing);
+
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      expect(find.text(fridayTitle), findsNothing);
+      expect(find.text(nextWeekTitle), findsOneWidget);
+    });
+  });
 }
