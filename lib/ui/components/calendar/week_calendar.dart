@@ -517,8 +517,7 @@ class WeekActivityContent extends StatelessWidget {
                     child: Text(
                       activityOccasion.activity.title,
                       overflow: TextOverflow.clip,
-                      style:
-                          abiliaTextTheme.caption.copyWith(height: 20 / 16),
+                      style: abiliaTextTheme.caption.copyWith(height: 20 / 16),
                       textAlign: TextAlign.center,
                     ),
                   ),
