@@ -1,11 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/config.dart';
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/colors.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
 import 'package:seagull/utils/all.dart';
 
 import 'package:seagull/ui/all.dart';
@@ -54,7 +49,7 @@ class _LoginFormState extends State<LoginForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  padding56,
+                  SizedBox(height: 56.s),
                   Center(
                     child: SizedBox(
                       width: 64.0.s,
@@ -67,8 +62,10 @@ class _LoginFormState extends State<LoginForm> {
                             )
                           : GestureDetector(
                               key: TestKey.loginLogo,
-                              onLongPress: () => setState(
-                                  () => _showBackends = !_showBackends),
+                              onLongPress: () {
+                                _loginFormBloc.add(ResetForm());
+                                setState(() => _showBackends = !_showBackends);
+                              },
                               child: FadeInImage(
                                 fadeInDuration:
                                     const Duration(milliseconds: 50),
@@ -81,7 +78,7 @@ class _LoginFormState extends State<LoginForm> {
                             ),
                     ),
                   ),
-                  padding32,
+                  SizedBox(height: 32.s),
                   AbiliaTextInput(
                     formKey: TestKey.userNameInput,
                     controller: _usernameController,
@@ -96,15 +93,15 @@ class _LoginFormState extends State<LoginForm> {
                       FilteringTextInputFormatter.deny(RegExp(r'\s'))
                     ],
                   ),
-                  padding16,
+                  SizedBox(height: 16.s),
                   PasswordInput(
                     controller: _passwordController,
                     loginFormBloc: _loginFormBloc,
                     obscureText: formState.hidePassword,
                     errorState: credentialsError,
                   ),
+                  SizedBox(height: 24.s),
                   if (Config.isMPGO) ...[
-                    padding32,
                     Tts(
                       key: TestKey.loginHint,
                       child: Text(
@@ -114,10 +111,11 @@ class _LoginFormState extends State<LoginForm> {
                             .copyWith(color: AbiliaColors.black75),
                       ),
                     ),
-                    padding16,
-                  ] else
-                    const Spacer(flex: 92),
-                  if (errorState && !licenseError) ...[
+                  ],
+                  if (errorState &&
+                      !licenseError &&
+                      !(_showBackends && Config.isMPGO)) ...[
+                    if (Config.isMPGO) SizedBox(height: 12.s),
                     ErrorMessage(
                       key: TestKey.loginError,
                       text: Text(
@@ -126,9 +124,8 @@ class _LoginFormState extends State<LoginForm> {
                             .message(translate),
                       ),
                     ),
-                    const Spacer(flex: 95),
-                  ] else
-                    const Spacer(flex: 191),
+                  ],
+                  const Spacer(),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.s),
                     child: LoginButton(
@@ -138,13 +135,14 @@ class _LoginFormState extends State<LoginForm> {
                               : null,
                     ),
                   ),
-                  padding32,
+                  SizedBox(height: 32.s),
                   CollapsableWidget(
                     collapsed: !_showBackends,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         BackendSwitches(),
-                        const Center(child: Version()),
+                        const Version(),
                         SizedBox(height: 4.0.s),
                       ],
                     ),
@@ -157,10 +155,6 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
-
-  Spacer get padding16 => const Spacer(flex: 16);
-  Spacer get padding32 => const Spacer(flex: 32);
-  Spacer get padding56 => const Spacer(flex: 56);
 
   @override
   void dispose() {

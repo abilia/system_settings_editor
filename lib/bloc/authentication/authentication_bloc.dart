@@ -78,7 +78,6 @@ class AuthenticationBloc
     String token,
     LoggedOutReason loggedOutReason = LoggedOutReason.LOG_OUT,
   }) async* {
-    await repo.logout(token);
     try {
       await onLogout?.call();
     } catch (e) {
@@ -89,5 +88,6 @@ class AuthenticationBloc
         loggedOutReason: loggedOutReason,
       );
     }
+    await repo.logout(token);
   }
 }

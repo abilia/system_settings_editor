@@ -95,8 +95,8 @@ class YesNoDialog extends StatelessWidget {
   final IconData headingIcon;
   const YesNoDialog({
     Key key,
-    this.text,
-    this.heading,
+    @required this.text,
+    @required this.heading,
     this.headingIcon,
   }) : super(key: key);
 
@@ -120,6 +120,29 @@ class YesNoDialog extends StatelessWidget {
         icon: AbiliaIcons.ok,
         onPressed: () => Navigator.of(context).maybePop(true),
       ),
+    );
+  }
+}
+
+class WarningDialog extends StatelessWidget {
+  final String text;
+  const WarningDialog({
+    Key key,
+    @required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ViewDialog(
+      heading: AppBarHeading(
+        text: Translator.of(context).translate.warning,
+        iconData: AbiliaIcons.gewa_radio_error,
+      ),
+      body: Tts(child: Text(text)),
+      forwardNavigationWidget: OkButton(
+        onPressed: () => Navigator.of(context).maybePop(true),
+      ),
+      backNavigationWidget: PreviousButton(),
     );
   }
 }

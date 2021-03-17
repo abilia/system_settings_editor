@@ -199,6 +199,8 @@ abstract class Translated {
 
   final String error = 'Error';
 
+  final String warning = 'Warning';
+
   final String missingTitleOrImageAndStartTime =
       'Your activity should contain an image or name and start time.';
 
@@ -206,8 +208,11 @@ abstract class Translated {
 
   final String missingStartTime = 'You must enter a start time.';
 
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'You have selected a start time which has already passed. This is not allowed.';
+
+  final String startTimeBeforeNowWarning =
+      'You have selected a start time which has already passed';
 
   final String availableFor = 'Available for';
 
@@ -651,6 +656,9 @@ class SV extends Translated {
   final String error = 'Fel';
 
   @override
+  final String warning = 'Varning';
+
+  @override
   final String missingTitleOrImageAndStartTime =
       'Aktiviteten måste ha ett namn eller en bild och en starttid.';
 
@@ -662,8 +670,12 @@ class SV extends Translated {
   final String missingStartTime = 'Du måste ange en starttid.';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.';
+
+  @override
+  final String startTimeBeforeNowWarning =
+      'Du har valt en starttid som är före aktuell tid';
 
   @override
   final String availableFor = 'Tillgänglig för';
@@ -1183,6 +1195,9 @@ class DA extends Translated {
   final String error = 'Fejl';
 
   @override
+  final String warning = 'Advarsel';
+
+  @override
   final String missingTitleOrImageAndStartTime =
       'Aktiviteten skal have et navn eller et billede og et starttidspunkt.';
 
@@ -1194,8 +1209,11 @@ class DA extends Translated {
   final String missingStartTime = 'Du skal angive en starttid.';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'Starttiden er allerede passeret. Det er ikke tilladt.';
+
+  @override
+  final String startTimeBeforeNowWarning = 'Starttiden er allerede passeret';
 
   @override
   final String availableFor = 'Fås til';
@@ -1712,6 +1730,9 @@ class NL extends Translated {
   final String error = 'Fout';
 
   @override
+  final String warning = 'Waarschuwing';
+
+  @override
   final String missingTitleOrImageAndStartTime =
       'Je activiteit moet een afbeelding of naam en starttijd bevatten.';
 
@@ -1723,8 +1744,12 @@ class NL extends Translated {
   final String missingStartTime = 'U moet een starttijd instellen.';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'U heeft een starttijd geselecteerd die al voorbij is. Dit is niet toegestaan.';
+
+  @override
+  final String startTimeBeforeNowWarning =
+      'U heeft een starttijd geselecteerd die al voorbij is';
 
   @override
   final String availableFor = 'Beschikbaar voor';
@@ -2242,6 +2267,9 @@ class FI extends Translated {
   final String error = 'Virhe';
 
   @override
+  final String warning = 'Varoitus';
+
+  @override
   final String missingTitleOrImageAndStartTime =
       'Toimintasi tulisi sisältää kuva tai nimi ja aloitusaika.';
 
@@ -2253,8 +2281,12 @@ class FI extends Translated {
   final String missingStartTime = 'Anna aloitusaika.';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'Valitsit aloitusajan, joka on jo mennyt. Tätä ei sallita.';
+
+  @override
+  final String startTimeBeforeNowWarning =
+      'Valitsit aloitusajan, joka on jo mennyt';
 
   @override
   final String availableFor = 'Käytettävissä';
@@ -2771,6 +2803,9 @@ class DE extends Translated {
   final String error = 'Error';
 
   @override
+  final String warning = 'Warnung';
+
+  @override
   final String missingTitleOrImageAndStartTime =
       'Ihre Aktivität sollte ein Bild oder einen Namen und eine Startzeit enthalten.';
 
@@ -2782,8 +2817,12 @@ class DE extends Translated {
   final String missingStartTime = 'Sie müssen eine Startzeit eingeben:';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'Die gewählte Startzeit liegt in der Vergangenheit. Dies ist nicht zulässig.';
+
+  @override
+  final String startTimeBeforeNowWarning =
+      'Die gewählte Startzeit liegt in der Vergangenheit';
 
   @override
   final String availableFor = 'Verfügbar für';
@@ -3304,6 +3343,9 @@ class NB extends Translated {
   final String error = 'Feil';
 
   @override
+  final String warning = 'Advarsel';
+
+  @override
   final String missingTitleOrImageAndStartTime =
       'Aktiviteten må ha et navn ellet et bilde og en starttid.';
 
@@ -3315,8 +3357,11 @@ class NB extends Translated {
   final String missingStartTime = 'En aktivitet må ha en starttid.';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'Starttiden er allerede passert. Det er ikke tillatt.';
+
+  @override
+  final String startTimeBeforeNowWarning = 'Starttiden er allerede passert';
 
   @override
   final String availableFor = 'Tilgjengelig for';

@@ -17,27 +17,28 @@ void main() {
     await GetIt.I.reset();
   });
 
-  testWidgets('Login with wrong password', (WidgetTester tester) async {
+  setUp(() async {
     app.main();
-    await tester.pumpAndSettle();
-    await tester.selectBackend(backend);
-    await tester.login('IGT$testId', password: 'wrongpassword');
+  });
+
+  testWidgets('Login with wrong password', (WidgetTester tester) async {
+    await tester.login('IGT$testId', backend, password: 'wrongpassword');
     expect(find.byType(ErrorMessage), findsOneWidget);
   });
 
   testWidgets('Login with no license', (WidgetTester tester) async {
-    app.main();
-    await tester.pumpAndSettle();
-    await tester.selectBackend(backend);
-    await tester.login('IGT$testId');
+    await tester.login(
+      'IGT$testId',
+      backend,
+    );
     expect(find.byType(LicenseErrorDialog), findsOneWidget);
   });
 
   testWidgets('Create activity with note SGC-502', (WidgetTester tester) async {
-    app.main();
-    await tester.pumpAndSettle();
-    await tester.selectBackend(backend);
-    await tester.login('IGTWL$testId');
+    await tester.login(
+      'IGTWL$testId',
+      backend,
+    );
     if (Platform.isAndroid) {
       await tester.pressCancelButton();
     }
@@ -66,6 +67,7 @@ void main() {
 
 extension on WidgetTester {
   Future<void> selectBackend(String env) async {
+    await pumpAndSettle();
     await longPress(find.byKey(TestKey.loginLogo));
     // await tester.tap(find.byKey(TestKey.loginLogo));
     await pumpAndSettle();
@@ -142,7 +144,9 @@ extension on WidgetTester {
     await pumpAndSettle();
   }
 
-  Future<void> login(String userName, {String password = 'password'}) async {
+  Future<void> login(String userName, String backend,
+      {String password = 'password'}) async {
+    await selectBackend(backend);
     await tap(find.byKey(TestKey.userNameInput));
     await pumpAndSettle();
     await showKeyboard(find.byKey(TestKey.input));

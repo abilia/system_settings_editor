@@ -251,114 +251,6 @@ void main() {
       });
     });
 
-    testWidgets(
-        'pressing add activity button with no title nor time shows error',
-        (WidgetTester tester) async {
-      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
-
-      // Act press submit
-      await tester.pumpWidget(
-          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
-      await tester.pumpAndSettle();
-
-      await tester.tap(submitButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert error message
-      expect(
-          find.text(translate.missingTitleOrImageAndStartTime), findsOneWidget);
-      // Act dissmiss
-      await tester.tapAt(Offset.zero);
-      await tester.pumpAndSettle();
-      // Assert no error message
-      expect(
-          find.text(translate.missingTitleOrImageAndStartTime), findsNothing);
-    });
-
-    testWidgets('pressing add activity button without time shows error',
-        (WidgetTester tester) async {
-      final newActivtyName = 'new activity name';
-      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
-
-      // Act press submit
-      await tester.pumpWidget(
-          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
-      await tester.pumpAndSettle();
-
-      // Act enter title
-      await tester.enterText_(
-          find.byKey(TestKey.editTitleTextFormField), newActivtyName);
-      await tester.pumpAndSettle();
-
-      // Act press submit
-      await tester.tap(submitButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert error message
-      expect(find.text(translate.missingStartTime), findsOneWidget);
-      // Act dissmiss
-      await tester.tapAt(Offset.zero);
-      await tester.pumpAndSettle();
-      // Assert no error message
-      expect(find.text(translate.missingStartTime), findsNothing);
-    });
-
-    testWidgets('pressing add activity button with no title shows error',
-        (WidgetTester tester) async {
-      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
-
-      await tester.pumpWidget(
-          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
-      await tester.pumpAndSettle();
-      // Act press fullday
-      await tester.scrollDown(dy: -150);
-      await tester.tap(find.byKey(TestKey.fullDaySwitch));
-      await tester.pumpAndSettle();
-
-      // Act press submit
-      await tester.tap(submitButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert error message
-      expect(find.text(translate.missingTitleOrImage), findsOneWidget);
-      // Act dissmiss
-      await tester.tapAt(Offset.zero);
-      await tester.pumpAndSettle();
-      // Assert no error message
-      expect(find.text(translate.missingTitleOrImage), findsNothing);
-    });
-
-    testWidgets(
-        'pressing add activity on other tab scrolls back to main page on error',
-        (WidgetTester tester) async {
-      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
-
-      await tester.pumpWidget(
-          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
-      await tester.pumpAndSettle();
-
-      // Act go to tab
-      await tester.goToAlarmTab();
-      await tester.pumpAndSettle();
-      // Assert not at main tab
-      expect(find.byType(MainTab), findsNothing);
-
-      // Act press submit
-      await tester.tap(submitButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert error message
-      expect(
-          find.text(translate.missingTitleOrImageAndStartTime), findsOneWidget);
-
-      // Act dissmiss
-      await tester.tapAt(Offset.zero);
-      await tester.pumpAndSettle();
-
-      // Assert at main tab
-      expect(find.byType(MainTab), findsOneWidget);
-    });
-
     testWidgets('full day switch', (WidgetTester tester) async {
       await tester
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
@@ -2156,7 +2048,7 @@ text''';
       await tester.pumpAndSettle();
 
       expect(find.text('15:29'), findsOneWidget);
-      expect(find.text(translate.startTimeBeforeNow), findsOneWidget);
+      expect(find.text(translate.startTimeBeforeNowError), findsOneWidget);
     });
 
     testWidgets(
@@ -2186,7 +2078,7 @@ text''';
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
 
-      expect(find.text(translate.startTimeBeforeNow), findsNothing);
+      expect(find.text(translate.startTimeBeforeNowError), findsNothing);
     });
 
     testWidgets(
@@ -2220,7 +2112,7 @@ text''';
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
 
-      expect(find.text(translate.startTimeBeforeNow), findsNothing);
+      expect(find.text(translate.startTimeBeforeNowError), findsNothing);
     });
 
     testWidgets('calendarActivityType-Left/Rigth given name',
