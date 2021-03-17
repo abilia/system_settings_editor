@@ -6,10 +6,11 @@ import 'package:seagull/utils/all.dart';
 void main() {
   final atNine = DateTime(2020, 03, 12, 09, 00);
   group('basics', () {
-    testWidgets('''
-old: |
-new: |
-conflicts''', (tester) async {
+    testWidgets('stored start time same as new start time > conflicts',
+// old: |
+// new: |
+// conflicts
+        (tester) async {
       final storedActivity =
           Activity.createNew(title: 'old', startTime: atNine);
       final newActivity = Activity.createNew(title: 'new', startTime: atNine);
@@ -19,10 +20,12 @@ conflicts''', (tester) async {
       );
     });
 
-    testWidgets('''
-old:  |
-new: |
-does not conflicts''', (tester) async {
+    testWidgets(
+        'stored start time different from new start time > no conflicts',
+// old:  |
+// new: |
+// does not conflicts
+        (tester) async {
       final storedActivity =
           Activity.createNew(title: 'old', startTime: atNine.add(1.minutes()));
       final newActivity = Activity.createNew(title: 'new', startTime: atNine);
@@ -32,10 +35,12 @@ does not conflicts''', (tester) async {
       );
     });
 
-    testWidgets('''
-old: |----|
-new:   |
-conflicts''', (tester) async {
+    testWidgets(
+        'stored activity with range and new activity with start time inside range > conflicts',
+// old: |----|
+// new:   |
+// conflicts
+        (tester) async {
       final storedActivity = Activity.createNew(
           title: 'old',
           startTime: atNine.subtract(30.minutes()),
@@ -50,10 +55,12 @@ conflicts''', (tester) async {
       );
     });
 
-    testWidgets('''
-old: |----|
-new:        |
-does not conflict''', (tester) async {
+    testWidgets(
+        'stored activity with range and new activity with start time ousude range > no conflicts',
+// old: |----|
+// new:        |
+// does not conflict
+        (tester) async {
       final storedActivity = Activity.createNew(
           title: 'old',
           startTime: atNine.subtract(30.minutes()),
@@ -68,10 +75,12 @@ does not conflict''', (tester) async {
       );
     });
 
-    testWidgets('''
-old:    |
-new: |-----|
-conflicts''', (tester) async {
+    testWidgets(
+        'stored activity with only start time and new with range > conflicts',
+// old:    |
+// new: |-----|
+// conflicts
+        (tester) async {
       final storedActivity =
           Activity.createNew(title: 'old', startTime: atNine.add(1.hours()));
       final newActivity = Activity.createNew(
@@ -85,10 +94,11 @@ conflicts''', (tester) async {
       );
     });
 
-    testWidgets('''
-old:   |---|
-new: |---|
-conflicts''', (tester) async {
+    testWidgets('stored overlapping with new > conflicts',
+// old:   |---|
+// new: |---|
+// conflicts
+        (tester) async {
       final storedActivity = Activity.createNew(
         title: 'old',
         startTime: atNine.add(10.minutes()),
@@ -104,10 +114,11 @@ conflicts''', (tester) async {
         isTrue,
       );
     });
-    testWidgets('''
-old:     |--|
-new: |--|
-does not conflict''', (tester) async {
+    testWidgets('no overlap > no conflicts',
+// old:     |--|
+// new: |--|
+// does not conflict
+        (tester) async {
       final storedActivity = Activity.createNew(
         title: 'old',
         startTime: atNine.add(10.minutes()),
@@ -124,10 +135,11 @@ does not conflict''', (tester) async {
       );
     });
 
-    testWidgets('''
-old:|--|
-new: |
-conflicts''', (tester) async {
+    testWidgets('start just after range > conflicts',
+// old:|--|
+// new: |
+// conflicts
+        (tester) async {
       final storedActivity = Activity.createNew(
         title: 'old',
         startTime: atNine,
@@ -193,10 +205,11 @@ conflicts''', (tester) async {
   });
 
   group('same activity', () {
-    testWidgets('''Same activity does not collieds with self
-old:   |--|
-edited:  |--|
-does not conflict''', (tester) async {
+    testWidgets('Same activity does not collieds with self',
+// old:   |--|
+// edited:  |--|
+// does not conflict
+        (tester) async {
       final storedActivity = Activity.createNew(
           title: 'old', startTime: atNine, duration: 1.hours());
       final edited = storedActivity.copyWith(
@@ -211,11 +224,12 @@ does not conflict''', (tester) async {
       );
     });
 
-    testWidgets('''
-clock:     00:00
-old:    |----:----|
-edited:      :   |------|
-does not conflict''', (tester) async {
+    testWidgets('overlapping 24:00 but is same activity > no conflicts',
+// clock:     00:00
+// old:    |----:----|
+// edited:      :   |------|
+// does not conflict
+        (tester) async {
       final storedActivity = Activity.createNew(
         title: 'old',
         startTime: atNine.subtract(12.hours()),
@@ -235,11 +249,12 @@ does not conflict''', (tester) async {
 
   group('Activities overlapping 24:00', () {
     final at21 = DateTime(2021, 11, 21, 21, 00);
-    testWidgets('''
-clock:  00:00
-old: |----:----|
-new:      :    |
-conflicts''', (tester) async {
+    testWidgets('starts same time as end on stored > conflicts',
+// clock:  00:00
+// old: |----:----|
+// new:      :    |
+// conflicts
+        (tester) async {
       final storedActivity = Activity.createNew(
         title: 'old',
         startTime: atNine.subtract(12.hours()),
@@ -256,11 +271,13 @@ conflicts''', (tester) async {
       );
     });
 
-    testWidgets('''
-clock:   00:00
-old:       :   |-----|
-new: |-----:-----|
-conflicts''', (tester) async {
+    testWidgets(
+        'overlapping with stored activity ranging over 24:00 > conflicts',
+// clock:   00:00
+// old:       :   |-----|
+// new: |-----:-----|
+// conflicts
+        (tester) async {
       final storedActivity = Activity.createNew(
         title: 'old',
         startTime: at21.add(12.hours()),
