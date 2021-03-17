@@ -166,23 +166,37 @@ class WeekCalendarDayHeading extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    DefaultTextStyle(
-                      style: dayTheme.theme.textTheme.bodyText1
-                          .copyWith(height: 18 / 16),
-                      child: Tts(
-                        data: '${day.day}, ${weekDayFormat.format(day)}',
-                        child: Column(
-                          children: [
-                            Text(
-                              '${day.day}',
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              t.shortWeekday(day.weekday),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
+                    SizedBox(
+                      height: 44.s,
+                      child: DefaultTextStyle(
+                        style: dayTheme.theme.textTheme.bodyText1
+                            .copyWith(height: 18 / 16),
+                        child: Tts(
+                            data: '${day.day}, ${weekDayFormat.format(day)}',
+                            child: BlocBuilder<ClockBloc, DateTime>(
+                              buildWhen: (previous, current) =>
+                                  !previous.isAtSameDay(current),
+                              builder: (context, now) => WithCrossOver(
+                                color: dayTheme.theme.textTheme.bodyText1.color,
+                                crossOverPadding:
+                                    EdgeInsets.fromLTRB(4.s, 4.s, 4.s, 12.s),
+                                applyCross: day.isBefore(now.onlyDays()),
+                                child: Center(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        '${day.day}',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Text(
+                                        t.shortWeekday(day.weekday),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )),
                       ),
                     ),
                     if (fullDayActivities.length == 1)
@@ -218,11 +232,7 @@ class FullDayStack extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(top: 2.s, left: 2.s),
             child: Container(
-              decoration: BoxDecoration(
-                color: AbiliaColors.white,
-                borderRadius: borderRadius,
-                border: border,
-              ),
+              decoration: whiteBoxDecoration,
               width: double.infinity,
             ),
           ),
@@ -232,11 +242,7 @@ class FullDayStack extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(bottom: 2.s, right: 2.s),
             child: Container(
-              decoration: BoxDecoration(
-                color: AbiliaColors.white,
-                borderRadius: borderRadius,
-                border: border,
-              ),
+              decoration: whiteBoxDecoration,
               width: double.infinity,
               child: Center(
                 child: Text('+$numberOfActivities'),
@@ -495,25 +501,30 @@ class WeekActivityContent extends StatelessWidget {
         borderRadius: borderRadius,
         color: AbiliaColors.white,
       ),
-      child: Center(
-        child: activityOccasion.activity.hasImage
-            ? ActivityImage.fromActivityOccasion(
+      child: activityOccasion.activity.hasImage
+          ? ActivityImage.fromActivityOccasion(
+              activityOccasion: activityOccasion,
+              size: double.infinity,
+              fit: BoxFit.cover,
+              crossOverPadding: EdgeInsets.all(7.s))
+          : Padding(
+              padding: EdgeInsets.all(3.0.s),
+              child: ActivityOccasionDecoration(
                 activityOccasion: activityOccasion,
-                size: double.infinity,
-                fit: BoxFit.cover,
-              )
-            : Padding(
-                padding: EdgeInsets.all(3.0.s),
-                child: Tts(
-                  child: Text(
-                    activityOccasion.activity.title,
-                    overflow: TextOverflow.clip,
-                    style: abiliaTextTheme.caption.copyWith(height: 20 / 16),
-                    textAlign: TextAlign.center,
+                crossOverPadding: EdgeInsets.all(4.s),
+                child: Center(
+                  child: Tts(
+                    child: Text(
+                      activityOccasion.activity.title,
+                      overflow: TextOverflow.clip,
+                      style:
+                          abiliaTextTheme.caption.copyWith(height: 20 / 16),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),
-      ),
+            ),
     );
   }
 }
@@ -600,10 +611,11 @@ class WeekAppBarTitleRows {
     String langCode,
     Translated translator,
   }) {
+    final shortWeekDayName = translator.shortWeekday(selectedDay.weekday);
     final week = '${translator.week} ${selectedWeekStart.getWeekNumber()}';
     final row1 = selectedDay.isSameWeek(selectedWeekStart) &&
             currentTime.isSameWeek(selectedWeekStart)
-        ? ' ${DateFormat('EEEE', langCode).format(selectedDay)}, $week'
+        ? ' $shortWeekDayName, $week'
         : week;
     final row2 = '${selectedWeekStart.year}';
 

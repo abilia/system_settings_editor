@@ -1,5 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/scale_util.dart';
 
 class CrossOver extends StatelessWidget {
@@ -64,4 +65,34 @@ class _CrossOverPainter extends CustomPainter {
 
   @override
   bool hitTest(Offset position) => false;
+}
+
+class WithCrossOver extends StatelessWidget {
+  final Widget child;
+  final bool applyCross;
+  final EdgeInsets crossOverPadding;
+  final Color color;
+  const WithCrossOver({
+    Key key,
+    @required this.child,
+    @required this.applyCross,
+    this.crossOverPadding = EdgeInsets.zero,
+    this.color = const Color(0xFF000000),
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        child,
+        if (applyCross)
+          Padding(
+            padding: crossOverPadding,
+            child: CrossOver(
+              color: color,
+            ),
+          ),
+      ],
+    );
+  }
 }
