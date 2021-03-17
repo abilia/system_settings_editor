@@ -5,6 +5,7 @@ enum SaveError {
   NO_TITLE_OR_IMAGE,
   START_TIME_BEFORE_NOW,
   UNCONFIRMED_START_TIME_BEFORE_NOW,
+  UNCONFIRMED_ACTIVITY_CONFLICT,
   NO_RECURRING_DAYS,
   STORED_RECURRING,
 }
@@ -38,6 +39,11 @@ abstract class EditActivityState extends Equatable with Silent {
       timeInterval == originalTimeInterval &&
       newImage == null;
 
+  bool get unchangedTime =>
+      this is StoredActivityState &&
+      timeInterval == originalTimeInterval &&
+      originalActivity.recurs == activity.recurs;
+
   bool get storedRecurring =>
       this is StoredActivityState && originalActivity.isRecurring;
 
@@ -54,6 +60,45 @@ abstract class EditActivityState extends Equatable with Silent {
         path: activity.icon,
         file: newImage,
       );
+
+  Activity _activityToStore() {
+    var storeActivity = (activity.hasAttachment && activity.infoItem.isEmpty)
+        ? activity.copyWith(infoItem: InfoItem.none)
+        : activity;
+
+    if (activity.fullDay) {
+      return storeActivity.copyWith(
+        startTime: timeInterval.startDate.onlyDays(),
+        alarmType: NO_ALARM,
+        reminderBefore: const [],
+      );
+    }
+
+    final startTime = timeInterval.startDate.withTime(timeInterval.startTime);
+    return storeActivity.copyWith(
+      startTime: startTime,
+      duration: _getDuration(startTime, timeInterval.endTime),
+    );
+  }
+
+  Duration _getDuration(DateTime startTime, TimeOfDay endTime) {
+    if (startTime == null || endTime == null) return Duration.zero;
+    final pickedEndTimeBeforeStartTime = endTime.hour < startTime.hour ||
+        endTime.hour == startTime.hour && endTime.minute < startTime.minute;
+
+    return pickedEndTimeBeforeStartTime
+        ? startTime
+            .copyWith(
+              day: startTime.day + 1,
+              hour: endTime.hour,
+              minute: endTime.minute,
+            )
+            .difference(startTime)
+        : Duration(
+            hours: endTime.hour - startTime.hour,
+            minutes: endTime.minute - startTime.minute,
+          );
+  }
 
   @override
   List<Object> get props => [

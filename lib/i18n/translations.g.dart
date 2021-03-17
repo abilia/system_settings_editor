@@ -210,7 +210,10 @@ abstract class Translated {
       'You have selected a start time which has already passed. This is not allowed.';
 
   final String startTimeBeforeNowWarning =
-      'You have selected a start time which has already passed';
+      'You have selected a start time which has already passed. Press OK to continue.';
+
+  final String conflictWarning =
+      'There are activities conflicting with this activity. Press OK to continue.';
 
   final String availableFor = 'Available for';
 
@@ -670,7 +673,11 @@ class SV extends Translated {
 
   @override
   final String startTimeBeforeNowWarning =
-      'Du har valt en starttid som är före aktuell tid';
+      'Du har valt en starttid som är före aktuell tid. Tryck ok om du vill fortsätta.';
+
+  @override
+  final String conflictWarning =
+      'Det finns aktiviteter som krockar med din aktivitet. Tryck ok om du vill fortsätta.';
 
   @override
   final String availableFor = 'Tillgänglig för';
@@ -1205,7 +1212,12 @@ class DA extends Translated {
       'Starttiden er allerede passeret. Det er ikke tilladt.';
 
   @override
-  final String startTimeBeforeNowWarning = 'Starttiden er allerede passeret';
+  final String startTimeBeforeNowWarning =
+      'Starttiden er allerede passeret. Tryk på OK for at fortsætte.';
+
+  @override
+  final String conflictWarning =
+      'Der er aktiviteter, der falder sammen med denne aktivitet. Tryk på OK for at fortsætte.';
 
   @override
   final String availableFor = 'Fås til';
@@ -1738,7 +1750,11 @@ class NL extends Translated {
 
   @override
   final String startTimeBeforeNowWarning =
-      'U heeft een starttijd geselecteerd die al voorbij is';
+      'U heeft een starttijd geselecteerd die al voorbij is. Druk op OK om door te gaan.';
+
+  @override
+  final String conflictWarning =
+      'Er zijn activiteiten die conflicteren met deze activiteit. Druk op OK om door te gaan.';
 
   @override
   final String availableFor = 'Beschikbaar voor';
@@ -2272,7 +2288,11 @@ class FI extends Translated {
 
   @override
   final String startTimeBeforeNowWarning =
-      'Valitsit aloitusajan, joka on jo mennyt';
+      'Valitsit aloitusajan, joka on jo mennyt. Jatka painamalla OK.';
+
+  @override
+  final String conflictWarning =
+      'On olemassa aktiviteetteja, jotka ovat ristiriidassa tämän aktiviteetin kanssa. Jatka painamalla OK.';
 
   @override
   final String availableFor = 'Käytettävissä';
@@ -2805,7 +2825,11 @@ class DE extends Translated {
 
   @override
   final String startTimeBeforeNowWarning =
-      'Die gewählte Startzeit liegt in der Vergangenheit';
+      'Die gewählte Startzeit liegt in der Vergangenheit. Drücken Sie auf OK, um fortzufahren.';
+
+  @override
+  final String conflictWarning =
+      'Mit dieser Aktivität stehen andere Aktivitäten im Konflikt. Drücken Sie auf OK, um fortzufahren.';
 
   @override
   final String availableFor = 'Verfügbar für';
@@ -3341,7 +3365,12 @@ class NB extends Translated {
       'Starttiden er allerede passert. Det er ikke tillatt.';
 
   @override
-  final String startTimeBeforeNowWarning = 'Starttiden er allerede passert';
+  final String startTimeBeforeNowWarning =
+      'Starttiden er allerede passert. Trykk på OK for å fortsette.';
+
+  @override
+  final String conflictWarning =
+      'Der er aktiviteter som kolliderer med denne aktivitet. Trykk på OK for å fortsette.';
 
   @override
   final String availableFor = 'Tilgjengelig for';

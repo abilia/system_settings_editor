@@ -29,12 +29,15 @@ void main() {
 
   MockSortableBloc mockSortableBloc;
   MockUserFileBloc mockUserFileBloc;
+  MockActivitiesBloc mockActivitiesBloc;
   MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   setUp(() async {
     tz.initializeTimeZones();
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
     mockUserFileBloc = MockUserFileBloc();
+    mockActivitiesBloc = MockActivitiesBloc();
+    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([]));
     mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
@@ -61,9 +64,10 @@ void main() {
                     StreamController<DateTime>().stream,
                     initialTime: startTime),
               ),
-              BlocProvider<MemoplannerSettingBloc>(
-                create: (context) => mockMemoplannerSettingsBloc,
+              BlocProvider<MemoplannerSettingBloc>.value(
+                value: mockMemoplannerSettingsBloc,
               ),
+              BlocProvider<ActivitiesBloc>.value(value: mockActivitiesBloc),
               BlocProvider<EditActivityBloc>(
                 create: (context) => newActivity
                     ? EditActivityBloc.newActivity(
@@ -82,12 +86,8 @@ void main() {
                             BlocProvider.of<MemoplannerSettingBloc>(context),
                       ),
               ),
-              BlocProvider<SortableBloc>(
-                create: (context) => mockSortableBloc,
-              ),
-              BlocProvider<UserFileBloc>(
-                create: (context) => mockUserFileBloc,
-              ),
+              BlocProvider<SortableBloc>.value(value: mockSortableBloc),
+              BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
               BlocProvider<SettingsBloc>(
                 create: (context) => SettingsBloc(
                   settingsDb: MockSettingsDb(),
@@ -302,6 +302,135 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert -- leaves editactivitypage
+    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.byType(EditActivityPage), findsNothing);
+  });
+
+  testWidgets('pressing add activity with conflict shows warning',
+      (WidgetTester tester) async {
+    // Arrange
+    final conflicting = Activity.createNew(
+      title: 'conflict',
+      startTime: startTime,
+      duration: 30.minutes(),
+    );
+    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([conflicting]));
+    await tester.pumpWidget(
+        wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+    await tester.pumpAndSettle();
+
+    // Act enter title
+    await tester.enterText_(
+        find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
+    await tester.pumpAndSettle();
+
+    // Act -- Change input to new start time
+    await tester.tap(timeFieldFinder);
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(TestKey.startTimeInput), '0333');
+    await tester.pumpAndSettle();
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Act press submit
+    await tester.tap(submitButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Assert warning message
+    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.text(translate.conflictWarning), findsOneWidget);
+
+    // Act dissmiss
+    await tester.tap(find.byType(PreviousButton));
+    await tester.pumpAndSettle();
+
+    // Assert - back ad edit activity
+    expect(find.byType(EditActivityPage), findsOneWidget);
+    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.text(translate.conflictWarning), findsNothing);
+
+    // Act press submit
+    await tester.tap(submitButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Assert warning message
+    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.text(translate.conflictWarning), findsOneWidget);
+
+    // Act press ok
+    await tester.tap(find.byType(OkButton));
+    await tester.pumpAndSettle();
+
+    // // Assert - finds nothing
+    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.text(translate.conflictWarning), findsNothing);
+    expect(find.byType(EditActivityPage), findsNothing);
+  });
+
+  testWidgets('add activity with conflict and before now shows both warning',
+      (WidgetTester tester) async {
+    // Arrange
+    final conflictingActivity = Activity.createNew(
+      title: 'conflict',
+      startTime: startTime.subtract(10.minutes()),
+      duration: 30.minutes(),
+    );
+    when(mockActivitiesBloc.state)
+        .thenReturn(ActivitiesLoaded([conflictingActivity]));
+    await tester.pumpWidget(
+        wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+    await tester.pumpAndSettle();
+
+    // Act enter title
+    await tester.enterText_(
+        find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
+    await tester.pumpAndSettle();
+
+    // Act -- Change input to new start time
+    await tester.tap(timeFieldFinder);
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(TestKey.startTimeInput), '0325');
+    await tester.pumpAndSettle();
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Act press submit
+    await tester.tap(submitButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Assert warning message before now
+    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
+
+    // Act dissmiss
+    await tester.tap(find.byType(PreviousButton));
+    await tester.pumpAndSettle();
+
+    // Assert - back ad edit activity
+    expect(find.byType(EditActivityPage), findsOneWidget);
+    expect(find.byType(WarningDialog), findsNothing);
+
+    // Act press submit
+    await tester.tap(submitButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Assert warning message before now
+    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
+
+    // Act press ok
+    await tester.tap(find.byType(OkButton));
+    await tester.pumpAndSettle();
+
+    // Assert warning message conflict
+    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.text(translate.conflictWarning), findsOneWidget);
+
+    // Act press ok
+    await tester.tap(find.byType(OkButton));
+    await tester.pumpAndSettle();
+
+    // Assert - finds nothing
     expect(find.byType(WarningDialog), findsNothing);
     expect(find.byType(EditActivityPage), findsNothing);
   });

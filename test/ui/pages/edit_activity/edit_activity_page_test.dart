@@ -36,11 +36,14 @@ void main() {
   MockSortableBloc mockSortableBloc;
   MockUserFileBloc mockUserFileBloc;
   MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
+  MockActivitiesBloc mockActivitiesBloc;
   setUp(() async {
     tz.initializeTimeZones();
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
     mockUserFileBloc = MockUserFileBloc();
+    mockActivitiesBloc = MockActivitiesBloc();
+    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([]));
     mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
@@ -67,9 +70,10 @@ void main() {
                     StreamController<DateTime>().stream,
                     initialTime: startTime),
               ),
-              BlocProvider<MemoplannerSettingBloc>(
-                create: (context) => mockMemoplannerSettingsBloc,
+              BlocProvider<MemoplannerSettingBloc>.value(
+                value: mockMemoplannerSettingsBloc,
               ),
+              BlocProvider<ActivitiesBloc>.value(value: mockActivitiesBloc),
               BlocProvider<EditActivityBloc>(
                 create: (context) => newActivity
                     ? EditActivityBloc.newActivity(
@@ -88,12 +92,8 @@ void main() {
                             BlocProvider.of<MemoplannerSettingBloc>(context),
                       ),
               ),
-              BlocProvider<SortableBloc>(
-                create: (context) => mockSortableBloc,
-              ),
-              BlocProvider<UserFileBloc>(
-                create: (context) => mockUserFileBloc,
-              ),
+              BlocProvider<SortableBloc>.value(value: mockSortableBloc),
+              BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
               BlocProvider<SettingsBloc>(
                 create: (context) => SettingsBloc(
                   settingsDb: MockSettingsDb(),
