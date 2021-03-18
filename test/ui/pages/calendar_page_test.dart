@@ -66,6 +66,7 @@ void main() {
             userRepository: userRepository,
           ),
           child: MaterialApp(
+            theme: abiliaTheme,
             key: authedStateKey,
             supportedLocales: Translator.supportedLocals,
             localizationsDelegates: [Translator.delegate],

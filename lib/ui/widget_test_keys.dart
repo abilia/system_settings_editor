@@ -52,7 +52,6 @@ class TestKey {
       noEndDate = Key('noEndDate'),
       startTime = Key('startTime'),
       endTime = Key('endTime'),
-      dayAppBarTitle = Key('dayAppBarTitle'),
       sideDotsTimeText = Key('sideDotsTimeText'),
       errorViewDialog = Key('errorViewDialog'),
       animatedTheme = Key('animatedTheme'),

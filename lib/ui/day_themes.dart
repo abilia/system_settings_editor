@@ -106,11 +106,9 @@ ThemeData _lightAppBarTheme = abiliaTheme.copyWith(
   appBarTheme: abiliaTheme.appBarTheme.copyWith(
     brightness: Brightness.dark,
   ),
-  textTheme: abiliaTextTheme.copyWith(
-    headline6: abiliaTextTheme.headline6.copyWith(color: AbiliaColors.white),
-    button: abiliaTextTheme.button.copyWith(color: AbiliaColors.white),
-    subtitle1: abiliaTextTheme.subtitle1.copyWith(color: AbiliaColors.white),
-    bodyText1: abiliaTextTheme.bodyText1.copyWith(color: AbiliaColors.white),
+  textTheme: abiliaTextTheme.apply(
+    displayColor: AbiliaColors.white,
+    bodyColor: AbiliaColors.white,
   ),
   textButtonTheme: TextButtonThemeData(style: actionButtonStyleLight),
 );

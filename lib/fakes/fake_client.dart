@@ -72,7 +72,8 @@ class Fakes {
                 licenseResponseExpires(DateTime.now().add(10.days()));
           }
 
-          return Future.value(response ?? Response('not found', 404));
+          return Future.value(
+              response ?? Response(json.encode(List.empty()), 200));
         },
       );
 

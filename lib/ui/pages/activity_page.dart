@@ -16,39 +16,22 @@ class ActivityPage extends StatelessWidget {
     return BlocBuilder<ActivitiesBloc, ActivitiesState>(
       builder: (context, state) {
         final activityOccasion = occasion.fromActivitiesState(state);
-        return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-          builder: (context, memoSettingsState) => AnimatedTheme(
-            data: weekdayTheme(
-                    dayColor: memoSettingsState.calendarDayColor,
-                    languageCode: Localizations.localeOf(context).languageCode,
-                    weekday: occasion.day.weekday)
-                .theme,
-            child: Scaffold(
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(68.s),
-                child: AnimatedSwitcher(
-                  duration: 200.milliseconds(),
-                  child: DayAppBar(
-                    day: activityOccasion.day,
-                    leftAction: ActionButton(
-                      key: TestKey.activityBackButton,
-                      onPressed: () => Navigator.of(context).maybePop(),
-                      child: Icon(
-                        AbiliaIcons.navigation_previous,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              body: Padding(
-                padding: EdgeInsets.all(ActivityInfo.margin)
-                    .subtract(EdgeInsets.only(left: ActivityInfo.margin)),
-                child: ActivityInfoWithDots(activityOccasion),
-              ),
-              bottomNavigationBar:
-                  ActivityBottomAppBar(activityOccasion: activityOccasion),
+        return Scaffold(
+          appBar: DayAppBar(
+            day: activityOccasion.day,
+            leftAction: ActionButton(
+              key: TestKey.activityBackButton,
+              onPressed: () => Navigator.of(context).maybePop(),
+              child: Icon(AbiliaIcons.navigation_previous),
             ),
           ),
+          body: Padding(
+            padding: EdgeInsets.all(ActivityInfo.margin)
+                .subtract(EdgeInsets.only(left: ActivityInfo.margin)),
+            child: ActivityInfoWithDots(activityOccasion),
+          ),
+          bottomNavigationBar:
+              ActivityBottomAppBar(activityOccasion: activityOccasion),
         );
       },
     );

@@ -385,8 +385,7 @@ void main() {
     await tester.verifyTts(find.text(firstFullDay.title),
         contains: translate.fullDay);
 
-    await tester.verifyTts(find.byKey(TestKey.dayAppBarTitle),
-        contains: '${now.day}');
+    await tester.verifyTts(find.byType(AppBarTitle), contains: '${now.day}');
   });
 
   testWidgets('tts no activities', (WidgetTester tester) async {

@@ -10,13 +10,11 @@ class Agenda extends StatefulWidget {
 
   final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
-  final MemoplannerSettingsState memoplannerSettingsState;
 
   const Agenda({
     Key key,
     @required this.activityState,
     @required this.calendarViewState,
-    @required this.memoplannerSettingsState,
   }) : super(key: key);
 
   @override
@@ -62,73 +60,75 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
             (boxConstraints.maxWidth.s - timePillarWidth) / 2;
         return RefreshIndicator(
           onRefresh: refresh,
-          child: Stack(
-            children: <Widget>[
-              NotificationListener<ScrollNotification>(
-                onNotification: state.isToday ? onScrollNotification : null,
-                child: AbiliaScrollBar(
-                  controller: scrollController,
-                  child: CustomScrollView(
-                    center: state.isToday ? center : null,
+          child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+            builder: (context, memoplannerSettingsState) => Stack(
+              children: <Widget>[
+                NotificationListener<ScrollNotification>(
+                  onNotification: state.isToday ? onScrollNotification : null,
+                  child: AbiliaScrollBar(
                     controller: scrollController,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    slivers: [
-                      if (state.activities.isEmpty &&
-                          state.fullDayActivities.isEmpty)
-                        SliverNoActivities(key: center)
-                      else ...[
-                        if (!todayFirstActivity)
-                          SliverPadding(
-                            padding: EdgeInsets.only(top: Agenda.topPadding),
-                            sliver: SliverActivityList(
-                              state.pastActivities,
-                              reversed: state.isToday,
-                              lastMargin: _lastPastPadding(
+                    child: CustomScrollView(
+                      center: state.isToday ? center : null,
+                      controller: scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      slivers: [
+                        if (state.activities.isEmpty &&
+                            state.fullDayActivities.isEmpty)
+                          SliverNoActivities(key: center)
+                        else ...[
+                          if (!todayFirstActivity)
+                            SliverPadding(
+                              padding: EdgeInsets.only(top: Agenda.topPadding),
+                              sliver: SliverActivityList(
                                 state.pastActivities,
-                                state.notPastActivities,
+                                reversed: state.isToday,
+                                lastMargin: _lastPastPadding(
+                                  state.pastActivities,
+                                  state.notPastActivities,
+                                ),
+                                showCategories:
+                                    memoplannerSettingsState.showCategories,
                               ),
-                              showCategories: widget
-                                  .memoplannerSettingsState.showCategories,
+                            ),
+                          SliverPadding(
+                            key: center,
+                            padding: EdgeInsets.only(
+                              top: todayFirstActivity ? Agenda.topPadding : 0.0,
+                              bottom: Agenda.bottomPadding,
+                            ),
+                            sliver: SliverActivityList(
+                              state.notPastActivities,
+                              showCategories:
+                                  memoplannerSettingsState.showCategories,
                             ),
                           ),
-                        SliverPadding(
-                          key: center,
-                          padding: EdgeInsets.only(
-                            top: todayFirstActivity ? Agenda.topPadding : 0.0,
-                            bottom: Agenda.bottomPadding,
-                          ),
-                          sliver: SliverActivityList(
-                            state.notPastActivities,
-                            showCategories:
-                                widget.memoplannerSettingsState.showCategories,
-                          ),
-                        ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                 ),
-              ),
-              ArrowUp(
-                controller: scrollController,
-                collapseMargin: Agenda.topPadding,
-              ),
-              ArrowDown(
-                controller: scrollController,
-                collapseMargin: Agenda.bottomPadding,
-              ),
-              if (widget.memoplannerSettingsState.showCategories) ...[
-                CategoryLeft(
-                  maxWidth: categoryLabelWidth,
-                  settingsState: widget.memoplannerSettingsState,
-                  expanded: widget.calendarViewState.expandLeftCategory,
+                ArrowUp(
+                  controller: scrollController,
+                  collapseMargin: Agenda.topPadding,
                 ),
-                CategoryRight(
-                  maxWidth: categoryLabelWidth,
-                  settingsState: widget.memoplannerSettingsState,
-                  expanded: widget.calendarViewState.expandRightCategory,
+                ArrowDown(
+                  controller: scrollController,
+                  collapseMargin: Agenda.bottomPadding,
                 ),
-              ]
-            ],
+                if (memoplannerSettingsState.showCategories) ...[
+                  CategoryLeft(
+                    maxWidth: categoryLabelWidth,
+                    settingsState: memoplannerSettingsState,
+                    expanded: widget.calendarViewState.expandLeftCategory,
+                  ),
+                  CategoryRight(
+                    maxWidth: categoryLabelWidth,
+                    settingsState: memoplannerSettingsState,
+                    expanded: widget.calendarViewState.expandRightCategory,
+                  ),
+                ],
+              ],
+            ),
           ),
         );
       },
