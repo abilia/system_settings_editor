@@ -328,6 +328,22 @@ abstract class Translated {
 
   final String viewMode = 'View mode';
 
+  final String dayInterval = 'Day interval';
+
+  final String interval = 'Interval';
+
+  final String viewDay = 'Day';
+
+  final String dayAndNight = 'Day and night';
+
+  final String zoom = 'Zoom';
+
+  final String small = 'Small';
+
+  final String medium = 'Medium';
+
+  final String large = 'Large';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';

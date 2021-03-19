@@ -291,6 +291,7 @@ class CollapsableWidget extends StatelessWidget {
     this.alignment = Alignment.topLeft,
     this.axis = Axis.vertical,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final begin = collapsed ? 0.0 : 1.0;
