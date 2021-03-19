@@ -453,6 +453,11 @@ class DeleteInputFormatter extends TextInputFormatter {
         text: oldValue.text.substring(0, 3),
         selection: TextSelection.collapsed(offset: 3),
       );
+    } else if (oldValue.text.length == 1 && newValue.text.length == 4) {
+      return TextEditingValue(
+        text: oldValue.text + newValue.text.substring(3, 4),
+        selection: TextSelection.collapsed(offset: 2),
+      );
     } else {
       return newValue;
     }
