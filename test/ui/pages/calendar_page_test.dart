@@ -1044,4 +1044,68 @@ void main() {
       expect(find.text(nextWeekTitle), findsOneWidget);
     });
   });
+
+  group('Month calendar', () {
+    setUp(() {
+      final activities = <Activity>[];
+      activityResponse = () => activities;
+      when(mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activities));
+      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    });
+
+    testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthCalendar), findsOneWidget);
+      expect(find.byType(MonthAppBar), findsOneWidget);
+    });
+
+    group('tts', () {
+      testWidgets('MonthAppBar', (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        await tester.verifyTts(find.byType(MonthAppBar),
+            contains: 'August 2020');
+      });
+
+      testWidgets('next month app bar', (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToCurrentActionButton), findsOneWidget);
+        await tester.verifyTts(find.byType(MonthAppBar),
+            contains: 'September 2020');
+      });
+
+      testWidgets('previous month app bar', (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToCurrentActionButton), findsOneWidget);
+        await tester.verifyTts(find.byType(MonthAppBar), contains: 'July 2020');
+      });
+
+      testWidgets('previous month app bar', (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToCurrentActionButton), findsOneWidget);
+        await tester.verifyTts(find.byType(MonthAppBar), contains: 'July 2020');
+      });
+    });
+  });
 }

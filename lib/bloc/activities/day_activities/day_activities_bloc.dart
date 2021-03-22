@@ -18,7 +18,7 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
   DayActivitiesBloc(
       {@required this.activitiesBloc, @required this.dayPickerBloc})
       : super(activitiesBloc.state is ActivitiesLoaded
-            ? DayActivitiesLoaded(
+            ? _mapToState(
                 (activitiesBloc.state as ActivitiesLoaded).activities,
                 dayPickerBloc.state.day,
                 dayPickerBloc.state.occasion,
@@ -39,20 +39,31 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
     if (event is UpdateDay) {
       final activityState = activitiesBloc.state;
       if (activityState is ActivitiesLoaded) {
-        yield DayActivitiesLoaded(
+        yield _mapToState(
           activityState.activities,
           event.dayFilter,
           event.occasion,
         );
       }
     } else if (event is UpdateActivities) {
-      yield DayActivitiesLoaded(
+      yield _mapToState(
         event.activities,
         dayPickerBloc.state.day,
         dayPickerBloc.state.occasion,
       );
     }
   }
+
+  static DayActivitiesState _mapToState(
+    final Iterable<Activity> activities,
+    final DateTime day,
+    final Occasion occasion,
+  ) =>
+      DayActivitiesLoaded(
+        activities.expand((activity) => activity.dayActivitiesForDay(day)),
+        day,
+        occasion,
+      );
 
   @override
   Future<void> close() async {
