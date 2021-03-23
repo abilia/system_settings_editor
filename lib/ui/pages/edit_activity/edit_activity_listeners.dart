@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EditActivityListeners extends StatelessWidget {
@@ -28,7 +29,7 @@ class EditActivityListeners extends StatelessWidget {
               return _inputNeeded(errors, state, context);
             }
           },
-        )
+        ),
       ],
       child: child,
     );
@@ -96,17 +97,19 @@ class EditActivityListeners extends StatelessWidget {
   Future _inputNeeded(Set<SaveError> errors, EditActivityState state,
       BuildContext context) async {
     final translate = Translator.of(context).translate;
+    SaveActivity saveEvent;
+
     if (errors.contains(SaveError.STORED_RECURRING)) {
       if (state is StoredActivityState) {
-        final applyTo = await Navigator.of(context).push(MaterialPageRoute(
+        final applyTo =
+            await Navigator.of(context).push<ApplyTo>(MaterialPageRoute(
           builder: (_) => SelectRecurrentTypePage(
             heading: translate.editRecurringActivity,
             headingIcon: AbiliaIcons.edit,
           ),
         ));
         if (applyTo == null) return;
-        BlocProvider.of<EditActivityBloc>(context)
-            .add(SaveRecurringActivity(applyTo, state.day));
+        saveEvent = SaveRecurringActivity(applyTo, state.day);
       }
     }
     if (errors.any({
@@ -132,12 +135,9 @@ class EditActivityListeners extends StatelessWidget {
         );
         if (confirmConflict != true) return;
       }
-
-      BlocProvider.of<EditActivityBloc>(context).add(
-        SaveActivity(
-          warningConfirmed: true,
-        ),
-      );
     }
+    BlocProvider.of<EditActivityBloc>(context).add(
+      saveEvent ?? SaveActivity(warningConfirmed: true),
+    );
   }
 }

@@ -935,9 +935,8 @@ void main() {
 
         // Act
         editActivityBloc.add(ReplaceActivity(activityWithNewTitle));
+        editActivityBloc.add(SaveActivity());
         editActivityBloc.add(SaveRecurringActivity(ApplyTo.onlyThisDay, aDay));
-        editActivityBloc.add(SaveRecurringActivity(ApplyTo.onlyThisDay, aDay,
-            warningConfirmed: true));
 
         // Assert
         await expectLater(
@@ -952,7 +951,10 @@ void main() {
                 activityWithNewTitle,
                 expectedTimeIntervall,
                 aDay,
-              ).failSave({SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW}),
+              ).failSave({
+                SaveError.STORED_RECURRING,
+                SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
+              }),
               StoredActivityState(
                 expetedActivityToSave,
                 expectedTimeIntervall,
