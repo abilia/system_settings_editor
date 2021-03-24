@@ -59,16 +59,16 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
                 heading: t.viewMode,
                 groupValue: calendarType,
                 leftText: t.listView,
+                rightText: t.timePillarView,
                 leftValue: DayCalendarType.LIST,
+                rightValue: DayCalendarType.TIMEPILLAR,
+                leftIcon: AbiliaIcons.calendar_list,
+                rightIcon: AbiliaIcons.timeline,
                 onChanged: (type) {
                   setState(() {
                     calendarType = type;
                   });
                 },
-                rightText: t.timePillarView,
-                rightValue: DayCalendarType.TIMEPILLAR,
-                leftIcon: AbiliaIcons.calendar_list,
-                rightIcon: AbiliaIcons.timeline,
               ),
             ),
             Divider(
@@ -79,72 +79,65 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(12.s, 16.s, 16.s, 8.s),
-                    child: TripleSelector<int>(
+                  ...[
+                    TripleSelector<int>(
                       heading: t.dayInterval,
                       groupValue: dayInterval,
                       leftText: t.interval,
-                      leftValue: 0,
                       midText: t.viewDay,
+                      rightText: t.dayAndNight,
+                      leftValue: 0,
                       midValue: 1,
+                      rightValue: 2,
+                      leftIcon: AbiliaIcons.day_interval,
+                      midIcon: AbiliaIcons.sun,
+                      rightIcon: AbiliaIcons.day_night,
                       onChanged: (newDayInterval) {
                         setState(() {
                           dayInterval = newDayInterval;
                         });
                       },
-                      rightText: t.dayAndNight,
-                      rightValue: 2,
-                      leftIcon: AbiliaIcons.day_interval,
-                      midIcon: AbiliaIcons.day,
-                      rightIcon: AbiliaIcons.day_night,
                     ),
-                  ),
-                  Divider(
-                    endIndent: 16.s,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(12.s, 16.s, 16.s, 8.s),
-                    child: TripleSelector<int>(
+                    Divider(
+                      endIndent: 16.s,
+                    ),
+                    TripleSelector<int>(
                       heading: t.zoom,
                       groupValue: zoom,
                       leftText: t.small,
-                      leftValue: 0,
                       midText: t.medium,
+                      rightText: t.large,
+                      leftValue: 0,
                       midValue: 1,
+                      rightValue: 2,
+                      leftIcon: AbiliaIcons.decrease_text,
+                      midIcon: AbiliaIcons.decrease_text,
+                      rightIcon: AbiliaIcons.enlarge_text,
                       onChanged: (newZoom) {
                         setState(() {
                           zoom = newZoom;
                         });
                       },
-                      rightText: t.large,
-                      rightValue: 2,
-                      leftIcon: AbiliaIcons.decrease_text,
-                      midIcon: AbiliaIcons.decrease_text,
-                      rightIcon: AbiliaIcons.enlarge_text,
                     ),
-                  ),
-                  Divider(
-                    endIndent: 16.s,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(12.s, 16.s, 16.s, 8.s),
-                    child: DuoSelector<bool>(
+                    Divider(
+                      endIndent: 16.s,
+                    ),
+                    DuoSelector<bool>(
                       heading: t.activityDuration,
                       groupValue: dotsInTimePillar,
                       leftText: t.dots,
+                      rightText: t.edge,
                       leftValue: true,
+                      rightValue: false,
+                      leftIcon: AbiliaIcons.options,
+                      rightIcon: AbiliaIcons.flarp,
                       onChanged: (dots) {
                         setState(() {
                           dotsInTimePillar = dots;
                         });
                       },
-                      rightText: t.edge,
-                      rightValue: false,
-                      leftIcon: AbiliaIcons.options,
-                      rightIcon: AbiliaIcons.flarp,
                     ),
-                  ),
+                  ].map(_addPadding),
                 ],
               ),
             ),
@@ -166,6 +159,13 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
       ),
     );
   }
+
+  Widget _addPadding(Widget widget) => widget is Divider
+      ? widget
+      : Padding(
+          padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 8.s),
+          child: widget,
+        );
 }
 
 class DuoSelector<T> extends StatelessWidget {
