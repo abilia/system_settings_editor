@@ -65,6 +65,5 @@ class TestKey {
       basicActivityChoice = Key('basicActivityChoice'),
       noButton = Key('noButton'),
       yesButton = Key('yesButton'),
-      loginLogo = Key('loginLogo'),
-      eyeScroll = Key('eyeScroll');
+      loginLogo = Key('loginLogo');
 }
