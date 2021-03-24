@@ -53,9 +53,8 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
         controller: _controller,
         child: ListView(
           children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 8.s),
-              child: DuoSelector<DayCalendarType>(
+            _addPadding(
+              DuoSelector<DayCalendarType>(
                 heading: t.viewMode,
                 groupValue: calendarType,
                 leftText: t.listView,
