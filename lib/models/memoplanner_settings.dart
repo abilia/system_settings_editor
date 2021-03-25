@@ -34,7 +34,8 @@ class MemoplannerSettings {
       setting12hTimeFormatTimelineKey = 'setting_12h_time_format_timeline',
       settingDisplayHourLinesKey = 'setting_display_hour_lines',
       settingDisplayTimelineKey = 'setting_display_line_timeline',
-      viewOptionsTimeIntervalKey = 'view_options_time_interval';
+      viewOptionsTimeIntervalKey = 'view_options_time_interval',
+      viewOptionsZoomKey = 'view_options_zoom';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -64,7 +65,8 @@ class MemoplannerSettings {
       eveningIntervalStart,
       nightIntervalStart,
       calendarDayColor,
-      viewOptionsTimeInterval;
+      viewOptionsTimeInterval,
+      viewOptionsZoom;
 
   final String calendarActivityTypeLeft, calendarActivityTypeRight;
 
@@ -99,6 +101,7 @@ class MemoplannerSettings {
     this.calendarActivityTypeRight,
     this.calendarDayColor = 0,
     this.viewOptionsTimeInterval = 1,
+    this.viewOptionsZoom = 1,
   });
 
   factory MemoplannerSettings.fromSettingsList(
@@ -202,6 +205,7 @@ class MemoplannerSettings {
       ),
       calendarDayColor: settings.parse(calendarDayColorKey, 0),
       viewOptionsTimeInterval: settings.parse(viewOptionsTimeIntervalKey, 1),
+      viewOptionsZoom: settings.parse(viewOptionsZoomKey, 1),
     );
   }
 }

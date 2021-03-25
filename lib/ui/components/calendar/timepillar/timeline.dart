@@ -18,7 +18,8 @@ class Timeline extends StatelessWidget {
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) => AnimatedPositioned(
         duration: transitionDuration,
-        top: timeToMidDotPixelDistance(now) -
+        top: timeToMidDotPixelDistance(
+                now, context.read<TimepillarBloc>().state) -
             offset +
             TimePillarCalendar.topPadding -
             timelineHeight / 2,

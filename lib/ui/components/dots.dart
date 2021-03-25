@@ -94,17 +94,20 @@ class Dots extends StatelessWidget {
   final Decoration decoration;
   const Dots({Key key, @required this.decoration}) : super(key: key);
   @override
-  Widget build(BuildContext context) => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(
-          dotsPerHour,
-          (_) => Container(
-            height: dotSize,
-            width: dotSize,
-            decoration: decoration,
-          ),
+  Widget build(BuildContext context) {
+    final ts = context.read<TimepillarBloc>().state;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: List.generate(
+        dotsPerHour,
+        (_) => Container(
+          height: ts.dotSize,
+          width: ts.dotSize,
+          decoration: decoration,
         ),
-      );
+      ),
+    );
+  }
 }
 
 class AnimatedDot extends StatelessWidget {
@@ -116,8 +119,8 @@ class AnimatedDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AnimatedContainer(
         duration: transitionDuration,
-        height: size ?? dotSize,
-        width: size ?? dotSize,
+        height: size ?? context.read<TimepillarBloc>().state.dotSize,
+        width: size ?? context.read<TimepillarBloc>().state.dotSize,
         decoration: decoration,
         child: child,
       );
@@ -138,6 +141,7 @@ class SideDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final flat = startTime.roundToMinute(minutesPerDot, roundingMinute);
+    final ts = context.read<TimepillarBloc>().state;
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (_, now) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -163,8 +167,8 @@ class SideDots extends StatelessWidget {
             }
             return AnimatedDot(decoration: pastSideDotShape);
           },
-        ).expand((d) => [d, SizedBox(height: dotPadding)]).toList()
-          ..add(SizedBox(width: dotSize)),
+        ).expand((d) => [d, SizedBox(height: ts.dotPadding)]).toList()
+          ..add(SizedBox(width: ts.dotSize)),
       ),
     );
   }

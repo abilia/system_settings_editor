@@ -5,15 +5,6 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityTimepillarCard extends StatelessWidget {
-  static final double imageSize = 56.0.s,
-      imagePadding = 16.0.s,
-      imageHeigth = imageSize + imagePadding,
-      crossWidth = 48.0.s,
-      crossVerticalPadding = 36.0.s,
-      width = 72.0.s,
-      padding = 12.0.s,
-      minHeight = 84.0.s,
-      totalWith = dotSize + width + padding;
   static const int maxTitleLines = 5;
 
   final ActivityOccasion activityOccasion;
@@ -41,6 +32,7 @@ class ActivityTimepillarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ts = context.read<TimepillarBloc>().state;
     final activity = activityOccasion.activity;
     final hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
@@ -51,7 +43,7 @@ class ActivityTimepillarCard extends StatelessWidget {
 
     final endTime = activityOccasion.end;
     final startTime = activityOccasion.start;
-    final dotHeight = dots * dotDistance;
+    final dotHeight = dots * ts.dotDistance;
 
     final right = TimepillarSide.RIGHT == timepillarSide;
 
@@ -59,8 +51,8 @@ class ActivityTimepillarCard extends StatelessWidget {
       builder: (context, settings) {
         final decoration = getBoxDecoration(current, inactive);
         return Positioned(
-          right: right ? null : column * totalWith,
-          left: right ? column * totalWith : null,
+          right: right ? null : column * ts.totalWidth,
+          left: right ? column * ts.totalWidth : null,
           top: top,
           child: Tts.fromSemantics(
             activity.semanticsProperties(context),
@@ -102,14 +94,14 @@ class ActivityTimepillarCard extends StatelessWidget {
                   },
                   child: Container(
                     margin: right
-                        ? EdgeInsets.only(left: dotSize + hourPadding)
-                        : EdgeInsets.only(right: dotSize + hourPadding),
+                        ? EdgeInsets.only(left: ts.dotSize + hourPadding)
+                        : EdgeInsets.only(right: ts.dotSize + hourPadding),
                     decoration: decoration,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxWidth: width,
-                        minWidth: width,
-                        minHeight: minHeight,
+                        maxWidth: ts.width,
+                        minWidth: ts.width,
+                        minHeight: ts.minHeight,
                         maxHeight: height,
                       ),
                       child: Center(
@@ -127,12 +119,12 @@ class ActivityTimepillarCard extends StatelessWidget {
                             if (hasImage || signedOff)
                               ActivityImage.fromActivityOccasion(
                                 activityOccasion: activityOccasion,
-                                size: imageSize,
+                                size: ts.imageSize,
                               )
                             else if (past)
                               SizedBox(
-                                width: crossWidth,
-                                height: height - crossVerticalPadding,
+                                width: ts.crossWidth,
+                                height: height - ts.crossVerticalPadding,
                                 child: const CrossOver(),
                               )
                           ],
@@ -164,7 +156,7 @@ class SideTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: ActivityTimepillarCard.width,
+      width: context.read<TimepillarBloc>().state.width,
       height: height,
       child: DecoratedBox(
         decoration: BoxDecoration(

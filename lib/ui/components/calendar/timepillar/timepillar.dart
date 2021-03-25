@@ -5,14 +5,10 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-final double timePillarPadding = 4.0.s,
-    timePillarWidth = 42.0.s,
-    timePillarTotalWidth = timePillarWidth + timePillarPadding * 2;
-
-double timePillarHeight(TimepillarInterval interval) =>
-    (interval.lengthInHours +
+double timePillarHeight(TimepillarState ts) =>
+    (ts.timepillarInterval.lengthInHours +
             1) * // include one extra hour for the last digit after the timepillar (could only be the font size of the text)
-        hourHeigt +
+        ts.hourHeight +
     TimePillarCalendar.topMargin +
     TimePillarCalendar.bottomMargin;
 
@@ -37,6 +33,7 @@ class TimePillar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ts = context.read<TimepillarBloc>().state;
     final dots = today
         ? _todayDots
         : dayOccasion == Occasion.past
@@ -58,7 +55,7 @@ class TimePillar extends StatelessWidget {
               return Positioned(
                 top: p.start,
                 child: SizedBox(
-                  width: timePillarTotalWidth,
+                  width: ts.timePillarTotalWidth,
                   height: p.length,
                   child: const DecoratedBox(
                     decoration: BoxDecoration(
@@ -69,15 +66,15 @@ class TimePillar extends StatelessWidget {
             }),
             if (today && showTimeLine)
               Timeline(
-                width: timePillarTotalWidth,
-                offset: hoursToPixels(interval.startTime.hour) -
+                width: ts.timePillarTotalWidth,
+                offset: hoursToPixels(interval.startTime.hour, ts.dotDistance) -
                     TimePillarCalendar.topMargin,
               ),
             Padding(
-              padding: EdgeInsets.fromLTRB(timePillarPadding,
-                  TimePillarCalendar.topMargin, timePillarPadding, 0),
+              padding: EdgeInsets.fromLTRB(ts.timePillarPadding,
+                  TimePillarCalendar.topMargin, ts.timePillarPadding, 0),
               child: SizedBox(
-                width: timePillarWidth,
+                width: ts.timePillarWidth,
                 child: Column(
                   children: List.generate(
                     interval.lengthInHours,
@@ -99,8 +96,8 @@ class TimePillar extends StatelessWidget {
                       Hour(
                         hour: formatHour(interval.endTime),
                         dots: SizedBox(
-                          width: dotSize,
-                          height: dotSize,
+                          width: ts.dotSize,
+                          height: ts.dotSize,
                         ),
                         isNight: interval.endTime
                             .subtract(1.hours())
@@ -144,16 +141,18 @@ class Hour extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dayTheme = Theme.of(context)
-        .textTheme
-        .headline6
-        .copyWith(color: AbiliaColors.black);
-    final nightTheme = Theme.of(context)
-        .textTheme
-        .headline6
-        .copyWith(color: AbiliaColors.white);
+    final fontSize = Theme.of(context).textTheme.headline6.fontSize;
+    final zoom = context.read<TimepillarBloc>().state.zoom;
+    final dayTheme = Theme.of(context).textTheme.headline6.copyWith(
+          color: AbiliaColors.black,
+          fontSize: fontSize * zoom,
+        );
+    final nightTheme = Theme.of(context).textTheme.headline6.copyWith(
+          color: AbiliaColors.white,
+          fontSize: fontSize * zoom,
+        );
     return Container(
-      height: hourHeigt,
+      height: context.read<TimepillarBloc>().state.hourHeight,
       padding: EdgeInsets.symmetric(vertical: hourPadding),
       decoration: BoxDecoration(
         border: Border(

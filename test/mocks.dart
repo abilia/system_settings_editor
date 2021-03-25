@@ -57,6 +57,8 @@ class MockGenericBloc extends Mock implements GenericBloc {}
 
 class MockUserFileBloc extends Mock implements UserFileBloc {}
 
+class MockTimepillarBloc extends Mock implements TimepillarBloc {}
+
 class MockAlarmBloc extends Mock implements AlarmBloc {}
 
 class MockNotificationBloc extends Mock implements NotificationBloc {}

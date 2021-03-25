@@ -23,7 +23,7 @@ class ActivityBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: max(categoryMinWidth,
-          boardData.columns * ActivityTimepillarCard.totalWith),
+          boardData.columns * context.read<TimepillarBloc>().state.totalWidth),
       child: Stack(children: boardData.cards),
     );
   }
@@ -32,20 +32,21 @@ class ActivityBoard extends StatelessWidget {
     List<ActivityOccasion> activities,
     TextStyle textStyle,
     double scaleFactor,
-    TimepillarInterval interval,
     DayParts dayParts,
     TimepillarSide timepillarSide,
+    TimepillarState ts,
   ) {
-    final maxEndPos = timePillarHeight(interval) +
-        dotDistance +
-        ActivityTimepillarCard.imageHeigth +
-        ActivityTimepillarCard.padding * 2 +
+    final maxEndPos = timePillarHeight(ts) +
+        ts.dotDistance +
+        ts.imageHeight +
+        ts.padding * 2 +
         textStyle.fontSize *
             textStyle.height *
             ActivityTimepillarCard.maxTitleLines;
 
     activities.sort((a1, a2) => a1.start.compareTo(a2.start));
     final scheduled = <List<ActivityTimepillarCard>>[];
+    final interval = ts.timepillarInterval;
     ActivityLoop:
     for (final ao in activities) {
       final a = ao.activity;
@@ -64,24 +65,22 @@ class ActivityBoard extends StatelessWidget {
       final dots =
           endTime.difference(startTime).inDots(minutesPerDot, roundingMinute);
 
-      final dotHeight = dots * dotDistance;
+      final dotHeight = dots * ts.dotDistance;
 
       final textHeight = (a.hasTitle
           ? a.title
-              .textPainter(textStyle, ActivityTimepillarCard.width,
-                  scaleFactor: scaleFactor)
+              .textPainter(textStyle, ts.width,
+                  scaleFactor: scaleFactor * ts.zoom)
               .height
           : 0.0);
-      final imageHeight = a.hasImage || ao.isSignedOff
-          ? ActivityTimepillarCard.imageHeigth
-          : 0.0;
-      final renderedHeight =
-          max(textHeight + imageHeight, ActivityTimepillarCard.minHeight);
+      final imageHeight = a.hasImage || ao.isSignedOff ? ts.imageHeight : 0.0;
+      final renderedHeight = max(textHeight + imageHeight, ts.minHeight);
 
       final topOffset = startsBeforeInterval
           ? 0
-          : timeToPixels(minuteStartPosition.hour, minuteStartPosition.minute) -
-              hoursToPixels(interval.startTime.hour);
+          : timeToPixels(minuteStartPosition.hour, minuteStartPosition.minute,
+                  ts.dotDistance) -
+              hoursToPixels(interval.startTime.hour, ts.dotDistance);
 
       var height = max(dotHeight, renderedHeight);
 
