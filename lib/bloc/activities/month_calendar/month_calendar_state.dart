@@ -31,7 +31,7 @@ class MonthWeek extends Equatable {
 abstract class MonthCalendarDay extends Equatable {}
 
 class MonthDay extends MonthCalendarDay {
-  final int day;
+  final DateTime day;
   final ActivityDay fullDayActivity;
   final int fullDayActivityCount;
   final bool hasActivities;

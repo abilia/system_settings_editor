@@ -11,33 +11,49 @@ class MonthCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MonthAppBar(),
-      body: Column(
-        children: [
-          const MonthHeading(),
-          const Expanded(
-            child: MonthContent(),
-          ),
-        ],
+      body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        builder: (context, memoSettingsState) {
+          final dayThemes = List.generate(
+            DateTime.daysPerWeek,
+            (d) => weekdayTheme(
+              dayColor: memoSettingsState.calendarDayColor,
+              languageCode: Localizations.localeOf(context).languageCode,
+              weekday: d + 1,
+            ),
+          );
+          return Column(
+            children: [
+              MonthHeading(dayThemes: dayThemes),
+              Expanded(
+                child: MonthContent(dayThemes: dayThemes),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 }
 
 class MonthContent extends StatelessWidget {
-  const MonthContent({Key key}) : super(key: key);
+  const MonthContent({
+    Key key,
+    @required this.dayThemes,
+  }) : super(key: key);
+  final List<DayTheme> dayThemes;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MonthCalendarBloc, MonthCalendarState>(
       builder: (context, state) {
         return Column(
-          children: state.weeks
-              .map(
-                (week) => Expanded(
-                  child: WeekRow(week),
-                ),
-              )
-              .toList(),
+          children: [
+            ...state.weeks.map(
+              (week) => Expanded(
+                child: WeekRow(week, dayThemes: dayThemes),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -46,7 +62,12 @@ class MonthContent extends StatelessWidget {
 
 class WeekRow extends StatelessWidget {
   final MonthWeek week;
-  const WeekRow(this.week, {Key key}) : super(key: key);
+  const WeekRow(
+    this.week, {
+    Key key,
+    @required this.dayThemes,
+  }) : super(key: key);
+  final List<DayTheme> dayThemes;
 
   @override
   Widget build(BuildContext context) {
@@ -55,15 +76,21 @@ class WeekRow extends StatelessWidget {
       child: Row(
         children: [
           WeekNumber(weekNumber: week.number),
-          ...week.days
-              .map((day) => Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 2.s),
-                          child: MonthDayView(day),
-                        ),
-                      ) // MonthDay(day + 1),
-                  )
-              .toList(),
+          ...week.days.map(
+            (day) => Expanded(
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.s),
+                  child: day is MonthDay
+                      ? MonthDayView(
+                          day,
+                          dayTheme: dayThemes[day.day.weekday - 1],
+                        )
+                      : const SizedBox()
+
+                  // MonthDayView(day, dayTheme: dayThemes[day. ],
+                  ),
+            ),
+          ),
         ],
       ),
     );
@@ -73,7 +100,9 @@ class WeekRow extends StatelessWidget {
 class MonthHeading extends StatelessWidget {
   const MonthHeading({
     Key key,
+    @required this.dayThemes,
   }) : super(key: key);
+  final List<DayTheme> dayThemes;
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +118,15 @@ class MonthHeading extends StatelessWidget {
           return Expanded(
             child: Tts(
               data: weekdays[weekdayindex],
-              child: Text(
-                weekdaysShort[weekdayindex],
-                textAlign: TextAlign.center,
+              child: Container(
+                height: 32.s,
+                color: dayThemes[weekday].color,
+                child: Center(
+                  child: Text(
+                    weekdaysShort[weekdayindex],
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
             ),
           );
@@ -102,80 +137,80 @@ class MonthHeading extends StatelessWidget {
 }
 
 class MonthDayView extends StatelessWidget {
-  final MonthCalendarDay monthDay;
+  final MonthDay day;
+  final DayTheme dayTheme;
   const MonthDayView(
-    this.monthDay, {
+    this.day, {
     Key key,
+    @required this.dayTheme,
   }) : super(key: key);
   static final radius = Radius.circular(8.s);
 
   @override
   Widget build(BuildContext context) {
-    final day = monthDay;
-    if (day is MonthDay) {
-      return Container(
-        foregroundDecoration: day.isCurrent
-            ? BoxDecoration(
-                border: currentActivityBorder,
-                borderRadius: BorderRadius.all(radius),
-              )
-            : null,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
+    return Container(
+      foregroundDecoration: day.isCurrent
+          ? BoxDecoration(
+              border: currentActivityBorder,
+              borderRadius: BorderRadius.all(radius),
+            )
+          : null,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: dayTheme.color,
+              borderRadius: BorderRadius.only(
+                topLeft: radius,
+                topRight: radius,
+              ),
+            ),
+            height: 24.s,
+            padding: EdgeInsets.symmetric(horizontal: 4.s),
+            child: DefaultTextStyle(
+              style: dayTheme.theme.textTheme.subtitle2,
+              child: Row(
+                children: [
+                  Text('${day.day.day}'),
+                  Spacer(),
+                  if (day.hasActivities)
+                    ColorDot(color: dayTheme.theme.accentColor),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
               decoration: BoxDecoration(
-                color: AbiliaColors.black80,
+                color: dayTheme.secondaryColor,
                 borderRadius: BorderRadius.only(
-                  topLeft: radius,
-                  topRight: radius,
+                  bottomLeft: radius,
+                  bottomRight: radius,
                 ),
+                border: day.occasion == Occasion.current
+                    ? null
+                    : border, // noTopborder,
               ),
-              height: 24.s,
-              padding: EdgeInsets.symmetric(horizontal: 4.s),
-              child: DefaultTextStyle(
-                style: abiliaTextTheme.subtitle2.copyWith(
-                  color: AbiliaColors.white,
-                ),
-                child: Row(
-                  children: [
-                    Text('${day.day}'),
-                    Spacer(),
-                    if (day.hasActivities) ColorDot(),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: radius, bottomRight: radius),
-                    border: day.occasion == Occasion.current
-                        ? null
-                        : border //noTopborder
+              padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
+              child: Stack(
+                children: [
+                  if (day.fullDayActivityCount > 1)
+                    MonthFullDayStack(
+                      numberOfActivities: day.fullDayActivityCount,
+                    )
+                  else if (day.fullDayActivity != null)
+                    MonthActivityContent(
+                      activityDay: day.fullDayActivity,
                     ),
-                padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
-                child: Stack(
-                  children: [
-                    if (day.fullDayActivityCount > 1)
-                      Container(
-                        color: AbiliaColors.white,
-                      )
-                    else if (day.fullDayActivity != null)
-                      Container(
-                        color: AbiliaColors.green,
-                      ),
-                    if (day.occasion == Occasion.past) CrossOver(),
-                  ],
-                ),
+                  if (day.occasion == Occasion.past) CrossOver(),
+                ],
               ),
             ),
-          ],
-        ),
-      );
-    }
-    return SizedBox();
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -193,6 +228,80 @@ class WeekNumber extends StatelessWidget {
           weekNumber?.toString() ?? weekTranslation[0],
           textAlign: TextAlign.center,
         ),
+      ),
+    );
+  }
+}
+
+class MonthFullDayStack extends StatelessWidget {
+  final int numberOfActivities;
+  const MonthFullDayStack({
+    Key key,
+    @required this.numberOfActivities,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final decoration = BoxDecoration(
+      color: AbiliaColors.white,
+      borderRadius: BorderRadius.all(MonthDayView.radius),
+      border: border,
+    );
+    return Stack(
+      children: [
+        Container(
+          child: Padding(
+            padding: EdgeInsets.only(top: 2.s, left: 2.s),
+            child: Container(decoration: decoration),
+          ),
+        ),
+        Container(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 2.s, right: 2.s),
+            child: Container(
+              decoration: decoration,
+              child: Center(
+                child: Text('+$numberOfActivities'),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class MonthActivityContent extends StatelessWidget {
+  const MonthActivityContent({
+    Key key,
+    @required this.activityDay,
+  }) : super(key: key);
+
+  final ActivityDay activityDay;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AbiliaColors.white,
+        borderRadius: BorderRadius.all(MonthDayView.radius),
+        border: border,
+      ),
+      child: Center(
+        child: activityDay.activity.hasImage
+            ? FadeInAbiliaImage(
+                imageFileId: activityDay.activity.fileId,
+                imageFilePath: activityDay.activity.icon,
+                fit: BoxFit.fitWidth,
+              )
+            : Padding(
+                padding: EdgeInsets.all(3.0.s),
+                child: Tts(
+                  child: Text(
+                    activityDay.activity.title,
+                  ),
+                ),
+              ),
       ),
     );
   }

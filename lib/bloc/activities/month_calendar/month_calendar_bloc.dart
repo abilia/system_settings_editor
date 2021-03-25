@@ -53,7 +53,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
         activitiesBloc.state.activities,
         clockBloc.state,
       );
-    } else if (event is ActivitiesLoaded) {
+    } else if (event is UpdateMonthActivites) {
       yield _mapToState(
         state.firstDay,
         activitiesBloc.state.activities,
@@ -123,7 +123,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
         .expand((activity) => activity.dayActivitiesForDay(day))
         .toList();
     if (activitiesThatDay.isEmpty) {
-      return MonthDay(day.day, null, false, 0, occasion);
+      return MonthDay(day, null, false, 0, occasion);
     }
     final fullDayActivity = activitiesThatDay
         .firstWhere((a) => a.activity.fullDay, orElse: () => null);
@@ -131,7 +131,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
         activitiesThatDay.where((a) => a.activity.fullDay).length;
     final hasActivities = activitiesThatDay.any((a) => !a.activity.fullDay);
     return MonthDay(
-      day.day,
+      day,
       fullDayActivity,
       hasActivities,
       fullDayActivityCount,
