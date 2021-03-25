@@ -32,15 +32,20 @@ abstract class MonthCalendarDay extends Equatable {}
 
 class MonthDay extends MonthCalendarDay {
   final int day;
-  final Activity fullDayActivity;
+  final ActivityDay fullDayActivity;
   final int fullDayActivityCount;
   final bool hasActivities;
+  final Occasion occasion;
+  bool get isCurrent => occasion == Occasion.current;
+  bool get isPast => occasion == Occasion.past;
+  bool get isFuture => occasion == Occasion.future;
 
   MonthDay(
     this.day,
     this.fullDayActivity,
     this.hasActivities,
     this.fullDayActivityCount,
+    this.occasion,
   );
 
   @override
@@ -49,6 +54,7 @@ class MonthDay extends MonthCalendarDay {
         fullDayActivity,
         hasActivities,
         fullDayActivityCount,
+        occasion,
       ];
   @override
   bool get stringify => true;

@@ -77,15 +77,15 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
     final firstDayNextMonth = firstDayOfMonth.nextMonth();
     final lastDayOfMonth = firstDayNextMonth.previousDay();
 
-    final weekNumber = firstDayOfMonth.getWeekNumber();
-    final lastWeekInMonth = lastDayOfMonth.getWeekNumber();
-
+    final firstWeekNumber = firstDayOfMonth.getWeekNumber();
     final mondayOfFirstDayOfMonth = firstDayOfMonth.firstInWeek();
-
     final month = firstDayOfMonth.month;
+
     var dayIterator = mondayOfFirstDayOfMonth;
     final weekData = [
-      for (int week = weekNumber; week <= lastWeekInMonth; week++)
+      for (int week = firstWeekNumber;
+          dayIterator.isBefore(lastDayOfMonth);
+          week = dayIterator.getWeekNumber())
         MonthWeek(
           week,
           [
@@ -93,7 +93,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
                 d < DateTime.daysPerWeek;
                 dayIterator = dayIterator.nextDay(), d++)
               if (dayIterator.month == month)
-                MonthDay(dayIterator.day, null, false, 0)
+                _getDay(activities, dayIterator, now)
               else
                 NotInMonthDay()
           ],
@@ -109,6 +109,33 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
       firstDay: firstDayOfMonth,
       occasion: occasion,
       weeks: weekData,
+    );
+  }
+
+  static MonthDay _getDay(
+      Iterable<Activity> activities, DateTime day, DateTime now) {
+    final occasion = day.isAtSameMomentOrAfter(now)
+        ? Occasion.future
+        : now.onlyDays().isAfter(day)
+            ? Occasion.past
+            : Occasion.current;
+    final activitiesThatDay = activities
+        .expand((activity) => activity.dayActivitiesForDay(day))
+        .toList();
+    if (activitiesThatDay.isEmpty) {
+      return MonthDay(day.day, null, false, 0, occasion);
+    }
+    final fullDayActivity = activitiesThatDay
+        .firstWhere((a) => a.activity.fullDay, orElse: () => null);
+    final fullDayActivityCount =
+        activitiesThatDay.where((a) => a.activity.fullDay).length;
+    final hasActivities = activitiesThatDay.any((a) => !a.activity.fullDay);
+    return MonthDay(
+      day.day,
+      fullDayActivity,
+      hasActivities,
+      fullDayActivityCount,
+      occasion,
     );
   }
 

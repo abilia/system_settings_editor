@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 
 import 'package:seagull/ui/all.dart';
 
@@ -112,43 +113,66 @@ class MonthDayView extends StatelessWidget {
   Widget build(BuildContext context) {
     final day = monthDay;
     if (day is MonthDay) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: AbiliaColors.black80,
-              borderRadius: BorderRadius.only(
-                topLeft: radius,
-                topRight: radius,
-              ),
-            ),
-            height: 24.s,
-            padding: EdgeInsets.symmetric(horizontal: 4.s),
-            child: DefaultTextStyle(
-              style: abiliaTextTheme.subtitle2.copyWith(
-                color: AbiliaColors.white,
-              ),
-              child: Row(
-                children: [
-                  Text('${day.day}'),
-                  Spacer(),
-                  ColorDot(),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: Container(
+      return Container(
+        foregroundDecoration: day.isCurrent
+            ? BoxDecoration(
+                border: currentActivityBorder,
+                borderRadius: BorderRadius.all(radius),
+              )
+            : null,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
               decoration: BoxDecoration(
-                color: AbiliaColors.white110,
-                borderRadius:
-                    BorderRadius.only(bottomLeft: radius, bottomRight: radius),
-                border: border,
+                color: AbiliaColors.black80,
+                borderRadius: BorderRadius.only(
+                  topLeft: radius,
+                  topRight: radius,
+                ),
+              ),
+              height: 24.s,
+              padding: EdgeInsets.symmetric(horizontal: 4.s),
+              child: DefaultTextStyle(
+                style: abiliaTextTheme.subtitle2.copyWith(
+                  color: AbiliaColors.white,
+                ),
+                child: Row(
+                  children: [
+                    Text('${day.day}'),
+                    Spacer(),
+                    if (day.hasActivities) ColorDot(),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: radius, bottomRight: radius),
+                    border: day.occasion == Occasion.current
+                        ? null
+                        : border //noTopborder
+                    ),
+                padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
+                child: Stack(
+                  children: [
+                    if (day.fullDayActivityCount > 1)
+                      Container(
+                        color: AbiliaColors.white,
+                      )
+                    else if (day.fullDayActivity != null)
+                      Container(
+                        color: AbiliaColors.green,
+                      ),
+                    if (day.occasion == Occasion.past) CrossOver(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       );
     }
     return SizedBox();

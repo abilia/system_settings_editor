@@ -89,8 +89,8 @@ final borderRadiusTop = BorderRadius.only(
 final BorderSide borderSide =
     BorderSide(color: AbiliaColors.white140, width: 1.0.s);
 final Border currentActivityBorder =
-    Border.fromBorderSide(currentAcrtivityBorderSide);
-final BorderSide currentAcrtivityBorderSide =
+    Border.fromBorderSide(currentActivityBorderSide);
+final BorderSide currentActivityBorderSide =
     BorderSide(color: AbiliaColors.red, width: 2.0.s);
 final Border errorBorder = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.red, width: 1.0.s),
@@ -102,6 +102,11 @@ final borderOrange = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.orange40, width: 2.0.s),
 );
 final border = Border.fromBorderSide(borderSide);
+final noTopborder = Border(
+  left: borderSide,
+  right: borderSide,
+  bottom: borderSide,
+);
 final ligthShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
   side: BorderSide(color: AbiliaColors.transparentWhite30, width: 1.0.s),
