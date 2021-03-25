@@ -176,7 +176,15 @@ longpressToSpeak	Tap and hold for speech support	Tryck och håll ned för talst�
 longPressInfoText	Tap and hold about 1½ seconds on any function to get it read to by speech synthesis	Tryck länge på någon text för att få den uppläst	Tryk og hold ca. 1½ sekund på enhver funktion for at få den læst til ved talesyntese	Tik en houd ongeveer 1½ seconde vast op een functie om deze te laten voorlezen door spraaksynthese	Napauta ja pidä painettuna noin 1,5 sekuntia mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla	Tippen und halten Sie etwa 1½ Sekunden lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen	Trykk og hold i ca. 1½ sekund på en funksjon for å få den lest opp ved talesyntese
 display	Display	Visa	Vise	Tonen	Näytä	Anzeige	Vise
 viewMode	View mode	Visningsläge	Visningstilstand	Weergavemodus	Katselutila	Ansichtsmodus	Visningsmodus
-							
+dayInterval	Day interval	Intervall	Interval	Interval	Aikaväli	Intervall	Intervall
+interval	Interval	Intervall	Interval	Interval	Aikaväli	Intervall	Intervall
+viewDay	Day	Dagen	Dagen	Dag	Dag	Päivä	Tag	Dagen
+dayAndNight	Day and night	Dygnet	Døgnet	Dag en nacht	Päivä ja yö	Tag und Nacht	Døgnet
+zoom	Timeline zoom	Tidslinjens zoom	Zoom	Zoom tijdlijn	Aikajanan zoomaus	Zeitstrahl Zoom	Zoom
+small	Small	Liten	Lille	Klein	Pieni	Klein	Liten
+medium	Medium	Mellan	Mellem	Medium	Keskikokoinen	Mittel	Mellom
+large	Large	Stor	Stor	Groot	Suuri	Groß	Stor
+
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser
 notifications	Notifications	Notiser	Notifikationer	Meldingen	Ilmoitukset	Benachrichtigungen	Notifikasjoner

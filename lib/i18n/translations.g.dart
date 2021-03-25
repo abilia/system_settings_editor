@@ -330,6 +330,22 @@ abstract class Translated {
 
   final String viewMode = 'View mode';
 
+  final String dayInterval = 'Day interval';
+
+  final String interval = 'Interval';
+
+  final String viewDay = 'Day';
+
+  final String dayAndNight = 'Day and night';
+
+  final String zoom = 'Timeline zoom';
+
+  final String small = 'Small';
+
+  final String medium = 'Medium';
+
+  final String large = 'Large';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -852,6 +868,30 @@ class SV extends Translated {
 
   @override
   final String viewMode = 'Visningsläge';
+
+  @override
+  final String dayInterval = 'Intervall';
+
+  @override
+  final String interval = 'Intervall';
+
+  @override
+  final String viewDay = 'Dagen';
+
+  @override
+  final String dayAndNight = 'Dygnet';
+
+  @override
+  final String zoom = 'Tidslinjens zoom';
+
+  @override
+  final String small = 'Liten';
+
+  @override
+  final String medium = 'Mellan';
+
+  @override
+  final String large = 'Stor';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1397,6 +1437,30 @@ class DA extends Translated {
   final String viewMode = 'Visningstilstand';
 
   @override
+  final String dayInterval = 'Interval';
+
+  @override
+  final String interval = 'Interval';
+
+  @override
+  final String viewDay = 'Dagen';
+
+  @override
+  final String dayAndNight = 'Døgnet';
+
+  @override
+  final String zoom = 'Zoom';
+
+  @override
+  final String small = 'Lille';
+
+  @override
+  final String medium = 'Mellem';
+
+  @override
+  final String large = 'Stor';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -1935,6 +1999,30 @@ class NL extends Translated {
 
   @override
   final String viewMode = 'Weergavemodus';
+
+  @override
+  final String dayInterval = 'Interval';
+
+  @override
+  final String interval = 'Interval';
+
+  @override
+  final String viewDay = 'Dag';
+
+  @override
+  final String dayAndNight = 'Dag en nacht';
+
+  @override
+  final String zoom = 'Zoom tijdlijn';
+
+  @override
+  final String small = 'Klein';
+
+  @override
+  final String medium = 'Medium';
+
+  @override
+  final String large = 'Groot';
 
   @override
   final String permissions = 'Rechten';
@@ -2476,6 +2564,30 @@ class FI extends Translated {
 
   @override
   final String viewMode = 'Katselutila';
+
+  @override
+  final String dayInterval = 'Aikaväli';
+
+  @override
+  final String interval = 'Aikaväli';
+
+  @override
+  final String viewDay = 'Dag';
+
+  @override
+  final String dayAndNight = 'Päivä ja yö';
+
+  @override
+  final String zoom = 'Aikajanan zoomaus';
+
+  @override
+  final String small = 'Pieni';
+
+  @override
+  final String medium = 'Keskikokoinen';
+
+  @override
+  final String large = 'Suuri';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3020,6 +3132,30 @@ class DE extends Translated {
   final String viewMode = 'Ansichtsmodus';
 
   @override
+  final String dayInterval = 'Intervall';
+
+  @override
+  final String interval = 'Intervall';
+
+  @override
+  final String viewDay = 'Päivä';
+
+  @override
+  final String dayAndNight = 'Tag und Nacht';
+
+  @override
+  final String zoom = 'Zeitstrahl Zoom';
+
+  @override
+  final String small = 'Klein';
+
+  @override
+  final String medium = 'Mittel';
+
+  @override
+  final String large = 'Groß';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -3560,6 +3696,30 @@ class NB extends Translated {
 
   @override
   final String viewMode = 'Visningsmodus';
+
+  @override
+  final String dayInterval = 'Intervall';
+
+  @override
+  final String interval = 'Intervall';
+
+  @override
+  final String viewDay = 'Tag';
+
+  @override
+  final String dayAndNight = 'Døgnet';
+
+  @override
+  final String zoom = 'Zoom';
+
+  @override
+  final String small = 'Liten';
+
+  @override
+  final String medium = 'Mellom';
+
+  @override
+  final String large = 'Stor';
 
   @override
   final String permissions = 'Tillatelser';
