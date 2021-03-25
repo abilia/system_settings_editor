@@ -7,26 +7,38 @@ import 'all.dart';
 class EyeButtonDialog extends StatefulWidget {
   final DayCalendarType currentCalendarType;
   final bool currentDotsInTimepillar;
+  final int currentZoom;
+  final int currentDayInterval;
+
   const EyeButtonDialog({
     Key key,
     @required this.currentCalendarType,
     @required this.currentDotsInTimepillar,
+    this.currentZoom = 0,
+    this.currentDayInterval = 0,
   }) : super(key: key);
 
   @override
   _EyeButtonDialogState createState() => _EyeButtonDialogState(
         calendarType: currentCalendarType,
         dotsInTimePillar: currentDotsInTimepillar,
+        zoom: currentZoom,
+        dayInterval: currentDayInterval,
       );
 }
 
 class _EyeButtonDialogState extends State<EyeButtonDialog> {
   bool dotsInTimePillar;
+  int zoom;
+  int dayInterval;
   DayCalendarType calendarType;
+  ScrollController _controller;
 
   _EyeButtonDialogState({
     @required this.calendarType,
     @required this.dotsInTimePillar,
+    @required this.zoom,
+    @required this.dayInterval,
   });
 
   @override
@@ -37,53 +49,99 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
         text: t.display,
         iconData: AbiliaIcons.show,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 8.s),
-            child: DuoSelector<DayCalendarType>(
-              heading: t.viewMode,
-              groupValue: calendarType,
-              leftText: t.listView,
-              leftValue: DayCalendarType.LIST,
-              onChanged: (type) {
-                setState(() {
-                  calendarType = type;
-                });
-              },
-              rightText: t.timePillarView,
-              rightValue: DayCalendarType.TIMEPILLAR,
-              leftIcon: AbiliaIcons.calendar_list,
-              rightIcon: AbiliaIcons.timeline,
-            ),
-          ),
-          Divider(
-            endIndent: 16.s,
-          ),
-          CollapsableWidget(
-            collapsed: calendarType == DayCalendarType.LIST,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(12.s, 16.s, 16.s, 8.s),
-              child: DuoSelector<bool>(
-                heading: t.activityDuration,
-                groupValue: dotsInTimePillar,
-                leftText: t.dots,
-                leftValue: true,
-                onChanged: (dots) {
+      body: AbiliaScrollBar(
+        controller: _controller,
+        child: ListView(
+          children: [
+            _addPadding(
+              DuoSelector<DayCalendarType>(
+                heading: t.viewMode,
+                groupValue: calendarType,
+                leftText: t.listView,
+                rightText: t.timePillarView,
+                leftValue: DayCalendarType.LIST,
+                rightValue: DayCalendarType.TIMEPILLAR,
+                leftIcon: AbiliaIcons.calendar_list,
+                rightIcon: AbiliaIcons.timeline,
+                onChanged: (type) {
                   setState(() {
-                    dotsInTimePillar = dots;
+                    calendarType = type;
                   });
                 },
-                rightText: t.edge,
-                rightValue: false,
-                leftIcon: AbiliaIcons.options,
-                rightIcon: AbiliaIcons.flarp,
               ),
             ),
-          ),
-        ],
+            Divider(
+              endIndent: 16.s,
+            ),
+            CollapsableWidget(
+              collapsed: calendarType == DayCalendarType.LIST,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ...[
+                    TripleSelector<int>(
+                      heading: t.dayInterval,
+                      groupValue: dayInterval,
+                      leftText: t.interval,
+                      midText: t.viewDay,
+                      rightText: t.dayAndNight,
+                      leftValue: 0,
+                      midValue: 1,
+                      rightValue: 2,
+                      leftIcon: AbiliaIcons.day_interval,
+                      midIcon: AbiliaIcons.sun,
+                      rightIcon: AbiliaIcons.day_night,
+                      onChanged: (newDayInterval) {
+                        setState(() {
+                          dayInterval = newDayInterval;
+                        });
+                      },
+                    ),
+                    Divider(
+                      endIndent: 16.s,
+                    ),
+                    TripleSelector<int>(
+                      heading: t.zoom,
+                      groupValue: zoom,
+                      leftText: t.small,
+                      midText: t.medium,
+                      rightText: t.large,
+                      leftValue: 0,
+                      midValue: 1,
+                      rightValue: 2,
+                      leftIcon: AbiliaIcons.decrease_text,
+                      midIcon: AbiliaIcons.decrease_text,
+                      rightIcon: AbiliaIcons.enlarge_text,
+                      onChanged: (newZoom) {
+                        setState(() {
+                          zoom = newZoom;
+                        });
+                      },
+                    ),
+                    Divider(
+                      endIndent: 16.s,
+                    ),
+                    DuoSelector<bool>(
+                      heading: t.activityDuration,
+                      groupValue: dotsInTimePillar,
+                      leftText: t.dots,
+                      rightText: t.edge,
+                      leftValue: true,
+                      rightValue: false,
+                      leftIcon: AbiliaIcons.options,
+                      rightIcon: AbiliaIcons.flarp,
+                      onChanged: (dots) {
+                        setState(() {
+                          dotsInTimePillar = dots;
+                        });
+                      },
+                    ),
+                  ].map(_addPadding),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       bodyPadding: EdgeInsets.zero,
       expanded: true,
@@ -93,11 +151,20 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
           await Navigator.of(context).maybePop(EyeButtonSettings(
             calendarType: calendarType,
             dotsInTimepillar: dotsInTimePillar,
+            zoom: zoom,
+            dayInterval: dayInterval,
           ));
         },
       ),
     );
   }
+
+  Widget _addPadding(Widget widget) => widget is Divider
+      ? widget
+      : Padding(
+          padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 8.s),
+          child: widget,
+        );
 }
 
 class DuoSelector<T> extends StatelessWidget {
@@ -149,6 +216,97 @@ class DuoSelector<T> extends StatelessWidget {
                   value: leftValue,
                   borderRadius: borderRadiusLeft,
                   icon: leftIcon,
+                ),
+              ),
+              SizedBox(
+                width: 2.s,
+              ),
+              Expanded(
+                child: _SelectButton<T>(
+                  text: rightText,
+                  onPressed: () => onChanged(rightValue),
+                  groupValue: groupValue,
+                  value: rightValue,
+                  borderRadius: borderRadiusRight,
+                  icon: rightIcon,
+                ),
+              ),
+            ]),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class TripleSelector<T> extends StatelessWidget {
+  final String heading;
+  final T groupValue;
+  final ValueChanged<T> onChanged;
+  final String leftText;
+  final String midText;
+  final String rightText;
+  final T leftValue;
+  final T midValue;
+  final T rightValue;
+  final IconData leftIcon;
+  final IconData midIcon;
+  final IconData rightIcon;
+
+  const TripleSelector({
+    Key key,
+    @required this.heading,
+    @required this.groupValue,
+    @required this.onChanged,
+    @required this.leftValue,
+    @required this.midValue,
+    @required this.rightValue,
+    @required this.leftText,
+    @required this.midText,
+    @required this.rightText,
+    @required this.leftIcon,
+    @required this.midIcon,
+    @required this.rightIcon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Tts(
+          child: Text(
+            heading,
+            style: abiliaTextTheme.bodyText2.copyWith(
+              color: AbiliaColors.black75,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 8.0.s),
+          child: Container(
+            child: Row(children: [
+              Expanded(
+                child: _SelectButton<T>(
+                  text: leftText,
+                  onPressed: () => onChanged(leftValue),
+                  groupValue: groupValue,
+                  value: leftValue,
+                  borderRadius: borderRadiusLeft,
+                  icon: leftIcon,
+                ),
+              ),
+              SizedBox(
+                width: 2.s,
+              ),
+              Expanded(
+                child: _SelectButton<T>(
+                  text: midText,
+                  onPressed: () => onChanged(midValue),
+                  groupValue: groupValue,
+                  value: midValue,
+                  borderRadius: BorderRadius.zero,
+                  icon: midIcon,
                 ),
               ),
               SizedBox(

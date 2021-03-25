@@ -306,6 +306,52 @@ void main() {
     expect(find.byType(EditActivityPage), findsNothing);
   });
 
+  testWidgets(
+      'edit recurrint activity TDO change time before now shows warning',
+      (WidgetTester tester) async {
+    final edit = Activity.createNew(
+      title: 'recurring',
+      startTime: startTime.subtract(40.days()),
+      recurs: Recurs.everyDay,
+    );
+    await tester.pumpWidget(
+      wrapWithMaterialApp(EditActivityPage(day: today), givenActivity: edit),
+    );
+    await tester.pumpAndSettle();
+
+    // Act -- Change input to new start time
+    await tester.tap(timeFieldFinder);
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(TestKey.startTimeInput), '0133');
+    await tester.pumpAndSettle();
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Act -- press submit
+    await tester.tap(submitButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Assert -- select recurrence page shows
+    expect(find.byType(SelectRecurrentTypePage), findsOneWidget);
+
+    // Act -- this day onlu selected, pressing OK
+    await tester.tap(find.byType(OkButton));
+    await tester.pumpAndSettle();
+
+    // Assert -- before now warning
+    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
+
+    // Act -- Ok the warning
+    await tester.tap(find.byType(OkButton));
+    await tester.pumpAndSettle();
+
+    // Assert -- leaves editactivitypage
+    expect(find.byType(SelectRecurrentTypePage), findsNothing);
+    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.byType(EditActivityPage), findsNothing);
+  });
+
   testWidgets('pressing add activity with conflict shows warning',
       (WidgetTester tester) async {
     // Arrange

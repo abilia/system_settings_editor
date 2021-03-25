@@ -29,9 +29,10 @@ class SaveActivity extends EditActivityEvent with Fine {
 class SaveRecurringActivity extends SaveActivity with Fine {
   final ApplyTo applyTo;
   final DateTime day;
-  const SaveRecurringActivity(this.applyTo, this.day,
-      {bool warningConfirmed = false})
-      : super(warningConfirmed: warningConfirmed);
+  const SaveRecurringActivity(
+    this.applyTo,
+    this.day,
+  ) : super(warningConfirmed: true);
   @override
   List<Object> get props => [applyTo];
 }
