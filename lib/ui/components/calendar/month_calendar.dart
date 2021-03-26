@@ -120,7 +120,7 @@ class MonthHeading extends StatelessWidget {
               data: weekdays[weekdayindex],
               child: Container(
                 height: 32.s,
-                color: dayThemes[weekday].color,
+                color: dayThemes[weekday].dayColor,
                 child: Center(
                   child: Text(
                     weekdaysShort[weekdayindex],
