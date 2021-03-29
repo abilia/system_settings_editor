@@ -148,67 +148,73 @@ class MonthDayView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      foregroundDecoration: day.isCurrent
-          ? BoxDecoration(
-              border: currentActivityBorder,
-              borderRadius: BorderRadius.all(radius),
-            )
-          : null,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: dayTheme.color,
-              borderRadius: BorderRadius.only(
-                topLeft: radius,
-                topRight: radius,
-              ),
-            ),
-            height: 24.s,
-            padding: EdgeInsets.symmetric(horizontal: 4.s),
-            child: DefaultTextStyle(
-              style: dayTheme.theme.textTheme.subtitle2,
-              child: Row(
-                children: [
-                  Text('${day.day.day}'),
-                  Spacer(),
-                  if (day.hasActivities)
-                    ColorDot(color: dayTheme.theme.accentColor),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: Container(
+    return GestureDetector(
+      onTap: () {
+        BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
+        DefaultTabController.of(context).animateTo(0);
+      },
+      child: Container(
+        foregroundDecoration: day.isCurrent
+            ? BoxDecoration(
+                border: currentActivityBorder,
+                borderRadius: BorderRadius.all(radius),
+              )
+            : null,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
               decoration: BoxDecoration(
-                color: dayTheme.secondaryColor,
+                color: dayTheme.color,
                 borderRadius: BorderRadius.only(
-                  bottomLeft: radius,
-                  bottomRight: radius,
+                  topLeft: radius,
+                  topRight: radius,
                 ),
-                border: day.occasion == Occasion.current
-                    ? null
-                    : border, // noTopborder,
               ),
-              padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
-              child: Stack(
-                children: [
-                  if (day.fullDayActivityCount > 1)
-                    MonthFullDayStack(
-                      numberOfActivities: day.fullDayActivityCount,
-                    )
-                  else if (day.fullDayActivity != null)
-                    MonthActivityContent(
-                      activityDay: day.fullDayActivity,
-                    ),
-                  if (day.occasion == Occasion.past) CrossOver(),
-                ],
+              height: 24.s,
+              padding: EdgeInsets.symmetric(horizontal: 4.s),
+              child: DefaultTextStyle(
+                style: dayTheme.theme.textTheme.subtitle2,
+                child: Row(
+                  children: [
+                    Text('${day.day.day}'),
+                    Spacer(),
+                    if (day.hasActivities)
+                      ColorDot(color: dayTheme.theme.accentColor),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: dayTheme.secondaryColor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: radius,
+                    bottomRight: radius,
+                  ),
+                  border: day.occasion == Occasion.current
+                      ? null
+                      : border, // noTopborder,
+                ),
+                padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
+                child: Stack(
+                  children: [
+                    if (day.fullDayActivityCount > 1)
+                      MonthFullDayStack(
+                        numberOfActivities: day.fullDayActivityCount,
+                      )
+                    else if (day.fullDayActivity != null)
+                      MonthActivityContent(
+                        activityDay: day.fullDayActivity,
+                      ),
+                    if (day.occasion == Occasion.past) CrossOver(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
