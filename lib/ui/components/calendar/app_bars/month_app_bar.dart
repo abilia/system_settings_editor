@@ -3,6 +3,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class MonthAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const MonthAppBar({Key key}) : super(key: key);
   @override
   Size get preferredSize => CalendarAppBar.size;
 

@@ -4,6 +4,9 @@ class MonthCalendarState extends Equatable {
   final DateTime firstDay;
   final List<MonthWeek> weeks;
   final Occasion occasion;
+
+  int get index => firstDay.year * DateTime.monthsPerYear + firstDay.month;
+
   const MonthCalendarState({
     @required this.firstDay,
     @required this.occasion,

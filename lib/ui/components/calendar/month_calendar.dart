@@ -10,7 +10,7 @@ class MonthCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MonthAppBar(),
+      appBar: const MonthAppBar(),
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         builder: (context, memoSettingsState) {
           final dayThemes = List.generate(
@@ -44,18 +44,34 @@ class MonthContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MonthCalendarBloc, MonthCalendarState>(
-      builder: (context, state) {
-        return Column(
-          children: [
-            ...state.weeks.map(
-              (week) => Expanded(
-                child: WeekRow(week, dayThemes: dayThemes),
-              ),
-            ),
-          ],
-        );
+    final pageController = PageController(
+        initialPage: context.read<MonthCalendarBloc>().state.index);
+    return BlocListener<MonthCalendarBloc, MonthCalendarState>(
+      listener: (context, state) {
+        pageController.animateToPage(state.index,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeOutQuad);
       },
+      child: PageView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController,
+        itemBuilder: (context, item) {
+          return BlocBuilder<MonthCalendarBloc, MonthCalendarState>(
+            buildWhen: (oldState, newState) => newState.index == item,
+            builder: (context, state) {
+              return Column(
+                children: [
+                  ...state.weeks.map(
+                    (week) => Expanded(
+                      child: WeekRow(week, dayThemes: dayThemes),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -293,12 +309,13 @@ class MonthActivityContent extends StatelessWidget {
         borderRadius: BorderRadius.all(MonthDayView.radius),
         border: border,
       ),
-      child: Center(
+      child: Expanded(
         child: activityDay.activity.hasImage
             ? FadeInAbiliaImage(
                 imageFileId: activityDay.activity.fileId,
                 imageFilePath: activityDay.activity.icon,
                 fit: BoxFit.fitWidth,
+                height: double.infinity,
               )
             : Padding(
                 padding: EdgeInsets.all(3.0.s),
