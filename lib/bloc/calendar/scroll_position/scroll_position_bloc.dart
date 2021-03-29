@@ -119,7 +119,7 @@ class ScrollPositionBloc
       final diff = now.difference(scrollControllerCreatedTime);
       final hours = diff.inHours;
       final minutes = diff.inMinutes % Duration.minutesPerHour;
-      
+
       return timeToPixels(hours, minutes, timepillarBloc.state.dotDistance);
     }
     return 0.0;
