@@ -15,13 +15,13 @@ class Timeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ts = context.read<TimepillarBloc>().state;
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) => AnimatedPositioned(
         duration: transitionDuration,
-        top: timeToMidDotPixelDistance(
-                now, context.read<TimepillarBloc>().state) -
+        top: timeToMidDotPixelDistance(now, ts) -
             offset +
-            TimePillarCalendar.topPadding -
+            ts.topPadding -
             timelineHeight / 2,
         child: Container(
           width: width,

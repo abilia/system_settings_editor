@@ -42,9 +42,8 @@ void main() {
 Generic<MemoplannerSettingData> memoplannerSetting(
     bool value, String identifier) {
   return Generic.createNew<MemoplannerSettingData>(
-    data: MemoplannerSettingData(
-      data: value.toString(),
-      type: 'Boolean',
+    data: MemoplannerSettingData.fromData(
+      data: value,
       identifier: identifier,
     ),
     type: GenericType.memoPlannerSettings,

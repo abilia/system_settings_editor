@@ -88,9 +88,7 @@ class ActivityBoard extends StatelessWidget {
         height = maxEndPos - topOffset;
       }
 
-      final top = topOffset +
-          TimePillarCalendar.topMargin +
-          TimePillarCalendar.topPadding;
+      final top = topOffset + TimePillarCalendar.topMargin + ts.topPadding;
 
       Widget card(int col) => ActivityTimepillarCard(
             key: ObjectKey(ao),

@@ -72,6 +72,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activityRepository: context.read<ActivityRepository>(),
                 userFileRepository: context.read<UserFileRepository>(),
                 sortableRepository: context.read<SortableRepository>(),
+                genericRepository: context.read<GenericRepository>(),
                 syncDelay: GetIt.I<SyncDelays>(),
               ),
             ),
@@ -291,6 +292,9 @@ class CopiedAuthProviders extends StatelessWidget {
         ),
         BlocProvider<PermissionBloc>.value(
           value: blocContext.read<PermissionBloc>(),
+        ),
+        BlocProvider<TimepillarBloc>.value(
+          value: blocContext.read<TimepillarBloc>(),
         ),
       ],
       child: child,

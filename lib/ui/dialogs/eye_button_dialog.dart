@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -7,37 +8,37 @@ import 'all.dart';
 class EyeButtonDialog extends StatefulWidget {
   final DayCalendarType currentCalendarType;
   final bool currentDotsInTimepillar;
-  final int currentZoom;
-  final int currentDayInterval;
+  final TimepillarZoom currentZoom;
+  final TimepillarIntervalType currentDayInterval;
 
   const EyeButtonDialog({
     Key key,
     @required this.currentCalendarType,
     @required this.currentDotsInTimepillar,
-    this.currentZoom = 0,
-    this.currentDayInterval = 0,
+    @required this.currentZoom,
+    @required this.currentDayInterval,
   }) : super(key: key);
 
   @override
   _EyeButtonDialogState createState() => _EyeButtonDialogState(
         calendarType: currentCalendarType,
         dotsInTimePillar: currentDotsInTimepillar,
-        zoom: currentZoom,
+        timepillarZoom: currentZoom,
         dayInterval: currentDayInterval,
       );
 }
 
 class _EyeButtonDialogState extends State<EyeButtonDialog> {
   bool dotsInTimePillar;
-  int zoom;
-  int dayInterval;
+  TimepillarZoom timepillarZoom;
+  TimepillarIntervalType dayInterval;
   DayCalendarType calendarType;
   ScrollController _controller;
 
   _EyeButtonDialogState({
     @required this.calendarType,
     @required this.dotsInTimePillar,
-    @required this.zoom,
+    @required this.timepillarZoom,
     @required this.dayInterval,
   });
 
@@ -79,15 +80,15 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ...[
-                    TripleSelector<int>(
+                    TripleSelector<TimepillarIntervalType>(
                       heading: t.dayInterval,
                       groupValue: dayInterval,
                       leftText: t.interval,
                       midText: t.viewDay,
                       rightText: t.dayAndNight,
-                      leftValue: 0,
-                      midValue: 1,
-                      rightValue: 2,
+                      leftValue: TimepillarIntervalType.INTERVAL,
+                      midValue: TimepillarIntervalType.DAY,
+                      rightValue: TimepillarIntervalType.DAY_AND_NIGHT,
                       leftIcon: AbiliaIcons.day_interval,
                       midIcon: AbiliaIcons.sun,
                       rightIcon: AbiliaIcons.day_night,
@@ -100,21 +101,21 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
                     Divider(
                       endIndent: 16.s,
                     ),
-                    TripleSelector<int>(
+                    TripleSelector<TimepillarZoom>(
                       heading: t.zoom,
-                      groupValue: zoom,
+                      groupValue: timepillarZoom,
                       leftText: t.small,
                       midText: t.medium,
                       rightText: t.large,
-                      leftValue: 0,
-                      midValue: 1,
-                      rightValue: 2,
+                      leftValue: TimepillarZoom.SMALL,
+                      midValue: TimepillarZoom.NORMAL,
+                      rightValue: TimepillarZoom.LARGE,
                       leftIcon: AbiliaIcons.decrease_text,
                       midIcon: AbiliaIcons.decrease_text,
                       rightIcon: AbiliaIcons.enlarge_text,
                       onChanged: (newZoom) {
                         setState(() {
-                          zoom = newZoom;
+                          timepillarZoom = newZoom;
                         });
                       },
                     ),
@@ -151,8 +152,8 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
           await Navigator.of(context).maybePop(EyeButtonSettings(
             calendarType: calendarType,
             dotsInTimepillar: dotsInTimePillar,
-            zoom: zoom,
-            dayInterval: dayInterval,
+            timepillarZoom: timepillarZoom,
+            intervalType: dayInterval,
           ));
         },
       ),

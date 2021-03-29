@@ -94,8 +94,8 @@ class ActivityTimepillarCard extends StatelessWidget {
                   },
                   child: Container(
                     margin: right
-                        ? EdgeInsets.only(left: ts.dotSize + hourPadding)
-                        : EdgeInsets.only(right: ts.dotSize + hourPadding),
+                        ? EdgeInsets.only(left: ts.dotSize + ts.hourPadding)
+                        : EdgeInsets.only(right: ts.dotSize + ts.hourPadding),
                     decoration: decoration,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(

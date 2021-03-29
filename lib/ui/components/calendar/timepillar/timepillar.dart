@@ -33,7 +33,6 @@ class TimePillar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ts = context.read<TimepillarBloc>().state;
     final dots = today
         ? _todayDots
         : dayOccasion == Occasion.past
@@ -42,72 +41,75 @@ class TimePillar extends StatelessWidget {
 
     final formatHour = onlyHourFormat(context, clockType: hourClockType);
     final theme = Theme.of(context);
-    return DefaultTextStyle(
-      style: theme.textTheme.headline6.copyWith(color: AbiliaColors.black),
-      child: Container(
-        color: interval.intervalPart == IntervalPart.NIGHT
-            ? TimePillarCalendar.nightBackgroundColor
-            : theme.scaffoldBackgroundColor,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: <Widget>[
-            ...nightParts.map((p) {
-              return Positioned(
-                top: p.start,
-                child: SizedBox(
+    return BlocBuilder<TimepillarBloc, TimepillarState>(
+      builder: (context, ts) => DefaultTextStyle(
+        style: theme.textTheme.headline6.copyWith(color: AbiliaColors.black),
+        child: Container(
+          color: interval.intervalPart == IntervalPart.NIGHT
+              ? TimePillarCalendar.nightBackgroundColor
+              : theme.scaffoldBackgroundColor,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: <Widget>[
+              ...nightParts.map((p) {
+                return Positioned(
+                  top: p.start,
+                  child: SizedBox(
+                    width: ts.timePillarTotalWidth,
+                    height: p.length,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(
+                          color: TimePillarCalendar.nightBackgroundColor),
+                    ),
+                  ),
+                );
+              }),
+              if (today && showTimeLine)
+                Timeline(
                   width: ts.timePillarTotalWidth,
-                  height: p.length,
-                  child: const DecoratedBox(
-                    decoration: BoxDecoration(
-                        color: TimePillarCalendar.nightBackgroundColor),
+                  offset:
+                      hoursToPixels(interval.startTime.hour, ts.dotDistance) -
+                          TimePillarCalendar.topMargin,
+                ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(ts.timePillarPadding,
+                    TimePillarCalendar.topMargin, ts.timePillarPadding, 0),
+                child: SizedBox(
+                  width: ts.timePillarWidth,
+                  child: Column(
+                    children: List.generate(
+                      interval.lengthInHours,
+                      (index) {
+                        final hourIndex = index + interval.startTime.hour;
+                        final hour = interval.startTime
+                            .onlyDays()
+                            .copyWith(hour: hourIndex);
+                        return Hour(
+                          hour: formatHour(hour),
+                          dots: dots(
+                            hour,
+                            hour.isNight(dayParts),
+                          ),
+                          isNight: hour.isNight(dayParts),
+                        );
+                      },
+                    )..add(
+                        Hour(
+                          hour: formatHour(interval.endTime),
+                          dots: SizedBox(
+                            width: ts.dotSize,
+                            height: ts.dotSize,
+                          ),
+                          isNight: interval.endTime
+                              .subtract(1.hours())
+                              .isNight(dayParts),
+                        ),
+                      ),
                   ),
                 ),
-              );
-            }),
-            if (today && showTimeLine)
-              Timeline(
-                width: ts.timePillarTotalWidth,
-                offset: hoursToPixels(interval.startTime.hour, ts.dotDistance) -
-                    TimePillarCalendar.topMargin,
               ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(ts.timePillarPadding,
-                  TimePillarCalendar.topMargin, ts.timePillarPadding, 0),
-              child: SizedBox(
-                width: ts.timePillarWidth,
-                child: Column(
-                  children: List.generate(
-                    interval.lengthInHours,
-                    (index) {
-                      final hourIndex = index + interval.startTime.hour;
-                      final hour = interval.startTime
-                          .onlyDays()
-                          .copyWith(hour: hourIndex);
-                      return Hour(
-                        hour: formatHour(hour),
-                        dots: dots(
-                          hour,
-                          hour.isNight(dayParts),
-                        ),
-                        isNight: hour.isNight(dayParts),
-                      );
-                    },
-                  )..add(
-                      Hour(
-                        hour: formatHour(interval.endTime),
-                        dots: SizedBox(
-                          width: ts.dotSize,
-                          height: ts.dotSize,
-                        ),
-                        isNight: interval.endTime
-                            .subtract(1.hours())
-                            .isNight(dayParts),
-                      ),
-                    ),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -142,23 +144,23 @@ class Hour extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fontSize = Theme.of(context).textTheme.headline6.fontSize;
-    final zoom = context.read<TimepillarBloc>().state.zoom;
+    final ts = context.read<TimepillarBloc>().state;
     final dayTheme = Theme.of(context).textTheme.headline6.copyWith(
           color: AbiliaColors.black,
-          fontSize: fontSize * zoom,
+          fontSize: fontSize * ts.zoom,
         );
     final nightTheme = Theme.of(context).textTheme.headline6.copyWith(
           color: AbiliaColors.white,
-          fontSize: fontSize * zoom,
+          fontSize: fontSize * ts.zoom,
         );
     return Container(
       height: context.read<TimepillarBloc>().state.hourHeight,
-      padding: EdgeInsets.symmetric(vertical: hourPadding),
+      padding: EdgeInsets.symmetric(vertical: ts.hourPadding),
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
             color: isNight ? AbiliaColors.white140 : AbiliaColors.black,
-            width: hourPadding,
+            width: ts.hourPadding,
           ),
         ),
       ),
@@ -167,7 +169,7 @@ class Hour extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            width: 25.0.s,
+            width: 25.0.s * ts.zoom,
             child: Tts(
               child: Text(
                 hour,

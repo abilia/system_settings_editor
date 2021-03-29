@@ -13,8 +13,9 @@ part 'memoplanner_setting_event.dart';
 class MemoplannerSettingBloc
     extends Bloc<MemoplannerSettingsEvent, MemoplannerSettingsState> {
   StreamSubscription _genericSubscription;
+  final GenericBloc genericBloc;
 
-  MemoplannerSettingBloc({@required GenericBloc genericBloc})
+  MemoplannerSettingBloc({@required this.genericBloc})
       : super(genericBloc.state is GenericsLoaded
             ? MemoplannerSettingsLoaded(
                 MemoplannerSettings.fromSettingsList(
@@ -40,6 +41,19 @@ class MemoplannerSettingBloc
     }
     if (event is GenericsLoadedFailed) {
       yield MemoplannerSettingsFailed();
+    }
+    if (event is ZoomSettingUpdatedEvent) {
+      genericBloc.add(
+        GenericUpdated<MemoplannerSettingData>(
+          MemoplannerSettingData.fromData(
+            data: event.timepillarZoom.index,
+            identifier: MemoplannerSettings.viewOptionsZoomKey,
+          ),
+        ),
+      );
+    }
+    if (event is IntervalTypeUpdatedEvent) {
+      yield MemoplannerSettingsLoaded(MemoplannerSettings());
     }
   }
 

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:seagull/models/all.dart';
 
 class MemoplannerSettings {
@@ -205,7 +203,7 @@ class MemoplannerSettings {
       ),
       calendarDayColor: settings.parse(calendarDayColorKey, 0),
       viewOptionsTimeInterval: settings.parse(viewOptionsTimeIntervalKey, 1),
-      viewOptionsZoom: settings.parse(viewOptionsZoomKey, 1),
+      viewOptionsZoom: settings.getInt(viewOptionsZoomKey, defaultValue: 1),
     );
   }
 }
@@ -217,7 +215,7 @@ extension _Parsing on List<MemoplannerSettingData> {
     if (setting == null) {
       return defaultValue;
     }
-    return json.decode(setting.data);
+    return setting.data;
   }
 
   String getString(
@@ -235,6 +233,13 @@ extension _Parsing on List<MemoplannerSettingData> {
     bool defaultValue = true,
   }) {
     return parse<bool>(settingName, defaultValue);
+  }
+
+  int getInt(
+    String settingName, {
+    int defaultValue = 0,
+  }) {
+    return parse<int>(settingName, defaultValue);
   }
 }
 

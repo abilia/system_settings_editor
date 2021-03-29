@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -150,9 +151,9 @@ void main() {
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
-
+      final ts = FakeTimepillarState.withZoom(zoom: 1);
       for (final y in activityYPos) {
-        expect(y, closeTo(timelineYPostion, dotSize / 2));
+        expect(y, closeTo(timelineYPostion, ts.dotSize / 2));
       }
     });
 
@@ -184,7 +185,7 @@ void main() {
       final ts = TimepillarState(
           TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
       for (final y in activityYPos) {
-        final activityDotMidPos = y + dotSize / 2;
+        final activityDotMidPos = y + ts.dotSize / 2;
         expect(
             (activityDotMidPos - timelineMidPos).abs(), equals(ts.dotDistance));
       }

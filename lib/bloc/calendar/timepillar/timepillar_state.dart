@@ -11,7 +11,8 @@ final double _minHeight = 84.0.s;
 
 // Dots
 final double _dotSize = 10.0.s;
-final double _dotPadding = hourPadding * 3;
+final double _hourPadding = 1.0.s;
+final double _dotPadding = _hourPadding * 3;
 final double _dotDistance = _dotSize + _dotPadding;
 
 // Timepillar
@@ -38,6 +39,7 @@ class TimepillarState extends Equatable {
   double get dotSize => _dotSize * zoom;
   double get dotDistance => (_dotSize + _dotPadding) * zoom;
   double get hourHeight => _dotDistance * dotsPerHour * zoom;
+  double get hourPadding => _hourPadding * zoom;
   double get dotPadding => _dotPadding * zoom;
 
   // Timepillar
@@ -45,7 +47,8 @@ class TimepillarState extends Equatable {
   double get timePillarWidth => _timePillarWidth * zoom;
   double get timePillarTotalWidth =>
       (_timePillarWidth + _timePillarPadding * 2) * zoom;
+  double get topPadding => 2 * hourPadding;
 
   @override
-  List<Object> get props => [timepillarInterval];
+  List<Object> get props => [timepillarInterval, zoom];
 }
