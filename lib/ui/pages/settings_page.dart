@@ -18,7 +18,7 @@ class MenuPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.menu,
-        iconData: AbiliaIcons.app_menu,
+        iconData: AbiliaIcons.settings,
       ),
       body: ListView.separated(
         padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
@@ -27,7 +27,7 @@ class MenuPage extends StatelessWidget {
         separatorBuilder: (context, index) => SizedBox(height: 8.0.s),
       ),
       bottomNavigationBar: const BottomNavigation(
-        backNavigationWidget: CloseButton(),
+        backNavigationWidget: BackButton(),
       ),
     );
   }
