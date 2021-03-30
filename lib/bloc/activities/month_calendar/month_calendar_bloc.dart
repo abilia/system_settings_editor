@@ -13,6 +13,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
   final ActivitiesBloc activitiesBloc;
   final ClockBloc clockBloc;
   StreamSubscription _activitiesSubscription;
+  StreamSubscription _clockSubscription;
 
   MonthCalendarBloc({
     this.activitiesBloc,
@@ -24,11 +25,18 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
             clockBloc.state,
           ),
         ) {
-    _activitiesSubscription = activitiesBloc.listen(
-      (state) => add(
-        UpdateMonthActivites(state.activities),
-      ),
-    );
+    _activitiesSubscription =
+        activitiesBloc.listen((state) => add(UpdateMonth()));
+    _clockSubscription = clockBloc
+        .where((time) =>
+            state.weeks
+                .expand((w) => w.days)
+                .whereType<MonthDay>()
+                .firstWhere((day) => day.isCurrent, orElse: () => null)
+                ?.day
+                ?.isAtSameDay(time) ==
+            false)
+        .listen((_) => add(UpdateMonth()));
   }
 
   @override
@@ -53,7 +61,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
         activitiesBloc.state.activities,
         clockBloc.state,
       );
-    } else if (event is UpdateMonthActivites) {
+    } else if (event is UpdateMonth) {
       yield _mapToState(
         state.firstDay,
         activitiesBloc.state.activities,
@@ -142,6 +150,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
   @override
   Future<void> close() async {
     await _activitiesSubscription.cancel();
+    await _clockSubscription.cancel();
     return super.close();
   }
 }

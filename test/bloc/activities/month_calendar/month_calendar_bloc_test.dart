@@ -48,7 +48,7 @@ void main() {
       expect(monthCalendarBloc.state.weeks.length, 5);
     });
 
-    test('initial state correct', () {
+    test('initial state', () {
       // Arrange
       monthCalendarBloc = MonthCalendarBloc(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
@@ -138,7 +138,7 @@ void main() {
       );
     });
 
-    test('next month correct, basic', () async {
+    test('next month, basic', () async {
       // Arrange
       monthCalendarBloc = MonthCalendarBloc(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
@@ -156,7 +156,7 @@ void main() {
       expect(state.occasion, Occasion.future);
     });
 
-    test('next month correct', () {
+    test('next month', () {
       // Arrange
       monthCalendarBloc = MonthCalendarBloc(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
@@ -286,7 +286,7 @@ void main() {
       expect(state.occasion, Occasion.past);
     });
 
-    test('previous month correct', () {
+    test('previous month', () {
       // Arrange
       monthCalendarBloc = MonthCalendarBloc(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
@@ -384,7 +384,38 @@ void main() {
       );
     });
 
-    test('january state correct', () {
+    test('when new day day is updated', () async {
+      // Arrange
+      monthCalendarBloc = MonthCalendarBloc(
+          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+
+      var week11 = monthCalendarBloc.state.weeks[2];
+      var day18 = week11.days[3] as MonthDay,
+          day19 = week11.days[4] as MonthDay,
+          day20 = week11.days[5] as MonthDay;
+
+      // Assert
+      expect(week11.number, 11);
+      expect(day18.occasion, Occasion.past);
+      expect(day19.occasion, Occasion.current);
+      expect(day20.occasion, Occasion.future);
+
+      // Act
+      clock.add(initial.nextDay());
+      final nextState = await monthCalendarBloc.first;
+
+      week11 = nextState.weeks[2];
+      day19 = week11.days[4] as MonthDay;
+      day20 = week11.days[5] as MonthDay;
+      final day21 = week11.days[6] as MonthDay;
+
+      // Assert
+      expect(day19.occasion, Occasion.past);
+      expect(day20.occasion, Occasion.current);
+      expect(day21.occasion, Occasion.future);
+    });
+
+    test('january 2021', () {
       // Arrange
       final january15 = DateTime(2021, 01, 15, 15, 15);
       final newClock = StreamController<DateTime>();
@@ -483,7 +514,7 @@ void main() {
     });
   });
 
-  group('Calendar days are correct', () {
+  group('month activities', () {
     test('monthly recurrent activity', () async {
       // Arrange
       when(mockActivityRepository.load()).thenAnswer(

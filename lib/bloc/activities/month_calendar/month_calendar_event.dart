@@ -13,9 +13,4 @@ class GoToPreviousMonth extends MonthCalendarEvent {}
 
 class GoToCurrentMonth extends MonthCalendarEvent {}
 
-class UpdateMonthActivites extends MonthCalendarEvent {
-  final Iterable<Activity> activities;
-  UpdateMonthActivites(this.activities);
-  @override
-  List<Object> get props => [activities];
-}
+class UpdateMonth extends MonthCalendarEvent {}
