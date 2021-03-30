@@ -70,7 +70,6 @@ DayTheme weekdayTheme({
   @required String languageCode,
   @required int weekday,
 }) {
-  // dayColor = DayColor.allDays;
   final noColors = dayColor == DayColor.noColors ||
       dayColor == DayColor.saturdayAndSunday && weekday < DateTime.saturday;
 

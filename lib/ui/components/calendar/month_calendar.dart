@@ -159,6 +159,7 @@ class MonthDayView extends StatelessWidget {
     @required this.dayTheme,
   }) : super(key: key);
   static final radius = Radius.circular(8.s);
+  static final bottomRadius = BorderRadius.vertical(bottom: radius);
 
   @override
   Widget build(BuildContext context) {
@@ -182,10 +183,7 @@ class MonthDayView extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   color: dayTheme.color,
-                  borderRadius: BorderRadius.only(
-                    topLeft: radius,
-                    topRight: radius,
-                  ),
+                  borderRadius: BorderRadius.vertical(top: radius),
                 ),
                 height: 24.s,
                 padding: EdgeInsets.symmetric(horizontal: 4.s),
@@ -204,38 +202,41 @@ class MonthDayView extends StatelessWidget {
               Expanded(
                 // A borderRadius can only be given for a uniform Border.
                 // https://github.com/flutter/flutter/issues/12583
-                // So work around is wrapping with second container with
+                // So work around is wrapping containers with
                 // background color
                 child: Container(
-                  padding: EdgeInsets.only(left: 1.s, right: 1.s, bottom: 1.s),
                   decoration: BoxDecoration(
-                    color: AbiliaColors.white140,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: radius,
-                      bottomRight: radius,
-                    ),
+                    color: dayTheme.secondaryColor,
+                    borderRadius: bottomRadius,
                   ),
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
+                    padding:
+                        EdgeInsets.only(left: 1.s, right: 1.s, bottom: 1.s),
                     decoration: BoxDecoration(
-                      color: dayTheme.secondaryColor,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: radius,
-                        bottomRight: radius,
-                      ),
+                      color: AbiliaColors.transparentBlack30,
+                      borderRadius: bottomRadius,
                     ),
-                    child: Stack(
-                      children: [
-                        if (day.fullDayActivityCount > 1)
-                          MonthFullDayStack(
-                            numberOfActivities: day.fullDayActivityCount,
-                          )
-                        else if (day.fullDayActivity != null)
-                          MonthActivityContent(
-                            activityDay: day.fullDayActivity,
-                          ),
-                        if (day.isPast) CrossOver(),
-                      ],
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
+                      decoration: BoxDecoration(
+                        color: dayTheme.secondaryColor,
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(7.s),
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          if (day.fullDayActivityCount > 1)
+                            MonthFullDayStack(
+                              numberOfActivities: day.fullDayActivityCount,
+                            )
+                          else if (day.fullDayActivity != null)
+                            MonthActivityContent(
+                              activityDay: day.fullDayActivity,
+                            ),
+                          if (day.isPast) CrossOver(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
