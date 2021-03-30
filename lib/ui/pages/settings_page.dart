@@ -4,8 +4,8 @@ import 'package:seagull/fakes/all.dart';
 
 import 'package:seagull/ui/all.dart';
 
-class MenuPage extends StatelessWidget {
-  const MenuPage({Key key}) : super(key: key);
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({Key key}) : super(key: key);
   final widgets = const <Widget>[
     TextToSpeechSwitch(),
     PermissionPickField(),
