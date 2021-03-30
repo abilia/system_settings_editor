@@ -41,7 +41,6 @@ class MonthDay extends MonthCalendarDay {
   final Occasion occasion;
   bool get isCurrent => occasion == Occasion.current;
   bool get isPast => occasion == Occasion.past;
-  bool get isFuture => occasion == Occasion.future;
 
   MonthDay(
     this.day,

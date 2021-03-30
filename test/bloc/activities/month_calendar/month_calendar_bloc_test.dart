@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../mocks.dart';
@@ -11,6 +12,8 @@ import '../../../mocks.dart';
 void main() {
   MonthCalendarBloc monthCalendarBloc;
   ActivitiesBloc activitiesBloc;
+  ActivityRepository mockActivityRepository;
+
   ClockBloc clockBloc;
   StreamController<DateTime> clock;
   final initial = DateTime(2021, 03, 19, 09, 45);
@@ -18,13 +21,19 @@ void main() {
   setUp(() {
     clock = StreamController<DateTime>();
     clockBloc = ClockBloc(clock.stream, initialTime: initial);
-    activitiesBloc = MockActivitiesBloc();
-    when(activitiesBloc.state).thenReturn(ActivitiesLoaded([]));
+    mockActivityRepository = MockActivityRepository();
+
+    activitiesBloc = ActivitiesBloc(
+      activityRepository: mockActivityRepository,
+      syncBloc: MockSyncBloc(),
+      pushBloc: MockPushBloc(),
+    );
   });
 
   group('Calendar days are correct', () {
     setUp(() {
-      when(activitiesBloc.state).thenReturn(ActivitiesLoaded([]));
+      when(mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(Iterable.empty()));
     });
     test('initial state basics', () {
       // Arrange
@@ -43,63 +52,86 @@ void main() {
       // Arrange
       monthCalendarBloc = MonthCalendarBloc(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
-      final firstDay = DateTime(2021, 03, 01);
+
       // Asserts
       expect(
         monthCalendarBloc.state,
         MonthCalendarState(
-          firstDay: firstDay,
+          firstDay: DateTime(2021, 03, 01),
           occasion: Occasion.current,
           weeks: [
             MonthWeek(
               9,
-              List.generate(
-                7,
-                (d) => MonthDay(
-                    firstDay.addDays(d), null, false, 0, Occasion.past),
-              ),
+              [
+                MonthDay(DateTime(2021, 03, 01), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 02), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 03), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 04), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 05), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 06), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 07), null, false, 0, Occasion.past),
+              ],
             ),
             MonthWeek(
               10,
-              List.generate(
-                7,
-                (d) => MonthDay(
-                    firstDay.addDays(d + 7), null, false, 0, Occasion.past),
-              ),
+              [
+                MonthDay(DateTime(2021, 03, 08), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 09), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 10), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 11), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 12), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 13), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 14), null, false, 0, Occasion.past),
+              ],
             ),
             MonthWeek(
               11,
-              List.generate(
-                7,
-                (d) => MonthDay(
-                    firstDay.addDays(d + 14),
-                    null,
-                    false,
-                    0,
-                    d < 4
-                        ? Occasion.past
-                        : d > 4
-                            ? Occasion.future
-                            : Occasion.current),
-              ),
+              [
+                MonthDay(DateTime(2021, 03, 15), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 16), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 17), null, false, 0, Occasion.past),
+                MonthDay(DateTime(2021, 03, 18), null, false, 0, Occasion.past),
+                MonthDay(
+                    DateTime(2021, 03, 19), null, false, 0, Occasion.current),
+                MonthDay(
+                    DateTime(2021, 03, 20), null, false, 0, Occasion.future),
+                MonthDay(
+                    DateTime(2021, 03, 21), null, false, 0, Occasion.future),
+              ],
             ),
             MonthWeek(
               12,
-              List.generate(
-                7,
-                (d) => MonthDay(
-                    firstDay.addDays(d + 21), null, false, 0, Occasion.future),
-              ),
+              [
+                MonthDay(
+                    DateTime(2021, 03, 22), null, false, 0, Occasion.future),
+                MonthDay(
+                    DateTime(2021, 03, 23), null, false, 0, Occasion.future),
+                MonthDay(
+                    DateTime(2021, 03, 24), null, false, 0, Occasion.future),
+                MonthDay(
+                    DateTime(2021, 03, 25), null, false, 0, Occasion.future),
+                MonthDay(
+                    DateTime(2021, 03, 26), null, false, 0, Occasion.future),
+                MonthDay(
+                    DateTime(2021, 03, 27), null, false, 0, Occasion.future),
+                MonthDay(
+                    DateTime(2021, 03, 28), null, false, 0, Occasion.future),
+              ],
             ),
             MonthWeek(
               13,
-              List.generate(
-                7,
-                (d) => d < 3
-                    ? MonthDay(firstDay.addDays(d + 28), null, false, 0,
-                        Occasion.future)
-                    : NotInMonthDay(),
-              ),
+              [
+                MonthDay(
+                    DateTime(2021, 03, 29), null, false, 0, Occasion.future),
+                MonthDay(
+                    DateTime(2021, 03, 30), null, false, 0, Occasion.future),
+                MonthDay(
+                    DateTime(2021, 03, 31), null, false, 0, Occasion.future),
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
+              ],
             ),
           ],
         ),
@@ -452,9 +484,10 @@ void main() {
   });
 
   group('Calendar days are correct', () {
-    test('monthly recurrent activity', () {
-      when(activitiesBloc.state).thenReturn(
-        ActivitiesLoaded(
+    test('monthly recurrent activity', () async {
+      // Arrange
+      when(mockActivityRepository.load()).thenAnswer(
+        (_) => Future.value(
           [
             Activity.createNew(
               title: 'end and start of month',
@@ -465,220 +498,257 @@ void main() {
         ),
       );
 
-      // Arrange
       monthCalendarBloc = MonthCalendarBloc(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 
+      // Act
+      activitiesBloc.add(LoadActivities());
+
       // Asserts
-      expect(
-        monthCalendarBloc.state,
-        MonthCalendarState(
-          firstDay: DateTime(2021, 03, 01),
-          occasion: Occasion.current,
-          weeks: [
-            MonthWeek(
-              9,
-              [
-                MonthDay(DateTime(2021, 03, 1), null, true, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 2), null, true, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 3), null, true, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 4), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 5), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 6), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 7), null, false, 0, Occasion.past),
-              ],
-            ),
-            MonthWeek(
-              10,
-              [
-                MonthDay(DateTime(2021, 03, 8), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 9), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 10), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 11), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 12), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 13), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 14), null, false, 0, Occasion.past),
-              ],
-            ),
-            MonthWeek(
-              11,
-              [
-                MonthDay(DateTime(2021, 03, 15), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 16), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 17), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 18), null, false, 0, Occasion.past),
-                MonthDay(
-                    DateTime(2021, 03, 19), null, false, 0, Occasion.current),
-                MonthDay(
-                    DateTime(2021, 03, 20), null, false, 0, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 21), null, false, 0, Occasion.future),
-              ],
-            ),
-            MonthWeek(
-              12,
-              [
-                MonthDay(
-                    DateTime(2021, 03, 22), null, false, 00, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 23), null, false, 00, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 24), null, false, 00, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 25), null, false, 00, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 26), null, false, 00, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 27), null, false, 00, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 28), null, false, 00, Occasion.future),
-              ],
-            ),
-            MonthWeek(
-              13,
-              [
-                MonthDay(
-                    DateTime(2021, 03, 29), null, false, 00, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 30), null, true, 00, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 31), null, true, 00, Occasion.future),
-                NotInMonthDay(),
-                NotInMonthDay(),
-                NotInMonthDay(),
-                NotInMonthDay(),
-              ],
-            ),
-          ],
+      await expectLater(
+        monthCalendarBloc,
+        emits(
+          MonthCalendarState(
+            firstDay: DateTime(2021, 03, 01),
+            occasion: Occasion.current,
+            weeks: [
+              MonthWeek(
+                9,
+                [
+                  MonthDay(DateTime(2021, 03, 1), null, true, 0, Occasion.past),
+                  MonthDay(DateTime(2021, 03, 2), null, true, 0, Occasion.past),
+                  MonthDay(DateTime(2021, 03, 3), null, true, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 4), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 5), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 6), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 7), null, false, 0, Occasion.past),
+                ],
+              ),
+              MonthWeek(
+                10,
+                [
+                  MonthDay(
+                      DateTime(2021, 03, 8), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 9), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 10), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 11), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 12), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 13), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 14), null, false, 0, Occasion.past),
+                ],
+              ),
+              MonthWeek(
+                11,
+                [
+                  MonthDay(
+                      DateTime(2021, 03, 15), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 16), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 17), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 18), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 19), null, false, 0, Occasion.current),
+                  MonthDay(
+                      DateTime(2021, 03, 20), null, false, 0, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 21), null, false, 0, Occasion.future),
+                ],
+              ),
+              MonthWeek(
+                12,
+                [
+                  MonthDay(
+                      DateTime(2021, 03, 22), null, false, 00, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 23), null, false, 00, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 24), null, false, 00, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 25), null, false, 00, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 26), null, false, 00, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 27), null, false, 00, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 28), null, false, 00, Occasion.future),
+                ],
+              ),
+              MonthWeek(
+                13,
+                [
+                  MonthDay(
+                      DateTime(2021, 03, 29), null, false, 00, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 30), null, true, 00, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 31), null, true, 00, Occasion.future),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                ],
+              ),
+            ],
+          ),
         ),
       );
     });
 
-    test('weekend activity', () {
+    test('weekend activity', () async {
+      // Arrange
+      final firstDay = DateTime(2021, 03, 01);
       final weekendFullDay = Activity.createNew(
         title: 'full day on weekends',
         startTime: DateTime(2010, 01, 01),
         recurs: Recurs.weeklyOnDays([6, 7]),
         fullDay: true,
       );
-      when(activitiesBloc.state).thenReturn(
-        ActivitiesLoaded(
+      when(mockActivityRepository.load()).thenAnswer(
+        (_) => Future.value(
           [
             weekendFullDay,
           ],
         ),
       );
 
-      // Arrange
       monthCalendarBloc = MonthCalendarBloc(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
-      final firstDay = DateTime(2021, 03, 01);
+
+      // Act
+      activitiesBloc.add(LoadActivities());
 
       // Asserts
-      expect(
-        monthCalendarBloc.state,
-        MonthCalendarState(
-          firstDay: firstDay,
-          occasion: Occasion.current,
-          weeks: [
-            MonthWeek(
-              9,
-              [
-                MonthDay(firstDay, null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 2), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 3), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 4), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 5), null, false, 0, Occasion.past),
-                ...[6, 7].map<MonthDay>(
-                  (d) => MonthDay(
-                    DateTime(2021, 03, d),
-                    ActivityDay(weekendFullDay, firstDay.addDays(d - 1)),
-                    false,
-                    1,
-                    Occasion.past,
+      await expectLater(
+        monthCalendarBloc,
+        emits(
+          MonthCalendarState(
+            firstDay: firstDay,
+            occasion: Occasion.current,
+            weeks: [
+              MonthWeek(
+                9,
+                [
+                  MonthDay(firstDay, null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 2), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 3), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 4), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 5), null, false, 0, Occasion.past),
+                  ...[6, 7].map<MonthDay>(
+                    (d) => MonthDay(
+                      DateTime(2021, 03, d),
+                      ActivityDay(weekendFullDay, firstDay.addDays(d - 1)),
+                      false,
+                      1,
+                      Occasion.past,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            MonthWeek(
-              10,
-              [
-                MonthDay(DateTime(2021, 03, 8), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 9), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 10), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 11), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 12), null, false, 0, Occasion.past),
-                ...[13, 14].map<MonthDay>(
-                  (d) => MonthDay(
-                    DateTime(2021, 03, d),
-                    ActivityDay(weekendFullDay, firstDay.addDays(d - 1)),
-                    false,
-                    1,
-                    Occasion.past,
+                ],
+              ),
+              MonthWeek(
+                10,
+                [
+                  MonthDay(
+                      DateTime(2021, 03, 8), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 9), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 10), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 11), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 12), null, false, 0, Occasion.past),
+                  ...[13, 14].map<MonthDay>(
+                    (d) => MonthDay(
+                      DateTime(2021, 03, d),
+                      ActivityDay(weekendFullDay, firstDay.addDays(d - 1)),
+                      false,
+                      1,
+                      Occasion.past,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            MonthWeek(
-              11,
-              [
-                MonthDay(DateTime(2021, 03, 15), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 16), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 17), null, false, 0, Occasion.past),
-                MonthDay(DateTime(2021, 03, 18), null, false, 0, Occasion.past),
-                MonthDay(
-                    DateTime(2021, 03, 19), null, false, 0, Occasion.current),
-                ...[20, 21].map<MonthDay>(
-                  (d) => MonthDay(
-                    DateTime(2021, 03, d),
-                    ActivityDay(weekendFullDay, firstDay.addDays(d - 1)),
-                    false,
-                    1,
-                    Occasion.future,
+                ],
+              ),
+              MonthWeek(
+                11,
+                [
+                  MonthDay(
+                      DateTime(2021, 03, 15), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 16), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 17), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 18), null, false, 0, Occasion.past),
+                  MonthDay(
+                      DateTime(2021, 03, 19), null, false, 0, Occasion.current),
+                  ...[20, 21].map<MonthDay>(
+                    (d) => MonthDay(
+                      DateTime(2021, 03, d),
+                      ActivityDay(weekendFullDay, firstDay.addDays(d - 1)),
+                      false,
+                      1,
+                      Occasion.future,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            MonthWeek(
-              12,
-              [
-                MonthDay(
-                    DateTime(2021, 03, 22), null, false, 0, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 23), null, false, 0, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 24), null, false, 0, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 25), null, false, 0, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 26), null, false, 0, Occasion.future),
-                ...[27, 28].map<MonthDay>(
-                  (d) => MonthDay(
-                    DateTime(2021, 03, d),
-                    ActivityDay(weekendFullDay, firstDay.addDays(d - 1)),
-                    false,
-                    1,
-                    Occasion.future,
+                ],
+              ),
+              MonthWeek(
+                12,
+                [
+                  MonthDay(
+                      DateTime(2021, 03, 22), null, false, 0, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 23), null, false, 0, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 24), null, false, 0, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 25), null, false, 0, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 26), null, false, 0, Occasion.future),
+                  ...[27, 28].map<MonthDay>(
+                    (d) => MonthDay(
+                      DateTime(2021, 03, d),
+                      ActivityDay(weekendFullDay, firstDay.addDays(d - 1)),
+                      false,
+                      1,
+                      Occasion.future,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            MonthWeek(
-              13,
-              [
-                MonthDay(
-                    DateTime(2021, 03, 29), null, false, 0, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 30), null, false, 0, Occasion.future),
-                MonthDay(
-                    DateTime(2021, 03, 31), null, false, 0, Occasion.future),
-                NotInMonthDay(),
-                NotInMonthDay(),
-                NotInMonthDay(),
-                NotInMonthDay(),
-              ],
-            ),
-          ],
+                ],
+              ),
+              MonthWeek(
+                13,
+                [
+                  MonthDay(
+                      DateTime(2021, 03, 29), null, false, 0, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 30), null, false, 0, Occasion.future),
+                  MonthDay(
+                      DateTime(2021, 03, 31), null, false, 0, Occasion.future),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                ],
+              ),
+            ],
+          ),
         ),
       );
     });

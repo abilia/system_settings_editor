@@ -102,7 +102,6 @@ class WeekRow extends StatelessWidget {
                           dayTheme: dayThemes[day.day.weekday - 1],
                         )
                       : const SizedBox()
-
                   // MonthDayView(day, dayTheme: dayThemes[day. ],
                   ),
             ),
@@ -209,9 +208,9 @@ class MonthDayView extends StatelessWidget {
                     bottomLeft: radius,
                     bottomRight: radius,
                   ),
-                  border: day.occasion == Occasion.current
+                  border: day.isCurrent
                       ? null
-                      : border, // noTopborder,
+                      : border, //TODO  Flutter is stupid and cannot define different border due noTopborder,
                 ),
                 padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
                 child: Stack(
@@ -224,7 +223,7 @@ class MonthDayView extends StatelessWidget {
                       MonthActivityContent(
                         activityDay: day.fullDayActivity,
                       ),
-                    if (day.occasion == Occasion.past) CrossOver(),
+                    if (day.isPast) CrossOver(),
                   ],
                 ),
               ),
@@ -243,7 +242,7 @@ class WeekNumber extends StatelessWidget {
   Widget build(BuildContext context) {
     final weekTranslation = Translator.of(context).translate.week;
     return Tts(
-      data: '$weekTranslation ${(weekNumber ?? '')}',
+      data: '$weekTranslation ${weekNumber ?? ''}',
       child: SizedBox(
         width: 24.s,
         child: Text(
@@ -309,7 +308,7 @@ class MonthActivityContent extends StatelessWidget {
         borderRadius: BorderRadius.all(MonthDayView.radius),
         border: border,
       ),
-      child: Expanded(
+      child: Center(
         child: activityDay.activity.hasImage
             ? FadeInAbiliaImage(
                 imageFileId: activityDay.activity.fileId,
