@@ -1,7 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-
 import 'package:seagull/ui/all.dart';
 
 class MonthCalendar extends StatelessWidget {
@@ -163,72 +162,86 @@ class MonthDayView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
-        DefaultTabController.of(context).animateTo(0);
-      },
-      child: Container(
-        foregroundDecoration: day.isCurrent
-            ? BoxDecoration(
-                border: currentActivityBorder,
-                borderRadius: BorderRadius.all(radius),
-              )
-            : null,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: dayTheme.color,
-                borderRadius: BorderRadius.only(
-                  topLeft: radius,
-                  topRight: radius,
-                ),
-              ),
-              height: 24.s,
-              padding: EdgeInsets.symmetric(horizontal: 4.s),
-              child: DefaultTextStyle(
-                style: dayTheme.theme.textTheme.subtitle2,
-                child: Row(
-                  children: [
-                    Text('${day.day.day}'),
-                    Spacer(),
-                    if (day.hasActivities)
-                      ColorDot(color: dayTheme.theme.accentColor),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
+    return Tts(
+      data: DateFormat.MMMMEEEEd().format(day.day),
+      child: GestureDetector(
+        onTap: () {
+          BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
+          DefaultTabController.of(context).animateTo(0);
+        },
+        child: Container(
+          foregroundDecoration: day.isCurrent
+              ? BoxDecoration(
+                  border: currentActivityBorder,
+                  borderRadius: BorderRadius.all(radius),
+                )
+              : null,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
                 decoration: BoxDecoration(
-                  color: dayTheme.secondaryColor,
+                  color: dayTheme.color,
                   borderRadius: BorderRadius.only(
-                    bottomLeft: radius,
-                    bottomRight: radius,
+                    topLeft: radius,
+                    topRight: radius,
                   ),
-                  border: day.isCurrent
-                      ? null
-                      : border, //TODO  Flutter is stupid and cannot define different border due noTopborder,
                 ),
-                padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
-                child: Stack(
-                  children: [
-                    if (day.fullDayActivityCount > 1)
-                      MonthFullDayStack(
-                        numberOfActivities: day.fullDayActivityCount,
-                      )
-                    else if (day.fullDayActivity != null)
-                      MonthActivityContent(
-                        activityDay: day.fullDayActivity,
-                      ),
-                    if (day.isPast) CrossOver(),
-                  ],
+                height: 24.s,
+                padding: EdgeInsets.symmetric(horizontal: 4.s),
+                child: DefaultTextStyle(
+                  style: dayTheme.theme.textTheme.subtitle2,
+                  child: Row(
+                    children: [
+                      Text('${day.day.day}'),
+                      Spacer(),
+                      if (day.hasActivities)
+                        ColorDot(color: dayTheme.theme.accentColor),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                // A borderRadius can only be given for a uniform Border.
+                // https://github.com/flutter/flutter/issues/12583
+                // So work around is wrapping with second container with
+                // background color
+                child: Container(
+                  padding: EdgeInsets.only(left: 1.s, right: 1.s, bottom: 1.s),
+                  decoration: BoxDecoration(
+                    color: AbiliaColors.white140,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: radius,
+                      bottomRight: radius,
+                    ),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
+                    decoration: BoxDecoration(
+                      color: dayTheme.secondaryColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: radius,
+                        bottomRight: radius,
+                      ),
+                    ),
+                    child: Stack(
+                      children: [
+                        if (day.fullDayActivityCount > 1)
+                          MonthFullDayStack(
+                            numberOfActivities: day.fullDayActivityCount,
+                          )
+                        else if (day.fullDayActivity != null)
+                          MonthActivityContent(
+                            activityDay: day.fullDayActivity,
+                          ),
+                        if (day.isPast) CrossOver(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -271,20 +284,14 @@ class MonthFullDayStack extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          child: Padding(
-            padding: EdgeInsets.only(top: 2.s, left: 2.s),
-            child: Container(decoration: decoration),
-          ),
+          margin: EdgeInsets.only(top: 3.s, left: 2.s),
+          decoration: decoration,
         ),
         Container(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 2.s, right: 2.s),
-            child: Container(
-              decoration: decoration,
-              child: Center(
-                child: Text('+$numberOfActivities'),
-              ),
-            ),
+          margin: EdgeInsets.only(bottom: 3.s, right: 2.s),
+          decoration: decoration,
+          child: Center(
+            child: Text('+$numberOfActivities'),
           ),
         ),
       ],

@@ -1063,6 +1063,14 @@ void main() {
       expect(find.byType(MonthAppBar), findsOneWidget);
     });
 
+    testWidgets('day tts', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.verifyTts(find.text('30'), contains: 'Sunday, August 30');
+    });
+
     testWidgets('taping day goes back to that day calendar',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
