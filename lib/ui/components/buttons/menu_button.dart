@@ -19,7 +19,7 @@ class MenuButton extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (_) => CopiedAuthProviders(
                     blocContext: context,
-                    child: SettingsPage(),
+                    child: MenuPage(),
                   ),
                   settings: RouteSettings(name: 'MenuPage'),
                 ),

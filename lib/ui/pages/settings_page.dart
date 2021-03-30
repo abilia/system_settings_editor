@@ -17,7 +17,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.menu,
+        title: Translator.of(context).translate.settings,
         iconData: AbiliaIcons.settings,
       ),
       body: ListView.separated(
