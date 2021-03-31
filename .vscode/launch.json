@@ -7,11 +7,10 @@
     {
       "name": "MEMOplanner Go",
       "request": "launch",
-      "flutterMode": "release",
       "type": "dart",
       "args": [
         "--dart-define",
-        "release=release",
+        "release=alpha",
         "--flavor",
         "mpgo"
       ],
