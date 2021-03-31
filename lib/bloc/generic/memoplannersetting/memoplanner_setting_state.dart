@@ -1,6 +1,6 @@
 part of 'memoplanner_setting_bloc.dart';
 
-abstract class MemoplannerSettingsState {
+abstract class MemoplannerSettingsState extends Equatable {
   final MemoplannerSettings settings;
   const MemoplannerSettingsState(this.settings);
   bool get displayAlarmButton => settings.displayAlarmButton;
@@ -149,6 +149,12 @@ abstract class MemoplannerSettingsState {
     }
     return ALARM_SOUND_AND_VIBRATION;
   }
+
+  @override
+  List<Object> get props => settings.props;
+
+  @override
+  bool get stringify => true;
 }
 
 HourClockType _hourClockTypeFromNullBool(bool value) => value == null
@@ -227,4 +233,6 @@ class TimepillarInterval extends Equatable {
 
   @override
   List<Object> get props => [startTime, endTime];
+  @override
+  bool get stringify => true;
 }

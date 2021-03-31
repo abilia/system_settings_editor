@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -37,18 +38,11 @@ class GenericBloc extends Bloc<GenericEvent, GenericState> {
     if (event is GenericUpdated) {
       final currentState = state;
       if (currentState is GenericsLoaded) {
-        final toUpdate = currentState.generics.firstWhere(
-          (e) =>
-              e.data.identifier == event.genericData.identifier &&
-              e.type == event.genericData.genericTypeString(),
-          orElse: () => Generic.createNew<MemoplannerSettingData>(
-            data: event.genericData,
-          ),
-        );
-        final updated = toUpdate.copyWithNewData(newData: event.genericData);
-        await genericRepository.save([updated]);
-        final generics = await genericRepository.load();
-        yield GenericsLoaded(generics: generics.toList());
+        final toUpdate = currentState.generics[event.genericData.key]
+                ?.copyWithNewData(newData: event.genericData) ??
+            Generic.createNew<MemoplannerSettingData>(data: event.genericData);
+        await genericRepository.save([toUpdate]);
+        yield* _mapLoadGenericsToState();
         syncBloc.add(GenericSaved());
       }
     }
@@ -57,7 +51,9 @@ class GenericBloc extends Bloc<GenericEvent, GenericState> {
   Stream<GenericState> _mapLoadGenericsToState() async* {
     try {
       final generics = await genericRepository.load();
-      yield GenericsLoaded(generics: generics.toList());
+      yield GenericsLoaded(
+        generics: {for (var generic in generics) generic.data.key: generic},
+      );
     } catch (e) {
       yield GenericsLoadedFailed();
     }

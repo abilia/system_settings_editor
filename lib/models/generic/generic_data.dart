@@ -1,10 +1,16 @@
 part of 'generic.dart';
 
 abstract class GenericData extends Equatable {
-  final identifier;
+  final String identifier;
   const GenericData(this.identifier);
   String toRaw();
-  String genericTypeString();
+  String get genericTypeString;
+  String get key => uniqueId(genericTypeString, identifier);
+  static String uniqueId(genericTypeString, identifier) =>
+      '$genericTypeString-$identifier';
+
+  @override
+  bool get stringify => true;
 }
 
 class RawGenericData extends GenericData {
@@ -16,12 +22,12 @@ class RawGenericData extends GenericData {
   String toRaw() => data;
 
   @override
-  List<Object> get props => [data];
-
-  static RawSortableData fromJson(String data) => RawSortableData(data);
+  String get genericTypeString => '';
 
   @override
-  String genericTypeString() => null;
+  List<Object> get props => [data, identifier];
+
+  static RawSortableData fromJson(String data) => RawSortableData(data);
 }
 
 class MemoplannerSettingData<T> extends GenericData {
@@ -66,7 +72,10 @@ class MemoplannerSettingData<T> extends GenericData {
       });
 
   @override
-  List<Object> get props => [data, type];
+  String get genericTypeString => GenericType.memoPlannerSettings;
+
+  @override
+  List<Object> get props => [data, type, identifier];
 
   factory MemoplannerSettingData.fromJson(String data, String identifier) {
     final genericData = json.decode(data);
@@ -76,7 +85,4 @@ class MemoplannerSettingData<T> extends GenericData {
       identifier: identifier,
     );
   }
-
-  @override
-  String genericTypeString() => GenericType.memoPlannerSettings;
 }

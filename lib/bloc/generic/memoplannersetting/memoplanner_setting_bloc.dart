@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -18,7 +19,7 @@ class MemoplannerSettingBloc
   MemoplannerSettingBloc({@required this.genericBloc})
       : super(genericBloc.state is GenericsLoaded
             ? MemoplannerSettingsLoaded(
-                MemoplannerSettings.fromSettingsList(
+                MemoplannerSettings.fromSettingsMap(
                   _filter((genericBloc.state as GenericsLoaded).generics),
                 ),
               )
@@ -37,29 +38,21 @@ class MemoplannerSettingBloc
       MemoplannerSettingsEvent event) async* {
     if (event is UpdateMemoplannerSettings) {
       yield MemoplannerSettingsLoaded(
-          MemoplannerSettings.fromSettingsList(_filter(event.generics)));
+          MemoplannerSettings.fromSettingsMap(_filter(event.generics)));
     }
     if (event is GenericsLoadedFailed) {
       yield MemoplannerSettingsFailed();
     }
-    if (event is ZoomSettingUpdatedEvent) {
-      genericBloc.add(
-        GenericUpdated<MemoplannerSettingData>(
-          MemoplannerSettingData.fromData(
-            data: event.timepillarZoom.index,
-            identifier: MemoplannerSettings.viewOptionsZoomKey,
-          ),
-        ),
-      );
-    }
-    if (event is IntervalTypeUpdatedEvent) {
-      yield MemoplannerSettingsLoaded(MemoplannerSettings());
+    if (event is SettingspUpdateEvent) {
+      genericBloc.add(GenericUpdated(event.settingData));
     }
   }
 
-  static List<MemoplannerSettingData> _filter(List<Generic> generics) {
-    final memoSettings = generics.whereType<Generic<MemoplannerSettingData>>();
-    return memoSettings.map((ms) => ms.data).toList();
+  static Map<String, MemoplannerSettingData> _filter(
+      Map<String, Generic> generics) {
+    return (generics.map((key, value) => MapEntry(key, value.data))
+          ..removeWhere((key, value) => value is! MemoplannerSettingData))
+        .cast<String, MemoplannerSettingData>();
   }
 
   @override
