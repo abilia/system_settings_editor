@@ -17,14 +17,14 @@ class TimePillarCalendar extends StatefulWidget {
   final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
   final MemoplannerSettingsState memoplannerSettingsState;
-  final TimepillarInterval timepillarInterval;
+  final TimepillarState timepillarState;
 
   const TimePillarCalendar({
     Key key,
     @required this.activityState,
     @required this.calendarViewState,
     @required this.memoplannerSettingsState,
-    @required this.timepillarInterval,
+    @required this.timepillarState,
   }) : super(key: key);
 
   @override
@@ -45,7 +45,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
   DateTime get day => widget.activityState.day;
   List<ActivityOccasion> get activities => widget.activityState.activities;
   CalendarViewState get viewState => widget.calendarViewState;
-  TimepillarInterval get interval => widget.timepillarInterval;
+  TimepillarInterval get interval => widget.timepillarState.timepillarInterval;
 
   @override
   void initState() {
@@ -76,7 +76,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
 
   @override
   Widget build(BuildContext context) {
-    final ts = context.read<TimepillarBloc>().state;
+    final ts = widget.timepillarState;
     final mediaData = MediaQuery.of(context);
     final screenWidth = mediaData.size.width;
     final categoryMinWidth = (screenWidth - ts.timePillarTotalWidth) / 2;
@@ -166,6 +166,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                     top: TimePillarCalendar.topMargin),
                                 child: HourLines(
                                   numberOfLines: interval.lengthInHours + 1,
+                                  hourHeight: ts.hourHeight,
                                 ),
                               ),
                             if (showTimeLine)
@@ -174,6 +175,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                 offset: hoursToPixels(interval.startTime.hour,
                                         ts.dotDistance) -
                                     TimePillarCalendar.topMargin,
+                                timepillarState: ts,
                               ),
                             CustomScrollView(
                               anchor: horizontalAnchor,
@@ -195,6 +197,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                       child: ActivityBoard(
                                         leftBoardData,
                                         categoryMinWidth: categoryMinWidth,
+                                        timepillarWidth: ts.totalWidth,
                                       ),
                                     ),
                                   ),
@@ -223,6 +226,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                     child: ActivityBoard(
                                       rightBoardData,
                                       categoryMinWidth: categoryMinWidth,
+                                      timepillarWidth: ts.totalWidth,
                                     ),
                                   ),
                                 ),

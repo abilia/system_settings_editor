@@ -7,7 +7,6 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
@@ -46,6 +45,7 @@ void main() {
       end: startInterval.add(1.days()),
     );
     final mockTimepillarBloc = MockTimepillarBloc();
+    final ts = TimepillarState(interval, 1);
     when(mockTimepillarBloc.state).thenReturn(TimepillarState(
         TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1));
     return MaterialApp(
@@ -69,6 +69,7 @@ void main() {
               Timeline(
                 width: 40,
                 offset: -TimePillarCalendar.topMargin,
+                timepillarState: ts,
               ),
               ActivityBoard(
                 ActivityBoard.positionTimepillarCards(
@@ -77,9 +78,10 @@ void main() {
                   1.0,
                   MemoplannerSettingsLoaded(MemoplannerSettings()).dayParts,
                   TimepillarSide.RIGHT,
-                  TimepillarState(interval, 1),
+                  ts,
                 ),
                 categoryMinWidth: 400,
+                timepillarWidth: ts.totalWidth,
               ),
             ],
           ),
@@ -151,7 +153,8 @@ void main() {
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
-      final ts = FakeTimepillarState.withZoom(zoom: 1);
+      final interval = TimepillarInterval(start: time, end: time);
+      final ts = TimepillarState(interval, 1);
       for (final y in activityYPos) {
         expect(y, closeTo(timelineYPostion, ts.dotSize / 2));
       }

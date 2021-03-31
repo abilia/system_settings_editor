@@ -67,6 +67,7 @@ class TimePillar extends StatelessWidget {
               if (today && showTimeLine)
                 Timeline(
                   width: ts.timePillarTotalWidth,
+                  timepillarState: ts,
                   offset:
                       hoursToPixels(interval.startTime.hour, ts.dotDistance) -
                           TimePillarCalendar.topMargin,
@@ -91,6 +92,7 @@ class TimePillar extends StatelessWidget {
                             hour.isNight(dayParts),
                           ),
                           isNight: hour.isNight(dayParts),
+                          timepillarState: ts,
                         );
                       },
                     )..add(
@@ -103,6 +105,7 @@ class TimePillar extends StatelessWidget {
                           isNight: interval.endTime
                               .subtract(1.hours())
                               .isNight(dayParts),
+                          timepillarState: ts,
                         ),
                       ),
                   ),
@@ -135,16 +138,18 @@ class Hour extends StatelessWidget {
     @required this.hour,
     @required this.dots,
     @required this.isNight,
+    @required this.timepillarState,
   }) : super(key: key);
 
   final String hour;
   final Widget dots;
   final bool isNight;
+  final TimepillarState timepillarState;
 
   @override
   Widget build(BuildContext context) {
     final fontSize = Theme.of(context).textTheme.headline6.fontSize;
-    final ts = context.read<TimepillarBloc>().state;
+    final ts = timepillarState;
     final dayTheme = Theme.of(context).textTheme.headline6.copyWith(
           color: AbiliaColors.black,
           fontSize: fontSize * ts.zoom,

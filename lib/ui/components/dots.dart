@@ -95,15 +95,17 @@ class Dots extends StatelessWidget {
   const Dots({Key key, @required this.decoration}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final ts = context.read<TimepillarBloc>().state;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: List.generate(
-        dotsPerHour,
-        (_) => Container(
-          height: ts.dotSize,
-          width: ts.dotSize,
-          decoration: decoration,
+    return BlocBuilder<TimepillarBloc, TimepillarState>(
+      buildWhen: (oldState, newState) => oldState.dotSize != newState.dotSize,
+      builder: (context, ts) => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(
+          dotsPerHour,
+          (_) => Container(
+            height: ts.dotSize,
+            width: ts.dotSize,
+            decoration: decoration,
+          ),
         ),
       ),
     );
@@ -119,6 +121,8 @@ class AnimatedDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<TimepillarBloc, TimepillarState>(
+        buildWhen: (previous, current) =>
+            size == null && previous.dotSize != current.dotSize,
         builder: (context, ts) => AnimatedContainer(
           duration: transitionDuration,
           height: size ?? ts.dotSize,
