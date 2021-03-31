@@ -84,15 +84,12 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
 
     final firstDayNextMonth = firstDayOfMonth.nextMonth();
     final lastDayOfMonth = firstDayNextMonth.previousDay();
-
-    final firstWeekNumber = firstDayOfMonth.getWeekNumber();
-    final mondayOfFirstDayOfMonth = firstDayOfMonth.firstInWeek();
     final month = firstDayOfMonth.month;
 
-    var dayIterator = mondayOfFirstDayOfMonth;
+    var dayIterator = firstDayOfMonth.firstInWeek();
     final weekData = [
-      for (int week = firstWeekNumber;
-          dayIterator.isBefore(lastDayOfMonth);
+      for (int week = firstDayOfMonth.getWeekNumber();
+          !dayIterator.isAfter(lastDayOfMonth);
           week = dayIterator.getWeekNumber())
         MonthWeek(
           week,

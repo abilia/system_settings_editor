@@ -512,6 +512,101 @@ void main() {
         ),
       );
     });
+
+    test('may 2021', () {
+      // Arrange
+      final mayThe4 = DateTime(2021, 05, 04, 13, 37);
+      final newClock = StreamController<DateTime>();
+
+      clockBloc = ClockBloc(newClock.stream, initialTime: mayThe4);
+      monthCalendarBloc = MonthCalendarBloc(
+          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+
+      final weeks = [
+        MonthWeek(
+          17,
+          [
+            NotInMonthDay(),
+            NotInMonthDay(),
+            NotInMonthDay(),
+            NotInMonthDay(),
+            NotInMonthDay(),
+            MonthDay(DateTime(2021, 05, 01), null, false, 0, Occasion.past),
+            MonthDay(DateTime(2021, 05, 02), null, false, 0, Occasion.past),
+          ],
+        ),
+        MonthWeek(
+          18,
+          [
+            MonthDay(DateTime(2021, 05, 03), null, false, 0, Occasion.past),
+            MonthDay(DateTime(2021, 05, 04), null, false, 0, Occasion.current),
+            MonthDay(DateTime(2021, 05, 05), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 06), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 07), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 08), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 09), null, false, 0, Occasion.future),
+          ],
+        ),
+        MonthWeek(
+          19,
+          [
+            MonthDay(DateTime(2021, 05, 10), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 11), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 12), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 13), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 14), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 15), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 16), null, false, 0, Occasion.future),
+          ],
+        ),
+        MonthWeek(
+          20,
+          [
+            MonthDay(DateTime(2021, 05, 17), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 18), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 19), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 20), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 21), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 22), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 23), null, false, 0, Occasion.future),
+          ],
+        ),
+        MonthWeek(
+          21,
+          [
+            MonthDay(DateTime(2021, 05, 24), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 25), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 26), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 27), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 28), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 29), null, false, 0, Occasion.future),
+            MonthDay(DateTime(2021, 05, 30), null, false, 0, Occasion.future),
+          ],
+        ),
+        MonthWeek(
+          22,
+          [
+            MonthDay(DateTime(2021, 05, 31), null, false, 0, Occasion.future),
+            NotInMonthDay(),
+            NotInMonthDay(),
+            NotInMonthDay(),
+            NotInMonthDay(),
+            NotInMonthDay(),
+            NotInMonthDay(),
+          ],
+        ),
+      ];
+
+      // Asserts
+      expect(
+        monthCalendarBloc.state,
+        MonthCalendarState(
+          firstDay: DateTime(2021, 05, 01),
+          occasion: Occasion.current,
+          weeks: weeks,
+        ),
+      );
+    });
   });
 
   group('month activities', () {

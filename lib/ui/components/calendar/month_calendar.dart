@@ -94,15 +94,14 @@ class WeekRow extends StatelessWidget {
           ...week.days.map(
             (day) => Expanded(
               child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.s),
-                  child: day is MonthDay
-                      ? MonthDayView(
-                          day,
-                          dayTheme: dayThemes[day.day.weekday - 1],
-                        )
-                      : const SizedBox()
-                  // MonthDayView(day, dayTheme: dayThemes[day. ],
-                  ),
+                padding: EdgeInsets.symmetric(horizontal: 2.s),
+                child: day is MonthDay
+                    ? MonthDayView(
+                        day,
+                        dayTheme: dayThemes[day.day.weekday - 1],
+                      )
+                    : const SizedBox.shrink(),
+              ),
             ),
           ),
         ],
@@ -164,7 +163,9 @@ class MonthDayView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tts(
-      data: DateFormat.MMMMEEEEd().format(day.day),
+      data:
+          DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
+              .format(day.day),
       child: GestureDetector(
         onTap: () {
           BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
