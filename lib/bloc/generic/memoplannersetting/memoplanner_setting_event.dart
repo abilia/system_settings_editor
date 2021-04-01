@@ -20,24 +20,24 @@ class GenericsFailedEvent extends MemoplannerSettingsEvent {
   List<Object> get props => [];
 }
 
-class SettingspUpdateEvent<T> extends MemoplannerSettingsEvent {
+class SettingsUpdateEvent<T> extends MemoplannerSettingsEvent {
   final String identifier;
   final T data;
   MemoplannerSettingData get settingData =>
       MemoplannerSettingData.fromData(data: data, identifier: identifier);
-  const SettingspUpdateEvent(this.identifier, this.data);
+  const SettingsUpdateEvent(this.identifier, this.data);
   @override
   List<Object> get props => [identifier, data];
 }
 
-class ZoomSettingUpdatedEvent extends SettingspUpdateEvent {
+class ZoomSettingUpdatedEvent extends SettingsUpdateEvent {
   final TimepillarZoom timepillarZoom;
 
   ZoomSettingUpdatedEvent(this.timepillarZoom)
       : super(MemoplannerSettings.viewOptionsZoomKey, timepillarZoom.index);
 }
 
-class IntervalTypeUpdatedEvent extends SettingspUpdateEvent {
+class IntervalTypeUpdatedEvent extends SettingsUpdateEvent {
   final TimepillarIntervalType timepillarIntervalType;
 
   IntervalTypeUpdatedEvent(this.timepillarIntervalType)

@@ -239,10 +239,16 @@ class MemoplannerSettings extends Equatable {
 }
 
 extension _Parsing on Map<String, MemoplannerSettingData> {
-  T parse<T>(String settingName, [T defaultValue]) =>
-      this[GenericData.uniqueId(GenericType.memoPlannerSettings, settingName)]
-          ?.data ??
-      defaultValue;
+  T parse<T>(String settingName, [T defaultValue]) {
+    try {
+      return this[GenericData.uniqueId(
+                  GenericType.memoPlannerSettings, settingName)]
+              ?.data ??
+          defaultValue;
+    } catch (e) {
+      return defaultValue;
+    }
+  }
 
   bool getBool(
     String settingName, {

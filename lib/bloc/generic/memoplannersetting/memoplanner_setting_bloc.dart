@@ -43,7 +43,7 @@ class MemoplannerSettingBloc
     if (event is GenericsLoadedFailed) {
       yield MemoplannerSettingsFailed();
     }
-    if (event is SettingspUpdateEvent) {
+    if (event is SettingsUpdateEvent) {
       genericBloc.add(GenericUpdated(event.settingData));
     }
   }
