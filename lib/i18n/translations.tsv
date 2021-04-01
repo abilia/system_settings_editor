@@ -163,6 +163,7 @@ task	Task	Uppgift	Opgave	Taak	Tehtävä	Aufgabe	Oppgave
 remove	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
 							
 ### Settings							
+settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
 timePillarView	1 timepillar	1 tidpelare	1 tidslinje	1 tijdlijn	1 aikajana	1 Zeitstrahl	1 tidslinje
 listView	List	Lista	Liste	Lijst	Luettelo	Liste	Liste
@@ -210,3 +211,9 @@ allowAccessBody2	You can always do that later from the	Du kan alltid göra det s
 about	About	Information	Information	Informatie	Tiedot	Information	Informasjon
 version	Version	Version	Version	Versie	Versio	Version	Versjon
 producer	Producer	Producent	Producent	Producent	Valmistaja	Hersteller	Produsent
+							
+### Menu page							
+camera	Camera	Kamera	Kamera	Camera	Kamera	Kamera	Kamera
+photoCalendar	Photo-\ncalendar	Foto-\nkalender	Billede-\nkalender	Foto-\nkalender	Kuva-\nkalenteri	Foto-\nkalender	Bilde-\nkalender
+countdown	Countdown	Nedräkning	Nedtælling	Timers	Ajastin	Countdown	Nedtelling
+quickSettingsMenu	Quick-\nsettings	Snabb-\ninställningar	Hurtig-\nindstillinger	Snelle\ninstellingen	Pika-\nasetukset	Schnell-\neinstellungen	Hurtig-\ninnstillinger

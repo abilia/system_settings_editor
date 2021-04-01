@@ -1,18 +1,8 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
-import 'package:seagull/fakes/all.dart';
-
 import 'package:seagull/ui/all.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({Key key}) : super(key: key);
-  final widgets = const <Widget>[
-    TextToSpeechSwitch(),
-    PermissionPickField(),
-    AboutPickField(),
-    LogoutPickField(),
-    if (Config.alpha) FakeTicker(),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,11 +10,21 @@ class MenuPage extends StatelessWidget {
         title: Translator.of(context).translate.menu,
         iconData: AbiliaIcons.app_menu,
       ),
-      body: ListView.separated(
-        padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
-        itemBuilder: (context, i) => widgets[i],
-        itemCount: widgets.length,
-        separatorBuilder: (context, index) => SizedBox(height: 8.0.s),
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.s, horizontal: 12.s),
+        child: GridView.count(
+          crossAxisSpacing: 7.5.s,
+          mainAxisSpacing: 7.s,
+          crossAxisCount: 3,
+          children: [
+            CameraButton(),
+            MyPhotosButton(),
+            PhotoCalendarButton(),
+            CountdownButton(),
+            QuickSettingsButton(),
+            SettingsButton(),
+          ],
+        ),
       ),
       bottomNavigationBar: const BottomNavigation(
         backNavigationWidget: CloseButton(),
@@ -33,109 +33,138 @@ class MenuPage extends StatelessWidget {
   }
 }
 
-class LogoutPickField extends StatelessWidget {
-  const LogoutPickField({Key key}) : super(key: key);
+class CameraButton extends StatelessWidget {
+  const CameraButton({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return PickField(
-      leading: Icon(AbiliaIcons.power_off_on),
-      text: Text(Translator.of(context).translate.logout),
-      onTap: () => Navigator.of(context).push(
+    return MenuItemButton(
+      icon: AbiliaIcons.camera_photo,
+      onPressed: () {},
+      style: blueButtonStyle,
+      text: Translator.of(context).translate.camera,
+    );
+  }
+}
+
+class MyPhotosButton extends StatelessWidget {
+  const MyPhotosButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MenuItemButton(
+      icon: AbiliaIcons.my_photos,
+      onPressed: () {},
+      style: blueButtonStyle,
+      text: Translator.of(context).translate.myPhotos,
+    );
+  }
+}
+
+class PhotoCalendarButton extends StatelessWidget {
+  const PhotoCalendarButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MenuItemButton(
+      icon: AbiliaIcons.day,
+      onPressed: () {},
+      style: blueButtonStyle,
+      text: Translator.of(context).translate.photoCalendar,
+    );
+  }
+}
+
+class CountdownButton extends StatelessWidget {
+  const CountdownButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MenuItemButton(
+      icon: AbiliaIcons.stop_watch,
+      onPressed: () {},
+      style: pinkButtonStyle,
+      text: Translator.of(context).translate.countdown,
+    );
+  }
+}
+
+class QuickSettingsButton extends StatelessWidget {
+  const QuickSettingsButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MenuItemButton(
+      icon: AbiliaIcons.menu_setup,
+      onPressed: () {},
+      style: yellowButtonStyle,
+      text: Translator.of(context).translate.quickSettingsMenu,
+    );
+  }
+}
+
+class SettingsButton extends StatelessWidget {
+  const SettingsButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MenuItemButton(
+      style: actionButtonStyleBlack,
+      text: Translator.of(context).translate.settings,
+      icon: AbiliaIcons.settings,
+      onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => CopiedAuthProviders(
             blocContext: context,
-            child: LogoutPage(),
+            child: SettingsPage(),
           ),
-          settings: RouteSettings(name: 'LogoutPage'),
+          settings: RouteSettings(name: 'SettingsPage'),
         ),
       ),
     );
   }
 }
 
-class AboutPickField extends StatelessWidget {
-  const AboutPickField({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) => PickField(
-        leading: Icon(AbiliaIcons.information),
-        text: Text(Translator.of(context).translate.about),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => CopiedAuthProviders(
-              blocContext: context,
-              child: AboutPage(),
-            ),
-            settings: RouteSettings(name: 'AboutPage'),
-          ),
-        ),
-      );
-}
-
-class TextToSpeechSwitch extends StatelessWidget {
-  const TextToSpeechSwitch({
+class MenuItemButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+  final ButtonStyle style;
+  final IconData icon;
+  const MenuItemButton({
     Key key,
+    @required this.onPressed,
+    @required this.text,
+    @required this.icon,
+    @required this.style,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsBloc, SettingsState>(
-      builder: (context, settingsState) => Row(children: [
-        Expanded(
-          child: SwitchField(
-            value: settingsState.textToSpeech,
-            leading: Icon(AbiliaIcons.speak_text),
-            text: Text(Translator.of(context).translate.textToSpeech),
-            onChanged: (v) =>
-                context.read<SettingsBloc>().add(TextToSpeechUpdated(v)),
+    final textStyle = style.textStyle.resolve({MaterialState.pressed});
+    return Tts(
+      data: text.replaceAll('-\n', ''),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: TextButton(
+          style: style,
+          onPressed: onPressed,
+          child: Column(
+            children: [
+              SizedBox(
+                height: textStyle.fontSize * textStyle.height * 2,
+                child: Text(
+                  text,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Icon(
+                icon,
+                size: 48.s,
+              ),
+            ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(8.0.s, 0, 4.0.s, 0),
-          child: InfoButton(
-            onTap: () => showViewDialog(
-              useSafeArea: false,
-              context: context,
-              builder: (context) => LongPressInfoDialog(),
-            ),
-          ),
-        ),
-      ]),
+      ),
     );
   }
-}
-
-class PermissionPickField extends StatelessWidget {
-  const PermissionPickField({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<PermissionBloc, PermissionState>(
-        builder: (context, state) => Stack(
-          children: [
-            PickField(
-              leading: Icon(AbiliaIcons.menu_setup),
-              text: Text(Translator.of(context).translate.permissions),
-              onTap: () async {
-                context.read<PermissionBloc>().checkAll();
-                await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
-                      child: PermissionsPage(),
-                    ),
-                    settings: RouteSettings(name: 'PermissionPage'),
-                  ),
-                );
-              },
-            ),
-            if (state.importantPermissionMissing)
-              Positioned(
-                top: 8.0.s,
-                right: 8.0.s,
-                child: OrangeDot(),
-              ),
-          ],
-        ),
-      );
 }

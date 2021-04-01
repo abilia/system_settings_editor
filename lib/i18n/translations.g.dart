@@ -303,6 +303,8 @@ abstract class Translated {
 
   final String remove = 'Delete';
 
+  final String settings = 'Settings';
+
   final String calendarView = 'Day Calendar';
 
   final String timePillarView = '1 timepillar';
@@ -397,6 +399,14 @@ abstract class Translated {
   final String version = 'Version';
 
   final String producer = 'Producer';
+
+  final String camera = 'Camera';
+
+  final String photoCalendar = 'Photo-\ncalendar';
+
+  final String countdown = 'Countdown';
+
+  final String quickSettingsMenu = 'Quick-\nsettings';
 }
 
 class EN extends Translated {}
@@ -830,6 +840,9 @@ class SV extends Translated {
   final String remove = 'Ta bort';
 
   @override
+  final String settings = 'Inställningar';
+
+  @override
   final String calendarView = 'Dagkalender';
 
   @override
@@ -966,6 +979,18 @@ class SV extends Translated {
 
   @override
   final String producer = 'Producent';
+
+  @override
+  final String camera = 'Kamera';
+
+  @override
+  final String photoCalendar = 'Foto-\nkalender';
+
+  @override
+  final String countdown = 'Nedräkning';
+
+  @override
+  final String quickSettingsMenu = 'Snabb-\ninställningar';
 }
 
 class DA extends Translated {
@@ -1397,6 +1422,9 @@ class DA extends Translated {
   final String remove = 'Slet';
 
   @override
+  final String settings = 'Indstillinger';
+
+  @override
   final String calendarView = 'Dagkalender';
 
   @override
@@ -1533,6 +1561,18 @@ class DA extends Translated {
 
   @override
   final String producer = 'Producent';
+
+  @override
+  final String camera = 'Kamera';
+
+  @override
+  final String photoCalendar = 'Billede-\nkalender';
+
+  @override
+  final String countdown = 'Nedtælling';
+
+  @override
+  final String quickSettingsMenu = 'Hurtig-\nindstillinger';
 }
 
 class NL extends Translated {
@@ -1961,6 +2001,9 @@ class NL extends Translated {
   final String remove = 'Verwijderen';
 
   @override
+  final String settings = 'Instellingen';
+
+  @override
   final String calendarView = 'Dagkalender';
 
   @override
@@ -2097,6 +2140,18 @@ class NL extends Translated {
 
   @override
   final String producer = 'Producent';
+
+  @override
+  final String camera = 'Camera';
+
+  @override
+  final String photoCalendar = 'Foto-\nkalender';
+
+  @override
+  final String countdown = 'Timers';
+
+  @override
+  final String quickSettingsMenu = 'Snelle\ninstellingen';
 }
 
 class FI extends Translated {
@@ -2526,6 +2581,9 @@ class FI extends Translated {
   final String remove = 'Poista';
 
   @override
+  final String settings = 'Asetukset';
+
+  @override
   final String calendarView = 'Päiväkalenteri';
 
   @override
@@ -2661,6 +2719,18 @@ class FI extends Translated {
 
   @override
   final String producer = 'Valmistaja';
+
+  @override
+  final String camera = 'Kamera';
+
+  @override
+  final String photoCalendar = 'Kuva-\nkalenteri';
+
+  @override
+  final String countdown = 'Ajastin';
+
+  @override
+  final String quickSettingsMenu = 'Pika-\nasetukset';
 }
 
 class DE extends Translated {
@@ -3091,6 +3161,9 @@ class DE extends Translated {
   final String remove = 'Löschen';
 
   @override
+  final String settings = 'Einstellungen';
+
+  @override
   final String calendarView = 'Tageskalender';
 
   @override
@@ -3228,6 +3301,18 @@ class DE extends Translated {
 
   @override
   final String producer = 'Hersteller';
+
+  @override
+  final String camera = 'Kamera';
+
+  @override
+  final String photoCalendar = 'Foto-\nkalender';
+
+  @override
+  final String countdown = 'Countdown';
+
+  @override
+  final String quickSettingsMenu = 'Schnell-\neinstellungen';
 }
 
 class NB extends Translated {
@@ -3658,6 +3743,9 @@ class NB extends Translated {
   final String remove = 'Slett';
 
   @override
+  final String settings = 'Innstillinger';
+
+  @override
   final String calendarView = 'Dagkalender';
 
   @override
@@ -3794,4 +3882,16 @@ class NB extends Translated {
 
   @override
   final String producer = 'Produsent';
+
+  @override
+  final String camera = 'Kamera';
+
+  @override
+  final String photoCalendar = 'Bilde-\nkalender';
+
+  @override
+  final String countdown = 'Nedtelling';
+
+  @override
+  final String quickSettingsMenu = 'Hurtig-\ninnstillinger';
 }

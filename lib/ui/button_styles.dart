@@ -108,6 +108,7 @@ final actionIconTextButtonStyleRed = ButtonStyle(
 final double actionButtonMinSize = 48.0.s;
 
 final _actionButtonStyle = ButtonStyle(
+  textStyle: MaterialStateProperty.all(abiliaTextTheme.button),
   minimumSize:
       MaterialStateProperty.all(Size(actionButtonMinSize, actionButtonMinSize)),
   padding: MaterialStateProperty.all(EdgeInsets.all(8.0.s)),
@@ -232,3 +233,120 @@ ButtonStyle tabButtonStyle({
                 MaterialStateProperty.all(AbiliaColors.transparentBlack20),
             foregroundColor: MaterialStateProperty.all(AbiliaColors.black),
           );
+
+final ButtonStyle blueButtonStyle = ButtonDef(
+  background: StateColors(
+    def: AbiliaColors.blue,
+    disabled: AbiliaColors.blue,
+    pressed: AbiliaColors.blue,
+  ),
+  foreGround: StateColors(
+    def: AbiliaColors.white,
+    disabled: AbiliaColors.white,
+    pressed: AbiliaColors.white,
+  ),
+  shapeBorders: ShapeBorders(
+    def: darkShapeBorder,
+    pressedOrDisabled: noBorderShape,
+  ),
+).toStyle();
+
+final ButtonStyle pinkButtonStyle = ButtonDef(
+  background: StateColors(
+    def: AbiliaColors.pink40,
+    disabled: AbiliaColors.pink40,
+    pressed: AbiliaColors.pink40,
+  ),
+  foreGround: StateColors(
+    def: AbiliaColors.white,
+    disabled: AbiliaColors.white,
+    pressed: AbiliaColors.white,
+  ),
+  shapeBorders: ShapeBorders(
+    def: darkShapeBorder,
+    pressedOrDisabled: noBorderShape,
+  ),
+).toStyle();
+
+final ButtonStyle yellowButtonStyle = ButtonDef(
+  background: StateColors(
+    def: AbiliaColors.yellow,
+    disabled: AbiliaColors.yellow,
+    pressed: AbiliaColors.yellow,
+  ),
+  foreGround: StateColors(
+    def: AbiliaColors.black,
+    disabled: AbiliaColors.black,
+    pressed: AbiliaColors.black,
+  ),
+  shapeBorders: ShapeBorders(
+    def: darkShapeBorder,
+    pressedOrDisabled: noBorderShape,
+  ),
+).toStyle();
+
+class ButtonDef {
+  final StateColors foreGround;
+  final StateColors background;
+  final ShapeBorders shapeBorders;
+
+  ButtonDef({
+    this.foreGround,
+    this.background,
+    this.shapeBorders,
+  });
+
+  ButtonStyle toStyle() {
+    return _actionButtonStyle.copyWith(
+      textStyle: MaterialStateProperty.all(abiliaTextTheme.button),
+      foregroundColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return foreGround.disabled;
+          }
+          return foreGround.def;
+        },
+      ),
+      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return background.disabled;
+          }
+          if (states.contains(MaterialState.pressed)) {
+            return background.pressed;
+          }
+          return background.def;
+        },
+      ),
+      shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled) ||
+            states.contains(MaterialState.pressed)) {
+          return shapeBorders.pressedOrDisabled;
+        }
+        return shapeBorders.def;
+      }),
+    );
+  }
+}
+
+class StateColors {
+  final Color disabled;
+  final Color pressed;
+  final Color def;
+
+  StateColors({
+    this.disabled,
+    this.pressed,
+    this.def,
+  });
+}
+
+class ShapeBorders {
+  final ShapeBorder pressedOrDisabled;
+  final ShapeBorder def;
+
+  ShapeBorders({
+    this.pressedOrDisabled,
+    this.def,
+  });
+}

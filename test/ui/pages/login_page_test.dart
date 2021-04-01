@@ -217,6 +217,9 @@ void main() {
     await tester.tap(find.byIcon(AbiliaIcons.app_menu));
     await tester.pumpAndSettle();
     expect(find.byType(MenuPage), findsOneWidget);
+    await tester.tap(find.byIcon(AbiliaIcons.settings));
+    await tester.pumpAndSettle();
+    expect(find.byType(SettingsPage), findsOneWidget);
     await tester.tap(find.byType(LogoutPickField));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(LogoutButton));
