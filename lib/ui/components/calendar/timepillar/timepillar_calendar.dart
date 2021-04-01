@@ -13,19 +13,18 @@ const transitionDuration = Duration(seconds: 1);
 class TimePillarCalendar extends StatefulWidget {
   static final topMargin = 30.0.s;
   static final bottomMargin = 10.0.s;
-  static final topPadding = 2 * hourPadding;
   static const nightBackgroundColor = AbiliaColors.black90;
   final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
   final MemoplannerSettingsState memoplannerSettingsState;
-  final TimepillarInterval timepillarInterval;
+  final TimepillarState timepillarState;
 
   const TimePillarCalendar({
     Key key,
     @required this.activityState,
     @required this.calendarViewState,
     @required this.memoplannerSettingsState,
-    @required this.timepillarInterval,
+    @required this.timepillarState,
   }) : super(key: key);
 
   @override
@@ -46,7 +45,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
   DateTime get day => widget.activityState.day;
   List<ActivityOccasion> get activities => widget.activityState.activities;
   CalendarViewState get viewState => widget.calendarViewState;
-  TimepillarInterval get interval => widget.timepillarInterval;
+  TimepillarInterval get interval => widget.timepillarState.timepillarInterval;
 
   @override
   void initState() {
@@ -65,22 +64,28 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
 
   void initVerticalScroll() {
     final now = context.read<ClockBloc>().state;
+    final ts = context.read<TimepillarBloc>().state;
     final scrollOffset = widget.activityState.isToday
-        ? timeToPixels(now.hour, now.minute) -
-            hourHeigt * 2 -
-            hoursToPixels(interval.startTime.hour)
-        : hourHeigt * memoSettings.dayParts.morning.inHours;
+        ? timeToPixels(now.hour, now.minute, ts.dotDistance) -
+            ts.hourHeight * 2 -
+            hoursToPixels(interval.startTime.hour, ts.dotDistance)
+        : ts.hourHeight * memoSettings.dayParts.morning.inHours;
     verticalScrollController =
         ScrollController(initialScrollOffset: max(scrollOffset, 0));
   }
 
   @override
   Widget build(BuildContext context) {
+    final ts = widget.timepillarState;
     final mediaData = MediaQuery.of(context);
     final screenWidth = mediaData.size.width;
-    final categoryMinWidth = (screenWidth - timePillarTotalWidth) / 2;
+    final categoryMinWidth = (screenWidth - ts.timePillarTotalWidth) / 2;
 
-    final textStyle = Theme.of(context).textTheme.caption;
+    final fontSize = Theme.of(context).textTheme.caption.fontSize;
+    final textStyle = Theme.of(context)
+        .textTheme
+        .caption
+        .copyWith(fontSize: fontSize * ts.zoom);
     final textScaleFactor = mediaData.textScaleFactor;
     final timepillarActivities = interval.getForInterval(activities);
     final leftBoardData = ActivityBoard.positionTimepillarCards(
@@ -91,9 +96,9 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
           : <ActivityOccasion>[],
       textStyle,
       textScaleFactor,
-      interval,
       memoSettings.dayParts,
       TimepillarSide.LEFT,
+      ts,
     );
     final rightBoardData = ActivityBoard.positionTimepillarCards(
       showCategories
@@ -103,21 +108,21 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
           : timepillarActivities,
       textStyle,
       textScaleFactor,
-      interval,
       memoSettings.dayParts,
       TimepillarSide.RIGHT,
+      ts,
     );
-    final calendarHeight = max(timePillarHeight(interval),
-        max(leftBoardData.heigth, rightBoardData.heigth));
+    final calendarHeight = max(
+        timePillarHeight(ts), max(leftBoardData.heigth, rightBoardData.heigth));
 
     final np = interval.intervalPart == IntervalPart.DAY_AND_NIGHT
-        ? nightParts(widget.memoplannerSettingsState.dayParts, interval)
+        ? nightParts(widget.memoplannerSettingsState.dayParts, ts)
         : <NightPart>[];
 
     // Anchor is the starting point of the central sliver (timepillar).
     // horizontalAnchor is where the left side of the timepillar needs to be in parts of the screen to make it centralized.
     final timePillarPercentOfTotalScreen =
-        (timePillarTotalWidth / 2) / screenWidth;
+        (ts.timePillarTotalWidth / 2) / screenWidth;
     final horizontalAnchor =
         showCategories ? 0.5 - timePillarPercentOfTotalScreen : 0.0;
     return LayoutBuilder(
@@ -161,13 +166,16 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                     top: TimePillarCalendar.topMargin),
                                 child: HourLines(
                                   numberOfLines: interval.lengthInHours + 1,
+                                  hourHeight: ts.hourHeight,
                                 ),
                               ),
                             if (showTimeLine)
                               Timeline(
                                 width: boxConstraints.maxWidth,
-                                offset: hoursToPixels(interval.startTime.hour) -
+                                offset: hoursToPixels(interval.startTime.hour,
+                                        ts.dotDistance) -
                                     TimePillarCalendar.topMargin,
+                                timepillarState: ts,
                               ),
                             CustomScrollView(
                               anchor: horizontalAnchor,
@@ -189,6 +197,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                       child: ActivityBoard(
                                         leftBoardData,
                                         categoryMinWidth: categoryMinWidth,
+                                        timepillarWidth: ts.totalWidth,
                                       ),
                                     ),
                                   ),
@@ -217,6 +226,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                     child: ActivityBoard(
                                       rightBoardData,
                                       categoryMinWidth: categoryMinWidth,
+                                      timepillarWidth: ts.totalWidth,
                                     ),
                                   ),
                                 ),
@@ -230,12 +240,12 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                 ),
                 ArrowLeft(
                   controller: horizontalScrollController,
-                  collapseMargin: ActivityTimepillarCard.padding,
+                  collapseMargin: ts.padding,
                 ),
                 ArrowUp(controller: verticalScrollController),
                 ArrowRight(
                   controller: horizontalScrollController,
-                  collapseMargin: ActivityTimepillarCard.padding,
+                  collapseMargin: ts.padding,
                 ),
                 ArrowDown(controller: verticalScrollController),
               ],
@@ -246,20 +256,24 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
     );
   }
 
-  List<NightPart> nightParts(DayParts dayParts, TimepillarInterval interval) {
+  List<NightPart> nightParts(DayParts dayParts, TimepillarState ts) {
+    final interval = ts.timepillarInterval;
     final intervalDay = interval.startTime.onlyDays();
     return <NightPart>[
       if (interval.startTime.isBefore(intervalDay.add(dayParts.morning)))
         NightPart(
             0,
-            hoursToPixels(intervalDay.add(dayParts.morning).hour) +
+            hoursToPixels(
+                    intervalDay.add(dayParts.morning).hour, ts.dotDistance) +
                 TimePillarCalendar.topMargin),
       if (interval.endTime.isAfter(intervalDay.add(dayParts.night)))
         NightPart(
-            hoursToPixels(intervalDay.add(dayParts.night).hour) +
+            hoursToPixels(
+                    intervalDay.add(dayParts.night).hour, ts.dotDistance) +
                 TimePillarCalendar.topMargin,
             hoursToPixels(
-                interval.endTime.hour == 0 ? 24 : interval.endTime.hour))
+                interval.endTime.hour == 0 ? 24 : interval.endTime.hour,
+                ts.dotDistance))
     ];
   }
 

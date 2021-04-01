@@ -6,6 +6,8 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../../mocks.dart';
+
 class MockScrollController extends Mock implements ScrollController {}
 
 class MockScrollPosition extends Mock implements ScrollPosition {}
@@ -14,6 +16,7 @@ void main() {
   ScrollPositionBloc scrollPositionBloc;
   MockScrollController mockScrollController;
   MockScrollPosition mockScrollPosition;
+  MockTimepillarBloc mockTimepillarBloc;
   StreamController<DateTime> ticker;
   final initialTime = DateTime(2020, 12, 24, 15, 00);
 
@@ -23,12 +26,24 @@ void main() {
     final dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     mockScrollController = MockScrollController();
     mockScrollPosition = MockScrollPosition();
+    mockTimepillarBloc = MockTimepillarBloc();
+
     scrollPositionBloc = ScrollPositionBloc(
       dayPickerBloc: dayPickerBloc,
       clockBloc: clockBloc,
+      timepillarBloc: mockTimepillarBloc,
     );
     when(mockScrollController.position).thenReturn(mockScrollPosition);
     when(mockScrollController.hasClients).thenReturn(true);
+    when(mockTimepillarBloc.state).thenReturn(
+      TimepillarState(
+        TimepillarInterval(
+          start: DateTime.now(),
+          end: DateTime.now(),
+        ),
+        1,
+      ),
+    );
   });
 
   test('initial state is Unready', () {
@@ -271,7 +286,13 @@ void main() {
       when(mockScrollController.initialScrollOffset).thenReturn(initialOffset);
       when(mockScrollController.offset).thenReturn(initialOffset);
       when(mockScrollPosition.maxScrollExtent).thenReturn(400);
-      final timePixelOffset = timeToPixels(1, 30);
+      final ts = TimepillarState(
+          TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1);
+      final timePixelOffset = timeToPixels(
+        1,
+        30,
+        ts.dotDistance,
+      );
       final nowPos = initialOffset + timePixelOffset;
 
       // Act

@@ -22,8 +22,11 @@ class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
     @required this.clockBloc,
     @required this.memoSettingsBloc,
     @required this.dayPickerBloc,
-  }) : super(TimepillarState(generateInterval(clockBloc.state,
-            dayPickerBloc.state.day, memoSettingsBloc.state))) {
+  }) : super(TimepillarState(
+          generateInterval(
+              clockBloc.state, dayPickerBloc.state.day, memoSettingsBloc.state),
+          memoSettingsBloc.state.timepillarZoom.zoomValue,
+        )) {
     _clockSubscription = clockBloc.listen((state) {
       add(TimepillarConditionsChangedEvent());
     });
@@ -40,8 +43,11 @@ class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
     TimepillarEvent event,
   ) async* {
     if (event is TimepillarConditionsChangedEvent) {
-      yield TimepillarState(generateInterval(
-          clockBloc.state, dayPickerBloc.state.day, memoSettingsBloc.state));
+      yield TimepillarState(
+        generateInterval(
+            clockBloc.state, dayPickerBloc.state.day, memoSettingsBloc.state),
+        memoSettingsBloc.state.timepillarZoom.zoomValue,
+      );
     }
   }
 

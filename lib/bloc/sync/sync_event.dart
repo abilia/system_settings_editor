@@ -11,3 +11,5 @@ class ActivitySaved extends SyncEvent {}
 class FileSaved extends SyncEvent {}
 
 class SortableSaved extends SyncEvent {}
+
+class GenericSaved extends SyncEvent {}

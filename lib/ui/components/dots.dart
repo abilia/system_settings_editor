@@ -94,17 +94,22 @@ class Dots extends StatelessWidget {
   final Decoration decoration;
   const Dots({Key key, @required this.decoration}) : super(key: key);
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) {
+    return BlocBuilder<TimepillarBloc, TimepillarState>(
+      buildWhen: (oldState, newState) => oldState.dotSize != newState.dotSize,
+      builder: (context, ts) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(
           dotsPerHour,
           (_) => Container(
-            height: dotSize,
-            width: dotSize,
+            height: ts.dotSize,
+            width: ts.dotSize,
             decoration: decoration,
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 class AnimatedDot extends StatelessWidget {
@@ -114,12 +119,17 @@ class AnimatedDot extends StatelessWidget {
   const AnimatedDot({Key key, @required this.decoration, this.size, this.child})
       : super(key: key);
   @override
-  Widget build(BuildContext context) => AnimatedContainer(
-        duration: transitionDuration,
-        height: size ?? dotSize,
-        width: size ?? dotSize,
-        decoration: decoration,
-        child: child,
+  Widget build(BuildContext context) =>
+      BlocBuilder<TimepillarBloc, TimepillarState>(
+        buildWhen: (previous, current) =>
+            size == null && previous.dotSize != current.dotSize,
+        builder: (context, ts) => AnimatedContainer(
+          duration: transitionDuration,
+          height: size ?? ts.dotSize,
+          width: size ?? ts.dotSize,
+          decoration: decoration,
+          child: child,
+        ),
       );
 }
 
@@ -138,33 +148,35 @@ class SideDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final flat = startTime.roundToMinute(minutesPerDot, roundingMinute);
-    return BlocBuilder<ClockBloc, DateTime>(
-      builder: (_, now) => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(
-          dots,
-          (dot) {
-            final dotStartTime = dot == 0
-                ? startTime
-                : flat.add((dot * minutesPerDot).minutes());
-            final nextDotStart = dot < dots - 1
-                ? flat.add(((dot + 1) * minutesPerDot).minutes())
-                : endTime.add(1.minutes());
-            if (dotStartTime.isAfter(now)) {
-              if (dotStartTime.isNight(dayParts)) {
-                return const AnimatedDot(decoration: futureNightDotShape);
+    return BlocBuilder<TimepillarBloc, TimepillarState>(
+      builder: (context, ts) => BlocBuilder<ClockBloc, DateTime>(
+        builder: (_, now) => Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(
+            dots,
+            (dot) {
+              final dotStartTime = dot == 0
+                  ? startTime
+                  : flat.add((dot * minutesPerDot).minutes());
+              final nextDotStart = dot < dots - 1
+                  ? flat.add(((dot + 1) * minutesPerDot).minutes())
+                  : endTime.add(1.minutes());
+              if (dotStartTime.isAfter(now)) {
+                if (dotStartTime.isNight(dayParts)) {
+                  return const AnimatedDot(decoration: futureNightDotShape);
+                }
+                return const AnimatedDot(decoration: futureSideDotShape);
+              } else if (now.isBefore(nextDotStart)) {
+                return const AnimatedDot(decoration: currentDotShape);
               }
-              return const AnimatedDot(decoration: futureSideDotShape);
-            } else if (now.isBefore(nextDotStart)) {
-              return const AnimatedDot(decoration: currentDotShape);
-            }
-            if (dotStartTime.isNight(dayParts)) {
-              return const AnimatedDot(decoration: pastNightDotShape);
-            }
-            return AnimatedDot(decoration: pastSideDotShape);
-          },
-        ).expand((d) => [d, SizedBox(height: dotPadding)]).toList()
-          ..add(SizedBox(width: dotSize)),
+              if (dotStartTime.isNight(dayParts)) {
+                return const AnimatedDot(decoration: pastNightDotShape);
+              }
+              return AnimatedDot(decoration: pastSideDotShape);
+            },
+          ).expand((d) => [d, SizedBox(height: ts.dotPadding)]).toList()
+            ..add(SizedBox(width: ts.dotSize)),
+        ),
       ),
     );
   }

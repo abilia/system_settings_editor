@@ -1,13 +1,14 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class HourLines extends StatelessWidget {
-  final numberOfLines;
+  final int numberOfLines;
+  final double hourHeight;
   const HourLines({
     Key key,
     this.numberOfLines = 24,
+    @required this.hourHeight,
   }) : super(key: key);
 
   @override
@@ -15,7 +16,7 @@ class HourLines extends StatelessWidget {
         children: List.generate(
           numberOfLines,
           (_) => Container(
-            height: hourHeigt,
+            height: hourHeight,
             child: const DottedLine(
               dashColor: AbiliaColors.white135,
             ),

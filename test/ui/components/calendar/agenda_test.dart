@@ -489,16 +489,14 @@ void main() {
       final leftCategoryName = 'New Left', rightCategoryName = 'New Right';
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
+              data: MemoplannerSettingData.fromData(
                 data: leftCategoryName,
-                type: 'String',
                 identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
               ),
             ),
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
+              data: MemoplannerSettingData.fromData(
                 data: rightCategoryName,
-                type: 'String',
                 identifier: MemoplannerSettings.calendarActivityTypeRightKey,
               ),
             )
@@ -517,9 +515,8 @@ void main() {
         (WidgetTester tester) async {
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: 'false',
-                type: 'Bool',
+              data: MemoplannerSettingData.fromData(
+                data: false,
                 identifier:
                     MemoplannerSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -549,16 +546,14 @@ void main() {
 
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
+              data: MemoplannerSettingData.fromData(
                 data: leftCategoryName,
-                type: 'String',
                 identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
               ),
             ),
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
+              data: MemoplannerSettingData.fromData(
                 data: rightCategoryName,
-                type: 'String',
                 identifier: MemoplannerSettings.calendarActivityTypeRightKey,
               ),
             )
@@ -586,9 +581,8 @@ void main() {
 
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: 'false',
-                type: 'Bool',
+              data: MemoplannerSettingData.fromData(
+                data: false,
                 identifier:
                     MemoplannerSettings.calendarActivityTypeShowTypesKey,
               ),

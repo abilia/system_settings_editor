@@ -44,6 +44,13 @@ class Generic<T extends GenericData> extends DataModel {
     return null;
   }
 
+  Generic copyWithNewData({GenericData newData}) => Generic._(
+        id: id,
+        type: type,
+        data: newData,
+        deleted: deleted,
+      );
+
   @override
   List<Object> get props => [id, type, data, deleted];
 

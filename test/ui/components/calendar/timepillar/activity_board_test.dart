@@ -44,6 +44,10 @@ void main() {
       start: startInterval,
       end: startInterval.add(1.days()),
     );
+    final mockTimepillarBloc = MockTimepillarBloc();
+    final ts = TimepillarState(interval, 1);
+    when(mockTimepillarBloc.state).thenReturn(TimepillarState(
+        TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1));
     return MaterialApp(
       home: Directionality(
         textDirection: TextDirection.ltr,
@@ -55,24 +59,29 @@ void main() {
             ),
             BlocProvider<SettingsBloc>(
               create: (context) => SettingsBloc(settingsDb: mockSettingsDb),
-            )
+            ),
+            BlocProvider<TimepillarBloc>(
+              create: (context) => mockTimepillarBloc,
+            ),
           ],
           child: Stack(
             children: <Widget>[
               Timeline(
                 width: 40,
                 offset: -TimePillarCalendar.topMargin,
+                timepillarState: ts,
               ),
               ActivityBoard(
                 ActivityBoard.positionTimepillarCards(
                   activityOccasions,
                   textStyle,
                   1.0,
-                  interval,
                   MemoplannerSettingsLoaded(MemoplannerSettings()).dayParts,
                   TimepillarSide.RIGHT,
+                  ts,
                 ),
                 categoryMinWidth: 400,
+                timepillarWidth: ts.totalWidth,
               ),
             ],
           ),
@@ -144,9 +153,10 @@ void main() {
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
-
+      final interval = TimepillarInterval(start: time, end: time);
+      final ts = TimepillarState(interval, 1);
       for (final y in activityYPos) {
-        expect(y, closeTo(timelineYPostion, dotSize / 2));
+        expect(y, closeTo(timelineYPostion, ts.dotSize / 2));
       }
     });
 
@@ -175,10 +185,12 @@ void main() {
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
-
+      final ts = TimepillarState(
+          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
       for (final y in activityYPos) {
-        final activityDotMidPos = y + dotSize / 2;
-        expect((activityDotMidPos - timelineMidPos).abs(), equals(dotDistance));
+        final activityDotMidPos = y + ts.dotSize / 2;
+        expect(
+            (activityDotMidPos - timelineMidPos).abs(), equals(ts.dotDistance));
       }
     });
     testWidgets(
@@ -234,9 +246,10 @@ void main() {
           tester.getTopLeft(find.byKey(ObjectKey(activityA))).dx;
       final activityBXPos =
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
-
+      final ts = TimepillarState(
+          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
       expect((activityAXPos - activityBXPos).abs(),
-          greaterThanOrEqualTo(ActivityTimepillarCard.totalWith));
+          greaterThanOrEqualTo(ts.totalWidth));
     });
     testWidgets(
         'two activities to sufficient time distance but the first with a long title does not has same vertical position',
@@ -265,8 +278,10 @@ void main() {
       final activityBXPos =
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
 
+      final ts = TimepillarState(
+          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
       expect((activityAXPos - activityBXPos).abs(),
-          greaterThanOrEqualTo(ActivityTimepillarCard.totalWith));
+          greaterThanOrEqualTo(ts.totalWidth));
     });
 
     testWidgets('Is not placed at same horizontal position',
@@ -310,9 +325,9 @@ void main() {
         activities,
         textStyle,
         1.0,
-        interval,
         DayParts(0, 0, 0, 0, 0),
         TimepillarSide.RIGHT,
+        TimepillarState(interval, 1),
       );
       final uniques = boardData.cards.map((f) => {f.top, f.column});
 

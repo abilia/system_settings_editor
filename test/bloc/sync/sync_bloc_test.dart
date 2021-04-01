@@ -11,11 +11,13 @@ void main() {
   final activityRepository = MockActivityRepository();
   final userFileRepository = MockUserFileRepository();
   final sortableRepository = MockSortableRepository();
+  final genericRepository = MockGenericRepository();
   group('happy caseas', () {
     final syncBloc = SyncBloc(
       activityRepository: activityRepository,
       userFileRepository: userFileRepository,
       sortableRepository: sortableRepository,
+      genericRepository: genericRepository,
       syncDelay: SyncDelays.zero,
     );
     setUp(() {
@@ -47,6 +49,7 @@ void main() {
       activityRepository: activityRepository,
       userFileRepository: userFileRepository,
       sortableRepository: sortableRepository,
+      genericRepository: genericRepository,
       syncDelay:
           SyncDelays(betweenSync: 10.milliseconds(), retryDelay: Duration.zero),
     );
@@ -90,6 +93,7 @@ void main() {
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
         syncDelay: SyncDelays(
           betweenSync: stallTime,
           retryDelay: stallTime,
