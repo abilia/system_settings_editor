@@ -38,8 +38,8 @@ class ArchiveImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageHeight = 84.0;
-    final imageWidth = 84.0;
+    final imageHeight = 84.0.s;
+    final imageWidth = 84.0.s;
     final imageArchiveData = sortable.data;
     final name = imageArchiveData.name;
     final imageId = imageArchiveData.fileId;
@@ -52,7 +52,7 @@ class ArchiveImage extends StatelessWidget {
       ),
       child: Container(
         decoration: boxDecoration,
-        padding: const EdgeInsets.all(4.0),
+        padding: EdgeInsets.all(4.0.s),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
@@ -62,7 +62,7 @@ class ArchiveImage extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: abiliaTextTheme.caption,
               ),
-              const SizedBox(height: 2),
+              SizedBox(height: 2.s),
             ],
             FadeInAbiliaImage(
               height: imageHeight,
@@ -87,7 +87,7 @@ class FullScreenArchiveImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: EdgeInsets.all(12.s),
       child: ClipRRect(
         borderRadius: borderRadius,
         child: FullScreenImage(
