@@ -341,7 +341,7 @@ class FadeInAbiliaImage extends StatelessWidget {
       );
 
       return ClipRRect(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.s),
         child: userFile != null
             ? FadeInImage(
                 height: height,

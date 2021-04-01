@@ -82,17 +82,17 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     return Tts(
       data: heading,
       child: Padding(
-        padding: const EdgeInsets.only(right: 12.0),
+        padding: EdgeInsets.only(right: 12.s),
         child: Separated(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 12.0, 0.0, 4.0),
+            padding: EdgeInsets.fromLTRB(16.s, 12.s, 0.0, 4.s),
             child: Row(
               children: [
                 ActionButtonDark(
                   onPressed: () => back(context, sortableArchiveState),
                   child: Icon(AbiliaIcons.navigation_previous),
                 ),
-                const SizedBox(width: 12.0),
+                SizedBox(width: 12.0.s),
                 Expanded(
                   child: Text(
                     heading,
@@ -174,10 +174,10 @@ class _SortableLibraryState<T extends SortableData>
               left: leftPadding,
               right: rightPadding,
             ),
-            mainAxisSpacing: 8.0,
-            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0.s,
+            crossAxisSpacing: 8.0.s,
             crossAxisCount: 3,
-            childAspectRatio: 0.96,
+            childAspectRatio: 0.92,
             children: currentFolderContent
                 .map(
                   (sortable) => sortable.isGroup
@@ -222,7 +222,7 @@ class EmptyLibraryMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 60.0),
+      padding: EdgeInsets.only(top: 60.0.s),
       child: Align(
         alignment: Alignment.topCenter,
         child: Tts(
@@ -266,7 +266,7 @@ class LibraryFolder extends StatelessWidget {
           onTap: onTap,
           borderRadius: borderRadius,
           child: Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: EdgeInsets.all(4.0.s),
             child: Column(
               children: <Widget>[
                 Text(
@@ -274,27 +274,27 @@ class LibraryFolder extends StatelessWidget {
                   style: abiliaTextTheme.caption,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2.s),
                 Stack(
                   children: [
-                    const Icon(
+                    Icon(
                       AbiliaIcons.folder,
-                      size: 86,
+                      size: 86.s,
                       color: AbiliaColors.orange,
                     ),
                     Positioned(
-                      bottom: 16,
-                      left: 10,
+                      bottom: 16.s,
+                      left: 10.s,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(6.s),
                         child: Align(
                           alignment: Alignment.center,
                           heightFactor: 42 / 66,
                           child: FadeInAbiliaImage(
                             imageFileId: fileId,
                             imageFilePath: filePath,
-                            width: 66,
-                            height: 66,
+                            width: 66.s,
+                            height: 66.s,
                           ),
                         ),
                       ),
