@@ -385,3 +385,19 @@ class OrangeDot extends StatelessWidget {
     );
   }
 }
+
+class ColorDot extends StatelessWidget {
+  final Color color;
+  const ColorDot({Key key, this.color = AbiliaColors.white}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 8.s,
+      height: 8.s,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(4.s)),
+        color: color,
+      ),
+    );
+  }
+}
