@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/components/clock/analog_clock.dart';
 import 'package:seagull/utils/all.dart';
 
 class CalendarAppBar extends StatelessWidget {
@@ -30,13 +31,14 @@ class CalendarAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = weekdayTheme(
+      dayColor: calendarDayColor,
+      languageCode: Localizations.localeOf(context).languageCode,
+      weekday: day.weekday,
+    );
     return AnimatedTheme(
       key: TestKey.animatedTheme,
-      data: weekdayTheme(
-        dayColor: calendarDayColor,
-        languageCode: Localizations.localeOf(context).languageCode,
-        weekday: day.weekday,
-      ).theme,
+      data: theme.theme,
       child: Builder(
         builder: (context) => AppBar(
           elevation: 0.0,
@@ -45,7 +47,6 @@ class CalendarAppBar extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 16.0.s,
-                vertical: 8.0.s,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,19 +70,22 @@ class CalendarAppBar extends StatelessWidget {
                     ),
                   ),
                   clockReplacement ??
-                      Banner(
-                        message: 'Clock',
-                        location: BannerLocation.bottomEnd,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(actionButtonMinSize / 2),
-                            ),
-                            color: AbiliaColors.white,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          AnalogClock(
+                            borderWidth: 1.0.s,
+                            borderColor: AbiliaColors.transparentBlack30,
+                            height: actionButtonMinSize,
+                            width: actionButtonMinSize,
+                            centerPointRadius: 4.0.s,
+                            hourNumberScale: 1.5.s,
+                            hourHandLength: 11.s,
+                            minuteHandLength: 15.s,
+                            fontSize: 7.s,
                           ),
-                          width: actionButtonMinSize,
-                          height: actionButtonMinSize,
-                        ),
+                          DigitalClock(),
+                        ],
                       ),
                   SizedBox(width: clockPadding),
                   rightAction ?? _emptyAction,
