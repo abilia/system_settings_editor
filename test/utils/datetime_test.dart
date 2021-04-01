@@ -162,20 +162,6 @@ void main() {
     });
   });
 
-  group('nextHalfHour', () {
-    test('pickes next half hour on exact', () {
-      expect(
-        DateTime(2000, 12, 12, 12, 00).nextHalfHour(),
-        DateTime(2000, 12, 12, 12, 30),
-      );
-    });
-    test('pickes next on precise before', () {
-      expect(
-        DateTime(2000, 12, 12, 11, 59, 59, 999).nextHalfHour(),
-        DateTime(2000, 12, 12, 12, 00, 00, 000),
-      );
-    });
-  });
   group('roundToMinute', () {
     test('rounds down on 7', () {
       final minutesPerDot = 15;
