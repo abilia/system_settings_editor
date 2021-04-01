@@ -608,7 +608,7 @@ void main() {
       }
       await tester.pumpAndSettle();
 
-      // Expect - the alarm screens should be removed and only the latest reminders shoudl show
+      // Expect - the alarm screens should be removed and only the latest reminders should show
       expect(reminderFinder, findsNWidgets(activities.length));
       expect(alarmScreenFinder, findsNothing);
     });

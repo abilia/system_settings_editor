@@ -16,11 +16,14 @@ extension DateTimeExtensions on DateTime {
   DateTime nextWeek() => copyWith(day: day + 7);
   DateTime previousWeek() => copyWith(day: day - 7);
   DateTime previousDay() => copyWith(day: day - 1);
+
+  DateTime firstDayOfMonth() => DateTime(year, month, 1);
+  DateTime nextMonth() => DateTime(year, month + 1, 1);
+  DateTime previousMonth() => DateTime(year, month - 1, 1);
+
   DateTime millisecondBefore() =>
       DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch - 1);
 
-  DateTime nextHalfHour() => DateTime(
-      year, month, day, minute >= 30 ? hour + 1 : hour, minute >= 30 ? 0 : 30);
   DateTime nextMinute() => DateTime(year, month, day, hour, minute + 1);
 
   DateTime roundToMinute(int minutesPerDot, int rounding) => DateTime(

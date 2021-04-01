@@ -72,6 +72,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activityRepository: context.read<ActivityRepository>(),
                 userFileRepository: context.read<UserFileRepository>(),
                 sortableRepository: context.read<SortableRepository>(),
+                genericRepository: context.read<GenericRepository>(),
                 syncDelay: GetIt.I<SyncDelays>(),
               ),
             ),
@@ -84,6 +85,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<WeekCalendarBloc>(
               create: (context) => WeekCalendarBloc(
+                activitiesBloc: context.read<ActivitiesBloc>(),
+                clockBloc: context.read<ClockBloc>(),
+              ),
+            ),
+            BlocProvider<MonthCalendarBloc>(
+              create: (context) => MonthCalendarBloc(
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 clockBloc: context.read<ClockBloc>(),
               ),
@@ -289,8 +296,8 @@ class CopiedAuthProviders extends StatelessWidget {
         BlocProvider<PermissionBloc>.value(
           value: blocContext.read<PermissionBloc>(),
         ),
-        BlocProvider<PermissionBloc>.value(
-          value: blocContext.read<PermissionBloc>(),
+        BlocProvider<TimepillarBloc>.value(
+          value: blocContext.read<TimepillarBloc>(),
         ),
       ],
       child: child,

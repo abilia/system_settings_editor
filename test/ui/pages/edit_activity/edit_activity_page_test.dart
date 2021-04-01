@@ -94,6 +94,11 @@ void main() {
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),
               BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
+              BlocProvider<DayPickerBloc>(
+                create: (context) => DayPickerBloc(
+                  clockBloc: context.read<ClockBloc>(),
+                ),
+              ),
               BlocProvider<SettingsBloc>(
                 create: (context) => SettingsBloc(
                   settingsDb: MockSettingsDb(),
@@ -102,6 +107,13 @@ void main() {
               BlocProvider<PermissionBloc>(
                 create: (context) => PermissionBloc()..checkAll(),
               ),
+              BlocProvider<TimepillarBloc>(
+                create: (context) => TimepillarBloc(
+                  clockBloc: context.read<ClockBloc>(),
+                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  dayPickerBloc: context.read<DayPickerBloc>(),
+                ),
+              )
             ],
             child: child,
           ),

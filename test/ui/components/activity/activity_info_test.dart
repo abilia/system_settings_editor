@@ -47,6 +47,9 @@ void main() {
                 settingsDb: MockSettingsDb(),
               ),
             ),
+            BlocProvider<TimepillarBloc>(
+              create: (context) => MockTimepillarBloc(),
+            ),
           ],
           child: MaterialApp(
             supportedLocales: Translator.supportedLocals,

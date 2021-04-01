@@ -18,12 +18,14 @@ class ScrollPositionBloc
 
   final DayPickerBloc dayPickerBloc;
   final ClockBloc clockBloc;
+  final TimepillarBloc timepillarBloc;
   StreamSubscription dayPickerBlocSubscription;
   StreamSubscription clockBlocSubscription;
 
   ScrollPositionBloc({
     @required this.dayPickerBloc,
     @required this.clockBloc,
+    @required this.timepillarBloc,
     this.nowMarginTop = 8,
     this.nowMarginBottom = 8,
   }) : super(Unready()) {
@@ -117,7 +119,8 @@ class ScrollPositionBloc
       final diff = now.difference(scrollControllerCreatedTime);
       final hours = diff.inHours;
       final minutes = diff.inMinutes % Duration.minutesPerHour;
-      return timeToPixels(hours, minutes);
+
+      return timeToPixels(hours, minutes, timepillarBloc.state.dotDistance);
     }
     return 0.0;
   }

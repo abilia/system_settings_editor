@@ -18,6 +18,7 @@ void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = startTime.onlyDays();
   final mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
+  final mockTimepillarBloc = MockTimepillarBloc();
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [Translator.delegate],
@@ -39,6 +40,9 @@ void main() {
               create: (context) => SettingsBloc(
                 settingsDb: MockSettingsDb(),
               ),
+            ),
+            BlocProvider<TimepillarBloc>(
+              create: (context) => mockTimepillarBloc,
             ),
           ],
           child: widget,

@@ -152,9 +152,8 @@ void main() {
     testWidgets('tts on 24 h', (WidgetTester tester) async {
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: 'false',
-                type: 'Bool',
+              data: MemoplannerSettingData.fromData(
+                data: false,
                 identifier: MemoplannerSettings.setting12hTimeFormatTimelineKey,
               ),
             ),
@@ -249,9 +248,8 @@ void main() {
     testWidgets('Dont Exists if settings say so', (WidgetTester tester) async {
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: 'false',
-                type: 'Bool',
+              data: MemoplannerSettingData.fromData(
+                data: false,
                 identifier: MemoplannerSettings.settingDisplayTimelineKey,
               ),
             ),
@@ -269,9 +267,8 @@ void main() {
 
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: 'false',
-                type: 'Bool',
+              data: MemoplannerSettingData.fromData(
+                data: false,
                 identifier: MemoplannerSettings.settingDisplayTimelineKey,
               ),
             ),
@@ -320,9 +317,8 @@ void main() {
         (WidgetTester tester) async {
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: 'true',
-                type: 'Bool',
+              data: MemoplannerSettingData.fromData(
+                data: true,
                 identifier: MemoplannerSettings.settingDisplayHourLinesKey,
               ),
             ),
@@ -339,9 +335,8 @@ void main() {
 
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: 'true',
-                type: 'Bool',
+              data: MemoplannerSettingData.fromData(
+                data: true,
                 identifier: MemoplannerSettings.settingDisplayHourLinesKey,
               ),
             ),
@@ -366,9 +361,8 @@ void main() {
         (WidgetTester tester) async {
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: 'false',
-                type: 'Bool',
+              data: MemoplannerSettingData.fromData(
+                data: false,
                 identifier:
                     MemoplannerSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -390,9 +384,8 @@ void main() {
 
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: 'false',
-                type: 'Bool',
+              data: MemoplannerSettingData.fromData(
+                data: false,
                 identifier:
                     MemoplannerSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -582,9 +575,8 @@ void main() {
     setUp(() {
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: TimepillarIntervalType.INTERVAL.index.toString(),
-                type: 'int',
+              data: MemoplannerSettingData.fromData(
+                data: TimepillarIntervalType.INTERVAL.index,
                 identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
               ),
               type: GenericType.memoPlannerSettings,
@@ -676,9 +668,8 @@ void main() {
 
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: TimepillarIntervalType.DAY_AND_NIGHT.index.toString(),
-                type: 'int',
+              data: MemoplannerSettingData.fromData(
+                data: TimepillarIntervalType.DAY_AND_NIGHT.index,
                 identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
               ),
               type: GenericType.memoPlannerSettings,
@@ -703,9 +694,8 @@ void main() {
 
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: TimepillarIntervalType.DAY.index.toString(),
-                type: 'int',
+              data: MemoplannerSettingData.fromData(
+                data: TimepillarIntervalType.DAY.index,
                 identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
               ),
               type: GenericType.memoPlannerSettings,

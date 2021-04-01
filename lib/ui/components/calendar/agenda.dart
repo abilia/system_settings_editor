@@ -6,7 +6,9 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
 
 class Agenda extends StatefulWidget {
-  static final topPadding = 60.0.s, bottomPadding = 125.0.s;
+  static final topPadding = 60.0.s,
+      bottomPadding = 125.0.s,
+      categoryWidth = 42.0.s;
 
   final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
@@ -57,7 +59,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final categoryLabelWidth =
-            (boxConstraints.maxWidth.s - timePillarWidth) / 2;
+            (boxConstraints.maxWidth.s - Agenda.categoryWidth) / 2;
         return RefreshIndicator(
           onRefresh: refresh,
           child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(

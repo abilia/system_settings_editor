@@ -1,6 +1,6 @@
 part of 'memoplanner_setting_bloc.dart';
 
-abstract class MemoplannerSettingsState {
+abstract class MemoplannerSettingsState extends Equatable {
   final MemoplannerSettings settings;
   const MemoplannerSettingsState(this.settings);
   bool get displayAlarmButton => settings.displayAlarmButton;
@@ -33,9 +33,13 @@ abstract class MemoplannerSettingsState {
   int get afternoonStart => settings.afternoonIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
+
   DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>
       TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
+
+  TimepillarZoom get timepillarZoom =>
+      TimepillarZoom.values[settings.viewOptionsZoom];
 
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();
@@ -145,6 +149,12 @@ abstract class MemoplannerSettingsState {
     }
     return ALARM_SOUND_AND_VIBRATION;
   }
+
+  @override
+  List<Object> get props => settings.props;
+
+  @override
+  bool get stringify => true;
 }
 
 HourClockType _hourClockTypeFromNullBool(bool value) => value == null
@@ -177,6 +187,27 @@ enum IntervalPart {
   DAY_AND_NIGHT,
 }
 
+enum TimepillarZoom {
+  SMALL,
+  NORMAL,
+  LARGE,
+}
+
+extension ZoomExtension on TimepillarZoom {
+  double get zoomValue {
+    switch (this) {
+      case TimepillarZoom.SMALL:
+        return 0.75;
+      case TimepillarZoom.NORMAL:
+        return 1;
+      case TimepillarZoom.LARGE:
+        return 1.3;
+      default:
+        return 1;
+    }
+  }
+}
+
 class TimepillarInterval extends Equatable {
   final DateTime startTime, endTime;
   final IntervalPart intervalPart;
@@ -202,4 +233,6 @@ class TimepillarInterval extends Equatable {
 
   @override
   List<Object> get props => [startTime, endTime];
+  @override
+  bool get stringify => true;
 }

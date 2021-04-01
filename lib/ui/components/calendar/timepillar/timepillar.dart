@@ -5,14 +5,10 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-final double timePillarPadding = 4.0.s,
-    timePillarWidth = 42.0.s,
-    timePillarTotalWidth = timePillarWidth + timePillarPadding * 2;
-
-double timePillarHeight(TimepillarInterval interval) =>
-    (interval.lengthInHours +
+double timePillarHeight(TimepillarState ts) =>
+    (ts.timepillarInterval.lengthInHours +
             1) * // include one extra hour for the last digit after the timepillar (could only be the font size of the text)
-        hourHeigt +
+        ts.hourHeight +
     TimePillarCalendar.topMargin +
     TimePillarCalendar.bottomMargin;
 
@@ -45,72 +41,78 @@ class TimePillar extends StatelessWidget {
 
     final formatHour = onlyHourFormat(context, clockType: hourClockType);
     final theme = Theme.of(context);
-    return DefaultTextStyle(
-      style: theme.textTheme.headline6.copyWith(color: AbiliaColors.black),
-      child: Container(
-        color: interval.intervalPart == IntervalPart.NIGHT
-            ? TimePillarCalendar.nightBackgroundColor
-            : theme.scaffoldBackgroundColor,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: <Widget>[
-            ...nightParts.map((p) {
-              return Positioned(
-                top: p.start,
+    return BlocBuilder<TimepillarBloc, TimepillarState>(
+      builder: (context, ts) => DefaultTextStyle(
+        style: theme.textTheme.headline6.copyWith(color: AbiliaColors.black),
+        child: Container(
+          color: interval.intervalPart == IntervalPart.NIGHT
+              ? TimePillarCalendar.nightBackgroundColor
+              : theme.scaffoldBackgroundColor,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: <Widget>[
+              ...nightParts.map((p) {
+                return Positioned(
+                  top: p.start,
+                  child: SizedBox(
+                    width: ts.timePillarTotalWidth,
+                    height: p.length,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(
+                          color: TimePillarCalendar.nightBackgroundColor),
+                    ),
+                  ),
+                );
+              }),
+              if (today && showTimeLine)
+                Timeline(
+                  width: ts.timePillarTotalWidth,
+                  timepillarState: ts,
+                  offset:
+                      hoursToPixels(interval.startTime.hour, ts.dotDistance) -
+                          TimePillarCalendar.topMargin,
+                ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(ts.timePillarPadding,
+                    TimePillarCalendar.topMargin, ts.timePillarPadding, 0),
                 child: SizedBox(
-                  width: timePillarTotalWidth,
-                  height: p.length,
-                  child: const DecoratedBox(
-                    decoration: BoxDecoration(
-                        color: TimePillarCalendar.nightBackgroundColor),
+                  width: ts.timePillarWidth,
+                  child: Column(
+                    children: List.generate(
+                      interval.lengthInHours,
+                      (index) {
+                        final hourIndex = index + interval.startTime.hour;
+                        final hour = interval.startTime
+                            .onlyDays()
+                            .copyWith(hour: hourIndex);
+                        return Hour(
+                          hour: formatHour(hour),
+                          dots: dots(
+                            hour,
+                            hour.isNight(dayParts),
+                          ),
+                          isNight: hour.isNight(dayParts),
+                          timepillarState: ts,
+                        );
+                      },
+                    )..add(
+                        Hour(
+                          hour: formatHour(interval.endTime),
+                          dots: SizedBox(
+                            width: ts.dotSize,
+                            height: ts.dotSize,
+                          ),
+                          isNight: interval.endTime
+                              .subtract(1.hours())
+                              .isNight(dayParts),
+                          timepillarState: ts,
+                        ),
+                      ),
                   ),
                 ),
-              );
-            }),
-            if (today && showTimeLine)
-              Timeline(
-                width: timePillarTotalWidth,
-                offset: hoursToPixels(interval.startTime.hour) -
-                    TimePillarCalendar.topMargin,
               ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(timePillarPadding,
-                  TimePillarCalendar.topMargin, timePillarPadding, 0),
-              child: SizedBox(
-                width: timePillarWidth,
-                child: Column(
-                  children: List.generate(
-                    interval.lengthInHours,
-                    (index) {
-                      final hourIndex = index + interval.startTime.hour;
-                      final hour = interval.startTime
-                          .onlyDays()
-                          .copyWith(hour: hourIndex);
-                      return Hour(
-                        hour: formatHour(hour),
-                        dots: dots(
-                          hour,
-                          hour.isNight(dayParts),
-                        ),
-                        isNight: hour.isNight(dayParts),
-                      );
-                    },
-                  )..add(
-                      Hour(
-                        hour: formatHour(interval.endTime),
-                        dots: SizedBox(
-                          width: dotSize,
-                          height: dotSize,
-                        ),
-                        isNight: interval.endTime
-                            .subtract(1.hours())
-                            .isNight(dayParts),
-                      ),
-                    ),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -136,30 +138,34 @@ class Hour extends StatelessWidget {
     @required this.hour,
     @required this.dots,
     @required this.isNight,
+    @required this.timepillarState,
   }) : super(key: key);
 
   final String hour;
   final Widget dots;
   final bool isNight;
+  final TimepillarState timepillarState;
 
   @override
   Widget build(BuildContext context) {
-    final dayTheme = Theme.of(context)
-        .textTheme
-        .headline6
-        .copyWith(color: AbiliaColors.black);
-    final nightTheme = Theme.of(context)
-        .textTheme
-        .headline6
-        .copyWith(color: AbiliaColors.white);
+    final fontSize = Theme.of(context).textTheme.headline6.fontSize;
+    final ts = timepillarState;
+    final dayTheme = Theme.of(context).textTheme.headline6.copyWith(
+          color: AbiliaColors.black,
+          fontSize: fontSize * ts.zoom,
+        );
+    final nightTheme = Theme.of(context).textTheme.headline6.copyWith(
+          color: AbiliaColors.white,
+          fontSize: fontSize * ts.zoom,
+        );
     return Container(
-      height: hourHeigt,
-      padding: EdgeInsets.symmetric(vertical: hourPadding),
+      height: context.read<TimepillarBloc>().state.hourHeight,
+      padding: EdgeInsets.symmetric(vertical: ts.hourPadding),
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
             color: isNight ? AbiliaColors.white140 : AbiliaColors.black,
-            width: hourPadding,
+            width: ts.hourPadding,
           ),
         ),
       ),
@@ -168,7 +174,7 @@ class Hour extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            width: 25.0.s,
+            width: 25.0.s * ts.zoom,
             child: Tts(
               child: Text(
                 hour,

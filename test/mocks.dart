@@ -43,6 +43,8 @@ class MockSortableRepository extends Mock implements SortableRepository {}
 
 class MockUserFileRepository extends Mock implements UserFileRepository {}
 
+class MockGenericRepository extends Mock implements GenericRepository {}
+
 class MockTokenDb extends Mock implements TokenDb {}
 
 class MockLicenseDb extends Mock implements LicenseDb {}
@@ -56,6 +58,8 @@ class MockSortableBloc extends Mock implements SortableBloc {}
 class MockGenericBloc extends Mock implements GenericBloc {}
 
 class MockUserFileBloc extends Mock implements UserFileBloc {}
+
+class MockTimepillarBloc extends Mock implements TimepillarBloc {}
 
 class MockAlarmBloc extends Mock implements AlarmBloc {}
 

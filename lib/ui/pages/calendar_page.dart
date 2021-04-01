@@ -19,6 +19,7 @@ class _CalendarPageState extends State<CalendarPage>
     _scrollPositionBloc = ScrollPositionBloc(
       dayPickerBloc: _dayPickerBloc,
       clockBloc: context.read<ClockBloc>(),
+      timepillarBloc: context.read<TimepillarBloc>(),
     );
     WidgetsBinding.instance.addObserver(this);
     super.initState();

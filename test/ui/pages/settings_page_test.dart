@@ -15,6 +15,7 @@ void main() {
   MockSettingsDb mockSettingsDb;
   MockAuthenticationBloc mockAuthenticationBloc;
   MockActivitiesBloc mockActivitiesBloc;
+  MockTimepillarBloc mockTimepillarBloc;
   final user = User(
       id: 1,
       name: 'Slartibartfast',
@@ -26,6 +27,7 @@ void main() {
     await initializeDateFormatting();
     mockSettingsDb = MockSettingsDb();
     mockAuthenticationBloc = MockAuthenticationBloc();
+    mockTimepillarBloc = MockTimepillarBloc();
     mockActivitiesBloc = MockActivitiesBloc();
     when(mockActivitiesBloc.state).thenReturn(ActivitiesNotLoaded());
     final userDb = MockUserDb();
@@ -55,6 +57,9 @@ void main() {
               BlocProvider<ActivitiesBloc>(
                 create: (context) => mockActivitiesBloc,
               ),
+              BlocProvider<TimepillarBloc>(
+                create: (context) => mockTimepillarBloc,
+              )
             ],
             child: child,
           ),

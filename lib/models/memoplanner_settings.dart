@@ -1,8 +1,7 @@
-import 'dart:convert';
-
+import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 
-class MemoplannerSettings {
+class MemoplannerSettings extends Equatable {
   static const String displayAlarmButtonKey =
           'activity_detailed_setting_display_change_alarm_button',
       displayDeleteButtonKey =
@@ -34,7 +33,8 @@ class MemoplannerSettings {
       setting12hTimeFormatTimelineKey = 'setting_12h_time_format_timeline',
       settingDisplayHourLinesKey = 'setting_display_hour_lines',
       settingDisplayTimelineKey = 'setting_display_line_timeline',
-      viewOptionsTimeIntervalKey = 'view_options_time_interval';
+      viewOptionsTimeIntervalKey = 'view_options_time_interval',
+      viewOptionsZoomKey = 'view_options_zoom';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -64,7 +64,8 @@ class MemoplannerSettings {
       eveningIntervalStart,
       nightIntervalStart,
       calendarDayColor,
-      viewOptionsTimeInterval;
+      viewOptionsTimeInterval,
+      viewOptionsZoom;
 
   final String calendarActivityTypeLeft, calendarActivityTypeRight;
 
@@ -99,15 +100,11 @@ class MemoplannerSettings {
     this.calendarActivityTypeRight,
     this.calendarDayColor = 0,
     this.viewOptionsTimeInterval = 1,
+    this.viewOptionsZoom = 1,
   });
 
-  factory MemoplannerSettings.fromSettingsList(
-      List<MemoplannerSettingData> settings) {
-    return _parseSettings(settings);
-  }
-
-  static MemoplannerSettings _parseSettings(
-      List<MemoplannerSettingData> settings) {
+  factory MemoplannerSettings.fromSettingsMap(
+      Map<String, MemoplannerSettingData> settings) {
     return MemoplannerSettings(
       displayAlarmButton: settings.getBool(
         displayAlarmButtonKey,
@@ -165,7 +162,6 @@ class MemoplannerSettings {
       ),
       setting12hTimeFormatTimeline: settings.getBool(
         setting12hTimeFormatTimelineKey,
-        defaultValue: null,
       ),
       settingDisplayHourLines: settings.getBool(
         settingDisplayHourLinesKey,
@@ -194,44 +190,71 @@ class MemoplannerSettings {
         nightIntervalStartKey,
         82800000,
       ),
-      calendarActivityTypeLeft: settings.getString(
+      calendarActivityTypeLeft: settings.parse<String>(
         calendarActivityTypeLeftKey,
       ),
-      calendarActivityTypeRight: settings.getString(
+      calendarActivityTypeRight: settings.parse<String>(
         calendarActivityTypeRightKey,
       ),
       calendarDayColor: settings.parse(calendarDayColorKey, 0),
       viewOptionsTimeInterval: settings.parse(viewOptionsTimeIntervalKey, 1),
+      viewOptionsZoom: settings.parse(viewOptionsZoomKey, 1),
     );
   }
+
+  @override
+  List<Object> get props => [
+        displayAlarmButton,
+        displayDeleteButton,
+        displayEditButton,
+        displayQuarterHour,
+        displayTimeLeft,
+        dayCaptionShowDayButtons,
+        activityDateEditable,
+        activityTypeEditable,
+        activityEndTimeEditable,
+        activityTimeBeforeCurrent,
+        activityRecurringEditable,
+        activityDisplayAlarmOption,
+        activityDisplaySilentAlarmOption,
+        activityDisplayNoAlarmOption,
+        activityDisplayDayPeriod,
+        activityDisplayWeekDay,
+        activityDisplayDate,
+        calendarActivityTypeShowTypes,
+        setting12hTimeFormatTimeline,
+        settingDisplayHourLines,
+        settingDisplayTimeline,
+        morningIntervalStart,
+        forenoonIntervalStart,
+        afternoonIntervalStart,
+        eveningIntervalStart,
+        nightIntervalStart,
+        calendarActivityTypeLeft,
+        calendarActivityTypeRight,
+        calendarDayColor,
+        viewOptionsTimeInterval,
+        viewOptionsZoom,
+      ];
 }
 
-extension _Parsing on List<MemoplannerSettingData> {
-  T parse<T>(String settingName, T defaultValue) {
-    final setting =
-        firstWhere((s) => s.identifier == settingName, orElse: () => null);
-    if (setting == null) {
+extension _Parsing on Map<String, MemoplannerSettingData> {
+  T parse<T>(String settingName, [T defaultValue]) {
+    try {
+      return this[GenericData.uniqueId(
+                  GenericType.memoPlannerSettings, settingName)]
+              ?.data ??
+          defaultValue;
+    } catch (e) {
       return defaultValue;
     }
-    return json.decode(setting.data);
   }
-
-  String getString(
-    String settingName, [
-    String defaultValue,
-  ]) =>
-      firstWhere(
-        (s) => s.identifier == settingName,
-        orElse: () => null,
-      )?.data ??
-      defaultValue;
 
   bool getBool(
     String settingName, {
     bool defaultValue = true,
-  }) {
-    return parse<bool>(settingName, defaultValue);
-  }
+  }) =>
+      parse<bool>(settingName, defaultValue);
 }
 
 class DayParts {

@@ -12,33 +12,50 @@ class EyeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsBloc, SettingsState>(
-      builder: (context, state) => Material(
-        color: Colors.transparent,
-        elevation: 3,
-        shadowColor: AbiliaColors.black,
-        borderRadius: borderRadius,
-        child: ActionButtonBlack(
-          onPressed: () async {
-            final settings = await showViewDialog<EyeButtonSettings>(
-              context: context,
-              builder: (context) => EyeButtonDialog(
-                currentCalendarType: currentDayCalendarType,
-                currentDotsInTimepillar: state.dotsInTimepillar,
-              ),
-            );
-            if (settings != null) {
-              if (currentDayCalendarType != settings.calendarType) {
-                BlocProvider.of<CalendarViewBloc>(context)
-                    .add(CalendarTypeChanged(settings.calendarType));
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, memoSettingsState) =>
+          BlocBuilder<SettingsBloc, SettingsState>(
+        builder: (context, state) => Material(
+          color: Colors.transparent,
+          elevation: 3,
+          shadowColor: AbiliaColors.black,
+          borderRadius: borderRadius,
+          child: ActionButtonBlack(
+            onPressed: () async {
+              final settings = await showViewDialog<EyeButtonSettings>(
+                context: context,
+                builder: (context) => EyeButtonDialog(
+                  currentCalendarType: currentDayCalendarType,
+                  currentDotsInTimepillar: state.dotsInTimepillar,
+                  currentDayInterval: memoSettingsState.timepillarIntervalType,
+                  currentZoom: memoSettingsState.timepillarZoom,
+                ),
+              );
+              if (settings != null) {
+                if (currentDayCalendarType != settings.calendarType) {
+                  BlocProvider.of<CalendarViewBloc>(context)
+                      .add(CalendarTypeChanged(settings.calendarType));
+                }
+                if (state.dotsInTimepillar != settings.dotsInTimepillar) {
+                  BlocProvider.of<SettingsBloc>(context)
+                      .add(DotsInTimepillarUpdated(settings.dotsInTimepillar));
+                }
+                if (memoSettingsState.timepillarIntervalType !=
+                    settings.intervalType) {
+                  context
+                      .read<MemoplannerSettingBloc>()
+                      .add(IntervalTypeUpdatedEvent(settings.intervalType));
+                }
+                if (memoSettingsState.timepillarZoom !=
+                    settings.timepillarZoom) {
+                  context
+                      .read<MemoplannerSettingBloc>()
+                      .add(ZoomSettingUpdatedEvent(settings.timepillarZoom));
+                }
               }
-              if (state.dotsInTimepillar != settings.dotsInTimepillar) {
-                BlocProvider.of<SettingsBloc>(context)
-                    .add(DotsInTimepillarUpdated(settings.dotsInTimepillar));
-              }
-            }
-          },
-          child: Icon(AbiliaIcons.show),
+            },
+            child: Icon(AbiliaIcons.show),
+          ),
         ),
       ),
     );

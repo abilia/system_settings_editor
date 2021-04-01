@@ -19,7 +19,7 @@ class GenericRepository extends DataRepository<Generic> {
           client: client,
           baseUrl: baseUrl,
           path: 'generics',
-          postPath: 'genericitems',
+          postPath: 'generics',
           authToken: authToken,
           userId: userId,
           db: genericDb,

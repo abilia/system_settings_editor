@@ -106,7 +106,7 @@ class Calendars extends StatelessWidget {
                                   calendarViewState: calendarViewState,
                                   memoplannerSettingsState:
                                       memoplannerSettingsState,
-                                  timepillarInterval: state.timepillarInterval,
+                                  timepillarState: state,
                                 ),
                               ),
                             ),
