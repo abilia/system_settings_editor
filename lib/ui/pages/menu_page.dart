@@ -142,7 +142,7 @@ class MenuItemButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = style.textStyle.resolve({MaterialState.pressed});
     return Tts(
-      data: text,
+      data: text.replaceAll('-\n', ''),
       child: AspectRatio(
         aspectRatio: 1,
         child: TextButton(
