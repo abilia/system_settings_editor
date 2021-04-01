@@ -13,17 +13,17 @@ class ActivityBoard extends StatelessWidget {
   const ActivityBoard(
     this.boardData, {
     @required this.categoryMinWidth,
+    @required this.timepillarWidth,
     Key key,
   }) : super(key: key);
 
   final ActivityBoardData boardData;
-  final double categoryMinWidth;
+  final double categoryMinWidth, timepillarWidth;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: max(categoryMinWidth,
-          boardData.columns * context.read<TimepillarBloc>().state.totalWidth),
+      width: max(categoryMinWidth, boardData.columns * timepillarWidth),
       child: Stack(children: boardData.cards),
     );
   }
@@ -69,8 +69,7 @@ class ActivityBoard extends StatelessWidget {
 
       final textHeight = (a.hasTitle
           ? a.title
-              .textPainter(textStyle, ts.width,
-                  scaleFactor: scaleFactor * ts.zoom)
+              .textPainter(textStyle, ts.width, scaleFactor: scaleFactor)
               .height
           : 0.0);
       final imageHeight = a.hasImage || ao.isSignedOff ? ts.imageHeight : 0.0;
@@ -101,6 +100,7 @@ class ActivityBoard extends StatelessWidget {
             timepillarInterval: interval,
             dayParts: dayParts,
             timepillarSide: timepillarSide,
+            timepillarState: ts,
           );
 
       for (var i = 0; i < scheduled.length; i++) {

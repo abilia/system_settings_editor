@@ -29,8 +29,9 @@ void main() {
     expect(unique.length, 1);
     expect(unique.first.data.identifier,
         MemoplannerSettings.displayDeleteButtonKey);
-    final settings = MemoplannerSettings.fromSettingsList(
-        unique.map((e) => e.data as MemoplannerSettingData).toList());
+    final settings = MemoplannerSettings.fromSettingsMap(
+      {for (var e in unique) e.data.key: e.data as MemoplannerSettingData},
+    );
     expect(settings.displayDeleteButton, false);
   });
 

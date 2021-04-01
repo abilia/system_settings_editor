@@ -14,6 +14,7 @@ class ActivityTimepillarCard extends StatelessWidget {
   final TimepillarInterval timepillarInterval;
   final DayParts dayParts;
   final TimepillarSide timepillarSide;
+  final TimepillarState timepillarState;
 
   const ActivityTimepillarCard({
     Key key,
@@ -26,13 +27,14 @@ class ActivityTimepillarCard extends StatelessWidget {
     @required this.timepillarInterval,
     @required this.dayParts,
     @required this.timepillarSide,
+    @required this.timepillarState,
   })  : assert(activityOccasion != null),
         endPos = top + height,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ts = context.read<TimepillarBloc>().state;
+    final ts = timepillarState;
     final activity = activityOccasion.activity;
     final hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
@@ -78,6 +80,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                         (dotHeight > 0
                             ? decoration.border.dimensions.vertical
                             : 0),
+                    width: ts.width,
                   ),
                 GestureDetector(
                   onTap: () {
@@ -146,17 +149,19 @@ class SideTime extends StatelessWidget {
   final Occasion occasion;
   final int category;
   final double height;
+  final double width;
   const SideTime({
     Key key,
     @required this.occasion,
     @required this.category,
     @required this.height,
+    @required this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: context.read<TimepillarBloc>().state.width,
+      width: width,
       height: height,
       child: DecoratedBox(
         decoration: BoxDecoration(

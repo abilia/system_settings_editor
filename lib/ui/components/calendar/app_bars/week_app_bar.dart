@@ -38,7 +38,10 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: const Icon(AbiliaIcons.return_to_previous_page),
             ),
             clockReplacement: !currentWeekStart.isSameWeek(time)
-                ? GoToCurrentWeekButton()
+                ? GoToCurrentActionButton(
+                    onPressed: () =>
+                        context.read<WeekCalendarBloc>().add(GoToCurrentWeek()),
+                  )
                 : null,
             rightAction: ActionButton(
               onPressed: () =>
