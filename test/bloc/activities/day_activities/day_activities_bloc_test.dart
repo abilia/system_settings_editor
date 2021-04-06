@@ -42,7 +42,7 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
+      await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
 
       // Assert
       expect(
@@ -61,7 +61,7 @@ void main() {
       activitiesBloc.add(LoadActivities());
       // Assert
       expectLater(
-        dayActivitiesBloc,
+        dayActivitiesBloc.stream,
         emits(DayActivitiesLoaded(
             Iterable<ActivityDay>.empty(), today, Occasion.current)),
       );
@@ -81,7 +81,7 @@ void main() {
 
       // Assert
       expectLater(
-        dayActivitiesBloc,
+        dayActivitiesBloc.stream,
         emits(DayActivitiesLoaded(expected, today, Occasion.current)),
       );
     });
@@ -98,12 +98,12 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       dayPickerBloc.add(NextDay());
 
       // Assert
       await expectLater(
-        dayActivitiesBloc,
+        dayActivitiesBloc.stream,
         emitsInOrder([
           DayActivitiesLoaded(expextedToday, today, Occasion.current),
           DayActivitiesLoaded(expextedTomorrow, tomorrow, Occasion.future),
@@ -125,12 +125,12 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       dayPickerBloc.add(PreviousDay());
 
       // Assert
       await expectLater(
-        dayActivitiesBloc,
+        dayActivitiesBloc.stream,
         emitsInOrder([
           DayActivitiesLoaded(expectedNow, today, Occasion.current),
           DayActivitiesLoaded(expectedYesterday, yesterday, Occasion.past),
@@ -151,14 +151,14 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(PreviousDay());
       dayPickerBloc.add(PreviousDay());
 
       // Assert
       await expectLater(
-        dayActivitiesBloc,
+        dayActivitiesBloc.stream,
         emitsInOrder([
           DayActivitiesLoaded(Iterable.empty(), today, Occasion.current),
           DayActivitiesLoaded(Iterable.empty(), tomorrow, Occasion.future),
@@ -186,7 +186,7 @@ void main() {
 
       // Assert
       await expectLater(
-        dayActivitiesBloc,
+        dayActivitiesBloc.stream,
         emits(DayActivitiesLoaded(Iterable.empty(), today, Occasion.current)),
       );
 
@@ -199,7 +199,7 @@ void main() {
 
       // Assert
       await expectLater(
-        dayActivitiesBloc,
+        dayActivitiesBloc.stream,
         emits(DayActivitiesLoaded(expectedActivity, today, Occasion.current)),
       );
     });
@@ -235,14 +235,14 @@ void main() {
           .thenAnswer((_) => Future.value(weekendActivity));
       // Act
       activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
+      await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       // Assert
       await expectLater(
-          dayActivitiesBloc,
+          dayActivitiesBloc.stream,
           emitsInOrder([
             DayActivitiesLoaded(
               Iterable.empty(),
@@ -281,13 +281,13 @@ void main() {
           .thenAnswer((_) => Future.value(christmas));
       // Act
       activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
+      await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
       dayPickerBloc.add(GoTo(day: boxingDay));
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       // Assert
       await expectLater(
-          dayActivitiesBloc,
+          dayActivitiesBloc.stream,
           emitsInOrder([
             DayActivitiesLoaded(
               Iterable.empty(),
@@ -320,13 +320,13 @@ void main() {
           .thenAnswer((_) => Future.value(christmas));
       // Act
       activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
+      await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
       dayPickerBloc.add(GoTo(day: boxingDay));
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       // Assert
       await expectLater(
-          dayActivitiesBloc,
+          dayActivitiesBloc.stream,
           emitsInOrder([
             DayActivitiesLoaded(
               Iterable.empty(),
@@ -360,13 +360,13 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.any((s) => s is DayActivitiesLoaded);
+      await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
       dayPickerBloc.add(GoTo(day: startTime));
       allOtherDays.forEach((_) => dayPickerBloc.add(NextDay()));
 
       // Assert
       await expectLater(
-        dayActivitiesBloc,
+        dayActivitiesBloc.stream,
         emitsInOrder(
           allOtherDays.map(
             (day) => DayActivitiesLoaded(
@@ -427,14 +427,14 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       dayPickerBloc.add(GoTo(day: dayBeforeSplit));
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
 
       // Assert
       await expectLater(
-          dayActivitiesBloc,
+          dayActivitiesBloc.stream,
           emitsInOrder([
             DayActivitiesLoaded(
               Iterable.empty(),

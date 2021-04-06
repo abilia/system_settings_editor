@@ -22,7 +22,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     @required this.syncBloc,
     @required PushBloc pushBloc,
   }) : super(ActivitiesNotLoaded()) {
-    pushSubscription = pushBloc.listen((state) {
+    pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
         add(LoadActivities());
       }

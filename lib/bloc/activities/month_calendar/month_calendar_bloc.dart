@@ -26,8 +26,8 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
           ),
         ) {
     _activitiesSubscription =
-        activitiesBloc.listen((state) => add(UpdateMonth()));
-    _clockSubscription = clockBloc
+        activitiesBloc.stream.listen((state) => add(UpdateMonth()));
+    _clockSubscription = clockBloc.stream
         .where((time) =>
             state.weeks
                 .expand((w) => w.days)

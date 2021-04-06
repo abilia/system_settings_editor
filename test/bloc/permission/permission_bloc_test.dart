@@ -31,7 +31,7 @@ void main() {
     final permissionBloc = PermissionBloc();
     permissionBloc.add(RequestPermissions([Permission.camera]));
     await expectLater(
-      permissionBloc,
+      permissionBloc.stream,
       emits(PermissionState.empty()
           .update({Permission.camera: PermissionStatus.granted})),
     );
@@ -49,7 +49,7 @@ void main() {
     final permissionBloc = PermissionBloc();
     permissionBloc.add(RequestPermissions(permissonSet.keys.toList()));
     await expectLater(
-      permissionBloc,
+      permissionBloc.stream,
       emits(PermissionState.empty().update(permissonSet)),
     );
     expect(requestedPermissions, containsAll(permissonSet.keys));
@@ -61,7 +61,7 @@ void main() {
     final permissionBloc = PermissionBloc();
     permissionBloc.add(CheckStatusForPermissions([Permission.camera]));
     await expectLater(
-      permissionBloc,
+      permissionBloc.stream,
       emits(PermissionState.empty()
           .update({Permission.camera: PermissionStatus.granted})),
     );
@@ -78,7 +78,7 @@ void main() {
     final permissionBloc = PermissionBloc();
     permissionBloc.add(CheckStatusForPermissions(permissonSet.keys.toList()));
     await expectLater(
-      permissionBloc,
+      permissionBloc.stream,
       emits(PermissionState.empty().update(permissonSet)),
     );
     expect(checkedPermissions, containsAll(permissonSet.keys));

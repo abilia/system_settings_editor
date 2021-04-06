@@ -313,9 +313,9 @@ class BlocLoggingObserver extends BlocObserver {
   }
 
   @override
-  void onError(Cubit cubit, Object error, StackTrace stacktrace) {
-    super.onError(cubit, error, stacktrace);
-    _log(cubit).severe('error in $cubit', error, stacktrace);
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    super.onError(bloc, error, stackTrace);
+    _log(bloc).severe('error in $bloc', error, stackTrace);
   }
 
   void logEventToAnalytics(Transition transition) async {

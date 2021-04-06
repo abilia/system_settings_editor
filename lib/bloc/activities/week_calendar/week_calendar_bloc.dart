@@ -23,7 +23,7 @@ class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
                 (activitiesBloc.state as ActivitiesLoaded).activities,
                 clockBloc.state)
             : WeekCalendarInitial(clockBloc.state.firstInWeek())) {
-    _activitiesSubscription = activitiesBloc.listen((state) {
+    _activitiesSubscription = activitiesBloc.stream.listen((state) {
       final activityState = state;
       if (activityState is ActivitiesLoaded) {
         add(UpdateWeekActivites(activityState.activities));

@@ -29,11 +29,11 @@ class ScrollPositionBloc
     this.nowMarginTop = 8,
     this.nowMarginBottom = 8,
   }) : super(Unready()) {
-    dayPickerBlocSubscription = dayPickerBloc
+    dayPickerBlocSubscription = dayPickerBloc.stream
         .where((state) => !state.isToday)
         .listen((_) => add(WrongDaySelected()));
     clockBlocSubscription =
-        clockBloc.listen((now) => add(ScrollPositionUpdated()));
+        clockBloc.stream.listen((now) => add(ScrollPositionUpdated()));
   }
 
   @override

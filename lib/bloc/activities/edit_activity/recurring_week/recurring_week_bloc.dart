@@ -17,7 +17,7 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
   RecurringWeekBloc(EditActivityBloc editActivityBloc)
       : super(RecurringWeekState.initial(editActivityBloc.state)) {
     _editActivityBlocSubscription =
-        editActivityBloc.listen((editActivityState) {
+        editActivityBloc.stream.listen((editActivityState) {
       final startDate = editActivityState.timeInterval.startDate;
       final endDate = editActivityState.activity.recurs.end;
       if (editActivityState.activity.recurs.weekly) {
@@ -30,7 +30,7 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
       }
     });
 
-    _selfSubscription = listen((recurringWeekState) {
+    _selfSubscription = stream.listen((recurringWeekState) {
       editActivityBloc.add(
         ReplaceActivity(
           editActivityBloc.state.activity.copyWith(

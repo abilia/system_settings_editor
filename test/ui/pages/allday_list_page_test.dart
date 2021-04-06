@@ -83,8 +83,6 @@ void main() {
     );
 
     when(activitiesOccasionBlocMock.state).thenReturn(expected);
-    when(activitiesOccasionBlocMock.skip(1))
-        .thenAnswer((_) => StreamController<ActivitiesOccasionState>().stream);
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
       ..init();

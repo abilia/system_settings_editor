@@ -51,7 +51,7 @@ void main() {
       activitiesBloc.add(LoadActivities());
       // Assert
       expectLater(
-        weekCalendarBloc,
+        weekCalendarBloc.stream,
         emits(
           WeekCalendarLoaded(
             initialMinutes.firstInWeek(),
@@ -72,7 +72,7 @@ void main() {
       weekCalendarBloc.add(PreviousWeek());
       // Assert
       expectLater(
-        weekCalendarBloc,
+        weekCalendarBloc.stream,
         emitsInOrder(
           [
             WeekCalendarLoaded(
@@ -104,7 +104,7 @@ void main() {
       weekCalendarBloc.add(PreviousWeek());
       // Assert
       expectLater(
-        weekCalendarBloc,
+        weekCalendarBloc.stream,
         emitsInOrder(
           [
             WeekCalendarLoaded(

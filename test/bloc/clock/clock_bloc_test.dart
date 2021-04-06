@@ -23,13 +23,13 @@ void main() {
   test('tick returns tick', () {
     final tick = DateTime(2000);
     mockedTicker.add(tick);
-    expectLater(clockBloc, emits(tick));
+    expectLater(clockBloc.stream, emits(tick));
   });
 
   test('ticks returns ticks', () {
     final ticks = List.generate(100, (m) => DateTime(2000).add(m.minutes()));
     ticks.forEach((tick) => mockedTicker.add(tick));
-    expectLater(clockBloc, emitsInOrder(ticks));
+    expectLater(clockBloc.stream, emitsInOrder(ticks));
   });
 
   tearDown(() {

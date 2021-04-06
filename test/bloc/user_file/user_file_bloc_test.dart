@@ -63,7 +63,7 @@ void main() {
 
     // Assert
     await expectLater(
-      userFileBloc,
+      userFileBloc.stream,
       emits(UserFilesLoaded([userFile])),
     );
   });
@@ -123,7 +123,7 @@ void main() {
 
     // Assert --that added file is prioritized
     await expectLater(
-        userFileBloc,
+        userFileBloc.stream,
         emitsInOrder([
           UserFilesLoaded([userFile]),
           UserFilesLoaded([userFile, addedFile]),
@@ -156,7 +156,7 @@ void main() {
 
     // Assert
     await expectLater(
-      userFileBloc,
+      userFileBloc.stream,
       emits(UserFilesLoaded([expectedFile])),
     );
   });
@@ -206,7 +206,7 @@ void main() {
     );
 
     await expectLater(
-      userFileBloc,
+      userFileBloc.stream,
       emitsInOrder([
         UserFilesLoaded([expectedFile1]),
         UserFilesLoaded([expectedFile1, expectedFile2]),
