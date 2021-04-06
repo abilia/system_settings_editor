@@ -27,13 +27,13 @@ class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
               clockBloc.state, dayPickerBloc.state.day, memoSettingsBloc.state),
           memoSettingsBloc.state.timepillarZoom.zoomValue,
         )) {
-    _clockSubscription = clockBloc.listen((state) {
+    _clockSubscription = clockBloc.stream.listen((state) {
       add(TimepillarConditionsChangedEvent());
     });
-    _memoSettingsSubscription = memoSettingsBloc.listen((state) {
+    _memoSettingsSubscription = memoSettingsBloc.stream.listen((state) {
       add(TimepillarConditionsChangedEvent());
     });
-    _dayPickerSubscription = dayPickerBloc.listen((state) {
+    _dayPickerSubscription = dayPickerBloc.stream.listen((state) {
       add(TimepillarConditionsChangedEvent());
     });
   }

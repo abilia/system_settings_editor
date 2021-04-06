@@ -145,7 +145,7 @@ void main() {
 
       // Act
       monthCalendarBloc.add(GoToNextMonth());
-      final state = await monthCalendarBloc.first;
+      final state = await monthCalendarBloc.stream.first;
 
       // Assert
       expect(
@@ -166,7 +166,7 @@ void main() {
 
       // Assert
       expectLater(
-        monthCalendarBloc,
+        monthCalendarBloc.stream,
         emits(
           MonthCalendarState(
             firstDay: DateTime(2021, 04, 01),
@@ -275,7 +275,7 @@ void main() {
 
       // Act
       monthCalendarBloc.add(GoToPreviousMonth());
-      final state = await monthCalendarBloc.first;
+      final state = await monthCalendarBloc.stream.first;
 
       // Assert
       expect(
@@ -296,7 +296,7 @@ void main() {
 
       // Assert
       expectLater(
-        monthCalendarBloc,
+        monthCalendarBloc.stream,
         emits(
           MonthCalendarState(
             firstDay: DateTime(2021, 02, 01),
@@ -402,7 +402,7 @@ void main() {
 
       // Act
       clock.add(initial.nextDay());
-      final nextState = await monthCalendarBloc.first;
+      final nextState = await monthCalendarBloc.stream.first;
 
       week11 = nextState.weeks[2];
       day19 = week11.days[4] as MonthDay;
@@ -632,7 +632,7 @@ void main() {
 
       // Asserts
       await expectLater(
-        monthCalendarBloc,
+        monthCalendarBloc.stream,
         emits(
           MonthCalendarState(
             firstDay: DateTime(2021, 03, 01),
@@ -757,7 +757,7 @@ void main() {
 
       // Asserts
       await expectLater(
-        monthCalendarBloc,
+        monthCalendarBloc.stream,
         emits(
           MonthCalendarState(
             firstDay: firstDay,

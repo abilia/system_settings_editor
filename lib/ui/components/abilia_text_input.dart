@@ -379,7 +379,7 @@ class _PasswordInputPageState
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       BlocBuilder<LoginFormBloc, LoginFormState>(
-                        cubit: widget.loginFormBloc,
+                        bloc: widget.loginFormBloc,
                         builder: (context, state) => Expanded(
                           child: TextFormField(
                             key: TestKey.input,
@@ -438,7 +438,7 @@ class HidePasswordButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginFormBloc, LoginFormState>(
-      cubit: loginFormBloc,
+      bloc: loginFormBloc,
       builder: (context, state) => CollapsableWidget(
         collapsed: state.password.isEmpty,
         padding: padding,

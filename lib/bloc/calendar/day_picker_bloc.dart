@@ -18,7 +18,8 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
       : _initialDay = clockBloc.state.onlyDays(),
         super(DayPickerState(
             clockBloc.state.onlyDays(), startIndex, clockBloc.state)) {
-    clockBlocSubscription = clockBloc.listen((now) => add(TimeChanged(now)));
+    clockBlocSubscription =
+        clockBloc.stream.listen((now) => add(TimeChanged(now)));
   }
 
   @override

@@ -21,7 +21,7 @@ class GenericBloc extends Bloc<GenericEvent, GenericState> {
     @required PushBloc pushBloc,
     @required this.syncBloc,
   }) : super(GenericsNotLoaded()) {
-    pushSubscription = pushBloc.listen((state) {
+    pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
         add(LoadGenerics());
       }

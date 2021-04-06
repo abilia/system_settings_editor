@@ -24,13 +24,13 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
                 dayPickerBloc.state.occasion,
               )
             : DayActivitiesUninitialized()) {
-    _activitiesSubscription = activitiesBloc.listen((state) {
+    _activitiesSubscription = activitiesBloc.stream.listen((state) {
       final activityState = state;
       if (activityState is ActivitiesLoaded) {
         add(UpdateActivities(activityState.activities));
       }
     });
-    _dayPickerSubscription = dayPickerBloc
+    _dayPickerSubscription = dayPickerBloc.stream
         .listen((state) => add(UpdateDay(state.day, state.occasion)));
   }
 

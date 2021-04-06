@@ -17,7 +17,7 @@ class SortableArchiveBloc<T extends SortableData>
 
   SortableArchiveBloc({@required this.sortableBloc})
       : super(SortableArchiveState({}, {}, null)) {
-    sortableSubscription = sortableBloc.listen((sortableState) {
+    sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         add(SortablesUpdated(sortableState.sortables));
       }

@@ -40,7 +40,7 @@ void main() {
     );
     licenseBloc.add(ReloadLicenses());
     await expectLater(
-      licenseBloc,
+      licenseBloc.stream,
       emits(ValidLicense()),
     );
   });
@@ -56,7 +56,7 @@ void main() {
     );
     licenseBloc.add(ReloadLicenses());
     await expectLater(
-      licenseBloc,
+      licenseBloc.stream,
       emits(NoValidLicense()),
     );
   });

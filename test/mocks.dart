@@ -49,25 +49,34 @@ class MockTokenDb extends Mock implements TokenDb {}
 
 class MockLicenseDb extends Mock implements LicenseDb {}
 
-class MockPushBloc extends Mock implements PushBloc {}
+class MockPushBloc extends MockBloc<PushEvent, PushState> implements PushBloc {}
 
-class MockSyncBloc extends Mock implements SyncBloc {}
+class MockSyncBloc extends MockBloc<SyncEvent, SyncState> implements SyncBloc {}
 
-class MockSortableBloc extends Mock implements SortableBloc {}
+class MockSortableBloc extends MockBloc<SortableEvent, SortableState>
+    implements SortableBloc {}
 
-class MockGenericBloc extends Mock implements GenericBloc {}
+class MockGenericBloc extends MockBloc<GenericEvent, GenericState>
+    implements GenericBloc {}
 
-class MockUserFileBloc extends Mock implements UserFileBloc {}
+class MockUserFileBloc extends MockBloc<UserFileEvent, UserFileState>
+    implements UserFileBloc {}
 
-class MockTimepillarBloc extends Mock implements TimepillarBloc {}
+class MockTimepillarBloc extends MockBloc<TimepillarEvent, TimepillarState>
+    implements TimepillarBloc {}
 
-class MockAlarmBloc extends Mock implements AlarmBloc {}
+class MockAlarmBloc extends MockBloc<AlarmEvent, AlarmStateBase>
+    implements AlarmBloc {}
 
-class MockNotificationBloc extends Mock implements NotificationBloc {}
+class MockNotificationBloc extends MockBloc<NotificationAlarm, AlarmStateBase>
+    implements NotificationBloc {}
 
-class MockCalendarViewBloc extends Mock implements CalendarViewBloc {}
+class MockCalendarViewBloc
+    extends MockBloc<CalendarViewEvent, CalendarViewState>
+    implements CalendarViewBloc {}
 
-class MockLicenseBloc extends Mock implements LicenseBloc {}
+class MockLicenseBloc extends MockBloc<LicenseEvent, LicenseState>
+    implements LicenseBloc {}
 
 class MockImageArchiveBloc extends MockBloc<SortableArchiveEvent,
         SortableArchiveState<ImageArchiveData>>
@@ -160,11 +169,8 @@ class MockFlutterLocalNotificationsPlugin extends Mock
 class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesState>
     implements ActivitiesBloc {}
 
-class MockMemoplannerSettings
-    extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettingsState>
-    implements MemoplannerSettingBloc {}
-
-class MockActivitiesOccasionBloc extends Mock
+class MockActivitiesOccasionBloc
+    extends MockBloc<ActivitiesOccasionEvent, ActivitiesOccasionState>
     implements ActivitiesOccasionBloc {}
 
 class MockDayActivitiesBloc
@@ -188,14 +194,7 @@ class MockAuthenticationBloc
 class MockAlarmNavigator extends Mock implements AlarmNavigator {}
 
 class MockBloc<E, S> extends Mock {
-  @override
-  dynamic noSuchMethod(Invocation invocation, [Object returnValue]) {
-    final memberName = invocation.memberName.toString().split('"')[1];
-    final result = super.noSuchMethod(invocation);
-    return (memberName == 'skip' && result == null)
-        ? Stream<S>.empty()
-        : result;
-  }
+  Stream<S> get stream => Stream.empty();
 }
 
 extension OurEnterText on WidgetTester {

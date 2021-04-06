@@ -24,7 +24,7 @@ void main() {
     final nextMin = clockBloc?.state?.add(Duration(minutes: 1));
     if (nextMin != null) {
       mockedTicker?.add(nextMin);
-      await clockBloc.firstWhere((d) => d == nextMin);
+      await clockBloc.stream.firstWhere((d) => d == nextMin);
     }
   }
 
@@ -47,11 +47,11 @@ void main() {
         .thenAnswer((_) => Future.value([nowActivity]));
     // Act
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.firstWhere((s) => s is ActivitiesLoaded);
     await _tick();
     // Assert
     await expectLater(
-      alarmBloc,
+      alarmBloc.stream,
       emits(AlarmState(StartAlarm(nowActivity, day))),
     );
   });
@@ -72,7 +72,7 @@ void main() {
     alarmBloc.close();
     // Assert
     await expectLater(
-      alarmBloc,
+      alarmBloc.stream,
       neverEmits(AlarmState(StartAlarm(nowActivity, day))),
     );
   });
@@ -85,12 +85,12 @@ void main() {
     // Act
     await _tick();
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.any((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
     // ignore: unawaited_futures
     alarmBloc.close();
     // Assert
     await expectLater(
-      alarmBloc,
+      alarmBloc.stream,
       neverEmits(AlarmState(StartAlarm(soonActivity, day))),
     );
   });
@@ -102,12 +102,12 @@ void main() {
         .thenAnswer((_) => Future.value([soonActivity]));
     // Act
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.any((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
     // ignore: unawaited_futures
     alarmBloc.close();
     // Assert
     await expectLater(
-      alarmBloc,
+      alarmBloc.stream,
       neverEmits(AlarmState(StartAlarm(soonActivity, day))),
     );
   });
@@ -119,11 +119,11 @@ void main() {
         .thenAnswer((_) => Future.value([soonActivity]));
     // Act
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.any((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
     await _tick();
     // Assert
     await expectLater(
-      alarmBloc,
+      alarmBloc.stream,
       emits(AlarmState(StartAlarm(soonActivity, day))),
     );
   });
@@ -136,10 +136,10 @@ void main() {
         .thenAnswer((_) => Future.value([soonActivity, soonActivity2]));
     // Act
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.any((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
     // Assert
     final futureExpect = expectLater(
-      alarmBloc,
+      alarmBloc.stream,
       emitsInAnyOrder([
         AlarmState(StartAlarm(soonActivity, day)),
         AlarmState(StartAlarm(soonActivity2, day)),
@@ -159,12 +159,12 @@ void main() {
 
     // Act
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.any((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
     await _tick();
 
     // Assert
     await expectLater(
-      alarmBloc,
+      alarmBloc.stream,
       emits(AlarmState(StartAlarm(nextMinActivity, day))),
     );
 
@@ -172,7 +172,7 @@ void main() {
     await _tick();
     // Assert
     await expectLater(
-      alarmBloc,
+      alarmBloc.stream,
       emits(AlarmState(StartAlarm(inTwoMinActivity, day))),
     );
   });
@@ -192,8 +192,8 @@ void main() {
     await _tick();
 
     // Assert
-    await expectLater(
-        alarmBloc, emits(AlarmState(StartAlarm(inTwoMinutesActivity, day))));
+    await expectLater(alarmBloc.stream,
+        emits(AlarmState(StartAlarm(inTwoMinutesActivity, day))));
   });
 
   test('Recurring weekly alarms shows', () async {
@@ -203,11 +203,11 @@ void main() {
         .thenAnswer((_) => Future.value([recursThursday]));
     // Act
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.any((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
     await _tick();
     // Assert
     await expectLater(
-        alarmBloc, emits(AlarmState(StartAlarm(recursThursday, day))));
+        alarmBloc.stream, emits(AlarmState(StartAlarm(recursThursday, day))));
   });
 
   test('Recurring monthly alarms shows', () async {
@@ -220,11 +220,11 @@ void main() {
         .thenAnswer((_) => Future.value([recursTheThisDayOfMonth]));
     // Act
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.any((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
     await _tick();
     // Assert
-    await expectLater(
-        alarmBloc, emits(AlarmState(StartAlarm(recursTheThisDayOfMonth, day))));
+    await expectLater(alarmBloc.stream,
+        emits(AlarmState(StartAlarm(recursTheThisDayOfMonth, day))));
   });
 
   test('Recurring yearly alarms shows', () async {
@@ -234,11 +234,11 @@ void main() {
         .thenAnswer((_) => Future.value([recursTheThisDayOfYear]));
     // Act
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.any((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
     await _tick();
     // Assert
-    await expectLater(
-        alarmBloc, emits(AlarmState(StartAlarm(recursTheThisDayOfYear, day))));
+    await expectLater(alarmBloc.stream,
+        emits(AlarmState(StartAlarm(recursTheThisDayOfYear, day))));
   });
 
   test('Alarm on EndTime shows', () async {
@@ -248,11 +248,11 @@ void main() {
         .thenAnswer((_) => Future.value([activityEnding]));
     // Act
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.any((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
     await _tick();
     // Assert
     await expectLater(
-        alarmBloc,
+        alarmBloc.stream,
         emits(
           AlarmState(EndAlarm(activityEnding, day)),
         ));
@@ -269,16 +269,17 @@ void main() {
         .thenAnswer((_) => Future.value([nextAlarm, afterThatAlarm]));
     // Act
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.any((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
     await _tick();
 
     // Assert
-    await expectLater(alarmBloc, emits(AlarmState(StartAlarm(nextAlarm, day))));
+    await expectLater(
+        alarmBloc.stream, emits(AlarmState(StartAlarm(nextAlarm, day))));
 
     // Act
     await _tick();
     await expectLater(
-        alarmBloc, emits(AlarmState(StartAlarm(afterThatAlarm, day))));
+        alarmBloc.stream, emits(AlarmState(StartAlarm(afterThatAlarm, day))));
   });
 
   test('Reminders shows', () async {
@@ -290,11 +291,11 @@ void main() {
         .thenAnswer((_) => Future.value([remind1HourBefore]));
     // Act
     activitiesBloc.add(LoadActivities());
-    await activitiesBloc.any((s) => s is ActivitiesLoaded);
+    await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
     await _tick();
     // Assert
     await expectLater(
-      alarmBloc,
+      alarmBloc.stream,
       emits(
         AlarmState(
             ReminderBefore(remind1HourBefore, day, reminder: reminderTime)),

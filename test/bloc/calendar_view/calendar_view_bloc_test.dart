@@ -18,7 +18,7 @@ void main() {
   test('Change calendar view', () async {
     calendarViewBloc.add(CalendarTypeChanged(DayCalendarType.TIMEPILLAR));
     await expectLater(
-      calendarViewBloc,
+      calendarViewBloc.stream,
       emits(CalendarViewState(DayCalendarType.TIMEPILLAR)),
     );
   });
@@ -26,7 +26,7 @@ void main() {
   test('Toggle left category', () async {
     calendarViewBloc.add(ToggleLeft());
     await expectLater(
-      calendarViewBloc,
+      calendarViewBloc.stream,
       emits(
         CalendarViewState(
           DayCalendarType.LIST,
@@ -38,7 +38,7 @@ void main() {
   test('Toggle right category', () async {
     calendarViewBloc.add(ToggleRight());
     await expectLater(
-      calendarViewBloc,
+      calendarViewBloc.stream,
       emits(
         CalendarViewState(
           DayCalendarType.LIST,

@@ -60,7 +60,7 @@ void main() {
     scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
     // Assert
-    await expectLater(scrollPositionBloc, emits(Unready()));
+    await expectLater(scrollPositionBloc.stream, emits(Unready()));
   });
 
   test('InView', () async {
@@ -74,7 +74,7 @@ void main() {
 
     // Assert
     await expectLater(
-      scrollPositionBloc,
+      scrollPositionBloc.stream,
       emits(InView(mockScrollController)),
     );
   });
@@ -90,7 +90,7 @@ void main() {
 
     // Assert
     await expectLater(
-      scrollPositionBloc,
+      scrollPositionBloc.stream,
       emits(OutOfView(mockScrollController)),
     );
   });
@@ -107,7 +107,7 @@ void main() {
 
     // Assert
     await expectLater(
-      scrollPositionBloc,
+      scrollPositionBloc.stream,
       emits(InView(mockScrollController)),
     );
   });
@@ -124,7 +124,7 @@ void main() {
 
     // Assert
     await expectLater(
-      scrollPositionBloc,
+      scrollPositionBloc.stream,
       emits(InView(mockScrollController)),
     );
   });
@@ -141,7 +141,7 @@ void main() {
 
     // Assert
     await expectLater(
-      scrollPositionBloc,
+      scrollPositionBloc.stream,
       emits(OutOfView(mockScrollController)),
     );
   });
@@ -158,7 +158,7 @@ void main() {
 
     // Assert
     await expectLater(
-      scrollPositionBloc,
+      scrollPositionBloc.stream,
       emits(OutOfView(mockScrollController)),
     );
   });
@@ -177,7 +177,7 @@ void main() {
 
       // Assert
       await expectLater(
-        scrollPositionBloc,
+        scrollPositionBloc.stream,
         emits(InView(mockScrollController)),
       );
 
@@ -189,7 +189,7 @@ void main() {
 
       // Assert
       await expectLater(
-        scrollPositionBloc,
+        scrollPositionBloc.stream,
         emits(OutOfView(mockScrollController)),
       );
     },
@@ -207,7 +207,7 @@ void main() {
 
     // Assert
     await expectLater(
-      scrollPositionBloc,
+      scrollPositionBloc.stream,
       emits(InView(mockScrollController)),
     );
 
@@ -219,7 +219,7 @@ void main() {
 
     // Assert
     await expectLater(
-      scrollPositionBloc,
+      scrollPositionBloc.stream,
       emits(OutOfView(mockScrollController)),
     );
   });
@@ -254,7 +254,7 @@ void main() {
 
       // Assert
       await expectLater(
-        scrollPositionBloc,
+        scrollPositionBloc.stream,
         emits(InView(mockScrollController, initialTime)),
       );
     });
@@ -272,7 +272,7 @@ void main() {
 
       // Assert
       await expectLater(
-        scrollPositionBloc,
+        scrollPositionBloc.stream,
         emitsInOrder([
           InView(mockScrollController, initialTime),
           OutOfView(mockScrollController, initialTime),
@@ -300,7 +300,7 @@ void main() {
           createdTime: initialTime));
       // Assert
       await expectLater(
-        scrollPositionBloc,
+        scrollPositionBloc.stream,
         emits(InView(mockScrollController, initialTime)),
       );
 
@@ -308,7 +308,7 @@ void main() {
       ticker.add(initialTime.add(1.hours() + 30.minutes()));
       // Assert
       await expectLater(
-        scrollPositionBloc,
+        scrollPositionBloc.stream,
         emits(OutOfView(mockScrollController, initialTime)),
       );
 

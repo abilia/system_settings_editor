@@ -54,7 +54,7 @@ void main() {
       activitiesBloc.add(LoadActivities());
       // Assert
       expectLater(
-        activitiesOccasionBloc,
+        activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
@@ -83,7 +83,7 @@ void main() {
 
       // Assert
       expectLater(
-        activitiesOccasionBloc,
+        activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
             activities: [
@@ -120,7 +120,7 @@ void main() {
 
       // Assert
       expectLater(
-        activitiesOccasionBloc,
+        activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
@@ -160,7 +160,7 @@ void main() {
 
       // Assert
       expectLater(
-        activitiesOccasionBloc,
+        activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
@@ -197,14 +197,14 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(PreviousDay());
       dayPickerBloc.add(PreviousDay());
 
       // Assert
       await expectLater(
-        activitiesOccasionBloc,
+        activitiesOccasionBloc.stream,
         emitsInOrder([
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[],
@@ -262,7 +262,7 @@ void main() {
       dayPickerBloc.add(NextDay());
       //Assert
       expectLater(
-        activitiesOccasionBloc,
+        activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
             activities: [
@@ -300,7 +300,7 @@ void main() {
       dayPickerBloc.add(PreviousDay());
       //Assert
       expectLater(
-        activitiesOccasionBloc,
+        activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
             activities: [
@@ -332,7 +332,7 @@ void main() {
       activitiesBloc.add(LoadActivities());
 
       expectLater(
-        activitiesOccasionBloc,
+        activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
@@ -358,7 +358,7 @@ void main() {
 
       // Assert
       expectLater(
-        activitiesOccasionBloc,
+        activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
@@ -389,7 +389,7 @@ void main() {
 
       // Assert
       await expectLater(
-        activitiesOccasionBloc,
+        activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
@@ -412,7 +412,7 @@ void main() {
 
       // Assert
       await expectLater(
-        activitiesOccasionBloc,
+        activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
             activities: <ActivityOccasion>[
@@ -451,7 +451,7 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       dayPickerBloc.add(PreviousDay());
       dayPickerBloc.add(GoTo(day: friday));
       dayPickerBloc.add(NextDay());
@@ -460,7 +460,7 @@ void main() {
 
       // Assert
       await expectLater(
-          activitiesOccasionBloc,
+          activitiesOccasionBloc.stream,
           emitsInOrder([
             // Tuesday
             ActivitiesOccasionLoaded(
@@ -561,14 +561,14 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       dayPickerBloc.add(PreviousDay());
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
 
       // Assert
       await expectLater(
-          activitiesOccasionBloc,
+          activitiesOccasionBloc.stream,
           emitsInOrder([
             // Tuesday
             ActivitiesOccasionLoaded(
@@ -648,12 +648,12 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       dayPickerBloc.add(NextDay());
 
       // Assert
       await expectLater(
-          activitiesOccasionBloc,
+          activitiesOccasionBloc.stream,
           emitsInOrder([
             // Tuesday
             ActivitiesOccasionLoaded(
@@ -718,11 +718,11 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.any((s) => s is ActivitiesLoaded);
+      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
 
       // Assert
       await expectLater(
-          activitiesOccasionBloc,
+          activitiesOccasionBloc.stream,
           emitsInOrder([
             // Tuesday
             ActivitiesOccasionLoaded(

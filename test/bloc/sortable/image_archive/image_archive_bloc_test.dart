@@ -25,7 +25,7 @@ void main() {
     final folderId = '123';
     imageArchiveBloc.add(FolderChanged(folderId));
     await expectLater(
-      imageArchiveBloc,
+      imageArchiveBloc.stream,
       emits(SortableArchiveState<ImageArchiveData>({}, {}, folderId)),
     );
   });
@@ -38,7 +38,7 @@ void main() {
     imageArchiveBloc
         .add(SortablesUpdated([imageArchiveSortable, checklistSortable]));
     await expectLater(
-      imageArchiveBloc,
+      imageArchiveBloc.stream,
       emits(stateFromSortables([imageArchiveSortable])),
     );
   });
@@ -59,7 +59,7 @@ void main() {
     imageArchiveBloc.add(FolderChanged(imageArchiveFolder2.id));
     imageArchiveBloc.add(NavigateUp());
     await expectLater(
-      imageArchiveBloc,
+      imageArchiveBloc.stream,
       emitsInOrder([
         stateFromSortables([imageArchiveFolder1, imageArchiveFolder2]),
         stateFromSortables(

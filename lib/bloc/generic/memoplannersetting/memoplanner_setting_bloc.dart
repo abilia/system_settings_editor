@@ -24,7 +24,7 @@ class MemoplannerSettingBloc
                 ),
               )
             : MemoplannerSettingsNotLoaded()) {
-    _genericSubscription = genericBloc.listen((state) {
+    _genericSubscription = genericBloc.stream.listen((state) {
       if (state is GenericsLoaded) {
         add(UpdateMemoplannerSettings(state.generics));
       } else if (state is GenericsLoadedFailed) {

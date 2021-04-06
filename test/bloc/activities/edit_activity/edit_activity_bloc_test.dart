@@ -94,7 +94,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emits(UnstoredActivityState(activityWithTitle, timeInterval)),
     );
   });
@@ -134,7 +134,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         UnstoredActivityState(activity, timeInterval).failSave({
           SaveError.NO_TITLE_OR_IMAGE,
@@ -189,7 +189,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         StoredActivityState(activityAsFullDay, timeInterval, aDay),
         StoredActivityState(activityExpectedToBeSaved, timeInterval,
@@ -219,7 +219,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emits(UnstoredActivityState(activity, expectedTimeInterval)),
     );
   });
@@ -269,7 +269,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder(
         [
           UnstoredActivityState(activity, expectedTimeInterval1),
@@ -328,7 +328,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder(
         [
           StoredActivityState(activity, expectedNewTimeInterval, aDay),
@@ -383,7 +383,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         StoredActivityState(activity, expectedNewTimeInterval, aDay),
         StoredActivityState(expetedNewActivity, expectedNewTimeInterval, aDay)
@@ -431,7 +431,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         StoredActivityState(with15MinReminder, timeInterval, aDay),
         StoredActivityState(with15MinAnd1HourReminder, timeInterval, aDay),
@@ -485,7 +485,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         StoredActivityState(activity, expectedNewTimeInterval, aDay),
         StoredActivityState(expectedNewActivity, expectedNewTimeInterval, aDay)
@@ -526,7 +526,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder(
         [
           UnstoredActivityState(
@@ -580,7 +580,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         StoredActivityState(
           withChecklist,
@@ -639,7 +639,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emits(
         StoredActivityState(
           activityWithEmptyChecklist,
@@ -682,7 +682,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emits(
         StoredActivityState(
           activityWithEmptyNote,
@@ -725,7 +725,7 @@ void main() {
 
     // Assert
     await expectLater(
-        editActivityBloc,
+        editActivityBloc.stream,
         emitsInOrder([
           UnstoredActivityState(
             originalActivity,
@@ -772,7 +772,7 @@ void main() {
 
         // Assert
         await expectLater(
-            editActivityBloc,
+            editActivityBloc.stream,
             emitsInOrder([
               UnstoredActivityState(
                 originalActivity,
@@ -825,7 +825,7 @@ void main() {
 
         // Assert
         await expectLater(
-            editActivityBloc,
+            editActivityBloc.stream,
             emitsInOrder([
               UnstoredActivityState(
                 originalActivity,
@@ -878,7 +878,7 @@ void main() {
 
         // Assert
         await expectLater(
-            editActivityBloc,
+            editActivityBloc.stream,
             emitsInOrder([
               UnstoredActivityState(
                 originalActivity,
@@ -940,7 +940,7 @@ void main() {
 
         // Assert
         await expectLater(
-            editActivityBloc,
+            editActivityBloc.stream,
             emitsInOrder([
               StoredActivityState(
                 activityWithNewTitle,
@@ -995,7 +995,7 @@ void main() {
 
         // Assert
         await expectLater(
-            editActivityBloc,
+            editActivityBloc.stream,
             emitsInOrder([
               UnstoredActivityState(
                 originalActivity,
@@ -1048,7 +1048,7 @@ void main() {
 
         // Assert
         await expectLater(
-            editActivityBloc,
+            editActivityBloc.stream,
             emitsInOrder([
               UnstoredActivityState(originalActivity, timeIntervall),
               UnstoredActivityState(
@@ -1096,7 +1096,7 @@ void main() {
 
         // Assert
         await expectLater(
-            editActivityBloc,
+            editActivityBloc.stream,
             emitsInOrder([
               StoredActivityState(
                 titleChanged,
@@ -1139,7 +1139,7 @@ void main() {
 
         // Assert
         await expectLater(
-            editActivityBloc,
+            editActivityBloc.stream,
             emitsInOrder([
               UnstoredActivityState(
                 activity,
@@ -1184,7 +1184,7 @@ void main() {
 
         // Assert
         await expectLater(
-            editActivityBloc,
+            editActivityBloc.stream,
             emitsInOrder([
               UnstoredActivityState(
                 originalActivity,
@@ -1230,7 +1230,7 @@ void main() {
 
         // Assert
         await expectLater(
-            editActivityBloc,
+            editActivityBloc.stream,
             emitsInOrder([
               StoredActivityState(
                 titleChanged,
@@ -1271,7 +1271,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder(
         [
           StoredActivityState(
@@ -1316,7 +1316,7 @@ void main() {
 
     // Assert
     await expectLater(
-        editActivityBloc,
+        editActivityBloc.stream,
         emitsInOrder([
           StoredActivityState(
             activityWithNewTitle,

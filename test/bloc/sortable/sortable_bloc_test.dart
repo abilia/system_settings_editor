@@ -27,7 +27,7 @@ void main() {
     when(mockSortableRepository.load()).thenAnswer((_) => Future.value([]));
     sortableBloc.add(LoadSortables());
     await expectLater(
-      sortableBloc,
+      sortableBloc.stream,
       emits(SortablesLoaded(sortables: [])),
     );
   });
@@ -36,7 +36,7 @@ void main() {
     when(mockSortableRepository.load()).thenThrow(Exception());
     sortableBloc.add(LoadSortables());
     await expectLater(
-      sortableBloc,
+      sortableBloc.stream,
       emits(SortablesLoadedFailed()),
     );
   });
@@ -61,7 +61,7 @@ void main() {
 
     // Assert
     await expectLater(
-      sortableBloc,
+      sortableBloc.stream,
       emitsInOrder([
         SortablesLoaded(sortables: [uploadFolder]),
         isA<SortablesLoaded>(),

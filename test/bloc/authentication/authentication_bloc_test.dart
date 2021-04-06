@@ -38,7 +38,7 @@ void main() {
 
       // Assert
       expectLater(
-        authenticationBloc,
+        authenticationBloc.stream,
         emits(Unauthenticated(userRepository)),
       );
     });
@@ -51,7 +51,7 @@ void main() {
 
       // Assert
       await expectLater(
-        authenticationBloc,
+        authenticationBloc.stream,
         emitsInOrder([
           Unauthenticated(userRepository),
           Authenticated(
@@ -72,7 +72,7 @@ void main() {
 
       // Assert
       await expectLater(
-        authenticationBloc,
+        authenticationBloc.stream,
         emitsInOrder([
           Unauthenticated(userRepository),
           Authenticated(
@@ -155,7 +155,7 @@ void main() {
 
       // Assert
       await expectLater(
-        authenticationBloc,
+        authenticationBloc.stream,
         emits(
           Unauthenticated(mockedUserRepository),
         ),
