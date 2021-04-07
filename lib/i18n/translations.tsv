@@ -197,6 +197,13 @@ activityView	Activity View	Aktivitetsvy	Aktivitetssiden	Activiteitsweergave	Akti
 addActivity	Add activity	Lägga in aktivitet	Indsæt aktivitet	Activiteit toevoegen	Lisää aktiviteetti	Aktivität hinzufügen	Legg inn aktivitet
 alarmSettings	Alarm settings	Larminställningar	Alarmindstillinger	Alarminstellingen	Hälytysasetukset	Alarmeinstellungen	Alarminnstillinger
 
+## Functions Settings							
+toolbarSettingsHint	Views displayed in the Toolbar	Visningar visas i verktygsfältet	Visninger vises i værktøjslinjen	Weergaven weergegeven in de werkbalk	Näkymät näkyvät työkalupalkissa	In der Symbolleiste angezeigte Ansichten	Visninger som vises på verktøylinjen
+homeScreenSettingsHint	View displayed when the home button is pressed	Visad vy vid tryck på hemknappen	Side der bliver vist ved tryk på hjemknappen	Weergave getoond als de homeknop wordt ingedrukt	Näkymä näytetään, kun aloitussivun painiketta painetaan	Wird nach Drücken der Schaltfläche Home angezeigt	Vindu som vil bli vist ved trykk på hjemknappen
+timeoutSettingsHint	Returns to the home screen after a period of inactivity.	Återgång till startsidan efter en tids inaktivitet.	Gå tilbage til startsiden, efter en periode med inaktivitet.	Gaat terug naar het thuisscherm na een periode van inactiviteit.	Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen.	Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität.	Återgång till startsidan efter en tids inaktivitet.
+noTimeout	No timeout	Ingen timeout	Ingen timeout	Geen time-out	Ei aikakatkaisua	Keine Zeitüberschreitung	Ingen timeout
+activateScreensaver	Activate Screensaver	Aktivera skärmsläckare	Aktivér pauseskærm	Screensaver activeren	Aktivoi näytönsäästäjä	Bildschirmschoner aktivieren	Aktiver skjermsparer
+
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser
 notifications	Notifications	Notiser	Notifikationer	Meldingen	Ilmoitukset	Benachrichtigungen	Notifikasjoner

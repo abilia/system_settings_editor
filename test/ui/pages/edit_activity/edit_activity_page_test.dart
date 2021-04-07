@@ -517,8 +517,8 @@ void main() {
       await tester.pumpAndSettle();
       final reminderSwitchFinder = find.byIcon(AbiliaIcons.handi_reminder);
       final reminder15MinFinder =
-          find.text(15.minutes().toReminderString(translate));
-      final reminderDayFinder = find.text(1.days().toReminderString(translate));
+          find.text(15.minutes().toDurationString(translate));
+      final reminderDayFinder = find.text(1.days().toDurationString(translate));
       final remindersAllSelected =
           find.byIcon(AbiliaIcons.radiocheckbox_selected);
       final remindersAll = find.byType(SelectableField);
@@ -2449,7 +2449,7 @@ text''';
         1.hours(),
         2.hours(),
         1.days(),
-      ].map((r) => r.toReminderString(translate));
+      ].map((r) => r.toDurationString(translate));
 
       for (final t in reminders) {
         await tester.verifyTts(find.text(t), exact: t);

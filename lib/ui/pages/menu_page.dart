@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({Key key}) : super(key: key);
@@ -142,7 +143,7 @@ class MenuItemButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = style.textStyle.resolve({MaterialState.pressed});
     return Tts(
-      data: text.replaceAll('-\n', ''),
+      data: text.singleLine,
       child: AspectRatio(
         aspectRatio: 1,
         child: TextButton(

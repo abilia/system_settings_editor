@@ -20,7 +20,6 @@ class CalendarBottomBar extends StatelessWidget {
             children: <Widget>[
               AddActivityButton(day: state.day),
               AbiliaTabBar(
-                collapsedCondition: (i) => false,
                 tabs: <Widget>[
                   Icon(AbiliaIcons.day),
                   Icon(AbiliaIcons.week),

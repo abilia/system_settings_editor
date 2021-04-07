@@ -9,12 +9,14 @@ extension IntToDuration on int {
 }
 
 extension DurationExtensions on Duration {
-  String toReminderString(Translated translater) {
+  String toDurationString(Translated translater, {bool shortMin = true}) {
     if (inDays > 1) return '$inDays ${translater.days}';
     if (inDays == 1) return '$inDays ${translater.day}';
     if (inHours > 1) return '$inHours ${translater.hours}';
     if (inHours == 1) return '$inHours ${translater.hour}';
-    return '$inMinutes ${translater.min}'.trim();
+    if (shortMin) return '$inMinutes ${translater.min}';
+    if (inMinutes == 1) return '$inMinutes ${translater.minute}';
+    return '$inMinutes ${translater.minutes}';
   }
 
   String toUntilString(Translated translater) {

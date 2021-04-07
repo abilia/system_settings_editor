@@ -280,7 +280,7 @@ class Reminders extends StatelessWidget {
           .map(
             (r) => SelectableField(
               text: Text(
-                r.toReminderString(translator),
+                r.toDurationString(translator),
                 style:
                     Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
               ),
