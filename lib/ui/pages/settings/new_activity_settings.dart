@@ -6,9 +6,8 @@ class NewActivitySettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsBasePage(
-      widgets: [],
-      icon: AbiliaIcons.new_icon,
-      title: Translator.of(context).translate.newActivity
-    );
+        widgets: [],
+        icon: AbiliaIcons.new_icon,
+        title: Translator.of(context).translate.newActivity);
   }
 }
