@@ -185,6 +185,10 @@ zoom	Timeline zoom	Tidslinjens zoom	Zoom	Zoom tijdlijn	Aikajanan zoomaus	Zeitstr
 small	Small	Liten	Lille	Klein	Pieni	Klein	Liten
 medium	Medium	Mellan	Mellem	Medium	Keskikokoinen	Mittel	Mellom
 large	Large	Stor	Stor	Groot	Suuri	Groß	Stor
+system	System	System	System	Systeem	Järjestelmä	System	System
+calendar	Calendar	Kalender	Kalender	Kalender	Kalenteri	Kalender	Kalender
+functions	Functions	Funktioner	Funktioner	Functies	Toiminnot	Funktionen	Funksjoner
+imagePicker	Image picker	Bildväljare	Billedvalg	Afbeeldingkiezer	Kuvanvalitsin	Bildauswahl	Bildevalg
 
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser

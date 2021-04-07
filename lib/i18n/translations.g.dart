@@ -348,6 +348,14 @@ abstract class Translated {
 
   final String large = 'Large';
 
+  final String system = 'System';
+
+  final String calendar = 'Calendar';
+
+  final String functions = 'Functions';
+
+  final String imagePicker = 'Image picker';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -905,6 +913,18 @@ class SV extends Translated {
 
   @override
   final String large = 'Stor';
+
+  @override
+  final String system = 'System';
+
+  @override
+  final String calendar = 'Kalender';
+
+  @override
+  final String functions = 'Funktioner';
+
+  @override
+  final String imagePicker = 'Bildväljare';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1489,6 +1509,18 @@ class DA extends Translated {
   final String large = 'Stor';
 
   @override
+  final String system = 'System';
+
+  @override
+  final String calendar = 'Kalender';
+
+  @override
+  final String functions = 'Funktioner';
+
+  @override
+  final String imagePicker = 'Billedvalg';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -2066,6 +2098,18 @@ class NL extends Translated {
 
   @override
   final String large = 'Groot';
+
+  @override
+  final String system = 'Systeem';
+
+  @override
+  final String calendar = 'Kalender';
+
+  @override
+  final String functions = 'Functies';
+
+  @override
+  final String imagePicker = 'Afbeeldingkiezer';
 
   @override
   final String permissions = 'Rechten';
@@ -2646,6 +2690,18 @@ class FI extends Translated {
 
   @override
   final String large = 'Suuri';
+
+  @override
+  final String system = 'Järjestelmä';
+
+  @override
+  final String calendar = 'Kalenteri';
+
+  @override
+  final String functions = 'Toiminnot';
+
+  @override
+  final String imagePicker = 'Kuvanvalitsin';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3229,6 +3285,18 @@ class DE extends Translated {
   final String large = 'Groß';
 
   @override
+  final String system = 'System';
+
+  @override
+  final String calendar = 'Kalender';
+
+  @override
+  final String functions = 'Funktionen';
+
+  @override
+  final String imagePicker = 'Bildauswahl';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -3808,6 +3876,18 @@ class NB extends Translated {
 
   @override
   final String large = 'Stor';
+
+  @override
+  final String system = 'System';
+
+  @override
+  final String calendar = 'Kalender';
+
+  @override
+  final String functions = 'Funksjoner';
+
+  @override
+  final String imagePicker = 'Bildevalg';
 
   @override
   final String permissions = 'Tillatelser';

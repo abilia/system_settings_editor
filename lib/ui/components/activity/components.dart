@@ -136,11 +136,10 @@ class PickField extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (trailing != null)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: trailing ?? trailingArrow,
-                  ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: trailing ?? trailingArrow,
+                ),
               ],
             ),
           ),

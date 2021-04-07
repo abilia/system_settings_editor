@@ -1,11 +1,12 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/fakes/all.dart';
 
 import 'package:seagull/ui/all.dart';
 
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key key}) : super(key: key);
+class SystemSettingsPage extends StatelessWidget {
+  const SystemSettingsPage({Key key}) : super(key: key);
   final widgets = const <Widget>[
     TextToSpeechSwitch(),
     PermissionPickField(),
@@ -17,9 +18,8 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.settings,
-        iconData: AbiliaIcons.settings,
-      ),
+          title: Translator.of(context).translate.system,
+          iconData: AbiliaIcons.technical_settings),
       body: ListView.separated(
         padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
         itemBuilder: (context, i) => widgets[i],
