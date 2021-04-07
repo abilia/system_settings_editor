@@ -189,6 +189,13 @@ system	System	System	System	Systeem	Järjestelmä	System	System
 calendar	Calendar	Kalender	Kalender	Kalender	Kalenteri	Kalender	Kalender
 functions	Functions	Funktioner	Funktioner	Functies	Toiminnot	Funktionen	Funksjoner
 imagePicker	Image picker	Bildväljare	Billedvalg	Afbeeldingkiezer	Kuvanvalitsin	Bildauswahl	Bildevalg
+general	General	Generellt	Generelt	Algemeen	Yleistä	Allgemeines	Generelt
+dayCalendar	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
+weekCalendar	Week Calendar	Veckokalender	Ugekalender	Weekkalender	Viikkokalenteri	Wochenkalender	Ukekalender
+monthCalendar	Month Calendar	Månadskalender	Månedskalender	Maandkalender	Kuukausikalenteri	Monatskalender	Månedskalender
+activityView	Activity View	Aktivitetsvy	Aktivitetssiden	Activiteitsweergave	Aktiviteettinäkymä	Aktivitätsanzeige	Aktivitetsvindu
+addActivity	Add activity	Lägga in aktivitet	Indsæt aktivitet	Activiteit toevoegen	Lisää aktiviteetti	Aktivität hinzufügen	Legg inn aktivitet
+alarmSettings	Alarm settings	Larminställningar	Alarmindstillinger	Alarminstellingen	Hälytysasetukset	Alarmeinstellungen	Alarminnstillinger
 
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser

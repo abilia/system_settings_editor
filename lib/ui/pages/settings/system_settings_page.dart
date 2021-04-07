@@ -7,28 +7,19 @@ import 'package:seagull/ui/all.dart';
 
 class SystemSettingsPage extends StatelessWidget {
   const SystemSettingsPage({Key key}) : super(key: key);
-  final widgets = const <Widget>[
-    TextToSpeechSwitch(),
-    PermissionPickField(),
-    AboutPickField(),
-    LogoutPickField(),
-    if (Config.alpha) FakeTicker(),
-  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AbiliaAppBar(
-          title: Translator.of(context).translate.system,
-          iconData: AbiliaIcons.technical_settings),
-      body: ListView.separated(
-        padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
-        itemBuilder: (context, i) => widgets[i],
-        itemCount: widgets.length,
-        separatorBuilder: (context, index) => SizedBox(height: 8.0.s),
-      ),
-      bottomNavigationBar: const BottomNavigation(
-        backNavigationWidget: BackButton(),
-      ),
+    return SettingsBasePage(
+      widgets: [
+        TextToSpeechSwitch(),
+        PermissionPickField(),
+        AboutPickField(),
+        LogoutPickField(),
+        if (Config.alpha) FakeTicker(),
+      ],
+      icon: AbiliaIcons.technical_settings,
+      title: Translator.of(context).translate.system,
     );
   }
 }

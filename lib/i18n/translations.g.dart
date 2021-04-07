@@ -356,6 +356,20 @@ abstract class Translated {
 
   final String imagePicker = 'Image picker';
 
+  final String general = 'General';
+
+  final String dayCalendar = 'Day Calendar';
+
+  final String weekCalendar = 'Week Calendar';
+
+  final String monthCalendar = 'Month Calendar';
+
+  final String activityView = 'Activity View';
+
+  final String addActivity = 'Add activity';
+
+  final String alarmSettings = 'Alarm settings';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -925,6 +939,27 @@ class SV extends Translated {
 
   @override
   final String imagePicker = 'Bildväljare';
+
+  @override
+  final String general = 'Generellt';
+
+  @override
+  final String dayCalendar = 'Dagkalender';
+
+  @override
+  final String weekCalendar = 'Veckokalender';
+
+  @override
+  final String monthCalendar = 'Månadskalender';
+
+  @override
+  final String activityView = 'Aktivitetsvy';
+
+  @override
+  final String addActivity = 'Lägga in aktivitet';
+
+  @override
+  final String alarmSettings = 'Larminställningar';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1521,6 +1556,27 @@ class DA extends Translated {
   final String imagePicker = 'Billedvalg';
 
   @override
+  final String general = 'Generelt';
+
+  @override
+  final String dayCalendar = 'Dagkalender';
+
+  @override
+  final String weekCalendar = 'Ugekalender';
+
+  @override
+  final String monthCalendar = 'Månedskalender';
+
+  @override
+  final String activityView = 'Aktivitetssiden';
+
+  @override
+  final String addActivity = 'Indsæt aktivitet';
+
+  @override
+  final String alarmSettings = 'Alarmindstillinger';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -2110,6 +2166,27 @@ class NL extends Translated {
 
   @override
   final String imagePicker = 'Afbeeldingkiezer';
+
+  @override
+  final String general = 'Algemeen';
+
+  @override
+  final String dayCalendar = 'Dagkalender';
+
+  @override
+  final String weekCalendar = 'Weekkalender';
+
+  @override
+  final String monthCalendar = 'Maandkalender';
+
+  @override
+  final String activityView = 'Activiteitsweergave';
+
+  @override
+  final String addActivity = 'Activiteit toevoegen';
+
+  @override
+  final String alarmSettings = 'Alarminstellingen';
 
   @override
   final String permissions = 'Rechten';
@@ -2702,6 +2779,27 @@ class FI extends Translated {
 
   @override
   final String imagePicker = 'Kuvanvalitsin';
+
+  @override
+  final String general = 'Yleistä';
+
+  @override
+  final String dayCalendar = 'Päiväkalenteri';
+
+  @override
+  final String weekCalendar = 'Viikkokalenteri';
+
+  @override
+  final String monthCalendar = 'Kuukausikalenteri';
+
+  @override
+  final String activityView = 'Aktiviteettinäkymä';
+
+  @override
+  final String addActivity = 'Lisää aktiviteetti';
+
+  @override
+  final String alarmSettings = 'Hälytysasetukset';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3297,6 +3395,27 @@ class DE extends Translated {
   final String imagePicker = 'Bildauswahl';
 
   @override
+  final String general = 'Allgemeines';
+
+  @override
+  final String dayCalendar = 'Tageskalender';
+
+  @override
+  final String weekCalendar = 'Wochenkalender';
+
+  @override
+  final String monthCalendar = 'Monatskalender';
+
+  @override
+  final String activityView = 'Aktivitätsanzeige';
+
+  @override
+  final String addActivity = 'Aktivität hinzufügen';
+
+  @override
+  final String alarmSettings = 'Alarmeinstellungen';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -3888,6 +4007,27 @@ class NB extends Translated {
 
   @override
   final String imagePicker = 'Bildevalg';
+
+  @override
+  final String general = 'Generelt';
+
+  @override
+  final String dayCalendar = 'Dagkalender';
+
+  @override
+  final String weekCalendar = 'Ukekalender';
+
+  @override
+  final String monthCalendar = 'Månedskalender';
+
+  @override
+  final String activityView = 'Aktivitetsvindu';
+
+  @override
+  final String addActivity = 'Legg inn aktivitet';
+
+  @override
+  final String alarmSettings = 'Alarminnstillinger';
 
   @override
   final String permissions = 'Tillatelser';
