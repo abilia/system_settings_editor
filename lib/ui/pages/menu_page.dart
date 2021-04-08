@@ -157,10 +157,12 @@ class MenuItemButton extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
+              Spacer(),
               Icon(
                 icon,
                 size: 48.s,
               ),
+              Spacer(),
             ],
           ),
         ),
