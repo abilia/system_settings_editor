@@ -250,8 +250,7 @@ void setupPermissions(
       case 'checkPermissionStatus':
         final askedPermission = Permission.values[methodCall.arguments as int];
         checkedPermissions.add(askedPermission);
-        return (permissions[askedPermission] ?? PermissionStatus.undetermined)
-            .value;
+        return (permissions[askedPermission]).value;
       case 'openAppSettings':
         openAppSettingsCalls++;
         break;
@@ -271,7 +270,7 @@ extension PermissionStatusValue on PermissionStatus {
         return 1;
       case PermissionStatus.restricted:
         return 2;
-      case PermissionStatus.undetermined:
+      case PermissionStatus.limited:
         return 3;
       case PermissionStatus.permanentlyDenied:
         return 4;

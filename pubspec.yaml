@@ -13,30 +13,30 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   collection: ^1.14.12
-  devicelocale: ^0.4.0
+  devicelocale: ^0.4.1
   dotted_border: ^2.0.0-nullsafety.0
   dotted_line: ^3.0.0
-  equatable: ^1.2.5 #^2.0.0
-  exif: ^1.0.3 # no ns 2021-03-09
-  firebase_analytics: ^7.0.0 # ^7.1.0
-  firebase_core: ^0.6.0 # ^1.0.0
-  firebase_crashlytics: ^0.3.0 # ^1.0.0
-  firebase_messaging: ^8.0.0-dev.12 # ^9.0.0
-  flutter_appcenter_bundle: 3.2.0+2 # no ns 2021-03-09
+  equatable: ^2.0.0
+  exif: ^2.0.0
+  firebase_analytics: ^7.1.0
+  firebase_core: ^1.0.3
+  firebase_crashlytics: ^2.0.0
+  firebase_messaging: ^9.1.1
+  # flutter_appcenter_bundle: ^3.3.1+2 # Not working at the moment.
   flutter_archive: ^3.0.0
   flutter_bloc: ^7.0.0
   flutter_local_notifications:
     git:
       url: git://github.com/abilia/flutter_local_notifications.git
-      ref: flutter_local_notifications-v3.0.3-fork-1.8 # flutter_local_notifications-v5.0.0+1-fork-1.10
+      ref: flutter_local_notifications-v5.0.0+1-fork-1.10
       path: flutter_local_notifications/
   flutter_native_timezone: ^1.0.10
   flutter_tts: ^3.0.0
   get_it: ^6.0.0
-  google_fonts: ^1.1.2 # ^2.0.0
-  http: ^0.12.2 # ^0.13.0
-  image_picker: ^0.6.7+22 # ^0.7.2
-  logging: ^1.0.0
+  google_fonts: ^2.0.0
+  http: ^0.13.1
+  image_picker: ^0.7.4
+  logging: ^1.0.1
   meta: ^1.1.8
   mime: ^1.0.0
   package_info: ^2.0.0
@@ -44,15 +44,15 @@ dependencies:
   permission_handler:
     git:
       url: git://github.com/abilia/flutter-permission-handler.git
-      ref: permission_handler_v5.1.0+10+fork.2 # permission_handler_v6.0.1+fork
+      ref: permission_handler_v6.0.1+fork.10
       path: permission_handler/
-  photo_view: ^0.11.0
+  photo_view: ^0.11.1
   rxdart: ^0.26.0
-  shared_preferences: ^2.0.3
-  sqflite: ^2.0.0+2
+  shared_preferences: ^2.0.5
+  sqflite: ^2.0.0+3
   synchronized: ^3.0.0
-  transparent_image: ^2.0.0-nullsafety.0
-  uuid: ^2.2.2 # ^3.0.1
+  transparent_image: ^2.0.0
+  uuid: ^3.0.1
 
 dev_dependencies:
   test: any
@@ -60,10 +60,10 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
-  build_runner: ^1.11.5 # no ns 2021-03-09
+  build_runner: ^1.12.2 # no ns 2021-04-08. Null safety is merged to master branch so expecting release any day now.
   file: ^6.0.0
-  flutter_launcher_icons: ^0.8.1 # ^0.9.0
-  mockito: ^4.1.4 # ^0.5.0
+  flutter_launcher_icons: ^0.9.0
+  mockito: ^5.0.3
   sqflite_common_ffi: ^2.0.0
 
 flutter_icons:

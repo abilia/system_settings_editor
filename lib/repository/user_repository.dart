@@ -10,6 +10,7 @@ import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class UserRepository extends Repository {
   static final _log = Logger((UserRepository).toString());
@@ -45,7 +46,7 @@ class UserRepository extends Repository {
     @required DateTime time,
   }) async {
     final response = await client.post(
-      '$baseUrl/api/v1/auth/client/me',
+      '$baseUrl/api/v1/auth/client/me'.toUri(),
       headers: {
         HttpHeaders.authorizationHeader:
             'Basic ${base64Encode(utf8.encode('$username:$password'))}',
@@ -92,7 +93,7 @@ class UserRepository extends Repository {
   }
 
   Future<User> getUserFromApi(String token) async {
-    final response = await client.get('$baseUrl/api/v1/entity/me',
+    final response = await client.get('$baseUrl/api/v1/entity/me'.toUri(),
         headers: authHeader(token));
 
     if (response.statusCode == 200) {
@@ -117,7 +118,8 @@ class UserRepository extends Repository {
   }
 
   Future<List<License>> getLicensesFromApi(String token) async {
-    final response = await client.get('$baseUrl/api/v1/license/portal/me',
+    final response = await client.get(
+        '$baseUrl/api/v1/license/portal/me'.toUri(),
         headers: authHeader(token));
     if (response.statusCode == 200) {
       return (json.decode(response.body) as List)
@@ -146,7 +148,8 @@ class UserRepository extends Repository {
   Future<bool> _unregisterClient([String token]) async {
     token ??= getToken();
     try {
-      final response = await client.delete('$baseUrl/api/v1/auth/client',
+      final response = await client.delete(
+          '$baseUrl/api/v1/auth/client'.toUri(),
           headers: authHeader(token));
       return response.statusCode == 200;
     } catch (_) {

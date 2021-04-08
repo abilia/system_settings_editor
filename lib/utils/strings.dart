@@ -34,6 +34,12 @@ extension SizeOfText on String {
   }
 }
 
+extension UriExtension on String {
+  Uri toUri() {
+    return Uri.parse(this);
+  }
+}
+
 class TextRenderingSize {
   final int numberOfLines;
   final TextPainter textPainter;

@@ -63,7 +63,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   Future<Iterable<DbModel<M>>> fetchData(int revision) async {
     log.fine('fetching $path for revision $revision');
     final response = await client.get(
-      '$baseUrl/api/v1/data/$userId/$path?revision=$revision',
+      '$baseUrl/api/v1/data/$userId/$path?revision=$revision'.toUri(),
       headers: authHeader(authToken),
     );
     final decoded = (json.decode(response.body)) as List;
@@ -103,7 +103,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     Iterable<DbModel<M>> data,
   ) async {
     final response = await client.post(
-      '$baseUrl/api/v$postApiVersion/data/$userId/$postPath',
+      '$baseUrl/api/v$postApiVersion/data/$userId/$postPath'.toUri(),
       headers: jsonAuthHeader(authToken),
       body: jsonEncode(data.toList()),
     );

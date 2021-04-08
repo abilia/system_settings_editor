@@ -9,6 +9,7 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/fakes/fake_user_files.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
 
@@ -64,7 +65,7 @@ void main() {
 
     when(
       mockClient.get(
-        '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision',
+        '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision'.toUri(),
         headers: authHeader(Fakes.token),
       ),
     ).thenAnswer(
@@ -84,7 +85,7 @@ void main() {
 
     when(
       mockClient.get(
-        fileIdUrl(baseUrl, userId, fileId),
+        fileIdUrl(baseUrl, userId, fileId).toUri(),
         headers: authHeader(Fakes.token),
       ),
     ).thenAnswer(
@@ -145,7 +146,7 @@ void main() {
       ''';
     when(
       mockClient.post(
-        '$baseUrl/api/v1/data/$userId/storage/items/$lastRevision',
+        '$baseUrl/api/v1/data/$userId/storage/items/$lastRevision'.toUri(),
         headers: jsonAuthHeader(Fakes.token),
         body: jsonEncode(dirtyFiles.toList()),
       ),
