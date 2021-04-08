@@ -186,7 +186,8 @@ void main() {
         ));
 
     when(mockClient.get(
-            '$baseUrl/api/v1/data/$userId/activities?revision=$failedRevision'.toUri(),
+            '$baseUrl/api/v1/data/$userId/activities?revision=$failedRevision'
+                .toUri(),
             headers: authHeader(Fakes.token)))
         .thenAnswer((_) => (Future.value(
               Response(
