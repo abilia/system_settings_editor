@@ -162,6 +162,7 @@ class MemoplannerSettings extends Equatable {
       ),
       setting12hTimeFormatTimeline: settings.getBool(
         setting12hTimeFormatTimelineKey,
+        defaultValue: null,
       ),
       settingDisplayHourLines: settings.getBool(
         settingDisplayHourLinesKey,
