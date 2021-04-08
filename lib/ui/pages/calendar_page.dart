@@ -43,22 +43,26 @@ class _CalendarPageState extends State<CalendarPage>
   Widget build(BuildContext context) {
     return BlocProvider<ScrollPositionBloc>.value(
       value: _scrollPositionBloc,
-      child: BlocBuilder<CalendarViewBloc, CalendarViewState>(
-        builder: (context, calendarViewState) => DefaultTabController(
+      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        builder: (context, settingsState) => DefaultTabController(
           initialIndex: 0,
-          length: 3,
+          length: settingsState.calendarCount,
           child: Scaffold(
+            bottomNavigationBar: settingsState is MemoplannerSettingsLoaded &&
+                    settingsState.displayBottomBar
+                ? CalendarBottomBar(settingsState)
+                : null,
             body: TabBarView(
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                DayCalendar(
-                  calendarViewState: calendarViewState,
+                BlocBuilder<CalendarViewBloc, CalendarViewState>(
+                  builder: (context, calendarViewState) =>
+                      DayCalendar(calendarViewState: calendarViewState),
                 ),
-                WeekCalendarTab(),
-                MonthCalendar()
+                if (settingsState.displayWeekCalendar) const WeekCalendarTab(),
+                if (settingsState.displayMonthCalendar) const MonthCalendar()
               ],
             ),
-            bottomNavigationBar: CalendarBottomBar(),
           ),
         ),
       ),

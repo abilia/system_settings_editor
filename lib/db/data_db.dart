@@ -92,7 +92,7 @@ abstract class DataDb<M extends DataModel> {
 
   Future<int> getLastRevision() async {
     final result = await db.rawQuery(MAX_REVISION_SQL);
-    final revision = result.first['max_revision'];
+    final revision = result.isNotEmpty ? result.first['max_revision'] : null;
     if (revision == null) {
       return 0;
     }

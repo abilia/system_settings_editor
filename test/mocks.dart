@@ -121,7 +121,11 @@ class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
 
 class MockActivityDb extends Mock implements ActivityDb {}
 
-class MockGenericDb extends Mock implements GenericDb {}
+class MockGenericDb extends Mock implements GenericDb {
+  MockGenericDb() {
+    when(getAllNonDeletedMaxRevision()).thenAnswer((_) => Future.value([]));
+  }
+}
 
 class MockUserFileDb extends Mock implements UserFileDb {
   @override

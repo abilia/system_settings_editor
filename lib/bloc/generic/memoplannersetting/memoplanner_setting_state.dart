@@ -27,12 +27,26 @@ abstract class MemoplannerSettingsState extends Equatable {
       _hourClockTypeFromNullBool(settings.setting12hTimeFormatTimeline);
   bool get displayHourLines => settings.settingDisplayHourLines;
   bool get displayTimeline => settings.settingDisplayTimeline;
+  bool get displayWeekCalendar => settings.functionMenuDisplayWeek;
+  bool get displayMonthCalendar => settings.functionMenuDisplayMonth;
+  bool get displayOnlyDayCalendar =>
+      !displayWeekCalendar && !displayMonthCalendar;
+  bool get displayBottomBar =>
+      displayMenu ||
+      displayNewActivity ||
+      displayMonthCalendar ||
+      displayWeekCalendar;
+  bool get displayNewActivity => settings.functionMenuDisplayNewActivity;
+  bool get displayMenu => settings.functionMenuDisplayMenu;
 
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;
   int get afternoonStart => settings.afternoonIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
+
+  int get calendarCount =>
+      1 + (displayWeekCalendar ? 1 : 0) + (displayMonthCalendar ? 1 : 0);
 
   DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>

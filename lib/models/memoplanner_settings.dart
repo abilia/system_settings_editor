@@ -34,7 +34,11 @@ class MemoplannerSettings extends Equatable {
       settingDisplayHourLinesKey = 'setting_display_hour_lines',
       settingDisplayTimelineKey = 'setting_display_line_timeline',
       viewOptionsTimeIntervalKey = 'view_options_time_interval',
-      viewOptionsZoomKey = 'view_options_zoom';
+      viewOptionsZoomKey = 'view_options_zoom',
+      functionMenuDisplayWeekKey = 'function_menu_display_week',
+      functionMenuDisplayMonthKey = 'function_menu_display_month',
+      functionMenuDisplayNewActivityKey = 'function_menu_display_new_activity',
+      functionMenuDisplayMenuKey = 'function_menu_display_menu';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -56,7 +60,11 @@ class MemoplannerSettings extends Equatable {
       calendarActivityTypeShowTypes,
       setting12hTimeFormatTimeline,
       settingDisplayHourLines,
-      settingDisplayTimeline;
+      settingDisplayTimeline,
+      functionMenuDisplayWeek,
+      functionMenuDisplayMonth,
+      functionMenuDisplayNewActivity,
+      functionMenuDisplayMenu;
 
   final int morningIntervalStart,
       forenoonIntervalStart,
@@ -101,6 +109,10 @@ class MemoplannerSettings extends Equatable {
     this.calendarDayColor = 0,
     this.viewOptionsTimeInterval = 1,
     this.viewOptionsZoom = 1,
+    this.functionMenuDisplayWeek = true,
+    this.functionMenuDisplayMonth = true,
+    this.functionMenuDisplayNewActivity = true,
+    this.functionMenuDisplayMenu = true,
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -171,6 +183,18 @@ class MemoplannerSettings extends Equatable {
       settingDisplayTimeline: settings.getBool(
         settingDisplayTimelineKey,
       ),
+      functionMenuDisplayWeek: settings.getBool(
+        functionMenuDisplayWeekKey,
+      ),
+      functionMenuDisplayMonth: settings.getBool(
+        functionMenuDisplayMonthKey,
+      ),
+      functionMenuDisplayNewActivity: settings.getBool(
+        functionMenuDisplayNewActivityKey,
+      ),
+      functionMenuDisplayMenu: settings.getBool(
+        functionMenuDisplayMenuKey,
+      ),
       morningIntervalStart: settings.parse(
         morningIntervalStartKey,
         21600000,
@@ -236,6 +260,10 @@ class MemoplannerSettings extends Equatable {
         calendarDayColor,
         viewOptionsTimeInterval,
         viewOptionsZoom,
+        functionMenuDisplayWeek,
+        functionMenuDisplayMonth,
+        functionMenuDisplayNewActivity,
+        functionMenuDisplayMenu
       ];
 }
 
