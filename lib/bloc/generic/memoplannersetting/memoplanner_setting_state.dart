@@ -38,12 +38,14 @@ abstract class MemoplannerSettingsState extends Equatable {
       displayWeekCalendar;
   bool get displayNewActivity => settings.functionMenuDisplayNewActivity;
   bool get displayMenu => settings.functionMenuDisplayMenu;
+  bool get useScreensaver => settings.useScreensaver;
 
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;
   int get afternoonStart => settings.afternoonIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
+  int get activityTimeout => settings.activityTimeout;
 
   int get calendarCount =>
       1 + (displayWeekCalendar ? 1 : 0) + (displayMonthCalendar ? 1 : 0);
@@ -51,7 +53,7 @@ abstract class MemoplannerSettingsState extends Equatable {
   DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>
       TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
-
+  StartView get startView => StartView.values[settings.functionMenuStartView];
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
 

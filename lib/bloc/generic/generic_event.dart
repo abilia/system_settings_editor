@@ -11,8 +11,8 @@ class LoadGenerics extends GenericEvent {
   String toString() => 'LoadGenerics';
 }
 
-class GenericUpdated<T extends GenericData> extends GenericEvent {
-  final T genericData;
+class GenericUpdated extends GenericEvent {
+  final Iterable<GenericData> genericData;
 
   GenericUpdated(this.genericData);
   @override
