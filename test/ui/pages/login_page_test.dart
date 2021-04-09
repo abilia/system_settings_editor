@@ -119,7 +119,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Enter field password dialog
-    await tester.tap(find.byKey(TestKey.passwordInput));
+    await tester.tap(find.byKey(TestKey.passwordInput), warnIfMissed: false);
     await tester.pumpAndSettle();
 
     // No button shows at all
@@ -343,7 +343,7 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(TestKey.userNameInput));
+    await tester.tap(find.byKey(TestKey.userNameInput), warnIfMissed: false);
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(TestKey.input), 'a');
     await tester.pumpAndSettle();
@@ -360,7 +360,7 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(TestKey.passwordInput));
+    await tester.tap(find.byKey(TestKey.passwordInput), warnIfMissed: false);
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(TestKey.input), '7seven7');
     await tester.pumpAndSettle();
@@ -379,7 +379,7 @@ void main() {
 
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
 
-    await tester.tap(find.byKey(TestKey.userNameInput));
+    await tester.tap(find.byKey(TestKey.userNameInput), warnIfMissed: false);
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(TestKey.input), Fakes.username);
     await tester.pumpAndSettle();
@@ -398,7 +398,7 @@ void main() {
 
     await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
 
-    await tester.tap(find.byKey(TestKey.passwordInput));
+    await tester.tap(find.byKey(TestKey.passwordInput), warnIfMissed: false);
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(TestKey.input), secretPassword);
     await tester.pumpAndSettle();

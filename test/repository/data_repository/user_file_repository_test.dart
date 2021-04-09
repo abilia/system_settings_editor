@@ -15,7 +15,7 @@ import '../../mocks.dart';
 
 void main() {
   final mockUserFileDb = MockUserFileDb();
-  final baseUrl = 'url';
+  final baseUrl = 'http://url.com';
   final mockFileStorage = MockFileStorage();
   final mockClient = MockedClient();
   final mockMultiRequestBuilder = MockMultipartRequestBuilder();
@@ -220,7 +220,8 @@ void main() {
     when(
       mockClient.get(any, headers: anyNamed('headers')),
     ).thenAnswer((r) {
-      final String url = r.positionalArguments[0];
+      final Uri uri = r.positionalArguments[0];
+      final url = uri.path;
       final p = int.tryParse(url.split('?').first.split('/').last);
       if (failsOnId.contains(p)) {
         return Future.value(Response('not found', 400));
