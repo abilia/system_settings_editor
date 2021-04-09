@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:intl/intl.dart';
+import 'package:seagull/utils/all.dart';
 
 import 'clock_painter.dart';
 
@@ -65,41 +64,35 @@ class AnalogClock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final language = Localizations.localeOf(context).toLanguageTag();
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, time) => GestureDetector(
-          onTap: onPressed,
-          child: Tts(
-            data:
-                memoSettingsState.timepillarHourClockType == HourClockType.use12
-                    ? DateFormat('hh:mm a', language).format(time)
-                    : DateFormat('HH:mm', language).format(time),
-            child: Container(
-              width: width,
-              height: height,
-              decoration: decoration,
-              child: CustomPaint(
-                painter: ClockPainter(
-                  time,
-                  dialPlateColor: dialPlateColor,
-                  hourHandColor: hourHandColor,
-                  minuteHandColor: minuteHandColor,
-                  numberColor: numberColor,
-                  borderColor: borderColor,
-                  centerPointColor: centerPointColor,
-                  centerPointRadius: centerPointRadius,
-                  showBorder: showBorder,
-                  showMinuteHand: showMinuteHand,
-                  showNumber: showNumber,
-                  borderWidth: borderWidth,
-                  fontSize: fontSize,
-                  minuteHandLength: minuteHandLength,
-                  hourHandLength: hourHandLength,
-                  hourNumbers: hourNumbers,
-                ),
-                child: child,
+    return BlocBuilder<ClockBloc, DateTime>(
+      builder: (context, time) => GestureDetector(
+        onTap: onPressed,
+        child: Tts(
+          data: hourAndMinuteFormat(context)(time),
+          child: Container(
+            width: width,
+            height: height,
+            decoration: decoration,
+            child: CustomPaint(
+              painter: ClockPainter(
+                time,
+                dialPlateColor: dialPlateColor,
+                hourHandColor: hourHandColor,
+                minuteHandColor: minuteHandColor,
+                numberColor: numberColor,
+                borderColor: borderColor,
+                centerPointColor: centerPointColor,
+                centerPointRadius: centerPointRadius,
+                showBorder: showBorder,
+                showMinuteHand: showMinuteHand,
+                showNumber: showNumber,
+                borderWidth: borderWidth,
+                fontSize: fontSize,
+                minuteHandLength: minuteHandLength,
+                hourHandLength: hourHandLength,
+                hourNumbers: hourNumbers,
               ),
+              child: child,
             ),
           ),
         ),
