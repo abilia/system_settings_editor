@@ -199,7 +199,7 @@ class MockBloc<E, S> extends Mock {
 
 extension OurEnterText on WidgetTester {
   Future<void> enterText_(Finder finder, String text) async {
-    await tap(finder);
+    await tap(finder, warnIfMissed: false);
     await pumpAndSettle();
     await enterText(find.byKey(TestKey.input), text);
     await pumpAndSettle();
@@ -208,7 +208,7 @@ extension OurEnterText on WidgetTester {
   }
 
   Future verifyTts(Finder finder, {String contains, String exact}) async {
-    await longPress(finder);
+    await longPress(finder, warnIfMissed: false);
     final arg = verify(GetIt.I<FlutterTts>().speak(captureAny)).captured.first;
     if (contains != null) {
       expect(arg.contains(contains), isTrue,
@@ -250,8 +250,7 @@ void setupPermissions(
       case 'checkPermissionStatus':
         final askedPermission = Permission.values[methodCall.arguments as int];
         checkedPermissions.add(askedPermission);
-        return (permissions[askedPermission] ?? PermissionStatus.undetermined)
-            .value;
+        return (permissions[askedPermission]).value;
       case 'openAppSettings':
         openAppSettingsCalls++;
         break;
@@ -271,7 +270,7 @@ extension PermissionStatusValue on PermissionStatus {
         return 1;
       case PermissionStatus.restricted:
         return 2;
-      case PermissionStatus.undetermined:
+      case PermissionStatus.limited:
         return 3;
       case PermissionStatus.permanentlyDenied:
         return 4;

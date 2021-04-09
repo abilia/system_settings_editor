@@ -1306,7 +1306,7 @@ text''';
       // Act -- remove end time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.tap(endTimeInputFinder);
+      await tester.tap(endTimeInputFinder, warnIfMissed: false);
       await tester.showKeyboard(endTimeInputFinder);
       await tester.sendKeyEvent(LogicalKeyboardKey.delete);
       await tester.pumpAndSettle();
@@ -1392,8 +1392,6 @@ text''';
 
       await tester.enterText(startTimeInputFinder, '');
       await tester.enterText(endTimeInputFinder, '');
-      await tester.tap(endTimeInputFinder);
-      await tester.tap(startTimeInputFinder);
 
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
@@ -1488,7 +1486,7 @@ text''';
       await tester.enterText(startTimeInputFinder, '0');
       expect(find.text('0'), findsOneWidget);
 
-      await tester.tap(endTimeInputFinder);
+      await tester.tap(endTimeInputFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
       expect(find.text('13:44'),
           findsOneWidget); // Time resets when no valid time is entered
@@ -1496,7 +1494,6 @@ text''';
       await tester.enterText(endTimeInputFinder, '1111');
       expect(find.text('11:11'), findsOneWidget);
 
-      await tester.tap(startTimeInputFinder);
       await tester.enterText(startTimeInputFinder, '0001');
       expect(find.text('00:01'), findsOneWidget);
       await tester.pumpAndSettle();
@@ -1572,7 +1569,9 @@ text''';
       await tester.enterText(startTimeInputFinder, '1033');
       await tester.enterText(endTimeInputFinder, '1111');
 
-      await tester.tap(startTimeInputFinder);
+      await tester.tap(startTimeInputFinder,
+          warnIfMissed:
+              false); // startTimeInputFinder is below another input widget that catches the tap event
       await tester.pumpAndSettle();
       await tester.sendKeyEvent(LogicalKeyboardKey.delete);
       await tester.pumpAndSettle();
@@ -1890,12 +1889,9 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
-      // Arrange -- set full day
-      await tester.tap(find.byKey(TestKey.fullDaySwitch));
-      await tester.pumpAndSettle();
+      // Arrange -- set weekly recurance
       await tester.goToRecurrenceTab();
       await tester.pumpAndSettle();
-      // Arrange -- set weekly recurance
       await tester.tap(find.byKey(TestKey.changeRecurrence));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));

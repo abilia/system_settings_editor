@@ -91,7 +91,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     int latestRevision,
   ) async {
     final response = await client.post(
-      '$baseUrl/api/v1/data/$userId/storage/items/$latestRevision',
+      '$baseUrl/api/v1/data/$userId/storage/items/$latestRevision'.toUri(),
       headers: jsonAuthHeader(authToken),
       body: jsonEncode(userFiles.toList()),
     );
@@ -126,7 +126,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     try {
       final bytes = await file.readAsBytes();
 
-      final uri = Uri.parse('$baseUrl/api/v1/data/$userId/storage/files');
+      final uri = '$baseUrl/api/v1/data/$userId/storage/files'.toUri();
       final request = multipartRequestBuilder.generateFileMultipartRequest(
         uri: uri,
         bytes: bytes,
@@ -178,14 +178,14 @@ class UserFileRepository extends DataRepository<UserFile> {
         userId: userId,
         imageFileId: id,
         size: size,
-      ),
+      ).toUri(),
       headers: authHeader(authToken),
     );
   }
 
   Future<void> _handleNonImage(UserFile userFile) async {
     final originalFileResponse = await client.get(
-      fileIdUrl(baseUrl, userId, userFile.id),
+      fileIdUrl(baseUrl, userId, userFile.id).toUri(),
       headers: authHeader(authToken),
     );
     if (originalFileResponse.statusCode == 200) {
@@ -198,7 +198,7 @@ class UserFileRepository extends DataRepository<UserFile> {
 
   Future<void> _handleImageFile(UserFile userFile) async {
     final originalFileResponse = client.get(
-      fileIdUrl(baseUrl, userId, userFile.id),
+      fileIdUrl(baseUrl, userId, userFile.id).toUri(),
       headers: authHeader(authToken),
     );
     final thumbResponse = _getImageThumb(userFile.id, ImageThumb.THUMB_SIZE);

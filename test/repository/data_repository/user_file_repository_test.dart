@@ -9,12 +9,13 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/fakes/fake_user_files.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
 
 void main() {
   final mockUserFileDb = MockUserFileDb();
-  final baseUrl = 'url';
+  final baseUrl = 'http://url.com';
   final mockFileStorage = MockFileStorage();
   final mockClient = MockedClient();
   final mockMultiRequestBuilder = MockMultipartRequestBuilder();
@@ -64,7 +65,7 @@ void main() {
 
     when(
       mockClient.get(
-        '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision',
+        '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision'.toUri(),
         headers: authHeader(Fakes.token),
       ),
     ).thenAnswer(
@@ -84,7 +85,7 @@ void main() {
 
     when(
       mockClient.get(
-        fileIdUrl(baseUrl, userId, fileId),
+        fileIdUrl(baseUrl, userId, fileId).toUri(),
         headers: authHeader(Fakes.token),
       ),
     ).thenAnswer(
@@ -145,7 +146,7 @@ void main() {
       ''';
     when(
       mockClient.post(
-        '$baseUrl/api/v1/data/$userId/storage/items/$lastRevision',
+        '$baseUrl/api/v1/data/$userId/storage/items/$lastRevision'.toUri(),
         headers: jsonAuthHeader(Fakes.token),
         body: jsonEncode(dirtyFiles.toList()),
       ),
@@ -219,7 +220,8 @@ void main() {
     when(
       mockClient.get(any, headers: anyNamed('headers')),
     ).thenAnswer((r) {
-      final String url = r.positionalArguments[0];
+      final Uri uri = r.positionalArguments[0];
+      final url = uri.path;
       final p = int.tryParse(url.split('?').first.split('/').last);
       if (failsOnId.contains(p)) {
         return Future.value(Response('not found', 400));
