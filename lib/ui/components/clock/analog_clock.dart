@@ -64,37 +64,35 @@ class AnalogClock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, time) => GestureDetector(
-          onTap: onPressed,
-          child: Tts(
-            data: hourAndMinuteFormat(context)(time),
-            child: Container(
-              width: width,
-              height: height,
-              decoration: decoration,
-              child: CustomPaint(
-                painter: ClockPainter(
-                  time,
-                  dialPlateColor: dialPlateColor,
-                  hourHandColor: hourHandColor,
-                  minuteHandColor: minuteHandColor,
-                  numberColor: numberColor,
-                  borderColor: borderColor,
-                  centerPointColor: centerPointColor,
-                  centerPointRadius: centerPointRadius,
-                  showBorder: showBorder,
-                  showMinuteHand: showMinuteHand,
-                  showNumber: showNumber,
-                  borderWidth: borderWidth,
-                  fontSize: fontSize,
-                  minuteHandLength: minuteHandLength,
-                  hourHandLength: hourHandLength,
-                  hourNumbers: hourNumbers,
-                ),
-                child: child,
+    return BlocBuilder<ClockBloc, DateTime>(
+      builder: (context, time) => GestureDetector(
+        onTap: onPressed,
+        child: Tts(
+          data: hourAndMinuteFormat(context)(time),
+          child: Container(
+            width: width,
+            height: height,
+            decoration: decoration,
+            child: CustomPaint(
+              painter: ClockPainter(
+                time,
+                dialPlateColor: dialPlateColor,
+                hourHandColor: hourHandColor,
+                minuteHandColor: minuteHandColor,
+                numberColor: numberColor,
+                borderColor: borderColor,
+                centerPointColor: centerPointColor,
+                centerPointRadius: centerPointRadius,
+                showBorder: showBorder,
+                showMinuteHand: showMinuteHand,
+                showNumber: showNumber,
+                borderWidth: borderWidth,
+                fontSize: fontSize,
+                minuteHandLength: minuteHandLength,
+                hourHandLength: hourHandLength,
+                hourNumbers: hourNumbers,
               ),
+              child: child,
             ),
           ),
         ),
