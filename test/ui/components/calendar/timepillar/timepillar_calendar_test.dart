@@ -107,7 +107,7 @@ void main() {
 
   testWidgets('Shows when selected', (WidgetTester tester) async {
     await goToTimePillar(tester);
-    expect(find.byType(TimePillarCalendar), findsOneWidget);
+    expect(find.byType(TimepillarCalendar), findsOneWidget);
   });
 
   testWidgets('Can navigate back to agenda view', (WidgetTester tester) async {
@@ -118,7 +118,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();
-    expect(find.byType(TimePillarCalendar), findsNothing);
+    expect(find.byType(TimepillarCalendar), findsNothing);
     expect(find.byType(Agenda), findsOneWidget);
   });
 

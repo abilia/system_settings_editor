@@ -10,16 +10,42 @@ import 'package:seagull/utils/all.dart';
 
 const transitionDuration = Duration(seconds: 1);
 
-class TimePillarCalendar extends StatefulWidget {
+class TimepillarCalendar extends StatelessWidget {
   static final topMargin = 30.0.s;
   static final bottomMargin = 10.0.s;
   static const nightBackgroundColor = AbiliaColors.black90;
   final ActivitiesOccasionLoaded activityState;
   final CalendarViewState calendarViewState;
+
+  const TimepillarCalendar({
+    Key key,
+    this.activityState,
+    this.calendarViewState,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TimepillarBloc, TimepillarState>(
+      builder: (context, state) =>
+          BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        builder: (context, memoplannerSettingsState) => _TimepillarCalendar(
+          key: ValueKey(state.timepillarInterval),
+          activityState: activityState,
+          calendarViewState: calendarViewState,
+          memoplannerSettingsState: memoplannerSettingsState,
+          timepillarState: state,
+        ),
+      ),
+    );
+  }
+}
+
+class _TimepillarCalendar extends StatefulWidget {
+  final ActivitiesOccasionLoaded activityState;
+  final CalendarViewState calendarViewState;
   final MemoplannerSettingsState memoplannerSettingsState;
   final TimepillarState timepillarState;
 
-  const TimePillarCalendar({
+  const _TimepillarCalendar({
     Key key,
     @required this.activityState,
     @required this.calendarViewState,
@@ -28,10 +54,10 @@ class TimePillarCalendar extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _TimePillarCalendarState createState() => _TimePillarCalendarState();
+  _TimepillarCalendarState createState() => _TimepillarCalendarState();
 }
 
-class _TimePillarCalendarState extends State<TimePillarCalendar>
+class _TimepillarCalendarState extends State<_TimepillarCalendar>
     with CalendarStateMixin {
   ScrollController verticalScrollController;
   ScrollController horizontalScrollController;
@@ -132,7 +158,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
           onRefresh: refresh,
           child: Container(
             color: interval.intervalPart == IntervalPart.NIGHT
-                ? TimePillarCalendar.nightBackgroundColor
+                ? TimepillarCalendar.nightBackgroundColor
                 : Theme.of(context).scaffoldBackgroundColor,
             child: Stack(
               children: <Widget>[
@@ -154,7 +180,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                   height: p.length,
                                   child: const DecoratedBox(
                                     decoration: BoxDecoration(
-                                        color: TimePillarCalendar
+                                        color: TimepillarCalendar
                                             .nightBackgroundColor),
                                   ),
                                 ),
@@ -163,7 +189,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                             if (showHourLines)
                               Padding(
                                 padding: EdgeInsets.only(
-                                    top: TimePillarCalendar.topMargin),
+                                    top: TimepillarCalendar.topMargin),
                                 child: HourLines(
                                   numberOfLines: interval.lengthInHours + 1,
                                   hourHeight: ts.hourHeight,
@@ -174,7 +200,7 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
                                 width: boxConstraints.maxWidth,
                                 offset: hoursToPixels(interval.startTime.hour,
                                         ts.dotDistance) -
-                                    TimePillarCalendar.topMargin,
+                                    TimepillarCalendar.topMargin,
                                 timepillarState: ts,
                               ),
                             CustomScrollView(
@@ -265,12 +291,12 @@ class _TimePillarCalendarState extends State<TimePillarCalendar>
             0,
             hoursToPixels(
                     intervalDay.add(dayParts.morning).hour, ts.dotDistance) +
-                TimePillarCalendar.topMargin),
+                TimepillarCalendar.topMargin),
       if (interval.endTime.isAfter(intervalDay.add(dayParts.night)))
         NightPart(
             hoursToPixels(
                     intervalDay.add(dayParts.night).hour, ts.dotDistance) +
-                TimePillarCalendar.topMargin,
+                TimepillarCalendar.topMargin,
             hoursToPixels(
                 interval.endTime.hour == 0 ? 24 : interval.endTime.hour,
                 ts.dotDistance))

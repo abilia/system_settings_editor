@@ -18,7 +18,6 @@ void main() {
   Iterable<Generic> generics = [];
 
   setUp(() async {
-    var mockTicker = StreamController<DateTime>();
     setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
@@ -31,10 +30,14 @@ void main() {
     final genericDb = MockGenericDb();
     when(genericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(generics));
+    when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
-      ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialTime)
+      ..ticker = Ticker(
+        stream: StreamController<DateTime>().stream,
+        initialTime: initialTime,
+      )
       ..client = Fakes.client(genericResponse: () => generics)
       ..alarmScheduler = noAlarmScheduler
       ..database = db
@@ -45,7 +48,7 @@ void main() {
   tearDown(GetIt.I.reset);
 
   testWidgets('shows settings page', (tester) async {
-    await tester.goToFunctionSettingsPage();
+    await tester.goToFunctionSettingsPage(pump: true);
     expect(find.byType(FunctionSettingsPage), findsOneWidget);
     expect(find.byType(OkButton), findsOneWidget);
     expect(find.byType(CancelButton), findsOneWidget);
@@ -55,8 +58,8 @@ void main() {
     testWidgets('Default settings shows all buttons in bottomBar',
         (tester) async {
       // Act
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
+      await tester.pumpApp();
+
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
       expect(find.byType(AddActivityButton), findsOneWidget);
@@ -182,8 +185,8 @@ extension on WidgetTester {
     await pumpAndSettle();
   }
 
-  Future<void> goToFunctionSettingsPage() async {
-    await pumpApp();
+  Future<void> goToFunctionSettingsPage({bool pump = false}) async {
+    if (pump) await pumpApp();
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
     await tap(find.byType(SettingsButton));
