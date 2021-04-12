@@ -21,6 +21,7 @@ class _HiddenSettingState extends State<HiddenSetting> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
+              key: TestKey.hiddenSettingsButtonLeft,
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 if (!leftTapped) {
@@ -46,6 +47,7 @@ class _HiddenSettingState extends State<HiddenSetting> {
               ),
             ),
             GestureDetector(
+              key: TestKey.hiddenSettingsButtonRight,
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 if (leftTapped && !rightTapped) {

@@ -9,14 +9,14 @@ extension IntToDuration on int {
 }
 
 extension DurationExtensions on Duration {
-  String toDurationString(Translated translater, {bool shortMin = true}) {
-    if (inDays > 1) return '$inDays ${translater.days}';
-    if (inDays == 1) return '$inDays ${translater.day}';
-    if (inHours > 1) return '$inHours ${translater.hours}';
-    if (inHours == 1) return '$inHours ${translater.hour}';
-    if (shortMin) return '$inMinutes ${translater.min}';
-    if (inMinutes == 1) return '$inMinutes ${translater.minute}';
-    return '$inMinutes ${translater.minutes}';
+  String toDurationString(Translated translator, {bool shortMin = true}) {
+    if (inDays > 1) return '$inDays ${translator.days}';
+    if (inDays == 1) return '$inDays ${translator.day}';
+    if (inHours > 1) return '$inHours ${translator.hours}';
+    if (inHours == 1) return '$inHours ${translator.hour}';
+    if (shortMin) return '$inMinutes ${translator.min}';
+    if (inMinutes == 1) return '$inMinutes ${translator.minute}';
+    return '$inMinutes ${translator.minutes}';
   }
 
   String toUntilString(Translated translater) {

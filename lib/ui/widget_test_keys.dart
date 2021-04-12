@@ -64,5 +64,7 @@ class TestKey {
       basicActivityChoice = Key('basicActivityChoice'),
       noButton = Key('noButton'),
       yesButton = Key('yesButton'),
-      loginLogo = Key('loginLogo');
+      loginLogo = Key('loginLogo'),
+      hiddenSettingsButtonLeft = Key('hiddenSettingsButtonLeft'),
+      hiddenSettingsButtonRight = Key('hiddenSettingsButtonRight');
 }

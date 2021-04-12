@@ -22,6 +22,7 @@ class MenuItemPickField extends StatelessWidget {
               blocContext: context,
               child: navigateTo,
             ),
+            settings: RouteSettings(name: text),
           ),
         ),
       );

@@ -68,7 +68,6 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
   bool get showTimeLine => isToday && memoSettings.displayTimeline;
   bool get showCategories => memoSettings.showCategories;
   bool get showHourLines => memoSettings.displayHourLines;
-  DateTime get day => widget.activityState.day;
   List<ActivityOccasion> get activities => widget.activityState.activities;
   CalendarViewState get viewState => widget.calendarViewState;
   TimepillarInterval get interval => widget.timepillarState.timepillarInterval;
