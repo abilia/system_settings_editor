@@ -4,11 +4,13 @@ class SettingsBasePage extends StatelessWidget {
   final List<Widget> widgets;
   final IconData icon;
   final String title;
+  final Widget bottomNavigationBar;
   const SettingsBasePage({
     Key key,
     @required this.widgets,
     @required this.icon,
     @required this.title,
+    this.bottomNavigationBar,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -23,9 +25,8 @@ class SettingsBasePage extends StatelessWidget {
         itemCount: widgets.length,
         separatorBuilder: (context, index) => SizedBox(height: 8.0.s),
       ),
-      bottomNavigationBar: const BottomNavigation(
-        backNavigationWidget: BackButton(),
-      ),
+      bottomNavigationBar: bottomNavigationBar ??
+          const BottomNavigation(backNavigationWidget: BackButton()),
     );
   }
 }

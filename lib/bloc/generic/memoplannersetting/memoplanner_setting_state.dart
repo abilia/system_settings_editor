@@ -39,6 +39,8 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayNewActivity => settings.functionMenuDisplayNewActivity;
   bool get displayMenu => settings.functionMenuDisplayMenu;
   bool get useScreensaver => settings.useScreensaver;
+  bool get displayPhotos => settings.imageMenuDisplayPhotoItem;
+  bool get displayCamera => settings.imageMenuDisplayCameraItem;
 
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;
