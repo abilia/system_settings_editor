@@ -52,7 +52,7 @@ class _CalendarPageState extends State<CalendarPage>
           child: Scaffold(
             bottomNavigationBar: settingsState is MemoplannerSettingsLoaded &&
                     settingsState.displayBottomBar
-                ? CalendarBottomBar(settingsState)
+                ? const CalendarBottomBar()
                 : null,
             body: TabBarView(
               physics: const NeverScrollableScrollPhysics(),

@@ -12,7 +12,7 @@ class DayCalendar extends StatelessWidget {
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (old, fresh) =>
             old.displayMenu != fresh.displayMenu ||
-            old.displayMenu != fresh.displayMenu,
+            old.showCategories != fresh.showCategories,
         builder: (context, settingState) =>
             BlocBuilder<PermissionBloc, PermissionState>(
           buildWhen: (old, fresh) =>
