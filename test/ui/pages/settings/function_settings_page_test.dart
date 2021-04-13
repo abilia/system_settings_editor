@@ -66,9 +66,14 @@ void main() {
       WidgetTester tester, {
       String key,
       dynamic matcher,
+      bool yesOnDialog = false,
     }) async {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
+      if (yesOnDialog) {
+        await tester.tap(find.byKey(TestKey.yesButton));
+        await tester.pumpAndSettle();
+      }
 
       final v = verify(genericDb.insertAndAddDirty(captureAny));
       expect(v.callCount, 1);
@@ -116,7 +121,7 @@ void main() {
         );
       });
 
-      testWidgets('hide menu calendar saved', (tester) async {
+      testWidgets('hide menu calendar shows popup and saved', (tester) async {
         await tester.goToFunctionSettingsPage(pump: true);
         await tester.tap(find.byIcon(AbiliaIcons.app_menu));
         await tester.pumpAndSettle();
@@ -125,6 +130,7 @@ void main() {
           tester,
           key: MemoplannerSettings.functionMenuDisplayMenuKey,
           matcher: isFalse,
+          yesOnDialog: true,
         );
       });
     });

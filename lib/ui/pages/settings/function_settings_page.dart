@@ -7,6 +7,7 @@ class FunctionSettingsPage extends StatelessWidget {
   const FunctionSettingsPage({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
     return BlocProvider<FunctionSettingsCubit>(
       create: (context) => FunctionSettingsCubit(
         settingsState: context.read<MemoplannerSettingBloc>().state,
@@ -16,7 +17,7 @@ class FunctionSettingsPage extends StatelessWidget {
         length: 3,
         child: Scaffold(
           appBar: AbiliaAppBar(
-            title: Translator.of(context).translate.functions,
+            title: t.functions,
             iconData: AbiliaIcons.menu_setup,
             bottom: AbiliaTabBar(
               tabs: <Widget>[
@@ -35,7 +36,20 @@ class FunctionSettingsPage extends StatelessWidget {
             backNavigationWidget: CancelButton(),
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
-                onPressed: () {
+                onPressed: () async {
+                  if (context
+                      .read<FunctionSettingsCubit>()
+                      .state
+                      .displayMenuChangedToDisabled) {
+                    final answer = await showViewDialog<bool>(
+                      context: context,
+                      builder: (context) => YesNoDialog(
+                        heading: t.functions,
+                        text: t.menuRemovalWarning,
+                      ),
+                    );
+                    if (answer != true) return;
+                  }
                   context.read<FunctionSettingsCubit>().save();
                   Navigator.of(context).pop();
                 },

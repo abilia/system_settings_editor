@@ -43,7 +43,13 @@ class MemoplannerSettings extends Equatable {
       useScreensaverKey = 'use_screensaver',
       functionMenuStartViewKey = 'function_menu_start_view',
       imageMenuDisplayPhotoItemKey = 'image_menu_display_photo_item',
-      imageMenuDisplayCameraItemKey = 'image_menu_display_camera_item';
+      imageMenuDisplayCameraItemKey = 'image_menu_display_camera_item',
+      settingsMenuShowCameraKey = 'settings_menu_show_camera',
+      settingsMenuShowPhotosKey = 'settings_menu_show_photos',
+      settingsMenuShowPhotoCalendarKey = 'settings_menu_show_photo_calendar',
+      settingsMenuShowTimersKey = 'settings_menu_show_timers',
+      settingsMenuShowQuickSettingsKey = 'settings_menu_show_quick_settings',
+      settingsMenuShowSettingsKey = 'settings_menu_show_settings';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -72,7 +78,13 @@ class MemoplannerSettings extends Equatable {
       functionMenuDisplayMenu,
       useScreensaver,
       imageMenuDisplayPhotoItem,
-      imageMenuDisplayCameraItem;
+      imageMenuDisplayCameraItem,
+      settingsMenuShowCamera,
+      settingsMenuShowPhotos,
+      settingsMenuShowPhotoCalendar,
+      settingsMenuShowTimers,
+      settingsMenuShowQuickSettings,
+      settingsMenuShowSettings;
 
   final int morningIntervalStart,
       forenoonIntervalStart,
@@ -128,6 +140,12 @@ class MemoplannerSettings extends Equatable {
     this.activityTimeout = 0,
     this.useScreensaver = false,
     this.functionMenuStartView = 0,
+    this.settingsMenuShowCamera = true,
+    this.settingsMenuShowPhotos = true,
+    this.settingsMenuShowPhotoCalendar = true,
+    this.settingsMenuShowTimers = true,
+    this.settingsMenuShowQuickSettings = true,
+    this.settingsMenuShowSettings = true,
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -186,6 +204,24 @@ class MemoplannerSettings extends Equatable {
       ),
       calendarActivityTypeShowTypes: settings.getBool(
         calendarActivityTypeShowTypesKey,
+      ),
+      settingsMenuShowCamera: settings.getBool(
+        settingsMenuShowCameraKey,
+      ),
+      settingsMenuShowPhotos: settings.getBool(
+        settingsMenuShowPhotosKey,
+      ),
+      settingsMenuShowPhotoCalendar: settings.getBool(
+        settingsMenuShowPhotoCalendarKey,
+      ),
+      settingsMenuShowTimers: settings.getBool(
+        settingsMenuShowTimersKey,
+      ),
+      settingsMenuShowQuickSettings: settings.getBool(
+        settingsMenuShowQuickSettingsKey,
+      ),
+      settingsMenuShowSettings: settings.getBool(
+        settingsMenuShowSettingsKey,
       ),
       setting12hTimeFormatTimeline: settings.getBool(
         setting12hTimeFormatTimelineKey,
@@ -301,7 +337,13 @@ class MemoplannerSettings extends Equatable {
         useScreensaver,
         functionMenuStartView,
         imageMenuDisplayPhotoItem,
-        imageMenuDisplayCameraItem
+        imageMenuDisplayCameraItem,
+        settingsMenuShowCamera,
+        settingsMenuShowPhotos,
+        settingsMenuShowPhotoCalendar,
+        settingsMenuShowTimers,
+        settingsMenuShowQuickSettings,
+        settingsMenuShowSettings,
       ];
 }
 

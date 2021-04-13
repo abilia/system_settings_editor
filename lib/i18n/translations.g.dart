@@ -382,6 +382,9 @@ abstract class Translated {
 
   final String activateScreensaver = 'Activate Screensaver';
 
+  final String menuRemovalWarning =
+      'Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -988,6 +991,10 @@ class SV extends Translated {
 
   @override
   final String activateScreensaver = 'Aktivera skärmsläckare';
+
+  @override
+  final String menuRemovalWarning =
+      'Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1622,6 +1629,10 @@ class DA extends Translated {
   final String activateScreensaver = 'Aktivér pauseskærm';
 
   @override
+  final String menuRemovalWarning =
+      'Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -2249,6 +2260,10 @@ class NL extends Translated {
 
   @override
   final String activateScreensaver = 'Screensaver activeren';
+
+  @override
+  final String menuRemovalWarning =
+      'Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.';
 
   @override
   final String permissions = 'Rechten';
@@ -2879,6 +2894,10 @@ class FI extends Translated {
 
   @override
   final String activateScreensaver = 'Aktivoi näytönsäästäjä';
+
+  @override
+  final String menuRemovalWarning =
+      'Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3512,6 +3531,10 @@ class DE extends Translated {
   final String activateScreensaver = 'Bildschirmschoner aktivieren';
 
   @override
+  final String menuRemovalWarning =
+      'Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -4141,6 +4164,10 @@ class NB extends Translated {
 
   @override
   final String activateScreensaver = 'Aktiver skjermsparer';
+
+  @override
+  final String menuRemovalWarning =
+      'Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.';
 
   @override
   final String permissions = 'Tillatelser';
