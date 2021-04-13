@@ -27,12 +27,14 @@ abstract class MemoplannerSettingsState extends Equatable {
       _hourClockTypeFromNullBool(settings.setting12hTimeFormatTimeline);
   bool get displayHourLines => settings.settingDisplayHourLines;
   bool get displayTimeline => settings.settingDisplayTimeline;
+  bool get vibrateAtReminder => settings.vibrateAtReminder;
 
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;
   int get afternoonStart => settings.afternoonIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
+  int get alarmDuration => settings.alarmDuration;
 
   DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>
@@ -40,6 +42,10 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
+
+  Sound get nonCheckableAlarm => settings.nonCheckableActivityAlarm.toSound();
+  Sound get checkableAlarm => settings.checkableActivityAlarm.toSound();
+  Sound get reminderAlarm => settings.reminderAlarm.toSound();
 
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();

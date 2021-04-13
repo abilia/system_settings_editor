@@ -208,7 +208,7 @@ Future<IOSNotificationDetails> _iosNotificationDetails(
     presentAlert: true,
     presentBadge: true,
     presentSound: alarm.sound || alarm.vibrate,
-    sound: alarm.vibrate && !alarm.sound ? 'silent.aiff' : null,
+    sound: alarm.vibrate && !alarm.sound ? 'silent.aiff' : 'drum.m4r',
     attachments: await _iOSNotificationAttachment(activity, fileStorage),
   );
 }

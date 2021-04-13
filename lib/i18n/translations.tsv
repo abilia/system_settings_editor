@@ -196,7 +196,9 @@ monthCalendar	Month Calendar	Månadskalender	Månedskalender	Maandkalender	Kuuka
 activityView	Activity View	Aktivitetsvy	Aktivitetssiden	Activiteitsweergave	Aktiviteettinäkymä	Aktivitätsanzeige	Aktivitetsvindu
 addActivity	Add activity	Lägga in aktivitet	Indsæt aktivitet	Activiteit toevoegen	Lisää aktiviteetti	Aktivität hinzufügen	Legg inn aktivitet
 alarmSettings	Alarm settings	Larminställningar	Alarmindstillinger	Alarminstellingen	Hälytysasetukset	Alarmeinstellungen	Alarminnstillinger
-
+nonCheckableActivities	Non checkable activities	Ej kvitterbara aktiviteter	Ikke-kvitterbare aktiviteter	Niet-afvinkbare activiteiten	Ei-tarkistettavat aktiviteetit	Keine kontrollierbaren Aktivitäten	Ikke kvitterbare aktiviteter
+defaultSound	Default	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
+							
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser
 notifications	Notifications	Notiser	Notifikationer	Meldingen	Ilmoitukset	Benachrichtigungen	Notifikasjoner

@@ -6,7 +6,7 @@ export 'countdown_setings_page.dart';
 export 'menu_settings_page.dart';
 export 'activity_view_settings.dart';
 export 'calendar_general_settings.dart';
-export 'alarm_settings.dart';
+export 'alarm_settings_page.dart';
 export 'week_calendar_settings.dart';
 export 'month_calendar_settings.dart';
 export 'day_calendar_settings.dart';

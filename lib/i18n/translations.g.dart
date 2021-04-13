@@ -370,6 +370,10 @@ abstract class Translated {
 
   final String alarmSettings = 'Alarm settings';
 
+  final String nonCheckableActivities = 'Non checkable activities';
+
+  final String defaultSound = 'Default';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -960,6 +964,12 @@ class SV extends Translated {
 
   @override
   final String alarmSettings = 'Larminställningar';
+
+  @override
+  final String nonCheckableActivities = 'Ej kvitterbara aktiviteter';
+
+  @override
+  final String defaultSound = 'Förval';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1577,6 +1587,12 @@ class DA extends Translated {
   final String alarmSettings = 'Alarmindstillinger';
 
   @override
+  final String nonCheckableActivities = 'Ikke-kvitterbare aktiviteter';
+
+  @override
+  final String defaultSound = 'Forvalg';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -2187,6 +2203,12 @@ class NL extends Translated {
 
   @override
   final String alarmSettings = 'Alarminstellingen';
+
+  @override
+  final String nonCheckableActivities = 'Niet-afvinkbare activiteiten';
+
+  @override
+  final String defaultSound = 'Voorselectie';
 
   @override
   final String permissions = 'Rechten';
@@ -2800,6 +2822,12 @@ class FI extends Translated {
 
   @override
   final String alarmSettings = 'Hälytysasetukset';
+
+  @override
+  final String nonCheckableActivities = 'Ei-tarkistettavat aktiviteetit';
+
+  @override
+  final String defaultSound = 'Esivalinta';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3416,6 +3444,12 @@ class DE extends Translated {
   final String alarmSettings = 'Alarmeinstellungen';
 
   @override
+  final String nonCheckableActivities = 'Keine kontrollierbaren Aktivitäten';
+
+  @override
+  final String defaultSound = 'Vorauswahl';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -4028,6 +4062,12 @@ class NB extends Translated {
 
   @override
   final String alarmSettings = 'Alarminnstillinger';
+
+  @override
+  final String nonCheckableActivities = 'Ikke kvitterbare aktiviteter';
+
+  @override
+  final String defaultSound = 'Forvalg';
 
   @override
   final String permissions = 'Tillatelser';

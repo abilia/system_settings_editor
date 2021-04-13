@@ -1,6 +1,6 @@
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/pages/settings/activity_view_settings.dart';
-import 'package:seagull/ui/pages/settings/alarm_settings.dart';
+import 'package:seagull/ui/pages/settings/alarm_settings_page.dart';
 import 'package:seagull/ui/pages/settings/calendar_general_settings.dart';
 import 'package:seagull/ui/pages/settings/day_calendar_settings.dart';
 import 'package:seagull/ui/pages/settings/month_calendar_settings.dart';
@@ -46,7 +46,7 @@ class CalendarSettingsPage extends StatelessWidget {
           navigateTo: NewActivitySettings(),
         ),
         MenuItemPickField(
-          icon: AbiliaIcons.technical_settings,
+          icon: AbiliaIcons.handi_alarm_vibration,
           text: Translator.of(context).translate.alarmSettings,
           navigateTo: AlarmSettingsPage(),
         ),

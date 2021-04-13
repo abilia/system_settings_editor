@@ -34,7 +34,12 @@ class MemoplannerSettings extends Equatable {
       settingDisplayHourLinesKey = 'setting_display_hour_lines',
       settingDisplayTimelineKey = 'setting_display_line_timeline',
       viewOptionsTimeIntervalKey = 'view_options_time_interval',
-      viewOptionsZoomKey = 'view_options_zoom';
+      viewOptionsZoomKey = 'view_options_zoom',
+      nonCheckableActivityAlarmKey = 'activity_alarm_without_confirm',
+      checkableActivityAlarmKey = 'activity_alarm_with_confirm',
+      reminderAlarmKey = 'activity_reminder_alarm',
+      vibrateAtReminderKey = 'setting_vibrate_at_reminder',
+      alarmDurationKey = 'alarm_duration';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -56,7 +61,8 @@ class MemoplannerSettings extends Equatable {
       calendarActivityTypeShowTypes,
       setting12hTimeFormatTimeline,
       settingDisplayHourLines,
-      settingDisplayTimeline;
+      settingDisplayTimeline,
+      vibrateAtReminder;
 
   final int morningIntervalStart,
       forenoonIntervalStart,
@@ -65,9 +71,14 @@ class MemoplannerSettings extends Equatable {
       nightIntervalStart,
       calendarDayColor,
       viewOptionsTimeInterval,
-      viewOptionsZoom;
+      viewOptionsZoom,
+      alarmDuration;
 
-  final String calendarActivityTypeLeft, calendarActivityTypeRight;
+  final String calendarActivityTypeLeft,
+      calendarActivityTypeRight,
+      nonCheckableActivityAlarm,
+      checkableActivityAlarm,
+      reminderAlarm;
 
   MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -101,6 +112,11 @@ class MemoplannerSettings extends Equatable {
     this.calendarDayColor = 0,
     this.viewOptionsTimeInterval = 1,
     this.viewOptionsZoom = 1,
+    this.alarmDuration = 30000,
+    this.checkableActivityAlarm,
+    this.nonCheckableActivityAlarm,
+    this.reminderAlarm,
+    this.vibrateAtReminder = true,
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -200,6 +216,14 @@ class MemoplannerSettings extends Equatable {
       calendarDayColor: settings.parse(calendarDayColorKey, 0),
       viewOptionsTimeInterval: settings.parse(viewOptionsTimeIntervalKey, 1),
       viewOptionsZoom: settings.parse(viewOptionsZoomKey, 1),
+      alarmDuration: settings.parse(alarmDurationKey, 30000),
+      checkableActivityAlarm:
+          settings.parse(checkableActivityAlarmKey, 'Default'),
+      nonCheckableActivityAlarm:
+          settings.parse(nonCheckableActivityAlarmKey, 'Default'),
+      reminderAlarm: settings.parse(reminderAlarmKey, 'Default'),
+      vibrateAtReminder:
+          settings.getBool(vibrateAtReminderKey, defaultValue: true),
     );
   }
 
@@ -236,6 +260,11 @@ class MemoplannerSettings extends Equatable {
         calendarDayColor,
         viewOptionsTimeInterval,
         viewOptionsZoom,
+        alarmDuration,
+        checkableActivityAlarm,
+        nonCheckableActivityAlarm,
+        reminderAlarm,
+        vibrateAtReminder,
       ];
 }
 
