@@ -41,7 +41,9 @@ class MemoplannerSettings extends Equatable {
       functionMenuDisplayMenuKey = 'function_menu_display_menu',
       activityTimeoutKey = 'activity_timeout',
       useScreensaverKey = 'use_screensaver',
-      functionMenuStartViewKey = 'function_menu_start_view';
+      functionMenuStartViewKey = 'function_menu_start_view',
+      imageMenuDisplayPhotoItemKey = 'image_menu_display_photo_item',
+      imageMenuDisplayCameraItemKey = 'image_menu_display_camera_item';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -68,7 +70,9 @@ class MemoplannerSettings extends Equatable {
       functionMenuDisplayMonth,
       functionMenuDisplayNewActivity,
       functionMenuDisplayMenu,
-      useScreensaver;
+      useScreensaver,
+      imageMenuDisplayPhotoItem,
+      imageMenuDisplayCameraItem;
 
   final int morningIntervalStart,
       forenoonIntervalStart,
@@ -102,6 +106,8 @@ class MemoplannerSettings extends Equatable {
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
     this.calendarActivityTypeShowTypes = true,
+    this.imageMenuDisplayPhotoItem = true,
+    this.imageMenuDisplayCameraItem = true,
     this.setting12hTimeFormatTimeline,
     this.settingDisplayHourLines = false,
     this.settingDisplayTimeline = true,
@@ -208,6 +214,12 @@ class MemoplannerSettings extends Equatable {
         useScreensaverKey,
         defaultValue: false,
       ),
+      imageMenuDisplayPhotoItem: settings.getBool(
+        imageMenuDisplayPhotoItemKey,
+      ),
+      imageMenuDisplayCameraItem: settings.getBool(
+        imageMenuDisplayCameraItemKey,
+      ),
       morningIntervalStart: settings.parse(
         morningIntervalStartKey,
         21600000,
@@ -288,6 +300,8 @@ class MemoplannerSettings extends Equatable {
         activityTimeout,
         useScreensaver,
         functionMenuStartView,
+        imageMenuDisplayPhotoItem,
+        imageMenuDisplayCameraItem
       ];
 }
 
