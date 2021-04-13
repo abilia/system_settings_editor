@@ -9,8 +9,8 @@ double timePillarHeight(TimepillarState ts) =>
     (ts.timepillarInterval.lengthInHours +
             1) * // include one extra hour for the last digit after the timepillar (could only be the font size of the text)
         ts.hourHeight +
-    TimePillarCalendar.topMargin +
-    TimePillarCalendar.bottomMargin;
+    TimepillarCalendar.topMargin +
+    TimepillarCalendar.bottomMargin;
 
 class TimePillar extends StatelessWidget {
   final TimepillarInterval interval;
@@ -46,7 +46,7 @@ class TimePillar extends StatelessWidget {
         style: theme.textTheme.headline6.copyWith(color: AbiliaColors.black),
         child: Container(
           color: interval.intervalPart == IntervalPart.NIGHT
-              ? TimePillarCalendar.nightBackgroundColor
+              ? TimepillarCalendar.nightBackgroundColor
               : theme.scaffoldBackgroundColor,
           child: Stack(
             clipBehavior: Clip.none,
@@ -59,7 +59,7 @@ class TimePillar extends StatelessWidget {
                     height: p.length,
                     child: const DecoratedBox(
                       decoration: BoxDecoration(
-                          color: TimePillarCalendar.nightBackgroundColor),
+                          color: TimepillarCalendar.nightBackgroundColor),
                     ),
                   ),
                 );
@@ -70,11 +70,11 @@ class TimePillar extends StatelessWidget {
                   timepillarState: ts,
                   offset:
                       hoursToPixels(interval.startTime.hour, ts.dotDistance) -
-                          TimePillarCalendar.topMargin,
+                          TimepillarCalendar.topMargin,
                 ),
               Padding(
                 padding: EdgeInsets.fromLTRB(ts.timePillarPadding,
-                    TimePillarCalendar.topMargin, ts.timePillarPadding, 0),
+                    TimepillarCalendar.topMargin, ts.timePillarPadding, 0),
                 child: SizedBox(
                   width: ts.timePillarWidth,
                   child: Column(

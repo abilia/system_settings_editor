@@ -3,32 +3,42 @@ import 'package:seagull/ui/all.dart';
 
 class CalendarBottomBar extends StatelessWidget {
   static final barHeigt = 64.0.s;
-
-  const CalendarBottomBar({
-    Key key,
-  }) : super(key: key);
+  const CalendarBottomBar({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DayPickerBloc, DayPickerState>(
-      builder: (context, state) => BottomAppBar(
-        child: Container(
-          height: barHeigt,
-          padding: EdgeInsets.symmetric(horizontal: 16.0.s),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              AddActivityButton(day: state.day),
-              AbiliaTabBar(
-                collapsedCondition: (i) => false,
-                tabs: <Widget>[
-                  Icon(AbiliaIcons.day),
-                  Icon(AbiliaIcons.week),
-                  Icon(AbiliaIcons.month),
-                ],
-              ),
-              MenuButton(),
-            ],
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, settingsState) =>
+          BlocBuilder<DayPickerBloc, DayPickerState>(
+        builder: (context, dayState) => BottomAppBar(
+          child: Container(
+            height: barHeigt,
+            padding: EdgeInsets.symmetric(horizontal: 16.0.s),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                if (settingsState.displayNewActivity)
+                  AddActivityButton(day: dayState.day)
+                else
+                  SizedBox(width: actionButtonMinSize),
+                if (!settingsState.displayOnlyDayCalendar)
+                  AbiliaTabBar(
+                    tabs: <Widget>[
+                      Icon(AbiliaIcons.day),
+                      if (settingsState.displayWeekCalendar)
+                        Icon(AbiliaIcons.week),
+                      if (settingsState.displayMonthCalendar)
+                        Icon(AbiliaIcons.month),
+                    ],
+                  )
+                else
+                  const Spacer(),
+                if (settingsState.displayMenu)
+                  MenuButton()
+                else
+                  SizedBox(width: actionButtonMinSize),
+              ],
+            ),
           ),
         ),
       ),

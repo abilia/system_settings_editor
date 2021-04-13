@@ -75,7 +75,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert - At timepillar and side dots shows
-    expect(find.byType(TimePillarCalendar), findsOneWidget);
+    expect(find.byType(TimepillarCalendar), findsOneWidget);
     expect(find.byType(SideDots), findsWidgets);
     expect(find.byType(SideTime), findsNothing);
 
@@ -96,7 +96,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert - At timepillar and side time shows
-    expect(find.byType(TimePillarCalendar), findsOneWidget);
+    expect(find.byType(TimepillarCalendar), findsOneWidget);
     expect(find.byType(SideDots), findsNothing);
     expect(find.byType(SideTime), findsWidgets);
   });

@@ -44,7 +44,7 @@ class MemoplannerSettingBloc
       yield MemoplannerSettingsFailed();
     }
     if (event is SettingsUpdateEvent) {
-      genericBloc.add(GenericUpdated(event.settingData));
+      genericBloc.add(GenericUpdated([event.settingData]));
     }
   }
 
