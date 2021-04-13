@@ -68,7 +68,7 @@ void main() {
             children: <Widget>[
               Timeline(
                 width: 40,
-                offset: -TimePillarCalendar.topMargin,
+                offset: -TimepillarCalendar.topMargin,
                 timepillarState: ts,
               ),
               ActivityBoard(

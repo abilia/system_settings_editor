@@ -529,7 +529,7 @@ void main() {
     testWidgets('no settings shows agenda', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      expect(find.byType(TimePillarCalendar), findsNothing);
+      expect(find.byType(TimepillarCalendar), findsNothing);
       expect(find.byType(Agenda), findsOneWidget);
     });
 
@@ -541,7 +541,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(Agenda), findsNothing);
-      expect(find.byType(TimePillarCalendar), findsOneWidget);
+      expect(find.byType(TimepillarCalendar), findsOneWidget);
     });
 
     testWidgets('when calendar is changed, settings i saved',

@@ -28,6 +28,20 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayHourLines => settings.settingDisplayHourLines;
   bool get displayTimeline => settings.settingDisplayTimeline;
   bool get vibrateAtReminder => settings.vibrateAtReminder;
+  bool get displayWeekCalendar => settings.functionMenuDisplayWeek;
+  bool get displayMonthCalendar => settings.functionMenuDisplayMonth;
+  bool get displayOnlyDayCalendar =>
+      !displayWeekCalendar && !displayMonthCalendar;
+  bool get displayBottomBar =>
+      displayMenu ||
+      displayNewActivity ||
+      displayMonthCalendar ||
+      displayWeekCalendar;
+  bool get displayNewActivity => settings.functionMenuDisplayNewActivity;
+  bool get displayMenu => settings.functionMenuDisplayMenu;
+  bool get useScreensaver => settings.useScreensaver;
+  bool get displayPhotos => settings.imageMenuDisplayPhotoItem;
+  bool get displayCamera => settings.imageMenuDisplayCameraItem;
 
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;
@@ -35,11 +49,15 @@ abstract class MemoplannerSettingsState extends Equatable {
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
   int get alarmDuration => settings.alarmDuration;
+  int get activityTimeout => settings.activityTimeout;
+
+  int get calendarCount =>
+      1 + (displayWeekCalendar ? 1 : 0) + (displayMonthCalendar ? 1 : 0);
 
   DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>
       TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
-
+  StartView get startView => StartView.values[settings.functionMenuStartView];
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
 

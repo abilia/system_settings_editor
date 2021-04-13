@@ -374,6 +374,18 @@ abstract class Translated {
 
   final String defaultSound = 'Default';
 
+  final String toolbarSettingsHint = 'Views displayed in the Toolbar';
+
+  final String homeScreenSettingsHint =
+      'View displayed when the home button is pressed';
+
+  final String timeoutSettingsHint =
+      'Returns to the home screen after a period of inactivity.';
+
+  final String noTimeout = 'No timeout';
+
+  final String activateScreensaver = 'Activate Screensaver';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -970,6 +982,22 @@ class SV extends Translated {
 
   @override
   final String defaultSound = 'Förval';
+
+  @override
+  final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
+
+  @override
+  final String homeScreenSettingsHint = 'Visad vy vid tryck på hemknappen';
+
+  @override
+  final String timeoutSettingsHint =
+      'Återgång till startsidan efter en tids inaktivitet.';
+
+  @override
+  final String noTimeout = 'Ingen timeout';
+
+  @override
+  final String activateScreensaver = 'Aktivera skärmsläckare';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1593,6 +1621,23 @@ class DA extends Translated {
   final String defaultSound = 'Forvalg';
 
   @override
+  final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
+
+  @override
+  final String homeScreenSettingsHint =
+      'Side der bliver vist ved tryk på hjemknappen';
+
+  @override
+  final String timeoutSettingsHint =
+      'Gå tilbage til startsiden, efter en periode med inaktivitet.';
+
+  @override
+  final String noTimeout = 'Ingen timeout';
+
+  @override
+  final String activateScreensaver = 'Aktivér pauseskærm';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -2209,6 +2254,23 @@ class NL extends Translated {
 
   @override
   final String defaultSound = 'Voorselectie';
+
+  @override
+  final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
+
+  @override
+  final String homeScreenSettingsHint =
+      'Weergave getoond als de homeknop wordt ingedrukt';
+
+  @override
+  final String timeoutSettingsHint =
+      'Gaat terug naar het thuisscherm na een periode van inactiviteit.';
+
+  @override
+  final String noTimeout = 'Geen time-out';
+
+  @override
+  final String activateScreensaver = 'Screensaver activeren';
 
   @override
   final String permissions = 'Rechten';
@@ -2828,6 +2890,23 @@ class FI extends Translated {
 
   @override
   final String defaultSound = 'Esivalinta';
+
+  @override
+  final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
+
+  @override
+  final String homeScreenSettingsHint =
+      'Näkymä näytetään, kun aloitussivun painiketta painetaan';
+
+  @override
+  final String timeoutSettingsHint =
+      'Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen.';
+
+  @override
+  final String noTimeout = 'Ei aikakatkaisua';
+
+  @override
+  final String activateScreensaver = 'Aktivoi näytönsäästäjä';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3450,6 +3529,23 @@ class DE extends Translated {
   final String defaultSound = 'Vorauswahl';
 
   @override
+  final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
+
+  @override
+  final String homeScreenSettingsHint =
+      'Wird nach Drücken der Schaltfläche Home angezeigt';
+
+  @override
+  final String timeoutSettingsHint =
+      'Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität.';
+
+  @override
+  final String noTimeout = 'Keine Zeitüberschreitung';
+
+  @override
+  final String activateScreensaver = 'Bildschirmschoner aktivieren';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -4068,6 +4164,23 @@ class NB extends Translated {
 
   @override
   final String defaultSound = 'Forvalg';
+
+  @override
+  final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';
+
+  @override
+  final String homeScreenSettingsHint =
+      'Vindu som vil bli vist ved trykk på hjemknappen';
+
+  @override
+  final String timeoutSettingsHint =
+      'Återgång till startsidan efter en tids inaktivitet.';
+
+  @override
+  final String noTimeout = 'Ingen timeout';
+
+  @override
+  final String activateScreensaver = 'Aktiver skjermsparer';
 
   @override
   final String permissions = 'Tillatelser';

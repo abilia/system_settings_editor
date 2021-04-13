@@ -65,42 +65,50 @@ class SelectPicturePage extends StatelessWidget {
             ),
           Padding(
             padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
-            child: Column(
-              children: [
-                PickField(
-                  key: TestKey.imageArchiveButton,
-                  leading: const Icon(AbiliaIcons.folder),
-                  text: Text(translate.imageArchive),
-                  onTap: () async {
-                    final selectedImage =
-                        await Navigator.of(context).push<SelectedImage>(
-                      MaterialPageRoute(
-                        builder: (_) => CopiedAuthProviders(
-                          blocContext: context,
-                          child: const ImageArchivePage(),
-                        ),
+            child:
+                BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    PickField(
+                      key: TestKey.imageArchiveButton,
+                      leading: const Icon(AbiliaIcons.folder),
+                      text: Text(translate.imageArchive),
+                      onTap: () async {
+                        final selectedImage =
+                            await Navigator.of(context).push<SelectedImage>(
+                          MaterialPageRoute(
+                            builder: (_) => CopiedAuthProviders(
+                              blocContext: context,
+                              child: const ImageArchivePage(),
+                            ),
+                          ),
+                        );
+                        if (selectedImage != null) {
+                          await Navigator.of(context).maybePop(selectedImage);
+                        }
+                      },
+                    ),
+                    SizedBox(height: 8.0.s),
+                    if (state.displayPhotos) ...[
+                      ImageSourceWidget(
+                        text: translate.myPhotos,
+                        imageSource: ImageSource.gallery,
+                        permission: Platform.isAndroid
+                            ? Permission.storage
+                            : Permission.photos,
                       ),
-                    );
-                    if (selectedImage != null) {
-                      await Navigator.of(context).maybePop(selectedImage);
-                    }
-                  },
-                ),
-                SizedBox(height: 8.0.s),
-                ImageSourceWidget(
-                  text: translate.myPhotos,
-                  imageSource: ImageSource.gallery,
-                  permission: Platform.isAndroid
-                      ? Permission.storage
-                      : Permission.photos,
-                ),
-                SizedBox(height: 8.0.s),
-                ImageSourceWidget(
-                  text: translate.takeNewPhoto,
-                  imageSource: ImageSource.camera,
-                  permission: Permission.camera,
-                ),
-              ],
+                      SizedBox(height: 8.0.s),
+                    ],
+                    if (state.displayCamera)
+                      ImageSourceWidget(
+                        text: translate.takeNewPhoto,
+                        imageSource: ImageSource.camera,
+                        permission: Permission.camera,
+                      ),
+                  ],
+                );
+              },
             ),
           ),
         ],

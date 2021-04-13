@@ -40,6 +40,10 @@ extension UriExtension on String {
   }
 }
 
+extension Replace on String {
+  String get singleLine => replaceAll('-\n', '');
+}
+
 class TextRenderingSize {
   final int numberOfLines;
   final TextPainter textPainter;

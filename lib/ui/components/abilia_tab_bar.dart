@@ -6,13 +6,14 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
     Key key,
     @required this.tabs,
     this.height,
-    @required this.collapsedCondition,
+    this.collapsedCondition,
   }) : super(key: key);
 
   final List<Widget> tabs;
   final double height;
 
   final bool Function(int index) collapsedCondition;
+  bool Function(int) get isCollapsed => collapsedCondition ?? (_) => false;
 
   @override
   Size get preferredSize => Size.fromHeight(height ?? 64.0.s);
@@ -24,9 +25,9 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
       for (var i = 0; i < tabs.length; i++)
         _Tab(
           index: i,
-          offset: collapsedCondition(i) ? offset++ : offset,
+          offset: isCollapsed(i) ? offset++ : offset,
           last: (tabs.length - 1) == i,
-          collapsed: () => collapsedCondition(i),
+          collapsed: () => isCollapsed(i),
           controller: DefaultTabController.of(context),
           child: tabs[i],
         )

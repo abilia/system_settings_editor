@@ -21,6 +21,7 @@ export 'user_file/user_file_bloc.dart';
 export 'sync/sync_bloc.dart';
 export 'providers.dart';
 export 'settings/settings_bloc.dart';
+export 'settings/function_settings/function_settings_cubit.dart';
 export 'generic/generic_bloc.dart';
 export 'generic/memoplannersetting/memoplanner_setting_bloc.dart';
 export 'license/license_bloc.dart';

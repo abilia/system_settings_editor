@@ -10,14 +10,12 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage>
     with WidgetsBindingObserver {
-  DayPickerBloc _dayPickerBloc;
   ScrollPositionBloc _scrollPositionBloc;
 
   @override
   void initState() {
-    _dayPickerBloc = BlocProvider.of<DayPickerBloc>(context);
     _scrollPositionBloc = ScrollPositionBloc(
-      dayPickerBloc: _dayPickerBloc,
+      dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
       clockBloc: context.read<ClockBloc>(),
       timepillarBloc: context.read<TimepillarBloc>(),
     );
@@ -43,22 +41,27 @@ class _CalendarPageState extends State<CalendarPage>
   Widget build(BuildContext context) {
     return BlocProvider<ScrollPositionBloc>.value(
       value: _scrollPositionBloc,
-      child: BlocBuilder<CalendarViewBloc, CalendarViewState>(
-        builder: (context, calendarViewState) => DefaultTabController(
+      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        buildWhen: (old, fresh) =>
+            old.runtimeType != fresh.runtimeType ||
+            old.calendarCount != fresh.calendarCount ||
+            old.displayBottomBar != fresh.displayBottomBar,
+        builder: (context, settingsState) => DefaultTabController(
           initialIndex: 0,
-          length: 3,
+          length: settingsState.calendarCount,
           child: Scaffold(
+            bottomNavigationBar: settingsState is MemoplannerSettingsLoaded &&
+                    settingsState.displayBottomBar
+                ? const CalendarBottomBar()
+                : null,
             body: TabBarView(
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                DayCalendar(
-                  calendarViewState: calendarViewState,
-                ),
-                WeekCalendarTab(),
-                MonthCalendar()
+                const DayCalendar(),
+                if (settingsState.displayWeekCalendar) const WeekCalendarTab(),
+                if (settingsState.displayMonthCalendar) const MonthCalendar()
               ],
             ),
-            bottomNavigationBar: CalendarBottomBar(),
           ),
         ),
       ),

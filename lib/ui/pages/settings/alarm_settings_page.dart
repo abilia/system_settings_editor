@@ -3,7 +3,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/buttons/play_sound_button.dart';
 import 'package:seagull/ui/pages/settings/select_sound_page.dart';
-import 'package:seagull/ui/pages/settings/settings_base_page.dart';
 
 class AlarmSettingsPage extends StatelessWidget {
   const AlarmSettingsPage({Key key}) : super(key: key);

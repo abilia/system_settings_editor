@@ -39,7 +39,16 @@ class MemoplannerSettings extends Equatable {
       checkableActivityAlarmKey = 'activity_alarm_with_confirm',
       reminderAlarmKey = 'activity_reminder_alarm',
       vibrateAtReminderKey = 'setting_vibrate_at_reminder',
-      alarmDurationKey = 'alarm_duration';
+      alarmDurationKey = 'alarm_duration',
+      functionMenuDisplayWeekKey = 'function_menu_display_week',
+      functionMenuDisplayMonthKey = 'function_menu_display_month',
+      functionMenuDisplayNewActivityKey = 'function_menu_display_new_activity',
+      functionMenuDisplayMenuKey = 'function_menu_display_menu',
+      activityTimeoutKey = 'activity_timeout',
+      useScreensaverKey = 'use_screensaver',
+      functionMenuStartViewKey = 'function_menu_start_view',
+      imageMenuDisplayPhotoItemKey = 'image_menu_display_photo_item',
+      imageMenuDisplayCameraItemKey = 'image_menu_display_camera_item';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -62,7 +71,14 @@ class MemoplannerSettings extends Equatable {
       setting12hTimeFormatTimeline,
       settingDisplayHourLines,
       settingDisplayTimeline,
-      vibrateAtReminder;
+      vibrateAtReminder,
+      functionMenuDisplayWeek,
+      functionMenuDisplayMonth,
+      functionMenuDisplayNewActivity,
+      functionMenuDisplayMenu,
+      useScreensaver,
+      imageMenuDisplayPhotoItem,
+      imageMenuDisplayCameraItem;
 
   final int morningIntervalStart,
       forenoonIntervalStart,
@@ -72,7 +88,9 @@ class MemoplannerSettings extends Equatable {
       calendarDayColor,
       viewOptionsTimeInterval,
       viewOptionsZoom,
-      alarmDuration;
+      alarmDuration,
+      activityTimeout,
+      functionMenuStartView;
 
   final String calendarActivityTypeLeft,
       calendarActivityTypeRight,
@@ -99,6 +117,8 @@ class MemoplannerSettings extends Equatable {
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
     this.calendarActivityTypeShowTypes = true,
+    this.imageMenuDisplayPhotoItem = true,
+    this.imageMenuDisplayCameraItem = true,
     this.setting12hTimeFormatTimeline,
     this.settingDisplayHourLines = false,
     this.settingDisplayTimeline = true,
@@ -117,6 +137,13 @@ class MemoplannerSettings extends Equatable {
     this.nonCheckableActivityAlarm,
     this.reminderAlarm,
     this.vibrateAtReminder = true,
+    this.functionMenuDisplayWeek = true,
+    this.functionMenuDisplayMonth = true,
+    this.functionMenuDisplayNewActivity = true,
+    this.functionMenuDisplayMenu = true,
+    this.activityTimeout = 0,
+    this.useScreensaver = false,
+    this.functionMenuStartView = 0,
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -187,6 +214,28 @@ class MemoplannerSettings extends Equatable {
       settingDisplayTimeline: settings.getBool(
         settingDisplayTimelineKey,
       ),
+      functionMenuDisplayWeek: settings.getBool(
+        functionMenuDisplayWeekKey,
+      ),
+      functionMenuDisplayMonth: settings.getBool(
+        functionMenuDisplayMonthKey,
+      ),
+      functionMenuDisplayNewActivity: settings.getBool(
+        functionMenuDisplayNewActivityKey,
+      ),
+      functionMenuDisplayMenu: settings.getBool(
+        functionMenuDisplayMenuKey,
+      ),
+      useScreensaver: settings.getBool(
+        useScreensaverKey,
+        defaultValue: false,
+      ),
+      imageMenuDisplayPhotoItem: settings.getBool(
+        imageMenuDisplayPhotoItemKey,
+      ),
+      imageMenuDisplayCameraItem: settings.getBool(
+        imageMenuDisplayCameraItemKey,
+      ),
       morningIntervalStart: settings.parse(
         morningIntervalStartKey,
         21600000,
@@ -206,6 +255,14 @@ class MemoplannerSettings extends Equatable {
       nightIntervalStart: settings.parse(
         nightIntervalStartKey,
         82800000,
+      ),
+      activityTimeout: settings.parse(
+        activityTimeoutKey,
+        0,
+      ),
+      functionMenuStartView: settings.parse(
+        functionMenuStartViewKey,
+        0,
       ),
       calendarActivityTypeLeft: settings.parse<String>(
         calendarActivityTypeLeftKey,
@@ -265,6 +322,15 @@ class MemoplannerSettings extends Equatable {
         nonCheckableActivityAlarm,
         reminderAlarm,
         vibrateAtReminder,
+        functionMenuDisplayWeek,
+        functionMenuDisplayMonth,
+        functionMenuDisplayNewActivity,
+        functionMenuDisplayMenu,
+        activityTimeout,
+        useScreensaver,
+        functionMenuStartView,
+        imageMenuDisplayPhotoItem,
+        imageMenuDisplayCameraItem
       ];
 }
 
@@ -311,3 +377,5 @@ enum DayPart { morning, forenoon, afternoon, evening, night }
 enum DayColor { allDays, saturdayAndSunday, noColors }
 
 enum HourClockType { use12, use24, useSystem }
+
+enum StartView { dayCalendar, weekCalendar, monthCalendar, menu, photoAlbum }
