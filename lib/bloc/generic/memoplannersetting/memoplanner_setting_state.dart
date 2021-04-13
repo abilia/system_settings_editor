@@ -75,6 +75,7 @@ abstract class MemoplannerSettingsState extends Equatable {
   StartView get startView => StartView.values[settings.functionMenuStartView];
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
+  ClockType get clockType => ClockType.values[settings.settingClockType];
 
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();

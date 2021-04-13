@@ -1,5 +1,4 @@
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/settings/settings_base_page.dart';
 
 class WeekCalendarSettings extends StatelessWidget {
   const WeekCalendarSettings({Key key}) : super(key: key);

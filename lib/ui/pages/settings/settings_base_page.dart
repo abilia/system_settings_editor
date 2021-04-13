@@ -30,3 +30,33 @@ class SettingsBasePage extends StatelessWidget {
     );
   }
 }
+
+class SettingsTab extends StatelessWidget {
+  const SettingsTab({
+    Key key,
+    this.children = const [],
+  }) : super(key: key);
+  final List<Widget> children;
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTextStyle(
+      style: abiliaTextTheme.bodyText2.copyWith(color: AbiliaColors.black75),
+      child: ListView(
+        padding: EdgeInsets.symmetric(vertical: 20.s),
+        children: [
+          ...children.map(
+            (w) => w is Divider
+                ? Padding(
+                    padding: EdgeInsets.only(top: 16.s, bottom: 16.s),
+                    child: w,
+                  )
+                : Padding(
+                    padding: EdgeInsets.fromLTRB(12.s, 8.s, 16.s, 0),
+                    child: w,
+                  ),
+          )
+        ],
+      ),
+    );
+  }
+}

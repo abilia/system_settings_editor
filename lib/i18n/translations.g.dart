@@ -385,6 +385,18 @@ abstract class Translated {
   final String menuRemovalWarning =
       'Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.';
 
+  final String clock = 'Clock';
+
+  final String analogueDigital = 'Analogue + digital';
+
+  final String analogue = 'Analogue';
+
+  final String digital = 'Digital';
+
+  final String timeline = 'Timeline';
+
+  final String earyMorning = 'early morning';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -995,6 +1007,24 @@ class SV extends Translated {
   @override
   final String menuRemovalWarning =
       'Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.';
+
+  @override
+  final String clock = 'Klocka';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Tidslinje';
+
+  @override
+  final String earyMorning = 'morgon';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1633,6 +1663,24 @@ class DA extends Translated {
       'Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.';
 
   @override
+  final String clock = 'Ur';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Tidslinje';
+
+  @override
+  final String earyMorning = 'morgen';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -2264,6 +2312,24 @@ class NL extends Translated {
   @override
   final String menuRemovalWarning =
       'Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.';
+
+  @override
+  final String clock = 'Klok';
+
+  @override
+  final String analogueDigital = 'Analoog + digitaal';
+
+  @override
+  final String analogue = 'Analoog';
+
+  @override
+  final String digital = 'Digitaal';
+
+  @override
+  final String timeline = 'Tijdlijn';
+
+  @override
+  final String earyMorning = 'ochtend';
 
   @override
   final String permissions = 'Rechten';
@@ -2898,6 +2964,24 @@ class FI extends Translated {
   @override
   final String menuRemovalWarning =
       'Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.';
+
+  @override
+  final String clock = 'Kello';
+
+  @override
+  final String analogueDigital = 'Analoginen + digitaalinen';
+
+  @override
+  final String analogue = 'Analoginen';
+
+  @override
+  final String digital = 'Digitaalinen';
+
+  @override
+  final String timeline = 'Aikajana';
+
+  @override
+  final String earyMorning = 'aamu';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3535,6 +3619,24 @@ class DE extends Translated {
       'Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.';
 
   @override
+  final String clock = 'Uhr';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Zeitstrahl';
+
+  @override
+  final String earyMorning = 'frühmorgens';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -4168,6 +4270,24 @@ class NB extends Translated {
   @override
   final String menuRemovalWarning =
       'Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.';
+
+  @override
+  final String clock = 'Klokke';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Tidslinje';
+
+  @override
+  final String earyMorning = 'morgen';
 
   @override
   final String permissions = 'Tillatelser';

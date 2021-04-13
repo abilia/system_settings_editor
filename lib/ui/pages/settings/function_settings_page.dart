@@ -71,31 +71,13 @@ class _SettingsTab extends StatelessWidget {
   final List<Widget> children;
   final String hint;
   @override
-  Widget build(BuildContext context) {
-    final widgets = [
-      Padding(
-        padding: EdgeInsets.only(bottom: 8.s),
-        child: Tts(child: Text(hint)),
-      ),
-      ...children,
-    ]
-        .map(
-          (w) => w is Divider
-              ? Padding(
-                  padding: EdgeInsets.only(top: 16.s, bottom: 16.s),
-                  child: w,
-                )
-              : Padding(
-                  padding: EdgeInsets.fromLTRB(12.s, 8.s, 16.s, 0),
-                  child: w,
-                ),
-        )
-        .toList();
-    return ListView(
-      padding: EdgeInsets.symmetric(vertical: 20.s),
-      children: widgets,
-    );
-  }
+  Widget build(BuildContext context) => SettingsTab(children: [
+        Padding(
+          padding: EdgeInsets.only(bottom: 8.s),
+          child: Tts(child: Text(hint)),
+        ),
+        ...children,
+      ]);
 }
 
 class ToolbarSettingsTab extends StatelessWidget {

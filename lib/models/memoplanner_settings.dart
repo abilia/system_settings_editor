@@ -49,7 +49,8 @@ class MemoplannerSettings extends Equatable {
       settingsMenuShowPhotoCalendarKey = 'settings_menu_show_photo_calendar',
       settingsMenuShowTimersKey = 'settings_menu_show_timers',
       settingsMenuShowQuickSettingsKey = 'settings_menu_show_quick_settings',
-      settingsMenuShowSettingsKey = 'settings_menu_show_settings';
+      settingsMenuShowSettingsKey = 'settings_menu_show_settings',
+      settingClockTypeKey = 'setting_clock_type';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -95,7 +96,8 @@ class MemoplannerSettings extends Equatable {
       viewOptionsTimeInterval,
       viewOptionsZoom,
       activityTimeout,
-      functionMenuStartView;
+      functionMenuStartView,
+      settingClockType;
 
   final String calendarActivityTypeLeft, calendarActivityTypeRight;
 
@@ -146,6 +148,7 @@ class MemoplannerSettings extends Equatable {
     this.settingsMenuShowTimers = true,
     this.settingsMenuShowQuickSettings = true,
     this.settingsMenuShowSettings = true,
+    this.settingClockType = 0,
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -284,6 +287,10 @@ class MemoplannerSettings extends Equatable {
         functionMenuStartViewKey,
         0,
       ),
+      settingClockType: settings.parse(
+        settingClockTypeKey,
+        0,
+      ),
       calendarActivityTypeLeft: settings.parse<String>(
         calendarActivityTypeLeftKey,
       ),
@@ -344,6 +351,7 @@ class MemoplannerSettings extends Equatable {
         settingsMenuShowTimers,
         settingsMenuShowQuickSettings,
         settingsMenuShowSettings,
+        settingClockType,
       ];
 }
 
@@ -392,3 +400,5 @@ enum DayColor { allDays, saturdayAndSunday, noColors }
 enum HourClockType { use12, use24, useSystem }
 
 enum StartView { dayCalendar, weekCalendar, monthCalendar, menu, photoAlbum }
+
+enum ClockType { analogueDigital, analogue, digital }
