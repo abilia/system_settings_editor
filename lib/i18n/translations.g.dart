@@ -397,6 +397,16 @@ abstract class Translated {
 
   final String earyMorning = 'early morning';
 
+  final String twelveHourFormat = '12 hours format';
+
+  final String oneDot = 'One dot';
+
+  final String columnOfDots = 'Column of dots';
+
+  final String lineAcrossCurrentTime = 'Line across current time';
+
+  final String linesForEachHour = 'Lines for each hour';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -1025,6 +1035,21 @@ class SV extends Translated {
 
   @override
   final String earyMorning = 'morgon';
+
+  @override
+  final String twelveHourFormat = '12 timmar format';
+
+  @override
+  final String oneDot = 'En punkt';
+
+  @override
+  final String columnOfDots = 'Pelare av punkter';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linje på aktuell tid';
+
+  @override
+  final String linesForEachHour = 'Linjer för varje timme';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1681,6 +1706,21 @@ class DA extends Translated {
   final String earyMorning = 'morgen';
 
   @override
+  final String twelveHourFormat = '12 timers format';
+
+  @override
+  final String oneDot = 'Et punkt';
+
+  @override
+  final String columnOfDots = 'Søjle af punkter';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linje viser aktuel tid';
+
+  @override
+  final String linesForEachHour = 'Linjer for hver time';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -2330,6 +2370,21 @@ class NL extends Translated {
 
   @override
   final String earyMorning = 'ochtend';
+
+  @override
+  final String twelveHourFormat = '12 uur formaat';
+
+  @override
+  final String oneDot = 'Eén punt';
+
+  @override
+  final String columnOfDots = 'Kolommen van punten';
+
+  @override
+  final String lineAcrossCurrentTime = 'Lijn door huidige tijd';
+
+  @override
+  final String linesForEachHour = 'Lijnen voor elk uur';
 
   @override
   final String permissions = 'Rechten';
@@ -2982,6 +3037,21 @@ class FI extends Translated {
 
   @override
   final String earyMorning = 'aamu';
+
+  @override
+  final String twelveHourFormat = '12 tunnin muoto';
+
+  @override
+  final String oneDot = 'Yksi piste';
+
+  @override
+  final String columnOfDots = 'Pistepylväs';
+
+  @override
+  final String lineAcrossCurrentTime = 'Viiva nykyisen ajan kohdalla';
+
+  @override
+  final String linesForEachHour = 'Viivat jokaiselle tunnille';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3637,6 +3707,21 @@ class DE extends Translated {
   final String earyMorning = 'frühmorgens';
 
   @override
+  final String twelveHourFormat = '12 Stunden Format';
+
+  @override
+  final String oneDot = 'Ein Punkt';
+
+  @override
+  final String columnOfDots = 'Spalte aus Punkten';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linie über aktueller Zeit';
+
+  @override
+  final String linesForEachHour = 'Linien für jede Stunde';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -4288,6 +4373,21 @@ class NB extends Translated {
 
   @override
   final String earyMorning = 'morgen';
+
+  @override
+  final String twelveHourFormat = '12 timers format';
+
+  @override
+  final String oneDot = 'Et punkt';
+
+  @override
+  final String columnOfDots = 'Pillar av punkter';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linje viser aktuell tid';
+
+  @override
+  final String linesForEachHour = 'Linjer for hver time';
 
   @override
   final String permissions = 'Tillatelser';

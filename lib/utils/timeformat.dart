@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:seagull/models/all.dart';
 
 String Function(DateTime) hourAndMinuteFormat(BuildContext context) {
   final language = Localizations.localeOf(context).toLanguageTag();
@@ -9,15 +8,9 @@ String Function(DateTime) hourAndMinuteFormat(BuildContext context) {
 }
 
 String Function(DateTime) onlyHourFormat(BuildContext context,
-    {HourClockType clockType = HourClockType.useSystem}) {
-  switch (clockType) {
-    case HourClockType.useSystem:
-      if (MediaQuery.of(context).alwaysUse24HourFormat) continue use24;
-      break;
-    use24:
-    case HourClockType.use24:
-      return DateFormat('H').format;
-    default:
+    {bool use12h = false}) {
+  if (!use12h && MediaQuery.of(context).alwaysUse24HourFormat) {
+    return DateFormat('H').format;
   }
   return DateFormat('h').format;
 }

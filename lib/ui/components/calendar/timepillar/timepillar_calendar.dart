@@ -232,10 +232,10 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
                                     interval: interval,
                                     dayOccasion: widget.activityState.occasion,
                                     showTimeLine: showTimeLine,
-                                    hourClockType:
-                                        memoSettings.timepillarHourClockType,
+                                    use12h: memoSettings.timepillar12HourFormat,
                                     nightParts: np,
                                     dayParts: memoSettings.dayParts,
+                                    columnOfDots: memoSettings.columnOfDots,
                                   ),
                                 ),
                                 category(

@@ -23,10 +23,10 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get activityDisplayWeekDay => settings.activityDisplayWeekDay;
   bool get activityDisplayDate => settings.activityDisplayDate;
   bool get showCategories => settings.calendarActivityTypeShowTypes;
-  HourClockType get timepillarHourClockType =>
-      _hourClockTypeFromNullBool(settings.setting12hTimeFormatTimeline);
+  bool get timepillar12HourFormat => settings.setting12hTimeFormatTimeline;
   bool get displayHourLines => settings.settingDisplayHourLines;
   bool get displayTimeline => settings.settingDisplayTimeline;
+  bool get columnOfDots => settings.settingTimePillarTimeline;
   bool get displayWeekCalendar => settings.functionMenuDisplayWeek;
   bool get displayMonthCalendar => settings.functionMenuDisplayMonth;
   bool get displayOnlyDayCalendar =>
@@ -192,12 +192,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   @override
   bool get stringify => true;
 }
-
-HourClockType _hourClockTypeFromNullBool(bool value) => value == null
-    ? HourClockType.useSystem
-    : value
-        ? HourClockType.use12
-        : HourClockType.use24;
 
 class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
   MemoplannerSettingsLoaded(MemoplannerSettings settings) : super(settings);

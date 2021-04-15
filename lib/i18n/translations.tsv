@@ -212,6 +212,11 @@ analogue	Analogue	Analog	Analog	Analoog	Analoginen	Analog	Analog
 digital	Digital	Digital	Digital	Digitaal	Digitaalinen	Digital	Digital
 timeline	Timeline	Tidslinje	Tidslinje	Tijdlijn	Aikajana	Zeitstrahl	Tidslinje
 earyMorning	early morning	morgon	morgen	ochtend	aamu	frühmorgens	morgen
+twelveHourFormat	12 hours format	12 timmar format	12 timers format	12 uur formaat	12 tunnin muoto	12 Stunden Format	12 timers format
+oneDot	One dot	En punkt	Et punkt	Eén punt	Yksi piste	Ein Punkt	Et punkt
+columnOfDots	Column of dots	Pelare av punkter	Søjle af punkter	Kolommen van punten	Pistepylväs	Spalte aus Punkten	Pillar av punkter
+lineAcrossCurrentTime	Line across current time	Linje på aktuell tid	Linje viser aktuel tid	Lijn door huidige tijd	Viiva nykyisen ajan kohdalla	Linie über aktueller Zeit	Linje viser aktuell tid
+linesForEachHour	Lines for each hour	Linjer för varje timme	Linjer for hver time	Lijnen voor elk uur	Viivat jokaiselle tunnille	Linien für jede Stunde	Linjer for hver time
 
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser
