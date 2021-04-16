@@ -63,6 +63,7 @@ Future scheduleAlarmNotifications(
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
+  String sound,
   FileStorage fileStorage, {
   DateTime Function() now,
 }) async {
@@ -73,6 +74,7 @@ Future scheduleAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
     alwaysUse24HourFormat,
+    sound,
     fileStorage,
     now,
   );
@@ -82,6 +84,7 @@ Future scheduleAlarmNotificationsIsolated(
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
+  String sound,
   FileStorage fileStorage, {
   DateTime Function() now,
 }) async {
@@ -98,6 +101,7 @@ Future scheduleAlarmNotificationsIsolated(
     shouldBeScheduledNotifications,
     language,
     alwaysUse24HourFormat,
+    sound,
     fileStorage,
     now,
   );
@@ -119,6 +123,7 @@ Future _scheduleAllAlarmNotifications(
   Iterable<NotificationAlarm> notifications,
   String language,
   bool alwaysUse24HourFormat,
+  String sound,
   FileStorage fileStorage,
   DateTime Function() now,
 ) =>
@@ -137,6 +142,7 @@ Future _scheduleAllAlarmNotifications(
             newNotification,
             language,
             alwaysUse24HourFormat,
+            sound,
             fileStorage,
             now,
             // Adding a delay on simultaneous alarms to let the selectNotificationSubject handle them
@@ -151,6 +157,7 @@ Future<bool> _scheduleNotification(
   NotificationAlarm notificationAlarm,
   String language,
   bool alwaysUse24HourFormat,
+  String sound,
   FileStorage fileStorage,
   DateTime Function() now, [
   int secondsOffset = 0,
@@ -170,11 +177,29 @@ Future<bool> _scheduleNotification(
   final and = Platform.isIOS
       ? null
       : await _androidNotificationDetails(
-          notificationAlarm, fileStorage, title, subtitle);
+          notificationAlarm,
+          fileStorage,
+          title,
+          subtitle,
+          sound,
+        );
 
   final ios = Platform.isAndroid
       ? null
-      : await _iosNotificationDetails(notificationAlarm, fileStorage);
+      : await _iosNotificationDetails(
+          notificationAlarm,
+          fileStorage,
+          sound,
+        );
+
+  // await notificationPlugin.show(
+  //   0,
+  //   'custom sound notification title',
+  //   'custom sound notification body',
+  //   NotificationDetails(android: and, iOS: ios),
+  // );
+
+  // return true;
 
   if (notificationTime.isBefore(now())) return false;
   final time = TZDateTime.from(
@@ -201,26 +226,31 @@ Future<bool> _scheduleNotification(
 }
 
 Future<IOSNotificationDetails> _iosNotificationDetails(
-    NotificationAlarm notificationAlarm, FileStorage fileStorage) async {
+  NotificationAlarm notificationAlarm,
+  FileStorage fileStorage,
+  String sound,
+) async {
   final activity = notificationAlarm.activity;
   final alarm = activity.alarm;
   return IOSNotificationDetails(
     presentAlert: true,
     presentBadge: true,
     presentSound: alarm.sound || alarm.vibrate,
-    sound: alarm.vibrate && !alarm.sound ? 'silent.aiff' : 'drum.m4r',
+    sound: alarm.vibrate && !alarm.sound ? 'silent.aiff' : '$sound.aiff',
     attachments: await _iOSNotificationAttachment(activity, fileStorage),
   );
 }
 
 Future<AndroidNotificationDetails> _androidNotificationDetails(
-    NotificationAlarm notificationAlarm,
-    FileStorage fileStorage,
-    String title,
-    String subtitle) async {
+  NotificationAlarm notificationAlarm,
+  FileStorage fileStorage,
+  String title,
+  String subtitle,
+  String sound,
+) async {
   final activity = notificationAlarm.activity;
   final alarm = activity.alarm;
-  final notificationChannel = _notificationChannel(alarm);
+  final notificationChannel = _notificationChannel(alarm, sound);
 
   return AndroidNotificationDetails(
     notificationChannel.id,
@@ -228,6 +258,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     notificationChannel.description,
     groupKey: activity.seriesId,
     playSound: alarm.sound,
+    sound: RawResourceAndroidNotificationSound(sound),
     enableVibration: alarm.vibrate,
     importance: Importance.max,
     priority: Priority.high,
@@ -243,9 +274,12 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
   );
 }
 
-NotificationChannel _notificationChannel(Alarm alarm) => alarm.sound
-    ? NotificationChannel('Sound + Vibration', 'Sound + Vibration',
-        'Activities with Alarm + Vibration or Only Alarm')
+NotificationChannel _notificationChannel(Alarm alarm, String sound) => alarm
+        .sound
+    ? NotificationChannel(
+        'SoundVibration$sound',
+        'Sound and Vibration with sound $sound',
+        'Activities with Alarm and Vibration or Only Alarm with sound $sound')
     : alarm.vibrate
         ? NotificationChannel(
             'Vibration', 'Vibration', 'Activities with Only vibration ')

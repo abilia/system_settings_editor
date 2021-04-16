@@ -4,6 +4,7 @@ enum Sound {
   Default,
   Trip,
   Drum,
+  Springboard,
 }
 
 extension SoundExtension on Sound {
@@ -13,6 +14,8 @@ extension SoundExtension on Sound {
         return 'Trip';
       case Sound.Drum:
         return 'Drum';
+      case Sound.Springboard:
+        return 'Springboard';
       case Sound.Default:
         return 'Default';
       default:
@@ -30,6 +33,10 @@ extension SoundExtension on Sound {
         return 'trip';
       case Sound.Drum:
         return 'drum';
+      case Sound.Springboard:
+        return 'springboard';
+      case Sound.Default:
+        return '';
       default:
         throw Exception();
     }

@@ -31,6 +31,8 @@ hour	hour	timme	time	uur	tunti	Stunde	time
 h	h	t	t	u	t	S	t
 minutes	minutes	minuter	minutter	minuten	minuuttia	Minuten	minutter
 minute	minute	minut	minut	minuut	minuutti	Minute	minutt
+seconds	seconds	sekunder	sekunder	seconden	sekuntia	Sekunden	sekunder
+second	second	sekund	sekund	seconde	sekunti	Sekunde	sekund
 min	min	min	min	min	min	Min	min
 am	AM	fm	am	am	am	am	am
 pm	PM	em	pm	pm	pm	pm	pm
@@ -197,6 +199,10 @@ activityView	Activity View	Aktivitetsvy	Aktivitetssiden	Activiteitsweergave	Akti
 addActivity	Add activity	Lägga in aktivitet	Indsæt aktivitet	Activiteit toevoegen	Lisää aktiviteetti	Aktivität hinzufügen	Legg inn aktivitet
 alarmSettings	Alarm settings	Larminställningar	Alarmindstillinger	Alarminstellingen	Hälytysasetukset	Alarmeinstellungen	Alarminnstillinger
 nonCheckableActivities	Non checkable activities	Ej kvitterbara aktiviteter	Ikke-kvitterbare aktiviteter	Niet-afvinkbare activiteiten	Ei-tarkistettavat aktiviteetit	Keine kontrollierbaren Aktivitäten	Ikke kvitterbare aktiviteter
+checkableActivities	Checkable activities	Kvitterbara aktiviteter	Kvitterbare aktiviteter	Afvinkbare activiteiten	Tarkistettavat aktiviteetit	Kontrollierbare Aktivitäten	Kvitterbare aktiviteter
+vibrationOnReminder	Vibration on reminder	Vibration vid påminnelse	Vibration ved påmindelse	Trilfunctie bij herinnering	Värinä muistutuksessa	Vibration bei Erinnerung	Vibrasjon ved påminnelse
+alarmTime	Alarm time	Larmtid	Alarmtid	Alarmtijd	Hälytysaika	Alarmzeit	Alarmtid
+alert	Alert	Signal	Signal	Alert	Hälytys	Anruffunktion	Signal
 defaultSound	Default	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
 							
 ## Functions Settings							

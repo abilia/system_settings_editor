@@ -76,6 +76,10 @@ abstract class Translated {
 
   final String minute = 'minute';
 
+  final String seconds = 'seconds';
+
+  final String second = 'second';
+
   final String min = 'min';
 
   final String am = 'AM';
@@ -372,6 +376,14 @@ abstract class Translated {
 
   final String nonCheckableActivities = 'Non checkable activities';
 
+  final String checkableActivities = 'Checkable activities';
+
+  final String vibrationOnReminder = 'Vibration on reminder';
+
+  final String alarmTime = 'Alarm time';
+
+  final String alert = 'Alert';
+
   final String defaultSound = 'Default';
 
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
@@ -535,6 +547,12 @@ class SV extends Translated {
 
   @override
   final String minute = 'minut';
+
+  @override
+  final String seconds = 'sekunder';
+
+  @override
+  final String second = 'sekund';
 
   @override
   final String min = 'min';
@@ -981,6 +999,18 @@ class SV extends Translated {
   final String nonCheckableActivities = 'Ej kvitterbara aktiviteter';
 
   @override
+  final String checkableActivities = 'Kvitterbara aktiviteter';
+
+  @override
+  final String vibrationOnReminder = 'Vibration vid påminnelse';
+
+  @override
+  final String alarmTime = 'Larmtid';
+
+  @override
+  final String alert = 'Signal';
+
+  @override
   final String defaultSound = 'Förval';
 
   @override
@@ -1172,6 +1202,12 @@ class DA extends Translated {
 
   @override
   final String minute = 'minut';
+
+  @override
+  final String seconds = 'sekunder';
+
+  @override
+  final String second = 'sekund';
 
   @override
   final String min = 'min';
@@ -1618,6 +1654,18 @@ class DA extends Translated {
   final String nonCheckableActivities = 'Ikke-kvitterbare aktiviteter';
 
   @override
+  final String checkableActivities = 'Kvitterbare aktiviteter';
+
+  @override
+  final String vibrationOnReminder = 'Vibration ved påmindelse';
+
+  @override
+  final String alarmTime = 'Alarmtid';
+
+  @override
+  final String alert = 'Signal';
+
+  @override
   final String defaultSound = 'Forvalg';
 
   @override
@@ -1809,6 +1857,12 @@ class NL extends Translated {
 
   @override
   final String minute = 'minuut';
+
+  @override
+  final String seconds = 'seconden';
+
+  @override
+  final String second = 'seconde';
 
   @override
   final String min = 'min';
@@ -2253,6 +2307,18 @@ class NL extends Translated {
   final String nonCheckableActivities = 'Niet-afvinkbare activiteiten';
 
   @override
+  final String checkableActivities = 'Afvinkbare activiteiten';
+
+  @override
+  final String vibrationOnReminder = 'Trilfunctie bij herinnering';
+
+  @override
+  final String alarmTime = 'Alarmtijd';
+
+  @override
+  final String alert = 'Alert';
+
+  @override
   final String defaultSound = 'Voorselectie';
 
   @override
@@ -2444,6 +2510,12 @@ class FI extends Translated {
 
   @override
   final String minute = 'minuutti';
+
+  @override
+  final String seconds = 'sekuntia';
+
+  @override
+  final String second = 'sekunti';
 
   @override
   final String min = 'min';
@@ -2889,6 +2961,18 @@ class FI extends Translated {
   final String nonCheckableActivities = 'Ei-tarkistettavat aktiviteetit';
 
   @override
+  final String checkableActivities = 'Tarkistettavat aktiviteetit';
+
+  @override
+  final String vibrationOnReminder = 'Värinä muistutuksessa';
+
+  @override
+  final String alarmTime = 'Hälytysaika';
+
+  @override
+  final String alert = 'Hälytys';
+
+  @override
   final String defaultSound = 'Esivalinta';
 
   @override
@@ -3079,6 +3163,12 @@ class DE extends Translated {
 
   @override
   final String minute = 'Minute';
+
+  @override
+  final String seconds = 'Sekunden';
+
+  @override
+  final String second = 'Sekunde';
 
   @override
   final String min = 'Min';
@@ -3526,6 +3616,18 @@ class DE extends Translated {
   final String nonCheckableActivities = 'Keine kontrollierbaren Aktivitäten';
 
   @override
+  final String checkableActivities = 'Kontrollierbare Aktivitäten';
+
+  @override
+  final String vibrationOnReminder = 'Vibration bei Erinnerung';
+
+  @override
+  final String alarmTime = 'Alarmzeit';
+
+  @override
+  final String alert = 'Anruffunktion';
+
+  @override
   final String defaultSound = 'Vorauswahl';
 
   @override
@@ -3718,6 +3820,12 @@ class NB extends Translated {
 
   @override
   final String minute = 'minutt';
+
+  @override
+  final String seconds = 'sekunder';
+
+  @override
+  final String second = 'sekund';
 
   @override
   final String min = 'min';
@@ -4161,6 +4269,18 @@ class NB extends Translated {
 
   @override
   final String nonCheckableActivities = 'Ikke kvitterbare aktiviteter';
+
+  @override
+  final String checkableActivities = 'Kvitterbare aktiviteter';
+
+  @override
+  final String vibrationOnReminder = 'Vibrasjon ved påminnelse';
+
+  @override
+  final String alarmTime = 'Alarmtid';
+
+  @override
+  final String alert = 'Signal';
 
   @override
   final String defaultSound = 'Forvalg';

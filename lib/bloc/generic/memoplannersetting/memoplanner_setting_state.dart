@@ -61,9 +61,15 @@ abstract class MemoplannerSettingsState extends Equatable {
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
 
-  Sound get nonCheckableAlarm => settings.nonCheckableActivityAlarm.toSound();
-  Sound get checkableAlarm => settings.checkableActivityAlarm.toSound();
-  Sound get reminderAlarm => settings.reminderAlarm.toSound();
+  Sound get nonCheckableAlarm => settings.nonCheckableActivityAlarm == null
+      ? Sound.Default
+      : settings.nonCheckableActivityAlarm.toSound();
+  Sound get checkableAlarm => settings.checkableActivityAlarm == null
+      ? Sound.Default
+      : settings.checkableActivityAlarm.toSound();
+  Sound get reminderAlarm => settings.reminderAlarm == null
+      ? Sound.Default
+      : settings.reminderAlarm.toSound();
 
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();

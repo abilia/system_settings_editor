@@ -3,7 +3,7 @@ part of 'alarm_settings_cubit.dart';
 class AlarmSettingsState extends Equatable {
   final Sound nonCheckableSound, checkableSound, reminderSound;
   final bool vibrateAtReminder;
-  final int alarmDuration;
+  final AlarmDuration alarmDuration;
 
   AlarmSettingsState._({
     this.nonCheckableSound,
@@ -21,7 +21,9 @@ class AlarmSettingsState extends Equatable {
         checkableSound: state.checkableAlarm,
         reminderSound: state.reminderAlarm,
         vibrateAtReminder: state.vibrateAtReminder,
-        alarmDuration: state.alarmDuration,
+        alarmDuration: state.alarmDuration == null
+            ? AlarmDuration.Alert
+            : state.alarmDuration.toAlarmDuration(),
       );
 
   AlarmSettingsState copyWith({
@@ -29,7 +31,7 @@ class AlarmSettingsState extends Equatable {
     Sound checkableSound,
     Sound reminderSound,
     bool vibrateAtReminder,
-    int alarmDuration,
+    AlarmDuration alarmDuration,
   }) =>
       AlarmSettingsState._(
         nonCheckableSound: nonCheckableSound ?? this.nonCheckableSound,
@@ -49,7 +51,7 @@ class AlarmSettingsState extends Equatable {
           identifier: MemoplannerSettings.checkableActivityAlarmKey,
         ),
         MemoplannerSettingData.fromData(
-          data: reminderSound,
+          data: reminderSound.name(),
           identifier: MemoplannerSettings.reminderAlarmKey,
         ),
         MemoplannerSettingData.fromData(
@@ -57,7 +59,7 @@ class AlarmSettingsState extends Equatable {
           identifier: MemoplannerSettings.vibrateAtReminderKey,
         ),
         MemoplannerSettingData.fromData(
-          data: alarmDuration,
+          data: alarmDuration.milliseconds(),
           identifier: MemoplannerSettings.alarmDurationKey,
         ),
       ];

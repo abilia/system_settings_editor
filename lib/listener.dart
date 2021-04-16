@@ -149,6 +149,11 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
                 state.activities,
                 Localizations.localeOf(context).toLanguageTag(),
                 MediaQuery.of(context).alwaysUse24HourFormat,
+                context
+                    .read<MemoplannerSettingBloc>()
+                    .state
+                    .nonCheckableAlarm
+                    .fileName(),
                 GetIt.I<FileStorage>(),
               );
             }

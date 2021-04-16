@@ -13,7 +13,7 @@ class AlarmSettingsCubit extends Cubit<AlarmSettingsState> {
     this.genericBloc,
   }) : super(AlarmSettingsState.fromMemoplannerSettings(settingsState));
 
-  void changeFunctionSettings(AlarmSettingsState newState) => emit(newState);
+  void changeAlarmSettings(AlarmSettingsState newState) => emit(newState);
   void save() => genericBloc.add(GenericUpdated(state.memoplannerSettingData));
-  
+
 }

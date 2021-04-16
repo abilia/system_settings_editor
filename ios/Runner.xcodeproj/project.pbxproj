@@ -16,6 +16,8 @@
 		98AC1AFF3B06A559B887B2EB /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C76DC2730E9650C4FE5234 /* Pods_Runner.framework */; };
 		B58E8CE5256690840006F1D5 /* silent.aiff in Resources */ = {isa = PBXBuildFile; fileRef = B58E8CE4256690840006F1D5 /* silent.aiff */; };
 		C522FD9923856C19008F85BC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C522FD9823856C19008F85BC /* GoogleService-Info.plist */; };
+		C5D9040E2626E94A00067928 /* drum.aiff in Resources */ = {isa = PBXBuildFile; fileRef = C5D9040C2626E94A00067928 /* drum.aiff */; };
+		C5D9040F2626E94A00067928 /* trip.aiff in Resources */ = {isa = PBXBuildFile; fileRef = C5D9040D2626E94A00067928 /* trip.aiff */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,6 +58,8 @@
 		C56DCC9723A12C916C35FA41 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		C5720A72235F30F400A7A831 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Main.strings; sourceTree = "<group>"; };
 		C5720A73235F30F400A7A831 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		C5D9040C2626E94A00067928 /* drum.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = drum.aiff; path = Resourses/Sounds/drum.aiff; sourceTree = "<group>"; };
+		C5D9040D2626E94A00067928 /* trip.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = trip.aiff; path = Resourses/Sounds/trip.aiff; sourceTree = "<group>"; };
 		EBA268E239ED75FC912C8DD2 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +111,8 @@
 			isa = PBXGroup;
 			children = (
 				B58E8CE4256690840006F1D5 /* silent.aiff */,
+				C5D9040C2626E94A00067928 /* drum.aiff */,
+				C5D9040D2626E94A00067928 /* trip.aiff */,
 				C522FD9823856C19008F85BC /* GoogleService-Info.plist */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
@@ -216,7 +222,9 @@
 			files = (
 				B58E8CE5256690840006F1D5 /* silent.aiff in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
+				C5D9040E2626E94A00067928 /* drum.aiff in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
+				C5D9040F2626E94A00067928 /* trip.aiff in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				C522FD9923856C19008F85BC /* GoogleService-Info.plist in Resources */,
