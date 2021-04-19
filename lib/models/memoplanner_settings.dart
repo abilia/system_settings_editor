@@ -275,10 +275,10 @@ class MemoplannerSettings extends Equatable {
       viewOptionsZoom: settings.parse(viewOptionsZoomKey, 1),
       alarmDuration: settings.parse(alarmDurationKey, 30000),
       checkableActivityAlarm:
-          settings.parse(checkableActivityAlarmKey, 'Default'),
+          settings.parse(checkableActivityAlarmKey, Sound.Default.name()),
       nonCheckableActivityAlarm:
-          settings.parse(nonCheckableActivityAlarmKey, 'Default'),
-      reminderAlarm: settings.parse(reminderAlarmKey, 'Default'),
+          settings.parse(nonCheckableActivityAlarmKey, Sound.Default.name()),
+      reminderAlarm: settings.parse(reminderAlarmKey, Sound.Default.name()),
       vibrateAtReminder:
           settings.getBool(vibrateAtReminderKey, defaultValue: true),
     );

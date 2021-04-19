@@ -7,9 +7,6 @@ typedef AlarmScheduler = Future Function(
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
-  String checkableSound,
-  String nonCheckableSound,
-  String reminderSound,
-  Duration alarmDuration,
+  MemoplannerSettings settings,
   FileStorage fileStorage,
 );

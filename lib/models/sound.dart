@@ -1,6 +1,7 @@
 import 'package:seagull/i18n/all.dart';
 
 enum Sound {
+  NoSound,
   Default,
   Trip,
   Drum,
@@ -18,6 +19,8 @@ extension SoundExtension on Sound {
         return 'Springboard';
       case Sound.Default:
         return 'Default';
+      case Sound.NoSound:
+        return '- No sound -';
       default:
         throw Exception();
     }
@@ -37,6 +40,8 @@ extension SoundExtension on Sound {
         return 'springboard';
       case Sound.Default:
         return '';
+      case Sound.NoSound:
+        return 'silent';
       default:
         throw Exception();
     }

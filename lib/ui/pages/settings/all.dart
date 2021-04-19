@@ -13,3 +13,4 @@ export 'day_calendar_settings.dart';
 export 'settings_base_page.dart';
 export 'image_picker_settings_page.dart';
 export 'new_activity_settings.dart';
+export 'select_sound_page.dart';

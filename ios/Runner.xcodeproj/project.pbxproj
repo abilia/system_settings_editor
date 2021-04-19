@@ -18,7 +18,6 @@
 		C522FD9923856C19008F85BC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C522FD9823856C19008F85BC /* GoogleService-Info.plist */; };
 		C5A551482629C86C001DC962 /* trip_30.aiff in Resources */ = {isa = PBXBuildFile; fileRef = C5A551402629C86C001DC962 /* trip_30.aiff */; };
 		C5A551492629C86C001DC962 /* drum_15.aiff in Resources */ = {isa = PBXBuildFile; fileRef = C5A551412629C86C001DC962 /* drum_15.aiff */; };
-		C5A5514A2629C86C001DC962 /* thebigadventure.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5A551422629C86C001DC962 /* thebigadventure.wav */; };
 		C5A5514B2629C86C001DC962 /* springboard_15.aiff in Resources */ = {isa = PBXBuildFile; fileRef = C5A551432629C86C001DC962 /* springboard_15.aiff */; };
 		C5A5514C2629C86C001DC962 /* springboard.aiff in Resources */ = {isa = PBXBuildFile; fileRef = C5A551442629C86C001DC962 /* springboard.aiff */; };
 		C5A5514D2629C86C001DC962 /* drum_30.aiff in Resources */ = {isa = PBXBuildFile; fileRef = C5A551452629C86C001DC962 /* drum_30.aiff */; };
@@ -68,7 +67,6 @@
 		C5720A73235F30F400A7A831 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		C5A551402629C86C001DC962 /* trip_30.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = trip_30.aiff; path = Resourses/Sounds/trip_30.aiff; sourceTree = "<group>"; };
 		C5A551412629C86C001DC962 /* drum_15.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = drum_15.aiff; path = Resourses/Sounds/drum_15.aiff; sourceTree = "<group>"; };
-		C5A551422629C86C001DC962 /* thebigadventure.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = thebigadventure.wav; path = Resourses/Sounds/thebigadventure.wav; sourceTree = "<group>"; };
 		C5A551432629C86C001DC962 /* springboard_15.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = springboard_15.aiff; path = Resourses/Sounds/springboard_15.aiff; sourceTree = "<group>"; };
 		C5A551442629C86C001DC962 /* springboard.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = springboard.aiff; path = Resourses/Sounds/springboard.aiff; sourceTree = "<group>"; };
 		C5A551452629C86C001DC962 /* drum_30.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = drum_30.aiff; path = Resourses/Sounds/drum_30.aiff; sourceTree = "<group>"; };
@@ -131,7 +129,6 @@
 				C5A551432629C86C001DC962 /* springboard_15.aiff */,
 				C5A551472629C86C001DC962 /* springboard_30.aiff */,
 				C5A551442629C86C001DC962 /* springboard.aiff */,
-				C5A551422629C86C001DC962 /* thebigadventure.wav */,
 				C5A551462629C86C001DC962 /* trip_15.aiff */,
 				C5A551402629C86C001DC962 /* trip_30.aiff */,
 				B58E8CE4256690840006F1D5 /* silent.aiff */,
@@ -250,7 +247,6 @@
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				C5A5514F2629C86C001DC962 /* springboard_30.aiff in Resources */,
 				C5D9040E2626E94A00067928 /* drum.aiff in Resources */,
-				C5A5514A2629C86C001DC962 /* thebigadventure.wav in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				C5D9040F2626E94A00067928 /* trip.aiff in Resources */,
 				C5A551492629C86C001DC962 /* drum_15.aiff in Resources */,

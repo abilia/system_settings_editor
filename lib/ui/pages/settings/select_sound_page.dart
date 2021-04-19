@@ -7,12 +7,14 @@ class SelectSoundPage extends StatefulWidget {
   final Sound sound;
   final IconData appBarIcon;
   final String appBarTitle;
+  final bool noSoundOption;
 
   const SelectSoundPage({
     Key key,
     @required this.sound,
     @required this.appBarIcon,
     @required this.appBarTitle,
+    this.noSoundOption = false,
   }) : super(key: key);
 
   @override
@@ -32,6 +34,7 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     final widgets = Sound.values
+        .where((s) => widget.noSoundOption ? true : s != Sound.NoSound)
         .map(
           (s) => Row(
             children: [
@@ -43,8 +46,10 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
                   text: Text(s.displayName(t)),
                 ),
               ),
-              SizedBox(width: 12),
-              PlaySoundButton(sound: s),
+              if (selectedSound == s && s != Sound.NoSound) ...[
+                SizedBox(width: 12),
+                PlaySoundButton(sound: s),
+              ],
             ],
           ),
         )

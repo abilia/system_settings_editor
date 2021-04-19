@@ -20,7 +20,9 @@ class AlarmSettingsPage extends StatelessWidget {
         builder: (context, state) {
           final widgets = [
             AlarmSelector(
+              key: TestKey.nonCheckableAlarmSelector,
               heading: t.nonCheckableActivities,
+              icon: AbiliaIcons.handi_uncheck,
               sound: state.nonCheckableSound,
               onChanged: (sound) => context
                   .read<AlarmSettingsCubit>()
@@ -28,20 +30,26 @@ class AlarmSettingsPage extends StatelessWidget {
                       state.copyWith(nonCheckableSound: sound)),
             ),
             AlarmSelector(
+              key: TestKey.checkableAlarmSelector,
               heading: t.checkableActivities,
+              icon: AbiliaIcons.handi_check,
               sound: state.checkableSound,
               onChanged: (sound) => context
                   .read<AlarmSettingsCubit>()
                   .changeAlarmSettings(state.copyWith(checkableSound: sound)),
             ),
             AlarmSelector(
+              key: TestKey.reminderAlarmSelector,
               heading: t.reminders,
+              icon: AbiliaIcons.handi_reminder,
               sound: state.reminderSound,
+              noSoundOption: true,
               onChanged: (sound) => context
                   .read<AlarmSettingsCubit>()
                   .changeAlarmSettings(state.copyWith(reminderSound: sound)),
             ),
             SwitchField(
+              key: TestKey.vibrateAtReminderSelector,
               text: Text(t.vibrationOnReminder),
               value: state.vibrateAtReminder,
               onChanged: (v) => context
@@ -49,6 +57,7 @@ class AlarmSettingsPage extends StatelessWidget {
                   .changeAlarmSettings(state.copyWith(vibrateAtReminder: v)),
             ),
             AlarmDurationSelector(
+              key: TestKey.alarmDurationSelector,
               duration: state.alarmDuration,
             ),
           ];
@@ -81,13 +90,17 @@ class AlarmSettingsPage extends StatelessWidget {
 
 class AlarmSelector extends StatelessWidget {
   final String heading;
+  final IconData icon;
   final Sound sound;
   final ValueChanged<Sound> onChanged;
+  final bool noSoundOption;
   const AlarmSelector({
     Key key,
     @required this.heading,
+    @required this.icon,
     @required this.sound,
     @required this.onChanged,
+    this.noSoundOption = false,
   }) : super(key: key);
 
   @override
@@ -109,8 +122,9 @@ class AlarmSelector extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => SelectSoundPage(
                         sound: sound,
-                        appBarIcon: AbiliaIcons.handi_uncheck,
-                        appBarTitle: t.nonCheckableActivities,
+                        noSoundOption: noSoundOption,
+                        appBarIcon: icon,
+                        appBarTitle: heading,
                       ),
                     ),
                   );

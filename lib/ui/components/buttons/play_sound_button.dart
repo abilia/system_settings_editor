@@ -14,14 +14,16 @@ class PlaySoundButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ActionButton(
       style: actionButtonStyleDark,
-      onPressed: () async {
-        if (sound == Sound.Default) {
-          await FlutterRingtonePlayer.playNotification();
-        } else {
-          final audioCache = AudioCache();
-          await audioCache.play('sounds/${sound.fileName()}.mp3');
-        }
-      },
+      onPressed: sound == Sound.NoSound
+          ? null
+          : () async {
+              if (sound == Sound.Default) {
+                await FlutterRingtonePlayer.playNotification();
+              } else {
+                final audioCache = AudioCache();
+                await audioCache.play('sounds/${sound.fileName()}.mp3');
+              }
+            },
       child: Icon(
         AbiliaIcons.play_sound,
       ),
