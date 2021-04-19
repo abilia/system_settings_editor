@@ -152,10 +152,6 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
                 Localizations.localeOf(context).toLanguageTag(),
                 MediaQuery.of(context).alwaysUse24HourFormat,
                 settingsState.settings,
-                // settingsState.checkableAlarm.fileName(),
-                // settingsState.nonCheckableAlarm.fileName(),
-                // settingsState.reminderAlarm.fileName(),
-                // Duration(milliseconds: settingsState.alarmDuration),
                 GetIt.I<FileStorage>(),
               );
             }
