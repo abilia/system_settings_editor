@@ -29,7 +29,7 @@ extension MockSharedPreferences on SharedPreferences {
   }
 }
 
-final AlarmScheduler noAlarmScheduler = ((a, b, c, d, e) async {});
+final AlarmScheduler noAlarmScheduler = ((a, b, c, d, e, f, g, h) async {});
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 

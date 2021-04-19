@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
@@ -63,7 +64,10 @@ Future scheduleAlarmNotifications(
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
-  String sound,
+  String checkableSound,
+  String nonCheckableSound,
+  String reminderSound,
+  Duration alarmDuration,
   FileStorage fileStorage, {
   DateTime Function() now,
 }) async {
@@ -74,7 +78,10 @@ Future scheduleAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
     alwaysUse24HourFormat,
-    sound,
+    checkableSound,
+    nonCheckableSound,
+    reminderSound,
+    alarmDuration,
     fileStorage,
     now,
   );
@@ -84,7 +91,10 @@ Future scheduleAlarmNotificationsIsolated(
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
-  String sound,
+  String checkableSound,
+  String nonCheckableSound,
+  String reminderSound,
+  Duration alarmDuration,
   FileStorage fileStorage, {
   DateTime Function() now,
 }) async {
@@ -101,7 +111,10 @@ Future scheduleAlarmNotificationsIsolated(
     shouldBeScheduledNotifications,
     language,
     alwaysUse24HourFormat,
-    sound,
+    checkableSound,
+    nonCheckableSound,
+    reminderSound,
+    alarmDuration,
     fileStorage,
     now,
   );
@@ -123,7 +136,10 @@ Future _scheduleAllAlarmNotifications(
   Iterable<NotificationAlarm> notifications,
   String language,
   bool alwaysUse24HourFormat,
-  String sound,
+  String checkableSound,
+  String nonCheckableSound,
+  String reminderSound,
+  Duration alarmDuration,
   FileStorage fileStorage,
   DateTime Function() now,
 ) =>
@@ -138,11 +154,17 @@ Future _scheduleAllAlarmNotifications(
         final notificationTimes = <DateTime>{};
         var scheduled = 0;
         for (final newNotification in notifications) {
+          final sound = newNotification is NewAlarm
+              ? newNotification.activity.checkable
+                  ? checkableSound
+                  : nonCheckableSound
+              : reminderSound;
           if (await _scheduleNotification(
             newNotification,
             language,
             alwaysUse24HourFormat,
             sound,
+            alarmDuration,
             fileStorage,
             now,
             // Adding a delay on simultaneous alarms to let the selectNotificationSubject handle them
@@ -158,6 +180,7 @@ Future<bool> _scheduleNotification(
   String language,
   bool alwaysUse24HourFormat,
   String sound,
+  Duration alarmDuration,
   FileStorage fileStorage,
   DateTime Function() now, [
   int secondsOffset = 0,
@@ -182,6 +205,7 @@ Future<bool> _scheduleNotification(
           title,
           subtitle,
           sound,
+          alarmDuration,
         );
 
   final ios = Platform.isAndroid
@@ -190,16 +214,8 @@ Future<bool> _scheduleNotification(
           notificationAlarm,
           fileStorage,
           sound,
+          alarmDuration,
         );
-
-  // await notificationPlugin.show(
-  //   0,
-  //   'custom sound notification title',
-  //   'custom sound notification body',
-  //   NotificationDetails(android: and, iOS: ios),
-  // );
-
-  // return true;
 
   if (notificationTime.isBefore(now())) return false;
   final time = TZDateTime.from(
@@ -229,14 +245,18 @@ Future<IOSNotificationDetails> _iosNotificationDetails(
   NotificationAlarm notificationAlarm,
   FileStorage fileStorage,
   String sound,
+  Duration alarmDuration,
 ) async {
   final activity = notificationAlarm.activity;
   final alarm = activity.alarm;
+  final seconds = alarmDuration.inSeconds;
   return IOSNotificationDetails(
     presentAlert: true,
     presentBadge: true,
     presentSound: alarm.sound || alarm.vibrate,
-    sound: alarm.vibrate && !alarm.sound ? 'silent.aiff' : '$sound.aiff',
+    sound: alarm.vibrate && !alarm.sound
+        ? 'silent.aiff'
+        : '$sound${seconds >= 30 ? '_30' : seconds >= 15 ? '_15' : ''}.aiff',
     attachments: await _iOSNotificationAttachment(activity, fileStorage),
   );
 }
@@ -247,10 +267,12 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
   String title,
   String subtitle,
   String sound,
+  Duration alarmDuration,
 ) async {
   final activity = notificationAlarm.activity;
   final alarm = activity.alarm;
   final notificationChannel = _notificationChannel(alarm, sound);
+  final insistentFlag = 4;
 
   return AndroidNotificationDetails(
     notificationChannel.id,
@@ -263,6 +285,10 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     importance: Importance.max,
     priority: Priority.high,
     fullScreenIntent: true,
+    additionalFlags: alarmDuration.inSeconds > 0
+        ? Int32List.fromList(<int>[insistentFlag])
+        : null,
+    timeoutAfter: alarmDuration.inMilliseconds,
     startActivityClassName: 'com.abilia.memoplannergo.AlarmActivity',
     largeIcon: await _androidLargeIcon(activity, fileStorage),
     styleInformation: await _androidStyleInformation(

@@ -145,15 +145,16 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
         BlocListener<ActivitiesBloc, ActivitiesState>(
           listener: (context, state) async {
             if (state is ActivitiesLoaded) {
+              final settingsState =
+                  context.read<MemoplannerSettingBloc>().state;
               await GetIt.I<AlarmScheduler>()(
                 state.activities,
                 Localizations.localeOf(context).toLanguageTag(),
                 MediaQuery.of(context).alwaysUse24HourFormat,
-                context
-                    .read<MemoplannerSettingBloc>()
-                    .state
-                    .nonCheckableAlarm
-                    .fileName(),
+                settingsState.checkableAlarm.fileName(),
+                settingsState.nonCheckableAlarm.fileName(),
+                settingsState.reminderAlarm.fileName(),
+                Duration(milliseconds: settingsState.alarmDuration),
                 GetIt.I<FileStorage>(),
               );
             }

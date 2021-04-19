@@ -65,7 +65,10 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     };
 
     final settings = MemoplannerSettings.fromSettingsMap(_f(genericsMap));
-    final sound = settings.checkableActivityAlarm.toSound();
+    final checkableSound = settings.checkableActivityAlarm.toSound();
+    final nonCheckableSound = settings.nonCheckableActivityAlarm.toSound();
+    final reminderSound = settings.reminderAlarm.toSound();
+    final duration = Duration(milliseconds: settings.alarmDuration);
 
     log.fine('finding alarms from ${activities.length} activities');
 
@@ -73,7 +76,10 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       activities,
       settingsDb.language,
       settingsDb.alwaysUse24HourFormat,
-      sound.fileName(),
+      checkableSound.fileName(),
+      nonCheckableSound.fileName(),
+      reminderSound.fileName(),
+      duration,
       fileStorage,
     );
 
