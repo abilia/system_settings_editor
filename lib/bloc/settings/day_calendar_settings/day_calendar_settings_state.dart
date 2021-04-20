@@ -1,35 +1,51 @@
 part of 'day_calendar_settings_cubit.dart';
 
 class DayCalendarSettingsState extends Equatable {
-  final bool displayWeek;
+  final bool showBrowseButtons, showWeekday, showDayPeriod, showDate, showClock;
 
   DayCalendarSettingsState._({
-    this.displayWeek,
+    @required this.showBrowseButtons,
+    @required this.showWeekday,
+    @required this.showDayPeriod,
+    @required this.showDate,
+    @required this.showClock,
   });
 
   factory DayCalendarSettingsState.fromMemoplannerSettings(
     MemoplannerSettingsState state,
   ) =>
       DayCalendarSettingsState._(
-        displayWeek: state.displayWeekCalendar,
+        showBrowseButtons: state.dayCaptionShowDayButtons,
+        showWeekday: state.activityDisplayWeekDay,
+        showDayPeriod: state.activityDisplayDayPeriod,
+        showDate: state.activityDisplayDate,
+        showClock: state.activityDisplayClock,
       );
 
   DayCalendarSettingsState copyWith({
-    bool displayWeek,
+    bool showBrowseButtons,
+    bool showWeekday,
+    bool showDayPeriod,
+    bool showDate,
+    bool showClock,
   }) =>
       DayCalendarSettingsState._(
-        displayWeek: displayWeek ?? this.displayWeek,
+        showBrowseButtons: showBrowseButtons ?? this.showBrowseButtons,
+        showWeekday: showWeekday ?? this.showWeekday,
+        showDayPeriod: showDayPeriod ?? this.showDayPeriod,
+        showDate: showDate ?? this.showDate,
+        showClock: showClock ?? this.showClock,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
-          data: displayWeek,
+          data: showBrowseButtons,
           identifier: MemoplannerSettings.functionMenuDisplayWeekKey,
         ),
       ];
 
   @override
   List<Object> get props => [
-        displayWeek,
+        showBrowseButtons,
       ];
 }

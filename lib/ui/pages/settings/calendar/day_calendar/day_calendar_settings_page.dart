@@ -25,7 +25,7 @@ class DayCalendarSettingsPage extends StatelessWidget {
             ),
           ),
           body: TabBarView(children: [
-            Container(),
+            DayAppBarSettingsTab(),
             Container(),
             Container(),
           ]),

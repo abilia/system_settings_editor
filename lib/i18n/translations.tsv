@@ -196,7 +196,7 @@ monthCalendar	Month Calendar	Månadskalender	Månedskalender	Maandkalender	Kuuka
 activityView	Activity View	Aktivitetsvy	Aktivitetssiden	Activiteitsweergave	Aktiviteettinäkymä	Aktivitätsanzeige	Aktivitetsvindu
 addActivity	Add activity	Lägga in aktivitet	Indsæt aktivitet	Activiteit toevoegen	Lisää aktiviteetti	Aktivität hinzufügen	Legg inn aktivitet
 alarmSettings	Alarm settings	Larminställningar	Alarmindstillinger	Alarminstellingen	Hälytysasetukset	Alarmeinstellungen	Alarminnstillinger
-
+							
 ## Functions Settings							
 toolbarSettingsHint	Views displayed in the Toolbar	Visningar visas i verktygsfältet	Visninger vises i værktøjslinjen	Weergaven weergegeven in de werkbalk	Näkymät näkyvät työkalupalkissa	In der Symbolleiste angezeigte Ansichten	Visninger som vises på verktøylinjen
 homeScreenSettingsHint	View displayed when the home button is pressed	Visad vy vid tryck på hemknappen	Side der bliver vist ved tryk på hjemknappen	Weergave getoond als de homeknop wordt ingedrukt	Näkymä näytetään, kun aloitussivun painiketta painetaan	Wird nach Drücken der Schaltfläche Home angezeigt	Vindu som vil bli vist ved trykk på hjemknappen
@@ -204,7 +204,10 @@ timeoutSettingsHint	Returns to the home screen after a period of inactivity.	Åt
 noTimeout	No timeout	Ingen timeout	Ingen timeout	Geen time-out	Ei aikakatkaisua	Keine Zeitüberschreitung	Ingen timeout
 activateScreensaver	Activate Screensaver	Aktivera skärmsläckare	Aktivér pauseskærm	Screensaver activeren	Aktivoi näytönsäästäjä	Bildschirmschoner aktivieren	Aktiver skjermsparer
 menuRemovalWarning 	Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.	Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.	Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.	Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.	Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.	Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.	Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.
-
+							
+## Day Calendar Settings
+topField	Top Field	Toppfält	Topfelt	Bovenste veld	Yläkenttä	Oberstes Feld	Toppfelt
+							
 ## Calendar General Settings							
 clock	Clock	Klocka	Ur	Klok	Kello	Uhr	Klokke
 analogueDigital	Analogue + digital	Analog + digital	Analog + digital	Analoog + digitaal	Analoginen + digitaalinen	Analog + digital	Analog + digital
@@ -217,7 +220,7 @@ oneDot	One dot	En punkt	Et punkt	Eén punt	Yksi piste	Ein Punkt	Et punkt
 columnOfDots	Column of dots	Pelare av punkter	Søjle af punkter	Kolommen van punten	Pistepylväs	Spalte aus Punkten	Pillar av punkter
 lineAcrossCurrentTime	Line across current time	Linje på aktuell tid	Linje viser aktuel tid	Lijn door huidige tijd	Viiva nykyisen ajan kohdalla	Linie über aktueller Zeit	Linje viser aktuell tid
 linesForEachHour	Lines for each hour	Linjer för varje timme	Linjer for hver time	Lijnen voor elk uur	Viivat jokaiselle tunnille	Linien für jede Stunde	Linjer for hver time
-
+							
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser
 notifications	Notifications	Notiser	Notifikationer	Meldingen	Ilmoitukset	Benachrichtigungen	Notifikasjoner

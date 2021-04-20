@@ -385,6 +385,8 @@ abstract class Translated {
   final String menuRemovalWarning =
       'Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.';
 
+  final String topField = 'Top Field';
+
   final String clock = 'Clock';
 
   final String analogueDigital = 'Analogue + digital';
@@ -1017,6 +1019,9 @@ class SV extends Translated {
   @override
   final String menuRemovalWarning =
       'Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.';
+
+  @override
+  final String topField = 'Toppfält';
 
   @override
   final String clock = 'Klocka';
@@ -1688,6 +1693,9 @@ class DA extends Translated {
       'Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.';
 
   @override
+  final String topField = 'Topfelt';
+
+  @override
   final String clock = 'Ur';
 
   @override
@@ -2352,6 +2360,9 @@ class NL extends Translated {
   @override
   final String menuRemovalWarning =
       'Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.';
+
+  @override
+  final String topField = 'Bovenste veld';
 
   @override
   final String clock = 'Klok';
@@ -3019,6 +3030,9 @@ class FI extends Translated {
   @override
   final String menuRemovalWarning =
       'Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.';
+
+  @override
+  final String topField = 'Yläkenttä';
 
   @override
   final String clock = 'Kello';
@@ -3689,6 +3703,9 @@ class DE extends Translated {
       'Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.';
 
   @override
+  final String topField = 'Oberstes Feld';
+
+  @override
   final String clock = 'Uhr';
 
   @override
@@ -4355,6 +4372,9 @@ class NB extends Translated {
   @override
   final String menuRemovalWarning =
       'Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.';
+
+  @override
+  final String topField = 'Toppfelt';
 
   @override
   final String clock = 'Klokke';
