@@ -16,19 +16,23 @@ class TimePillar extends StatelessWidget {
   final TimepillarInterval interval;
   final Occasion dayOccasion;
   final bool showTimeLine;
-  final HourClockType hourClockType;
+  final bool use12h;
   final List<NightPart> nightParts;
   final DayParts dayParts;
   bool get today => dayOccasion == Occasion.current;
+  final bool columnOfDots;
+  final bool preview;
 
   const TimePillar({
     Key key,
     @required this.interval,
     @required this.dayOccasion,
     @required this.showTimeLine,
-    @required this.hourClockType,
+    @required this.use12h,
     @required this.nightParts,
     @required this.dayParts,
+    @required this.columnOfDots,
+    this.preview = false,
   }) : super(key: key);
 
   @override
@@ -39,8 +43,9 @@ class TimePillar extends StatelessWidget {
             ? _pastDots
             : _futureDots;
 
-    final formatHour = onlyHourFormat(context, clockType: hourClockType);
+    final formatHour = onlyHourFormat(context, use12h: use12h);
     final theme = Theme.of(context);
+    final topMargin = preview ? 0.0 : TimepillarCalendar.topMargin;
     return BlocBuilder<TimepillarBloc, TimepillarState>(
       builder: (context, ts) => DefaultTextStyle(
         style: theme.textTheme.headline6.copyWith(color: AbiliaColors.black),
@@ -70,32 +75,39 @@ class TimePillar extends StatelessWidget {
                   timepillarState: ts,
                   offset:
                       hoursToPixels(interval.startTime.hour, ts.dotDistance) -
-                          TimepillarCalendar.topMargin,
+                          topMargin,
                 ),
               Padding(
-                padding: EdgeInsets.fromLTRB(ts.timePillarPadding,
-                    TimepillarCalendar.topMargin, ts.timePillarPadding, 0),
+                padding: EdgeInsets.fromLTRB(
+                  ts.timePillarPadding,
+                  topMargin,
+                  ts.timePillarPadding,
+                  0,
+                ),
                 child: SizedBox(
                   width: ts.timePillarWidth,
                   child: Column(
-                    children: List.generate(
-                      interval.lengthInHours,
-                      (index) {
-                        final hourIndex = index + interval.startTime.hour;
-                        final hour = interval.startTime
-                            .onlyDays()
-                            .copyWith(hour: hourIndex);
-                        return Hour(
-                          hour: formatHour(hour),
-                          dots: dots(
-                            hour,
-                            hour.isNight(dayParts),
-                          ),
-                          isNight: hour.isNight(dayParts),
-                          timepillarState: ts,
-                        );
-                      },
-                    )..add(
+                    children: [
+                      ...List.generate(
+                        interval.lengthInHours,
+                        (index) {
+                          final hourIndex = index + interval.startTime.hour;
+                          final hour = interval.startTime
+                              .onlyDays()
+                              .copyWith(hour: hourIndex);
+                          return Hour(
+                            hour: formatHour(hour),
+                            dots: dots(
+                              hour,
+                              hour.isNight(dayParts),
+                              columnOfDots,
+                            ),
+                            isNight: hour.isNight(dayParts),
+                            timepillarState: ts,
+                          );
+                        },
+                      ),
+                      if (!preview)
                         Hour(
                           hour: formatHour(interval.endTime),
                           dots: SizedBox(
@@ -107,7 +119,7 @@ class TimePillar extends StatelessWidget {
                               .isNight(dayParts),
                           timepillarState: ts,
                         ),
-                      ),
+                    ],
                   ),
                 ),
               ),
@@ -118,18 +130,16 @@ class TimePillar extends StatelessWidget {
     );
   }
 
-  Widget _todayDots(DateTime hour, bool isNight) => TodayDots(
+  Widget _todayDots(DateTime hour, bool isNight, bool columnOfDots) =>
+      TodayDots(
         hour: hour,
         isNight: isNight,
+        columnOfDots: columnOfDots,
       );
 
-  Widget _pastDots(DateTime hour, bool isNight) => PastDots(
-        isNight: isNight,
-      );
+  Widget _pastDots(_, bool isNight, __) => PastDots(isNight: isNight);
 
-  Widget _futureDots(DateTime hour, bool isNight) => FutureDots(
-        isNight: isNight,
-      );
+  Widget _futureDots(_, bool isNight, __) => FutureDots(isNight: isNight);
 }
 
 class Hour extends StatelessWidget {

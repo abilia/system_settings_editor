@@ -1,19 +1,25 @@
 part of 'function_settings_cubit.dart';
 
 class FunctionSettingsState extends Equatable {
-  final bool displayWeek, displayMonth, displayNewActivity, displayMenu;
+  final bool displayWeek,
+      displayMonth,
+      displayNewActivity,
+      displayMenu,
+      displayMenuInitial;
   final StartView startView;
   final int timeout;
   final bool useScreensaver;
 
   bool get hasTimeOut => timeout > 0;
   bool get shouldUseScreenSaver => hasTimeOut && useScreensaver;
+  bool get displayMenuChangedToDisabled => !displayMenu && displayMenuInitial;
 
   FunctionSettingsState._({
     this.displayWeek,
     this.displayMonth,
     this.displayNewActivity,
     this.displayMenu,
+    this.displayMenuInitial,
     this.timeout,
     this.useScreensaver,
     StartView startView,
@@ -49,7 +55,8 @@ class FunctionSettingsState extends Equatable {
         displayWeek: state.displayWeekCalendar,
         displayMonth: state.displayMonthCalendar,
         displayNewActivity: state.displayNewActivity,
-        displayMenu: state.displayMenu,
+        displayMenu: state.settings.functionMenuDisplayMenu,
+        displayMenuInitial: state.settings.functionMenuDisplayMenu,
         timeout: state.activityTimeout,
         useScreensaver: state.useScreensaver,
         startView: state.startView,
@@ -72,6 +79,7 @@ class FunctionSettingsState extends Equatable {
         timeout: timeout ?? this.timeout,
         useScreensaver: useScreensaver ?? this.useScreensaver,
         startView: startView ?? this.startView,
+        displayMenuInitial: displayMenuInitial,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [

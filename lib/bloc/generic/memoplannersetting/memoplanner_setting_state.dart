@@ -23,10 +23,10 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get activityDisplayWeekDay => settings.activityDisplayWeekDay;
   bool get activityDisplayDate => settings.activityDisplayDate;
   bool get showCategories => settings.calendarActivityTypeShowTypes;
-  HourClockType get timepillarHourClockType =>
-      _hourClockTypeFromNullBool(settings.setting12hTimeFormatTimeline);
+  bool get timepillar12HourFormat => settings.setting12hTimeFormatTimeline;
   bool get displayHourLines => settings.settingDisplayHourLines;
   bool get displayTimeline => settings.settingDisplayTimeline;
+  bool get columnOfDots => settings.settingTimePillarTimeline;
   bool get displayWeekCalendar => settings.functionMenuDisplayWeek;
   bool get displayMonthCalendar => settings.functionMenuDisplayMonth;
   bool get displayOnlyDayCalendar =>
@@ -37,10 +37,27 @@ abstract class MemoplannerSettingsState extends Equatable {
       displayMonthCalendar ||
       displayWeekCalendar;
   bool get displayNewActivity => settings.functionMenuDisplayNewActivity;
-  bool get displayMenu => settings.functionMenuDisplayMenu;
+  bool get displayMenu =>
+      settings.functionMenuDisplayMenu && !allMenuItemsDisabled;
   bool get useScreensaver => settings.useScreensaver;
   bool get displayPhotos => settings.imageMenuDisplayPhotoItem;
   bool get displayCamera => settings.imageMenuDisplayCameraItem;
+
+  bool get settingsInaccessable => !displayMenu || !displayMenuSettings;
+
+  bool get allMenuItemsDisabled =>
+      !displayMenuCamera &&
+      !displayMenuMyPhotos &&
+      !displayMenuPhotoCalendar &&
+      !displayMenuCountdown &&
+      !displayMenuQuickSettings &&
+      !displayMenuSettings;
+  bool get displayMenuCamera => settings.settingsMenuShowCamera;
+  bool get displayMenuMyPhotos => settings.settingsMenuShowPhotos;
+  bool get displayMenuPhotoCalendar => settings.settingsMenuShowPhotoCalendar;
+  bool get displayMenuCountdown => settings.settingsMenuShowTimers;
+  bool get displayMenuQuickSettings => settings.settingsMenuShowQuickSettings;
+  bool get displayMenuSettings => settings.settingsMenuShowSettings;
 
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;
@@ -58,6 +75,7 @@ abstract class MemoplannerSettingsState extends Equatable {
   StartView get startView => StartView.values[settings.functionMenuStartView];
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
+  ClockType get clockType => ClockType.values[settings.settingClockType];
 
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();
@@ -174,12 +192,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   @override
   bool get stringify => true;
 }
-
-HourClockType _hourClockTypeFromNullBool(bool value) => value == null
-    ? HourClockType.useSystem
-    : value
-        ? HourClockType.use12
-        : HourClockType.use24;
 
 class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
   MemoplannerSettingsLoaded(MemoplannerSettings settings) : super(settings);
