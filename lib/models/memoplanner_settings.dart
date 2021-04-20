@@ -127,11 +127,11 @@ class MemoplannerSettings extends Equatable {
     this.setting12hTimeFormatTimeline = false,
     this.settingDisplayHourLines = false,
     this.settingDisplayTimeline = true,
-    this.morningIntervalStart = 21600000,
-    this.forenoonIntervalStart = 36000000,
-    this.afternoonIntervalStart = 43200000,
-    this.eveningIntervalStart = 64800000,
-    this.nightIntervalStart = 82800000,
+    this.morningIntervalStart = DayParts.morningDefault,
+    this.forenoonIntervalStart = DayParts.forenoonDefault,
+    this.afternoonIntervalStart = DayParts.afternoonDefault,
+    this.eveningIntervalStart = DayParts.eveningDefault,
+    this.nightIntervalStart = DayParts.nightDefault,
     this.calendarActivityTypeLeft,
     this.calendarActivityTypeRight,
     this.calendarDayColor = 0,
@@ -268,23 +268,23 @@ class MemoplannerSettings extends Equatable {
       ),
       morningIntervalStart: settings.parse(
         morningIntervalStartKey,
-        21600000,
+        DayParts.morningDefault,
       ),
       forenoonIntervalStart: settings.parse(
         forenoonIntervalStartKey,
-        36000000,
+        DayParts.forenoonDefault,
       ),
       afternoonIntervalStart: settings.parse(
         afternoonIntervalStartKey,
-        43200000,
+        DayParts.afternoonDefault,
       ),
       eveningIntervalStart: settings.parse(
         eveningIntervalStartKey,
-        64800000,
+        DayParts.eveningDefault,
       ),
       nightIntervalStart: settings.parse(
         nightIntervalStartKey,
-        82800000,
+        DayParts.nightDefault,
       ),
       activityTimeout: settings.parse(
         activityTimeoutKey,
@@ -381,27 +381,6 @@ extension _Parsing on Map<String, MemoplannerSettingData> {
   }) =>
       parse<bool>(settingName, defaultValue);
 }
-
-class DayParts {
-  Duration get morning => Duration(milliseconds: morningStart);
-  Duration get night => Duration(milliseconds: nightStart);
-
-  final int morningStart,
-      forenoonStart,
-      afternoonStart,
-      eveningStart,
-      nightStart;
-
-  const DayParts(
-    this.morningStart,
-    this.forenoonStart,
-    this.afternoonStart,
-    this.eveningStart,
-    this.nightStart,
-  );
-}
-
-enum DayPart { morning, forenoon, afternoon, evening, night }
 
 enum DayColor { allDays, saturdayAndSunday, noColors }
 

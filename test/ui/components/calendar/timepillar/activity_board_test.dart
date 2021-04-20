@@ -325,7 +325,7 @@ void main() {
         activities,
         textStyle,
         1.0,
-        DayParts(0, 0, 0, 0, 0),
+        DayParts.standard(),
         TimepillarSide.RIGHT,
         TimepillarState(interval, 1),
       );
