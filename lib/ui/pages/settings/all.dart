@@ -9,7 +9,7 @@ export 'calendar_general_settings.dart';
 export 'alarm_settings.dart';
 export 'week_calendar_settings.dart';
 export 'month_calendar_settings.dart';
-export 'day_calendar_settings.dart';
+export 'day_calendar_settings_page.dart';
 export 'settings_base_page.dart';
 export 'image_picker_settings_page.dart';
 export 'new_activity_settings.dart';

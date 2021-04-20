@@ -2,7 +2,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/pages/settings/activity_view_settings.dart';
 import 'package:seagull/ui/pages/settings/alarm_settings.dart';
 import 'package:seagull/ui/pages/settings/calendar_general_settings.dart';
-import 'package:seagull/ui/pages/settings/day_calendar_settings.dart';
+import 'package:seagull/ui/pages/settings/day_calendar_settings_page.dart';
 import 'package:seagull/ui/pages/settings/month_calendar_settings.dart';
 import 'package:seagull/ui/pages/settings/new_activity_settings.dart';
 import 'package:seagull/ui/pages/settings/settings_base_page.dart';
@@ -23,7 +23,7 @@ class CalendarSettingsPage extends StatelessWidget {
         MenuItemPickField(
           icon: AbiliaIcons.day,
           text: Translator.of(context).translate.dayCalendar,
-          navigateTo: DayCalendarSettings(),
+          navigateTo: DayCalendarSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.week,
