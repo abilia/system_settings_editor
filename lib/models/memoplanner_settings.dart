@@ -43,7 +43,15 @@ class MemoplannerSettings extends Equatable {
       useScreensaverKey = 'use_screensaver',
       functionMenuStartViewKey = 'function_menu_start_view',
       imageMenuDisplayPhotoItemKey = 'image_menu_display_photo_item',
-      imageMenuDisplayCameraItemKey = 'image_menu_display_camera_item';
+      imageMenuDisplayCameraItemKey = 'image_menu_display_camera_item',
+      settingsMenuShowCameraKey = 'settings_menu_show_camera',
+      settingsMenuShowPhotosKey = 'settings_menu_show_photos',
+      settingsMenuShowPhotoCalendarKey = 'settings_menu_show_photo_calendar',
+      settingsMenuShowTimersKey = 'settings_menu_show_timers',
+      settingsMenuShowQuickSettingsKey = 'settings_menu_show_quick_settings',
+      settingsMenuShowSettingsKey = 'settings_menu_show_settings',
+      settingClockTypeKey = 'setting_clock_type',
+      settingTimePillarTimelineKey = 'setting_time_pillar_timeline';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -72,7 +80,14 @@ class MemoplannerSettings extends Equatable {
       functionMenuDisplayMenu,
       useScreensaver,
       imageMenuDisplayPhotoItem,
-      imageMenuDisplayCameraItem;
+      imageMenuDisplayCameraItem,
+      settingsMenuShowCamera,
+      settingsMenuShowPhotos,
+      settingsMenuShowPhotoCalendar,
+      settingsMenuShowTimers,
+      settingsMenuShowQuickSettings,
+      settingsMenuShowSettings,
+      settingTimePillarTimeline;
 
   final int morningIntervalStart,
       forenoonIntervalStart,
@@ -83,7 +98,8 @@ class MemoplannerSettings extends Equatable {
       viewOptionsTimeInterval,
       viewOptionsZoom,
       activityTimeout,
-      functionMenuStartView;
+      functionMenuStartView,
+      settingClockType;
 
   final String calendarActivityTypeLeft, calendarActivityTypeRight;
 
@@ -108,7 +124,7 @@ class MemoplannerSettings extends Equatable {
     this.calendarActivityTypeShowTypes = true,
     this.imageMenuDisplayPhotoItem = true,
     this.imageMenuDisplayCameraItem = true,
-    this.setting12hTimeFormatTimeline,
+    this.setting12hTimeFormatTimeline = false,
     this.settingDisplayHourLines = false,
     this.settingDisplayTimeline = true,
     this.morningIntervalStart = 21600000,
@@ -128,6 +144,14 @@ class MemoplannerSettings extends Equatable {
     this.activityTimeout = 0,
     this.useScreensaver = false,
     this.functionMenuStartView = 0,
+    this.settingsMenuShowCamera = true,
+    this.settingsMenuShowPhotos = true,
+    this.settingsMenuShowPhotoCalendar = true,
+    this.settingsMenuShowTimers = true,
+    this.settingsMenuShowQuickSettings = true,
+    this.settingsMenuShowSettings = true,
+    this.settingClockType = 0,
+    this.settingTimePillarTimeline = false,
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -187,9 +211,27 @@ class MemoplannerSettings extends Equatable {
       calendarActivityTypeShowTypes: settings.getBool(
         calendarActivityTypeShowTypesKey,
       ),
+      settingsMenuShowCamera: settings.getBool(
+        settingsMenuShowCameraKey,
+      ),
+      settingsMenuShowPhotos: settings.getBool(
+        settingsMenuShowPhotosKey,
+      ),
+      settingsMenuShowPhotoCalendar: settings.getBool(
+        settingsMenuShowPhotoCalendarKey,
+      ),
+      settingsMenuShowTimers: settings.getBool(
+        settingsMenuShowTimersKey,
+      ),
+      settingsMenuShowQuickSettings: settings.getBool(
+        settingsMenuShowQuickSettingsKey,
+      ),
+      settingsMenuShowSettings: settings.getBool(
+        settingsMenuShowSettingsKey,
+      ),
       setting12hTimeFormatTimeline: settings.getBool(
         setting12hTimeFormatTimelineKey,
-        defaultValue: null,
+        defaultValue: false,
       ),
       settingDisplayHourLines: settings.getBool(
         settingDisplayHourLinesKey,
@@ -220,6 +262,10 @@ class MemoplannerSettings extends Equatable {
       imageMenuDisplayCameraItem: settings.getBool(
         imageMenuDisplayCameraItemKey,
       ),
+      settingTimePillarTimeline: settings.getBool(
+        settingTimePillarTimelineKey,
+        defaultValue: false,
+      ),
       morningIntervalStart: settings.parse(
         morningIntervalStartKey,
         21600000,
@@ -246,6 +292,10 @@ class MemoplannerSettings extends Equatable {
       ),
       functionMenuStartView: settings.parse(
         functionMenuStartViewKey,
+        0,
+      ),
+      settingClockType: settings.parse(
+        settingClockTypeKey,
         0,
       ),
       calendarActivityTypeLeft: settings.parse<String>(
@@ -301,7 +351,15 @@ class MemoplannerSettings extends Equatable {
         useScreensaver,
         functionMenuStartView,
         imageMenuDisplayPhotoItem,
-        imageMenuDisplayCameraItem
+        imageMenuDisplayCameraItem,
+        settingsMenuShowCamera,
+        settingsMenuShowPhotos,
+        settingsMenuShowPhotoCalendar,
+        settingsMenuShowTimers,
+        settingsMenuShowQuickSettings,
+        settingsMenuShowSettings,
+        settingClockType,
+        settingTimePillarTimeline,
       ];
 }
 
@@ -334,7 +392,7 @@ class DayParts {
       eveningStart,
       nightStart;
 
-  DayParts(
+  const DayParts(
     this.morningStart,
     this.forenoonStart,
     this.afternoonStart,
@@ -347,6 +405,6 @@ enum DayPart { morning, forenoon, afternoon, evening, night }
 
 enum DayColor { allDays, saturdayAndSunday, noColors }
 
-enum HourClockType { use12, use24, useSystem }
-
 enum StartView { dayCalendar, weekCalendar, monthCalendar, menu, photoAlbum }
+
+enum ClockType { analogueDigital, analogue, digital }

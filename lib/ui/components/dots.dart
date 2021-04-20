@@ -43,10 +43,11 @@ class TodayDots extends StatelessWidget {
     Key key,
     @required this.hour,
     @required this.isNight,
+    @required this.columnOfDots,
   }) : super(key: key);
 
   final DateTime hour;
-  final bool isNight;
+  final bool isNight, columnOfDots;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +63,9 @@ class TodayDots extends StatelessWidget {
                 return const AnimatedDot(
                   decoration: futureNightDotShape,
                 );
+              }
+              if (columnOfDots) {
+                return const AnimatedDot(decoration: currentDotShape);
               }
               return const AnimatedDot(decoration: futureDotShape);
             } else if (now.isBefore(dotTime.add(minutesPerDot.minutes()))) {

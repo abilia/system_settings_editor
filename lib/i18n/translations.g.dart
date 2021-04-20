@@ -382,6 +382,31 @@ abstract class Translated {
 
   final String activateScreensaver = 'Activate Screensaver';
 
+  final String menuRemovalWarning =
+      'Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.';
+
+  final String clock = 'Clock';
+
+  final String analogueDigital = 'Analogue + digital';
+
+  final String analogue = 'Analogue';
+
+  final String digital = 'Digital';
+
+  final String timeline = 'Timeline';
+
+  final String earyMorning = 'early morning';
+
+  final String twelveHourFormat = '12 hours format';
+
+  final String oneDot = 'One dot';
+
+  final String columnOfDots = 'Column of dots';
+
+  final String lineAcrossCurrentTime = 'Line across current time';
+
+  final String linesForEachHour = 'Lines for each hour';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -988,6 +1013,43 @@ class SV extends Translated {
 
   @override
   final String activateScreensaver = 'Aktivera skärmsläckare';
+
+  @override
+  final String menuRemovalWarning =
+      'Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.';
+
+  @override
+  final String clock = 'Klocka';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Tidslinje';
+
+  @override
+  final String earyMorning = 'morgon';
+
+  @override
+  final String twelveHourFormat = '12 timmar format';
+
+  @override
+  final String oneDot = 'En punkt';
+
+  @override
+  final String columnOfDots = 'Pelare av punkter';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linje på aktuell tid';
+
+  @override
+  final String linesForEachHour = 'Linjer för varje timme';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1622,6 +1684,43 @@ class DA extends Translated {
   final String activateScreensaver = 'Aktivér pauseskærm';
 
   @override
+  final String menuRemovalWarning =
+      'Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.';
+
+  @override
+  final String clock = 'Ur';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Tidslinje';
+
+  @override
+  final String earyMorning = 'morgen';
+
+  @override
+  final String twelveHourFormat = '12 timers format';
+
+  @override
+  final String oneDot = 'Et punkt';
+
+  @override
+  final String columnOfDots = 'Søjle af punkter';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linje viser aktuel tid';
+
+  @override
+  final String linesForEachHour = 'Linjer for hver time';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -2249,6 +2348,43 @@ class NL extends Translated {
 
   @override
   final String activateScreensaver = 'Screensaver activeren';
+
+  @override
+  final String menuRemovalWarning =
+      'Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.';
+
+  @override
+  final String clock = 'Klok';
+
+  @override
+  final String analogueDigital = 'Analoog + digitaal';
+
+  @override
+  final String analogue = 'Analoog';
+
+  @override
+  final String digital = 'Digitaal';
+
+  @override
+  final String timeline = 'Tijdlijn';
+
+  @override
+  final String earyMorning = 'ochtend';
+
+  @override
+  final String twelveHourFormat = '12 uur formaat';
+
+  @override
+  final String oneDot = 'Eén punt';
+
+  @override
+  final String columnOfDots = 'Kolommen van punten';
+
+  @override
+  final String lineAcrossCurrentTime = 'Lijn door huidige tijd';
+
+  @override
+  final String linesForEachHour = 'Lijnen voor elk uur';
 
   @override
   final String permissions = 'Rechten';
@@ -2879,6 +3015,43 @@ class FI extends Translated {
 
   @override
   final String activateScreensaver = 'Aktivoi näytönsäästäjä';
+
+  @override
+  final String menuRemovalWarning =
+      'Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.';
+
+  @override
+  final String clock = 'Kello';
+
+  @override
+  final String analogueDigital = 'Analoginen + digitaalinen';
+
+  @override
+  final String analogue = 'Analoginen';
+
+  @override
+  final String digital = 'Digitaalinen';
+
+  @override
+  final String timeline = 'Aikajana';
+
+  @override
+  final String earyMorning = 'aamu';
+
+  @override
+  final String twelveHourFormat = '12 tunnin muoto';
+
+  @override
+  final String oneDot = 'Yksi piste';
+
+  @override
+  final String columnOfDots = 'Pistepylväs';
+
+  @override
+  final String lineAcrossCurrentTime = 'Viiva nykyisen ajan kohdalla';
+
+  @override
+  final String linesForEachHour = 'Viivat jokaiselle tunnille';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3512,6 +3685,43 @@ class DE extends Translated {
   final String activateScreensaver = 'Bildschirmschoner aktivieren';
 
   @override
+  final String menuRemovalWarning =
+      'Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.';
+
+  @override
+  final String clock = 'Uhr';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Zeitstrahl';
+
+  @override
+  final String earyMorning = 'frühmorgens';
+
+  @override
+  final String twelveHourFormat = '12 Stunden Format';
+
+  @override
+  final String oneDot = 'Ein Punkt';
+
+  @override
+  final String columnOfDots = 'Spalte aus Punkten';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linie über aktueller Zeit';
+
+  @override
+  final String linesForEachHour = 'Linien für jede Stunde';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -4141,6 +4351,43 @@ class NB extends Translated {
 
   @override
   final String activateScreensaver = 'Aktiver skjermsparer';
+
+  @override
+  final String menuRemovalWarning =
+      'Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.';
+
+  @override
+  final String clock = 'Klokke';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Tidslinje';
+
+  @override
+  final String earyMorning = 'morgen';
+
+  @override
+  final String twelveHourFormat = '12 timers format';
+
+  @override
+  final String oneDot = 'Et punkt';
+
+  @override
+  final String columnOfDots = 'Pillar av punkter';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linje viser aktuell tid';
+
+  @override
+  final String linesForEachHour = 'Linjer for hver time';
 
   @override
   final String permissions = 'Tillatelser';

@@ -66,5 +66,6 @@ class TestKey {
       yesButton = Key('yesButton'),
       loginLogo = Key('loginLogo'),
       hiddenSettingsButtonLeft = Key('hiddenSettingsButtonLeft'),
-      hiddenSettingsButtonRight = Key('hiddenSettingsButtonRight');
+      hiddenSettingsButtonRight = Key('hiddenSettingsButtonRight'),
+      use12hSwitch = Key('use12hSwitch');
 }

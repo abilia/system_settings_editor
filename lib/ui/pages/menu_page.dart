@@ -13,18 +13,22 @@ class MenuPage extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 20.s, horizontal: 12.s),
-        child: GridView.count(
-          crossAxisSpacing: 7.5.s,
-          mainAxisSpacing: 7.s,
-          crossAxisCount: 3,
-          children: [
-            CameraButton(),
-            MyPhotosButton(),
-            PhotoCalendarButton(),
-            CountdownButton(),
-            QuickSettingsButton(),
-            SettingsButton(),
-          ],
+        child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+          builder: (context, state) {
+            return GridView.count(
+              crossAxisSpacing: 7.5.s,
+              mainAxisSpacing: 7.s,
+              crossAxisCount: 3,
+              children: [
+                if (state.displayMenuCamera) CameraButton(),
+                if (state.displayMenuMyPhotos) MyPhotosButton(),
+                if (state.displayMenuPhotoCalendar) PhotoCalendarButton(),
+                if (state.displayMenuCountdown) CountdownButton(),
+                if (state.displayMenuQuickSettings) QuickSettingsButton(),
+                if (state.displayMenuSettings) SettingsButton(),
+              ],
+            );
+          },
         ),
       ),
       bottomNavigationBar: const BottomNavigation(
