@@ -38,6 +38,7 @@ class AppBarTitleRows {
     bool displayWeekDay = true,
     bool displayPartOfDay = true,
     bool displayDate = true,
+    bool compress = true,
     @required DateTime currentTime,
     @required DateTime day,
     @required DayParts dayParts,
@@ -50,12 +51,14 @@ class AppBarTitleRows {
     var row1 =
         displayWeekDay ? '${DateFormat('EEEE', langCode).format(day)}' : '';
     var row2 = displayDate
-        ? DateFormat('d MMMM y', langCode).format(day)
+        ? DateFormat(compress ? 'd MMM yy' : 'd MMMM y', langCode).format(day)
         : displayPartOfDay
             ? partOfDay
             : '';
     if (displayDate && displayPartOfDay && partOfDay.isNotEmpty) {
-      row1 += displayWeekDay ? ', $partOfDay' : partOfDay;
+      row1 = displayWeekDay
+          ? '${DateFormat(compress ? 'EEE' : 'EEEE', langCode).format(day)}, ${compress ? partOfDay.substring(0, 3) : partOfDay}'
+          : partOfDay;
     }
     return AppBarTitleRows._(row1, row2);
   }

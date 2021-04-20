@@ -387,6 +387,16 @@ abstract class Translated {
 
   final String topField = 'Top Field';
 
+  final String showBrowseButtons = 'Show browse buttons';
+
+  final String showWeekday = 'Show weekday';
+
+  final String showDayPeriod = 'Show time for day and night';
+
+  final String showDate = 'Show date';
+
+  final String showClock = 'Show clock';
+
   final String clock = 'Clock';
 
   final String analogueDigital = 'Analogue + digital';
@@ -1022,6 +1032,21 @@ class SV extends Translated {
 
   @override
   final String topField = 'Toppfält';
+
+  @override
+  final String showBrowseButtons = 'Visa bläddraknappar';
+
+  @override
+  final String showWeekday = 'Visa veckodag';
+
+  @override
+  final String showDayPeriod = 'Visa tid på dygnet';
+
+  @override
+  final String showDate = 'Visa datum';
+
+  @override
+  final String showClock = 'Visa klocka';
 
   @override
   final String clock = 'Klocka';
@@ -1696,6 +1721,21 @@ class DA extends Translated {
   final String topField = 'Topfelt';
 
   @override
+  final String showBrowseButtons = 'Vis bladre-knapper';
+
+  @override
+  final String showWeekday = 'Vis ugedag';
+
+  @override
+  final String showDayPeriod = 'Vis tid på døgnet';
+
+  @override
+  final String showDate = 'Vis dato';
+
+  @override
+  final String showClock = 'Vis ur';
+
+  @override
   final String clock = 'Ur';
 
   @override
@@ -2363,6 +2403,21 @@ class NL extends Translated {
 
   @override
   final String topField = 'Bovenste veld';
+
+  @override
+  final String showBrowseButtons = 'Toon bladerknoppen';
+
+  @override
+  final String showWeekday = 'Weekdag tonen';
+
+  @override
+  final String showDayPeriod = 'Tijd voor dag en nacht tonen';
+
+  @override
+  final String showDate = 'Datum tonen';
+
+  @override
+  final String showClock = 'Toon klok';
 
   @override
   final String clock = 'Klok';
@@ -3033,6 +3088,21 @@ class FI extends Translated {
 
   @override
   final String topField = 'Yläkenttä';
+
+  @override
+  final String showBrowseButtons = 'Näytä selauspainikkeet';
+
+  @override
+  final String showWeekday = 'Näytä viikonpäivä';
+
+  @override
+  final String showDayPeriod = 'Näytä aika päivälle ja yölle';
+
+  @override
+  final String showDate = 'Näytä päivämäärä';
+
+  @override
+  final String showClock = 'Näytä kello';
 
   @override
   final String clock = 'Kello';
@@ -3706,6 +3776,21 @@ class DE extends Translated {
   final String topField = 'Oberstes Feld';
 
   @override
+  final String showBrowseButtons = 'Suchschaltflächen anzeigen';
+
+  @override
+  final String showWeekday = 'Wochentag anzeigen';
+
+  @override
+  final String showDayPeriod = 'Zeit für Tag und Nacht anzeigen';
+
+  @override
+  final String showDate = 'Datum anzeigen';
+
+  @override
+  final String showClock = 'Uhr anzeigen';
+
+  @override
   final String clock = 'Uhr';
 
   @override
@@ -4375,6 +4460,21 @@ class NB extends Translated {
 
   @override
   final String topField = 'Toppfelt';
+
+  @override
+  final String showBrowseButtons = 'Vis bla-knapper';
+
+  @override
+  final String showWeekday = 'Vis ukedag';
+
+  @override
+  final String showDayPeriod = 'Vis tid på døgnet';
+
+  @override
+  final String showDate = 'Vis dato';
+
+  @override
+  final String showClock = 'Vis klokken';
 
   @override
   final String clock = 'Klokke';

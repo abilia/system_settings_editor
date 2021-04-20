@@ -7,6 +7,7 @@ class CalendarAppBar extends StatelessWidget {
   final Widget leftAction;
   final Widget rightAction;
   final Widget clockReplacement;
+  final bool showClock;
   final AppBarTitleRows rows;
   final bool crossedOver;
   final DateTime day;
@@ -23,6 +24,7 @@ class CalendarAppBar extends StatelessWidget {
     this.rightAction,
     this.clockReplacement,
     this.crossedOver = false,
+    this.showClock = true,
     @required this.rows,
     @required this.day,
     this.calendarDayColor = DayColor.noColors,
@@ -35,6 +37,9 @@ class CalendarAppBar extends StatelessWidget {
       languageCode: Localizations.localeOf(context).languageCode,
       weekday: day.weekday,
     );
+    final clockToTheRight = rightAction == null && showClock;
+    final clockSpaceEmpty = (clockReplacement == null && !showClock) ||
+        (clockReplacement == null && clockToTheRight);
     return AnimatedTheme(
       key: TestKey.animatedTheme,
       data: theme.theme,
@@ -52,7 +57,8 @@ class CalendarAppBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   leftAction ?? _emptyAction,
-                  SizedBox(width: clockPadding + actionButtonMinSize),
+                  if (!clockSpaceEmpty)
+                    SizedBox(width: clockPadding + actionButtonMinSize),
                   Flexible(
                     child: Stack(
                       alignment: Alignment.center,
@@ -68,9 +74,12 @@ class CalendarAppBar extends StatelessWidget {
                       ],
                     ),
                   ),
-                  clockReplacement ?? const AbiliaClock(),
-                  SizedBox(width: clockPadding),
-                  rightAction ?? _emptyAction,
+                  if (!clockSpaceEmpty) ...[
+                    clockReplacement ?? const AbiliaClock(),
+                    SizedBox(width: clockPadding)
+                  ],
+                  rightAction ??
+                      (clockToTheRight ? AbiliaClock() : _emptyAction),
                 ],
               ),
             ),

@@ -23,6 +23,12 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get activityDisplayWeekDay => settings.activityDisplayWeekDay;
   bool get activityDisplayDate => settings.activityDisplayDate;
   bool get activityDisplayClock => settings.activityDisplayClock;
+  bool get displayDayCalendarAppBar =>
+      activityDisplayDayPeriod ||
+      activityDisplayWeekDay ||
+      activityDisplayDate ||
+      activityDisplayClock ||
+      dayCaptionShowDayButtons;
   bool get showCategories => settings.calendarActivityTypeShowTypes;
   bool get timepillar12HourFormat => settings.setting12hTimeFormatTimeline;
   bool get displayHourLines => settings.settingDisplayHourLines;

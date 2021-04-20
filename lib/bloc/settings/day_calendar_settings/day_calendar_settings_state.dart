@@ -40,12 +40,32 @@ class DayCalendarSettingsState extends Equatable {
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
           data: showBrowseButtons,
-          identifier: MemoplannerSettings.functionMenuDisplayWeekKey,
+          identifier: MemoplannerSettings.dayCaptionShowDayButtonsKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showWeekday,
+          identifier: MemoplannerSettings.activityDisplayWeekDayKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showDayPeriod,
+          identifier: MemoplannerSettings.activityDisplayDayPeriodKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showDate,
+          identifier: MemoplannerSettings.activityDisplayDateKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showClock,
+          identifier: MemoplannerSettings.activityDisplayClockKey,
         ),
       ];
 
   @override
   List<Object> get props => [
         showBrowseButtons,
+        showWeekday,
+        showDayPeriod,
+        showDate,
+        showClock,
       ];
 }

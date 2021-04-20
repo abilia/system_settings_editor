@@ -7,14 +7,15 @@ class DayCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DayCalendarAppBar(),
-      body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (old, fresh) =>
-            old.settingsInaccessable != fresh.settingsInaccessable ||
-            old.showCategories != fresh.showCategories,
-        builder: (context, settingState) =>
-            BlocBuilder<PermissionBloc, PermissionState>(
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (old, fresh) =>
+          old.settingsInaccessable != fresh.settingsInaccessable ||
+          old.showCategories != fresh.showCategories ||
+          old.displayDayCalendarAppBar != fresh.displayDayCalendarAppBar,
+      builder: (context, settingState) => Scaffold(
+        appBar:
+            settingState.displayDayCalendarAppBar ? DayCalendarAppBar() : null,
+        body: BlocBuilder<PermissionBloc, PermissionState>(
           buildWhen: (old, fresh) =>
               old.notificationDenied != fresh.notificationDenied,
           builder: (context, state) => Stack(
