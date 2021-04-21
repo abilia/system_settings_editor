@@ -425,6 +425,10 @@ abstract class Translated {
 
   final String linesForEachHour = 'Lines for each hour';
 
+  final String saturdayAndSunday = 'Saturday and Sunday';
+
+  final String noDayColours = 'No day colours';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -1095,6 +1099,12 @@ class SV extends Translated {
 
   @override
   final String linesForEachHour = 'Linjer för varje timme';
+
+  @override
+  final String saturdayAndSunday = 'Lördag och söndag';
+
+  @override
+  final String noDayColours = 'Inga dagfärger';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1793,6 +1803,12 @@ class DA extends Translated {
   final String linesForEachHour = 'Linjer for hver time';
 
   @override
+  final String saturdayAndSunday = 'Lørdag og søndag';
+
+  @override
+  final String noDayColours = 'Ingen dagsfarver';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -2484,6 +2500,12 @@ class NL extends Translated {
 
   @override
   final String linesForEachHour = 'Lijnen voor elk uur';
+
+  @override
+  final String saturdayAndSunday = 'Zaterdag en zondag';
+
+  @override
+  final String noDayColours = 'Geen dagkleuren';
 
   @override
   final String permissions = 'Rechten';
@@ -3178,6 +3200,12 @@ class FI extends Translated {
 
   @override
   final String linesForEachHour = 'Viivat jokaiselle tunnille';
+
+  @override
+  final String saturdayAndSunday = 'Lauantai ja sunnuntai';
+
+  @override
+  final String noDayColours = 'Ei päivien värejä';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3875,6 +3903,12 @@ class DE extends Translated {
   final String linesForEachHour = 'Linien für jede Stunde';
 
   @override
+  final String saturdayAndSunday = 'Samstag und Sonntag';
+
+  @override
+  final String noDayColours = 'Keine Tagesfarben';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -4568,6 +4602,12 @@ class NB extends Translated {
 
   @override
   final String linesForEachHour = 'Linjer for hver time';
+
+  @override
+  final String saturdayAndSunday = 'Lørdag og søndag';
+
+  @override
+  final String noDayColours = 'Ingen dagfarger';
 
   @override
   final String permissions = 'Tillatelser';
