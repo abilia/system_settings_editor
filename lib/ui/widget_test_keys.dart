@@ -71,5 +71,6 @@ class TestKey {
       alarmDurationSelector = Key('alarmDurationSelector'),
       vibrateAtReminderSelector = Key('vibrateAtReminderSelector'),
       hiddenSettingsButtonLeft = Key('hiddenSettingsButtonLeft'),
-      hiddenSettingsButtonRight = Key('hiddenSettingsButtonRight');
+      hiddenSettingsButtonRight = Key('hiddenSettingsButtonRight'),
+      use12hSwitch = Key('use12hSwitch');
 }

@@ -7,6 +7,7 @@ class FunctionSettingsPage extends StatelessWidget {
   const FunctionSettingsPage({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
     return BlocProvider<FunctionSettingsCubit>(
       create: (context) => FunctionSettingsCubit(
         settingsState: context.read<MemoplannerSettingBloc>().state,
@@ -16,7 +17,7 @@ class FunctionSettingsPage extends StatelessWidget {
         length: 3,
         child: Scaffold(
           appBar: AbiliaAppBar(
-            title: Translator.of(context).translate.functions,
+            title: t.functions,
             iconData: AbiliaIcons.menu_setup,
             bottom: AbiliaTabBar(
               tabs: <Widget>[
@@ -35,7 +36,20 @@ class FunctionSettingsPage extends StatelessWidget {
             backNavigationWidget: CancelButton(),
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
-                onPressed: () {
+                onPressed: () async {
+                  if (context
+                      .read<FunctionSettingsCubit>()
+                      .state
+                      .displayMenuChangedToDisabled) {
+                    final answer = await showViewDialog<bool>(
+                      context: context,
+                      builder: (context) => YesNoDialog(
+                        heading: t.functions,
+                        text: t.menuRemovalWarning,
+                      ),
+                    );
+                    if (answer != true) return;
+                  }
                   context.read<FunctionSettingsCubit>().save();
                   Navigator.of(context).pop();
                 },
@@ -57,31 +71,13 @@ class _SettingsTab extends StatelessWidget {
   final List<Widget> children;
   final String hint;
   @override
-  Widget build(BuildContext context) {
-    final widgets = [
-      Padding(
-        padding: EdgeInsets.only(bottom: 8.s),
-        child: Tts(child: Text(hint)),
-      ),
-      ...children,
-    ]
-        .map(
-          (w) => w is Divider
-              ? Padding(
-                  padding: EdgeInsets.only(top: 16.s, bottom: 16.s),
-                  child: w,
-                )
-              : Padding(
-                  padding: EdgeInsets.fromLTRB(12.s, 8.s, 16.s, 0),
-                  child: w,
-                ),
-        )
-        .toList();
-    return ListView(
-      padding: EdgeInsets.symmetric(vertical: 20.s),
-      children: widgets,
-    );
-  }
+  Widget build(BuildContext context) => SettingsTab(children: [
+        Padding(
+          padding: EdgeInsets.only(bottom: 8.s),
+          child: Tts(child: Text(hint)),
+        ),
+        ...children,
+      ]);
 }
 
 class ToolbarSettingsTab extends StatelessWidget {

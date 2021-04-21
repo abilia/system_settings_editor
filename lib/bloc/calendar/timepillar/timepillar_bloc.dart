@@ -38,6 +38,13 @@ class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
     });
   }
 
+  TimepillarBloc.fake({
+    this.clockBloc,
+    this.memoSettingsBloc,
+    this.dayPickerBloc,
+    TimepillarState state,
+  }) : super(state);
+
   @override
   Stream<TimepillarState> mapEventToState(
     TimepillarEvent event,

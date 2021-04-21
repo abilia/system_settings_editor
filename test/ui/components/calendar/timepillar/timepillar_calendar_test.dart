@@ -150,14 +150,7 @@ void main() {
     });
 
     testWidgets('tts on 24 h', (WidgetTester tester) async {
-      genericResponse = () => [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
-                data: false,
-                identifier: MemoplannerSettings.setting12hTimeFormatTimelineKey,
-              ),
-            ),
-          ];
+      tester.binding.window.alwaysUse24HourFormatTestValue = true;
       await goToTimePillar(tester);
       final hour = DateFormat('H').format(time);
       await tester.verifyTts(find.text(hour), contains: hour);

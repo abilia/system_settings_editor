@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/clock/analog_clock.dart';
 import 'package:seagull/utils/all.dart';
 
 class CalendarAppBar extends StatelessWidget {
@@ -69,24 +68,7 @@ class CalendarAppBar extends StatelessWidget {
                       ],
                     ),
                   ),
-                  clockReplacement ??
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          AnalogClock(
-                            borderWidth: 1.0.s,
-                            borderColor: AbiliaColors.transparentBlack30,
-                            height: actionButtonMinSize,
-                            width: actionButtonMinSize,
-                            centerPointRadius: 4.0.s,
-                            hourNumberScale: 1.5.s,
-                            hourHandLength: 11.s,
-                            minuteHandLength: 15.s,
-                            fontSize: 7.s,
-                          ),
-                          DigitalClock(),
-                        ],
-                      ),
+                  clockReplacement ?? const AbiliaClock(),
                   SizedBox(width: clockPadding),
                   rightAction ?? _emptyAction,
                 ],
