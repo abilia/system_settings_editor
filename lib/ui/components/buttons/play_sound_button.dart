@@ -21,6 +21,7 @@ class PlaySoundButton extends StatelessWidget {
                 await FlutterRingtonePlayer.playNotification();
               } else {
                 final audioCache = AudioCache();
+                audioCache.respectSilence = true;
                 await audioCache.play('sounds/${sound.fileName()}.mp3');
               }
             },

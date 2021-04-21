@@ -20,7 +20,7 @@ extension SoundExtension on Sound {
       case Sound.Default:
         return 'Default';
       case Sound.NoSound:
-        return '- No sound -';
+        return t.noSound;
       default:
         throw Exception();
     }

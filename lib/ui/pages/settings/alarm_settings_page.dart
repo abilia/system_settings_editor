@@ -160,7 +160,7 @@ class AlarmDurationSelector extends StatelessWidget {
       children: [
         SubHeading(t.alarmTime),
         PickField(
-            text: Text('${duration.displayText(t)}'),
+            text: Text(duration.displayText(t)),
             onTap: () async {
               final result = await Navigator.of(context).push<AlarmDuration>(
                 MaterialPageRoute(

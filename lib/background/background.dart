@@ -10,6 +10,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:seagull/utils/all.dart';
 
 Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   final documentDirectory = await getApplicationDocumentsDirectory();
@@ -60,11 +61,9 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       userId: user.id,
     ).load();
 
-    final genericsMap = {
-      for (var generic in generics) generic.data.key: generic
-    };
-
-    final settings = MemoplannerSettings.fromSettingsMap(_f(genericsMap));
+    final genericsMap = generics.toGenericKeyMap();
+    final settings = MemoplannerSettings.fromSettingsMap(
+        genericsMap.filterMemoplannerSettingsData());
 
     log.fine('finding alarms from ${activities.length} activities');
 
@@ -88,10 +87,4 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   } finally {
     await logger.cancelLogging();
   }
-}
-
-Map<String, MemoplannerSettingData> _f(Map<String, Generic> generics) {
-  return (generics.map((key, value) => MapEntry(key, value.data))
-        ..removeWhere((key, value) => value is! MemoplannerSettingData))
-      .cast<String, MemoplannerSettingData>();
 }

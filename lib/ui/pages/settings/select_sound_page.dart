@@ -46,10 +46,14 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
                   text: Text(s.displayName(t)),
                 ),
               ),
-              if (selectedSound == s && s != Sound.NoSound) ...[
-                SizedBox(width: 12),
-                PlaySoundButton(sound: s),
-              ],
+              CollapsableWidget(
+                axis: Axis.horizontal,
+                collapsed: !(selectedSound == s && s != Sound.NoSound),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 12.0.s),
+                  child: PlaySoundButton(sound: s),
+                ),
+              ),
             ],
           ),
         )

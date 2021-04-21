@@ -57,10 +57,10 @@ abstract class NewAlarm extends NotificationAlarm {
   NewAlarm(ActivityDay activityDay) : super(activityDay);
 
   @override
-  bool hasSound(MemoplannerSettings settings) => activity.alarm.sound;
+  bool hasSound(_) => activity.alarm.sound;
 
   @override
-  bool vibrate(MemoplannerSettings settings) => activity.alarm.vibrate;
+  bool vibrate(_) => activity.alarm.vibrate;
 
   @override
   Sound sound(MemoplannerSettings settings) => activity.checkable

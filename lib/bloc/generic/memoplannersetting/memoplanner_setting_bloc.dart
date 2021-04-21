@@ -20,7 +20,9 @@ class MemoplannerSettingBloc
       : super(genericBloc.state is GenericsLoaded
             ? MemoplannerSettingsLoaded(
                 MemoplannerSettings.fromSettingsMap(
-                  _filter((genericBloc.state as GenericsLoaded).generics),
+                  (genericBloc.state as GenericsLoaded)
+                      .generics
+                      .filterMemoplannerSettingsData(),
                 ),
               )
             : MemoplannerSettingsNotLoaded()) {
@@ -37,8 +39,9 @@ class MemoplannerSettingBloc
   Stream<MemoplannerSettingsState> mapEventToState(
       MemoplannerSettingsEvent event) async* {
     if (event is UpdateMemoplannerSettings) {
-      yield MemoplannerSettingsLoaded(
-          MemoplannerSettings.fromSettingsMap(_filter(event.generics)));
+      yield MemoplannerSettingsLoaded(MemoplannerSettings.fromSettingsMap(
+        event.generics.filterMemoplannerSettingsData(),
+      ));
     }
     if (event is GenericsLoadedFailed) {
       yield MemoplannerSettingsFailed();
@@ -46,13 +49,6 @@ class MemoplannerSettingBloc
     if (event is SettingsUpdateEvent) {
       genericBloc.add(GenericUpdated([event.settingData]));
     }
-  }
-
-  static Map<String, MemoplannerSettingData> _filter(
-      Map<String, Generic> generics) {
-    return (generics.map((key, value) => MapEntry(key, value.data))
-          ..removeWhere((key, value) => value is! MemoplannerSettingData))
-        .cast<String, MemoplannerSettingData>();
   }
 
   @override

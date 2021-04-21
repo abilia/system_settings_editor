@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 part 'generic_event.dart';
 part 'generic_state.dart';
@@ -53,7 +54,7 @@ class GenericBloc extends Bloc<GenericEvent, GenericState> {
     try {
       final generics = await genericRepository.load();
       yield GenericsLoaded(
-        generics: {for (var generic in generics) generic.data.key: generic},
+        generics: generics.toGenericKeyMap(),
       );
     } catch (e) {
       yield GenericsLoadedFailed();
