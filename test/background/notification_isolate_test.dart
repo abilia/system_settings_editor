@@ -77,6 +77,7 @@ void main() {
       allActivities,
       'en',
       true,
+      MemoplannerSettings.fromSettingsMap({}),
       mockedFileStorage,
       now: () => now,
     );
@@ -93,6 +94,7 @@ void main() {
       allActivities,
       'en',
       true,
+      MemoplannerSettings.fromSettingsMap({}),
       mockedFileStorage,
       now: () => now,
     );
@@ -110,6 +112,7 @@ void main() {
       allActivities.take(2),
       'en',
       true,
+      MemoplannerSettings.fromSettingsMap({}),
       mockedFileStorage,
       now: () => now,
     );

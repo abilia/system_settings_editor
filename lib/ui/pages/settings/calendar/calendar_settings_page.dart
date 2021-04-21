@@ -38,7 +38,7 @@ class CalendarSettingsPage extends StatelessWidget {
           navigateTo: NewActivitySettings(),
         ),
         MenuItemPickField(
-          icon: AbiliaIcons.technical_settings,
+          icon: AbiliaIcons.handi_alarm_vibration,
           text: Translator.of(context).translate.alarmSettings,
           navigateTo: AlarmSettingsPage(),
         ),

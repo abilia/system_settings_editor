@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:seagull/models/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:seagull/background/all.dart';
@@ -9,6 +10,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:seagull/utils/all.dart';
 
 Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   final documentDirectory = await getApplicationDocumentsDirectory();
@@ -51,12 +53,25 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 
     final settingsDb = SettingsDb(preferences);
 
+    final generics = await GenericRepository(
+      authToken: token,
+      baseUrl: baseUrl,
+      client: client,
+      genericDb: GenericDb(database),
+      userId: user.id,
+    ).load();
+
+    final genericsMap = generics.toGenericKeyMap();
+    final settings = MemoplannerSettings.fromSettingsMap(
+        genericsMap.filterMemoplannerSettingsData());
+
     log.fine('finding alarms from ${activities.length} activities');
 
     await scheduleAlarmNotifications(
       activities,
       settingsDb.language,
       settingsDb.alwaysUse24HourFormat,
+      settings,
       fileStorage,
     );
 

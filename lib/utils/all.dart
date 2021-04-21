@@ -20,3 +20,4 @@ export 'timeformat.dart';
 export 'login_error_message.dart';
 export 'device.dart';
 export 'scale_util.dart';
+export 'generic_extensions.dart';

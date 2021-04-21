@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
@@ -63,6 +64,7 @@ Future scheduleAlarmNotifications(
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
+  MemoplannerSettings settings,
   FileStorage fileStorage, {
   DateTime Function() now,
 }) async {
@@ -73,6 +75,7 @@ Future scheduleAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
     alwaysUse24HourFormat,
+    settings,
     fileStorage,
     now,
   );
@@ -82,6 +85,7 @@ Future scheduleAlarmNotificationsIsolated(
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
+  MemoplannerSettings settings,
   FileStorage fileStorage, {
   DateTime Function() now,
 }) async {
@@ -98,6 +102,7 @@ Future scheduleAlarmNotificationsIsolated(
     shouldBeScheduledNotifications,
     language,
     alwaysUse24HourFormat,
+    settings,
     fileStorage,
     now,
   );
@@ -119,6 +124,7 @@ Future _scheduleAllAlarmNotifications(
   Iterable<NotificationAlarm> notifications,
   String language,
   bool alwaysUse24HourFormat,
+  MemoplannerSettings settings,
   FileStorage fileStorage,
   DateTime Function() now,
 ) =>
@@ -137,6 +143,7 @@ Future _scheduleAllAlarmNotifications(
             newNotification,
             language,
             alwaysUse24HourFormat,
+            settings,
             fileStorage,
             now,
             // Adding a delay on simultaneous alarms to let the selectNotificationSubject handle them
@@ -151,6 +158,7 @@ Future<bool> _scheduleNotification(
   NotificationAlarm notificationAlarm,
   String language,
   bool alwaysUse24HourFormat,
+  MemoplannerSettings settings,
   FileStorage fileStorage,
   DateTime Function() now, [
   int secondsOffset = 0,
@@ -170,11 +178,21 @@ Future<bool> _scheduleNotification(
   final and = Platform.isIOS
       ? null
       : await _androidNotificationDetails(
-          notificationAlarm, fileStorage, title, subtitle);
+          notificationAlarm,
+          fileStorage,
+          title,
+          subtitle,
+          settings,
+        );
 
   final ios = Platform.isAndroid
       ? null
-      : await _iosNotificationDetails(notificationAlarm, fileStorage);
+      : await _iosNotificationDetails(
+          notificationAlarm,
+          fileStorage,
+          notificationAlarm.sound(settings),
+          Duration(milliseconds: settings.alarmDuration),
+        );
 
   if (notificationTime.isBefore(now())) return false;
   final time = TZDateTime.from(
@@ -201,37 +219,58 @@ Future<bool> _scheduleNotification(
 }
 
 Future<IOSNotificationDetails> _iosNotificationDetails(
-    NotificationAlarm notificationAlarm, FileStorage fileStorage) async {
+  NotificationAlarm notificationAlarm,
+  FileStorage fileStorage,
+  Sound sound,
+  Duration alarmDuration,
+) async {
   final activity = notificationAlarm.activity;
   final alarm = activity.alarm;
+  final seconds = alarmDuration.inSeconds;
+  final soundFile = (alarm.vibrate && !alarm.sound) || sound == Sound.NoSound
+      ? 'silent.aiff'
+      : '${sound.fileName()}${seconds >= 30 ? '_30' : seconds >= 15 ? '_15' : ''}.aiff';
   return IOSNotificationDetails(
     presentAlert: true,
     presentBadge: true,
     presentSound: alarm.sound || alarm.vibrate,
-    sound: alarm.vibrate && !alarm.sound ? 'silent.aiff' : null,
+    sound: soundFile,
     attachments: await _iOSNotificationAttachment(activity, fileStorage),
   );
 }
 
 Future<AndroidNotificationDetails> _androidNotificationDetails(
-    NotificationAlarm notificationAlarm,
-    FileStorage fileStorage,
-    String title,
-    String subtitle) async {
+  NotificationAlarm notificationAlarm,
+  FileStorage fileStorage,
+  String title,
+  String subtitle,
+  MemoplannerSettings settings,
+) async {
   final activity = notificationAlarm.activity;
-  final alarm = activity.alarm;
-  final notificationChannel = _notificationChannel(alarm);
+  final sound = notificationAlarm.sound(settings);
+  final hasSound = notificationAlarm.hasSound(settings);
+  final vibrate = notificationAlarm.vibrate(settings);
+
+  final notificationChannel = _notificationChannel(hasSound, vibrate, sound);
+  final insistentFlag = 4;
 
   return AndroidNotificationDetails(
     notificationChannel.id,
     notificationChannel.name,
     notificationChannel.description,
     groupKey: activity.seriesId,
-    playSound: alarm.sound,
-    enableVibration: alarm.vibrate,
+    playSound: hasSound,
+    sound: sound == Sound.NoSound
+        ? null
+        : RawResourceAndroidNotificationSound(sound.fileName()),
+    enableVibration: vibrate,
     importance: Importance.max,
     priority: Priority.high,
     fullScreenIntent: true,
+    additionalFlags: settings.alarmDuration > 0
+        ? Int32List.fromList(<int>[insistentFlag])
+        : null,
+    timeoutAfter: settings.alarmDuration,
     startActivityClassName: 'com.abilia.memoplannergo.AlarmActivity',
     largeIcon: await _androidLargeIcon(activity, fileStorage),
     styleInformation: await _androidStyleInformation(
@@ -243,14 +282,18 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
   );
 }
 
-NotificationChannel _notificationChannel(Alarm alarm) => alarm.sound
-    ? NotificationChannel('Sound + Vibration', 'Sound + Vibration',
-        'Activities with Alarm + Vibration or Only Alarm')
-    : alarm.vibrate
+NotificationChannel _notificationChannel(
+        bool hasSound, bool vibrate, Sound sound) =>
+    hasSound
         ? NotificationChannel(
-            'Vibration', 'Vibration', 'Activities with Only vibration ')
-        : NotificationChannel(
-            'Silent', 'Silent', 'Activities with Silent Alarm');
+            'SoundVibration${sound.name()}',
+            'Sound and Vibration with sound ${sound.name()}',
+            'Activities with Alarm and Vibration or Only Alarm with sound ${sound.name()}')
+        : vibrate
+            ? NotificationChannel(
+                'Vibration', 'Vibration', 'Activities with Only vibration ')
+            : NotificationChannel(
+                'Silent', 'Silent', 'Activities with Silent Alarm');
 
 class NotificationChannel {
   final String id, name, description;
