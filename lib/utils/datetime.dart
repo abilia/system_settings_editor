@@ -144,6 +144,6 @@ extension DateTimeExtensions on DateTime {
 }
 
 extension IntDateTimeExtensions on int {
-  DateTime fromMillisecondsSinceEpoch() =>
-      DateTime.fromMillisecondsSinceEpoch(this);
+  DateTime fromMillisecondsSinceEpoch({bool isUtc = false}) =>
+      DateTime.fromMillisecondsSinceEpoch(this, isUtc: isUtc);
 }

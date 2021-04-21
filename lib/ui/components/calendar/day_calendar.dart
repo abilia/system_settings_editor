@@ -11,7 +11,7 @@ class DayCalendar extends StatelessWidget {
       appBar: DayCalendarAppBar(),
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (old, fresh) =>
-            old.settingsInaccessable != fresh.settingsInaccessable ||
+            old.settingsInaccessible != fresh.settingsInaccessible ||
             old.showCategories != fresh.showCategories,
         builder: (context, settingState) =>
             BlocBuilder<PermissionBloc, PermissionState>(
@@ -42,7 +42,7 @@ class DayCalendar extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (settingState.settingsInaccessable)
+              if (settingState.settingsInaccessible)
                 HiddenSetting(settingState.showCategories),
             ],
           ),

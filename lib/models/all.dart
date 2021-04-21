@@ -19,5 +19,6 @@ export 'memoplanner_settings.dart';
 export 'calendar_type.dart';
 export 'selected_image.dart';
 export 'eye_button_settings.dart';
+export 'day_parts.dart';
 export 'sound.dart';
 export 'alarm_duration.dart';

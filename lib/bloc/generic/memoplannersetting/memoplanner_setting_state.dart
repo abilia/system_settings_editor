@@ -44,7 +44,7 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayPhotos => settings.imageMenuDisplayPhotoItem;
   bool get displayCamera => settings.imageMenuDisplayCameraItem;
 
-  bool get settingsInaccessable => !displayMenu || !displayMenuSettings;
+  bool get settingsInaccessible => !displayMenu || !displayMenuSettings;
 
   bool get allMenuItemsDisabled =>
       !displayMenuCamera &&
