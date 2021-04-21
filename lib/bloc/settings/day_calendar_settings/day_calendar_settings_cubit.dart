@@ -14,6 +14,7 @@ class DayCalendarSettingsCubit extends Cubit<DayCalendarSettingsState> {
     this.genericBloc,
   }) : super(DayCalendarSettingsState.fromMemoplannerSettings(settingsState));
 
-  void changeDayCalendarSettings(DayCalendarSettingsState newState) => emit(newState);
+  void changeDayCalendarSettings(DayCalendarSettingsState newState) =>
+      emit(newState);
   void save() => genericBloc.add(GenericUpdated(state.memoplannerSettingData));
 }

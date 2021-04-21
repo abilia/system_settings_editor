@@ -1071,7 +1071,7 @@ void main() {
       await tester.verifyTts(find.text('30'), contains: 'Sunday, August 30');
     });
 
-    testWidgets('taping day goes back to that day calendar',
+    testWidgets('tapping day goes back to that day calendar',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -1082,7 +1082,7 @@ void main() {
       expect(find.byType(DayAppBar), findsOneWidget);
       expect(find.byType(DayCalendar), findsOneWidget);
       expect(find.text('Sunday'), findsOneWidget);
-      expect(find.text('30 August 2020'), findsOneWidget);
+      expect(find.text('30 Aug 20'), findsOneWidget);
     });
 
     group('app bar', () {
