@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  audioplayers: ^0.18.3
   collection: ^1.14.12
   devicelocale: ^0.4.1
   dotted_border: ^2.0.0-nullsafety.0
@@ -31,6 +32,7 @@ dependencies:
       ref: flutter_local_notifications-v5.0.0+1-fork-1.10
       path: flutter_local_notifications/
   flutter_native_timezone: ^1.0.10
+  flutter_ringtone_player: ^3.0.0
   flutter_tts: ^3.0.0
   get_it: ^6.0.0
   google_fonts: ^2.0.0
@@ -78,6 +80,7 @@ flutter:
     - assets/graphics/memoplanner/
     - assets/graphics/memoplannergo/
     - google_fonts/
+    - assets/sounds/
   fonts:
     - family: AbiliaFont
       fonts:

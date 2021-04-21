@@ -14,6 +14,7 @@ class ClockSettingsTab extends StatelessWidget {
     return BlocBuilder<GeneralCalendarSettingsCubit,
         GeneralCalendarSettingsState>(
       builder: (context, state) {
+        final tpState = state.timepillar;
         final onClockChanged = (v) => context
             .read<GeneralCalendarSettingsCubit>()
             .changeFunctionSettings(state.copyWith(clockType: v));
@@ -54,44 +55,45 @@ class ClockSettingsTab extends StatelessWidget {
             const PreviewTimePillar(),
             SwitchField(
               key: TestKey.use12hSwitch,
-              value: !is24h || state.use12h,
+              value: !is24h || tpState.use12h,
               onChanged: is24h
                   ? (value) => context
                       .read<GeneralCalendarSettingsCubit>()
-                      .changeFunctionSettings(state.copyWith(use12h: value))
+                      .changeTimepillarSettings(tpState.copyWith(use12h: value))
                   : null,
               text: Text(t.twelveHourFormat),
             ),
             const SizedBox.shrink(),
             RadioField(
-              text: Text(t.oneDot),
-              value: false,
-              groupValue: state.columnOfDots,
-              onChanged: (value) => context
-                  .read<GeneralCalendarSettingsCubit>()
-                  .changeFunctionSettings(state.copyWith(columnOfDots: value)),
-            ),
+                text: Text(t.oneDot),
+                value: false,
+                groupValue: tpState.columnOfDots,
+                onChanged: (value) => context
+                    .read<GeneralCalendarSettingsCubit>()
+                    .changeTimepillarSettings(
+                        tpState.copyWith(columnOfDots: value))),
             RadioField(
               text: Text(t.columnOfDots),
               value: true,
-              groupValue: state.columnOfDots,
+              groupValue: tpState.columnOfDots,
               onChanged: (value) => context
                   .read<GeneralCalendarSettingsCubit>()
-                  .changeFunctionSettings(state.copyWith(columnOfDots: value)),
+                  .changeTimepillarSettings(
+                      tpState.copyWith(columnOfDots: value)),
             ),
             const SizedBox.shrink(),
             SwitchField(
-              value: state.timeline,
+              value: tpState.timeline,
               onChanged: (value) => context
                   .read<GeneralCalendarSettingsCubit>()
-                  .changeFunctionSettings(state.copyWith(timeline: value)),
+                  .changeTimepillarSettings(tpState.copyWith(timeline: value)),
               text: Text(t.lineAcrossCurrentTime),
             ),
             SwitchField(
-              value: state.hourLines,
+              value: tpState.hourLines,
               onChanged: (value) => context
                   .read<GeneralCalendarSettingsCubit>()
-                  .changeFunctionSettings(state.copyWith(hourLines: value)),
+                  .changeTimepillarSettings(tpState.copyWith(hourLines: value)),
               text: Text(t.linesForEachHour),
             ),
           ],
@@ -133,10 +135,13 @@ class PreviewTimePillar extends StatelessWidget {
             width: 138.s,
             child: BlocBuilder<GeneralCalendarSettingsCubit,
                 GeneralCalendarSettingsState>(
+              buildWhen: (previous, current) =>
+                  previous.timepillar != current.timepillar,
               builder: (context, state) {
+                final tpState = state.timepillar;
                 return Stack(
                   children: [
-                    if (state.hourLines)
+                    if (tpState.hourLines)
                       HourLines(
                         numberOfLines: 3,
                         hourHeight: ts.hourHeight,
@@ -145,21 +150,15 @@ class PreviewTimePillar extends StatelessWidget {
                       child: TimePillar(
                         preview: true,
                         dayOccasion: Occasion.current,
-                        dayParts: const DayParts(
-                          21600000,
-                          36000000,
-                          43200000,
-                          64800000,
-                          82800000,
-                        ),
-                        use12h: state.use12h,
+                        dayParts: DayParts.standard(),
+                        use12h: tpState.use12h,
                         nightParts: [],
                         interval: interval,
-                        showTimeLine: state.timeline,
-                        columnOfDots: state.columnOfDots,
+                        showTimeLine: tpState.timeline,
+                        columnOfDots: tpState.columnOfDots,
                       ),
                     ),
-                    if (state.timeline)
+                    if (tpState.timeline)
                       Timeline(
                         width: ts.timePillarTotalWidth * 3,
                         timepillarState: ts,
