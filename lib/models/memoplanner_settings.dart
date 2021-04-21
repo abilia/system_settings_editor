@@ -35,6 +35,11 @@ class MemoplannerSettings extends Equatable {
       settingDisplayTimelineKey = 'setting_display_line_timeline',
       viewOptionsTimeIntervalKey = 'view_options_time_interval',
       viewOptionsZoomKey = 'view_options_zoom',
+      nonCheckableActivityAlarmKey = 'activity_alarm_without_confirm',
+      checkableActivityAlarmKey = 'activity_alarm_with_confirm',
+      reminderAlarmKey = 'activity_reminder_alarm',
+      vibrateAtReminderKey = 'setting_vibrate_at_reminder',
+      alarmDurationKey = 'alarm_duration',
       functionMenuDisplayWeekKey = 'function_menu_display_week',
       functionMenuDisplayMonthKey = 'function_menu_display_month',
       functionMenuDisplayNewActivityKey = 'function_menu_display_new_activity',
@@ -74,6 +79,7 @@ class MemoplannerSettings extends Equatable {
       setting12hTimeFormatTimeline,
       settingDisplayHourLines,
       settingDisplayTimeline,
+      vibrateAtReminder,
       functionMenuDisplayWeek,
       functionMenuDisplayMonth,
       functionMenuDisplayNewActivity,
@@ -97,11 +103,16 @@ class MemoplannerSettings extends Equatable {
       calendarDayColor,
       viewOptionsTimeInterval,
       viewOptionsZoom,
+      alarmDuration,
       activityTimeout,
       functionMenuStartView,
       settingClockType;
 
-  final String calendarActivityTypeLeft, calendarActivityTypeRight;
+  final String calendarActivityTypeLeft,
+      calendarActivityTypeRight,
+      nonCheckableActivityAlarm,
+      checkableActivityAlarm,
+      reminderAlarm;
 
   MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -137,6 +148,11 @@ class MemoplannerSettings extends Equatable {
     this.calendarDayColor = 0,
     this.viewOptionsTimeInterval = 1,
     this.viewOptionsZoom = 1,
+    this.alarmDuration = 30000,
+    this.checkableActivityAlarm,
+    this.nonCheckableActivityAlarm,
+    this.reminderAlarm,
+    this.vibrateAtReminder = true,
     this.functionMenuDisplayWeek = true,
     this.functionMenuDisplayMonth = true,
     this.functionMenuDisplayNewActivity = true,
@@ -307,6 +323,14 @@ class MemoplannerSettings extends Equatable {
       calendarDayColor: settings.parse(calendarDayColorKey, 0),
       viewOptionsTimeInterval: settings.parse(viewOptionsTimeIntervalKey, 1),
       viewOptionsZoom: settings.parse(viewOptionsZoomKey, 1),
+      alarmDuration: settings.parse(alarmDurationKey, 30000),
+      checkableActivityAlarm:
+          settings.parse(checkableActivityAlarmKey, Sound.Default.name()),
+      nonCheckableActivityAlarm:
+          settings.parse(nonCheckableActivityAlarmKey, Sound.Default.name()),
+      reminderAlarm: settings.parse(reminderAlarmKey, Sound.Default.name()),
+      vibrateAtReminder:
+          settings.getBool(vibrateAtReminderKey, defaultValue: true),
     );
   }
 
@@ -343,6 +367,11 @@ class MemoplannerSettings extends Equatable {
         calendarDayColor,
         viewOptionsTimeInterval,
         viewOptionsZoom,
+        alarmDuration,
+        checkableActivityAlarm,
+        nonCheckableActivityAlarm,
+        reminderAlarm,
+        vibrateAtReminder,
         functionMenuDisplayWeek,
         functionMenuDisplayMonth,
         functionMenuDisplayNewActivity,

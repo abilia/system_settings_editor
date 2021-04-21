@@ -26,6 +26,7 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get timepillar12HourFormat => settings.setting12hTimeFormatTimeline;
   bool get displayHourLines => settings.settingDisplayHourLines;
   bool get displayTimeline => settings.settingDisplayTimeline;
+  bool get vibrateAtReminder => settings.vibrateAtReminder;
   bool get columnOfDots => settings.settingTimePillarTimeline;
   bool get displayWeekCalendar => settings.functionMenuDisplayWeek;
   bool get displayMonthCalendar => settings.functionMenuDisplayMonth;
@@ -64,6 +65,7 @@ abstract class MemoplannerSettingsState extends Equatable {
   int get afternoonStart => settings.afternoonIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
+  int get alarmDuration => settings.alarmDuration;
   int get activityTimeout => settings.activityTimeout;
 
   int get calendarCount =>
@@ -76,6 +78,15 @@ abstract class MemoplannerSettingsState extends Equatable {
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
   ClockType get clockType => ClockType.values[settings.settingClockType];
+  Sound get nonCheckableAlarm => settings.nonCheckableActivityAlarm == null
+      ? Sound.Default
+      : settings.nonCheckableActivityAlarm.toSound();
+  Sound get checkableAlarm => settings.checkableActivityAlarm == null
+      ? Sound.Default
+      : settings.checkableActivityAlarm.toSound();
+  Sound get reminderAlarm => settings.reminderAlarm == null
+      ? Sound.Default
+      : settings.reminderAlarm.toSound();
 
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();

@@ -8,6 +8,9 @@ abstract class NotificationAlarm extends Equatable {
   final ActivityDay activityDay;
   DateTime get day => activityDay.day;
   Activity get activity => activityDay.activity;
+  bool hasSound(MemoplannerSettings settings);
+  bool vibrate(MemoplannerSettings settings);
+  Sound sound(MemoplannerSettings settings);
   NotificationAlarm(this.activityDay) : assert(activityDay != null);
   DateTime get notificationTime;
   String get type;
@@ -52,6 +55,17 @@ abstract class NotificationAlarm extends Equatable {
 
 abstract class NewAlarm extends NotificationAlarm {
   NewAlarm(ActivityDay activityDay) : super(activityDay);
+
+  @override
+  bool hasSound(_) => activity.alarm.sound;
+
+  @override
+  bool vibrate(_) => activity.alarm.vibrate;
+
+  @override
+  Sound sound(MemoplannerSettings settings) => activity.checkable
+      ? settings.checkableActivityAlarm.toSound()
+      : settings.nonCheckableActivityAlarm.toSound();
 }
 
 class StartAlarm extends NewAlarm {
@@ -82,6 +96,17 @@ abstract class NewReminder extends NotificationAlarm {
   NewReminder(ActivityDay activityDay, this.reminder)
       : assert(reminder != null),
         super(activityDay);
+
+  @override
+  bool hasSound(MemoplannerSettings settings) =>
+      settings.reminderAlarm.toSound() != Sound.NoSound;
+
+  @override
+  bool vibrate(MemoplannerSettings settings) => settings.vibrateAtReminder;
+
+  @override
+  Sound sound(MemoplannerSettings settings) => settings.reminderAlarm.toSound();
+
   @override
   List<Object> get props => [reminder, ...super.props];
 }
