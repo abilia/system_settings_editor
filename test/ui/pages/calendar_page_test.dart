@@ -1082,7 +1082,7 @@ void main() {
       expect(find.byType(DayAppBar), findsOneWidget);
       expect(find.byType(DayCalendar), findsOneWidget);
       expect(find.text('Sunday'), findsOneWidget);
-      expect(find.text('30 Aug 20'), findsOneWidget);
+      expect(find.text('30 August 2020'), findsOneWidget);
     });
 
     group('app bar', () {
