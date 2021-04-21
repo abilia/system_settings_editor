@@ -32,8 +32,6 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
                 displayWeekDay: memoSettingsState.activityDisplayWeekDay,
                 displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
                 displayDate: memoSettingsState.activityDisplayDate,
-                compress: memoSettingsState.activityDisplayClock &&
-                    rightAction != null,
                 currentTime: time,
                 day: day,
                 dayParts: memoSettingsState.dayParts,

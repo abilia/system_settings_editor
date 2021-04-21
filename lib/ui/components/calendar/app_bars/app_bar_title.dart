@@ -38,7 +38,7 @@ class AppBarTitleRows {
     bool displayWeekDay = true,
     bool displayPartOfDay = true,
     bool displayDate = true,
-    bool compress = true,
+    bool compress = false,
     @required DateTime currentTime,
     @required DateTime day,
     @required DayParts dayParts,

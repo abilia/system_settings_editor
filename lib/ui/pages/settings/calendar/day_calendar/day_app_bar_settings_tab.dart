@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class DayAppBarSettingsTab extends StatelessWidget {
   const DayAppBarSettingsTab({Key key}) : super(key: key);
@@ -61,35 +62,38 @@ class DayAppBarPreview extends StatelessWidget {
     return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettingsState>(
       builder: (context, state) =>
           BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) => Container(
-          height: CalendarAppBar.size.height,
-          child: CalendarAppBar(
-            leftAction: state.showBrowseButtons
-                ? ActionButton(
-                    onPressed: () => {},
-                    child: Icon(AbiliaIcons.return_to_previous_page),
-                  )
-                : null,
-            rightAction: state.showBrowseButtons
-                ? ActionButton(
-                    onPressed: () => {},
-                    child: Icon(AbiliaIcons.go_to_next_page),
-                  )
-                : null,
-            day: DateTime.now(),
-            calendarDayColor: memoSettingsState.calendarDayColor,
-            rows: AppBarTitleRows.day(
-              displayWeekDay: state.showWeekday,
-              displayPartOfDay: state.showDayPeriod,
-              displayDate: state.showDate,
-              compress: state.showClock && state.showBrowseButtons,
-              currentTime: DateTime.now(),
+        builder: (context, memoSettingsState) =>
+            BlocBuilder<ClockBloc, DateTime>(
+          builder: (context, currentTime) => Container(
+            height: CalendarAppBar.size.height,
+            child: CalendarAppBar(
+              leftAction: state.showBrowseButtons
+                  ? ActionButton(
+                      onPressed: () => {},
+                      child: Icon(AbiliaIcons.return_to_previous_page),
+                    )
+                  : null,
+              rightAction: state.showBrowseButtons
+                  ? ActionButton(
+                      onPressed: () => {},
+                      child: Icon(AbiliaIcons.go_to_next_page),
+                    )
+                  : null,
               day: DateTime.now(),
-              dayParts: memoSettingsState.dayParts,
-              langCode: Localizations.localeOf(context).toLanguageTag(),
-              translator: Translator.of(context).translate,
+              calendarDayColor: memoSettingsState.calendarDayColor,
+              rows: AppBarTitleRows.day(
+                displayWeekDay: state.showWeekday,
+                displayPartOfDay: state.showDayPeriod,
+                displayDate: state.showDate,
+                compress: state.showClock && state.showBrowseButtons,
+                currentTime: currentTime,
+                day: currentTime.onlyDays(),
+                dayParts: memoSettingsState.dayParts,
+                langCode: Localizations.localeOf(context).toLanguageTag(),
+                translator: Translator.of(context).translate,
+              ),
+              showClock: state.showClock,
             ),
-            showClock: state.showClock,
           ),
         ),
       ),
