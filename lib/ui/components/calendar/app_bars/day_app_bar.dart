@@ -41,6 +41,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
               rightAction: rightAction,
               leftAction: leftAction,
               crossedOver: day.isDayBefore(time),
+              showClock: memoSettingsState.activityDisplayClock,
             ),
           );
         },

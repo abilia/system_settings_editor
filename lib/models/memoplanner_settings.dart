@@ -21,6 +21,7 @@ class MemoplannerSettings extends Equatable {
       activityDisplayDayPeriodKey = 'day_caption_show_period',
       activityDisplayWeekDayKey = 'day_caption_show_weekday',
       activityDisplayDateKey = 'day_caption_show_date',
+      activityDisplayClockKey = 'day_caption_show_clock',
       morningIntervalStartKey = 'morning_interval_start',
       forenoonIntervalStartKey = 'forenoon_interval_start',
       afternoonIntervalStartKey = 'afternoon_interval_start',
@@ -75,6 +76,7 @@ class MemoplannerSettings extends Equatable {
       activityDisplayDayPeriod,
       activityDisplayWeekDay,
       activityDisplayDate,
+      activityDisplayClock,
       calendarActivityTypeShowTypes,
       setting12hTimeFormatTimeline,
       settingDisplayHourLines,
@@ -132,6 +134,7 @@ class MemoplannerSettings extends Equatable {
     this.activityDisplayDayPeriod = true,
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
+    this.activityDisplayClock = true,
     this.calendarActivityTypeShowTypes = true,
     this.imageMenuDisplayPhotoItem = true,
     this.imageMenuDisplayCameraItem = true,
@@ -223,6 +226,9 @@ class MemoplannerSettings extends Equatable {
       ),
       activityDisplayDate: settings.getBool(
         activityDisplayDateKey,
+      ),
+      activityDisplayClock: settings.getBool(
+        activityDisplayClockKey,
       ),
       calendarActivityTypeShowTypes: settings.getBool(
         calendarActivityTypeShowTypesKey,
@@ -353,6 +359,7 @@ class MemoplannerSettings extends Equatable {
         activityDisplayDayPeriod,
         activityDisplayWeekDay,
         activityDisplayDate,
+        activityDisplayClock,
         calendarActivityTypeShowTypes,
         setting12hTimeFormatTimeline,
         settingDisplayHourLines,

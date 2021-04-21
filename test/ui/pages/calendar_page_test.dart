@@ -1071,7 +1071,7 @@ void main() {
       await tester.verifyTts(find.text('30'), contains: 'Sunday, August 30');
     });
 
-    testWidgets('taping day goes back to that day calendar',
+    testWidgets('tapping day goes back to that day calendar',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
