@@ -12,6 +12,7 @@ class DayColorsSettingsTab extends StatelessWidget {
       builder: (context, state) {
         return SettingsTab(
           children: [
+            Tts(child: Text(Translator.of(context).translate.dayColours)),
             MonthHeading(
               showLeadingWeekShort: false,
               dayThemes: List.generate(

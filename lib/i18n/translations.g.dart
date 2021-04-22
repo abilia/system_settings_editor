@@ -439,6 +439,8 @@ abstract class Translated {
 
   final String saturdayAndSunday = 'Saturday and Sunday';
 
+  final String dayColours = 'Day colours';
+
   final String noDayColours = 'No day colours';
 
   final String permissions = 'Permissions';
@@ -1132,6 +1134,9 @@ class SV extends Translated {
 
   @override
   final String saturdayAndSunday = 'Lördag och söndag';
+
+  @override
+  final String dayColours = 'Dagfärger';
 
   @override
   final String noDayColours = 'Inga dagfärger';
@@ -1854,6 +1859,9 @@ class DA extends Translated {
   final String saturdayAndSunday = 'Lørdag og søndag';
 
   @override
+  final String dayColours = 'Dagfarver';
+
+  @override
   final String noDayColours = 'Ingen dagsfarver';
 
   @override
@@ -2569,6 +2577,9 @@ class NL extends Translated {
 
   @override
   final String saturdayAndSunday = 'Zaterdag en zondag';
+
+  @override
+  final String dayColours = 'Dagkleuren';
 
   @override
   final String noDayColours = 'Geen dagkleuren';
@@ -3287,6 +3298,9 @@ class FI extends Translated {
 
   @override
   final String saturdayAndSunday = 'Lauantai ja sunnuntai';
+
+  @override
+  final String dayColours = 'Päivien värit';
 
   @override
   final String noDayColours = 'Ei päivien värejä';
@@ -4008,6 +4022,9 @@ class DE extends Translated {
   final String saturdayAndSunday = 'Samstag und Sonntag';
 
   @override
+  final String dayColours = 'Tagesfarben';
+
+  @override
   final String noDayColours = 'Keine Tagesfarben';
 
   @override
@@ -4725,6 +4742,9 @@ class NB extends Translated {
 
   @override
   final String saturdayAndSunday = 'Lørdag og søndag';
+
+  @override
+  final String dayColours = 'Dagfarger';
 
   @override
   final String noDayColours = 'Ingen dagfarger';
