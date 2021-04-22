@@ -3,12 +3,21 @@ part of 'day_calendar_settings_cubit.dart';
 class DayCalendarSettingsState extends Equatable {
   final bool showBrowseButtons, showWeekday, showDayPeriod, showDate, showClock;
 
+  final bool dotsInTimePillar;
+  final TimepillarZoom timepillarZoom;
+  final TimepillarIntervalType dayInterval;
+  final DayCalendarType calendarType;
+
   DayCalendarSettingsState._({
     @required this.showBrowseButtons,
     @required this.showWeekday,
     @required this.showDayPeriod,
     @required this.showDate,
     @required this.showClock,
+    @required this.dotsInTimePillar,
+    @required this.timepillarZoom,
+    @required this.dayInterval,
+    @required this.calendarType,
   });
 
   factory DayCalendarSettingsState.fromMemoplannerSettings(
@@ -20,6 +29,10 @@ class DayCalendarSettingsState extends Equatable {
         showDayPeriod: state.activityDisplayDayPeriod,
         showDate: state.activityDisplayDate,
         showClock: state.activityDisplayClock,
+        calendarType: state.dayCalendarType,
+        dayInterval: state.timepillarIntervalType,
+        dotsInTimePillar: state.dotsInTimepillar,
+        timepillarZoom: state.timepillarZoom,
       );
 
   DayCalendarSettingsState copyWith({
@@ -28,6 +41,10 @@ class DayCalendarSettingsState extends Equatable {
     bool showDayPeriod,
     bool showDate,
     bool showClock,
+    DayCalendarType calendarType,
+    TimepillarIntervalType dayInterval,
+    bool dotsInTimePillar,
+    TimepillarZoom timepillarZoom,
   }) =>
       DayCalendarSettingsState._(
         showBrowseButtons: showBrowseButtons ?? this.showBrowseButtons,
@@ -35,6 +52,10 @@ class DayCalendarSettingsState extends Equatable {
         showDayPeriod: showDayPeriod ?? this.showDayPeriod,
         showDate: showDate ?? this.showDate,
         showClock: showClock ?? this.showClock,
+        calendarType: calendarType ?? this.calendarType,
+        dayInterval: dayInterval ?? this.dayInterval,
+        dotsInTimePillar: dotsInTimePillar ?? this.dotsInTimePillar,
+        timepillarZoom: timepillarZoom ?? this.timepillarZoom,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
@@ -58,6 +79,22 @@ class DayCalendarSettingsState extends Equatable {
           data: showClock,
           identifier: MemoplannerSettings.activityDisplayClockKey,
         ),
+        MemoplannerSettingData.fromData(
+          data: calendarType.index,
+          identifier: MemoplannerSettings.viewOptionsTimeViewKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: dayInterval.index,
+          identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: dotsInTimePillar,
+          identifier: MemoplannerSettings.dotsInTimepillarKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: timepillarZoom.index,
+          identifier: MemoplannerSettings.viewOptionsZoomKey,
+        ),
       ];
 
   @override
@@ -67,5 +104,9 @@ class DayCalendarSettingsState extends Equatable {
         showDayPeriod,
         showDate,
         showClock,
+        calendarType,
+        dayInterval,
+        dotsInTimePillar,
+        timepillarZoom,
       ];
 }

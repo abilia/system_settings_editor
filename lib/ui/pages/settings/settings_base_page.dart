@@ -32,13 +32,16 @@ class SettingsBasePage extends StatelessWidget {
 }
 
 class SettingsTab extends StatelessWidget {
+  final double dividerPadding;
   const SettingsTab({
     Key key,
     this.children = const [],
+    this.dividerPadding,
   }) : super(key: key);
   final List<Widget> children;
   @override
   Widget build(BuildContext context) {
+    final padding = dividerPadding ?? 16.s;
     return DefaultTextStyle(
       style: abiliaTextTheme.bodyText2.copyWith(color: AbiliaColors.black75),
       child: ListView(
@@ -47,7 +50,7 @@ class SettingsTab extends StatelessWidget {
           ...children.map(
             (w) => w is Divider
                 ? Padding(
-                    padding: EdgeInsets.only(top: 16.s, bottom: 16.s),
+                    padding: EdgeInsets.only(top: padding, bottom: padding),
                     child: w,
                   )
                 : Padding(

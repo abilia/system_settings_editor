@@ -26,8 +26,8 @@ class DayCalendarSettingsPage extends StatelessWidget {
           ),
           body: TabBarView(children: [
             DayAppBarSettingsTab(),
-            Container(),
-            Container(),
+            DayViewSettingsTab(),
+            EyeButtonSettingsTab(),
           ]),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: CancelButton(),
