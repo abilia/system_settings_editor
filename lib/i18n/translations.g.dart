@@ -443,6 +443,10 @@ abstract class Translated {
 
   final String noDayColours = 'No day colours';
 
+  final String showCagetories = 'Show categories';
+
+  final String showColours = 'Show colours';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -1140,6 +1144,12 @@ class SV extends Translated {
 
   @override
   final String noDayColours = 'Inga dagfärger';
+
+  @override
+  final String showCagetories = 'Visa kategorier';
+
+  @override
+  final String showColours = 'Visa färger';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1865,6 +1875,12 @@ class DA extends Translated {
   final String noDayColours = 'Ingen dagsfarver';
 
   @override
+  final String showCagetories = 'Vis kategorier';
+
+  @override
+  final String showColours = 'Vis farver';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -2583,6 +2599,12 @@ class NL extends Translated {
 
   @override
   final String noDayColours = 'Geen dagkleuren';
+
+  @override
+  final String showCagetories = 'Categorieën tonen';
+
+  @override
+  final String showColours = 'Kleuren tonen';
 
   @override
   final String permissions = 'Rechten';
@@ -3304,6 +3326,12 @@ class FI extends Translated {
 
   @override
   final String noDayColours = 'Ei päivien värejä';
+
+  @override
+  final String showCagetories = 'Näyte kategoriat';
+
+  @override
+  final String showColours = 'Näytä värit';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -4028,6 +4056,12 @@ class DE extends Translated {
   final String noDayColours = 'Keine Tagesfarben';
 
   @override
+  final String showCagetories = 'Kategorien zeigen';
+
+  @override
+  final String showColours = 'Farben zeigen';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -4748,6 +4782,12 @@ class NB extends Translated {
 
   @override
   final String noDayColours = 'Ingen dagfarger';
+
+  @override
+  final String showCagetories = 'Vis kategorier';
+
+  @override
+  final String showColours = 'Vis farger';
 
   @override
   final String permissions = 'Tillatelser';

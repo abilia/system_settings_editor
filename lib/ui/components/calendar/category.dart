@@ -9,13 +9,13 @@ final _radius = Radius.circular(100.s);
 
 abstract class _CategoryWidget extends StatelessWidget {
   final bool expanded;
-  final MemoplannerSettingsState settingsState;
+  final String categoryName;
   final double maxWidth;
 
   const _CategoryWidget({
     Key key,
     @required this.expanded,
-    @required this.settingsState,
+    @required this.categoryName,
     @required this.maxWidth,
   }) : super(key: key);
 }
@@ -24,18 +24,17 @@ class CategoryLeft extends _CategoryWidget {
   const CategoryLeft({
     Key key,
     @required bool expanded,
-    @required MemoplannerSettingsState settingsState,
+    @required String categoryName,
     double maxWidth = double.infinity,
   }) : super(
           key: key,
           expanded: expanded,
           maxWidth: maxWidth,
-          settingsState: settingsState,
+          categoryName: categoryName,
         );
   @override
   Widget build(BuildContext context) => _Category(
-        text: settingsState.leftCategoryName ??
-            Translator.of(context).translate.left,
+        text: categoryName ?? Translator.of(context).translate.left,
         borderRadius:
             BorderRadius.only(topRight: _radius, bottomRight: _radius),
         expanded: expanded,
@@ -47,18 +46,17 @@ class CategoryRight extends _CategoryWidget {
   const CategoryRight({
     Key key,
     @required bool expanded,
-    @required MemoplannerSettingsState settingsState,
+    @required String categoryName,
     double maxWidth = double.infinity,
   }) : super(
           key: key,
           expanded: expanded,
           maxWidth: maxWidth,
-          settingsState: settingsState,
+          categoryName: categoryName,
         );
   @override
   Widget build(BuildContext context) => _Category(
-        text: settingsState.rightCategoryName ??
-            Translator.of(context).translate.right,
+        text: categoryName ?? Translator.of(context).translate.right,
         expanded: expanded,
         icon: AbiliaIcons.navigation_next,
         alignment: const Alignment(1, 0),

@@ -237,6 +237,8 @@ linesForEachHour	Lines for each hour	Linjer för varje timme	Linjer for hver tim
 saturdayAndSunday	Saturday and Sunday	Lördag och söndag	Lørdag og søndag	Zaterdag en zondag	Lauantai ja sunnuntai	Samstag und Sonntag	Lørdag og søndag
 dayColours	Day colours	Dagfärger	Dagfarver	Dagkleuren	Päivien värit	Tagesfarben	Dagfarger
 noDayColours	No day colours	Inga dagfärger	Ingen dagsfarver	Geen dagkleuren	Ei päivien värejä	Keine Tagesfarben	Ingen dagfarger
+showCagetories	Show categories	Visa kategorier	Vis kategorier	Categorieën tonen	Näyte kategoriat	Kategorien zeigen	Vis kategorier
+showColours	Show colours	Visa färger	Vis farver	Kleuren tonen	Näytä värit	Farben zeigen	Vis farger
 							
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser

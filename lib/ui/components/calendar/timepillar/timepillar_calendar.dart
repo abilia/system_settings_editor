@@ -214,7 +214,8 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
                                         ? CategoryLeft(
                                             expanded:
                                                 viewState.expandLeftCategory,
-                                            settingsState: memoSettings,
+                                            categoryName:
+                                                memoSettings.leftCategoryName,
                                           )
                                         : null,
                                     height: boxConstraints.maxHeight,
@@ -243,7 +244,8 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
                                       ? CategoryRight(
                                           expanded:
                                               viewState.expandRightCategory,
-                                          settingsState: memoSettings,
+                                          categoryName:
+                                              memoSettings.rightCategoryName,
                                         )
                                       : null,
                                   height: boxConstraints.maxHeight,
