@@ -195,28 +195,42 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
   }
 
   void _handleEditQuestionResult(final Question oldQuestion) async {
-    final result = await Navigator.of(context).push<QuestionResult>(
+    final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
-          child: EditQuestionPage(question: oldQuestion),
+          child: EditQuestionPage(
+            question: oldQuestion,
+            tempFile: tempImageFiles[oldQuestion.id],
+          ),
         ),
       ),
     );
+    bool changed(ImageAndName imageAndName) =>
+        imageAndName.name != oldQuestion.name ||
+        imageAndName.image.id != oldQuestion.fileId;
 
-    if (result != null && result.question != oldQuestion) {
-      final questionMap = {for (var q in widget.checklist.questions) q.id: q}
-        ..[oldQuestion.id] = result.question;
-      final newQuestions = questionMap.values.where((q) => q != null);
+    if (result != null && changed(result)) {
+      final questionMap = {for (var q in widget.checklist.questions) q.id: q};
+      if (result.isEmpty) {
+        questionMap.remove(oldQuestion.id);
+      } else {
+        questionMap[oldQuestion.id] = Question(
+          id: oldQuestion.id,
+          name: result.name,
+          fileId: result.image.id,
+          image: result.image.path,
+        );
+      }
 
-      if (result.hasNewImage) {
-        newFileAdded(result.newImage, result.question.id);
+      if (result.image.toBeStored) {
+        newFileAdded(result.image.file, oldQuestion.id);
       }
 
       BlocProvider.of<EditActivityBloc>(context).add(
         ReplaceActivity(
           widget.activity.copyWith(
-            infoItem: widget.checklist.copyWith(questions: newQuestions),
+            infoItem: widget.checklist.copyWith(questions: questionMap.values),
           ),
         ),
       );
@@ -224,7 +238,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
   }
 
   void _handleNewQuestion() async {
-    final result = await Navigator.of(context).push<QuestionResult>(
+    final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
@@ -236,8 +250,8 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
     if (result != null && result.isNotEmpty) {
       final uniqueId = DateTime.now().millisecondsSinceEpoch;
 
-      if (result.hasNewImage) {
-        newFileAdded(result.newImage, uniqueId);
+      if (result.image.toBeStored) {
+        newFileAdded(result.image.file, uniqueId);
       }
 
       BlocProvider.of<EditActivityBloc>(context).add(
@@ -246,7 +260,12 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
             infoItem: widget.checklist.copyWith(
               questions: [
                 ...widget.checklist.questions,
-                result.question.copyWith(id: uniqueId)
+                Question(
+                  id: uniqueId,
+                  name: result.name,
+                  fileId: result.image.id,
+                  image: result.image.path,
+                ),
               ],
             ),
           ),
