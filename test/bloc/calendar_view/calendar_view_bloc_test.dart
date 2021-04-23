@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 
 import '../../mocks.dart';
 
@@ -12,15 +11,7 @@ void main() {
     calendarViewBloc = CalendarViewBloc(settingsDb);
   });
   test('initial state', () {
-    expect(calendarViewBloc.state, CalendarViewState(DayCalendarType.LIST));
-  });
-
-  test('Change calendar view', () async {
-    calendarViewBloc.add(CalendarTypeChanged(DayCalendarType.TIMEPILLAR));
-    await expectLater(
-      calendarViewBloc.stream,
-      emits(CalendarViewState(DayCalendarType.TIMEPILLAR)),
-    );
+    expect(calendarViewBloc.state, CalendarViewState());
   });
 
   test('Toggle left category', () async {
@@ -29,7 +20,6 @@ void main() {
       calendarViewBloc.stream,
       emits(
         CalendarViewState(
-          DayCalendarType.LIST,
           expandLeftCategory: false,
         ),
       ),
@@ -41,7 +31,6 @@ void main() {
       calendarViewBloc.stream,
       emits(
         CalendarViewState(
-          DayCalendarType.LIST,
           expandRightCategory: false,
         ),
       ),

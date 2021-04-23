@@ -39,9 +39,11 @@ class MemoplannerSettingBloc
   Stream<MemoplannerSettingsState> mapEventToState(
       MemoplannerSettingsEvent event) async* {
     if (event is UpdateMemoplannerSettings) {
-      yield MemoplannerSettingsLoaded(MemoplannerSettings.fromSettingsMap(
-        event.generics.filterMemoplannerSettingsData(),
-      ));
+      yield MemoplannerSettingsLoaded(
+        MemoplannerSettings.fromSettingsMap(
+          event.generics.filterMemoplannerSettingsData(),
+        ),
+      );
     }
     if (event is GenericsLoadedFailed) {
       yield MemoplannerSettingsFailed();

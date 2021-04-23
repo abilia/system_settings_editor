@@ -79,7 +79,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     return synchronized(() async {
       await fetchIntoDatabase();
       final dirtyData = await db.getAllDirty();
-      if (dirtyData.isEmpty) return true;
+      if (dirtyData == null || dirtyData.isEmpty) return true;
       try {
         final res = await postData(dirtyData);
         if (res.succeded.isNotEmpty) {

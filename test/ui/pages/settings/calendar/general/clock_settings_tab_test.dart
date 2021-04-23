@@ -22,11 +22,16 @@ void main() {
 
   Iterable<Generic> generics;
   GenericDb genericDb;
+  final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
+    data: MemoplannerSettingData.fromData(
+        data: DayCalendarType.TIMEPILLAR.index,
+        identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+  );
 
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
-    generics = [];
+    generics = [timepillarGeneric];
 
     final mockBatch = MockBatch();
     when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
@@ -287,7 +292,7 @@ void main() {
 
     group('timepillar settings', () {
       testWidgets('timePillar standard settings 12h', (tester) async {
-        await tester.goToTimePillarCalendar(use24: false);
+        await tester.pumpApp(use24: false);
         expect(find.text('1'), findsOneWidget);
         expect(find.text('2'), findsOneWidget);
         expect(find.text('13'), findsNothing);
@@ -301,7 +306,7 @@ void main() {
       });
 
       testWidgets('timePillar standard settings 24h', (tester) async {
-        await tester.goToTimePillarCalendar(use24: true);
+        await tester.pumpApp(use24: true);
         expect(find.text('13'), findsOneWidget);
         expect(find.text('14'), findsOneWidget);
         expect(find.text('1'), findsNothing);
@@ -316,8 +321,9 @@ void main() {
               identifier: MemoplannerSettings.setting12hTimeFormatTimelineKey,
             ),
           ),
+          timepillarGeneric,
         ];
-        await tester.goToTimePillarCalendar(use24: true);
+        await tester.pumpApp(use24: true);
         expect(find.text('1'), findsOneWidget);
         expect(find.text('2'), findsOneWidget);
         expect(find.text('13'), findsNothing);
@@ -332,8 +338,9 @@ void main() {
               identifier: MemoplannerSettings.settingTimePillarTimelineKey,
             ),
           ),
+          timepillarGeneric,
         ];
-        await tester.goToTimePillarCalendar();
+        await tester.pumpApp(use24: false);
         expect(
           tester.widget<TimePillar>(find.byType(TimePillar)).columnOfDots,
           isTrue,
@@ -348,8 +355,9 @@ void main() {
               identifier: MemoplannerSettings.settingDisplayTimelineKey,
             ),
           ),
+          timepillarGeneric,
         ];
-        await tester.goToTimePillarCalendar();
+        await tester.pumpApp(use24: false);
         expect(find.byType(Timeline), findsNothing);
       });
 
@@ -361,8 +369,9 @@ void main() {
               identifier: MemoplannerSettings.settingDisplayHourLinesKey,
             ),
           ),
+          timepillarGeneric,
         ];
-        await tester.goToTimePillarCalendar();
+        await tester.pumpApp(use24: false);
         expect(find.byType(HourLines), findsWidgets);
       });
     });
@@ -385,16 +394,6 @@ extension on WidgetTester {
     await tap(find.byIcon(AbiliaIcons.month));
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.settings));
-    await pumpAndSettle();
-  }
-
-  Future<void> goToTimePillarCalendar({bool use24 = false}) async {
-    await pumpApp(use24: use24);
-    await tap(find.byType(EyeButton));
-    await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.timeline));
-    await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.ok));
     await pumpAndSettle();
   }
 }

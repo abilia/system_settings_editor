@@ -18,7 +18,6 @@ import '../../../../../mocks.dart';
 
 void main() {
   final initialTime = DateTime(2021, 04, 16, 13, 37);
-  // final translate = Locales.language.values.first;
 
   Iterable<Generic> generics;
   GenericDb genericDb;
@@ -240,9 +239,14 @@ void main() {
             identifier: MemoplannerSettings.nightIntervalStartKey,
           ),
         ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+              data: DayCalendarType.TIMEPILLAR.index,
+              identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+        ),
       ];
       // Act
-      await tester.goToTimePillarCalendar(use24: true);
+      await tester.pumpApp(use24: true);
       // Assert
       expect(find.text('09'), findsNothing);
       expect(find.text('10'), findsOneWidget);
@@ -271,16 +275,6 @@ extension on WidgetTester {
     await tap(find.byIcon(AbiliaIcons.settings));
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.day_interval));
-    await pumpAndSettle();
-  }
-
-  Future<void> goToTimePillarCalendar({bool use24 = false}) async {
-    await pumpApp(use24: use24);
-    await tap(find.byType(EyeButton));
-    await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.timeline));
-    await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.ok));
     await pumpAndSettle();
   }
 

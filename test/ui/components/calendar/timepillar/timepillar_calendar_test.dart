@@ -24,9 +24,6 @@ void main() {
   MockActivityDb mockActivityDb;
   MockSettingsDb mockSettingsDb;
   StreamController<DateTime> mockTicker;
-  final changeViewButtonFinder = find.byType(EyeButton);
-  final timePillarButtonFinder = find.byIcon(AbiliaIcons.timeline);
-  final okButtonFinder = find.byIcon(AbiliaIcons.ok);
   final time = DateTime(2007, 08, 09, 13, 11);
   final leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
@@ -37,6 +34,12 @@ void main() {
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
   final previusDayButtonFinder =
       find.byIcon(AbiliaIcons.return_to_previous_page);
+
+  final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
+    data: MemoplannerSettingData.fromData(
+        data: DayCalendarType.TIMEPILLAR.index,
+        identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+  );
 
   setUp(() async {
     setupPermissions();
@@ -63,10 +66,15 @@ void main() {
       (value) => Future.value([]),
     );
 
+    genericResponse = () => [
+          timepillarGeneric,
+        ];
+
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
+      ..sortableDb = MockSortableDb()
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: time)
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(
@@ -89,37 +97,10 @@ void main() {
     await GetIt.I.reset();
   });
 
-  Future goToTimePillar(
-    WidgetTester tester, {
-    PushBloc pushBloc,
-  }) async {
-    await tester.pumpWidget(App(
-      pushBloc: pushBloc,
-    ));
-    await tester.pumpAndSettle();
-    await tester.tap(changeViewButtonFinder);
-    await tester.pumpAndSettle();
-    await tester.tap(timePillarButtonFinder);
-    await tester.pumpAndSettle();
-    await tester.tap(okButtonFinder);
-    await tester.pumpAndSettle();
-  }
-
   testWidgets('Shows when selected', (WidgetTester tester) async {
-    await goToTimePillar(tester);
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
     expect(find.byType(TimepillarCalendar), findsOneWidget);
-  });
-
-  testWidgets('Can navigate back to agenda view', (WidgetTester tester) async {
-    await goToTimePillar(tester);
-    await tester.tap(changeViewButtonFinder);
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
-    await tester.pumpAndSettle();
-    await tester.tap(okButtonFinder);
-    await tester.pumpAndSettle();
-    expect(find.byType(TimepillarCalendar), findsNothing);
-    expect(find.byType(Agenda), findsOneWidget);
   });
 
   testWidgets('all days activity tts', (WidgetTester tester) async {
@@ -131,34 +112,44 @@ void main() {
         reminderBefore: [60 * 60 * 1000],
         alarmType: NO_ALARM);
     activityResponse = () => [activity];
-    await goToTimePillar(tester);
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
     expect(find.byType(FullDayContainer), findsOneWidget);
     await tester.verifyTts(find.byType(FullDayContainer),
         contains: activity.title);
   });
 
   group('timepillar', () {
+    setUp(() {
+      genericResponse = () => [
+            timepillarGeneric,
+          ];
+    });
     testWidgets('timepillar shows', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(SliverTimePillar), findsOneWidget);
     });
 
     testWidgets('tts', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       final hour = DateFormat('h').format(time);
       await tester.verifyTts(find.text(hour).at(0), contains: hour);
     });
 
     testWidgets('tts on 24 h', (WidgetTester tester) async {
       tester.binding.window.alwaysUse24HourFormatTestValue = true;
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       final hour = DateFormat('H').format(time);
       await tester.verifyTts(find.text(hour), contains: hour);
     });
 
     testWidgets('Shows timepillar when scrolled in x',
         (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
 
       await tester.flingFrom(Offset(200, 200), Offset(200, 0), 200);
       await tester.pumpAndSettle();
@@ -166,7 +157,8 @@ void main() {
     });
     testWidgets('Shows timepillar when scrolled in y',
         (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
 
       await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
       await tester.pumpAndSettle();
@@ -175,7 +167,8 @@ void main() {
 
     testWidgets('Shows go to now button when scrolling',
         (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
       await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
       await tester.pumpAndSettle();
@@ -184,14 +177,21 @@ void main() {
   });
 
   group('timepillar dots', () {
+    setUp(() {
+      genericResponse = () => [
+            timepillarGeneric,
+          ];
+    });
     testWidgets('Current dots shows', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(PastDots), findsNothing);
       expect(find.byType(AnimatedDot), findsWidgets);
       expect(find.byType(FutureDots), findsNothing);
     });
     testWidgets('Yesterday shows only past dots', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       await tester.tap(previusDayButtonFinder);
       await tester.pumpAndSettle();
 
@@ -200,7 +200,8 @@ void main() {
       expect(find.byType(FutureDots), findsNothing);
     });
     testWidgets('Tomorrow shows only future dots', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
 
@@ -210,7 +211,8 @@ void main() {
     });
 
     testWidgets('Only one current dot', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(
           tester
               .widgetList<AnimatedDot>(find.byType(AnimatedDot))
@@ -219,7 +221,8 @@ void main() {
     });
 
     testWidgets('Alwasy only one current dots', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       for (var i = 0; i < 20; i++) {
         mockTicker.add(time.add(i.minutes()));
         await tester.pumpAndSettle();
@@ -233,8 +236,14 @@ void main() {
   });
 
   group('Timeline', () {
+    setUp(() {
+      genericResponse = () => [
+            timepillarGeneric,
+          ];
+    });
     testWidgets('Exists', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsWidgets);
     });
 
@@ -247,15 +256,19 @@ void main() {
               ),
             ),
           ];
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
 
-    testWidgets(' hides timelien after push update ',
+    testWidgets('hides timeline after push update',
         (WidgetTester tester) async {
       final pushBloc = PushBloc();
 
-      await goToTimePillar(tester, pushBloc: pushBloc);
+      await tester.pumpWidget(App(
+        pushBloc: pushBloc,
+      ));
+      await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsWidgets);
 
       genericResponse = () => [
@@ -265,6 +278,7 @@ void main() {
                 identifier: MemoplannerSettings.settingDisplayTimelineKey,
               ),
             ),
+            timepillarGeneric,
           ];
       pushBloc.add(PushEvent('collapse_key'));
       await tester.pumpAndSettle();
@@ -272,14 +286,16 @@ void main() {
     });
 
     testWidgets('Tomorrow does not show timeline', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
 
     testWidgets('Yesterday does not show timline', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       await tester.tap(previusDayButtonFinder);
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
@@ -287,7 +303,8 @@ void main() {
 
     testWidgets('timeline is at same y pos as current-time-dot',
         (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       final currentDot = tester
           .widgetList<AnimatedDot>(find.byType(AnimatedDot))
           .firstWhere((d) => d.decoration == currentDotShape);
@@ -302,7 +319,8 @@ void main() {
     });
 
     testWidgets('hourTimeline hidden by default', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsNothing);
     });
 
@@ -315,15 +333,19 @@ void main() {
                 identifier: MemoplannerSettings.settingDisplayHourLinesKey,
               ),
             ),
+            timepillarGeneric,
           ];
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsOneWidget);
     });
 
     testWidgets('hourTimeline shows on push', (WidgetTester tester) async {
       final pushBloc = PushBloc();
-      await goToTimePillar(tester, pushBloc: pushBloc);
+      await tester.pumpWidget(App(
+        pushBloc: pushBloc,
+      ));
+      await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsNothing);
 
       genericResponse = () => [
@@ -333,6 +355,7 @@ void main() {
                 identifier: MemoplannerSettings.settingDisplayHourLinesKey,
               ),
             ),
+            timepillarGeneric,
           ];
       pushBloc.add(PushEvent('collapse_key'));
       await tester.pumpAndSettle();
@@ -345,7 +368,8 @@ void main() {
         rightFinder = find.byType(CategoryRight);
 
     testWidgets('Categories Exists', (WidgetTester tester) async {
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(leftFinder, findsOneWidget);
       expect(rightFinder, findsOneWidget);
     });
@@ -361,7 +385,8 @@ void main() {
               ),
             ),
           ];
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(CategoryLeft), findsNothing);
       expect(find.byType(CategoryRight), findsNothing);
     });
@@ -370,7 +395,10 @@ void main() {
         (WidgetTester tester) async {
       final pushBloc = PushBloc();
 
-      await goToTimePillar(tester, pushBloc: pushBloc);
+      await tester.pumpWidget(App(
+        pushBloc: pushBloc,
+      ));
+      await tester.pumpAndSettle();
 
       expect(leftFinder, findsOneWidget);
       expect(rightFinder, findsOneWidget);
@@ -412,11 +440,16 @@ void main() {
               category: Category.left,
             ),
           ];
+
+      genericResponse = () => [
+            timepillarGeneric,
+          ];
     });
 
     testWidgets('Shows activity', (WidgetTester tester) async {
       // Act
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       // Assert
       expect(leftActivityFinder, findsOneWidget);
       expect(rightActivityFinder, findsOneWidget);
@@ -425,7 +458,8 @@ void main() {
 
     testWidgets('tts', (WidgetTester tester) async {
       // Act
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       // Assert
       await tester.verifyTts(leftActivityFinder, contains: leftTitle);
       await tester.verifyTts(rightActivityFinder, contains: rightTitle);
@@ -434,7 +468,8 @@ void main() {
     testWidgets('Activities is right or left of timeline',
         (WidgetTester tester) async {
       // Arrange
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
 
       // Act
       final timelineXPostion = tester.getCenter(find.byType(Timeline).first).dx;
@@ -449,7 +484,8 @@ void main() {
     testWidgets('tapping activity shows activity info',
         (WidgetTester tester) async {
       // Arrange
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       // Act
       await tester.tap(leftActivityFinder);
       await tester.pumpAndSettle();
@@ -462,7 +498,8 @@ void main() {
     testWidgets('changing activity shows in timepillar card',
         (WidgetTester tester) async {
       // Arrange
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       // Act
       await tester.tap(rightActivityFinder);
       await tester.pumpAndSettle();
@@ -480,7 +517,8 @@ void main() {
     testWidgets('setting no dots shows SideTime', (WidgetTester tester) async {
       // Arrange
       when(mockSettingsDb.dotsInTimepillar).thenReturn(false);
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       // Act
       await tester.pumpAndSettle();
       // Assert
@@ -492,7 +530,8 @@ void main() {
       // Arrange
       activityResponse =
           () => [Activity.createNew(title: 'title', startTime: time)];
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       // Act
       await tester.pumpAndSettle();
       // Assert
@@ -505,7 +544,8 @@ void main() {
             Activity.createNew(
                 title: 'title', startTime: time.subtract(10.minutes()))
           ];
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       // Act
       await tester.pumpAndSettle();
       // Assert
@@ -522,7 +562,8 @@ void main() {
               duration: 8.hours(),
             )
           ];
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       // Act
       await tester.pumpAndSettle();
       // Assert
@@ -539,7 +580,8 @@ void main() {
               duration: 1.hours(),
             )
           ];
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       // Act
       await tester.pumpAndSettle();
       // Assert
@@ -556,7 +598,8 @@ void main() {
                 checkable: true,
                 signedOffDates: [time.onlyDays()])
           ];
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       // Act
       await tester.pumpAndSettle();
       // Assert
@@ -572,8 +615,8 @@ void main() {
                 data: TimepillarIntervalType.INTERVAL.index,
                 identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
               ),
-              type: GenericType.memoPlannerSettings,
-            )
+            ),
+            timepillarGeneric,
           ];
     });
     testWidgets('Activity outside interval is not visible',
@@ -584,7 +627,8 @@ void main() {
               startTime: time.copyWith(hour: 8, minute: 0),
             )
           ];
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
     });
 
@@ -596,7 +640,8 @@ void main() {
               startTime: time,
             )
           ];
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
     });
 
@@ -612,7 +657,8 @@ void main() {
 
       mockTicker.add(
           activityTime); // Shows night interval. Activity should be visible here.
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
 
       mockTicker.add(DateTime(2020, 12, 01, 08,
@@ -637,7 +683,8 @@ void main() {
           ];
 
       mockTicker.add(DateTime(2020, 12, 01, 01, 01));
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
 
       mockTicker.add(DateTime(2020, 12, 01, 09, 59));
@@ -665,12 +712,13 @@ void main() {
                 data: TimepillarIntervalType.DAY_AND_NIGHT.index,
                 identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
               ),
-              type: GenericType.memoPlannerSettings,
-            )
+            ),
+            timepillarGeneric,
           ];
 
       mockTicker.add(DateTime(2020, 12, 01, 01, 01));
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
     });
 
@@ -691,12 +739,13 @@ void main() {
                 data: TimepillarIntervalType.DAY.index,
                 identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
               ),
-              type: GenericType.memoPlannerSettings,
-            )
+            ),
+            timepillarGeneric,
           ];
 
       mockTicker.add(DateTime(2020, 12, 01, 01, 00));
-      await goToTimePillar(tester);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
 
       mockTicker.add(DateTime(2020, 12, 01, 07, 00));
