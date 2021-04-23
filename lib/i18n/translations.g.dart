@@ -497,11 +497,11 @@ abstract class Translated {
 
   final String camera = 'Camera';
 
-  final String photoCalendar = 'Photo-\ncalendar';
+  final String photoCalendar = 'Photo calendar';
 
   final String countdown = 'Countdown';
 
-  final String quickSettingsMenu = 'Quick-\nsettings';
+  final String quickSettingsMenu = 'Quick settings';
 }
 
 class EN extends Translated {}
