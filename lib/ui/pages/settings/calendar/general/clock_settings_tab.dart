@@ -17,7 +17,7 @@ class ClockSettingsTab extends StatelessWidget {
         final tpState = state.timepillar;
         final onClockChanged = (v) => context
             .read<GeneralCalendarSettingsCubit>()
-            .changeFunctionSettings(state.copyWith(clockType: v));
+            .changeSettings(state.copyWith(clockType: v));
         return SettingsTab(
           children: [
             Tts(child: Text(t.clock)),

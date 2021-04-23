@@ -8,6 +8,7 @@ class MonthCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final languageCode = Localizations.localeOf(context).languageCode;
     return Scaffold(
       appBar: const MonthAppBar(),
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -16,7 +17,7 @@ class MonthCalendar extends StatelessWidget {
             DateTime.daysPerWeek,
             (d) => weekdayTheme(
               dayColor: memoSettingsState.calendarDayColor,
-              languageCode: Localizations.localeOf(context).languageCode,
+              languageCode: languageCode,
               weekday: d + 1,
             ),
           );
@@ -114,8 +115,10 @@ class MonthHeading extends StatelessWidget {
   const MonthHeading({
     Key key,
     @required this.dayThemes,
+    this.showLeadingWeekShort = true,
   }) : super(key: key);
   final List<DayTheme> dayThemes;
+  final bool showLeadingWeekShort;
 
   @override
   Widget build(BuildContext context) {
@@ -125,19 +128,28 @@ class MonthHeading extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const WeekNumber(),
+        if (showLeadingWeekShort) const WeekNumber(),
         ...List.generate(DateTime.daysPerWeek, (weekday) {
           final weekdayindex = (weekday + 1) % DateTime.daysPerWeek;
-          return Expanded(
-            child: Tts(
-              data: weekdays[weekdayindex],
-              child: Container(
-                height: 32.s,
-                color: dayThemes[weekday].dayColor,
-                child: Center(
-                  child: Text(
-                    weekdaysShort[weekdayindex],
-                    textAlign: TextAlign.center,
+          final dayTheme = dayThemes[weekday];
+          final textTheme = dayTheme.theme.textTheme;
+          return DefaultTextStyle(
+            style: textTheme.button.copyWith(
+              color: dayTheme.isColor
+                  ? textTheme.subtitle2.color
+                  : AbiliaColors.black,
+            ),
+            child: Expanded(
+              child: Tts(
+                data: weekdays[weekdayindex],
+                child: Container(
+                  height: 32.s,
+                  color: dayTheme.dayColor,
+                  child: Center(
+                    child: Text(
+                      weekdaysShort[weekdayindex],
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),
