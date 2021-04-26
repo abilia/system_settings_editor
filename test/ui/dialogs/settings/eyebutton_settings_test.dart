@@ -15,6 +15,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../mocks.dart';
+import '../../../utils/verify_generic.dart';
 
 void main() {
   MockSettingsDb mockSettingsDb;
@@ -103,10 +104,12 @@ void main() {
     await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
 
-    // Assert - At timepillar and side time shows
-    expect(find.byType(TimepillarCalendar), findsOneWidget);
-    expect(find.byType(SideDots), findsNothing);
-    expect(find.byType(SideTime), findsWidgets);
+    await verifyGeneric(
+      tester,
+      mockGenericDb,
+      key: MemoplannerSettings.dotsInTimepillarKey,
+      matcher: isFalse,
+    );
   });
 
   testWidgets('tts', (WidgetTester tester) async {

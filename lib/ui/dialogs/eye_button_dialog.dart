@@ -14,7 +14,7 @@ class EyeButtonDialog extends StatefulWidget {
   const EyeButtonDialog({
     Key key,
     @required this.currentCalendarType,
-    @required this.currentDotsInTimepillar, 
+    @required this.currentDotsInTimepillar,
     @required this.currentZoom,
     @required this.currentDayInterval,
   }) : super(key: key);

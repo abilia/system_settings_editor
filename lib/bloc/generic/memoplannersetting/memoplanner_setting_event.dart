@@ -52,3 +52,10 @@ class DayCalendarTypeUpdatedEvent extends SettingsUpdateEvent {
       : super(
             MemoplannerSettings.viewOptionsTimeViewKey, dayCalendarType.index);
 }
+
+class DotsInTimepillarUpdatedEvent extends SettingsUpdateEvent {
+  final bool dotsInTimepillar;
+
+  DotsInTimepillarUpdatedEvent(this.dotsInTimepillar)
+      : super(MemoplannerSettings.dotsInTimepillarKey, dotsInTimepillar);
+}

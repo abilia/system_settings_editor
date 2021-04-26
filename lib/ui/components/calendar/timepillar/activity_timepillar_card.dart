@@ -49,7 +49,9 @@ class ActivityTimepillarCard extends StatelessWidget {
 
     final right = TimepillarSide.RIGHT == timepillarSide;
 
-    return BlocBuilder<SettingsBloc, SettingsState>(
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.dotsInTimepillar != current.dotsInTimepillar,
       builder: (context, settings) {
         final decoration = getBoxDecoration(current, inactive);
         return Positioned(

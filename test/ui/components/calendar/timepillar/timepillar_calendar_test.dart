@@ -516,7 +516,14 @@ void main() {
 
     testWidgets('setting no dots shows SideTime', (WidgetTester tester) async {
       // Arrange
-      when(mockSettingsDb.dotsInTimepillar).thenReturn(false);
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                  data: false,
+                  identifier: MemoplannerSettings.dotsInTimepillarKey),
+            ),
+            timepillarGeneric,
+          ];
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Act
