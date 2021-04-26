@@ -22,23 +22,24 @@ class EyeButton extends StatelessWidget {
                 final settings = await showViewDialog<EyeButtonSettings>(
                   context: context,
                   builder: (context) => EyeButtonDialog(
-                    currentCalendarType:
-                        calendarViewState.currentDayCalendarType,
-                    currentDotsInTimepillar: state.dotsInTimepillar,
+                    currentCalendarType: memoSettingsState.dayCalendarType,
+                    currentDotsInTimepillar: memoSettingsState.dotsInTimepillar,
                     currentDayInterval:
                         memoSettingsState.timepillarIntervalType,
                     currentZoom: memoSettingsState.timepillarZoom,
                   ),
                 );
                 if (settings != null) {
-                  if (calendarViewState.currentDayCalendarType !=
+                  if (memoSettingsState.dayCalendarType !=
                       settings.calendarType) {
-                    BlocProvider.of<CalendarViewBloc>(context)
-                        .add(CalendarTypeChanged(settings.calendarType));
+                    context.read<MemoplannerSettingBloc>().add(
+                        DayCalendarTypeUpdatedEvent(settings.calendarType));
                   }
-                  if (state.dotsInTimepillar != settings.dotsInTimepillar) {
-                    BlocProvider.of<SettingsBloc>(context).add(
-                        DotsInTimepillarUpdated(settings.dotsInTimepillar));
+                  if (memoSettingsState.dotsInTimepillar !=
+                      settings.dotsInTimepillar) {
+                    context.read<MemoplannerSettingBloc>().add(
+                        DotsInTimepillarUpdatedEvent(
+                            settings.dotsInTimepillar));
                   }
                   if (memoSettingsState.timepillarIntervalType !=
                       settings.intervalType) {

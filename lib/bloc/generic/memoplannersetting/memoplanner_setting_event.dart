@@ -44,3 +44,18 @@ class IntervalTypeUpdatedEvent extends SettingsUpdateEvent {
       : super(MemoplannerSettings.viewOptionsTimeIntervalKey,
             timepillarIntervalType.index);
 }
+
+class DayCalendarTypeUpdatedEvent extends SettingsUpdateEvent {
+  final DayCalendarType dayCalendarType;
+
+  DayCalendarTypeUpdatedEvent(this.dayCalendarType)
+      : super(
+            MemoplannerSettings.viewOptionsTimeViewKey, dayCalendarType.index);
+}
+
+class DotsInTimepillarUpdatedEvent extends SettingsUpdateEvent {
+  final bool dotsInTimepillar;
+
+  DotsInTimepillarUpdatedEvent(this.dotsInTimepillar)
+      : super(MemoplannerSettings.dotsInTimepillarKey, dotsInTimepillar);
+}

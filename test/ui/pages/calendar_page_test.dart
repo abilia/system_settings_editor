@@ -81,6 +81,7 @@ void main() {
 
   MockActivityDb mockActivityDb;
   SettingsDb mockSettingsDb;
+  MockGenericDb mockGenericDb;
   StreamController<DateTime> mockTicker;
   ActivityResponse activityResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
@@ -99,6 +100,7 @@ void main() {
         .thenAnswer((_) => Future.value(activityResponse()));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     mockSettingsDb = MockSettingsDb();
+    mockGenericDb = MockGenericDb();
 
     when(licenseDb.getLicenses()).thenReturn([
       License(
@@ -125,6 +127,7 @@ void main() {
       ..fileStorage = MockFileStorage()
       ..userFileDb = mockUserFileDb
       ..settingsDb = mockSettingsDb
+      ..genericDb = mockGenericDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = db
@@ -526,6 +529,12 @@ void main() {
   });
 
   group('Choosen calendar setting', () {
+    final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
+      data: MemoplannerSettingData.fromData(
+        data: DayCalendarType.TIMEPILLAR.index,
+        identifier: MemoplannerSettings.viewOptionsTimeViewKey,
+      ),
+    );
     testWidgets('no settings shows agenda', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -534,22 +543,30 @@ void main() {
     });
 
     testWidgets(
-        'timepillar is choosen in settings settings shows timepillar view',
+        'timepillar is choosen in memoplanner settings shows timepillar view',
         (WidgetTester tester) async {
-      when(mockSettingsDb.preferedCalendar)
-          .thenReturn(DayCalendarType.TIMEPILLAR);
+      when(mockGenericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value([timepillarGeneric]));
+
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(Agenda), findsNothing);
       expect(find.byType(TimepillarCalendar), findsOneWidget);
     });
 
-    testWidgets('when calendar is changed, settings i saved',
+    testWidgets('when calendar is changed, settings is saved',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await goToTimePillar(tester);
-      verify(mockSettingsDb.setPreferredCalendar(DayCalendarType.TIMEPILLAR));
+      final v = verify(mockGenericDb.insertAndAddDirty(captureAny));
+      expect(v.callCount, 1);
+      final l = v.captured.single.toList() as List<Generic<GenericData>>;
+      final d = l.whereType<Generic<MemoplannerSettingData>>().firstWhere(
+          (element) =>
+              element.data.identifier ==
+              MemoplannerSettings.viewOptionsTimeViewKey);
+      expect(d.data.data, DayCalendarType.TIMEPILLAR.index);
     });
   });
 
@@ -814,14 +831,16 @@ void main() {
           (WidgetTester tester) async {
         when(memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarActivityTypeShowTypes: false),
+          MemoplannerSettings(
+            calendarActivityTypeShowTypes: false,
+            viewOptionsTimeView: DayCalendarType.TIMEPILLAR.index,
+          ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
-        await goToTimePillar(tester);
 
         final w = find.byType(TimePillar);
         final topLeft = tester.getTopLeft(w);
@@ -833,14 +852,16 @@ void main() {
           (WidgetTester tester) async {
         when(memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarActivityTypeShowTypes: true),
+          MemoplannerSettings(
+            calendarActivityTypeShowTypes: true,
+            viewOptionsTimeView: DayCalendarType.TIMEPILLAR.index,
+          ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
-        await goToTimePillar(tester);
 
         final timepillarCenter = tester.getCenter(find.byType(TimePillar));
         final calendarCenter = tester.getCenter(find.byType(CalendarPage));

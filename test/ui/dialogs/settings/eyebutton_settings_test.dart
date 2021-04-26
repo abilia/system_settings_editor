@@ -15,10 +15,12 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../mocks.dart';
+import '../../../utils/verify_generic.dart';
 
 void main() {
   MockSettingsDb mockSettingsDb;
   final translate = Locales.language.values.first;
+  MockGenericDb mockGenericDb;
 
   setUp(() async {
     setupPermissions();
@@ -46,6 +48,16 @@ void main() {
       (value) => Future.value([]),
     );
 
+    final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
+      data: MemoplannerSettingData.fromData(
+          data: DayCalendarType.TIMEPILLAR.index,
+          identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+    );
+
+    mockGenericDb = MockGenericDb();
+    when(mockGenericDb.getAllNonDeletedMaxRevision())
+        .thenAnswer((_) => Future.value([timepillarGeneric]));
+
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -56,6 +68,7 @@ void main() {
       ..fileStorage = MockFileStorage()
       ..userFileDb = mockUserFileDb
       ..settingsDb = mockSettingsDb
+      ..genericDb = mockGenericDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
@@ -67,11 +80,7 @@ void main() {
 
   testWidgets('Timepillar shows first dots, then edge when settings changes',
       (WidgetTester tester) async {
-    // Act - go to timepillar
-    await tester.goToEyeButtonSettings();
-    await tester.tap(find.byIcon(AbiliaIcons.timeline));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byType(OkButton));
+    await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
     // Assert - At timepillar and side dots shows
@@ -95,10 +104,12 @@ void main() {
     await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
 
-    // Assert - At timepillar and side time shows
-    expect(find.byType(TimepillarCalendar), findsOneWidget);
-    expect(find.byType(SideDots), findsNothing);
-    expect(find.byType(SideTime), findsWidgets);
+    await verifyGeneric(
+      tester,
+      mockGenericDb,
+      key: MemoplannerSettings.dotsInTimepillarKey,
+      matcher: isFalse,
+    );
   });
 
   testWidgets('tts', (WidgetTester tester) async {

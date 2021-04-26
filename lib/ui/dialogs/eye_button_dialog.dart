@@ -197,11 +197,13 @@ class DuoSelector<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Tts(
-          child: Text(
-            heading,
-            style: abiliaTextTheme.bodyText2.copyWith(
-              color: AbiliaColors.black75,
+        Center(
+          child: Tts(
+            child: Text(
+              heading,
+              style: abiliaTextTheme.bodyText2.copyWith(
+                color: AbiliaColors.black75,
+              ),
             ),
           ),
         ),
@@ -275,11 +277,13 @@ class TripleSelector<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Tts(
-          child: Text(
-            heading,
-            style: abiliaTextTheme.bodyText2.copyWith(
-              color: AbiliaColors.black75,
+        Center(
+          child: Tts(
+            child: Text(
+              heading,
+              style: abiliaTextTheme.bodyText2.copyWith(
+                color: AbiliaColors.black75,
+              ),
             ),
           ),
         ),

@@ -147,6 +147,65 @@ void main() {
           matcher: isFalse,
         );
       });
+
+      testWidgets('Select list', (tester) async {
+        await tester.goToDayCalendarSettingsPage(pump: true);
+        await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
+        await tester.pumpAndSettle();
+
+        await _verifySaved(
+          tester,
+          key: MemoplannerSettings.viewOptionsTimeViewKey,
+          matcher: DayCalendarType.LIST.index,
+        );
+      });
+
+      testWidgets('Set timepillar interval', (tester) async {
+        await tester.goToDayCalendarSettingsPage(pump: true);
+        await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.day_night));
+        await tester.pumpAndSettle();
+
+        await _verifySaved(
+          tester,
+          key: MemoplannerSettings.viewOptionsTimeIntervalKey,
+          matcher: TimepillarIntervalType.DAY_AND_NIGHT.index,
+        );
+      });
+
+      testWidgets('Set timepillar zoom', (tester) async {
+        await tester.goToDayCalendarSettingsPage(pump: true);
+        await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(translate.large));
+        await tester.pumpAndSettle();
+
+        await _verifySaved(
+          tester,
+          key: MemoplannerSettings.viewOptionsZoomKey,
+          matcher: TimepillarZoom.LARGE.index,
+        );
+      });
+
+      testWidgets('Set timepillar dots', (tester) async {
+        await tester.goToDayCalendarSettingsPage(pump: true);
+        await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+        await tester.pumpAndSettle();
+        await tester.dragUntilVisible(find.byIcon(AbiliaIcons.flarp),
+            find.byType(DayAppBarSettingsTab), Offset(0, 100));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.flarp));
+        await tester.pumpAndSettle();
+
+        await _verifySaved(
+          tester,
+          key: MemoplannerSettings.dotsInTimepillarKey,
+          matcher: isFalse,
+        );
+      });
     });
   });
 }

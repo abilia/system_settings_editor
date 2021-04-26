@@ -23,12 +23,18 @@ void main() {
   StreamController<DateTime> streamController;
   Stream<DateTime> stream;
   MockSettingsDb mockSettingsDb;
+  MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   final textStyle = abiliaTextTheme.caption;
 
   setUp(() {
     streamController = StreamController<DateTime>();
     stream = streamController.stream;
     mockSettingsDb = MockSettingsDb();
+    mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
+    when(mockMemoplannerSettingsBloc.state)
+        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+      dotsInTimepillar: true,
+    )));
     when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
@@ -59,6 +65,9 @@ void main() {
             ),
             BlocProvider<SettingsBloc>(
               create: (context) => SettingsBloc(settingsDb: mockSettingsDb),
+            ),
+            BlocProvider<MemoplannerSettingBloc>(
+              create: (context) => mockMemoplannerSettingsBloc,
             ),
             BlocProvider<TimepillarBloc>(
               create: (context) => mockTimepillarBloc,
@@ -465,6 +474,28 @@ void main() {
               .widgetList<AnimatedDot>(find.byType(AnimatedDot))
               .where((d) => d.decoration == futureNightDotShape),
           hasLength(1));
+    });
+
+    testWidgets('No side dots when setting is flarp',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        dotsInTimepillar: false,
+      )));
+
+      await tester.pumpWidget(
+        wrap(
+          ActivityOccasion.forTest(
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+              duration: 60.minutes(),
+            ),
+          ),
+        ),
+      );
+      expect(find.byType(AnimatedDot), findsNothing);
+      expect(find.byType(SideTime), findsOneWidget);
     });
   });
 }
