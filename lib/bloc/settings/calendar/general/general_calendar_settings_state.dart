@@ -4,11 +4,13 @@ class GeneralCalendarSettingsState extends Equatable {
   final ClockType clockType;
   final TimepillarSettingState timepillar;
   final DayParts dayParts;
+  final DayColor dayColor;
 
   GeneralCalendarSettingsState._(
     this.clockType,
     this.timepillar,
     this.dayParts,
+    this.dayColor,
   );
 
   factory GeneralCalendarSettingsState.fromMemoplannerSettings(
@@ -18,17 +20,20 @@ class GeneralCalendarSettingsState extends Equatable {
         state.clockType,
         TimepillarSettingState.fromMemoplannerSettings(state),
         state.dayParts,
+        state.calendarDayColor,
       );
 
   GeneralCalendarSettingsState copyWith({
     ClockType clockType,
     TimepillarSettingState timepillar,
     DayParts dayParts,
+    DayColor dayColor,
   }) =>
       GeneralCalendarSettingsState._(
         clockType ?? this.clockType,
         timepillar ?? this.timepillar,
         dayParts ?? this.dayParts,
+        dayColor ?? this.dayColor,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
@@ -38,6 +43,10 @@ class GeneralCalendarSettingsState extends Equatable {
         ),
         ...timepillar.memoplannerSettingData,
         ...dayParts.memoplannerSettingData,
+        MemoplannerSettingData.fromData(
+          data: dayColor.index,
+          identifier: MemoplannerSettings.calendarDayColorKey,
+        ),
       ];
 
   @override
@@ -45,6 +54,7 @@ class GeneralCalendarSettingsState extends Equatable {
         clockType,
         timepillar,
         dayParts,
+        dayColor,
       ];
 }
 

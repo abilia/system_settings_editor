@@ -50,7 +50,7 @@ class SettingsTab extends StatelessWidget {
           ...children.map(
             (w) => w is Divider
                 ? Padding(
-                    padding: EdgeInsets.only(top: padding, bottom: padding),
+                    padding: EdgeInsets.symmetric(vertical: padding),
                     child: w,
                   )
                 : Padding(

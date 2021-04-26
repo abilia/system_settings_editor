@@ -234,6 +234,9 @@ oneDot	One dot	En punkt	Et punkt	Eén punt	Yksi piste	Ein Punkt	Et punkt
 columnOfDots	Column of dots	Pelare av punkter	Søjle af punkter	Kolommen van punten	Pistepylväs	Spalte aus Punkten	Pillar av punkter
 lineAcrossCurrentTime	Line across current time	Linje på aktuell tid	Linje viser aktuel tid	Lijn door huidige tijd	Viiva nykyisen ajan kohdalla	Linie über aktueller Zeit	Linje viser aktuell tid
 linesForEachHour	Lines for each hour	Linjer för varje timme	Linjer for hver time	Lijnen voor elk uur	Viivat jokaiselle tunnille	Linien für jede Stunde	Linjer for hver time
+saturdayAndSunday	Saturday and Sunday	Lördag och söndag	Lørdag og søndag	Zaterdag en zondag	Lauantai ja sunnuntai	Samstag und Sonntag	Lørdag og søndag
+dayColours	Day colours	Dagfärger	Dagfarver	Dagkleuren	Päivien värit	Tagesfarben	Dagfarger
+noDayColours	No day colours	Inga dagfärger	Ingen dagsfarver	Geen dagkleuren	Ei päivien värejä	Keine Tagesfarben	Ingen dagfarger
 							
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser

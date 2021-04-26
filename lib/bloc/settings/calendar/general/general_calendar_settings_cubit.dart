@@ -14,11 +14,10 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettingsState> {
   }) : super(GeneralCalendarSettingsState.fromMemoplannerSettings(
             settingsState));
 
-  void changeFunctionSettings(GeneralCalendarSettingsState newState) =>
-      emit(newState);
+  void changeSettings(GeneralCalendarSettingsState newState) => emit(newState);
 
   void changeTimepillarSettings(TimepillarSettingState newState) =>
-      changeFunctionSettings(state.copyWith(timepillar: newState));
+      changeSettings(state.copyWith(timepillar: newState));
 
   void save() => genericBloc.add(GenericUpdated(state.memoplannerSettingData));
 
