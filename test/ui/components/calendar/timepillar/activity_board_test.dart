@@ -35,7 +35,6 @@ void main() {
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
       dotsInTimepillar: true,
     )));
-    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
       ..init();

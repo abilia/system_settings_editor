@@ -182,8 +182,10 @@ abstract class MemoplannerSettingsState extends Equatable {
         nightStart,
       );
 
-  String get leftCategoryName => settings.calendarActivityTypeLeft;
-  String get rightCategoryName => settings.calendarActivityTypeRight;
+  String get leftCategoryName =>
+      settings.calendarActivityTypeLeft.nullIfEmpty();
+  String get rightCategoryName =>
+      settings.calendarActivityTypeRight.nullIfEmpty();
 
   // Properties derived from one or more settings
   bool get abilityToSelectAlarm =>

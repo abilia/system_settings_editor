@@ -6,15 +6,6 @@ abstract class CalendarViewEvent extends Equatable {
   bool get stringify => true;
 }
 
-class CalendarTypeChanged extends CalendarViewEvent {
-  final DayCalendarType calendarType;
-
-  const CalendarTypeChanged(this.calendarType);
-
-  @override
-  List<Object> get props => [calendarType];
-}
-
 abstract class ToggleCategory extends CalendarViewEvent {
   const ToggleCategory();
   @override

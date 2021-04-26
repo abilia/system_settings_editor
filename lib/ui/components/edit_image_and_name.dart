@@ -20,8 +20,8 @@ class ImageAndName {
         image ?? this.image,
       );
 
-  bool get hasTitle => name?.isNotEmpty == true;
-  bool get isEmpty => !hasTitle && image.isEmpty;
+  bool get hasName => name?.isNotEmpty == true;
+  bool get isEmpty => !hasName && image.isEmpty;
   bool get isNotEmpty => !isEmpty;
 }
 
@@ -30,6 +30,7 @@ class EditImageAndName extends StatefulWidget {
   final PreferredSizeWidget appBar;
   final int maxLines, minLines;
   final bool allowEmpty;
+  final String hintText;
   const EditImageAndName({
     Key key,
     this.imageAndName,
@@ -37,6 +38,7 @@ class EditImageAndName extends StatefulWidget {
     this.maxLines,
     this.minLines,
     this.allowEmpty = false,
+    this.hintText,
   }) : super(key: key);
 
   @override
@@ -49,6 +51,7 @@ class _EditImageAndNameState extends State<EditImageAndName> {
   _EditImageAndNameState(this.imageAndName);
   ImageAndName imageAndName;
   TextEditingController txtEditController;
+  bool get hasHint => widget.hintText?.isNotEmpty == true;
   @override
   void initState() {
     super.initState();
@@ -84,6 +87,9 @@ class _EditImageAndNameState extends State<EditImageAndName> {
                         SubHeading(heading),
                         TextField(
                           controller: txtEditController,
+                          decoration: hasHint
+                              ? InputDecoration(hintText: widget.hintText)
+                              : null,
                           textCapitalization: TextCapitalization.sentences,
                           style: Theme.of(context).textTheme.bodyText1,
                           autofocus: true,

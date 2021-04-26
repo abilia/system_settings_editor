@@ -68,7 +68,6 @@ void main() {
       );
 
   testWidgets('Settings page shows', (WidgetTester tester) async {
-    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
     expect(find.byType(LogoutPickField), findsOneWidget);
@@ -80,7 +79,6 @@ void main() {
 
   testWidgets('tts', (WidgetTester tester) async {
     when(mockSettingsDb.textToSpeech).thenReturn(true);
-    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
 
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();

@@ -125,12 +125,12 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                 if (memoplannerSettingsState.showCategories) ...[
                   CategoryLeft(
                     maxWidth: categoryLabelWidth,
-                    categoryName: memoplannerSettingsState.rightCategoryName,
+                    categoryName: memoplannerSettingsState.leftCategoryName,
                     expanded: widget.calendarViewState.expandLeftCategory,
                   ),
                   CategoryRight(
                     maxWidth: categoryLabelWidth,
-                    categoryName: memoplannerSettingsState.leftCategoryName,
+                    categoryName: memoplannerSettingsState.rightCategoryName,
                     expanded: widget.calendarViewState.expandRightCategory,
                   ),
                 ],

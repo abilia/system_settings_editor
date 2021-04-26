@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class CategoriesSettingsTab extends StatelessWidget {
   const CategoriesSettingsTab({Key key}) : super(key: key);
@@ -13,31 +14,34 @@ class CategoriesSettingsTab extends StatelessWidget {
       builder: (context, state) {
         final cState = state.categories;
         final t = Translator.of(context).translate;
+        final leftName =
+            cState.leftCategoryName.isEmpty ? t.left : cState.leftCategoryName;
+        final rigthName = cState.rigthCategoryName.isEmpty
+            ? t.right
+            : cState.rigthCategoryName;
         return SettingsTab(
           children: [
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8.s),
-                decoration: boxDecoration,
-                child: Stack(
-                  children: [
-                    if (cState.showCategories)
-                      IgnorePointer(
-                        child: CategoryLeft(
-                          expanded: true,
-                          categoryName: cState.leftCategoryName,
-                        ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 8.s),
+              decoration: boxDecoration,
+              child: Stack(
+                children: [
+                  if (cState.showCategories)
+                    IgnorePointer(
+                      child: CategoryLeft(
+                        expanded: true,
+                        categoryName: leftName,
                       ),
-                    const TimepillarExample(),
-                    if (cState.showCategories)
-                      IgnorePointer(
-                        child: CategoryRight(
-                          expanded: true,
-                          categoryName: cState.rigthCategoryName,
-                        ),
+                    ),
+                  const TimepillarExample(),
+                  if (cState.showCategories)
+                    IgnorePointer(
+                      child: CategoryRight(
+                        expanded: true,
+                        categoryName: rigthName,
                       ),
-                  ],
-                ),
+                    ),
+                ],
               ),
             ),
             const SizedBox.shrink(),
@@ -56,10 +60,56 @@ class CategoriesSettingsTab extends StatelessWidget {
                 children: [
                   SizedBox(height: 8.s),
                   PickField(
-                    text: Text(cState.leftCategoryName ?? t.left),
+                    key: TestKey.editLeftCategory,
+                    text: Text(leftName),
+                    onTap: () async {
+                      final result =
+                          await Navigator.of(context).push<ImageAndName>(
+                        MaterialPageRoute(
+                          builder: (_) => CopiedAuthProviders(
+                            blocContext: context,
+                            child: EditCategoryPage(
+                              name: cState.leftCategoryName,
+                              hintText: t.left,
+                            ),
+                          ),
+                        ),
+                      );
+                      if (result != null) {
+                        context
+                            .read<GeneralCalendarSettingsCubit>()
+                            .changeCategorySettings(
+                              cState.copyWith(leftCategoryName: result.name),
+                            );
+                      }
+                    },
                   ),
                   SizedBox(height: 8.s),
-                  PickField(text: Text(cState.rigthCategoryName ?? t.right)),
+                  PickField(
+                    key: TestKey.editRigthCategory,
+                    text: Text(rigthName),
+                    onTap: () async {
+                      final result =
+                          await Navigator.of(context).push<ImageAndName>(
+                        MaterialPageRoute(
+                          builder: (_) => CopiedAuthProviders(
+                            blocContext: context,
+                            child: EditCategoryPage(
+                              name: cState.rigthCategoryName,
+                              hintText: t.right,
+                            ),
+                          ),
+                        ),
+                      );
+                      if (result != null) {
+                        context
+                            .read<GeneralCalendarSettingsCubit>()
+                            .changeCategorySettings(
+                              cState.copyWith(rigthCategoryName: result.name),
+                            );
+                      }
+                    },
+                  ),
                   SizedBox(height: 16.s),
                   SwitchField(
                     value: cState.showColors,
@@ -68,7 +118,7 @@ class CategoriesSettingsTab extends StatelessWidget {
                         .changeCategorySettings(
                           cState.copyWith(showColors: value),
                         ),
-                    text: Text(Translator.of(context).translate.showColours),
+                    text: Text(t.showColours),
                   ),
                 ],
               ),

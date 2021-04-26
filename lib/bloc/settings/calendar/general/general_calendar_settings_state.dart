@@ -135,7 +135,10 @@ class CategoriesSettingState extends Equatable {
     this.showColors,
     this.rigthCategoryName,
     this.leftCategoryName,
-  );
+  )   : assert(showCategories != null),
+        assert(showColors != null),
+        assert(leftCategoryName != null),
+        assert(rigthCategoryName != null);
 
   factory CategoriesSettingState.fromMemoplannerSettings(
     MemoplannerSettingsState state,
@@ -143,8 +146,8 @@ class CategoriesSettingState extends Equatable {
       CategoriesSettingState._(
         state.showCategories,
         state.showColor,
-        state.rightCategoryName,
-        state.rightCategoryName,
+        state.rightCategoryName ?? '',
+        state.leftCategoryName ?? '',
       );
 
   CategoriesSettingState copyWith({

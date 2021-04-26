@@ -15,6 +15,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../../mocks.dart';
+import '../../../../../utils/verify_generic.dart';
 
 void main() {
   final initialTime = DateTime(2021, 04, 23, 13, 37);
@@ -73,23 +74,6 @@ void main() {
     expect(find.byType(CancelButton), findsOneWidget);
   });
 
-  Future _verifySaved(
-    WidgetTester tester, {
-    String key,
-    dynamic matcher,
-  }) async {
-    await tester.tap(find.byType(OkButton));
-    await tester.pumpAndSettle();
-
-    final v = verify(genericDb.insertAndAddDirty(captureAny));
-    expect(v.callCount, 1);
-    final l = v.captured.single.toList() as List<Generic<GenericData>>;
-    final d = l
-        .whereType<Generic<MemoplannerSettingData>>()
-        .firstWhere((element) => element.data.identifier == key);
-    expect(d.data.data, matcher);
-  }
-
   group('day colors', () {
     testWidgets('Default all day colors', (tester) async {
       // Act
@@ -98,8 +82,12 @@ void main() {
       final monthHeading =
           tester.widget<MonthHeading>(find.byType(MonthHeading));
       expect(monthHeading.dayThemes.every((e) => e.isColor), isTrue);
-      await _verifySaved(
+
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.calendarDayColorKey,
         matcher: DayColor.allDays.index,
       );
@@ -115,8 +103,11 @@ void main() {
           tester.widget<MonthHeading>(find.byType(MonthHeading));
       expect(monthHeading.dayThemes.where((e) => e.isColor), hasLength(2));
 
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.calendarDayColorKey,
         matcher: DayColor.saturdayAndSunday.index,
       );
@@ -132,8 +123,11 @@ void main() {
           tester.widget<MonthHeading>(find.byType(MonthHeading));
       expect(monthHeading.dayThemes.any((e) => e.isColor), isFalse);
 
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.calendarDayColorKey,
         matcher: DayColor.noColors.index,
       );

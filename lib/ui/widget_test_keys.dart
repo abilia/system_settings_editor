@@ -72,5 +72,7 @@ class TestKey {
       vibrateAtReminderSelector = Key('vibrateAtReminderSelector'),
       hiddenSettingsButtonLeft = Key('hiddenSettingsButtonLeft'),
       hiddenSettingsButtonRight = Key('hiddenSettingsButtonRight'),
-      use12hSwitch = Key('use12hSwitch');
+      use12hSwitch = Key('use12hSwitch'),
+      editLeftCategory = Key('editLeftCategory'),
+      editRigthCategory = Key('editRigthCategory');
 }
