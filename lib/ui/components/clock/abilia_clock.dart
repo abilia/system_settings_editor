@@ -3,13 +3,19 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class AbiliaClock extends StatelessWidget {
-  const AbiliaClock({Key key}) : super(key: key);
+  final double height, width;
+  const AbiliaClock({Key key, this.height, this.width}) : super(key: key);
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.clockType != current.clockType,
-        builder: (context, state) => AbiliaClockType(state.clockType),
+  Widget build(BuildContext context) => SizedBox(
+        height: height ?? 60.s,
+        width: width ?? 48.s,
+        child: FittedBox(
+          child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+            buildWhen: (previous, current) =>
+                previous.clockType != current.clockType,
+            builder: (context, state) => AbiliaClockType(state.clockType),
+          ),
+        ),
       );
 }
 
