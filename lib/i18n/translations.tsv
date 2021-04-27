@@ -205,6 +205,8 @@ alarmTime	Alarm time	Larmtid	Alarmtid	Alarmtijd	Hälytysaika	Alarmzeit	Alarmtid
 alert	Alert	Signal	Signal	Alert	Hälytys	Anruffunktion	Signal
 defaultSound	Default	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
 noSound	- No sound -	- Inget ljud -	- Ingen lyd -	- Geen geluid -	- Ei ääntä -	- Kein Klang -	- Ingen lyd -
+showWeekNumber	Show week number	Visa veckonummer	Vis ugenummer	Weeknummer tonen	Näytä viikon numero	Wochennummer anzeigen	Vis ukenummer
+showYear	Show year	Visa år	Vis år	Jaar tonen	Näytä vuosi	Jahr anzeigen	Vis år
 							
 ## Functions Settings							
 toolbarSettingsHint	Views displayed in the Toolbar	Visningar visas i verktygsfältet	Visninger vises i værktøjslinjen	Weergaven weergegeven in de werkbalk	Näkymät näkyvät työkalupalkissa	In der Symbolleiste angezeigte Ansichten	Visninger som vises på verktøylinjen

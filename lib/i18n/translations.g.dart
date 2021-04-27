@@ -388,6 +388,10 @@ abstract class Translated {
 
   final String noSound = '- No sound -';
 
+  final String showWeekNumber = 'Show week number';
+
+  final String showYear = 'Show year';
+
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
 
   final String homeScreenSettingsHint =
@@ -1060,6 +1064,12 @@ class SV extends Translated {
 
   @override
   final String noSound = '- Inget ljud -';
+
+  @override
+  final String showWeekNumber = 'Visa veckonummer';
+
+  @override
+  final String showYear = 'Visa år';
 
   @override
   final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
@@ -1784,6 +1794,12 @@ class DA extends Translated {
   final String noSound = '- Ingen lyd -';
 
   @override
+  final String showWeekNumber = 'Vis ugenummer';
+
+  @override
+  final String showYear = 'Vis år';
+
+  @override
   final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
 
   @override
@@ -2502,6 +2518,12 @@ class NL extends Translated {
 
   @override
   final String noSound = '- Geen geluid -';
+
+  @override
+  final String showWeekNumber = 'Weeknummer tonen';
+
+  @override
+  final String showYear = 'Jaar tonen';
 
   @override
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
@@ -3223,6 +3245,12 @@ class FI extends Translated {
 
   @override
   final String noSound = '- Ei ääntä -';
+
+  @override
+  final String showWeekNumber = 'Näytä viikon numero';
+
+  @override
+  final String showYear = 'Näytä vuosi';
 
   @override
   final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
@@ -3947,6 +3975,12 @@ class DE extends Translated {
   final String noSound = '- Kein Klang -';
 
   @override
+  final String showWeekNumber = 'Wochennummer anzeigen';
+
+  @override
+  final String showYear = 'Jahr anzeigen';
+
+  @override
   final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
 
   @override
@@ -4667,6 +4701,12 @@ class NB extends Translated {
 
   @override
   final String noSound = '- Ingen lyd -';
+
+  @override
+  final String showWeekNumber = 'Vis ukenummer';
+
+  @override
+  final String showYear = 'Vis år';
 
   @override
   final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';

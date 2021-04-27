@@ -68,6 +68,12 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayMenuSettings => settings.settingsMenuShowSettings;
   bool get dotsInTimepillar => settings.dotsInTimepillar;
 
+  bool get weekCaptionShowBrowseButtons =>
+      settings.weekCaptionShowBrowseButtons;
+  bool get weekCaptionShowWeekNumber => settings.weekCaptionShowWeekNumber;
+  bool get weekCaptionShowYear => settings.weekCaptionShowYear;
+  bool get weekCaptionShowClock => settings.weekCaptionShowClock;
+
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;
   int get afternoonStart => settings.afternoonIntervalStart;
