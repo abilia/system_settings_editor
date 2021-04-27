@@ -68,6 +68,19 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayMenuQuickSettings => settings.settingsMenuShowQuickSettings;
   bool get displayMenuSettings => settings.settingsMenuShowSettings;
   bool get dotsInTimepillar => settings.dotsInTimepillar;
+  bool get settingViewOptionsTimeView => settings.settingViewOptionsTimeView;
+  bool get settingViewOptionsTimeInterval =>
+      settings.settingViewOptionsTimeInterval;
+  bool get settingViewOptionsZoom => settings.settingViewOptionsZoom;
+  bool get settingViewOptionsDurationDots =>
+      settings.settingViewOptionsDurationDots;
+
+  bool get displayEyeButton =>
+      settingViewOptionsTimeView ||
+      (dayCalendarType == DayCalendarType.TIMEPILLAR &&
+          (settingViewOptionsTimeInterval ||
+              settingViewOptionsZoom ||
+              settingViewOptionsDurationDots));
 
   int get morningStart => settings.morningIntervalStart;
   int get forenoonStart => settings.forenoonIntervalStart;

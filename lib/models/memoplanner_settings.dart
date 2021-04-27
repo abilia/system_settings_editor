@@ -60,7 +60,11 @@ class MemoplannerSettings extends Equatable {
       settingsMenuShowQuickSettingsKey = 'settings_menu_show_quick_settings',
       settingsMenuShowSettingsKey = 'settings_menu_show_settings',
       settingClockTypeKey = 'setting_clock_type',
-      settingTimePillarTimelineKey = 'setting_time_pillar_timeline';
+      settingTimePillarTimelineKey = 'setting_time_pillar_timeline',
+      settingViewOptionsTimeViewKey = 'setting_view_options_time_view',
+      settingViewOptionsTimeIntervalKey = 'setting_view_options_time_interval',
+      settingViewOptionsZoomKey = 'setting_view_options_zoom',
+      settingViewOptionsDurationDotsKey = 'setting_view_options_duration_dots';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -100,7 +104,11 @@ class MemoplannerSettings extends Equatable {
       settingsMenuShowTimers,
       settingsMenuShowQuickSettings,
       settingsMenuShowSettings,
-      settingTimePillarTimeline;
+      settingTimePillarTimeline,
+      settingViewOptionsTimeView,
+      settingViewOptionsTimeInterval,
+      settingViewOptionsZoom,
+      settingViewOptionsDurationDots;
 
   final int morningIntervalStart,
       forenoonIntervalStart,
@@ -180,6 +188,10 @@ class MemoplannerSettings extends Equatable {
     this.settingsMenuShowSettings = true,
     this.settingClockType = 0,
     this.settingTimePillarTimeline = false,
+    this.settingViewOptionsTimeView = true,
+    this.settingViewOptionsTimeInterval = true,
+    this.settingViewOptionsZoom = true,
+    this.settingViewOptionsDurationDots = true,
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -352,6 +364,13 @@ class MemoplannerSettings extends Equatable {
       reminderAlarm: settings.parse(reminderAlarmKey, Sound.Default.name()),
       vibrateAtReminder:
           settings.getBool(vibrateAtReminderKey, defaultValue: true),
+      settingViewOptionsTimeView:
+          settings.getBool(settingViewOptionsTimeViewKey),
+      settingViewOptionsTimeInterval:
+          settings.getBool(settingViewOptionsTimeIntervalKey),
+      settingViewOptionsZoom: settings.getBool(settingViewOptionsZoomKey),
+      settingViewOptionsDurationDots:
+          settings.getBool(settingViewOptionsDurationDotsKey),
     );
   }
 
@@ -414,6 +433,10 @@ class MemoplannerSettings extends Equatable {
         settingsMenuShowSettings,
         settingClockType,
         settingTimePillarTimeline,
+        settingViewOptionsTimeView,
+        settingViewOptionsTimeInterval,
+        settingViewOptionsZoom,
+        settingViewOptionsDurationDots,
       ];
 }
 

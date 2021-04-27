@@ -388,6 +388,12 @@ abstract class Translated {
 
   final String noSound = '- No sound -';
 
+  final String viewSettings = 'View settings';
+
+  final String typeOfDisplay = 'Type of display';
+
+  final String timelineLength = 'Timeline length';
+
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
 
   final String homeScreenSettingsHint =
@@ -1066,6 +1072,15 @@ class SV extends Translated {
 
   @override
   final String noSound = '- Inget ljud -';
+
+  @override
+  final String viewSettings = 'Visa inställningar';
+
+  @override
+  final String typeOfDisplay = 'Typ av visning';
+
+  @override
+  final String timelineLength = 'Tidslinjens längd';
 
   @override
   final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
@@ -1799,6 +1814,15 @@ class DA extends Translated {
   final String noSound = '- Ingen lyd -';
 
   @override
+  final String viewSettings = 'Se indstillinger';
+
+  @override
+  final String typeOfDisplay = 'Type';
+
+  @override
+  final String timelineLength = 'Tid på døgnet';
+
+  @override
   final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
 
   @override
@@ -2526,6 +2550,15 @@ class NL extends Translated {
 
   @override
   final String noSound = '- Geen geluid -';
+
+  @override
+  final String viewSettings = 'Laat instellingen zien';
+
+  @override
+  final String typeOfDisplay = 'Schermsoort';
+
+  @override
+  final String timelineLength = 'Lengte tijdlijn';
 
   @override
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
@@ -3256,6 +3289,15 @@ class FI extends Translated {
 
   @override
   final String noSound = '- Ei ääntä -';
+
+  @override
+  final String viewSettings = 'Näytä asetukset';
+
+  @override
+  final String typeOfDisplay = 'Näytön tyyppi';
+
+  @override
+  final String timelineLength = 'Aikajanan pituus';
 
   @override
   final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
@@ -3989,6 +4031,15 @@ class DE extends Translated {
   final String noSound = '- Kein Klang -';
 
   @override
+  final String viewSettings = 'Einstellungen anzeigen';
+
+  @override
+  final String typeOfDisplay = 'Bildschirmtyp';
+
+  @override
+  final String timelineLength = 'Zeitstrahl Länge';
+
+  @override
   final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
 
   @override
@@ -4718,6 +4769,15 @@ class NB extends Translated {
 
   @override
   final String noSound = '- Ingen lyd -';
+
+  @override
+  final String viewSettings = 'Visningsinnstillinger';
+
+  @override
+  final String typeOfDisplay = 'Type';
+
+  @override
+  final String timelineLength = 'Tid på døgnet';
 
   @override
   final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';

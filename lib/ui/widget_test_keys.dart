@@ -74,5 +74,9 @@ class TestKey {
       hiddenSettingsButtonRight = Key('hiddenSettingsButtonRight'),
       use12hSwitch = Key('use12hSwitch'),
       editLeftCategory = Key('editLeftCategory'),
-      editRigthCategory = Key('editRigthCategory');
+      editRigthCategory = Key('editRigthCategory'),
+      showTypeOfDisplaySwitch = Key('showTypeOfDisplaySwitch'),
+      showTimepillarLengthSwitch = Key('showTimepillarLengthSwitch'),
+      showTimelineZoomSwitch = Key('showTimelineZoomSwitch'),
+      showDurationSelectionSwitch = Key('showDurationSelectionSwitch');
 }
