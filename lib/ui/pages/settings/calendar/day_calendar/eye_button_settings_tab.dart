@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/settings/calendar/day_calendar_settings/day_calendar_settings_cubit.dart';
 import 'package:seagull/ui/all.dart';
 
 class EyeButtonSettingsTab extends StatelessWidget {
@@ -8,50 +7,49 @@ class EyeButtonSettingsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettingsState>(
-      builder: (context, state) => SettingsTab(
-        dividerPadding: 8.s,
+      builder: (context, state) => ListView(
+        padding: EdgeInsets.only(top: 20.s, right: 16.s, bottom: 56.s),
         children: [
           Text(t.viewSettings),
-          if (state.showTypeOfDisplay) ...[
-            PreviewDuo(
-              firstIcon: AbiliaIcons.calendar_list,
-              firstTitle: t.listView,
-              secondIcon: AbiliaIcons.timeline,
-              secondTitle: t.timePillarView,
+          CollapsableWidget(
+            collapsed: !state.showTypeOfDisplay,
+            child: _buildSelector(
+              [
+                SelectorItem(t.listView, AbiliaIcons.calendar_list),
+                SelectorItem(t.timePillarView, AbiliaIcons.timeline),
+              ],
             ),
-            Divider()
-          ],
-          if (state.showTimepillarLength) ...[
-            PreviewTripple(
-              firstIcon: AbiliaIcons.day_interval,
-              firstTitle: t.interval,
-              secondIcon: AbiliaIcons.sun,
-              secondTitle: t.viewDay,
-              thirdIcon: AbiliaIcons.day_night,
-              thirdTitle: t.dayAndNight,
+          ),
+          CollapsableWidget(
+            collapsed: !state.showTimepillarLength,
+            child: _buildSelector(
+              [
+                SelectorItem(t.interval, AbiliaIcons.day_interval),
+                SelectorItem(t.viewDay, AbiliaIcons.sun),
+                SelectorItem(t.dayAndNight, AbiliaIcons.day_night),
+              ],
             ),
-            Divider()
-          ],
-          if (state.showTimelineZoom) ...[
-            PreviewTripple(
-              firstIcon: AbiliaIcons.decrease_text,
-              firstTitle: t.small,
-              secondIcon: AbiliaIcons.decrease_text,
-              secondTitle: t.medium,
-              thirdIcon: AbiliaIcons.enlarge_text,
-              thirdTitle: t.large,
+          ),
+          CollapsableWidget(
+            collapsed: !state.showTimelineZoom,
+            child: _buildSelector(
+              [
+                SelectorItem(t.small, AbiliaIcons.decrease_text),
+                SelectorItem(t.medium, AbiliaIcons.decrease_text),
+                SelectorItem(t.large, AbiliaIcons.enlarge_text),
+              ],
             ),
-            Divider()
-          ],
-          if (state.showDurationSelection) ...[
-            PreviewDuo(
-              firstIcon: AbiliaIcons.options,
-              firstTitle: t.dots,
-              secondIcon: AbiliaIcons.flarp,
-              secondTitle: t.edge,
+          ),
+          CollapsableWidget(
+            collapsed: !state.showDurationSelection,
+            child: _buildSelector(
+              [
+                SelectorItem(t.dots, AbiliaIcons.options),
+                SelectorItem(t.edge, AbiliaIcons.flarp),
+              ],
             ),
-            Divider()
-          ],
+          ),
+          SizedBox(height: 8.s),
           SwitchField(
             key: TestKey.showTypeOfDisplaySwitch,
             text: Text(t.typeOfDisplay),
@@ -100,132 +98,32 @@ class EyeButtonSettingsTab extends StatelessWidget {
                   ),
             },
           ),
-        ],
+        ]
+            .map(
+              (w) => w is CollapsableWidget
+                  ? w
+                  : Padding(
+                      padding: EdgeInsets.only(left: 12.s, bottom: 8.s),
+                      child: w,
+                    ),
+            )
+            .toList(),
       ),
     );
   }
-}
 
-class PreviewTripple extends StatelessWidget {
-  final String firstTitle, secondTitle, thirdTitle;
-  final IconData firstIcon, secondIcon, thirdIcon;
-  const PreviewTripple({
-    Key key,
-    @required this.firstTitle,
-    @required this.secondTitle,
-    @required this.thirdTitle,
-    @required this.firstIcon,
-    @required this.secondIcon,
-    @required this.thirdIcon,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(children: [
-        Expanded(
-          child: Tts(
-            data: 'text',
-            child: SelectButton(
-              title: firstTitle,
-              icon: firstIcon,
-              borderRadius: borderRadiusLeft,
-            ),
+  Widget _buildSelector(List<SelectorItem> items) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 12.s, top: 8.s),
+          child: Selector(
+            groupValue: 0,
+            items: items,
           ),
         ),
-        SizedBox(
-          width: 2.s,
-        ),
-        Expanded(
-          child: SelectButton(
-            title: secondTitle,
-            icon: secondIcon,
-            borderRadius: BorderRadius.zero,
-          ),
-        ),
-        SizedBox(
-          width: 2.s,
-        ),
-        Expanded(
-          child: SelectButton(
-            title: thirdTitle,
-            icon: thirdIcon,
-            borderRadius: borderRadiusRight,
-          ),
-        ),
-      ]),
-    );
-  }
-}
-
-class PreviewDuo extends StatelessWidget {
-  final String firstTitle, secondTitle;
-  final IconData firstIcon, secondIcon;
-  const PreviewDuo(
-      {Key key,
-      this.firstTitle,
-      this.secondTitle,
-      this.firstIcon,
-      this.secondIcon})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(children: [
-        Expanded(
-          child: Tts(
-            data: 'text',
-            child: SelectButton(
-              title: firstTitle,
-              icon: firstIcon,
-              borderRadius: borderRadiusLeft,
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 2.s,
-        ),
-        Expanded(
-          child: SelectButton(
-            title: secondTitle,
-            icon: secondIcon,
-            borderRadius: borderRadiusRight,
-          ),
-        ),
-      ]),
-    );
-  }
-}
-
-class SelectButton extends StatelessWidget {
-  final BorderRadius borderRadius;
-  final String title;
-  final IconData icon;
-  const SelectButton({
-    Key key,
-    @required this.borderRadius,
-    @required this.title,
-    @required this.icon,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () => {},
-      style: tabButtonStyle(
-        borderRadius: borderRadius,
-        isSelected: false,
-      ).copyWith(
-        textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle2),
-        padding: MaterialStateProperty.all(EdgeInsets.only(bottom: 8.0.s)),
-      ),
-      child: Column(
-        children: [
-          Text(title),
-          Icon(icon),
-        ],
-      ),
+        Divider(endIndent: 0, height: 16.s),
+      ],
     );
   }
 }
