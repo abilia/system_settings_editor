@@ -45,39 +45,22 @@ class Selector<T> extends StatelessWidget {
           child: Row(
             children: [
               for (int i = 0; i < items.length; i++)
-                if (i == 0)
-                  Padding(
-                    padding: EdgeInsets.only(right: 2.s),
-                    child: _SelectButton<T>(
-                      text: items[i].title,
-                      onPressed: () => onChanged(items[i].value),
-                      groupValue: groupValue,
-                      value: items[i].value,
-                      borderRadius: borderRadiusLeft,
-                      icon: items[i].icon,
-                    ),
-                  )
-                else if (i == items.length - 1)
-                  _SelectButton<T>(
+                Padding(
+                  padding:
+                      EdgeInsets.only(right: i == items.length - 1 ? 0 : 2.s),
+                  child: _SelectButton<T>(
                     text: items[i].title,
                     onPressed: () => onChanged(items[i].value),
                     groupValue: groupValue,
                     value: items[i].value,
-                    borderRadius: borderRadiusRight,
+                    borderRadius: i == 0
+                        ? borderRadiusLeft
+                        : i == items.length - 1
+                            ? borderRadiusRight
+                            : BorderRadius.zero,
                     icon: items[i].icon,
-                  )
-                else
-                  Padding(
-                    padding: EdgeInsets.only(right: 2.s),
-                    child: _SelectButton<T>(
-                      text: items[i].title,
-                      onPressed: () => onChanged(items[i].value),
-                      groupValue: groupValue,
-                      value: items[i].value,
-                      borderRadius: BorderRadius.zero,
-                      icon: items[i].icon,
-                    ),
                   ),
+                )
             ].map((e) => Expanded(child: e)).toList(),
           ),
         ),
