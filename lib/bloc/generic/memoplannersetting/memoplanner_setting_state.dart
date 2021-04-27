@@ -69,8 +69,7 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get dotsInTimepillar => settings.dotsInTimepillar;
 
   int get morningStart => settings.morningIntervalStart;
-  int get forenoonStart => settings.forenoonIntervalStart;
-  int get afternoonStart => settings.afternoonIntervalStart;
+  int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
   int get alarmDuration => settings.alarmDuration;
@@ -138,16 +137,11 @@ abstract class MemoplannerSettingsState extends Equatable {
       case DayPart.morning:
         return TimepillarInterval(
           start: base.add(morningStart.milliseconds()),
-          end: base.add(forenoonStart.milliseconds()),
+          end: base.add(dayStart.milliseconds()),
         );
-      case DayPart.forenoon:
+      case DayPart.day:
         return TimepillarInterval(
-          start: base.add(forenoonStart.milliseconds()),
-          end: base.add(afternoonStart.milliseconds()),
-        );
-      case DayPart.afternoon:
-        return TimepillarInterval(
-          start: base.add(afternoonStart.milliseconds()),
+          start: base.add(dayStart.milliseconds()),
           end: base.add(eveningStart.milliseconds()),
         );
       case DayPart.evening:
@@ -175,8 +169,7 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   DayParts get dayParts => DayParts(
         morningStart,
-        forenoonStart,
-        afternoonStart,
+        dayStart,
         eveningStart,
         nightStart,
       );

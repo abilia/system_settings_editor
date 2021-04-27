@@ -135,14 +135,14 @@ void main() {
       await tester.goToGeneralCalendarSettingsPageIntervalTab();
 
       await tester.stepRight(DayPart.morning, times: 4);
-      await tester.stepRight(DayPart.forenoon, times: 7);
+      await tester.stepRight(DayPart.day, times: 7);
       await tester.stepRight(DayPart.evening, times: 2);
       await tester.stepRight(DayPart.night);
 
       final morningRight = tester.widget<ActionButtonDark>(
           find.byKey(IntervalStepper.rightStepKey(DayPart.morning)));
       final dayRight = tester.widget<ActionButtonDark>(
-          find.byKey(IntervalStepper.rightStepKey(DayPart.forenoon)));
+          find.byKey(IntervalStepper.rightStepKey(DayPart.day)));
       final eveningRight = tester.widget<ActionButtonDark>(
           find.byKey(IntervalStepper.rightStepKey(DayPart.evening)));
       final nightRight = tester.widget<ActionButtonDark>(
@@ -169,14 +169,14 @@ void main() {
       await tester.goToGeneralCalendarSettingsPageIntervalTab();
 
       await tester.stepLeft(DayPart.morning);
-      await tester.stepLeft(DayPart.forenoon, times: 2);
+      await tester.stepLeft(DayPart.day, times: 2);
       await tester.stepLeft(DayPart.evening, times: 2);
       await tester.stepLeft(DayPart.night, times: 4);
 
       final morningRight = tester.widget<ActionButtonDark>(
           find.byKey(IntervalStepper.leftStepKey(DayPart.morning)));
       final dayRight = tester.widget<ActionButtonDark>(
-          find.byKey(IntervalStepper.leftStepKey(DayPart.forenoon)));
+          find.byKey(IntervalStepper.leftStepKey(DayPart.day)));
       final eveningRight = tester.widget<ActionButtonDark>(
           find.byKey(IntervalStepper.leftStepKey(DayPart.evening)));
       final nightRight = tester.widget<ActionButtonDark>(
@@ -202,7 +202,7 @@ void main() {
     testWidgets('max day and evening, then min night', (tester) async {
       await tester.goToGeneralCalendarSettingsPageIntervalTab();
 
-      await tester.stepRight(DayPart.forenoon, times: 8);
+      await tester.stepRight(DayPart.day, times: 8);
       expect(find.text('6:00 AM'), findsOneWidget);
       expect(find.text('6:00 PM'), findsOneWidget);
       expect(find.text('7:00 PM'), findsOneWidget);

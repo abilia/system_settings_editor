@@ -24,7 +24,6 @@ class MemoplannerSettings extends Equatable {
       activityDisplayClockKey = 'day_caption_show_clock',
       morningIntervalStartKey = 'morning_interval_start',
       forenoonIntervalStartKey = 'forenoon_interval_start',
-      afternoonIntervalStartKey = 'afternoon_interval_start',
       eveningIntervalStartKey = 'evening_interval_start',
       nightIntervalStartKey = 'night_interval_start',
       calendarActivityTypeLeftKey = 'calendar_activity_type_left',
@@ -101,8 +100,7 @@ class MemoplannerSettings extends Equatable {
       settingTimePillarTimeline;
 
   final int morningIntervalStart,
-      forenoonIntervalStart,
-      afternoonIntervalStart,
+      dayIntervalStart,
       eveningIntervalStart,
       nightIntervalStart,
       calendarDayColor,
@@ -147,8 +145,7 @@ class MemoplannerSettings extends Equatable {
     this.settingDisplayHourLines = false,
     this.settingDisplayTimeline = true,
     this.morningIntervalStart = DayParts.morningDefault,
-    this.forenoonIntervalStart = DayParts.forenoonDefault,
-    this.afternoonIntervalStart = DayParts.afternoonDefault,
+    this.dayIntervalStart = DayParts.dayDefault,
     this.eveningIntervalStart = DayParts.eveningDefault,
     this.nightIntervalStart = DayParts.nightDefault,
     this.calendarActivityTypeLeft,
@@ -298,13 +295,9 @@ class MemoplannerSettings extends Equatable {
         morningIntervalStartKey,
         DayParts.morningDefault,
       ),
-      forenoonIntervalStart: settings.parse(
+      dayIntervalStart: settings.parse(
         forenoonIntervalStartKey,
-        DayParts.forenoonDefault,
-      ),
-      afternoonIntervalStart: settings.parse(
-        afternoonIntervalStartKey,
-        DayParts.afternoonDefault,
+        DayParts.dayDefault,
       ),
       eveningIntervalStart: settings.parse(
         eveningIntervalStartKey,
@@ -374,8 +367,7 @@ class MemoplannerSettings extends Equatable {
         settingDisplayHourLines,
         settingDisplayTimeline,
         morningIntervalStart,
-        forenoonIntervalStart,
-        afternoonIntervalStart,
+        dayIntervalStart,
         eveningIntervalStart,
         nightIntervalStart,
         calendarActivityTypeLeft,

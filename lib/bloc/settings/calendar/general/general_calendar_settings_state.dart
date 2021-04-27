@@ -131,7 +131,7 @@ extension _MemoplannerSettingData on DayParts {
           identifier: MemoplannerSettings.morningIntervalStartKey,
         ),
         MemoplannerSettingData.fromData(
-          data: forenoonStart,
+          data: dayStart,
           identifier: MemoplannerSettings.forenoonIntervalStartKey,
         ),
         MemoplannerSettingData.fromData(
