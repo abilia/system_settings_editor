@@ -205,6 +205,9 @@ alarmTime	Alarm time	Larmtid	Alarmtid	Alarmtijd	Hälytysaika	Alarmzeit	Alarmtid
 alert	Alert	Signal	Signal	Alert	Hälytys	Anruffunktion	Signal
 defaultSound	Default	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
 noSound	- No sound -	- Inget ljud -	- Ingen lyd -	- Geen geluid -	- Ei ääntä -	- Kein Klang -	- Ingen lyd -
+viewSettings	View settings	Visa inställningar	Se indstillinger	Laat instellingen zien	Näytä asetukset	Einstellungen anzeigen	Visningsinnstillinger
+typeOfDisplay	Type of display	Typ av visning	Type	Schermsoort	Näytön tyyppi	Bildschirmtyp	Type
+timelineLength	Timeline length	Tidslinjens längd	Tid på døgnet	Lengte tijdlijn	Aikajanan pituus	Zeitstrahl Länge	Tid på døgnet
 							
 ## Functions Settings							
 toolbarSettingsHint	Views displayed in the Toolbar	Visningar visas i verktygsfältet	Visninger vises i værktøjslinjen	Weergaven weergegeven in de werkbalk	Näkymät näkyvät työkalupalkissa	In der Symbolleiste angezeigte Ansichten	Visninger som vises på verktøylinjen

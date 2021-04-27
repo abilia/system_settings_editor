@@ -206,6 +206,54 @@ void main() {
           matcher: isFalse,
         );
       });
+
+      testWidgets('Hide type of display in eye button', (tester) async {
+        await tester.goToEyeButtonSwitches();
+        await tester.tap(find.byKey(TestKey.showTypeOfDisplaySwitch));
+        await tester.pumpAndSettle();
+
+        await _verifySaved(
+          tester,
+          key: MemoplannerSettings.settingViewOptionsTimeViewKey,
+          matcher: isFalse,
+        );
+      });
+
+      testWidgets('Hide interval setting', (tester) async {
+        await tester.goToEyeButtonSwitches();
+        await tester.tap(find.byKey(TestKey.showTimepillarLengthSwitch));
+        await tester.pumpAndSettle();
+
+        await _verifySaved(
+          tester,
+          key: MemoplannerSettings.settingViewOptionsTimeIntervalKey,
+          matcher: isFalse,
+        );
+      });
+
+      testWidgets('Hide zoom setting', (tester) async {
+        await tester.goToEyeButtonSwitches();
+        await tester.tap(find.byKey(TestKey.showTimelineZoomSwitch));
+        await tester.pumpAndSettle();
+
+        await _verifySaved(
+          tester,
+          key: MemoplannerSettings.settingViewOptionsZoomKey,
+          matcher: isFalse,
+        );
+      });
+
+      testWidgets('Hide time display setting', (tester) async {
+        await tester.goToEyeButtonSwitches();
+        await tester.tap(find.byKey(TestKey.showDurationSelectionSwitch));
+        await tester.pumpAndSettle();
+
+        await _verifySaved(
+          tester,
+          key: MemoplannerSettings.settingViewOptionsDurationDotsKey,
+          matcher: isFalse,
+        );
+      });
     });
   });
 }
@@ -225,6 +273,15 @@ extension on WidgetTester {
     await tap(find.byIcon(AbiliaIcons.month));
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.day));
+    await pumpAndSettle();
+  }
+
+  Future<void> goToEyeButtonSwitches() async {
+    await goToDayCalendarSettingsPage(pump: true);
+    await tap(find.byIcon(AbiliaIcons.show));
+    await pumpAndSettle();
+    final center = getCenter(find.byType(EyeButtonSettingsTab));
+    await dragFrom(center, Offset(0.0, -800));
     await pumpAndSettle();
   }
 }

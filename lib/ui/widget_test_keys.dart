@@ -72,5 +72,9 @@ class TestKey {
       vibrateAtReminderSelector = Key('vibrateAtReminderSelector'),
       hiddenSettingsButtonLeft = Key('hiddenSettingsButtonLeft'),
       hiddenSettingsButtonRight = Key('hiddenSettingsButtonRight'),
-      use12hSwitch = Key('use12hSwitch');
+      use12hSwitch = Key('use12hSwitch'),
+      showTypeOfDisplaySwitch = Key('showTypeOfDisplaySwitch'),
+      showTimepillarLengthSwitch = Key('showTimepillarLengthSwitch'),
+      showTimelineZoomSwitch = Key('showTimelineZoomSwitch'),
+      showDurationSelectionSwitch = Key('showDurationSelectionSwitch');
 }

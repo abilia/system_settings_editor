@@ -52,96 +52,105 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
       ),
       body: AbiliaScrollBar(
         controller: _controller,
-        child: ListView(
-          children: [
-            _addPadding(
-              DuoSelector<DayCalendarType>(
-                heading: t.viewMode,
-                groupValue: calendarType,
-                leftText: t.listView,
-                rightText: t.timePillarView,
-                leftValue: DayCalendarType.LIST,
-                rightValue: DayCalendarType.TIMEPILLAR,
-                leftIcon: AbiliaIcons.calendar_list,
-                rightIcon: AbiliaIcons.timeline,
-                onChanged: (type) {
-                  setState(() {
-                    calendarType = type;
-                  });
-                },
+        child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+          builder: (context, state) => ListView(
+            children: [
+              if (state.settingViewOptionsTimeView) ...[
+                _addPadding(
+                  DuoSelector<DayCalendarType>(
+                    heading: t.viewMode,
+                    groupValue: calendarType,
+                    leftText: t.listView,
+                    rightText: t.timePillarView,
+                    leftValue: DayCalendarType.LIST,
+                    rightValue: DayCalendarType.TIMEPILLAR,
+                    leftIcon: AbiliaIcons.calendar_list,
+                    rightIcon: AbiliaIcons.timeline,
+                    onChanged: (type) {
+                      setState(() {
+                        calendarType = type;
+                      });
+                    },
+                  ),
+                ),
+                Divider(
+                  endIndent: 16.s,
+                )
+              ],
+              CollapsableWidget(
+                collapsed: calendarType == DayCalendarType.LIST,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ...[
+                      if (state.settingViewOptionsTimeInterval) ...[
+                        TripleSelector<TimepillarIntervalType>(
+                          heading: t.dayInterval,
+                          groupValue: dayInterval,
+                          leftText: t.interval,
+                          midText: t.viewDay,
+                          rightText: t.dayAndNight,
+                          leftValue: TimepillarIntervalType.INTERVAL,
+                          midValue: TimepillarIntervalType.DAY,
+                          rightValue: TimepillarIntervalType.DAY_AND_NIGHT,
+                          leftIcon: AbiliaIcons.day_interval,
+                          midIcon: AbiliaIcons.sun,
+                          rightIcon: AbiliaIcons.day_night,
+                          onChanged: (newDayInterval) {
+                            setState(() {
+                              dayInterval = newDayInterval;
+                            });
+                          },
+                        ),
+                        Divider(
+                          endIndent: 16.s,
+                        )
+                      ],
+                      if (state.settingViewOptionsZoom) ...[
+                        TripleSelector<TimepillarZoom>(
+                          heading: t.zoom,
+                          groupValue: timepillarZoom,
+                          leftText: t.small,
+                          midText: t.medium,
+                          rightText: t.large,
+                          leftValue: TimepillarZoom.SMALL,
+                          midValue: TimepillarZoom.NORMAL,
+                          rightValue: TimepillarZoom.LARGE,
+                          leftIcon: AbiliaIcons.decrease_text,
+                          midIcon: AbiliaIcons.decrease_text,
+                          rightIcon: AbiliaIcons.enlarge_text,
+                          onChanged: (newZoom) {
+                            setState(() {
+                              timepillarZoom = newZoom;
+                            });
+                          },
+                        ),
+                        Divider(
+                          endIndent: 16.s,
+                        )
+                      ],
+                      if (state.settingViewOptionsDurationDots)
+                        DuoSelector<bool>(
+                          heading: t.activityDuration,
+                          groupValue: dotsInTimePillar,
+                          leftText: t.dots,
+                          rightText: t.edge,
+                          leftValue: true,
+                          rightValue: false,
+                          leftIcon: AbiliaIcons.options,
+                          rightIcon: AbiliaIcons.flarp,
+                          onChanged: (dots) {
+                            setState(() {
+                              dotsInTimePillar = dots;
+                            });
+                          },
+                        ),
+                    ].map(_addPadding),
+                  ],
+                ),
               ),
-            ),
-            Divider(
-              endIndent: 16.s,
-            ),
-            CollapsableWidget(
-              collapsed: calendarType == DayCalendarType.LIST,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  ...[
-                    TripleSelector<TimepillarIntervalType>(
-                      heading: t.dayInterval,
-                      groupValue: dayInterval,
-                      leftText: t.interval,
-                      midText: t.viewDay,
-                      rightText: t.dayAndNight,
-                      leftValue: TimepillarIntervalType.INTERVAL,
-                      midValue: TimepillarIntervalType.DAY,
-                      rightValue: TimepillarIntervalType.DAY_AND_NIGHT,
-                      leftIcon: AbiliaIcons.day_interval,
-                      midIcon: AbiliaIcons.sun,
-                      rightIcon: AbiliaIcons.day_night,
-                      onChanged: (newDayInterval) {
-                        setState(() {
-                          dayInterval = newDayInterval;
-                        });
-                      },
-                    ),
-                    Divider(
-                      endIndent: 16.s,
-                    ),
-                    TripleSelector<TimepillarZoom>(
-                      heading: t.zoom,
-                      groupValue: timepillarZoom,
-                      leftText: t.small,
-                      midText: t.medium,
-                      rightText: t.large,
-                      leftValue: TimepillarZoom.SMALL,
-                      midValue: TimepillarZoom.NORMAL,
-                      rightValue: TimepillarZoom.LARGE,
-                      leftIcon: AbiliaIcons.decrease_text,
-                      midIcon: AbiliaIcons.decrease_text,
-                      rightIcon: AbiliaIcons.enlarge_text,
-                      onChanged: (newZoom) {
-                        setState(() {
-                          timepillarZoom = newZoom;
-                        });
-                      },
-                    ),
-                    Divider(
-                      endIndent: 16.s,
-                    ),
-                    DuoSelector<bool>(
-                      heading: t.activityDuration,
-                      groupValue: dotsInTimePillar,
-                      leftText: t.dots,
-                      rightText: t.edge,
-                      leftValue: true,
-                      rightValue: false,
-                      leftIcon: AbiliaIcons.options,
-                      rightIcon: AbiliaIcons.flarp,
-                      onChanged: (dots) {
-                        setState(() {
-                          dotsInTimePillar = dots;
-                        });
-                      },
-                    ),
-                  ].map(_addPadding),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bodyPadding: EdgeInsets.zero,
