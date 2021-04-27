@@ -14,60 +14,88 @@ class DayViewSettingsTab extends StatelessWidget {
         return SettingsTab(
           dividerPadding: 8.s,
           children: [
-            DuoSelector<DayCalendarType>(
+            Selector<DayCalendarType>(
               heading: t.viewMode,
               groupValue: state.calendarType,
-              leftText: t.listView,
-              rightText: t.timePillarView,
-              leftValue: DayCalendarType.LIST,
-              rightValue: DayCalendarType.TIMEPILLAR,
-              leftIcon: AbiliaIcons.calendar_list,
-              rightIcon: AbiliaIcons.timeline,
+              items: [
+                SelectorItem(
+                  t.listView,
+                  AbiliaIcons.calendar_list,
+                  DayCalendarType.LIST,
+                ),
+                SelectorItem(
+                  t.timePillarView,
+                  AbiliaIcons.timeline,
+                  DayCalendarType.TIMEPILLAR,
+                ),
+              ],
               onChanged: (type) => cubit.changeDayCalendarSettings(
                   state.copyWith(calendarType: type)),
             ),
-            Divider(),
-            TripleSelector<TimepillarIntervalType>(
+            Divider(endIndent: 16.s),
+            Selector<TimepillarIntervalType>(
               heading: t.dayInterval,
               groupValue: state.dayInterval,
-              leftText: t.interval,
-              midText: t.viewDay,
-              rightText: t.dayAndNight,
-              leftValue: TimepillarIntervalType.INTERVAL,
-              midValue: TimepillarIntervalType.DAY,
-              rightValue: TimepillarIntervalType.DAY_AND_NIGHT,
-              leftIcon: AbiliaIcons.day_interval,
-              midIcon: AbiliaIcons.sun,
-              rightIcon: AbiliaIcons.day_night,
+              items: [
+                SelectorItem(
+                  t.interval,
+                  AbiliaIcons.day_interval,
+                  TimepillarIntervalType.INTERVAL,
+                ),
+                SelectorItem(
+                  t.viewDay,
+                  AbiliaIcons.sun,
+                  TimepillarIntervalType.DAY,
+                ),
+                SelectorItem(
+                  t.dayAndNight,
+                  AbiliaIcons.day_night,
+                  TimepillarIntervalType.DAY_AND_NIGHT,
+                ),
+              ],
               onChanged: (newDayInterval) => cubit.changeDayCalendarSettings(
                   state.copyWith(dayInterval: newDayInterval)),
             ),
-            Divider(),
-            TripleSelector<TimepillarZoom>(
+            Divider(endIndent: 16.s),
+            Selector<TimepillarZoom>(
               heading: t.zoom,
               groupValue: state.timepillarZoom,
-              leftText: t.small,
-              midText: t.medium,
-              rightText: t.large,
-              leftValue: TimepillarZoom.SMALL,
-              midValue: TimepillarZoom.NORMAL,
-              rightValue: TimepillarZoom.LARGE,
-              leftIcon: AbiliaIcons.decrease_text,
-              midIcon: AbiliaIcons.decrease_text,
-              rightIcon: AbiliaIcons.enlarge_text,
+              items: [
+                SelectorItem(
+                  t.small,
+                  AbiliaIcons.decrease_text,
+                  TimepillarZoom.SMALL,
+                ),
+                SelectorItem(
+                  t.medium,
+                  AbiliaIcons.decrease_text,
+                  TimepillarZoom.NORMAL,
+                ),
+                SelectorItem(
+                  t.large,
+                  AbiliaIcons.enlarge_text,
+                  TimepillarZoom.LARGE,
+                ),
+              ],
               onChanged: (newZoom) => cubit.changeDayCalendarSettings(
                   state.copyWith(timepillarZoom: newZoom)),
             ),
-            Divider(),
-            DuoSelector<bool>(
+            Divider(endIndent: 16.s),
+            Selector<bool>(
               heading: t.activityDuration,
               groupValue: state.dotsInTimePillar,
-              leftText: t.dots,
-              rightText: t.edge,
-              leftValue: true,
-              rightValue: false,
-              leftIcon: AbiliaIcons.options,
-              rightIcon: AbiliaIcons.flarp,
+              items: [
+                SelectorItem(
+                  t.dots,
+                  AbiliaIcons.options,
+                  true,
+                ),
+                SelectorItem(
+                  t.edge,
+                  AbiliaIcons.flarp,
+                  false,
+                ),
+              ],
               onChanged: (dots) => cubit.changeDayCalendarSettings(
                   state.copyWith(dotsInTimePillar: dots)),
             ),

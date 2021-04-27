@@ -11,7 +11,8 @@ class DayCalendar extends StatelessWidget {
       buildWhen: (old, fresh) =>
           old.settingsInaccessible != fresh.settingsInaccessible ||
           old.showCategories != fresh.showCategories ||
-          old.displayDayCalendarAppBar != fresh.displayDayCalendarAppBar,
+          old.displayDayCalendarAppBar != fresh.displayDayCalendarAppBar ||
+          old.displayEyeButton != fresh.displayEyeButton,
       builder: (context, settingState) => Scaffold(
         appBar:
             settingState.displayDayCalendarAppBar ? DayCalendarAppBar() : null,
@@ -21,13 +22,14 @@ class DayCalendar extends StatelessWidget {
           builder: (context, state) => Stack(
             children: [
               const Calendars(),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: EdgeInsets.all(16.0.s),
-                  child: const EyeButton(),
+              if (settingState.displayEyeButton)
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0.s),
+                    child: const EyeButton(),
+                  ),
                 ),
-              ),
               if (state.notificationDenied)
                 Align(
                   alignment: Alignment.bottomCenter,
