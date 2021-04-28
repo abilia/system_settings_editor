@@ -129,9 +129,7 @@ extension DateTimeExtensions on DateTime {
 
     if (msAfterMidnight >= dayParts.eveningStart) return DayPart.evening;
 
-    if (msAfterMidnight >= dayParts.afternoonStart) return DayPart.afternoon;
-
-    if (msAfterMidnight >= dayParts.forenoonStart) return DayPart.forenoon;
+    if (msAfterMidnight >= dayParts.dayStart) return DayPart.day;
 
     if (msAfterMidnight >= dayParts.morningStart) return DayPart.morning;
 

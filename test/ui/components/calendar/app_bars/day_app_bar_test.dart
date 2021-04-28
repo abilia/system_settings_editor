@@ -10,7 +10,7 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks.dart';
+import '../../../../mocks.dart';
 
 void main() {
   final day = DateTime(2020, 10, 05, 08, 00);
@@ -181,6 +181,30 @@ void main() {
         ClockBloc(StreamController<DateTime>().stream, initialTime: noEvening);
     _expectSettings(MemoplannerSettings(
         eveningIntervalStart: 19 * 60 * 60 * 1000)); // 19.00 in milliseconds
+    await tester
+        .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
+    await tester.pumpAndSettle();
+    expect(find.text('Monday, afternoon'), findsOneWidget);
+    expect(find.text('5 October 2020'), findsOneWidget);
+  });
+
+  testWidgets('Forenoon at 11.59', (WidgetTester tester) async {
+    final forenoon = DateTime(2020, 10, 05, 11, 59);
+    final clockBloc =
+        ClockBloc(StreamController<DateTime>().stream, initialTime: forenoon);
+    _expectSettings(MemoplannerSettings()); //
+    await tester
+        .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
+    await tester.pumpAndSettle();
+    expect(find.text('Monday, forenoon'), findsOneWidget);
+    expect(find.text('5 October 2020'), findsOneWidget);
+  });
+
+  testWidgets('afternoon at 12.00', (WidgetTester tester) async {
+    final forenoon = DateTime(2020, 10, 05, 12);
+    final clockBloc =
+        ClockBloc(StreamController<DateTime>().stream, initialTime: forenoon);
+    _expectSettings(MemoplannerSettings()); //
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
     await tester.pumpAndSettle();

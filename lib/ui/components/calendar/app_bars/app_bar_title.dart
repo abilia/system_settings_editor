@@ -46,8 +46,12 @@ class AppBarTitleRows {
     @required Translated translator,
   }) {
     final part = currentTime.dayPart(dayParts);
-    final partOfDay =
-        _getPartOfDay(currentTime.isAtSameDay(day), part, translator);
+    final partOfDay = _getPartOfDay(
+      currentTime.isAtSameDay(day),
+      currentTime.hour,
+      part,
+      translator,
+    );
     var row1 =
         displayWeekDay ? '${DateFormat('EEEE', langCode).format(day)}' : '';
     var row2 = displayDate
@@ -65,6 +69,7 @@ class AppBarTitleRows {
 
   static String _getPartOfDay(
     bool today,
+    int hour,
     DayPart part,
     Translated translator,
   ) {
@@ -74,9 +79,10 @@ class AppBarTitleRows {
           return translator.night;
         case DayPart.evening:
           return translator.evening;
-        case DayPart.afternoon:
-          return translator.afternoon;
-        case DayPart.forenoon:
+        case DayPart.day:
+          if (hour > 11) {
+            return translator.afternoon;
+          }
           return translator.forenoon;
         case DayPart.morning:
           return translator.morning;
