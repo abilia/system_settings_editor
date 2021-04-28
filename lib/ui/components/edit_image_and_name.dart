@@ -51,7 +51,7 @@ class _EditImageAndNameState extends State<EditImageAndName> {
   _EditImageAndNameState(this.imageAndName);
   ImageAndName imageAndName;
   TextEditingController txtEditController;
-  bool get hasHint => widget.hintText?.isNotEmpty == true;
+
   @override
   void initState() {
     super.initState();
@@ -87,9 +87,8 @@ class _EditImageAndNameState extends State<EditImageAndName> {
                         SubHeading(heading),
                         TextField(
                           controller: txtEditController,
-                          decoration: hasHint
-                              ? InputDecoration(hintText: widget.hintText)
-                              : null,
+                          decoration:
+                              InputDecoration(hintText: widget.hintText),
                           textCapitalization: TextCapitalization.sentences,
                           style: Theme.of(context).textTheme.bodyText1,
                           autofocus: true,

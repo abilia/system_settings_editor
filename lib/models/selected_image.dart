@@ -21,7 +21,7 @@ class SelectedImage extends Equatable {
     this.toBeStored,
   );
 
-  static SelectedImage from({
+  factory SelectedImage.from({
     String id,
     String path,
     File file,
@@ -33,7 +33,7 @@ class SelectedImage extends Equatable {
         false,
       );
 
-  static SelectedImage newFile(File file) {
+  factory SelectedImage.newFile(File file) {
     assert(file != null);
     assert(file.existsSync());
     final id = Uuid().v4();
