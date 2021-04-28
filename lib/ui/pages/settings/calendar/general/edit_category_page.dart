@@ -1,18 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EditCategoryPage extends StatelessWidget {
-  final String name, fileId, hintText;
-  final File tempFile;
+  final ImageAndName imageAndName;
+  final String hintText;
 
   const EditCategoryPage({
-    this.name,
+    this.imageAndName,
     @required this.hintText,
-    this.fileId,
-    this.tempFile,
     Key key,
   })  : assert(hintText != null),
         super(key: key);
@@ -23,13 +19,7 @@ class EditCategoryPage extends StatelessWidget {
       minLines: 1,
       allowEmpty: true,
       hintText: hintText,
-      imageAndName: ImageAndName(
-        name,
-        SelectedImage.from(
-          id: fileId,
-          file: tempFile,
-        ),
-      ),
+      imageAndName: imageAndName,
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.phone_log,
         title: Translator.of(context).translate.editCategory,

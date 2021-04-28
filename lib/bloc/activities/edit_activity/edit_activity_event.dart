@@ -64,7 +64,6 @@ class ImageSelected extends ActivityChangedEvent {
   final SelectedImage selected;
   String get imageId => selected.id;
   String get path => selected.path;
-  File get newImage => selected.file;
   const ImageSelected(this.selected);
 
   @override

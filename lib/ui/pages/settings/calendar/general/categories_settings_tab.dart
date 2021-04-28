@@ -69,7 +69,8 @@ class CategoriesSettingsTab extends StatelessWidget {
                           builder: (_) => CopiedAuthProviders(
                             blocContext: context,
                             child: EditCategoryPage(
-                              name: cState.leftCategoryName,
+                              imageAndName: ImageAndName(
+                                  cState.leftCategoryName, SelectedImage.empty),
                               hintText: t.left,
                             ),
                           ),
@@ -95,7 +96,9 @@ class CategoriesSettingsTab extends StatelessWidget {
                           builder: (_) => CopiedAuthProviders(
                             blocContext: context,
                             child: EditCategoryPage(
-                              name: cState.rigthCategoryName,
+                              imageAndName: ImageAndName(
+                                  cState.rigthCategoryName,
+                                  SelectedImage.empty),
                               hintText: t.right,
                             ),
                           ),
