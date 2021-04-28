@@ -22,7 +22,6 @@ import '../../../../mocks.dart';
 
 void main() {
   MockActivityDb mockActivityDb;
-  MockSettingsDb mockSettingsDb;
   StreamController<DateTime> mockTicker;
   final time = DateTime(2007, 08, 09, 13, 11);
   final leftTitle = 'LeftCategoryActivity',
@@ -53,8 +52,6 @@ void main() {
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
     final mockGenericDb = MockGenericDb();
     when(mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
@@ -83,7 +80,6 @@ void main() {
       )
       ..fileStorage = MockFileStorage()
       ..userFileDb = mockUserFileDb
-      ..settingsDb = mockSettingsDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()

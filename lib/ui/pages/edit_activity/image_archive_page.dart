@@ -23,7 +23,7 @@ class ImageArchivePage extends StatelessWidget {
         ..pop()
         ..maybePop(),
       onOk: (selected) => Navigator.of(context).pop<SelectedImage>(
-        SelectedImage(
+        SelectedImage.from(
           id: selected?.data?.fileId,
           path: selected?.data?.file,
         ),

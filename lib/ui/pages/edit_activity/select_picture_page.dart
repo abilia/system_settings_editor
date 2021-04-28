@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/logging.dart';
-import 'package:uuid/uuid.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
 
 final _log = Logger((SelectPicturePage).toString());
@@ -47,9 +45,7 @@ class SelectPicturePage extends StatelessWidget {
                       RemoveButton(
                         key: TestKey.removePicture,
                         onTap: () {
-                          Navigator.of(context).maybePop(
-                            SelectedImage.none(),
-                          );
+                          Navigator.of(context).maybePop(SelectedImage.empty);
                         },
                         icon: Icon(
                           AbiliaIcons.delete_all_clear,
@@ -172,14 +168,8 @@ class ImageSourceWidget extends StatelessWidget {
     try {
       final image = await _picker.getImage(source: imageSource);
       if (image != null) {
-        final id = Uuid().v4();
-        final path = '${FileStorage.folder}/$id';
         await Navigator.of(context).maybePop(
-          SelectedImage(
-            id: id,
-            path: path,
-            file: File(image.path),
-          ),
+          SelectedImage.newFile(File(image.path)),
         );
       }
     } on PlatformException catch (e) {

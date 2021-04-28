@@ -90,7 +90,7 @@ class SelectPictureWidget extends StatelessWidget {
     Key key,
     @required this.selectedImage,
     @required this.onImageSelected,
-    @required this.errorState,
+    this.errorState = false,
   }) : super(key: key);
 
   @override
@@ -124,7 +124,7 @@ class SelectPictureWidget extends StatelessWidget {
     );
 
     if (newSelectedImage != null) {
-      if (newSelectedImage.file != null) {
+      if (newSelectedImage.toBeStored) {
         BlocProvider.of<UserFileBloc>(context).add(
           ImageAdded(newSelectedImage),
         );

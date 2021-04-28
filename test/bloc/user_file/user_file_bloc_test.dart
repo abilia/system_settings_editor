@@ -118,8 +118,8 @@ void main() {
     // Act -- while downloadning files, user adds file
     await untilCalled(
         mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')));
-    userFileBloc
-        .add(ImageAdded(SelectedImage(id: fileId, path: filePath, file: file)));
+    userFileBloc.add(
+        ImageAdded(SelectedImage.from(id: fileId, path: filePath, file: file)));
 
     // Assert --that added file is prioritized
     await expectLater(
@@ -140,8 +140,8 @@ void main() {
     final processedFile1 = await adjustImageSizeAndRotation(fileContent);
 
     // Act
-    userFileBloc
-        .add(ImageAdded(SelectedImage(id: fileId, path: filePath, file: file)));
+    userFileBloc.add(
+        ImageAdded(SelectedImage.from(id: fileId, path: filePath, file: file)));
 
     final expectedFile = UserFile(
       id: fileId,
@@ -176,10 +176,10 @@ void main() {
 
     // Act
     userFileBloc.add(
-      ImageAdded(SelectedImage(id: fileId, path: filePath1, file: file)),
+      ImageAdded(SelectedImage.from(id: fileId, path: filePath1, file: file)),
     );
     userFileBloc.add(
-      ImageAdded(SelectedImage(id: fileId2, path: filePath2, file: file2)),
+      ImageAdded(SelectedImage.from(id: fileId2, path: filePath2, file: file2)),
     );
 
     // Assert

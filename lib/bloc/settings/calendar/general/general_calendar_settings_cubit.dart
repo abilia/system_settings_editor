@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
@@ -18,6 +19,9 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettingsState> {
 
   void changeTimepillarSettings(TimepillarSettingState newState) =>
       changeSettings(state.copyWith(timepillar: newState));
+
+  void changeCategorySettings(CategoriesSettingState newState) =>
+      changeSettings(state.copyWith(categories: newState));
 
   void save() => genericBloc.add(GenericUpdated(state.memoplannerSettingData));
 

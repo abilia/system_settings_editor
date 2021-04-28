@@ -449,6 +449,12 @@ abstract class Translated {
 
   final String noDayColours = 'No day colours';
 
+  final String showCagetories = 'Show categories';
+
+  final String showColours = 'Show colours';
+
+  final String editCategory = 'Edit category';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -1155,6 +1161,15 @@ class SV extends Translated {
 
   @override
   final String noDayColours = 'Inga dagfärger';
+
+  @override
+  final String showCagetories = 'Visa kategorier';
+
+  @override
+  final String showColours = 'Visa färger';
+
+  @override
+  final String editCategory = 'Redigera kategori';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1889,6 +1904,15 @@ class DA extends Translated {
   final String noDayColours = 'Ingen dagsfarver';
 
   @override
+  final String showCagetories = 'Vis kategorier';
+
+  @override
+  final String showColours = 'Vis farver';
+
+  @override
+  final String editCategory = 'Rediger kategori';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -2618,6 +2642,15 @@ class NL extends Translated {
   final String noDayColours = 'Geen dagkleuren';
 
   @override
+  final String showCagetories = 'Categorieën tonen';
+
+  @override
+  final String showColours = 'Kleuren tonen';
+
+  @override
+  final String editCategory = 'Bewerk categorie';
+
+  @override
   final String permissions = 'Rechten';
 
   @override
@@ -3186,7 +3219,7 @@ class FI extends Translated {
   final String interval = 'Aikaväli';
 
   @override
-  final String viewDay = 'Dag';
+  final String viewDay = 'Päivä';
 
   @override
   final String dayAndNight = 'Päivä ja yö';
@@ -3346,6 +3379,15 @@ class FI extends Translated {
 
   @override
   final String noDayColours = 'Ei päivien värejä';
+
+  @override
+  final String showCagetories = 'Näyte kategoriat';
+
+  @override
+  final String showColours = 'Näytä värit';
+
+  @override
+  final String editCategory = 'Muokkaa kategoriaa';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3917,7 +3959,7 @@ class DE extends Translated {
   final String interval = 'Intervall';
 
   @override
-  final String viewDay = 'Päivä';
+  final String viewDay = 'Tag';
 
   @override
   final String dayAndNight = 'Tag und Nacht';
@@ -4077,6 +4119,15 @@ class DE extends Translated {
 
   @override
   final String noDayColours = 'Keine Tagesfarben';
+
+  @override
+  final String showCagetories = 'Kategorien zeigen';
+
+  @override
+  final String showColours = 'Farben zeigen';
+
+  @override
+  final String editCategory = 'Kategorie bearbeiten';
 
   @override
   final String permissions = 'Berechtigungen';
@@ -4648,7 +4699,7 @@ class NB extends Translated {
   final String interval = 'Intervall';
 
   @override
-  final String viewDay = 'Tag';
+  final String viewDay = 'Dagen';
 
   @override
   final String dayAndNight = 'Døgnet';
@@ -4808,6 +4859,15 @@ class NB extends Translated {
 
   @override
   final String noDayColours = 'Ingen dagfarger';
+
+  @override
+  final String showCagetories = 'Vis kategorier';
+
+  @override
+  final String showColours = 'Vis farger';
+
+  @override
+  final String editCategory = 'Rediger kategori';
 
   @override
   final String permissions = 'Tillatelser';
