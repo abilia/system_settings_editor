@@ -26,6 +26,8 @@ class MemoplannerSettings extends Equatable {
       weekCaptionShowWeekNumberKey = 'week_caption_show_week_number',
       weekCaptionShowYearKey = 'week_caption_show_year',
       weekCaptionShowClockKey = 'week_caption_show_clock',
+      weekDisplayShowFullWeekKey = 'week_display_show_full_week',
+      weekDisplayShowColorModeKey = 'week_display_show_color_mode',
       morningIntervalStartKey = 'morning_interval_start',
       forenoonIntervalStartKey = 'forenoon_interval_start',
       afternoonIntervalStartKey = 'afternoon_interval_start',
@@ -117,6 +119,8 @@ class MemoplannerSettings extends Equatable {
       viewOptionsTimeInterval,
       viewOptionsTimeView,
       viewOptionsZoom,
+      weekDisplayShowFullWeek,
+      weekDisplayShowColorMode,
       alarmDuration,
       activityTimeout,
       functionMenuStartView,
@@ -151,6 +155,8 @@ class MemoplannerSettings extends Equatable {
     this.weekCaptionShowWeekNumber = true,
     this.weekCaptionShowYear = true,
     this.weekCaptionShowClock = true,
+    this.weekDisplayShowFullWeek = 0,
+    this.weekDisplayShowColorMode = 1,
     this.calendarActivityTypeShowTypes = true,
     this.dotsInTimepillar = true,
     this.imageMenuDisplayPhotoItem = true,
@@ -253,6 +259,14 @@ class MemoplannerSettings extends Equatable {
       weekCaptionShowWeekNumber: settings.getBool(weekCaptionShowWeekNumberKey),
       weekCaptionShowYear: settings.getBool(weekCaptionShowYearKey),
       weekCaptionShowClock: settings.getBool(weekCaptionShowClockKey),
+      weekDisplayShowFullWeek: settings.parse(
+        weekDisplayShowFullWeekKey,
+        WeekDisplayDays.everyDay.index,
+      ),
+      weekDisplayShowColorMode: settings.parse(
+        weekDisplayShowColorModeKey,
+        WeekColor.columns.index,
+      ),
       calendarActivityTypeShowTypes: settings.getBool(
         calendarActivityTypeShowTypesKey,
       ),
@@ -390,6 +404,8 @@ class MemoplannerSettings extends Equatable {
         weekCaptionShowWeekNumber,
         weekCaptionShowYear,
         weekCaptionShowClock,
+        weekDisplayShowFullWeek,
+        weekDisplayShowColorMode,
         calendarActivityTypeShowTypes,
         setting12hTimeFormatTimeline,
         settingDisplayHourLines,
@@ -455,3 +471,20 @@ enum DayColor { allDays, saturdayAndSunday, noColors }
 enum StartView { dayCalendar, weekCalendar, monthCalendar, menu, photoAlbum }
 
 enum ClockType { analogueDigital, analogue, digital }
+
+enum WeekDisplayDays { everyDay, weekdays }
+
+extension WeekDisplayDaysExtension on WeekDisplayDays {
+  int numberOfDays() {
+    switch (this) {
+      case WeekDisplayDays.everyDay:
+        return 7;
+      case WeekDisplayDays.weekdays:
+        return 5;
+      default:
+        return 7;
+    }
+  }
+}
+
+enum WeekColor { captions, columns }

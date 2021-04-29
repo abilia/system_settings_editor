@@ -392,6 +392,14 @@ abstract class Translated {
 
   final String showYear = 'Show year';
 
+  final String everyDay = 'Every day (7)';
+
+  final String weekdays = 'Weekdays (5)';
+
+  final String captions = 'Captions';
+
+  final String columns = 'Columns';
+
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
 
   final String homeScreenSettingsHint =
@@ -1070,6 +1078,18 @@ class SV extends Translated {
 
   @override
   final String showYear = 'Visa år';
+
+  @override
+  final String everyDay = 'Alla dagar (7)';
+
+  @override
+  final String weekdays = 'Vardagar (5)';
+
+  @override
+  final String captions = 'Rubriker';
+
+  @override
+  final String columns = 'Kolumner';
 
   @override
   final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
@@ -1800,6 +1820,18 @@ class DA extends Translated {
   final String showYear = 'Vis år';
 
   @override
+  final String everyDay = 'Alle dage (7)';
+
+  @override
+  final String weekdays = 'Hverdage (5)';
+
+  @override
+  final String captions = 'Titler';
+
+  @override
+  final String columns = 'Kolonner';
+
+  @override
   final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
 
   @override
@@ -2524,6 +2556,18 @@ class NL extends Translated {
 
   @override
   final String showYear = 'Jaar tonen';
+
+  @override
+  final String everyDay = 'Elke dag (7)';
+
+  @override
+  final String weekdays = 'Weekdagen (5)';
+
+  @override
+  final String captions = 'Bijschriften';
+
+  @override
+  final String columns = 'Kolommen';
 
   @override
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
@@ -3251,6 +3295,18 @@ class FI extends Translated {
 
   @override
   final String showYear = 'Näytä vuosi';
+
+  @override
+  final String everyDay = 'Joka päivä (7)';
+
+  @override
+  final String weekdays = 'Arkisin (5)';
+
+  @override
+  final String captions = 'Otsikot';
+
+  @override
+  final String columns = 'Sarakkeet';
 
   @override
   final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
@@ -3981,6 +4037,18 @@ class DE extends Translated {
   final String showYear = 'Jahr anzeigen';
 
   @override
+  final String everyDay = 'Täglich (7)';
+
+  @override
+  final String weekdays = 'Werktage (5)';
+
+  @override
+  final String captions = 'Unterschriften';
+
+  @override
+  final String columns = 'Spalten';
+
+  @override
   final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
 
   @override
@@ -4707,6 +4775,18 @@ class NB extends Translated {
 
   @override
   final String showYear = 'Vis år';
+
+  @override
+  final String everyDay = 'Alle dager (7)';
+
+  @override
+  final String weekdays = 'Hverdager (5)';
+
+  @override
+  final String captions = 'Titler';
+
+  @override
+  final String columns = 'Kolonner';
 
   @override
   final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';

@@ -20,7 +20,7 @@ class WeekAppBarSettingsTab extends StatelessWidget {
             value: state.showBrowseButtons,
             onChanged: (v) => context
                 .read<WeekCalendarSettingsCubit>()
-                .changeWeelCalendarSettings(
+                .changeWeekCalendarSettings(
                     state.copyWith(showBrowseButtons: v)),
           ),
           SwitchField(
@@ -28,21 +28,21 @@ class WeekAppBarSettingsTab extends StatelessWidget {
             value: state.showWeekNumber,
             onChanged: (v) => context
                 .read<WeekCalendarSettingsCubit>()
-                .changeWeelCalendarSettings(state.copyWith(showWeekNumber: v)),
+                .changeWeekCalendarSettings(state.copyWith(showWeekNumber: v)),
           ),
           SwitchField(
             text: Text(t.showYear),
             value: state.showYear,
             onChanged: (v) => context
                 .read<WeekCalendarSettingsCubit>()
-                .changeWeelCalendarSettings(state.copyWith(showYear: v)),
+                .changeWeekCalendarSettings(state.copyWith(showYear: v)),
           ),
           SwitchField(
             text: Text(t.showClock),
             value: state.showClock,
             onChanged: (v) => context
                 .read<WeekCalendarSettingsCubit>()
-                .changeWeelCalendarSettings(state.copyWith(showClock: v)),
+                .changeWeekCalendarSettings(state.copyWith(showClock: v)),
           ),
         ],
       ),

@@ -104,6 +104,12 @@ abstract class MemoplannerSettingsState extends Equatable {
       ? Sound.Default
       : settings.reminderAlarm.toSound();
 
+  WeekDisplayDays get weekDisplayDays =>
+      WeekDisplayDays.values[settings.weekDisplayShowFullWeek];
+
+  WeekColor get weekColor =>
+      WeekColor.values[settings.weekDisplayShowColorMode];
+
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();
     switch (timepillarIntervalType) {

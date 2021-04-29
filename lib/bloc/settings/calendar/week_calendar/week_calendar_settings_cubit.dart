@@ -13,7 +13,7 @@ class WeekCalendarSettingsCubit extends Cubit<WeekCalendarSettingsState> {
     this.genericBloc,
   }) : super(WeekCalendarSettingsState.fromMemoplannerSettings(settingsState));
 
-  void changeWeelCalendarSettings(WeekCalendarSettingsState newState) =>
+  void changeWeekCalendarSettings(WeekCalendarSettingsState newState) =>
       emit(newState);
   void save() => genericBloc.add(GenericUpdated(state.memoplannerSettingData));
 }
