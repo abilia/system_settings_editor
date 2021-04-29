@@ -124,66 +124,68 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
         parent: controller,
       ),
     );
-    return GestureDetector(
-      onTap: () {
-        if (value == widget.expanded) {
-          controller.forward();
-        } else {
-          controller.reverse();
-        }
-        BlocProvider.of<CalendarViewBloc>(context).add(widget.toggleCategory);
-      },
-      child: Align(
-        alignment: widget.alignment.add(top),
-        child: Tts.fromSemantics(
-          SemanticsProperties(
-            header: true,
-            label: widget.text,
-          ),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: widget.maxWidth),
-            child: Container(
-              margin: EdgeInsets.only(top: 4.0.s),
-              padding: EdgeInsets.symmetric(vertical: 10.s),
-              decoration: BoxDecoration(
-                borderRadius: widget.borderRadius,
-                color: AbiliaColors.black80,
-              ),
-              child: Stack(
-                textDirection: widget.textDirection,
-                alignment: widget.alignment,
-                children: [
-                  AnimatedBuilder(
-                    animation: matrixAnimation,
-                    builder: (context, child) => Transform(
-                      alignment: Alignment.center,
-                      transform: matrixAnimation.value,
-                      child: child,
-                    ),
-                    child: Icon(
-                      widget.icon,
-                      size: smallIconSize,
-                      color: AbiliaColors.black60,
-                    ),
-                  ),
-                  Padding(
-                    padding: widget.left
-                        ? EdgeInsets.only(left: 22.s, right: 16.s)
-                        : EdgeInsets.only(left: 16.s, right: 22.s),
-                    child: AnimatedBuilder(
-                      animation: controller,
-                      builder: (context, _) => Text(
-                        widget.text.substring(0, intAnimation.value),
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle1
-                            .copyWith(color: AbiliaColors.white),
-                        softWrap: false,
-                        overflow: TextOverflow.fade,
+    return SafeArea(
+      child: GestureDetector(
+        onTap: () {
+          if (value == widget.expanded) {
+            controller.forward();
+          } else {
+            controller.reverse();
+          }
+          BlocProvider.of<CalendarViewBloc>(context).add(widget.toggleCategory);
+        },
+        child: Align(
+          alignment: widget.alignment.add(top),
+          child: Tts.fromSemantics(
+            SemanticsProperties(
+              header: true,
+              label: widget.text,
+            ),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: widget.maxWidth),
+              child: Container(
+                margin: EdgeInsets.only(top: 4.0.s),
+                padding: EdgeInsets.symmetric(vertical: 10.s),
+                decoration: BoxDecoration(
+                  borderRadius: widget.borderRadius,
+                  color: AbiliaColors.black80,
+                ),
+                child: Stack(
+                  textDirection: widget.textDirection,
+                  alignment: widget.alignment,
+                  children: [
+                    AnimatedBuilder(
+                      animation: matrixAnimation,
+                      builder: (context, child) => Transform(
+                        alignment: Alignment.center,
+                        transform: matrixAnimation.value,
+                        child: child,
+                      ),
+                      child: Icon(
+                        widget.icon,
+                        size: smallIconSize,
+                        color: AbiliaColors.black60,
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: widget.left
+                          ? EdgeInsets.only(left: 22.s, right: 16.s)
+                          : EdgeInsets.only(left: 16.s, right: 22.s),
+                      child: AnimatedBuilder(
+                        animation: controller,
+                        builder: (context, _) => Text(
+                          widget.text.substring(0, intAnimation.value),
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              .copyWith(color: AbiliaColors.white),
+                          softWrap: false,
+                          overflow: TextOverflow.fade,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

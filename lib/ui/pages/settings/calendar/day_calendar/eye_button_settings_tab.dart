@@ -10,7 +10,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
       builder: (context, state) => ListView(
         padding: EdgeInsets.only(top: 20.s, right: 16.s, bottom: 56.s),
         children: [
-          Text(t.viewSettings),
+          Tts(child: Text(t.viewSettings)),
           CollapsableWidget(
             collapsed: !state.showTypeOfDisplay,
             child: _buildSelector(
