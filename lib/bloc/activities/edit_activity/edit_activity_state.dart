@@ -55,7 +55,7 @@ abstract class EditActivityState extends Equatable with Silent {
       : hasStartTime &&
           timeInterval.startDate.withTime(timeInterval.startTime).isBefore(now);
 
-  SelectedImage get selectedImage => SelectedImage(
+  SelectedImage get selectedImage => SelectedImage.from(
         id: activity.fileId,
         path: activity.icon,
         file: newImage,

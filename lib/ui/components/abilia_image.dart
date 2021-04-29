@@ -198,6 +198,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
 class FullScreenImage extends StatelessWidget {
   final String fileId;
   final String filePath;
+  final File tempFile;
   final Decoration backgroundDecoration;
   final GestureTapCallback onTap;
 
@@ -205,6 +206,7 @@ class FullScreenImage extends StatelessWidget {
     Key key,
     @required this.fileId,
     @required this.filePath,
+    this.tempFile,
     this.backgroundDecoration,
     this.onTap,
   }) : super(key: key);
@@ -215,6 +217,11 @@ class FullScreenImage extends StatelessWidget {
       onTap: onTap,
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
+        if (tempFile != null) {
+          return PhotoView(
+              backgroundDecoration: backgroundDecoration,
+              imageProvider: FileImage(tempFile));
+        }
         return BlocBuilder<UserFileBloc, UserFileState>(
             builder: (context, userFileState) {
           final userFile = userFileState.getLoadedByIdOrPath(fileId, filePath);

@@ -6,7 +6,7 @@ import 'package:seagull/utils/all.dart';
 class IntervalsSettingsTab extends StatelessWidget {
   static const dayparts = [
     DayPart.morning,
-    DayPart.forenoon,
+    DayPart.day,
     DayPart.evening,
     DayPart.night,
   ];
@@ -91,7 +91,7 @@ class IntervalStepper extends StatelessWidget {
     switch (part) {
       case DayPart.morning:
         return translator.earyMorning;
-      case DayPart.forenoon:
+      case DayPart.day:
         return translator.day;
       case DayPart.evening:
         return translator.evening;

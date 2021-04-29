@@ -16,3 +16,19 @@ Future verifyGeneric(
       as MemoplannerSettingData;
   expect(d.data, matcher);
 }
+
+Future verifyGenerics(
+  WidgetTester tester,
+  GenericDb genericDb, {
+  Map<String, dynamic> keyMatch,
+}) async {
+  final v = verify(genericDb.insertAndAddDirty(captureAny));
+  expect(v.callCount, 1);
+  final l = v.captured.single.toList() as List<Generic<GenericData>>;
+  for (var kvp in keyMatch.entries) {
+    final d = l
+        .whereType<Generic<MemoplannerSettingData>>()
+        .firstWhere((element) => element.data.identifier == kvp.key);
+    expect(d.data.data, kvp.value);
+  }
+}

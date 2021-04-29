@@ -30,12 +30,12 @@ class MemoplannerSettings extends Equatable {
       weekDisplayShowColorModeKey = 'week_display_show_color_mode',
       morningIntervalStartKey = 'morning_interval_start',
       forenoonIntervalStartKey = 'forenoon_interval_start',
-      afternoonIntervalStartKey = 'afternoon_interval_start',
       eveningIntervalStartKey = 'evening_interval_start',
       nightIntervalStartKey = 'night_interval_start',
       calendarActivityTypeLeftKey = 'calendar_activity_type_left',
       calendarActivityTypeRightKey = 'calendar_activity_type_right',
       calendarActivityTypeShowTypesKey = 'calendar_activity_type_show_types',
+      calendarActivityTypeShowColorKey = 'calendar_activity_type_show_color',
       calendarDayColorKey = 'calendar_daycolor',
       setting12hTimeFormatTimelineKey = 'setting_12h_time_format_timeline',
       settingDisplayHourLinesKey = 'setting_display_hour_lines',
@@ -65,7 +65,11 @@ class MemoplannerSettings extends Equatable {
       settingsMenuShowQuickSettingsKey = 'settings_menu_show_quick_settings',
       settingsMenuShowSettingsKey = 'settings_menu_show_settings',
       settingClockTypeKey = 'setting_clock_type',
-      settingTimePillarTimelineKey = 'setting_time_pillar_timeline';
+      settingTimePillarTimelineKey = 'setting_time_pillar_timeline',
+      settingViewOptionsTimeViewKey = 'setting_view_options_time_view',
+      settingViewOptionsTimeIntervalKey = 'setting_view_options_time_interval',
+      settingViewOptionsZoomKey = 'setting_view_options_zoom',
+      settingViewOptionsDurationDotsKey = 'setting_view_options_duration_dots';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -90,6 +94,7 @@ class MemoplannerSettings extends Equatable {
       weekCaptionShowYear,
       weekCaptionShowClock,
       calendarActivityTypeShowTypes,
+      calendarActivityTypeShowColor,
       setting12hTimeFormatTimeline,
       settingDisplayHourLines,
       settingDisplayTimeline,
@@ -108,11 +113,14 @@ class MemoplannerSettings extends Equatable {
       settingsMenuShowTimers,
       settingsMenuShowQuickSettings,
       settingsMenuShowSettings,
-      settingTimePillarTimeline;
+      settingTimePillarTimeline,
+      settingViewOptionsTimeView,
+      settingViewOptionsTimeInterval,
+      settingViewOptionsZoom,
+      settingViewOptionsDurationDots;
 
   final int morningIntervalStart,
-      forenoonIntervalStart,
-      afternoonIntervalStart,
+      dayIntervalStart,
       eveningIntervalStart,
       nightIntervalStart,
       calendarDayColor,
@@ -157,7 +165,6 @@ class MemoplannerSettings extends Equatable {
     this.weekCaptionShowClock = true,
     this.weekDisplayShowFullWeek = 0,
     this.weekDisplayShowColorMode = 1,
-    this.calendarActivityTypeShowTypes = true,
     this.dotsInTimepillar = true,
     this.imageMenuDisplayPhotoItem = true,
     this.imageMenuDisplayCameraItem = true,
@@ -165,12 +172,13 @@ class MemoplannerSettings extends Equatable {
     this.settingDisplayHourLines = false,
     this.settingDisplayTimeline = true,
     this.morningIntervalStart = DayParts.morningDefault,
-    this.forenoonIntervalStart = DayParts.forenoonDefault,
-    this.afternoonIntervalStart = DayParts.afternoonDefault,
+    this.dayIntervalStart = DayParts.dayDefault,
     this.eveningIntervalStart = DayParts.eveningDefault,
     this.nightIntervalStart = DayParts.nightDefault,
     this.calendarActivityTypeLeft,
     this.calendarActivityTypeRight,
+    this.calendarActivityTypeShowTypes = true,
+    this.calendarActivityTypeShowColor = true,
     this.calendarDayColor = 0,
     this.viewOptionsTimeInterval = 1,
     this.viewOptionsTimeView = 1,
@@ -195,6 +203,10 @@ class MemoplannerSettings extends Equatable {
     this.settingsMenuShowSettings = true,
     this.settingClockType = 0,
     this.settingTimePillarTimeline = false,
+    this.settingViewOptionsTimeView = true,
+    this.settingViewOptionsTimeInterval = true,
+    this.settingViewOptionsZoom = true,
+    this.settingViewOptionsDurationDots = true,
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -270,6 +282,9 @@ class MemoplannerSettings extends Equatable {
       calendarActivityTypeShowTypes: settings.getBool(
         calendarActivityTypeShowTypesKey,
       ),
+      calendarActivityTypeShowColor: settings.getBool(
+        calendarActivityTypeShowColorKey,
+      ),
       settingsMenuShowCamera: settings.getBool(
         settingsMenuShowCameraKey,
       ),
@@ -329,13 +344,9 @@ class MemoplannerSettings extends Equatable {
         morningIntervalStartKey,
         DayParts.morningDefault,
       ),
-      forenoonIntervalStart: settings.parse(
+      dayIntervalStart: settings.parse(
         forenoonIntervalStartKey,
-        DayParts.forenoonDefault,
-      ),
-      afternoonIntervalStart: settings.parse(
-        afternoonIntervalStartKey,
-        DayParts.afternoonDefault,
+        DayParts.dayDefault,
       ),
       eveningIntervalStart: settings.parse(
         eveningIntervalStartKey,
@@ -377,6 +388,13 @@ class MemoplannerSettings extends Equatable {
       reminderAlarm: settings.parse(reminderAlarmKey, Sound.Default.name()),
       vibrateAtReminder:
           settings.getBool(vibrateAtReminderKey, defaultValue: true),
+      settingViewOptionsTimeView:
+          settings.getBool(settingViewOptionsTimeViewKey),
+      settingViewOptionsTimeInterval:
+          settings.getBool(settingViewOptionsTimeIntervalKey),
+      settingViewOptionsZoom: settings.getBool(settingViewOptionsZoomKey),
+      settingViewOptionsDurationDots:
+          settings.getBool(settingViewOptionsDurationDotsKey),
     );
   }
 
@@ -406,17 +424,17 @@ class MemoplannerSettings extends Equatable {
         weekCaptionShowClock,
         weekDisplayShowFullWeek,
         weekDisplayShowColorMode,
-        calendarActivityTypeShowTypes,
         setting12hTimeFormatTimeline,
         settingDisplayHourLines,
         settingDisplayTimeline,
         morningIntervalStart,
-        forenoonIntervalStart,
-        afternoonIntervalStart,
+        dayIntervalStart,
         eveningIntervalStart,
         nightIntervalStart,
         calendarActivityTypeLeft,
         calendarActivityTypeRight,
+        calendarActivityTypeShowTypes,
+        calendarActivityTypeShowColor,
         calendarDayColor,
         viewOptionsTimeInterval,
         viewOptionsTimeView,
@@ -444,6 +462,10 @@ class MemoplannerSettings extends Equatable {
         settingsMenuShowSettings,
         settingClockType,
         settingTimePillarTimeline,
+        settingViewOptionsTimeView,
+        settingViewOptionsTimeInterval,
+        settingViewOptionsZoom,
+        settingViewOptionsDurationDots,
       ];
 }
 

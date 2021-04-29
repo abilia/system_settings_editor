@@ -5,12 +5,14 @@ class GeneralCalendarSettingsState extends Equatable {
   final TimepillarSettingState timepillar;
   final DayParts dayParts;
   final DayColor dayColor;
+  final CategoriesSettingState categories;
 
   GeneralCalendarSettingsState._(
     this.clockType,
     this.timepillar,
     this.dayParts,
     this.dayColor,
+    this.categories,
   );
 
   factory GeneralCalendarSettingsState.fromMemoplannerSettings(
@@ -21,6 +23,7 @@ class GeneralCalendarSettingsState extends Equatable {
         TimepillarSettingState.fromMemoplannerSettings(state),
         state.dayParts,
         state.calendarDayColor,
+        CategoriesSettingState.fromMemoplannerSettings(state),
       );
 
   GeneralCalendarSettingsState copyWith({
@@ -28,12 +31,14 @@ class GeneralCalendarSettingsState extends Equatable {
     TimepillarSettingState timepillar,
     DayParts dayParts,
     DayColor dayColor,
+    CategoriesSettingState categories,
   }) =>
       GeneralCalendarSettingsState._(
         clockType ?? this.clockType,
         timepillar ?? this.timepillar,
         dayParts ?? this.dayParts,
         dayColor ?? this.dayColor,
+        categories ?? this.categories,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
@@ -47,6 +52,7 @@ class GeneralCalendarSettingsState extends Equatable {
           data: dayColor.index,
           identifier: MemoplannerSettings.calendarDayColorKey,
         ),
+        ...categories.memoplannerSettingData,
       ];
 
   @override
@@ -55,6 +61,7 @@ class GeneralCalendarSettingsState extends Equatable {
         timepillar,
         dayParts,
         dayColor,
+        categories,
       ];
 }
 
@@ -119,6 +126,71 @@ class TimepillarSettingState extends Equatable {
       ];
 }
 
+class CategoriesSettingState extends Equatable {
+  final bool showCategories, showColors;
+  final String rigthCategoryName, leftCategoryName;
+
+  CategoriesSettingState._(
+    this.showCategories,
+    this.showColors,
+    this.rigthCategoryName,
+    this.leftCategoryName,
+  )   : assert(showCategories != null),
+        assert(showColors != null),
+        assert(leftCategoryName != null),
+        assert(rigthCategoryName != null);
+
+  factory CategoriesSettingState.fromMemoplannerSettings(
+    MemoplannerSettingsState state,
+  ) =>
+      CategoriesSettingState._(
+        state.showCategories,
+        state.showColor,
+        state.rightCategoryName ?? '',
+        state.leftCategoryName ?? '',
+      );
+
+  CategoriesSettingState copyWith({
+    bool showCategories,
+    bool showColors,
+    String rigthCategoryName,
+    String leftCategoryName,
+  }) =>
+      CategoriesSettingState._(
+        showCategories ?? this.showCategories,
+        showColors ?? this.showColors,
+        rigthCategoryName ?? this.rigthCategoryName,
+        leftCategoryName ?? this.leftCategoryName,
+      );
+
+  List<MemoplannerSettingData> get memoplannerSettingData => [
+        MemoplannerSettingData.fromData(
+          data: showCategories,
+          identifier: MemoplannerSettings.calendarActivityTypeShowTypesKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showColors,
+          identifier: MemoplannerSettings.calendarActivityTypeShowColorKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: rigthCategoryName,
+          identifier: MemoplannerSettings.calendarActivityTypeRightKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: leftCategoryName,
+          identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
+        ),
+      ];
+
+  @override
+  List<Object> get props => [
+        showCategories,
+        showColors,
+        rigthCategoryName,
+        leftCategoryName,
+      ];
+}
+
 extension DayPartLimit on DayParts {
   bool atMax(DayPart part) => fromDayPart(part) >= DayParts.limits[part].max;
   bool atMin(DayPart part) => fromDayPart(part) <= DayParts.limits[part].min;
@@ -131,7 +203,7 @@ extension _MemoplannerSettingData on DayParts {
           identifier: MemoplannerSettings.morningIntervalStartKey,
         ),
         MemoplannerSettingData.fromData(
-          data: forenoonStart,
+          data: dayStart,
           identifier: MemoplannerSettings.forenoonIntervalStartKey,
         ),
         MemoplannerSettingData.fromData(

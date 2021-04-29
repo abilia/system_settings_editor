@@ -21,5 +21,6 @@ export 'buttons/all.dart';
 export 'abilia_scrollbar.dart';
 export 'clock/all.dart';
 export 'menu_item_pick_field.dart';
+export 'edit_image_and_name.dart';
 
 export 'package:flutter/semantics.dart';

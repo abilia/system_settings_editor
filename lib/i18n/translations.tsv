@@ -181,7 +181,7 @@ display	Display	Visa	Vise	Tonen	Näytä	Anzeige	Vise
 viewMode	View mode	Visningsläge	Visningstilstand	Weergavemodus	Katselutila	Ansichtsmodus	Visningsmodus
 dayInterval	Day interval	Intervall	Interval	Interval	Aikaväli	Intervall	Intervall
 interval	Interval	Intervall	Interval	Interval	Aikaväli	Intervall	Intervall
-viewDay	Day	Dagen	Dagen	Dag	Dag	Päivä	Tag	Dagen
+viewDay	Day	Dagen	Dagen	Dag	Päivä	Tag	Dagen
 dayAndNight	Day and night	Dygnet	Døgnet	Dag en nacht	Päivä ja yö	Tag und Nacht	Døgnet
 zoom	Timeline zoom	Tidslinjens zoom	Zoom	Zoom tijdlijn	Aikajanan zoomaus	Zeitstrahl Zoom	Zoom
 small	Small	Liten	Lille	Klein	Pieni	Klein	Liten
@@ -208,6 +208,9 @@ noSound	- No sound -	- Inget ljud -	- Ingen lyd -	- Geen geluid -	- Ei ääntä 
 showWeekNumber	Show week number	Visa veckonummer	Vis ugenummer	Weeknummer tonen	Näytä viikon numero	Wochennummer anzeigen	Vis ukenummer
 showYear	Show year	Visa år	Vis år	Jaar tonen	Näytä vuosi	Jahr anzeigen	Vis år
 everyDay	Every day (7)	Alla dagar (7)	Alle dage (7)	Elke dag (7)	Joka päivä (7)	Täglich (7)	Alle dager (7)
+viewSettings	View settings	Visa inställningar	Se indstillinger	Laat instellingen zien	Näytä asetukset	Einstellungen anzeigen	Visningsinnstillinger
+typeOfDisplay	Type of display	Typ av visning	Type	Schermsoort	Näytön tyyppi	Bildschirmtyp	Type
+timelineLength	Timeline length	Tidslinjens längd	Tid på døgnet	Lengte tijdlijn	Aikajanan pituus	Zeitstrahl Länge	Tid på døgnet
 weekdays	Weekdays (5)	Vardagar (5)	Hverdage (5)	Weekdagen (5)	Arkisin (5)	Werktage (5)	Hverdager (5)
 captions	Captions	Rubriker	Titler	Bijschriften	Otsikot	Unterschriften	Titler
 columns	Columns	Kolumner	Kolonner	Kolommen	Sarakkeet	Spalten	Kolonner
@@ -218,7 +221,7 @@ homeScreenSettingsHint	View displayed when the home button is pressed	Visad vy v
 timeoutSettingsHint	Returns to the home screen after a period of inactivity.	Återgång till startsidan efter en tids inaktivitet.	Gå tilbage til startsiden, efter en periode med inaktivitet.	Gaat terug naar het thuisscherm na een periode van inactiviteit.	Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen.	Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität.	Återgång till startsidan efter en tids inaktivitet.
 noTimeout	No timeout	Ingen timeout	Ingen timeout	Geen time-out	Ei aikakatkaisua	Keine Zeitüberschreitung	Ingen timeout
 activateScreensaver	Activate Screensaver	Aktivera skärmsläckare	Aktivér pauseskærm	Screensaver activeren	Aktivoi näytönsäästäjä	Bildschirmschoner aktivieren	Aktiver skjermsparer
-menuRemovalWarning 	Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.	Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.	Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.	Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.	Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.	Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.	Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.
+menuRemovalWarning	Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.	Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.	Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.	Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.	Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.	Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.	Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.
 							
 ## Day Calendar Settings							
 topField	Top Field	Toppfält	Topfelt	Bovenste veld	Yläkenttä	Oberstes Feld	Toppfelt
@@ -243,6 +246,9 @@ linesForEachHour	Lines for each hour	Linjer för varje timme	Linjer for hver tim
 saturdayAndSunday	Saturday and Sunday	Lördag och söndag	Lørdag og søndag	Zaterdag en zondag	Lauantai ja sunnuntai	Samstag und Sonntag	Lørdag og søndag
 dayColours	Day colours	Dagfärger	Dagfarver	Dagkleuren	Päivien värit	Tagesfarben	Dagfarger
 noDayColours	No day colours	Inga dagfärger	Ingen dagsfarver	Geen dagkleuren	Ei päivien värejä	Keine Tagesfarben	Ingen dagfarger
+showCagetories	Show categories	Visa kategorier	Vis kategorier	Categorieën tonen	Näyte kategoriat	Kategorien zeigen	Vis kategorier
+showColours	Show colours	Visa färger	Vis farver	Kleuren tonen	Näytä värit	Farben zeigen	Vis farger
+editCategory	Edit category	Redigera kategori	Rediger kategori	Bewerk categorie	Muokkaa kategoriaa	Kategorie bearbeiten	Rediger kategori
 							
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser

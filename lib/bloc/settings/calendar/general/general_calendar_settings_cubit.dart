@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
@@ -18,6 +19,9 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettingsState> {
 
   void changeTimepillarSettings(TimepillarSettingState newState) =>
       changeSettings(state.copyWith(timepillar: newState));
+
+  void changeCategorySettings(CategoriesSettingState newState) =>
+      changeSettings(state.copyWith(categories: newState));
 
   void save() => genericBloc.add(GenericUpdated(state.memoplannerSettingData));
 
@@ -39,9 +43,8 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettingsState> {
         dayPart =
             state.dayParts.copyWith(morningStart: val, increased: increased);
         break;
-      case DayPart.forenoon:
-        dayPart =
-            state.dayParts.copyWith(forenoonStart: val, increased: increased);
+      case DayPart.day:
+        dayPart = state.dayParts.copyWith(dayStart: val, increased: increased);
         break;
       case DayPart.evening:
         dayPart =
@@ -61,41 +64,38 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettingsState> {
 extension on DayParts {
   DayParts copyWith({
     int morningStart,
-    int forenoonStart,
+    int dayStart,
     int eveningStart,
     int nightStart,
     bool increased,
   }) {
     morningStart ??= this.morningStart;
-    forenoonStart ??= this.forenoonStart;
+    dayStart ??= this.dayStart;
     eveningStart ??= this.eveningStart;
     nightStart ??= this.nightStart;
 
     morningStart = DayParts.limits[DayPart.morning].clamp(morningStart);
-    forenoonStart = DayParts.limits[DayPart.forenoon].clamp(forenoonStart);
+    dayStart = DayParts.limits[DayPart.day].clamp(dayStart);
     eveningStart = DayParts.limits[DayPart.evening].clamp(eveningStart);
     nightStart = DayParts.limits[DayPart.night].clamp(nightStart);
 
     if (increased) {
-      forenoonStart +=
-          forenoonStart <= morningStart ? Duration.millisecondsPerHour : 0;
+      dayStart += dayStart <= morningStart ? Duration.millisecondsPerHour : 0;
       eveningStart +=
-          eveningStart <= forenoonStart ? Duration.millisecondsPerHour : 0;
+          eveningStart <= dayStart ? Duration.millisecondsPerHour : 0;
       nightStart +=
           nightStart <= eveningStart ? Duration.millisecondsPerHour : 0;
     } else {
       eveningStart -=
           eveningStart >= nightStart ? Duration.millisecondsPerHour : 0;
-      forenoonStart -=
-          forenoonStart >= eveningStart ? Duration.millisecondsPerHour : 0;
+      dayStart -= dayStart >= eveningStart ? Duration.millisecondsPerHour : 0;
       morningStart -=
-          morningStart >= forenoonStart ? Duration.millisecondsPerHour : 0;
+          morningStart >= dayStart ? Duration.millisecondsPerHour : 0;
     }
 
     return DayParts(
       morningStart,
-      forenoonStart,
-      afternoonStart,
+      dayStart,
       eveningStart,
       nightStart,
     );

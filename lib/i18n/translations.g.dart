@@ -394,6 +394,12 @@ abstract class Translated {
 
   final String everyDay = 'Every day (7)';
 
+  final String viewSettings = 'View settings';
+
+  final String typeOfDisplay = 'Type of display';
+
+  final String timelineLength = 'Timeline length';
+
   final String weekdays = 'Weekdays (5)';
 
   final String captions = 'Captions';
@@ -454,6 +460,12 @@ abstract class Translated {
   final String dayColours = 'Day colours';
 
   final String noDayColours = 'No day colours';
+
+  final String showCagetories = 'Show categories';
+
+  final String showColours = 'Show colours';
+
+  final String editCategory = 'Edit category';
 
   final String permissions = 'Permissions';
 
@@ -1083,6 +1095,15 @@ class SV extends Translated {
   final String everyDay = 'Alla dagar (7)';
 
   @override
+  final String viewSettings = 'Visa inställningar';
+
+  @override
+  final String typeOfDisplay = 'Typ av visning';
+
+  @override
+  final String timelineLength = 'Tidslinjens längd';
+
+  @override
   final String weekdays = 'Vardagar (5)';
 
   @override
@@ -1170,6 +1191,15 @@ class SV extends Translated {
 
   @override
   final String noDayColours = 'Inga dagfärger';
+
+  @override
+  final String showCagetories = 'Visa kategorier';
+
+  @override
+  final String showColours = 'Visa färger';
+
+  @override
+  final String editCategory = 'Redigera kategori';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1823,6 +1853,15 @@ class DA extends Translated {
   final String everyDay = 'Alle dage (7)';
 
   @override
+  final String viewSettings = 'Se indstillinger';
+
+  @override
+  final String typeOfDisplay = 'Type';
+
+  @override
+  final String timelineLength = 'Tid på døgnet';
+
+  @override
   final String weekdays = 'Hverdage (5)';
 
   @override
@@ -1911,6 +1950,15 @@ class DA extends Translated {
 
   @override
   final String noDayColours = 'Ingen dagsfarver';
+
+  @override
+  final String showCagetories = 'Vis kategorier';
+
+  @override
+  final String showColours = 'Vis farver';
+
+  @override
+  final String editCategory = 'Rediger kategori';
 
   @override
   final String permissions = 'Tilladelser';
@@ -2561,6 +2609,15 @@ class NL extends Translated {
   final String everyDay = 'Elke dag (7)';
 
   @override
+  final String viewSettings = 'Laat instellingen zien';
+
+  @override
+  final String typeOfDisplay = 'Schermsoort';
+
+  @override
+  final String timelineLength = 'Lengte tijdlijn';
+
+  @override
   final String weekdays = 'Weekdagen (5)';
 
   @override
@@ -2649,6 +2706,15 @@ class NL extends Translated {
 
   @override
   final String noDayColours = 'Geen dagkleuren';
+
+  @override
+  final String showCagetories = 'Categorieën tonen';
+
+  @override
+  final String showColours = 'Kleuren tonen';
+
+  @override
+  final String editCategory = 'Bewerk categorie';
 
   @override
   final String permissions = 'Rechten';
@@ -3219,7 +3285,7 @@ class FI extends Translated {
   final String interval = 'Aikaväli';
 
   @override
-  final String viewDay = 'Dag';
+  final String viewDay = 'Päivä';
 
   @override
   final String dayAndNight = 'Päivä ja yö';
@@ -3298,6 +3364,15 @@ class FI extends Translated {
 
   @override
   final String everyDay = 'Joka päivä (7)';
+
+  @override
+  final String viewSettings = 'Näytä asetukset';
+
+  @override
+  final String typeOfDisplay = 'Näytön tyyppi';
+
+  @override
+  final String timelineLength = 'Aikajanan pituus';
 
   @override
   final String weekdays = 'Arkisin (5)';
@@ -3388,6 +3463,15 @@ class FI extends Translated {
 
   @override
   final String noDayColours = 'Ei päivien värejä';
+
+  @override
+  final String showCagetories = 'Näyte kategoriat';
+
+  @override
+  final String showColours = 'Näytä värit';
+
+  @override
+  final String editCategory = 'Muokkaa kategoriaa';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -3959,7 +4043,7 @@ class DE extends Translated {
   final String interval = 'Intervall';
 
   @override
-  final String viewDay = 'Päivä';
+  final String viewDay = 'Tag';
 
   @override
   final String dayAndNight = 'Tag und Nacht';
@@ -4038,6 +4122,15 @@ class DE extends Translated {
 
   @override
   final String everyDay = 'Täglich (7)';
+
+  @override
+  final String viewSettings = 'Einstellungen anzeigen';
+
+  @override
+  final String typeOfDisplay = 'Bildschirmtyp';
+
+  @override
+  final String timelineLength = 'Zeitstrahl Länge';
 
   @override
   final String weekdays = 'Werktage (5)';
@@ -4128,6 +4221,15 @@ class DE extends Translated {
 
   @override
   final String noDayColours = 'Keine Tagesfarben';
+
+  @override
+  final String showCagetories = 'Kategorien zeigen';
+
+  @override
+  final String showColours = 'Farben zeigen';
+
+  @override
+  final String editCategory = 'Kategorie bearbeiten';
 
   @override
   final String permissions = 'Berechtigungen';
@@ -4699,7 +4801,7 @@ class NB extends Translated {
   final String interval = 'Intervall';
 
   @override
-  final String viewDay = 'Tag';
+  final String viewDay = 'Dagen';
 
   @override
   final String dayAndNight = 'Døgnet';
@@ -4778,6 +4880,15 @@ class NB extends Translated {
 
   @override
   final String everyDay = 'Alle dager (7)';
+
+  @override
+  final String viewSettings = 'Visningsinnstillinger';
+
+  @override
+  final String typeOfDisplay = 'Type';
+
+  @override
+  final String timelineLength = 'Tid på døgnet';
 
   @override
   final String weekdays = 'Hverdager (5)';
@@ -4868,6 +4979,15 @@ class NB extends Translated {
 
   @override
   final String noDayColours = 'Ingen dagfarger';
+
+  @override
+  final String showCagetories = 'Vis kategorier';
+
+  @override
+  final String showColours = 'Vis farger';
+
+  @override
+  final String editCategory = 'Rediger kategori';
 
   @override
   final String permissions = 'Tillatelser';

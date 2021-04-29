@@ -15,6 +15,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../../mocks.dart';
+import '../../../../../utils/verify_generic.dart';
 
 void main() {
   final initialTime = DateTime(2021, 04, 16, 13, 37);
@@ -71,22 +72,6 @@ void main() {
     expect(find.byType(CancelButton), findsOneWidget);
   });
 
-  Future _verifySaved(
-      WidgetTester tester, Map<String, dynamic> keyMatch) async {
-    await tester.tap(find.byType(OkButton));
-    await tester.pumpAndSettle();
-
-    final v = verify(genericDb.insertAndAddDirty(captureAny));
-    expect(v.callCount, 1);
-    final l = v.captured.single.toList() as List<Generic<GenericData>>;
-    for (var kvp in keyMatch.entries) {
-      final d = l
-          .whereType<Generic<MemoplannerSettingData>>()
-          .firstWhere((element) => element.data.identifier == kvp.key);
-      expect(d.data.data, kvp.value);
-    }
-  }
-
   group('time interval', () {
     testWidgets('Default time interval 12h clock', (tester) async {
       // Act
@@ -112,8 +97,10 @@ void main() {
       await tester.goToGeneralCalendarSettingsPageIntervalTab();
 
       await tester.stepRight(DayPart.morning);
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
 
-      await _verifySaved(tester, {
+      await verifyGenerics(tester, genericDb, keyMatch: {
         MemoplannerSettings.morningIntervalStartKey:
             7 * Duration.millisecondsPerHour,
       });
@@ -124,8 +111,10 @@ void main() {
       await tester.goToGeneralCalendarSettingsPageIntervalTab();
 
       await tester.stepRight(DayPart.morning, times: 4);
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
 
-      await _verifySaved(tester, {
+      await verifyGenerics(tester, genericDb, keyMatch: {
         MemoplannerSettings.forenoonIntervalStartKey:
             11 * Duration.millisecondsPerHour,
       });
@@ -135,14 +124,14 @@ void main() {
       await tester.goToGeneralCalendarSettingsPageIntervalTab();
 
       await tester.stepRight(DayPart.morning, times: 4);
-      await tester.stepRight(DayPart.forenoon, times: 7);
+      await tester.stepRight(DayPart.day, times: 7);
       await tester.stepRight(DayPart.evening, times: 2);
       await tester.stepRight(DayPart.night);
 
       final morningRight = tester.widget<ActionButtonDark>(
           find.byKey(IntervalStepper.rightStepKey(DayPart.morning)));
       final dayRight = tester.widget<ActionButtonDark>(
-          find.byKey(IntervalStepper.rightStepKey(DayPart.forenoon)));
+          find.byKey(IntervalStepper.rightStepKey(DayPart.day)));
       final eveningRight = tester.widget<ActionButtonDark>(
           find.byKey(IntervalStepper.rightStepKey(DayPart.evening)));
       final nightRight = tester.widget<ActionButtonDark>(
@@ -153,7 +142,10 @@ void main() {
       expect(eveningRight.onPressed, isNull);
       expect(nightRight.onPressed, isNull);
 
-      await _verifySaved(tester, {
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      await verifyGenerics(tester, genericDb, keyMatch: {
         MemoplannerSettings.morningIntervalStartKey:
             10 * Duration.millisecondsPerHour,
         MemoplannerSettings.forenoonIntervalStartKey:
@@ -169,14 +161,14 @@ void main() {
       await tester.goToGeneralCalendarSettingsPageIntervalTab();
 
       await tester.stepLeft(DayPart.morning);
-      await tester.stepLeft(DayPart.forenoon, times: 2);
+      await tester.stepLeft(DayPart.day, times: 2);
       await tester.stepLeft(DayPart.evening, times: 2);
       await tester.stepLeft(DayPart.night, times: 4);
 
       final morningRight = tester.widget<ActionButtonDark>(
           find.byKey(IntervalStepper.leftStepKey(DayPart.morning)));
       final dayRight = tester.widget<ActionButtonDark>(
-          find.byKey(IntervalStepper.leftStepKey(DayPart.forenoon)));
+          find.byKey(IntervalStepper.leftStepKey(DayPart.day)));
       final eveningRight = tester.widget<ActionButtonDark>(
           find.byKey(IntervalStepper.leftStepKey(DayPart.evening)));
       final nightRight = tester.widget<ActionButtonDark>(
@@ -187,7 +179,10 @@ void main() {
       expect(eveningRight.onPressed, isNull);
       expect(nightRight.onPressed, isNull);
 
-      await _verifySaved(tester, {
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      await verifyGenerics(tester, genericDb, keyMatch: {
         MemoplannerSettings.morningIntervalStartKey:
             5 * Duration.millisecondsPerHour,
         MemoplannerSettings.forenoonIntervalStartKey:
@@ -202,7 +197,7 @@ void main() {
     testWidgets('max day and evening, then min night', (tester) async {
       await tester.goToGeneralCalendarSettingsPageIntervalTab();
 
-      await tester.stepRight(DayPart.forenoon, times: 8);
+      await tester.stepRight(DayPart.day, times: 8);
       expect(find.text('6:00 AM'), findsOneWidget);
       expect(find.text('6:00 PM'), findsOneWidget);
       expect(find.text('7:00 PM'), findsOneWidget);

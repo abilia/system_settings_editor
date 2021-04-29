@@ -30,6 +30,7 @@ abstract class MemoplannerSettingsState extends Equatable {
       activityDisplayClock ||
       dayCaptionShowDayButtons;
   bool get showCategories => settings.calendarActivityTypeShowTypes;
+  bool get showColor => settings.calendarActivityTypeShowColor;
   bool get timepillar12HourFormat => settings.setting12hTimeFormatTimeline;
   bool get displayHourLines => settings.settingDisplayHourLines;
   bool get displayTimeline => settings.settingDisplayTimeline;
@@ -67,6 +68,19 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayMenuQuickSettings => settings.settingsMenuShowQuickSettings;
   bool get displayMenuSettings => settings.settingsMenuShowSettings;
   bool get dotsInTimepillar => settings.dotsInTimepillar;
+  bool get settingViewOptionsTimeView => settings.settingViewOptionsTimeView;
+  bool get settingViewOptionsTimeInterval =>
+      settings.settingViewOptionsTimeInterval;
+  bool get settingViewOptionsZoom => settings.settingViewOptionsZoom;
+  bool get settingViewOptionsDurationDots =>
+      settings.settingViewOptionsDurationDots;
+
+  bool get displayEyeButton =>
+      settingViewOptionsTimeView ||
+      (dayCalendarType == DayCalendarType.TIMEPILLAR &&
+          (settingViewOptionsTimeInterval ||
+              settingViewOptionsZoom ||
+              settingViewOptionsDurationDots));
 
   bool get weekCaptionShowBrowseButtons =>
       settings.weekCaptionShowBrowseButtons;
@@ -75,8 +89,7 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get weekCaptionShowClock => settings.weekCaptionShowClock;
 
   int get morningStart => settings.morningIntervalStart;
-  int get forenoonStart => settings.forenoonIntervalStart;
-  int get afternoonStart => settings.afternoonIntervalStart;
+  int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
   int get alarmDuration => settings.alarmDuration;
@@ -150,16 +163,11 @@ abstract class MemoplannerSettingsState extends Equatable {
       case DayPart.morning:
         return TimepillarInterval(
           start: base.add(morningStart.milliseconds()),
-          end: base.add(forenoonStart.milliseconds()),
+          end: base.add(dayStart.milliseconds()),
         );
-      case DayPart.forenoon:
+      case DayPart.day:
         return TimepillarInterval(
-          start: base.add(forenoonStart.milliseconds()),
-          end: base.add(afternoonStart.milliseconds()),
-        );
-      case DayPart.afternoon:
-        return TimepillarInterval(
-          start: base.add(afternoonStart.milliseconds()),
+          start: base.add(dayStart.milliseconds()),
           end: base.add(eveningStart.milliseconds()),
         );
       case DayPart.evening:
@@ -187,14 +195,15 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   DayParts get dayParts => DayParts(
         morningStart,
-        forenoonStart,
-        afternoonStart,
+        dayStart,
         eveningStart,
         nightStart,
       );
 
-  String get leftCategoryName => settings.calendarActivityTypeLeft;
-  String get rightCategoryName => settings.calendarActivityTypeRight;
+  String get leftCategoryName =>
+      settings.calendarActivityTypeLeft.nullIfEmpty();
+  String get rightCategoryName =>
+      settings.calendarActivityTypeRight.nullIfEmpty();
 
   // Properties derived from one or more settings
   bool get abilityToSelectAlarm =>

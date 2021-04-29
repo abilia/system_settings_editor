@@ -128,7 +128,7 @@ void main() {
       expect(poped, hasLength(1));
       final selectedImageRoute = poped.first as Route;
       final res = await selectedImageRoute.popped;
-      expect(res, SelectedImage(id: fileId, path: path));
+      expect(res, SelectedImage.from(id: fileId, path: path));
     });
 
     testWidgets('tts', (WidgetTester tester) async {

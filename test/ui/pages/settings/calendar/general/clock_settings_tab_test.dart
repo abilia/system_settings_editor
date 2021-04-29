@@ -15,6 +15,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../../mocks.dart';
+import '../../../../../utils/verify_generic.dart';
 
 void main() {
   final initialTime = DateTime(2021, 04, 13, 13, 37);
@@ -77,23 +78,6 @@ void main() {
     expect(find.byType(CancelButton), findsOneWidget);
   });
 
-  Future _verifySaved(
-    WidgetTester tester, {
-    String key,
-    dynamic matcher,
-  }) async {
-    await tester.tap(find.byType(OkButton));
-    await tester.pumpAndSettle();
-
-    final v = verify(genericDb.insertAndAddDirty(captureAny));
-    expect(v.callCount, 1);
-    final l = v.captured.single.toList() as List<Generic<GenericData>>;
-    final d = l
-        .whereType<Generic<MemoplannerSettingData>>()
-        .firstWhere((element) => element.data.identifier == key);
-    expect(d.data.data, matcher);
-  }
-
   group('clock', () {
     testWidgets('digital clock choice saved', (tester) async {
       await tester.goToGeneralCalendarSettingsPage();
@@ -103,8 +87,11 @@ void main() {
       expect(find.byType(AnalogClock), findsNothing);
       expect(find.byType(DigitalClock), findsOneWidget);
 
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingClockTypeKey,
         matcher: ClockType.digital.index,
       );
@@ -117,8 +104,11 @@ void main() {
 
       expect(find.byType(AnalogClock), findsOneWidget);
       expect(find.byType(DigitalClock), findsNothing);
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingClockTypeKey,
         matcher: ClockType.analogue.index,
       );
@@ -210,8 +200,11 @@ void main() {
       expect(find.text('1'), findsOneWidget);
       expect(find.text('2'), findsOneWidget);
 
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.setting12hTimeFormatTimelineKey,
         matcher: isTrue,
       );
@@ -237,8 +230,11 @@ void main() {
 
       expect(timepillarAfter.columnOfDots, isTrue);
 
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingTimePillarTimelineKey,
         matcher: isTrue,
       );
@@ -260,8 +256,11 @@ void main() {
 
       expect(find.byType(Timeline), findsNothing);
 
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingDisplayTimelineKey,
         matcher: isFalse,
       );
@@ -283,8 +282,11 @@ void main() {
 
       expect(find.byType(HourLines), findsWidgets);
 
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingDisplayHourLinesKey,
         matcher: isTrue,
       );

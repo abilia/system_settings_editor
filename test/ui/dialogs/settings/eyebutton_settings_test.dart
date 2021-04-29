@@ -18,7 +18,6 @@ import '../../../mocks.dart';
 import '../../../utils/verify_generic.dart';
 
 void main() {
-  MockSettingsDb mockSettingsDb;
   final translate = Locales.language.values.first;
   MockGenericDb mockGenericDb;
 
@@ -37,9 +36,6 @@ void main() {
     when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
         Future.value([Activity.createNew(title: 'null', startTime: initTime)]));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-
-    mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
 
     final mockUserFileDb = MockUserFileDb();
     when(
@@ -67,7 +63,6 @@ void main() {
       ..client = Fakes.client(activityResponse: activityResponse)
       ..fileStorage = MockFileStorage()
       ..userFileDb = mockUserFileDb
-      ..settingsDb = mockSettingsDb
       ..genericDb = mockGenericDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler

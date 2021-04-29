@@ -208,6 +208,7 @@ class QuestionView extends StatelessWidget {
         return FullscreenImageDialog(
           fileId: fileId,
           filePath: filePath,
+          tempFile: tempImageFile,
         );
       },
     );
