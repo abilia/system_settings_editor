@@ -71,8 +71,7 @@ class WeekCalendarDisplay extends StatelessWidget {
         child:
             BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
                 builder: (context, state) {
-          final days =
-              state.weekDisplayDays == WeekDisplayDays.everyDay ? 7 : 5;
+          final days = state.weekDisplayDays.numberOfDays();
           return Column(
             children: [
               Row(
