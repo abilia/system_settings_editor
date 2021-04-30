@@ -93,30 +93,25 @@ class Calendars extends StatelessWidget {
                           MemoplannerSettingsState>(
                         buildWhen: (previous, current) =>
                             previous.dayCalendarType != current.dayCalendarType,
-                        builder: (context, memoState) =>
-                            BlocBuilder<CalendarViewBloc, CalendarViewState>(
-                          builder: (context, calendarViewState) => Stack(
-                            children: [
-                              if (memoState.dayCalendarType ==
-                                  DayCalendarType.LIST)
-                                Agenda(
-                                  activityState: activityState,
-                                  calendarViewState: calendarViewState,
-                                )
-                              else
-                                TimepillarCalendar(
-                                  activityState: activityState,
-                                  calendarViewState: calendarViewState,
-                                ),
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 32.0.s),
-                                  child: GoToNowButton(),
-                                ),
+                        builder: (context, memoState) => Stack(
+                          children: [
+                            if (memoState.dayCalendarType ==
+                                DayCalendarType.LIST)
+                              Agenda(
+                                activityState: activityState,
+                              )
+                            else
+                              TimepillarCalendar(
+                                activityState: activityState,
                               ),
-                            ],
-                          ),
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 32.0.s),
+                                child: GoToNowButton(),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

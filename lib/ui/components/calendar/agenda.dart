@@ -11,12 +11,10 @@ class Agenda extends StatefulWidget {
       categoryWidth = 42.0.s;
 
   final ActivitiesOccasionLoaded activityState;
-  final CalendarViewState calendarViewState;
 
   const Agenda({
     Key key,
     @required this.activityState,
-    @required this.calendarViewState,
   }) : super(key: key);
 
   @override
@@ -126,12 +124,12 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                   CategoryLeft(
                     maxWidth: categoryLabelWidth,
                     categoryName: memoplannerSettingsState.leftCategoryName,
-                    expanded: widget.calendarViewState.expandLeftCategory,
+                    fileId: memoplannerSettingsState.leftCategoryImage,
                   ),
                   CategoryRight(
                     maxWidth: categoryLabelWidth,
                     categoryName: memoplannerSettingsState.rightCategoryName,
-                    expanded: widget.calendarViewState.expandRightCategory,
+                    fileId: memoplannerSettingsState.rightCategoryImage,
                   ),
                 ],
               ],

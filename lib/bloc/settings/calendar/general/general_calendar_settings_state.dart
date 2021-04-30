@@ -127,18 +127,18 @@ class TimepillarSettingState extends Equatable {
 }
 
 class CategoriesSettingState extends Equatable {
-  final bool showCategories, showColors;
-  final String rigthCategoryName, leftCategoryName;
+  final bool show, colors;
+  final ImageAndName left, right;
 
   CategoriesSettingState._(
-    this.showCategories,
-    this.showColors,
-    this.rigthCategoryName,
-    this.leftCategoryName,
-  )   : assert(showCategories != null),
-        assert(showColors != null),
-        assert(leftCategoryName != null),
-        assert(rigthCategoryName != null);
+    this.show,
+    this.colors,
+    this.left,
+    this.right,
+  )   : assert(show != null),
+        assert(colors != null),
+        assert(left != null),
+        assert(right != null);
 
   factory CategoriesSettingState.fromMemoplannerSettings(
     MemoplannerSettingsState state,
@@ -146,48 +146,62 @@ class CategoriesSettingState extends Equatable {
       CategoriesSettingState._(
         state.showCategories,
         state.showColor,
-        state.rightCategoryName ?? '',
-        state.leftCategoryName ?? '',
+        ImageAndName(
+          state.leftCategoryName,
+          SelectedImage.from(id: state.leftCategoryImage),
+        ),
+        ImageAndName(
+          state.rightCategoryName,
+          SelectedImage.from(id: state.rightCategoryImage),
+        ),
       );
 
   CategoriesSettingState copyWith({
-    bool showCategories,
-    bool showColors,
-    String rigthCategoryName,
-    String leftCategoryName,
+    bool show,
+    bool colors,
+    ImageAndName left,
+    ImageAndName right,
   }) =>
       CategoriesSettingState._(
-        showCategories ?? this.showCategories,
-        showColors ?? this.showColors,
-        rigthCategoryName ?? this.rigthCategoryName,
-        leftCategoryName ?? this.leftCategoryName,
+        show ?? this.show,
+        colors ?? this.colors,
+        left ?? this.left,
+        right ?? this.right,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
-          data: showCategories,
+          data: show,
           identifier: MemoplannerSettings.calendarActivityTypeShowTypesKey,
         ),
         MemoplannerSettingData.fromData(
-          data: showColors,
+          data: colors,
           identifier: MemoplannerSettings.calendarActivityTypeShowColorKey,
         ),
         MemoplannerSettingData.fromData(
-          data: rigthCategoryName,
+          data: left.name,
+          identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: right.name,
           identifier: MemoplannerSettings.calendarActivityTypeRightKey,
         ),
         MemoplannerSettingData.fromData(
-          data: leftCategoryName,
-          identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
+          data: left.image.id,
+          identifier: MemoplannerSettings.calendarActivityTypeLeftImageKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: right.image.id,
+          identifier: MemoplannerSettings.calendarActivityTypeRightImageKey,
         ),
       ];
 
   @override
   List<Object> get props => [
-        showCategories,
-        showColors,
-        rigthCategoryName,
-        leftCategoryName,
+        show,
+        colors,
+        left,
+        right,
       ];
 }
 

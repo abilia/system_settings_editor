@@ -15,12 +15,10 @@ class TimepillarCalendar extends StatelessWidget {
   static final bottomMargin = 10.0.s;
   static const nightBackgroundColor = AbiliaColors.black90;
   final ActivitiesOccasionLoaded activityState;
-  final CalendarViewState calendarViewState;
 
   const TimepillarCalendar({
     Key key,
     this.activityState,
-    this.calendarViewState,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,6 @@ class TimepillarCalendar extends StatelessWidget {
         builder: (context, memoplannerSettingsState) => _TimepillarCalendar(
           key: ValueKey(state.timepillarInterval),
           activityState: activityState,
-          calendarViewState: calendarViewState,
           memoplannerSettingsState: memoplannerSettingsState,
           timepillarState: state,
         ),
@@ -41,14 +38,12 @@ class TimepillarCalendar extends StatelessWidget {
 
 class _TimepillarCalendar extends StatefulWidget {
   final ActivitiesOccasionLoaded activityState;
-  final CalendarViewState calendarViewState;
   final MemoplannerSettingsState memoplannerSettingsState;
   final TimepillarState timepillarState;
 
   const _TimepillarCalendar({
     Key key,
     @required this.activityState,
-    @required this.calendarViewState,
     @required this.memoplannerSettingsState,
     @required this.timepillarState,
   }) : super(key: key);
@@ -69,7 +64,6 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
   bool get showCategories => memoSettings.showCategories;
   bool get showHourLines => memoSettings.displayHourLines;
   List<ActivityOccasion> get activities => widget.activityState.activities;
-  CalendarViewState get viewState => widget.calendarViewState;
   TimepillarInterval get interval => widget.timepillarState.timepillarInterval;
 
   @override
@@ -212,10 +206,10 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
                                   category(
                                     showCategories
                                         ? CategoryLeft(
-                                            expanded:
-                                                viewState.expandLeftCategory,
                                             categoryName:
                                                 memoSettings.leftCategoryName,
+                                            fileId:
+                                                memoSettings.leftCategoryImage,
                                           )
                                         : null,
                                     height: boxConstraints.maxHeight,
@@ -242,10 +236,10 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
                                 category(
                                   showCategories
                                       ? CategoryRight(
-                                          expanded:
-                                              viewState.expandRightCategory,
                                           categoryName:
                                               memoSettings.rightCategoryName,
+                                          fileId:
+                                              memoSettings.rightCategoryImage,
                                         )
                                       : null,
                                   height: boxConstraints.maxHeight,
