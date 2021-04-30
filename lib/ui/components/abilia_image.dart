@@ -126,6 +126,7 @@ class ActivityImage extends StatelessWidget {
       fileId,
       filePath,
       GetIt.I<FileStorage>(),
+      imageSize: imageSize,
     );
     if (file != null) {
       return Image.file(file);
@@ -211,7 +212,11 @@ class FullScreenImage extends StatelessWidget {
         return BlocBuilder<UserFileBloc, UserFileState>(
             builder: (context, userFileState) {
           final file = userFileState.getLoadedByIdOrPath(
-              fileId, filePath, GetIt.I<FileStorage>());
+            fileId,
+            filePath,
+            GetIt.I<FileStorage>(),
+            imageSize: ImageSize.ORIGINAL,
+          );
           return PhotoView(
             backgroundDecoration: backgroundDecoration,
             imageProvider: file != null
@@ -369,7 +374,10 @@ class FadeInNetworkImage extends StatelessWidget {
               height: height,
               width: width,
               placeholder: MemoryImage(kTransparentImage),
-              imageErrorBuilder: (_, __, ___) => const CrossOver(),
+              imageErrorBuilder: (_, __, ___) => CrossOver(
+                fallbackHeight: height,
+                fallbackWidth: width,
+              ),
               image: NetworkImage(
                 imageFileId != null
                     ? imageThumbIdUrl(

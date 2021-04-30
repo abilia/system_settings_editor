@@ -13,7 +13,7 @@ abstract class UserFileState extends Equatable {
     String fileId,
     String filePath,
     FileStorage fileStorage, {
-    ImageSize imageSize = ImageSize.THUMB,
+    @required ImageSize imageSize,
   }) {
     final userFile = userFiles.firstWhere(
         (f) => (f.id == fileId || f.path == filePath) && f.fileLoaded,
