@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
@@ -7,11 +5,9 @@ import 'package:seagull/ui/all.dart';
 
 class EditQuestionPage extends StatelessWidget {
   final Question question;
-  final File tempFile;
 
   const EditQuestionPage({
     this.question,
-    this.tempFile,
     Key key,
   }) : super(key: key);
   @override
@@ -27,7 +23,6 @@ class EditQuestionPage extends StatelessWidget {
               SelectedImage.from(
                 path: question.image,
                 id: question.fileId,
-                file: tempFile,
               ),
             )
           : null,

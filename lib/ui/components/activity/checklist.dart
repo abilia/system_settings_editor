@@ -1,6 +1,3 @@
-import 'dart:collection';
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +9,6 @@ class ChecklistView extends StatefulWidget {
   final DateTime day;
   final Function(Question) onTap;
   final EdgeInsetsGeometry padding;
-  final UnmodifiableMapView<int, File> tempImageFiles;
   final bool preview;
 
   ChecklistView(
@@ -21,10 +17,8 @@ class ChecklistView extends StatefulWidget {
     this.onTap,
     Key key,
     this.padding = EdgeInsets.zero,
-    Map<int, File> tempImageFiles = const {},
     this.preview = false,
-  })  : tempImageFiles = UnmodifiableMapView(tempImageFiles),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   _ChecklistViewState createState() => _ChecklistViewState();
@@ -54,7 +48,6 @@ class _ChecklistViewState extends State<ChecklistView> {
             signedOff: widget.day != null &&
                 widget.checklist.isSignedOff(question, widget.day),
             onTap: widget.onTap != null ? () => widget.onTap(question) : null,
-            tempImageFile: widget.tempImageFiles[question.id],
           );
         },
       ),
@@ -66,7 +59,6 @@ class QuestionView extends StatelessWidget {
   final Question question;
   final bool signedOff;
   final GestureTapCallback onTap;
-  final File tempImageFile;
   final bool inactive;
 
   const QuestionView(
@@ -74,7 +66,6 @@ class QuestionView extends StatelessWidget {
     @required this.onTap,
     this.signedOff = false,
     key,
-    this.tempImageFile,
     this.inactive = false,
   }) : super(key: key);
 
@@ -139,7 +130,6 @@ class QuestionView extends StatelessWidget {
                                 key: TestKey.checklistQuestionImageKey,
                                 imageFileId: question.fileId,
                                 imageFilePath: question.image,
-                                imageFile: tempImageFile,
                                 width: 40.s,
                                 height: 40.s,
                                 fit: BoxFit.contain,
@@ -208,7 +198,6 @@ class QuestionView extends StatelessWidget {
         return FullscreenImageDialog(
           fileId: fileId,
           filePath: filePath,
-          tempFile: tempImageFile,
         );
       },
     );

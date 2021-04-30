@@ -117,11 +117,11 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     }
     if (event is ImageSelected) {
       yield state.copyWith(
-          state.activity.copyWith(
-            fileId: event.imageId,
-            icon: event.path,
-          ),
-          imageUpdate: ImageUpdate(event.newImage));
+        state.activity.copyWith(
+          fileId: event.imageId,
+          icon: event.path,
+        ),
+      );
     }
     if (event is ChangeInfoItemType) {
       yield* _mapChangeInfoItemTypeToState(event);

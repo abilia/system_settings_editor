@@ -3,28 +3,6 @@ import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class ImageAndName {
-  final String name;
-  final SelectedImage image;
-  const ImageAndName(this.name, this.image);
-
-  static ImageAndName get empty =>
-      const ImageAndName(null, SelectedImage.empty);
-
-  ImageAndName copyWith({
-    String name,
-    SelectedImage image,
-  }) =>
-      ImageAndName(
-        name ?? this.name,
-        image ?? this.image,
-      );
-
-  bool get hasName => name?.isNotEmpty == true;
-  bool get isEmpty => !hasName && image.isEmpty;
-  bool get isNotEmpty => !isEmpty;
-}
-
 class EditImageAndName extends StatefulWidget {
   final ImageAndName imageAndName;
   final PreferredSizeWidget appBar;

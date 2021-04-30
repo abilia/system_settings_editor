@@ -40,6 +40,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     UserFileEvent event,
   ) async* {
     if (event is ImageAdded) {
+      yield state.addTempFile(event.selectedImage.id, event.selectedImage.file);
       yield* _mapImageAddedToState(event);
     }
     if (event is LoadUserFiles) {
@@ -53,7 +54,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> _mapLoadUserFilesToState() async* {
     await userFileRepository.fetchIntoDatabaseSynchronized();
     final storedFiles = await userFileRepository.getAllLoadedFiles();
-    yield UserFilesLoaded(storedFiles);
+    yield UserFilesLoaded(storedFiles, state._tempFiles);
     add(_DownloadUserFiles());
   }
 
@@ -62,8 +63,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
         await userFileRepository.downloadUserFiles(limit: 10);
     if (downloadedUserFiles.isNotEmpty) {
       yield UserFilesLoaded(
-        state.userFiles.followedBy(downloadedUserFiles).toList(),
-      );
+          [...state.userFiles, ...downloadedUserFiles], state._tempFiles);
       add(_DownloadUserFiles());
     }
   }
@@ -71,13 +71,14 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> _mapImageAddedToState(
     ImageAdded event,
   ) async* {
-    final originalBytes = await event.file.readAsBytes();
-    final userFile =
-        await handleImage(originalBytes, event.id, event.file.path);
-    syncBloc.add(FileSaved());
-    yield UserFilesLoaded(
-      state.userFiles.followedBy([userFile]).toList(),
+    final originalBytes = await event.selectedImage.file.readAsBytes();
+    final userFile = await handleImage(
+      originalBytes,
+      event.selectedImage.id,
+      event.selectedImage.file.path,
     );
+    syncBloc.add(FileSaved());
+    yield state.add(userFile);
   }
 
   UserFile generateUserFile(

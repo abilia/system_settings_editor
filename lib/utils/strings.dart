@@ -42,7 +42,6 @@ extension UriExtension on String {
 
 extension Replace on String {
   String get singleLine => replaceAll('-\n', '');
-  String nullIfEmpty() => this == null || isEmpty ? null : this;
 }
 
 class TextRenderingSize {

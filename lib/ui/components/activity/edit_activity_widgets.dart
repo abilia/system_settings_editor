@@ -124,7 +124,7 @@ class SelectPictureWidget extends StatelessWidget {
     );
 
     if (newSelectedImage != null) {
-      if (newSelectedImage.toBeStored) {
+      if (newSelectedImage.file != null) {
         BlocProvider.of<UserFileBloc>(context).add(
           ImageAdded(newSelectedImage),
         );
@@ -172,7 +172,6 @@ class SelectedImageWidget extends StatelessWidget {
                 width: innerSize,
                 imageFileId: selectedImage.id,
                 imageFilePath: selectedImage.path,
-                imageFile: selectedImage.file,
               )
             : Container(
                 decoration: whiteNoBorderBoxDecoration,
@@ -265,15 +264,17 @@ class CategoryWidget extends StatelessWidget {
                 buildCategoryRadioField(
                   context,
                   Category.left,
-                  state.leftCategoryName ??
-                      Translator.of(context).translate.left,
+                  state.leftCategoryName.isEmpty
+                      ? Translator.of(context).translate.left
+                      : state.leftCategoryName,
                 ),
                 SizedBox(width: 8.s),
                 buildCategoryRadioField(
                   context,
                   Category.right,
-                  state.rightCategoryName ??
-                      Translator.of(context).translate.right,
+                  state.rightCategoryName.isEmpty
+                      ? Translator.of(context).translate.right
+                      : state.rightCategoryName,
                 ),
               ],
             )

@@ -157,8 +157,8 @@ class MemoplannerSettings extends Equatable {
     this.dayIntervalStart = DayParts.dayDefault,
     this.eveningIntervalStart = DayParts.eveningDefault,
     this.nightIntervalStart = DayParts.nightDefault,
-    this.calendarActivityTypeLeft,
-    this.calendarActivityTypeRight,
+    this.calendarActivityTypeLeft = '',
+    this.calendarActivityTypeRight = '',
     this.calendarActivityTypeShowTypes = true,
     this.calendarActivityTypeShowColor = true,
     this.calendarDayColor = 0,
@@ -339,9 +339,11 @@ class MemoplannerSettings extends Equatable {
       ),
       calendarActivityTypeLeft: settings.parse<String>(
         calendarActivityTypeLeftKey,
+        '',
       ),
       calendarActivityTypeRight: settings.parse<String>(
         calendarActivityTypeRightKey,
+        '',
       ),
       calendarDayColor: settings.parse(calendarDayColorKey, 0),
       viewOptionsTimeInterval: settings.parse(viewOptionsTimeIntervalKey, 1),

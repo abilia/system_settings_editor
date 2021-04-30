@@ -35,7 +35,9 @@ class CategoryLeft extends _CategoryWidget {
         );
   @override
   Widget build(BuildContext context) => _Category(
-        text: categoryName ?? Translator.of(context).translate.left,
+        text: categoryName.isEmpty
+            ? Translator.of(context).translate.left
+            : categoryName,
         borderRadius:
             BorderRadius.only(topRight: _radius, bottomRight: _radius),
         expanded: expanded,
@@ -57,7 +59,9 @@ class CategoryRight extends _CategoryWidget {
         );
   @override
   Widget build(BuildContext context) => _Category(
-        text: categoryName ?? Translator.of(context).translate.right,
+        text: categoryName.isEmpty
+            ? Translator.of(context).translate.right
+            : categoryName,
         expanded: expanded,
         icon: AbiliaIcons.navigation_next,
         alignment: const Alignment(1, 0),
