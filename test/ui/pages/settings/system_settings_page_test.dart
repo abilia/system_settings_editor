@@ -9,7 +9,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../../mocks.dart';
+import '../../../mocks.dart';
 
 void main() {
   MockSettingsDb mockSettingsDb;
@@ -277,7 +277,6 @@ void main() {
       }
 
       expect(openAppSettingsCalls, perms.length - 1);
-      expect(openSystemAlertSettingCalls, 1);
     });
 
     testWidgets('Permission granted, except notifcation, tapped calls settings',
@@ -348,6 +347,8 @@ void main() {
       expect(
           find.byType(NotificationPermissionOffWarningDialog), findsOneWidget);
       await tester.tap(find.byKey(TestKey.okDialog));
+      await tester.pumpAndSettle();
+
       expect(openSystemAlertSettingCalls, 1);
     });
 

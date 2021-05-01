@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:intent/flag.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
@@ -241,28 +242,56 @@ void setupPermissions(
   openAppSettingsCalls = 0;
   openSystemAlertSettingCalls = 0;
   MethodChannel('flutter.baseflow.com/permissions/methods')
-      .setMockMethodCallHandler((MethodCall methodCall) async {
-    switch (methodCall.method) {
-      case 'requestPermissions':
-        requestedPermissions.addAll(
-          (methodCall.arguments as List)
-              .cast<int>()
-              .map((i) => Permission.values[i]),
-        );
-        return permissions
-            .map((key, value) => MapEntry<int, int>(key.value, value.value));
-      case 'checkPermissionStatus':
-        final askedPermission = Permission.values[methodCall.arguments as int];
-        checkedPermissions.add(askedPermission);
-        return (permissions[askedPermission]).value;
-      case 'openAppSettings':
-        openAppSettingsCalls++;
-        break;
-      case 'openSystemAlertSetting':
-        openSystemAlertSettingCalls++;
-        break;
-    }
-  });
+      .setMockMethodCallHandler(
+    (MethodCall methodCall) async {
+      switch (methodCall.method) {
+        case 'requestPermissions':
+          requestedPermissions.addAll(
+            (methodCall.arguments as List)
+                .cast<int>()
+                .map((i) => Permission.values[i]),
+          );
+          return permissions
+              .map((key, value) => MapEntry<int, int>(key.value, value.value));
+        case 'checkPermissionStatus':
+          final askedPermission =
+              Permission.values[methodCall.arguments as int];
+          checkedPermissions.add(askedPermission);
+          return (permissions[askedPermission]).value;
+        case 'openAppSettings':
+          openAppSettingsCalls++;
+          break;
+      }
+    },
+  );
+  MethodChannel('intent').setMockMethodCallHandler(
+    (MethodCall methodCall) async {
+      print(methodCall);
+      switch (methodCall.method) {
+        case 'startActivity':
+          if (methodCall.arguments['data'] == 'package:pkgName' &&
+              methodCall.arguments['action'] ==
+                  'android.settings.action.MANAGE_OVERLAY_PERMISSION' &&
+              (methodCall.arguments['flag'] as List)
+                  .contains(Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)) {
+            openSystemAlertSettingCalls++;
+          }
+      }
+    },
+  );
+  MethodChannel('plugins.flutter.io/package_info').setMockMethodCallHandler(
+    (MethodCall methodCall) async {
+      switch (methodCall.method) {
+        case 'getAll':
+          return {
+            'appName': 'MPGOTEST',
+            'packageName': 'pkgName',
+            'version': '9.9.9',
+            'buildNumber': '12345',
+          };
+      }
+    },
+  );
 }
 
 extension PermissionStatusValue on PermissionStatus {
