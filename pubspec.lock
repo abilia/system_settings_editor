@@ -514,6 +514,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  intent:
+    dependency: "direct main"
+    description:
+      name: intent
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.0"
   intl:
     dependency: transitive
     description:
@@ -671,21 +678,17 @@ packages:
   permission_handler:
     dependency: "direct main"
     description:
-      path: "permission_handler/"
-      ref: "permission_handler_v6.0.1+fork.10"
-      resolved-ref: d59dcc797be3ddc76db1d3c7715c4d24d12bceaf
-      url: "git://github.com/abilia/flutter-permission-handler.git"
-    source: git
-    version: "6.0.1"
+      name: permission_handler
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.1.0"
   permission_handler_platform_interface:
     dependency: transitive
     description:
-      path: "permission_handler_platform_interface/"
-      ref: c98f5b18c9c59cfd82ae988a37c8982fbcc6f44a
-      resolved-ref: c98f5b18c9c59cfd82ae988a37c8982fbcc6f44a
-      url: "git://github.com/abilia/flutter-permission-handler.git"
-    source: git
-    version: "3.0.0+1"
+      name: permission_handler_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.3.0"
   petitparser:
     dependency: transitive
     description:

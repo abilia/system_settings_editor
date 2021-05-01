@@ -38,16 +38,13 @@ dependencies:
   google_fonts: ^2.0.0
   http: ^0.13.2
   image_picker: ^0.7.4
+  intent: ^1.4.0
   logging: ^1.0.1
   meta: ^1.1.8
   mime: ^1.0.0
   package_info: ^2.0.0
   path_provider: ^2.0.1
-  permission_handler:
-    git:
-      url: git://github.com/abilia/flutter-permission-handler.git
-      ref: permission_handler_v6.0.1+fork.10
-      path: permission_handler/
+  permission_handler: ^7.1.0
   photo_view: ^0.11.1
   rxdart: ^0.26.0
   shared_preferences: ^2.0.5

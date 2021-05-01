@@ -123,7 +123,9 @@ class RequestFullscreenNotificationButton extends StatelessWidget {
         icon: AbiliaIcons.ok,
         text: Translator.of(context).translate.allow,
         onPressed: () async {
-          await openSystemAlertSetting();
+          context
+              .read<PermissionBloc>()
+              .add(RequestPermissions([Permission.systemAlertWindow]));
           await Navigator.of(context).maybePop();
         },
       );
