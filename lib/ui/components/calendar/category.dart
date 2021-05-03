@@ -93,7 +93,6 @@ class _Category extends StatefulWidget {
 
 class __CategoryState extends State<_Category> with TickerProviderStateMixin {
   final bool value;
-  final imageSize = 36.s;
   AlignmentGeometry alignment;
   BorderRadius borderRadius;
   AnimationController controller;
@@ -210,13 +209,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                           padding: paddingAnimation.value,
                           child: w,
                         ),
-                        child: FadeInAbiliaImage(
-                          key: Key(widget.fileId),
-                          imageFileId: widget.fileId,
-                          width: imageSize,
-                          height: imageSize,
-                          borderRadius: BorderRadius.circular(18.s),
-                        ),
+                        child: CategoryImage(fileId: widget.fileId),
                       )
                     else
                       SizedBox(width: 16.s)
@@ -235,4 +228,19 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
     controller.dispose();
     super.dispose();
   }
+}
+
+class CategoryImage extends StatelessWidget {
+  const CategoryImage({Key key, @required this.fileId}) : super(key: key);
+
+  static final imageSize = 36.s, borderRadius = BorderRadius.circular(18.s);
+  final String fileId;
+
+  @override
+  Widget build(BuildContext context) => FadeInAbiliaImage(
+        imageFileId: fileId,
+        width: imageSize,
+        height: imageSize,
+        borderRadius: borderRadius,
+      );
 }

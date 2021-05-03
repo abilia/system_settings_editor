@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -35,8 +37,6 @@ final AlarmScheduler noAlarmScheduler = ((a, b, c, d, e) async {});
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 class MockUserRepository extends Mock implements UserRepository {}
-
-class MockHttpClient extends Mock implements Client {}
 
 class MockActivityRepository extends Mock implements ActivityRepository {}
 
@@ -310,4 +310,50 @@ extension PermissionStatusValue on PermissionStatus {
         return 3;
     }
   }
+}
+
+class MockHttpClient extends Mock implements HttpClient {}
+
+class MockHttpClientRequest extends Mock implements HttpClientRequest {}
+
+class MockHttpClientResponse extends Mock implements HttpClientResponse {}
+
+class MockHttpHeaders extends Mock implements HttpHeaders {}
+
+R provideMockedNetworkImages<R>(R Function() body) => HttpOverrides.runZoned(
+      body,
+      createHttpClient: (_) => createMockImageHttpClient(kTransparentImage),
+    );
+
+// Returns a mock HTTP client that responds with an image to all requests.
+MockHttpClient createMockImageHttpClient(List<int> imageBytes) {
+  final client = MockHttpClient();
+  final request = MockHttpClientRequest();
+  final response = MockHttpClientResponse();
+  final headers = MockHttpHeaders();
+
+  when(client.getUrl(any))
+      .thenAnswer((_) => Future<HttpClientRequest>.value(request));
+  when(request.headers).thenReturn(headers);
+  when(request.close())
+      .thenAnswer((_) => Future<HttpClientResponse>.value(response));
+  when(response.contentLength).thenReturn(imageBytes.length);
+  when(response.statusCode).thenReturn(HttpStatus.ok);
+  when(response.compressionState)
+      .thenReturn(HttpClientResponseCompressionState.notCompressed);
+  when(response.listen(any)).thenAnswer((Invocation invocation) {
+    final void Function(List<int>) onData = invocation.positionalArguments[0];
+    final void Function() onDone = invocation.namedArguments[#onDone];
+    final void Function(Object, [StackTrace]) onError =
+        invocation.namedArguments[#onError];
+    final bool cancelOnError = invocation.namedArguments[#cancelOnError];
+
+    return Stream<List<int>>.fromIterable(<List<int>>[imageBytes]).listen(
+        onData,
+        onDone: onDone,
+        onError: onError,
+        cancelOnError: cancelOnError);
+  });
+
+  return client;
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -261,20 +260,26 @@ class CategoryWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                buildCategoryRadioField(
-                  context,
-                  Category.left,
-                  state.leftCategoryName.isEmpty
+                _CategoryRadioField(
+                  category: Category.left,
+                  radioKey: TestKey.leftCategoryRadio,
+                  activity: activity,
+                  icon: AbiliaIcons.move_item_left,
+                  label: state.leftCategoryName.isEmpty
                       ? Translator.of(context).translate.left
                       : state.leftCategoryName,
+                  fileId: state.leftCategoryImage,
                 ),
                 SizedBox(width: 8.s),
-                buildCategoryRadioField(
-                  context,
-                  Category.right,
-                  state.rightCategoryName.isEmpty
+                _CategoryRadioField(
+                  category: Category.right,
+                  radioKey: TestKey.rightCategoryRadio,
+                  activity: activity,
+                  icon: AbiliaIcons.move_item_right,
+                  label: state.rightCategoryName.isEmpty
                       ? Translator.of(context).translate.right
                       : state.rightCategoryName,
+                  fileId: state.rightCategoryImage,
                 ),
               ],
             )
@@ -283,22 +288,46 @@ class CategoryWidget extends StatelessWidget {
       },
     );
   }
+}
 
-  Expanded buildCategoryRadioField(
-      BuildContext context, int category, String text) {
-    final left = category == Category.left;
-    final key = left ? TestKey.leftCategoryRadio : TestKey.rightCategoryRadio;
-    final icon =
-        left ? AbiliaIcons.move_item_left : AbiliaIcons.move_item_right;
+class _CategoryRadioField extends StatelessWidget {
+  final IconData icon;
+  final String label, fileId;
+  final Activity activity;
+  final int category;
+  final Key radioKey;
+
+  const _CategoryRadioField({
+    Key key,
+    @required this.icon,
+    @required this.label,
+    @required this.activity,
+    @required this.category,
+    @required this.radioKey,
+    @required this.fileId,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
-      child: RadioField(
-        key: key,
-        margin: EdgeInsets.symmetric(horizontal: 14.0.s, vertical: 16.0.s),
+      child: RadioField<int>(
+        key: radioKey,
+        margin: fileId.isEmpty
+            ? EdgeInsets.symmetric(horizontal: 14.0.s, vertical: 16.0.s)
+            : EdgeInsets.all(4.s),
         onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
             .add(ReplaceActivity(activity.copyWith(category: v))),
-        leading: Icon(icon),
+        leading: fileId.isEmpty
+            ? Icon(icon)
+            : Container(
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: CategoryImage.borderRadius,
+                  border: border,
+                ),
+                child: CategoryImage(fileId: fileId),
+              ),
         text: Text(
-          text,
+          label,
           overflow: TextOverflow.ellipsis,
         ),
         groupValue: activity.category,

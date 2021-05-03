@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 
 import 'dart:async';
+import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
@@ -32,6 +35,7 @@ void main() {
         identifier: MemoplannerSettings.viewOptionsTimeViewKey),
   );
   setUp(() async {
+    tz.initializeTimeZones();
     setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     generics = [];
@@ -132,27 +136,29 @@ void main() {
       ),
     ];
 
-    await tester.goToGeneralCalendarSettingsPageCategoriesTab();
-    expect(find.byType(CalendarGeneralSettingsPage), findsOneWidget);
+    await provideMockedNetworkImages(() async {
+      await tester.goToGeneralCalendarSettingsPageCategoriesTab();
+      expect(find.byType(CalendarGeneralSettingsPage), findsOneWidget);
 
-    expect(find.byType(CategoryRight), findsNothing);
-    expect(find.byType(CategoryLeft), findsNothing);
-    expect(find.byType(FadeInAbiliaImage), findsNothing);
-    expect(find.text(leftName), findsNothing);
-    expect(find.text(rightName), findsNothing);
-    expect(find.text(translate.left), findsNothing);
-    expect(find.text(translate.right), findsNothing);
+      expect(find.byType(CategoryRight), findsNothing);
+      expect(find.byType(CategoryLeft), findsNothing);
+      expect(find.byType(FadeInAbiliaImage), findsNothing);
+      expect(find.text(leftName), findsNothing);
+      expect(find.text(rightName), findsNothing);
+      expect(find.text(translate.left), findsNothing);
+      expect(find.text(translate.right), findsNothing);
 
-    await tester.tap(find.text(translate.showCagetories));
-    await tester.pumpAndSettle();
+      await tester.tap(find.text(translate.showCagetories));
+      await tester.pumpAndSettle();
 
-    expect(find.byType(CategoryRight), findsOneWidget);
-    expect(find.byType(CategoryLeft), findsOneWidget);
-    expect(find.byType(FadeInAbiliaImage), findsNWidgets(4));
-    expect(find.text(leftName), findsNWidgets(4));
-    expect(find.text(rightName), findsNWidgets(4));
-    expect(find.text(translate.left), findsNothing);
-    expect(find.text(translate.right), findsNothing);
+      expect(find.byType(CategoryRight), findsOneWidget);
+      expect(find.byType(CategoryLeft), findsOneWidget);
+      expect(find.byType(FadeInAbiliaImage), findsNWidgets(4));
+      expect(find.text(leftName), findsNWidgets(4));
+      expect(find.text(rightName), findsNWidgets(4));
+      expect(find.text(translate.left), findsNothing);
+      expect(find.text(translate.right), findsNothing);
+    });
   });
 
   group('settings saved', () {
@@ -454,15 +460,18 @@ void main() {
           ),
         ),
       ];
-      // Act
-      await tester.pumpApp(use24: true);
-      // Assert
-      expect(find.byType(CategoryRight), findsOneWidget);
-      expect(find.byType(CategoryLeft), findsOneWidget);
-      expect(find.text(translate.left), findsOneWidget);
-      expect(find.text(translate.right), findsOneWidget);
-      expect(find.byKey(Key(fileIdRight)), findsOneWidget);
-      expect(find.byKey(Key(fileIdLeft)), findsOneWidget);
+      await provideMockedNetworkImages(
+        () async {
+          // Act
+          await tester.pumpApp(use24: true);
+          // Assert
+          expect(find.byType(CategoryRight), findsOneWidget);
+          expect(find.byType(CategoryLeft), findsOneWidget);
+          expect(find.text(translate.left), findsOneWidget);
+          expect(find.text(translate.right), findsOneWidget);
+          expect(find.byType(CategoryImage), findsNWidgets(2));
+        },
+      );
     });
 
     testWidgets('category image, agenda view', (tester) async {
@@ -482,15 +491,76 @@ void main() {
           ),
         ),
       ];
-      // Act
-      await tester.pumpApp(use24: true);
-      // Assert
-      expect(find.byType(CategoryRight), findsOneWidget);
-      expect(find.byType(CategoryLeft), findsOneWidget);
-      expect(find.text(translate.left), findsOneWidget);
-      expect(find.text(translate.right), findsOneWidget);
-      expect(find.byKey(Key(fileIdRight)), findsOneWidget);
-      expect(find.byKey(Key(fileIdLeft)), findsOneWidget);
+
+      await provideMockedNetworkImages(
+        () async {
+          // Act
+          await tester.pumpApp(use24: true);
+          // Assert
+          expect(find.byType(CategoryRight), findsOneWidget);
+          expect(find.byType(CategoryLeft), findsOneWidget);
+          expect(find.text(translate.left), findsOneWidget);
+          expect(find.text(translate.right), findsOneWidget);
+          expect(find.byType(CategoryImage), findsNWidgets(2));
+        },
+      );
+    });
+
+    testWidgets('category image, name, edit activityt view', (tester) async {
+      // Arrange
+      final nameLeft = 'nameLeft',
+          nameRight = 'nameRight',
+          fileIdLeft = 'fileIdLeft',
+          fileIdRight = 'fileIdRight';
+
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: nameLeft,
+            identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: nameRight,
+            identifier: MemoplannerSettings.calendarActivityTypeRightKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: fileIdLeft,
+            identifier: MemoplannerSettings.calendarActivityTypeLeftImageKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: fileIdRight,
+            identifier: MemoplannerSettings.calendarActivityTypeRightImageKey,
+          ),
+        ),
+      ];
+      await HttpOverrides.runZoned(
+        () async {
+          // Act
+          await tester.pumpApp();
+          await tester.tap(find.byType(AddActivityButton));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(NextButton));
+          await tester.pumpAndSettle();
+          await tester.dragUntilVisible(
+            find.byType(CategoryWidget),
+            find.byType(EditActivityPage),
+            Offset(0, -100),
+          );
+          await tester.pumpAndSettle();
+
+          // Assert
+          expect(find.text(nameLeft), findsOneWidget);
+          expect(find.text(nameRight), findsOneWidget);
+          // expect(find.byType(CategoryImage), findsNWidgets(2));
+        },
+        createHttpClient: (_) => createMockImageHttpClient(kTransparentImage),
+      );
     });
   });
 }

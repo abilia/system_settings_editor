@@ -80,7 +80,6 @@ class _CategoryPickField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => PickField(
-        key: key,
         text: Text(imageAndName.hasName ? imageAndName.name : defaultName),
         padding: imageAndName.image.isNotEmpty
             ? EdgeInsets.fromLTRB(4.s, 4.s, 12.s, 4.s)
