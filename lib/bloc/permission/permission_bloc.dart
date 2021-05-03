@@ -5,7 +5,10 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intent/flag.dart';
+import 'package:intent/intent.dart' as android_intent;
 import 'package:meta/meta.dart';
+import 'package:package_info/package_info.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:seagull/logging.dart';
@@ -50,4 +53,13 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
   );
 
   void checkAll() => add(CheckStatusForPermissions(allPermissions.toList()));
+
+  static Future openSystemAlertSetting() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    final intent = android_intent.Intent()
+      ..setAction('android.settings.action.MANAGE_OVERLAY_PERMISSION')
+      ..setData(Uri(scheme: 'package', path: packageInfo.packageName))
+      ..addFlag(Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+    await intent.startActivity();
+  }
 }

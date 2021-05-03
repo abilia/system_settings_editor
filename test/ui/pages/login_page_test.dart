@@ -319,7 +319,7 @@ void main() {
       expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
       expect(find.byType(RequestFullscreenNotificationButton), findsOneWidget);
       await tester.tap(find.byType(RequestFullscreenNotificationButton));
-      expect(openSystemAlertSettingCalls, 1);
+      expect(requestedPermissions, contains(Permission.systemAlertWindow));
     });
 
     testWidgets(

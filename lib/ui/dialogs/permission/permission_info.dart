@@ -56,14 +56,9 @@ class PermissionInfoDialog extends StatelessWidget {
   }
 
   String body(Translated translate) {
-    switch (permission) {
-      case Permission.camera:
-        return translate.allowAccessCameraBody;
-      case Permission.photos:
-        return translate.allowAccessPhotosBody;
-      default:
-        return '';
-    }
+    if (permission == Permission.camera) return translate.allowAccessCameraBody;
+    if (permission == Permission.photos) return translate.allowAccessPhotosBody;
+    return '';
   }
 }
 
