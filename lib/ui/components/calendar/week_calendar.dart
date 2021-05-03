@@ -60,6 +60,7 @@ class WeekCalendar extends StatelessWidget {
             selectedDay: selectedDay,
             weekStart: weekStart,
             dayColor: memoSettingsState.calendarDayColor,
+            weekDisplayDays: memoSettingsState.weekDisplayDays,
           ),
           Expanded(
               child: WeekCalendarBody(
@@ -67,6 +68,8 @@ class WeekCalendar extends StatelessWidget {
             dayColor: memoSettingsState.calendarDayColor,
             selectedDay: selectedDay,
             weekStart: weekStart,
+            weekDisplayDays: memoSettingsState.weekDisplayDays,
+            weekColor: memoSettingsState.weekColor,
           )),
         ],
       ),
@@ -79,19 +82,22 @@ class WeekCalendarTop extends StatelessWidget {
   final DateTime weekStart;
   final Map<int, List<ActivityOccasion>> activities;
   final DayColor dayColor;
+  final WeekDisplayDays weekDisplayDays;
   const WeekCalendarTop({
     Key key,
     @required this.selectedDay,
     @required this.weekStart,
     @required this.activities,
     @required this.dayColor,
+    @required this.weekDisplayDays,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
       child: Row(
-        children: List<WeekCalendarDayHeading>.generate(7, (i) {
+        children: List<WeekCalendarDayHeading>.generate(
+            weekDisplayDays.numberOfDays(), (i) {
           final day = weekStart.addDays(i);
           return WeekCalendarDayHeading(
             day: day,
@@ -260,12 +266,16 @@ class WeekCalendarBody extends StatelessWidget {
   final DateTime weekStart;
   final Map<int, List<ActivityOccasion>> activities;
   final DayColor dayColor;
+  final WeekDisplayDays weekDisplayDays;
+  final WeekColor weekColor;
   const WeekCalendarBody({
     Key key,
     @required this.selectedDay,
     @required this.weekStart,
     @required this.activities,
     @required this.dayColor,
+    @required this.weekDisplayDays,
+    @required this.weekColor,
   }) : super(key: key);
 
   @override
@@ -280,7 +290,8 @@ class WeekCalendarBody extends StatelessWidget {
             child: IntrinsicHeight(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: List<WeekDayColumn>.generate(7, (i) {
+                children: List<WeekDayColumn>.generate(
+                    weekDisplayDays.numberOfDays(), (i) {
                   final day = weekStart.addDays(i);
                   return WeekDayColumn(
                     day: day,
@@ -289,6 +300,7 @@ class WeekCalendarBody extends StatelessWidget {
                         .where((a) => !a.activity.fullDay)
                         .toList(),
                     dayColor: dayColor,
+                    weekColor: weekColor,
                   );
                 }),
               ),
@@ -305,6 +317,7 @@ class WeekDayColumn extends StatelessWidget {
   final bool selected;
   final List<ActivityOccasion> activities;
   final DayColor dayColor;
+  final WeekColor weekColor;
 
   const WeekDayColumn({
     Key key,
@@ -312,6 +325,7 @@ class WeekDayColumn extends StatelessWidget {
     @required this.selected,
     @required this.activities,
     @required this.dayColor,
+    @required this.weekColor,
   }) : super(key: key);
 
   @override
@@ -333,7 +347,11 @@ class WeekDayColumn extends StatelessWidget {
           padding: EdgeInsets.only(right: 2.s, left: 2.s, bottom: 4.s),
           child: Container(
             decoration: BoxDecoration(
-              color: selected ? AbiliaColors.red : dayTheme.secondaryColor,
+              color: selected
+                  ? AbiliaColors.red
+                  : weekColor == WeekColor.columns
+                      ? dayTheme.secondaryColor
+                      : AbiliaColors.white110,
               borderRadius: BorderRadius.only(
                 bottomLeft: radius,
                 bottomRight: radius,
@@ -344,7 +362,9 @@ class WeekDayColumn extends StatelessWidget {
               margin: EdgeInsetsDirectional.only(
                   start: borderSize, end: borderSize, bottom: borderSize),
               decoration: BoxDecoration(
-                color: dayTheme.secondaryColor,
+                color: weekColor == WeekColor.columns
+                    ? dayTheme.secondaryColor
+                    : AbiliaColors.white110,
                 borderRadius: BorderRadius.only(
                   bottomLeft: innerRadiusFromBorderSize(borderSize),
                   bottomRight: innerRadiusFromBorderSize(borderSize),

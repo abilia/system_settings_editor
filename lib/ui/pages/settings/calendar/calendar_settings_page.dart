@@ -21,7 +21,7 @@ class CalendarSettingsPage extends StatelessWidget {
         MenuItemPickField(
           icon: AbiliaIcons.week,
           text: Translator.of(context).translate.weekCalendar,
-          navigateTo: WeekCalendarSettings(),
+          navigateTo: WeekCalendarSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.month,

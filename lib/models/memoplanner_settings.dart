@@ -22,6 +22,12 @@ class MemoplannerSettings extends Equatable {
       activityDisplayWeekDayKey = 'day_caption_show_weekday',
       activityDisplayDateKey = 'day_caption_show_date',
       activityDisplayClockKey = 'day_caption_show_clock',
+      weekCaptionShowBrowseButtonsKey = 'week_caption_show_week_buttons',
+      weekCaptionShowWeekNumberKey = 'week_caption_show_week_number',
+      weekCaptionShowYearKey = 'week_caption_show_year',
+      weekCaptionShowClockKey = 'week_caption_show_clock',
+      weekDisplayShowFullWeekKey = 'week_display_show_full_week',
+      weekDisplayShowColorModeKey = 'week_display_show_color_mode',
       morningIntervalStartKey = 'morning_interval_start',
       forenoonIntervalStartKey = 'forenoon_interval_start',
       eveningIntervalStartKey = 'evening_interval_start',
@@ -83,6 +89,10 @@ class MemoplannerSettings extends Equatable {
       activityDisplayWeekDay,
       activityDisplayDate,
       activityDisplayClock,
+      weekCaptionShowBrowseButtons,
+      weekCaptionShowWeekNumber,
+      weekCaptionShowYear,
+      weekCaptionShowClock,
       calendarActivityTypeShowTypes,
       calendarActivityTypeShowColor,
       setting12hTimeFormatTimeline,
@@ -117,6 +127,8 @@ class MemoplannerSettings extends Equatable {
       viewOptionsTimeInterval,
       viewOptionsTimeView,
       viewOptionsZoom,
+      weekDisplayShowFullWeek,
+      weekDisplayShowColorMode,
       alarmDuration,
       activityTimeout,
       functionMenuStartView,
@@ -147,6 +159,12 @@ class MemoplannerSettings extends Equatable {
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
     this.activityDisplayClock = true,
+    this.weekCaptionShowBrowseButtons = true,
+    this.weekCaptionShowWeekNumber = true,
+    this.weekCaptionShowYear = true,
+    this.weekCaptionShowClock = true,
+    this.weekDisplayShowFullWeek = 0,
+    this.weekDisplayShowColorMode = 1,
     this.dotsInTimepillar = true,
     this.imageMenuDisplayPhotoItem = true,
     this.imageMenuDisplayCameraItem = true,
@@ -247,6 +265,19 @@ class MemoplannerSettings extends Equatable {
       ),
       activityDisplayClock: settings.getBool(
         activityDisplayClockKey,
+      ),
+      weekCaptionShowBrowseButtons:
+          settings.getBool(weekCaptionShowBrowseButtonsKey),
+      weekCaptionShowWeekNumber: settings.getBool(weekCaptionShowWeekNumberKey),
+      weekCaptionShowYear: settings.getBool(weekCaptionShowYearKey),
+      weekCaptionShowClock: settings.getBool(weekCaptionShowClockKey),
+      weekDisplayShowFullWeek: settings.parse(
+        weekDisplayShowFullWeekKey,
+        WeekDisplayDays.everyDay.index,
+      ),
+      weekDisplayShowColorMode: settings.parse(
+        weekDisplayShowColorModeKey,
+        WeekColor.columns.index,
       ),
       calendarActivityTypeShowTypes: settings.getBool(
         calendarActivityTypeShowTypesKey,
@@ -389,6 +420,12 @@ class MemoplannerSettings extends Equatable {
         activityDisplayWeekDay,
         activityDisplayDate,
         activityDisplayClock,
+        weekCaptionShowBrowseButtons,
+        weekCaptionShowWeekNumber,
+        weekCaptionShowYear,
+        weekCaptionShowClock,
+        weekDisplayShowFullWeek,
+        weekDisplayShowColorMode,
         setting12hTimeFormatTimeline,
         settingDisplayHourLines,
         settingDisplayTimeline,
@@ -458,3 +495,20 @@ enum DayColor { allDays, saturdayAndSunday, noColors }
 enum StartView { dayCalendar, weekCalendar, monthCalendar, menu, photoAlbum }
 
 enum ClockType { analogueDigital, analogue, digital }
+
+enum WeekDisplayDays { everyDay, weekdays }
+
+extension WeekDisplayDaysExtension on WeekDisplayDays {
+  int numberOfDays() {
+    switch (this) {
+      case WeekDisplayDays.everyDay:
+        return 7;
+      case WeekDisplayDays.weekdays:
+        return 5;
+      default:
+        return 7;
+    }
+  }
+}
+
+enum WeekColor { captions, columns }

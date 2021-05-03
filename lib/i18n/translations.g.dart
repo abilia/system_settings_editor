@@ -388,11 +388,23 @@ abstract class Translated {
 
   final String noSound = '- No sound -';
 
+  final String showWeekNumber = 'Show week number';
+
+  final String showYear = 'Show year';
+
+  final String everyDay = 'Every day (7)';
+
   final String viewSettings = 'View settings';
 
   final String typeOfDisplay = 'Type of display';
 
   final String timelineLength = 'Timeline length';
+
+  final String weekdays = 'Weekdays (5)';
+
+  final String captions = 'Captions';
+
+  final String columns = 'Columns';
 
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
 
@@ -1074,6 +1086,15 @@ class SV extends Translated {
   final String noSound = '- Inget ljud -';
 
   @override
+  final String showWeekNumber = 'Visa veckonummer';
+
+  @override
+  final String showYear = 'Visa år';
+
+  @override
+  final String everyDay = 'Alla dagar (7)';
+
+  @override
   final String viewSettings = 'Visa inställningar';
 
   @override
@@ -1081,6 +1102,15 @@ class SV extends Translated {
 
   @override
   final String timelineLength = 'Tidslinjens längd';
+
+  @override
+  final String weekdays = 'Vardagar (5)';
+
+  @override
+  final String captions = 'Rubriker';
+
+  @override
+  final String columns = 'Kolumner';
 
   @override
   final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
@@ -1814,6 +1844,15 @@ class DA extends Translated {
   final String noSound = '- Ingen lyd -';
 
   @override
+  final String showWeekNumber = 'Vis ugenummer';
+
+  @override
+  final String showYear = 'Vis år';
+
+  @override
+  final String everyDay = 'Alle dage (7)';
+
+  @override
   final String viewSettings = 'Se indstillinger';
 
   @override
@@ -1821,6 +1860,15 @@ class DA extends Translated {
 
   @override
   final String timelineLength = 'Tid på døgnet';
+
+  @override
+  final String weekdays = 'Hverdage (5)';
+
+  @override
+  final String captions = 'Titler';
+
+  @override
+  final String columns = 'Kolonner';
 
   @override
   final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
@@ -2552,6 +2600,15 @@ class NL extends Translated {
   final String noSound = '- Geen geluid -';
 
   @override
+  final String showWeekNumber = 'Weeknummer tonen';
+
+  @override
+  final String showYear = 'Jaar tonen';
+
+  @override
+  final String everyDay = 'Elke dag (7)';
+
+  @override
   final String viewSettings = 'Laat instellingen zien';
 
   @override
@@ -2559,6 +2616,15 @@ class NL extends Translated {
 
   @override
   final String timelineLength = 'Lengte tijdlijn';
+
+  @override
+  final String weekdays = 'Weekdagen (5)';
+
+  @override
+  final String captions = 'Bijschriften';
+
+  @override
+  final String columns = 'Kolommen';
 
   @override
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
@@ -3291,6 +3357,15 @@ class FI extends Translated {
   final String noSound = '- Ei ääntä -';
 
   @override
+  final String showWeekNumber = 'Näytä viikon numero';
+
+  @override
+  final String showYear = 'Näytä vuosi';
+
+  @override
+  final String everyDay = 'Joka päivä (7)';
+
+  @override
   final String viewSettings = 'Näytä asetukset';
 
   @override
@@ -3298,6 +3373,15 @@ class FI extends Translated {
 
   @override
   final String timelineLength = 'Aikajanan pituus';
+
+  @override
+  final String weekdays = 'Arkisin (5)';
+
+  @override
+  final String captions = 'Otsikot';
+
+  @override
+  final String columns = 'Sarakkeet';
 
   @override
   final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
@@ -4031,6 +4115,15 @@ class DE extends Translated {
   final String noSound = '- Kein Klang -';
 
   @override
+  final String showWeekNumber = 'Wochennummer anzeigen';
+
+  @override
+  final String showYear = 'Jahr anzeigen';
+
+  @override
+  final String everyDay = 'Täglich (7)';
+
+  @override
   final String viewSettings = 'Einstellungen anzeigen';
 
   @override
@@ -4038,6 +4131,15 @@ class DE extends Translated {
 
   @override
   final String timelineLength = 'Zeitstrahl Länge';
+
+  @override
+  final String weekdays = 'Werktage (5)';
+
+  @override
+  final String captions = 'Unterschriften';
+
+  @override
+  final String columns = 'Spalten';
 
   @override
   final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
@@ -4771,6 +4873,15 @@ class NB extends Translated {
   final String noSound = '- Ingen lyd -';
 
   @override
+  final String showWeekNumber = 'Vis ukenummer';
+
+  @override
+  final String showYear = 'Vis år';
+
+  @override
+  final String everyDay = 'Alle dager (7)';
+
+  @override
   final String viewSettings = 'Visningsinnstillinger';
 
   @override
@@ -4778,6 +4889,15 @@ class NB extends Translated {
 
   @override
   final String timelineLength = 'Tid på døgnet';
+
+  @override
+  final String weekdays = 'Hverdager (5)';
+
+  @override
+  final String captions = 'Titler';
+
+  @override
+  final String columns = 'Kolonner';
 
   @override
   final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';

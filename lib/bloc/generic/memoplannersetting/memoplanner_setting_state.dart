@@ -82,6 +82,12 @@ abstract class MemoplannerSettingsState extends Equatable {
               settingViewOptionsZoom ||
               settingViewOptionsDurationDots));
 
+  bool get weekCaptionShowBrowseButtons =>
+      settings.weekCaptionShowBrowseButtons;
+  bool get weekCaptionShowWeekNumber => settings.weekCaptionShowWeekNumber;
+  bool get weekCaptionShowYear => settings.weekCaptionShowYear;
+  bool get weekCaptionShowClock => settings.weekCaptionShowClock;
+
   int get morningStart => settings.morningIntervalStart;
   int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
@@ -110,6 +116,12 @@ abstract class MemoplannerSettingsState extends Equatable {
   Sound get reminderAlarm => settings.reminderAlarm == null
       ? Sound.Default
       : settings.reminderAlarm.toSound();
+
+  WeekDisplayDays get weekDisplayDays =>
+      WeekDisplayDays.values[settings.weekDisplayShowFullWeek];
+
+  WeekColor get weekColor =>
+      WeekColor.values[settings.weekDisplayShowColorMode];
 
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();

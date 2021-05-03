@@ -94,18 +94,31 @@ class AppBarTitleRows {
   }
 
   factory AppBarTitleRows.week({
-    @required DateTime currentTime,
     @required DateTime selectedWeekStart,
     @required DateTime selectedDay,
+    @required bool showWeekNumber,
+    @required bool showYear,
+    @required String langCode,
+    @required bool compressDay,
     @required Translated translator,
   }) {
+    final displayWeekDay = selectedDay.isSameWeek(selectedWeekStart);
+    final longWeekDay = '${DateFormat('EEEE', langCode).format(selectedDay)}';
     final shortWeekDayName = translator.shortWeekday(selectedDay.weekday);
+    final day = compressDay && showWeekNumber && showYear
+        ? shortWeekDayName
+        : longWeekDay;
     final week = '${translator.week} ${selectedWeekStart.getWeekNumber()}';
-    final row1 = selectedDay.isSameWeek(selectedWeekStart) &&
-            currentTime.isSameWeek(selectedWeekStart)
-        ? ' $shortWeekDayName, $week'
-        : week;
-    final row2 = '${selectedWeekStart.year}';
+    final row1 = displayWeekDay
+        ? day + (showWeekNumber && showYear ? ', $week' : '')
+        : showWeekNumber && showYear
+            ? week
+            : '';
+    final row2 = showYear
+        ? '${selectedWeekStart.year}'
+        : showWeekNumber
+            ? week
+            : '';
 
     return AppBarTitleRows._(row1, row2);
   }
