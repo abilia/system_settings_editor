@@ -266,7 +266,6 @@ void setupPermissions(
   );
   MethodChannel('intent').setMockMethodCallHandler(
     (MethodCall methodCall) async {
-      print(methodCall);
       switch (methodCall.method) {
         case 'startActivity':
           if (methodCall.arguments['data'] == 'package:pkgName' &&
