@@ -214,6 +214,7 @@ timelineLength	Timeline length	Tidslinjens längd	Tid på døgnet	Lengte tijdlij
 weekdays	Weekdays (5)	Vardagar (5)	Hverdage (5)	Weekdagen (5)	Arkisin (5)	Werktage (5)	Hverdager (5)
 captions	Captions	Rubriker	Titler	Bijschriften	Otsikot	Unterschriften	Titler
 columns	Columns	Kolumner	Kolonner	Kolommen	Sarakkeet	Spalten	Kolonner
+headings	Headings	Rubriker	Titler	Kopteksten	Otsikot	Überschriften	Titler
 							
 ## Functions Settings							
 toolbarSettingsHint	Views displayed in the Toolbar	Visningar visas i verktygsfältet	Visninger vises i værktøjslinjen	Weergaven weergegeven in de werkbalk	Näkymät näkyvät työkalupalkissa	In der Symbolleiste angezeigte Ansichten	Visninger som vises på verktøylinjen

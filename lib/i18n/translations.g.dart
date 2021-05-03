@@ -406,6 +406,8 @@ abstract class Translated {
 
   final String columns = 'Columns';
 
+  final String headings = 'Headings';
+
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
 
   final String homeScreenSettingsHint =
@@ -1111,6 +1113,9 @@ class SV extends Translated {
 
   @override
   final String columns = 'Kolumner';
+
+  @override
+  final String headings = 'Rubriker';
 
   @override
   final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
@@ -1871,6 +1876,9 @@ class DA extends Translated {
   final String columns = 'Kolonner';
 
   @override
+  final String headings = 'Titler';
+
+  @override
   final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
 
   @override
@@ -2625,6 +2633,9 @@ class NL extends Translated {
 
   @override
   final String columns = 'Kolommen';
+
+  @override
+  final String headings = 'Kopteksten';
 
   @override
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
@@ -3382,6 +3393,9 @@ class FI extends Translated {
 
   @override
   final String columns = 'Sarakkeet';
+
+  @override
+  final String headings = 'Otsikot';
 
   @override
   final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
@@ -4142,6 +4156,9 @@ class DE extends Translated {
   final String columns = 'Spalten';
 
   @override
+  final String headings = 'Überschriften';
+
+  @override
   final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
 
   @override
@@ -4898,6 +4915,9 @@ class NB extends Translated {
 
   @override
   final String columns = 'Kolonner';
+
+  @override
+  final String headings = 'Titler';
 
   @override
   final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';
