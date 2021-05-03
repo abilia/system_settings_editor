@@ -19,10 +19,10 @@ class WeekCalendarSettingsState extends Equatable {
     MemoplannerSettingsState state,
   ) =>
       WeekCalendarSettingsState._(
-        showBrowseButtons: state.dayCaptionShowDayButtons,
-        showWeekNumber: state.activityDisplayWeekDay,
-        showYear: state.activityDisplayDayPeriod,
-        showClock: state.activityDisplayClock,
+        showBrowseButtons: state.weekCaptionShowBrowseButtons,
+        showWeekNumber: state.weekCaptionShowWeekNumber,
+        showYear: state.weekCaptionShowYear,
+        showClock: state.weekCaptionShowClock,
         weekDisplayDays: state.weekDisplayDays,
         weekColor: state.weekColor,
       );
