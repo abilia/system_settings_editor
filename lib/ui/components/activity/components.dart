@@ -128,7 +128,6 @@ class PickField extends StatelessWidget {
                   Expanded(
                     child: DefaultTextStyle(
                       overflow: TextOverflow.ellipsis,
-                      // softWrap: false,
                       style: abiliaTextTheme.bodyText1.copyWith(height: 1.0),
                       child: text,
                     ),
