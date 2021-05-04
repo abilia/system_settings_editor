@@ -299,14 +299,18 @@ class FadeInAbiliaImage extends StatelessWidget {
   final String imageFileId, imageFilePath;
   final double width, height;
   final BoxFit fit;
+  final BorderRadius borderRadius;
+  final radius = BorderRadius.circular(12.s);
 
   FadeInAbiliaImage({
+    Key key,
     @required this.imageFileId,
-    @required this.imageFilePath,
+    this.imageFilePath,
     this.height,
     this.width,
     this.fit = BoxFit.cover,
-  });
+    this.borderRadius,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -330,7 +334,7 @@ class FadeInAbiliaImage extends StatelessWidget {
       );
 
       return ClipRRect(
-        borderRadius: BorderRadius.circular(12.s),
+        borderRadius: borderRadius ?? radius,
         child: file != null
             ? FadeInImage(
                 height: height,

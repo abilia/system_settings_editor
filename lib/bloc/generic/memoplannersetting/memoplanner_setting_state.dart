@@ -202,6 +202,8 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   String get leftCategoryName => settings.calendarActivityTypeLeft;
   String get rightCategoryName => settings.calendarActivityTypeRight;
+  String get leftCategoryImage => settings.calendarActivityTypeLeftImage;
+  String get rightCategoryImage => settings.calendarActivityTypeRightImage;
 
   // Properties derived from one or more settings
   bool get abilityToSelectAlarm =>

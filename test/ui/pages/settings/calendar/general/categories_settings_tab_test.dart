@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 
 import 'dart:async';
+import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
@@ -22,7 +25,9 @@ void main() {
   final initialTime = DateTime(2021, 04, 26, 13, 37);
 
   Iterable<Generic> generics;
+  Iterable<Sortable> sortable;
   GenericDb genericDb;
+  SortableDb sortableDb;
 
   final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
@@ -30,9 +35,11 @@ void main() {
         identifier: MemoplannerSettings.viewOptionsTimeViewKey),
   );
   setUp(() async {
+    tz.initializeTimeZones();
     setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     generics = [];
+    sortable = [];
 
     final mockBatch = MockBatch();
     when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
@@ -47,17 +54,26 @@ void main() {
     when(genericDb.insertAndAddDirty(any))
         .thenAnswer((realInvocation) => Future.value([]));
 
+    sortableDb = MockSortableDb();
+    when(sortableDb.getAllNonDeleted())
+        .thenAnswer((_) => Future.value(sortable));
+    when(sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..ticker = Ticker(
         stream: StreamController<DateTime>().stream,
         initialTime: initialTime,
       )
-      ..client = Fakes.client(genericResponse: () => generics)
+      ..client = Fakes.client(
+        genericResponse: () => generics,
+        sortableResponse: () => sortable,
+      )
       ..alarmScheduler = noAlarmScheduler
       ..database = db
       ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb
+      ..sortableDb = sortableDb
       ..init();
   });
 
@@ -68,7 +84,7 @@ void main() {
     expect(find.byType(CalendarGeneralSettingsPage), findsOneWidget);
     expect(find.byIcon(AbiliaIcons.clock), findsOneWidget);
     expect(find.byIcon(AbiliaIcons.day_interval), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.change_page_color), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.change_page_color), findsNWidgets(2));
     expect(find.byIcon(AbiliaIcons.calendar_list), findsOneWidget);
     expect(find.byType(ClockSettingsTab), findsNothing);
     expect(find.byType(IntervalsSettingsTab), findsNothing);
@@ -78,9 +94,71 @@ void main() {
     expect(find.byType(CategoryLeft), findsOneWidget);
     expect(find.text(translate.left), findsNWidgets(2));
     expect(find.text(translate.right), findsNWidgets(2));
-
     expect(find.byType(OkButton), findsOneWidget);
     expect(find.byType(CancelButton), findsOneWidget);
+  });
+
+  testWidgets('settings shows', (tester) async {
+    final fileIdLeft = 'fileIdLeft',
+        fileIdRight = 'fileIdRight',
+        leftName = 'leftName',
+        rightName = 'leftName';
+    generics = [
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.calendarActivityTypeShowTypesKey,
+        ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: leftName,
+          identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
+        ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: rightName,
+          identifier: MemoplannerSettings.calendarActivityTypeRightKey,
+        ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: fileIdLeft,
+          identifier: MemoplannerSettings.calendarActivityTypeLeftImageKey,
+        ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: fileIdRight,
+          identifier: MemoplannerSettings.calendarActivityTypeRightImageKey,
+        ),
+      ),
+    ];
+
+    await provideMockedNetworkImages(() async {
+      await tester.goToGeneralCalendarSettingsPageCategoriesTab();
+      expect(find.byType(CalendarGeneralSettingsPage), findsOneWidget);
+
+      expect(find.byType(CategoryRight), findsNothing);
+      expect(find.byType(CategoryLeft), findsNothing);
+      expect(find.byType(FadeInAbiliaImage), findsNothing);
+      expect(find.text(leftName), findsNothing);
+      expect(find.text(rightName), findsNothing);
+      expect(find.text(translate.left), findsNothing);
+      expect(find.text(translate.right), findsNothing);
+
+      await tester.tap(find.text(translate.showCagetories));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CategoryRight), findsOneWidget);
+      expect(find.byType(CategoryLeft), findsOneWidget);
+      expect(find.byType(FadeInAbiliaImage), findsNWidgets(4));
+      expect(find.text(leftName), findsNWidgets(4));
+      expect(find.text(rightName), findsNWidgets(4));
+      expect(find.text(translate.left), findsNothing);
+      expect(find.text(translate.right), findsNothing);
+    });
   });
 
   group('settings saved', () {
@@ -180,6 +258,67 @@ void main() {
         genericDb,
         key: MemoplannerSettings.calendarActivityTypeRightKey,
         matcher: newRightName,
+      );
+    });
+
+    testWidgets('edit image right saved', (tester) async {
+      final fileId = 'imgfileId';
+      sortable = [
+        Sortable.createNew<ImageArchiveData>(
+          data: ImageArchiveData(name: 'test image', fileId: fileId),
+        )
+      ];
+      await tester.goToGeneralCalendarSettingsPageCategoriesTab();
+      await tester.tap(find.byKey(TestKey.editRigthCategory));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SelectPictureWidget));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.imageArchiveButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(ArchiveImage));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
+        tester,
+        genericDb,
+        key: MemoplannerSettings.calendarActivityTypeRightImageKey,
+        matcher: fileId,
+      );
+    });
+
+    testWidgets('edit image left saved', (tester) async {
+      final fileId = 'imgfileId';
+      sortable = [
+        Sortable.createNew<ImageArchiveData>(
+          data: ImageArchiveData(name: 'test image', fileId: fileId),
+        )
+      ];
+      await tester.goToGeneralCalendarSettingsPageCategoriesTab();
+
+      await tester.tap(find.byKey(TestKey.editLeftCategory));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SelectPictureWidget));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.imageArchiveButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(ArchiveImage));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
+        tester,
+        genericDb,
+        key: MemoplannerSettings.calendarActivityTypeLeftImageKey,
+        matcher: fileId,
       );
     });
   });
@@ -301,6 +440,127 @@ void main() {
       expect(find.byType(CategoryLeft), findsOneWidget);
       expect(find.text(left), findsOneWidget);
       expect(find.text(translate.right), findsOneWidget);
+    });
+
+    testWidgets('category image, timepillar view', (tester) async {
+      // Arrange
+      final fileIdLeft = 'fileIdLeft', fileIdRight = 'fileIdRight';
+      generics = [
+        timepillarGeneric,
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: fileIdLeft,
+            identifier: MemoplannerSettings.calendarActivityTypeLeftImageKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: fileIdRight,
+            identifier: MemoplannerSettings.calendarActivityTypeRightImageKey,
+          ),
+        ),
+      ];
+      await provideMockedNetworkImages(
+        () async {
+          // Act
+          await tester.pumpApp(use24: true);
+          // Assert
+          expect(find.byType(CategoryRight), findsOneWidget);
+          expect(find.byType(CategoryLeft), findsOneWidget);
+          expect(find.text(translate.left), findsOneWidget);
+          expect(find.text(translate.right), findsOneWidget);
+          expect(find.byType(CategoryImage), findsNWidgets(2));
+        },
+      );
+    });
+
+    testWidgets('category image, agenda view', (tester) async {
+      // Arrange
+      final fileIdLeft = 'fileIdLeft', fileIdRight = 'fileIdRight';
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: fileIdLeft,
+            identifier: MemoplannerSettings.calendarActivityTypeLeftImageKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: fileIdRight,
+            identifier: MemoplannerSettings.calendarActivityTypeRightImageKey,
+          ),
+        ),
+      ];
+
+      await provideMockedNetworkImages(
+        () async {
+          // Act
+          await tester.pumpApp(use24: true);
+          // Assert
+          expect(find.byType(CategoryRight), findsOneWidget);
+          expect(find.byType(CategoryLeft), findsOneWidget);
+          expect(find.text(translate.left), findsOneWidget);
+          expect(find.text(translate.right), findsOneWidget);
+          expect(find.byType(CategoryImage), findsNWidgets(2));
+        },
+      );
+    });
+
+    testWidgets('category image, name, edit activityt view', (tester) async {
+      // Arrange
+      final nameLeft = 'nameLeft',
+          nameRight = 'nameRight',
+          fileIdLeft = 'fileIdLeft',
+          fileIdRight = 'fileIdRight';
+
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: nameLeft,
+            identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: nameRight,
+            identifier: MemoplannerSettings.calendarActivityTypeRightKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: fileIdLeft,
+            identifier: MemoplannerSettings.calendarActivityTypeLeftImageKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: fileIdRight,
+            identifier: MemoplannerSettings.calendarActivityTypeRightImageKey,
+          ),
+        ),
+      ];
+      await HttpOverrides.runZoned(
+        () async {
+          // Act
+          await tester.pumpApp();
+          await tester.tap(find.byType(AddActivityButton));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(NextButton));
+          await tester.pumpAndSettle();
+          await tester.dragUntilVisible(
+            find.byType(CategoryWidget),
+            find.byType(EditActivityPage),
+            Offset(0, -100),
+          );
+          await tester.pumpAndSettle();
+
+          // Assert
+          expect(find.text(nameLeft), findsOneWidget);
+          expect(find.text(nameRight), findsOneWidget);
+          // expect(find.byType(CategoryImage), findsNWidgets(2));
+        },
+        createHttpClient: (_) => createMockImageHttpClient(kTransparentImage),
+      );
     });
   });
 }
