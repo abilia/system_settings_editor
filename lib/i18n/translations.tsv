@@ -231,6 +231,12 @@ showDayPeriod	Show time for day and night	Visa tid på dygnet	Vis tid på døgne
 showDate	Show date	Visa datum	Vis dato	Datum tonen	Näytä päivämäärä	Datum anzeigen	Vis dato
 showClock	Show clock	Visa klocka	Vis ur	Toon klok	Näytä kello	Uhr anzeigen	Vis klokken
 							
+## Activity view Settings							
+delete	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
+edit	Edit	Ändra	Ændre	Bewerken	Muokkaa	Bearbeiten	Endre
+showQuarterHourWatchBar	Show Quarter Hour Watch bar	Visa kvartur	Vis kvartur	Kwartierkijkbalk tonen	Näytä aikapylväsnäkymä	Viertelstunden-Balken anzeigen	Vis kvarterur
+timeOnQuarterHourBar	Time on Quarter Hour bar	Tid på kvartur	Tid på kvartur	Tijd op kwartierbalk	Aika varttikellon palkissa	Zeit auf Viertelstunden-Balken	Tid på kvarterur
+							
 ## Calendar General Settings							
 clock	Clock	Klocka	Ur	Klok	Kello	Uhr	Klokke
 analogueDigital	Analogue + digital	Analog + digital	Analog + digital	Analoog + digitaal	Analoginen + digitaalinen	Analog + digital	Analog + digital

@@ -10,8 +10,14 @@ import 'package:seagull/utils/all.dart';
 
 class ActivityInfoWithDots extends StatelessWidget {
   final ActivityDay activityDay;
+  final Widget previewImage;
 
-  const ActivityInfoWithDots(this.activityDay, {Key key}) : super(key: key);
+  const ActivityInfoWithDots(
+    this.activityDay, {
+    Key key,
+    this.previewImage,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -24,7 +30,10 @@ class ActivityInfoWithDots extends StatelessWidget {
                 child: Padding(
               padding: EdgeInsets.only(
                   left: displayQuarter ? 0 : ActivityInfo.margin),
-              child: ActivityInfo(activityDay),
+              child: ActivityInfo(
+                activityDay,
+                previewImage: previewImage,
+              ),
             )),
           ],
         );

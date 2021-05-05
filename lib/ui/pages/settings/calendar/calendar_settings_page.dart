@@ -1,5 +1,4 @@
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/settings/calendar/day_calendar/day_calendar_settings_page.dart';
 
 class CalendarSettingsPage extends StatelessWidget {
   const CalendarSettingsPage({Key key}) : super(key: key);
@@ -31,7 +30,7 @@ class CalendarSettingsPage extends StatelessWidget {
         MenuItemPickField(
           icon: AbiliaIcons.full_screen,
           text: Translator.of(context).translate.activityView,
-          navigateTo: ActivityViewSettings(),
+          navigateTo: ActivityViewSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.new_icon,
