@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -132,24 +134,50 @@ void main() {
     }
   });
 
+  testWidgets('code protect not visible on mpgo', (WidgetTester tester) async {
+    setupPermissions();
+    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpAndSettle();
+    expect(find.byIcon(AbiliaIcons.numeric_keyboard), findsNothing);
+  }, skip: !Config.isMPGO, tags: Flavor.mpgo.tag);
+
+  testWidgets('code protect visible on mp', (WidgetTester tester) async {
+    setupPermissions();
+    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.numeric_keyboard));
+    await tester.pumpAndSettle();
+    expect(find.byType(CodeProtectPage), findsOneWidget);
+  }, skip: !Config.isMP, tags: Flavor.mp.tag);
+
   testWidgets('android settings not availible on mpgo',
       (WidgetTester tester) async {
     setupPermissions();
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
     expect(find.byType(AndroidSettingsPickField), findsNothing);
-  });
+  }, skip: !Config.isMPGO, tags: Flavor.mpgo.tag);
 
-  testWidgets('android settings not availible on mp',
-      (WidgetTester tester) async {
-    setupPermissions();
+  testWidgets('android settings availible on mp', (WidgetTester tester) async {
+    var openAndroidSettingCalls = 0;
+    MethodChannel('intent').setMockMethodCallHandler(
+      (MethodCall methodCall) async {
+        switch (methodCall.method) {
+          case 'startActivity':
+            if (methodCall.arguments['action'] ==
+                AndroidIntentAction.settings) {
+              openAndroidSettingCalls++;
+            }
+        }
+      },
+    );
+
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(AndroidSettingsPickField));
     await tester.pumpAndSettle();
-  },
-      skip:
-          true); // TODO find a way to set enviorment var to test MP specific code...
+    expect(openAndroidSettingCalls, 1);
+  }, skip: !Config.isMP, tags: Flavor.mp.tag);
 
   group('permission page', () {
     tearDown(setupPermissions);

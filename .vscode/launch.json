@@ -33,6 +33,18 @@
       "type": "dart",
       "request": "launch",
       "program": "./test/"
+    },
+    {
+      "name": "MP Tests",
+      "type": "dart",
+      "request": "launch",
+      "program": "./test/",
+      "args": [
+        "--tags",
+        "mp",
+        "--dart-define",
+        "flavor=mp",
+      ],
     }
   ]
 }
