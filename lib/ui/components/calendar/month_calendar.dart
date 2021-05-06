@@ -12,6 +12,8 @@ class MonthCalendar extends StatelessWidget {
     return Scaffold(
       appBar: const MonthAppBar(),
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        buildWhen: (previous, current) =>
+            previous.calendarDayColor != current.calendarDayColor,
         builder: (context, memoSettingsState) {
           final dayThemes = List.generate(
             DateTime.daysPerWeek,
@@ -169,8 +171,7 @@ class MonthDayView extends StatelessWidget {
     Key key,
     @required this.dayTheme,
   }) : super(key: key);
-  static final radius = Radius.circular(8.s);
-  static final bottomRadius = BorderRadius.vertical(bottom: radius);
+  static final monthDayRadius = Radius.circular(8.s);
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +188,7 @@ class MonthDayView extends StatelessWidget {
           foregroundDecoration: day.isCurrent
               ? BoxDecoration(
                   border: currentActivityBorder,
-                  borderRadius: BorderRadius.all(radius),
+                  borderRadius: BorderRadius.all(monthDayRadius),
                 )
               : null,
           child: Column(
@@ -196,7 +197,7 @@ class MonthDayView extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   color: dayTheme.color,
-                  borderRadius: BorderRadius.vertical(top: radius),
+                  borderRadius: BorderRadius.vertical(top: monthDayRadius),
                 ),
                 height: 24.s,
                 padding: EdgeInsets.symmetric(horizontal: 4.s),
@@ -213,49 +214,79 @@ class MonthDayView extends StatelessWidget {
                 ),
               ),
               Expanded(
-                // A borderRadius can only be given for a uniform Border.
-                // https://github.com/flutter/flutter/issues/12583
-                // So work around is wrapping containers with
-                // background color
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: dayTheme.secondaryColor,
-                    borderRadius: bottomRadius,
-                  ),
-                  child: Container(
-                    padding:
-                        EdgeInsets.only(left: 1.s, right: 1.s, bottom: 1.s),
-                    decoration: BoxDecoration(
-                      color: AbiliaColors.transparentBlack30,
-                      borderRadius: bottomRadius,
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
-                      decoration: BoxDecoration(
-                        color: dayTheme.secondaryColor,
-                        borderRadius: BorderRadius.vertical(
-                          bottom: Radius.circular(7.s),
-                        ),
-                      ),
-                      child: Stack(
-                        children: [
-                          if (day.fullDayActivityCount > 1)
-                            MonthFullDayStack(
-                              numberOfActivities: day.fullDayActivityCount,
-                            )
-                          else if (day.fullDayActivity != null)
-                            MonthActivityContent(
-                              activityDay: day.fullDayActivity,
-                            ),
-                          if (day.isPast) CrossOver(),
-                        ],
-                      ),
-                    ),
+                child: BlocBuilder<MemoplannerSettingBloc,
+                    MemoplannerSettingsState>(
+                  buildWhen: (previous, current) =>
+                      previous.monthWeekColor != current.monthWeekColor,
+                  builder: (context, settingState) => MonthDayContainer(
+                    color: settingState.monthWeekColor == WeekColor.columns
+                        ? dayTheme.secondaryColor
+                        : AbiliaColors.white110,
+                    day: day,
                   ),
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class MonthDayContainer extends StatelessWidget {
+  static final bottomRadius =
+      BorderRadius.vertical(bottom: MonthDayView.monthDayRadius);
+
+  const MonthDayContainer({
+    Key key,
+    @required this.color,
+    this.day,
+  }) : super(key: key);
+
+  final Color color;
+  final MonthDay day;
+
+  @override
+  Widget build(BuildContext context) {
+    // A borderRadius can only be given for a uniform Border.
+    // https://github.com/flutter/flutter/issues/12583
+    // So work around is wrapping containers with
+    // background color
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: bottomRadius,
+      ),
+      child: Container(
+        padding: EdgeInsets.only(left: 1.s, right: 1.s, bottom: 1.s),
+        decoration: BoxDecoration(
+          color: AbiliaColors.transparentBlack30,
+          borderRadius: bottomRadius,
+        ),
+        child: Container(
+          padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(7.s),
+            ),
+          ),
+          child: day != null
+              ? Stack(
+                  children: [
+                    if (day.fullDayActivityCount > 1)
+                      MonthFullDayStack(
+                        numberOfActivities: day.fullDayActivityCount,
+                      )
+                    else if (day.fullDayActivity != null)
+                      MonthActivityContent(
+                        activityDay: day.fullDayActivity,
+                      ),
+                    if (day.isPast) CrossOver(),
+                  ],
+                )
+              : null,
         ),
       ),
     );
@@ -292,7 +323,7 @@ class MonthFullDayStack extends StatelessWidget {
   Widget build(BuildContext context) {
     final decoration = BoxDecoration(
       color: AbiliaColors.white,
-      borderRadius: BorderRadius.all(MonthDayView.radius),
+      borderRadius: BorderRadius.all(MonthDayView.monthDayRadius),
       border: border,
     );
     return Stack(
@@ -326,7 +357,7 @@ class MonthActivityContent extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AbiliaColors.white,
-        borderRadius: BorderRadius.all(MonthDayView.radius),
+        borderRadius: BorderRadius.all(MonthDayView.monthDayRadius),
         border: border,
       ),
       child: Center(
