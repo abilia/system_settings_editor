@@ -9,7 +9,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../../../mocks.dart';
+import '../../../../mocks.dart';
 
 void main() {
   MockSettingsDb mockSettingsDb;
@@ -70,8 +70,8 @@ void main() {
   testWidgets('Settings page shows', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    expect(find.byType(LogoutPickField), findsOneWidget);
-    await tester.tap(find.byType(LogoutPickField));
+    expect(find.byIcon(AbiliaIcons.power_off_on), findsOneWidget);
+    await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
     await tester.pumpAndSettle();
     expect(find.byType(LogoutButton), findsOneWidget);
     expect(find.byType(ProfilePictureNameAndEmail), findsOneWidget);
@@ -82,9 +82,9 @@ void main() {
 
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    await tester.verifyTts(find.byType(LogoutPickField),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.power_off_on),
         exact: translate.logout);
-    await tester.tap(find.byType(LogoutPickField));
+    await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
     await tester.pumpAndSettle();
     await tester.verifyTts(find.byType(LogoutButton), exact: translate.logout);
     await tester.verifyTts(find.text(user.name), exact: user.name);
@@ -116,8 +116,7 @@ void main() {
     when(mockSettingsDb.textToSpeech).thenReturn(true);
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    expect(find.byType(AboutPickField), findsOneWidget);
-    await tester.tap(find.byType(AboutPickField));
+    await tester.tap(find.byIcon(AbiliaIcons.information));
     await tester.pumpAndSettle();
     expect(find.byType(AboutPage), findsOneWidget);
     final textWidgets = find
@@ -132,6 +131,25 @@ void main() {
       await tester.verifyTts(find.text(text), exact: text);
     }
   });
+
+  testWidgets('android settings not availible on mpgo',
+      (WidgetTester tester) async {
+    setupPermissions();
+    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpAndSettle();
+    expect(find.byType(AndroidSettingsPickField), findsNothing);
+  });
+
+  testWidgets('android settings not availible on mp',
+      (WidgetTester tester) async {
+    setupPermissions();
+    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(AndroidSettingsPickField));
+    await tester.pumpAndSettle();
+  },
+      skip:
+          true); // TODO find a way to set enviorment var to test MP specific code...
 
   group('permission page', () {
     tearDown(setupPermissions);

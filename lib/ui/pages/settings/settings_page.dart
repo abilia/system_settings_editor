@@ -1,3 +1,5 @@
+import 'package:seagull/config.dart';
+import 'package:seagull/fakes/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/pages/settings/image_picker_settings_page.dart';
 import 'package:seagull/ui/pages/settings/menu_settings_page.dart';
@@ -38,6 +40,7 @@ class SettingsPage extends StatelessWidget {
           text: Translator.of(context).translate.system,
           navigateTo: SystemSettingsPage(),
         ),
+        if (Config.alpha) const FakeTicker(),
       ],
       icon: AbiliaIcons.settings,
       title: Translator.of(context).translate.settings,

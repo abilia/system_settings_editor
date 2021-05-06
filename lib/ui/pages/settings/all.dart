@@ -1,12 +1,11 @@
 export 'calendar/all.dart';
+export 'system/all.dart';
 export 'settings_page.dart';
-export 'system_settings_page.dart';
 export 'function_settings_page.dart';
 export 'countdown_setings_page.dart';
 export 'menu_settings_page.dart';
 export 'activity_view_settings.dart';
 export 'alarm_settings_page.dart';
-export 'calendar/day_calendar/day_calendar_settings_page.dart';
 export 'settings_base_page.dart';
 export 'image_picker_settings_page.dart';
 export 'calendar/add_activity/new_activity_settings_page.dart';
