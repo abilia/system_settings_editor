@@ -25,7 +25,7 @@ class CalendarSettingsPage extends StatelessWidget {
         MenuItemPickField(
           icon: AbiliaIcons.month,
           text: Translator.of(context).translate.monthCalendar,
-          navigateTo: MonthCalendarSettings(),
+          navigateTo: MonthCalendarSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.full_screen,
@@ -35,7 +35,7 @@ class CalendarSettingsPage extends StatelessWidget {
         MenuItemPickField(
           icon: AbiliaIcons.new_icon,
           text: Translator.of(context).translate.newActivity,
-          navigateTo: NewActivitySettings(),
+          navigateTo: NewActivitySettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.handi_alarm_vibration,

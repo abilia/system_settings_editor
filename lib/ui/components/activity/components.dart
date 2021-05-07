@@ -78,6 +78,7 @@ class PickField extends StatelessWidget {
   final Widget leading, trailing;
   final Text text;
   final double heigth;
+  final EdgeInsets padding;
   final bool errorState;
   final String semanticsLabel;
   static final defaultHeigth = 56.s;
@@ -91,6 +92,7 @@ class PickField extends StatelessWidget {
     this.heigth,
     this.errorState = false,
     this.semanticsLabel,
+    this.padding,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -111,33 +113,26 @@ class PickField extends StatelessWidget {
                 : onTap == null
                     ? disabledBoxDecoration
                     : whiteBoxDecoration,
-            padding: EdgeInsets.all(12.s),
-            child: Stack(
+            padding: padding ?? EdgeInsets.all(12.s),
+            child: Row(
               children: <Widget>[
-                Center(
-                  child: Row(
-                    children: <Widget>[
-                      if (leading != null)
-                        IconTheme(
-                          data: Theme.of(context)
-                              .iconTheme
-                              .copyWith(size: smallIconSize),
-                          child: leading,
-                        ),
-                      SizedBox(width: 12.s),
-                      if (text != null)
-                        DefaultTextStyle(
-                          style:
-                              abiliaTextTheme.bodyText1.copyWith(height: 1.0),
-                          child: text,
-                        ),
-                    ],
+                if (leading != null)
+                  IconTheme(
+                    data: Theme.of(context)
+                        .iconTheme
+                        .copyWith(size: smallIconSize),
+                    child: leading,
                   ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: trailing ?? trailingArrow,
-                ),
+                SizedBox(width: 12.s),
+                if (text != null)
+                  Expanded(
+                    child: DefaultTextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      style: abiliaTextTheme.bodyText1.copyWith(height: 1.0),
+                      child: text,
+                    ),
+                  ),
+                trailing ?? trailingArrow,
               ],
             ),
           ),

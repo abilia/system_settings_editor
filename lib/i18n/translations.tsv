@@ -214,6 +214,13 @@ timelineLength	Timeline length	Tidslinjens längd	Tid på døgnet	Lengte tijdlij
 weekdays	Weekdays (5)	Vardagar (5)	Hverdage (5)	Weekdagen (5)	Arkisin (5)	Werktage (5)	Hverdager (5)
 captions	Captions	Rubriker	Titler	Bijschriften	Otsikot	Unterschriften	Titler
 columns	Columns	Kolumner	Kolonner	Kolommen	Sarakkeet	Spalten	Kolonner
+headings	Headings	Rubriker	Titler	Kopteksten	Otsikot	Überschriften	Titler
+allowPassedStartTime	Allow passed start time	Lägga in på passerad tid	Indsæt på passeret starttid	Verlopen Starttijd toestaan	Salli mennyt aloitusaika	Startzeit in der Vergangenheit erlauben	Legg inn på passert tid
+addRecurringActivity	Add recurring activity	Lägga in återkommande aktivitet	>Indsæt gentagende aktivitet	Terugkerende activiteit toevoegen	Lisää toistuva aktiviteetti	Wiederkehrende Aktivität hinzufügen	Legg inn gjentakende aktivitet
+showEndTime	Show end time	Visa sluttid	Vis sluttid	Eindtijd tonen	Näytä päättymisaika	Endezeit anzeigen	Vis sluttid
+showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	Alarme anzeigen	Vis alarm
+showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
+showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
 							
 ## Functions Settings							
 toolbarSettingsHint	Views displayed in the Toolbar	Visningar visas i verktygsfältet	Visninger vises i værktøjslinjen	Weergaven weergegeven in de werkbalk	Näkymät näkyvät työkalupalkissa	In der Symbolleiste angezeigte Ansichten	Visninger som vises på verktøylinjen

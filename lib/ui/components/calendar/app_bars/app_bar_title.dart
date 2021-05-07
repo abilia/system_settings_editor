@@ -124,8 +124,11 @@ class AppBarTitleRows {
   }
 
   factory AppBarTitleRows.month({
-    DateTime currentTime,
-    String langCode,
+    @required DateTime currentTime,
+    @required String langCode,
+    @required bool showYear,
   }) =>
-      AppBarTitleRows._(DateFormat.yMMMM(langCode).format(currentTime));
+      showYear
+          ? AppBarTitleRows._(DateFormat.yMMMM(langCode).format(currentTime))
+          : AppBarTitleRows._(DateFormat.MMM(langCode).format(currentTime));
 }

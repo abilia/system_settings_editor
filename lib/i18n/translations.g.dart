@@ -406,6 +406,20 @@ abstract class Translated {
 
   final String columns = 'Columns';
 
+  final String headings = 'Headings';
+
+  final String allowPassedStartTime = 'Allow passed start time';
+
+  final String addRecurringActivity = 'Add recurring activity';
+
+  final String showEndTime = 'Show end time';
+
+  final String showAlarm = 'Show alarm';
+
+  final String showSilentAlarm = 'Show silent alarm';
+
+  final String showNoAlarm = 'Show no alarm';
+
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
 
   final String homeScreenSettingsHint =
@@ -1119,6 +1133,27 @@ class SV extends Translated {
 
   @override
   final String columns = 'Kolumner';
+
+  @override
+  final String headings = 'Rubriker';
+
+  @override
+  final String allowPassedStartTime = 'Lägga in på passerad tid';
+
+  @override
+  final String addRecurringActivity = 'Lägga in återkommande aktivitet';
+
+  @override
+  final String showEndTime = 'Visa sluttid';
+
+  @override
+  final String showAlarm = 'Visa larm';
+
+  @override
+  final String showSilentAlarm = 'Visa tyst larm';
+
+  @override
+  final String showNoAlarm = 'Visa inget larm';
 
   @override
   final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
@@ -1891,6 +1926,27 @@ class DA extends Translated {
   final String columns = 'Kolonner';
 
   @override
+  final String headings = 'Titler';
+
+  @override
+  final String allowPassedStartTime = 'Indsæt på passeret starttid';
+
+  @override
+  final String addRecurringActivity = '>Indsæt gentagende aktivitet';
+
+  @override
+  final String showEndTime = 'Vis sluttid';
+
+  @override
+  final String showAlarm = 'Vis alarm';
+
+  @override
+  final String showSilentAlarm = 'Vis stille alarm';
+
+  @override
+  final String showNoAlarm = 'Vis ingen alarm';
+
+  @override
   final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
 
   @override
@@ -2657,6 +2713,27 @@ class NL extends Translated {
 
   @override
   final String columns = 'Kolommen';
+
+  @override
+  final String headings = 'Kopteksten';
+
+  @override
+  final String allowPassedStartTime = 'Verlopen Starttijd toestaan';
+
+  @override
+  final String addRecurringActivity = 'Terugkerende activiteit toevoegen';
+
+  @override
+  final String showEndTime = 'Eindtijd tonen';
+
+  @override
+  final String showAlarm = 'Alarmen weergeven';
+
+  @override
+  final String showSilentAlarm = 'Stille alarmen weergeven';
+
+  @override
+  final String showNoAlarm = 'Geen alarmen weergeven';
 
   @override
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
@@ -3426,6 +3503,27 @@ class FI extends Translated {
 
   @override
   final String columns = 'Sarakkeet';
+
+  @override
+  final String headings = 'Otsikot';
+
+  @override
+  final String allowPassedStartTime = 'Salli mennyt aloitusaika';
+
+  @override
+  final String addRecurringActivity = 'Lisää toistuva aktiviteetti';
+
+  @override
+  final String showEndTime = 'Näytä päättymisaika';
+
+  @override
+  final String showAlarm = 'Näytä hälytykset';
+
+  @override
+  final String showSilentAlarm = 'Näytä hiljaiset hälytykset';
+
+  @override
+  final String showNoAlarm = 'Älä näytä hälytystä';
 
   @override
   final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
@@ -4198,6 +4296,27 @@ class DE extends Translated {
   final String columns = 'Spalten';
 
   @override
+  final String headings = 'Überschriften';
+
+  @override
+  final String allowPassedStartTime = 'Startzeit in der Vergangenheit erlauben';
+
+  @override
+  final String addRecurringActivity = 'Wiederkehrende Aktivität hinzufügen';
+
+  @override
+  final String showEndTime = 'Endezeit anzeigen';
+
+  @override
+  final String showAlarm = 'Alarme anzeigen';
+
+  @override
+  final String showSilentAlarm = 'Stille Alarme anzeigen';
+
+  @override
+  final String showNoAlarm = 'Kein Alarm anzeigen';
+
+  @override
   final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
 
   @override
@@ -4966,6 +5085,27 @@ class NB extends Translated {
 
   @override
   final String columns = 'Kolonner';
+
+  @override
+  final String headings = 'Titler';
+
+  @override
+  final String allowPassedStartTime = 'Legg inn på passert tid';
+
+  @override
+  final String addRecurringActivity = 'Legg inn gjentakende aktivitet';
+
+  @override
+  final String showEndTime = 'Vis sluttid';
+
+  @override
+  final String showAlarm = 'Vis alarm';
+
+  @override
+  final String showSilentAlarm = 'Vis stille alarm';
+
+  @override
+  final String showNoAlarm = 'Vis ingen alarm';
 
   @override
   final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';

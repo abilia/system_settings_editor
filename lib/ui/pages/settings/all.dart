@@ -7,5 +7,5 @@ export 'menu_settings_page.dart';
 export 'alarm_settings_page.dart';
 export 'settings_base_page.dart';
 export 'image_picker_settings_page.dart';
-export 'new_activity_settings.dart';
+export 'calendar/add_activity/new_activity_settings_page.dart';
 export 'select_sound_page.dart';

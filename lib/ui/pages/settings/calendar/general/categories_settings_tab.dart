@@ -12,115 +12,48 @@ class CategoriesSettingsTab extends StatelessWidget {
     return BlocBuilder<GeneralCalendarSettingsCubit,
         GeneralCalendarSettingsState>(
       builder: (context, state) {
-        final cState = state.categories;
         final t = Translator.of(context).translate;
-        final leftName =
-            cState.leftCategoryName.isEmpty ? t.left : cState.leftCategoryName;
-        final rigthName = cState.rigthCategoryName.isEmpty
-            ? t.right
-            : cState.rigthCategoryName;
         return SettingsTab(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 8.s),
-              decoration: boxDecoration,
-              child: Stack(
-                children: [
-                  if (cState.showCategories)
-                    IgnorePointer(
-                      child: CategoryLeft(
-                        expanded: true,
-                        categoryName: leftName,
-                      ),
-                    ),
-                  const TimepillarExample(),
-                  if (cState.showCategories)
-                    IgnorePointer(
-                      child: CategoryRight(
-                        expanded: true,
-                        categoryName: rigthName,
-                      ),
-                    ),
-                ],
-              ),
-            ),
+            _CategoriesPreview(state: state),
             const SizedBox.shrink(),
             SwitchField(
-              value: cState.showCategories,
+              value: state.categories.show,
               onChanged: (value) => context
                   .read<GeneralCalendarSettingsCubit>()
                   .changeCategorySettings(
-                    cState.copyWith(showCategories: value),
+                    state.categories.copyWith(show: value),
                   ),
+              leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
               text: Text(t.showCagetories),
             ),
             CollapsableWidget(
-              collapsed: !cState.showCategories,
+              collapsed: !state.categories.show,
               child: Column(
                 children: [
                   SizedBox(height: 8.s),
-                  PickField(
+                  _CategoryPickField(
                     key: TestKey.editLeftCategory,
-                    text: Text(leftName),
-                    onTap: () async {
-                      final result =
-                          await Navigator.of(context).push<ImageAndName>(
-                        MaterialPageRoute(
-                          builder: (_) => CopiedAuthProviders(
-                            blocContext: context,
-                            child: EditCategoryPage(
-                              imageAndName: ImageAndName(
-                                  cState.leftCategoryName, SelectedImage.empty),
-                              hintText: t.left,
-                            ),
-                          ),
-                        ),
-                      );
-                      if (result != null) {
-                        context
-                            .read<GeneralCalendarSettingsCubit>()
-                            .changeCategorySettings(
-                              cState.copyWith(leftCategoryName: result.name),
-                            );
-                      }
-                    },
+                    imageAndName: state.categories.left,
+                    defaultName: t.left,
+                    onResult: (r) => state.categories.copyWith(left: r),
                   ),
                   SizedBox(height: 8.s),
-                  PickField(
+                  _CategoryPickField(
                     key: TestKey.editRigthCategory,
-                    text: Text(rigthName),
-                    onTap: () async {
-                      final result =
-                          await Navigator.of(context).push<ImageAndName>(
-                        MaterialPageRoute(
-                          builder: (_) => CopiedAuthProviders(
-                            blocContext: context,
-                            child: EditCategoryPage(
-                              imageAndName: ImageAndName(
-                                  cState.rigthCategoryName,
-                                  SelectedImage.empty),
-                              hintText: t.right,
-                            ),
-                          ),
-                        ),
-                      );
-                      if (result != null) {
-                        context
-                            .read<GeneralCalendarSettingsCubit>()
-                            .changeCategorySettings(
-                              cState.copyWith(rigthCategoryName: result.name),
-                            );
-                      }
-                    },
+                    imageAndName: state.categories.right,
+                    defaultName: t.right,
+                    onResult: (r) => state.categories.copyWith(right: r),
                   ),
                   SizedBox(height: 16.s),
                   SwitchField(
-                    value: cState.showColors,
+                    value: state.categories.colors,
                     onChanged: (value) => context
                         .read<GeneralCalendarSettingsCubit>()
                         .changeCategorySettings(
-                          cState.copyWith(showColors: value),
+                          state.categories.copyWith(colors: value),
                         ),
+                    leading: Icon(AbiliaIcons.change_page_color),
                     text: Text(t.showColours),
                   ),
                 ],
@@ -133,37 +66,111 @@ class CategoriesSettingsTab extends StatelessWidget {
   }
 }
 
-class TimepillarExample extends StatelessWidget {
-  const TimepillarExample({Key key}) : super(key: key);
+class _CategoryPickField extends StatelessWidget {
+  final ImageAndName imageAndName;
+  final String defaultName;
+  final CategoriesSettingState Function(ImageAndName) onResult;
+
+  const _CategoryPickField({
+    Key key,
+    this.imageAndName,
+    this.defaultName,
+    this.onResult,
+  }) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ClockBloc(
-        StreamController<DateTime>().stream,
-        initialTime: DateTime(2021, 1, 1, 8, 30),
-      ),
-      child: BlocBuilder<GeneralCalendarSettingsCubit,
-          GeneralCalendarSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.timepillar != current.timepillar,
-        builder: (context, state) {
-          return Center(
-            child: TimePillar(
-              preview: true,
-              dayOccasion: Occasion.current,
-              dayParts: DayParts.standard(),
-              use12h: state.timepillar.use12h,
-              nightParts: [],
-              interval: TimepillarInterval(
-                start: DateTime(2021, 1, 1, 7),
-                end: DateTime(2021, 1, 1, 10),
+  Widget build(BuildContext context) => PickField(
+        text: Text(imageAndName.hasName ? imageAndName.name : defaultName),
+        padding: imageAndName.image.isNotEmpty
+            ? EdgeInsets.fromLTRB(4.s, 4.s, 12.s, 4.s)
+            : null,
+        leading: imageAndName.image.isNotEmpty
+            ? FadeInAbiliaImage(
+                imageFileId: imageAndName.image.id,
+                imageFilePath: imageAndName.image.path,
+                width: 48.s,
+                height: 48.s,
+              )
+            : null,
+        onTap: () async {
+          final result = await Navigator.of(context).push<ImageAndName>(
+            MaterialPageRoute(
+              builder: (_) => CopiedAuthProviders(
+                blocContext: context,
+                child: EditCategoryPage(
+                  imageAndName: imageAndName,
+                  hintText: defaultName,
+                ),
               ),
-              showTimeLine: false,
-              columnOfDots: state.timepillar.columnOfDots,
             ),
           );
+          if (result != null) {
+            context
+                .read<GeneralCalendarSettingsCubit>()
+                .changeCategorySettings(onResult(result));
+          }
         },
-      ),
-    );
-  }
+      );
+}
+
+class _CategoriesPreview extends StatelessWidget {
+  const _CategoriesPreview({
+    Key key,
+    this.state,
+  }) : super(key: key);
+  final GeneralCalendarSettingsState state;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        padding: EdgeInsets.symmetric(vertical: 8.s),
+        decoration: boxDecoration,
+        child: BlocProvider(
+          create: (context) => ClockBloc(
+            StreamController<DateTime>().stream,
+            initialTime: DateTime(2021, 1, 1, 8, 30),
+          ),
+          child: BlocBuilder<TimepillarBloc, TimepillarState>(
+            builder: (context, ts) => LayoutBuilder(
+              builder: (context, boxConstraints) {
+                final categoryWidth =
+                    (boxConstraints.maxWidth - ts.timePillarTotalWidth) / 2;
+                return Stack(
+                  children: [
+                    if (state.categories.show)
+                      CategoryLeft(
+                        categoryName: state.categories.left.name,
+                        fileId: state.categories.left.image.id,
+                        maxWidth: categoryWidth,
+                      ),
+                    Align(
+                      alignment: state.categories.show
+                          ? Alignment.center
+                          : Alignment.topLeft,
+                      child: TimePillar(
+                        preview: true,
+                        dayOccasion: Occasion.current,
+                        dayParts: DayParts.standard(),
+                        use12h: state.timepillar.use12h,
+                        nightParts: [],
+                        interval: TimepillarInterval(
+                          start: DateTime(2021, 1, 1, 7),
+                          end: DateTime(2021, 1, 1, 10),
+                        ),
+                        showTimeLine: false,
+                        columnOfDots: state.timepillar.columnOfDots,
+                      ),
+                    ),
+                    if (state.categories.show)
+                      CategoryRight(
+                        categoryName: state.categories.right.name,
+                        fileId: state.categories.right.image.id,
+                        maxWidth: categoryWidth,
+                      ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      );
 }

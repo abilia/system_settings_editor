@@ -8,56 +8,47 @@ class EyeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) =>
-          BlocBuilder<CalendarViewBloc, CalendarViewState>(
-        builder: (context, calendarViewState) =>
-            BlocBuilder<SettingsBloc, SettingsState>(
-          builder: (context, state) => Material(
-            color: Colors.transparent,
-            elevation: 3,
-            shadowColor: AbiliaColors.black,
-            borderRadius: borderRadius,
-            child: ActionButtonBlack(
-              onPressed: () async {
-                final settings = await showViewDialog<EyeButtonSettings>(
-                  context: context,
-                  builder: (context) => EyeButtonDialog(
-                    currentCalendarType: memoSettingsState.dayCalendarType,
-                    currentDotsInTimepillar: memoSettingsState.dotsInTimepillar,
-                    currentDayInterval:
-                        memoSettingsState.timepillarIntervalType,
-                    currentZoom: memoSettingsState.timepillarZoom,
-                  ),
-                );
-                if (settings != null) {
-                  if (memoSettingsState.dayCalendarType !=
-                      settings.calendarType) {
-                    context.read<MemoplannerSettingBloc>().add(
-                        DayCalendarTypeUpdatedEvent(settings.calendarType));
-                  }
-                  if (memoSettingsState.dotsInTimepillar !=
-                      settings.dotsInTimepillar) {
-                    context.read<MemoplannerSettingBloc>().add(
-                        DotsInTimepillarUpdatedEvent(
-                            settings.dotsInTimepillar));
-                  }
-                  if (memoSettingsState.timepillarIntervalType !=
-                      settings.intervalType) {
-                    context
-                        .read<MemoplannerSettingBloc>()
-                        .add(IntervalTypeUpdatedEvent(settings.intervalType));
-                  }
-                  if (memoSettingsState.timepillarZoom !=
-                      settings.timepillarZoom) {
-                    context
-                        .read<MemoplannerSettingBloc>()
-                        .add(ZoomSettingUpdatedEvent(settings.timepillarZoom));
-                  }
-                }
-              },
-              child: Icon(AbiliaIcons.show),
-            ),
-          ),
+      builder: (context, memoSettingsState) => Material(
+        color: Colors.transparent,
+        elevation: 3,
+        shadowColor: AbiliaColors.black,
+        borderRadius: borderRadius,
+        child: ActionButtonBlack(
+          onPressed: () async {
+            final settings = await showViewDialog<EyeButtonSettings>(
+              context: context,
+              builder: (context) => EyeButtonDialog(
+                currentCalendarType: memoSettingsState.dayCalendarType,
+                currentDotsInTimepillar: memoSettingsState.dotsInTimepillar,
+                currentDayInterval: memoSettingsState.timepillarIntervalType,
+                currentZoom: memoSettingsState.timepillarZoom,
+              ),
+            );
+            if (settings != null) {
+              if (memoSettingsState.dayCalendarType != settings.calendarType) {
+                context
+                    .read<MemoplannerSettingBloc>()
+                    .add(DayCalendarTypeUpdatedEvent(settings.calendarType));
+              }
+              if (memoSettingsState.dotsInTimepillar !=
+                  settings.dotsInTimepillar) {
+                context.read<MemoplannerSettingBloc>().add(
+                    DotsInTimepillarUpdatedEvent(settings.dotsInTimepillar));
+              }
+              if (memoSettingsState.timepillarIntervalType !=
+                  settings.intervalType) {
+                context
+                    .read<MemoplannerSettingBloc>()
+                    .add(IntervalTypeUpdatedEvent(settings.intervalType));
+              }
+              if (memoSettingsState.timepillarZoom != settings.timepillarZoom) {
+                context
+                    .read<MemoplannerSettingBloc>()
+                    .add(ZoomSettingUpdatedEvent(settings.timepillarZoom));
+              }
+            }
+          },
+          child: Icon(AbiliaIcons.show),
         ),
       ),
     );

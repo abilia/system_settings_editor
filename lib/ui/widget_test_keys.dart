@@ -78,5 +78,6 @@ class TestKey {
       showTypeOfDisplaySwitch = Key('showTypeOfDisplaySwitch'),
       showTimepillarLengthSwitch = Key('showTimepillarLengthSwitch'),
       showTimelineZoomSwitch = Key('showTimelineZoomSwitch'),
-      showDurationSelectionSwitch = Key('showDurationSelectionSwitch');
+      showDurationSelectionSwitch = Key('showDurationSelectionSwitch'),
+      monthColorSwith = Key('monthColorSwith');
 }

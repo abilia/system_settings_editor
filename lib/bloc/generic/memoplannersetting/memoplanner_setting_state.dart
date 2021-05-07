@@ -88,6 +88,11 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get weekCaptionShowYear => settings.weekCaptionShowYear;
   bool get weekCaptionShowClock => settings.weekCaptionShowClock;
 
+  bool get monthCaptionShowBrowseButtons =>
+      settings.monthCaptionShowMonthButtons;
+  bool get monthCaptionShowYear => settings.monthCaptionShowYear;
+  bool get monthCaptionShowClock => settings.monthCaptionShowClock;
+
   int get morningStart => settings.morningIntervalStart;
   int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
@@ -122,6 +127,8 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   WeekColor get weekColor =>
       WeekColor.values[settings.weekDisplayShowColorMode];
+  WeekColor get monthWeekColor =>
+      WeekColor.values[settings.calendarMonthViewShowColors];
 
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();
@@ -202,6 +209,8 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   String get leftCategoryName => settings.calendarActivityTypeLeft;
   String get rightCategoryName => settings.calendarActivityTypeRight;
+  String get leftCategoryImage => settings.calendarActivityTypeLeftImage;
+  String get rightCategoryImage => settings.calendarActivityTypeRightImage;
 
   // Properties derived from one or more settings
   bool get abilityToSelectAlarm =>
