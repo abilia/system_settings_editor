@@ -447,6 +447,14 @@ abstract class Translated {
 
   final String showClock = 'Show clock';
 
+  final String delete = 'Delete';
+
+  final String edit = 'Edit';
+
+  final String showQuarterHourWatchBar = 'Show Quarter Hour Watch bar';
+
+  final String timeOnQuarterHourBar = 'Time on Quarter Hour bar';
+
   final String clock = 'Clock';
 
   final String analogueDigital = 'Analogue + digital';
@@ -1184,6 +1192,18 @@ class SV extends Translated {
 
   @override
   final String showClock = 'Visa klocka';
+
+  @override
+  final String delete = 'Ta bort';
+
+  @override
+  final String edit = 'Ändra';
+
+  @override
+  final String showQuarterHourWatchBar = 'Visa kvartur';
+
+  @override
+  final String timeOnQuarterHourBar = 'Tid på kvartur';
 
   @override
   final String clock = 'Klocka';
@@ -1966,6 +1986,18 @@ class DA extends Translated {
   final String showClock = 'Vis ur';
 
   @override
+  final String delete = 'Slet';
+
+  @override
+  final String edit = 'Ændre';
+
+  @override
+  final String showQuarterHourWatchBar = 'Vis kvartur';
+
+  @override
+  final String timeOnQuarterHourBar = 'Tid på kvartur';
+
+  @override
   final String clock = 'Ur';
 
   @override
@@ -2741,6 +2773,18 @@ class NL extends Translated {
 
   @override
   final String showClock = 'Toon klok';
+
+  @override
+  final String delete = 'Verwijderen';
+
+  @override
+  final String edit = 'Bewerken';
+
+  @override
+  final String showQuarterHourWatchBar = 'Kwartierkijkbalk tonen';
+
+  @override
+  final String timeOnQuarterHourBar = 'Tijd op kwartierbalk';
 
   @override
   final String clock = 'Klok';
@@ -3519,6 +3563,18 @@ class FI extends Translated {
 
   @override
   final String showClock = 'Näytä kello';
+
+  @override
+  final String delete = 'Poista';
+
+  @override
+  final String edit = 'Muokkaa';
+
+  @override
+  final String showQuarterHourWatchBar = 'Näytä aikapylväsnäkymä';
+
+  @override
+  final String timeOnQuarterHourBar = 'Aika varttikellon palkissa';
 
   @override
   final String clock = 'Kello';
@@ -4300,6 +4356,18 @@ class DE extends Translated {
   final String showClock = 'Uhr anzeigen';
 
   @override
+  final String delete = 'Löschen';
+
+  @override
+  final String edit = 'Bearbeiten';
+
+  @override
+  final String showQuarterHourWatchBar = 'Viertelstunden-Balken anzeigen';
+
+  @override
+  final String timeOnQuarterHourBar = 'Zeit auf Viertelstunden-Balken';
+
+  @override
   final String clock = 'Uhr';
 
   @override
@@ -5077,6 +5145,18 @@ class NB extends Translated {
 
   @override
   final String showClock = 'Vis klokken';
+
+  @override
+  final String delete = 'Slett';
+
+  @override
+  final String edit = 'Endre';
+
+  @override
+  final String showQuarterHourWatchBar = 'Vis kvarterur';
+
+  @override
+  final String timeOnQuarterHourBar = 'Tid på kvarterur';
 
   @override
   final String clock = 'Klokke';

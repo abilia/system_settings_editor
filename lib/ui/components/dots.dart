@@ -256,8 +256,9 @@ class SideDotsLarge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.displayTimeLeft != current.displayTimeLeft,
       builder: (context, state) {
-        final displayRemainingTime = state.displayTimeLeft;
         return Column(
           children: <Widget>[
             Spacer(),
@@ -273,7 +274,7 @@ class SideDotsLarge extends StatelessWidget {
             Expanded(
               child: Column(
                 children: <Widget>[
-                  if (displayRemainingTime)
+                  if (state.displayTimeLeft)
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Tts(

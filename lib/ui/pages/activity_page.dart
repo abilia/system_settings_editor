@@ -8,8 +8,13 @@ import 'package:seagull/ui/all.dart';
 
 class ActivityPage extends StatelessWidget {
   final ActivityOccasion occasion;
+  final Widget previewImage;
 
-  ActivityPage({Key key, @required this.occasion}) : super(key: key);
+  ActivityPage({
+    Key key,
+    @required this.occasion,
+    this.previewImage,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +33,10 @@ class ActivityPage extends StatelessWidget {
           body: Padding(
             padding: EdgeInsets.all(ActivityInfo.margin)
                 .subtract(EdgeInsets.only(left: ActivityInfo.margin)),
-            child: ActivityInfoWithDots(activityOccasion),
+            child: ActivityInfoWithDots(
+              activityOccasion,
+              previewImage: previewImage,
+            ),
           ),
           bottomNavigationBar:
               ActivityBottomAppBar(activityOccasion: activityOccasion),

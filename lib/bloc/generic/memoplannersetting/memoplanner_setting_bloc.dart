@@ -3,7 +3,6 @@ import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -16,8 +15,8 @@ class MemoplannerSettingBloc
   StreamSubscription _genericSubscription;
   final GenericBloc genericBloc;
 
-  MemoplannerSettingBloc({@required this.genericBloc})
-      : super(genericBloc.state is GenericsLoaded
+  MemoplannerSettingBloc({this.genericBloc})
+      : super(genericBloc?.state is GenericsLoaded
             ? MemoplannerSettingsLoaded(
                 MemoplannerSettings.fromSettingsMap(
                   (genericBloc.state as GenericsLoaded)
@@ -26,7 +25,7 @@ class MemoplannerSettingBloc
                 ),
               )
             : MemoplannerSettingsNotLoaded()) {
-    _genericSubscription = genericBloc.stream.listen((state) {
+    _genericSubscription = genericBloc?.stream?.listen((state) {
       if (state is GenericsLoaded) {
         add(UpdateMemoplannerSettings(state.generics));
       } else if (state is GenericsLoadedFailed) {
@@ -55,7 +54,7 @@ class MemoplannerSettingBloc
 
   @override
   Future<void> close() async {
-    await _genericSubscription.cancel();
+    await _genericSubscription?.cancel();
     return super.close();
   }
 }
