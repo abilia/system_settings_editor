@@ -238,7 +238,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.technical_settings));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(LogoutPickField));
+      await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(LogoutButton));
       await tester.pumpAndSettle();

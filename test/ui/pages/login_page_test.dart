@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/fakes/all.dart';
@@ -260,9 +261,14 @@ void main() {
 
     await tester.verifyTts(find.byKey(TestKey.loginError),
         exact: translate.wrongCredentials);
+  });
+
+  testWidgets('tts mpgo hint text', (WidgetTester tester) async {
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
     await tester.verifyTts(find.byKey(TestKey.loginHint),
         exact: translate.loginHint);
-  });
+  }, skip: Config.isMP, tags: Flavor.mpgo.tag);
 
   testWidgets('Gets no valid license dialog when no valid license',
       (WidgetTester tester) async {

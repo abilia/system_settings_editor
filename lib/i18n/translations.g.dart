@@ -420,6 +420,8 @@ abstract class Translated {
 
   final String showNoAlarm = 'Show no alarm';
 
+  final String androidSettings = 'Android Settings';
+
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
 
   final String homeScreenSettingsHint =
@@ -488,6 +490,20 @@ abstract class Translated {
   final String showColours = 'Show colours';
 
   final String editCategory = 'Edit category';
+
+  final String codeProtect = 'Code protect';
+
+  final String code = 'Code';
+
+  final String codeProtectSettings = 'Code protect settings';
+
+  final String codeProtectThisView = 'Code protect this view';
+
+  final String codeProtectAndroidSettings = 'Code protect Android Settings';
+
+  final String enterNewCode = 'Enter new code';
+
+  final String confirmCode = 'Confirm code';
 
   final String permissions = 'Permissions';
 
@@ -1156,6 +1172,9 @@ class SV extends Translated {
   final String showNoAlarm = 'Visa inget larm';
 
   @override
+  final String androidSettings = 'Android-inställningar';
+
+  @override
   final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
 
   @override
@@ -1255,6 +1274,27 @@ class SV extends Translated {
 
   @override
   final String editCategory = 'Redigera kategori';
+
+  @override
+  final String codeProtect = 'Kodskydd';
+
+  @override
+  final String code = 'Kod';
+
+  @override
+  final String codeProtectSettings = 'Kodskydda Inställningar';
+
+  @override
+  final String codeProtectThisView = 'Kodskydda denna vy';
+
+  @override
+  final String codeProtectAndroidSettings = 'Kodskydda Android-inställningar';
+
+  @override
+  final String enterNewCode = 'Ange ny kod';
+
+  @override
+  final String confirmCode = 'Bekräfta kod';
 
   @override
   final String permissions = 'Behörigheter';
@@ -1947,6 +1987,9 @@ class DA extends Translated {
   final String showNoAlarm = 'Vis ingen alarm';
 
   @override
+  final String androidSettings = 'Android-indstillinger';
+
+  @override
   final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
 
   @override
@@ -2047,6 +2090,27 @@ class DA extends Translated {
 
   @override
   final String editCategory = 'Rediger kategori';
+
+  @override
+  final String codeProtect = 'Kodebeskyttelse';
+
+  @override
+  final String code = 'Kode';
+
+  @override
+  final String codeProtectSettings = 'Kodebeskyt indstillinger';
+
+  @override
+  final String codeProtectThisView = 'Kodebeskytte denne visning.';
+
+  @override
+  final String codeProtectAndroidSettings = 'Kodebeskyt Android-indstillinger';
+
+  @override
+  final String enterNewCode = 'Angiv nyt kodeord';
+
+  @override
+  final String confirmCode = 'Bekræft kodeord';
 
   @override
   final String permissions = 'Tilladelser';
@@ -2736,6 +2800,9 @@ class NL extends Translated {
   final String showNoAlarm = 'Geen alarmen weergeven';
 
   @override
+  final String androidSettings = 'Android-instellingen';
+
+  @override
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
 
   @override
@@ -2836,6 +2903,28 @@ class NL extends Translated {
 
   @override
   final String editCategory = 'Bewerk categorie';
+
+  @override
+  final String codeProtect = 'Codebescherming';
+
+  @override
+  final String code = 'Code';
+
+  @override
+  final String codeProtectSettings = 'Codebeschermingsinstellingen';
+
+  @override
+  final String codeProtectThisView = 'Deze weergave met code beschermen';
+
+  @override
+  final String codeProtectAndroidSettings =
+      'Codebeschermingsinstellingen Android';
+
+  @override
+  final String enterNewCode = 'Voer nieuwe code in';
+
+  @override
+  final String confirmCode = 'Bevestig code';
 
   @override
   final String permissions = 'Rechten';
@@ -3526,6 +3615,9 @@ class FI extends Translated {
   final String showNoAlarm = 'Älä näytä hälytystä';
 
   @override
+  final String androidSettings = 'Android-asetukset';
+
+  @override
   final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
 
   @override
@@ -3626,6 +3718,27 @@ class FI extends Translated {
 
   @override
   final String editCategory = 'Muokkaa kategoriaa';
+
+  @override
+  final String codeProtect = 'Suojakoodi';
+
+  @override
+  final String code = 'Koodi';
+
+  @override
+  final String codeProtectSettings = 'Suojaa asetukset koodilla';
+
+  @override
+  final String codeProtectThisView = 'Suojaa tämä näkymä koodilla';
+
+  @override
+  final String codeProtectAndroidSettings = 'Suojaa Android-asetukset koodilla';
+
+  @override
+  final String enterNewCode = 'Anna uusi koodi';
+
+  @override
+  final String confirmCode = 'Vahvista koodi';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -4317,6 +4430,9 @@ class DE extends Translated {
   final String showNoAlarm = 'Kein Alarm anzeigen';
 
   @override
+  final String androidSettings = 'Android-Einstellungen';
+
+  @override
   final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
 
   @override
@@ -4417,6 +4533,28 @@ class DE extends Translated {
 
   @override
   final String editCategory = 'Kategorie bearbeiten';
+
+  @override
+  final String codeProtect = 'Schutz durch Code';
+
+  @override
+  final String code = 'Code';
+
+  @override
+  final String codeProtectSettings = 'Einstellungen mit Code schützen';
+
+  @override
+  final String codeProtectThisView = 'Diese Anzeige durch Code schützen';
+
+  @override
+  final String codeProtectAndroidSettings =
+      'Android-Einstellungen mit Code schützen';
+
+  @override
+  final String enterNewCode = 'Neuen Code eingeben';
+
+  @override
+  final String confirmCode = 'Code bestätigen';
 
   @override
   final String permissions = 'Berechtigungen';
@@ -5108,6 +5246,9 @@ class NB extends Translated {
   final String showNoAlarm = 'Vis ingen alarm';
 
   @override
+  final String androidSettings = 'Android-innstillinger';
+
+  @override
   final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';
 
   @override
@@ -5208,6 +5349,27 @@ class NB extends Translated {
 
   @override
   final String editCategory = 'Rediger kategori';
+
+  @override
+  final String codeProtect = 'Kodebeskyttelse';
+
+  @override
+  final String code = 'Kode';
+
+  @override
+  final String codeProtectSettings = 'Kodebeskytt Innstillinger';
+
+  @override
+  final String codeProtectThisView = 'Kodebeskytte denne visning.';
+
+  @override
+  final String codeProtectAndroidSettings = 'Kodebeskytt Android-innstillinger';
+
+  @override
+  final String enterNewCode = 'Angi ny kode';
+
+  @override
+  final String confirmCode = 'Bekreft kode';
 
   @override
   final String permissions = 'Tillatelser';

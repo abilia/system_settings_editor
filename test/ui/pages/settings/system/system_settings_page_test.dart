@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../../../mocks.dart';
+import '../../../../mocks.dart';
 
 void main() {
   MockSettingsDb mockSettingsDb;
@@ -70,8 +72,8 @@ void main() {
   testWidgets('Settings page shows', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    expect(find.byType(LogoutPickField), findsOneWidget);
-    await tester.tap(find.byType(LogoutPickField));
+    expect(find.byIcon(AbiliaIcons.power_off_on), findsOneWidget);
+    await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
     await tester.pumpAndSettle();
     expect(find.byType(LogoutButton), findsOneWidget);
     expect(find.byType(ProfilePictureNameAndEmail), findsOneWidget);
@@ -82,9 +84,9 @@ void main() {
 
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    await tester.verifyTts(find.byType(LogoutPickField),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.power_off_on),
         exact: translate.logout);
-    await tester.tap(find.byType(LogoutPickField));
+    await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
     await tester.pumpAndSettle();
     await tester.verifyTts(find.byType(LogoutButton), exact: translate.logout);
     await tester.verifyTts(find.text(user.name), exact: user.name);
@@ -116,8 +118,7 @@ void main() {
     when(mockSettingsDb.textToSpeech).thenReturn(true);
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    expect(find.byType(AboutPickField), findsOneWidget);
-    await tester.tap(find.byType(AboutPickField));
+    await tester.tap(find.byIcon(AbiliaIcons.information));
     await tester.pumpAndSettle();
     expect(find.byType(AboutPage), findsOneWidget);
     final textWidgets = find
@@ -132,6 +133,51 @@ void main() {
       await tester.verifyTts(find.text(text), exact: text);
     }
   });
+
+  testWidgets('code protect not visible on mpgo', (WidgetTester tester) async {
+    setupPermissions();
+    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpAndSettle();
+    expect(find.byIcon(AbiliaIcons.numeric_keyboard), findsNothing);
+  }, skip: !Config.isMPGO, tags: Flavor.mpgo.tag);
+
+  testWidgets('code protect visible on mp', (WidgetTester tester) async {
+    setupPermissions();
+    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.numeric_keyboard));
+    await tester.pumpAndSettle();
+    expect(find.byType(CodeProtectPage), findsOneWidget);
+  }, skip: !Config.isMP, tags: Flavor.mp.tag);
+
+  testWidgets('android settings not availible on mpgo',
+      (WidgetTester tester) async {
+    setupPermissions();
+    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpAndSettle();
+    expect(find.byType(AndroidSettingsPickField), findsNothing);
+  }, skip: !Config.isMPGO, tags: Flavor.mpgo.tag);
+
+  testWidgets('android settings availible on mp', (WidgetTester tester) async {
+    var openAndroidSettingCalls = 0;
+    MethodChannel('intent').setMockMethodCallHandler(
+      (MethodCall methodCall) async {
+        switch (methodCall.method) {
+          case 'startActivity':
+            if (methodCall.arguments['action'] ==
+                AndroidIntentAction.settings) {
+              openAndroidSettingCalls++;
+            }
+        }
+      },
+    );
+
+    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(AndroidSettingsPickField));
+    await tester.pumpAndSettle();
+    expect(openAndroidSettingCalls, 1);
+  }, skip: !Config.isMP, tags: Flavor.mp.tag);
 
   group('permission page', () {
     tearDown(setupPermissions);

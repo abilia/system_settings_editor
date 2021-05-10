@@ -8,8 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
-import 'package:intent/flag.dart';
 import 'package:mockito/mockito.dart';
+
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
@@ -270,9 +270,7 @@ void setupPermissions(
         case 'startActivity':
           if (methodCall.arguments['data'] == 'package:pkgName' &&
               methodCall.arguments['action'] ==
-                  'android.settings.action.MANAGE_OVERLAY_PERMISSION' &&
-              (methodCall.arguments['flag'] as List)
-                  .contains(Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)) {
+                  AndroidIntentAction.manageOverlay) {
             openSystemAlertSettingCalls++;
           }
       }

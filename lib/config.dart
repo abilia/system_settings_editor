@@ -9,8 +9,8 @@ class Config {
 }
 
 class Flavor {
-  final String name, id;
-  const Flavor._(this.name, this.id);
-  static const mpgo = Flavor._('MEMOplanner Go', 'memoplannergo');
-  static const mp = Flavor._('MEMOplanner', 'memoplanner');
+  final String name, id, tag;
+  const Flavor._(this.name, this.id, this.tag);
+  static const mpgo = Flavor._('MEMOplanner Go', 'memoplannergo', 'mpgo');
+  static const mp = Flavor._('MEMOplanner', 'memoplanner', 'mp');
 }
