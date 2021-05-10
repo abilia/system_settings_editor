@@ -79,5 +79,6 @@ class TestKey {
       showTimepillarLengthSwitch = Key('showTimepillarLengthSwitch'),
       showTimelineZoomSwitch = Key('showTimelineZoomSwitch'),
       showDurationSelectionSwitch = Key('showDurationSelectionSwitch'),
-      monthColorSwith = Key('monthColorSwith');
+      monthColorSwith = Key('monthColorSwith'),
+      addSettingsTab = Key('addSettingsTab');
 }

@@ -58,103 +58,256 @@ void main() {
 
   group('New activity settings page', () {
     testWidgets('Navigate to page', (tester) async {
-      await tester.goToNewActivitySettingsPage(pump: true);
+      await tester.goToNewActivitySettingsPage();
       expect(find.byType(NewActivitySettingsPage), findsOneWidget);
       expect(find.byType(OkButton), findsOneWidget);
       expect(find.byType(CancelButton), findsOneWidget);
     });
+    group('General tab', () {
+      testWidgets('Allow passed start time', (tester) async {
+        await tester.goToNewActivitySettingsPage();
+        await tester.tap(find.text(translate.allowPassedStartTime));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
 
-    testWidgets('Allow passed start time', (tester) async {
-      await tester.goToNewActivitySettingsPage(pump: true);
-      await tester.tap(find.text(translate.allowPassedStartTime));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
+        await verifyGeneric(
+          tester,
+          genericDb,
+          key: MemoplannerSettings.activityTimeBeforeCurrentKey,
+          matcher: isFalse,
+        );
+      });
 
-      await verifyGeneric(
-        tester,
-        genericDb,
-        key: MemoplannerSettings.activityTimeBeforeCurrentKey,
-        matcher: isFalse,
-      );
+      testWidgets('Add recurring activity', (tester) async {
+        await tester.goToNewActivitySettingsPage();
+        await tester.tap(find.text(translate.addRecurringActivity));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        await verifyGeneric(
+          tester,
+          genericDb,
+          key: MemoplannerSettings.activityRecurringEditableKey,
+          matcher: isFalse,
+        );
+      });
+
+      testWidgets('Show end time', (tester) async {
+        await tester.goToNewActivitySettingsPage();
+        await tester.tap(find.text(translate.showEndTime));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        await verifyGeneric(
+          tester,
+          genericDb,
+          key: MemoplannerSettings.activityEndTimeEditableKey,
+          matcher: isFalse,
+        );
+      });
+
+      testWidgets('show alarm', (tester) async {
+        await tester.goToNewActivitySettingsPage();
+        await tester.tap(find.text(translate.showAlarm));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        await verifyGeneric(
+          tester,
+          genericDb,
+          key: MemoplannerSettings.activityDisplayAlarmOptionKey,
+          matcher: isFalse,
+        );
+      });
+
+      testWidgets('Show silent alarm', (tester) async {
+        await tester.goToNewActivitySettingsPage();
+        await tester.tap(find.text(translate.showSilentAlarm));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        await verifyGeneric(
+          tester,
+          genericDb,
+          key: MemoplannerSettings.activityDisplaySilentAlarmOptionKey,
+          matcher: isFalse,
+        );
+      });
+
+      testWidgets('Show no alarm', (tester) async {
+        await tester.goToNewActivitySettingsPage();
+        await tester.dragUntilVisible(find.text(translate.showNoAlarm),
+            find.byType(NewActivityGeneralSettingsTab), Offset(0, 100));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(translate.showNoAlarm));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        await verifyGeneric(
+          tester,
+          genericDb,
+          key: MemoplannerSettings.activityDisplayNoAlarmOptionKey,
+          matcher: isFalse,
+        );
+      });
     });
+    group('Add tab', () {
+      testWidgets('Select add type', (tester) async {
+        await tester.goToAddTab();
+        expect(find.byType(NewActivityAddSettingsTab), findsOneWidget);
+        await tester.tap(find.text(translate.stepByStep));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
 
-    testWidgets('Add recurring activity', (tester) async {
-      await tester.goToNewActivitySettingsPage(pump: true);
-      await tester.tap(find.text(translate.addRecurringActivity));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
+        await verifyGeneric(
+          tester,
+          genericDb,
+          key: MemoplannerSettings.addActivityTypeAdvancedKey,
+          matcher: isFalse,
+        );
+      });
 
-      await verifyGeneric(
-        tester,
-        genericDb,
-        key: MemoplannerSettings.activityRecurringEditableKey,
-        matcher: isFalse,
-      );
-    });
+      testWidgets('Advanced - Set select date', (tester) async {
+        await tester.verifyInAddTab(
+          find.text(translate.selectDate),
+          genericDb,
+          key: MemoplannerSettings.activityDateEditableKey,
+          matcher: isFalse,
+        );
+      });
 
-    testWidgets('Show end time', (tester) async {
-      await tester.goToNewActivitySettingsPage(pump: true);
-      await tester.tap(find.text(translate.showEndTime));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
+      testWidgets('Advanced - Set select type', (tester) async {
+        await tester.verifyInAddTab(
+          find.text(translate.selectType),
+          genericDb,
+          key: MemoplannerSettings.activityTypeEditableKey,
+          matcher: isFalse,
+        );
+      });
 
-      await verifyGeneric(
-        tester,
-        genericDb,
-        key: MemoplannerSettings.activityEndTimeEditableKey,
-        matcher: isFalse,
-      );
-    });
+      testWidgets('Advanced - Show basic activities', (tester) async {
+        await tester.verifyInAddTab(
+          find.text(translate.showBasicActivities),
+          genericDb,
+          key: MemoplannerSettings.advancedActivityTemplateKey,
+          matcher: isFalse,
+        );
+      });
 
-    testWidgets('show alarm', (tester) async {
-      await tester.goToNewActivitySettingsPage(pump: true);
-      await tester.tap(find.text(translate.showAlarm));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
+      testWidgets('StepByStep - Show basic activities', (tester) async {
+        await tester.verifyStepByStep(
+          find.text(translate.showBasicActivities),
+          genericDb,
+          key: MemoplannerSettings.wizardTemplateStepKey,
+          matcher: isFalse,
+        );
+      });
 
-      await verifyGeneric(
-        tester,
-        genericDb,
-        key: MemoplannerSettings.activityDisplayAlarmOptionKey,
-        matcher: isFalse,
-      );
-    });
+      testWidgets('StepByStep - Select name', (tester) async {
+        await tester.verifyStepByStep(
+          find.text(translate.selectName),
+          genericDb,
+          key: MemoplannerSettings.wizardTitleStepKey,
+          matcher: isFalse,
+        );
+      });
 
-    testWidgets('Show silent alarm', (tester) async {
-      await tester.goToNewActivitySettingsPage(pump: true);
-      await tester.tap(find.text(translate.showSilentAlarm));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
+      testWidgets('StepByStep - Select image', (tester) async {
+        await tester.verifyStepByStep(
+          find.text(translate.selectImage),
+          genericDb,
+          key: MemoplannerSettings.wizardImageStepKey,
+          matcher: isFalse,
+        );
+      });
 
-      await verifyGeneric(
-        tester,
-        genericDb,
-        key: MemoplannerSettings.activityDisplaySilentAlarmOptionKey,
-        matcher: isFalse,
-      );
-    });
+      testWidgets('StepByStep - Select date', (tester) async {
+        await tester.verifyStepByStep(
+          find.text(translate.selectDate),
+          genericDb,
+          key: MemoplannerSettings.wizardDatePickerStepKey,
+          matcher: isFalse,
+        );
+      });
 
-    testWidgets('Show no alarm', (tester) async {
-      await tester.goToNewActivitySettingsPage(pump: true);
-      await tester.dragUntilVisible(find.text(translate.showNoAlarm),
-          find.byType(NewActivityGeneralSettingsTab), Offset(0, 100));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text(translate.showNoAlarm));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
+      testWidgets('StepByStep - Select type', (tester) async {
+        await tester.verifyStepByStep(
+          find.text(translate.selectImage),
+          genericDb,
+          key: MemoplannerSettings.wizardTypeStepKey,
+          matcher: isFalse,
+        );
+      });
 
-      await verifyGeneric(
-        tester,
-        genericDb,
-        key: MemoplannerSettings.activityDisplayNoAlarmOptionKey,
-        matcher: isFalse,
-      );
+      testWidgets('StepByStep - Select checkable', (tester) async {
+        await tester.verifyStepByStep(
+          find.byIcon(AbiliaIcons.handi_check, skipOffstage: false),
+          genericDb,
+          key: MemoplannerSettings.wizardCheckableStepKey,
+          matcher: isFalse,
+        );
+      });
+
+      testWidgets('StepByStep - Select available for', (tester) async {
+        await tester.verifyStepByStep(
+          find.text(translate.selectAvailableFor, skipOffstage: false),
+          genericDb,
+          key: MemoplannerSettings.wizardAvailabilityTypeKey,
+          matcher: isFalse,
+        );
+      });
+
+      testWidgets('StepByStep - Select delete after', (tester) async {
+        await tester.verifyStepByStep(
+          find.text(translate.selectDeleteAfter, skipOffstage: false),
+          genericDb,
+          key: MemoplannerSettings.wizardRemoveAfterStepKey,
+          matcher: isTrue,
+        );
+      });
+
+      testWidgets('StepByStep - Select alarm', (tester) async {
+        await tester.verifyStepByStep(
+          find.text(translate.selectAlarm, skipOffstage: false),
+          genericDb,
+          key: MemoplannerSettings.wizardAlarmStepKey,
+          matcher: isTrue,
+        );
+      });
+
+      testWidgets('StepByStep - Select checklist', (tester) async {
+        await tester.verifyStepByStep(
+          find.text(translate.selectChecklist, skipOffstage: false),
+          genericDb,
+          key: MemoplannerSettings.wizardChecklistStepKey,
+          matcher: isTrue,
+        );
+      });
+
+      testWidgets('StepByStep - Select note', (tester) async {
+        await tester.verifyStepByStep(
+          find.text(translate.selectNote, skipOffstage: false),
+          genericDb,
+          key: MemoplannerSettings.wizardNotesStepKey,
+          matcher: isTrue,
+        );
+      });
+
+      testWidgets('StepByStep - Select reminder', (tester) async {
+        await tester.verifyStepByStep(
+          find.text(translate.selectReminder, skipOffstage: false),
+          genericDb,
+          key: MemoplannerSettings.wizardRemindersStepKey,
+          matcher: isTrue,
+        );
+      });
     });
   });
 }
@@ -165,8 +318,60 @@ extension on WidgetTester {
     await pumpAndSettle();
   }
 
-  Future<void> goToNewActivitySettingsPage({bool pump = false}) async {
-    if (pump) await pumpApp();
+  Future<void> verifyInAddTab(
+    Finder f,
+    GenericDb genericDb, {
+    String key,
+    dynamic matcher,
+  }) async {
+    await goToAddTab();
+    await tap(f);
+    await pumpAndSettle();
+    await tap(find.byType(OkButton));
+    await pumpAndSettle();
+
+    await verifyGeneric(
+      this,
+      genericDb,
+      key: key,
+      matcher: matcher,
+    );
+  }
+
+  Future<void> verifyStepByStep(
+    Finder finder,
+    GenericDb genericDb, {
+    String key,
+    dynamic matcher,
+  }) async {
+    await goToAddTab();
+    await tap(find.text(Locales.language.values.first.stepByStep));
+    await pumpAndSettle();
+    expect(find.byType(NewActivityAddSettingsTab), findsOneWidget);
+    await dragUntilVisible(
+        finder, find.byType(NewActivityAddSettingsTab), Offset(0, -100));
+    await pumpAndSettle();
+    await tap(finder);
+    await pumpAndSettle();
+    await tap(find.byType(OkButton));
+    await pumpAndSettle();
+
+    await verifyGeneric(
+      this,
+      genericDb,
+      key: key,
+      matcher: matcher,
+    );
+  }
+
+  Future<void> goToAddTab() async {
+    await goToNewActivitySettingsPage();
+    await tap(find.byKey(TestKey.addSettingsTab));
+    await pumpAndSettle();
+  }
+
+  Future<void> goToNewActivitySettingsPage() async {
+    await pumpApp();
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
     await tap(find.byType(SettingsButton));
