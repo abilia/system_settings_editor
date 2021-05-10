@@ -420,6 +420,34 @@ abstract class Translated {
 
   final String showNoAlarm = 'Show no alarm';
 
+  final String throughEditView = 'Through Edit View';
+
+  final String stepByStep = 'Step-by-step';
+
+  final String showBasicActivities = 'Show basic activities';
+
+  final String selectName = 'Select name';
+
+  final String selectImage = 'Select image';
+
+  final String selectDate = 'Select date';
+
+  final String selectType = 'Select type';
+
+  final String selectCheckable = 'Select checkable';
+
+  final String selectAvailableFor = 'Select available for';
+
+  final String selectDeleteAfter = 'Select delete after';
+
+  final String selectAlarm = 'Select alarm';
+
+  final String selectChecklist = 'Select checklist';
+
+  final String selectNote = 'Select note';
+
+  final String selectReminder = 'Select reminder';
+
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
 
   final String homeScreenSettingsHint =
@@ -1154,6 +1182,48 @@ class SV extends Translated {
 
   @override
   final String showNoAlarm = 'Visa inget larm';
+
+  @override
+  final String throughEditView = 'Via Ändravyn';
+
+  @override
+  final String stepByStep = 'Stegvis';
+
+  @override
+  final String showBasicActivities = 'Visa basaktiviteter';
+
+  @override
+  final String selectName = 'Välj namn';
+
+  @override
+  final String selectImage = 'Välj bild';
+
+  @override
+  final String selectDate = 'Välj datum';
+
+  @override
+  final String selectType = 'Välj typ';
+
+  @override
+  final String selectCheckable = 'Välj kvitterbar';
+
+  @override
+  final String selectAvailableFor = 'Välj tillgänglig för';
+
+  @override
+  final String selectDeleteAfter = 'Välj ta bort efteråt';
+
+  @override
+  final String selectAlarm = 'Välj larm';
+
+  @override
+  final String selectChecklist = 'Välj checklista';
+
+  @override
+  final String selectNote = 'Välj anteckning';
+
+  @override
+  final String selectReminder = 'Välj påminnelser';
 
   @override
   final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
@@ -1947,6 +2017,48 @@ class DA extends Translated {
   final String showNoAlarm = 'Vis ingen alarm';
 
   @override
+  final String throughEditView = 'Via Redigersiden';
+
+  @override
+  final String stepByStep = 'Trinvist';
+
+  @override
+  final String showBasicActivities = 'Vis standardaktiviteter';
+
+  @override
+  final String selectName = 'Vælg navn';
+
+  @override
+  final String selectImage = 'Vælg billede';
+
+  @override
+  final String selectDate = 'Vælg dato';
+
+  @override
+  final String selectType = 'Vælg type';
+
+  @override
+  final String selectCheckable = 'Vælg kvittering';
+
+  @override
+  final String selectAvailableFor = 'Vælg tilgængelig for';
+
+  @override
+  final String selectDeleteAfter = 'Vælg slet bagefter';
+
+  @override
+  final String selectAlarm = 'Vælg alarm';
+
+  @override
+  final String selectChecklist = 'Vælg tjekliste';
+
+  @override
+  final String selectNote = 'Vælg note';
+
+  @override
+  final String selectReminder = 'Vælg påmindelse';
+
+  @override
   final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
 
   @override
@@ -2734,6 +2846,48 @@ class NL extends Translated {
 
   @override
   final String showNoAlarm = 'Geen alarmen weergeven';
+
+  @override
+  final String throughEditView = 'Door bewerkweergave';
+
+  @override
+  final String stepByStep = 'Stap voor stap';
+
+  @override
+  final String showBasicActivities = 'Toon standaardactiviteiten';
+
+  @override
+  final String selectName = 'Naam selecteren';
+
+  @override
+  final String selectImage = 'Afbeelding selecteren';
+
+  @override
+  final String selectDate = 'Datum selecteren';
+
+  @override
+  final String selectType = 'Type selecteren';
+
+  @override
+  final String selectCheckable = 'Afvinkbaarheid selecteren';
+
+  @override
+  final String selectAvailableFor = 'Selecteer beschikbaar voor';
+
+  @override
+  final String selectDeleteAfter = 'Wissen na selecteren';
+
+  @override
+  final String selectAlarm = 'Alarm selecteren';
+
+  @override
+  final String selectChecklist = 'Checklist selecteren';
+
+  @override
+  final String selectNote = 'Notitie selecteren';
+
+  @override
+  final String selectReminder = 'Herinnering selecteren';
 
   @override
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
@@ -3524,6 +3678,48 @@ class FI extends Translated {
 
   @override
   final String showNoAlarm = 'Älä näytä hälytystä';
+
+  @override
+  final String throughEditView = 'Muokkausnäkymässä';
+
+  @override
+  final String stepByStep = 'Vaihe vaiheelta';
+
+  @override
+  final String showBasicActivities = 'Näytä perusaktiviteetit';
+
+  @override
+  final String selectName = 'Valitse nimi';
+
+  @override
+  final String selectImage = 'Valitse kuva';
+
+  @override
+  final String selectDate = 'Valitse päivämäärä';
+
+  @override
+  final String selectType = 'Valitse tyyppi';
+
+  @override
+  final String selectCheckable = 'Valitse tarkistettava';
+
+  @override
+  final String selectAvailableFor = 'Valitse käytettävissä';
+
+  @override
+  final String selectDeleteAfter = 'Valitse poista, kun on kulunut';
+
+  @override
+  final String selectAlarm = 'Valitse hälytys';
+
+  @override
+  final String selectChecklist = 'Valitse tarkistusluettelo';
+
+  @override
+  final String selectNote = 'Valitse muistiinpano';
+
+  @override
+  final String selectReminder = 'Valitse muistutus';
 
   @override
   final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
@@ -4317,6 +4513,48 @@ class DE extends Translated {
   final String showNoAlarm = 'Kein Alarm anzeigen';
 
   @override
+  final String throughEditView = 'Durch Bearbeitungsanzeige';
+
+  @override
+  final String stepByStep = 'Schritt für Schritt';
+
+  @override
+  final String showBasicActivities = 'Standardaktivitäten anzeigen';
+
+  @override
+  final String selectName = 'Name auswählen';
+
+  @override
+  final String selectImage = 'Bild auswählen';
+
+  @override
+  final String selectDate = 'Datum auswählen';
+
+  @override
+  final String selectType = 'Typ auswählen';
+
+  @override
+  final String selectCheckable = 'Kontrollierbar auswählen';
+
+  @override
+  final String selectAvailableFor = 'Wählen Sie verfügbar für';
+
+  @override
+  final String selectDeleteAfter = 'Zeit bis Löschen auswählen';
+
+  @override
+  final String selectAlarm = 'Alarm auswählen';
+
+  @override
+  final String selectChecklist = 'Checkliste auswählen';
+
+  @override
+  final String selectNote = 'Hinweis auswählen';
+
+  @override
+  final String selectReminder = 'Erinnerung auswählen';
+
+  @override
   final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
 
   @override
@@ -5106,6 +5344,48 @@ class NB extends Translated {
 
   @override
   final String showNoAlarm = 'Vis ingen alarm';
+
+  @override
+  final String throughEditView = 'Via endrevindu';
+
+  @override
+  final String stepByStep = 'Via sekvens';
+
+  @override
+  final String showBasicActivities = 'Vis liste med standardaktiviteter';
+
+  @override
+  final String selectName = 'Velg navn';
+
+  @override
+  final String selectImage = 'Velg bilde';
+
+  @override
+  final String selectDate = 'Velg dato';
+
+  @override
+  final String selectType = 'Velg type';
+
+  @override
+  final String selectCheckable = 'Velg kvittering';
+
+  @override
+  final String selectAvailableFor = 'Velg tilgjengelig for';
+
+  @override
+  final String selectDeleteAfter = 'Velg slett etterpå';
+
+  @override
+  final String selectAlarm = 'Velg alarm';
+
+  @override
+  final String selectChecklist = 'Velg sjekkliste';
+
+  @override
+  final String selectNote = 'Velg notat';
+
+  @override
+  final String selectReminder = 'Velg påminnelser';
 
   @override
   final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';

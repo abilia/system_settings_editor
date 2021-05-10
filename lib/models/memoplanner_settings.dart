@@ -12,6 +12,7 @@ class MemoplannerSettings extends Equatable {
       dayCaptionShowDayButtonsKey = 'day_caption_show_day_buttons',
       activityDateEditableKey = 'advanced_activity_date',
       activityTypeEditableKey = 'advanced_activity_type',
+      advancedActivityTemplateKey = 'advanced_activity_template',
       activityEndTimeEditableKey = 'add_activity_end_time',
       activityTimeBeforeCurrentKey = 'add_activity_time_before_current',
       activityRecurringEditableKey = 'add_activity_recurring_step',
@@ -22,12 +23,25 @@ class MemoplannerSettings extends Equatable {
       activityDisplayWeekDayKey = 'day_caption_show_weekday',
       activityDisplayDateKey = 'day_caption_show_date',
       activityDisplayClockKey = 'day_caption_show_clock',
+      addActivityTypeAdvancedKey = 'add_activity_type_advanced',
       weekCaptionShowBrowseButtonsKey = 'week_caption_show_week_buttons',
       weekCaptionShowWeekNumberKey = 'week_caption_show_week_number',
       weekCaptionShowYearKey = 'week_caption_show_year',
       weekCaptionShowClockKey = 'week_caption_show_clock',
       weekDisplayShowFullWeekKey = 'week_display_show_full_week',
       weekDisplayShowColorModeKey = 'week_display_show_color_mode',
+      wizardTemplateStepKey = 'wizard_template_step',
+      wizardTitleStepKey = 'wizard_title_step',
+      wizardImageStepKey = 'wizard_image_step',
+      wizardDatePickerStepKey = 'wizard_date_picker_step',
+      wizardTypeStepKey = 'wizard_type_step',
+      wizardCheckableStepKey = 'wizard_checkable_step',
+      wizardAvailabilityTypeKey = 'wizard_availability_type',
+      wizardRemoveAfterStepKey = 'wizard_remove_after_step',
+      wizardAlarmStepKey = 'wizard_alarm_step',
+      wizardChecklistStepKey = 'wizard_checklist_step',
+      wizardNotesStepKey = 'wizard_notes_step',
+      wizardRemindersStepKey = 'wizard_reminders_step',
       monthCaptionShowMonthButtonsKey = 'month_caption_show_month_buttons',
       monthCaptionShowYearKey = 'month_caption_show_year',
       monthCaptionShowClockKey = 'month_caption_show_clock',
@@ -85,6 +99,7 @@ class MemoplannerSettings extends Equatable {
       dayCaptionShowDayButtons,
       activityDateEditable,
       activityTypeEditable,
+      advancedActivityTemplate,
       activityEndTimeEditable,
       activityTimeBeforeCurrent,
       activityRecurringEditable,
@@ -95,6 +110,7 @@ class MemoplannerSettings extends Equatable {
       activityDisplayWeekDay,
       activityDisplayDate,
       activityDisplayClock,
+      addActivityTypeAdvanced,
       weekCaptionShowBrowseButtons,
       weekCaptionShowWeekNumber,
       weekCaptionShowYear,
@@ -126,7 +142,19 @@ class MemoplannerSettings extends Equatable {
       settingViewOptionsTimeView,
       settingViewOptionsTimeInterval,
       settingViewOptionsZoom,
-      settingViewOptionsDurationDots;
+      settingViewOptionsDurationDots,
+      wizardTemplateStep,
+      wizardTitleStep,
+      wizardImageStep,
+      wizardDatePickerStep,
+      wizardTypeStep,
+      wizardCheckableStep,
+      wizardAvailabilityType,
+      wizardRemoveAfterStep,
+      wizardAlarmStep,
+      wizardChecklistStep,
+      wizardNotesStep,
+      wizardRemindersStep;
 
   final int morningIntervalStart,
       dayIntervalStart,
@@ -161,6 +189,7 @@ class MemoplannerSettings extends Equatable {
     this.dayCaptionShowDayButtons = true,
     this.activityDateEditable = true,
     this.activityTypeEditable = true,
+    this.advancedActivityTemplate = true,
     this.activityEndTimeEditable = true,
     this.activityTimeBeforeCurrent = true,
     this.activityRecurringEditable = true,
@@ -171,6 +200,7 @@ class MemoplannerSettings extends Equatable {
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
     this.activityDisplayClock = true,
+    this.addActivityTypeAdvanced = true,
     this.weekCaptionShowBrowseButtons = true,
     this.weekCaptionShowWeekNumber = true,
     this.weekCaptionShowYear = true,
@@ -225,6 +255,18 @@ class MemoplannerSettings extends Equatable {
     this.settingViewOptionsTimeInterval = true,
     this.settingViewOptionsZoom = true,
     this.settingViewOptionsDurationDots = true,
+    this.wizardTemplateStep = true,
+    this.wizardTitleStep = true,
+    this.wizardImageStep = true,
+    this.wizardDatePickerStep = true,
+    this.wizardTypeStep = false,
+    this.wizardCheckableStep = true,
+    this.wizardAvailabilityType = true,
+    this.wizardRemoveAfterStep = false,
+    this.wizardAlarmStep = false,
+    this.wizardChecklistStep = false,
+    this.wizardNotesStep = false,
+    this.wizardRemindersStep = false,
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -253,6 +295,9 @@ class MemoplannerSettings extends Equatable {
       ),
       activityTypeEditable: settings.getBool(
         activityTypeEditableKey,
+      ),
+      advancedActivityTemplate: settings.getBool(
+        advancedActivityTemplateKey,
       ),
       activityEndTimeEditable: settings.getBool(
         activityEndTimeEditableKey,
@@ -283,6 +328,9 @@ class MemoplannerSettings extends Equatable {
       ),
       activityDisplayClock: settings.getBool(
         activityDisplayClockKey,
+      ),
+      addActivityTypeAdvanced: settings.getBool(
+        addActivityTypeAdvancedKey,
       ),
       weekCaptionShowBrowseButtons:
           settings.getBool(weekCaptionShowBrowseButtonsKey),
@@ -431,6 +479,23 @@ class MemoplannerSettings extends Equatable {
       settingViewOptionsZoom: settings.getBool(settingViewOptionsZoomKey),
       settingViewOptionsDurationDots:
           settings.getBool(settingViewOptionsDurationDotsKey),
+      wizardTemplateStep: settings.getBool(wizardTemplateStepKey),
+      wizardTitleStep: settings.getBool(wizardTitleStepKey),
+      wizardImageStep: settings.getBool(wizardImageStepKey),
+      wizardDatePickerStep: settings.getBool(wizardDatePickerStepKey),
+      wizardTypeStep: settings.getBool(wizardTypeStepKey, defaultValue: false),
+      wizardCheckableStep: settings.getBool(wizardCheckableStepKey),
+      wizardAvailabilityType: settings.getBool(wizardAvailabilityTypeKey),
+      wizardRemoveAfterStep:
+          settings.getBool(wizardRemoveAfterStepKey, defaultValue: false),
+      wizardAlarmStep:
+          settings.getBool(wizardAlarmStepKey, defaultValue: false),
+      wizardChecklistStep:
+          settings.getBool(wizardChecklistStepKey, defaultValue: false),
+      wizardNotesStep:
+          settings.getBool(wizardNotesStepKey, defaultValue: false),
+      wizardRemindersStep:
+          settings.getBool(wizardRemindersStepKey, defaultValue: false),
     );
   }
 
@@ -444,6 +509,7 @@ class MemoplannerSettings extends Equatable {
         dayCaptionShowDayButtons,
         activityDateEditable,
         activityTypeEditable,
+        advancedActivityTemplate,
         activityEndTimeEditable,
         activityTimeBeforeCurrent,
         activityRecurringEditable,
@@ -454,6 +520,7 @@ class MemoplannerSettings extends Equatable {
         activityDisplayWeekDay,
         activityDisplayDate,
         activityDisplayClock,
+        addActivityTypeAdvanced,
         weekCaptionShowBrowseButtons,
         weekCaptionShowWeekNumber,
         weekCaptionShowYear,
@@ -508,6 +575,18 @@ class MemoplannerSettings extends Equatable {
         settingViewOptionsTimeInterval,
         settingViewOptionsZoom,
         settingViewOptionsDurationDots,
+        wizardTemplateStep,
+        wizardTitleStep,
+        wizardImageStep,
+        wizardDatePickerStep,
+        wizardTypeStep,
+        wizardCheckableStep,
+        wizardAvailabilityType,
+        wizardRemoveAfterStep,
+        wizardAlarmStep,
+        wizardChecklistStep,
+        wizardNotesStep,
+        wizardRemindersStep
       ];
 }
 
@@ -537,6 +616,8 @@ enum StartView { dayCalendar, weekCalendar, monthCalendar, menu, photoAlbum }
 enum ClockType { analogueDigital, analogue, digital }
 
 enum WeekDisplayDays { everyDay, weekdays }
+
+enum NewActivityMode { editView, stepByStep }
 
 extension WeekDisplayDaysExtension on WeekDisplayDays {
   int numberOfDays() {

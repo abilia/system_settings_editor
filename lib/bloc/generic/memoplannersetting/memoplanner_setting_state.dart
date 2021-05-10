@@ -11,6 +11,7 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get dayCaptionShowDayButtons => settings.dayCaptionShowDayButtons;
   bool get activityDateEditable => settings.activityDateEditable;
   bool get activityTypeEditable => settings.activityTypeEditable;
+  bool get advancedActivityTemplate => settings.advancedActivityTemplate;
   bool get activityEndTimeEditable => settings.activityEndTimeEditable;
   bool get activityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
   bool get activityRecurringEditable => settings.activityRecurringEditable;
@@ -93,6 +94,19 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get monthCaptionShowYear => settings.monthCaptionShowYear;
   bool get monthCaptionShowClock => settings.monthCaptionShowClock;
 
+  bool get wizardTemplateStep => settings.wizardTemplateStep;
+  bool get wizardTitleStep => settings.wizardTitleStep;
+  bool get wizardImageStep => settings.wizardImageStep;
+  bool get wizardDatePickerStep => settings.wizardDatePickerStep;
+  bool get wizardTypeStep => settings.wizardTypeStep;
+  bool get wizardCheckableStep => settings.wizardCheckableStep;
+  bool get wizardAvailabilityType => settings.wizardAvailabilityType;
+  bool get wizardRemoveAfterStep => settings.wizardRemoveAfterStep;
+  bool get wizardAlarmStep => settings.wizardAlarmStep;
+  bool get wizardChecklistStep => settings.wizardChecklistStep;
+  bool get wizardNotesStep => settings.wizardNotesStep;
+  bool get wizardRemindersStep => settings.wizardRemindersStep;
+
   int get morningStart => settings.morningIntervalStart;
   int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
@@ -121,6 +135,10 @@ abstract class MemoplannerSettingsState extends Equatable {
   Sound get reminderAlarm => settings.reminderAlarm == null
       ? Sound.Default
       : settings.reminderAlarm.toSound();
+
+  NewActivityMode get addActivityType => settings.addActivityTypeAdvanced
+      ? NewActivityMode.editView
+      : NewActivityMode.stepByStep;
 
   WeekDisplayDays get weekDisplayDays =>
       WeekDisplayDays.values[settings.weekDisplayShowFullWeek];
