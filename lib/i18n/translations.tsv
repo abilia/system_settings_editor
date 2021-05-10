@@ -221,7 +221,21 @@ showEndTime	Show end time	Visa sluttid	Vis sluttid	Eindtijd tonen	Näytä päät
 showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	Alarme anzeigen	Vis alarm
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
+throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu
 androidSettings	Android Settings	Android-inställningar	Android-indstillinger	Android-instellingen	Android-asetukset	Android-Einstellungen	Android-innstillinger
+stepByStep	Step-by-step	Stegvis	Trinvist	Stap voor stap	Vaihe vaiheelta	Schritt für Schritt	Via sekvens
+showBasicActivities	Show basic activities	Visa basaktiviteter	Vis standardaktiviteter	Toon standaardactiviteiten	Näytä perusaktiviteetit	Standardaktivitäten anzeigen	Vis liste med standardaktiviteter
+selectName	Select name	Välj namn	Vælg navn	Naam selecteren	Valitse nimi	Name auswählen	Velg navn
+selectImage	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valitse kuva	Bild auswählen	Velg bilde
+selectDate	Select date	Välj datum	Vælg dato	Datum selecteren	Valitse päivämäärä	Datum auswählen	Velg dato
+selectType	Select type	Välj typ	Vælg type	Type selecteren	Valitse tyyppi	Typ auswählen	Velg type
+selectCheckable	Select checkable	Välj kvitterbar	Vælg kvittering	Afvinkbaarheid selecteren	Valitse tarkistettava	Kontrollierbar auswählen	Velg kvittering
+selectAvailableFor	Select available for	Välj tillgänglig för	Vælg tilgængelig for	Selecteer beschikbaar voor	Valitse käytettävissä	Wählen Sie verfügbar für	Velg tilgjengelig for
+selectDeleteAfter	Select delete after	Välj ta bort efteråt	Vælg slet bagefter	Wissen na selecteren	Valitse poista, kun on kulunut	Zeit bis Löschen auswählen	Velg slett etterpå
+selectAlarm	Select alarm	Välj larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Velg alarm
+selectChecklist	Select checklist	Välj checklista	Vælg tjekliste	Checklist selecteren	Valitse tarkistusluettelo	Checkliste auswählen	Velg sjekkliste
+selectNote	Select note	Välj anteckning	Vælg note	Notitie selecteren	Valitse muistiinpano	Hinweis auswählen	Velg notat
+selectReminder	Select reminder	Välj påminnelser	Vælg påmindelse	Herinnering selecteren	Valitse muistutus	Erinnerung auswählen	Velg påminnelser
 							
 ## Functions Settings							
 toolbarSettingsHint	Views displayed in the Toolbar	Visningar visas i verktygsfältet	Visninger vises i værktøjslinjen	Weergaven weergegeven in de werkbalk	Näkymät näkyvät työkalupalkissa	In der Symbolleiste angezeigte Ansichten	Visninger som vises på verktøylinjen

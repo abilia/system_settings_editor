@@ -23,7 +23,10 @@ class NewActivitySettingsPage extends StatelessWidget {
             bottom: AbiliaTabBar(
               tabs: <Widget>[
                 Icon(AbiliaIcons.settings),
-                Icon(AbiliaIcons.new_icon),
+                Icon(
+                  AbiliaIcons.new_icon,
+                  key: TestKey.addSettingsTab,
+                ),
                 Icon(AbiliaIcons.technical_settings),
               ],
             ),
