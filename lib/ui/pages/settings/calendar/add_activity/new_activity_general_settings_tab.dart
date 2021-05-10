@@ -10,6 +10,7 @@ class NewActivityGeneralSettingsTab extends StatelessWidget {
     return BlocBuilder<AddActivitySettingsCubit, AddActivitySettingsState>(
       builder: (context, state) => SettingsTab(
         children: [
+          Tts(child: Text(t.general)),
           SwitchField(
             text: Text(t.allowPassedStartTime),
             leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),

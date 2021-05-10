@@ -29,6 +29,7 @@ class NewActivityAddSettingsTab extends StatelessWidget {
               state.copyWith(stepByStepSettingsState: sss));
       return SettingsTab(
         children: [
+          Tts(child: Text(t.add)),
           RadioField(
             value: NewActivityMode.editView,
             groupValue: addTabState.newActivityMode,

@@ -448,6 +448,10 @@ abstract class Translated {
 
   final String selectReminder = 'Select reminder';
 
+  final String add = 'Add';
+
+  final String defaults = 'Defaults';
+
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
 
   final String homeScreenSettingsHint =
@@ -1224,6 +1228,12 @@ class SV extends Translated {
 
   @override
   final String selectReminder = 'Välj påminnelser';
+
+  @override
+  final String add = 'Lägg in';
+
+  @override
+  final String defaults = 'Förval';
 
   @override
   final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
@@ -2059,6 +2069,12 @@ class DA extends Translated {
   final String selectReminder = 'Vælg påmindelse';
 
   @override
+  final String add = 'Indsæt';
+
+  @override
+  final String defaults = 'Forvalg';
+
+  @override
   final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
 
   @override
@@ -2888,6 +2904,12 @@ class NL extends Translated {
 
   @override
   final String selectReminder = 'Herinnering selecteren';
+
+  @override
+  final String add = 'Toevoegen';
+
+  @override
+  final String defaults = 'Voorselectie';
 
   @override
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
@@ -3720,6 +3742,12 @@ class FI extends Translated {
 
   @override
   final String selectReminder = 'Valitse muistutus';
+
+  @override
+  final String add = 'Lisää';
+
+  @override
+  final String defaults = 'Esivalinta';
 
   @override
   final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
@@ -4555,6 +4583,12 @@ class DE extends Translated {
   final String selectReminder = 'Erinnerung auswählen';
 
   @override
+  final String add = 'Hinzufügen';
+
+  @override
+  final String defaults = 'Vorauswahl';
+
+  @override
   final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
 
   @override
@@ -5386,6 +5420,12 @@ class NB extends Translated {
 
   @override
   final String selectReminder = 'Velg påminnelser';
+
+  @override
+  final String add = 'Legg inn';
+
+  @override
+  final String defaults = 'Forvalg';
 
   @override
   final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';

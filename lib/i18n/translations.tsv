@@ -235,6 +235,8 @@ selectAlarm	Select alarm	Välj larm	Vælg alarm	Alarm selecteren	Valitse hälyty
 selectChecklist	Select checklist	Välj checklista	Vælg tjekliste	Checklist selecteren	Valitse tarkistusluettelo	Checkliste auswählen	Velg sjekkliste
 selectNote	Select note	Välj anteckning	Vælg note	Notitie selecteren	Valitse muistiinpano	Hinweis auswählen	Velg notat
 selectReminder	Select reminder	Välj påminnelser	Vælg påmindelse	Herinnering selecteren	Valitse muistutus	Erinnerung auswählen	Velg påminnelser
+add	Add	Lägg in	Indsæt	Toevoegen	Lisää	Hinzufügen	Legg inn
+defaults	Defaults	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
 							
 ## Functions Settings							
 toolbarSettingsHint	Views displayed in the Toolbar	Visningar visas i verktygsfältet	Visninger vises i værktøjslinjen	Weergaven weergegeven in de werkbalk	Näkymät näkyvät työkalupalkissa	In der Symbolleiste angezeigte Ansichten	Visninger som vises på verktøylinjen

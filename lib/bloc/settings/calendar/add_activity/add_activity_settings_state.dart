@@ -308,3 +308,44 @@ class StepByStepSettingsState extends Equatable {
         selectReminder,
       ];
 }
+
+class DefaultsTabSettingsState extends Equatable {
+  final bool vibration, alarmOnlyAtStartTime;
+
+  DefaultsTabSettingsState._({
+    @required this.vibration,
+    @required this.alarmOnlyAtStartTime,
+  });
+
+  factory DefaultsTabSettingsState.fromMemoplannerSettings(
+    MemoplannerSettingsState state,
+  ) =>
+      DefaultsTabSettingsState._(
+        vibration: state.,
+        alarmOnlyAtStartTime: state.activityDateEditable,
+      );
+
+  DefaultsTabSettingsState copyWith({
+    bool vibration, alarmOnlyAtStartTime,
+  }) =>
+      DefaultsTabSettingsState._(
+        vibration: vibration ?? this.vibration,
+        alarmOnlyAtStartTime: alarmOnlyAtStartTime ?? this.alarmOnlyAtStartTime,
+      );
+
+  List<MemoplannerSettingData> get memoplannerSettingData => [
+        MemoplannerSettingData.fromData(
+          data: vibration,
+          identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: alarmOnlyAtStartTime,
+          identifier: MemoplannerSettings.activityDateEditableKey,
+        ),
+      ];
+
+  @override
+  List<Object> get props => [
+    vibration, alarmOnlyAtStartTime,
+      ];
+}
