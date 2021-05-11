@@ -10,6 +10,7 @@ class AddActivitySettingsState extends Equatable {
 
   final AddTabEditViewSettingsState addTabEditViewSettingsState;
   final StepByStepSettingsState stepByStepSettingsState;
+  final DefaultsTabSettingsState defaultsTabSettingsState;
 
   AddActivitySettingsState._({
     @required this.allowPassedStartTime,
@@ -20,6 +21,7 @@ class AddActivitySettingsState extends Equatable {
     @required this.showNoAlarm,
     @required this.addTabEditViewSettingsState,
     @required this.stepByStepSettingsState,
+    @required this.defaultsTabSettingsState,
   });
 
   factory AddActivitySettingsState.fromMemoplannerSettings(
@@ -36,6 +38,8 @@ class AddActivitySettingsState extends Equatable {
             AddTabEditViewSettingsState.fromMemoplannerSettings(state),
         stepByStepSettingsState:
             StepByStepSettingsState.fromMemoplannerSettings(state),
+        defaultsTabSettingsState:
+            DefaultsTabSettingsState.fromMemoplannerSettings(state),
       );
 
   AddActivitySettingsState copyWith({
@@ -47,6 +51,7 @@ class AddActivitySettingsState extends Equatable {
     bool showNoAlarm,
     AddTabEditViewSettingsState addTabEditViewSettingsState,
     StepByStepSettingsState stepByStepSettingsState,
+    DefaultsTabSettingsState defaultsTabSettingsState,
   }) =>
       AddActivitySettingsState._(
         allowPassedStartTime: allowPassedStartTime ?? this.allowPassedStartTime,
@@ -59,6 +64,8 @@ class AddActivitySettingsState extends Equatable {
             addTabEditViewSettingsState ?? this.addTabEditViewSettingsState,
         stepByStepSettingsState:
             stepByStepSettingsState ?? this.stepByStepSettingsState,
+        defaultsTabSettingsState:
+            defaultsTabSettingsState ?? this.defaultsTabSettingsState,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
@@ -88,6 +95,7 @@ class AddActivitySettingsState extends Equatable {
         ),
         ...addTabEditViewSettingsState.memoplannerSettingData,
         ...stepByStepSettingsState.memoplannerSettingData,
+        ...defaultsTabSettingsState.memoplannerSettingData,
       ];
 
   @override
@@ -100,6 +108,7 @@ class AddActivitySettingsState extends Equatable {
         showNoAlarm,
         addTabEditViewSettingsState,
         stepByStepSettingsState,
+        defaultsTabSettingsState,
       ];
 }
 
@@ -310,42 +319,43 @@ class StepByStepSettingsState extends Equatable {
 }
 
 class DefaultsTabSettingsState extends Equatable {
-  final bool vibration, alarmOnlyAtStartTime;
+  final AlarmType alarmType;
+  final bool alarmOnlyAtStartTime;
 
   DefaultsTabSettingsState._({
-    @required this.vibration,
+    @required this.alarmType,
     @required this.alarmOnlyAtStartTime,
   });
 
   factory DefaultsTabSettingsState.fromMemoplannerSettings(
     MemoplannerSettingsState state,
-  ) =>
-      DefaultsTabSettingsState._(
-        vibration: state.,
-        alarmOnlyAtStartTime: state.activityDateEditable,
-      );
+  ) {
+    final alarm = Alarm.fromInt(state.defaultAlarmTypeSetting);
+    return DefaultsTabSettingsState._(
+      alarmType: alarm.type,
+      alarmOnlyAtStartTime: alarm.onlyStart,
+    );
+  }
 
   DefaultsTabSettingsState copyWith({
-    bool vibration, alarmOnlyAtStartTime,
+    AlarmType alarmType,
+    alarmOnlyAtStartTime,
   }) =>
       DefaultsTabSettingsState._(
-        vibration: vibration ?? this.vibration,
+        alarmType: alarmType ?? this.alarmType,
         alarmOnlyAtStartTime: alarmOnlyAtStartTime ?? this.alarmOnlyAtStartTime,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
-          data: vibration,
-          identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
-        ),
-        MemoplannerSettingData.fromData(
-          data: alarmOnlyAtStartTime,
-          identifier: MemoplannerSettings.activityDateEditableKey,
+          data: Alarm(type: alarmType, onlyStart: alarmOnlyAtStartTime).toInt,
+          identifier: MemoplannerSettings.activityDefaultAlarmTypeKey,
         ),
       ];
 
   @override
   List<Object> get props => [
-    vibration, alarmOnlyAtStartTime,
+        alarmType,
+        alarmOnlyAtStartTime,
       ];
 }

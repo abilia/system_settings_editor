@@ -55,7 +55,8 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
                     title: '',
                     startTime: day,
                     timezone: tz.local.name,
-                    alarmType: memoplannerSettingBloc.state.defaultAlarmType(),
+                    alarmType:
+                        memoplannerSettingBloc.state.defaultAlarmTypeSetting,
                   )
                 : basicActivityData.toActivity(
                     timezone: tz.local.name, day: day),

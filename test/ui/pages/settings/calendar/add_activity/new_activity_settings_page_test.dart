@@ -309,6 +309,41 @@ void main() {
         );
       });
     });
+    group('Defaults tab', () {
+      testWidgets('Select vibration', (tester) async {
+        await tester.goToDefaultsTab();
+        expect(find.byType(NewActivityDefaultSettingsTab), findsOneWidget);
+        await tester.tap(find.text(translate.vibration));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        await verifyGeneric(
+          tester,
+          genericDb,
+          key: MemoplannerSettings.activityDefaultAlarmTypeKey,
+          matcher: ALARM_VIBRATION,
+        );
+      });
+
+      testWidgets('Select silent only at start', (tester) async {
+        await tester.goToDefaultsTab();
+        expect(find.byType(NewActivityDefaultSettingsTab), findsOneWidget);
+        await tester.tap(find.text(translate.silentAlarm));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(translate.alarmOnlyAtStartTime));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        await verifyGeneric(
+          tester,
+          genericDb,
+          key: MemoplannerSettings.activityDefaultAlarmTypeKey,
+          matcher: ALARM_SILENT_ONLY_ON_START,
+        );
+      });
+    });
   });
 }
 
@@ -367,6 +402,12 @@ extension on WidgetTester {
   Future<void> goToAddTab() async {
     await goToNewActivitySettingsPage();
     await tap(find.byKey(TestKey.addSettingsTab));
+    await pumpAndSettle();
+  }
+
+  Future<void> goToDefaultsTab() async {
+    await goToNewActivitySettingsPage();
+    await tap(find.byIcon(AbiliaIcons.technical_settings));
     await pumpAndSettle();
   }
 

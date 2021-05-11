@@ -192,7 +192,7 @@ class MemoplannerSettings extends Equatable {
     this.activityDateEditable = true,
     this.activityTypeEditable = true,
     this.advancedActivityTemplate = true,
-    this.activityDefaultAlarmType = 101,
+    this.activityDefaultAlarmType = ALARM_SOUND_AND_VIBRATION,
     this.activityEndTimeEditable = true,
     this.activityTimeBeforeCurrent = true,
     this.activityRecurringEditable = true,
@@ -303,7 +303,7 @@ class MemoplannerSettings extends Equatable {
         advancedActivityTemplateKey,
       ),
       activityDefaultAlarmType:
-          settings.parse(activityDefaultAlarmTypeKey, 101),
+          settings.parse(activityDefaultAlarmTypeKey, ALARM_SOUND_AND_VIBRATION),
       activityEndTimeEditable: settings.getBool(
         activityEndTimeEditableKey,
       ),

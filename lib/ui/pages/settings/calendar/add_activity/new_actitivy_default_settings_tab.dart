@@ -1,3 +1,5 @@
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/settings/calendar/add_activity/add_activity_settings_cubit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -7,50 +9,66 @@ class NewActivityDefaultSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return SettingsTab(
-      children: [
-        Tts(child: Text(t.defaults)),
-        RadioField(
-          value: ALARM_SOUND,
-          groupValue: ALARM_SOUND,
-          onChanged: (v) {},
-          text: Text(t.alarm),
-          leading: Icon(
-            AbiliaIcons.handi_alarm_vibration,
+
+    return BlocBuilder<AddActivitySettingsCubit, AddActivitySettingsState>(
+        builder: (context, state) {
+      final onAlarmTypeChanged = (AlarmType alarmType) => context
+          .read<AddActivitySettingsCubit>()
+          .changeAddActivitySettings(state.copyWith(
+              defaultsTabSettingsState: state.defaultsTabSettingsState
+                  .copyWith(alarmType: alarmType)));
+      return SettingsTab(
+        children: [
+          Tts(child: Text(t.defaults)),
+          RadioField(
+            value: AlarmType.SoundAndVibration,
+            groupValue: state.defaultsTabSettingsState.alarmType,
+            onChanged: onAlarmTypeChanged,
+            text: Text(t.alarmAndVibration),
+            leading: Icon(
+              AbiliaIcons.handi_alarm_vibration,
+            ),
           ),
-        ),
-        RadioField(
-          value: ALARM_SILENT,
-          groupValue: ALARM_SOUND,
-          onChanged: (v) {},
-          text: Text(t.silentAlarm),
-          leading: Icon(
-            AbiliaIcons.handi_alarm,
+          RadioField(
+            value: AlarmType.Vibration,
+            groupValue: state.defaultsTabSettingsState.alarmType,
+            onChanged: onAlarmTypeChanged,
+            text: Text(t.vibration),
+            leading: Icon(
+              AbiliaIcons.handi_vibration,
+            ),
           ),
-        ),
-        RadioField(
-          value: NO_ALARM,
-          groupValue: ALARM_SOUND,
-          onChanged: (v) {},
-          text: Text(t.noAlarm),
-          leading: Icon(
-            AbiliaIcons.handi_no_alarm_vibration,
+          RadioField(
+            value: AlarmType.Silent,
+            groupValue: state.defaultsTabSettingsState.alarmType,
+            onChanged: onAlarmTypeChanged,
+            text: Text(t.silentAlarm),
+            leading: Icon(
+              AbiliaIcons.handi_alarm,
+            ),
           ),
-        ),
-        Divider(),
-        SwitchField(
-          text: Text(t.vibration),
-          leading: Icon(AbiliaIcons.handi_vibration),
-          value: true,
-          onChanged: (v) {},
-        ),
-        SwitchField(
-          text: Text(t.alarmOnlyAtStartTime),
-          leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
-          value: true,
-          onChanged: (v) {},
-        ),
-      ],
-    );
+          RadioField(
+            value: AlarmType.NoAlarm,
+            groupValue: state.defaultsTabSettingsState.alarmType,
+            onChanged: onAlarmTypeChanged,
+            text: Text(t.noAlarm),
+            leading: Icon(
+              AbiliaIcons.handi_no_alarm_vibration,
+            ),
+          ),
+          Divider(),
+          SwitchField(
+            text: Text(t.alarmOnlyAtStartTime),
+            leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
+            value: state.defaultsTabSettingsState.alarmOnlyAtStartTime,
+            onChanged: (v) => context
+                .read<AddActivitySettingsCubit>()
+                .changeAddActivitySettings(state.copyWith(
+                    defaultsTabSettingsState: state.defaultsTabSettingsState
+                        .copyWith(alarmOnlyAtStartTime: v))),
+          ),
+        ],
+      );
+    });
   }
 }

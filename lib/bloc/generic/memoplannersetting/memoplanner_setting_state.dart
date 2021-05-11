@@ -107,6 +107,8 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get wizardNotesStep => settings.wizardNotesStep;
   bool get wizardRemindersStep => settings.wizardRemindersStep;
 
+  int get defaultAlarmTypeSetting => settings.activityDefaultAlarmType;
+
   int get morningStart => settings.morningIntervalStart;
   int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
@@ -239,19 +241,6 @@ abstract class MemoplannerSettingsState extends Equatable {
         settings.activityDisplayNoAlarmOption
       ].where((e) => e).length >=
       2;
-
-  int defaultAlarmType() {
-    if (settings.activityDisplayAlarmOption) {
-      return ALARM_SOUND_AND_VIBRATION;
-    }
-    if (settings.activityDisplaySilentAlarmOption) {
-      return ALARM_VIBRATION;
-    }
-    if (settings.activityDisplayNoAlarmOption) {
-      return NO_ALARM;
-    }
-    return ALARM_SOUND_AND_VIBRATION;
-  }
 
   @override
   List<Object> get props => settings.props;
