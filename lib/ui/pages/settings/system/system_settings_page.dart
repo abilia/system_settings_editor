@@ -1,66 +1,53 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
-import 'package:seagull/fakes/all.dart';
-
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class SystemSettingsPage extends StatelessWidget {
   const SystemSettingsPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
     return SettingsBasePage(
-      widgets: [
-        TextToSpeechSwitch(),
-        PermissionPickField(),
-        AboutPickField(),
-        LogoutPickField(),
-        if (Config.alpha) FakeTicker(),
-      ],
       icon: AbiliaIcons.technical_settings,
-      title: Translator.of(context).translate.system,
+      title: t.system,
+      widgets: [
+        if (Config.isMP)
+          MenuItemPickField(
+            icon: AbiliaIcons.numeric_keyboard,
+            text: t.codeProtect,
+            navigateTo: CodeProtectPage(),
+          ),
+        const TextToSpeechSwitch(),
+        if (Config.isMP) const AndroidSettingsPickField(),
+        const PermissionPickField(),
+        MenuItemPickField(
+          icon: AbiliaIcons.information,
+          text: t.about,
+          navigateTo: AboutPage(),
+        ),
+        MenuItemPickField(
+          icon: AbiliaIcons.power_off_on,
+          text: t.logout,
+          navigateTo: LogoutPage(),
+        ),
+      ],
     );
   }
 }
 
-class LogoutPickField extends StatelessWidget {
-  const LogoutPickField({Key key}) : super(key: key);
+class AndroidSettingsPickField extends StatelessWidget {
+  const AndroidSettingsPickField({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PickField(
-      leading: Icon(AbiliaIcons.power_off_on),
-      text: Text(Translator.of(context).translate.logout),
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => CopiedAuthProviders(
-            blocContext: context,
-            child: LogoutPage(),
-          ),
-          settings: RouteSettings(name: 'LogoutPage'),
-        ),
-      ),
+      leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
+      text: Text(Translator.of(context).translate.androidSettings),
+      onTap: AndroidIntent.openSettings,
     );
   }
-}
-
-class AboutPickField extends StatelessWidget {
-  const AboutPickField({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) => PickField(
-        leading: Icon(AbiliaIcons.information),
-        text: Text(Translator.of(context).translate.about),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => CopiedAuthProviders(
-              blocContext: context,
-              child: AboutPage(),
-            ),
-            settings: RouteSettings(name: 'AboutPage'),
-          ),
-        ),
-      );
 }
 
 class TextToSpeechSwitch extends StatelessWidget {

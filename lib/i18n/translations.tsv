@@ -222,6 +222,7 @@ showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	A
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
 throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu
+androidSettings	Android Settings	Android-inställningar	Android-indstillinger	Android-instellingen	Android-asetukset	Android-Einstellungen	Android-innstillinger
 stepByStep	Step-by-step	Stegvis	Trinvist	Stap voor stap	Vaihe vaiheelta	Schritt für Schritt	Via sekvens
 showBasicActivities	Show basic activities	Visa basaktiviteter	Vis standardaktiviteter	Toon standaardactiviteiten	Näytä perusaktiviteetit	Standardaktivitäten anzeigen	Vis liste med standardaktiviteter
 selectName	Select name	Välj namn	Vælg navn	Naam selecteren	Valitse nimi	Name auswählen	Velg navn
@@ -278,6 +279,15 @@ noDayColours	No day colours	Inga dagfärger	Ingen dagsfarver	Geen dagkleuren	Ei 
 showCagetories	Show categories	Visa kategorier	Vis kategorier	Categorieën tonen	Näyte kategoriat	Kategorien zeigen	Vis kategorier
 showColours	Show colours	Visa färger	Vis farver	Kleuren tonen	Näytä värit	Farben zeigen	Vis farger
 editCategory	Edit category	Redigera kategori	Rediger kategori	Bewerk categorie	Muokkaa kategoriaa	Kategorie bearbeiten	Rediger kategori
+							
+### Code protect							
+codeProtect	Code protect	Kodskydd	Kodebeskyttelse	Codebescherming	Suojakoodi	Schutz durch Code	Kodebeskyttelse
+code	Code	Kod	Kode	Code	Koodi	Code	Kode
+codeProtectSettings	Code protect settings	Kodskydda Inställningar	Kodebeskyt indstillinger	Codebeschermingsinstellingen	Suojaa asetukset koodilla	Einstellungen mit Code schützen	Kodebeskytt Innstillinger
+codeProtectThisView	Code protect this view	Kodskydda denna vy	Kodebeskytte denne visning.	Deze weergave met code beschermen	Suojaa tämä näkymä koodilla	Diese Anzeige durch Code schützen	Kodebeskytte denne visning.
+codeProtectAndroidSettings	Code protect Android Settings	Kodskydda Android-inställningar	Kodebeskyt Android-indstillinger	Codebeschermingsinstellingen Android	Suojaa Android-asetukset koodilla	Android-Einstellungen mit Code schützen	Kodebeskytt Android-innstillinger
+enterNewCode	Enter new code	Ange ny kod	Angiv nyt kodeord	Voer nieuwe code in	Anna uusi koodi	Neuen Code eingeben	Angi ny kode
+confirmCode	Confirm code	Bekräfta kod	Bekræft kodeord	Bevestig code	Vahvista koodi	Code bestätigen	Bekreft kode
 							
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser
