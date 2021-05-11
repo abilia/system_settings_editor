@@ -302,8 +302,8 @@ class MemoplannerSettings extends Equatable {
       advancedActivityTemplate: settings.getBool(
         advancedActivityTemplateKey,
       ),
-      activityDefaultAlarmType:
-          settings.parse(activityDefaultAlarmTypeKey, ALARM_SOUND_AND_VIBRATION),
+      activityDefaultAlarmType: settings.parse(
+          activityDefaultAlarmTypeKey, ALARM_SOUND_AND_VIBRATION),
       activityEndTimeEditable: settings.getBool(
         activityEndTimeEditableKey,
       ),
