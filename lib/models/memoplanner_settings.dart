@@ -13,6 +13,7 @@ class MemoplannerSettings extends Equatable {
       activityDateEditableKey = 'advanced_activity_date',
       activityTypeEditableKey = 'advanced_activity_type',
       advancedActivityTemplateKey = 'advanced_activity_template',
+      activityDefaultAlarmTypeKey = 'activity_default_alarm_type',
       activityEndTimeEditableKey = 'add_activity_end_time',
       activityTimeBeforeCurrentKey = 'add_activity_time_before_current',
       activityRecurringEditableKey = 'add_activity_recurring_step',
@@ -170,7 +171,8 @@ class MemoplannerSettings extends Equatable {
       alarmDuration,
       activityTimeout,
       functionMenuStartView,
-      settingClockType;
+      settingClockType,
+      activityDefaultAlarmType;
 
   final String calendarActivityTypeLeft,
       calendarActivityTypeRight,
@@ -190,6 +192,7 @@ class MemoplannerSettings extends Equatable {
     this.activityDateEditable = true,
     this.activityTypeEditable = true,
     this.advancedActivityTemplate = true,
+    this.activityDefaultAlarmType = ALARM_SOUND_AND_VIBRATION,
     this.activityEndTimeEditable = true,
     this.activityTimeBeforeCurrent = true,
     this.activityRecurringEditable = true,
@@ -299,6 +302,8 @@ class MemoplannerSettings extends Equatable {
       advancedActivityTemplate: settings.getBool(
         advancedActivityTemplateKey,
       ),
+      activityDefaultAlarmType: settings.parse(
+          activityDefaultAlarmTypeKey, ALARM_SOUND_AND_VIBRATION),
       activityEndTimeEditable: settings.getBool(
         activityEndTimeEditableKey,
       ),
@@ -510,6 +515,7 @@ class MemoplannerSettings extends Equatable {
         activityDateEditable,
         activityTypeEditable,
         advancedActivityTemplate,
+        activityDefaultAlarmType,
         activityEndTimeEditable,
         activityTimeBeforeCurrent,
         activityRecurringEditable,
