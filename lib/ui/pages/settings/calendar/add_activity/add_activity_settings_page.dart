@@ -1,11 +1,11 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/settings/calendar/add_activity/new_actitivy_default_settings_tab.dart';
-import 'package:seagull/ui/pages/settings/calendar/add_activity/new_activity_add_settings_tab.dart';
-import 'package:seagull/ui/pages/settings/calendar/add_activity/new_activity_general_settings_tab.dart';
+import 'package:seagull/ui/pages/settings/calendar/add_activity/add_actitivy_default_settings_tab.dart';
+import 'package:seagull/ui/pages/settings/calendar/add_activity/add_activity_add_settings_tab.dart';
+import 'package:seagull/ui/pages/settings/calendar/add_activity/add_activity_general_settings_tab.dart';
 
-class NewActivitySettingsPage extends StatelessWidget {
-  const NewActivitySettingsPage({Key key}) : super(key: key);
+class AddActivitySettingsPage extends StatelessWidget {
+  const AddActivitySettingsPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class NewActivitySettingsPage extends StatelessWidget {
         length: 3,
         child: Scaffold(
           appBar: AbiliaAppBar(
-            title: Translator.of(context).translate.newActivity,
+            title: Translator.of(context).translate.addActivity,
             iconData: AbiliaIcons.new_icon,
             bottom: AbiliaTabBar(
               tabs: <Widget>[
@@ -32,9 +32,9 @@ class NewActivitySettingsPage extends StatelessWidget {
             ),
           ),
           body: TabBarView(children: [
-            NewActivityGeneralSettingsTab(),
-            NewActivityAddSettingsTab(),
-            NewActivityDefaultSettingsTab(),
+            AddActivityGeneralSettingsTab(),
+            AddActivityAddSettingsTab(),
+            AddActivityDefaultSettingsTab(),
           ]),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: CancelButton(),

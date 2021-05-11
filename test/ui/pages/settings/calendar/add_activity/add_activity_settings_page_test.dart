@@ -12,7 +12,7 @@ import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/settings/calendar/add_activity/new_activity_general_settings_tab.dart';
+import 'package:seagull/ui/pages/settings/calendar/add_activity/add_activity_general_settings_tab.dart';
 
 import '../../../../../mocks.dart';
 import '../../../../../utils/verify_generic.dart';
@@ -59,7 +59,7 @@ void main() {
   group('New activity settings page', () {
     testWidgets('Navigate to page', (tester) async {
       await tester.goToNewActivitySettingsPage();
-      expect(find.byType(NewActivitySettingsPage), findsOneWidget);
+      expect(find.byType(AddActivitySettingsPage), findsOneWidget);
       expect(find.byType(OkButton), findsOneWidget);
       expect(find.byType(CancelButton), findsOneWidget);
     });
@@ -142,7 +142,7 @@ void main() {
       testWidgets('Show no alarm', (tester) async {
         await tester.goToNewActivitySettingsPage();
         await tester.dragUntilVisible(find.text(translate.showNoAlarm),
-            find.byType(NewActivityGeneralSettingsTab), Offset(0, 100));
+            find.byType(AddActivityGeneralSettingsTab), Offset(0, 100));
         await tester.pumpAndSettle();
         await tester.tap(find.text(translate.showNoAlarm));
         await tester.pumpAndSettle();
@@ -160,7 +160,7 @@ void main() {
     group('Add tab', () {
       testWidgets('Select add type', (tester) async {
         await tester.goToAddTab();
-        expect(find.byType(NewActivityAddSettingsTab), findsOneWidget);
+        expect(find.byType(AddActivityAddSettingsTab), findsOneWidget);
         await tester.tap(find.text(translate.stepByStep));
         await tester.pumpAndSettle();
         await tester.tap(find.byType(OkButton));
@@ -312,7 +312,7 @@ void main() {
     group('Defaults tab', () {
       testWidgets('Select vibration', (tester) async {
         await tester.goToDefaultsTab();
-        expect(find.byType(NewActivityDefaultSettingsTab), findsOneWidget);
+        expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);
         await tester.tap(find.text(translate.vibration));
         await tester.pumpAndSettle();
         await tester.tap(find.byType(OkButton));
@@ -328,7 +328,7 @@ void main() {
 
       testWidgets('Select silent only at start', (tester) async {
         await tester.goToDefaultsTab();
-        expect(find.byType(NewActivityDefaultSettingsTab), findsOneWidget);
+        expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);
         await tester.tap(find.text(translate.silentAlarm));
         await tester.pumpAndSettle();
         await tester.tap(find.text(translate.alarmOnlyAtStartTime));
@@ -382,9 +382,9 @@ extension on WidgetTester {
     await goToAddTab();
     await tap(find.text(Locales.language.values.first.stepByStep));
     await pumpAndSettle();
-    expect(find.byType(NewActivityAddSettingsTab), findsOneWidget);
+    expect(find.byType(AddActivityAddSettingsTab), findsOneWidget);
     await dragUntilVisible(
-        finder, find.byType(NewActivityAddSettingsTab), Offset(0, -100));
+        finder, find.byType(AddActivityAddSettingsTab), Offset(0, -100));
     await pumpAndSettle();
     await tap(finder);
     await pumpAndSettle();

@@ -2,8 +2,8 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class NewActivityAddSettingsTab extends StatelessWidget {
-  const NewActivityAddSettingsTab({Key key}) : super(key: key);
+class AddActivityAddSettingsTab extends StatelessWidget {
+  const AddActivityAddSettingsTab({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
