@@ -28,7 +28,6 @@ class _FakeTickerState extends State<FakeTicker> {
         children: [
           SwitchField(
             value: useMockTime,
-            text: Text('Fake time'),
             onChanged: (v) {
               setState(() => minPerMin = v ? 1 : null);
               final cb = context.read<ClockBloc>();
@@ -36,6 +35,7 @@ class _FakeTickerState extends State<FakeTicker> {
                 cb.resetTicker(GetIt.I<Ticker>());
               }
             },
+            child: Text('Fake time'),
           ),
           CollapsableWidget(
             collapsed: !useMockTime,

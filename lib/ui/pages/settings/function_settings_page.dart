@@ -92,41 +92,41 @@ class ToolbarSettingsTab extends StatelessWidget {
           children: [
             SwitchField(
               leading: Icon(AbiliaIcons.plus),
-              text: Text(t.createActivity),
               value: state.displayNewActivity,
               onChanged: (v) => context
                   .read<FunctionSettingsCubit>()
                   .changeFunctionSettings(
                       state.copyWith(displayNewActivity: v)),
+              child: Text(t.createActivity),
             ),
             SwitchField(
               leading: Icon(AbiliaIcons.day),
-              text: Text(t.calendarView),
               value: true,
+              child: Text(t.calendarView),
             ),
             SwitchField(
               leading: Icon(AbiliaIcons.week),
-              text: Text(t.weekCalendar),
               value: state.displayWeek,
               onChanged: (v) => context
                   .read<FunctionSettingsCubit>()
                   .changeFunctionSettings(state.copyWith(displayWeek: v)),
+              child: Text(t.weekCalendar),
             ),
             SwitchField(
               leading: Icon(AbiliaIcons.month),
-              text: Text(t.monthCalendar),
               value: state.displayMonth,
               onChanged: (v) => context
                   .read<FunctionSettingsCubit>()
                   .changeFunctionSettings(state.copyWith(displayMonth: v)),
+              child: Text(t.monthCalendar),
             ),
             SwitchField(
               leading: Icon(AbiliaIcons.app_menu),
-              text: Text(t.menu),
               value: state.displayMenu,
               onChanged: (v) => context
                   .read<FunctionSettingsCubit>()
                   .changeFunctionSettings(state.copyWith(displayMenu: v)),
+              child: Text(t.menu),
             ),
           ],
         );
@@ -222,13 +222,13 @@ class TimeoutSettingsTab extends StatelessWidget {
             const Divider(),
             SwitchField(
               leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
-              text: Text(t.activateScreensaver),
               value: state.shouldUseScreenSaver,
               onChanged: state.hasTimeOut
                   ? (v) => context
                       .read<FunctionSettingsCubit>()
                       .changeFunctionSettings(state.copyWith(useScreensaver: v))
                   : null,
+              child: Text(t.activateScreensaver),
             ),
           ],
         );

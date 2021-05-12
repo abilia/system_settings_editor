@@ -52,7 +52,6 @@ class EyeButtonSettingsTab extends StatelessWidget {
           SizedBox(height: 8.s),
           SwitchField(
             key: TestKey.showTypeOfDisplaySwitch,
-            text: Text(t.typeOfDisplay),
             value: state.showTypeOfDisplay,
             onChanged: (v) => {
               context
@@ -61,10 +60,10 @@ class EyeButtonSettingsTab extends StatelessWidget {
                     state.copyWith(showTypeOfDisplay: v),
                   ),
             },
+            child: Text(t.typeOfDisplay),
           ),
           SwitchField(
             key: TestKey.showTimepillarLengthSwitch,
-            text: Text(t.timelineLength),
             value: state.showTimepillarLength,
             onChanged: (v) => {
               context
@@ -73,10 +72,10 @@ class EyeButtonSettingsTab extends StatelessWidget {
                     state.copyWith(showTimepillarLength: v),
                   ),
             },
+            child: Text(t.timelineLength),
           ),
           SwitchField(
             key: TestKey.showTimelineZoomSwitch,
-            text: Text(t.zoom),
             value: state.showTimelineZoom,
             onChanged: (v) => {
               context
@@ -85,10 +84,10 @@ class EyeButtonSettingsTab extends StatelessWidget {
                     state.copyWith(showTimelineZoom: v),
                   ),
             },
+            child: Text(t.zoom),
           ),
           SwitchField(
             key: TestKey.showDurationSelectionSwitch,
-            text: Text(t.activityDuration),
             value: state.showDurationSelection,
             onChanged: (v) => {
               context
@@ -97,6 +96,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                     state.copyWith(showDurationSelection: v),
                   ),
             },
+            child: Text(t.activityDuration),
           ),
         ]
             .map(

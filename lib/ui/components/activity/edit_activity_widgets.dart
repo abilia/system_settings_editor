@@ -382,9 +382,9 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
           AbiliaIcons.handi_alarm,
           size: smallIconSize,
         ),
-        text: Text(Translator.of(context).translate.alarmOnlyAtStartTime),
         value: alarm.onlyStart,
         onChanged: alarm.shouldAlarm ? onChanged : null,
+        child: Text(Translator.of(context).translate.alarmOnlyAtStartTime),
       );
 }
 
@@ -406,10 +406,10 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
             AbiliaIcons.handi_check,
             size: smallIconSize,
           ),
-          text: Text(translator.checkable),
           value: activity.checkable,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
               .add(ReplaceActivity(activity.copyWith(checkable: v))),
+          child: Text(translator.checkable),
         ),
         SizedBox(height: 8.0.s),
         SwitchField(
@@ -418,10 +418,10 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
             AbiliaIcons.delete_all_clear,
             size: smallIconSize,
           ),
-          text: Text(translator.deleteAfter),
           value: activity.removeAfter,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
               .add(ReplaceActivity(activity.copyWith(removeAfter: v))),
+          child: Text(translator.deleteAfter),
         ),
       ],
     );
@@ -577,7 +577,6 @@ class EndDateWidget extends StatelessWidget {
             AbiliaIcons.basic_activity,
             size: smallIconSize,
           ),
-          text: Text(translate.noEndDate),
           value: activity.recurs.hasNoEnd,
           onChanged: disabled
               ? null
@@ -590,6 +589,7 @@ class EndDateWidget extends StatelessWidget {
                       ),
                     ),
                   ),
+          child: Text(translate.noEndDate),
         ),
       ],
     );

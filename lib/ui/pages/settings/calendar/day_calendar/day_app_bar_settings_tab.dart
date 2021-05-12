@@ -13,40 +13,40 @@ class DayAppBarSettingsTab extends StatelessWidget {
           Tts(child: Text(t.topField)),
           DayAppBarPreview(),
           SwitchField(
-            text: Text(t.showBrowseButtons),
             value: state.showBrowseButtons,
             onChanged: (v) => context
                 .read<DayCalendarSettingsCubit>()
                 .changeDayCalendarSettings(
                     state.copyWith(showBrowseButtons: v)),
+            child: Text(t.showBrowseButtons),
           ),
           SwitchField(
-            text: Text(t.showWeekday),
             value: state.showWeekday,
             onChanged: (v) => context
                 .read<DayCalendarSettingsCubit>()
                 .changeDayCalendarSettings(state.copyWith(showWeekday: v)),
+            child: Text(t.showWeekday),
           ),
           SwitchField(
-            text: Text(t.showDayPeriod),
             value: state.showDayPeriod,
             onChanged: (v) => context
                 .read<DayCalendarSettingsCubit>()
                 .changeDayCalendarSettings(state.copyWith(showDayPeriod: v)),
+            child: Text(t.showDayPeriod),
           ),
           SwitchField(
-            text: Text(t.showDate),
             value: state.showDate,
             onChanged: (v) => context
                 .read<DayCalendarSettingsCubit>()
                 .changeDayCalendarSettings(state.copyWith(showDate: v)),
+            child: Text(t.showDate),
           ),
           SwitchField(
-            text: Text(t.showClock),
             value: state.showClock,
             onChanged: (v) => context
                 .read<DayCalendarSettingsCubit>()
                 .changeDayCalendarSettings(state.copyWith(showClock: v)),
+            child: Text(t.showClock),
           ),
         ],
       ),

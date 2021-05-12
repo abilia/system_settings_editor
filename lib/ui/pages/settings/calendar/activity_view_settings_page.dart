@@ -27,46 +27,46 @@ class ActivityViewSettingsPage extends StatelessWidget {
             SizedBox(height: 16.s),
             SwitchField(
               leading: Icon(AbiliaIcons.handi_alarm_vibration),
-              text: Text(t.alarm),
               value: state.alarm,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
                   .changeSettings(state.copyWith(alarm: v)),
+              child: Text(t.alarm),
             ),
             SwitchField(
               leading: Icon(AbiliaIcons.delete_all_clear),
-              text: Text(t.delete),
               value: state.delete,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
                   .changeSettings(state.copyWith(delete: v)),
+              child: Text(t.delete),
             ),
             SwitchField(
               leading: Icon(AbiliaIcons.edit),
-              text: Text(t.edit),
               value: state.edit,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
                   .changeSettings(state.copyWith(edit: v)),
+              child: Text(t.edit),
             ),
             const SizedBox.shrink(),
             SwitchField(
               leading: Icon(AbiliaIcons.timeline),
-              text: Text(t.showQuarterHourWatchBar),
               value: state.quarterHour,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
                   .changeSettings(state.copyWith(quarterHour: v)),
+              child: Text(t.showQuarterHourWatchBar),
             ),
             SwitchField(
               leading: Icon(AbiliaIcons.clock),
-              text: Text(t.timeOnQuarterHourBar),
               value: state.quarterHour && state.timeOnQuarterHour,
               onChanged: state.quarterHour
                   ? (v) => context
                       .read<ActivityViewSettingsCubit>()
                       .changeSettings(state.copyWith(timeOnQuarterHour: v))
                   : null,
+              child: Text(t.timeOnQuarterHourBar),
             )
           ],
           bottomNavigationBar: BottomNavigation(

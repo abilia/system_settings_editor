@@ -136,13 +136,13 @@ class Weekly extends StatelessWidget with EditActivityTab {
                         AbiliaIcons.this_week,
                         size: smallIconSize,
                       ),
-                      text: Text(
-                        Translator.of(context).translate.everyOtherWeek,
-                      ),
                       value: state.everyOtherWeek,
                       onChanged: (v) => context
                           .read<RecurringWeekBloc>()
                           .add(ChangeEveryOtherWeek(v)),
+                      child: Text(
+                        Translator.of(context).translate.everyOtherWeek,
+                      ),
                     ),
                   ),
                 ),

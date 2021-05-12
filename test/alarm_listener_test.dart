@@ -247,10 +247,8 @@ void main() {
       expect(selectNotificationSubject.values, isEmpty);
 
       // Act Login
-      await tester.enterText_(
-          find.byKey(TestKey.passwordInput), 'secretPassword');
-      await tester.enterText_(
-          find.byKey(TestKey.usernameInput), Fakes.username);
+      await tester.enterText_(find.byType(PasswordInput), 'secretPassword');
+      await tester.enterText_(find.byType(UsernameInput), Fakes.username);
       await tester.pump();
       await tester.tap(find.byType(LoginButton));
       await tester.pumpAndSettle();

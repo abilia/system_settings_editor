@@ -4,7 +4,8 @@ import 'package:seagull/ui/all.dart';
 class SwitchField extends StatelessWidget {
   final ValueChanged<bool> onChanged;
   final Widget leading;
-  final Text text;
+  final Widget child;
+  final String ttsData;
   final double heigth, width;
   final bool value;
   final Decoration decoration;
@@ -12,14 +13,16 @@ class SwitchField extends StatelessWidget {
 
   const SwitchField({
     Key key,
-    @required this.text,
+    @required this.child,
     this.onChanged,
     this.leading,
     this.heigth,
     this.width,
     this.value = false,
     this.decoration,
-  })  : assert(text != null),
+    this.ttsData,
+  })  : assert(child != null),
+        assert(child is Text || ttsData != null),
         super(key: key);
 
   @override
@@ -31,7 +34,7 @@ class SwitchField extends StatelessWidget {
     );
     return Tts.fromSemantics(
       SemanticsProperties(
-        label: text.data,
+        label: child is Text ? (child as Text).data : ttsData,
         toggled: value,
       ),
       child: Material(
@@ -60,11 +63,10 @@ class SwitchField extends StatelessWidget {
                           child: leading),
                       SizedBox(width: 12.s),
                     ],
-                    if (text != null)
-                      DefaultTextStyle(
-                        style: abiliaTextTheme.bodyText1.copyWith(height: 1.0),
-                        child: text,
-                      ),
+                    DefaultTextStyle(
+                      style: abiliaTextTheme.bodyText1.copyWith(height: 1.0),
+                      child: child,
+                    ),
                   ],
                 ),
                 SizedBox(

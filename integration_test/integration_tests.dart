@@ -148,7 +148,7 @@ extension on WidgetTester {
   Future<void> login(String userName, String backend,
       {String password = 'password'}) async {
     await selectBackend(backend);
-    await tap(find.byKey(TestKey.usernameInput));
+    await tap(find.byType(UsernameInput));
     await pumpAndSettle();
     await showKeyboard(find.byKey(TestKey.input));
     await pumpAndSettle();
@@ -157,7 +157,7 @@ extension on WidgetTester {
     await tap(find.byType(OkButton));
     await pumpAndSettle();
 
-    await tap(find.byKey(TestKey.passwordInput));
+    await tap(find.byType(PasswordInput));
     await pumpAndSettle();
     await showKeyboard(find.byKey(TestKey.input));
     await pumpAndSettle();

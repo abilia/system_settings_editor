@@ -62,7 +62,6 @@ class PermissionSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     return SwitchField(
       key: ObjectKey(permission),
-      text: Text(permission.translate(Translator.of(context).translate)),
       leading: permission.icon,
       value: status.isGranted,
       onChanged: (v) async {
@@ -72,6 +71,7 @@ class PermissionSwitch extends StatelessWidget {
         }
         context.read<PermissionBloc>().add(RequestPermissions([permission]));
       },
+      child: Text(permission.translate(Translator.of(context).translate)),
     );
   }
 }
@@ -96,7 +96,6 @@ class NotificationPermissionSwitch extends StatelessWidget {
           children: [
             SwitchField(
               key: ObjectKey(permission),
-              text: Text(permission.translate(translate)),
               leading: permission.icon,
               value: status.isGranted,
               decoration: denied ? warningBoxDecoration : whiteBoxDecoration,
@@ -117,6 +116,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
                       .add(RequestPermissions([permission]));
                 }
               },
+              child: Text(permission.translate(translate)),
             ),
             if (denied)
               Positioned(
@@ -173,7 +173,6 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                 children: [
                   SwitchField(
                     key: ObjectKey(permission),
-                    text: Text(permission.translate(translate)),
                     leading: permission.icon,
                     value: status.isGranted,
                     decoration:
@@ -192,6 +191,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                             RequestPermissions([Permission.systemAlertWindow]));
                       }
                     },
+                    child: Text(permission.translate(translate)),
                   ),
                   if (denied)
                     Positioned(

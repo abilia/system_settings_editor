@@ -39,19 +39,9 @@ class LoginForm extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 32.s),
-                AbiliaTextInput(
-                  formKey: TestKey.usernameInput,
+                UsernameInput(
                   initialValue: state.username,
-                  keyboardType: TextInputType.emailAddress,
-                  icon: AbiliaIcons.contact,
-                  heading: translate.username,
-                  inputHeading: translate.usernameTitle,
                   errorState: state.usernameError,
-                  autoCorrect: false,
-                  inputValid: (s) => LoginBloc.usernameValid(s),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(RegExp(r'\s'))
-                  ],
                   onChanged: (newUsername) => context.read<LoginBloc>().add(
                         UsernameChanged(newUsername),
                       ),
@@ -77,6 +67,36 @@ class LoginForm extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class UsernameInput extends StatelessWidget {
+  const UsernameInput({
+    Key key,
+    this.initialValue,
+    this.errorState,
+    this.onChanged,
+  }) : super(key: key);
+
+  final String initialValue;
+  final bool errorState;
+  final void Function(String) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    return AbiliaTextInput(
+      initialValue: initialValue,
+      keyboardType: TextInputType.emailAddress,
+      icon: AbiliaIcons.contact,
+      heading: translate.username,
+      inputHeading: translate.usernameTitle,
+      errorState: errorState,
+      autoCorrect: false,
+      inputValid: (s) => LoginBloc.usernameValid(s),
+      inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
+      onChanged: onChanged,
     );
   }
 }

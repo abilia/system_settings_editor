@@ -11,8 +11,16 @@ wrongCredentials	Username or password doesn\'t match.\nVerify your credentials a
 noConnection	No contact with myAbilia. Check your Internet connection.	Ingen kontakt med myAbilia. Kontrollera din internetanslutning.	Enheden er ikke tilsluttet myAbilia. Kontroller din internetforbindelse.	Het apparaat is niet aangesloten op het myAbilia. Controleer uw internetverbinding.	Laitetta ei ole yhdistetty myAbilia. Tarkista Internet-yhteys.	Das Gerät ist nicht mit dem myAbilia verbunden. Überprüfen Sie Ihre Internetverbindung.	Enheten er ikke koblet til myAbilia. Sjekk din Internettforbindelse.
 enterUsername	Enter username	Ange ditt användarnamn	Angiv dit brugernavn	Gebruikersnaam invoeren	Anna käyttäjätunnus	Benutzername eingeben	Angi ditt brukernavn
 enterPassword	Enter password	Ange ditt lösenord	Angiv din adgangskode	Wachtwoord invoeren	Anna salasana	Passwort eingeben	Angi ditt passord
+							
+### Create Account							
 createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia konto än?	Har du ikke en myAbilia-konto endnu?	Heeft u nog geen myAbilia-account?	Eikö sinulla ole vielä myAbilia-tiliä?	Sie haben noch kein myAbilia-Konto?	Har du ikke en myAbilia-konto ennå?
 createAccount	Create Account	Skapa konto	Opret konto	Maak account	Luo tili	Benutzerkonto erstellen	Opprett konto
+createAaccountHeading	Create your account in myAbilia	Skapa ditt konto i myAbilia	Opret din konto i myAbilia	Creëer uw account in myAbilia	Luo tili myAbiliassa	Erstellen Sie Ihr Konto in myAbilia	Opprett kontoen din i myAbilia
+createAaccountSubheading	You need a myAbilia account to use MEMOplanner	Du behöver ett myAbilia-konto för att kunna använda MEMOplanner	Du har brug for en myAbilia-konto for at bruge MEMOplanner	U heeft een myAbilia-account nodig om MEMOplanner te gebruiken	Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria	Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können	Du trenger en myAbilia-konto for å bruke MEMOplanner
+confirmPassword	Confirm password	Bekräfta lösenordet	Bekræft adgangskoden	Wachtwoord bevestigen	Vahvista salasana	Passwort bestätigen	Bekreft passordet
+acceptTerms	I have read and agree to 	Jag har läst och godkänner 	Jeg har læst og accepterer 	Ik heb gelezen en akkoord gegaan 	Olen lukenut ja sopineet 	Ich habe gelesen und bin damit einverstanden 	Jeg har lest og godtar 
+termsOfUse	terms of use	användarvillkor	brugervillkår	gebruiksvoorwaarden	käyttöehdot	nutzungsbedingungen	brukervillkår
+privacyPolicy	privacy policy	personuppgiftspolicy	persondatapolitik	privacybeleid	tietosuojakäytäntö	datenschutzbestimmungen	personvernerklæring
 							
 ### License							
 noLicense	This account has no valid license.	Det här kontot saknar giltig licens. Du kan därför inte logga in.	Problemer med at logge ind!\nDu har ikke en gyldig licens.	Dit account heeft geen geldige licentie.	Tällä tilillä ei ole kelvollista lisenssiä.	Für dieses Konto gibt es keine gültige Lizenz.	Problemer med å logge inn!\nDu har ikke en gyldig lisens.

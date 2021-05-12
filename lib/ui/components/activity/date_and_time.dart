@@ -47,10 +47,10 @@ class DateAndTimeWidget extends StatelessWidget {
                 AbiliaIcons.restore,
                 size: smallIconSize,
               ),
-              text: Text(translator.fullDay),
               value: activity.fullDay,
               onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
                   .add(ReplaceActivity(activity.copyWith(fullDay: v))),
+              child: Text(translator.fullDay),
             ),
           ],
         ),
@@ -74,13 +74,13 @@ class ReminderSwitch extends StatelessWidget {
         AbiliaIcons.handi_reminder,
         size: smallIconSize,
       ),
-      text: Text(Translator.of(context).translate.reminders),
       value: activity.reminders.isNotEmpty,
       onChanged: (switchOn) {
         final reminders = switchOn ? [15.minutes().inMilliseconds] : <int>[];
         BlocProvider.of<EditActivityBloc>(context)
             .add(ReplaceActivity(activity.copyWith(reminderBefore: reminders)));
       },
+      child: Text(Translator.of(context).translate.reminders),
     );
   }
 }

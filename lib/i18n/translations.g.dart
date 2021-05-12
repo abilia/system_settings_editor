@@ -47,6 +47,19 @@ abstract class Translated {
 
   final String createAccount = 'Create Account';
 
+  final String createAaccountHeading = 'Create your account in myAbilia';
+
+  final String createAaccountSubheading =
+      'You need a myAbilia account to use MEMOplanner';
+
+  final String confirmPassword = 'Confirm password';
+
+  final String acceptTerms = 'I have read and agree to ';
+
+  final String termsOfUse = 'terms of use';
+
+  final String privacyPolicy = 'privacy policy';
+
   final String noLicense = 'This account has no valid license.';
 
   final String licenseExpired = 'License is expired';
@@ -652,6 +665,25 @@ class SV extends Translated {
 
   @override
   final String createAccount = 'Skapa konto';
+
+  @override
+  final String createAaccountHeading = 'Skapa ditt konto i myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Du behöver ett myAbilia-konto för att kunna använda MEMOplanner';
+
+  @override
+  final String confirmPassword = 'Bekräfta lösenordet';
+
+  @override
+  final String acceptTerms = 'Jag har läst och godkänner ';
+
+  @override
+  final String termsOfUse = 'användarvillkor';
+
+  @override
+  final String privacyPolicy = 'personuppgiftspolicy';
 
   @override
   final String noLicense =
@@ -1530,6 +1562,25 @@ class DA extends Translated {
 
   @override
   final String createAccount = 'Opret konto';
+
+  @override
+  final String createAaccountHeading = 'Opret din konto i myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Du har brug for en myAbilia-konto for at bruge MEMOplanner';
+
+  @override
+  final String confirmPassword = 'Bekræft adgangskoden';
+
+  @override
+  final String acceptTerms = 'Jeg har læst og accepterer ';
+
+  @override
+  final String termsOfUse = 'brugervillkår';
+
+  @override
+  final String privacyPolicy = 'persondatapolitik';
 
   @override
   final String noLicense =
@@ -2411,6 +2462,25 @@ class NL extends Translated {
   final String createAccount = 'Maak account';
 
   @override
+  final String createAaccountHeading = 'Creëer uw account in myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'U heeft een myAbilia-account nodig om MEMOplanner te gebruiken';
+
+  @override
+  final String confirmPassword = 'Wachtwoord bevestigen';
+
+  @override
+  final String acceptTerms = 'Ik heb gelezen en akkoord gegaan ';
+
+  @override
+  final String termsOfUse = 'gebruiksvoorwaarden';
+
+  @override
+  final String privacyPolicy = 'privacybeleid';
+
+  @override
   final String noLicense = 'Dit account heeft geen geldige licentie.';
 
   @override
@@ -3288,6 +3358,25 @@ class FI extends Translated {
   final String createAccount = 'Luo tili';
 
   @override
+  final String createAaccountHeading = 'Luo tili myAbiliassa';
+
+  @override
+  final String createAaccountSubheading =
+      'Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria';
+
+  @override
+  final String confirmPassword = 'Vahvista salasana';
+
+  @override
+  final String acceptTerms = 'Olen lukenut ja sopineet ';
+
+  @override
+  final String termsOfUse = 'käyttöehdot';
+
+  @override
+  final String privacyPolicy = 'tietosuojakäytäntö';
+
+  @override
   final String noLicense = 'Tällä tilillä ei ole kelvollista lisenssiä.';
 
   @override
@@ -4163,6 +4252,25 @@ class DE extends Translated {
 
   @override
   final String createAccount = 'Benutzerkonto erstellen';
+
+  @override
+  final String createAaccountHeading = 'Erstellen Sie Ihr Konto in myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können';
+
+  @override
+  final String confirmPassword = 'Passwort bestätigen';
+
+  @override
+  final String acceptTerms = 'Ich habe gelesen und bin damit einverstanden ';
+
+  @override
+  final String termsOfUse = 'nutzungsbedingungen';
+
+  @override
+  final String privacyPolicy = 'datenschutzbestimmungen';
 
   @override
   final String noLicense = 'Für dieses Konto gibt es keine gültige Lizenz.';
@@ -5043,6 +5151,25 @@ class NB extends Translated {
 
   @override
   final String createAccount = 'Opprett konto';
+
+  @override
+  final String createAaccountHeading = 'Opprett kontoen din i myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Du trenger en myAbilia-konto for å bruke MEMOplanner';
+
+  @override
+  final String confirmPassword = 'Bekreft passordet';
+
+  @override
+  final String acceptTerms = 'Jeg har lest og godtar ';
+
+  @override
+  final String termsOfUse = 'brukervillkår';
+
+  @override
+  final String privacyPolicy = 'personvernerklæring';
 
   @override
   final String noLicense =

@@ -3,8 +3,6 @@ import 'package:flutter/foundation.dart';
 class TestKey {
   static const Key input = Key('input'),
       inputOk = Key('inputOk'),
-      usernameInput = Key('username'),
-      passwordInput = Key('password'),
       goToNowButton = Key('goToNow'),
       appBarCloseButton = Key('appBarCloseButton'),
       timePillarSettingsButton = Key('timePillarSettingsButton'),

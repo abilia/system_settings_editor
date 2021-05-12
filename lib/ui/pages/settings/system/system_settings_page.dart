@@ -63,9 +63,9 @@ class TextToSpeechSwitch extends StatelessWidget {
           child: SwitchField(
             value: settingsState.textToSpeech,
             leading: Icon(AbiliaIcons.speak_text),
-            text: Text(Translator.of(context).translate.textToSpeech),
             onChanged: (v) =>
                 context.read<SettingsBloc>().add(TextToSpeechUpdated(v)),
+            child: Text(Translator.of(context).translate.textToSpeech),
           ),
         ),
         Padding(
