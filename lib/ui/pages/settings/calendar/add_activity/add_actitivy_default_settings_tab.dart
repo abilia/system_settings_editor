@@ -3,8 +3,8 @@ import 'package:seagull/bloc/settings/calendar/add_activity/add_activity_setting
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class NewActivityDefaultSettingsTab extends StatelessWidget {
-  const NewActivityDefaultSettingsTab({Key key}) : super(key: key);
+class AddActivityDefaultSettingsTab extends StatelessWidget {
+  const AddActivityDefaultSettingsTab({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
