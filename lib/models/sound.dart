@@ -50,7 +50,9 @@ extension SoundExtension on Sound {
 
 extension SoundStringExtension on String {
   Sound toSound() {
-    return Sound.values.firstWhere((e) => e.toString() == 'Sound.' + this,
-        orElse: () => Sound.Default);
+    return this == null
+        ? Sound.Default
+        : Sound.values.firstWhere((e) => e.toString() == 'Sound.' + this,
+            orElse: () => Sound.Default);
   }
 }
