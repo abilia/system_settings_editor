@@ -279,6 +279,13 @@ void main() {
   }, skip: !Config.isMPGO, tags: Flavor.mpgo.tag);
 
   testWidgets('tts mp hint text', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = Size(800, 1280);
+    tester.binding.window.devicePixelRatioTestValue = 1;
+
+    // resets the screen to its orinal size after the test end
+    addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+    addTearDown(tester.binding.window.clearDevicePixelRatioTestValue);
+
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
     await tester.verifyTts(find.text(translate.loginHintMP),
