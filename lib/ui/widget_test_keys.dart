@@ -2,10 +2,9 @@ import 'package:flutter/foundation.dart';
 
 class TestKey {
   static const Key input = Key('input'),
-      userNameInput = Key('userName'),
+      inputOk = Key('inputOk'),
+      usernameInput = Key('username'),
       passwordInput = Key('password'),
-      loginHint = Key('loginHint'),
-      loginError = Key('loginError'),
       goToNowButton = Key('goToNow'),
       appBarCloseButton = Key('appBarCloseButton'),
       timePillarSettingsButton = Key('timePillarSettingsButton'),
@@ -62,9 +61,6 @@ class TestKey {
       photosPickField = Key('photosPickField'),
       newActivityChoice = Key('newActivityChoice'),
       basicActivityChoice = Key('basicActivityChoice'),
-      noButton = Key('noButton'),
-      yesButton = Key('yesButton'),
-      loginLogo = Key('loginLogo'),
       nonCheckableAlarmSelector = Key('nonCheckableAlarmSelector'),
       checkableAlarmSelector = Key('checkableAlarmSelector'),
       reminderAlarmSelector = Key('reminderAlarmSelector'),

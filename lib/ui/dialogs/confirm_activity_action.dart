@@ -33,18 +33,8 @@ class CheckActivityConfirmDialog extends StatelessWidget {
           style: abiliaTextTheme.bodyText1,
         ),
       ),
-      backNavigationWidget: GreyButton(
-        key: TestKey.noButton,
-        text: Translator.of(context).translate.no,
-        icon: AbiliaIcons.close_program,
-        onPressed: () => Navigator.of(context).maybePop(false),
-      ),
-      forwardNavigationWidget: GreenButton(
-        key: TestKey.yesButton,
-        text: Translator.of(context).translate.yes,
-        icon: AbiliaIcons.ok,
-        onPressed: () => Navigator.of(context).maybePop(true),
-      ),
+      backNavigationWidget: NoButton(),
+      forwardNavigationWidget: YesButton(),
     );
   }
 }

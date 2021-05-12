@@ -12,12 +12,25 @@ final buttonBackgroundLight = MaterialStateProperty.resolveWith<Color>(
     return AbiliaColors.transparentWhite20;
   },
 );
+
 final foregroundLight = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
       return AbiliaColors.transparentWhite40;
     }
     return AbiliaColors.white;
+  },
+);
+
+final buttonBackgroundDarkGrey = MaterialStateProperty.resolveWith<Color>(
+  (Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return AbiliaColors.white140;
+    }
+    if (states.contains(MaterialState.pressed)) {
+      return AbiliaColors.black90;
+    }
+    return AbiliaColors.black80;
   },
 );
 
@@ -54,12 +67,19 @@ final baseButtonStyle = ButtonStyle(
   minimumSize: MaterialStateProperty.all(Size.fromHeight(64.0.s)),
 );
 
-final textButtonStyleRed = baseButtonStyle.copyWith(
-  backgroundColor: buttonBackgroundRed,
+final textButtonStyle = baseButtonStyle.copyWith(
   shape: noBorder,
   padding: MaterialStateProperty.all(
     EdgeInsets.symmetric(horizontal: 32.s, vertical: 20.s),
   ),
+);
+
+final textButtonStyleGreen = textButtonStyle.copyWith(
+  backgroundColor: buttonBackgroundGreen,
+);
+
+final textButtonStyleDarkGrey = textButtonStyle.copyWith(
+  backgroundColor: buttonBackgroundDarkGrey,
 );
 
 final iconTextButtonStyle = baseButtonStyle.copyWith(

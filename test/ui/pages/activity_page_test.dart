@@ -46,8 +46,8 @@ void main() {
 
   final checkButtonFinder = find.byKey(TestKey.activityCheckButton);
   final uncheckButtonFinder = find.byKey(TestKey.uncheckButton);
-  final yesButtonFinder = find.byKey(TestKey.yesButton);
-  final noButtonFinder = find.byKey(TestKey.noButton);
+  final yesButtonFinder = find.byType(YesButton);
+  final noButtonFinder = find.byType(NoButton);
 
   final activityInfoSideDotsFinder = find.byType(ActivityInfoSideDots);
 

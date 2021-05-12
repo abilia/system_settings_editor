@@ -7,7 +7,7 @@ export 'activities/edit_activity/recurring_week/recurring_week_bloc.dart';
 export 'activities/activities_occasion/activities_occasion_bloc.dart';
 export 'authentication/authentication_bloc.dart';
 export 'login/login_bloc.dart';
-export 'login/form/login_form_bloc.dart';
+export 'login/password/password_cubit.dart';
 export 'calendar/day_picker_bloc.dart';
 export 'calendar/scroll_position/scroll_position_bloc.dart';
 export 'clock/clock_bloc.dart';

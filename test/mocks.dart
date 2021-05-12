@@ -208,7 +208,7 @@ extension OurEnterText on WidgetTester {
     await pumpAndSettle();
     await enterText(find.byKey(TestKey.input), text);
     await pumpAndSettle();
-    await tap(find.byType(OkButton).first);
+    await tap(find.byKey(TestKey.inputOk));
     await pumpAndSettle();
   }
 

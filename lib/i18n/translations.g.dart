@@ -18,13 +18,15 @@ class Locales {
 }
 
 abstract class Translated {
-  final String userNameTitle = 'Username or email';
+  final String usernameTitle = 'Username or email';
 
-  final String userName = 'Username';
+  final String username = 'Username';
 
   final String password = 'Password';
 
-  final String loginHint =
+  final String loginHintMP = 'Use your myAbilia account to Login';
+
+  final String loginHintMPGO =
       'Login with the same username and password as on your MEMOplanner';
 
   final String login = 'Log in';
@@ -36,6 +38,14 @@ abstract class Translated {
 
   final String noConnection =
       'No contact with myAbilia. Check your Internet connection.';
+
+  final String enterUsername = 'Enter username';
+
+  final String enterPassword = 'Enter password';
+
+  final String createAccountHint = 'Don’t have a myAbilia account yet?';
+
+  final String createAccount = 'Create Account';
 
   final String noLicense = 'This account has no valid license.';
 
@@ -602,16 +612,19 @@ class EN extends Translated {}
 
 class SV extends Translated {
   @override
-  final String userNameTitle = 'Användarnamn eller e-post';
+  final String usernameTitle = 'Användarnamn eller e-post';
 
   @override
-  final String userName = 'Användarnamn';
+  final String username = 'Användarnamn';
 
   @override
   final String password = 'Lösenord';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Använd ditt myAbilia-konto för att logga in';
+
+  @override
+  final String loginHintMPGO =
       'Logga in med samma användarnamn och lösenord som på din MEMOplanner';
 
   @override
@@ -627,6 +640,18 @@ class SV extends Translated {
   @override
   final String noConnection =
       'Ingen kontakt med myAbilia. Kontrollera din internetanslutning.';
+
+  @override
+  final String enterUsername = 'Ange ditt användarnamn';
+
+  @override
+  final String enterPassword = 'Ange ditt lösenord';
+
+  @override
+  final String createAccountHint = 'Har du inte ett myAbilia konto än?';
+
+  @override
+  final String createAccount = 'Skapa konto';
 
   @override
   final String noLicense =
@@ -1465,16 +1490,19 @@ class SV extends Translated {
 
 class DA extends Translated {
   @override
-  final String userNameTitle = 'Brugernavn eller e-mail';
+  final String usernameTitle = 'Brugernavn eller e-mail';
 
   @override
-  final String userName = 'Brugernavn';
+  final String username = 'Brugernavn';
 
   @override
   final String password = 'Adgangskode';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Brug din myAbilia-konto til at logge ind';
+
+  @override
+  final String loginHintMPGO =
       'Log ind med samme brugernavn og adgangskode som på din MEMOplanner';
 
   @override
@@ -1490,6 +1518,18 @@ class DA extends Translated {
   @override
   final String noConnection =
       'Enheden er ikke tilsluttet myAbilia. Kontroller din internetforbindelse.';
+
+  @override
+  final String enterUsername = 'Angiv dit brugernavn';
+
+  @override
+  final String enterPassword = 'Angiv din adgangskode';
+
+  @override
+  final String createAccountHint = 'Har du ikke en myAbilia-konto endnu?';
+
+  @override
+  final String createAccount = 'Opret konto';
 
   @override
   final String noLicense =
@@ -2329,16 +2369,19 @@ class DA extends Translated {
 
 class NL extends Translated {
   @override
-  final String userNameTitle = 'Gebruikersnaam of e-mail';
+  final String usernameTitle = 'Gebruikersnaam of e-mail';
 
   @override
-  final String userName = 'Gebruikersnaam';
+  final String username = 'Gebruikersnaam';
 
   @override
   final String password = 'Wachtwoord';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Gebruik uw myAbilia-account om in te loggen';
+
+  @override
+  final String loginHintMPGO =
       'Log in met dezelfde gebruikersnaam en hetzelfde wachtwoord als op uw MEMOplanner';
 
   @override
@@ -2354,6 +2397,18 @@ class NL extends Translated {
   @override
   final String noConnection =
       'Het apparaat is niet aangesloten op het myAbilia. Controleer uw internetverbinding.';
+
+  @override
+  final String enterUsername = 'Gebruikersnaam invoeren';
+
+  @override
+  final String enterPassword = 'Wachtwoord invoeren';
+
+  @override
+  final String createAccountHint = 'Heeft u nog geen myAbilia-account?';
+
+  @override
+  final String createAccount = 'Maak account';
 
   @override
   final String noLicense = 'Dit account heeft geen geldige licentie.';
@@ -3191,16 +3246,19 @@ class NL extends Translated {
 
 class FI extends Translated {
   @override
-  final String userNameTitle = 'Käyttäjätunnus tai sähköpostiosoite';
+  final String usernameTitle = 'Käyttäjätunnus tai sähköpostiosoite';
 
   @override
-  final String userName = 'Käyttäjätunnus';
+  final String username = 'Käyttäjätunnus';
 
   @override
   final String password = 'Salasana';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Kirjaudu sisään myAbilia-tililläsi';
+
+  @override
+  final String loginHintMPGO =
       'Kirjaudu sisään samalla käyttäjänimellä ja salasanalla kuin MEMOplannerilla';
 
   @override
@@ -3216,6 +3274,18 @@ class FI extends Translated {
   @override
   final String noConnection =
       'Laitetta ei ole yhdistetty myAbilia. Tarkista Internet-yhteys.';
+
+  @override
+  final String enterUsername = 'Anna käyttäjätunnus';
+
+  @override
+  final String enterPassword = 'Anna salasana';
+
+  @override
+  final String createAccountHint = 'Eikö sinulla ole vielä myAbilia-tiliä?';
+
+  @override
+  final String createAccount = 'Luo tili';
 
   @override
   final String noLicense = 'Tällä tilillä ei ole kelvollista lisenssiä.';
@@ -4052,16 +4122,20 @@ class FI extends Translated {
 
 class DE extends Translated {
   @override
-  final String userNameTitle = 'Benutzername oder E-Mail';
+  final String usernameTitle = 'Benutzername oder E-Mail';
 
   @override
-  final String userName = 'Benutzername';
+  final String username = 'Benutzername';
 
   @override
   final String password = 'Passwort';
 
   @override
-  final String loginHint =
+  final String loginHintMP =
+      'Verwenden Sie Ihr myAbilia-Konto, um sich anzumelden';
+
+  @override
+  final String loginHintMPGO =
       'Melden Sie sich mit demselben Benutzernamen und Passwort wie auf Ihrem MEMOplanner an';
 
   @override
@@ -4077,6 +4151,18 @@ class DE extends Translated {
   @override
   final String noConnection =
       'Das Gerät ist nicht mit dem myAbilia verbunden. Überprüfen Sie Ihre Internetverbindung.';
+
+  @override
+  final String enterUsername = 'Benutzername eingeben';
+
+  @override
+  final String enterPassword = 'Passwort eingeben';
+
+  @override
+  final String createAccountHint = 'Sie haben noch kein myAbilia-Konto?';
+
+  @override
+  final String createAccount = 'Benutzerkonto erstellen';
 
   @override
   final String noLicense = 'Für dieses Konto gibt es keine gültige Lizenz.';
@@ -4917,16 +5003,19 @@ class DE extends Translated {
 
 class NB extends Translated {
   @override
-  final String userNameTitle = 'Brukernavn eller e-post';
+  final String usernameTitle = 'Brukernavn eller e-post';
 
   @override
-  final String userName = 'Brukernavn';
+  final String username = 'Brukernavn';
 
   @override
   final String password = 'Passord';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Bruk myAbilia-kontoen din for å logge på';
+
+  @override
+  final String loginHintMPGO =
       'Logg inn med samme brukernavn og passord som på MEMOplanner';
 
   @override
@@ -4942,6 +5031,18 @@ class NB extends Translated {
   @override
   final String noConnection =
       'Enheten er ikke koblet til myAbilia. Sjekk din Internettforbindelse.';
+
+  @override
+  final String enterUsername = 'Angi ditt brukernavn';
+
+  @override
+  final String enterPassword = 'Angi ditt passord';
+
+  @override
+  final String createAccountHint = 'Har du ikke en myAbilia-konto ennå?';
+
+  @override
+  final String createAccount = 'Opprett konto';
 
   @override
   final String noLicense =

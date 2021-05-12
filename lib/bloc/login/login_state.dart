@@ -1,43 +1,128 @@
 part of 'login_bloc.dart';
 
-abstract class LoginState extends Equatable {
-  const LoginState();
+class LoginState extends Equatable {
+  final String username;
+  final String password;
+
+  bool get isUsernameValid => LoginBloc.usernameValid(username);
+  bool get isPasswordValid => LoginBloc.passwordValid(password);
+  bool get isFormValid => isUsernameValid && isPasswordValid;
+
+  bool get credentialError => false;
+  bool get passwordError => false;
+  bool get usernameError => false;
+
+  const LoginState({
+    @required this.username,
+    @required this.password,
+  });
+
+  factory LoginState.initial() {
+    return LoginState(
+      username: '',
+      password: '',
+    );
+  }
+
+  LoginState copyWith({
+    String username,
+    String password,
+  }) =>
+      LoginState(
+        username: username ?? this.username,
+        password: password ?? this.password,
+      );
+
+  LoginLoading loadning() => LoginLoading._(
+        username,
+        password,
+      );
+
+  LoginFailure failure({
+    String error,
+    LoginFailureCause cause,
+  }) =>
+      LoginFailure._(
+        username,
+        password,
+        cause: cause,
+      );
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [
+        username,
+        password,
+      ];
+
   @override
   bool get stringify => true;
 }
 
-class LoginInitial extends LoginState {}
-
-class LoginSucceeded extends LoginState {}
-
-class LoginLoading extends LoginState {}
-
 enum LoginFailureCause {
+  NoUsername,
+  NoPassword,
   Credentials,
   NoConnection,
   LicenseExpired,
   NoLicense,
 }
 
+class LoginSucceeded extends LoginState {
+  const LoginSucceeded() : super(username: '', password: '');
+}
+
+class LoginLoading extends LoginState {
+  const LoginLoading._(
+    String username,
+    String password,
+  ) : super(
+          username: username,
+          password: password,
+        );
+}
+
 class LoginFailure extends LoginState {
   final String error;
-  final LoginFailureCause loginFailureCause;
+  final LoginFailureCause cause;
 
-  const LoginFailure({
-    @required this.error,
-    @required this.loginFailureCause,
-  });
+  const LoginFailure._(
+    String username,
+    String password, {
+    this.error,
+    @required this.cause,
+  }) : super(
+          username: username,
+          password: password,
+        );
+
+  @override
+  LoginFailure failure({
+    String error,
+    LoginFailureCause cause,
+  }) =>
+      LoginFailure._(
+        username,
+        password,
+        cause: cause,
+      );
 
   bool get licenseError =>
-      loginFailureCause == LoginFailureCause.LicenseExpired ||
-      loginFailureCause == LoginFailureCause.NoLicense;
+      cause == LoginFailureCause.LicenseExpired ||
+      cause == LoginFailureCause.NoLicense;
+
+  @override
+  bool get credentialError => cause == LoginFailureCause.Credentials;
+  @override
+  bool get usernameError =>
+      cause == LoginFailureCause.NoUsername || credentialError;
+  @override
+  bool get passwordError =>
+      cause == LoginFailureCause.NoPassword || credentialError;
 
   @override
   List<Object> get props => [
+        ...super.props,
         error,
-        loginFailureCause,
+        cause,
       ];
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/utils/all.dart';
 
 import 'colors.dart';
@@ -180,6 +181,17 @@ BoxDecoration getBoxDecoration(bool current, bool inactive) => inactive
 
 BoxDecoration selectedBoxDecoration(bool selected) =>
     selected ? greenBoarderWhiteBoxDecoration : whiteBoxDecoration;
+
+final errorDecoration = InputDecoration(
+  suffixIcon: Padding(
+    padding: EdgeInsetsDirectional.only(end: 16.0.s),
+    child: Icon(
+      AbiliaIcons.ir_error,
+      color: AbiliaColors.red,
+      size: smallIconSize,
+    ),
+  ),
+);
 
 // Icon theme
 final lightIconThemeData = IconThemeData(

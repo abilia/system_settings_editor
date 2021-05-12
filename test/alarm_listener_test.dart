@@ -250,7 +250,7 @@ void main() {
       await tester.enterText_(
           find.byKey(TestKey.passwordInput), 'secretPassword');
       await tester.enterText_(
-          find.byKey(TestKey.userNameInput), Fakes.username);
+          find.byKey(TestKey.usernameInput), Fakes.username);
       await tester.pump();
       await tester.tap(find.byType(LoginButton));
       await tester.pumpAndSettle();
@@ -276,7 +276,7 @@ void main() {
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.yesButton));
+      await tester.tap(find.byType(YesButton));
       await tester.pumpAndSettle();
 
       // Assert -- Alarm is checked
@@ -303,7 +303,7 @@ void main() {
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.yesButton));
+      await tester.tap(find.byType(YesButton));
       await tester.pumpAndSettle();
 
       // Assert -- Check button not showing and uncheck button still not showing (only shown in activity bottom bar)
@@ -358,7 +358,7 @@ void main() {
       expect(find.byType(CheckActivityConfirmDialog), findsOneWidget);
 
       // Act -- Press affermative on check popup
-      await tester.tap(find.byKey(TestKey.yesButton));
+      await tester.tap(find.byType(YesButton));
       await tester.pumpAndSettle();
 
       // Assert -- Check button gone and AlarmPage gone

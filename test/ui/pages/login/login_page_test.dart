@@ -14,7 +14,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks.dart';
+import '../../../mocks.dart';
 
 void main() {
   final secretPassword = 'pwfafawfa';
@@ -155,23 +155,31 @@ void main() {
     expect(find.byIcon(AbiliaIcons.hide), findsOneWidget);
   });
 
-  testWidgets('Cant press login when no username', (WidgetTester tester) async {
+  testWidgets('Login button pressed when no username shows error dialog',
+      (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    await tester.enterText_(
-        find.byKey(TestKey.passwordInput), Fakes.incorrectPassword);
-    final button = tester.widget<LoginButton>(find.byType(LoginButton));
-    expect(button.onPressed, null);
+    await tester.tap(find.byType(LoginButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ErrorDialog), findsOneWidget);
+    expect(find.text(translate.enterUsername), findsOneWidget);
   });
 
-  testWidgets('Cant press login when no password', (WidgetTester tester) async {
+  testWidgets('Login button pressed when no password shows error dialog',
+      (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
-    final button = tester.widget<LoginButton>(find.byType(LoginButton));
-    expect(button.onPressed, null);
+    await tester.enterText_(find.byKey(TestKey.usernameInput), Fakes.username);
+    expect(find.byType(LoginButton), findsOneWidget);
+
+    await tester.tap(find.byType(LoginButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ErrorDialog), findsOneWidget);
+    expect(find.text(translate.enterPassword), findsOneWidget);
   });
 
   testWidgets('Error message when incorrect username or password',
@@ -179,23 +187,23 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
+    await tester.enterText_(find.byKey(TestKey.usernameInput), Fakes.username);
     await tester.enterText_(
         find.byKey(TestKey.passwordInput), Fakes.incorrectPassword);
     await tester.pump();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsNothing);
-    expect(find.byKey(TestKey.loginError), findsOneWidget);
+    expect(find.byType(ErrorDialog), findsOneWidget);
+    expect(find.text(translate.wrongCredentials), findsOneWidget);
   });
 
   testWidgets('Can login', (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
-    await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
-    await tester.pump();
+    await tester.enterText_(find.byKey(TestKey.usernameInput), Fakes.username);
+    await tester.pumpAndSettle();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
@@ -207,7 +215,7 @@ void main() {
 
     // Login
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
-    await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
+    await tester.enterText_(find.byKey(TestKey.usernameInput), Fakes.username);
     await tester.pump();
     expect(find.byType(LoginButton), findsOneWidget);
     await tester.tap(find.byType(LoginButton));
@@ -232,7 +240,7 @@ void main() {
 
     // Login
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
-    await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
+    await tester.enterText_(find.byKey(TestKey.usernameInput), Fakes.username);
     await tester.pump();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
@@ -243,10 +251,10 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    await tester.verifyTts(find.byKey(TestKey.userNameInput),
-        exact: translate.userName);
-    await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
-    await tester.verifyTts(find.byKey(TestKey.userNameInput),
+    await tester.verifyTts(find.byKey(TestKey.usernameInput),
+        exact: translate.username);
+    await tester.enterText_(find.byKey(TestKey.usernameInput), Fakes.username);
+    await tester.verifyTts(find.byKey(TestKey.usernameInput),
         exact: Fakes.username);
     await tester.verifyTts(find.byKey(TestKey.passwordInput),
         exact: translate.password);
@@ -259,16 +267,23 @@ void main() {
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
 
-    await tester.verifyTts(find.byKey(TestKey.loginError),
+    await tester.verifyTts(find.text(translate.wrongCredentials),
         exact: translate.wrongCredentials);
   });
 
   testWidgets('tts mpgo hint text', (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    await tester.verifyTts(find.byKey(TestKey.loginHint),
-        exact: translate.loginHint);
-  }, skip: Config.isMP, tags: Flavor.mpgo.tag);
+    await tester.verifyTts(find.text(translate.loginHintMPGO),
+        exact: translate.loginHintMPGO);
+  }, skip: !Config.isMPGO, tags: Flavor.mpgo.tag);
+
+  testWidgets('tts mp hint text', (WidgetTester tester) async {
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    await tester.verifyTts(find.text(translate.loginHintMP),
+        exact: translate.loginHintMP);
+  }, skip: !Config.isMP, tags: Flavor.mp.tag);
 
   testWidgets('Gets no valid license dialog when no valid license',
       (WidgetTester tester) async {
@@ -279,7 +294,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
-    await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
+    await tester.enterText_(find.byKey(TestKey.usernameInput), Fakes.username);
     await tester.pump();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
@@ -294,7 +309,7 @@ void main() {
     ));
     await tester.pumpAndSettle();
     await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
-    await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
+    await tester.enterText_(find.byKey(TestKey.usernameInput), Fakes.username);
     await tester.pumpAndSettle();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
@@ -318,7 +333,7 @@ void main() {
       await tester.enterText_(
           find.byKey(TestKey.passwordInput), secretPassword);
       await tester.enterText_(
-          find.byKey(TestKey.userNameInput), Fakes.username);
+          find.byKey(TestKey.usernameInput), Fakes.username);
       await tester.pump();
       await tester.tap(find.byType(LoginButton));
       await tester.pumpAndSettle();
@@ -336,7 +351,7 @@ void main() {
       await tester.enterText_(
           find.byKey(TestKey.passwordInput), secretPassword);
       await tester.enterText_(
-          find.byKey(TestKey.userNameInput), Fakes.username);
+          find.byKey(TestKey.usernameInput), Fakes.username);
       await tester.pump();
       await tester.tap(find.byType(LoginButton));
       await tester.pumpAndSettle();
@@ -349,7 +364,7 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(TestKey.userNameInput), warnIfMissed: false);
+    await tester.tap(find.byKey(TestKey.usernameInput), warnIfMissed: false);
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(TestKey.input), 'a');
     await tester.pumpAndSettle();
@@ -378,31 +393,34 @@ void main() {
     expect(find.byType(LoginPage), findsOneWidget);
   });
 
-  testWidgets('Login button not clickable when cancelling username',
+  testWidgets('username not changed when cancle cancelling username',
       (WidgetTester tester) async {
+    final testUsername = 'testUsername';
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-
-    await tester.enterText_(find.byKey(TestKey.passwordInput), secretPassword);
-
-    await tester.tap(find.byKey(TestKey.userNameInput), warnIfMissed: false);
+    await tester.enterText_(find.byKey(TestKey.usernameInput), testUsername);
+    expect(find.text(testUsername), findsOneWidget);
+    await tester.tap(find.byKey(TestKey.usernameInput), warnIfMissed: false);
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(TestKey.input), Fakes.username);
     await tester.pumpAndSettle();
     await tester.tap(find.byType(CancelButton));
     await tester.pumpAndSettle();
     expect(find.byType(LoginPage), findsOneWidget);
-
-    final button = tester.widget<LoginButton>(find.byType(LoginButton));
-    expect(button.onPressed, null);
+    expect(find.text(Fakes.username), findsNothing);
+    expect(find.text(testUsername), findsOneWidget);
   });
 
-  testWidgets('Login button not clickable when cancelling password',
+  testWidgets('password not changed when cancle is pressed',
       (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    await tester.enterText_(find.byKey(TestKey.userNameInput), Fakes.username);
+    await tester.enterText_(find.byKey(TestKey.passwordInput), Fakes.username);
+    await tester.tap(find.byIcon(AbiliaIcons.show));
+    await tester.pumpAndSettle();
+
+    expect(find.text(Fakes.username), findsOneWidget);
 
     await tester.tap(find.byKey(TestKey.passwordInput), warnIfMissed: false);
     await tester.pumpAndSettle();
@@ -411,8 +429,7 @@ void main() {
     await tester.tap(find.byType(CancelButton));
     await tester.pumpAndSettle();
     expect(find.byType(LoginPage), findsOneWidget);
-
-    final button = tester.widget<LoginButton>(find.byType(LoginButton));
-    expect(button.onPressed, null);
+    expect(find.text(Fakes.username), findsOneWidget);
+    expect(find.text(secretPassword), findsNothing);
   });
 }

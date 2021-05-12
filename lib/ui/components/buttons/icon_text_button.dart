@@ -167,3 +167,25 @@ class BackButton extends StatelessWidget {
     );
   }
 }
+
+class YesButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GreenButton(
+      text: Translator.of(context).translate.yes,
+      icon: AbiliaIcons.ok,
+      onPressed: () => Navigator.of(context).maybePop(true),
+    );
+  }
+}
+
+class NoButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GreyButton(
+      text: Translator.of(context).translate.no,
+      icon: AbiliaIcons.close_program,
+      onPressed: () => Navigator.of(context).maybePop(false),
+    );
+  }
+}

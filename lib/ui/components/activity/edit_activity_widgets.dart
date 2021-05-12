@@ -187,7 +187,7 @@ class SelectedImageWidget extends StatelessWidget {
   }
 }
 
-class NameInput extends StatefulWidget {
+class NameInput extends StatelessWidget {
   const NameInput({
     Key key,
     @required this.text,
@@ -204,42 +204,18 @@ class NameInput extends StatefulWidget {
   final List<TextInputFormatter> inputFormatters;
 
   @override
-  _NameInputState createState() => _NameInputState();
-}
-
-class _NameInputState extends State<NameInput> {
-  TextEditingController _nameController;
-
-  @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController(text: widget.text);
-    _nameController.addListener(_onEdit);
-  }
-
-  void _onEdit() {
-    widget.onEdit(_nameController.text);
-  }
-
-  @override
-  void dispose() {
-    _nameController.removeListener(_onEdit);
-    _nameController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return AbiliaTextInput(
+      initialValue: text,
+      onChanged: onEdit,
       formKey: TestKey.editTitleTextFormField,
-      controller: _nameController,
-      errorState: widget.errorState,
+      errorState: errorState,
       icon: AbiliaIcons.edit,
       heading: Translator.of(context).translate.name,
       inputHeading: Translator.of(context).translate.name,
       textCapitalization: TextCapitalization.sentences,
-      inputFormatters: widget.inputFormatters,
-      maxLines: widget.maxLines,
+      inputFormatters: inputFormatters,
+      maxLines: maxLines,
     );
   }
 }
