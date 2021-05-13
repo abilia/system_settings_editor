@@ -9,7 +9,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -252,11 +251,6 @@ void main() {
 }
 
 extension on WidgetTester {
-  Future<void> pumpApp({bool use24 = false}) async {
-    binding.window.alwaysUse24HourFormatTestValue = use24;
-    await pumpWidget(App());
-    await pumpAndSettle();
-  }
 
   Future<void> goToGeneralCalendarSettingsPageIntervalTab(
       {bool use24 = false}) async {

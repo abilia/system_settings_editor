@@ -222,7 +222,7 @@ void main() {
       // Act
       mockTicker.add(twoHoursAfter);
       selectNotificationSubject.add(payloadSerial);
-      await tester.pumpWidget(App());
+      await tester.pumpApp();
       await tester.pumpAndSettle();
 
       // Assert

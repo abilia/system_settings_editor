@@ -8,7 +8,6 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/main.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -75,7 +74,7 @@ void main() {
   });
 
   testWidgets('Application starts', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
     expect(find.byType(LoginPage), findsOneWidget);
   });
@@ -84,7 +83,7 @@ void main() {
     // Arrange
     bool textHidden() =>
         tester.widget<EditableText>(find.text(secretPassword)).obscureText;
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
 
     // No show/hide-button visible at all
@@ -116,7 +115,7 @@ void main() {
     // Arrange
     bool textHidden() =>
         tester.firstWidget<EditableText>(find.text(secretPassword)).obscureText;
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
 
     // Enter field password dialog
@@ -157,7 +156,7 @@ void main() {
 
   testWidgets('Login button pressed when no username shows error dialog',
       (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(LoginButton));
@@ -169,7 +168,7 @@ void main() {
 
   testWidgets('Login button pressed when no password shows error dialog',
       (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
 
     await tester.enterText_(find.byType(UsernameInput), Fakes.username);
@@ -184,7 +183,7 @@ void main() {
 
   testWidgets('Error message when incorrect username or password',
       (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
 
     await tester.enterText_(find.byType(UsernameInput), Fakes.username);
@@ -199,7 +198,7 @@ void main() {
   });
 
   testWidgets('Can login', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
     await tester.enterText_(find.byType(PasswordInput), secretPassword);
     await tester.enterText_(find.byType(UsernameInput), Fakes.username);
@@ -210,7 +209,7 @@ void main() {
   });
 
   testWidgets('Can login, log out, then login', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
 
     // Login
@@ -248,7 +247,7 @@ void main() {
   });
 
   testWidgets('tts', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
 
     await tester.verifyTts(find.byType(UsernameInput),
@@ -269,14 +268,20 @@ void main() {
   });
 
   testWidgets('tts mpgo hint text', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
     await tester.verifyTts(find.text(translate.loginHintMPGO),
         exact: translate.loginHintMPGO);
   }, skip: !Config.isMPGO, tags: Flavor.mpgo.tag);
 
   testWidgets('tts mp hint text', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    tester.binding.window.physicalSizeTestValue = Size(800, 1280);
+    tester.binding.window.devicePixelRatioTestValue = 1;
+
+    // resets the screen to its orinal size after the test end
+    addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+    addTearDown(tester.binding.window.clearDevicePixelRatioTestValue);
+    await tester.pumpApp();
     await tester.pumpAndSettle();
     await tester.verifyTts(find.text(translate.loginHintMP),
         exact: translate.loginHintMP);
@@ -286,7 +291,7 @@ void main() {
       (WidgetTester tester) async {
     licensExpireTime = time.subtract(10.days());
 
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
 
     await tester.pumpAndSettle();
 
@@ -301,9 +306,7 @@ void main() {
   testWidgets('Can login when valid license, but gets logged out when invalid',
       (WidgetTester tester) async {
     final pushBloc = PushBloc();
-    await tester.pumpWidget(App(
-      pushBloc: pushBloc,
-    ));
+    await tester.pumpApp(pushBloc: pushBloc);
     await tester.pumpAndSettle();
     await tester.enterText_(find.byType(PasswordInput), secretPassword);
     await tester.enterText_(find.byType(UsernameInput), Fakes.username);
@@ -325,7 +328,7 @@ void main() {
         'when fullscreen notification is NOT granted: show FullscreenAlarmInfoDialog',
         (WidgetTester tester) async {
       setupPermissions();
-      await tester.pumpWidget(App());
+      await tester.pumpApp();
       await tester.pumpAndSettle();
       await tester.enterText_(find.byType(PasswordInput), secretPassword);
       await tester.enterText_(find.byType(UsernameInput), Fakes.username);
@@ -341,7 +344,7 @@ void main() {
     testWidgets(
         'when fullscreen notification IS granted: show NO FullscreenAlarmInfoDialog',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpApp();
       await tester.pumpAndSettle();
       await tester.enterText_(find.byType(PasswordInput), secretPassword);
       await tester.enterText_(find.byType(UsernameInput), Fakes.username);
@@ -354,7 +357,7 @@ void main() {
 
   testWidgets('Cant press OK with too short username',
       (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(UsernameInput), warnIfMissed: false);
@@ -371,7 +374,7 @@ void main() {
 
   testWidgets('Cant press OK with too short password',
       (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(PasswordInput), warnIfMissed: false);
@@ -389,7 +392,7 @@ void main() {
   testWidgets('username not changed when cancle cancelling username',
       (WidgetTester tester) async {
     final testUsername = 'testUsername';
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
     await tester.enterText_(find.byType(UsernameInput), testUsername);
     expect(find.text(testUsername), findsOneWidget);
@@ -406,7 +409,7 @@ void main() {
 
   testWidgets('password not changed when cancle is pressed',
       (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpApp();
     await tester.pumpAndSettle();
 
     await tester.enterText_(find.byType(PasswordInput), Fakes.username);

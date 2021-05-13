@@ -12,9 +12,11 @@ import 'package:mockito/mockito.dart';
 
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/logging.dart';
+import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
@@ -227,6 +229,25 @@ extension OurEnterText on WidgetTester {
   Future verifyNoTts(Finder finder) async {
     await longPress(finder);
     verifyNever(GetIt.I<FlutterTts>().speak(any));
+  }
+}
+
+extension IncreaseSizeOnMp on WidgetTester {
+  Future<void> pumpApp({bool use24 = false, PushBloc pushBloc}) async {
+    if (Config.isMP) {
+      binding.window.physicalSizeTestValue = Size(800, 1280);
+      binding.window.devicePixelRatioTestValue = 1;
+
+      // resets the screen to its orinal size after the test end
+      addTearDown(binding.window.clearPhysicalSizeTestValue);
+      addTearDown(binding.window.clearDevicePixelRatioTestValue);
+    }
+    if (use24) {
+      binding.window.alwaysUse24HourFormatTestValue = use24;
+      addTearDown(binding.window.clearAlwaysUse24HourTestValue);
+    }
+    await pumpWidget(App(pushBloc: pushBloc));
+    await pumpAndSettle();
   }
 }
 

@@ -154,7 +154,7 @@ class CreateAccountButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GreenButton(
       icon: AbiliaIcons.ok,
-      text: Translator.of(context).translate.ok,
+      text: Translator.of(context).translate.createAccount,
       onPressed: Navigator.of(context).maybePop,
     );
   }
