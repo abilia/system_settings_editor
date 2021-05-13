@@ -4,6 +4,9 @@ import 'package:seagull/config.dart';
 import 'package:seagull/ui/all.dart';
 
 class CreateAccountPage extends StatelessWidget {
+  static const termsOfUseUrl = 'https://www.abilia.com/intl/terms-of-use',
+      privacyPolicyUrl =
+          'https://www.abilia.com/intl/policy-for-the-processing-of-personal-data';
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
@@ -56,12 +59,14 @@ class CreateAccountPage extends StatelessWidget {
             AcceptTermsSwitch(
               linkText: t.termsOfUse,
               value: false,
+              url: termsOfUseUrl,
               onChanged: (v) {},
             ),
             SizedBox(height: 4.s),
             AcceptTermsSwitch(
               linkText: t.privacyPolicy,
               value: false,
+              url: privacyPolicyUrl,
               onChanged: (v) {},
             ),
           ],
@@ -76,14 +81,14 @@ class CreateAccountPage extends StatelessWidget {
 }
 
 class AcceptTermsSwitch extends StatelessWidget {
-  final String linkText, link;
+  final String linkText, url;
   final bool value;
   final ValueChanged<bool> onChanged;
 
   const AcceptTermsSwitch({
     Key key,
     this.linkText,
-    this.link,
+    this.url,
     this.value,
     this.onChanged,
   }) : super(key: key);
@@ -107,9 +112,11 @@ class AcceptTermsSwitch extends StatelessWidget {
                     decoration: TextDecoration.underline,
                   ),
               recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  //TODO
-                },
+                ..onTap = () => showViewDialog(
+                      context: context,
+                      builder: (_) => WebViewDialog(url: url),
+                      wrapWithAuthProviders: false,
+                    ),
             ),
           ],
         ),
