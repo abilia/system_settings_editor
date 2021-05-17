@@ -70,4 +70,26 @@ void main() {
       expect(reminderAgain, alarm);
     });
   });
+
+  test('null default sound does return default', () {
+    final nonCheckableAlarm = StartAlarm(
+        Activity.createNew(
+          title: 'not checkable',
+          startTime: DateTime(2021, 05, 12, 10, 27),
+        ),
+        day);
+    final checkableActivityAlarm = StartAlarm(
+        Activity.createNew(
+          title: 'checkable',
+          startTime: DateTime(2021, 05, 12, 10, 27),
+          checkable: true,
+        ),
+        day);
+    final settings = MemoplannerSettings(
+      checkableActivityAlarm: null,
+      nonCheckableActivityAlarm: null,
+    );
+    expect(nonCheckableAlarm.sound(settings), Sound.Default);
+    expect(checkableActivityAlarm.sound(settings), Sound.Default);
+  });
 }
