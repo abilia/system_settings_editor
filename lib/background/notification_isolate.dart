@@ -190,8 +190,8 @@ Future<bool> _scheduleNotification(
       : await _iosNotificationDetails(
           notificationAlarm,
           fileStorage,
-          notificationAlarm.sound(settings),
           Duration(milliseconds: settings.alarmDuration),
+          settings,
         );
 
   if (notificationTime.isBefore(now())) return false;
@@ -221,13 +221,16 @@ Future<bool> _scheduleNotification(
 Future<IOSNotificationDetails> _iosNotificationDetails(
   NotificationAlarm notificationAlarm,
   FileStorage fileStorage,
-  Sound sound,
   Duration alarmDuration,
+  MemoplannerSettings settings,
 ) async {
+  final sound = notificationAlarm.sound(settings);
+  final hasSound = notificationAlarm.hasSound(settings);
+  final hasVibration = notificationAlarm.vibrate(settings);
   final activity = notificationAlarm.activity;
   final alarm = activity.alarm;
   final seconds = alarmDuration.inSeconds;
-  final soundFile = (alarm.vibrate && !alarm.sound) || sound == Sound.NoSound
+  final soundFile = !hasVibration && !hasSound ? null : !hasSound || sound == Sound.NoSound
       ? 'silent.aiff'
       : '${sound.fileName()}${seconds >= 30 ? '_30' : seconds >= 15 ? '_15' : ''}.aiff';
   return IOSNotificationDetails(
@@ -260,7 +263,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     notificationChannel.description,
     groupKey: activity.seriesId,
     playSound: hasSound,
-    sound: sound == Sound.NoSound
+    sound: sound == Sound.NoSound || !hasSound
         ? null
         : RawResourceAndroidNotificationSound(sound.fileName()),
     enableVibration: vibrate,
