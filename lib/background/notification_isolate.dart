@@ -230,9 +230,11 @@ Future<IOSNotificationDetails> _iosNotificationDetails(
   final activity = notificationAlarm.activity;
   final alarm = activity.alarm;
   final seconds = alarmDuration.inSeconds;
-  final soundFile = !hasVibration && !hasSound ? null : !hasSound || sound == Sound.NoSound
-      ? 'silent.aiff'
-      : '${sound.fileName()}${seconds >= 30 ? '_30' : seconds >= 15 ? '_15' : ''}.aiff';
+  final soundFile = !hasVibration && !hasSound
+      ? null
+      : !hasSound || sound == Sound.NoSound
+          ? 'silent.aiff'
+          : '${sound.fileName()}${seconds >= 30 ? '_30' : seconds >= 15 ? '_15' : ''}.aiff';
   return IOSNotificationDetails(
     presentAlert: true,
     presentBadge: true,
