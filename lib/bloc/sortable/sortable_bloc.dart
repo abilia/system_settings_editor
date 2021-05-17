@@ -89,9 +89,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   Future<Sortable> getOrGenerateUploadFolder(
       Iterable<Sortable> sortables) async {
     try {
-      return sortables
-          .whereType<Sortable<ImageArchiveData>>()
-          .firstWhere((s) => s.data.upload ?? false);
+      return sortables.getUploadFolder();
     } catch (e) {
       _log.info('No upload folder. Create one');
       return sortableRepository.generateUploadFolder();

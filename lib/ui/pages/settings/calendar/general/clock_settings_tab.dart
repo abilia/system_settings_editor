@@ -26,7 +26,7 @@ class ClockSettingsTab extends StatelessWidget {
                 height: 90.s,
                 width: 72.s,
                 child: FittedBox(
-                  child: AbiliaClockType(
+                  child: AbiliaColumnClock(
                     state.clockType,
                   ),
                 ),

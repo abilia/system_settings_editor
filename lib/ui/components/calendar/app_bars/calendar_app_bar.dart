@@ -75,11 +75,11 @@ class CalendarAppBar extends StatelessWidget {
                     ),
                   ),
                   if (!clockSpaceEmpty) ...[
-                    clockReplacement ?? const AbiliaClock(),
+                    clockReplacement ?? const AbiliaFittedColumnClock(),
                     SizedBox(width: clockPadding)
                   ],
                   rightAction ??
-                      (clockToTheRight ? AbiliaClock() : _emptyAction),
+                      (clockToTheRight ? AbiliaFittedColumnClock() : _emptyAction),
                 ],
               ),
             ),

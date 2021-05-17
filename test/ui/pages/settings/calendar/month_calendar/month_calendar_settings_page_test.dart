@@ -66,7 +66,7 @@ void main() {
   group('app bar setting', () {
     testWidgets('defaults', (tester) async {
       await tester.goToMonthCalendarSettingsPage();
-      expect(find.byType(AbiliaClock), findsOneWidget);
+      expect(find.byType(AbiliaFittedColumnClock), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.go_to_next_page), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.return_to_previous_page), findsOneWidget);
       expect(find.text('May 2021'), findsOneWidget);
@@ -94,7 +94,7 @@ void main() {
         ),
       ];
       await tester.goToMonthCalendarSettingsPage();
-      expect(find.byType(AbiliaClock), findsNothing);
+      expect(find.byType(AbiliaFittedColumnClock), findsNothing);
       expect(find.byIcon(AbiliaIcons.go_to_next_page), findsNothing);
       expect(find.byIcon(AbiliaIcons.return_to_previous_page), findsNothing);
       expect(find.text('May 2021'), findsNothing);
@@ -148,7 +148,7 @@ void main() {
     group('respected in month app bar', () {
       testWidgets('defaults', (tester) async {
         await tester.goToMonthCalendar();
-        expect(find.byType(AbiliaClock), findsOneWidget);
+        expect(find.byType(AbiliaFittedColumnClock), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.go_to_next_page), findsOneWidget);
         expect(
             find.byIcon(AbiliaIcons.return_to_previous_page), findsOneWidget);
@@ -177,7 +177,7 @@ void main() {
           ),
         ];
         await tester.goToMonthCalendar();
-        expect(find.byType(AbiliaClock), findsNothing);
+        expect(find.byType(AbiliaFittedColumnClock), findsNothing);
         expect(find.byIcon(AbiliaIcons.go_to_next_page), findsNothing);
         expect(find.byIcon(AbiliaIcons.return_to_previous_page), findsNothing);
         expect(find.text('May 2021'), findsNothing);
