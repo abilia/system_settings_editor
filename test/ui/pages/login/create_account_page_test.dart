@@ -12,7 +12,7 @@ import '../../../mocks.dart';
 
 void main() {
   group(
-    'create accpput',
+    'create account',
     () {
       final translate = Locales.language.values.first;
 
@@ -32,12 +32,89 @@ void main() {
 
       testWidgets('Go to create account and back', (tester) async {
         await tester.pumpApp();
-        expect(find.byType(CreateAccountView), findsOneWidget);
+        expect(find.byType(MEMOplannerLoginFooter), findsOneWidget);
         await tester.tap(find.byType(GoToCreateAccountButton));
         await tester.pumpAndSettle();
         expect(find.byType(CreateAccountPage), findsOneWidget);
         await tester.tap(find.byType(BackToLoginButton));
         await tester.pumpAndSettle();
+        expect(find.byType(LoginPage), findsOneWidget);
+      }, tags: Flavor.mp.tag);
+
+      testWidgets('Errors', (tester) async {
+        Future _expectErrorDialog(WidgetTester tester, String errorMessage,
+            {Matcher matcher = findsOneWidget}) async {
+          await tester.tap(find.byType(CreateAccountButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(ErrorDialog), findsOneWidget);
+          expect(find.text(errorMessage), matcher);
+          await tester.tap(find.byType(OkButton));
+          await tester.pumpAndSettle();
+        }
+
+        final toShortUsername = 'ab',
+            username = 'abc',
+            takenUsername = 'taken',
+            toShortPassword = 'abcdefg',
+            password = 'abcdefgh';
+
+        await tester.pumpApp();
+        await tester.tap(find.byType(GoToCreateAccountButton));
+        await tester.pumpAndSettle();
+
+        await _expectErrorDialog(tester, translate.enterUsername);
+
+        await tester.enterText_(find.byType(UsernameInput), toShortUsername);
+
+        await _expectErrorDialog(tester, translate.usernameToShort);
+
+        await tester.enterText_(find.byType(UsernameInput), takenUsername);
+
+        await _expectErrorDialog(tester, translate.enterPassword);
+
+        await tester.enterText_(
+            find.byKey(TestKey.createAccountPassword), toShortPassword);
+
+        await _expectErrorDialog(tester, translate.passwordToShort);
+
+        await tester.enterText_(
+            find.byKey(TestKey.createAccountPassword), password);
+
+        await _expectErrorDialog(tester, translate.confirmPassword,
+            matcher: findsNWidgets(2));
+
+        await tester.enterText_(
+            find.byKey(TestKey.createAccountPasswordConfirm), toShortPassword);
+
+        await _expectErrorDialog(tester, translate.passwordMismatch);
+
+        await tester.enterText_(
+            find.byKey(TestKey.createAccountPasswordConfirm), password);
+
+        await _expectErrorDialog(tester, translate.confirmTermsOfUse);
+
+        await tester.tap(find.byKey(TestKey.acceptTermsOfUse));
+        await tester.pumpAndSettle();
+
+        await _expectErrorDialog(tester, translate.confirmPrivacyPolicy);
+
+        await tester.tap(find.byKey(TestKey.acceptPrivacyPolicy));
+        await tester.pumpAndSettle();
+
+        await _expectErrorDialog(tester, translate.usernameTaken);
+
+        await tester.enterText_(find.byType(UsernameInput), username);
+
+        await tester.tap(find.byType(CreateAccountButton));
+        await tester.pumpAndSettle();
+
+        expect(find.text(translate.accountCreatedHeading), findsOneWidget);
+        expect(find.text(translate.accountCreatedBody), findsOneWidget);
+
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(CreateAccountPage), findsNothing);
         expect(find.byType(LoginPage), findsOneWidget);
       }, tags: Flavor.mp.tag);
 

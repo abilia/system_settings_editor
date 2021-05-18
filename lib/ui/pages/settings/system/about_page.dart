@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
 import 'package:seagull/config.dart';
 
@@ -80,12 +81,8 @@ class AboutPage extends StatelessWidget {
 class Version extends StatelessWidget {
   const Version({Key key}) : super(key: key);
   @override
-  Widget build(BuildContext context) => FutureBuilder(
-        future: PackageInfo.fromPlatform(),
-        builder: (context, AsyncSnapshot<PackageInfo> snapshot) => Tts(
-          child: Text(snapshot.hasData ? _versionText(snapshot.data) : ''),
-        ),
-      );
+  Widget build(BuildContext context) =>
+      Tts(child: Text(_versionText(GetIt.I<PackageInfo>())));
 
   String _versionText(PackageInfo packageInfo) =>
       '${packageInfo.version}' +

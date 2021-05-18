@@ -1,7 +1,8 @@
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class CreateAccountView extends StatelessWidget {
+class MEMOplannerLoginFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,7 +47,15 @@ class GoToCreateAccountButton extends StatelessWidget {
         style: textButtonStyleDarkGrey,
         onPressed: () {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => CreateAccountPage()),
+            MaterialPageRoute(
+              builder: (context) => CreateAccountPage(
+                baseUrl: context
+                    .read<AuthenticationBloc>()
+                    .state
+                    .userRepository
+                    .baseUrl,
+              ),
+            ),
           );
         },
         child: Text(translate.createAccount),

@@ -342,7 +342,6 @@ void main() {
 }
 
 extension on WidgetTester {
-
   Future<void> goToMenuPage() async {
     await pumpApp();
     await tap(find.byType(MenuButton));

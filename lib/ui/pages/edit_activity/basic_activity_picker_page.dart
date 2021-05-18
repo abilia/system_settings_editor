@@ -27,7 +27,7 @@ class BasicActivityPickerPage extends StatelessWidget {
           translate.noBasicActivities,
         ),
         bottomNavigationBar: BottomNavigation(
-          backNavigationWidget: BackButton(
+          backNavigationWidget: PreviousButton(
             onPressed: state.isAtRoot
                 ? Navigator.of(context).maybePop
                 : () => BlocProvider.of<SortableArchiveBloc<BasicActivityData>>(

@@ -74,5 +74,9 @@ class TestKey {
       showTimelineZoomSwitch = Key('showTimelineZoomSwitch'),
       showDurationSelectionSwitch = Key('showDurationSelectionSwitch'),
       monthColorSwith = Key('monthColorSwith'),
-      addSettingsTab = Key('addSettingsTab');
+      addSettingsTab = Key('addSettingsTab'),
+      createAccountPassword = Key('createAccountPassword'),
+      createAccountPasswordConfirm = Key('createAccountPasswordConfirm'),
+      acceptTermsOfUse = Key('acceptTermsOfUse'),
+      acceptPrivacyPolicy = Key('acceptPrivacyPolicy');
 }

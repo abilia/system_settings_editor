@@ -9,10 +9,14 @@ class WebViewDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewDialog(
+      heading: AppBarHeading(
+        text: Translator.of(context).translate.browser,
+        iconData: AbiliaIcons.select_language,
+      ),
       body: WebView(initialUrl: url),
       expanded: true,
       bodyPadding: EdgeInsets.zero,
-      backNavigationWidget: OkButton(onPressed: Navigator.of(context).maybePop),
+      backNavigationWidget: const OkButton(),
     );
   }
 }

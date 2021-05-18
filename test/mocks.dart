@@ -310,24 +310,11 @@ void setupPermissions(
     (MethodCall methodCall) async {
       switch (methodCall.method) {
         case 'startActivity':
-          if (methodCall.arguments['data'] == 'package:pkgName' &&
+          if (methodCall.arguments['data'] == 'package:packageName' &&
               methodCall.arguments['action'] ==
                   AndroidIntentAction.manageOverlay) {
             openSystemAlertSettingCalls++;
           }
-      }
-    },
-  );
-  MethodChannel('plugins.flutter.io/package_info').setMockMethodCallHandler(
-    (MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'getAll':
-          return {
-            'appName': 'MPGOTEST',
-            'packageName': 'pkgName',
-            'version': '9.9.9',
-            'buildNumber': '12345',
-          };
       }
     },
   );

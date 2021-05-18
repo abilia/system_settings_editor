@@ -251,7 +251,6 @@ void main() {
 }
 
 extension on WidgetTester {
-
   Future<void> goToGeneralCalendarSettingsPageIntervalTab(
       {bool use24 = false}) async {
     await pumpApp(use24: use24);

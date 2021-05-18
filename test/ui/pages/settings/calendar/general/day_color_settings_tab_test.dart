@@ -192,7 +192,6 @@ void main() {
 }
 
 extension on WidgetTester {
-
   Future<void> goToGeneralCalendarSettingsPageDayColorsTab() async {
     await pumpApp();
     await tap(find.byType(MenuButton));

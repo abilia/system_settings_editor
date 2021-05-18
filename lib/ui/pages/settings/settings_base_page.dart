@@ -26,7 +26,7 @@ class SettingsBasePage extends StatelessWidget {
         separatorBuilder: (context, index) => SizedBox(height: 8.0.s),
       ),
       bottomNavigationBar: bottomNavigationBar ??
-          const BottomNavigation(backNavigationWidget: BackButton()),
+          const BottomNavigation(backNavigationWidget: PreviousButton()),
     );
   }
 }

@@ -72,6 +72,22 @@ class Fakes {
                 licenseResponseExpires(DateTime.now().add(10.days()));
           }
 
+          if (pathSegments.containsAll({'entity', 'user'})) {
+            final uName = json.decode(r.body)['usernameOrEmail'];
+            if (uName == 'taken') {
+              response = Response(
+                '{"status":400,"message":"That entity already have login information. Perhaps you wanted to update the entities login information. Auth: com.abilia.models.auth.AuthUsername@5e694644[entityId=493,username=sad,passwordHash=com.abilia.models.auth.PasswordHash@4838f869]","errorId":739,"errors":[{"code":"WHALE-0130","message":"Error creating user. Username/email address already in use"}]}',
+                400,
+              );
+            } else {
+              response = Response(
+                '{"id":492,"type":"user","name":"$uName","email":"qazxsw","image":null,"language":"en","shortname":null,"useShortname":false}',
+                200,
+              );
+            }
+            // {"usernameOrEmail":"abc","password":"","language":"en","termsOfCondition":true,"privacyPolicy":true}
+          }
+
           return Future.value(
               response ?? Response(json.encode(List.empty()), 200));
         },

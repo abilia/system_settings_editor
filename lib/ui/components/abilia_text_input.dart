@@ -98,7 +98,7 @@ class _AbiliaTextInputState extends State<AbiliaTextInput> {
                   style: theme.textTheme.bodyText1,
                   autovalidateMode: AutovalidateMode.always,
                   validator: (_) => widget.errorState ? '' : null,
-                  decoration: widget.errorState ? errorDecoration : null,
+                  decoration: widget.errorState ? inputErrorDecoration : null,
                 ),
               ),
             ),

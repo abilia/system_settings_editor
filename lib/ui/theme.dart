@@ -182,7 +182,7 @@ BoxDecoration getBoxDecoration(bool current, bool inactive) => inactive
 BoxDecoration selectedBoxDecoration(bool selected) =>
     selected ? greenBoarderWhiteBoxDecoration : whiteBoxDecoration;
 
-final errorDecoration = InputDecoration(
+final inputErrorDecoration = InputDecoration(
   suffixIcon: Padding(
     padding: EdgeInsetsDirectional.only(end: 16.0.s),
     child: Icon(

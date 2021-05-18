@@ -18,6 +18,7 @@ export 'activity_extension.dart';
 export 'dots_definition.dart';
 export 'timeformat.dart';
 export 'login_error_message.dart';
+export 'create_account_error_message.dart';
 export 'device.dart';
 export 'scale_util.dart';
 export 'generic_extensions.dart';

@@ -72,7 +72,8 @@ class PasswordInput extends StatelessWidget {
                             validator: (_) => errorState ? '' : null,
                             style: theme.textTheme.bodyText1,
                             autovalidateMode: AutovalidateMode.always,
-                            decoration: errorState ? errorDecoration : null,
+                            decoration:
+                                errorState ? inputErrorDecoration : null,
                           ),
                         ),
                       ),

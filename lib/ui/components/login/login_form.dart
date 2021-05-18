@@ -61,7 +61,7 @@ class LoginForm extends StatelessWidget {
                   child: const LoginButton(),
                 ),
                 const Spacer(),
-                if (Config.isMP) CreateAccountView() else AbiliaLogo(),
+                if (Config.isMP) MEMOplannerLoginFooter() else AbiliaLogo(),
               ],
             ),
           ),
@@ -77,11 +77,13 @@ class UsernameInput extends StatelessWidget {
     this.initialValue,
     this.errorState,
     this.onChanged,
+    this.inputValid,
   }) : super(key: key);
 
   final String initialValue;
   final bool errorState;
   final void Function(String) onChanged;
+  final bool Function(String) inputValid;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +96,7 @@ class UsernameInput extends StatelessWidget {
       inputHeading: translate.usernameTitle,
       errorState: errorState,
       autoCorrect: false,
-      inputValid: (s) => LoginBloc.usernameValid(s),
+      inputValid: inputValid ?? (s) => LoginBloc.usernameValid(s),
       inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
       onChanged: onChanged,
     );
