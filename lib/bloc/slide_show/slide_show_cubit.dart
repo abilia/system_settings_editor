@@ -14,16 +14,18 @@ class SlideShowCubit extends Cubit<SlideShowState> {
   final SortableBloc sortableBloc;
   StreamSubscription sortableSubscription;
   Timer timer;
+  final Duration slideDuration;
 
   SlideShowCubit({
     this.sortableBloc,
+    this.slideDuration = const Duration(seconds: 30),
   }) : super(sortableStateToState(sortableBloc.state)) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         sortablesUpdated(sortableState.sortables);
       }
     });
-    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => next());
+    timer = Timer(slideDuration, () => next());
   }
 
   void sortablesUpdated(Iterable<Sortable> sortables) {
@@ -32,17 +34,18 @@ class SlideShowCubit extends Cubit<SlideShowState> {
   }
 
   void next() {
+    timer.cancel();
     if (state.fileIds.isEmpty) {
       emit(SlideShowState.empty());
     } else {
-      final nextIndex =
-          (state.currentFileIndex + 1) % (state.fileIds.length - 1);
+      final nextIndex = (state.currentFileIndex + 1) % state.fileIds.length;
       emit(SlideShowState(
         currentFileId: state.fileIds[nextIndex],
         currentFileIndex: nextIndex,
         fileIds: state.fileIds,
       ));
     }
+    timer = Timer(slideDuration, () => next());
   }
 
   static SlideShowState sortableStateToState(SortableState state) {

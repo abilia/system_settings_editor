@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -31,31 +32,40 @@ class PhotoCalendarPage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.all(20.s),
-                                child: FittedAnalogClock(
-                                  height: 92.s,
-                                  width: 92.s,
+                              if (state.clockType != ClockType.digital)
+                                Padding(
+                                  padding: EdgeInsets.all(20.s),
+                                  child: FittedAnalogClock(
+                                    height: 92.s,
+                                    width: 92.s,
+                                  ),
                                 ),
-                              ),
-                              DigitalClock(
-                                style: theme.theme.textTheme.caption.copyWith(
-                                  fontSize: 32.s,
-                                  height: 1,
+                              if (state.clockType != ClockType.analogue)
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20.s),
+                                  child: DigitalClock(
+                                    style:
+                                        theme.theme.textTheme.caption.copyWith(
+                                      fontSize: 32.s,
+                                      height: 1,
+                                    ),
+                                  ),
                                 ),
-                              ),
                             ],
                           ),
                         ),
                         Positioned(
                           bottom: 12.s,
                           right: 12.s,
-                          child: ActionButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .popUntil((route) => route.isFirst);
-                            },
-                            child: Icon(AbiliaIcons.month),
+                          child: BlocBuilder<AuthenticationBloc,
+                              AuthenticationState>(
+                            builder: (context, authState) => ActionButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
+                              },
+                              child: Icon(AbiliaIcons.month),
+                            ),
                           ),
                         ),
                       ],
@@ -74,9 +84,14 @@ class PhotoCalendarPage extends StatelessWidget {
   }
 }
 
-class SlideShow extends StatelessWidget {
+class SlideShow extends StatefulWidget {
   const SlideShow({Key key}) : super(key: key);
 
+  @override
+  _SlideShowState createState() => _SlideShowState();
+}
+
+class _SlideShowState extends State<SlideShow> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SlideShowCubit>(
@@ -86,12 +101,28 @@ class SlideShow extends StatelessWidget {
       child: BlocBuilder<SlideShowCubit, SlideShowState>(
         builder: (context, state) {
           return AnimatedSwitcher(
-            duration: const Duration(seconds: 1),
-            child: FadeInAbiliaImage(
-              imageFileId: state.currentFileId,
-              // backgroundDecoration: BoxDecoration(color: AbiliaColors.white),
-              // fileId: state.currentFileId,
-              // filePath: null,
+            duration: Duration(seconds: 1),
+            child: GestureDetector(
+              key: Key(state.currentFileId),
+              onDoubleTap: () {
+                context.read<SlideShowCubit>().next();
+              },
+              child: SizedBox(
+                height: double.infinity,
+                width: double.infinity,
+                child: state.fileIds.isNotEmpty
+                    ? PhotoCalendarImage(
+                        fileId: state.currentFileId,
+                        errorContent: Image.asset(
+                          'assets/graphics/poppy_field.jpg',
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Image.asset(
+                        'assets/graphics/poppy_field.jpg',
+                        fit: BoxFit.cover,
+                      ),
+              ),
             ),
           );
         },

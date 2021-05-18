@@ -189,6 +189,53 @@ class CheckedImageWithImagePopup extends StatelessWidget {
   }
 }
 
+class PhotoCalendarImage extends StatelessWidget {
+  final String fileId;
+  final Widget errorContent;
+
+  const PhotoCalendarImage({
+    Key key,
+    @required this.fileId,
+    this.errorContent,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final errorImage = errorContent ?? Image.memory(kTransparentImage);
+    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) {
+      return BlocBuilder<UserFileBloc, UserFileState>(
+          builder: (context, userFileState) {
+        final file = userFileState.getLoadedByIdOrPath(
+          fileId,
+          null,
+          GetIt.I<FileStorage>(),
+          imageSize: ImageSize.ORIGINAL,
+        );
+        return file != null
+            ? Image.file(
+                file,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => errorImage,
+              )
+            : (state is Authenticated)
+                ? Image.network(
+                    imageThumbUrl(
+                      baseUrl: state.userRepository.baseUrl,
+                      userId: state.userId,
+                      imageFileId: fileId,
+                      imagePath: null,
+                    ),
+                    headers: authHeader(state.token),
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => errorImage,
+                  )
+                : errorImage;
+      });
+    });
+  }
+}
+
 class FullScreenImage extends StatelessWidget {
   final String fileId;
   final String filePath;
