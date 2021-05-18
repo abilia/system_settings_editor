@@ -16,7 +16,7 @@ class WebViewDialog extends StatelessWidget {
       body: WebView(initialUrl: url),
       expanded: true,
       bodyPadding: EdgeInsets.zero,
-      backNavigationWidget: const OkButton(),
+      backNavigationWidget: OkButton(onPressed: Navigator.of(context).maybePop),
     );
   }
 }

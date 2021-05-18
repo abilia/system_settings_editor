@@ -108,7 +108,7 @@ class OkButton extends StatelessWidget {
     return GreenButton(
       icon: AbiliaIcons.ok,
       text: Translator.of(context).translate.ok,
-      onPressed: onPressed ?? Navigator.of(context).maybePop,
+      onPressed: onPressed,
     );
   }
 }

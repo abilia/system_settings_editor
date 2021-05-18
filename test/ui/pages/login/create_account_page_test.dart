@@ -130,7 +130,7 @@ void main() {
         expect(openedUrl, CreateAccountPage.termsOfUseUrl);
       }, tags: Flavor.mp.tag);
 
-      testWidgets('Open privacuy policy', (tester) async {
+      testWidgets('Open privacy policy', (tester) async {
         await tester.pumpApp();
         await tester.tap(find.byType(GoToCreateAccountButton));
         await tester.pumpAndSettle();

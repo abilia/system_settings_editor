@@ -41,7 +41,8 @@ class CreateAccountPage extends StatelessWidget {
                     iconData: AbiliaIcons.ok,
                   ),
                   body: Tts(child: Text(t.accountCreatedBody)),
-                  backNavigationWidget: const OkButton(),
+                  backNavigationWidget:
+                      OkButton(onPressed: Navigator.of(context).maybePop),
                 ),
               );
               Navigator.of(context).pop(state.username);
@@ -56,7 +57,8 @@ class CreateAccountPage extends StatelessWidget {
                   wrapWithAuthProviders: false,
                   builder: (_) => ErrorDialog(
                     text: state.errorMessage(t),
-                    backNavigationWidget: const OkButton(),
+                    backNavigationWidget:
+                        OkButton(onPressed: Navigator.of(context).maybePop),
                   ),
                 );
               }

@@ -29,7 +29,7 @@ class BackendSwitchesDialog extends StatelessWidget {
           ],
         ),
       ),
-      backNavigationWidget: const OkButton(),
+      backNavigationWidget: OkButton(onPressed: Navigator.of(context).maybePop),
     );
   }
 }
