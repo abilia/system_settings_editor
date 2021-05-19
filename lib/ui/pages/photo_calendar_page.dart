@@ -35,9 +35,12 @@ class PhotoCalendarPage extends StatelessWidget {
                               if (state.clockType != ClockType.digital)
                                 Padding(
                                   padding: EdgeInsets.all(20.s),
-                                  child: FittedAnalogClock(
+                                  child: SizedBox(
                                     height: 92.s,
                                     width: 92.s,
+                                    child: FittedBox(
+                                      child: const AnalogClock(),
+                                    ),
                                   ),
                                 ),
                               if (state.clockType != ClockType.analogue)
