@@ -22,14 +22,10 @@ class ClockSettingsTab extends StatelessWidget {
           children: [
             Tts(child: Text(t.clock)),
             Center(
-              child: SizedBox(
+              child: FittedAbiliaClock(
+                state.clockType,
                 height: 90.s,
                 width: 72.s,
-                child: FittedBox(
-                  child: AbiliaColumnClock(
-                    state.clockType,
-                  ),
-                ),
               ),
             ),
             RadioField(

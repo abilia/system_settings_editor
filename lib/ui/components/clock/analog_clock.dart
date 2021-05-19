@@ -9,8 +9,29 @@ import 'package:seagull/utils/all.dart';
 
 import 'clock_painter.dart';
 
-// A modified copy of: https://github.com/conghaonet/flutter_analog_clock
 class AnalogClock extends StatelessWidget {
+  const AnalogClock({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _AnalogClock(
+      borderWidth: 1.0.s,
+      borderColor: AbiliaColors.transparentBlack30,
+      height: actionButtonMinSize,
+      width: actionButtonMinSize,
+      centerPointRadius: 4.0.s,
+      hourNumberScale: 1.5.s,
+      hourHandLength: 11.s,
+      minuteHandLength: 15.s,
+      fontSize: 7.s,
+    );
+  }
+}
+
+// A modified copy of: https://github.com/conghaonet/flutter_analog_clock
+class _AnalogClock extends StatelessWidget {
   final VoidCallback onPressed;
   final DateTime dateTime;
   final Color dialPlateColor;
@@ -35,7 +56,7 @@ class AnalogClock extends StatelessWidget {
   final BoxDecoration decoration;
   final Widget child;
 
-  const AnalogClock({
+  const _AnalogClock({
     this.dateTime,
     this.dialPlateColor = AbiliaColors.white,
     this.hourHandColor = AbiliaColors.black,
