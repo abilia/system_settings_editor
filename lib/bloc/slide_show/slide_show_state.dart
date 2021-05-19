@@ -4,10 +4,13 @@ class SlideShowState extends Equatable {
   final List<Sortable<ImageArchiveData>> slideShowFolderContent;
   final int currentIndex;
 
-  Sortable<ImageArchiveData> get currentImageArchiveData =>
-      slideShowFolderContent.isNotEmpty
-          ? slideShowFolderContent[currentIndex]
-          : null;
+  String get currentFileId => slideShowFolderContent.isNotEmpty
+      ? slideShowFolderContent[currentIndex].data.fileId
+      : null;
+
+  String get currentPath => slideShowFolderContent.isNotEmpty
+      ? slideShowFolderContent[currentIndex].data.file
+      : null;
 
   SlideShowState({
     @required this.slideShowFolderContent,

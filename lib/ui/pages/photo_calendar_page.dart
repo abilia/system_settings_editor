@@ -96,15 +96,15 @@ class SlideShow extends StatelessWidget {
           return AnimatedSwitcher(
             duration: Duration(seconds: 1),
             child: GestureDetector(
-              key: Key(state.currentImageArchiveData.data.fileId),
+              key: Key(state.currentFileId),
               onDoubleTap: () {
                 context.read<SlideShowCubit>().next();
               },
               child: SizedBox.expand(
                 child: state.slideShowFolderContent.isNotEmpty
                     ? PhotoCalendarImage(
-                        fileId: state.currentImageArchiveData.data.fileId,
-                        filePath: state.currentImageArchiveData.data.file,
+                        fileId: state.currentFileId,
+                        filePath: state.currentPath,
                         errorContent: Image.asset(
                           'assets/graphics/poppy_field.jpg',
                           fit: BoxFit.cover,

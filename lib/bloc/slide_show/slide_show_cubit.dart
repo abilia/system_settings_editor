@@ -77,8 +77,8 @@ class SlideShowCubit extends Cubit<SlideShowState> {
 
   @override
   Future<void> close() async {
-    await sortableSubscription.cancel();
     timer?.cancel();
+    await sortableSubscription.cancel();
     return super.close();
   }
 }
