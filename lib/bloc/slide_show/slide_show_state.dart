@@ -1,25 +1,26 @@
 part of 'slide_show_cubit.dart';
 
 class SlideShowState extends Equatable {
-  final List<String> fileIds;
-  final String currentFileId;
-  final int currentFileIndex;
+  final List<Sortable<ImageArchiveData>> slideShowFolderContent;
+  final int currentIndex;
+
+  Sortable<ImageArchiveData> get currentImageArchiveData =>
+      slideShowFolderContent.isNotEmpty
+          ? slideShowFolderContent[currentIndex]
+          : null;
 
   SlideShowState({
-    @required this.fileIds,
-    @required this.currentFileId,
-    @required this.currentFileIndex,
+    @required this.slideShowFolderContent,
+    @required this.currentIndex,
   });
 
   factory SlideShowState.empty() {
-    return SlideShowState(
-        currentFileId: null, currentFileIndex: 0, fileIds: []);
+    return SlideShowState(currentIndex: 0, slideShowFolderContent: []);
   }
 
   @override
   List<Object> get props => [
-        fileIds,
-        currentFileId,
-        currentFileIndex,
+        slideShowFolderContent,
+        currentIndex,
       ];
 }

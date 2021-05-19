@@ -191,11 +191,13 @@ class CheckedImageWithImagePopup extends StatelessWidget {
 
 class PhotoCalendarImage extends StatelessWidget {
   final String fileId;
+  final String filePath;
   final Widget errorContent;
 
   const PhotoCalendarImage({
     Key key,
     @required this.fileId,
+    @required this.filePath,
     this.errorContent,
   }) : super(key: key);
 
@@ -208,7 +210,7 @@ class PhotoCalendarImage extends StatelessWidget {
           builder: (context, userFileState) {
         final file = userFileState.getLoadedByIdOrPath(
           fileId,
-          null,
+          filePath,
           GetIt.I<FileStorage>(),
           imageSize: ImageSize.ORIGINAL,
         );
@@ -224,7 +226,7 @@ class PhotoCalendarImage extends StatelessWidget {
                       baseUrl: state.userRepository.baseUrl,
                       userId: state.userId,
                       imageFileId: fileId,
-                      imagePath: null,
+                      imagePath: filePath,
                     ),
                     headers: authHeader(state.token),
                     fit: BoxFit.cover,

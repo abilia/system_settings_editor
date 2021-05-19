@@ -60,15 +60,12 @@ class PhotoCalendarPage extends StatelessWidget {
                         Positioned(
                           bottom: 12.s,
                           right: 12.s,
-                          child: BlocBuilder<AuthenticationBloc,
-                              AuthenticationState>(
-                            builder: (context, authState) => ActionButton(
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
-                              },
-                              child: Icon(AbiliaIcons.month),
-                            ),
+                          child: ActionButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .popUntil((route) => route.isFirst);
+                            },
+                            child: Icon(AbiliaIcons.month),
                           ),
                         ),
                       ],
@@ -87,14 +84,7 @@ class PhotoCalendarPage extends StatelessWidget {
   }
 }
 
-class SlideShow extends StatefulWidget {
-  const SlideShow({Key key}) : super(key: key);
-
-  @override
-  _SlideShowState createState() => _SlideShowState();
-}
-
-class _SlideShowState extends State<SlideShow> {
+class SlideShow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SlideShowCubit>(
@@ -106,16 +96,15 @@ class _SlideShowState extends State<SlideShow> {
           return AnimatedSwitcher(
             duration: Duration(seconds: 1),
             child: GestureDetector(
-              key: Key(state.currentFileId),
+              key: Key(state.currentImageArchiveData.data.fileId),
               onDoubleTap: () {
                 context.read<SlideShowCubit>().next();
               },
-              child: SizedBox(
-                height: double.infinity,
-                width: double.infinity,
-                child: state.fileIds.isNotEmpty
+              child: SizedBox.expand(
+                child: state.slideShowFolderContent.isNotEmpty
                     ? PhotoCalendarImage(
-                        fileId: state.currentFileId,
+                        fileId: state.currentImageArchiveData.data.fileId,
+                        filePath: state.currentImageArchiveData.data.file,
                         errorContent: Image.asset(
                           'assets/graphics/poppy_field.jpg',
                           fit: BoxFit.cover,
