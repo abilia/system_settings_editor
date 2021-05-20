@@ -22,3 +22,4 @@ export 'device.dart';
 export 'scale_util.dart';
 export 'generic_extensions.dart';
 export 'android_intents.dart';
+export 'sortable_util.dart';

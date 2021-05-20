@@ -8,3 +8,4 @@ export 'allday_list_page.dart';
 export 'activity_page.dart';
 export 'available_for_page.dart';
 export 'edit_activity/all.dart';
+export 'photo_calendar_page.dart';

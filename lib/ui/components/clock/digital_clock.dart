@@ -4,7 +4,8 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class DigitalClock extends StatelessWidget {
-  const DigitalClock({Key key}) : super(key: key);
+  final TextStyle style;
+  const DigitalClock({Key key, this.style}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class DigitalClock extends StatelessWidget {
           child: Text(
             hourAndMinuteFormat(context)(time),
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.caption,
+            style: style ?? Theme.of(context).textTheme.caption,
           ),
         ),
       ),
