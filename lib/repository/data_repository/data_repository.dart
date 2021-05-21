@@ -48,7 +48,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
 
   @protected
   Future fetchIntoDatabase() async {
-    log.fine('loadning $path...');
+    log.fine('loading $path...');
     try {
       final revision = await db.getLastRevision();
       final fetchedData = await fetchData(revision);

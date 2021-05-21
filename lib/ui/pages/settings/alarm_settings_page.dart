@@ -50,11 +50,11 @@ class AlarmSettingsPage extends StatelessWidget {
             ),
             SwitchField(
               key: TestKey.vibrateAtReminderSelector,
-              text: Text(t.vibrationOnReminder),
               value: state.vibrateAtReminder,
               onChanged: (v) => context
                   .read<AlarmSettingsCubit>()
                   .changeAlarmSettings(state.copyWith(vibrateAtReminder: v)),
+              child: Text(t.vibrationOnReminder),
             ),
             AlarmDurationSelector(
               key: TestKey.alarmDurationSelector,

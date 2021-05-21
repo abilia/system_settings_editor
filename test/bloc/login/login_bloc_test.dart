@@ -33,17 +33,17 @@ void main() {
     });
 
     test('initial state is LoginInitial', () {
-      expect(loginBloc.state, LoginInitial());
+      expect(loginBloc.state, LoginState.initial());
     });
 
     test('LoginState and AuthenticationState in correct order', () async {
       // Arrange
       final loginToken = 'loginToken';
       final loggedInUserId = 1;
-
+      final username = 'username', password = 'password';
       when(mockUserRepository.authenticate(
-        username: anyNamed('username'),
-        password: anyNamed('password'),
+        username: anyNamed(username),
+        password: anyNamed(password),
         pushToken: anyNamed('pushToken'),
         time: anyNamed('time'),
       )).thenAnswer((_) => Future.value(loginToken));
@@ -78,29 +78,73 @@ void main() {
       );
 
       // Act
-      loginBloc.add(LoginButtonPressed(
-        username: 'username',
-        password: 'password',
-      ));
+      loginBloc.add(UsernameChanged(username));
+      loginBloc.add(PasswordChanged(password));
+
+      loginBloc.add(LoginButtonPressed());
+
+      final s1 = LoginState.initial().copyWith(username: username);
+      final s2 = s1.copyWith(password: password);
 
       // Assert
       await expectLater(
         loginBloc.stream,
         emitsInOrder([
-          LoginLoading(),
+          s1,
+          s2,
+          s2.loading(),
           LoginSucceeded(),
         ]),
       );
-      await expectLater(
-        authenticationBloc.stream,
-        emits(
-          Authenticated(
-            token: loginToken,
-            userId: loggedInUserId,
-            userRepository: mockUserRepository,
-            newlyLoggedIn: true,
-          ),
+      expect(
+        authenticationBloc.state,
+        Authenticated(
+          token: loginToken,
+          userId: loggedInUserId,
+          userRepository: mockUserRepository,
+          newlyLoggedIn: true,
         ),
+      );
+    });
+
+    test('LoginButtonPressed twice still yeilds LoginFailure twice on username',
+        () async {
+      loginBloc.add(LoginButtonPressed());
+      loginBloc.add(LoginButtonPressed());
+
+      final l1 = LoginState.initial().loading();
+      final e1 = l1.failure(cause: LoginFailureCause.NoUsername);
+
+      await expectLater(
+        loginBloc.stream,
+        emitsInOrder([
+          l1,
+          e1,
+          l1,
+          e1,
+        ]),
+      );
+    });
+
+    test('LoginButtonPressed twice still yeilds LoginFailure twice on password',
+        () async {
+      final username = 'username';
+      loginBloc.add(UsernameChanged(username));
+      loginBloc.add(LoginButtonPressed());
+      loginBloc.add(LoginButtonPressed());
+      final s1 = LoginState(username: username, password: '');
+      final l1 = s1.loading();
+      final e1 = s1.failure(cause: LoginFailureCause.NoPassword);
+
+      await expectLater(
+        loginBloc.stream,
+        emitsInOrder([
+          s1,
+          l1,
+          e1,
+          l1,
+          e1,
+        ]),
       );
     });
 
@@ -154,7 +198,9 @@ void main() {
       )).thenAnswer((_) => Future.value(loginToken));
 
       // Act
-      loginBloc.add(LoginButtonPressed(username: username, password: password));
+      loginBloc.add(UsernameChanged(username));
+      loginBloc.add(PasswordChanged(password));
+      loginBloc.add(LoginButtonPressed());
       // Assert
       await untilCalled(mockedUserRepository.authenticate(
         username: anyNamed('username'),

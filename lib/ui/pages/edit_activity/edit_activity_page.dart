@@ -60,7 +60,7 @@ class EditActivityPage extends StatelessWidget {
                 child: TabBarView(children: tabs),
               ),
               bottomNavigationBar: BottomNavigation(
-                backNavigationWidget: const BackButton(),
+                backNavigationWidget: const PreviousButton(),
                 forwardNavigationWidget: GreenButton(
                   key: TestKey.finishEditActivityButton,
                   icon: AbiliaIcons.ok,

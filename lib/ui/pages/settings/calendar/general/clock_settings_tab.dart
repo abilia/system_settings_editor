@@ -57,7 +57,7 @@ class ClockSettingsTab extends StatelessWidget {
                       .read<GeneralCalendarSettingsCubit>()
                       .changeTimepillarSettings(tpState.copyWith(use12h: value))
                   : null,
-              text: Text(t.twelveHourFormat),
+              child: Text(t.twelveHourFormat),
             ),
             const SizedBox.shrink(),
             RadioField(
@@ -83,14 +83,14 @@ class ClockSettingsTab extends StatelessWidget {
               onChanged: (value) => context
                   .read<GeneralCalendarSettingsCubit>()
                   .changeTimepillarSettings(tpState.copyWith(timeline: value)),
-              text: Text(t.lineAcrossCurrentTime),
+              child: Text(t.lineAcrossCurrentTime),
             ),
             SwitchField(
               value: tpState.hourLines,
               onChanged: (value) => context
                   .read<GeneralCalendarSettingsCubit>()
                   .changeTimepillarSettings(tpState.copyWith(hourLines: value)),
-              text: Text(t.linesForEachHour),
+              child: Text(t.linesForEachHour),
             ),
           ],
         );

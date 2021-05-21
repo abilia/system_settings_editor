@@ -14,20 +14,9 @@ class Device {
   static final double scaleFactor = _getScale(screenSize.longestSide);
 
   static double _getScale(double max) {
-    var scale = 1.0;
-    if (max >= 1000) {
-      if (max > 1500) {
-        scale = 3;
-      } else {
-        scale = 1.5;
-      }
-      if (devicePixelRatio < 1) {
-        scale /= devicePixelRatio;
-      }
-    }
-    if (max < minSupportedHeight) {
-      scale = 0.75;
-    }
-    return scale;
+    if (max > 1500) return 3.0;
+    if (max >= 1000) return 1.5;
+    if (max < minSupportedHeight) return 0.75;
+    return 1.0;
   }
 }

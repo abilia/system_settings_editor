@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:package_info/package_info.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
@@ -89,8 +90,12 @@ class GetItInitializer {
   FlutterTts _flutterTts;
   set flutterTts(FlutterTts flutterTts) => _flutterTts = flutterTts;
 
+  PackageInfo _packageInfo;
+  set packageInfo(PackageInfo packageInfo) => _packageInfo = packageInfo;
+
   void init() => GetIt.I
-    ..registerSingleton<BaseClient>(_baseClient ?? ClientWithDefaultHeaders())
+    ..registerSingleton<BaseClient>(
+        _baseClient ?? ClientWithDefaultHeaders(_packageInfo?.version))
     ..registerSingleton<TokenDb>(_tokenDb ?? TokenDb(_sharedPreferences))
     ..registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb(_sharedPreferences))
     ..registerSingleton<FirebasePushService>(
@@ -122,5 +127,6 @@ class GetItInitializer {
     ..registerSingleton<MultipartRequestBuilder>(
         _multipartRequestBuilder ?? MultipartRequestBuilder())
     ..registerSingleton<SyncDelays>(_syncDelay ?? const SyncDelays())
-    ..registerSingleton<FlutterTts>(_flutterTts);
+    ..registerSingleton<FlutterTts>(_flutterTts)
+    ..registerSingleton<PackageInfo>(_packageInfo);
 }

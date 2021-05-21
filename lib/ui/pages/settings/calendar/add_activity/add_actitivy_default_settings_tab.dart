@@ -58,7 +58,6 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
           ),
           Divider(),
           SwitchField(
-            text: Text(t.alarmOnlyAtStartTime),
             leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
             value: state.defaultsTabSettingsState.alarmOnlyAtStartTime,
             onChanged: (v) => context
@@ -66,6 +65,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
                 .changeAddActivitySettings(state.copyWith(
                     defaultsTabSettingsState: state.defaultsTabSettingsState
                         .copyWith(alarmOnlyAtStartTime: v))),
+            child: Text(t.alarmOnlyAtStartTime),
           ),
         ],
       );

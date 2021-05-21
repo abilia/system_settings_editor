@@ -245,7 +245,12 @@ void main() {
     expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
 
     // Act dissmiss
-    await tester.tap(find.byType(PreviousButton));
+    await tester.tap(
+      find.descendant(
+        of: find.byType(WarningDialog),
+        matching: find.byType(PreviousButton),
+      ),
+    );
     await tester.pumpAndSettle();
 
     // Assert - back ad edit activity
@@ -296,7 +301,12 @@ void main() {
     expect(find.byType(WarningDialog), findsNothing);
 
     // Act -- dissmiss, enter title, press submit
-    await tester.tap(find.byType(PreviousButton));
+    await tester.tap(
+      find.descendant(
+        of: find.byType(ErrorDialog),
+        matching: find.byType(PreviousButton),
+      ),
+    );
     await tester.pumpAndSettle();
     await tester.enterText_(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
@@ -399,7 +409,12 @@ void main() {
     expect(find.text(translate.conflictWarning), findsOneWidget);
 
     // Act dissmiss
-    await tester.tap(find.byType(PreviousButton));
+    await tester.tap(
+      find.descendant(
+        of: find.byType(WarningDialog),
+        matching: find.byType(PreviousButton),
+      ),
+    );
     await tester.pumpAndSettle();
 
     // Assert - back ad edit activity
@@ -461,7 +476,12 @@ void main() {
     expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
 
     // Act dissmiss
-    await tester.tap(find.byType(PreviousButton));
+    await tester.tap(
+      find.descendant(
+        of: find.byType(WarningDialog),
+        matching: find.byType(PreviousButton),
+      ),
+    );
     await tester.pumpAndSettle();
 
     // Assert - back ad edit activity

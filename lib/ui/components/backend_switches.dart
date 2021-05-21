@@ -6,13 +6,16 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class BackendSwitches extends StatelessWidget {
+class BackendSwitchesDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        builder: (context, state) {
-      return Center(
-        child: Wrap(
+    return ViewDialog(
+      heading: AppBarHeading(
+        text: 'Switch backend',
+        iconData: AbiliaIcons.one_drive,
+      ),
+      body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) => Wrap(
           spacing: 8.s,
           children: [
             ...backEndEnviorments.entries.map(
@@ -25,8 +28,9 @@ class BackendSwitches extends StatelessWidget {
             )
           ],
         ),
-      );
-    });
+      ),
+      backNavigationWidget: OkButton(onPressed: Navigator.of(context).maybePop),
+    );
   }
 }
 

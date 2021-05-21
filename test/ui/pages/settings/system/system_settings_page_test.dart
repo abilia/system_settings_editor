@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
+import 'package:package_info/package_info.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/getit.dart';
@@ -37,6 +38,11 @@ void main() {
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
       ..userDb = userDb
+      ..packageInfo = PackageInfo(
+          appName: 'appName',
+          packageName: 'packageName',
+          version: 'version',
+          buildNumber: 'buildNumber')
       ..init();
   });
 

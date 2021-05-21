@@ -10,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:devicelocale/devicelocale.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
+import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -72,6 +73,7 @@ Future<String> initServices() async {
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
     ..flutterTts = await flutterTts(currentLocale)
+    ..packageInfo = await PackageInfo.fromPlatform()
     ..init();
 
   return await baseUrlDb.initialize();

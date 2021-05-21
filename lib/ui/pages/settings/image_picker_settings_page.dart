@@ -57,20 +57,20 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
       widgets: [
         SwitchField(
           leading: Icon(AbiliaIcons.folder),
-          text: Text(t.imageArchive),
           value: true,
+          child: Text(t.imageArchive),
         ),
         SwitchField(
           leading: Icon(AbiliaIcons.my_photos),
-          text: Text(t.myPhotos),
           value: displayPhotos,
           onChanged: (v) => setState(() => displayPhotos = v),
+          child: Text(t.myPhotos),
         ),
         SwitchField(
           leading: Icon(AbiliaIcons.camera_photo),
-          text: Text(t.takeNewPhoto),
           value: displayCamera,
           onChanged: (v) => setState(() => displayCamera = v),
+          child: Text(t.takeNewPhoto),
         ),
       ],
     );

@@ -13,25 +13,25 @@ class MonthAppBarSettingsTab extends StatelessWidget {
           Tts(child: Text(t.topField)),
           _MonthAppBarPreview(),
           SwitchField(
-            text: Text(t.showBrowseButtons),
             value: state.browseButtons,
             onChanged: (v) => context
                 .read<MonthCalendarSettingsCubit>()
                 .changeMonthCalendarSettings(state.copyWith(browseButtons: v)),
+            child: Text(t.showBrowseButtons),
           ),
           SwitchField(
-            text: Text(t.showYear),
             value: state.year,
             onChanged: (v) => context
                 .read<MonthCalendarSettingsCubit>()
                 .changeMonthCalendarSettings(state.copyWith(year: v)),
+            child: Text(t.showYear),
           ),
           SwitchField(
-            text: Text(t.showClock),
             value: state.clock,
             onChanged: (v) => context
                 .read<MonthCalendarSettingsCubit>()
                 .changeMonthCalendarSettings(state.copyWith(clock: v)),
+            child: Text(t.showClock),
           ),
         ],
       ),

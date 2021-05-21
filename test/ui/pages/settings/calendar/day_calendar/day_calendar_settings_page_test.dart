@@ -63,7 +63,7 @@ void main() {
     await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
     if (yesOnDialog) {
-      await tester.tap(find.byKey(TestKey.yesButton));
+      await tester.tap(find.byType(YesButton));
       await tester.pumpAndSettle();
     }
 

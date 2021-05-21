@@ -222,7 +222,7 @@ void main() {
       // Act
       mockTicker.add(twoHoursAfter);
       selectNotificationSubject.add(payloadSerial);
-      await tester.pumpWidget(App());
+      await tester.pumpApp();
       await tester.pumpAndSettle();
 
       // Assert
@@ -247,10 +247,8 @@ void main() {
       expect(selectNotificationSubject.values, isEmpty);
 
       // Act Login
-      await tester.enterText_(
-          find.byKey(TestKey.passwordInput), 'secretPassword');
-      await tester.enterText_(
-          find.byKey(TestKey.userNameInput), Fakes.username);
+      await tester.enterText_(find.byType(PasswordInput), 'secretPassword');
+      await tester.enterText_(find.byType(UsernameInput), Fakes.username);
       await tester.pump();
       await tester.tap(find.byType(LoginButton));
       await tester.pumpAndSettle();
@@ -276,7 +274,7 @@ void main() {
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.yesButton));
+      await tester.tap(find.byType(YesButton));
       await tester.pumpAndSettle();
 
       // Assert -- Alarm is checked
@@ -303,7 +301,7 @@ void main() {
       // Act -- Tap the check button
       await tester.tap(find.byKey(TestKey.activityCheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.yesButton));
+      await tester.tap(find.byType(YesButton));
       await tester.pumpAndSettle();
 
       // Assert -- Check button not showing and uncheck button still not showing (only shown in activity bottom bar)
@@ -358,7 +356,7 @@ void main() {
       expect(find.byType(CheckActivityConfirmDialog), findsOneWidget);
 
       // Act -- Press affermative on check popup
-      await tester.tap(find.byKey(TestKey.yesButton));
+      await tester.tap(find.byType(YesButton));
       await tester.pumpAndSettle();
 
       // Assert -- Check button gone and AlarmPage gone

@@ -3,23 +3,10 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
-final errorDecoration = InputDecoration(
-  suffixIcon: Padding(
-    padding: EdgeInsetsDirectional.only(end: 16.0.s),
-    child: Icon(
-      AbiliaIcons.ir_error,
-      color: AbiliaColors.red,
-      size: smallIconSize,
-    ),
-  ),
-);
-
-class AbiliaTextInput extends StatelessWidget {
-  final TextEditingController controller;
+class AbiliaTextInput extends StatefulWidget {
+  final String initialValue;
   final bool errorState;
   final TextInputType keyboardType;
   final Key formKey;
@@ -31,6 +18,7 @@ class AbiliaTextInput extends StatelessWidget {
   final int maxLines;
   final bool autoCorrect;
   final bool Function(String) inputValid;
+  final void Function(String) onChanged;
 
   const AbiliaTextInput({
     Key key,
@@ -38,7 +26,8 @@ class AbiliaTextInput extends StatelessWidget {
     @required this.icon,
     @required this.heading,
     @required this.inputHeading,
-    @required this.controller,
+    @required this.initialValue,
+    @required this.onChanged,
     this.keyboardType,
     this.textCapitalization = TextCapitalization.none,
     this.inputFormatters = const <TextInputFormatter>[],
@@ -49,8 +38,20 @@ class AbiliaTextInput extends StatelessWidget {
   })  : assert(icon != null),
         assert(heading != null),
         assert(inputHeading != null),
-        assert(controller != null),
+        assert(initialValue != null),
         super(key: key);
+
+  @override
+  _AbiliaTextInputState createState() => _AbiliaTextInputState();
+}
+
+class _AbiliaTextInputState extends State<AbiliaTextInput> {
+  TextEditingController controller;
+  @override
+  void initState() {
+    controller = TextEditingController(text: widget.initialValue);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,45 +59,46 @@ class AbiliaTextInput extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SubHeading(heading),
+        SubHeading(widget.heading),
         Tts(
-          data: controller.text.isNotEmpty ? controller.text : heading,
+          data: controller.text.isNotEmpty ? controller.text : widget.heading,
           child: GestureDetector(
             onTap: () async {
               final newText = await Navigator.of(context).push<String>(
                 MaterialPageRoute(
                   builder: (context) => DefaultTextInputPage(
-                    inputHeading: inputHeading,
-                    icon: icon,
+                    inputHeading: widget.inputHeading,
+                    icon: widget.icon,
                     text: controller.text,
-                    heading: heading,
-                    keyboardType: keyboardType,
-                    inputFormatters: inputFormatters,
-                    textCapitalization: textCapitalization,
-                    maxLines: maxLines,
-                    autocorrect: autoCorrect,
-                    inputValid: inputValid ?? (s) => true,
+                    heading: widget.heading,
+                    keyboardType: widget.keyboardType,
+                    inputFormatters: widget.inputFormatters,
+                    textCapitalization: widget.textCapitalization,
+                    maxLines: widget.maxLines,
+                    autocorrect: widget.autoCorrect,
+                    inputValid: widget.inputValid ?? (s) => true,
                   ),
                 ),
               );
 
               if (newText != null) {
                 controller.text = newText;
+                widget.onChanged(newText);
               }
             },
             child: Container(
               color: Colors.transparent,
               child: IgnorePointer(
                 child: TextFormField(
-                  key: formKey,
-                  maxLines: maxLines,
+                  key: widget.formKey,
+                  maxLines: widget.maxLines,
                   minLines: 1,
                   readOnly: true,
                   controller: controller,
                   style: theme.textTheme.bodyText1,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (_) => errorState ? '' : null,
-                  decoration: errorState ? errorDecoration : null,
+                  autovalidateMode: AutovalidateMode.always,
+                  validator: (_) => widget.errorState ? '' : null,
+                  decoration: widget.errorState ? inputErrorDecoration : null,
                 ),
               ),
             ),
@@ -138,7 +140,7 @@ class DefaultTextInputPage extends StatefulWidget {
 }
 
 class _DefaultInputPageState
-    extends _StateWithFocusOnResume<DefaultTextInputPage> {
+    extends StateWithFocusOnResume<DefaultTextInputPage> {
   TextEditingController controller;
   bool _validInput = false;
   @override
@@ -206,9 +208,10 @@ class _DefaultInputPageState
             BottomNavigation(
               backNavigationWidget: CancelButton(),
               forwardNavigationWidget: OkButton(
+                key: TestKey.inputOk,
                 onPressed: _validInput ? _returnNewText : null,
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -220,246 +223,8 @@ class _DefaultInputPageState
   }
 }
 
-class PasswordInput extends StatelessWidget {
-  final TextEditingController controller;
-  final bool errorState, obscureText;
-  final LoginFormBloc loginFormBloc;
-
-  const PasswordInput({
-    Key key,
-    @required this.controller,
-    @required this.errorState,
-    @required this.loginFormBloc,
-    @required this.obscureText,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final heading = Translator.of(context).translate.password;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SubHeading(heading),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: Tts.fromSemantics(
-                SemanticsProperties(
-                  label: heading,
-                  value: controller.value.text,
-                  textField: true,
-                  obscured: true,
-                ),
-                child: GestureDetector(
-                  onTap: () async {
-                    final newPassword =
-                        await Navigator.of(context).push<String>(
-                      MaterialPageRoute(
-                        builder: (context) => PasswordInputPage(
-                          password: controller.text,
-                          loginFormBloc: loginFormBloc,
-                          context: context,
-                        ),
-                      ),
-                    );
-
-                    if (newPassword != null) {
-                      controller.text = newPassword;
-                    } else {
-                      loginFormBloc
-                          .add(PasswordChanged(password: controller.text));
-                    }
-                  },
-                  child: Container(
-                    color: Colors.transparent,
-                    child: IgnorePointer(
-                      child: TextFormField(
-                        key: TestKey.passwordInput,
-                        readOnly: true,
-                        controller: controller,
-                        obscureText: obscureText,
-                        style: theme.textTheme.bodyText1,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (_) => errorState ? '' : null,
-                        decoration: errorState ? errorDecoration : null,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            HidePasswordButton(
-              padding: EdgeInsets.only(left: 12.s),
-              loginFormBloc: loginFormBloc,
-            )
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class PasswordInputPage extends StatefulWidget {
-  PasswordInputPage({
-    Key key,
-    @required this.password,
-    @required this.loginFormBloc,
-    @required this.context,
-  }) : super(key: key);
-
-  final String password;
-  final LoginFormBloc loginFormBloc;
-  final BuildContext context;
-
-  @override
-  _PasswordInputPageState createState() => _PasswordInputPageState();
-}
-
-class _PasswordInputPageState
-    extends _StateWithFocusOnResume<PasswordInputPage> {
-  TextEditingController controller;
-  bool _validInput = false;
-  @override
-  void initState() {
-    super.initState();
-    controller = TextEditingController(text: widget.password);
-    controller.text = widget.password;
-    controller.addListener(onTextValueChanged);
-    _validInput = widget.loginFormBloc.isPasswordValid(controller.text);
-  }
-
-  @override
-  void dispose() {
-    controller.removeListener(onTextValueChanged);
-    controller.dispose();
-    super.dispose();
-  }
-
-  void onTextValueChanged() {
-    final valid = widget.loginFormBloc.isPasswordValid(controller.text);
-    if (valid != _validInput) {
-      setState(() {
-        _validInput = valid;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final heading = Translator.of(context).translate.password;
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: heading,
-        iconData: AbiliaIcons.lock,
-      ),
-      body: Column(
-        children: [
-          Tts.fromSemantics(
-            SemanticsProperties(
-              label: heading,
-              value: controller.value.text,
-              textField: true,
-              obscured: true,
-            ),
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                leftPadding,
-                verticalPadding,
-                0,
-                verticalPadding,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SubHeading(Translator.of(context).translate.password),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      BlocBuilder<LoginFormBloc, LoginFormState>(
-                        bloc: widget.loginFormBloc,
-                        builder: (context, state) => Expanded(
-                          child: TextFormField(
-                            key: TestKey.input,
-                            controller: controller,
-                            obscureText: state.hidePassword,
-                            keyboardType: TextInputType.visiblePassword,
-                            style: theme.textTheme.bodyText1,
-                            autofocus: true,
-                            focusNode: focusNode,
-                            onEditingComplete:
-                                _validInput ? _returnNewPassword : () {},
-                            onChanged: (s) => widget.loginFormBloc
-                                .add(PasswordChanged(password: s)),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 12.s),
-                      HidePasswordButton(
-                        loginFormBloc: widget.loginFormBloc,
-                        padding: EdgeInsets.only(
-                          right: horizontalPadding,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const Spacer(),
-          BottomNavigation(
-            backNavigationWidget: CancelButton(),
-            forwardNavigationWidget:
-                OkButton(onPressed: _validInput ? _returnNewPassword : null),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _returnNewPassword() {
-    Navigator.of(context).maybePop(controller.text);
-  }
-}
-
-class HidePasswordButton extends StatelessWidget {
-  const HidePasswordButton({
-    Key key,
-    @required this.loginFormBloc,
-    this.padding = EdgeInsets.zero,
-  }) : super(key: key);
-
-  final LoginFormBloc loginFormBloc;
-  final EdgeInsets padding;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LoginFormBloc, LoginFormState>(
-      bloc: loginFormBloc,
-      builder: (context, state) => CollapsableWidget(
-        collapsed: state.password.isEmpty,
-        padding: padding,
-        axis: Axis.horizontal,
-        child: ActionButtonDark(
-          onPressed: _onHidePasswordChanged,
-          child: Icon(
-            state.hidePassword ? AbiliaIcons.show : AbiliaIcons.hide,
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _onHidePasswordChanged() {
-    loginFormBloc.add(HidePasswordToggle());
-  }
-}
-
-abstract class _StateWithFocusOnResume<T extends StatefulWidget>
-    extends State<T> with WidgetsBindingObserver {
+abstract class StateWithFocusOnResume<T extends StatefulWidget> extends State<T>
+    with WidgetsBindingObserver {
   FocusNode focusNode;
   @override
   void initState() {

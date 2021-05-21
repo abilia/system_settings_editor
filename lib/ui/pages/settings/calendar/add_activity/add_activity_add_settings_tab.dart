@@ -47,109 +47,109 @@ class AddActivityAddSettingsTab extends StatelessWidget {
           Divider(),
           if (addTabState.newActivityMode == NewActivityMode.editView) ...[
             SwitchField(
-              text: Text(t.selectDate),
               leading: Icon(AbiliaIcons.month),
               value: addTabState.selectDate,
               onChanged: (v) =>
                   onTabStateChanged(addTabState.copyWith(selectDate: v)),
+              child: Text(t.selectDate),
             ),
             SwitchField(
-              text: Text(t.selectType),
               leading: Icon(AbiliaIcons.send_and_receive),
               value: addTabState.selectType,
               onChanged: (v) =>
                   onTabStateChanged(addTabState.copyWith(selectType: v)),
+              child: Text(t.selectType),
             ),
             SwitchField(
-              text: Text(t.showBasicActivities),
               leading: Icon(AbiliaIcons.basic_activity),
               value: addTabState.showBasicActivities,
               onChanged: (v) => onTabStateChanged(
                   addTabState.copyWith(showBasicActivities: v)),
+              child: Text(t.showBasicActivities),
             ),
           ] else ...[
             SwitchField(
-              text: Text(t.showBasicActivities),
               leading: Icon(AbiliaIcons.basic_activity),
               value: stepState.showBasicActivities,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(showBasicActivities: v)),
+              child: Text(t.showBasicActivities),
             ),
             SwitchField(
-              text: Text(t.selectName),
               leading: Icon(AbiliaIcons.select_text_size),
               value: stepState.selectName,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectName: v)),
+              child: Text(t.selectName),
             ),
             SwitchField(
-              text: Text(t.selectImage),
               leading: Icon(AbiliaIcons.my_photos),
               value: stepState.selectImage,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectImage: v)),
+              child: Text(t.selectImage),
             ),
             SwitchField(
-              text: Text(t.selectDate),
               leading: Icon(AbiliaIcons.month),
               value: stepState.setDate,
               onChanged: (v) => onStepChanged(stepState.copyWith(setDate: v)),
+              child: Text(t.selectDate),
             ),
             SwitchField(
-              text: Text(t.selectType),
               leading: Icon(AbiliaIcons.send_and_receive),
               value: stepState.selectType,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectType: v)),
+              child: Text(t.selectType),
             ),
             SwitchField(
-              text: Text(t.selectCheckable),
               leading: Icon(AbiliaIcons.handi_check),
               value: stepState.selectCheckable,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectCheckable: v)),
+              child: Text(t.selectCheckable),
             ),
             SwitchField(
-              text: Text(t.selectAvailableFor),
               leading: Icon(AbiliaIcons.password_protection),
               value: stepState.selectAvailableFor,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectAvailableFor: v)),
+              child: Text(t.selectAvailableFor),
             ),
             SwitchField(
-              text: Text(t.selectDeleteAfter),
               leading: Icon(AbiliaIcons.delete_all_clear),
               value: stepState.selectDeleteAfter,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectDeleteAfter: v)),
+              child: Text(t.selectDeleteAfter),
             ),
             SwitchField(
-              text: Text(t.selectAlarm),
               leading: Icon(AbiliaIcons.handi_alarm),
               value: stepState.selectAlarm,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectAlarm: v)),
+              child: Text(t.selectAlarm),
             ),
             SwitchField(
-              text: Text(t.selectChecklist),
               leading: Icon(AbiliaIcons.radiocheckbox_unselected),
               value: stepState.selectChecklist,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectChecklist: v)),
+              child: Text(t.selectChecklist),
             ),
             SwitchField(
-              text: Text(t.selectNote),
               leading: Icon(AbiliaIcons.note),
               value: stepState.selectNote,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectNote: v)),
+              child: Text(t.selectNote),
             ),
             SwitchField(
-              text: Text(t.selectReminder),
               leading: Icon(AbiliaIcons.handi_reminder),
               value: stepState.selectReminder,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectReminder: v)),
+              child: Text(t.selectReminder),
             ),
           ]
         ],

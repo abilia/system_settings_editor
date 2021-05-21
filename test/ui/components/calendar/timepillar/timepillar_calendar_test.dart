@@ -501,7 +501,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(CheckButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.yesButton));
+      await tester.tap(find.byType(YesButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.activityBackButton));
       await tester.pumpAndSettle();

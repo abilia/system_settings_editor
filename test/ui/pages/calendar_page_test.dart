@@ -500,28 +500,10 @@ void main() {
 
       testWidgets('Denied notifications link to permission settings',
           (WidgetTester tester) async {
-        bool tapTextSpan(RichText richText, String text) {
-          return !richText.text.visitChildren(
-            (InlineSpan visitor) {
-              if (visitor is TextSpan && visitor.text == text) {
-                (visitor.recognizer as TapGestureRecognizer).onTap();
-                return false;
-              }
-              return true;
-            },
-          );
-        }
-
         setupPermissions({Permission.notification: PermissionStatus.denied});
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        expect(
-            find.byWidgetPredicate(
-              (widget) =>
-                  widget is RichText &&
-                  tapTextSpan(widget, translate.settingsLink),
-            ),
-            findsOneWidget);
+        expect(find.tapTextSpan(translate.settingsLink), findsOneWidget);
         await tester.pumpAndSettle();
         expect(find.byType(PermissionsPage), findsOneWidget);
       });

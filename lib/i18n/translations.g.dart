@@ -18,13 +18,15 @@ class Locales {
 }
 
 abstract class Translated {
-  final String userNameTitle = 'Username or email';
+  final String usernameTitle = 'Username or email';
 
-  final String userName = 'Username';
+  final String username = 'Username';
 
   final String password = 'Password';
 
-  final String loginHint =
+  final String loginHintMP = 'Use your myAbilia account to Login';
+
+  final String loginHintMPGO =
       'Login with the same username and password as on your MEMOplanner';
 
   final String login = 'Log in';
@@ -36,6 +38,52 @@ abstract class Translated {
 
   final String noConnection =
       'No contact with myAbilia. Check your Internet connection.';
+
+  final String enterUsername = 'Enter username';
+
+  final String enterPassword = 'Enter password';
+
+  final String createAccountHint = 'Don’t have a myAbilia account yet?';
+
+  final String createAccount = 'Create Account';
+
+  final String createAaccountHeading = 'Create your account in myAbilia';
+
+  final String createAaccountSubheading =
+      'You need a myAbilia account to use MEMOplanner';
+
+  final String acceptTerms = 'I have read and agree to';
+
+  final String termsOfUse = 'terms of use';
+
+  final String privacyPolicy = 'privacy policy';
+
+  final String confirmPassword = 'Confirm password';
+
+  final String usernameToShort =
+      'Username or email is invalid, must contain at least three characters';
+
+  final String passwordToShort =
+      'The password must consist of at least 8 characters';
+
+  final String passwordMismatch = 'Both passwords must be the same';
+
+  final String confirmTermsOfUse = 'Confirm terms of use';
+
+  final String confirmPrivacyPolicy = 'Confirm privacy policy';
+
+  final String usernameTaken = 'Username/email address is already in use';
+
+  final String unknownError = 'Unknown error';
+
+  final String accountCreatedHeading = 'Account created';
+
+  final String accountCreatedBody =
+      'Your account has been created.\nYou can login using your username and password';
+
+  final String browser = 'Browser';
+
+  final String backToLogin = 'Back to Login';
 
   final String noLicense = 'This account has no valid license.';
 
@@ -602,16 +650,19 @@ class EN extends Translated {}
 
 class SV extends Translated {
   @override
-  final String userNameTitle = 'Användarnamn eller e-post';
+  final String usernameTitle = 'Användarnamn eller e-post';
 
   @override
-  final String userName = 'Användarnamn';
+  final String username = 'Användarnamn';
 
   @override
   final String password = 'Lösenord';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Använd ditt myAbilia-konto för att logga in';
+
+  @override
+  final String loginHintMPGO =
       'Logga in med samma användarnamn och lösenord som på din MEMOplanner';
 
   @override
@@ -627,6 +678,72 @@ class SV extends Translated {
   @override
   final String noConnection =
       'Ingen kontakt med myAbilia. Kontrollera din internetanslutning.';
+
+  @override
+  final String enterUsername = 'Ange ditt användarnamn';
+
+  @override
+  final String enterPassword = 'Ange ditt lösenord';
+
+  @override
+  final String createAccountHint = 'Har du inte ett myAbilia konto än?';
+
+  @override
+  final String createAccount = 'Skapa konto';
+
+  @override
+  final String createAaccountHeading = 'Skapa ditt konto i myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Du behöver ett myAbilia-konto för att kunna använda MEMOplanner';
+
+  @override
+  final String acceptTerms = 'Jag har läst och godkänner';
+
+  @override
+  final String termsOfUse = 'användarvillkor';
+
+  @override
+  final String privacyPolicy = 'personuppgiftspolicy';
+
+  @override
+  final String confirmPassword = 'Bekräfta lösenordet';
+
+  @override
+  final String usernameToShort =
+      'Användarnamn eller e-postadress är ogiltig, måste innehålla minst tre tecken';
+
+  @override
+  final String passwordToShort = 'Lösenordet måste bestå av minst 8 tecken';
+
+  @override
+  final String passwordMismatch = 'Lösenorden måste vara likadana';
+
+  @override
+  final String confirmTermsOfUse = 'Bekräfta användarvillkor';
+
+  @override
+  final String confirmPrivacyPolicy = 'Bekräfta personuppgiftspolicy';
+
+  @override
+  final String usernameTaken = 'Användarnamn/e-postadress används redan';
+
+  @override
+  final String unknownError = 'Okänt fel';
+
+  @override
+  final String accountCreatedHeading = 'Konto skapat';
+
+  @override
+  final String accountCreatedBody =
+      'Ditt konto har skapats.\nDu kan logga in med ditt användarnamn och lösenord';
+
+  @override
+  final String browser = 'Webbläsare';
+
+  @override
+  final String backToLogin = 'Tillbaka till login';
 
   @override
   final String noLicense =
@@ -1465,16 +1582,19 @@ class SV extends Translated {
 
 class DA extends Translated {
   @override
-  final String userNameTitle = 'Brugernavn eller e-mail';
+  final String usernameTitle = 'Brugernavn eller e-mail';
 
   @override
-  final String userName = 'Brugernavn';
+  final String username = 'Brugernavn';
 
   @override
   final String password = 'Adgangskode';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Brug din myAbilia-konto til at logge ind';
+
+  @override
+  final String loginHintMPGO =
       'Log ind med samme brugernavn og adgangskode som på din MEMOplanner';
 
   @override
@@ -1490,6 +1610,72 @@ class DA extends Translated {
   @override
   final String noConnection =
       'Enheden er ikke tilsluttet myAbilia. Kontroller din internetforbindelse.';
+
+  @override
+  final String enterUsername = 'Angiv dit brugernavn';
+
+  @override
+  final String enterPassword = 'Angiv din adgangskode';
+
+  @override
+  final String createAccountHint = 'Har du ikke en myAbilia-konto endnu?';
+
+  @override
+  final String createAccount = 'Opret konto';
+
+  @override
+  final String createAaccountHeading = 'Opret din konto i myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Du har brug for en myAbilia-konto for at bruge MEMOplanner';
+
+  @override
+  final String acceptTerms = 'Jeg har læst og accepterer';
+
+  @override
+  final String termsOfUse = 'brugervillkår';
+
+  @override
+  final String privacyPolicy = 'persondatapolitik';
+
+  @override
+  final String confirmPassword = 'Bekræft adgangskoden';
+
+  @override
+  final String usernameToShort =
+      'Brugernavn eller e-mail er ugyldig, skal indeholde mindst tre tegn';
+
+  @override
+  final String passwordToShort = 'Adgangskoden skal bestå af mindst 8 tegn';
+
+  @override
+  final String passwordMismatch = 'Begge adgangskoder skal være de samme';
+
+  @override
+  final String confirmTermsOfUse = 'Bekræft brugervilkår';
+
+  @override
+  final String confirmPrivacyPolicy = 'Bekræft persondatapolitik';
+
+  @override
+  final String usernameTaken = 'Brugernavn/e-mail-adresse er allerede i brug';
+
+  @override
+  final String unknownError = 'Ukendt fejl';
+
+  @override
+  final String accountCreatedHeading = 'Konto oprettet';
+
+  @override
+  final String accountCreatedBody =
+      'Din konto er oprettet.\nDu kan logge ind med dit brugernavn og din adgangskode';
+
+  @override
+  final String browser = 'Browser';
+
+  @override
+  final String backToLogin = 'Zurück zur Anmeldung';
 
   @override
   final String noLicense =
@@ -2329,16 +2515,19 @@ class DA extends Translated {
 
 class NL extends Translated {
   @override
-  final String userNameTitle = 'Gebruikersnaam of e-mail';
+  final String usernameTitle = 'Gebruikersnaam of e-mail';
 
   @override
-  final String userName = 'Gebruikersnaam';
+  final String username = 'Gebruikersnaam';
 
   @override
   final String password = 'Wachtwoord';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Gebruik uw myAbilia-account om in te loggen';
+
+  @override
+  final String loginHintMPGO =
       'Log in met dezelfde gebruikersnaam en hetzelfde wachtwoord als op uw MEMOplanner';
 
   @override
@@ -2354,6 +2543,73 @@ class NL extends Translated {
   @override
   final String noConnection =
       'Het apparaat is niet aangesloten op het myAbilia. Controleer uw internetverbinding.';
+
+  @override
+  final String enterUsername = 'Gebruikersnaam invoeren';
+
+  @override
+  final String enterPassword = 'Wachtwoord invoeren';
+
+  @override
+  final String createAccountHint = 'Heeft u nog geen myAbilia-account?';
+
+  @override
+  final String createAccount = 'Maak account';
+
+  @override
+  final String createAaccountHeading = 'Creëer uw account in myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'U heeft een myAbilia-account nodig om MEMOplanner te gebruiken';
+
+  @override
+  final String acceptTerms = 'Ik heb gelezen en akkoord gegaan';
+
+  @override
+  final String termsOfUse = 'gebruiksvoorwaarden';
+
+  @override
+  final String privacyPolicy = 'privacybeleid';
+
+  @override
+  final String confirmPassword = 'Wachtwoord bevestigen';
+
+  @override
+  final String usernameToShort =
+      'Gebruikersnaam of e-mail is ongeldig, moet ten minste drie tekens bevatten';
+
+  @override
+  final String passwordToShort =
+      'Het wachtwoord moet ten minste 8 tekens bevatten';
+
+  @override
+  final String passwordMismatch = 'Beide wachtwoorden moeten hetzelfde zijn';
+
+  @override
+  final String confirmTermsOfUse = 'Bevestig de gebruiksvoorwaarden';
+
+  @override
+  final String confirmPrivacyPolicy = 'Bevestig privacybeleid';
+
+  @override
+  final String usernameTaken = 'Gebruikersnaam/e-mailadres is reeds in gebruik';
+
+  @override
+  final String unknownError = 'Onbekende fout';
+
+  @override
+  final String accountCreatedHeading = 'Account gecreëerd';
+
+  @override
+  final String accountCreatedBody =
+      'Uw account is gecreëerd.\nU kunt inloggen met uw gebruikersnaam en wachtwoord';
+
+  @override
+  final String browser = 'Browser';
+
+  @override
+  final String backToLogin = 'Zurück zur Anmeldung';
 
   @override
   final String noLicense = 'Dit account heeft geen geldige licentie.';
@@ -3191,16 +3447,19 @@ class NL extends Translated {
 
 class FI extends Translated {
   @override
-  final String userNameTitle = 'Käyttäjätunnus tai sähköpostiosoite';
+  final String usernameTitle = 'Käyttäjätunnus tai sähköpostiosoite';
 
   @override
-  final String userName = 'Käyttäjätunnus';
+  final String username = 'Käyttäjätunnus';
 
   @override
   final String password = 'Salasana';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Kirjaudu sisään myAbilia-tililläsi';
+
+  @override
+  final String loginHintMPGO =
       'Kirjaudu sisään samalla käyttäjänimellä ja salasanalla kuin MEMOplannerilla';
 
   @override
@@ -3216,6 +3475,72 @@ class FI extends Translated {
   @override
   final String noConnection =
       'Laitetta ei ole yhdistetty myAbilia. Tarkista Internet-yhteys.';
+
+  @override
+  final String enterUsername = 'Anna käyttäjätunnus';
+
+  @override
+  final String enterPassword = 'Anna salasana';
+
+  @override
+  final String createAccountHint = 'Eikö sinulla ole vielä myAbilia-tiliä?';
+
+  @override
+  final String createAccount = 'Luo tili';
+
+  @override
+  final String createAaccountHeading = 'Luo tili myAbiliassa';
+
+  @override
+  final String createAaccountSubheading =
+      'Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria';
+
+  @override
+  final String acceptTerms = 'Olen lukenut ja sopineet';
+
+  @override
+  final String termsOfUse = 'käyttöehdot';
+
+  @override
+  final String privacyPolicy = 'tietosuojakäytäntö';
+
+  @override
+  final String confirmPassword = 'Vahvista salasana';
+
+  @override
+  final String usernameToShort =
+      'Käyttäjätunnus tai sähköpostiosoite on virheellinen, niissä on oltava vähintään kolme merkkiä';
+
+  @override
+  final String passwordToShort = 'Salasanassa on oltava vähintään 8 merkkiä';
+
+  @override
+  final String passwordMismatch = 'Molempien salasanojen on oltava samat';
+
+  @override
+  final String confirmTermsOfUse = 'Vahvista käyttöehdot';
+
+  @override
+  final String confirmPrivacyPolicy = 'Vahvista tietosuojakäytäntö';
+
+  @override
+  final String usernameTaken = 'Käyttäjätunnus/sähköpostiosoite on jo käytössä';
+
+  @override
+  final String unknownError = 'Tuntematon virhe';
+
+  @override
+  final String accountCreatedHeading = 'Tili luotu puolivälissä';
+
+  @override
+  final String accountCreatedBody =
+      'Tili on luotu.\nVoit kirjautua sisään käyttämällä käyttäjätunnustasi ja salasanaasi';
+
+  @override
+  final String browser = 'Selain';
+
+  @override
+  final String backToLogin = 'Takaisin sisäänkirjautumiseen';
 
   @override
   final String noLicense = 'Tällä tilillä ei ole kelvollista lisenssiä.';
@@ -4052,16 +4377,20 @@ class FI extends Translated {
 
 class DE extends Translated {
   @override
-  final String userNameTitle = 'Benutzername oder E-Mail';
+  final String usernameTitle = 'Benutzername oder E-Mail';
 
   @override
-  final String userName = 'Benutzername';
+  final String username = 'Benutzername';
 
   @override
   final String password = 'Passwort';
 
   @override
-  final String loginHint =
+  final String loginHintMP =
+      'Verwenden Sie Ihr myAbilia-Konto, um sich anzumelden';
+
+  @override
+  final String loginHintMPGO =
       'Melden Sie sich mit demselben Benutzernamen und Passwort wie auf Ihrem MEMOplanner an';
 
   @override
@@ -4077,6 +4406,75 @@ class DE extends Translated {
   @override
   final String noConnection =
       'Das Gerät ist nicht mit dem myAbilia verbunden. Überprüfen Sie Ihre Internetverbindung.';
+
+  @override
+  final String enterUsername = 'Benutzername eingeben';
+
+  @override
+  final String enterPassword = 'Passwort eingeben';
+
+  @override
+  final String createAccountHint = 'Sie haben noch kein myAbilia-Konto?';
+
+  @override
+  final String createAccount = 'Benutzerkonto erstellen';
+
+  @override
+  final String createAaccountHeading = 'Erstellen Sie Ihr Konto in myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können';
+
+  @override
+  final String acceptTerms = 'Ich habe gelesen und bin damit einverstanden';
+
+  @override
+  final String termsOfUse = 'nutzungsbedingungen';
+
+  @override
+  final String privacyPolicy = 'datenschutzbestimmungen';
+
+  @override
+  final String confirmPassword = 'Passwort bestätigen';
+
+  @override
+  final String usernameToShort =
+      'Benutzername oder E-Mail ungültig - Mindestlänge drei Zeichen';
+
+  @override
+  final String passwordToShort =
+      'Das Passwort muss mindestens 8 Zeichen lang sein';
+
+  @override
+  final String passwordMismatch = 'Beide Passwörter müssen identisch sein';
+
+  @override
+  final String confirmTermsOfUse = 'Bestätigen Sie die Nutzungsbedingungen';
+
+  @override
+  final String confirmPrivacyPolicy =
+      'Bestätigen Sie die Datenschutzbestimmungen';
+
+  @override
+  final String usernameTaken =
+      'Benutzername/E-Mail-Adresse bereit in Gebrauch.';
+
+  @override
+  final String unknownError = 'Unbekannter Fehler';
+
+  @override
+  final String accountCreatedHeading = 'Konto erstellt';
+
+  @override
+  final String accountCreatedBody =
+      'Ihr Konto wurde erstellt.\nSie können sich mit Ihrem Benutzernamen und Passwort anmelden';
+
+  @override
+  final String browser = 'Browser';
+
+  @override
+  final String backToLogin = 'Zurück zur Anmeldung';
 
   @override
   final String noLicense = 'Für dieses Konto gibt es keine gültige Lizenz.';
@@ -4917,16 +5315,19 @@ class DE extends Translated {
 
 class NB extends Translated {
   @override
-  final String userNameTitle = 'Brukernavn eller e-post';
+  final String usernameTitle = 'Brukernavn eller e-post';
 
   @override
-  final String userName = 'Brukernavn';
+  final String username = 'Brukernavn';
 
   @override
   final String password = 'Passord';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Bruk myAbilia-kontoen din for å logge på';
+
+  @override
+  final String loginHintMPGO =
       'Logg inn med samme brukernavn og passord som på MEMOplanner';
 
   @override
@@ -4942,6 +5343,72 @@ class NB extends Translated {
   @override
   final String noConnection =
       'Enheten er ikke koblet til myAbilia. Sjekk din Internettforbindelse.';
+
+  @override
+  final String enterUsername = 'Angi ditt brukernavn';
+
+  @override
+  final String enterPassword = 'Angi ditt passord';
+
+  @override
+  final String createAccountHint = 'Har du ikke en myAbilia-konto ennå?';
+
+  @override
+  final String createAccount = 'Opprett konto';
+
+  @override
+  final String createAaccountHeading = 'Opprett kontoen din i myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Du trenger en myAbilia-konto for å bruke MEMOplanner';
+
+  @override
+  final String acceptTerms = 'Jeg har lest og godtar';
+
+  @override
+  final String termsOfUse = 'brukervillkår';
+
+  @override
+  final String privacyPolicy = 'personvernerklæring';
+
+  @override
+  final String confirmPassword = 'Bekreft passordet';
+
+  @override
+  final String usernameToShort =
+      'Brukernavn eller e-postadresse er ugyldig, må inneholde minst tre tegn';
+
+  @override
+  final String passwordToShort = 'Passordet må bestå av minst 8 tegn';
+
+  @override
+  final String passwordMismatch = 'Begge passordene må være de samme';
+
+  @override
+  final String confirmTermsOfUse = 'Bekreft brukervilkår';
+
+  @override
+  final String confirmPrivacyPolicy = 'Bekreft personvernerklæring';
+
+  @override
+  final String usernameTaken = 'Brukernavn/e-postadresse er allerede i bruk';
+
+  @override
+  final String unknownError = 'Ukjent feil';
+
+  @override
+  final String accountCreatedHeading = 'Konto opprettet';
+
+  @override
+  final String accountCreatedBody =
+      'Kontoen din er opprettet.\nDu kan logge inn ved å bruke ditt brukernavn og passord';
+
+  @override
+  final String browser = 'Nettleser';
+
+  @override
+  final String backToLogin = 'Tilbake til innlogging';
 
   @override
   final String noLicense =

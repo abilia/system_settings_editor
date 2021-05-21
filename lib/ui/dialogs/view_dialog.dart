@@ -75,8 +75,13 @@ class ViewDialog extends StatelessWidget {
 
 class ErrorDialog extends StatelessWidget {
   final String text;
+  final Widget backNavigationWidget;
 
-  const ErrorDialog({Key key, this.text}) : super(key: key);
+  const ErrorDialog({
+    Key key,
+    this.text,
+    this.backNavigationWidget,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ViewDialog(
@@ -85,7 +90,7 @@ class ErrorDialog extends StatelessWidget {
           iconData: AbiliaIcons.ir_error,
         ),
         body: Tts(child: Text(text)),
-        backNavigationWidget: PreviousButton(),
+        backNavigationWidget: backNavigationWidget ?? PreviousButton(),
       );
 }
 
@@ -108,18 +113,8 @@ class YesNoDialog extends StatelessWidget {
         iconData: headingIcon,
       ),
       body: Tts(child: Text(text)),
-      backNavigationWidget: GreyButton(
-        key: TestKey.noButton,
-        text: Translator.of(context).translate.no,
-        icon: AbiliaIcons.close_program,
-        onPressed: () => Navigator.of(context).maybePop(false),
-      ),
-      forwardNavigationWidget: GreenButton(
-        key: TestKey.yesButton,
-        text: Translator.of(context).translate.yes,
-        icon: AbiliaIcons.ok,
-        onPressed: () => Navigator.of(context).maybePop(true),
-      ),
+      backNavigationWidget: NoButton(),
+      forwardNavigationWidget: YesButton(),
     );
   }
 }

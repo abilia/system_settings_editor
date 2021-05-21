@@ -30,30 +30,37 @@ class LoginPage extends StatelessWidget {
         ),
       );
     }
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<LoginBloc>(
-          create: (context) => LoginBloc(
-            authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-            pushService: GetIt.I<FirebasePushService>(),
-            clockBloc: BlocProvider.of<ClockBloc>(context),
-          ),
-        ),
-        BlocProvider<LoginFormBloc>(create: (context) => LoginFormBloc()),
-      ],
+    return BlocProvider<LoginBloc>(
+      create: (context) => LoginBloc(
+        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+        pushService: GetIt.I<FirebasePushService>(),
+        clockBloc: BlocProvider.of<ClockBloc>(context),
+      ),
       child: BlocListener<LoginBloc, LoginState>(
-        listenWhen: (_, state) => state is LoginFailure && state.licenseError,
+        listenWhen: (_, state) => state is LoginFailure,
         listener: (context, state) async {
-          final cause = (state as LoginFailure).loginFailureCause;
-          context.read<LoginFormBloc>().add(ResetForm());
-          await showViewDialog(
-            context: context,
-            builder: (_) => LicenseErrorDialog(
-              heading: cause.heading(translate),
-              message: cause.message(translate),
-            ),
-            wrapWithAuthProviders: false,
-          );
+          if (state is LoginFailure) {
+            final cause = state.cause;
+            if (state.licenseError) {
+              context.read<LoginBloc>().add(ClearFailure());
+              await showViewDialog(
+                context: context,
+                builder: (_) => LicenseErrorDialog(
+                  heading: cause.heading(translate),
+                  message: cause.message(translate),
+                ),
+                wrapWithAuthProviders: false,
+              );
+            } else {
+              await showViewDialog(
+                context: context,
+                builder: (_) => ErrorDialog(
+                  text: cause.message(translate),
+                ),
+                wrapWithAuthProviders: false,
+              );
+            }
+          }
         },
         child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,

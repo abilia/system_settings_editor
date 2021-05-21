@@ -97,39 +97,39 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
       widgets: [
         SwitchField(
           leading: Icon(AbiliaIcons.camera_photo),
-          text: Text(t.camera),
           value: camera,
           onChanged: (v) => setState(() => camera = v),
+          child: Text(t.camera),
         ),
         SwitchField(
           leading: Icon(AbiliaIcons.my_photos),
-          text: Text(t.myPhotos),
           value: myPhotos,
           onChanged: (v) => setState(() => myPhotos = v),
+          child: Text(t.myPhotos),
         ),
         SwitchField(
           leading: Icon(AbiliaIcons.day),
-          text: Text(t.photoCalendar.singleLine),
           value: photoCalendar,
           onChanged: (v) => setState(() => photoCalendar = v),
+          child: Text(t.photoCalendar.singleLine),
         ),
         SwitchField(
           leading: Icon(AbiliaIcons.stop_watch),
-          text: Text(t.countdown),
           value: countdown,
           onChanged: (v) => setState(() => countdown = v),
+          child: Text(t.countdown),
         ),
         SwitchField(
           leading: Icon(AbiliaIcons.menu_setup),
-          text: Text(t.quickSettingsMenu.singleLine),
           value: quickSettings,
           onChanged: (v) => setState(() => quickSettings = v),
+          child: Text(t.quickSettingsMenu.singleLine),
         ),
         SwitchField(
           leading: Icon(AbiliaIcons.settings),
-          text: Text(t.settings),
           value: settings,
           onChanged: (v) => setState(() => settings = v),
+          child: Text(t.settings),
         ),
       ],
     );

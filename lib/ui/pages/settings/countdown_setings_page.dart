@@ -16,7 +16,7 @@ class CountdownSettingsPage extends StatelessWidget {
         separatorBuilder: (context, index) => SizedBox(height: 8.0.s),
       ),
       bottomNavigationBar: const BottomNavigation(
-        backNavigationWidget: BackButton(),
+        backNavigationWidget: PreviousButton(),
       ),
     );
   }

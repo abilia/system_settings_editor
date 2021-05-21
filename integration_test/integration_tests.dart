@@ -68,10 +68,11 @@ void main() {
 extension on WidgetTester {
   Future<void> selectBackend(String env) async {
     await pumpAndSettle();
-    await longPress(find.byKey(TestKey.loginLogo));
-    // await tester.tap(find.byKey(TestKey.loginLogo));
+    await longPress(find.byType(MEMOplannerLogo));
     await pumpAndSettle();
     await tap(find.text(env));
+    await pumpAndSettle();
+    await tap(find.byType(OkButton));
     await pumpAndSettle();
   }
 
@@ -147,7 +148,7 @@ extension on WidgetTester {
   Future<void> login(String userName, String backend,
       {String password = 'password'}) async {
     await selectBackend(backend);
-    await tap(find.byKey(TestKey.userNameInput));
+    await tap(find.byType(UsernameInput));
     await pumpAndSettle();
     await showKeyboard(find.byKey(TestKey.input));
     await pumpAndSettle();
@@ -156,7 +157,7 @@ extension on WidgetTester {
     await tap(find.byType(OkButton));
     await pumpAndSettle();
 
-    await tap(find.byKey(TestKey.passwordInput));
+    await tap(find.byType(PasswordInput));
     await pumpAndSettle();
     await showKeyboard(find.byKey(TestKey.input));
     await pumpAndSettle();

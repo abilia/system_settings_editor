@@ -115,7 +115,7 @@ void main() {
 
     // Act -- Loadfiles
     userFileBloc.add(LoadUserFiles());
-    // Act -- while downloadning files, user adds file
+    // Act -- while downloading files, user adds file
     await untilCalled(
         mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')));
     userFileBloc.add(ImageAdded(SelectedImage.forTest(fileId, filePath, file)));

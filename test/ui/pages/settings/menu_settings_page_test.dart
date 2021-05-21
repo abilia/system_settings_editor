@@ -10,7 +10,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -79,7 +78,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       if (yesOnDialog) {
-        await tester.tap(find.byKey(TestKey.yesButton));
+        await tester.tap(find.byType(YesButton));
         await tester.pumpAndSettle();
       }
 
@@ -343,11 +342,6 @@ void main() {
 }
 
 extension on WidgetTester {
-  Future<void> pumpApp() async {
-    await pumpWidget(App());
-    await pumpAndSettle();
-  }
-
   Future<void> goToMenuPage() async {
     await pumpApp();
     await tap(find.byType(MenuButton));
