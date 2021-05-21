@@ -27,13 +27,9 @@ class CreateAccountState extends Equatable {
         privacyPolicy: privacyPolicy ?? this.privacyPolicy,
       );
 
-  CreateAccountFailed failed(
-    CreateAccountFailure failure, {
-    String message = '',
-  }) =>
+  CreateAccountFailed failed(CreateAccountFailure failure) =>
       CreateAccountFailed(
         failure,
-        message,
         username,
         firstPassword,
         secondPassword,
@@ -41,7 +37,7 @@ class CreateAccountState extends Equatable {
         privacyPolicy,
       );
 
-  CreateAccountLoadning loadning() => CreateAccountLoadning(
+  CreateAccountLoading loading() => CreateAccountLoading(
         username,
         firstPassword,
         secondPassword,
@@ -67,8 +63,8 @@ class CreateAccountState extends Equatable {
       ];
 }
 
-class CreateAccountLoadning extends CreateAccountState {
-  const CreateAccountLoadning(
+class CreateAccountLoading extends CreateAccountState {
+  const CreateAccountLoading(
     String username,
     String firstPassword,
     String secondPassword,
@@ -85,11 +81,9 @@ class CreateAccountLoadning extends CreateAccountState {
 
 class CreateAccountFailed extends CreateAccountState {
   final CreateAccountFailure failure;
-  final String message;
 
   const CreateAccountFailed(
     this.failure,
-    this.message,
     String username,
     String firstPassword,
     String secondPassword,
@@ -129,7 +123,7 @@ class CreateAccountFailed extends CreateAccountState {
       failure == CreateAccountFailure.PrivacyPolicy;
 
   @override
-  List<Object> get props => [failure, message, super.props];
+  List<Object> get props => [failure, super.props];
 }
 
 class AccountCreated extends CreateAccountState {

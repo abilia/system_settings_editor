@@ -50,7 +50,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> _mapLoginButtonPressedToState(
       LoginButtonPressed event) async* {
-    yield state.loadning();
+    yield state.loading();
     if (!state.isUsernameValid) {
       yield state.failure(cause: LoginFailureCause.NoUsername);
       return;
@@ -74,18 +74,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield LoginSucceeded();
       } else {
         yield state.failure(
-          error: 'No valid license',
           cause: licenses.anyMemoplannerLicense()
               ? LoginFailureCause.LicenseExpired
               : LoginFailureCause.NoLicense,
         );
       }
-    } on UnauthorizedException catch (error) {
-      yield state.failure(
-          error: error.toString(), cause: LoginFailureCause.Credentials);
+    } on UnauthorizedException {
+      yield state.failure(cause: LoginFailureCause.Credentials);
     } catch (error) {
-      yield state.failure(
-          error: error.toString(), cause: LoginFailureCause.NoConnection);
+      yield state.failure(cause: LoginFailureCause.NoConnection);
     }
   }
 }

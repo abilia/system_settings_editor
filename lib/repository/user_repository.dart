@@ -157,6 +157,41 @@ class UserRepository extends Repository {
     }
   }
 
+  Future<void> createAccount({
+    @required String language,
+    @required String usernameOrEmail,
+    @required String password,
+    @required bool termsOfUse,
+    @required bool privacyPolicy,
+  }) async {
+    _log.fine('try creating account $usernameOrEmail');
+
+    final response = await client.post(
+      '$baseUrl/open/v1/entity/user'.toUri(),
+      headers: const {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: json.encode(
+        {
+          'usernameOrEmail': usernameOrEmail,
+          'password': password,
+          'language': language,
+          'termsOfCondition': termsOfUse,
+          'privacyPolicy': privacyPolicy,
+        },
+      ),
+    );
+    _log.finer(
+      'creating account response ${response.statusCode} ${response.body}',
+    );
+
+    switch (response.statusCode) {
+      case 200:
+        _log.fine('account $usernameOrEmail created');
+        break;
+      default:
+        throw CreateAccountException.fromJson(json.decode(response.body));
+    }
+  }
+
   @override
   String toString() =>
       'UserRepository: { secureStorage: $tokenDb ${super.toString()} }';

@@ -1,9 +1,8 @@
 import 'package:flutter/gestures.dart';
-import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
-import 'package:seagull/repository/create_account_repository.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -11,9 +10,10 @@ class CreateAccountPage extends StatelessWidget {
   static const termsOfUseUrl = 'https://www.abilia.com/intl/terms-of-use',
       privacyPolicyUrl =
           'https://www.abilia.com/intl/policy-for-the-processing-of-personal-data';
-  final String baseUrl;
+  final UserRepository userRepository;
 
-  const CreateAccountPage({Key key, @required this.baseUrl}) : super(key: key);
+  const CreateAccountPage({Key key, @required this.userRepository})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context);
@@ -22,10 +22,7 @@ class CreateAccountPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => CreateAccountBloc(
         languageTag: translator.locale.toLanguageTag(),
-        repository: CreateAccountRepository(
-          client: GetIt.I<BaseClient>(),
-          baseUrl: baseUrl,
-        ),
+        repository: userRepository,
       ),
       child: MultiBlocListener(
         listeners: [
@@ -170,7 +167,7 @@ class AcceptTermsSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return SwitchField(
-      ttsData: '${t.acceptTerms}$linkText',
+      ttsData: '${t.acceptTerms} $linkText',
       value: value,
       onChanged: onChanged,
       decoration: errorState ? whiteErrorBoxDecoration : null,
@@ -178,7 +175,7 @@ class AcceptTermsSwitch extends StatelessWidget {
         text: TextSpan(
           style: DefaultTextStyle.of(context).style,
           children: [
-            TextSpan(text: t.acceptTerms),
+            TextSpan(text: '${t.acceptTerms} '),
             TextSpan(
               text: linkText,
               style: DefaultTextStyle.of(context).style.copyWith(
@@ -206,7 +203,7 @@ class MyAbiliaLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CreateAccountBloc, CreateAccountState>(
       builder: (context, state) {
-        if (state is CreateAccountLoadning) {
+        if (state is CreateAccountLoading) {
           return SizedBox(
             width: 64.s,
             height: 64.s,
@@ -236,7 +233,7 @@ class BackToLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GreyButton(
       icon: AbiliaIcons.navigation_previous,
-      text: Translator.of(context).translate.toLogin,
+      text: Translator.of(context).translate.backToLogin,
       onPressed: Navigator.of(context).maybePop,
     );
   }
@@ -252,7 +249,7 @@ class CreateAccountButton extends StatelessWidget {
         return GreenButton(
           icon: AbiliaIcons.ok,
           text: Translator.of(context).translate.createAccount,
-          onPressed: state is! CreateAccountLoadning
+          onPressed: state is! CreateAccountLoading
               ? () => context
                   .read<CreateAccountBloc>()
                   .add(CreateAccountButtonPressed())
@@ -260,5 +257,34 @@ class CreateAccountButton extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+extension CreateAccountErrorMessage on CreateAccountFailed {
+  String errorMessage(Translated translate) {
+    switch (failure) {
+      case CreateAccountFailure.NoUsername:
+        return translate.enterUsername;
+      case CreateAccountFailure.UsernameToShort:
+        return translate.usernameToShort;
+      case CreateAccountFailure.NoPassword:
+        return translate.enterPassword;
+      case CreateAccountFailure.PasswordToShort:
+        return translate.passwordToShort;
+      case CreateAccountFailure.NoConfirmPassword:
+        return translate.confirmPassword;
+      case CreateAccountFailure.PasswordMismatch:
+        return translate.passwordMismatch;
+      case CreateAccountFailure.TermsOfUse:
+        return translate.confirmTermsOfUse;
+      case CreateAccountFailure.PrivacyPolicy:
+        return translate.confirmPrivacyPolicy;
+      case CreateAccountFailure.UsernameTaken:
+        return translate.usernameTaken;
+      case CreateAccountFailure.NoConnection:
+        return translate.noConnection;
+      default:
+        return translate.unknownError;
+    }
   }
 }

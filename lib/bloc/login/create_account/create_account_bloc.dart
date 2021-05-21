@@ -13,7 +13,7 @@ part 'create_account_event.dart';
 part 'create_account_state.dart';
 
 class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
-  final CreateAccountRepository repository;
+  final UserRepository repository;
   static final _log = Logger((CreateAccountBloc).toString());
 
   final String languageTag;
@@ -42,7 +42,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
       yield state.copyWith(privacyPolicy: event.accepted);
     }
     if (event is CreateAccountButtonPressed) {
-      yield state.loadning();
+      yield state.loading();
       yield* _mapCreateAccountEventToState();
     }
   }
@@ -79,9 +79,9 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
           (_) => true,
           orElse: () => null,
         );
+        _log.warning('creating account failed: $exception');
         yield state.failed(
           firstError?.failure ?? CreateAccountFailure.Unknown,
-          message: firstError?.message ?? exception.message,
         );
       } catch (exception) {
         _log.warning('unknown exception when creating account: $exception');

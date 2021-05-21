@@ -49,11 +49,8 @@ class GoToCreateAccountButton extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => CreateAccountPage(
-                baseUrl: context
-                    .read<AuthenticationBloc>()
-                    .state
-                    .userRepository
-                    .baseUrl,
+                userRepository:
+                    context.read<AuthenticationBloc>().state.userRepository,
               ),
             ),
           );

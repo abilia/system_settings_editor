@@ -92,7 +92,7 @@ void main() {
         emitsInOrder([
           s1,
           s2,
-          s2.loadning(),
+          s2.loading(),
           LoginSucceeded(),
         ]),
       );
@@ -112,7 +112,7 @@ void main() {
       loginBloc.add(LoginButtonPressed());
       loginBloc.add(LoginButtonPressed());
 
-      final l1 = LoginState.initial().loadning();
+      final l1 = LoginState.initial().loading();
       final e1 = l1.failure(cause: LoginFailureCause.NoUsername);
 
       await expectLater(
@@ -133,7 +133,7 @@ void main() {
       loginBloc.add(LoginButtonPressed());
       loginBloc.add(LoginButtonPressed());
       final s1 = LoginState(username: username, password: '');
-      final l1 = s1.loadning();
+      final l1 = s1.loading();
       final e1 = s1.failure(cause: LoginFailureCause.NoPassword);
 
       await expectLater(

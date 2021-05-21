@@ -52,7 +52,7 @@ abstract class Translated {
   final String createAaccountSubheading =
       'You need a myAbilia account to use MEMOplanner';
 
-  final String acceptTerms = 'I have read and agree to ';
+  final String acceptTerms = 'I have read and agree to';
 
   final String termsOfUse = 'terms of use';
 
@@ -82,6 +82,8 @@ abstract class Translated {
       'Your account has been created.\nYou can login using your username and password';
 
   final String browser = 'Browser';
+
+  final String backToLogin = 'Back to Login';
 
   final String noLicense = 'This account has no valid license.';
 
@@ -697,7 +699,7 @@ class SV extends Translated {
       'Du behöver ett myAbilia-konto för att kunna använda MEMOplanner';
 
   @override
-  final String acceptTerms = 'Jag har läst och godkänner ';
+  final String acceptTerms = 'Jag har läst och godkänner';
 
   @override
   final String termsOfUse = 'användarvillkor';
@@ -716,7 +718,7 @@ class SV extends Translated {
   final String passwordToShort = 'Lösenordet måste bestå av minst 8 tecken';
 
   @override
-  final String passwordMismatch = 'Båda lösenorden måste vara desamma';
+  final String passwordMismatch = 'Lösenorden måste vara likadana';
 
   @override
   final String confirmTermsOfUse = 'Bekräfta användarvillkor';
@@ -725,7 +727,7 @@ class SV extends Translated {
   final String confirmPrivacyPolicy = 'Bekräfta personuppgiftspolicy';
 
   @override
-  final String usernameTaken = 'Användarnamn /e-postadress används redan';
+  final String usernameTaken = 'Användarnamn/e-postadress används redan';
 
   @override
   final String unknownError = 'Okänt fel';
@@ -739,6 +741,9 @@ class SV extends Translated {
 
   @override
   final String browser = 'Webbläsare';
+
+  @override
+  final String backToLogin = 'Tillbaka till login';
 
   @override
   final String noLicense =
@@ -1626,7 +1631,7 @@ class DA extends Translated {
       'Du har brug for en myAbilia-konto for at bruge MEMOplanner';
 
   @override
-  final String acceptTerms = 'Jeg har læst og accepterer ';
+  final String acceptTerms = 'Jeg har læst og accepterer';
 
   @override
   final String termsOfUse = 'brugervillkår';
@@ -1654,7 +1659,7 @@ class DA extends Translated {
   final String confirmPrivacyPolicy = 'Bekræft persondatapolitik';
 
   @override
-  final String usernameTaken = 'Brugernavn / e-mail-adresse er allerede i brug';
+  final String usernameTaken = 'Brugernavn/e-mail-adresse er allerede i brug';
 
   @override
   final String unknownError = 'Ukendt fejl';
@@ -1668,6 +1673,9 @@ class DA extends Translated {
 
   @override
   final String browser = 'Browser';
+
+  @override
+  final String backToLogin = 'Zurück zur Anmeldung';
 
   @override
   final String noLicense =
@@ -2556,7 +2564,7 @@ class NL extends Translated {
       'U heeft een myAbilia-account nodig om MEMOplanner te gebruiken';
 
   @override
-  final String acceptTerms = 'Ik heb gelezen en akkoord gegaan ';
+  final String acceptTerms = 'Ik heb gelezen en akkoord gegaan';
 
   @override
   final String termsOfUse = 'gebruiksvoorwaarden';
@@ -2599,6 +2607,9 @@ class NL extends Translated {
 
   @override
   final String browser = 'Browser';
+
+  @override
+  final String backToLogin = 'Zurück zur Anmeldung';
 
   @override
   final String noLicense = 'Dit account heeft geen geldige licentie.';
@@ -3485,7 +3496,7 @@ class FI extends Translated {
       'Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria';
 
   @override
-  final String acceptTerms = 'Olen lukenut ja sopineet ';
+  final String acceptTerms = 'Olen lukenut ja sopineet';
 
   @override
   final String termsOfUse = 'käyttöehdot';
@@ -3527,6 +3538,9 @@ class FI extends Translated {
 
   @override
   final String browser = 'Selain';
+
+  @override
+  final String backToLogin = 'Takaisin sisäänkirjautumiseen';
 
   @override
   final String noLicense = 'Tällä tilillä ei ole kelvollista lisenssiä.';
@@ -4413,7 +4427,7 @@ class DE extends Translated {
       'Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können';
 
   @override
-  final String acceptTerms = 'Ich habe gelesen und bin damit einverstanden ';
+  final String acceptTerms = 'Ich habe gelesen und bin damit einverstanden';
 
   @override
   final String termsOfUse = 'nutzungsbedingungen';
@@ -4458,6 +4472,9 @@ class DE extends Translated {
 
   @override
   final String browser = 'Browser';
+
+  @override
+  final String backToLogin = 'Zurück zur Anmeldung';
 
   @override
   final String noLicense = 'Für dieses Konto gibt es keine gültige Lizenz.';
@@ -5347,7 +5364,7 @@ class NB extends Translated {
       'Du trenger en myAbilia-konto for å bruke MEMOplanner';
 
   @override
-  final String acceptTerms = 'Jeg har lest og godtar ';
+  final String acceptTerms = 'Jeg har lest og godtar';
 
   @override
   final String termsOfUse = 'brukervillkår';
@@ -5375,7 +5392,7 @@ class NB extends Translated {
   final String confirmPrivacyPolicy = 'Bekreft personvernerklæring';
 
   @override
-  final String usernameTaken = 'Brukernavn / e-postadresse er allerede i bruk';
+  final String usernameTaken = 'Brukernavn/e-postadresse er allerede i bruk';
 
   @override
   final String unknownError = 'Ukjent feil';
@@ -5389,6 +5406,9 @@ class NB extends Translated {
 
   @override
   final String browser = 'Nettleser';
+
+  @override
+  final String backToLogin = 'Tilbake til innlogging';
 
   @override
   final String noLicense =

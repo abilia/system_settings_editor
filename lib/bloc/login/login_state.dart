@@ -33,13 +33,12 @@ class LoginState extends Equatable {
         password: password ?? this.password,
       );
 
-  LoginLoading loadning() => LoginLoading._(
+  LoginLoading loading() => LoginLoading._(
         username,
         password,
       );
 
   LoginFailure failure({
-    String error,
     LoginFailureCause cause,
   }) =>
       LoginFailure._(
@@ -82,13 +81,11 @@ class LoginLoading extends LoginState {
 }
 
 class LoginFailure extends LoginState {
-  final String error;
   final LoginFailureCause cause;
 
   const LoginFailure._(
     String username,
     String password, {
-    this.error,
     @required this.cause,
   }) : super(
           username: username,
@@ -97,7 +94,6 @@ class LoginFailure extends LoginState {
 
   @override
   LoginFailure failure({
-    String error,
     LoginFailureCause cause,
   }) =>
       LoginFailure._(
@@ -122,7 +118,6 @@ class LoginFailure extends LoginState {
   @override
   List<Object> get props => [
         ...super.props,
-        error,
         cause,
       ];
 }
