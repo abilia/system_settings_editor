@@ -54,6 +54,13 @@ class _AbiliaTextInputState extends State<AbiliaTextInput> {
   }
 
   @override
+  void didUpdateWidget(AbiliaTextInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => controller.text = widget.initialValue);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Column(
