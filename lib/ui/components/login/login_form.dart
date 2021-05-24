@@ -96,7 +96,7 @@ class UsernameInput extends StatelessWidget {
       inputHeading: translate.usernameTitle,
       errorState: errorState,
       autoCorrect: false,
-      inputValid: inputValid ?? (s) => LoginBloc.usernameValid(s),
+      inputValid: inputValid ?? LoginBloc.usernameValid,
       inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
       onChanged: onChanged,
     );

@@ -41,6 +41,30 @@ void main() {
         expect(find.byType(LoginPage), findsOneWidget);
       }, tags: Flavor.mp.tag);
 
+      testWidgets('Created account name in login page', (tester) async {
+        final username = 'this_is_a_user_name',
+            password = 't/-/15_15_4_/>455w0|2|)';
+        await tester.pumpApp();
+        await tester.tap(find.byType(GoToCreateAccountButton));
+        await tester.pumpAndSettle();
+        await tester.enterText_(find.byType(UsernameInput), username);
+        await tester.enterText_(
+            find.byKey(TestKey.createAccountPassword), password);
+        await tester.enterText_(
+            find.byKey(TestKey.createAccountPasswordConfirm), password);
+        await tester.tap(find.byKey(TestKey.acceptPrivacyPolicy));
+        await tester.tap(find.byKey(TestKey.acceptTermsOfUse));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(CreateAccountButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(CreateAccountPage), findsNothing);
+        expect(find.byType(LoginPage), findsOneWidget);
+        expect(find.text(username), findsOneWidget);
+      }, tags: Flavor.mp.tag);
+
       testWidgets('Errors', (tester) async {
         Future _expectErrorDialog(WidgetTester tester, String errorMessage,
             {Matcher matcher = findsOneWidget}) async {
