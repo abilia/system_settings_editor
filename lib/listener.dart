@@ -143,15 +143,32 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
     return MultiBlocListener(
       listeners: [
         BlocListener<ActivitiesBloc, ActivitiesState>(
-          listener: (context, state) async {
-            if (state is ActivitiesLoaded) {
-              final settingsState =
-                  context.read<MemoplannerSettingBloc>().state;
+          listener: (context, activitiesState) async {
+            final settingsState = context.read<MemoplannerSettingBloc>().state;
+            if (activitiesState is ActivitiesLoaded &&
+                !(settingsState is MemoplannerSettingsNotLoaded)) {
               await GetIt.I<AlarmScheduler>()(
-                state.activities,
+                activitiesState.activities,
                 Localizations.localeOf(context).toLanguageTag(),
                 MediaQuery.of(context).alwaysUse24HourFormat,
                 settingsState.settings,
+                GetIt.I<FileStorage>(),
+              );
+            }
+          },
+        ),
+        BlocListener<MemoplannerSettingBloc, MemoplannerSettingsState>(
+          listenWhen: (previous, current) =>
+              previous is MemoplannerSettingsNotLoaded &&
+              !(current is MemoplannerSettingsNotLoaded),
+          listener: (context, state) async {
+            final activitiesState = context.read<ActivitiesBloc>().state;
+            if (activitiesState is ActivitiesLoaded) {
+              await GetIt.I<AlarmScheduler>()(
+                activitiesState.activities,
+                Localizations.localeOf(context).toLanguageTag(),
+                MediaQuery.of(context).alwaysUse24HourFormat,
+                state.settings,
                 GetIt.I<FileStorage>(),
               );
             }
