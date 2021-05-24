@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'package:seagull/ui/all.dart';
 
-class AbiliaTextInput extends StatefulWidget {
+class AbiliaTextInput extends StatelessWidget {
   final String initialValue;
   final bool errorState;
   final TextInputType keyboardType;
@@ -42,70 +42,50 @@ class AbiliaTextInput extends StatefulWidget {
         super(key: key);
 
   @override
-  _AbiliaTextInputState createState() => _AbiliaTextInputState();
-}
-
-class _AbiliaTextInputState extends State<AbiliaTextInput> {
-  TextEditingController controller;
-  @override
-  void initState() {
-    controller = TextEditingController(text: widget.initialValue);
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(AbiliaTextInput oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => controller.text = widget.initialValue);
-  }
-
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SubHeading(widget.heading),
+        SubHeading(heading),
         Tts(
-          data: controller.text.isNotEmpty ? controller.text : widget.heading,
+          data: initialValue.isNotEmpty ? initialValue : heading,
           child: GestureDetector(
             onTap: () async {
               final newText = await Navigator.of(context).push<String>(
                 MaterialPageRoute(
                   builder: (context) => DefaultTextInputPage(
-                    inputHeading: widget.inputHeading,
-                    icon: widget.icon,
-                    text: controller.text,
-                    heading: widget.heading,
-                    keyboardType: widget.keyboardType,
-                    inputFormatters: widget.inputFormatters,
-                    textCapitalization: widget.textCapitalization,
-                    maxLines: widget.maxLines,
-                    autocorrect: widget.autoCorrect,
-                    inputValid: widget.inputValid ?? (s) => true,
+                    inputHeading: inputHeading,
+                    icon: icon,
+                    text: initialValue,
+                    heading: heading,
+                    keyboardType: keyboardType,
+                    inputFormatters: inputFormatters,
+                    textCapitalization: textCapitalization,
+                    maxLines: maxLines,
+                    autocorrect: autoCorrect,
+                    inputValid: inputValid ?? (s) => true,
                   ),
                 ),
               );
 
               if (newText != null) {
-                controller.text = newText;
-                widget.onChanged(newText);
+                onChanged(newText);
               }
             },
             child: Container(
               color: Colors.transparent,
               child: IgnorePointer(
                 child: TextFormField(
-                  key: widget.formKey,
-                  maxLines: widget.maxLines,
+                  key: formKey,
+                  controller: TextEditingController(text: initialValue),
+                  maxLines: maxLines,
                   minLines: 1,
                   readOnly: true,
-                  controller: controller,
                   style: theme.textTheme.bodyText1,
                   autovalidateMode: AutovalidateMode.always,
-                  validator: (_) => widget.errorState ? '' : null,
-                  decoration: widget.errorState ? inputErrorDecoration : null,
+                  validator: (_) => errorState ? '' : null,
+                  decoration: errorState ? inputErrorDecoration : null,
                 ),
               ),
             ),
