@@ -13,6 +13,9 @@ class EditActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.activityRecurringEditable !=
+          current.activityRecurringEditable,
       builder: (context, memoSettingsState) =>
           BlocBuilder<EditActivityBloc, EditActivityState>(
         builder: (context, state) {
@@ -22,7 +25,6 @@ class EditActivityPage extends StatelessWidget {
           final tabs = [
             MainTab(
               editActivityState: state,
-              memoplannerSettingsState: memoSettingsState,
               day: day,
             ),
             if (!fullDay) AlarmAndReminderTab(activity: activity),

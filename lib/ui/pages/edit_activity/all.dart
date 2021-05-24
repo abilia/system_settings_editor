@@ -11,3 +11,4 @@ export 'library_page.dart';
 export 'select_recurrent_type_page.dart';
 export 'edit_activity_listeners.dart';
 export 'available_for_page.dart';
+export 'date_picker_page.dart';

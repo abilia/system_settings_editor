@@ -12,8 +12,6 @@ class TestKey {
       editTitleTextFormField = Key('editTitleTextFormField'),
       finishEditActivityButton = Key('finishEditActivityButton'),
       fullDaySwitch = Key('fullDaySwitch'),
-      datePicker = Key('datePicker'),
-      timePicker = Key('timePicker'),
       startTimeInput = Key('startTimeInput'),
       endTimeInput = Key('endTimeInput'),
       startTimePmRadioField = Key('startTimePmRadioField'),

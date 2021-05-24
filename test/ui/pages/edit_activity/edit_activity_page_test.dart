@@ -29,7 +29,7 @@ void main() {
   );
   final translate = Locales.language.values.first;
 
-  final timeFieldFinder = find.byKey(TestKey.timePicker);
+  final timeFieldFinder = find.byType(TimeIntervallPicker);
   final okButtonFinder = find.byType(OkButton);
   final cancelButtonFinder = find.byType(CancelButton);
 
@@ -443,10 +443,12 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('(Today) February 10, 2020'), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.datePicker));
+      await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('14'));
-      await tester.tap(find.text('OK'));
+      await tester.tap(find.ancestor(
+          of: find.text('14'), matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
       expect(find.text('(Today) February 10, 2020'), findsNothing);
@@ -2202,7 +2204,7 @@ text''';
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
 
-      await tester.verifyTts(find.byKey(TestKey.datePicker),
+      await tester.verifyTts(find.byType(DatePicker),
           contains: translate.today);
     });
 
