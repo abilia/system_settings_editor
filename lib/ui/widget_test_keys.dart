@@ -44,7 +44,6 @@ class TestKey {
       dotsPreview = Key('dotsPreview'),
       changeInfoItem = Key('changeInfoItem'),
       changeRecurrence = Key('changeRecurrence'),
-      noEndDate = Key('noEndDate'),
       startTime = Key('startTime'),
       endTime = Key('endTime'),
       sideDotsTimeText = Key('sideDotsTimeText'),

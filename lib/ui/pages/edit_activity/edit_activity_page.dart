@@ -28,7 +28,7 @@ class EditActivityPage extends StatelessWidget {
               day: day,
             ),
             if (!fullDay) AlarmAndReminderTab(activity: activity),
-            if (displayRecurrence) RecurrenceTab(state: state),
+            if (displayRecurrence) const RecurrenceTab(),
             InfoItemTab(state: state),
           ];
           return DefaultTabController(

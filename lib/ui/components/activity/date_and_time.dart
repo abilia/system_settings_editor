@@ -88,13 +88,11 @@ class ReminderSwitch extends StatelessWidget {
 class DatePicker extends StatelessWidget {
   final DateTime date;
   final Function(DateTime) onChange;
-  final DateTime firstDate;
-  final DateTime lastDate;
+  final DateTime notBefore;
   const DatePicker(
     this.date, {
     @required this.onChange,
-    this.firstDate,
-    this.lastDate,
+    this.notBefore,
   });
 
   @override
@@ -111,7 +109,10 @@ class DatePicker extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => CopiedAuthProviders(
                       blocContext: context,
-                      child: DatePickerPage(date: date),
+                      child: DatePickerPage(
+                        date: date,
+                        notBefore: notBefore,
+                      ),
                     ),
                   ),
                 );
