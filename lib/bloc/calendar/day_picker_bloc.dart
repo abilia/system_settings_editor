@@ -9,15 +9,11 @@ import 'package:seagull/utils/all.dart';
 part 'day_picker_event.dart';
 
 class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
-  final DateTime _initialDay;
-  static final int startIndex = 1000000;
   final ClockBloc clockBloc;
   StreamSubscription clockBlocSubscription;
 
   DayPickerBloc({@required this.clockBloc})
-      : _initialDay = clockBloc.state.onlyDays(),
-        super(DayPickerState(
-            clockBloc.state.onlyDays(), startIndex, clockBloc.state)) {
+      : super(DayPickerState(clockBloc.state.onlyDays(), clockBloc.state)) {
     clockBlocSubscription =
         clockBloc.stream.listen((now) => add(TimeChanged(now)));
   }
@@ -41,12 +37,8 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
     }
   }
 
-  DayPickerState generateState(DateTime day) {
-    day = day.onlyDays();
-    // DateTime.days does not work for daylight saving
-    final dayDiff = (day.difference(_initialDay).inHours / 24).round();
-    return DayPickerState(day, startIndex + dayDiff, clockBloc.state);
-  }
+  DayPickerState generateState(DateTime day) =>
+      DayPickerState(day.onlyDays(), clockBloc.state);
 
   @override
   Future<void> close() async {
@@ -61,22 +53,26 @@ class DayPickerState extends Equatable {
   final Occasion occasion;
   bool get isToday => occasion == Occasion.current;
 
-  DayPickerState(this.day, this.index, DateTime now)
-      : occasion = day.isAtSameDay(now)
+  DayPickerState(this.day, DateTime now)
+      : index = _dayToIndex(day),
+        occasion = day.isAtSameDay(now)
             ? Occasion.current
             : day.isAfter(now)
                 ? Occasion.future
                 : Occasion.past;
 
   @visibleForTesting
-  DayPickerState.forTest(this.day, this.index, this.occasion);
+  DayPickerState.forTest(this.day, this.occasion) : index = _dayToIndex(day);
+
+  static int _dayToIndex(DateTime day) =>
+      day.millisecondsSinceEpoch ~/ Duration.millisecondsPerDay;
 
   @override
   String toString() =>
       'DayPickerState { day: ${yMd(day)}, index: $index, occasion: $occasion }';
 
   @override
-  List<Object> get props => [day, index, occasion];
+  List<Object> get props => [day, occasion];
 
-  DayPickerState _timeChange(DateTime now) => DayPickerState(day, index, now);
+  DayPickerState _timeChange(DateTime now) => DayPickerState(day, now);
 }

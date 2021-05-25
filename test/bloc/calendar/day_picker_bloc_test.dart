@@ -25,7 +25,6 @@ void main() {
         dayPickerBloc.state,
         DayPickerState.forTest(
           theDay,
-          DayPickerBloc.startIndex,
           Occasion.current,
         ));
   });
@@ -36,7 +35,6 @@ void main() {
       dayPickerBloc.stream,
       emits(DayPickerState.forTest(
         theDayAfter,
-        DayPickerBloc.startIndex + 1,
         Occasion.future,
       )),
     );
@@ -48,7 +46,6 @@ void main() {
       dayPickerBloc.stream,
       emits(DayPickerState.forTest(
         thedayBefore,
-        DayPickerBloc.startIndex - 1,
         Occasion.past,
       )),
     );
@@ -62,12 +59,10 @@ void main() {
       emitsInOrder([
         DayPickerState.forTest(
           theDayAfter,
-          DayPickerBloc.startIndex + 1,
           Occasion.future,
         ),
         DayPickerState.forTest(
           theDay,
-          DayPickerBloc.startIndex,
           Occasion.current,
         )
       ]),
@@ -83,17 +78,14 @@ void main() {
       emitsInOrder([
         DayPickerState.forTest(
           theDayAfter,
-          DayPickerBloc.startIndex + 1,
           Occasion.future,
         ),
         DayPickerState.forTest(
           theDayAfterTomorrow,
-          DayPickerBloc.startIndex + 2,
           Occasion.future,
         ),
         DayPickerState.forTest(
           theDay,
-          DayPickerBloc.startIndex,
           Occasion.current,
         ),
       ]),
@@ -120,12 +112,10 @@ void main() {
       emitsInOrder([
         DayPickerState.forTest(
           dayLightSavingTime,
-          DayPickerBloc.startIndex + 1,
           Occasion.future,
         ),
         DayPickerState.forTest(
           daysAfterDST,
-          DayPickerBloc.startIndex + 2,
           Occasion.future,
         )
       ]),
@@ -151,12 +141,10 @@ void main() {
       emitsInOrder([
         DayPickerState.forTest(
           daysAfterDST,
-          DayPickerBloc.startIndex - 1,
           Occasion.past,
         ),
         DayPickerState.forTest(
           dayLightSavingTime,
-          DayPickerBloc.startIndex - 2,
           Occasion.past,
         )
       ]),
@@ -183,12 +171,10 @@ void main() {
       emitsInOrder([
         DayPickerState.forTest(
           dayLightSavingTime,
-          DayPickerBloc.startIndex + 1,
           Occasion.future,
         ),
         DayPickerState.forTest(
           daysAfterDST,
-          DayPickerBloc.startIndex + 2,
           Occasion.future,
         ),
       ]),
@@ -214,12 +200,10 @@ void main() {
       emitsInOrder([
         DayPickerState.forTest(
           daysAfterDST,
-          DayPickerBloc.startIndex - 1,
           Occasion.past,
         ),
         DayPickerState.forTest(
           dayLightSavingTime,
-          DayPickerBloc.startIndex - 2,
           Occasion.past,
         ),
       ]),
@@ -238,12 +222,10 @@ void main() {
       emitsInOrder([
         DayPickerState.forTest(
           theDayAfter,
-          DayPickerBloc.startIndex + 1,
           Occasion.future,
         ),
         DayPickerState.forTest(
           theDay,
-          DayPickerBloc.startIndex,
           Occasion.current,
         ),
       ]),
@@ -260,7 +242,6 @@ void main() {
       emits(
         DayPickerState.forTest(
           theDayAfter,
-          DayPickerBloc.startIndex + 1,
           Occasion.current,
         ),
       ),
@@ -279,7 +260,6 @@ void main() {
       emits(
         DayPickerState.forTest(
           theDayAfterTomorrow,
-          DayPickerBloc.startIndex + 2,
           Occasion.current,
         ),
       ),
@@ -298,7 +278,6 @@ void main() {
       emits(
         DayPickerState.forTest(
           theDayAfter,
-          DayPickerBloc.startIndex + 1,
           Occasion.current,
         ),
       ),
