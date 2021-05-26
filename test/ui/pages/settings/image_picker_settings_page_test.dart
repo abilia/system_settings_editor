@@ -70,28 +70,15 @@ void main() {
       expect(find.text(translate.myPhotos), findsOneWidget);
       expect(find.text(translate.takeNewPhoto), findsOneWidget);
     });
-    Future _verifySaved(
-      WidgetTester tester, {
-      String key,
-      dynamic matcher,
-    }) async {
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-
-      final v = verify(genericDb.insertAndAddDirty(captureAny));
-      expect(v.callCount, 1);
-      final l = v.captured.single.toList() as List<Generic<GenericData>>;
-      final d = l
-          .whereType<Generic<MemoplannerSettingData>>()
-          .firstWhere((element) => element.data.identifier == key);
-      expect(d.data.data, matcher);
-    }
 
     testWidgets('change display camera is stored', (tester) async {
       await tester.goToFunctionImagePickerSettingPage();
       await tester.tap(find.byIcon(AbiliaIcons.camera_photo));
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.imageMenuDisplayCameraItemKey,
         matcher: isFalse,
       );
@@ -100,8 +87,11 @@ void main() {
     testWidgets('change display my photo is stored', (tester) async {
       await tester.goToFunctionImagePickerSettingPage();
       await tester.tap(find.text(translate.myPhotos));
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.imageMenuDisplayPhotoItemKey,
         matcher: isFalse,
       );

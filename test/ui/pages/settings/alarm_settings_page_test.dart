@@ -56,23 +56,6 @@ void main() {
 
     tearDown(GetIt.I.reset);
 
-    Future _verifySaved(
-      WidgetTester tester, {
-      String key,
-      dynamic matcher,
-    }) async {
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-
-      final v = verify(genericDb.insertAndAddDirty(captureAny));
-      expect(v.callCount, 1);
-      final l = v.captured.single.toList() as List<Generic<GenericData>>;
-      final d = l
-          .whereType<Generic<MemoplannerSettingData>>()
-          .firstWhere((element) => element.data.identifier == key);
-      expect(d.data.data, matcher);
-    }
-
     testWidgets('The page shows', (tester) async {
       await tester.goToAlarmSettingsPage(pump: true);
       expect(find.byType(AlarmSettingsPage), findsOneWidget);
@@ -93,8 +76,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text(Sound.Default.displayName(null)), findsNWidgets(2));
       expect(find.text(Sound.Drum.displayName(null)), findsOneWidget);
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.nonCheckableActivityAlarmKey,
         matcher: Sound.Drum.name(),
       );
@@ -108,8 +94,11 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.checkableActivityAlarmKey,
         matcher: Sound.Trip.name(),
       );
@@ -123,8 +112,11 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.reminderAlarmKey,
         matcher: Sound.Springboard.name(),
       );
@@ -139,8 +131,11 @@ void main() {
           .tap(find.text(AlarmDuration.FiveMinutes.displayText(translate)));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.alarmDurationKey,
         matcher: 5.minutes().inMilliseconds,
       );
@@ -150,8 +145,11 @@ void main() {
       await tester.goToAlarmSettingsPage(pump: true);
       await tester.tap(find.byKey(TestKey.vibrateAtReminderSelector));
       await tester.pumpAndSettle();
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.vibrateAtReminderKey,
         matcher: false,
       );

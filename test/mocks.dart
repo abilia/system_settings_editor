@@ -24,6 +24,8 @@ import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+export 'utils/verify_generic.dart';
+
 extension MockSharedPreferences on SharedPreferences {
   static Future<SharedPreferences> getInstance({bool loggedIn = true}) {
     SharedPreferences.setMockInitialValues({
