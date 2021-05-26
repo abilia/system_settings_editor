@@ -8,7 +8,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -17,45 +16,45 @@ import '../../../../../mocks.dart';
 import '../../../../../utils/verify_generic.dart';
 
 void main() {
-  final translate = Locales.language.values.first;
-  final initialTime = DateTime(2021, 04, 17, 09, 20);
-  Iterable<Generic> generics = [];
-  GenericDb genericDb;
-
-  setUp(() async {
-    setupPermissions();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
-
-    final mockBatch = MockBatch();
-    when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
-    final db = MockDatabase();
-    when(db.batch()).thenReturn(mockBatch);
-    when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
-
-    genericDb = MockGenericDb();
-    when(genericDb.getAllNonDeletedMaxRevision())
-        .thenAnswer((_) => Future.value(generics));
-    when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(genericDb.insertAndAddDirty(any))
-        .thenAnswer((realInvocation) => Future.value([]));
-
-    GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
-      ..ticker = Ticker(
-        stream: StreamController<DateTime>().stream,
-        initialTime: initialTime,
-      )
-      ..client = Fakes.client(genericResponse: () => generics)
-      ..alarmScheduler = noAlarmScheduler
-      ..database = db
-      ..syncDelay = SyncDelays.zero
-      ..genericDb = genericDb
-      ..init();
-  });
-
-  tearDown(GetIt.I.reset);
-
   group('week calendar settings page', () {
+    final translate = Locales.language.values.first;
+    final initialTime = DateTime(2021, 04, 17, 09, 20);
+    Iterable<Generic> generics = [];
+    GenericDb genericDb;
+
+    setUp(() async {
+      setupPermissions();
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
+      final mockBatch = MockBatch();
+      when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
+      final db = MockDatabase();
+      when(db.batch()).thenReturn(mockBatch);
+      when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
+
+      genericDb = MockGenericDb();
+      when(genericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value(generics));
+      when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+      when(genericDb.insertAndAddDirty(any))
+          .thenAnswer((realInvocation) => Future.value([]));
+
+      GetItInitializer()
+        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..ticker = Ticker(
+          stream: StreamController<DateTime>().stream,
+          initialTime: initialTime,
+        )
+        ..client = Fakes.client(genericResponse: () => generics)
+        ..alarmScheduler = noAlarmScheduler
+        ..database = db
+        ..syncDelay = SyncDelays.zero
+        ..genericDb = genericDb
+        ..init();
+    });
+
+    tearDown(GetIt.I.reset);
+
     testWidgets('Navigate to page', (tester) async {
       await tester.goToWeekCalendarSettingsPage(pump: true);
       expect(find.byType(WeekCalendarSettingsPage), findsOneWidget);
@@ -159,15 +158,10 @@ void main() {
         matcher: WeekColor.captions.index,
       );
     });
-  });
+  }, skip: !Config.isMP);
 }
 
 extension on WidgetTester {
-  Future<void> pumpApp() async {
-    await pumpWidget(App());
-    await pumpAndSettle();
-  }
-
   Future<void> goToWeekCalendarSettingsPage({bool pump = false}) async {
     if (pump) await pumpApp();
     await tap(find.byType(MenuButton));

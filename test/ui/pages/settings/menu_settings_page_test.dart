@@ -181,7 +181,7 @@ void main() {
         matcher: isTrue,
       );
     });
-  });
+  }, skip: !Config.isMP);
 
   group('menu visisbility settings', () {
     testWidgets('all menu items shows', (tester) async {
@@ -293,51 +293,51 @@ void main() {
       expect(find.byType(HiddenSetting), findsOneWidget);
       expect(find.byType(MenuButton), findsOneWidget);
     });
+  }, skip: !Config.isMP);
 
-    testWidgets('all menu items disable hiddes menu button', (tester) async {
-      // Arrange
-      generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowCameraKey,
-          ),
+  testWidgets('all menu items disable hiddes menu button', (tester) async {
+    // Arrange
+    generics = [
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowCameraKey,
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowPhotosKey,
-          ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowPhotosKey,
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowPhotoCalendarKey,
-          ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowPhotoCalendarKey,
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowTimersKey,
-          ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowTimersKey,
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowQuickSettingsKey,
-          ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowQuickSettingsKey,
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowSettingsKey,
-          ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowSettingsKey,
         ),
-      ];
-      await tester.pumpApp();
-      expect(find.byType(HiddenSetting), findsOneWidget);
-      expect(find.byType(MenuButton), findsNothing);
-    });
+      ),
+    ];
+    await tester.pumpApp();
+    expect(find.byType(HiddenSetting), findsOneWidget);
+    expect(find.byType(MenuButton), findsNothing);
   });
 }
 

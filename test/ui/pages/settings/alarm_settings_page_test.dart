@@ -8,7 +8,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -18,62 +17,62 @@ import 'package:seagull/utils/all.dart';
 import '../../../mocks.dart';
 
 void main() {
-  final translate = Locales.language.values.first;
-  final initialTime = DateTime(2021, 04, 17, 09, 20);
-  Iterable<Generic> generics = [];
-  GenericDb genericDb;
-
-  setUp(() async {
-    setupPermissions();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
-
-    final mockBatch = MockBatch();
-    when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
-    final db = MockDatabase();
-    when(db.batch()).thenReturn(mockBatch);
-    when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
-
-    genericDb = MockGenericDb();
-    when(genericDb.getAllNonDeletedMaxRevision())
-        .thenAnswer((_) => Future.value(generics));
-    when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(genericDb.insertAndAddDirty(any))
-        .thenAnswer((realInvocation) => Future.value([]));
-
-    GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
-      ..ticker = Ticker(
-        stream: StreamController<DateTime>().stream,
-        initialTime: initialTime,
-      )
-      ..client = Fakes.client(genericResponse: () => generics)
-      ..alarmScheduler = noAlarmScheduler
-      ..database = db
-      ..syncDelay = SyncDelays.zero
-      ..genericDb = genericDb
-      ..init();
-  });
-
-  tearDown(GetIt.I.reset);
-
-  Future _verifySaved(
-    WidgetTester tester, {
-    String key,
-    dynamic matcher,
-  }) async {
-    await tester.tap(find.byType(OkButton));
-    await tester.pumpAndSettle();
-
-    final v = verify(genericDb.insertAndAddDirty(captureAny));
-    expect(v.callCount, 1);
-    final l = v.captured.single.toList() as List<Generic<GenericData>>;
-    final d = l
-        .whereType<Generic<MemoplannerSettingData>>()
-        .firstWhere((element) => element.data.identifier == key);
-    expect(d.data.data, matcher);
-  }
-
   group('Alarm setting spage', () {
+    final translate = Locales.language.values.first;
+    final initialTime = DateTime(2021, 04, 17, 09, 20);
+    Iterable<Generic> generics = [];
+    GenericDb genericDb;
+
+    setUp(() async {
+      setupPermissions();
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
+      final mockBatch = MockBatch();
+      when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
+      final db = MockDatabase();
+      when(db.batch()).thenReturn(mockBatch);
+      when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
+
+      genericDb = MockGenericDb();
+      when(genericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value(generics));
+      when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+      when(genericDb.insertAndAddDirty(any))
+          .thenAnswer((realInvocation) => Future.value([]));
+
+      GetItInitializer()
+        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..ticker = Ticker(
+          stream: StreamController<DateTime>().stream,
+          initialTime: initialTime,
+        )
+        ..client = Fakes.client(genericResponse: () => generics)
+        ..alarmScheduler = noAlarmScheduler
+        ..database = db
+        ..syncDelay = SyncDelays.zero
+        ..genericDb = genericDb
+        ..init();
+    });
+
+    tearDown(GetIt.I.reset);
+
+    Future _verifySaved(
+      WidgetTester tester, {
+      String key,
+      dynamic matcher,
+    }) async {
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      final v = verify(genericDb.insertAndAddDirty(captureAny));
+      expect(v.callCount, 1);
+      final l = v.captured.single.toList() as List<Generic<GenericData>>;
+      final d = l
+          .whereType<Generic<MemoplannerSettingData>>()
+          .firstWhere((element) => element.data.identifier == key);
+      expect(d.data.data, matcher);
+    }
+
     testWidgets('The page shows', (tester) async {
       await tester.goToAlarmSettingsPage(pump: true);
       expect(find.byType(AlarmSettingsPage), findsOneWidget);
@@ -157,15 +156,10 @@ void main() {
         matcher: false,
       );
     });
-  });
+  }, skip: !Config.isMP);
 }
 
 extension on WidgetTester {
-  Future<void> pumpApp() async {
-    await pumpWidget(App());
-    await pumpAndSettle();
-  }
-
   Future<void> goToAlarmSettingsPage({bool pump = false}) async {
     if (pump) await pumpApp();
     await tap(find.byType(MenuButton));

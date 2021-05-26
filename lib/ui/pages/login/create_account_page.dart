@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';

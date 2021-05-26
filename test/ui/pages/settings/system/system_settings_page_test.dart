@@ -4,13 +4,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info/package_info.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../../mocks.dart';
 
@@ -145,7 +145,7 @@ void main() {
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.numeric_keyboard), findsNothing);
-  }, skip: !Config.isMPGO, tags: Flavor.mpgo.tag);
+  }, skip: !Config.isMPGO);
 
   testWidgets('code protect visible on mp', (WidgetTester tester) async {
     setupPermissions();
@@ -154,7 +154,7 @@ void main() {
     await tester.tap(find.byIcon(AbiliaIcons.numeric_keyboard));
     await tester.pumpAndSettle();
     expect(find.byType(CodeProtectPage), findsOneWidget);
-  }, skip: !Config.isMP, tags: Flavor.mp.tag);
+  }, skip: !Config.isMP);
 
   testWidgets('android settings not availible on mpgo',
       (WidgetTester tester) async {
@@ -162,7 +162,7 @@ void main() {
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
     expect(find.byType(AndroidSettingsPickField), findsNothing);
-  }, skip: !Config.isMPGO, tags: Flavor.mpgo.tag);
+  }, skip: !Config.isMPGO);
 
   testWidgets('android settings availible on mp', (WidgetTester tester) async {
     var openAndroidSettingCalls = 0;
@@ -183,7 +183,7 @@ void main() {
     await tester.tap(find.byType(AndroidSettingsPickField));
     await tester.pumpAndSettle();
     expect(openAndroidSettingCalls, 1);
-  }, skip: !Config.isMP, tags: Flavor.mp.tag);
+  }, skip: !Config.isMP);
 
   group('permission page', () {
     tearDown(setupPermissions);

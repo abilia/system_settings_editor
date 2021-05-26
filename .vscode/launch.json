@@ -29,22 +29,20 @@
       ],
     },
     {
-      "name": "Flutter: Run all Tests",
+      "name": "Test as MEMOplanner Go",
       "type": "dart",
       "request": "launch",
       "program": "./test/"
     },
     {
-      "name": "MP Tests",
+      "name": "Test as MEMOplanner",
       "type": "dart",
       "request": "launch",
       "program": "./test/",
       "args": [
-        "--tags",
-        "mp",
         "--dart-define",
         "flavor=mp",
       ],
-    }
+    },
   ]
 }

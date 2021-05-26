@@ -18,7 +18,7 @@ echo "Installed flutter to `pwd`/flutter"
 
 # run tests
 flutter test
-flutter test --dart-define flavor=mp --tags mp
+flutter test --dart-define flavor=mp
 
 echo "Building APK"
 flutter build apk --flavor $flavor --release --build-number=$APPCENTER_BUILD_ID --dart-define release=$release --dart-define flavor=$flavor

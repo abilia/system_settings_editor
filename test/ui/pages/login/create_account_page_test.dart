@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:seagull/config.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/repository/all.dart';
@@ -39,7 +38,7 @@ void main() {
         await tester.tap(find.byType(BackToLoginButton));
         await tester.pumpAndSettle();
         expect(find.byType(LoginPage), findsOneWidget);
-      }, tags: Flavor.mp.tag);
+      });
 
       testWidgets('Created account name in login page', (tester) async {
         final username = 'this_is_a_user_name',
@@ -63,7 +62,7 @@ void main() {
         expect(find.byType(CreateAccountPage), findsNothing);
         expect(find.byType(LoginPage), findsOneWidget);
         expect(find.text(username), findsOneWidget);
-      }, tags: Flavor.mp.tag);
+      });
 
       testWidgets('Errors', (tester) async {
         Future _expectErrorDialog(WidgetTester tester, String errorMessage,
@@ -140,7 +139,7 @@ void main() {
 
         expect(find.byType(CreateAccountPage), findsNothing);
         expect(find.byType(LoginPage), findsOneWidget);
-      }, tags: Flavor.mp.tag);
+      });
 
       testWidgets('Open terms of use', (tester) async {
         await tester.pumpApp();
@@ -152,7 +151,7 @@ void main() {
         final openedUrl =
             tester.widget<WebView>(find.byType(WebView)).initialUrl;
         expect(openedUrl, CreateAccountPage.termsOfUseUrl);
-      }, tags: Flavor.mp.tag);
+      });
 
       testWidgets('Open privacy policy', (tester) async {
         await tester.pumpApp();
@@ -164,7 +163,7 @@ void main() {
         final openedUrl =
             tester.widget<WebView>(find.byType(WebView)).initialUrl;
         expect(openedUrl, CreateAccountPage.privacyPolicyUrl);
-      }, tags: Flavor.mp.tag);
+      });
     },
     skip: !Config.isMP,
   );

@@ -16,6 +16,6 @@ flutter doctor
 echo "Installed flutter to `pwd`/flutter"
 
 flutter test
-flutter test --dart-define flavor=mp --tags mp
+flutter test --dart-define flavor=mp
 
 flutter build ios --release --no-codesign --build-number=$APPCENTER_BUILD_ID --dart-define=release=$release

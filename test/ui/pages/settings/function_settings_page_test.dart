@@ -293,7 +293,8 @@ void main() {
         );
       });
     });
-  });
+  }, skip: !Config.isMP);
+
   group('BottomBar visisbility settings', () {
     testWidgets('Default settings shows all buttons in bottomBar',
         (tester) async {
@@ -440,7 +441,16 @@ void main() {
       await tester.tap(find.byKey(TestKey.hiddenSettingsButtonRight));
       await tester.tap(find.byKey(TestKey.hiddenSettingsButtonLeft));
       await tester.pumpAndSettle();
-      expect(find.byType(SettingsPage), findsOneWidget);
+      expect(
+        find.byType(SettingsPage),
+        findsOneWidget,
+        skip: !Config.isMP,
+      );
+      expect(
+        find.byType(SystemSettingsPage),
+        findsOneWidget,
+        skip: !Config.isMPGO,
+      );
     });
   });
 }
