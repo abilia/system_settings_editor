@@ -534,64 +534,66 @@ class RecurrenceWidget extends StatelessWidget {
 }
 
 class EndDateWidget extends StatelessWidget {
-  final EditActivityState state;
-  bool get disabled => state.storedRecurring;
-
-  const EndDateWidget(this.state, {Key key}) : super(key: key);
+  const EndDateWidget({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final activity = state.activity;
     final translate = Translator.of(context).translate;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CollapsableWidget(
-          collapsed: activity.recurs.hasNoEnd,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SubHeading(translate.endDate),
-              DatePicker(
-                activity.recurs.end,
-                firstDate: state.timeInterval.startDate,
-                onChange: disabled
-                    ? null
-                    : (newDate) =>
-                        BlocProvider.of<EditActivityBloc>(context).add(
-                          ReplaceActivity(
-                            activity.copyWith(
-                              recurs: activity.recurs.changeEnd(newDate),
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
+      builder: (context, state) {
+        final activity = state.activity;
+        final recurs = activity.recurs;
+        final disabled = state.storedRecurring;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CollapsableWidget(
+              collapsed: recurs.hasNoEnd,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SubHeading(translate.endDate),
+                  DatePicker(
+                    activity.recurs.end,
+                    notBefore: state.timeInterval.startDate,
+                    onChange: disabled
+                        ? null
+                        : (newDate) =>
+                            BlocProvider.of<EditActivityBloc>(context).add(
+                              ReplaceActivity(
+                                activity.copyWith(
+                                  recurs: recurs.changeEnd(newDate),
+                                ),
+                              ),
+                            ),
+                  ),
+                  SizedBox(height: 16.s),
+                ],
+              ),
+            ),
+            SwitchField(
+              leading: Icon(
+                AbiliaIcons.basic_activity,
+                size: smallIconSize,
+              ),
+              value: recurs.hasNoEnd,
+              onChanged: disabled
+                  ? null
+                  : (v) => BlocProvider.of<EditActivityBloc>(context).add(
+                        ReplaceActivity(
+                          activity.copyWith(
+                            recurs: recurs.changeEnd(
+                              v
+                                  ? Recurs.noEndDate
+                                  : state.timeInterval.startDate,
                             ),
                           ),
                         ),
-              ),
-              SizedBox(
-                height: 16.0,
-              ),
-            ],
-          ),
-        ),
-        SwitchField(
-          key: TestKey.noEndDate,
-          leading: Icon(
-            AbiliaIcons.basic_activity,
-            size: smallIconSize,
-          ),
-          value: activity.recurs.hasNoEnd,
-          onChanged: disabled
-              ? null
-              : (v) => BlocProvider.of<EditActivityBloc>(context).add(
-                    ReplaceActivity(
-                      activity.copyWith(
-                        recurs: activity.recurs.changeEnd(
-                          v ? Recurs.noEndDate : activity.startTime,
-                        ),
                       ),
-                    ),
-                  ),
-          child: Text(translate.noEndDate),
-        ),
-      ],
+              child: Text(translate.noEndDate),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -612,7 +614,8 @@ class WeekDays extends StatelessWidget {
         return SelectableField(
           text: Text(
             Translator.of(context).translate.shortWeekday(d),
-            style: Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
+            style:
+                Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5.s),
           ),
           selected: selectedWeekDays.contains(d),
           onTap: () =>

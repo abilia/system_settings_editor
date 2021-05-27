@@ -5,12 +5,10 @@ class MainTab extends StatefulWidget {
   MainTab({
     Key key,
     @required this.editActivityState,
-    @required this.memoplannerSettingsState,
     @required this.day,
   }) : super(key: key);
 
   final EditActivityState editActivityState;
-  final MemoplannerSettingsState memoplannerSettingsState;
   final DateTime day;
 
   @override
@@ -29,6 +27,9 @@ class _MainTabState extends State<MainTab> with EditActivityTab {
   Widget build(BuildContext context) {
     final activity = widget.editActivityState.activity;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.showCategories != current.showCategories ||
+          previous.activityTypeEditable != current.activityTypeEditable,
       builder: (context, memoSettingsState) => VerticalScrollArrows(
         controller: _scrollController,
         child: ListView(
@@ -39,7 +40,7 @@ class _MainTabState extends State<MainTab> with EditActivityTab {
             separatedAndPadded(
                 ActivityNameAndPictureWidget(widget.editActivityState)),
             separatedAndPadded(DateAndTimeWidget(widget.editActivityState)),
-            if (widget.memoplannerSettingsState.showCategories)
+            if (memoSettingsState.showCategories)
               CollapsableWidget(
                 collapsed:
                     activity.fullDay || !memoSettingsState.activityTypeEditable,

@@ -61,36 +61,17 @@ void main() {
       expect(find.byType(CancelButton), findsOneWidget);
     });
 
-    Future _verifySaved(
-      WidgetTester tester, {
-      String key,
-      dynamic matcher,
-      bool yesOnDialog = false,
-    }) async {
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      if (yesOnDialog) {
-        await tester.tap(find.byType(YesButton));
-        await tester.pumpAndSettle();
-      }
-
-      final v = verify(genericDb.insertAndAddDirty(captureAny));
-      expect(v.callCount, 1);
-      final l = v.captured.single.toList() as List<Generic<GenericData>>;
-      final d = l
-          .whereType<Generic<MemoplannerSettingData>>()
-          .firstWhere((element) => element.data.identifier == key);
-      expect(d.data.data, matcher);
-    }
-
     group('bottom bar tab', () {
       testWidgets('hide add activity saved', (tester) async {
         await tester.goToFunctionSettingsPage(pump: true);
         await tester.tap(find.byIcon(AbiliaIcons.plus));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.functionMenuDisplayNewActivityKey,
           matcher: isFalse,
         );
@@ -101,8 +82,11 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.week));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.functionMenuDisplayWeekKey,
           matcher: isFalse,
         );
@@ -113,8 +97,11 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.functionMenuDisplayMonthKey,
           matcher: isFalse,
         );
@@ -125,11 +112,15 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.app_menu));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(YesButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.functionMenuDisplayMenuKey,
           matcher: isFalse,
-          yesOnDialog: true,
         );
       });
     });
@@ -183,8 +174,11 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.week));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.functionMenuStartViewKey,
           matcher: StartView.weekCalendar.index,
         );
@@ -197,8 +191,11 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.functionMenuStartViewKey,
           matcher: StartView.monthCalendar.index,
         );
@@ -211,8 +208,11 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.app_menu));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.functionMenuStartViewKey,
           matcher: StartView.menu.index,
         );
@@ -226,8 +226,11 @@ void main() {
             .tap(find.byIcon(AbiliaIcons.past_picture_from_windows_clipboard));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.functionMenuStartViewKey,
           matcher: StartView.photoAlbum.index,
         );
@@ -248,8 +251,11 @@ void main() {
         await tester.tap(find.text('5 ${translate.minutes}'));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.activityTimeoutKey,
           matcher: 5 * 60 * 1000,
         );
@@ -265,8 +271,11 @@ void main() {
             .tap(find.byIcon(AbiliaIcons.past_picture_from_windows_clipboard));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.useScreensaverKey,
           matcher: isTrue,
         );
@@ -286,14 +295,18 @@ void main() {
         await tester.tap(find.text(translate.noTimeout));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.useScreensaverKey,
           matcher: isFalse,
         );
       });
     });
-  });
+  }, skip: !Config.isMP);
+
   group('BottomBar visisbility settings', () {
     testWidgets('Default settings shows all buttons in bottomBar',
         (tester) async {
@@ -440,7 +453,16 @@ void main() {
       await tester.tap(find.byKey(TestKey.hiddenSettingsButtonRight));
       await tester.tap(find.byKey(TestKey.hiddenSettingsButtonLeft));
       await tester.pumpAndSettle();
-      expect(find.byType(SettingsPage), findsOneWidget);
+      expect(
+        find.byType(SettingsPage),
+        findsOneWidget,
+        skip: !Config.isMP,
+      );
+      expect(
+        find.byType(SystemSettingsPage),
+        findsOneWidget,
+        skip: !Config.isMPGO,
+      );
     });
   });
 }

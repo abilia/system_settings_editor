@@ -7,42 +7,41 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/main.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../mocks.dart';
 
 void main() {
-  final initialTime = DateTime(2021, 04, 17, 09, 20);
-
-  setUp(() async {
-    setupPermissions();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
-
-    final mockBatch = MockBatch();
-    when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
-    final db = MockDatabase();
-    when(db.batch()).thenReturn(mockBatch);
-    when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
-
-    GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
-      ..ticker = Ticker(
-        stream: StreamController<DateTime>().stream,
-        initialTime: initialTime,
-      )
-      ..client = Fakes.client()
-      ..alarmScheduler = noAlarmScheduler
-      ..database = db
-      ..syncDelay = SyncDelays.zero
-      ..genericDb = MockGenericDb()
-      ..init();
-  });
-
-  tearDown(GetIt.I.reset);
-
   group('Photo calendar page', () {
+    final initialTime = DateTime(2021, 04, 17, 09, 20);
+
+    setUp(() async {
+      setupPermissions();
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
+      final mockBatch = MockBatch();
+      when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
+      final db = MockDatabase();
+      when(db.batch()).thenReturn(mockBatch);
+      when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
+
+      GetItInitializer()
+        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..ticker = Ticker(
+          stream: StreamController<DateTime>().stream,
+          initialTime: initialTime,
+        )
+        ..client = Fakes.client()
+        ..alarmScheduler = noAlarmScheduler
+        ..database = db
+        ..syncDelay = SyncDelays.zero
+        ..genericDb = MockGenericDb()
+        ..init();
+    });
+
+    tearDown(GetIt.I.reset);
+
     testWidgets('The page shows', (tester) async {
       await tester.goToPhotoCalendarPage(pump: true);
       expect(find.byType(PhotoCalendarPage), findsOneWidget);
@@ -55,15 +54,10 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(CalendarPage), findsOneWidget);
     });
-  });
+  }, skip: !Config.isMP);
 }
 
 extension on WidgetTester {
-  Future<void> pumpApp() async {
-    await pumpWidget(App());
-    await pumpAndSettle();
-  }
-
   Future<void> goToPhotoCalendarPage({bool pump = false}) async {
     if (pump) await pumpApp();
     await tap(find.byType(MenuButton));

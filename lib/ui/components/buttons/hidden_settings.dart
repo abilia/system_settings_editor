@@ -34,7 +34,8 @@ class _HiddenSettingState extends State<HiddenSetting> {
                     MaterialPageRoute(
                       builder: (_) => CopiedAuthProviders(
                         blocContext: context,
-                        child: SettingsPage(),
+                        child:
+                            Config.isMP ? SettingsPage() : SystemSettingsPage(),
                       ),
                       settings: RouteSettings(name: 'SettingsPage from hidden'),
                     ),

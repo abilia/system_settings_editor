@@ -12,8 +12,15 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
   final ClockBloc clockBloc;
   StreamSubscription clockBlocSubscription;
 
-  DayPickerBloc({@required this.clockBloc})
-      : super(DayPickerState(clockBloc.state.onlyDays(), clockBloc.state)) {
+  DayPickerBloc({
+    @required this.clockBloc,
+    DateTime initialDay,
+  }) : super(
+          DayPickerState(
+            (initialDay ?? clockBloc.state).onlyDays(),
+            clockBloc.state,
+          ),
+        ) {
     clockBlocSubscription =
         clockBloc.stream.listen((now) => add(TimeChanged(now)));
   }

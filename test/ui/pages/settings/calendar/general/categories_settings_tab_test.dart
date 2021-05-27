@@ -95,7 +95,7 @@ void main() {
     expect(find.text(translate.right), findsNWidgets(2));
     expect(find.byType(OkButton), findsOneWidget);
     expect(find.byType(CancelButton), findsOneWidget);
-  });
+  }, skip: !Config.isMP);
 
   testWidgets('settings shows', (tester) async {
     final fileIdLeft = 'fileIdLeft',
@@ -158,7 +158,7 @@ void main() {
       expect(find.text(translate.left), findsNothing);
       expect(find.text(translate.right), findsNothing);
     });
-  });
+  }, skip: !Config.isMP);
 
   group('settings saved', () {
     testWidgets('show color choice saved', (tester) async {
@@ -320,7 +320,7 @@ void main() {
         matcher: fileId,
       );
     });
-  });
+  }, skip: !Config.isMP);
 
   group('category visisbility settings', () {
     testWidgets('show category false', (tester) async {

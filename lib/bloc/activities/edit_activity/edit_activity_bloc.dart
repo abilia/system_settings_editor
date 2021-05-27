@@ -177,15 +177,24 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   }
 
   Stream<EditActivityState> _mapChangeDateToState(ChangeDate event) async* {
+    final newTimeInterval = state.timeInterval.copyWith(startDate: event.date);
     if (state.activity.recurs.yearly) {
       yield state.copyWith(
         state.activity.copyWith(recurs: Recurs.yearly(event.date)),
-        timeInterval: state.timeInterval.copyWith(startDate: event.date),
+        timeInterval: newTimeInterval,
+      );
+    } else if (state.activity.isRecurring &&
+        state.activity.recurs.end.isDayBefore(event.date)) {
+      yield state.copyWith(
+        state.activity.copyWith(
+          recurs: state.activity.recurs.changeEnd(event.date),
+        ),
+        timeInterval: newTimeInterval,
       );
     } else {
       yield state.copyWith(
         state.activity,
-        timeInterval: state.timeInterval.copyWith(startDate: event.date),
+        timeInterval: newTimeInterval,
       );
     }
   }

@@ -629,10 +629,13 @@ void main() {
       await tester.enterText_(
           find.byKey(TestKey.editTitleTextFormField), testActivityTitle);
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.datePicker));
+      await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('${initialDay.subtract(1.days()).day}'));
-      await tester.tap(find.text('OK'));
+      await tester.tap(find.ancestor(
+          of: find.text('${initialDay.subtract(1.days()).day}'),
+          matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.dragFrom(
           tester.getCenter(find.byType(EditActivityPage)), Offset(0.0, -200));
