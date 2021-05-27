@@ -107,8 +107,24 @@ class DatePicker extends StatelessWidget {
             : () async {
                 final newDate = await Navigator.of(context).push<DateTime>(
                   MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
+                    builder: (_) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (context) => MonthCalendarBloc(
+                            clockBloc: context.read<ClockBloc>(),
+                            initialDay: date,
+                          ),
+                        ),
+                        BlocProvider(
+                          create: (context) => DayPickerBloc(
+                            clockBloc: context.read<ClockBloc>(),
+                            initialDay: date,
+                          ),
+                        ),
+                        BlocProvider.value(
+                          value: context.read<MemoplannerSettingBloc>(),
+                        ),
+                      ],
                       child: DatePickerPage(
                         date: date,
                         notBefore: notBefore,
