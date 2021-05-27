@@ -3,33 +3,21 @@ import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class RecurrenceTab extends StatefulWidget {
+class RecurrenceTab extends StatelessWidget with EditActivityTab {
   const RecurrenceTab({Key key}) : super(key: key);
 
   @override
-  _RecurrenceTabState createState() => _RecurrenceTabState();
-}
-
-class _RecurrenceTabState extends State<RecurrenceTab> with EditActivityTab {
-  ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return VerticalScrollArrows(
-      controller: _scrollController,
-      child: BlocBuilder<EditActivityBloc, EditActivityState>(
-        builder: (context, state) {
-          final recurringDataError =
-              state.saveErrors.contains(SaveError.NO_RECURRING_DAYS);
-          final activity = state.activity;
-          final recurs = activity.recurs;
-          return ListView(
+    final _scrollController = ScrollController();
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
+      builder: (context, state) {
+        final recurringDataError =
+            state.saveErrors.contains(SaveError.NO_RECURRING_DAYS);
+        final activity = state.activity;
+        final recurs = activity.recurs;
+        return VerticalScrollArrows(
+          controller: _scrollController,
+          child: ListView(
             controller: _scrollController,
             padding: EditActivityTab.rightPadding
                 .add(EditActivityTab.bottomPadding)
@@ -91,9 +79,9 @@ class _RecurrenceTabState extends State<RecurrenceTab> with EditActivityTab {
                   ],
                 ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
