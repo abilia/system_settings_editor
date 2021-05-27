@@ -31,7 +31,7 @@ final _log = Logger('main');
 
 void main() async {
   final baseUrl = await initServices();
-  final payload = Platform.isIOS ? null : await _payload;
+  final payload = await getOrAddPayloadToStream();
   runApp(
     App(
       baseUrl: baseUrl,
@@ -75,19 +75,26 @@ Future<String> initServices() async {
   return await baseUrlDb.initialize();
 }
 
-Future<NotificationAlarm> get _payload async {
+Future<NotificationAlarm> getOrAddPayloadToStream() async {
   final notificationAppLaunchDetails =
       await notificationPlugin.getNotificationAppLaunchDetails();
   try {
+    final payload = notificationAppLaunchDetails.payload;
     if (notificationAppLaunchDetails.didNotificationLaunchApp) {
-      final payload =
-          NotificationAlarm.decode(notificationAppLaunchDetails.payload);
-      _log.fine('Notification Launched App with payload: $payload');
-      return payload;
+      _log.info('Notification Launched App with payload: $payload');
+      if (payload != null) {
+        if (Platform.isAndroid) {
+          _log.info('on android, parsing payload for fullscreen alarm');
+          return NotificationAlarm.decode(payload);
+        } else {
+          _log.info('on ios, adding payload to selectNotificationSubject');
+          selectNotificationSubject.add(payload);
+        }
+      }
     }
   } catch (e) {
     _log.severe(
-        'Could not parse payload: ${notificationAppLaunchDetails.payload}', e);
+        'Could not parse payload: ${notificationAppLaunchDetails?.payload}', e);
   }
   return null;
 }
