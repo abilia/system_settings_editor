@@ -28,3 +28,4 @@ export 'calendar/timepillar/timepillar_bloc.dart';
 export 'activities/week_calendar/week_calendar_bloc.dart';
 export 'activities/month_calendar/month_calendar_bloc.dart';
 export 'slide_show/slide_show_cubit.dart';
+export 'sortable/my_photos/my_photos_bloc.dart';

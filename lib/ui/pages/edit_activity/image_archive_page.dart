@@ -16,6 +16,16 @@ class ImageArchivePage extends StatelessWidget {
       rootHeading: translate.imageArchive,
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),
+      libraryFolderGenerator: (imageArchive) => imageArchive.data.isMyPhotos
+          ? LibraryFolder(
+              title: translate.myPhotos,
+              color: AbiliaColors.blue,
+            )
+          : LibraryFolder(
+              title: imageArchive.data.title(),
+              fileId: imageArchive.data.folderFileId(),
+              filePath: imageArchive.data.folderFilePath(),
+            ),
       selectedItemGenerator: (imageArchive) =>
           FullScreenArchiveImage(selected: imageArchive.data),
       emptyLibraryMessage: translate.noImages,

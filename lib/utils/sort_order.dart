@@ -1,3 +1,5 @@
+import 'package:seagull/models/all.dart';
+
 ///
 /// Sort order algorithm copied from myAbilia frontend code with adjustments to dart.
 ///
@@ -37,4 +39,14 @@ String calculateNextSortOrder(String sortOrder, int step) {
   }
 
   return arr.join('');
+}
+
+extension SortExtension on Iterable<Sortable> {
+  String firstSortOrderInFolder(String folderId) {
+    final root = where((s) => s.groupId == folderId).toList();
+      root.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+      return root.isEmpty
+          ? getStartSortOrder()
+          : calculateNextSortOrder(root.first.sortOrder, -1);
+  }
 }

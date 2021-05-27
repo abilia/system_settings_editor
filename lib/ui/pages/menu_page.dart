@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/pages/my_photos_page.dart';
 import 'package:seagull/ui/pages/photo_calendar_page.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -89,7 +90,14 @@ class MyPhotosButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MenuItemButton(
       icon: AbiliaIcons.my_photos,
-      onPressed: () {},
+      onPressed: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => CopiedAuthProviders(
+            blocContext: context,
+            child: MyPhotosPage(),
+          ),
+        ),
+      ),
       style: blueButtonStyle,
       text: Translator.of(context).translate.myPhotos,
     );

@@ -33,7 +33,7 @@ class RawSortableData extends SortableData {
 
 class ImageArchiveData extends SortableData {
   final String name, fileId, icon, file;
-  final bool upload;
+  final bool upload, myPhotos;
 
   const ImageArchiveData({
     this.name,
@@ -41,7 +41,10 @@ class ImageArchiveData extends SortableData {
     this.icon,
     this.file,
     this.upload,
+    this.myPhotos,
   }) : super();
+
+  bool get isMyPhotos => myPhotos ?? false;
 
   @override
   String toRaw() => json.encode({
@@ -50,6 +53,7 @@ class ImageArchiveData extends SortableData {
         if (icon != null) 'icon': icon,
         if (file != null) 'file': file,
         if (upload != null) 'upload': upload,
+        if (myPhotos != null) 'myPhotos': myPhotos,
       });
 
   @override
@@ -58,11 +62,13 @@ class ImageArchiveData extends SortableData {
   factory ImageArchiveData.fromJson(String data) {
     final sortableData = json.decode(data);
     return ImageArchiveData(
-        name: sortableData['name'],
-        fileId: sortableData['fileId'],
-        icon: sortableData['icon'],
-        file: sortableData['file'],
-        upload: sortableData['upload']);
+      name: sortableData['name'],
+      fileId: sortableData['fileId'],
+      icon: sortableData['icon'],
+      file: sortableData['file'],
+      upload: sortableData['upload'],
+      myPhotos: sortableData['myPhotos'],
+    );
   }
 
   @override
