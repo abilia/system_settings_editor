@@ -29,7 +29,7 @@ void main() {
   );
   final translate = Locales.language.values.first;
 
-  final timeFieldFinder = find.byKey(TestKey.timePicker);
+  final timeFieldFinder = find.byType(TimeIntervallPicker);
   final okButtonFinder = find.byType(OkButton);
   final cancelButtonFinder = find.byType(CancelButton);
 
@@ -435,22 +435,6 @@ void main() {
               .widget<Switch>(find.byKey(ObjectKey(TestKey.deleteAfterSwitch)))
               .value,
           isTrue);
-    });
-
-    testWidgets('Date picker', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
-      await tester.pumpAndSettle();
-      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
-
-      await tester.tap(find.byKey(TestKey.datePicker));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('14'));
-      await tester.tap(find.text('OK'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('(Today) February 10, 2020'), findsNothing);
-      expect(find.text('February 14, 2020'), findsOneWidget);
     });
 
     testWidgets('Category picker', (WidgetTester tester) async {
@@ -1206,6 +1190,157 @@ text''';
     });
   });
 
+  group('Date picker', () {
+    testWidgets('changes date', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
+
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+          of: find.text('14'), matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      expect(find.text('(Today) February 10, 2020'), findsNothing);
+      expect(find.text('February 14, 2020'), findsOneWidget);
+    });
+
+    testWidgets('can switch months', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DatePickerPage), findsOneWidget);
+
+      expect(find.text('February 2020'), findsOneWidget);
+      expect(find.byType(MonthDayView), findsNWidgets(29));
+
+      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.pumpAndSettle();
+
+      expect(find.text('January 2020'), findsOneWidget);
+      expect(find.byType(MonthDayView), findsNWidgets(31));
+
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+
+      expect(find.text('April 2020'), findsOneWidget);
+      expect(find.byType(MonthDayView), findsNWidgets(30));
+
+      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.pumpAndSettle();
+      expect(find.text('February 2020'), findsOneWidget);
+    });
+
+    testWidgets('changes date then add recurring sets end date to start date',
+        (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
+
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+          of: find.text('14'), matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.goToRecurrenceTab();
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.byType(EndDateWidget));
+      await tester.pumpAndSettle();
+      expect(find.text('February 14, 2020'), findsOneWidget);
+    });
+
+    testWidgets(
+        'changes date after added recurring sets end date to start date',
+        (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.goToRecurrenceTab();
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.byType(EndDateWidget));
+      await tester.pumpAndSettle();
+      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
+      await tester.goToMainTab();
+      // Act change start date to 14th
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+          of: find.text('14'), matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      await tester.goToRecurrenceTab();
+      await tester.scrollDown(dy: -250);
+      expect(find.text('February 14, 2020'), findsOneWidget);
+    });
+
+    testWidgets('cant pick recurring end date before start date',
+        (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(wrapWithMaterialApp(
+        EditActivityPage(day: today),
+        newActivity: true,
+      ));
+      await tester.pumpAndSettle();
+      await tester.goToRecurrenceTab();
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.byType(EndDateWidget));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+        of: find.text('3'),
+        matching: find.byType(MonthDayView),
+      ));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EditActivityPage), findsNothing);
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(find.text(translate.endBeforeStartError), findsOneWidget);
+
+      await tester.tap(find.byType(PreviousButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EditActivityPage), findsNothing);
+      expect(find.byType(DatePickerPage), findsOneWidget);
+    });
+  });
+
   final startTimeInputFinder = find.byKey(TestKey.startTimeInput);
   final endTimeInputFinder = find.byKey(TestKey.endTimeInput);
 
@@ -1684,7 +1819,7 @@ text''';
       expect(find.text(translate.once), findsOneWidget);
     });
 
-    testWidgets('all info item present', (WidgetTester tester) async {
+    testWidgets('all recurrance present', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(wrapWithMaterialApp(
         EditActivityPage(day: today),
@@ -1824,7 +1959,7 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
-      await tester.tap(find.byKey(TestKey.noEndDate));
+      await tester.tap(find.byType(EndDateWidget));
       await tester.pumpAndSettle();
 
       // Assert -- date picker visible
@@ -1855,15 +1990,21 @@ text''';
       await tester.goToRecurrenceTab();
 
       // Assert -- date picker visible
-      expect(find.byKey(TestKey.noEndDate), findsOneWidget);
+      await tester.tap(find.byType(EndDateWidget));
       expect(find.byType(EndDateWidget), findsOneWidget);
       expect(find.byType(DatePicker), findsOneWidget);
       expect(
         tester.widget<DatePicker>(find.byType(DatePicker)).onChange,
         isNull,
       );
+      await tester.tap(find.byType(EndDateWidget));
+
       expect(
-        tester.widget<SwitchField>(find.byKey(TestKey.noEndDate)).onChanged,
+        tester
+            .widget<SwitchField>(find.descendant(
+                of: find.byType(EndDateWidget),
+                matching: find.byType(SwitchField)))
+            .onChanged,
         isNull,
       );
     });
@@ -2202,7 +2343,7 @@ text''';
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
 
-      await tester.verifyTts(find.byKey(TestKey.datePicker),
+      await tester.verifyTts(find.byType(DatePicker),
           contains: translate.today);
     });
 

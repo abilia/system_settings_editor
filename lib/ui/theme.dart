@@ -89,10 +89,14 @@ final borderRadiusTop = BorderRadius.only(
 // Borders
 final BorderSide borderSide =
     BorderSide(color: AbiliaColors.white140, width: 1.0.s);
+final Border selectedActivityBorder =
+    Border.fromBorderSide(selectedsActivityBorderSide);
 final Border currentActivityBorder =
     Border.fromBorderSide(currentActivityBorderSide);
 final BorderSide currentActivityBorderSide =
     BorderSide(color: AbiliaColors.red, width: 2.0.s);
+final BorderSide selectedsActivityBorderSide =
+    BorderSide(color: AbiliaColors.black, width: 2.0.s);
 final Border errorBorder = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.red, width: 1.0.s),
 );

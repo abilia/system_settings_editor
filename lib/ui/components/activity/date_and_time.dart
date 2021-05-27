@@ -88,65 +88,62 @@ class ReminderSwitch extends StatelessWidget {
 class DatePicker extends StatelessWidget {
   final DateTime date;
   final Function(DateTime) onChange;
-  final DateTime firstDate;
-  final DateTime lastDate;
+  final DateTime notBefore;
   const DatePicker(
     this.date, {
     @required this.onChange,
-    this.firstDate,
-    this.lastDate,
+    this.notBefore,
   });
 
   @override
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context);
     final timeFormat = DateFormat.yMMMMd(locale.toLanguageTag());
-    final translator = Translator.of(context).translate;
-    final _firstDate = firstDate ?? DateTime(date.year - 20);
-    final _lastDate = lastDate ?? DateTime(date.year + 20);
-
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, state) {
-        final dayColor = weekdayTheme(
-                dayColor: state.calendarDayColor,
-                languageCode: locale.languageCode,
-                weekday: date.weekday)
-            .color;
-        final color =
-            dayColor == AbiliaColors.white ? AbiliaColors.white120 : dayColor;
-        return BlocBuilder<ClockBloc, DateTime>(
-          builder: (context, time) => PickField(
-            key: TestKey.datePicker,
-            onTap: onChange == null
-                ? null
-                : () async {
-                    final newDate = await showDatePicker(
-                      context: context,
-                      initialDate: date,
-                      firstDate: _firstDate,
-                      lastDate: _lastDate,
-                      builder: (context, child) => Theme(
-                        data: abiliaTheme.copyWith(
-                          colorScheme: abiliaTheme.colorScheme.copyWith(
-                            primary: color,
-                            surface: color,
+    return BlocBuilder<ClockBloc, DateTime>(
+      buildWhen: (previous, current) => previous.day != current.day,
+      builder: (context, time) => PickField(
+        onTap: onChange == null
+            ? null
+            : () async {
+                final newDate = await Navigator.of(context).push<DateTime>(
+                  MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (context) => MonthCalendarBloc(
+                            clockBloc: context.read<ClockBloc>(),
+                            initialDay: date,
                           ),
                         ),
-                        child: child,
+                        BlocProvider(
+                          create: (context) => DayPickerBloc(
+                            clockBloc: context.read<ClockBloc>(),
+                            initialDay: date,
+                          ),
+                        ),
+                        BlocProvider.value(
+                          value: context.read<MemoplannerSettingBloc>(),
+                        ),
+                      ],
+                      child: DatePickerPage(
+                        date: date,
+                        notBefore: notBefore,
                       ),
-                    );
-                    if (newDate != null) {
-                      onChange(newDate);
-                    }
-                  },
-            leading: Icon(AbiliaIcons.calendar),
-            text: Text(
-              (time.isAtSameDay(date) ? '(${translator.today}) ' : '') +
-                  '${timeFormat.format(date)}',
-            ),
-          ),
-        );
-      },
+                    ),
+                  ),
+                );
+                if (newDate != null) {
+                  onChange(newDate);
+                }
+              },
+        leading: Icon(AbiliaIcons.calendar),
+        text: Text(
+          (time.isAtSameDay(date)
+                  ? '(${Translator.of(context).translate.today}) '
+                  : '') +
+              '${timeFormat.format(date)}',
+        ),
+      ),
     );
   }
 }
@@ -172,7 +169,6 @@ class TimeIntervallPicker extends StatelessWidget {
                 timeInterval.startTime,
                 timeInterval.sameTime ? null : timeInterval.endTime,
               ),
-              key: TestKey.timePicker,
               errorState: startTimeError,
               onTap: () async {
                 final newTimeInterval =

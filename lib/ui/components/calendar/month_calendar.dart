@@ -2,37 +2,46 @@ import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class MonthCalendar extends StatelessWidget {
   const MonthCalendar({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final languageCode = Localizations.localeOf(context).languageCode;
     return Scaffold(
       appBar: const MonthAppBar(),
-      body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.calendarDayColor != current.calendarDayColor,
-        builder: (context, memoSettingsState) {
-          final dayThemes = List.generate(
-            DateTime.daysPerWeek,
-            (d) => weekdayTheme(
-              dayColor: memoSettingsState.calendarDayColor,
-              languageCode: languageCode,
-              weekday: d + 1,
+      body: const MonthBody(),
+    );
+  }
+}
+
+class MonthBody extends StatelessWidget {
+  const MonthBody({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.calendarDayColor != current.calendarDayColor,
+      builder: (context, memoSettingsState) {
+        final dayThemes = List.generate(
+          DateTime.daysPerWeek,
+          (d) => weekdayTheme(
+            dayColor: memoSettingsState.calendarDayColor,
+            languageCode: Localizations.localeOf(context).languageCode,
+            weekday: d + 1,
+          ),
+        );
+        return Column(
+          children: [
+            MonthHeading(dayThemes: dayThemes),
+            Expanded(
+              child: MonthContent(dayThemes: dayThemes),
             ),
-          );
-          return Column(
-            children: [
-              MonthHeading(dayThemes: dayThemes),
-              Expanded(
-                child: MonthContent(dayThemes: dayThemes),
-              ),
-            ],
-          );
-        },
-      ),
+          ],
+        );
+      },
     );
   }
 }
@@ -182,51 +191,58 @@ class MonthDayView extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
-          DefaultTabController.of(context).animateTo(0);
+          DefaultTabController.of(context)?.animateTo(0);
         },
-        child: Container(
-          foregroundDecoration: day.isCurrent
-              ? BoxDecoration(
-                  border: currentActivityBorder,
-                  borderRadius: BorderRadius.all(monthDayRadius),
-                )
-              : null,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: dayTheme.color,
-                  borderRadius: BorderRadius.vertical(top: monthDayRadius),
-                ),
-                height: 24.s,
-                padding: EdgeInsets.symmetric(horizontal: 4.s),
-                child: DefaultTextStyle(
-                  style: dayTheme.theme.textTheme.subtitle2,
-                  child: Row(
-                    children: [
-                      Text('${day.day.day}'),
-                      Spacer(),
-                      if (day.hasActivities)
-                        ColorDot(color: dayTheme.theme.accentColor),
-                    ],
+        child: BlocBuilder<DayPickerBloc, DayPickerState>(
+          builder: (context, dayPickerState) => Container(
+            foregroundDecoration: day.isCurrent
+                ? BoxDecoration(
+                    border: currentActivityBorder,
+                    borderRadius: BorderRadius.all(monthDayRadius),
+                  )
+                : dayPickerState.day.isAtSameDay(day.day)
+                    ? BoxDecoration(
+                        border: selectedActivityBorder,
+                        borderRadius: BorderRadius.all(monthDayRadius),
+                      )
+                    : null,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: dayTheme.color,
+                    borderRadius: BorderRadius.vertical(top: monthDayRadius),
+                  ),
+                  height: 24.s,
+                  padding: EdgeInsets.symmetric(horizontal: 4.s),
+                  child: DefaultTextStyle(
+                    style: dayTheme.theme.textTheme.subtitle2,
+                    child: Row(
+                      children: [
+                        Text('${day.day.day}'),
+                        Spacer(),
+                        if (day.hasActivities)
+                          ColorDot(color: dayTheme.theme.accentColor),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: BlocBuilder<MemoplannerSettingBloc,
-                    MemoplannerSettingsState>(
-                  buildWhen: (previous, current) =>
-                      previous.monthWeekColor != current.monthWeekColor,
-                  builder: (context, settingState) => MonthDayContainer(
-                    color: settingState.monthWeekColor == WeekColor.columns
-                        ? dayTheme.secondaryColor
-                        : AbiliaColors.white110,
-                    day: day,
+                Expanded(
+                  child: BlocBuilder<MemoplannerSettingBloc,
+                      MemoplannerSettingsState>(
+                    buildWhen: (previous, current) =>
+                        previous.monthWeekColor != current.monthWeekColor,
+                    builder: (context, settingState) => MonthDayContainer(
+                      color: settingState.monthWeekColor == WeekColor.columns
+                          ? dayTheme.secondaryColor
+                          : AbiliaColors.white110,
+                      day: day,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

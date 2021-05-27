@@ -15,8 +15,7 @@ class CreateActivityPage extends StatefulWidget {
   _CreateActivityPageState createState() => _CreateActivityPageState(false);
 }
 
-class _CreateActivityPageState extends State<CreateActivityPage>
-    with SingleTickerProviderStateMixin {
+class _CreateActivityPageState extends State<CreateActivityPage> {
   bool pickBasicActivityView;
 
   _CreateActivityPageState(this.pickBasicActivityView);
