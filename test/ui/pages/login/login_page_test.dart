@@ -6,7 +6,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -222,12 +221,14 @@ void main() {
     expect(find.byType(CalendarPage), findsOneWidget);
 
     // Logout
-    await tester.tap(find.byIcon(AbiliaIcons.app_menu));
-    await tester.pumpAndSettle();
-    expect(find.byType(MenuPage), findsOneWidget);
-    await tester.tap(find.byIcon(AbiliaIcons.settings));
-    await tester.pumpAndSettle();
-    expect(find.byType(SettingsPage), findsOneWidget);
+    if (Config.isMP) {
+      await tester.tap(find.byIcon(AbiliaIcons.app_menu));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.settings));
+      await tester.pumpAndSettle();
+      expect(find.byType(SettingsPage), findsOneWidget);
+    }
     await tester.tap(find.byIcon(AbiliaIcons.technical_settings));
     await tester.pumpAndSettle();
     expect(find.byType(SystemSettingsPage), findsOneWidget);
@@ -272,7 +273,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.verifyTts(find.text(translate.loginHintMPGO),
         exact: translate.loginHintMPGO);
-  }, skip: !Config.isMPGO, tags: Flavor.mpgo.tag);
+  }, skip: !Config.isMPGO);
 
   testWidgets('tts mp hint text', (WidgetTester tester) async {
     tester.binding.window.physicalSizeTestValue = Size(800, 1280);
@@ -285,7 +286,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.verifyTts(find.text(translate.loginHintMP),
         exact: translate.loginHintMP);
-  }, skip: !Config.isMP, tags: Flavor.mp.tag);
+  }, skip: !Config.isMP);
 
   testWidgets('Gets no valid license dialog when no valid license',
       (WidgetTester tester) async {

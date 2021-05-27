@@ -69,33 +69,15 @@ void main() {
       expect(find.byIcon(AbiliaIcons.menu_setup), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.settings), findsOneWidget);
     });
-    Future _verifySaved(
-      WidgetTester tester, {
-      String key,
-      dynamic matcher,
-      bool yesOnDialog = false,
-    }) async {
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      if (yesOnDialog) {
-        await tester.tap(find.byType(YesButton));
-        await tester.pumpAndSettle();
-      }
-
-      final v = verify(genericDb.insertAndAddDirty(captureAny));
-      expect(v.callCount, 1);
-      final l = v.captured.single.toList() as List<Generic<GenericData>>;
-      final d =
-          l.map((e) => e.data).firstWhere((data) => data.identifier == key)
-              as MemoplannerSettingData;
-      expect(d.data, matcher);
-    }
 
     testWidgets('change display camera is stored', (tester) async {
       await tester.goToMenuSettingPage();
       await tester.tap(find.byIcon(AbiliaIcons.camera_photo));
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingsMenuShowCameraKey,
         matcher: isFalse,
       );
@@ -104,8 +86,11 @@ void main() {
     testWidgets('change display my photos is stored', (tester) async {
       await tester.goToMenuSettingPage();
       await tester.tap(find.byIcon(AbiliaIcons.my_photos));
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingsMenuShowPhotosKey,
         matcher: isFalse,
       );
@@ -114,8 +99,11 @@ void main() {
     testWidgets('change display photo calendar is stored', (tester) async {
       await tester.goToMenuSettingPage();
       await tester.tap(find.byIcon(AbiliaIcons.day));
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingsMenuShowPhotoCalendarKey,
         matcher: isFalse,
       );
@@ -124,8 +112,11 @@ void main() {
     testWidgets('change display countdown is stored', (tester) async {
       await tester.goToMenuSettingPage();
       await tester.tap(find.byIcon(AbiliaIcons.stop_watch));
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingsMenuShowTimersKey,
         matcher: isFalse,
       );
@@ -134,8 +125,11 @@ void main() {
     testWidgets('change display quick settings is stored', (tester) async {
       await tester.goToMenuSettingPage();
       await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingsMenuShowQuickSettingsKey,
         matcher: isFalse,
       );
@@ -145,11 +139,15 @@ void main() {
         (tester) async {
       await tester.goToMenuSettingPage();
       await tester.tap(find.byIcon(AbiliaIcons.settings));
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(YesButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingsMenuShowSettingsKey,
         matcher: isFalse,
-        yesOnDialog: true,
       );
     });
 
@@ -175,13 +173,16 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.settings));
       await tester.pumpAndSettle();
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.settingsMenuShowSettingsKey,
         matcher: isTrue,
       );
     });
-  });
+  }, skip: !Config.isMP);
 
   group('menu visisbility settings', () {
     testWidgets('all menu items shows', (tester) async {
@@ -293,51 +294,51 @@ void main() {
       expect(find.byType(HiddenSetting), findsOneWidget);
       expect(find.byType(MenuButton), findsOneWidget);
     });
+  }, skip: !Config.isMP);
 
-    testWidgets('all menu items disable hiddes menu button', (tester) async {
-      // Arrange
-      generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowCameraKey,
-          ),
+  testWidgets('all menu items disable hiddes menu button', (tester) async {
+    // Arrange
+    generics = [
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowCameraKey,
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowPhotosKey,
-          ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowPhotosKey,
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowPhotoCalendarKey,
-          ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowPhotoCalendarKey,
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowTimersKey,
-          ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowTimersKey,
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowQuickSettingsKey,
-          ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowQuickSettingsKey,
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.settingsMenuShowSettingsKey,
-          ),
+      ),
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: false,
+          identifier: MemoplannerSettings.settingsMenuShowSettingsKey,
         ),
-      ];
-      await tester.pumpApp();
-      expect(find.byType(HiddenSetting), findsOneWidget);
-      expect(find.byType(MenuButton), findsNothing);
-    });
+      ),
+    ];
+    await tester.pumpApp();
+    expect(find.byType(HiddenSetting), findsOneWidget);
+    expect(find.byType(MenuButton), findsNothing);
   });
 }
 

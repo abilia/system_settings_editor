@@ -1,4 +1,3 @@
-import 'package:seagull/config.dart';
 import 'package:seagull/ui/all.dart';
 
 class AbiliaLogo extends StatelessWidget {
