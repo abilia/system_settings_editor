@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  android_intent_plus: ^1.0.1
   audioplayers: ^0.18.3
   collection: ^1.14.12
   devicelocale: ^0.4.1
@@ -38,7 +39,6 @@ dependencies:
   google_fonts: ^2.0.0
   http: ^0.13.2
   image_picker: ^0.7.4
-  intent: ^1.4.0
   logging: ^1.0.1
   meta: ^1.1.8
   mime: ^1.0.0

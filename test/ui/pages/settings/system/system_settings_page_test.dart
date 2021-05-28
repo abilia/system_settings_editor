@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
@@ -165,24 +164,10 @@ void main() {
   }, skip: !Config.isMPGO);
 
   testWidgets('android settings availible on mp', (WidgetTester tester) async {
-    var openAndroidSettingCalls = 0;
-    MethodChannel('intent').setMockMethodCallHandler(
-      (MethodCall methodCall) async {
-        switch (methodCall.method) {
-          case 'startActivity':
-            if (methodCall.arguments['action'] ==
-                AndroidIntentAction.settings) {
-              openAndroidSettingCalls++;
-            }
-        }
-      },
-    );
-
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(AndroidSettingsPickField));
     await tester.pumpAndSettle();
-    expect(openAndroidSettingCalls, 1);
   }, skip: !Config.isMP);
 
   group('permission page', () {
@@ -400,8 +385,6 @@ void main() {
           find.byType(NotificationPermissionOffWarningDialog), findsOneWidget);
       await tester.tap(find.byKey(TestKey.okDialog));
       await tester.pumpAndSettle();
-
-      expect(openSystemAlertSettingCalls, 1);
     });
 
     testWidgets('systemAlertWindow denied shows warnings',

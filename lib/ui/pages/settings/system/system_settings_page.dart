@@ -46,7 +46,7 @@ class AndroidSettingsPickField extends StatelessWidget {
     return PickField(
       leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
       text: Text(Translator.of(context).translate.androidSettings),
-      onTap: AndroidIntent.openSettings,
+      onTap: AndroidIntents.openSettings,
     );
   }
 }
