@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -42,6 +44,8 @@ void main() {
           packageName: 'packageName',
           version: 'version',
           buildNumber: 'buildNumber')
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..database = MockDatabase()
       ..init();
   });
 

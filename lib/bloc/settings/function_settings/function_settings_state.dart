@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'function_settings_cubit.dart';
 
 class FunctionSettingsState extends Equatable {

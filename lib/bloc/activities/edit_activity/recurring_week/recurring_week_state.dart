@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'recurring_week_bloc.dart';
 
 class RecurringWeekState extends Equatable {

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 library flutter_analog_clock;
 
 import 'package:flutter/material.dart';

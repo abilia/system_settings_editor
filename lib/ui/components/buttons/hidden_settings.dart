@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:seagull/bloc/providers.dart';
 import 'package:seagull/ui/all.dart';
 

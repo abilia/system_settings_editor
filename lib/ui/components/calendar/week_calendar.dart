@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 export 'select_info_type_page.dart';
 export 'edit_note_page.dart';
 export 'edit_question_page.dart';

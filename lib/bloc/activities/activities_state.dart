@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'activities_bloc.dart';
 
 abstract class ActivitiesState extends Equatable {

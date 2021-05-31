@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:seagull/models/all.dart';
