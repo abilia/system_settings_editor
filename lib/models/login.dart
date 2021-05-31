@@ -6,7 +6,11 @@ class Login extends Equatable {
   final String token;
   final int endDate;
   final String renewToken;
-  Login._({this.token, this.endDate, this.renewToken});
+  Login._({
+    required this.token,
+    required this.endDate,
+    required this.renewToken,
+  });
 
   factory Login.fromJson(Map<String, dynamic> json) {
     return Login._(

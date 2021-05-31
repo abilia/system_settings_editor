@@ -10,9 +10,11 @@ class Translator {
   Translator(this.locale);
 
   static Translator of(BuildContext context) =>
-      Localizations.of<Translator>(context, Translator);
+      Localizations.of<Translator>(context, Translator) ??
+      Translator(Locales.language.keys.first);
 
-  Translated get translate => Locales.language[locale];
+  Translated get translate =>
+      Locales.language[locale] ?? Locales.language.values.first;
 
   static const LocalizationsDelegate<Translator> delegate =
       _AppLocalizationsDelegate();

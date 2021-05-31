@@ -1,14 +1,17 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 class Alarm extends Equatable {
   final AlarmType type;
   final bool onlyStart;
-  Alarm({@required this.type, this.onlyStart = false})
-      : assert(onlyStart != null),
-        assert(type != null);
-  Alarm copyWith({AlarmType type, bool onlyStart}) =>
+
+  Alarm({
+    required this.type,
+    this.onlyStart = false,
+  });
+
+  Alarm copyWith({AlarmType? type, bool? onlyStart}) =>
       Alarm(type: type ?? this.type, onlyStart: onlyStart ?? this.onlyStart);
+
   factory Alarm.fromInt(int value) {
     switch (value) {
       case ALARM_SOUND_AND_VIBRATION:
@@ -32,6 +35,7 @@ class Alarm extends Equatable {
         return Alarm(type: AlarmType.NoAlarm, onlyStart: true);
     }
   }
+
   bool get vibrate =>
       type == AlarmType.SoundAndVibration || type == AlarmType.Vibration;
   bool get sound =>
@@ -66,7 +70,6 @@ class Alarm extends Equatable {
       case AlarmType.NoAlarm:
         return NO_ALARM;
     }
-    return NO_ALARM;
   }
 
   AlarmType get typeSeagull {

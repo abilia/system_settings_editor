@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -1103,7 +1105,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
             Activity.createNew(
               title: 'title',
               startTime: startTime,
-              infoItem: Checklist(questions: [Question(name: item1)]),
+              infoItem: Checklist(questions: [Question(id: 1, name: item1)]),
             )
           ],
         ),

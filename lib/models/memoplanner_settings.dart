@@ -235,9 +235,9 @@ class MemoplannerSettings extends Equatable {
     this.viewOptionsTimeView = 1,
     this.viewOptionsZoom = 1,
     this.alarmDuration = 30000,
-    this.checkableActivityAlarm,
-    this.nonCheckableActivityAlarm,
-    this.reminderAlarm,
+    this.checkableActivityAlarm = SoundExtension.defaultName,
+    this.nonCheckableActivityAlarm = SoundExtension.defaultName,
+    this.reminderAlarm = SoundExtension.defaultName,
     this.vibrateAtReminder = true,
     this.functionMenuDisplayWeek = true,
     this.functionMenuDisplayMonth = true,
@@ -597,7 +597,7 @@ class MemoplannerSettings extends Equatable {
 }
 
 extension _Parsing on Map<String, MemoplannerSettingData> {
-  T parse<T>(String settingName, [T defaultValue]) {
+  T parse<T>(String settingName, T defaultValue) {
     try {
       return this[GenericData.uniqueId(
                   GenericType.memoPlannerSettings, settingName)]

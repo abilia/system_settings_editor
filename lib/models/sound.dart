@@ -9,6 +9,7 @@ enum Sound {
 }
 
 extension SoundExtension on Sound {
+  static const defaultName = 'Default';
   String displayName(Translated t) {
     switch (this) {
       case Sound.Trip:
@@ -18,7 +19,7 @@ extension SoundExtension on Sound {
       case Sound.Springboard:
         return 'Springboard';
       case Sound.Default:
-        return 'Default';
+        return defaultName;
       case Sound.NoSound:
         return t.noSound;
       default:
@@ -48,11 +49,11 @@ extension SoundExtension on Sound {
   }
 }
 
-extension SoundStringExtension on String {
+extension SoundStringExtension on String? {
   Sound toSound() {
     return this == null
         ? Sound.Default
-        : Sound.values.firstWhere((e) => e.toString() == 'Sound.' + this,
+        : Sound.values.firstWhere((e) => e.toString() == 'Sound.$this',
             orElse: () => Sound.Default);
   }
 }

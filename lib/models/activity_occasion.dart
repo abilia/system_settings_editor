@@ -14,8 +14,7 @@ class ActivityOccasion extends ActivityDay {
     Activity activity,
     DateTime day,
     this.occasion,
-  )   : assert(occasion != null),
-        super(activity, day);
+  ) : super(activity, day);
 
   @override
   ActivityOccasion fromActivitiesState(ActivitiesState activitiesState) =>
@@ -26,7 +25,7 @@ class ActivityOccasion extends ActivityDay {
   factory ActivityOccasion.forTest(
     Activity activity, {
     Occasion occasion = Occasion.current,
-    DateTime day,
+    DateTime? day,
   }) =>
       ActivityOccasion(
           activity, day ?? activity.startTime.onlyDays(), occasion);
@@ -53,9 +52,7 @@ class ActivityDay extends Equatable implements Comparable {
   bool get isSignedOff =>
       activity.checkable && activity.signedOffDates.contains(day);
 
-  const ActivityDay(this.activity, this.day)
-      : assert(activity != null),
-        assert(day != null);
+  const ActivityDay(this.activity, this.day);
   ActivityDay.copy(ActivityDay ad) : this(ad.activity, ad.day);
   ActivityDay fromActivitiesState(ActivitiesState activitiesState) =>
       ActivityDay(activitiesState.newActivityFromLoadedOrGiven(activity), day);

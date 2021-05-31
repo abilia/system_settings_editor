@@ -14,8 +14,8 @@ extension SizeOfText on String {
         ..layout(maxWidth: width);
 
   TextRenderingSize calulcateTextRenderSize({
-    @required BoxConstraints constraints,
-    @required TextStyle textStyle,
+    required BoxConstraints constraints,
+    required TextStyle textStyle,
     EdgeInsets padding = EdgeInsets.zero,
     double textScaleFactor = 1.0,
   }) {

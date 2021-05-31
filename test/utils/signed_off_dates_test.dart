@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/utils/signed_off_dates.dart';
 
@@ -7,9 +9,7 @@ void main() {
     test('Empty returns empty list', () {
       expect(''.tryDecodeSignedOffDates(), []);
     });
-    test('null returns null', () {
-      expect(null.tryDecodeSignedOffDates(), null);
-    });
+
     test('invalid returns null', () {
       expect('some random string'.tryDecodeSignedOffDates(), null);
     });
@@ -34,9 +34,6 @@ void main() {
       expect(<DateTime>[].tryEncodeSignedOffDates(), null);
     });
 
-    test('null returns null', () {
-      expect(null.tryEncodeSignedOffDates(), null);
-    });
     test('Singel signed day', () {
       expect(
           [DateTime(2020, 02, 12)].tryEncodeSignedOffDates(),
@@ -56,10 +53,6 @@ void main() {
     });
   });
   group('serialize then deserialize', () {
-    test('null return null', () {
-      expect(null.tryEncodeSignedOffDates().tryDecodeSignedOffDates(), null);
-    });
-
     test('corrupt date ignored', () {
       // Arrange
       final dates = [

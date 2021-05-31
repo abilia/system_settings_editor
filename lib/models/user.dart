@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 class User extends Equatable {
   final int id;
@@ -8,22 +7,23 @@ class User extends Equatable {
   final String username;
   final String language;
   final String image;
-  User(
-      {this.username,
-      this.language,
-      this.image,
-      @required this.id,
-      @required this.type,
-      @required this.name});
+  User({
+    this.username = '',
+    this.language = '',
+    this.image = '',
+    required this.id,
+    required this.type,
+    required this.name,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
       type: json['type'],
-      name: json['name'],
-      username: json['username'],
-      language: json['language'],
-      image: json['image'],
+      name: json['name'] ?? '',
+      username: json['username'] ?? '',
+      language: json['language'] ?? '',
+      image: json['image'] ?? '',
     );
   }
 

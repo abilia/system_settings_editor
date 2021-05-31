@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -595,9 +597,9 @@ void main() {
           title: 'null',
           startTime: startTime,
           infoItem: Checklist(questions: [
-            Question(name: q1),
-            Question(name: q3),
-            Question(name: q2)
+            Question(id: 1, name: q1),
+            Question(id: 2, name: q3),
+            Question(id: 3, name: q2)
           ]));
       await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
           givenActivity: activity));
@@ -863,9 +865,11 @@ Internal improvements to tests and examples.''';
     });
 
     group('checklist', () {
-      setUp(() {
+      setUp(() async {
         GetItInitializer()
           ..fileStorage = MockFileStorage()
+          ..sharedPreferences = await MockSharedPreferences.getInstance()
+          ..database = MockDatabase()
           ..init();
       });
       final questions = {
@@ -2309,9 +2313,11 @@ text''';
   });
 
   group('tts', () {
-    setUp(() {
+    setUp(() async {
       GetItInitializer()
         ..flutterTts = MockFlutterTts()
+        ..database = MockDatabase()
+        ..sharedPreferences = await MockSharedPreferences.getInstance()
         ..init();
     });
     testWidgets('title', (WidgetTester tester) async {

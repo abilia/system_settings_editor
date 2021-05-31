@@ -3,13 +3,14 @@ part of 'sortable.dart';
 class DbSortable extends DbModel<Sortable> {
   Sortable get sortable => model;
   const DbSortable._(
-      {@required Sortable sortable,
-      @required int revision,
-      @required int dirty})
+      {required Sortable sortable, required int revision, required int dirty})
       : super(model: sortable, revision: revision, dirty: dirty);
 
   @override
-  DbSortable copyWith({int revision, int dirty}) {
+  DbSortable copyWith({
+    int? revision,
+    int? dirty,
+  }) {
     return DbSortable._(
       sortable: sortable,
       revision: revision ?? this.revision,
@@ -102,12 +103,12 @@ class DbSortable extends DbModel<Sortable> {
         sortable: Sortable<RawSortableData>._(
           id: json['id'],
           type: json['type'],
-          data: RawSortableData(json['data']),
-          groupId: json['groupId'],
-          sortOrder: json['sortOrder'],
-          deleted: json['deleted'],
-          isGroup: json['group'],
-          visible: json['visible'],
+          data: RawSortableData(json['data'] ?? ''),
+          groupId: json['groupId'] ?? '',
+          sortOrder: json['sortOrder'] ?? '',
+          deleted: json['deleted'] ?? false,
+          isGroup: json['group'] ?? false,
+          visible: json['visible'] ?? true,
         ),
         revision: json['revision'],
         dirty: 0,

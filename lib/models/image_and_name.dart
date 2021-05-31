@@ -6,19 +6,18 @@ class ImageAndName extends Equatable {
   final SelectedImage image;
   const ImageAndName(this.name, this.image);
 
-  static ImageAndName get empty =>
-      const ImageAndName(null, SelectedImage.empty);
+  static ImageAndName get empty => const ImageAndName('', SelectedImage.empty);
 
   ImageAndName copyWith({
-    String name,
-    SelectedImage image,
+    String? name,
+    SelectedImage? image,
   }) =>
       ImageAndName(
         name ?? this.name,
         image ?? this.image,
       );
 
-  bool get hasName => name?.isNotEmpty == true;
+  bool get hasName => name.isNotEmpty == true;
   bool get isEmpty => !hasName && image.isEmpty;
   bool get isNotEmpty => !isEmpty;
 

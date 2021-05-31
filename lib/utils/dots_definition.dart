@@ -10,9 +10,9 @@ final bigDotSize = 28.0.s,
     bigDotPadding = 6.0.s;
 
 double timeToMidDotPixelDistance({
-  DateTime now,
-  double dotDistance,
-  double dotSize,
+  required DateTime now,
+  required double dotDistance,
+  required double dotSize,
 }) =>
     timeToPixels(now.hour, now.minute, dotDistance) + dotSize / 2;
 double timeToPixels(int hours, int minutes, double dotDistance) =>

@@ -30,17 +30,17 @@ Future<void> clearNotificationSubject() async {
 final _log = Logger('NotificationIsolate');
 
 @visibleForTesting
-FlutterLocalNotificationsPlugin notificationsPluginInstance;
+FlutterLocalNotificationsPlugin? notificationsPluginInstance;
 FlutterLocalNotificationsPlugin get notificationPlugin {
   ensureNotificationPluginInitialized();
-  return notificationsPluginInstance;
+  return notificationsPluginInstance!;
 }
 
 void ensureNotificationPluginInitialized() {
   if (notificationsPluginInstance == null) {
     _log.finer('initialize notification plugin... ');
     notificationsPluginInstance = FlutterLocalNotificationsPlugin();
-    notificationsPluginInstance.initialize(
+    notificationsPluginInstance!.initialize(
       InitializationSettings(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
         iOS: IOSInitializationSettings(
@@ -49,7 +49,7 @@ void ensureNotificationPluginInitialized() {
           requestAlertPermission: false,
         ),
       ),
-      onSelectNotification: (String payload) async {
+      onSelectNotification: (String? payload) async {
         if (payload != null) {
           _log.fine('notification payload: ' + payload);
           selectNotificationSubject.add(payload);
@@ -66,7 +66,7 @@ Future scheduleAlarmNotifications(
   bool alwaysUse24HourFormat,
   MemoplannerSettings settings,
   FileStorage fileStorage, {
-  DateTime Function() now,
+  DateTime Function()? now,
 }) async {
   now ??= () => DateTime.now();
   final _now = now().nextMinute();
@@ -87,7 +87,7 @@ Future scheduleAlarmNotificationsIsolated(
   bool alwaysUse24HourFormat,
   MemoplannerSettings settings,
   FileStorage fileStorage, {
-  DateTime Function() now,
+  DateTime Function()? now,
 }) async {
   now ??= () => DateTime.now();
   final _now = now().nextMinute();
@@ -316,14 +316,14 @@ String _subtitle(
       : Locales.language.keys.first;
   initializeDateFormatting(locale.languageCode);
   final tf = hourAndMinuteFromUse24(alwaysUse24HourFormat, language);
-  final translater = Locales.language[locale];
+  final translater = Locales.language[locale]!;
   final ad = notificationAlarm.activityDay;
   final endTime = ad.activity.hasEndTime ? ' - ${tf(ad.end)} ' : ' ';
   final extra = _extra(notificationAlarm, translater);
-  return tf(ad.start) + endTime + extra;
+  return tf(ad.start) + endTime + (extra ?? '');
 }
 
-String _extra(NotificationAlarm notificationAlarm, Translated translater) {
+String? _extra(NotificationAlarm notificationAlarm, Translated translater) {
   if (notificationAlarm is StartAlarm) return translater.startsNow;
   if (notificationAlarm is EndAlarm) return translater.endsNow;
   if (notificationAlarm is NewReminder) {
@@ -351,7 +351,7 @@ Future<List<IOSNotificationAttachment>> _iOSNotificationAttachment(
   return iOSAttachment;
 }
 
-Future<StyleInformation> _androidStyleInformation(
+Future<StyleInformation?> _androidStyleInformation(
   Activity activity,
   FileStorage fileStorage,
   String title,
@@ -370,7 +370,7 @@ Future<StyleInformation> _androidStyleInformation(
   return null;
 }
 
-Future<AndroidBitmap> _androidLargeIcon(
+Future<AndroidBitmap?> _androidLargeIcon(
   Activity activity,
   FileStorage fileStorage,
 ) async {

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/all.dart';
 
@@ -12,7 +14,7 @@ void main() {
       fileSize: 1,
       id: 'id',
       md5: 'md5',
-      path: path,
+      path: path ?? '',
       sha1: 'sha1',
       fileLoaded: true,
     );

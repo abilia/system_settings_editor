@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
@@ -16,7 +18,7 @@ class SortableArchiveBloc<T extends SortableData>
   StreamSubscription sortableSubscription;
 
   SortableArchiveBloc({@required this.sortableBloc})
-      : super(SortableArchiveState({}, {}, null)) {
+      : super(SortableArchiveState({}, {})) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         add(SortablesUpdated(sortableState.sortables));
@@ -41,27 +43,27 @@ class SortableArchiveBloc<T extends SortableData>
       yield SortableArchiveState<T>(
         allByFolder,
         allById,
-        currentFolder?.id,
+        currentFolderId: currentFolder?.id ?? '',
         selected: state.selected,
       );
     } else if (event is FolderChanged) {
       yield SortableArchiveState<T>(
         state.allByFolder,
         state.allById,
-        event.folderId,
+        currentFolderId: event.folderId,
       );
     } else if (event is NavigateUp) {
       final currentFolder = state.allById[state.currentFolderId];
       yield SortableArchiveState<T>(
         state.allByFolder,
         state.allById,
-        currentFolder.groupId,
+        currentFolderId: currentFolder.groupId,
       );
     } else if (event is SortableSelected) {
       yield SortableArchiveState<T>(
         state.allByFolder,
         state.allById,
-        state.currentFolderId,
+        currentFolderId: state.currentFolderId,
         selected: event.selected,
       );
     }

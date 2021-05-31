@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -24,6 +26,7 @@ void main() {
             initialTime: DateTime(2021, 05, 13, 11, 29),
           )
           ..client = Fakes.client()
+          ..database = MockDatabase()
           ..init();
       });
 

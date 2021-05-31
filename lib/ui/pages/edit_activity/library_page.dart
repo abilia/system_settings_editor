@@ -32,7 +32,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
         sortableBloc: BlocProvider.of<SortableBloc>(context),
       ),
       child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
-        builder: (context, state) =>  Scaffold(
+        builder: (context, state) => Scaffold(
           appBar: appBar ??
               AbiliaAppBar(
                 iconData: AbiliaIcons.documents,
