@@ -4,8 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/my_photos_page.dart';
-import 'package:seagull/ui/pages/photo_calendar_page.dart';
 import 'package:seagull/utils/all.dart';
 
 class MenuPage extends StatelessWidget {
