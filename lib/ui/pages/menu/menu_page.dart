@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -48,34 +49,45 @@ class CameraButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PermissionBloc, PermissionState>(
-      builder: (context, permissionState) => MenuItemButton(
-        icon: AbiliaIcons.camera_photo,
-        onPressed: () async {
-          if (permissionState.status[Permission.camera].isPermanentlyDenied) {
-            await showViewDialog(
-                useSafeArea: false,
-                context: context,
-                builder: (context) =>
-                    PermissionInfoDialog(permission: Permission.camera));
-          } else {
-            final image =
-                await ImagePicker().getImage(source: ImageSource.camera);
-            if (image != null) {
-              final selectedImage = SelectedImage.newFile(File(image.path));
-              BlocProvider.of<UserFileBloc>(context).add(
-                ImageAdded(selectedImage),
-              );
-              BlocProvider.of<SortableBloc>(context).add(
-                ImageArchiveImageAdded(
-                  selectedImage.id,
-                  selectedImage.file.path,
-                ),
-              );
-            }
-          }
-        },
-        style: blueButtonStyle,
-        text: Translator.of(context).translate.camera,
+      builder: (context, permissionState) => BlocProvider<MyPhotosBloc>(
+        create: (_) => MyPhotosBloc(
+          sortableBloc: BlocProvider.of<SortableBloc>(context),
+        ),
+        child: BlocBuilder<ClockBloc, DateTime>(
+          builder: (context, time) => MenuItemButton(
+            icon: AbiliaIcons.camera_photo,
+            onPressed: () async {
+              if (permissionState
+                  .status[Permission.camera].isPermanentlyDenied) {
+                await showViewDialog(
+                    useSafeArea: false,
+                    context: context,
+                    builder: (context) =>
+                        PermissionInfoDialog(permission: Permission.camera));
+              } else {
+                final image =
+                    await ImagePicker().getImage(source: ImageSource.camera);
+                if (image != null) {
+                  final selectedImage = SelectedImage.newFile(File(image.path));
+                  BlocProvider.of<UserFileBloc>(context).add(
+                    ImageAdded(selectedImage),
+                  );
+                  BlocProvider.of<MyPhotosBloc>(context).add(
+                    PhotoAdded(
+                      selectedImage.id,
+                      selectedImage.file.path,
+                      DateFormat.yMd(
+                              Localizations.localeOf(context).toLanguageTag())
+                          .format(time),
+                    ),
+                  );
+                }
+              }
+            },
+            style: blueButtonStyle,
+            text: Translator.of(context).translate.camera,
+          ),
+        ),
       ),
     );
   }
