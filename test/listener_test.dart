@@ -232,12 +232,14 @@ void main() {
       // Act logout
       await tester.tap(find.byIcon(AbiliaIcons.close_program));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.app_menu));
+      await tester.tap(find.byType(MenuButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.settings));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.technical_settings));
-      await tester.pumpAndSettle();
+      if (Config.isMP) {
+        await tester.tap(find.byIcon(AbiliaIcons.settings));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.technical_settings));
+        await tester.pumpAndSettle();
+      }
       await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(LogoutButton));

@@ -8,7 +8,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -16,67 +15,45 @@ import 'package:seagull/ui/all.dart';
 import '../../../../../mocks.dart';
 
 void main() {
-  final translate = Locales.language.values.first;
-  final initialTime = DateTime(2021, 04, 17, 09, 20);
-  Iterable<Generic> generics = [];
-  GenericDb genericDb;
-
-  setUp(() async {
-    setupPermissions();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
-
-    final mockBatch = MockBatch();
-    when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
-    final db = MockDatabase();
-    when(db.batch()).thenReturn(mockBatch);
-    when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
-
-    genericDb = MockGenericDb();
-    when(genericDb.getAllNonDeletedMaxRevision())
-        .thenAnswer((_) => Future.value(generics));
-    when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(genericDb.insertAndAddDirty(any))
-        .thenAnswer((realInvocation) => Future.value([]));
-
-    GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
-      ..ticker = Ticker(
-        stream: StreamController<DateTime>().stream,
-        initialTime: initialTime,
-      )
-      ..client = Fakes.client(genericResponse: () => generics)
-      ..alarmScheduler = noAlarmScheduler
-      ..database = db
-      ..syncDelay = SyncDelays.zero
-      ..genericDb = genericDb
-      ..init();
-  });
-
-  tearDown(GetIt.I.reset);
-
-  Future _verifySaved(
-    WidgetTester tester, {
-    String key,
-    dynamic matcher,
-    bool yesOnDialog = false,
-  }) async {
-    await tester.tap(find.byType(OkButton));
-    await tester.pumpAndSettle();
-    if (yesOnDialog) {
-      await tester.tap(find.byType(YesButton));
-      await tester.pumpAndSettle();
-    }
-
-    final v = verify(genericDb.insertAndAddDirty(captureAny));
-    expect(v.callCount, 1);
-    final l = v.captured.single.toList() as List<Generic<GenericData>>;
-    final d = l
-        .whereType<Generic<MemoplannerSettingData>>()
-        .firstWhere((element) => element.data.identifier == key);
-    expect(d.data.data, matcher);
-  }
-
   group('Day calendar settings page', () {
+    final translate = Locales.language.values.first;
+    final initialTime = DateTime(2021, 04, 17, 09, 20);
+    Iterable<Generic> generics = [];
+    GenericDb genericDb;
+
+    setUp(() async {
+      setupPermissions();
+      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+
+      final mockBatch = MockBatch();
+      when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
+      final db = MockDatabase();
+      when(db.batch()).thenReturn(mockBatch);
+      when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
+
+      genericDb = MockGenericDb();
+      when(genericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value(generics));
+      when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+      when(genericDb.insertAndAddDirty(any))
+          .thenAnswer((realInvocation) => Future.value([]));
+
+      GetItInitializer()
+        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..ticker = Ticker(
+          stream: StreamController<DateTime>().stream,
+          initialTime: initialTime,
+        )
+        ..client = Fakes.client(genericResponse: () => generics)
+        ..alarmScheduler = noAlarmScheduler
+        ..database = db
+        ..syncDelay = SyncDelays.zero
+        ..genericDb = genericDb
+        ..init();
+    });
+
+    tearDown(GetIt.I.reset);
+
     testWidgets('Navigate to page', (tester) async {
       await tester.goToDayCalendarSettingsPage(pump: true);
       expect(find.byType(DayCalendarSettingsPage), findsOneWidget);
@@ -90,8 +67,11 @@ void main() {
         await tester.tap(find.text(translate.showBrowseButtons));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.dayCaptionShowDayButtonsKey,
           matcher: isFalse,
         );
@@ -102,8 +82,11 @@ void main() {
         await tester.tap(find.text(translate.showWeekday));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.activityDisplayWeekDayKey,
           matcher: isFalse,
         );
@@ -114,8 +97,11 @@ void main() {
         await tester.tap(find.text(translate.showDayPeriod));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.activityDisplayDayPeriodKey,
           matcher: isFalse,
         );
@@ -126,8 +112,11 @@ void main() {
         await tester.tap(find.text(translate.showDate));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.activityDisplayDateKey,
           matcher: isFalse,
         );
@@ -141,8 +130,11 @@ void main() {
         await tester.tap(find.text(translate.showClock));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.activityDisplayClockKey,
           matcher: isFalse,
         );
@@ -155,8 +147,11 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.viewOptionsTimeViewKey,
           matcher: DayCalendarType.LIST.index,
         );
@@ -169,8 +164,11 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.day_night));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.viewOptionsTimeIntervalKey,
           matcher: TimepillarIntervalType.DAY_AND_NIGHT.index,
         );
@@ -183,8 +181,11 @@ void main() {
         await tester.tap(find.text(translate.large));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.viewOptionsZoomKey,
           matcher: TimepillarZoom.LARGE.index,
         );
@@ -200,8 +201,11 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.flarp));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.dotsInTimepillarKey,
           matcher: isFalse,
         );
@@ -212,8 +216,11 @@ void main() {
         await tester.tap(find.byKey(TestKey.showTypeOfDisplaySwitch));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.settingViewOptionsTimeViewKey,
           matcher: isFalse,
         );
@@ -224,8 +231,11 @@ void main() {
         await tester.tap(find.byKey(TestKey.showTimepillarLengthSwitch));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.settingViewOptionsTimeIntervalKey,
           matcher: isFalse,
         );
@@ -236,8 +246,11 @@ void main() {
         await tester.tap(find.byKey(TestKey.showTimelineZoomSwitch));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.settingViewOptionsZoomKey,
           matcher: isFalse,
         );
@@ -248,22 +261,20 @@ void main() {
         await tester.tap(find.byKey(TestKey.showDurationSelectionSwitch));
         await tester.pumpAndSettle();
 
-        await _verifySaved(
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        await verifyGeneric(
           tester,
+          genericDb,
           key: MemoplannerSettings.settingViewOptionsDurationDotsKey,
           matcher: isFalse,
         );
       });
     });
-  });
+  }, skip: !Config.isMP);
 }
 
 extension on WidgetTester {
-  Future<void> pumpApp() async {
-    await pumpWidget(App());
-    await pumpAndSettle();
-  }
-
   Future<void> goToDayCalendarSettingsPage({bool pump = false}) async {
     if (pump) await pumpApp();
     await tap(find.byType(MenuButton));

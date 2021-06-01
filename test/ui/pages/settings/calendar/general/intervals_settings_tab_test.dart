@@ -69,7 +69,7 @@ void main() {
     expect(find.byType(CategoriesSettingsTab), findsNothing);
     expect(find.byType(OkButton), findsOneWidget);
     expect(find.byType(CancelButton), findsOneWidget);
-  });
+  }, skip: !Config.isMP);
 
   group('time interval', () {
     testWidgets('Default time interval 12h clock', (tester) async {
@@ -209,7 +209,7 @@ void main() {
       expect(find.text('6:00 PM'), findsOneWidget);
       expect(find.text('7:00 PM'), findsOneWidget);
     });
-  });
+  }, skip: !Config.isMP);
 
   group('time interval visisbility settings', () {
     testWidgets('Change time interval', (tester) async {

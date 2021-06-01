@@ -8,7 +8,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -234,7 +233,7 @@ void main() {
         matcher: isFalse,
       );
     });
-  });
+  }, skip: !Config.isMP);
 
   group('settings in acivity view', () {
     testWidgets('defaults', (tester) async {
@@ -300,11 +299,6 @@ void main() {
 }
 
 extension on WidgetTester {
-  Future<void> pumpApp() async {
-    await pumpWidget(App());
-    await pumpAndSettle();
-  }
-
   Future<void> goToActivityPage() async {
     await pumpApp();
     await tap(find.byType(ActivityCard));

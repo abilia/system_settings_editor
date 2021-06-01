@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
-import 'package:intent/flag.dart';
-import 'package:intent/intent.dart' as android_intent;
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:android_intent_plus/flag.dart';
 import 'package:package_info/package_info.dart';
 
 class AndroidIntentAction {
@@ -8,18 +8,22 @@ class AndroidIntentAction {
       manageOverlay = 'android.settings.action.MANAGE_OVERLAY_PERMISSION';
 }
 
-class AndroidIntent {
-  static Future<void> openSettings() => (android_intent.Intent()
-        ..setAction(AndroidIntentAction.settings)
-        ..addFlag(Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-        ..addFlag(Flag.FLAG_ACTIVITY_NO_HISTORY))
-      .startActivity();
+class AndroidIntents {
+  static Future<void> openSettings() => AndroidIntent(
+        action: AndroidIntentAction.settings,
+        flags: [
+          Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS,
+          Flag.FLAG_ACTIVITY_NO_HISTORY
+        ],
+      ).launch();
 
-  static Future<void> openSystemAlertSetting() => (android_intent.Intent()
-        ..setAction(AndroidIntentAction.manageOverlay)
-        ..setData(
-            Uri(scheme: 'package', path: GetIt.I<PackageInfo>().packageName))
-        ..addFlag(Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-        ..addFlag(Flag.FLAG_ACTIVITY_NO_HISTORY))
-      .startActivity();
+  static Future<void> openSystemAlertSetting() => AndroidIntent(
+        action: AndroidIntentAction.manageOverlay,
+        data: Uri(scheme: 'package', path: GetIt.I<PackageInfo>().packageName)
+            .toString(),
+        flags: [
+          Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS,
+          Flag.FLAG_ACTIVITY_NO_HISTORY
+        ],
+      ).launch();
 }

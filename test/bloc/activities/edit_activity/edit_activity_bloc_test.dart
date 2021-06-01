@@ -1378,4 +1378,47 @@ void main() {
       ),
     );
   });
+
+  test('Changing start date to after recuring end changes recuring end',
+      () async {
+    // Arrange
+
+    final editActivityBloc = EditActivityBloc.newActivity(
+      activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+      day: aDay,
+    );
+
+    final in30Days = aTime.add(30.days());
+    final in60Days = aTime.add(60.days());
+    final activity = editActivityBloc.state.activity;
+    final timeInterval = editActivityBloc.state.timeInterval;
+    final recurringActivity = activity.copyWith(
+      recurs: Recurs.weeklyOnDay(2, ends: in30Days),
+    );
+
+    final expectedActivity =
+        activity.copyWith(recurs: Recurs.weeklyOnDay(2, ends: in60Days));
+    final expectedInterval = timeInterval.copyWith(startDate: in60Days);
+
+    editActivityBloc.add(ReplaceActivity(recurringActivity));
+    editActivityBloc.add(ChangeDate(in60Days));
+
+    await expectLater(
+      editActivityBloc.stream,
+      emitsInOrder(
+        [
+          UnstoredActivityState(
+            recurringActivity,
+            timeInterval,
+          ),
+          UnstoredActivityState(
+            expectedActivity,
+            expectedInterval,
+          ),
+        ],
+      ),
+    );
+  });
 }

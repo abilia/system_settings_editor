@@ -71,7 +71,7 @@ void main() {
     expect(find.byType(MonthHeading), findsOneWidget);
     expect(find.byType(OkButton), findsOneWidget);
     expect(find.byType(CancelButton), findsOneWidget);
-  });
+  }, skip: !Config.isMP);
 
   group('day colors', () {
     testWidgets('Default all day colors', (tester) async {
@@ -131,7 +131,7 @@ void main() {
         matcher: DayColor.noColors.index,
       );
     });
-  });
+  }, skip: !Config.isMP);
 
   group('day color visisbility settings', () {
     final noDayColor = AbiliaColors.black80,

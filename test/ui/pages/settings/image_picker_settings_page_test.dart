@@ -10,7 +10,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -71,28 +70,15 @@ void main() {
       expect(find.text(translate.myPhotos), findsOneWidget);
       expect(find.text(translate.takeNewPhoto), findsOneWidget);
     });
-    Future _verifySaved(
-      WidgetTester tester, {
-      String key,
-      dynamic matcher,
-    }) async {
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-
-      final v = verify(genericDb.insertAndAddDirty(captureAny));
-      expect(v.callCount, 1);
-      final l = v.captured.single.toList() as List<Generic<GenericData>>;
-      final d = l
-          .whereType<Generic<MemoplannerSettingData>>()
-          .firstWhere((element) => element.data.identifier == key);
-      expect(d.data.data, matcher);
-    }
 
     testWidgets('change display camera is stored', (tester) async {
       await tester.goToFunctionImagePickerSettingPage();
       await tester.tap(find.byIcon(AbiliaIcons.camera_photo));
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.imageMenuDisplayCameraItemKey,
         matcher: isFalse,
       );
@@ -101,13 +87,17 @@ void main() {
     testWidgets('change display my photo is stored', (tester) async {
       await tester.goToFunctionImagePickerSettingPage();
       await tester.tap(find.text(translate.myPhotos));
-      await _verifySaved(
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await verifyGeneric(
         tester,
+        genericDb,
         key: MemoplannerSettings.imageMenuDisplayPhotoItemKey,
         matcher: isFalse,
       );
     });
-  });
+  }, skip: !Config.isMP);
+
   group('select image visisbility settings', () {
     testWidgets('both camera and folder option shows', (tester) async {
       await tester.goToAddActivityImagePicker();
@@ -147,11 +137,6 @@ void main() {
 }
 
 extension on WidgetTester {
-  Future<void> pumpApp() async {
-    await pumpWidget(App());
-    await pumpAndSettle();
-  }
-
   Future<void> goToFunctionImagePickerSettingPage() async {
     await pumpApp();
     await tap(find.byType(MenuButton));

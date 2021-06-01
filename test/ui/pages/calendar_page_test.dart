@@ -629,10 +629,13 @@ void main() {
       await tester.enterText_(
           find.byKey(TestKey.editTitleTextFormField), testActivityTitle);
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.datePicker));
+      await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('${initialDay.subtract(1.days()).day}'));
-      await tester.tap(find.text('OK'));
+      await tester.tap(find.ancestor(
+          of: find.text('${initialDay.subtract(1.days()).day}'),
+          matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.dragFrom(
           tester.getCenter(find.byType(EditActivityPage)), Offset(0.0, -200));
@@ -1009,12 +1012,14 @@ void main() {
   });
 
   group('Week calendar', () {
-    final fridayTitle = 'Friday';
-    final nextWeekTitle = 'Next week';
+    final fridayTitle = 'f-r-i-d-a-y',
+        nextWeekTitle = 'N-e-x-t week title',
+        todaytitle = 't-o-d-a-y';
     final friday = initialDay.addDays(2);
     final nextWeek = initialDay.nextWeek();
     setUp(() {
       final activities = [
+        FakeActivity.starts(initialDay, title: todaytitle),
         FakeActivity.starts(friday, title: fridayTitle),
         FakeActivity.starts(nextWeek, title: nextWeekTitle),
       ];
@@ -1045,6 +1050,30 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text(fridayTitle), findsNothing);
       expect(find.text(nextWeekTitle), findsOneWidget);
+    });
+
+    testWidgets(
+        'BUG SGC-756 tapping day goes back to that day calendar, then go back to now goes back to now',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Agenda), findsOneWidget);
+
+      expect(find.text(todaytitle), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
+      await tester.tap(find.text(fridayTitle));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Agenda), findsOneWidget);
+      expect(find.text(fridayTitle), findsOneWidget);
+
+      await tester.tap(find.byType(GoToNowButton));
+      await tester.pumpAndSettle();
+      expect(find.text(fridayTitle), findsNothing);
+      expect(find.text(todaytitle), findsOneWidget);
     });
   });
 

@@ -61,7 +61,7 @@ void main() {
     expect(find.byType(MonthCalendarSettingsPage), findsOneWidget);
     expect(find.byType(OkButton), findsOneWidget);
     expect(find.byType(CancelButton), findsOneWidget);
-  });
+  }, skip: !Config.isMP);
 
   group('app bar setting', () {
     testWidgets('defaults', (tester) async {
@@ -145,46 +145,47 @@ void main() {
         matcher: isFalse,
       );
     });
-    group('respected in month app bar', () {
-      testWidgets('defaults', (tester) async {
-        await tester.goToMonthCalendar();
-        expect(find.byType(AbiliaClock), findsOneWidget);
-        expect(find.byIcon(AbiliaIcons.go_to_next_page), findsOneWidget);
-        expect(
-            find.byIcon(AbiliaIcons.return_to_previous_page), findsOneWidget);
-        expect(find.text('May 2021'), findsOneWidget);
-      });
+  }, skip: !Config.isMP);
 
-      testWidgets('memosettings respected', (tester) async {
-        generics = [
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
-              identifier: MemoplannerSettings.monthCaptionShowClockKey,
-              data: false,
-            ),
+  group('respected in month app bar', () {
+    testWidgets('defaults', (tester) async {
+      await tester.goToMonthCalendar();
+      expect(find.byType(AbiliaClock), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.go_to_next_page), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.return_to_previous_page), findsOneWidget);
+      expect(find.text('May 2021'), findsOneWidget);
+    });
+
+    testWidgets('memosettings respected', (tester) async {
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            identifier: MemoplannerSettings.monthCaptionShowClockKey,
+            data: false,
           ),
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
-              identifier: MemoplannerSettings.monthCaptionShowMonthButtonsKey,
-              data: false,
-            ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            identifier: MemoplannerSettings.monthCaptionShowMonthButtonsKey,
+            data: false,
           ),
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
-              identifier: MemoplannerSettings.monthCaptionShowYearKey,
-              data: false,
-            ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            identifier: MemoplannerSettings.monthCaptionShowYearKey,
+            data: false,
           ),
-        ];
-        await tester.goToMonthCalendar();
-        expect(find.byType(AbiliaClock), findsNothing);
-        expect(find.byIcon(AbiliaIcons.go_to_next_page), findsNothing);
-        expect(find.byIcon(AbiliaIcons.return_to_previous_page), findsNothing);
-        expect(find.text('May 2021'), findsNothing);
-        expect(find.text('May'), findsOneWidget);
-      });
+        ),
+      ];
+      await tester.goToMonthCalendar();
+      expect(find.byType(AbiliaClock), findsNothing);
+      expect(find.byIcon(AbiliaIcons.go_to_next_page), findsNothing);
+      expect(find.byIcon(AbiliaIcons.return_to_previous_page), findsNothing);
+      expect(find.text('May 2021'), findsNothing);
+      expect(find.text('May'), findsOneWidget);
     });
   });
+
   group('display settings', () {
     testWidgets('defaults', (tester) async {
       await tester.goToDisplayTab();
@@ -236,29 +237,29 @@ void main() {
         matcher: WeekColor.captions.index,
       );
     });
+  }, skip: !Config.isMP);
 
-    group('respected in month calendar', () {
-      testWidgets('defaults', (tester) async {
-        await tester.goToMonthCalendar();
-        final dayContainer = tester
-            .firstWidget<MonthDayContainer>(find.byType(MonthDayContainer));
-        expect(dayContainer.color, isNot(AbiliaColors.white110));
-      });
+  group('respected in month calendar', () {
+    testWidgets('defaults', (tester) async {
+      await tester.goToMonthCalendar();
+      final dayContainer =
+          tester.firstWidget<MonthDayContainer>(find.byType(MonthDayContainer));
+      expect(dayContainer.color, isNot(AbiliaColors.white110));
+    });
 
-      testWidgets('color respected', (tester) async {
-        generics = [
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
-              identifier: MemoplannerSettings.calendarMonthViewShowColorsKey,
-              data: WeekColor.captions.index,
-            ),
+    testWidgets('color respected', (tester) async {
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            identifier: MemoplannerSettings.calendarMonthViewShowColorsKey,
+            data: WeekColor.captions.index,
           ),
-        ];
-        await tester.goToMonthCalendar();
-        final dayContainer = tester
-            .firstWidget<MonthDayContainer>(find.byType(MonthDayContainer));
-        expect(dayContainer.color, AbiliaColors.white110);
-      });
+        ),
+      ];
+      await tester.goToMonthCalendar();
+      final dayContainer =
+          tester.firstWidget<MonthDayContainer>(find.byType(MonthDayContainer));
+      expect(dayContainer.color, AbiliaColors.white110);
     });
   });
 }

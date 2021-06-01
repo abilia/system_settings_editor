@@ -183,7 +183,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                           context: context,
                           builder: (context) =>
                               NotificationPermissionOffWarningDialog(
-                            onOk: AndroidIntent.openSystemAlertSetting,
+                            onOk: AndroidIntents.openSystemAlertSetting,
                           ),
                         );
                       } else {

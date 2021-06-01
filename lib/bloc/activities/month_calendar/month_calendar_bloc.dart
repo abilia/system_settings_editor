@@ -18,15 +18,16 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
   MonthCalendarBloc({
     this.activitiesBloc,
     this.clockBloc,
+    DateTime initialDay,
   }) : super(
           _mapToState(
-            clockBloc.state.firstDayOfMonth(),
-            activitiesBloc.state.activities,
+            (initialDay ?? clockBloc.state).firstDayOfMonth(),
+            activitiesBloc?.state?.activities,
             clockBloc.state,
           ),
         ) {
     _activitiesSubscription =
-        activitiesBloc.stream.listen((state) => add(UpdateMonth()));
+        activitiesBloc?.stream?.listen((state) => add(UpdateMonth()));
     _clockSubscription = clockBloc.stream
         .where((time) =>
             state.weeks
@@ -46,25 +47,25 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
     if (event is GoToNextMonth) {
       yield _mapToState(
         state.firstDay.nextMonth(),
-        activitiesBloc.state.activities,
+        activitiesBloc?.state?.activities,
         clockBloc.state,
       );
     } else if (event is GoToPreviousMonth) {
       yield _mapToState(
         state.firstDay.previousMonth(),
-        activitiesBloc.state.activities,
+        activitiesBloc?.state?.activities,
         clockBloc.state,
       );
     } else if (event is GoToCurrentMonth) {
       yield _mapToState(
         clockBloc.state.firstDayOfMonth(),
-        activitiesBloc.state.activities,
+        activitiesBloc?.state?.activities,
         clockBloc.state,
       );
     } else if (event is UpdateMonth) {
       yield _mapToState(
         state.firstDay,
-        activitiesBloc.state.activities,
+        activitiesBloc?.state?.activities,
         clockBloc.state,
       );
     }
@@ -124,6 +125,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
         : now.onlyDays().isAfter(day)
             ? Occasion.past
             : Occasion.current;
+    activities ??= [];
     final activitiesThatDay = activities
         .expand((activity) => activity.dayActivitiesForDay(day))
         .toList();
@@ -146,7 +148,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
 
   @override
   Future<void> close() async {
-    await _activitiesSubscription.cancel();
+    await _activitiesSubscription?.cancel();
     await _clockSubscription.cancel();
     return super.close();
   }

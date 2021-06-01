@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
-import 'package:seagull/config.dart';
 
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/version.dart';

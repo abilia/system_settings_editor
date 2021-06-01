@@ -249,6 +249,8 @@ abstract class Translated {
 
   final String save = 'Save';
 
+  final String endBeforeStartError = "End date can't be before start date";
+
   final String error = 'Error';
 
   final String warning = 'Warning';
@@ -992,6 +994,9 @@ class SV extends Translated {
 
   @override
   final String save = 'Spara';
+
+  @override
+  final String endBeforeStartError = 'Slutdatum kan inte vara före startdatum';
 
   @override
   final String error = 'Fel';
@@ -1926,6 +1931,9 @@ class DA extends Translated {
   final String save = 'Spare';
 
   @override
+  final String endBeforeStartError = 'Slutdato kan ikke være før startdato';
+
+  @override
   final String error = 'Fejl';
 
   @override
@@ -2855,6 +2863,10 @@ class NL extends Translated {
 
   @override
   final String save = 'Sparen';
+
+  @override
+  final String endBeforeStartError =
+      'Einddatum mag niet voor startdatum liggen';
 
   @override
   final String error = 'Fout';
@@ -3787,6 +3799,10 @@ class FI extends Translated {
 
   @override
   final String save = 'Tallentaa';
+
+  @override
+  final String endBeforeStartError =
+      'Päättymispäivä ei voi olla ennen alkamispäivää';
 
   @override
   final String error = 'Virhe';
@@ -4723,6 +4739,10 @@ class DE extends Translated {
   final String save = 'Sparen';
 
   @override
+  final String endBeforeStartError =
+      'Das Enddatum kann nicht vor dem Startdatum liegen';
+
+  @override
   final String error = 'Error';
 
   @override
@@ -5656,6 +5676,9 @@ class NB extends Translated {
 
   @override
   final String save = 'Spare';
+
+  @override
+  final String endBeforeStartError = 'Sluttdato kan ikke være før startdato';
 
   @override
   final String error = 'Feil';

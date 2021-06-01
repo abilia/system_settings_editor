@@ -60,7 +60,9 @@ class Calendars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = PageController(initialPage: DayPickerBloc.startIndex);
+    final controller = PageController(
+      initialPage: context.read<DayPickerBloc>().state.index,
+    );
     return BlocListener<DayPickerBloc, DayPickerState>(
       listener: (context, state) {
         controller.animateToPage(state.index,

@@ -75,7 +75,7 @@ void main() {
     expect(find.byType(CategoriesSettingsTab), findsNothing);
     expect(find.byType(OkButton), findsOneWidget);
     expect(find.byType(CancelButton), findsOneWidget);
-  });
+  }, skip: !Config.isMP);
 
   group('clock', () {
     testWidgets('digital clock choice saved', (tester) async {
@@ -112,49 +112,49 @@ void main() {
         matcher: ClockType.analogue.index,
       );
     });
+  }, skip: !Config.isMP);
 
-    group('clock visisbility settings', () {
-      testWidgets('Default settings digital and analogue', (tester) async {
-        // Act
-        await tester.pumpApp();
-        // Assert
-        expect(find.byType(DigitalClock), findsOneWidget);
-        expect(find.byType(AnalogClock), findsOneWidget);
-      });
+  group('clock visisbility settings', () {
+    testWidgets('Default settings digital and analogue', (tester) async {
+      // Act
+      await tester.pumpApp();
+      // Assert
+      expect(find.byType(DigitalClock), findsOneWidget);
+      expect(find.byType(AnalogClock), findsOneWidget);
+    });
 
-      testWidgets('hides digital', (tester) async {
-        // Arrange
-        generics = [
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
-              data: ClockType.analogue.index,
-              identifier: MemoplannerSettings.settingClockTypeKey,
-            ),
+    testWidgets('hides digital', (tester) async {
+      // Arrange
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: ClockType.analogue.index,
+            identifier: MemoplannerSettings.settingClockTypeKey,
           ),
-        ];
-        // Act
-        await tester.pumpApp();
-        // Assert
-        expect(find.byType(AnalogClock), findsOneWidget);
-        expect(find.byType(DigitalClock), findsNothing);
-      });
+        ),
+      ];
+      // Act
+      await tester.pumpApp();
+      // Assert
+      expect(find.byType(AnalogClock), findsOneWidget);
+      expect(find.byType(DigitalClock), findsNothing);
+    });
 
-      testWidgets('hides analog', (tester) async {
-        // Arrange
-        generics = [
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
-              data: ClockType.digital.index,
-              identifier: MemoplannerSettings.settingClockTypeKey,
-            ),
+    testWidgets('hides analog', (tester) async {
+      // Arrange
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: ClockType.digital.index,
+            identifier: MemoplannerSettings.settingClockTypeKey,
           ),
-        ];
-        // Act
-        await tester.pumpApp();
-        // Assert
-        expect(find.byType(AnalogClock), findsNothing);
-        expect(find.byType(DigitalClock), findsOneWidget);
-      });
+        ),
+      ];
+      // Act
+      await tester.pumpApp();
+      // Assert
+      expect(find.byType(AnalogClock), findsNothing);
+      expect(find.byType(DigitalClock), findsOneWidget);
     });
   });
 
@@ -290,91 +290,91 @@ void main() {
         matcher: isTrue,
       );
     });
+  }, skip: !Config.isMP);
 
-    group('timepillar settings', () {
-      testWidgets('timePillar standard settings 12h', (tester) async {
-        await tester.pumpApp(use24: false);
-        expect(find.text('1'), findsOneWidget);
-        expect(find.text('2'), findsOneWidget);
-        expect(find.text('13'), findsNothing);
-        expect(find.text('14'), findsNothing);
-        expect(
-          tester.widget<TimePillar>(find.byType(TimePillar)).columnOfDots,
-          isFalse,
-        );
-        expect(find.byType(Timeline), findsWidgets);
-        expect(find.byType(HourLines), findsNothing);
-      });
+  group('timepillar settings', () {
+    testWidgets('timePillar standard settings 12h', (tester) async {
+      await tester.pumpApp(use24: false);
+      expect(find.text('1'), findsOneWidget);
+      expect(find.text('2'), findsOneWidget);
+      expect(find.text('13'), findsNothing);
+      expect(find.text('14'), findsNothing);
+      expect(
+        tester.widget<TimePillar>(find.byType(TimePillar)).columnOfDots,
+        isFalse,
+      );
+      expect(find.byType(Timeline), findsWidgets);
+      expect(find.byType(HourLines), findsNothing);
+    });
 
-      testWidgets('timePillar standard settings 24h', (tester) async {
-        await tester.pumpApp(use24: true);
-        expect(find.text('13'), findsOneWidget);
-        expect(find.text('14'), findsOneWidget);
-        expect(find.text('1'), findsNothing);
-        expect(find.text('2'), findsNothing);
-      });
+    testWidgets('timePillar standard settings 24h', (tester) async {
+      await tester.pumpApp(use24: true);
+      expect(find.text('13'), findsOneWidget);
+      expect(find.text('14'), findsOneWidget);
+      expect(find.text('1'), findsNothing);
+      expect(find.text('2'), findsNothing);
+    });
 
-      testWidgets('12h true in 24h settings', (tester) async {
-        generics = [
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
-              data: true,
-              identifier: MemoplannerSettings.setting12hTimeFormatTimelineKey,
-            ),
+    testWidgets('12h true in 24h settings', (tester) async {
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: true,
+            identifier: MemoplannerSettings.setting12hTimeFormatTimelineKey,
           ),
-          timepillarGeneric,
-        ];
-        await tester.pumpApp(use24: true);
-        expect(find.text('1'), findsOneWidget);
-        expect(find.text('2'), findsOneWidget);
-        expect(find.text('13'), findsNothing);
-        expect(find.text('14'), findsNothing);
-      });
+        ),
+        timepillarGeneric,
+      ];
+      await tester.pumpApp(use24: true);
+      expect(find.text('1'), findsOneWidget);
+      expect(find.text('2'), findsOneWidget);
+      expect(find.text('13'), findsNothing);
+      expect(find.text('14'), findsNothing);
+    });
 
-      testWidgets('column of red dots', (tester) async {
-        generics = [
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
-              data: true,
-              identifier: MemoplannerSettings.settingTimePillarTimelineKey,
-            ),
+    testWidgets('column of red dots', (tester) async {
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: true,
+            identifier: MemoplannerSettings.settingTimePillarTimelineKey,
           ),
-          timepillarGeneric,
-        ];
-        await tester.pumpApp(use24: false);
-        expect(
-          tester.widget<TimePillar>(find.byType(TimePillar)).columnOfDots,
-          isTrue,
-        );
-      });
+        ),
+        timepillarGeneric,
+      ];
+      await tester.pumpApp(use24: false);
+      expect(
+        tester.widget<TimePillar>(find.byType(TimePillar)).columnOfDots,
+        isTrue,
+      );
+    });
 
-      testWidgets('time line hides', (tester) async {
-        generics = [
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
-              data: false,
-              identifier: MemoplannerSettings.settingDisplayTimelineKey,
-            ),
+    testWidgets('time line hides', (tester) async {
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MemoplannerSettings.settingDisplayTimelineKey,
           ),
-          timepillarGeneric,
-        ];
-        await tester.pumpApp(use24: false);
-        expect(find.byType(Timeline), findsNothing);
-      });
+        ),
+        timepillarGeneric,
+      ];
+      await tester.pumpApp(use24: false);
+      expect(find.byType(Timeline), findsNothing);
+    });
 
-      testWidgets('HourLines shows', (tester) async {
-        generics = [
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
-              data: true,
-              identifier: MemoplannerSettings.settingDisplayHourLinesKey,
-            ),
+    testWidgets('HourLines shows', (tester) async {
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: true,
+            identifier: MemoplannerSettings.settingDisplayHourLinesKey,
           ),
-          timepillarGeneric,
-        ];
-        await tester.pumpApp(use24: false);
-        expect(find.byType(HourLines), findsWidgets);
-      });
+        ),
+        timepillarGeneric,
+      ];
+      await tester.pumpApp(use24: false);
+      expect(find.byType(HourLines), findsWidgets);
     });
   });
 }

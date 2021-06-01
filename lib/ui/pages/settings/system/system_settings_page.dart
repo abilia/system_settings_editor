@@ -1,5 +1,5 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
+import 'package:seagull/fakes/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -32,6 +32,7 @@ class SystemSettingsPage extends StatelessWidget {
           text: t.logout,
           navigateTo: LogoutPage(),
         ),
+        if (Config.alpha) const FakeTicker(),
       ],
     );
   }
@@ -45,7 +46,7 @@ class AndroidSettingsPickField extends StatelessWidget {
     return PickField(
       leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
       text: Text(Translator.of(context).translate.androidSettings),
-      onTap: AndroidIntent.openSettings,
+      onTap: AndroidIntents.openSettings,
     );
   }
 }

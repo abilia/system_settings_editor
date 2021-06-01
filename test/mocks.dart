@@ -10,10 +10,10 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/logging.dart';
@@ -22,9 +22,9 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/widget_test_keys.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+export 'utils/verify_generic.dart';
 
 extension MockSharedPreferences on SharedPreferences {
   static Future<SharedPreferences> getInstance({bool loggedIn = true}) {
@@ -276,13 +276,11 @@ extension TapLink on CommonFinders {
 Set<Permission> checkedPermissions = {};
 Set<Permission> requestedPermissions = {};
 int openAppSettingsCalls = 0;
-int openSystemAlertSettingCalls = 0;
 void setupPermissions(
     [Map<Permission, PermissionStatus> permissions = const {}]) {
   checkedPermissions = {};
   requestedPermissions = {};
   openAppSettingsCalls = 0;
-  openSystemAlertSettingCalls = 0;
   MethodChannel('flutter.baseflow.com/permissions/methods')
       .setMockMethodCallHandler(
     (MethodCall methodCall) async {
@@ -303,18 +301,6 @@ void setupPermissions(
         case 'openAppSettings':
           openAppSettingsCalls++;
           break;
-      }
-    },
-  );
-  MethodChannel('intent').setMockMethodCallHandler(
-    (MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'startActivity':
-          if (methodCall.arguments['data'] == 'package:packageName' &&
-              methodCall.arguments['action'] ==
-                  AndroidIntentAction.manageOverlay) {
-            openSystemAlertSettingCalls++;
-          }
       }
     },
   );
