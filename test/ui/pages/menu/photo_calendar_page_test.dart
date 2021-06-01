@@ -11,7 +11,7 @@ import 'package:seagull/main.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../mocks.dart';
+import '../../../mocks.dart';
 
 void main() {
   final initialTime = DateTime(2021, 04, 17, 09, 20);
