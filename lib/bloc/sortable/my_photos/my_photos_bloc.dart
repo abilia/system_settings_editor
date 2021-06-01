@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:intl/intl.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/sortable/sortable.dart';
 import 'package:collection/collection.dart';
+import 'package:seagull/storage/all.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 part 'my_photos_state.dart';
@@ -33,6 +36,9 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
     if (event is SortablesArrived) {
       yield* _mapSortablesArrivedToState(event);
     }
+    if (event is PhotoAdded) {
+      yield* _mapPhotoAddedtoState(event);
+    }
   }
 
   Stream<MyPhotosState> _mapSortablesArrivedToState(
@@ -54,7 +60,36 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
     }
   }
 
-  void generateMyPhotosFolder(Iterable<Sortable<ImageArchiveData>> sortables) {
+  Stream<MyPhotosState> _mapPhotoAddedtoState(PhotoAdded event) async* {
+    final sortablesState = sortableBloc.state;
+    if (sortablesState is SortablesLoaded) {
+      final imageArchiveSortables =
+          sortablesState.sortables.whereType<Sortable<ImageArchiveData>>();
+      final myPhotosFolder = imageArchiveSortables.getMyPhotosFolder() ??
+          generateMyPhotosFolder(imageArchiveSortables);
+      final sortableData = ImageArchiveData(
+        name: event.name,
+        file: '${FileStorage.folder}/${event.imageId}',
+        fileId: event.imageId,
+      );
+      final myPhotosFolderContent = sortablesState.sortables
+          .where((s) => s.groupId == myPhotosFolder.id)
+          .toList();
+      myPhotosFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+      final sortOrder = myPhotosFolderContent.isEmpty
+          ? getStartSortOrder()
+          : calculateNextSortOrder(myPhotosFolderContent.last.sortOrder, 1);
+      final newSortable = Sortable.createNew<ImageArchiveData>(
+        data: sortableData,
+        groupId: myPhotosFolder.id,
+        sortOrder: sortOrder,
+      );
+      sortableBloc.add(SortableUpdated(newSortable));
+    }
+  }
+
+  Sortable<ImageArchiveData> generateMyPhotosFolder(
+      Iterable<Sortable<ImageArchiveData>> sortables) {
     final sortOrder = sortables.firstSortOrderInFolder(null);
 
     final sortableData = ImageArchiveData(
@@ -71,6 +106,7 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
     );
 
     sortableBloc.add(SortableUpdated(myPhotos));
+    return myPhotos;
   }
 
   @override
