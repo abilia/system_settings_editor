@@ -10,7 +10,7 @@ import 'package:seagull/getit.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../mocks.dart';
+import '../../../mocks.dart';
 
 void main() {
   group('Photo calendar page', () {

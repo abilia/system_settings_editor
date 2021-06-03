@@ -12,6 +12,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     @required this.libraryItemGenerator,
     @required this.emptyLibraryMessage,
     @required this.onOk,
+    this.libraryFolderGenerator,
     this.onCancel,
     this.appBar,
     this.rootHeading,
@@ -21,6 +22,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final VoidCallback onCancel;
   final LibraryItemGenerator<T> selectedItemGenerator;
   final LibraryItemGenerator<T> libraryItemGenerator;
+  final LibraryItemGenerator<T> libraryFolderGenerator;
   final String emptyLibraryMessage, rootHeading;
 
   @override
@@ -49,6 +51,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                     : SortableLibrary<T>(
                         libraryItemGenerator,
                         emptyLibraryMessage,
+                        libraryFolderGenerator: libraryFolderGenerator,
                       ),
               ),
             ],
@@ -134,9 +137,14 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
 class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
+  final LibraryItemGenerator<T> libraryFolderGenerator;
   final String emptyLibraryMessage;
 
-  SortableLibrary(this.libraryItemGenerator, this.emptyLibraryMessage);
+  SortableLibrary(
+    this.libraryItemGenerator,
+    this.emptyLibraryMessage, {
+    this.libraryFolderGenerator,
+  });
 
   @override
   _SortableLibraryState<T> createState() => _SortableLibraryState<T>();
@@ -181,14 +189,22 @@ class _SortableLibraryState<T extends SortableData>
             children: currentFolderContent
                 .map(
                   (sortable) => sortable.isGroup
-                      ? LibraryFolder(
-                          title: sortable.data.title(),
-                          fileId: sortable.data.folderFileId(),
-                          filePath: sortable.data.folderFilePath(),
-                          onTap: () {
-                            BlocProvider.of<SortableArchiveBloc<T>>(context)
-                                .add(FolderChanged(sortable.id));
-                          },
+                      ? Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius: borderRadius,
+                            onTap: () {
+                              BlocProvider.of<SortableArchiveBloc<T>>(context)
+                                  .add(FolderChanged(sortable.id));
+                            },
+                            child: widget.libraryFolderGenerator == null
+                                ? LibraryFolder(
+                                    title: sortable.data.title(),
+                                    fileId: sortable.data.folderFileId(),
+                                    filePath: sortable.data.folderFilePath(),
+                                  )
+                                : widget.libraryFolderGenerator(sortable),
+                          ),
                         )
                       : Material(
                           type: MaterialType.transparency,
@@ -242,15 +258,15 @@ class EmptyLibraryMessage extends StatelessWidget {
 }
 
 class LibraryFolder extends StatelessWidget {
-  final GestureTapCallback onTap;
   final String title, fileId, filePath;
+  final Color color;
 
   const LibraryFolder({
     Key key,
-    @required this.onTap,
     @required this.title,
-    @required this.fileId,
-    @required this.filePath,
+    this.fileId,
+    this.filePath,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -260,50 +276,43 @@ class LibraryFolder extends StatelessWidget {
         label: title,
         button: true,
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: borderRadius,
-          child: Padding(
-            padding: EdgeInsets.all(4.0.s),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  title,
-                  style: abiliaTextTheme.caption,
-                  overflow: TextOverflow.ellipsis,
+      child: Padding(
+        padding: EdgeInsets.all(4.0.s),
+        child: Column(
+          children: <Widget>[
+            Text(
+              title,
+              style: abiliaTextTheme.caption,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 2.s),
+            Stack(
+              children: [
+                Icon(
+                  AbiliaIcons.folder,
+                  size: 86.s,
+                  color: color ?? AbiliaColors.orange,
                 ),
-                SizedBox(height: 2.s),
-                Stack(
-                  children: [
-                    Icon(
-                      AbiliaIcons.folder,
-                      size: 86.s,
-                      color: AbiliaColors.orange,
-                    ),
-                    Positioned(
-                      bottom: 16.s,
-                      left: 10.s,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(6.s),
-                        child: Align(
-                          alignment: Alignment.center,
-                          heightFactor: 42 / 66,
-                          child: FadeInAbiliaImage(
-                            imageFileId: fileId,
-                            imageFilePath: filePath,
-                            width: 66.s,
-                            height: 66.s,
-                          ),
-                        ),
+                Positioned(
+                  bottom: 16.s,
+                  left: 10.s,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6.s),
+                    child: Align(
+                      alignment: Alignment.center,
+                      heightFactor: 42 / 66,
+                      child: FadeInAbiliaImage(
+                        imageFileId: fileId,
+                        imageFilePath: filePath,
+                        width: 66.s,
+                        height: 66.s,
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

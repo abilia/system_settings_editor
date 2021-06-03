@@ -12,10 +12,9 @@ part 'sortable_archive_state.dart';
 
 class SortableArchiveBloc<T extends SortableData>
     extends Bloc<SortableArchiveEvent, SortableArchiveState<T>> {
-  final SortableBloc sortableBloc;
   StreamSubscription sortableSubscription;
 
-  SortableArchiveBloc({@required this.sortableBloc})
+  SortableArchiveBloc({@required SortableBloc sortableBloc})
       : super(SortableArchiveState({}, {}, null)) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
