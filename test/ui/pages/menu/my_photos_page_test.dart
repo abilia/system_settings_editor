@@ -54,24 +54,22 @@ void main() {
 
   tearDown(GetIt.I.reset);
 
-  group(
-    'My photos page',
-    () {
-      testWidgets('The page shows and my photos folder is created',
-          (tester) async {
-        await tester.goToMyPhotos();
-        expect(find.byType(MyPhotosPage), findsOneWidget);
-        await verifyMyPhotosCreated(tester, sortableDb);
-      });
+  group('My photos page', () {
+    testWidgets('The page shows and my photos folder is created',
+        (tester) async {
+      await tester.goToMyPhotos();
+      expect(find.byType(MyPhotosPage), findsOneWidget);
+      await verifyMyPhotosCreated(tester, sortableDb);
+    });
 
-      testWidgets('Can navigate back to menu', (tester) async {
-        await tester.goToMyPhotos();
-        expect(find.byType(MyPhotosPage), findsOneWidget);
-        await tester.tap(find.byType(CloseButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(MenuPage), findsOneWidget);
-      });
-    }, skip: !Config.isMP);
+    testWidgets('Can navigate back to menu', (tester) async {
+      await tester.goToMyPhotos();
+      expect(find.byType(MyPhotosPage), findsOneWidget);
+      await tester.tap(find.byType(CloseButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsOneWidget);
+    });
+  }, skip: !Config.isMP);
 }
 
 extension on WidgetTester {
