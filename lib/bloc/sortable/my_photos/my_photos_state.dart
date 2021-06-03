@@ -12,9 +12,7 @@ class MyPhotosState extends Equatable {
   });
 
   List<Sortable<ImageArchiveData>> get currentFolderContent =>
-      allByFolder.containsKey(currentFolderId)
-          ? allByFolder[currentFolderId]
-          : [];
+      allByFolder[currentFolderId] ?? [];
 
   @override
   List<Object> get props => [
