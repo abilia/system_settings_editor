@@ -43,6 +43,9 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     if (event is ImageArchiveImageAdded) {
       yield* _mapImageArchiveImageAddedToState(event);
     }
+    if (event is SortableUpdated) {
+      yield* _mapSortableUpdatedToState(event);
+    }
   }
 
   Stream<SortableState> _mapLoadSortablesToState() async* {
@@ -85,6 +88,16 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       yield SortablesLoaded(
         sortables: currentState.sortables.followedBy([newSortable]),
       );
+    }
+  }
+
+  Stream<SortableState> _mapSortableUpdatedToState(
+      SortableUpdated event) async* {
+    final currentState = state;
+    if (currentState is SortablesLoaded) {
+      await sortableRepository.save([event.sortable]);
+      yield* _mapLoadSortablesToState();
+      syncBloc.add(SortableSaved());
     }
   }
 

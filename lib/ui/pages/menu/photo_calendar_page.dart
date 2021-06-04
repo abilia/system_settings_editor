@@ -89,6 +89,10 @@ class PhotoCalendarPage extends StatelessWidget {
 class SlideShow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final poppyImage = Image.asset(
+      'assets/graphics/poppy_field.jpg',
+      fit: BoxFit.cover,
+    );
     return BlocProvider<SlideShowCubit>(
       create: (context) => SlideShowCubit(
         sortableBloc: context.read<SortableBloc>(),
@@ -107,15 +111,9 @@ class SlideShow extends StatelessWidget {
                     ? PhotoCalendarImage(
                         fileId: state.currentFileId,
                         filePath: state.currentPath,
-                        errorContent: Image.asset(
-                          'assets/graphics/poppy_field.jpg',
-                          fit: BoxFit.cover,
-                        ),
+                        errorContent: poppyImage,
                       )
-                    : Image.asset(
-                        'assets/graphics/poppy_field.jpg',
-                        fit: BoxFit.cover,
-                      ),
+                    : poppyImage,
               ),
             ),
           );

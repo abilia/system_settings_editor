@@ -31,11 +31,7 @@ class SortableRepository extends DataRepository<Sortable> {
   Future<Sortable> generateUploadFolder() async {
     return synchronized(() async {
       final all = await db.getAllNonDeleted();
-      final root = all.where((s) => s.groupId == null).toList();
-      root.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-      final sortOrder = root.isEmpty
-          ? getStartSortOrder()
-          : calculateNextSortOrder(root.first.sortOrder, -1);
+      final sortOrder = all.firstSortOrderInFolder(null);
 
       final sortableData = ImageArchiveData(
         name: 'myAbilia',

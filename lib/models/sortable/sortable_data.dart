@@ -33,7 +33,7 @@ class RawSortableData extends SortableData {
 
 class ImageArchiveData extends SortableData {
   final String name, fileId, icon, file;
-  final bool upload;
+  final bool upload, myPhotos;
 
   const ImageArchiveData({
     this.name = '',
@@ -41,6 +41,7 @@ class ImageArchiveData extends SortableData {
     this.fileId = '',
     this.icon = '',
     this.upload = false,
+    this.myPhotos = false,
   }) : super();
 
   @override
@@ -50,6 +51,7 @@ class ImageArchiveData extends SortableData {
         if (icon.isNotEmpty) 'icon': icon,
         if (file.isNotEmpty) 'file': file,
         if (upload) 'upload': upload,
+        if (myPhotos) 'myPhotos': myPhotos,
       });
 
   @override
@@ -63,6 +65,7 @@ class ImageArchiveData extends SortableData {
       icon: sortableData['icon'] ?? '',
       file: sortableData['file'] ?? '',
       upload: sortableData['upload'] ?? false,
+      myPhotos: sortableData['myPhotos'] ?? false,
     );
   }
 

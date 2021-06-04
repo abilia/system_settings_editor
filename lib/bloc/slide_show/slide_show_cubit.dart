@@ -59,22 +59,21 @@ class SlideShowCubit extends Cubit<SlideShowState> {
   }
 
   static SlideShowState sortablesToState(Iterable<Sortable> sortables) {
-    try {
-      final uploadFolder = sortables.getUploadFolder();
-      final imageArchiveSortables =
-          sortables.whereType<Sortable<ImageArchiveData>>();
-      final allByFolder = groupBy<Sortable<ImageArchiveData>, String>(
-          imageArchiveSortables, (s) => s.groupId);
-      final allInUploadFolder = allByFolder.containsKey(uploadFolder.id)
-          ? allByFolder[uploadFolder.id]
-          : [];
-      return SlideShowState(
-        currentIndex: 0,
-        slideShowFolderContent: allInUploadFolder..shuffle(),
-      );
-    } catch (e) {
+    final myPhotosFolder = sortables.getMyPhotosFolder();
+    if (myPhotosFolder == null) {
       return SlideShowState.empty();
     }
+    final imageArchiveSortables =
+        sortables.whereType<Sortable<ImageArchiveData>>();
+    final allByFolder = groupBy<Sortable<ImageArchiveData>, String>(
+        imageArchiveSortables, (s) => s.groupId);
+    final allInMyPhotosRoot = allByFolder.containsKey(myPhotosFolder.id)
+        ? allByFolder[myPhotosFolder.id].where((e) => !e.isGroup).toList()
+        : [];
+    return SlideShowState(
+      currentIndex: 0,
+      slideShowFolderContent: allInMyPhotosRoot..shuffle(),
+    );
   }
 
   @override
