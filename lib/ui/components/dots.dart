@@ -10,6 +10,9 @@ import 'package:seagull/utils/all.dart';
 
 final pastDotShape =
         ShapeDecoration(shape: CircleBorder(side: BorderSide(width: 1.0.s))),
+    pastNightDotShape = ShapeDecoration(
+        shape: CircleBorder(
+            side: BorderSide(color: AbiliaColors.blue, width: 1.0.s))),
     pastSideDotShape = ShapeDecoration(
         shape: CircleBorder(
             side: BorderSide(color: AbiliaColors.black, width: 1.0.s)));
@@ -19,8 +22,6 @@ const futureDotShape =
         ShapeDecoration(color: Colors.transparent, shape: CircleBorder()),
     currentDotShape =
         ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder()),
-    pastNightDotShape =
-        ShapeDecoration(color: AbiliaColors.white140, shape: CircleBorder()),
     futureNightDotShape =
         ShapeDecoration(color: AbiliaColors.blue, shape: CircleBorder()),
     futureSideDotShape =
@@ -34,7 +35,7 @@ class PastDots extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => isNight
-      ? const Dots(decoration: pastNightDotShape)
+      ? Dots(decoration: pastNightDotShape)
       : Dots(decoration: pastDotShape);
 }
 
@@ -72,7 +73,7 @@ class TodayDots extends StatelessWidget {
               return const AnimatedDot(decoration: currentDotShape);
             }
             if (isNight) {
-              return const AnimatedDot(decoration: pastNightDotShape);
+              return AnimatedDot(decoration: pastNightDotShape);
             }
             return AnimatedDot(decoration: pastDotShape);
           },
@@ -174,7 +175,7 @@ class SideDots extends StatelessWidget {
                 return const AnimatedDot(decoration: currentDotShape);
               }
               if (dotStartTime.isNight(dayParts)) {
-                return const AnimatedDot(decoration: pastNightDotShape);
+                return AnimatedDot(decoration: pastNightDotShape);
               }
               return AnimatedDot(decoration: pastSideDotShape);
             },
