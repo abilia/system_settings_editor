@@ -21,7 +21,8 @@ class LockService : Service() {
             if (!isLocked) {
 
                 devicePolicyManager.setLockTaskPackages(
-                        adminComponentName, arrayOf(packageName))
+                        adminComponentName,
+                        com.abilia.memoplanner.DeviceAdminReceiver.allowedApps(packageName))
             } else {
 
                 devicePolicyManager.setLockTaskPackages(adminComponentName, arrayOf<String>())
