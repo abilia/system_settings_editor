@@ -17,9 +17,7 @@ flutter doctor
 echo "Installed flutter to `pwd`/flutter"
 
 # run tests
-flutter test
-flutter test --dart-define flavor=mp
-
+flutter test --dart-define flavor=$flavor
 echo "Building APK"
 flutter build apk --flavor $flavor --release --build-number=$APPCENTER_BUILD_ID --dart-define release=$release --dart-define flavor=$flavor
 # copy the APK where AppCenter will find it
