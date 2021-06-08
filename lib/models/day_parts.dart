@@ -33,17 +33,17 @@ class DayParts extends Equatable {
     this.dayStart,
     this.eveningStart,
     this.nightStart,
-  )   : assert(morningStart >= limits[DayPart.morning].min),
-        assert(morningStart <= limits[DayPart.morning].max),
+  )   : assert(morningStart >= limits[DayPart.morning]!.min),
+        assert(morningStart <= limits[DayPart.morning]!.max),
         assert(morningStart <= dayStart - Duration.millisecondsPerHour),
-        assert(dayStart >= limits[DayPart.day].min),
-        assert(dayStart <= limits[DayPart.day].max),
+        assert(dayStart >= limits[DayPart.day]!.min),
+        assert(dayStart <= limits[DayPart.day]!.max),
         assert(dayStart <= eveningStart - Duration.millisecondsPerHour),
-        assert(eveningStart >= limits[DayPart.evening].min),
-        assert(eveningStart <= limits[DayPart.evening].max),
+        assert(eveningStart >= limits[DayPart.evening]!.min),
+        assert(eveningStart <= limits[DayPart.evening]!.max),
         assert(eveningStart <= nightStart - Duration.millisecondsPerHour),
-        assert(nightStart >= limits[DayPart.night].min),
-        assert(nightStart <= limits[DayPart.night].max);
+        assert(nightStart >= limits[DayPart.night]!.min),
+        assert(nightStart <= limits[DayPart.night]!.max);
 
   int fromDayPart(DayPart dayPart) {
     switch (dayPart) {

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -66,12 +68,13 @@ void main() {
           )
           .then((_) => tester.pumpAndSettle());
 
-  setUp(() {
-    initializeDateFormatting();
+  setUp(() async {
+    await initializeDateFormatting();
     GetItInitializer()
       ..fileStorage = MockFileStorage()
       ..database = MockDatabase()
       ..flutterTts = MockFlutterTts()
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..init();
   });
 

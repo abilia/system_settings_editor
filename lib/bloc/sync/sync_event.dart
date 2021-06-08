@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'sync_bloc.dart';
 
 abstract class SyncEvent extends Equatable {

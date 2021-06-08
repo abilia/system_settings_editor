@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'calendar_view_bloc.dart';
 
 class CalendarViewState extends Equatable {

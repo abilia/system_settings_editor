@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 class DataUpdateResponse extends Equatable {
   final int previousRevision;
@@ -13,10 +12,10 @@ class DataUpdateResponse extends Equatable {
         succeded = _parseDataRevisionUpdates(json['dataRevisionUpdates']);
 
   static UnmodifiableListView<DataRevisionUpdate> _parseDataRevisionUpdates(
-          List jsonList) =>
+          List? jsonList) =>
       UnmodifiableListView(jsonList
               ?.whereType<Map<String, dynamic>>()
-              ?.map(DataRevisionUpdate.fromJson) ??
+              .map(DataRevisionUpdate.fromJson) ??
           []);
   @override
   String toString() =>
@@ -31,7 +30,11 @@ class DataUpdateResponse extends Equatable {
 class DataRevisionUpdate extends Equatable {
   final String id;
   final int revision, oldRevision;
-  const DataRevisionUpdate({this.id, this.revision, this.oldRevision});
+  const DataRevisionUpdate({
+    required this.id,
+    required this.revision,
+    required this.oldRevision,
+  });
   static DataRevisionUpdate fromJson(Map<String, dynamic> json) =>
       DataRevisionUpdate(
         id: json['id'],
@@ -50,12 +53,13 @@ class ResponseError {
   final String message;
 
   ResponseError({
-    @required this.code,
-    @required this.message,
+    required this.code,
+    required this.message,
   });
 
   static ResponseError fromJson(Map<String, dynamic> data) {
-    return ResponseError(code: data['code'], message: data['message']);
+    return ResponseError(
+        code: data['code'] ?? '', message: data['message'] ?? '');
   }
 }
 

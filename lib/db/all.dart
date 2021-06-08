@@ -1,3 +1,5 @@
+// @dart=2.9
+
 export 'package:sqflite/sqlite_api.dart';
 export 'activity_db.dart';
 export 'baseurl_db.dart';

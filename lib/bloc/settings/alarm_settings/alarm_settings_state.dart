@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'alarm_settings_cubit.dart';
 
 class AlarmSettingsState extends Equatable {

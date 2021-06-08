@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'slide_show_cubit.dart';
 
 class SlideShowState extends Equatable {

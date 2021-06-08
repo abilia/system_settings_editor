@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -217,30 +219,30 @@ void main() {
     );
 
     final expectedSettingsData = [
-      MemoplannerSettingData.fromData(
+      MemoplannerSettingData<dynamic>.fromData(
         data: false,
         identifier: MemoplannerSettings.functionMenuDisplayWeekKey,
       ),
-      MemoplannerSettingData.fromData(
+      MemoplannerSettingData<dynamic>.fromData(
         data: false,
         identifier: MemoplannerSettings.functionMenuDisplayMonthKey,
       ),
-      MemoplannerSettingData.fromData(
+      MemoplannerSettingData<dynamic>.fromData(
         data: false,
         identifier: MemoplannerSettings.functionMenuDisplayNewActivityKey,
       ),
-      MemoplannerSettingData.fromData(
+      MemoplannerSettingData<dynamic>.fromData(
           data: false,
           identifier: MemoplannerSettings.functionMenuDisplayMenuKey),
-      MemoplannerSettingData.fromData(
+      MemoplannerSettingData<dynamic>.fromData(
         data: 0,
         identifier: MemoplannerSettings.activityTimeoutKey,
       ),
-      MemoplannerSettingData.fromData(
+      MemoplannerSettingData<dynamic>.fromData(
         data: false, // if timeout is 0 screensaver should be false
         identifier: MemoplannerSettings.useScreensaverKey,
       ),
-      MemoplannerSettingData.fromData(
+      MemoplannerSettingData<dynamic>.fromData(
         data: StartView.photoAlbum.index,
         identifier: MemoplannerSettings.functionMenuStartViewKey,
       ),

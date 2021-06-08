@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -19,14 +18,15 @@ extension IterableActivity on Iterable<Activity> {
       endTimeTest: (a) => a.end.isAtSameMomentAs(time),
       reminderTest: (rs) => rs.notificationTime.isAtSameMomentAs(time));
 
-  List<NotificationAlarm> _alarmsFor(DateTime time,
-      {bool Function(ActivityDay) startTimeTest,
-      bool Function(ActivityDay) endTimeTest,
-      bool Function(NotificationAlarm) reminderTest}) {
+  List<NotificationAlarm> _alarmsFor(
+    DateTime time, {
+    required bool Function(ActivityDay) startTimeTest,
+    required bool Function(ActivityDay) endTimeTest,
+    required bool Function(NotificationAlarm) reminderTest,
+  }) {
     final day = time.onlyDays();
     final activitiesThisDay = where((a) => !a.fullDay)
         .expand((a) => a.dayActivitiesForDay(day))
-        .where((e) => e != null)
         .toList();
     final activitiesWithAlarm =
         activitiesThisDay.where((ad) => ad.activity.alarm.shouldAlarm);
@@ -82,9 +82,9 @@ extension IterableActivity on Iterable<Activity> {
 
   Iterable<NotificationAlarm> _alarmsForDay(
     DateTime day, {
-    @required DateTime notBefore,
-    @required int take,
-    @required int depth,
+    required DateTime notBefore,
+    required int take,
+    required int depth,
   }) {
     if (depth < 0) return <NotificationAlarm>[];
 

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'create_account_bloc.dart';
 
 class CreateAccountState extends Equatable {

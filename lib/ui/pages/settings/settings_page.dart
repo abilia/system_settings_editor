@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/pages/settings/image_picker_settings_page.dart';
 import 'package:seagull/ui/pages/settings/menu_settings_page.dart';

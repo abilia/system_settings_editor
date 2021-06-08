@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'add_activity_settings_cubit.dart';
 
 class AddActivitySettingsState extends Equatable {

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -26,7 +28,7 @@ void main() {
   MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   final textStyle = abiliaTextTheme.caption;
 
-  setUp(() {
+  setUp(() async {
     streamController = StreamController<DateTime>();
     stream = streamController.stream;
     mockSettingsDb = MockSettingsDb();
@@ -37,6 +39,8 @@ void main() {
     )));
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..database = MockDatabase()
       ..init();
   });
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 
 final yMd = DateFormat('y-MM-dd').format;
@@ -39,14 +38,14 @@ extension DateTimeExtensions on DateTime {
   DateTime firstInWeek() => subtract(Duration(days: weekday - 1)).onlyDays();
 
   DateTime copyWith(
-          {int year,
-          int month,
-          int day,
-          int hour,
-          int minute,
-          int second,
-          int millisecond,
-          int microsecond}) =>
+          {int? year,
+          int? month,
+          int? day,
+          int? hour,
+          int? minute,
+          int? second,
+          int? millisecond,
+          int? microsecond}) =>
       DateTime(
           year ?? this.year,
           month ?? this.month,
@@ -69,7 +68,7 @@ extension DateTimeExtensions on DateTime {
       onlyDays().isAfter(otherDate.onlyDays());
 
   bool inInclusiveRange(
-      {@required DateTime startDate, @required DateTime endDate}) {
+      {required DateTime startDate, required DateTime endDate}) {
     if (endDate.isBefore(startDate)) return false;
     if (isBefore(endDate) && isAfter(startDate)) return true;
     if (isAtSameMomentAs(startDate)) return true;
@@ -78,7 +77,7 @@ extension DateTimeExtensions on DateTime {
   }
 
   bool inRangeWithInclusiveStart(
-      {@required DateTime startDate, @required DateTime endDate}) {
+      {required DateTime startDate, required DateTime endDate}) {
     if (endDate.isBefore(startDate)) return false;
     if (isBefore(endDate) && isAfter(startDate)) return true;
     if (isAtSameMomentAs(startDate)) return true;
@@ -86,7 +85,7 @@ extension DateTimeExtensions on DateTime {
   }
 
   bool inExclusiveRange(
-      {@required DateTime startDate, @required DateTime endDate}) {
+      {required DateTime startDate, required DateTime endDate}) {
     if (endDate.isBefore(startDate)) return false;
     if (isBefore(endDate) && isAfter(startDate)) return true;
     return false;

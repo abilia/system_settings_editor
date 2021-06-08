@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'month_calendar_bloc.dart';
 
 class MonthCalendarState extends Equatable {

@@ -36,38 +36,36 @@ class ImageArchiveData extends SortableData {
   final bool upload, myPhotos;
 
   const ImageArchiveData({
-    this.name,
-    this.fileId,
-    this.icon,
-    this.file,
-    this.upload,
-    this.myPhotos,
+    this.name = '',
+    this.file = '',
+    this.fileId = '',
+    this.icon = '',
+    this.upload = false,
+    this.myPhotos = false,
   }) : super();
-
-  bool get isMyPhotos => myPhotos ?? false;
 
   @override
   String toRaw() => json.encode({
-        if (name != null) 'name': name,
-        if (fileId != null) 'fileId': fileId,
-        if (icon != null) 'icon': icon,
-        if (file != null) 'file': file,
-        if (upload != null) 'upload': upload,
-        if (myPhotos != null) 'myPhotos': myPhotos,
+        if (name.isNotEmpty) 'name': name,
+        if (fileId.isNotEmpty) 'fileId': fileId,
+        if (icon.isNotEmpty) 'icon': icon,
+        if (file.isNotEmpty) 'file': file,
+        if (upload) 'upload': upload,
+        if (myPhotos) 'myPhotos': myPhotos,
       });
 
   @override
-  List<Object> get props => [name, fileId, icon, file];
+  List<Object?> get props => [name, fileId, icon, file];
 
   factory ImageArchiveData.fromJson(String data) {
     final sortableData = json.decode(data);
     return ImageArchiveData(
-      name: sortableData['name'],
-      fileId: sortableData['fileId'],
-      icon: sortableData['icon'],
-      file: sortableData['file'],
-      upload: sortableData['upload'],
-      myPhotos: sortableData['myPhotos'],
+      name: sortableData['name'] ?? '',
+      fileId: sortableData['fileId'] ?? '',
+      icon: sortableData['icon'] ?? '',
+      file: sortableData['file'] ?? '',
+      upload: sortableData['upload'] ?? false,
+      myPhotos: sortableData['myPhotos'] ?? false,
     );
   }
 
@@ -84,7 +82,12 @@ class ImageArchiveData extends SortableData {
 class NoteData extends SortableData {
   final String name, text, icon, fileId;
 
-  NoteData({this.name, this.text, this.icon, this.fileId});
+  NoteData({
+    this.name = '',
+    this.text = '',
+    this.icon = '',
+    this.fileId = '',
+  });
 
   @override
   String toRaw() => json.encode({
@@ -127,9 +130,7 @@ class ChecklistData extends SortableData {
 
   @override
   String toRaw() => json.encode({
-        'checkItems': checklist.questions != null
-            ? List.from(checklist.questions.map((x) => x.toJson()))
-            : List.empty(),
+        'checkItems': List.from(checklist.questions.map((x) => x.toJson())),
         'image': checklist.image,
         'name': checklist.name,
         'fileId': checklist.fileId,
@@ -179,8 +180,8 @@ class BasicActivityDataItem extends BasicActivityData {
     this.fullDay = false,
     this.removeAfter = false,
     this.secret = false,
-    this.fileId,
-    this.icon,
+    this.fileId = '',
+    this.icon = '',
     this.info = '',
     this.reminders = '',
     this.activityTitle = '',
@@ -208,13 +209,12 @@ class BasicActivityDataItem extends BasicActivityData {
   }
 
   factory BasicActivityDataItem.createNew({
-    @required String title,
+    required String title,
   }) {
     return BasicActivityDataItem._(activityTitle: title);
   }
 
-  bool get hasImage =>
-      (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
+  bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
 
   @override
   String folderFileId() => fileId;
@@ -241,7 +241,7 @@ class BasicActivityDataItem extends BasicActivityData {
       ];
 
   @override
-  String title() => activityTitle ?? name;
+  String title() => activityTitle.isEmpty ? name : activityTitle;
 
   @override
   String toRaw() => json.encode({
@@ -262,8 +262,8 @@ class BasicActivityDataItem extends BasicActivityData {
       });
 
   Activity toActivity({
-    @required String timezone,
-    @required DateTime day,
+    required String timezone,
+    required DateTime day,
   }) {
     return Activity.createNew(
       title: activityTitle,
@@ -271,8 +271,7 @@ class BasicActivityDataItem extends BasicActivityData {
       timezone: timezone,
       alarmType: alarmType,
       category: category,
-      duration:
-          duration == null ? 0.seconds() : Duration(milliseconds: duration),
+      duration: Duration(milliseconds: duration),
       checkable: checkable,
       fullDay: fullDay,
       removeAfter: removeAfter,
@@ -284,15 +283,13 @@ class BasicActivityDataItem extends BasicActivityData {
     );
   }
 
-  TimeInterval toTimeInterval({DateTime startDate}) {
+  TimeInterval toTimeInterval({required DateTime startDate}) {
     final start = startDate.onlyDays().add(startTime.milliseconds());
     final end = start.add(duration.milliseconds());
     return TimeInterval(
       startDate: startDate,
       startTime: TimeOfDay.fromDateTime(start),
-      endTime: (duration == null || duration == 0)
-          ? null
-          : TimeOfDay.fromDateTime(end),
+      endTime: duration == 0 ? null : TimeOfDay.fromDateTime(end),
     );
   }
 }
@@ -301,9 +298,9 @@ class BasicActivityDataFolder extends BasicActivityData {
   final String name, icon, fileId;
 
   BasicActivityDataFolder._({
-    @required this.name,
-    @required this.icon,
-    @required this.fileId,
+    required this.name,
+    required this.icon,
+    required this.fileId,
   });
 
   factory BasicActivityDataFolder.fromJson(String data) {
@@ -316,8 +313,11 @@ class BasicActivityDataFolder extends BasicActivityData {
   }
 
   @visibleForTesting
-  factory BasicActivityDataFolder.createNew(
-          {String name, String icon, String fileId}) =>
+  factory BasicActivityDataFolder.createNew({
+    String? name,
+    String? icon,
+    String? fileId,
+  }) =>
       BasicActivityDataFolder._(
         name: name ?? '',
         icon: icon ?? '',

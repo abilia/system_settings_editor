@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 
 import 'package:seagull/models/all.dart';
@@ -16,7 +18,7 @@ class ImageArchivePage extends StatelessWidget {
       rootHeading: translate.imageArchive,
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),
-      libraryFolderGenerator: (imageArchive) => imageArchive.data.isMyPhotos
+      libraryFolderGenerator: (imageArchive) => imageArchive.data.myPhotos
           ? LibraryFolder(
               title: translate.myPhotos,
               color: AbiliaColors.blue,

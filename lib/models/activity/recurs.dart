@@ -16,10 +16,8 @@ class Recurs extends Equatable {
   bool get once => type == TYPE_NONE;
 
   @visibleForTesting
-  const Recurs.raw(this.type, this.data, int endTime)
-      : assert(data != null),
-        assert(type != null),
-        assert(type >= 0 && type <= 3),
+  const Recurs.raw(this.type, this.data, int? endTime)
+      : assert(type >= 0 && type <= 3),
         assert(type != TYPE_WEEKLY || data < 0x4000),
         assert(type != TYPE_MONTHLY || data < 0x80000000),
         endTime = type == TYPE_NONE ? NO_END : endTime ?? NO_END;
@@ -31,32 +29,32 @@ class Recurs extends Equatable {
         NO_END,
       );
 
-  factory Recurs.yearly(DateTime dayOfYear, {DateTime ends}) => Recurs.raw(
+  factory Recurs.yearly(DateTime dayOfYear, {DateTime? ends}) => Recurs.raw(
         TYPE_YEARLY,
         dayOfYearData(dayOfYear),
         ends?.millisecondsSinceEpoch,
       );
 
-  factory Recurs.monthly(int dayOfMonth, {DateTime ends}) => Recurs.raw(
+  factory Recurs.monthly(int dayOfMonth, {DateTime? ends}) => Recurs.raw(
         TYPE_MONTHLY,
         onDayOfMonth(dayOfMonth),
         ends?.millisecondsSinceEpoch,
       );
 
-  factory Recurs.monthlyOnDays(Iterable<int> daysOfMonth, {DateTime ends}) =>
+  factory Recurs.monthlyOnDays(Iterable<int> daysOfMonth, {DateTime? ends}) =>
       Recurs.raw(
         TYPE_MONTHLY,
         onDaysOfMonth(daysOfMonth),
         ends?.millisecondsSinceEpoch,
       );
 
-  factory Recurs.weeklyOnDay(int dayOfWeek, {DateTime ends}) =>
+  factory Recurs.weeklyOnDay(int dayOfWeek, {DateTime? ends}) =>
       Recurs.weeklyOnDays(
         [dayOfWeek],
         ends: ends,
       );
 
-  factory Recurs.weeklyOnDays(Iterable<int> weekdays, {DateTime ends}) =>
+  factory Recurs.weeklyOnDays(Iterable<int> weekdays, {DateTime? ends}) =>
       Recurs.raw(
         TYPE_WEEKLY,
         onDaysOfWeek(weekdays),
@@ -66,7 +64,7 @@ class Recurs extends Equatable {
   factory Recurs.biWeeklyOnDays({
     Iterable<int> evens = const [],
     Iterable<int> odds = const [],
-    DateTime ends,
+    DateTime? ends,
   }) =>
       Recurs.raw(
         TYPE_WEEKLY,
@@ -77,8 +75,7 @@ class Recurs extends Equatable {
   Recurs changeEnd(DateTime endTime) =>
       Recurs.raw(type, data, endTime.millisecondsSinceEpoch);
 
-  RecurrentType get recurrance =>
-      RecurrentType.values[type] ?? RecurrentType.none;
+  RecurrentType get recurrance => RecurrentType.values[type];
 
   bool recursOnDay(DateTime day) {
     switch (recurrance) {

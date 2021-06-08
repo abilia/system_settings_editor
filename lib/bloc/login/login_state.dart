@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'login_bloc.dart';
 
 class LoginState extends Equatable {
