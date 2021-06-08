@@ -34,7 +34,7 @@ dependencies:
       path: flutter_local_notifications/
   flutter_native_timezone: ^1.0.10
   flutter_ringtone_player: ^3.0.0
-  flutter_tts: ^3.0.0
+  flutter_tts: ^3.1.0
   get_it: ^6.1.1
   google_fonts: ^2.0.0
   http: ^0.13.2

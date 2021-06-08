@@ -68,7 +68,7 @@ Future<String> initServices() async {
     ..baseUrlDb = baseUrlDb
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
-    ..flutterTts = await flutterTts(currentLocale)
+    ..flutterTts = await flutterTts()
     ..packageInfo = await PackageInfo.fromPlatform()
     ..init();
 
