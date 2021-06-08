@@ -153,7 +153,8 @@ void main() {
         expect(find.byType(WebViewDialog), findsOneWidget);
         final openedUrl =
             tester.widget<WebView>(find.byType(WebView)).initialUrl;
-        expect(openedUrl, CreateAccountPage.termsOfUseUrl);
+        expect(
+            openedUrl, AcceptTermsSwitch.abiliaUrl + translate.termsOfUseUrl);
       });
 
       testWidgets('Open privacy policy', (tester) async {
@@ -165,7 +166,8 @@ void main() {
         expect(find.byType(WebViewDialog), findsOneWidget);
         final openedUrl =
             tester.widget<WebView>(find.byType(WebView)).initialUrl;
-        expect(openedUrl, CreateAccountPage.privacyPolicyUrl);
+        expect(openedUrl,
+            AcceptTermsSwitch.abiliaUrl + translate.privacyPolicyUrl);
       });
     },
     skip: !Config.isMP,

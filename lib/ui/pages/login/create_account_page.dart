@@ -8,9 +8,6 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class CreateAccountPage extends StatelessWidget {
-  static const termsOfUseUrl = 'https://www.abilia.com/intl/terms-of-use',
-      privacyPolicyUrl =
-          'https://www.abilia.com/intl/policy-for-the-processing-of-personal-data';
   final UserRepository userRepository;
 
   const CreateAccountPage({Key key, @required this.userRepository})
@@ -66,7 +63,7 @@ class CreateAccountPage extends StatelessWidget {
         child: BlocBuilder<CreateAccountBloc, CreateAccountState>(
           builder: (context, state) => Scaffold(
             body: Padding(
-              padding: EdgeInsets.only(left: 8.s, top: 24.0, right: 8.s),
+              padding: EdgeInsets.only(left: 16.s, top: 24.0, right: 16.s),
               child: Column(
                 children: [
                   SizedBox(height: 48.s),
@@ -97,6 +94,7 @@ class CreateAccountPage extends StatelessWidget {
                   SizedBox(height: 16.s),
                   PasswordInput(
                     key: TestKey.createAccountPassword,
+                    inputHeading: t.passwordHint,
                     password: state.firstPassword,
                     onPasswordChange: (password) => context
                         .read<CreateAccountBloc>()
@@ -107,7 +105,7 @@ class CreateAccountPage extends StatelessWidget {
                   SizedBox(height: 16.s),
                   PasswordInput(
                     key: TestKey.createAccountPasswordConfirm,
-                    heading: t.confirmPassword,
+                    inputHeading: t.confirmPassword,
                     password: state.secondPassword,
                     onPasswordChange: (password) => context
                         .read<CreateAccountBloc>()
@@ -120,7 +118,7 @@ class CreateAccountPage extends StatelessWidget {
                     key: TestKey.acceptTermsOfUse,
                     linkText: t.termsOfUse,
                     value: state.termsOfUse,
-                    url: termsOfUseUrl,
+                    url: t.termsOfUseUrl,
                     errorState: state.termsOfUseFailure,
                     onChanged: (v) =>
                         context.read<CreateAccountBloc>().add(TermsOfUse(v)),
@@ -130,7 +128,7 @@ class CreateAccountPage extends StatelessWidget {
                     key: TestKey.acceptPrivacyPolicy,
                     linkText: t.privacyPolicy,
                     value: state.privacyPolicy,
-                    url: privacyPolicyUrl,
+                    url: t.privacyPolicyUrl,
                     errorState: state.privacyPolicyFailure,
                     onChanged: (v) =>
                         context.read<CreateAccountBloc>().add(PrivacyPolicy(v)),
@@ -150,6 +148,8 @@ class CreateAccountPage extends StatelessWidget {
 }
 
 class AcceptTermsSwitch extends StatelessWidget {
+  static const abiliaUrl = 'https://www.abilia.com/';
+
   final String linkText, url;
   final bool value;
   final ValueChanged<bool> onChanged;
@@ -186,7 +186,7 @@ class AcceptTermsSwitch extends StatelessWidget {
               recognizer: TapGestureRecognizer()
                 ..onTap = () => showViewDialog(
                       context: context,
-                      builder: (_) => WebViewDialog(url: url),
+                      builder: (_) => WebViewDialog(url: '$abiliaUrl$url'),
                       wrapWithAuthProviders: false,
                     ),
             ),
