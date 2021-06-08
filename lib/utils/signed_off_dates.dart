@@ -13,21 +13,21 @@ String whaleDateFormat(DateTime date) {
 }
 
 extension EncodeSignOffDates on Iterable<DateTime> {
-  String tryEncodeSignedOffDates() {
-    if (this == null || isEmpty != false) return null;
+  String? tryEncodeSignedOffDates() {
+    if (isEmpty != false) return null;
     return map(whaleDateFormat).join(';').zipAndEncode();
   }
 }
 
 extension DeserializeSignOffDates on String {
-  Iterable<DateTime> tryDecodeSignedOffDates() => tryUnzipAndDecode()
+  Iterable<DateTime>? tryDecodeSignedOffDates() => tryUnzipAndDecode()
       ?.split(';')
-      ?.map((d) => '20' + d)
-      ?.map(DateTime.tryParse)
-      ?.where((d) => d != null);
+      .map((d) => '20' + d)
+      .map(DateTime.tryParse)
+      .where((d) => d != null) as Iterable<DateTime>;
 
   @visibleForTesting
-  String tryUnzipAndDecode() {
+  String? tryUnzipAndDecode() {
     try {
       return unzipAndDecode();
     } catch (_) {

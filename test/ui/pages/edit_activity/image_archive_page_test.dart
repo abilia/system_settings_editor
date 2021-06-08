@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -14,11 +16,13 @@ import '../../../utils/types.dart';
 void main() {
   group('Image archive test', () {
     final translate = Locales.language.values.first;
-    setUp(() {
+    setUp(() async {
       GetItInitializer()
         ..fileStorage = MockFileStorage()
         ..database = MockDatabase()
         ..flutterTts = MockFlutterTts()
+        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..database = MockDatabase()
         ..init();
     });
 

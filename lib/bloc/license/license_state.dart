@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'license_bloc.dart';
 
 abstract class LicenseState extends Equatable {

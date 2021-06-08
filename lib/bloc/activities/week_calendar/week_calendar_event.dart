@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'week_calendar_bloc.dart';
 
 abstract class WeekCalendarEvent extends Equatable {

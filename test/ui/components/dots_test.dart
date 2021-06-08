@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -49,14 +51,16 @@ void main() {
         ),
       );
 
-  setUp(() {
+  setUp(() async {
     // When settings are not loaded the default value will be used
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
-    initializeDateFormatting();
+    await initializeDateFormatting();
 
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..database = MockDatabase()
       ..init();
   });
 

@@ -16,8 +16,8 @@ class ImageResponse {
   final List<int> thumb;
 
   ImageResponse({
-    this.originalImage,
-    this.thumb,
+    required this.originalImage,
+    required this.thumb,
   });
 }
 
@@ -27,16 +27,16 @@ class ImageRequest {
   final String path;
 
   ImageRequest({
-    this.data,
-    this.id,
-    this.path,
+    required this.data,
+    required this.id,
+    required this.path,
   });
 }
 
 Future<List<int>> adjustImageSizeAndRotation(List<int> originalData) async {
   final adjustedOrientation = await adjustRotationToExif(originalData);
 
-  int width, height;
+  int? width, height;
   if (adjustedOrientation.height > adjustedOrientation.width) {
     height = min(IMAGE_MAX_SIZE, adjustedOrientation.height);
   } else {
@@ -53,7 +53,7 @@ Future<List<int>> adjustImageSizeAndRotation(List<int> originalData) async {
 }
 
 Future<img.Image> resizeImg(img.Image image, int size) async {
-  int width, height;
+  int? width, height;
   if (image.height > image.width) {
     height = min(size, image.height);
   } else {
@@ -69,8 +69,12 @@ Future<img.Image> resizeImg(img.Image image, int size) async {
 
 Future<img.Image> adjustRotationToExif(List<int> imageBytes) async {
   final image = img.decodeImage(imageBytes);
+  if (image == null) throw 'could not decode image bytes $imageBytes';
   final bakedImage = img.Image.from(image);
   final data = await readExifFromBytes(imageBytes);
+  if (data == null) {
+    return bakedImage;
+  }
   final orientationData = data[IMAGE_ORIENTATION_FLAG];
   final int orientation =
       orientationData?.values?.firstWhere((_) => true, orElse: () => 1);

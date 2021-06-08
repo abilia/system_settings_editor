@@ -22,9 +22,8 @@ class Activity extends DataModel {
   bool get isRecurring => recurs.isRecurring;
   Iterable<Duration> get reminders =>
       reminderBefore.map((r) => r.milliseconds()).toSet();
-  bool get hasImage =>
-      (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
-  bool get hasTitle => title?.isNotEmpty ?? false;
+  bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
+  bool get hasTitle => title.isNotEmpty;
   bool get hasAttachment => infoItem is! NoInfoItem;
 
   Activity signOff(DateTime day) => copyWith(
@@ -42,44 +41,32 @@ class Activity extends DataModel {
   final InfoItem infoItem;
   final Recurs recurs;
   const Activity._({
-    @required String id,
-    @required this.seriesId,
-    @required this.title,
-    @required this.startTime,
-    @required this.duration,
-    @required this.category,
-    @required this.deleted,
-    @required this.checkable,
-    @required this.removeAfter,
-    @required this.secret,
-    @required this.alarmType,
-    @required this.fullDay,
-    @required this.recurs,
-    @required this.reminderBefore,
-    @required this.infoItem,
-    @required this.icon,
-    @required this.fileId,
-    @required this.signedOffDates,
-    @required this.timezone,
-  })  : assert(seriesId != null),
-        assert(alarmType >= 0),
-        assert(startTime != null),
-        assert(duration != null),
+    required String id,
+    required this.seriesId,
+    required this.title,
+    required this.startTime,
+    required this.duration,
+    required this.category,
+    required this.deleted,
+    required this.checkable,
+    required this.removeAfter,
+    required this.secret,
+    required this.alarmType,
+    required this.fullDay,
+    required this.recurs,
+    required this.reminderBefore,
+    required this.infoItem,
+    required this.icon,
+    required this.fileId,
+    required this.signedOffDates,
+    required this.timezone,
+  })  : assert(alarmType >= 0),
         assert(category >= 0),
-        assert(deleted != null),
-        assert(checkable != null),
-        assert(removeAfter != null),
-        assert(secret != null),
-        assert(fullDay != null),
-        assert(recurs != null),
-        assert(infoItem != null),
-        assert(reminderBefore != null),
-        assert(signedOffDates != null),
         super(id);
 
   static Activity createNew({
-    @required String title,
-    @required DateTime startTime,
+    String title = '',
+    required DateTime startTime,
     Duration duration = Duration.zero,
     int category = Category.right,
     Recurs recurs = Recurs.not,
@@ -89,11 +76,11 @@ class Activity extends DataModel {
     bool secret = false,
     int alarmType = ALARM_SOUND_AND_VIBRATION,
     InfoItem infoItem = const NoInfoItem(),
-    String fileId,
-    String icon,
+    String fileId = '',
+    String icon = '',
     Iterable<int> reminderBefore = const [],
     Iterable<DateTime> signedOffDates = const [],
-    String timezone,
+    String timezone = '',
   }) {
     final id = Uuid().v4();
     return Activity._(
@@ -102,8 +89,8 @@ class Activity extends DataModel {
       title: title,
       startTime: startTime,
       duration: duration,
-      fileId: _nullIfEmpty(fileId),
-      icon: _nullIfEmpty(icon),
+      fileId: fileId,
+      icon: icon,
       category: category,
       deleted: false,
       checkable: checkable,
@@ -134,24 +121,24 @@ class Activity extends DataModel {
 
   Activity copyWith({
     bool newId = false,
-    String title,
-    DateTime startTime,
-    Duration duration,
-    int category,
-    Iterable<int> reminderBefore,
-    String fileId,
-    String icon,
-    bool deleted,
-    bool checkable,
-    bool removeAfter,
-    bool secret,
-    bool fullDay,
-    int alarmType,
-    Alarm alarm,
-    Recurs recurs,
-    InfoItem infoItem,
-    Iterable<DateTime> signedOffDates,
-    String timezone,
+    String? title,
+    DateTime? startTime,
+    Duration? duration,
+    int? category,
+    Iterable<int>? reminderBefore,
+    String? fileId,
+    String? icon,
+    bool? deleted,
+    bool? checkable,
+    bool? removeAfter,
+    bool? secret,
+    bool? fullDay,
+    int? alarmType,
+    Alarm? alarm,
+    Recurs? recurs,
+    InfoItem? infoItem,
+    Iterable<DateTime>? signedOffDates,
+    String? timezone,
   }) =>
       Activity._(
         id: newId ? Uuid().v4() : id,
@@ -169,8 +156,8 @@ class Activity extends DataModel {
         reminderBefore: reminderBefore != null
             ? UnmodifiableListView(reminderBefore)
             : this.reminderBefore,
-        fileId: fileId == null ? this.fileId : _nullIfEmpty(fileId),
-        icon: icon == null ? this.icon : _nullIfEmpty(icon),
+        fileId: fileId ?? this.fileId,
+        icon: icon ?? this.icon,
         alarmType: alarmType ?? alarm?.toInt ?? this.alarmType,
         infoItem: infoItem ?? this.infoItem,
         signedOffDates: signedOffDates != null
@@ -190,8 +177,8 @@ class Activity extends DataModel {
         secret: other.secret,
         fullDay: other.fullDay,
         reminderBefore: other.reminderBefore,
-        fileId: other.fileId ?? '',
-        icon: other.icon ?? '',
+        fileId: other.fileId,
+        icon: other.icon,
         alarmType: other.alarmType,
         infoItem: other.infoItem,
         timezone: other.timezone,
@@ -221,8 +208,7 @@ class Activity extends DataModel {
         signedOffDates,
         timezone,
       ];
+
   @override
   String toString() => 'Activity: { ${props.join(', ')} }';
 }
-
-String _nullIfEmpty(String value) => value?.isNotEmpty == true ? value : null;

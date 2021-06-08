@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'user_file_bloc.dart';
 
 abstract class UserFileEvent extends Equatable {

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -68,7 +70,7 @@ void main() {
         fileId: 'aef629ce-dbc1-4e8d-b3a8-0c4499a39b0e',
         image: '/Handi/User/Picture/key.gif',
         name: 'key',
-        checked: null,
+        checked: false,
       ),
     );
   });
@@ -92,6 +94,32 @@ void main() {
     expect(dQ, jQ);
 
     expect(json['checked'], hasLength(1));
+  });
+
+  test('json parse checklist no nulls', () {
+    final testJson =
+        '{"info-item":[{"type":"checklist","data":{"name":null,"fileId":null,"image":null,"questions":[{"name":null,"fileId":"aef629ce-dbc1-4e8d-b3a8-0c4499a39b0e","id":0,"image":"/Handi/User/Picture/key.gif"},{"name":"purse","fileId":null,"id":1,"image":"/Handi/User/Picture/purse.gif"},{"name":"mobile phone","fileId":"289fadbd-df10-4bb9-b9e0-692b343932b7","id":2,"image":null}]}}]}';
+
+    final infoItem = InfoItem.fromJsonString(testJson);
+    expect(infoItem is Checklist, isTrue);
+    expect(infoItem.typeId, Checklist.typeName);
+    expect(infoItem.isEmpty, isFalse);
+    final checklist = infoItem as Checklist;
+    expect(checklist.name, isNotNull);
+    expect(checklist.fileId, isNotNull);
+    expect(checklist.image, isNotNull);
+    final q0 = checklist.questions[0];
+    final q1 = checklist.questions[1];
+    final q2 = checklist.questions[2];
+    expect(q0.name, isNotNull);
+    expect(q0.fileId, isNotNull);
+    expect(q0.image, isNotNull);
+    expect(q1.name, isNotNull);
+    expect(q1.fileId, isNotNull);
+    expect(q1.image, isNotNull);
+    expect(q2.name, isNotNull);
+    expect(q2.fileId, isNotNull);
+    expect(q2.image, isNotNull);
   });
 
   test('serialize and deserialize minimal checklist', () {

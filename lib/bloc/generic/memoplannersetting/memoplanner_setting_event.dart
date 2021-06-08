@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'memoplanner_setting_bloc.dart';
 
 abstract class MemoplannerSettingsEvent extends Equatable {

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'my_photos_bloc.dart';
 
 class MyPhotosState extends Equatable {

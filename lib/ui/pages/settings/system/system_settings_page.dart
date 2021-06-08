@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 

@@ -3,15 +3,15 @@ part of 'activity.dart';
 class DbActivity extends DbModel<Activity> {
   Activity get activity => model;
   const DbActivity._({
-    Activity activity,
-    int dirty,
-    int revision,
+    required Activity activity,
+    required int dirty,
+    required int revision,
   }) : super(revision: revision, dirty: dirty, model: activity);
 
   @override
   DbActivity copyWith({
-    int revision,
-    int dirty,
+    int? revision,
+    int? dirty,
   }) =>
       DbActivity._(
         activity: activity,
@@ -25,19 +25,19 @@ class DbActivity extends DbModel<Activity> {
           seriesId: json['seriesId'],
           title: json['title'],
           startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime']),
-          duration: Duration(milliseconds: json['duration']),
-          fileId: _nullIfEmpty(json['fileId']),
-          icon: _nullIfEmpty(json['icon']),
+          duration: Duration(milliseconds: json['duration'] ?? 0),
+          fileId: json['fileId'] ?? '',
+          icon: json['icon'] ?? '',
           infoItem: InfoItem.fromBase64(json['infoItem']),
-          category: json['category'],
-          deleted: json['deleted'],
-          checkable: json['checkable'],
-          removeAfter: json['removeAfter'],
-          secret: json['secret'],
-          fullDay: json['fullDay'],
+          category: json['category'] ?? 0,
+          deleted: json['deleted'] ?? false,
+          checkable: json['checkable'] ?? false,
+          removeAfter: json['removeAfter'] ?? false,
+          secret: json['secret'] ?? false,
+          fullDay: json['fullDay'] ?? false,
           recurs: Recurs.raw(
-            json['recurrentType'],
-            json['recurrentData'],
+            json['recurrentType'] ?? Recurs.TYPE_NONE,
+            json['recurrentData'] ?? 0,
             json['endTime'],
           ),
           reminderBefore: parseReminders(json['reminderBefore']),
@@ -53,11 +53,11 @@ class DbActivity extends DbModel<Activity> {
         activity: Activity._(
           id: dbRow['id'],
           seriesId: dbRow['series_id'],
-          title: dbRow['title'],
+          title: dbRow['title'] ?? '',
           startTime: DateTime.fromMillisecondsSinceEpoch(dbRow['start_time']),
-          duration: Duration(milliseconds: dbRow['duration']),
-          fileId: _nullIfEmpty(dbRow['file_id']),
-          icon: _nullIfEmpty(dbRow['icon']),
+          duration: Duration(milliseconds: dbRow['duration'] ?? 0),
+          fileId: dbRow['file_id'] ?? '',
+          icon: dbRow['icon'] ?? '',
           infoItem: InfoItem.fromBase64(dbRow['info_item']),
           category: dbRow['category'],
           deleted: dbRow['deleted'] == 1,
@@ -71,9 +71,9 @@ class DbActivity extends DbModel<Activity> {
             dbRow['end_time'],
           ),
           reminderBefore: parseReminders(dbRow['reminder_before']),
-          alarmType: dbRow['alarm_type'],
+          alarmType: dbRow['alarm_type'] ?? AlarmType.NoAlarm,
           signedOffDates: _parseSignedOffDates(dbRow['signed_off_dates']),
-          timezone: dbRow['timezone'],
+          timezone: dbRow['timezone'] ?? '',
         ),
         revision: dbRow['revision'],
         dirty: dbRow['dirty'],
@@ -98,7 +98,7 @@ class DbActivity extends DbModel<Activity> {
         'recurrentData': activity.recurs.data,
         'reminderBefore': activity.reminderBefore.join(';'),
         'icon': activity.icon,
-        'infoItem': activity.infoItem?.toBase64(),
+        'infoItem': activity.infoItem.toBase64(),
         'alarmType': activity.alarmType,
         'signedOffDates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'revision': revision,
@@ -124,21 +124,24 @@ class DbActivity extends DbModel<Activity> {
         'recurrent_data': activity.recurs.data,
         'reminder_before': activity.reminderBefore.join(';'),
         'icon': activity.icon,
-        'info_item': activity.infoItem?.toBase64(),
+        'info_item': activity.infoItem.toBase64(),
         'alarm_type': activity.alarmType,
         'signed_off_dates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'timezone': activity.timezone,
         'revision': revision,
         'dirty': dirty,
       };
-  static UnmodifiableListView<DateTime> _parseSignedOffDates(signedOffDates) =>
-      UnmodifiableListView(
-          (signedOffDates as String)?.tryDecodeSignedOffDates() ?? []);
+  static UnmodifiableListView<DateTime> _parseSignedOffDates(
+          String? signedOffDates) =>
+      UnmodifiableListView(signedOffDates?.tryDecodeSignedOffDates() ?? []);
 
-  static UnmodifiableListView<int> parseReminders(String reminders) =>
-      UnmodifiableListView(
-          reminders?.split(';')?.map(int.tryParse)?.where((v) => v != null) ??
-              []);
+  static UnmodifiableListView<int> parseReminders(String? reminders) =>
+      UnmodifiableListView(reminders
+              ?.split(';')
+              .map(int.tryParse)
+              .where((v) => v != null)
+              .cast<int>() ??
+          []);
 
   @override
   List<Object> get props => [activity, revision, dirty];

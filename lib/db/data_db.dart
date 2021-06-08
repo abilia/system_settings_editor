@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:seagull/logging.dart';
 import 'package:sqflite/sqlite_api.dart';
 

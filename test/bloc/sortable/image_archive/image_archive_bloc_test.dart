@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
@@ -17,8 +19,8 @@ void main() {
   });
 
   test('Initial state is an empty ImageArchiveState', () {
-    expect(imageArchiveBloc.state,
-        SortableArchiveState<ImageArchiveData>({}, {}, null));
+    expect(
+        imageArchiveBloc.state, SortableArchiveState<ImageArchiveData>({}, {}));
   });
 
   test('FolderChanged will set the folder in the state', () async {
@@ -26,7 +28,8 @@ void main() {
     imageArchiveBloc.add(FolderChanged(folderId));
     await expectLater(
       imageArchiveBloc.stream,
-      emits(SortableArchiveState<ImageArchiveData>({}, {}, folderId)),
+      emits(SortableArchiveState<ImageArchiveData>({}, {},
+          currentFolderId: folderId)),
     );
   });
 
@@ -77,10 +80,11 @@ void main() {
 
 SortableArchiveState stateFromSortables(
   List<Sortable<ImageArchiveData>> sortables, {
-  String folderId,
+  String folderId = '',
 }) {
   final allByFolder =
       groupBy<Sortable<ImageArchiveData>, String>(sortables, (s) => s.groupId);
   final allById = {for (var s in sortables) s.id: s};
-  return SortableArchiveState<ImageArchiveData>(allByFolder, allById, folderId);
+  return SortableArchiveState<ImageArchiveData>(allByFolder, allById,
+      currentFolderId: folderId);
 }

@@ -8,9 +8,9 @@ class EyeButtonSettings {
   final TimepillarIntervalType intervalType;
 
   EyeButtonSettings({
-    this.calendarType,
-    this.dotsInTimepillar,
-    this.timepillarZoom,
-    this.intervalType,
+    required this.calendarType,
+    required this.dotsInTimepillar,
+    required this.timepillarZoom,
+    required this.intervalType,
   });
 }

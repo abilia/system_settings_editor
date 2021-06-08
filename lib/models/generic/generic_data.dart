@@ -35,14 +35,14 @@ class MemoplannerSettingData<T> extends GenericData {
   final String type;
 
   const MemoplannerSettingData._({
-    @required this.data,
-    @required this.type,
-    @required String identifier,
+    required this.data,
+    required this.type,
+    required String identifier,
   }) : super(identifier);
 
   factory MemoplannerSettingData.fromData({
-    @required dynamic data,
-    @required String identifier,
+    required T data,
+    required String identifier,
   }) {
     String type;
     switch (data.runtimeType) {
@@ -67,15 +67,15 @@ class MemoplannerSettingData<T> extends GenericData {
 
   @override
   String toRaw() => json.encode({
-        if (data != null) 'data': data,
-        if (type != null) 'type': type,
+        'data': data,
+        'type': type,
       });
 
   @override
   String get genericTypeString => GenericType.memoPlannerSettings;
 
   @override
-  List<Object> get props => [data, type, identifier];
+  List<Object?> get props => [data, type, identifier];
 
   factory MemoplannerSettingData.fromJson(String data, String identifier) {
     final genericData = json.decode(data);

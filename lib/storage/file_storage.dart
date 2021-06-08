@@ -10,7 +10,7 @@ class FileStorage {
 
   static const folder = 'seagull';
 
-  FileStorage(String storageDirectory) : _dir = '$storageDirectory/$folder/';
+  FileStorage(String? storageDirectory) : _dir = '$storageDirectory/$folder/';
 
   Future<void> storeFile(List<int> fileBytes, String fileName) async {
     final file = await File('$_dir$fileName').create(recursive: true);
@@ -51,7 +51,7 @@ class FileStorage {
   /// as flutter_local_notifications dont support adding the option UNNotificationAttachmentOptionsTypeHintKey as of 1.4.4+1
   final fileEnding = '_copy.jpg';
   final maxSizeInBytes = 10000000;
-  Future<File> copyImageThumbForNotification(String id) async {
+  Future<File?> copyImageThumbForNotification(String id) async {
     final thumb = getImageThumb(ImageThumb(id: id));
     if (!await thumb.exists()) {
       _log.warning('file $thumb does not extists');

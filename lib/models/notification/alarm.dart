@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+
 import 'package:seagull/models/all.dart';
 
 abstract class NotificationAlarm extends Equatable {
@@ -11,7 +11,7 @@ abstract class NotificationAlarm extends Equatable {
   bool hasSound(MemoplannerSettings settings);
   bool vibrate(MemoplannerSettings settings);
   Sound sound(MemoplannerSettings settings);
-  NotificationAlarm(this.activityDay) : assert(activityDay != null);
+  NotificationAlarm(this.activityDay);
   DateTime get notificationTime;
   String get type;
 
@@ -36,9 +36,8 @@ abstract class NotificationAlarm extends Equatable {
       case ReminderUnchecked.typeName:
         return ReminderUnchecked(activity, day,
             reminder: Duration(milliseconds: json['reminder']));
-        break;
       default:
-        return null;
+        throw 'unknown alarm type';
     }
   }
 
@@ -93,9 +92,7 @@ class EndAlarm extends NewAlarm {
 
 abstract class NewReminder extends NotificationAlarm {
   final Duration reminder;
-  NewReminder(ActivityDay activityDay, this.reminder)
-      : assert(reminder != null),
-        super(activityDay);
+  NewReminder(ActivityDay activityDay, this.reminder) : super(activityDay);
 
   @override
   bool hasSound(MemoplannerSettings settings) =>
@@ -112,9 +109,9 @@ abstract class NewReminder extends NotificationAlarm {
 }
 
 class ReminderBefore extends NewReminder {
-  ReminderBefore(Activity activity, DateTime day, {@required Duration reminder})
+  ReminderBefore(Activity activity, DateTime day, {required Duration reminder})
       : super(ActivityDay(activity, day), reminder);
-  ReminderBefore.from(ActivityDay activityDay, {@required Duration reminder})
+  ReminderBefore.from(ActivityDay activityDay, {required Duration reminder})
       : super(activityDay, reminder);
   @override
   DateTime get notificationTime => activityDay.start.subtract(reminder);
@@ -126,9 +123,9 @@ class ReminderBefore extends NewReminder {
 
 class ReminderUnchecked extends NewReminder {
   ReminderUnchecked(Activity activity, DateTime day,
-      {@required Duration reminder})
+      {required Duration reminder})
       : super(ActivityDay(activity, day), reminder);
-  ReminderUnchecked.from(ActivityDay activityDay, {@required Duration reminder})
+  ReminderUnchecked.from(ActivityDay activityDay, {required Duration reminder})
       : super(activityDay, reminder);
   @override
   DateTime get notificationTime => activityDay.end.add(reminder);

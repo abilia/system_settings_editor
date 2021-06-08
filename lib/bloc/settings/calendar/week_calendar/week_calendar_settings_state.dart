@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'week_calendar_settings_cubit.dart';
 
 class WeekCalendarSettingsState extends Equatable {

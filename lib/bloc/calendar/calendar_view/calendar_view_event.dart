@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'calendar_view_bloc.dart';
 
 abstract class CalendarViewEvent extends Equatable {

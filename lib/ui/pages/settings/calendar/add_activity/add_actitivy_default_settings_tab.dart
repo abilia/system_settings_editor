@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/settings/calendar/add_activity/add_activity_settings_cubit.dart';
 import 'package:seagull/models/all.dart';

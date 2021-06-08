@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'general_calendar_settings_cubit.dart';
 
 class GeneralCalendarSettingsState extends Equatable {

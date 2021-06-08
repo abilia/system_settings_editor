@@ -1,9 +1,7 @@
-import 'package:meta/meta.dart';
-
 extension ThowsafeMap<E> on Iterable<E> {
   Iterable<T> exceptionSafeMap<T>(
     T Function(E) function, {
-    @required T Function(dynamic, E) onException,
+    required T Function(dynamic, E) onException,
   }) =>
       map((e) {
         try {

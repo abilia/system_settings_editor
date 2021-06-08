@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 const MEMOPLANNER_LICENSE_NAME = 'memoplanner3';
 
@@ -9,9 +8,9 @@ class License extends Equatable {
   final DateTime endTime;
 
   License({
-    @required this.id,
-    @required this.product,
-    @required this.endTime,
+    required this.id,
+    required this.product,
+    required this.endTime,
   });
 
   factory License.fromJson(Map<String, dynamic> json) {

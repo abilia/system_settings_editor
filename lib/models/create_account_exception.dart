@@ -24,17 +24,17 @@ class CreateAccountException extends Equatable {
   final List<_Errors> errors;
 
   const CreateAccountException({
-    this.status,
-    this.message,
-    this.errorId,
-    this.errors,
+    required this.status,
+    required this.message,
+    required this.errorId,
+    required this.errors,
   });
 
   static CreateAccountException fromJson(Map<String, dynamic> json) =>
       CreateAccountException(
-        status: json['status'],
-        message: json['message'],
-        errorId: json['errorId'],
+        status: json['status'] ?? -1,
+        message: json['message'] ?? '',
+        errorId: json['errorId'] ?? -1,
         errors: [for (var e in json['errors'] ?? []) _Errors._fromJson(e)],
       );
 
@@ -49,11 +49,11 @@ class _Errors extends Equatable {
   final String code;
   final String message;
 
-  const _Errors._({this.code, this.message});
+  const _Errors._({required this.code, required this.message});
 
   static _Errors _fromJson(Map<String, dynamic> json) => _Errors._(
-        code: json['code'],
-        message: json['message'],
+        code: json['code'] ?? '',
+        message: json['message'] ?? '',
       );
 
   CreateAccountFailure get failure {
