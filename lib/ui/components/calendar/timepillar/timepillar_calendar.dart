@@ -13,8 +13,8 @@ import 'package:seagull/utils/all.dart';
 const transitionDuration = Duration(seconds: 1);
 
 class TimepillarCalendar extends StatelessWidget {
-  static final topMargin = 30.0.s;
-  static final bottomMargin = 10.0.s;
+  static final topMargin = 96.0.s;
+  static final bottomMargin = 64.0.s;
   static const nightBackgroundColor = AbiliaColors.black90;
   final ActivitiesOccasionLoaded activityState;
 
