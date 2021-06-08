@@ -227,16 +227,15 @@ void main() {
       expect(find.byType(MenuPage), findsOneWidget);
       await tester.tap(find.byIcon(AbiliaIcons.settings));
       await tester.pumpAndSettle();
-      expect(find.byType(SettingsPage), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.technical_settings));
+    } else if (Config.isMPGO) {
+      await tester.tap(find.byIcon(AbiliaIcons.settings));
     }
-    await tester.tap(find.byIcon(AbiliaIcons.technical_settings));
     await tester.pumpAndSettle();
-    expect(find.byType(SystemSettingsPage), findsOneWidget);
     await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(LogoutButton));
     await tester.pumpAndSettle();
-    expect(find.byType(LoginPage), findsOneWidget);
 
     // Login
     await tester.enterText_(find.byType(PasswordInput), secretPassword);

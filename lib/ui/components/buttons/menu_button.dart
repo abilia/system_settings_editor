@@ -20,31 +20,31 @@ class MenuButton extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => CopiedAuthProviders(
                       blocContext: context,
-                      child: MenuPage(),
+                      child: const MenuPage(),
                     ),
                     settings: RouteSettings(name: 'MenuPage'),
                   ),
                 ),
                 child: const Icon(AbiliaIcons.app_menu),
               )
-            else
+            else if (Config.isMPGO)
               ActionButtonLight(
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => CopiedAuthProviders(
                       blocContext: context,
-                      child: SystemSettingsPage(),
+                      child: const SettingsPage(),
                     ),
-                    settings: RouteSettings(name: 'SystemSettingsPage'),
+                    settings: RouteSettings(name: 'SettingsPage'),
                   ),
                 ),
-                child: const Icon(AbiliaIcons.technical_settings),
+                child: const Icon(AbiliaIcons.settings),
               ),
             if (state.importantPermissionMissing)
               Positioned(
                 top: -3.s,
                 right: -3.s,
-                child: OrangeDot(),
+                child: const OrangeDot(),
               ),
           ],
         );

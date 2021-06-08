@@ -10,6 +10,7 @@ import 'package:seagull/repository/end_point.dart';
 import 'package:seagull/ui/all.dart';
 
 class LogoutPage extends StatelessWidget {
+  const LogoutPage({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

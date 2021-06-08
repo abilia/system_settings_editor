@@ -6,6 +6,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/version.dart';
 
 class AboutPage extends StatelessWidget {
+  const AboutPage({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
