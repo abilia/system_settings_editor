@@ -4,10 +4,10 @@ abstract class DataModel extends Equatable {
   final String id;
 
   const DataModel(this.id);
-  DbModel wrapWithDbModel({int /*!*/ revision = 0, int /*!*/ dirty = 0});
+  DbModel wrapWithDbModel({int revision = 0, int dirty = 0});
 }
 
-abstract class DbModel<M extends DataModel /*!*/ > extends Equatable {
+abstract class DbModel<M extends DataModel> extends Equatable {
   final int dirty, revision;
   final M model;
 

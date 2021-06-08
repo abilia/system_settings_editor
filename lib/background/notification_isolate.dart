@@ -320,10 +320,10 @@ String _subtitle(
   final ad = notificationAlarm.activityDay;
   final endTime = ad.activity.hasEndTime ? ' - ${tf(ad.end)} ' : ' ';
   final extra = _extra(notificationAlarm, translater);
-  return tf(ad.start) + endTime + (extra ?? '');
+  return tf(ad.start) + endTime + extra;
 }
 
-String? _extra(NotificationAlarm notificationAlarm, Translated translater) {
+String _extra(NotificationAlarm notificationAlarm, Translated translater) {
   if (notificationAlarm is StartAlarm) return translater.startsNow;
   if (notificationAlarm is EndAlarm) return translater.endsNow;
   if (notificationAlarm is NewReminder) {

@@ -17,7 +17,7 @@ class ImageAndName extends Equatable {
         image ?? this.image,
       );
 
-  bool get hasName => name.isNotEmpty == true;
+  bool get hasName => name.isNotEmpty;
   bool get isEmpty => !hasName && image.isEmpty;
   bool get isNotEmpty => !isEmpty;
 
