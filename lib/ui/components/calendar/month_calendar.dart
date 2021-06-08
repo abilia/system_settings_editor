@@ -104,7 +104,7 @@ class WeekRow extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 4.s),
       child: Row(
         children: [
-          WeekNumber(weekNumber: week.number),
+          if (week.inMonth) WeekNumber(weekNumber: week.number),
           ...week.days.map(
             (day) => Expanded(
               child: Padding(
@@ -285,11 +285,10 @@ class MonthDayContainer extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
           decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(7.s),
-            ),
-          ),
+              color: color,
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(7.s),
+              )),
           child: day != null
               ? Stack(
                   children: [

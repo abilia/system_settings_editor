@@ -25,6 +25,7 @@ class MonthCalendarState extends Equatable {
 class MonthWeek extends Equatable {
   final int number;
   final List<MonthCalendarDay> days;
+  bool get inMonth => days.any((d) => d is MonthDay);
   MonthWeek(this.number, this.days);
 
   @override
