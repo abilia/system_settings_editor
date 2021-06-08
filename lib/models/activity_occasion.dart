@@ -8,6 +8,7 @@ enum Occasion { past, current, future }
 
 class ActivityOccasion extends ActivityDay {
   bool get isPast => occasion == Occasion.past;
+  bool get isCurrent => occasion == Occasion.current;
 
   final Occasion occasion;
   ActivityOccasion(
