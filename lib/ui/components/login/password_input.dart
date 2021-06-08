@@ -12,7 +12,7 @@ class PasswordInput extends StatelessWidget {
   final Function(String) onPasswordChange;
   final bool Function(String value) validator;
   final bool errorState;
-  final String heading;
+  final String inputHeading;
 
   const PasswordInput({
     Key key,
@@ -20,13 +20,14 @@ class PasswordInput extends StatelessWidget {
     @required this.onPasswordChange,
     @required this.errorState,
     @required this.validator,
-    this.heading,
+    this.inputHeading,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final _heading = heading ?? Translator.of(context).translate.password;
+    final _subheading =
+        inputHeading ?? Translator.of(context).translate.password;
     return BlocProvider(
       create: (_) => PasswordCubit(password, validator),
       child: BlocBuilder<PasswordCubit, PasswordState>(
@@ -34,14 +35,14 @@ class PasswordInput extends StatelessWidget {
         builder: (context, state) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SubHeading(_heading),
+            SubHeading(_subheading),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Expanded(
                   child: Tts.fromSemantics(
                     SemanticsProperties(
-                      label: heading,
+                      label: _subheading,
                       value: password,
                       textField: true,
                       obscured: state.hide,
@@ -55,7 +56,7 @@ class PasswordInput extends StatelessWidget {
                               value: context.read<PasswordCubit>(),
                               child: PasswordInputPage(
                                 password: password,
-                                heading: _heading,
+                                inputHeading: _subheading,
                               ),
                             ),
                           ),
@@ -98,10 +99,10 @@ class PasswordInputPage extends StatefulWidget {
   PasswordInputPage({
     Key key,
     @required this.password,
-    @required this.heading,
+    @required this.inputHeading,
   }) : super(key: key);
 
-  final String password, heading;
+  final String password, inputHeading;
 
   @override
   _PasswordInputPageState createState() => _PasswordInputPageState();
@@ -124,9 +125,11 @@ class _PasswordInputPageState
 
   @override
   Widget build(BuildContext context) {
+    final _subheading =
+        widget.inputHeading ?? Translator.of(context).translate.password;
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: widget.heading,
+        title: Translator.of(context).translate.password,
         iconData: AbiliaIcons.lock,
       ),
       body: BlocBuilder<PasswordCubit, PasswordState>(
@@ -134,7 +137,7 @@ class _PasswordInputPageState
           children: [
             Tts.fromSemantics(
               SemanticsProperties(
-                label: widget.heading,
+                label: _subheading,
                 value: controller.value.text,
                 textField: true,
                 obscured: true,
@@ -149,7 +152,7 @@ class _PasswordInputPageState
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SubHeading(Translator.of(context).translate.password),
+                    SubHeading(_subheading),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[

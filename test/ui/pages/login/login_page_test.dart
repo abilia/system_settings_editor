@@ -254,7 +254,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.verifyTts(find.byType(UsernameInput),
-        exact: translate.username);
+        exact: translate.usernameHint);
     await tester.enterText_(find.byType(UsernameInput), Fakes.username);
     await tester.verifyTts(find.byType(UsernameInput), exact: Fakes.username);
     await tester.verifyTts(find.text(translate.password),

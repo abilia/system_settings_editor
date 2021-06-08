@@ -18,8 +18,6 @@ class Locales {
 }
 
 abstract class Translated {
-  final String usernameTitle = 'Username or email';
-
   final String username = 'Username';
 
   final String password = 'Password';
@@ -56,7 +54,16 @@ abstract class Translated {
 
   final String termsOfUse = 'terms of use';
 
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
   final String privacyPolicy = 'privacy policy';
+
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  final String usernameHint = 'Username (phone number or email)';
+
+  final String passwordHint = 'Password (minimum 8 characters)';
 
   final String confirmPassword = 'Confirm password';
 
@@ -652,9 +659,6 @@ class EN extends Translated {}
 
 class SV extends Translated {
   @override
-  final String usernameTitle = 'Användarnamn eller e-post';
-
-  @override
   final String username = 'Användarnamn';
 
   @override
@@ -707,7 +711,19 @@ class SV extends Translated {
   final String termsOfUse = 'användarvillkor';
 
   @override
+  final String termsOfUseUrl = 'sv/anvandarvillkor';
+
+  @override
   final String privacyPolicy = 'personuppgiftspolicy';
+
+  @override
+  final String privacyPolicyUrl = 'sv/personuppgiftspolicy';
+
+  @override
+  final String usernameHint = 'Användarnamn (telefonnummer eller e-post)';
+
+  @override
+  final String passwordHint = 'Lösenord (minst 8 tecken)';
 
   @override
   final String confirmPassword = 'Bekräfta lösenordet';
@@ -1587,9 +1603,6 @@ class SV extends Translated {
 
 class DA extends Translated {
   @override
-  final String usernameTitle = 'Brugernavn eller e-mail';
-
-  @override
   final String username = 'Brugernavn';
 
   @override
@@ -1642,7 +1655,20 @@ class DA extends Translated {
   final String termsOfUse = 'brugervillkår';
 
   @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
   final String privacyPolicy = 'persondatapolitik';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String usernameHint = 'Brugernavn (telefon eller en e-mail)';
+
+  @override
+  final String passwordHint = 'Adgangskode (mindst 8 tegn)';
 
   @override
   final String confirmPassword = 'Bekræft adgangskoden';
@@ -2523,9 +2549,6 @@ class DA extends Translated {
 
 class NL extends Translated {
   @override
-  final String usernameTitle = 'Gebruikersnaam of e-mail';
-
-  @override
   final String username = 'Gebruikersnaam';
 
   @override
@@ -2578,7 +2601,20 @@ class NL extends Translated {
   final String termsOfUse = 'gebruiksvoorwaarden';
 
   @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
   final String privacyPolicy = 'privacybeleid';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String usernameHint = 'Gebruikersnaam (telefoon of een e-mail)';
+
+  @override
+  final String passwordHint = 'Wachtwoord (minimaal 8 tekens)';
 
   @override
   final String confirmPassword = 'Wachtwoord bevestigen';
@@ -3459,9 +3495,6 @@ class NL extends Translated {
 
 class FI extends Translated {
   @override
-  final String usernameTitle = 'Käyttäjätunnus tai sähköpostiosoite';
-
-  @override
   final String username = 'Käyttäjätunnus';
 
   @override
@@ -3514,7 +3547,20 @@ class FI extends Translated {
   final String termsOfUse = 'käyttöehdot';
 
   @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
   final String privacyPolicy = 'tietosuojakäytäntö';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String usernameHint = 'Käyttäjätunnus (puhelin tai sähköpostiosoite)';
+
+  @override
+  final String passwordHint = 'Salasanassa (vähintään 8 merkkiä)';
 
   @override
   final String confirmPassword = 'Vahvista salasana';
@@ -4393,9 +4439,6 @@ class FI extends Translated {
 
 class DE extends Translated {
   @override
-  final String usernameTitle = 'Benutzername oder E-Mail';
-
-  @override
   final String username = 'Benutzername';
 
   @override
@@ -4449,7 +4492,20 @@ class DE extends Translated {
   final String termsOfUse = 'nutzungsbedingungen';
 
   @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
   final String privacyPolicy = 'datenschutzbestimmungen';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String usernameHint = 'Benutzername (telefon oder E-Mail)';
+
+  @override
+  final String passwordHint = 'Passwort (mindestens 8 Zeichen)';
 
   @override
   final String confirmPassword = 'Passwort bestätigen';
@@ -5335,9 +5391,6 @@ class DE extends Translated {
 
 class NB extends Translated {
   @override
-  final String usernameTitle = 'Brukernavn eller e-post';
-
-  @override
   final String username = 'Brukernavn';
 
   @override
@@ -5390,7 +5443,19 @@ class NB extends Translated {
   final String termsOfUse = 'brukervillkår';
 
   @override
+  final String termsOfUseUrl = 'nb/brukervilkar';
+
+  @override
   final String privacyPolicy = 'personvernerklæring';
+
+  @override
+  final String privacyPolicyUrl = 'nb/personvernerklaering';
+
+  @override
+  final String usernameHint = 'Brukernavn (telefon eller en e-post)';
+
+  @override
+  final String passwordHint = 'Passord (minimum 8 tegn)';
 
   @override
   final String confirmPassword = 'Bekreft passordet';
