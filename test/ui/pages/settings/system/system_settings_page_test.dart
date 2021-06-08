@@ -143,36 +143,22 @@ void main() {
     }
   });
 
-  testWidgets('code protect not visible on mpgo', (WidgetTester tester) async {
-    setupPermissions();
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
-    await tester.pumpAndSettle();
-    expect(find.byIcon(AbiliaIcons.numeric_keyboard), findsNothing);
-  }, skip: !Config.isMPGO);
-
-  testWidgets('code protect visible on mp', (WidgetTester tester) async {
+  testWidgets('code protect visible', (WidgetTester tester) async {
     setupPermissions();
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.numeric_keyboard));
     await tester.pumpAndSettle();
     expect(find.byType(CodeProtectPage), findsOneWidget);
-  }, skip: !Config.isMP);
+  });
 
-  testWidgets('android settings not availible on mpgo',
-      (WidgetTester tester) async {
-    setupPermissions();
+  testWidgets('android settings availible', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    expect(find.byType(AndroidSettingsPickField), findsNothing);
-  }, skip: !Config.isMPGO);
-
-  testWidgets('android settings availible on mp', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester
+        .tap(find.byIcon(AbiliaIcons.past_picture_from_windows_clipboard));
     await tester.pumpAndSettle();
-    await tester.tap(find.byType(AndroidSettingsPickField));
-    await tester.pumpAndSettle();
-  }, skip: !Config.isMP);
+  });
 
   group('permission page', () {
     tearDown(setupPermissions);

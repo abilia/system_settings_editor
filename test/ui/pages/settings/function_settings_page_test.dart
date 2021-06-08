@@ -458,12 +458,6 @@ void main() {
       expect(
         find.byType(SettingsPage),
         findsOneWidget,
-        skip: !Config.isMP,
-      );
-      expect(
-        find.byType(SystemSettingsPage),
-        findsOneWidget,
-        skip: !Config.isMPGO,
       );
     });
   });
