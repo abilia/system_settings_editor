@@ -499,5 +499,6 @@ class AbiliaIcons {
       notification = IconData(0xEB31, fontFamily: fontFamily),
       sun = IconData(0xEB2A, fontFamily: fontFamily),
       day_interval = IconData(0xEB2B, fontFamily: fontFamily),
-      day_night = IconData(0xEB2C, fontFamily: fontFamily);
+      day_night = IconData(0xEB2C, fontFamily: fontFamily),
+      medium_text = IconData(0xe96b, fontFamily: fontFamily);
 }
