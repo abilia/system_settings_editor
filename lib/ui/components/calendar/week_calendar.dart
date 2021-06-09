@@ -85,110 +85,131 @@ class WeekCalendarDayHeading extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.isAtSameDay(day) != current.isAtSameDay(day),
         builder: (context, now) => BlocBuilder<DayPickerBloc, DayPickerState>(
-          buildWhen: (previous, current) =>
-              previous.day.isAtSameDay(day) != current.day.isAtSameDay(day),
           builder: (context, dayPickerState) {
             final selected = dayPickerState.day.isAtSameDay(day);
             final today = now.isAtSameDay(day);
-            final thickBorder = selected || today;
             final dayTheme = weekdayTheme(
               dayColor: memosettings.calendarDayColor,
               languageCode: Localizations.localeOf(context).languageCode,
               weekday: day.weekday,
             );
-            final borderColor = today
-                ? AbiliaColors.red
-                : selected
-                    ? AbiliaColors.black
-                    : dayTheme.borderColor;
-
-            final borderSize = thickBorder ? 2.s : 1.s;
-            final weekDayFormat = DateFormat(
-                'EEEE', Localizations.localeOf(context).toLanguageTag());
-            return Flexible(
-              flex: selected ? 77 : 45,
-              child: GestureDetector(
-                onTap: () {
-                  BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.0.s),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: borderColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: radius,
-                        topRight: radius,
-                      ),
-                    ),
-                    child: Container(
-                      margin: EdgeInsetsDirectional.only(
-                          start: borderSize, end: borderSize, top: borderSize),
-                      decoration: BoxDecoration(
-                        color: dayTheme.color,
-                        borderRadius: BorderRadius.only(
-                          topLeft: innerRadiusFromBorderSize(borderSize),
-                          topRight: innerRadiusFromBorderSize(borderSize),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: thickBorder ? 3.s : 4.s,
-                          right: 2.s,
-                          left: 2.s,
-                          bottom: 4.s,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            SizedBox(
-                              height: 44.s,
-                              child: DefaultTextStyle(
-                                style: dayTheme.theme.textTheme.bodyText1
-                                    .copyWith(height: 18 / 16),
-                                child: Tts(
-                                    data:
-                                        '${day.day}, ${weekDayFormat.format(day)}',
-                                    child: BlocBuilder<ClockBloc, DateTime>(
-                                      buildWhen: (previous, current) =>
-                                          !previous.isAtSameDay(current),
-                                      builder: (context, now) => WithCrossOver(
-                                        color: dayTheme
-                                            .theme.textTheme.bodyText1.color,
-                                        crossOverPadding: EdgeInsets.fromLTRB(
-                                            4.s, 4.s, 4.s, 12.s),
-                                        applyCross:
-                                            day.isBefore(now.onlyDays()),
-                                        child: Center(
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                '${day.day}',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              Text(
-                                                Translator.of(context)
-                                                    .translate
-                                                    .shortWeekday(day.weekday),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    )),
-                              ),
-                            ),
-                            FullDayActivies(weekdayIndex: day.weekday - 1)
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+            return WeekCalenderHeadingContent(
+              selected: selected,
+              day: day,
+              dayTheme: dayTheme,
+              today: today,
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class WeekCalenderHeadingContent extends StatelessWidget {
+  const WeekCalenderHeadingContent({
+    Key key,
+    @required this.day,
+    @required this.dayTheme,
+    @required this.selected,
+    @required this.today,
+  }) : super(key: key);
+
+  final DateTime day;
+  final DayTheme dayTheme;
+  final bool selected;
+  final bool today;
+
+  @override
+  Widget build(BuildContext context) {
+    final weekDayFormat =
+        DateFormat('EEEE', Localizations.localeOf(context).toLanguageTag());
+    final borderColor = today
+        ? AbiliaColors.red
+        : selected
+            ? AbiliaColors.black
+            : dayTheme.borderColor;
+    final thickBorder = selected || today;
+    final borderSize = thickBorder ? 2.s : 1.s;
+
+    return Flexible(
+      flex: selected ? 77 : 45,
+      child: GestureDetector(
+        onTap: () {
+          BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 2.0.s),
+          child: Container(
+            decoration: BoxDecoration(
+              color: borderColor,
+              borderRadius: BorderRadius.only(
+                topLeft: radius,
+                topRight: radius,
+              ),
+            ),
+            child: Container(
+              margin: EdgeInsetsDirectional.only(
+                  start: borderSize, end: borderSize, top: borderSize),
+              decoration: BoxDecoration(
+                color: dayTheme.color,
+                borderRadius: BorderRadius.only(
+                  topLeft: innerRadiusFromBorderSize(borderSize),
+                  topRight: innerRadiusFromBorderSize(borderSize),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: thickBorder ? 3.s : 4.s,
+                  right: 2.s,
+                  left: 2.s,
+                  bottom: 4.s,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      height: 44.s,
+                      child: DefaultTextStyle(
+                        style: dayTheme.theme.textTheme.bodyText1
+                            .copyWith(height: 18 / 16),
+                        child: Tts(
+                          data: '${day.day}, ${weekDayFormat.format(day)}',
+                          child: BlocBuilder<ClockBloc, DateTime>(
+                            buildWhen: (previous, current) =>
+                                !previous.isAtSameDay(current),
+                            builder: (context, now) => WithCrossOver(
+                              color: dayTheme.theme.textTheme.bodyText1.color,
+                              crossOverPadding:
+                                  EdgeInsets.fromLTRB(4.s, 4.s, 4.s, 12.s),
+                              applyCross: day.isBefore(now.onlyDays()),
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      '${day.day}',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      Translator.of(context)
+                                          .translate
+                                          .shortWeekday(day.weekday),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    FullDayActivies(weekdayIndex: day.weekday - 1)
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
