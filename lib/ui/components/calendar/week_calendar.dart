@@ -423,8 +423,11 @@ class WeekActivityContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      foregroundDecoration: BoxDecoration(
         border: activityOccasion.isCurrent ? currentActivityBorder : border,
+        borderRadius: borderRadius,
+      ),
+      decoration: BoxDecoration(
         borderRadius: borderRadius,
         color: AbiliaColors.white,
       ),
@@ -432,7 +435,6 @@ class WeekActivityContent extends StatelessWidget {
           ? ActivityImage.fromActivityOccasion(
               activityOccasion: activityOccasion,
               size: double.infinity,
-              fit: BoxFit.cover,
               crossOverPadding: EdgeInsets.all(7.s))
           : Padding(
               padding: EdgeInsets.all(3.0.s),

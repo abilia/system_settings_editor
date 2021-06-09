@@ -1,6 +1,5 @@
 _id_	en	sv	da	nl	fi	de	nb
 ### Login page							
-usernameTitle	Username or email	Användarnamn eller e-post	Brugernavn eller e-mail	Gebruikersnaam of e-mail	Käyttäjätunnus tai sähköpostiosoite	Benutzername oder E-Mail	Brukernavn eller e-post
 username	Username	Användarnamn	Brugernavn	Gebruikersnaam	Käyttäjätunnus	Benutzername	Brukernavn
 password	Password	Lösenord	Adgangskode	Wachtwoord	Salasana	Passwort	Passord
 loginHintMP	Use your myAbilia account to Login	Använd ditt myAbilia-konto för att logga in	Brug din myAbilia-konto til at logge ind	Gebruik uw myAbilia-account om in te loggen	Kirjaudu sisään myAbilia-tililläsi	Verwenden Sie Ihr myAbilia-Konto, um sich anzumelden	Bruk myAbilia-kontoen din for å logge på
@@ -19,7 +18,11 @@ createAaccountHeading	Create your account in myAbilia	Skapa ditt konto i myAbili
 createAaccountSubheading	You need a myAbilia account to use MEMOplanner	Du behöver ett myAbilia-konto för att kunna använda MEMOplanner	Du har brug for en myAbilia-konto for at bruge MEMOplanner	U heeft een myAbilia-account nodig om MEMOplanner te gebruiken	Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria	Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können	Du trenger en myAbilia-konto for å bruke MEMOplanner
 acceptTerms	I have read and agree to	Jag har läst och godkänner	Jeg har læst og accepterer	Ik heb gelezen en akkoord gegaan	Olen lukenut ja sopineet	Ich habe gelesen und bin damit einverstanden	Jeg har lest og godtar
 termsOfUse	terms of use	användarvillkor	brugervillkår	gebruiksvoorwaarden	käyttöehdot	nutzungsbedingungen	brukervillkår
+termsOfUseUrl	intl/terms-of-use	sv/anvandarvillkor	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	nb/brukervilkar
 privacyPolicy	privacy policy	personuppgiftspolicy	persondatapolitik	privacybeleid	tietosuojakäytäntö	datenschutzbestimmungen	personvernerklæring
+privacyPolicyUrl	intl/policy-for-the-processing-of-personal-data	sv/personuppgiftspolicy	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	nb/personvernerklaering
+usernameHint	Username (phone number or email)	Användarnamn (telefonnummer eller e-post)	Brugernavn (telefon eller en e-mail)	Gebruikersnaam (telefoon of een e-mail)	Käyttäjätunnus (puhelin tai sähköpostiosoite)	Benutzername (telefon oder E-Mail)	Brukernavn (telefon eller en e-post)
+passwordHint	Password (minimum 8 characters)	Lösenord (minst 8 tecken)	Adgangskode (mindst 8 tegn)	Wachtwoord (minimaal 8 tekens)	Salasanassa (vähintään 8 merkkiä)	Passwort (mindestens 8 Zeichen)	Passord (minimum 8 tegn)
 confirmPassword	Confirm password	Bekräfta lösenordet	Bekræft adgangskoden	Wachtwoord bevestigen	Vahvista salasana	Passwort bestätigen	Bekreft passordet
 usernameToShort	Username or email is invalid, must contain at least three characters	Användarnamn eller e-postadress är ogiltig, måste innehålla minst tre tecken	Brugernavn eller e-mail er ugyldig, skal indeholde mindst tre tegn	Gebruikersnaam of e-mail is ongeldig, moet ten minste drie tekens bevatten	Käyttäjätunnus tai sähköpostiosoite on virheellinen, niissä on oltava vähintään kolme merkkiä	Benutzername oder E-Mail ungültig - Mindestlänge drei Zeichen	Brukernavn eller e-postadresse er ugyldig, må inneholde minst tre tegn
 passwordToShort	The password must consist of at least 8 characters	Lösenordet måste bestå av minst 8 tecken	Adgangskoden skal bestå af mindst 8 tegn	Het wachtwoord moet ten minste 8 tekens bevatten	Salasanassa on oltava vähintään 8 merkkiä	Das Passwort muss mindestens 8 Zeichen lang sein	Passordet må bestå av minst 8 tegn

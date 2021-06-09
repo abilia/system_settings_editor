@@ -47,7 +47,7 @@ void main() {
         DateTime(2021, 03, 01),
       );
       expect(monthCalendarBloc.state.occasion, Occasion.current);
-      expect(monthCalendarBloc.state.weeks.length, 5);
+      expect(monthCalendarBloc.state.weeks.length, 6);
     });
 
     test('initial state', () {
@@ -135,6 +135,18 @@ void main() {
                 NotInMonthDay(),
               ],
             ),
+            MonthWeek(
+              14,
+              [
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
+              ],
+            ),
           ],
         ),
       );
@@ -154,7 +166,7 @@ void main() {
         state.firstDay,
         DateTime(2021, 04, 01),
       );
-      expect(state.weeks.length, 5);
+      expect(state.weeks.length, 6);
       expect(state.occasion, Occasion.future);
     });
 
@@ -264,6 +276,18 @@ void main() {
                   NotInMonthDay(),
                 ],
               ),
+              MonthWeek(
+                18,
+                [
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                ],
+              ),
             ],
           ),
         ),
@@ -284,7 +308,7 @@ void main() {
         state.firstDay,
         DateTime(2021, 02, 01),
       );
-      expect(state.weeks.length, 4);
+      expect(state.weeks.length, 6);
       expect(state.occasion, Occasion.past);
     });
 
@@ -378,6 +402,30 @@ void main() {
                       DateTime(2021, 02, 27), null, false, 00, Occasion.past),
                   MonthDay(
                       DateTime(2021, 02, 28), null, false, 00, Occasion.past),
+                ],
+              ),
+              MonthWeek(
+                9,
+                [
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                ],
+              ),
+              MonthWeek(
+                10,
+                [
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
                 ],
               ),
             ],
@@ -508,6 +556,18 @@ void main() {
                     DateTime(2021, 01, 30), null, false, 0, Occasion.future),
                 MonthDay(
                     DateTime(2021, 01, 31), null, false, 0, Occasion.future),
+              ],
+            ),
+            MonthWeek(
+              5,
+              [
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
+                NotInMonthDay(),
               ],
             ),
           ],
@@ -728,6 +788,18 @@ void main() {
                   NotInMonthDay(),
                 ],
               ),
+              MonthWeek(
+                14,
+                [
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                ],
+              ),
             ],
           ),
         ),
@@ -869,6 +941,18 @@ void main() {
                       DateTime(2021, 03, 30), null, false, 0, Occasion.future),
                   MonthDay(
                       DateTime(2021, 03, 31), null, false, 0, Occasion.future),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                ],
+              ),
+              MonthWeek(
+                14,
+                [
+                  NotInMonthDay(),
+                  NotInMonthDay(),
+                  NotInMonthDay(),
                   NotInMonthDay(),
                   NotInMonthDay(),
                   NotInMonthDay(),
