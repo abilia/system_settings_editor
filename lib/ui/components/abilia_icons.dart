@@ -114,7 +114,7 @@ class AbiliaIcons {
       alpha_num_keys = IconData(0xe968, fontFamily: fontFamily),
       start_selection = IconData(0xe969, fontFamily: fontFamily),
       end_selection = IconData(0xe96a, fontFamily: fontFamily),
-      empty5 = IconData(0xe96b, fontFamily: fontFamily),
+      medium_text = IconData(0xe96b, fontFamily: fontFamily),
       empty6 = IconData(0xe96c, fontFamily: fontFamily),
       one_switch = IconData(0xe96d, fontFamily: fontFamily),
       two_switch = IconData(0xe96e, fontFamily: fontFamily),
