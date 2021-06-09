@@ -123,7 +123,7 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
                             ),
                             SelectorItem(
                               t.medium,
-                              AbiliaIcons.decrease_text,
+                              AbiliaIcons.medium_text,
                               TimepillarZoom.NORMAL,
                             ),
                             SelectorItem(
