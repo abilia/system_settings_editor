@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 import 'dart:math' as math;
 
@@ -19,16 +17,16 @@ typedef JsonToDataModel<M extends DataModel> = DbModel<M> Function(
 
 abstract class DataRepository<M extends DataModel> extends Repository {
   DataRepository({
-    @required BaseClient client,
-    @required String baseUrl,
-    @required this.path,
-    @required this.authToken,
-    @required this.userId,
-    @required this.db,
-    @required this.fromJsonToDataModel,
-    @required this.log,
+    required BaseClient client,
+    required String baseUrl,
+    required this.path,
+    required this.authToken,
+    required this.userId,
+    required this.db,
+    required this.fromJsonToDataModel,
+    required this.log,
     this.postApiVersion = 1,
-    String postPath,
+    String? postPath,
   })  : postPath = postPath ?? path,
         super(client, baseUrl);
 
@@ -82,7 +80,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     return synchronized(() async {
       await fetchIntoDatabase();
       final dirtyData = await db.getAllDirty();
-      if (dirtyData == null || dirtyData.isEmpty) return true;
+      if (dirtyData.isEmpty) return true;
       try {
         final res = await postData(dirtyData);
         if (res.succeded.isNotEmpty) {
@@ -145,15 +143,21 @@ abstract class DataRepository<M extends DataModel> extends Repository {
         (success) => _updateDataItemWithNewRevision(success, dirtyDataMap),
       ),
     );
-    await db.insert(toUpdate);
+    await db.insert(toUpdate.whereNotNull());
   }
 
-  Future<DbModel<M>> _updateDataItemWithNewRevision(
+  Future<DbModel<M>?> _updateDataItemWithNewRevision(
     DataRevisionUpdate dataRevisionUpdate,
     Map<String, DbModel<M>> dirtyDataMap,
   ) async {
     final dataBeforeSync = dirtyDataMap[dataRevisionUpdate.id];
     final currentData = await db.getById(dataRevisionUpdate.id);
+    if (dataBeforeSync == null || currentData == null) {
+      log.severe(
+        '${dataRevisionUpdate.id} not found in database or $dirtyDataMap',
+      );
+      return null;
+    }
     final dirtyDiff = currentData.dirty - dataBeforeSync.dirty;
     return currentData.copyWith(
       revision: dataRevisionUpdate.revision,

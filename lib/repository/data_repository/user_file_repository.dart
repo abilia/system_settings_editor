@@ -1,13 +1,9 @@
-// @dart=2.9
-
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
 import 'package:collection/collection.dart';
 
@@ -23,13 +19,13 @@ class UserFileRepository extends DataRepository<UserFile> {
   final MultipartRequestBuilder multipartRequestBuilder;
 
   UserFileRepository({
-    @required String baseUrl,
-    @required BaseClient client,
-    @required String authToken,
-    @required int userId,
-    @required this.userFileDb,
-    @required this.fileStorage,
-    @required this.multipartRequestBuilder,
+    required String baseUrl,
+    required BaseClient client,
+    required String authToken,
+    required int userId,
+    required this.userFileDb,
+    required this.fileStorage,
+    required this.multipartRequestBuilder,
   }) : super(
           client: client,
           baseUrl: baseUrl,
@@ -62,7 +58,6 @@ class UserFileRepository extends DataRepository<UserFile> {
         final postFileSuccess = await _postFileData(
           file,
           dirtyFile.sha1,
-          dirtyFile.contentType,
         );
         if (!postFileSuccess) return false;
       }
@@ -124,7 +119,6 @@ class UserFileRepository extends DataRepository<UserFile> {
   Future<bool> _postFileData(
     File file,
     String sha1,
-    String contentType,
   ) async {
     try {
       final bytes = await file.readAsBytes();
@@ -151,7 +145,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     }
   }
 
-  Future<Iterable<UserFile>> downloadUserFiles({int limit}) async {
+  Future<Iterable<UserFile>> downloadUserFiles({int? limit}) async {
     final missingFiles = await userFileDb.getMissingFiles(limit: limit);
     log.fine('${missingFiles.length} missing files to fetch');
     final fetchedFiles = await Future.wait(
