@@ -9,6 +9,7 @@ import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
+import 'package:collection/collection.dart';
 
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
@@ -170,7 +171,7 @@ class UserFileRepository extends DataRepository<UserFile> {
         },
       ),
     );
-    return fetchedFiles.filterNull();
+    return fetchedFiles.whereNotNull();
   }
 
   Future<Response> _getImageThumb(String id, int size) {

@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
+import 'package:collection/collection.dart';
 
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
@@ -74,7 +75,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
           (j) => fromJsonToDataModel(j),
           onException: log.logAndReturnNull,
         )
-        .filterNull();
+        .whereNotNull();
   }
 
   Future<bool> synchronize() async {

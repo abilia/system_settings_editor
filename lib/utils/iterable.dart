@@ -3,13 +3,13 @@ extension ThowsafeMap<E> on Iterable<E> {
     T Function(E) function, {
     required T Function(dynamic, E) onException,
   }) =>
-      map((e) {
-        try {
-          return function(e);
-        } catch (exception) {
-          return onException(exception, e);
-        }
-      });
-
-  Iterable<E> filterNull() => where((element) => element != null);
+      map(
+        (e) {
+          try {
+            return function(e);
+          } catch (exception) {
+            return onException(exception, e);
+          }
+        },
+      );
 }

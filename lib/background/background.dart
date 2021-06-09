@@ -32,6 +32,10 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     final client = ClientWithDefaultHeaders(version);
     final user = UserDb(preferences).getUser();
     final token = TokenDb(preferences).getToken();
+    if (user == null || token == null) {
+      log.severe('No user or token: {token $token} {user $user}');
+      return;
+    }
     final database = await DatabaseRepository.createSqfliteDb();
 
     final activities = await ActivityRepository(
