@@ -9,6 +9,9 @@ abstract class SortableEvent extends Equatable {
 }
 
 class LoadSortables extends SortableEvent {
+  final bool initDefaults;
+
+  LoadSortables({this.initDefaults = false});
   @override
   String toString() => 'LoadSortables';
 }

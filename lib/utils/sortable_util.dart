@@ -2,9 +2,9 @@ import 'package:seagull/models/all.dart';
 import 'package:collection/collection.dart';
 
 extension SortableExtension on Iterable<Sortable> {
-  Sortable getUploadFolder() {
+  Sortable<ImageArchiveData>? getUploadFolder() {
     return whereType<Sortable<ImageArchiveData>>()
-        .firstWhere((s) => s.data.upload);
+        .firstWhereOrNull((s) => s.data.upload);
   }
 
   Sortable<ImageArchiveData>? getMyPhotosFolder() =>
