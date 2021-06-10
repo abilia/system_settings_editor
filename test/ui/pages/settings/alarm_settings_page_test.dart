@@ -68,23 +68,23 @@ void main() {
     testWidgets('Select non checkable alarm sound', (tester) async {
       await tester.goToAlarmSettingsPage(pump: true);
       expect(find.text(Sound.Default.displayName(null)), findsNWidgets(3));
-      expect(find.text(Sound.Drum.displayName(null)), findsNothing);
+      expect(find.text(Sound.AfloatSynth.displayName(null)), findsNothing);
       await tester.tap(find.byKey(TestKey.nonCheckableAlarmSelector));
       await tester.pumpAndSettle();
       expect(find.byType(SelectSoundPage), findsOneWidget);
-      await tester.tap(find.text(Sound.Drum.displayName(null)));
+      await tester.tap(find.text(Sound.AfloatSynth.displayName(null)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       expect(find.text(Sound.Default.displayName(null)), findsNWidgets(2));
-      expect(find.text(Sound.Drum.displayName(null)), findsOneWidget);
+      expect(find.text(Sound.AfloatSynth.displayName(null)), findsOneWidget);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await verifyGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.nonCheckableActivityAlarmKey,
-        matcher: Sound.Drum.name(),
+        matcher: Sound.AfloatSynth.name(),
       );
     });
 
@@ -92,7 +92,7 @@ void main() {
       await tester.goToAlarmSettingsPage(pump: true);
       await tester.tap(find.byKey(TestKey.checkableAlarmSelector));
       await tester.pumpAndSettle();
-      await tester.tap(find.text(Sound.Trip.displayName(null)));
+      await tester.tap(find.text(Sound.BreathlessPiano.displayName(null)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -102,7 +102,7 @@ void main() {
         tester,
         genericDb,
         key: MemoplannerSettings.checkableActivityAlarmKey,
-        matcher: Sound.Trip.name(),
+        matcher: Sound.BreathlessPiano.name(),
       );
     });
 
@@ -110,7 +110,7 @@ void main() {
       await tester.goToAlarmSettingsPage(pump: true);
       await tester.tap(find.byKey(TestKey.reminderAlarmSelector));
       await tester.pumpAndSettle();
-      await tester.tap(find.text(Sound.Springboard.displayName(null)));
+      await tester.tap(find.text(Sound.LatinAcousticGuitar.displayName(null)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -120,7 +120,7 @@ void main() {
         tester,
         genericDb,
         key: MemoplannerSettings.reminderAlarmKey,
-        matcher: Sound.Springboard.name(),
+        matcher: Sound.LatinAcousticGuitar.name(),
       );
     });
 
