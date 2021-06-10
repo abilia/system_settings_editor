@@ -52,71 +52,40 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   Stream<SortableState> _mapLoadSortablesToState(bool initDefaults) async* {
     try {
       final sortables = await sortableRepository.load();
-      final defaults =
-          initDefaults ? await getMissingDefaults(sortables) : <Sortable>[];
       yield SortablesLoaded(
-        sortables: sortables.followedBy(defaults).toList(),
+        sortables: [
+          ...sortables,
+          if (initDefaults) ...await getMissingDefaults(sortables),
+        ],
       );
     } catch (e) {
+      _log.warning('exception when loadning sortable $e');
       yield SortablesLoadedFailed();
     }
   }
 
   Future<List<Sortable>> getMissingDefaults(
       Iterable<Sortable> sortables) async {
-    return (await getMissingMyPhotosFolder(sortables))
-        .followedBy(await getMissingUploadsFolder(sortables))
-        .toList();
-  }
-
-  Future<List<Sortable>> getMissingMyPhotosFolder(
-      Iterable<Sortable> sortables) async {
-    if (sortables.getMyPhotosFolder() == null && Config.isMP) {
-      _log.fine('My photos folder is missing. Creating one.');
-      final sortOrder = sortables.firstSortOrderInFolder(null);
-
-      final sortableData = ImageArchiveData(
-        name: '',
-        icon: '',
-        myPhotos: true,
-      );
-
-      final myPhotos = Sortable.createNew<ImageArchiveData>(
-        data: sortableData,
-        groupId: '',
-        isGroup: true,
-        sortOrder: sortOrder,
-      );
-      await sortableRepository.save([myPhotos]);
+    final sortOrder = sortables.firstSortOrderInFolder();
+    final defaults = [
+      if (sortables.getMyPhotosFolder() == null && Config.isMP)
+        Sortable.createNew<ImageArchiveData>(
+          data: ImageArchiveData(myPhotos: true),
+          isGroup: true,
+          sortOrder: sortOrder,
+        ),
+      if (sortables.getUploadFolder() == null)
+        Sortable.createNew<ImageArchiveData>(
+          data: ImageArchiveData(name: 'myAbilia', upload: true),
+          isGroup: true,
+          sortOrder: sortOrder,
+        )
+    ];
+    if (defaults.isNotEmpty) {
+      await sortableRepository.save(defaults);
       syncBloc.add(SortableSaved());
-      return [myPhotos];
     }
-    return [];
-  }
-
-  Future<List<Sortable>> getMissingUploadsFolder(
-      Iterable<Sortable> sortables) async {
-    if (sortables.getUploadFolder() == null) {
-      _log.fine('Uploads folder is missing. Creating one.');
-      final sortOrder = sortables.firstSortOrderInFolder('');
-
-      final sortableData = ImageArchiveData(
-        name: 'myAbilia',
-        icon: '',
-        upload: true,
-      );
-
-      final upload = Sortable.createNew<ImageArchiveData>(
-        data: sortableData,
-        groupId: '',
-        isGroup: true,
-        sortOrder: sortOrder,
-      );
-      await sortableRepository.save([upload]);
-      syncBloc.add(SortableSaved());
-      return [upload];
-    }
-    return [];
+    return defaults;
   }
 
   Stream<SortableState> _mapImageArchiveImageAddedToState(
@@ -136,7 +105,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           .toList();
       uploadFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
       final sortOrder = uploadFolderContent.isEmpty
-          ? getStartSortOrder()
+          ? START_SORT_ORDER
           : calculateNextSortOrder(uploadFolderContent.last.sortOrder, 1);
 
       final newSortable = Sortable.createNew<ImageArchiveData>(

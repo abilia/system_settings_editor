@@ -1,6 +1,5 @@
-// @dart=2.9
-
 import 'package:logging/logging.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsDb {
@@ -19,11 +18,12 @@ class SettingsDb {
       preferences.setString(_LANGUAGE_RECORD, language);
 
   String get language {
-    try {
-      return preferences.getString(_LANGUAGE_RECORD);
-    } catch (_) {
-      return null;
+    final lang = preferences.getString(_LANGUAGE_RECORD);
+    if (lang == null) {
+      _log.warning('language is missing in db, falls back to default');
+      return Locales.language.keys.first.toLanguageTag();
     }
+    return lang;
   }
 
   Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) =>

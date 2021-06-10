@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 
 import 'package:seagull/models/all.dart';
@@ -17,7 +15,7 @@ class LicenseDb {
   List<License> getLicenses() {
     try {
       final licensesString = prefs.getString(_licenseKey);
-      return (json.decode(licensesString) as List)
+      return (json.decode(licensesString!) as List)
           .map((e) => License.fromJson(e))
           .toList();
     } catch (_) {

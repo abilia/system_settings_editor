@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/repository/data_repository/sortable_repository.dart';
 
 import '../../mocks.dart';
@@ -51,14 +52,15 @@ void main() {
       sortableBloc.stream,
       emits(isA<SortablesLoaded>()),
     );
-    final capture = verify(mockSortableRepository.save(captureAny)).captured;
+    final capture = verify(mockSortableRepository.save(captureAny))
+        .captured
+        .expand((l) => l)
+        .whereType<Sortable<ImageArchiveData>>()
+        .toList();
     expect(capture.length, 2);
 
-    final savedMyPhotos = (capture.first as List<Sortable<SortableData>>).first;
-    expect((savedMyPhotos.data as ImageArchiveData).myPhotos, isTrue);
-
-    final savedUpload = (capture.last as List<Sortable<SortableData>>).first;
-    expect((savedUpload.data as ImageArchiveData).upload, isTrue);
+    expect(capture.any((s) => s.data.myPhotos), isTrue);
+    expect(capture.any((s) => s.data.upload), isTrue);
   }, skip: !Config.isMP);
 
   test('Defaults are created for MPGO', () async {
@@ -68,11 +70,14 @@ void main() {
       sortableBloc.stream,
       emits(isA<SortablesLoaded>()),
     );
-    final capture = verify(mockSortableRepository.save(captureAny)).captured;
+    final capture = verify(mockSortableRepository.save(captureAny))
+        .captured
+        .expand((l) => l)
+        .whereType<Sortable<ImageArchiveData>>()
+        .toList();
     expect(capture.length, 1);
 
-    final savedUpload = (capture.first as List<Sortable<SortableData>>).first;
-    expect((savedUpload.data as ImageArchiveData).upload, isTrue);
+    expect(capture.any((s) => s.data.upload), isTrue);
   }, skip: Config.isMP);
 
   test('Generates new imagearchive sortable with existing upload folder',

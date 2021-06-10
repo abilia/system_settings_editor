@@ -1077,6 +1077,42 @@ void main() {
       expect(find.text(fridayTitle), findsNothing);
       expect(find.text(todaytitle), findsOneWidget);
     });
+
+    testWidgets('BUG SGC-833 expanded day updates in when returning to week',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      final selectedHeadingsInitial = tester.widgetList(find.byWidgetPredicate(
+          (widget) => widget is WeekCalenderHeadingContent && widget.selected));
+      expect(selectedHeadingsInitial, hasLength(1));
+
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+
+      final selectedHeadingsnextWeekPreSelect = tester.widgetList(
+          find.byWidgetPredicate((widget) =>
+              widget is WeekCalenderHeadingContent && widget.selected));
+      expect(selectedHeadingsnextWeekPreSelect, isEmpty);
+
+      final d = initialDay.addDays(8).day;
+      await tester.tap(find.text('$d'));
+      await tester.pumpAndSettle();
+      final selectedHeadingsnextWeekPostSelect = tester.widgetList(
+          find.byWidgetPredicate((widget) =>
+              widget is WeekCalenderHeadingContent && widget.selected));
+      expect(selectedHeadingsnextWeekPostSelect, hasLength(1));
+
+      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.pumpAndSettle();
+
+      final selectedHeadingsInitialPostSelect = tester.widgetList(
+          find.byWidgetPredicate((widget) =>
+              widget is WeekCalenderHeadingContent && widget.selected));
+      expect(selectedHeadingsInitialPostSelect, isEmpty);
+    });
   });
 
   group('Month calendar', () {
