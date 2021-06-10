@@ -105,7 +105,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           .toList();
       uploadFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
       final sortOrder = uploadFolderContent.isEmpty
-          ? getStartSortOrder()
+          ? START_SORT_ORDER
           : calculateNextSortOrder(uploadFolderContent.last.sortOrder, 1);
 
       final newSortable = Sortable.createNew<ImageArchiveData>(

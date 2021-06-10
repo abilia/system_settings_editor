@@ -6,14 +6,10 @@ import 'package:seagull/models/all.dart';
 
 const String SORT_ORDER_CHARACTERS =
     '!"#\$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}';
-const START_CHAR = '!';
-const END_CHAR = '}';
-
-String getStartSortOrder() =>
-    SORT_ORDER_CHARACTERS[((SORT_ORDER_CHARACTERS.length / 2).floor())];
+const START_CHAR = '!', END_CHAR = '}', START_SORT_ORDER = 'O';
 
 String calculateNextSortOrder(String sortOrder, int step) {
-  if (sortOrder.isEmpty) return getStartSortOrder();
+  if (sortOrder.isEmpty) return START_SORT_ORDER;
   final i = sortOrder.length - 1;
   var arr = sortOrder.split('').toList();
   final next = sortOrder.codeUnitAt(i) + step;
@@ -47,7 +43,7 @@ extension SortExtension on Iterable<Sortable> {
     final root = where((s) => s.groupId == folderId).toList();
     root.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
     return root.isEmpty
-        ? getStartSortOrder()
+        ? START_SORT_ORDER
         : calculateNextSortOrder(root.first.sortOrder, -1);
   }
 }

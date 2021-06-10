@@ -38,11 +38,12 @@ class Sortable<T extends SortableData> extends DataModel {
   static Sortable<T> createNew<T extends SortableData>({
     required T data,
     String groupId = '',
-    String sortOrder = '',
+    String sortOrder = START_SORT_ORDER,
     bool deleted = false,
     bool isGroup = false,
     bool visible = true,
   }) {
+    assert(sortOrder.isNotEmpty);
     return Sortable<T>._(
         id: Uuid().v4(),
         type: _getTypeString<T>(),

@@ -7,10 +7,6 @@ void main() {
   group('Test sort order algorithm', () {
     void expectNext(String start, int step, String expectedNext) =>
         expect(calculateNextSortOrder(start, step), expectedNext);
-    test('Start is correct', () {
-      final start = getStartSortOrder();
-      expect(start, 'O');
-    });
 
     test('Stepping to next', () {
       expectNext('A', 1, 'B');
