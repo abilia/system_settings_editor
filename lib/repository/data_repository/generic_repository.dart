@@ -1,8 +1,5 @@
-// @dart=2.9
-
 import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 
@@ -12,11 +9,11 @@ class GenericRepository extends DataRepository<Generic> {
   final GenericDb genericDb;
 
   GenericRepository({
-    @required String baseUrl,
-    @required BaseClient client,
-    @required String authToken,
-    @required int userId,
-    @required this.genericDb,
+    required String baseUrl,
+    required BaseClient client,
+    required String authToken,
+    required int userId,
+    required this.genericDb,
   }) : super(
           client: client,
           baseUrl: baseUrl,

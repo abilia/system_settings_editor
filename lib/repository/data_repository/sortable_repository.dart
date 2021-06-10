@@ -1,8 +1,5 @@
-// @dart=2.9
-
 import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
@@ -12,11 +9,11 @@ import '../all.dart';
 
 class SortableRepository extends DataRepository<Sortable> {
   SortableRepository({
-    @required String baseUrl,
-    @required BaseClient client,
-    @required String authToken,
-    @required int userId,
-    @required SortableDb sortableDb,
+    required String baseUrl,
+    required BaseClient client,
+    required String authToken,
+    required int userId,
+    required SortableDb sortableDb,
   }) : super(
           client: client,
           baseUrl: baseUrl,
@@ -31,7 +28,7 @@ class SortableRepository extends DataRepository<Sortable> {
   Future<Sortable> generateUploadFolder() async {
     return synchronized(() async {
       final all = await db.getAllNonDeleted();
-      final sortOrder = all.firstSortOrderInFolder(null);
+      final sortOrder = all.firstSortOrderInFolder();
 
       final sortableData = ImageArchiveData(
         name: 'myAbilia',
@@ -41,7 +38,7 @@ class SortableRepository extends DataRepository<Sortable> {
 
       final upload = Sortable.createNew<ImageArchiveData>(
         data: sortableData,
-        groupId: null,
+        groupId: '',
         isGroup: true,
         sortOrder: sortOrder,
       );

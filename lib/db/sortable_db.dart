@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/db/all.dart';

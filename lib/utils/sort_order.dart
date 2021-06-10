@@ -42,7 +42,7 @@ String calculateNextSortOrder(String sortOrder, int step) {
 }
 
 extension SortExtension on Iterable<Sortable> {
-  String firstSortOrderInFolder(String folderId) {
+  String firstSortOrderInFolder({String folderId = ''}) {
     final root = where((s) => s.groupId == folderId).toList();
     root.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
     return root.isEmpty

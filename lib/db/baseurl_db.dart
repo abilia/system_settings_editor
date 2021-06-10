@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/repository/end_point.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,16 +10,11 @@ class BaseUrlDb {
   Future setBaseUrl(String baseUrl) =>
       prefs.setString(_BASE_URL_RECORD, baseUrl);
 
-  String getBaseUrl() {
-    try {
-      return prefs.getString(_BASE_URL_RECORD);
-    } catch (_) {
-      return null;
-    }
-  }
+  String getBaseUrl() => prefs.getString(_BASE_URL_RECORD) ?? PROD;
 
   Future deleteBaseUrl() => prefs.remove(_BASE_URL_RECORD);
 
-  Future<String> initialize() async =>
-      getBaseUrl() ?? await setBaseUrl(PROD).then((_) => PROD);
+  Future<String> initialize() async => prefs.containsKey(_BASE_URL_RECORD)
+      ? getBaseUrl()
+      : await setBaseUrl(PROD).then((_) => PROD);
 }

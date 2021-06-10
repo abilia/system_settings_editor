@@ -91,7 +91,7 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
 
   Sortable<ImageArchiveData> generateMyPhotosFolder(
       Iterable<Sortable<ImageArchiveData>> sortables) {
-    final sortOrder = sortables.firstSortOrderInFolder(null);
+    final sortOrder = sortables.firstSortOrderInFolder();
 
     final sortableData = ImageArchiveData(
       name: '',
