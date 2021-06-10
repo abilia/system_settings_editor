@@ -70,6 +70,9 @@ class SettingsPage extends StatelessWidget {
       ],
       icon: AbiliaIcons.settings,
       title: t.settings,
+      bottomNavigationBar: Config.isMPGO
+          ? const BottomNavigation(backNavigationWidget: CloseButton())
+          : null,
     );
   }
 }
