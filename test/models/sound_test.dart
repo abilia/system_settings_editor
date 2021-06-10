@@ -5,8 +5,8 @@ import 'package:seagull/models/all.dart';
 
 void main() {
   test('Correct string mapping', () {
-    expect('Drum'.toSound(), Sound.Drum);
-    expect('Trip'.toSound(), Sound.Trip);
-    expect(Sound.Drum.name(), 'Drum');
+    expect('AfloatSynth'.toSound(), Sound.AfloatSynth);
+    expect('DoorBell'.toSound(), Sound.DoorBell);
+    expect(Sound.BreathlessPiano.name(), 'BreathlessPiano');
   });
 }
