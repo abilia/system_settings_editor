@@ -13,6 +13,7 @@ String getStartSortOrder() =>
     SORT_ORDER_CHARACTERS[((SORT_ORDER_CHARACTERS.length / 2).floor())];
 
 String calculateNextSortOrder(String sortOrder, int step) {
+  if (sortOrder.isEmpty) return getStartSortOrder();
   final i = sortOrder.length - 1;
   var arr = sortOrder.split('').toList();
   final next = sortOrder.codeUnitAt(i) + step;
