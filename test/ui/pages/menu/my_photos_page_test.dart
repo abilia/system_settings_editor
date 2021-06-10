@@ -57,11 +57,9 @@ void main() {
   tearDown(GetIt.I.reset);
 
   group('My photos page', () {
-    testWidgets('The page shows and my photos folder is created',
-        (tester) async {
+    testWidgets('The page shows', (tester) async {
       await tester.goToMyPhotos();
       expect(find.byType(MyPhotosPage), findsOneWidget);
-      await verifyMyPhotosCreated(tester, sortableDb);
     });
 
     testWidgets('Can navigate back to menu', (tester) async {
@@ -87,11 +85,4 @@ extension on WidgetTester {
     await tap(find.byIcon(AbiliaIcons.my_photos));
     await pumpAndSettle();
   }
-}
-
-Future verifyMyPhotosCreated(WidgetTester tester, SortableDb sortableDb) async {
-  final v = verify(sortableDb.insertAndAddDirty(captureAny));
-  expect(v.callCount, 1);
-  final sortable = v.captured.single.first as Sortable<ImageArchiveData>;
-  expect(sortable.data.myPhotos, isTrue);
 }

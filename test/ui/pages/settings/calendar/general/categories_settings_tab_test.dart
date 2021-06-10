@@ -267,7 +267,11 @@ void main() {
       sortable = [
         Sortable.createNew<ImageArchiveData>(
           data: ImageArchiveData(name: 'test image', fileId: fileId),
-        )
+        ),
+        Sortable.createNew<ImageArchiveData>(
+          isGroup: true,
+          data: ImageArchiveData(upload: true),
+        ),
       ];
       await tester.goToGeneralCalendarSettingsPageCategoriesTab();
       await tester.tap(find.byKey(TestKey.editRigthCategory));
@@ -297,7 +301,11 @@ void main() {
       sortable = [
         Sortable.createNew<ImageArchiveData>(
           data: ImageArchiveData(name: 'test image', fileId: fileId),
-        )
+        ),
+        Sortable.createNew<ImageArchiveData>(
+          isGroup: true,
+          data: ImageArchiveData(upload: true),
+        ),
       ];
       await tester.goToGeneralCalendarSettingsPageCategoriesTab();
 

@@ -1,9 +1,7 @@
 import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
-import 'package:synchronized/extension.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
 
 import '../all.dart';
 
@@ -24,26 +22,4 @@ class SortableRepository extends DataRepository<Sortable> {
           fromJsonToDataModel: DbSortable.fromJson,
           log: Logger((SortableRepository).toString()),
         );
-
-  Future<Sortable> generateUploadFolder() async {
-    return synchronized(() async {
-      final all = await db.getAllNonDeleted();
-      final sortOrder = all.firstSortOrderInFolder();
-
-      final sortableData = ImageArchiveData(
-        name: 'myAbilia',
-        icon: '',
-        upload: true,
-      );
-
-      final upload = Sortable.createNew<ImageArchiveData>(
-        data: sortableData,
-        groupId: '',
-        isGroup: true,
-        sortOrder: sortOrder,
-      );
-      await db.insertAndAddDirty([upload]);
-      return upload;
-    });
-  }
 }

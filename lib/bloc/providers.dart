@@ -113,7 +113,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                     syncBloc: context.read<SyncBloc>(),
                     pushBloc: context.read<PushBloc>(),
                   )
-                ..add(LoadSortables()),
+                ..add(LoadSortables(initDefaults: true)),
             ),
             BlocProvider<GenericBloc>(
               create: (context) => GenericBloc(

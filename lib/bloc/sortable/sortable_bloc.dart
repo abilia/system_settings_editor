@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
@@ -38,7 +39,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     SortableEvent event,
   ) async* {
     if (event is LoadSortables) {
-      yield* _mapLoadSortablesToState();
+      yield* _mapLoadSortablesToState(event.initDefaults);
     }
     if (event is ImageArchiveImageAdded) {
       yield* _mapImageArchiveImageAddedToState(event);
@@ -48,21 +49,50 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     }
   }
 
-  Stream<SortableState> _mapLoadSortablesToState() async* {
+  Stream<SortableState> _mapLoadSortablesToState(bool initDefaults) async* {
     try {
       final sortables = await sortableRepository.load();
-      yield SortablesLoaded(sortables: sortables);
-    } catch (_) {
+      yield SortablesLoaded(
+        sortables: [
+          ...sortables,
+          if (initDefaults) ...await getMissingDefaults(sortables),
+        ],
+      );
+    } catch (e) {
+      _log.warning('exception when loadning sortable $e');
       yield SortablesLoadedFailed();
     }
+  }
+
+  Future<List<Sortable>> getMissingDefaults(
+      Iterable<Sortable> sortables) async {
+    final sortOrder = sortables.firstSortOrderInFolder();
+    final defaults = [
+      if (sortables.getMyPhotosFolder() == null && Config.isMP)
+        Sortable.createNew<ImageArchiveData>(
+          data: ImageArchiveData(myPhotos: true),
+          isGroup: true,
+          sortOrder: sortOrder,
+        ),
+      if (sortables.getUploadFolder() == null)
+        Sortable.createNew<ImageArchiveData>(
+          data: ImageArchiveData(name: 'myAbilia', upload: true),
+          isGroup: true,
+          sortOrder: sortOrder,
+        )
+    ];
+    if (defaults.isNotEmpty) {
+      await sortableRepository.save(defaults);
+      syncBloc.add(SortableSaved());
+    }
+    return defaults;
   }
 
   Stream<SortableState> _mapImageArchiveImageAddedToState(
       ImageArchiveImageAdded event) async* {
     final currentState = state;
     if (currentState is SortablesLoaded) {
-      final uploadFolder =
-          await getOrGenerateUploadFolder(currentState.sortables);
+      final uploadFolder = currentState.sortables.getUploadFolder();
       final name = event.imagePath.split('/').last.split('.').first;
       final sortableData = ImageArchiveData(
         name: name,
@@ -75,7 +105,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           .toList();
       uploadFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
       final sortOrder = uploadFolderContent.isEmpty
-          ? getStartSortOrder()
+          ? START_SORT_ORDER
           : calculateNextSortOrder(uploadFolderContent.last.sortOrder, 1);
 
       final newSortable = Sortable.createNew<ImageArchiveData>(
@@ -96,18 +126,8 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     final currentState = state;
     if (currentState is SortablesLoaded) {
       await sortableRepository.save([event.sortable]);
-      yield* _mapLoadSortablesToState();
+      yield* _mapLoadSortablesToState(false);
       syncBloc.add(SortableSaved());
-    }
-  }
-
-  Future<Sortable> getOrGenerateUploadFolder(
-      Iterable<Sortable> sortables) async {
-    try {
-      return sortables.getUploadFolder();
-    } catch (e) {
-      _log.info('No upload folder. Create one');
-      return sortableRepository.generateUploadFolder();
     }
   }
 

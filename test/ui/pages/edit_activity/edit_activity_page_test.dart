@@ -803,6 +803,7 @@ Internal improvements to tests and examples.''';
                   name: 'NAAAMAE',
                   text: content,
                 ),
+                sortOrder: START_CHAR,
               ),
               ...List.generate(
                 30,
@@ -1116,13 +1117,14 @@ text''';
           SortablesLoaded(
             sortables: [
               Sortable.createNew<ChecklistData>(
+                  sortOrder: START_CHAR,
                   data: ChecklistData(Checklist(
                       name: title1,
                       fileId: 'fileid1',
                       questions: [
-                    Question(id: 0, name: '1'),
-                    Question(id: 1, name: '2', fileId: '2222')
-                  ]))),
+                        Question(id: 0, name: '1'),
+                        Question(id: 1, name: '2', fileId: '2222')
+                      ]))),
               ...List.generate(
                 30,
                 (index) => Sortable.createNew<ChecklistData>(

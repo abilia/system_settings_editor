@@ -47,18 +47,15 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
     final imageArchiveSortables =
         event.sortables.whereType<Sortable<ImageArchiveData>>();
     final myPhotosRoot = imageArchiveSortables.getMyPhotosFolder();
-    if (myPhotosRoot == null) {
-      generateMyPhotosFolder(imageArchiveSortables);
-    } else {
-      final allByFolder = groupBy<Sortable<ImageArchiveData>, String>(
-          imageArchiveSortables, (s) => s.groupId);
-      final allById = {for (var s in imageArchiveSortables) s.id: s};
-      yield MyPhotosState(
-        allByFolder: allByFolder,
-        allById: allById,
-        currentFolderId: myPhotosRoot.id,
-      );
-    }
+
+    final allByFolder = groupBy<Sortable<ImageArchiveData>, String>(
+        imageArchiveSortables, (s) => s.groupId);
+    final allById = {for (var s in imageArchiveSortables) s.id: s};
+    yield MyPhotosState(
+      allByFolder: allByFolder,
+      allById: allById,
+      currentFolderId: myPhotosRoot.id,
+    );
   }
 
   Stream<MyPhotosState> _mapPhotoAddedtoState(PhotoAdded event) async* {
@@ -66,8 +63,7 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
     if (sortablesState is SortablesLoaded) {
       final imageArchiveSortables =
           sortablesState.sortables.whereType<Sortable<ImageArchiveData>>();
-      final myPhotosFolder = imageArchiveSortables.getMyPhotosFolder() ??
-          generateMyPhotosFolder(imageArchiveSortables);
+      final myPhotosFolder = imageArchiveSortables.getMyPhotosFolder();
       final sortableData = ImageArchiveData(
         name: event.name,
         file: '${FileStorage.folder}/${event.imageId}',
@@ -78,7 +74,7 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
           .toList();
       myPhotosFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
       final sortOrder = myPhotosFolderContent.isEmpty
-          ? getStartSortOrder()
+          ? START_SORT_ORDER
           : calculateNextSortOrder(myPhotosFolderContent.last.sortOrder, 1);
       final newSortable = Sortable.createNew<ImageArchiveData>(
         data: sortableData,
