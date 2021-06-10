@@ -1,7 +1,6 @@
-// @dart=2.9
-
 import 'package:seagull/logging.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:collection/collection.dart';
 
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -33,7 +32,7 @@ abstract class DataDb<M extends DataModel> {
           (dataModel) => dataModel.toMapForDb(),
           onException: log.logAndReturnNull,
         )
-        .filterNull()
+        .whereNotNull()
         .forEach(
           (value) => batch.insert(
             tableName,
@@ -52,17 +51,17 @@ abstract class DataDb<M extends DataModel> {
           convertToDataModel,
           onException: log.logAndReturnNull,
         )
-        .filterNull();
+        .whereNotNull();
   }
 
-  Future<DbModel<M>> getById(String id) async {
+  Future<DbModel<M>?> getById(String id) async {
     final result = await db.rawQuery(GET_BY_ID_SQL, [id]);
     final userFiles = result
         .exceptionSafeMap(
           convertToDataModel,
           onException: log.logAndReturnNull,
         )
-        .filterNull();
+        .whereNotNull();
     if (userFiles.length == 1) {
       return userFiles.first;
     } else {
@@ -77,7 +76,7 @@ abstract class DataDb<M extends DataModel> {
           convertToDataModel,
           onException: log.logAndReturnNull,
         )
-        .filterNull()
+        .whereNotNull()
         .map((data) => data.model);
   }
 
@@ -88,21 +87,17 @@ abstract class DataDb<M extends DataModel> {
           convertToDataModel,
           onException: log.logAndReturnNull,
         )
-        .filterNull()
+        .whereNotNull()
         .map((data) => data.model);
   }
 
   Future<int> getLastRevision() async {
     final result = await db.rawQuery(MAX_REVISION_SQL);
-    final revision = result == null
-        ? null
-        : result.isNotEmpty
-            ? result.first['max_revision']
-            : null;
+    final revision = result.isNotEmpty ? result.first['max_revision'] : null;
     if (revision == null) {
       return 0;
     }
-    return revision;
+    return revision as int;
   }
 
   Future insertAndAddDirty(Iterable<M> data) async {

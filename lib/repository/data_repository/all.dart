@@ -1,5 +1,3 @@
-// @dart=2.9
-
 export 'activity_repository.dart';
 export 'sortable_repository.dart';
 export 'user_file_repository.dart';

@@ -130,6 +130,7 @@ class MockActivityDb extends Mock implements ActivityDb {}
 class MockGenericDb extends Mock implements GenericDb {
   MockGenericDb() {
     when(getAllNonDeletedMaxRevision()).thenAnswer((_) => Future.value([]));
+    when(getAllDirty()).thenAnswer((_) => Future.value([]));
   }
 }
 
@@ -144,7 +145,11 @@ class MockSettingsDb extends Mock implements SettingsDb {}
 
 class MockSortableDb extends Mock implements SortableDb {}
 
-class MockDatabase extends Mock implements Database {}
+class MockDatabase extends Mock implements Database {
+  MockDatabase() {
+    when(rawQuery(any)).thenAnswer((_) => Future.value([]));
+  }
+}
 
 class MockBatch extends Mock implements Batch {}
 

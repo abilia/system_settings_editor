@@ -73,7 +73,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       Iterable<Sortable> sortables) async {
     if (sortables.getMyPhotosFolder() == null && Config.isMP) {
       _log.fine('My photos folder is missing. Creating one.');
-      final sortOrder = sortables.firstSortOrderInFolder(null);
+      final sortOrder = sortables.firstSortOrderInFolder();
 
       final sortableData = ImageArchiveData(
         name: '',
@@ -98,7 +98,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       Iterable<Sortable> sortables) async {
     if (sortables.getUploadFolder() == null) {
       _log.fine('Uploads folder is missing. Creating one.');
-      final sortOrder = sortables.firstSortOrderInFolder('');
+      final sortOrder = sortables.firstSortOrderInFolder();
 
       final sortableData = ImageArchiveData(
         name: 'myAbilia',
