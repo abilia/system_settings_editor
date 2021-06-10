@@ -501,6 +501,9 @@ abstract class Translated {
 
   final String selectAlarm = 'Select alarm';
 
+  final String iOSAlarmTimeWarning =
+      'On iPhones, alarms longer than 30 seconds will be played for 30 seconds due to iOS restrictions';
+
   final String selectChecklist = 'Select checklist';
 
   final String selectNote = 'Select note';
@@ -1376,6 +1379,10 @@ class SV extends Translated {
 
   @override
   final String selectAlarm = 'Välj larm';
+
+  @override
+  final String iOSAlarmTimeWarning =
+      'På iPhones spelas larm som är längre än 30 sekunder i 30 sekunder på grund av iOS-begränsningar';
 
   @override
   final String selectChecklist = 'Välj checklista';
@@ -2323,6 +2330,10 @@ class DA extends Translated {
   final String selectAlarm = 'Vælg alarm';
 
   @override
+  final String iOSAlarmTimeWarning =
+      'På iPhones afspilles alarmer, der er længere end 30 sekunder i 30 sekunder på grund af iOS-begrænsninger';
+
+  @override
   final String selectChecklist = 'Vælg tjekliste';
 
   @override
@@ -3266,6 +3277,10 @@ class NL extends Translated {
 
   @override
   final String selectAlarm = 'Alarm selecteren';
+
+  @override
+  final String iOSAlarmTimeWarning =
+      'Op iPhones worden alarmen langer dan 30 seconden 30 seconden afgespeeld vanwege iOS-beperkingen';
 
   @override
   final String selectChecklist = 'Checklist selecteren';
@@ -4212,6 +4227,10 @@ class FI extends Translated {
 
   @override
   final String selectAlarm = 'Valitse hälytys';
+
+  @override
+  final String iOSAlarmTimeWarning =
+      'IPhone-laitteissa yli 30 sekunnin pituiset hälytykset toistetaan 30 sekunnin ajan iOS-rajoitusten vuoksi';
 
   @override
   final String selectChecklist = 'Valitse tarkistusluettelo';
@@ -5164,6 +5183,10 @@ class DE extends Translated {
   final String selectAlarm = 'Alarm auswählen';
 
   @override
+  final String iOSAlarmTimeWarning =
+      'Auf iPhones werden Alarme, die länger als 30 Sekunden sind, aufgrund von iOS-Einschränkungen 30 Sekunden lang wiedergegeben';
+
+  @override
   final String selectChecklist = 'Checkliste auswählen';
 
   @override
@@ -6107,6 +6130,10 @@ class NB extends Translated {
 
   @override
   final String selectAlarm = 'Velg alarm';
+
+  @override
+  final String iOSAlarmTimeWarning =
+      'På iPhones vil alarmer som er lenger enn 30 sekunder spilles av i 30 sekunder på grunn av iOS-begrensninger';
 
   @override
   final String selectChecklist = 'Velg sjekkliste';

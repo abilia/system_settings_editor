@@ -30,20 +30,22 @@ extension AlarmDurationExtension on AlarmDuration {
     }
   }
 
-  int milliseconds() {
+  int milliseconds() => duration().inMilliseconds;
+
+  Duration duration() {
     switch (this) {
       case AlarmDuration.Alert:
-        return 0;
+        return Duration.zero;
       case AlarmDuration.FifteenSeconds:
-        return 15.seconds().inMilliseconds;
+        return 15.seconds();
       case AlarmDuration.ThirtySeconds:
-        return 30.seconds().inMilliseconds;
+        return 30.seconds();
       case AlarmDuration.OneMinute:
-        return 1.minutes().inMilliseconds;
+        return 1.minutes();
       case AlarmDuration.TwoMinutes:
-        return 2.minutes().inMilliseconds;
+        return 2.minutes();
       case AlarmDuration.FiveMinutes:
-        return 5.minutes().inMilliseconds;
+        return 5.minutes();
       default:
         throw Exception();
     }

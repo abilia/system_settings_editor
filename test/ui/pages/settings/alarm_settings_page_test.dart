@@ -129,8 +129,12 @@ void main() {
       await tester.tap(find.byKey(TestKey.alarmDurationSelector));
       await tester.pumpAndSettle();
       expect(find.byType(SelectAlarmDurationPage), findsOneWidget);
+      expect(find.byType(ErrorMessage), findsNothing);
       await tester
           .tap(find.text(AlarmDuration.FiveMinutes.displayText(translate)));
+      await tester.pumpAndSettle();
+      expect(find.byType(ErrorMessage), findsOneWidget);
+      expect(find.text(translate.iOSAlarmTimeWarning), findsOneWidget);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
