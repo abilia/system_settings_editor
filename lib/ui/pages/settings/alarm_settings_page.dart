@@ -18,73 +18,76 @@ class AlarmSettingsPage extends StatelessWidget {
         settingsState: context.read<MemoplannerSettingBloc>().state,
         genericBloc: context.read<GenericBloc>(),
       ),
-      child: BlocBuilder<AlarmSettingsCubit, AlarmSettingsState>(
-        builder: (context, state) {
-          final widgets = [
-            AlarmSelector(
-              key: TestKey.nonCheckableAlarmSelector,
-              heading: t.nonCheckableActivities,
-              icon: AbiliaIcons.handi_uncheck,
-              sound: state.nonCheckableSound,
-              onChanged: (sound) => context
-                  .read<AlarmSettingsCubit>()
-                  .changeAlarmSettings(
-                      state.copyWith(nonCheckableSound: sound)),
-            ),
-            AlarmSelector(
-              key: TestKey.checkableAlarmSelector,
-              heading: t.checkableActivities,
-              icon: AbiliaIcons.handi_check,
-              sound: state.checkableSound,
-              onChanged: (sound) => context
-                  .read<AlarmSettingsCubit>()
-                  .changeAlarmSettings(state.copyWith(checkableSound: sound)),
-            ),
-            AlarmSelector(
-              key: TestKey.reminderAlarmSelector,
-              heading: t.reminders,
-              icon: AbiliaIcons.handi_reminder,
-              sound: state.reminderSound,
-              noSoundOption: true,
-              onChanged: (sound) => context
-                  .read<AlarmSettingsCubit>()
-                  .changeAlarmSettings(state.copyWith(reminderSound: sound)),
-            ),
-            SwitchField(
-              key: TestKey.vibrateAtReminderSelector,
-              value: state.vibrateAtReminder,
-              onChanged: (v) => context
-                  .read<AlarmSettingsCubit>()
-                  .changeAlarmSettings(state.copyWith(vibrateAtReminder: v)),
-              child: Text(t.vibrationOnReminder),
-            ),
-            AlarmDurationSelector(
-              key: TestKey.alarmDurationSelector,
-              duration: state.alarmDuration,
-            ),
-          ];
-          return Scaffold(
-            appBar: AbiliaAppBar(
-              title: Translator.of(context).translate.alarmSettings,
-              iconData: AbiliaIcons.handi_alarm_vibration,
-            ),
-            body: ListView.separated(
-              padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
-              itemBuilder: (context, i) => widgets[i],
-              itemCount: widgets.length,
-              separatorBuilder: (context, index) => SizedBox(height: 16.0.s),
-            ),
-            bottomNavigationBar: BottomNavigation(
-              backNavigationWidget: CancelButton(),
-              forwardNavigationWidget: OkButton(
-                onPressed: () {
-                  context.read<AlarmSettingsCubit>().save();
-                  Navigator.of(context).pop();
-                },
+      child: BlocProvider<SoundCubit>(
+        create: (_) => SoundCubit(),
+        child: BlocBuilder<AlarmSettingsCubit, AlarmSettingsState>(
+          builder: (context, state) {
+            final widgets = [
+              AlarmSelector(
+                key: TestKey.nonCheckableAlarmSelector,
+                heading: t.nonCheckableActivities,
+                icon: AbiliaIcons.handi_uncheck,
+                sound: state.nonCheckableSound,
+                onChanged: (sound) => context
+                    .read<AlarmSettingsCubit>()
+                    .changeAlarmSettings(
+                        state.copyWith(nonCheckableSound: sound)),
               ),
-            ),
-          );
-        },
+              AlarmSelector(
+                key: TestKey.checkableAlarmSelector,
+                heading: t.checkableActivities,
+                icon: AbiliaIcons.handi_check,
+                sound: state.checkableSound,
+                onChanged: (sound) => context
+                    .read<AlarmSettingsCubit>()
+                    .changeAlarmSettings(state.copyWith(checkableSound: sound)),
+              ),
+              AlarmSelector(
+                key: TestKey.reminderAlarmSelector,
+                heading: t.reminders,
+                icon: AbiliaIcons.handi_reminder,
+                sound: state.reminderSound,
+                noSoundOption: true,
+                onChanged: (sound) => context
+                    .read<AlarmSettingsCubit>()
+                    .changeAlarmSettings(state.copyWith(reminderSound: sound)),
+              ),
+              SwitchField(
+                key: TestKey.vibrateAtReminderSelector,
+                value: state.vibrateAtReminder,
+                onChanged: (v) => context
+                    .read<AlarmSettingsCubit>()
+                    .changeAlarmSettings(state.copyWith(vibrateAtReminder: v)),
+                child: Text(t.vibrationOnReminder),
+              ),
+              AlarmDurationSelector(
+                key: TestKey.alarmDurationSelector,
+                duration: state.alarmDuration,
+              ),
+            ];
+            return Scaffold(
+              appBar: AbiliaAppBar(
+                title: Translator.of(context).translate.alarmSettings,
+                iconData: AbiliaIcons.handi_alarm_vibration,
+              ),
+              body: ListView.separated(
+                padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
+                itemBuilder: (context, i) => widgets[i],
+                itemCount: widgets.length,
+                separatorBuilder: (context, index) => SizedBox(height: 16.0.s),
+              ),
+              bottomNavigationBar: BottomNavigation(
+                backNavigationWidget: CancelButton(),
+                forwardNavigationWidget: OkButton(
+                  onPressed: () {
+                    context.read<AlarmSettingsCubit>().save();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -122,11 +125,14 @@ class AlarmSelector extends StatelessWidget {
                 onTap: () async {
                   final result = await Navigator.of(context).push<Sound>(
                     MaterialPageRoute(
-                      builder: (context) => SelectSoundPage(
-                        sound: sound,
-                        noSoundOption: noSoundOption,
-                        appBarIcon: icon,
-                        appBarTitle: heading,
+                      builder: (_) => BlocProvider<SoundCubit>.value(
+                        value: context.read<SoundCubit>(),
+                        child: SelectSoundPage(
+                          sound: sound,
+                          noSoundOption: noSoundOption,
+                          appBarIcon: icon,
+                          appBarTitle: heading,
+                        ),
                       ),
                     ),
                   );

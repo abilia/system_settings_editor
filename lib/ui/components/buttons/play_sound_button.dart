@@ -1,9 +1,8 @@
 // @dart=2.9
 
-import 'package:audioplayers/audio_cache.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/bloc/all.dart';
 
 class PlaySoundButton extends StatelessWidget {
   final Sound sound;
@@ -14,21 +13,23 @@ class PlaySoundButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ActionButton(
-      style: actionButtonStyleDark,
-      onPressed: sound == Sound.NoSound
-          ? null
-          : () async {
-              if (sound == Sound.Default) {
-                await FlutterRingtonePlayer.playNotification();
-              } else {
-                final audioCache = AudioCache();
-                audioCache.respectSilence = true;
-                await audioCache.play('sounds/${sound.fileName()}.mp3');
-              }
-            },
-      child: Icon(
-        AbiliaIcons.play_sound,
+    return BlocBuilder<SoundCubit, SoundState>(
+      builder: (context, state) => ActionButton(
+        style: actionButtonStyleDark,
+        onPressed: sound == Sound.NoSound
+            ? null
+            : sound == state.currentSound
+                ? () async {
+                    await context.read<SoundCubit>().stopSound();
+                  }
+                : () async {
+                    await context.read<SoundCubit>().playSound(sound);
+                  },
+        child: Icon(
+          state.currentSound == sound
+              ? AbiliaIcons.stop
+              : AbiliaIcons.play_sound,
+        ),
       ),
     );
   }
