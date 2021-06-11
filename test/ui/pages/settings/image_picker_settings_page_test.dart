@@ -104,7 +104,7 @@ void main() {
     testWidgets('both camera and folder option shows', (tester) async {
       await tester.goToAddActivityImagePicker();
       expect(find.byIcon(AbiliaIcons.folder), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.my_photos), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.upload), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.camera_photo), findsOneWidget);
     });
 

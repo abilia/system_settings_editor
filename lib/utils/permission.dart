@@ -26,7 +26,7 @@ extension PermissionExtension on Permission {
     if (this == Permission.systemAlertWindow) return AbiliaIcons.resize_higher;
     if (this == Permission.notification) return AbiliaIcons.notification;
     if (this == Permission.photos || this == Permission.storage) {
-      return AbiliaIcons.my_photos;
+      return AbiliaIcons.upload;
     }
     return AbiliaIcons.empty1;
   }
