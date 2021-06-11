@@ -1,5 +1,6 @@
 // @dart=2.9
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -33,16 +34,22 @@ class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    final widgets = AlarmDuration.values
-        .map(
-          (d) => RadioField<AlarmDuration>(
-            groupValue: selectedAlarmDuration,
-            onChanged: setSelectedAlarmDuration,
-            value: d,
-            text: Text(d.displayText(t)),
-          ),
-        )
-        .toList();
+    final widgets = [
+      CollapsableWidget(
+        collapsed: Platform.isAndroid ||
+            selectedAlarmDuration.duration() <= const Duration(seconds: 30),
+        padding: EdgeInsets.only(bottom: 8.s),
+        child: ErrorMessage(text: Text(t.iOSAlarmTimeWarning)),
+      ),
+      ...AlarmDuration.values.map(
+        (d) => RadioField<AlarmDuration>(
+          groupValue: selectedAlarmDuration,
+          onChanged: setSelectedAlarmDuration,
+          value: d,
+          text: Text(d.displayText(t)),
+        ),
+      )
+    ];
     return Scaffold(
       appBar: AbiliaAppBar(
         iconData: widget.appBarIcon,
