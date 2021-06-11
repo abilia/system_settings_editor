@@ -276,7 +276,8 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
         ? Int32List.fromList(<int>[insistentFlag])
         : null,
     timeoutAfter: settings.alarmDuration,
-    startActivityClassName: 'com.abilia.memoplannergo.AlarmActivity',
+    startActivityClassName:
+        'com.abilia.memoplanner.AlarmActivity', // This is 'package.name.Activity', dont change to application flavor id
     largeIcon: await _androidLargeIcon(activity, fileStorage),
     styleInformation: await _androidStyleInformation(
       activity,
