@@ -90,7 +90,7 @@ class SelectPicturePage extends StatelessWidget {
                     SizedBox(height: 8.0.s),
                     if (state.displayPhotos) ...[
                       ImageSourceWidget(
-                        text: translate.myPhotos,
+                        text: translate.uploadImage,
                         imageSource: ImageSource.gallery,
                         permission: Platform.isAndroid
                             ? Permission.storage

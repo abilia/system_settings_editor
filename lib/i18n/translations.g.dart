@@ -304,6 +304,8 @@ abstract class Translated {
 
   final String imageArchive = 'Image Archive';
 
+  final String uploadImage = 'Upload image';
+
   final String myPhotos = 'My photos';
 
   final String takeNewPhoto = 'Take new photo';
@@ -1084,6 +1086,9 @@ class SV extends Translated {
 
   @override
   final String imageArchive = 'Bildarkiv';
+
+  @override
+  final String uploadImage = 'Ladda upp bild';
 
   @override
   final String myPhotos = 'Mina foton';
@@ -2035,6 +2040,9 @@ class DA extends Translated {
   final String imageArchive = 'Billedarkiv';
 
   @override
+  final String uploadImage = 'Upload billede';
+
+  @override
   final String myPhotos = 'Mine fotos';
 
   @override
@@ -2982,6 +2990,9 @@ class NL extends Translated {
 
   @override
   final String imageArchive = 'Afbeeldingenarchief';
+
+  @override
+  final String uploadImage = 'Afbeelding uploaden';
 
   @override
   final String myPhotos = "Mijn foto\'s";
@@ -3932,6 +3943,9 @@ class FI extends Translated {
 
   @override
   final String imageArchive = 'Kuva-arkisto';
+
+  @override
+  final String uploadImage = 'Lataa kuva';
 
   @override
   final String myPhotos = 'Omat valokuvat';
@@ -4886,6 +4900,9 @@ class DE extends Translated {
   final String imageArchive = 'Bildarchiv';
 
   @override
+  final String uploadImage = 'Bild hochladen';
+
+  @override
   final String myPhotos = 'Meine Fotos';
 
   @override
@@ -5835,6 +5852,9 @@ class NB extends Translated {
 
   @override
   final String imageArchive = 'Bildearkiv';
+
+  @override
+  final String uploadImage = 'Last opp bilde';
 
   @override
   final String myPhotos = 'Mine foto';
