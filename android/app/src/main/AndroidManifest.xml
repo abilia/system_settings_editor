@@ -4,8 +4,6 @@
   package="com.abilia.memoplanner">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- Tablet restriction -->
-    <uses-feature android:name="android.hardware.telephony" android:required="true" />
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
