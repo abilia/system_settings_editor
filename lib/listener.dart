@@ -62,12 +62,14 @@ class TopLevelListeners extends StatelessWidget {
                     builder: (_) {
                       return AuthenticatedBlocsProvider(
                         authenticatedState: state,
-                        child: AuthenticatedListeners(
-                          key: authedStateKey,
+                        child: AlarmListeners(
                           alarm: payload,
                           child: payload != null
                               ? FullScreenAlarm(alarm: payload)
-                              : CalendarPage(),
+                              : AuthenticatedListeners(
+                                  key: authedStateKey,
+                                  child: CalendarPage(),
+                                ),
                         ),
                       );
                     },
@@ -91,18 +93,46 @@ class TopLevelListeners extends StatelessWidget {
       );
 }
 
+class AlarmListeners extends StatelessWidget {
+  final Widget child;
+  final NotificationAlarm alarm;
+  bool get alarmScreen => alarm != null;
+  const AlarmListeners({Key key, this.child, this.alarm}) : super(key: key);
+
+  BlocListenerCondition<AlarmStateBase> get listenWhen => alarmScreen
+      ? (_, current) => current is AlarmState && current.alarm != alarm
+      : null;
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<NotificationBloc, AlarmStateBase>(
+          listener: _alarmListener,
+          listenWhen: listenWhen,
+        ),
+        BlocListener<AlarmBloc, AlarmStateBase>(
+          listener: _alarmListener,
+          listenWhen: listenWhen,
+        ),
+      ],
+      child: child,
+    );
+  }
+
+  void _alarmListener(BuildContext context, AlarmStateBase state) async {
+    if (state is AlarmState) {
+      await GetIt.I<AlarmNavigator>().pushAlarm(context, state.alarm);
+    }
+  }
+}
+
 class AuthenticatedListeners extends StatefulWidget {
   const AuthenticatedListeners({
     Key key,
     @required this.child,
-    this.alarm,
   }) : super(key: key);
 
   final Widget child;
-  final NotificationAlarm alarm;
-  BlocListenerCondition<AlarmStateBase> get listenWhen => alarm != null
-      ? (_, current) => current is AlarmState && current.alarm != alarm
-      : null;
   @override
   _AuthenticatedListenersState createState() => _AuthenticatedListenersState();
 }
@@ -145,10 +175,10 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
     return MultiBlocListener(
       listeners: [
         BlocListener<ActivitiesBloc, ActivitiesState>(
+          listenWhen: (_, current) => current is ActivitiesLoaded,
           listener: (context, activitiesState) async {
             final settingsState = context.read<MemoplannerSettingBloc>().state;
-            if (activitiesState is ActivitiesLoaded &&
-                !(settingsState is MemoplannerSettingsNotLoaded)) {
+            if (settingsState is! MemoplannerSettingsNotLoaded) {
               await GetIt.I<AlarmScheduler>()(
                 activitiesState.activities,
                 Localizations.localeOf(context).toLanguageTag(),
@@ -179,19 +209,13 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
         BlocListener<LicenseBloc, LicenseState>(
           listener: (context, state) async {
             if (state is NoValidLicense) {
-              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut(
-                loggedOutReason: LoggedOutReason.LICENSE_EXPIRED,
-              ));
+              BlocProvider.of<AuthenticationBloc>(context).add(
+                LoggedOut(
+                  loggedOutReason: LoggedOutReason.LICENSE_EXPIRED,
+                ),
+              );
             }
           },
-        ),
-        BlocListener<AlarmBloc, AlarmStateBase>(
-          listener: _alarmListener,
-          listenWhen: widget.listenWhen,
-        ),
-        BlocListener<NotificationBloc, AlarmStateBase>(
-          listener: _alarmListener,
-          listenWhen: widget.listenWhen,
         ),
         BlocListener<PermissionBloc, PermissionState>(
           listenWhen: _notificationsDenied,
@@ -204,12 +228,6 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
       ],
       child: widget.child,
     );
-  }
-
-  void _alarmListener(BuildContext context, AlarmStateBase state) async {
-    if (state is AlarmState) {
-      await GetIt.I<AlarmNavigator>().pushAlarm(context, state.alarm);
-    }
   }
 
   BlocListener<PermissionBloc, PermissionState>
