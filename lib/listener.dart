@@ -93,15 +93,46 @@ class TopLevelListeners extends StatelessWidget {
       );
 }
 
-class AlarmListeners extends StatelessWidget {
+class AlarmListeners extends StatefulWidget {
+  static final _log = Logger((AlarmListeners).toString());
   final Widget child;
   final NotificationAlarm alarm;
-  bool get alarmScreen => alarm != null;
   const AlarmListeners({Key key, this.child, this.alarm}) : super(key: key);
 
+  @override
+  _AlarmListenersState createState() => _AlarmListenersState();
+}
+
+class _AlarmListenersState extends State<AlarmListeners>
+    with WidgetsBindingObserver {
+  bool get alarmScreen => widget.alarm != null;
+  AppLifecycleState appLifecycleState;
+
   BlocListenerCondition<AlarmStateBase> get listenWhen => alarmScreen
-      ? (_, current) => current is AlarmState && current.alarm != alarm
-      : null;
+      ? (_, current) => current is AlarmState && current.alarm != widget.alarm
+      : (_, __) =>
+          appLifecycleState == null ||
+          appLifecycleState == AppLifecycleState.resumed;
+
+  @override
+  void initState() {
+    super.initState();
+    appLifecycleState = WidgetsBinding.instance.lifecycleState;
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    AlarmListeners._log.info('$state');
+    appLifecycleState = state;
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
@@ -115,7 +146,7 @@ class AlarmListeners extends StatelessWidget {
           listenWhen: listenWhen,
         ),
       ],
-      child: child,
+      child: widget.child,
     );
   }
 
