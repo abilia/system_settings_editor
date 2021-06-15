@@ -199,7 +199,7 @@ Future<bool> _scheduleNotification(
       notificationTime, tryGetLocation(activity.timezone, log: _log));
   try {
     _log.finest(
-        'scheduling: $title - $subtitle at $time ${activity.hasImage ? ' with image' : ''}');
+        'scheduling: $title - $subtitle at $time ${activity.hasImage ? ' with image' : ''} id: $hash');
     await notificationPlugin.zonedSchedule(
       hash,
       title,

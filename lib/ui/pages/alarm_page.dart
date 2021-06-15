@@ -37,12 +37,13 @@ class AlarmPage extends StatelessWidget {
           builder: (context, activitiesState) => ActivityInfo(
             alarm.activityDay.fromActivitiesState(activitiesState),
             previewImage: previewImage,
-            isAlarm: true,
+            alarm: alarm,
           ),
         ),
       ),
       bottomNavigationBar: AlarmBottomAppBar(
         activityOccasion: alarm.activityDay.toOccasion(alarm.day),
+        alarm: alarm,
       ),
     );
   }
@@ -108,7 +109,7 @@ class ReminderPage extends StatelessWidget {
               child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
                 builder: (context, activitiesState) => ActivityInfo(
                   reminder.activityDay.fromActivitiesState(activitiesState),
-                  isAlarm: true,
+                  alarm: reminder,
                 ),
               ),
             ),
@@ -117,6 +118,7 @@ class ReminderPage extends StatelessWidget {
       ),
       bottomNavigationBar: AlarmBottomAppBar(
         activityOccasion: reminder.activityDay.toOccasion(reminder.day),
+        alarm: reminder,
       ),
     );
   }
@@ -173,16 +175,18 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
   const AlarmBottomAppBar({
     Key key,
     @required this.activityOccasion,
+    @required this.alarm,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
+  final NotificationAlarm alarm;
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     final displayCheckButton =
         activityOccasion.activity.checkable && !activityOccasion.isSignedOff;
-    final closeButton = CloseButton(onPressed: () => popAlarm(context));
+    final closeButton = CloseButton(onPressed: () => popAlarm(context, alarm));
     return BottomAppBar(
       elevation: 0.0,
       child: Container(
@@ -208,7 +212,7 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
                       final checked =
                           await checkConfirmation(context, activityOccasion);
                       if (checked) {
-                        await popAlarm(context);
+                        await popAlarm(context, alarm);
                       }
                     },
                   ),

@@ -34,10 +34,12 @@ void main() {
     title: 'actity',
     checkable: true,
   );
-  final payloadSerial = json.encode(StartAlarm(
+
+  final payload = StartAlarm(
     activity,
     activityWithAlarmday,
-  ).toJson());
+  );
+  final payloadSerial = json.encode(payload.toJson());
 
   setUp(() async {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
@@ -217,6 +219,27 @@ void main() {
 
       // Assert
       expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+    });
+
+    testWidgets('SGC-841 notications not reschedualed on app alarm start',
+        (WidgetTester tester) async {
+      // Act
+      await tester.pumpWidget(App(payload: payload));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(alarmSchedualCalls, 0);
+    });
+
+    testWidgets('SGC-843 Alarm page Close button cancels alarm',
+        (WidgetTester tester) async {
+      // Act
+      await tester.pumpWidget(App(payload: payload));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(FullScreenAlarm), findsOneWidget);
+      await tester.tap(find.byType(CloseButton));
+      await tester.pumpAndSettle();
+      verify(notificationPlugin.cancel(payload.hashCode));
     });
 
     testWidgets('BUG SGC-380 NotificationSubject is cleared on logout',

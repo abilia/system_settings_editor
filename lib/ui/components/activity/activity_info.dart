@@ -1,14 +1,12 @@
 // @dart=2.9
 
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
+import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class ActivityInfoWithDots extends StatelessWidget {
   final ActivityDay activityDay;
@@ -48,12 +46,12 @@ class ActivityInfo extends StatefulWidget {
   static final margin = 12.0.s;
   final ActivityDay activityDay;
   final Widget previewImage;
-  final bool isAlarm;
+  final NotificationAlarm alarm;
   ActivityInfo(
     this.activityDay, {
     Key key,
     this.previewImage,
-    this.isAlarm = false,
+    this.alarm,
   }) : super(key: key);
   factory ActivityInfo.from({Activity activity, DateTime day, Key key}) =>
       ActivityInfo(ActivityDay(activity, day), key: key);
@@ -82,11 +80,13 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
               child: ActivityContainer(
                 activityDay: widget.activityDay,
                 previewImage: widget.previewImage,
-                isAlarm: widget.isAlarm,
+                alarm: widget.alarm,
               ),
             ),
           ),
-          if (!widget.isAlarm && activity.checkable && !occasion.isSignedOff)
+          if (widget.alarm == null &&
+              activity.checkable &&
+              !occasion.isSignedOff)
             Padding(
               padding: EdgeInsets.only(top: 7.0.s),
               child: CheckButton(
@@ -105,6 +105,7 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
 }
 
 mixin ActivityMixin {
+  static final _log = Logger((ActivityMixin).toString());
   Future<bool> checkConfirmation(
     BuildContext context,
     ActivityOccasion activityOccasion, {
@@ -124,7 +125,11 @@ mixin ActivityMixin {
     return check;
   }
 
-  Future popAlarm(BuildContext context) async {
+  Future popAlarm(BuildContext context, NotificationAlarm alarm) async {
+    if (alarm != null) {
+      _log.fine('closing alarm with id: ${alarm.hashCode}');
+      await notificationPlugin.cancel(alarm.hashCode);
+    }
     if (!await Navigator.of(context).maybePop()) {
       await SystemNavigator.pop();
     }
@@ -135,13 +140,13 @@ class ActivityContainer extends StatelessWidget {
   const ActivityContainer({
     Key key,
     @required this.activityDay,
-    @required this.isAlarm,
+    @required this.alarm,
     this.previewImage,
   }) : super(key: key);
 
   final ActivityDay activityDay;
   final Widget previewImage;
-  final bool isAlarm;
+  final NotificationAlarm alarm;
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +189,7 @@ class ActivityContainer extends StatelessWidget {
                   Expanded(
                     child: Attachment(
                       activityDay: activityDay,
-                      isAlarm: isAlarm,
+                      alarm: alarm,
                     ),
                   ),
                 ],
@@ -213,11 +218,12 @@ class ActivityContainer extends StatelessWidget {
 class Attachment extends StatelessWidget with ActivityMixin {
   static final padding = EdgeInsets.fromLTRB(18.0.s, 10.0.s, 14.0.s, 24.0.s);
   final ActivityDay activityDay;
-  final bool isAlarm;
+  final NotificationAlarm alarm;
+
   const Attachment({
     Key key,
     @required this.activityDay,
-    @required this.isAlarm,
+    @required this.alarm,
   }) : super(key: key);
 
   @override
@@ -253,8 +259,8 @@ class Attachment extends StatelessWidget with ActivityMixin {
                   .toOccasion(DateTime.now()),
               message: translate.checklistDoneInfo,
             );
-            if (isAlarm && checked == true) {
-              await popAlarm(context);
+            if (alarm != null && checked == true) {
+              await popAlarm(context, alarm);
             }
           }
         },
