@@ -1,9 +1,7 @@
 // @dart=2.9
 
-import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/settings/calendar/week_calendar/week_calendar_settings_cubit.dart';
-import 'package:seagull/models/memoplanner_settings.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
