@@ -242,6 +242,21 @@ void main() {
       verify(notificationPlugin.cancel(payload.hashCode));
     });
 
+    testWidgets('SGC-844', (WidgetTester tester) async {
+      // Act
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      addTearDown(() => tester.binding
+          .handleAppLifecycleStateChanged(AppLifecycleState.resumed));
+
+      selectNotificationSubject.add(payloadSerial);
+      await tester.pumpApp();
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(FullScreenAlarm), findsNothing);
+      expect(find.byType(NavigatableAlarmPage), findsNothing);
+    });
+
     testWidgets('BUG SGC-380 NotificationSubject is cleared on logout',
         (WidgetTester tester) async {
       // Act
