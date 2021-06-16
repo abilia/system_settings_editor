@@ -538,20 +538,33 @@ void main() {
       expect(find.byType(TimepillarCalendar), findsOneWidget);
     });
 
-    testWidgets('when calendar is changed, settings is saved',
+    testWidgets('when calendar is changed, settings is saved unsynced mpgo',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await goToTimePillar(tester);
-      final v = verify(mockGenericDb.insertAndAddDirty(captureAny));
-      expect(v.callCount, 1);
-      final l = v.captured.single.toList() as List<Generic<GenericData>>;
-      final d = l.whereType<Generic<MemoplannerSettingData>>().firstWhere(
-          (element) =>
-              element.data.identifier ==
-              MemoplannerSettings.viewOptionsTimeViewKey);
-      expect(d.data.data, DayCalendarType.TIMEPILLAR.index);
-    });
+
+      verifyUnsyncGeneric(
+        tester,
+        mockGenericDb,
+        key: MemoplannerSettings.viewOptionsTimeViewKey,
+        matcher: DayCalendarType.TIMEPILLAR.index,
+      );
+    }, skip: !Config.isMPGO);
+
+    testWidgets('when calendar is changed, settings is saved synced mp',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await goToTimePillar(tester);
+
+      verifySyncGeneric(
+        tester,
+        mockGenericDb,
+        key: MemoplannerSettings.viewOptionsTimeViewKey,
+        matcher: DayCalendarType.TIMEPILLAR.index,
+      );
+    }, skip: !Config.isMP);
   });
 
   group('MemoPlanner settings', () {

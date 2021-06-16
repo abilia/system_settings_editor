@@ -262,4 +262,3 @@ class MemoplannerSettingsNotLoaded extends MemoplannerSettingsState {
 class MemoplannerSettingsFailed extends MemoplannerSettingsState {
   MemoplannerSettingsFailed() : super(MemoplannerSettings());
 }
-

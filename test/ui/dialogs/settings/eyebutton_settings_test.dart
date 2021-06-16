@@ -101,12 +101,21 @@ void main() {
     await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
 
-    verifySyncGeneric(
-      tester,
-      mockGenericDb,
-      key: MemoplannerSettings.dotsInTimepillarKey,
-      matcher: isFalse,
-    );
+    if (Config.isMPGO) {
+      verifyUnsyncGeneric(
+        tester,
+        mockGenericDb,
+        key: MemoplannerSettings.dotsInTimepillarKey,
+        matcher: isFalse,
+      );
+    } else {
+      verifySyncGeneric(
+        tester,
+        mockGenericDb,
+        key: MemoplannerSettings.dotsInTimepillarKey,
+        matcher: isFalse,
+      );
+    }
   });
 
   testWidgets('tts', (WidgetTester tester) async {

@@ -93,11 +93,7 @@ abstract class DataDb<M extends DataModel> {
 
   Future<int> getLastRevision() async {
     final result = await db.rawQuery(MAX_REVISION_SQL);
-    final revision = result.isNotEmpty ? result.first['max_revision'] : null;
-    if (revision == null) {
-      return 0;
-    }
-    return revision as int;
+    return (result.firstOrNull?['max_revision'] ?? 0) as int;
   }
 
   Future insertAndAddDirty(Iterable<M> data) async {

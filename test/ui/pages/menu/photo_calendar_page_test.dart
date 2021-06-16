@@ -26,7 +26,6 @@ void main() {
       when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
       final db = MockDatabase();
       when(db.batch()).thenReturn(mockBatch);
-      when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
 
       GetItInitializer()
         ..sharedPreferences = await MockSharedPreferences.getInstance()

@@ -2,6 +2,20 @@ import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 
 class MemoplannerSettings extends Equatable {
+  static const Set<String> noSyncSettings = {
+    // alarm settings
+    nonCheckableActivityAlarmKey,
+    checkableActivityAlarmKey,
+    reminderAlarmKey,
+    vibrateAtReminderKey,
+    alarmDurationKey,
+    // eye button settings
+    viewOptionsZoomKey,
+    viewOptionsTimeIntervalKey,
+    viewOptionsTimeViewKey,
+    dotsInTimepillarKey,
+  };
+
   static const String displayAlarmButtonKey =
           'activity_detailed_setting_display_change_alarm_button',
       displayDeleteButtonKey =
@@ -684,4 +698,3 @@ extension _Parsing on Map<String, MemoplannerSettingData> {
   }) =>
       parse<bool>(settingName, defaultValue);
 }
-
