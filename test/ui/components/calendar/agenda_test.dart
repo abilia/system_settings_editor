@@ -73,6 +73,7 @@ void main() {
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
       ..flutterTts = MockFlutterTts()
+      ..syncDelay = SyncDelays.zero
       ..init();
   });
 

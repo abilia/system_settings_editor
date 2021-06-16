@@ -64,7 +64,7 @@ extension on WidgetTester {
     if (pump) await pumpApp();
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.day));
+    await tap(find.byType(PhotoCalendarButton));
     await pumpAndSettle();
   }
 }

@@ -146,7 +146,7 @@ void main() {
       expect(find.byKey(TestKey.editAlarm), findsNothing);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.displayAlarmButtonKey,
@@ -162,7 +162,7 @@ void main() {
       expect(find.byIcon(AbiliaIcons.delete_all_clear), findsOneWidget);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.displayDeleteButtonKey,
@@ -184,7 +184,7 @@ void main() {
       expect(find.byIcon(AbiliaIcons.edit), findsOneWidget);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.displayEditButtonKey,
@@ -206,7 +206,7 @@ void main() {
       expect(find.byType(ActivityInfoSideDots), findsNothing);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.displayQuarterHourKey,
@@ -228,7 +228,7 @@ void main() {
       expect(find.byKey(TestKey.sideDotsTimeText), findsNothing);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.displayTimeLeftKey,

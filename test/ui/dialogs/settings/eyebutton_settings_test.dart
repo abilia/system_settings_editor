@@ -101,7 +101,7 @@ void main() {
     await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
 
-    await verifyGeneric(
+    verifySyncGeneric(
       tester,
       mockGenericDb,
       key: MemoplannerSettings.dotsInTimepillarKey,
