@@ -178,7 +178,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.calendarActivityTypeShowColorKey,
@@ -204,7 +204,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.calendarActivityTypeShowTypesKey,
@@ -229,7 +229,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.calendarActivityTypeLeftKey,
@@ -254,7 +254,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.calendarActivityTypeRightKey,
@@ -288,7 +288,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.calendarActivityTypeRightImageKey,
@@ -323,7 +323,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.calendarActivityTypeLeftImageKey,

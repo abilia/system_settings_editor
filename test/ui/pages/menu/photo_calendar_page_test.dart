@@ -26,7 +26,6 @@ void main() {
       when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
       final db = MockDatabase();
       when(db.batch()).thenReturn(mockBatch);
-      when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
 
       GetItInitializer()
         ..sharedPreferences = await MockSharedPreferences.getInstance()
@@ -64,7 +63,7 @@ extension on WidgetTester {
     if (pump) await pumpApp();
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.day));
+    await tap(find.byType(PhotoCalendarButton));
     await pumpAndSettle();
   }
 }

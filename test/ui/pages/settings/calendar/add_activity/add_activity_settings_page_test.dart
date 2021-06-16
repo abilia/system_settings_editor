@@ -72,7 +72,7 @@ void main() {
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
 
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityTimeBeforeCurrentKey,
@@ -87,7 +87,7 @@ void main() {
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
 
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityRecurringEditableKey,
@@ -102,7 +102,7 @@ void main() {
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
 
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityEndTimeEditableKey,
@@ -117,7 +117,7 @@ void main() {
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
 
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityDisplayAlarmOptionKey,
@@ -132,7 +132,7 @@ void main() {
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
 
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityDisplaySilentAlarmOptionKey,
@@ -150,7 +150,7 @@ void main() {
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
 
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityDisplayNoAlarmOptionKey,
@@ -167,7 +167,7 @@ void main() {
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
 
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.addActivityTypeAdvancedKey,
@@ -319,7 +319,7 @@ void main() {
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
 
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityDefaultAlarmTypeKey,
@@ -337,7 +337,7 @@ void main() {
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
 
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityDefaultAlarmTypeKey,
@@ -361,7 +361,7 @@ extension on WidgetTester {
     await tap(find.byType(OkButton));
     await pumpAndSettle();
 
-    await verifyGeneric(
+    verifySyncGeneric(
       this,
       genericDb,
       key: key,
@@ -387,7 +387,7 @@ extension on WidgetTester {
     await tap(find.byType(OkButton));
     await pumpAndSettle();
 
-    await verifyGeneric(
+    verifySyncGeneric(
       this,
       genericDb,
       key: key,

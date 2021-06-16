@@ -66,6 +66,7 @@ void main() {
       ..database = mockDatabase
       ..flutterTts = MockFlutterTts()
       ..genericDb = MockGenericDb()
+      ..syncDelay = SyncDelays.zero
       ..init();
   });
 

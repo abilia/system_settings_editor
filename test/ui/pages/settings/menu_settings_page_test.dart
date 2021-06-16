@@ -77,7 +77,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.camera_photo));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingsMenuShowCameraKey,
@@ -90,7 +90,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.my_photos));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingsMenuShowPhotosKey,
@@ -103,7 +103,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.day));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingsMenuShowPhotoCalendarKey,
@@ -116,7 +116,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.stop_watch));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingsMenuShowTimersKey,
@@ -129,7 +129,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingsMenuShowQuickSettingsKey,
@@ -145,7 +145,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(YesButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingsMenuShowSettingsKey,
@@ -177,7 +177,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingsMenuShowSettingsKey,

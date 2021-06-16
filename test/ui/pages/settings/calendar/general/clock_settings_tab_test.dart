@@ -90,7 +90,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingClockTypeKey,
@@ -107,7 +107,7 @@ void main() {
       expect(find.byType(DigitalClock), findsNothing);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingClockTypeKey,
@@ -203,7 +203,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.setting12hTimeFormatTimelineKey,
@@ -233,7 +233,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingTimePillarTimelineKey,
@@ -259,7 +259,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingDisplayTimelineKey,
@@ -285,7 +285,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.settingDisplayHourLinesKey,

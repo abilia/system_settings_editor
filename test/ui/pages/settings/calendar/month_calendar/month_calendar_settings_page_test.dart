@@ -110,7 +110,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.monthCaptionShowMonthButtonsKey,
@@ -125,7 +125,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.monthCaptionShowYearKey,
@@ -140,7 +140,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.monthCaptionShowClockKey,
@@ -232,7 +232,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.calendarMonthViewShowColorsKey,

@@ -101,7 +101,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGenerics(tester, genericDb, keyMatch: {
+      verifyGenerics(tester, genericDb, keyMatch: {
         MemoplannerSettings.morningIntervalStartKey:
             7 * Duration.millisecondsPerHour,
       });
@@ -115,7 +115,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGenerics(tester, genericDb, keyMatch: {
+      verifyGenerics(tester, genericDb, keyMatch: {
         MemoplannerSettings.forenoonIntervalStartKey:
             11 * Duration.millisecondsPerHour,
       });
@@ -146,7 +146,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGenerics(tester, genericDb, keyMatch: {
+      verifyGenerics(tester, genericDb, keyMatch: {
         MemoplannerSettings.morningIntervalStartKey:
             10 * Duration.millisecondsPerHour,
         MemoplannerSettings.forenoonIntervalStartKey:
@@ -183,7 +183,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGenerics(tester, genericDb, keyMatch: {
+      verifyGenerics(tester, genericDb, keyMatch: {
         MemoplannerSettings.morningIntervalStartKey:
             5 * Duration.millisecondsPerHour,
         MemoplannerSettings.forenoonIntervalStartKey:

@@ -71,7 +71,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.dayCaptionShowDayButtonsKey,
@@ -86,7 +86,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityDisplayWeekDayKey,
@@ -101,7 +101,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityDisplayDayPeriodKey,
@@ -116,7 +116,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityDisplayDateKey,
@@ -134,7 +134,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityDisplayClockKey,
@@ -151,7 +151,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.viewOptionsTimeViewKey,
@@ -168,7 +168,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.viewOptionsTimeIntervalKey,
@@ -185,7 +185,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.viewOptionsZoomKey,
@@ -205,7 +205,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.dotsInTimepillarKey,
@@ -220,7 +220,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.settingViewOptionsTimeViewKey,
@@ -235,7 +235,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.settingViewOptionsTimeIntervalKey,
@@ -250,7 +250,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.settingViewOptionsZoomKey,
@@ -265,7 +265,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.settingViewOptionsDurationDotsKey,

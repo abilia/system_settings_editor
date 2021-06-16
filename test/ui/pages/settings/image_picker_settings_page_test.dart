@@ -78,7 +78,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.camera_photo));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.imageMenuDisplayCameraItemKey,
@@ -91,7 +91,7 @@ void main() {
       await tester.tap(find.text(translate.myPhotos));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.imageMenuDisplayPhotoItemKey,

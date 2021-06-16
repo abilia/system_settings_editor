@@ -2,6 +2,20 @@ import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 
 class MemoplannerSettings extends Equatable {
+  static const Set<String> noSyncSettings = {
+    // alarm settings
+    nonCheckableActivityAlarmKey,
+    checkableActivityAlarmKey,
+    reminderAlarmKey,
+    vibrateAtReminderKey,
+    alarmDurationKey,
+    // eye button settings
+    viewOptionsZoomKey,
+    viewOptionsTimeIntervalKey,
+    viewOptionsTimeViewKey,
+    dotsInTimepillarKey,
+  };
+
   static const String displayAlarmButtonKey =
           'activity_detailed_setting_display_change_alarm_button',
       displayDeleteButtonKey =
@@ -303,7 +317,9 @@ class MemoplannerSettings extends Equatable {
         advancedActivityTemplateKey,
       ),
       activityDefaultAlarmType: settings.parse(
-          activityDefaultAlarmTypeKey, ALARM_SOUND_AND_VIBRATION),
+        activityDefaultAlarmTypeKey,
+        ALARM_SOUND_AND_VIBRATION,
+      ),
       activityEndTimeEditable: settings.getBool(
         activityEndTimeEditableKey,
       ),
@@ -337,11 +353,18 @@ class MemoplannerSettings extends Equatable {
       addActivityTypeAdvanced: settings.getBool(
         addActivityTypeAdvancedKey,
       ),
-      weekCaptionShowBrowseButtons:
-          settings.getBool(weekCaptionShowBrowseButtonsKey),
-      weekCaptionShowWeekNumber: settings.getBool(weekCaptionShowWeekNumberKey),
-      weekCaptionShowYear: settings.getBool(weekCaptionShowYearKey),
-      weekCaptionShowClock: settings.getBool(weekCaptionShowClockKey),
+      weekCaptionShowBrowseButtons: settings.getBool(
+        weekCaptionShowBrowseButtonsKey,
+      ),
+      weekCaptionShowWeekNumber: settings.getBool(
+        weekCaptionShowWeekNumberKey,
+      ),
+      weekCaptionShowYear: settings.getBool(
+        weekCaptionShowYearKey,
+      ),
+      weekCaptionShowClock: settings.getBool(
+        weekCaptionShowClockKey,
+      ),
       weekDisplayShowFullWeek: settings.parse(
         weekDisplayShowFullWeekKey,
         WeekDisplayDays.everyDay.index,
@@ -350,10 +373,15 @@ class MemoplannerSettings extends Equatable {
         weekDisplayShowColorModeKey,
         WeekColor.columns.index,
       ),
-      monthCaptionShowMonthButtons:
-          settings.getBool(monthCaptionShowMonthButtonsKey),
-      monthCaptionShowYear: settings.getBool(monthCaptionShowYearKey),
-      monthCaptionShowClock: settings.getBool(monthCaptionShowClockKey),
+      monthCaptionShowMonthButtons: settings.getBool(
+        monthCaptionShowMonthButtonsKey,
+      ),
+      monthCaptionShowYear: settings.getBool(
+        monthCaptionShowYearKey,
+      ),
+      monthCaptionShowClock: settings.getBool(
+        monthCaptionShowClockKey,
+      ),
       calendarMonthViewShowColors: settings.parse(
         calendarMonthViewShowColorsKey,
         WeekColor.columns.index,
@@ -463,44 +491,100 @@ class MemoplannerSettings extends Equatable {
         calendarActivityTypeRightImageKey,
         '',
       ),
-      calendarDayColor: settings.parse(calendarDayColorKey, 0),
-      viewOptionsTimeInterval: settings.parse(viewOptionsTimeIntervalKey, 1),
-      viewOptionsTimeView: settings.parse(viewOptionsTimeViewKey, 1),
-      dotsInTimepillar:
-          settings.getBool(dotsInTimepillarKey, defaultValue: true),
-      viewOptionsZoom: settings.parse(viewOptionsZoomKey, 1),
-      alarmDuration: settings.parse(alarmDurationKey, 30000),
-      checkableActivityAlarm:
-          settings.parse(checkableActivityAlarmKey, Sound.Default.name()),
-      nonCheckableActivityAlarm:
-          settings.parse(nonCheckableActivityAlarmKey, Sound.Default.name()),
-      reminderAlarm: settings.parse(reminderAlarmKey, Sound.Default.name()),
-      vibrateAtReminder:
-          settings.getBool(vibrateAtReminderKey, defaultValue: true),
-      settingViewOptionsTimeView:
-          settings.getBool(settingViewOptionsTimeViewKey),
-      settingViewOptionsTimeInterval:
-          settings.getBool(settingViewOptionsTimeIntervalKey),
-      settingViewOptionsZoom: settings.getBool(settingViewOptionsZoomKey),
-      settingViewOptionsDurationDots:
-          settings.getBool(settingViewOptionsDurationDotsKey),
-      wizardTemplateStep: settings.getBool(wizardTemplateStepKey),
-      wizardTitleStep: settings.getBool(wizardTitleStepKey),
-      wizardImageStep: settings.getBool(wizardImageStepKey),
-      wizardDatePickerStep: settings.getBool(wizardDatePickerStepKey),
-      wizardTypeStep: settings.getBool(wizardTypeStepKey, defaultValue: false),
-      wizardCheckableStep: settings.getBool(wizardCheckableStepKey),
-      wizardAvailabilityType: settings.getBool(wizardAvailabilityTypeKey),
-      wizardRemoveAfterStep:
-          settings.getBool(wizardRemoveAfterStepKey, defaultValue: false),
-      wizardAlarmStep:
-          settings.getBool(wizardAlarmStepKey, defaultValue: false),
-      wizardChecklistStep:
-          settings.getBool(wizardChecklistStepKey, defaultValue: false),
-      wizardNotesStep:
-          settings.getBool(wizardNotesStepKey, defaultValue: false),
-      wizardRemindersStep:
-          settings.getBool(wizardRemindersStepKey, defaultValue: false),
+      calendarDayColor: settings.parse(
+        calendarDayColorKey,
+        0,
+      ),
+      viewOptionsTimeInterval: settings.parse(
+        viewOptionsTimeIntervalKey,
+        1,
+      ),
+      viewOptionsTimeView: settings.parse(
+        viewOptionsTimeViewKey,
+        1,
+      ),
+      dotsInTimepillar: settings.getBool(
+        dotsInTimepillarKey,
+        defaultValue: true,
+      ),
+      viewOptionsZoom: settings.parse(
+        viewOptionsZoomKey,
+        1,
+      ),
+      alarmDuration: settings.parse(
+        alarmDurationKey,
+        30000,
+      ),
+      checkableActivityAlarm: settings.parse(
+        checkableActivityAlarmKey,
+        Sound.Default.name(),
+      ),
+      nonCheckableActivityAlarm: settings.parse(
+        nonCheckableActivityAlarmKey,
+        Sound.Default.name(),
+      ),
+      reminderAlarm: settings.parse(
+        reminderAlarmKey,
+        Sound.Default.name(),
+      ),
+      vibrateAtReminder: settings.getBool(
+        vibrateAtReminderKey,
+        defaultValue: true,
+      ),
+      settingViewOptionsTimeView: settings.getBool(
+        settingViewOptionsTimeViewKey,
+      ),
+      settingViewOptionsTimeInterval: settings.getBool(
+        settingViewOptionsTimeIntervalKey,
+      ),
+      settingViewOptionsZoom: settings.getBool(
+        settingViewOptionsZoomKey,
+      ),
+      settingViewOptionsDurationDots: settings.getBool(
+        settingViewOptionsDurationDotsKey,
+      ),
+      wizardTemplateStep: settings.getBool(
+        wizardTemplateStepKey,
+      ),
+      wizardTitleStep: settings.getBool(
+        wizardTitleStepKey,
+      ),
+      wizardImageStep: settings.getBool(
+        wizardImageStepKey,
+      ),
+      wizardDatePickerStep: settings.getBool(
+        wizardDatePickerStepKey,
+      ),
+      wizardTypeStep: settings.getBool(
+        wizardTypeStepKey,
+        defaultValue: false,
+      ),
+      wizardCheckableStep: settings.getBool(
+        wizardCheckableStepKey,
+      ),
+      wizardAvailabilityType: settings.getBool(
+        wizardAvailabilityTypeKey,
+      ),
+      wizardRemoveAfterStep: settings.getBool(
+        wizardRemoveAfterStepKey,
+        defaultValue: false,
+      ),
+      wizardAlarmStep: settings.getBool(
+        wizardAlarmStepKey,
+        defaultValue: false,
+      ),
+      wizardChecklistStep: settings.getBool(
+        wizardChecklistStepKey,
+        defaultValue: false,
+      ),
+      wizardNotesStep: settings.getBool(
+        wizardNotesStepKey,
+        defaultValue: false,
+      ),
+      wizardRemindersStep: settings.getBool(
+        wizardRemindersStepKey,
+        defaultValue: false,
+      ),
     );
   }
 
@@ -614,28 +698,3 @@ extension _Parsing on Map<String, MemoplannerSettingData> {
   }) =>
       parse<bool>(settingName, defaultValue);
 }
-
-enum DayColor { allDays, saturdayAndSunday, noColors }
-
-enum StartView { dayCalendar, weekCalendar, monthCalendar, menu, photoAlbum }
-
-enum ClockType { analogueDigital, analogue, digital }
-
-enum WeekDisplayDays { everyDay, weekdays }
-
-enum NewActivityMode { editView, stepByStep }
-
-extension WeekDisplayDaysExtension on WeekDisplayDays {
-  int numberOfDays() {
-    switch (this) {
-      case WeekDisplayDays.everyDay:
-        return 7;
-      case WeekDisplayDays.weekdays:
-        return 5;
-      default:
-        return 7;
-    }
-  }
-}
-
-enum WeekColor { captions, columns }

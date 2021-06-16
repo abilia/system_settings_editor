@@ -86,7 +86,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.calendarDayColorKey,
@@ -106,7 +106,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.calendarDayColorKey,
@@ -126,7 +126,7 @@ void main() {
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.calendarDayColorKey,

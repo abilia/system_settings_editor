@@ -5,12 +5,12 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 
-Future verifyGeneric(
+void verifySyncGeneric(
   WidgetTester tester,
   GenericDb genericDb, {
   String key,
   dynamic matcher,
-}) async {
+}) {
   final v = verify(genericDb.insertAndAddDirty(captureAny));
   expect(v.callCount, 1);
   final l = v.captured.single.toList() as List<Generic<GenericData>>;
@@ -19,11 +19,27 @@ Future verifyGeneric(
   expect(d.data, matcher);
 }
 
-Future verifyGenerics(
+void verifyUnsyncGeneric(
+  WidgetTester tester,
+  GenericDb genericDb, {
+  String key,
+  dynamic matcher,
+}) {
+  verifyNever(genericDb.insertAndAddDirty(captureAny));
+  final v = verify(genericDb.insert(captureAny));
+  expect(v.callCount, 1);
+  final l = v.captured.single.toList() as List<DbModel<Generic<GenericData>>>;
+  final d = l
+      .map((e) => e.model.data)
+      .firstWhere((data) => data.identifier == key) as MemoplannerSettingData;
+  expect(d.data, matcher);
+}
+
+void verifyGenerics(
   WidgetTester tester,
   GenericDb genericDb, {
   Map<String, dynamic> keyMatch,
-}) async {
+}) {
   final v = verify(genericDb.insertAndAddDirty(captureAny));
   expect(v.callCount, 1);
   final l = v.captured.single.toList() as List<Generic<GenericData>>;

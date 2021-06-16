@@ -71,7 +71,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.weekCaptionShowBrowseButtonsKey,
@@ -86,7 +86,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.weekCaptionShowWeekNumberKey,
@@ -101,7 +101,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.weekCaptionShowYearKey,
@@ -116,7 +116,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.weekCaptionShowClockKey,
@@ -133,7 +133,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.weekDisplayShowFullWeekKey,
@@ -153,7 +153,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      await verifyGeneric(
+      verifySyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.weekDisplayShowColorModeKey,

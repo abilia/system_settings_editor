@@ -71,7 +71,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.functionMenuDisplayNewActivityKey,
@@ -86,7 +86,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.functionMenuDisplayWeekKey,
@@ -101,7 +101,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.functionMenuDisplayMonthKey,
@@ -118,7 +118,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byType(YesButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.functionMenuDisplayMenuKey,
@@ -178,7 +178,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.functionMenuStartViewKey,
@@ -195,7 +195,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.functionMenuStartViewKey,
@@ -212,7 +212,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.functionMenuStartViewKey,
@@ -230,7 +230,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.functionMenuStartViewKey,
@@ -255,7 +255,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.activityTimeoutKey,
@@ -275,7 +275,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.useScreensaverKey,
@@ -299,7 +299,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        await verifyGeneric(
+        verifySyncGeneric(
           tester,
           genericDb,
           key: MemoplannerSettings.useScreensaverKey,
