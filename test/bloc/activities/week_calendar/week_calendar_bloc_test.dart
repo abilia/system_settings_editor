@@ -137,5 +137,47 @@ void main() {
         ),
       );
     });
+
+    test('SGC-845: Week calendar should respect remove after', () {
+      final removeAfter = Activity.createNew(
+        title: 'Remove after',
+        startTime: DateTime(2010, 01, 01, 15, 00),
+        recurs: Recurs.weeklyOnDays([4, 5, 6]),
+        removeAfter: true,
+      );
+      // Arrange
+      when(mockActivityRepository.load())
+          .thenAnswer((_) => Future.value([removeAfter]));
+      // Act
+      activitiesBloc.add(LoadActivities());
+      // Assert
+      expectLater(
+        weekCalendarBloc.stream,
+        emitsInOrder(
+          [
+            WeekCalendarLoaded(
+              initialMinutes.firstInWeek(),
+              {
+                0: [],
+                1: [],
+                2: [],
+                3: [], // No activity this day since remove after is true
+                4: [
+                  ActivityDay(
+                          removeAfter, initialMinutes.firstInWeek().addDays(4))
+                      .toOccasion(initialMinutes)
+                ],
+                5: [
+                  ActivityDay(
+                          removeAfter, initialMinutes.firstInWeek().addDays(5))
+                      .toOccasion(initialMinutes)
+                ],
+                6: []
+              },
+            ),
+          ],
+        ),
+      );
+    });
   });
 }

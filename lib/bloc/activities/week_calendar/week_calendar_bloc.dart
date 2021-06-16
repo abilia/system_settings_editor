@@ -72,6 +72,7 @@ class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
       Iterable<Activity> activities, DateTime weekStart, DateTime now) {
     return activities
         .expand((activity) => activity.dayActivitiesForDay(weekStart))
+        .where((a) => !(a.activity.removeAfter && a.end.isDayBefore(now)))
         .map((e) => e.toOccasion(now))
         .toList()
           ..sort((a, b) => a.activity
