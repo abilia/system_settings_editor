@@ -14,6 +14,7 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		98AC1AFF3B06A559B887B2EB /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C76DC2730E9650C4FE5234 /* Pods_Runner.framework */; };
+		C51A7BFD267A2FEE00969297 /* silent.aiff in Resources */ = {isa = PBXBuildFile; fileRef = C51A7BFC267A2FEE00969297 /* silent.aiff */; };
 		C522FD9923856C19008F85BC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C522FD9823856C19008F85BC /* GoogleService-Info.plist */; };
 		C524E95C2671DBCD009F7DBA /* gibson_guitar_30.aiff in Resources */ = {isa = PBXBuildFile; fileRef = C524E93B2671DBCC009F7DBA /* gibson_guitar_30.aiff */; };
 		C524E95D2671DBCD009F7DBA /* breathless_piano.aiff in Resources */ = {isa = PBXBuildFile; fileRef = C524E93C2671DBCC009F7DBA /* breathless_piano.aiff */; };
@@ -82,6 +83,7 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A10C3E8BACDB22A40B128366 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
+		C51A7BFC267A2FEE00969297 /* silent.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = silent.aiff; path = Resourses/Sounds/silent.aiff; sourceTree = "<group>"; };
 		C522FD97238410CB008F85BC /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		C522FD9823856C19008F85BC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C524E93B2671DBCC009F7DBA /* gibson_guitar_30.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = gibson_guitar_30.aiff; path = Resourses/Sounds/gibson_guitar_30.aiff; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+				C51A7BFC267A2FEE00969297 /* silent.aiff */,
 				C524E97D2671DF61009F7DBA /* door_bell_30.aiff */,
 				C524E97E2671DF61009F7DBA /* door_bell.aiff */,
 				C524E9422671DBCC009F7DBA /* afloat_synth_15.aiff */,
@@ -310,6 +313,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C51A7BFD267A2FEE00969297 /* silent.aiff in Resources */,
 				C524E9702671DBCD009F7DBA /* notification_15.aiff in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				C524E97B2671DBCD009F7DBA /* gibson_guitar.aiff in Resources */,
