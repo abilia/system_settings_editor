@@ -124,8 +124,8 @@ abstract class MemoplannerSettingsState extends Equatable {
   DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>
       TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
-  DayCalendarType get dayCalendarType =>
-      DayCalendarType.values[settings.viewOptionsTimeView];
+  DayCalendarType get dayCalendarType => DayCalendarType.values[
+      min(settings.viewOptionsTimeView, DayCalendarType.values.length - 1)];
   StartView get startView => StartView.values[settings.functionMenuStartView];
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];

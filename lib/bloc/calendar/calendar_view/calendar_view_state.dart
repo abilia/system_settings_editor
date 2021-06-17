@@ -20,7 +20,6 @@ class CalendarViewState extends Equatable {
       ];
 
   CalendarViewState copyWith({
-    DayCalendarType dayCalendarType,
     bool expandLeftCategory,
     bool expandRightCategory,
   }) =>
