@@ -41,7 +41,7 @@ class Generic<T extends GenericData> extends DataModel {
     return null;
   }
 
-  Generic copyWithNewData({required GenericData newData}) => Generic._(
+  Generic<T> copyWithNewData({required T newData}) => Generic._(
         id: id,
         type: type,
         data: newData,
