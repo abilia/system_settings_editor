@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -10,12 +12,12 @@ class ActivityCard extends StatelessWidget {
   final bool preview;
   final bool showCategories;
 
-  static const double cardHeight = 56.0,
-      cardPadding = 4.0,
-      cardMarginSmall = 6.0,
-      cardMarginLarge = 10.0,
-      imageSize = 48.0,
-      categorySideOffset = 56.0;
+  static final double cardHeight = 56.0.s,
+      cardPadding = 4.0.s,
+      cardMarginSmall = 6.0.s,
+      cardMarginLarge = 10.0.s,
+      imageSize = 48.0.s,
+      categorySideOffset = 56.0.s;
 
   static const Duration duration = Duration(seconds: 1);
 
@@ -61,8 +63,8 @@ class ActivityCard extends StatelessWidget {
               margin: preview || activity.fullDay || !showCategories
                   ? EdgeInsets.zero
                   : activity.category == Category.right
-                      ? const EdgeInsets.only(left: categorySideOffset)
-                      : const EdgeInsets.only(right: categorySideOffset),
+                      ? EdgeInsets.only(left: categorySideOffset)
+                      : EdgeInsets.only(right: categorySideOffset),
               child: Material(
                 type: MaterialType.transparency,
                 child: InkWell(
@@ -84,7 +86,7 @@ class ActivityCard extends StatelessWidget {
                           );
                         },
                   child: Padding(
-                    padding: const EdgeInsets.all(cardPadding),
+                    padding: EdgeInsets.all(cardPadding),
                     child: Stack(
                       children: [
                         Row(
@@ -98,8 +100,7 @@ class ActivityCard extends StatelessWidget {
                               ),
                             Expanded(
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: cardPadding),
+                                padding: EdgeInsets.only(left: cardPadding),
                                 child: Stack(children: <Widget>[
                                   if (activity.hasTitle)
                                     Text(
@@ -155,8 +156,8 @@ class ActivityCard extends StatelessWidget {
 
 class CardIcon extends StatelessWidget {
   final IconData icon;
-  static const EdgeInsets padding = EdgeInsets.only(right: 4.0);
-  static const double iconSize = 18.0;
+  static final EdgeInsets padding = EdgeInsets.only(right: 4.0.s);
+  static final double iconSize = 18.0.s;
   const CardIcon(
     this.icon, {
     Key key,
@@ -183,16 +184,16 @@ class PrivateIcon extends StatelessWidget {
     return AnimatedContainer(
       margin: CardIcon.padding,
       duration: ActivityCard.duration,
+      width: 24.s,
+      height: 24.s,
+      decoration: BoxDecoration(
+        color: inactive ? AbiliaColors.white140 : AbiliaColors.black75,
+        borderRadius: borderRadius,
+      ),
       child: Icon(
         AbiliaIcons.password_protection,
         size: CardIcon.iconSize,
         color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
-      ),
-      width: 24,
-      height: 24,
-      decoration: BoxDecoration(
-        color: inactive ? AbiliaColors.white140 : AbiliaColors.black75,
-        borderRadius: borderRadius,
       ),
     );
   }

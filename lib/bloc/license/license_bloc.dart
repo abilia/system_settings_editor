@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
@@ -20,13 +22,13 @@ class LicenseBloc extends Bloc<LicenseEvent, LicenseState> {
     @required PushBloc pushBloc,
     @required AuthenticationBloc authenticationBloc,
   }) : super(LicensesNotLoaded()) {
-    pushSubscription = pushBloc.listen((state) {
+    pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
         add(ReloadLicenses());
       }
     });
 
-    authSubscription = authenticationBloc.listen((state) {
+    authSubscription = authenticationBloc.stream.listen((state) {
       if (state is Authenticated) {
         add(ReloadLicenses());
       }

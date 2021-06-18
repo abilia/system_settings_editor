@@ -1,18 +1,11 @@
+// @dart=2.9
+
 part of 'calendar_view_bloc.dart';
 
 abstract class CalendarViewEvent extends Equatable {
   const CalendarViewEvent();
   @override
   bool get stringify => true;
-}
-
-class CalendarViewChanged extends CalendarViewEvent {
-  final CalendarType calendarView;
-
-  const CalendarViewChanged(this.calendarView);
-
-  @override
-  List<Object> get props => [calendarView];
 }
 
 abstract class ToggleCategory extends CalendarViewEvent {

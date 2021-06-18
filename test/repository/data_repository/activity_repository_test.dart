@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -6,6 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
 
@@ -62,7 +65,7 @@ void main() {
           ''';
     when(
       mockClient.post(
-        '$baseUrl/api/v2/data/$userId/activities',
+        '$baseUrl/api/v2/data/$userId/activities'.toUri(),
         headers: jsonAuthHeader(Fakes.token),
         body: jsonEncode(dbActivities),
       ),
@@ -87,7 +90,7 @@ void main() {
     // Arrange
     when(
       mockClient.post(
-        '$baseUrl/api/v2/data/$userId/activities',
+        '$baseUrl/api/v2/data/$userId/activities'.toUri(),
         headers: jsonAuthHeader(Fakes.token),
         body: jsonEncode(dbActivities),
       ),
@@ -122,7 +125,7 @@ void main() {
     when(mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(activities));
     when(mockClient.post(
-      '$baseUrl/api/v2/data/$userId/activities',
+      '$baseUrl/api/v2/data/$userId/activities'.toUri(),
       headers: jsonAuthHeader(Fakes.token),
       body: jsonEncode(activities),
     )).thenAnswer((_) => Future.value(
@@ -133,7 +136,7 @@ void main() {
         ));
     when(mockActivityDb
             .insert([successActivity.copyWith(revision: newRevision)]))
-        .thenAnswer((_) => Future.value(List(1)));
+        .thenAnswer((_) => Future.value(List.filled(1, null)));
     final newDirty = 5;
     when(mockActivityDb.getById(successActivity.activity.id))
         .thenAnswer((_) => Future.value(successActivity.copyWith(dirty: 5)));
@@ -143,7 +146,7 @@ void main() {
 
     // Expect
     verify(mockClient.post(
-      '$baseUrl/api/v2/data/$userId/activities',
+      '$baseUrl/api/v2/data/$userId/activities'.toUri(),
       headers: jsonAuthHeader(Fakes.token),
       body: jsonEncode(activities),
     ));
@@ -174,7 +177,7 @@ void main() {
         .thenAnswer((_) => Future.value(activities));
     when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(100));
     when(mockClient.post(
-      '$baseUrl/api/v2/data/$userId/activities',
+      '$baseUrl/api/v2/data/$userId/activities'.toUri(),
       headers: jsonAuthHeader(Fakes.token),
       body: jsonEncode(activities),
     )).thenAnswer((_) => Future.value(
@@ -185,7 +188,8 @@ void main() {
         ));
 
     when(mockClient.get(
-            '$baseUrl/api/v1/data/$userId/activities?revision=$failedRevision',
+            '$baseUrl/api/v1/data/$userId/activities?revision=$failedRevision'
+                .toUri(),
             headers: authHeader(Fakes.token)))
         .thenAnswer((_) => (Future.value(
               Response(

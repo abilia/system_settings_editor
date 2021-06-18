@@ -1,4 +1,9 @@
+// @dart=2.9
+
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -7,18 +12,21 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/logging.dart';
+import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/widget_test_keys.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+export 'utils/verify_generic.dart';
 
 extension MockSharedPreferences on SharedPreferences {
   static Future<SharedPreferences> getInstance({bool loggedIn = true}) {
@@ -29,13 +37,15 @@ extension MockSharedPreferences on SharedPreferences {
   }
 }
 
-final AlarmScheduler noAlarmScheduler = ((a, b, c, d) async {});
+int alarmSchedualCalls = 0;
+AlarmScheduler get noAlarmScheduler {
+  alarmSchedualCalls = 0;
+  return ((a, b, c, d, e) async => alarmSchedualCalls++);
+}
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 class MockUserRepository extends Mock implements UserRepository {}
-
-class MockHttpClient extends Mock implements Client {}
 
 class MockActivityRepository extends Mock implements ActivityRepository {}
 
@@ -43,27 +53,40 @@ class MockSortableRepository extends Mock implements SortableRepository {}
 
 class MockUserFileRepository extends Mock implements UserFileRepository {}
 
+class MockGenericRepository extends Mock implements GenericRepository {}
+
 class MockTokenDb extends Mock implements TokenDb {}
 
 class MockLicenseDb extends Mock implements LicenseDb {}
 
-class MockPushBloc extends Mock implements PushBloc {}
+class MockPushBloc extends MockBloc<PushEvent, PushState> implements PushBloc {}
 
-class MockSyncBloc extends Mock implements SyncBloc {}
+class MockSyncBloc extends MockBloc<SyncEvent, SyncState> implements SyncBloc {}
 
-class MockSortableBloc extends Mock implements SortableBloc {}
+class MockSortableBloc extends MockBloc<SortableEvent, SortableState>
+    implements SortableBloc {}
 
-class MockGenericBloc extends Mock implements GenericBloc {}
+class MockGenericBloc extends MockBloc<GenericEvent, GenericState>
+    implements GenericBloc {}
 
-class MockUserFileBloc extends Mock implements UserFileBloc {}
+class MockUserFileBloc extends MockBloc<UserFileEvent, UserFileState>
+    implements UserFileBloc {}
 
-class MockAlarmBloc extends Mock implements AlarmBloc {}
+class MockTimepillarBloc extends MockBloc<TimepillarEvent, TimepillarState>
+    implements TimepillarBloc {}
 
-class MockNotificationBloc extends Mock implements NotificationBloc {}
+class MockAlarmBloc extends MockBloc<AlarmEvent, AlarmStateBase>
+    implements AlarmBloc {}
 
-class MockCalendarViewBloc extends Mock implements CalendarViewBloc {}
+class MockNotificationBloc extends MockBloc<NotificationAlarm, AlarmStateBase>
+    implements NotificationBloc {}
 
-class MockLicenseBloc extends Mock implements LicenseBloc {}
+class MockCalendarViewBloc
+    extends MockBloc<CalendarViewEvent, CalendarViewState>
+    implements CalendarViewBloc {}
+
+class MockLicenseBloc extends MockBloc<LicenseEvent, LicenseState>
+    implements LicenseBloc {}
 
 class MockImageArchiveBloc extends MockBloc<SortableArchiveEvent,
         SortableArchiveState<ImageArchiveData>>
@@ -108,9 +131,17 @@ class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
 
 class MockActivityDb extends Mock implements ActivityDb {}
 
-class MockGenericDb extends Mock implements GenericDb {}
+class MockGenericDb extends Mock implements GenericDb {
+  MockGenericDb() {
+    when(getAllNonDeletedMaxRevision()).thenAnswer((_) => Future.value([]));
+    when(getAllDirty()).thenAnswer((_) => Future.value([]));
+  }
+}
 
-class MockUserFileDb extends Mock implements UserFileDb {}
+class MockUserFileDb extends Mock implements UserFileDb {
+  @override
+  Future<Iterable<UserFile>> getAllLoadedFiles() => Future.value([]);
+}
 
 class MockUserDb extends Mock implements UserDb {}
 
@@ -118,7 +149,11 @@ class MockSettingsDb extends Mock implements SettingsDb {}
 
 class MockSortableDb extends Mock implements SortableDb {}
 
-class MockDatabase extends Mock implements Database {}
+class MockDatabase extends Mock implements Database {
+  MockDatabase() {
+    when(rawQuery(any)).thenAnswer((_) => Future.value([]));
+  }
+}
 
 class MockBatch extends Mock implements Batch {}
 
@@ -153,11 +188,8 @@ class MockFlutterLocalNotificationsPlugin extends Mock
 class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesState>
     implements ActivitiesBloc {}
 
-class MockMemoplannerSettings
-    extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettingsState>
-    implements MemoplannerSettingBloc {}
-
-class MockActivitiesOccasionBloc extends Mock
+class MockActivitiesOccasionBloc
+    extends MockBloc<ActivitiesOccasionEvent, ActivitiesOccasionState>
     implements ActivitiesOccasionBloc {}
 
 class MockDayActivitiesBloc
@@ -181,28 +213,21 @@ class MockAuthenticationBloc
 class MockAlarmNavigator extends Mock implements AlarmNavigator {}
 
 class MockBloc<E, S> extends Mock {
-  @override
-  dynamic noSuchMethod(Invocation invocation, [Object returnValue]) {
-    final memberName = invocation.memberName.toString().split('"')[1];
-    final result = super.noSuchMethod(invocation);
-    return (memberName == 'skip' && result == null)
-        ? Stream<S>.empty()
-        : result;
-  }
+  Stream<S> get stream => Stream.empty();
 }
 
 extension OurEnterText on WidgetTester {
   Future<void> enterText_(Finder finder, String text) async {
-    await tap(finder);
+    await tap(finder, warnIfMissed: false);
     await pumpAndSettle();
     await enterText(find.byKey(TestKey.input), text);
     await pumpAndSettle();
-    await tap(find.byType(OkButton).first);
+    await tap(find.byKey(TestKey.inputOk));
     await pumpAndSettle();
   }
 
   Future verifyTts(Finder finder, {String contains, String exact}) async {
-    await longPress(finder);
+    await longPress(finder, warnIfMissed: false);
     final arg = verify(GetIt.I<FlutterTts>().speak(captureAny)).captured.first;
     if (contains != null) {
       expect(arg.contains(contains), isTrue,
@@ -219,41 +244,77 @@ extension OurEnterText on WidgetTester {
   }
 }
 
+extension IncreaseSizeOnMp on WidgetTester {
+  Future<void> pumpApp({bool use24 = false, PushBloc pushBloc}) async {
+    if (Config.isMP) {
+      binding.window.physicalSizeTestValue = Size(800, 1280);
+      binding.window.devicePixelRatioTestValue = 1;
+
+      // resets the screen to its orinal size after the test end
+      addTearDown(binding.window.clearPhysicalSizeTestValue);
+      addTearDown(binding.window.clearDevicePixelRatioTestValue);
+    }
+    if (use24) {
+      binding.window.alwaysUse24HourFormatTestValue = use24;
+      addTearDown(binding.window.clearAlwaysUse24HourTestValue);
+    }
+    await pumpWidget(App(pushBloc: pushBloc));
+    await pumpAndSettle();
+  }
+}
+
+extension TapLink on CommonFinders {
+  bool _tapTextSpan(RichText richText, String text) {
+    return !richText.text.visitChildren(
+      (InlineSpan visitor) {
+        if (visitor is TextSpan && visitor.text == text) {
+          (visitor.recognizer as TapGestureRecognizer).onTap();
+          return false;
+        }
+        return true;
+      },
+    );
+  }
+
+  Finder tapTextSpan(String text) {
+    return byWidgetPredicate(
+      (widget) => widget is RichText && _tapTextSpan(widget, text),
+    );
+  }
+}
+
 // https://github.com/Baseflow/flutter-permission-handler/issues/262#issuecomment-702691396
 Set<Permission> checkedPermissions = {};
 Set<Permission> requestedPermissions = {};
 int openAppSettingsCalls = 0;
-int openSystemAlertSettingCalls = 0;
 void setupPermissions(
     [Map<Permission, PermissionStatus> permissions = const {}]) {
   checkedPermissions = {};
   requestedPermissions = {};
   openAppSettingsCalls = 0;
-  openSystemAlertSettingCalls = 0;
   MethodChannel('flutter.baseflow.com/permissions/methods')
-      .setMockMethodCallHandler((MethodCall methodCall) async {
-    switch (methodCall.method) {
-      case 'requestPermissions':
-        requestedPermissions.addAll(
-          (methodCall.arguments as List)
-              .cast<int>()
-              .map((i) => Permission.values[i]),
-        );
-        return permissions
-            .map((key, value) => MapEntry<int, int>(key.value, value.value));
-      case 'checkPermissionStatus':
-        final askedPermission = Permission.values[methodCall.arguments as int];
-        checkedPermissions.add(askedPermission);
-        return (permissions[askedPermission] ?? PermissionStatus.undetermined)
-            .value;
-      case 'openAppSettings':
-        openAppSettingsCalls++;
-        break;
-      case 'openSystemAlertSetting':
-        openSystemAlertSettingCalls++;
-        break;
-    }
-  });
+      .setMockMethodCallHandler(
+    (MethodCall methodCall) async {
+      switch (methodCall.method) {
+        case 'requestPermissions':
+          requestedPermissions.addAll(
+            (methodCall.arguments as List)
+                .cast<int>()
+                .map((i) => Permission.values[i]),
+          );
+          return permissions
+              .map((key, value) => MapEntry<int, int>(key.value, value.value));
+        case 'checkPermissionStatus':
+          final askedPermission =
+              Permission.values[methodCall.arguments as int];
+          checkedPermissions.add(askedPermission);
+          return (permissions[askedPermission]).value;
+        case 'openAppSettings':
+          openAppSettingsCalls++;
+          break;
+      }
+    },
+  );
 }
 
 extension PermissionStatusValue on PermissionStatus {
@@ -265,7 +326,7 @@ extension PermissionStatusValue on PermissionStatus {
         return 1;
       case PermissionStatus.restricted:
         return 2;
-      case PermissionStatus.undetermined:
+      case PermissionStatus.limited:
         return 3;
       case PermissionStatus.permanentlyDenied:
         return 4;
@@ -273,4 +334,50 @@ extension PermissionStatusValue on PermissionStatus {
         return 3;
     }
   }
+}
+
+class MockHttpClient extends Mock implements HttpClient {}
+
+class MockHttpClientRequest extends Mock implements HttpClientRequest {}
+
+class MockHttpClientResponse extends Mock implements HttpClientResponse {}
+
+class MockHttpHeaders extends Mock implements HttpHeaders {}
+
+R provideMockedNetworkImages<R>(R Function() body) => HttpOverrides.runZoned(
+      body,
+      createHttpClient: (_) => createMockImageHttpClient(kTransparentImage),
+    );
+
+// Returns a mock HTTP client that responds with an image to all requests.
+MockHttpClient createMockImageHttpClient(List<int> imageBytes) {
+  final client = MockHttpClient();
+  final request = MockHttpClientRequest();
+  final response = MockHttpClientResponse();
+  final headers = MockHttpHeaders();
+
+  when(client.getUrl(any))
+      .thenAnswer((_) => Future<HttpClientRequest>.value(request));
+  when(request.headers).thenReturn(headers);
+  when(request.close())
+      .thenAnswer((_) => Future<HttpClientResponse>.value(response));
+  when(response.contentLength).thenReturn(imageBytes.length);
+  when(response.statusCode).thenReturn(HttpStatus.ok);
+  when(response.compressionState)
+      .thenReturn(HttpClientResponseCompressionState.notCompressed);
+  when(response.listen(any)).thenAnswer((Invocation invocation) {
+    final void Function(List<int>) onData = invocation.positionalArguments[0];
+    final void Function() onDone = invocation.namedArguments[#onDone];
+    final void Function(Object, [StackTrace]) onError =
+        invocation.namedArguments[#onError];
+    final bool cancelOnError = invocation.namedArguments[#cancelOnError];
+
+    return Stream<List<int>>.fromIterable(<List<int>>[imageBytes]).listen(
+        onData,
+        onDone: onDone,
+        onError: onError,
+        cancelOnError: cancelOnError);
+  });
+
+  return client;
 }

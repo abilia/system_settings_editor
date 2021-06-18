@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -5,33 +7,33 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   const AbiliaTabBar({
     Key key,
     @required this.tabs,
-    this.size = const Size.fromHeight(64.0),
-    @required this.collapsedCondition,
+    this.height,
+    this.collapsedCondition,
   }) : super(key: key);
 
   final List<Widget> tabs;
-  final Size size;
+  final double height;
 
   final bool Function(int index) collapsedCondition;
+  bool Function(int) get isCollapsed => collapsedCondition ?? (_) => false;
 
   @override
-  Size get preferredSize => size;
+  Size get preferredSize => Size.fromHeight(height ?? 64.0.s);
 
   @override
   Widget build(BuildContext context) {
-    final wrappedTabs = List<Widget>(tabs.length);
     var offset = 0;
-    for (var i = 0; i < tabs.length; i++) {
-      wrappedTabs[i] = _Tab(
-        index: i,
-        offset: offset,
-        last: (tabs.length - 1) == i,
-        collapsed: () => collapsedCondition(i),
-        child: tabs[i],
-        controller: DefaultTabController.of(context),
-      );
-      if (collapsedCondition(i)) offset++;
-    }
+    final wrappedTabs = [
+      for (var i = 0; i < tabs.length; i++)
+        _Tab(
+          index: i,
+          offset: isCollapsed(i) ? offset++ : offset,
+          last: (tabs.length - 1) == i,
+          collapsed: () => isCollapsed(i),
+          controller: DefaultTabController.of(context),
+          child: tabs[i],
+        )
+    ];
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +110,6 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
       child: Row(
         children: <Widget>[
           _AnimatedTab(
-            child: widget.child,
             selectedTabAnimation: widget.controller.animation,
             scaleAnimation: _scaleAnimation,
             listenable: Listenable.merge(
@@ -120,6 +121,7 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
             beginIconThemeData: iconTheme.copyWith(size: smallIconSize),
             endIconThemeData: iconTheme.copyWith(
                 color: AbiliaColors.white, size: smallIconSize),
+            child: widget.child,
           )
         ],
       ),
@@ -128,13 +130,15 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
 }
 
 class _AnimatedTab extends AnimatedWidget {
-  static const beginBorder =
-          Border.fromBorderSide(BorderSide(color: AbiliaColors.white)),
+  static final beginBorder = Border.fromBorderSide(
+        BorderSide(color: AbiliaColors.white, width: 1.0.s),
+      ),
       endBorder = Border.fromBorderSide(
-          BorderSide(color: AbiliaColors.transparentWhite30));
-  static const firstBorderRadius = BorderRadius.horizontal(left: radius),
+        BorderSide(color: AbiliaColors.transparentWhite30, width: 1.0.s),
+      );
+  static final firstBorderRadius = BorderRadius.horizontal(left: radius),
       lastBorderRadius = BorderRadius.horizontal(right: radius);
-  const _AnimatedTab({
+  _AnimatedTab({
     Key key,
     @required this.child,
     @required this.scaleAnimation,
@@ -147,32 +151,32 @@ class _AnimatedTab extends AnimatedWidget {
     @required this.last,
     @required this.first,
   })  : beginDecoration = first
-            ? const BoxDecoration(
+            ? BoxDecoration(
                 borderRadius: firstBorderRadius,
                 color: AbiliaColors.white,
                 border: beginBorder)
             : last
-                ? const BoxDecoration(
+                ? BoxDecoration(
                     borderRadius: lastBorderRadius,
                     color: AbiliaColors.white,
                     border: beginBorder,
                   )
-                : const BoxDecoration(
+                : BoxDecoration(
                     borderRadius: BorderRadius.zero,
                     color: AbiliaColors.white,
                     border: beginBorder),
         endDecoration = first
-            ? const BoxDecoration(
+            ? BoxDecoration(
                 borderRadius: firstBorderRadius,
                 color: AbiliaColors.transparentWhite20,
                 border: endBorder)
             : last
-                ? const BoxDecoration(
+                ? BoxDecoration(
                     borderRadius: lastBorderRadius,
                     color: AbiliaColors.transparentWhite20,
                     border: endBorder,
                   )
-                : const BoxDecoration(
+                : BoxDecoration(
                     borderRadius: BorderRadius.zero,
                     color: AbiliaColors.transparentWhite20,
                     border: endBorder),
@@ -193,13 +197,15 @@ class _AnimatedTab extends AnimatedWidget {
         (selectedTabAnimation.value - index + offset).abs().clamp(0.0, 1.0);
 
     return Container(
-      width: 64.0 * scaleAnimation.value,
-      height: 48.0,
+      width: 64.0.s * scaleAnimation.value,
+      height: 48.0.s,
       margin: last
-          ? const EdgeInsets.only(left: 1.0)
+          ? EdgeInsets.only(left: 1.0.s)
           : first
-              ? const EdgeInsets.only(right: 1.0)
-              : EdgeInsets.symmetric(horizontal: 1.0 * scaleAnimation.value),
+              ? EdgeInsets.only(right: 1.0.s)
+              : EdgeInsets.symmetric(horizontal: 1.0.s * scaleAnimation.value),
+      decoration: DecorationTween(begin: beginDecoration, end: endDecoration)
+          .lerp(lerpValue),
       child: scaleAnimation.value == 0.0
           ? null
           : IconTheme(
@@ -215,8 +221,6 @@ class _AnimatedTab extends AnimatedWidget {
                 ),
               ),
             ),
-      decoration: DecorationTween(begin: beginDecoration, end: endDecoration)
-          .lerp(lerpValue),
     );
   }
 }

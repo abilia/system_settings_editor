@@ -1,10 +1,15 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:seagull/models/all.dart';
 
 part 'timepillar_event.dart';
 part 'timepillar_state.dart';
@@ -21,26 +26,39 @@ class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
     @required this.clockBloc,
     @required this.memoSettingsBloc,
     @required this.dayPickerBloc,
-  }) : super(TimepillarState(generateInterval(clockBloc.state,
-            dayPickerBloc.state.day, memoSettingsBloc.state))) {
-    _clockSubscription = clockBloc.listen((state) {
+  }) : super(TimepillarState(
+          generateInterval(
+              clockBloc.state, dayPickerBloc.state.day, memoSettingsBloc.state),
+          memoSettingsBloc.state.timepillarZoom.zoomValue,
+        )) {
+    _clockSubscription = clockBloc.stream.listen((state) {
       add(TimepillarConditionsChangedEvent());
     });
-    _memoSettingsSubscription = memoSettingsBloc.listen((state) {
+    _memoSettingsSubscription = memoSettingsBloc.stream.listen((state) {
       add(TimepillarConditionsChangedEvent());
     });
-    _dayPickerSubscription = dayPickerBloc.listen((state) {
+    _dayPickerSubscription = dayPickerBloc.stream.listen((state) {
       add(TimepillarConditionsChangedEvent());
     });
   }
+
+  TimepillarBloc.fake({
+    this.clockBloc,
+    this.memoSettingsBloc,
+    this.dayPickerBloc,
+    TimepillarState state,
+  }) : super(state);
 
   @override
   Stream<TimepillarState> mapEventToState(
     TimepillarEvent event,
   ) async* {
     if (event is TimepillarConditionsChangedEvent) {
-      yield TimepillarState(generateInterval(
-          clockBloc.state, dayPickerBloc.state.day, memoSettingsBloc.state));
+      yield TimepillarState(
+        generateInterval(
+            clockBloc.state, dayPickerBloc.state.day, memoSettingsBloc.state),
+        memoSettingsBloc.state.timepillarZoom.zoomValue,
+      );
     }
   }
 

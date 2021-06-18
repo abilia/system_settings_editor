@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+// @dart=2.9
+
 import 'package:flutter/services.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -63,7 +64,7 @@ class NameAndPictureWidget extends StatelessWidget {
             onImageSelected: onImageSelected,
             errorState: errorState,
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.s),
           Expanded(
             child: NameInput(
               text: text,
@@ -80,7 +81,7 @@ class NameAndPictureWidget extends StatelessWidget {
 }
 
 class SelectPictureWidget extends StatelessWidget {
-  static const imageSize = 84.0, padding = 4.0;
+  static final imageSize = 84.0.s, padding = 4.0.s;
   final SelectedImage selectedImage;
 
   final void Function(SelectedImage) onImageSelected;
@@ -90,7 +91,7 @@ class SelectPictureWidget extends StatelessWidget {
     Key key,
     @required this.selectedImage,
     @required this.onImageSelected,
-    @required this.errorState,
+    this.errorState = false,
   }) : super(key: key);
 
   @override
@@ -146,7 +147,7 @@ class SelectedImageWidget extends StatelessWidget {
 
   final bool errorState;
 
-  static const innerSize =
+  static final innerSize =
       SelectPictureWidget.imageSize - SelectPictureWidget.padding * 2;
 
   const SelectedImageWidget({
@@ -163,7 +164,7 @@ class SelectedImageWidget extends StatelessWidget {
       height: SelectPictureWidget.imageSize,
       child: LinedBorder(
         key: TestKey.addPicture,
-        padding: const EdgeInsets.all(SelectPictureWidget.padding),
+        padding: EdgeInsets.all(SelectPictureWidget.padding),
         errorState: errorState,
         onTap: onTap,
         child: selectedImage.isNotEmpty
@@ -172,13 +173,12 @@ class SelectedImageWidget extends StatelessWidget {
                 width: innerSize,
                 imageFileId: selectedImage.id,
                 imageFilePath: selectedImage.path,
-                imageFile: selectedImage.file,
               )
             : Container(
                 decoration: whiteNoBorderBoxDecoration,
                 width: innerSize,
                 height: innerSize,
-                child: const Icon(
+                child: Icon(
                   AbiliaIcons.add_photo,
                   size: defaultIconSize,
                   color: AbiliaColors.black75,
@@ -189,7 +189,7 @@ class SelectedImageWidget extends StatelessWidget {
   }
 }
 
-class NameInput extends StatefulWidget {
+class NameInput extends StatelessWidget {
   const NameInput({
     Key key,
     @required this.text,
@@ -206,42 +206,18 @@ class NameInput extends StatefulWidget {
   final List<TextInputFormatter> inputFormatters;
 
   @override
-  _NameInputState createState() => _NameInputState();
-}
-
-class _NameInputState extends State<NameInput> {
-  TextEditingController _nameController;
-
-  @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController(text: widget.text);
-    _nameController.addListener(_onEdit);
-  }
-
-  void _onEdit() {
-    widget.onEdit(_nameController.text);
-  }
-
-  @override
-  void dispose() {
-    _nameController.removeListener(_onEdit);
-    _nameController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return AbiliaTextInput(
+      initialValue: text,
+      onChanged: onEdit,
       formKey: TestKey.editTitleTextFormField,
-      controller: _nameController,
-      errorState: widget.errorState,
+      errorState: errorState,
       icon: AbiliaIcons.edit,
       heading: Translator.of(context).translate.name,
       inputHeading: Translator.of(context).translate.name,
       textCapitalization: TextCapitalization.sentences,
-      inputFormatters: widget.inputFormatters,
-      maxLines: widget.maxLines,
+      inputFormatters: inputFormatters,
+      maxLines: maxLines,
     );
   }
 }
@@ -262,18 +238,26 @@ class CategoryWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                buildCategoryRadioField(
-                  context,
-                  Category.left,
-                  state.leftCategoryName ??
-                      Translator.of(context).translate.left,
+                _CategoryRadioField(
+                  category: Category.left,
+                  radioKey: TestKey.leftCategoryRadio,
+                  activity: activity,
+                  icon: AbiliaIcons.move_item_left,
+                  label: state.leftCategoryName.isEmpty
+                      ? Translator.of(context).translate.left
+                      : state.leftCategoryName,
+                  fileId: state.leftCategoryImage,
                 ),
-                const SizedBox(width: 8),
-                buildCategoryRadioField(
-                  context,
-                  Category.right,
-                  state.rightCategoryName ??
-                      Translator.of(context).translate.right,
+                SizedBox(width: 8.s),
+                _CategoryRadioField(
+                  category: Category.right,
+                  radioKey: TestKey.rightCategoryRadio,
+                  activity: activity,
+                  icon: AbiliaIcons.move_item_right,
+                  label: state.rightCategoryName.isEmpty
+                      ? Translator.of(context).translate.right
+                      : state.rightCategoryName,
+                  fileId: state.rightCategoryImage,
                 ),
               ],
             )
@@ -282,22 +266,46 @@ class CategoryWidget extends StatelessWidget {
       },
     );
   }
+}
 
-  Expanded buildCategoryRadioField(
-      BuildContext context, int category, String text) {
-    final left = category == Category.left;
-    final key = left ? TestKey.leftCategoryRadio : TestKey.rightCategoryRadio;
-    final icon =
-        left ? AbiliaIcons.move_item_left : AbiliaIcons.move_item_right;
+class _CategoryRadioField extends StatelessWidget {
+  final IconData icon;
+  final String label, fileId;
+  final Activity activity;
+  final int category;
+  final Key radioKey;
+
+  const _CategoryRadioField({
+    Key key,
+    @required this.icon,
+    @required this.label,
+    @required this.activity,
+    @required this.category,
+    @required this.radioKey,
+    @required this.fileId,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
-      child: RadioField(
-        key: key,
-        margin: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16.0),
+      child: RadioField<int>(
+        key: radioKey,
+        margin: fileId.isEmpty
+            ? EdgeInsets.symmetric(horizontal: 14.0.s, vertical: 16.0.s)
+            : EdgeInsets.all(4.s),
         onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
             .add(ReplaceActivity(activity.copyWith(category: v))),
-        leading: Icon(icon),
+        leading: fileId.isEmpty
+            ? Icon(icon)
+            : Container(
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: CategoryImage.borderRadius,
+                  border: border,
+                ),
+                child: CategoryImage(fileId: fileId),
+              ),
         text: Text(
-          text,
+          label,
           overflow: TextOverflow.ellipsis,
         ),
         groupValue: activity.category,
@@ -344,7 +352,7 @@ class AlarmWidget extends StatelessWidget {
                   }
                 : null,
           ),
-          const SizedBox(height: 8.0),
+          SizedBox(height: 8.0.s),
           AlarmOnlyAtStartSwitch(
             alarm: alarm,
             onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
@@ -376,9 +384,9 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
           AbiliaIcons.handi_alarm,
           size: smallIconSize,
         ),
-        text: Text(Translator.of(context).translate.alarmOnlyAtStartTime),
         value: alarm.onlyStart,
         onChanged: alarm.shouldAlarm ? onChanged : null,
+        child: Text(Translator.of(context).translate.alarmOnlyAtStartTime),
       );
 }
 
@@ -400,22 +408,22 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
             AbiliaIcons.handi_check,
             size: smallIconSize,
           ),
-          text: Text(translator.checkable),
           value: activity.checkable,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
               .add(ReplaceActivity(activity.copyWith(checkable: v))),
+          child: Text(translator.checkable),
         ),
-        const SizedBox(height: 8.0),
+        SizedBox(height: 8.0.s),
         SwitchField(
           key: TestKey.deleteAfterSwitch,
           leading: Icon(
             AbiliaIcons.delete_all_clear,
             size: smallIconSize,
           ),
-          text: Text(translator.deleteAfter),
           value: activity.removeAfter,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
               .add(ReplaceActivity(activity.copyWith(removeAfter: v))),
+          child: Text(translator.deleteAfter),
         ),
       ],
     );
@@ -528,64 +536,66 @@ class RecurrenceWidget extends StatelessWidget {
 }
 
 class EndDateWidget extends StatelessWidget {
-  final EditActivityState state;
-  bool get disabled => state.storedRecurring;
-
-  const EndDateWidget(this.state, {Key key}) : super(key: key);
+  const EndDateWidget({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final activity = state.activity;
     final translate = Translator.of(context).translate;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CollapsableWidget(
-          collapsed: activity.recurs.hasNoEnd,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SubHeading(translate.endDate),
-              DatePicker(
-                activity.recurs.end,
-                firstDate: state.timeInterval.startDate,
-                onChange: disabled
-                    ? null
-                    : (newDate) =>
-                        BlocProvider.of<EditActivityBloc>(context).add(
-                          ReplaceActivity(
-                            activity.copyWith(
-                              recurs: activity.recurs.changeEnd(newDate),
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
+      builder: (context, state) {
+        final activity = state.activity;
+        final recurs = activity.recurs;
+        final disabled = state.storedRecurring;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CollapsableWidget(
+              collapsed: recurs.hasNoEnd,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SubHeading(translate.endDate),
+                  DatePicker(
+                    activity.recurs.end,
+                    notBefore: state.timeInterval.startDate,
+                    onChange: disabled
+                        ? null
+                        : (newDate) =>
+                            BlocProvider.of<EditActivityBloc>(context).add(
+                              ReplaceActivity(
+                                activity.copyWith(
+                                  recurs: recurs.changeEnd(newDate),
+                                ),
+                              ),
+                            ),
+                  ),
+                  SizedBox(height: 16.s),
+                ],
+              ),
+            ),
+            SwitchField(
+              leading: Icon(
+                AbiliaIcons.basic_activity,
+                size: smallIconSize,
+              ),
+              value: recurs.hasNoEnd,
+              onChanged: disabled
+                  ? null
+                  : (v) => BlocProvider.of<EditActivityBloc>(context).add(
+                        ReplaceActivity(
+                          activity.copyWith(
+                            recurs: recurs.changeEnd(
+                              v
+                                  ? Recurs.noEndDate
+                                  : state.timeInterval.startDate,
                             ),
                           ),
                         ),
-              ),
-              SizedBox(
-                height: 16.0,
-              ),
-            ],
-          ),
-        ),
-        SwitchField(
-          key: TestKey.noEndDate,
-          leading: Icon(
-            AbiliaIcons.basic_activity,
-            size: smallIconSize,
-          ),
-          text: Text(translate.noEndDate),
-          value: activity.recurs.hasNoEnd,
-          onChanged: disabled
-              ? null
-              : (v) => BlocProvider.of<EditActivityBloc>(context).add(
-                    ReplaceActivity(
-                      activity.copyWith(
-                        recurs: activity.recurs.changeEnd(
-                          v ? Recurs.noEndDate : activity.startTime,
-                        ),
                       ),
-                    ),
-                  ),
-        ),
-      ],
+              child: Text(translate.noEndDate),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -599,14 +609,15 @@ class WeekDays extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 14.0,
-      runSpacing: 8.0,
+      spacing: 14.0.s,
+      runSpacing: 8.0.s,
       children: List.generate(DateTime.daysPerWeek, (i) {
         final d = i + 1;
         return SelectableField(
           text: Text(
             Translator.of(context).translate.shortWeekday(d),
-            style: Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
+            style:
+                Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5.s),
           ),
           selected: selectedWeekDays.contains(d),
           onTap: () =>
@@ -628,8 +639,8 @@ class MonthDays extends StatelessWidget {
   Widget build(BuildContext context) {
     final selectedMonthDays = activity.recurs.monthDays;
     return Wrap(
-      spacing: 14.0,
-      runSpacing: 8.0,
+      spacing: 14.0.s,
+      runSpacing: 8.0.s,
       children: List.generate(31, (i) {
         final d = i + 1;
         return SelectableField(

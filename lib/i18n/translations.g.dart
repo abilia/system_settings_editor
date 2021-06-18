@@ -18,13 +18,13 @@ class Locales {
 }
 
 abstract class Translated {
-  final String userNameTitle = 'Username or email';
-
-  final String userName = 'Username';
+  final String username = 'Username';
 
   final String password = 'Password';
 
-  final String loginHint =
+  final String loginHintMP = 'Use your myAbilia account to Login';
+
+  final String loginHintMPGO =
       'Login with the same username and password as on your MEMOplanner';
 
   final String login = 'Log in';
@@ -36,6 +36,61 @@ abstract class Translated {
 
   final String noConnection =
       'No contact with myAbilia. Check your Internet connection.';
+
+  final String enterUsername = 'Enter username';
+
+  final String enterPassword = 'Enter password';
+
+  final String createAccountHint = 'Don’t have a myAbilia account yet?';
+
+  final String createAccount = 'Create Account';
+
+  final String createAaccountHeading = 'Create your account in myAbilia';
+
+  final String createAaccountSubheading =
+      'You need a myAbilia account to use MEMOplanner';
+
+  final String acceptTerms = 'I have read and agree to';
+
+  final String termsOfUse = 'terms of use';
+
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  final String privacyPolicy = 'privacy policy';
+
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  final String usernameHint = 'Username (phone number or email)';
+
+  final String passwordHint = 'Password (minimum 8 characters)';
+
+  final String confirmPassword = 'Confirm password';
+
+  final String usernameToShort =
+      'Username or email is invalid, must contain at least three characters';
+
+  final String passwordToShort =
+      'The password must consist of at least 8 characters';
+
+  final String passwordMismatch = 'Both passwords must be the same';
+
+  final String confirmTermsOfUse = 'Confirm terms of use';
+
+  final String confirmPrivacyPolicy = 'Confirm privacy policy';
+
+  final String usernameTaken = 'Username/email address is already in use';
+
+  final String unknownError = 'Unknown error';
+
+  final String accountCreatedHeading = 'Account created';
+
+  final String accountCreatedBody =
+      'Your account has been created.\nYou can login using your username and password';
+
+  final String browser = 'Browser';
+
+  final String backToLogin = 'Back to Login';
 
   final String noLicense = 'This account has no valid license.';
 
@@ -76,6 +131,10 @@ abstract class Translated {
 
   final String minute = 'minute';
 
+  final String seconds = 'seconds';
+
+  final String second = 'second';
+
   final String min = 'min';
 
   final String am = 'AM';
@@ -87,6 +146,10 @@ abstract class Translated {
   final String hourInessive = '';
 
   final String minuteInessive = '';
+
+  final String now = 'Now';
+
+  final String week = 'week';
 
   final String reminders = 'Reminders';
 
@@ -193,7 +256,11 @@ abstract class Translated {
 
   final String save = 'Save';
 
+  final String endBeforeStartError = "End date can't be before start date";
+
   final String error = 'Error';
+
+  final String warning = 'Warning';
 
   final String missingTitleOrImageAndStartTime =
       'Your activity should contain an image or name and start time.';
@@ -202,8 +269,14 @@ abstract class Translated {
 
   final String missingStartTime = 'You must enter a start time.';
 
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'You have selected a start time which has already passed. This is not allowed.';
+
+  final String startTimeBeforeNowWarning =
+      'You have selected a start time which has already passed. Press OK to continue.';
+
+  final String conflictWarning =
+      'There are activities conflicting with this activity. Press OK to continue.';
 
   final String availableFor = 'Available for';
 
@@ -230,6 +303,8 @@ abstract class Translated {
   final String removePicture = 'Remove image';
 
   final String imageArchive = 'Image Archive';
+
+  final String uploadImage = 'Upload image';
 
   final String myPhotos = 'My photos';
 
@@ -273,9 +348,9 @@ abstract class Translated {
 
   final String infoTypeNone = 'No extra function selected';
 
-  final String infoTypeChecklist = 'Add checklist';
+  final String infoTypeChecklist = 'Checklist';
 
-  final String infoTypeNote = 'Add note';
+  final String infoTypeNote = 'Note';
 
   final String typeSomething = 'Type something…';
 
@@ -290,6 +365,8 @@ abstract class Translated {
   final String task = 'Task';
 
   final String remove = 'Delete';
+
+  final String settings = 'Settings';
 
   final String calendarView = 'Day Calendar';
 
@@ -317,6 +394,210 @@ abstract class Translated {
   final String display = 'Display';
 
   final String viewMode = 'View mode';
+
+  final String dayInterval = 'Day interval';
+
+  final String interval = 'Interval';
+
+  final String viewDay = 'Day';
+
+  final String dayAndNight = 'Day and night';
+
+  final String zoom = 'Timeline zoom';
+
+  final String small = 'Small';
+
+  final String medium = 'Medium';
+
+  final String large = 'Large';
+
+  final String system = 'System';
+
+  final String calendar = 'Calendar';
+
+  final String functions = 'Functions';
+
+  final String imagePicker = 'Image picker';
+
+  final String general = 'General';
+
+  final String dayCalendar = 'Day Calendar';
+
+  final String weekCalendar = 'Week Calendar';
+
+  final String monthCalendar = 'Month Calendar';
+
+  final String activityView = 'Activity View';
+
+  final String addActivity = 'Add activity';
+
+  final String alarmSettings = 'Alarm settings';
+
+  final String nonCheckableActivities = 'Non checkable activities';
+
+  final String checkableActivities = 'Checkable activities';
+
+  final String vibrationOnReminder = 'Vibration on reminder';
+
+  final String alarmTime = 'Alarm time';
+
+  final String alert = 'Alert';
+
+  final String defaultSound = 'Default';
+
+  final String noSound = '- No sound -';
+
+  final String showWeekNumber = 'Show week number';
+
+  final String showYear = 'Show year';
+
+  final String everyDay = 'Every day (7)';
+
+  final String viewSettings = 'View settings';
+
+  final String typeOfDisplay = 'Type of display';
+
+  final String timelineLength = 'Timeline length';
+
+  final String weekdays = 'Weekdays (5)';
+
+  final String captions = 'Captions';
+
+  final String columns = 'Columns';
+
+  final String headings = 'Headings';
+
+  final String allowPassedStartTime = 'Allow passed start time';
+
+  final String addRecurringActivity = 'Add recurring activity';
+
+  final String showEndTime = 'Show end time';
+
+  final String showAlarm = 'Show alarm';
+
+  final String showSilentAlarm = 'Show silent alarm';
+
+  final String showNoAlarm = 'Show no alarm';
+
+  final String throughEditView = 'Through Edit View';
+
+  final String androidSettings = 'Android Settings';
+
+  final String stepByStep = 'Step-by-step';
+
+  final String showBasicActivities = 'Show basic activities';
+
+  final String selectName = 'Select name';
+
+  final String selectImage = 'Select image';
+
+  final String selectDate = 'Select date';
+
+  final String selectType = 'Select type';
+
+  final String selectCheckable = 'Select checkable';
+
+  final String selectAvailableFor = 'Select available for';
+
+  final String selectDeleteAfter = 'Select delete after';
+
+  final String selectAlarm = 'Select alarm';
+
+  final String iOSAlarmTimeWarning =
+      'On iPhones, alarms longer than 30 seconds will be played for 30 seconds due to iOS restrictions';
+
+  final String selectChecklist = 'Select checklist';
+
+  final String selectNote = 'Select note';
+
+  final String selectReminder = 'Select reminder';
+
+  final String add = 'Add';
+
+  final String defaults = 'Defaults';
+
+  final String toolbarSettingsHint = 'Views displayed in the Toolbar';
+
+  final String homeScreenSettingsHint =
+      'View displayed when the home button is pressed';
+
+  final String timeoutSettingsHint =
+      'Returns to the home screen after a period of inactivity.';
+
+  final String noTimeout = 'No timeout';
+
+  final String activateScreensaver = 'Activate Screensaver';
+
+  final String menuRemovalWarning =
+      'Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.';
+
+  final String topField = 'Top Field';
+
+  final String showBrowseButtons = 'Show browse buttons';
+
+  final String showWeekday = 'Show weekday';
+
+  final String showDayPeriod = 'Show time for day and night';
+
+  final String showDate = 'Show date';
+
+  final String showClock = 'Show clock';
+
+  final String delete = 'Delete';
+
+  final String edit = 'Edit';
+
+  final String showQuarterHourWatchBar = 'Show Quarter Hour Watch bar';
+
+  final String timeOnQuarterHourBar = 'Time on Quarter Hour bar';
+
+  final String clock = 'Clock';
+
+  final String analogueDigital = 'Analogue + digital';
+
+  final String analogue = 'Analogue';
+
+  final String digital = 'Digital';
+
+  final String timeline = 'Timeline';
+
+  final String earyMorning = 'early morning';
+
+  final String twelveHourFormat = '12 hours format';
+
+  final String oneDot = 'One dot';
+
+  final String columnOfDots = 'Column of dots';
+
+  final String lineAcrossCurrentTime = 'Line across current time';
+
+  final String linesForEachHour = 'Lines for each hour';
+
+  final String saturdayAndSunday = 'Saturday and Sunday';
+
+  final String dayColours = 'Day colours';
+
+  final String noDayColours = 'No day colours';
+
+  final String showCagetories = 'Show categories';
+
+  final String showColours = 'Show colours';
+
+  final String editCategory = 'Edit category';
+
+  final String codeProtect = 'Code protect';
+
+  final String code = 'Code';
+
+  final String codeProtectSettings = 'Code protect settings';
+
+  final String codeProtectThisView = 'Code protect this view';
+
+  final String codeProtectAndroidSettings = 'Code protect Android Settings';
+
+  final String enterNewCode = 'Enter new code';
+
+  final String confirmCode = 'Confirm code';
 
   final String permissions = 'Permissions';
 
@@ -369,22 +650,30 @@ abstract class Translated {
   final String version = 'Version';
 
   final String producer = 'Producer';
+
+  final String camera = 'Camera';
+
+  final String photoCalendar = 'Photo calendar';
+
+  final String countdown = 'Countdown';
+
+  final String quickSettingsMenu = 'Quick settings';
 }
 
 class EN extends Translated {}
 
 class SV extends Translated {
   @override
-  final String userNameTitle = 'Användarnamn eller e-post';
-
-  @override
-  final String userName = 'Användarnamn';
+  final String username = 'Användarnamn';
 
   @override
   final String password = 'Lösenord';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Använd ditt myAbilia-konto för att logga in';
+
+  @override
+  final String loginHintMPGO =
       'Logga in med samma användarnamn och lösenord som på din MEMOplanner';
 
   @override
@@ -400,6 +689,84 @@ class SV extends Translated {
   @override
   final String noConnection =
       'Ingen kontakt med myAbilia. Kontrollera din internetanslutning.';
+
+  @override
+  final String enterUsername = 'Ange ditt användarnamn';
+
+  @override
+  final String enterPassword = 'Ange ditt lösenord';
+
+  @override
+  final String createAccountHint = 'Har du inte ett myAbilia konto än?';
+
+  @override
+  final String createAccount = 'Skapa konto';
+
+  @override
+  final String createAaccountHeading = 'Skapa ditt konto i myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Du behöver ett myAbilia-konto för att kunna använda MEMOplanner';
+
+  @override
+  final String acceptTerms = 'Jag har läst och godkänner';
+
+  @override
+  final String termsOfUse = 'användarvillkor';
+
+  @override
+  final String termsOfUseUrl = 'sv/anvandarvillkor';
+
+  @override
+  final String privacyPolicy = 'personuppgiftspolicy';
+
+  @override
+  final String privacyPolicyUrl = 'sv/personuppgiftspolicy';
+
+  @override
+  final String usernameHint = 'Användarnamn (telefonnummer eller e-post)';
+
+  @override
+  final String passwordHint = 'Lösenord (minst 8 tecken)';
+
+  @override
+  final String confirmPassword = 'Bekräfta lösenordet';
+
+  @override
+  final String usernameToShort =
+      'Användarnamn eller e-postadress är ogiltig, måste innehålla minst tre tecken';
+
+  @override
+  final String passwordToShort = 'Lösenordet måste bestå av minst 8 tecken';
+
+  @override
+  final String passwordMismatch = 'Lösenorden måste vara likadana';
+
+  @override
+  final String confirmTermsOfUse = 'Bekräfta användarvillkor';
+
+  @override
+  final String confirmPrivacyPolicy = 'Bekräfta personuppgiftspolicy';
+
+  @override
+  final String usernameTaken = 'Användarnamn/e-postadress används redan';
+
+  @override
+  final String unknownError = 'Okänt fel';
+
+  @override
+  final String accountCreatedHeading = 'Konto skapat';
+
+  @override
+  final String accountCreatedBody =
+      'Ditt konto har skapats.\nDu kan logga in med ditt användarnamn och lösenord';
+
+  @override
+  final String browser = 'Webbläsare';
+
+  @override
+  final String backToLogin = 'Tillbaka till login';
 
   @override
   final String noLicense =
@@ -461,6 +828,12 @@ class SV extends Translated {
   final String minute = 'minut';
 
   @override
+  final String seconds = 'sekunder';
+
+  @override
+  final String second = 'sekund';
+
+  @override
   final String min = 'min';
 
   @override
@@ -477,6 +850,12 @@ class SV extends Translated {
 
   @override
   final String minuteInessive = '';
+
+  @override
+  final String now = 'Nu';
+
+  @override
+  final String week = 'vecka';
 
   @override
   final String reminders = 'Påminnelser';
@@ -638,7 +1017,13 @@ class SV extends Translated {
   final String save = 'Spara';
 
   @override
+  final String endBeforeStartError = 'Slutdatum kan inte vara före startdatum';
+
+  @override
   final String error = 'Fel';
+
+  @override
+  final String warning = 'Varning';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -652,8 +1037,16 @@ class SV extends Translated {
   final String missingStartTime = 'Du måste ange en starttid.';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.';
+
+  @override
+  final String startTimeBeforeNowWarning =
+      'Du har valt en starttid som är före aktuell tid. Tryck ok om du vill fortsätta.';
+
+  @override
+  final String conflictWarning =
+      'Det finns aktiviteter som krockar med din aktivitet. Tryck ok om du vill fortsätta.';
 
   @override
   final String availableFor = 'Tillgänglig för';
@@ -693,6 +1086,9 @@ class SV extends Translated {
 
   @override
   final String imageArchive = 'Bildarkiv';
+
+  @override
+  final String uploadImage = 'Ladda upp bild';
 
   @override
   final String myPhotos = 'Mina foton';
@@ -758,10 +1154,10 @@ class SV extends Translated {
   final String infoTypeNone = 'Ingen extra funktion vald';
 
   @override
-  final String infoTypeChecklist = 'Lägg till checklista';
+  final String infoTypeChecklist = 'Checklista';
 
   @override
-  final String infoTypeNote = 'Lägg till anteckning';
+  final String infoTypeNote = 'Anteckning';
 
   @override
   final String typeSomething = 'Skriv något…';
@@ -783,6 +1179,9 @@ class SV extends Translated {
 
   @override
   final String remove = 'Ta bort';
+
+  @override
+  final String settings = 'Inställningar';
 
   @override
   final String calendarView = 'Dagkalender';
@@ -823,6 +1222,309 @@ class SV extends Translated {
 
   @override
   final String viewMode = 'Visningsläge';
+
+  @override
+  final String dayInterval = 'Intervall';
+
+  @override
+  final String interval = 'Intervall';
+
+  @override
+  final String viewDay = 'Dagen';
+
+  @override
+  final String dayAndNight = 'Dygnet';
+
+  @override
+  final String zoom = 'Tidslinjens zoom';
+
+  @override
+  final String small = 'Liten';
+
+  @override
+  final String medium = 'Mellan';
+
+  @override
+  final String large = 'Stor';
+
+  @override
+  final String system = 'System';
+
+  @override
+  final String calendar = 'Kalender';
+
+  @override
+  final String functions = 'Funktioner';
+
+  @override
+  final String imagePicker = 'Bildväljare';
+
+  @override
+  final String general = 'Generellt';
+
+  @override
+  final String dayCalendar = 'Dagkalender';
+
+  @override
+  final String weekCalendar = 'Veckokalender';
+
+  @override
+  final String monthCalendar = 'Månadskalender';
+
+  @override
+  final String activityView = 'Aktivitetsvy';
+
+  @override
+  final String addActivity = 'Lägga in aktivitet';
+
+  @override
+  final String alarmSettings = 'Larminställningar';
+
+  @override
+  final String nonCheckableActivities = 'Ej kvitterbara aktiviteter';
+
+  @override
+  final String checkableActivities = 'Kvitterbara aktiviteter';
+
+  @override
+  final String vibrationOnReminder = 'Vibration vid påminnelse';
+
+  @override
+  final String alarmTime = 'Larmtid';
+
+  @override
+  final String alert = 'Signal';
+
+  @override
+  final String defaultSound = 'Förval';
+
+  @override
+  final String noSound = '- Inget ljud -';
+
+  @override
+  final String showWeekNumber = 'Visa veckonummer';
+
+  @override
+  final String showYear = 'Visa år';
+
+  @override
+  final String everyDay = 'Alla dagar (7)';
+
+  @override
+  final String viewSettings = 'Visa inställningar';
+
+  @override
+  final String typeOfDisplay = 'Typ av visning';
+
+  @override
+  final String timelineLength = 'Tidslinjens längd';
+
+  @override
+  final String weekdays = 'Vardagar (5)';
+
+  @override
+  final String captions = 'Rubriker';
+
+  @override
+  final String columns = 'Kolumner';
+
+  @override
+  final String headings = 'Rubriker';
+
+  @override
+  final String allowPassedStartTime = 'Lägga in på passerad tid';
+
+  @override
+  final String addRecurringActivity = 'Lägga in återkommande aktivitet';
+
+  @override
+  final String showEndTime = 'Visa sluttid';
+
+  @override
+  final String showAlarm = 'Visa larm';
+
+  @override
+  final String showSilentAlarm = 'Visa tyst larm';
+
+  @override
+  final String showNoAlarm = 'Visa inget larm';
+
+  @override
+  final String throughEditView = 'Via Ändravyn';
+
+  @override
+  final String androidSettings = 'Android-inställningar';
+
+  @override
+  final String stepByStep = 'Stegvis';
+
+  @override
+  final String showBasicActivities = 'Visa basaktiviteter';
+
+  @override
+  final String selectName = 'Välj namn';
+
+  @override
+  final String selectImage = 'Välj bild';
+
+  @override
+  final String selectDate = 'Välj datum';
+
+  @override
+  final String selectType = 'Välj typ';
+
+  @override
+  final String selectCheckable = 'Välj kvitterbar';
+
+  @override
+  final String selectAvailableFor = 'Välj tillgänglig för';
+
+  @override
+  final String selectDeleteAfter = 'Välj ta bort efteråt';
+
+  @override
+  final String selectAlarm = 'Välj larm';
+
+  @override
+  final String iOSAlarmTimeWarning =
+      'På iPhones spelas larm som är längre än 30 sekunder i 30 sekunder på grund av iOS-begränsningar';
+
+  @override
+  final String selectChecklist = 'Välj checklista';
+
+  @override
+  final String selectNote = 'Välj anteckning';
+
+  @override
+  final String selectReminder = 'Välj påminnelser';
+
+  @override
+  final String add = 'Lägg in';
+
+  @override
+  final String defaults = 'Förval';
+
+  @override
+  final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
+
+  @override
+  final String homeScreenSettingsHint = 'Visad vy vid tryck på hemknappen';
+
+  @override
+  final String timeoutSettingsHint =
+      'Återgång till startsidan efter en tids inaktivitet.';
+
+  @override
+  final String noTimeout = 'Ingen timeout';
+
+  @override
+  final String activateScreensaver = 'Aktivera skärmsläckare';
+
+  @override
+  final String menuRemovalWarning =
+      'Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.';
+
+  @override
+  final String topField = 'Toppfält';
+
+  @override
+  final String showBrowseButtons = 'Visa bläddraknappar';
+
+  @override
+  final String showWeekday = 'Visa veckodag';
+
+  @override
+  final String showDayPeriod = 'Visa tid på dygnet';
+
+  @override
+  final String showDate = 'Visa datum';
+
+  @override
+  final String showClock = 'Visa klocka';
+
+  @override
+  final String delete = 'Ta bort';
+
+  @override
+  final String edit = 'Ändra';
+
+  @override
+  final String showQuarterHourWatchBar = 'Visa kvartur';
+
+  @override
+  final String timeOnQuarterHourBar = 'Tid på kvartur';
+
+  @override
+  final String clock = 'Klocka';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Tidslinje';
+
+  @override
+  final String earyMorning = 'morgon';
+
+  @override
+  final String twelveHourFormat = '12 timmar format';
+
+  @override
+  final String oneDot = 'En punkt';
+
+  @override
+  final String columnOfDots = 'Pelare av punkter';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linje på aktuell tid';
+
+  @override
+  final String linesForEachHour = 'Linjer för varje timme';
+
+  @override
+  final String saturdayAndSunday = 'Lördag och söndag';
+
+  @override
+  final String dayColours = 'Dagfärger';
+
+  @override
+  final String noDayColours = 'Inga dagfärger';
+
+  @override
+  final String showCagetories = 'Visa kategorier';
+
+  @override
+  final String showColours = 'Visa färger';
+
+  @override
+  final String editCategory = 'Redigera kategori';
+
+  @override
+  final String codeProtect = 'Kodskydd';
+
+  @override
+  final String code = 'Kod';
+
+  @override
+  final String codeProtectSettings = 'Kodskydda Inställningar';
+
+  @override
+  final String codeProtectThisView = 'Kodskydda denna vy';
+
+  @override
+  final String codeProtectAndroidSettings = 'Kodskydda Android-inställningar';
+
+  @override
+  final String enterNewCode = 'Ange ny kod';
+
+  @override
+  final String confirmCode = 'Bekräfta kod';
 
   @override
   final String permissions = 'Behörigheter';
@@ -897,20 +1599,32 @@ class SV extends Translated {
 
   @override
   final String producer = 'Producent';
+
+  @override
+  final String camera = 'Kamera';
+
+  @override
+  final String photoCalendar = 'Foto-\nkalender';
+
+  @override
+  final String countdown = 'Nedräkning';
+
+  @override
+  final String quickSettingsMenu = 'Snabb-\ninställningar';
 }
 
 class DA extends Translated {
   @override
-  final String userNameTitle = 'Brugernavn eller e-mail';
-
-  @override
-  final String userName = 'Brugernavn';
+  final String username = 'Brugernavn';
 
   @override
   final String password = 'Adgangskode';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Brug din myAbilia-konto til at logge ind';
+
+  @override
+  final String loginHintMPGO =
       'Log ind med samme brugernavn og adgangskode som på din MEMOplanner';
 
   @override
@@ -926,6 +1640,85 @@ class DA extends Translated {
   @override
   final String noConnection =
       'Enheden er ikke tilsluttet myAbilia. Kontroller din internetforbindelse.';
+
+  @override
+  final String enterUsername = 'Angiv dit brugernavn';
+
+  @override
+  final String enterPassword = 'Angiv din adgangskode';
+
+  @override
+  final String createAccountHint = 'Har du ikke en myAbilia-konto endnu?';
+
+  @override
+  final String createAccount = 'Opret konto';
+
+  @override
+  final String createAaccountHeading = 'Opret din konto i myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Du har brug for en myAbilia-konto for at bruge MEMOplanner';
+
+  @override
+  final String acceptTerms = 'Jeg har læst og accepterer';
+
+  @override
+  final String termsOfUse = 'brugervillkår';
+
+  @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
+  final String privacyPolicy = 'persondatapolitik';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String usernameHint = 'Brugernavn (telefon eller en e-mail)';
+
+  @override
+  final String passwordHint = 'Adgangskode (mindst 8 tegn)';
+
+  @override
+  final String confirmPassword = 'Bekræft adgangskoden';
+
+  @override
+  final String usernameToShort =
+      'Brugernavn eller e-mail er ugyldig, skal indeholde mindst tre tegn';
+
+  @override
+  final String passwordToShort = 'Adgangskoden skal bestå af mindst 8 tegn';
+
+  @override
+  final String passwordMismatch = 'Begge adgangskoder skal være de samme';
+
+  @override
+  final String confirmTermsOfUse = 'Bekræft brugervilkår';
+
+  @override
+  final String confirmPrivacyPolicy = 'Bekræft persondatapolitik';
+
+  @override
+  final String usernameTaken = 'Brugernavn/e-mail-adresse er allerede i brug';
+
+  @override
+  final String unknownError = 'Ukendt fejl';
+
+  @override
+  final String accountCreatedHeading = 'Konto oprettet';
+
+  @override
+  final String accountCreatedBody =
+      'Din konto er oprettet.\nDu kan logge ind med dit brugernavn og din adgangskode';
+
+  @override
+  final String browser = 'Browser';
+
+  @override
+  final String backToLogin = 'Zurück zur Anmeldung';
 
   @override
   final String noLicense =
@@ -987,6 +1780,12 @@ class DA extends Translated {
   final String minute = 'minut';
 
   @override
+  final String seconds = 'sekunder';
+
+  @override
+  final String second = 'sekund';
+
+  @override
   final String min = 'min';
 
   @override
@@ -1003,6 +1802,12 @@ class DA extends Translated {
 
   @override
   final String minuteInessive = '';
+
+  @override
+  final String now = 'Nu';
+
+  @override
+  final String week = 'uge';
 
   @override
   final String reminders = 'Påmindelser';
@@ -1164,7 +1969,13 @@ class DA extends Translated {
   final String save = 'Spare';
 
   @override
+  final String endBeforeStartError = 'Slutdato kan ikke være før startdato';
+
+  @override
   final String error = 'Fejl';
+
+  @override
+  final String warning = 'Advarsel';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -1178,8 +1989,16 @@ class DA extends Translated {
   final String missingStartTime = 'Du skal angive en starttid.';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'Starttiden er allerede passeret. Det er ikke tilladt.';
+
+  @override
+  final String startTimeBeforeNowWarning =
+      'Starttiden er allerede passeret. Tryk på OK for at fortsætte.';
+
+  @override
+  final String conflictWarning =
+      'Der er aktiviteter, der falder sammen med denne aktivitet. Tryk på OK for at fortsætte.';
 
   @override
   final String availableFor = 'Fås til';
@@ -1219,6 +2038,9 @@ class DA extends Translated {
 
   @override
   final String imageArchive = 'Billedarkiv';
+
+  @override
+  final String uploadImage = 'Upload billede';
 
   @override
   final String myPhotos = 'Mine fotos';
@@ -1284,10 +2106,10 @@ class DA extends Translated {
   final String infoTypeNone = 'Ingen yderligere funktion er valgt';
 
   @override
-  final String infoTypeChecklist = 'Tilføj tjekliste';
+  final String infoTypeChecklist = 'Tjekliste';
 
   @override
-  final String infoTypeNote = 'Tilføj note';
+  final String infoTypeNote = 'Note';
 
   @override
   final String typeSomething = 'Skriv noget…';
@@ -1309,6 +2131,9 @@ class DA extends Translated {
 
   @override
   final String remove = 'Slet';
+
+  @override
+  final String settings = 'Indstillinger';
 
   @override
   final String calendarView = 'Dagkalender';
@@ -1349,6 +2174,310 @@ class DA extends Translated {
 
   @override
   final String viewMode = 'Visningstilstand';
+
+  @override
+  final String dayInterval = 'Interval';
+
+  @override
+  final String interval = 'Interval';
+
+  @override
+  final String viewDay = 'Dagen';
+
+  @override
+  final String dayAndNight = 'Døgnet';
+
+  @override
+  final String zoom = 'Zoom';
+
+  @override
+  final String small = 'Lille';
+
+  @override
+  final String medium = 'Mellem';
+
+  @override
+  final String large = 'Stor';
+
+  @override
+  final String system = 'System';
+
+  @override
+  final String calendar = 'Kalender';
+
+  @override
+  final String functions = 'Funktioner';
+
+  @override
+  final String imagePicker = 'Billedvalg';
+
+  @override
+  final String general = 'Generelt';
+
+  @override
+  final String dayCalendar = 'Dagkalender';
+
+  @override
+  final String weekCalendar = 'Ugekalender';
+
+  @override
+  final String monthCalendar = 'Månedskalender';
+
+  @override
+  final String activityView = 'Aktivitetssiden';
+
+  @override
+  final String addActivity = 'Indsæt aktivitet';
+
+  @override
+  final String alarmSettings = 'Alarmindstillinger';
+
+  @override
+  final String nonCheckableActivities = 'Ikke-kvitterbare aktiviteter';
+
+  @override
+  final String checkableActivities = 'Kvitterbare aktiviteter';
+
+  @override
+  final String vibrationOnReminder = 'Vibration ved påmindelse';
+
+  @override
+  final String alarmTime = 'Alarmtid';
+
+  @override
+  final String alert = 'Signal';
+
+  @override
+  final String defaultSound = 'Forvalg';
+
+  @override
+  final String noSound = '- Ingen lyd -';
+
+  @override
+  final String showWeekNumber = 'Vis ugenummer';
+
+  @override
+  final String showYear = 'Vis år';
+
+  @override
+  final String everyDay = 'Alle dage (7)';
+
+  @override
+  final String viewSettings = 'Se indstillinger';
+
+  @override
+  final String typeOfDisplay = 'Type';
+
+  @override
+  final String timelineLength = 'Tid på døgnet';
+
+  @override
+  final String weekdays = 'Hverdage (5)';
+
+  @override
+  final String captions = 'Titler';
+
+  @override
+  final String columns = 'Kolonner';
+
+  @override
+  final String headings = 'Titler';
+
+  @override
+  final String allowPassedStartTime = 'Indsæt på passeret starttid';
+
+  @override
+  final String addRecurringActivity = '>Indsæt gentagende aktivitet';
+
+  @override
+  final String showEndTime = 'Vis sluttid';
+
+  @override
+  final String showAlarm = 'Vis alarm';
+
+  @override
+  final String showSilentAlarm = 'Vis stille alarm';
+
+  @override
+  final String showNoAlarm = 'Vis ingen alarm';
+
+  @override
+  final String throughEditView = 'Via Redigersiden';
+
+  @override
+  final String androidSettings = 'Android-indstillinger';
+
+  @override
+  final String stepByStep = 'Trinvist';
+
+  @override
+  final String showBasicActivities = 'Vis standardaktiviteter';
+
+  @override
+  final String selectName = 'Vælg navn';
+
+  @override
+  final String selectImage = 'Vælg billede';
+
+  @override
+  final String selectDate = 'Vælg dato';
+
+  @override
+  final String selectType = 'Vælg type';
+
+  @override
+  final String selectCheckable = 'Vælg kvittering';
+
+  @override
+  final String selectAvailableFor = 'Vælg tilgængelig for';
+
+  @override
+  final String selectDeleteAfter = 'Vælg slet bagefter';
+
+  @override
+  final String selectAlarm = 'Vælg alarm';
+
+  @override
+  final String iOSAlarmTimeWarning =
+      'På iPhones afspilles alarmer, der er længere end 30 sekunder i 30 sekunder på grund af iOS-begrænsninger';
+
+  @override
+  final String selectChecklist = 'Vælg tjekliste';
+
+  @override
+  final String selectNote = 'Vælg note';
+
+  @override
+  final String selectReminder = 'Vælg påmindelse';
+
+  @override
+  final String add = 'Indsæt';
+
+  @override
+  final String defaults = 'Forvalg';
+
+  @override
+  final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
+
+  @override
+  final String homeScreenSettingsHint =
+      'Side der bliver vist ved tryk på hjemknappen';
+
+  @override
+  final String timeoutSettingsHint =
+      'Gå tilbage til startsiden, efter en periode med inaktivitet.';
+
+  @override
+  final String noTimeout = 'Ingen timeout';
+
+  @override
+  final String activateScreensaver = 'Aktivér pauseskærm';
+
+  @override
+  final String menuRemovalWarning =
+      'Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.';
+
+  @override
+  final String topField = 'Topfelt';
+
+  @override
+  final String showBrowseButtons = 'Vis bladre-knapper';
+
+  @override
+  final String showWeekday = 'Vis ugedag';
+
+  @override
+  final String showDayPeriod = 'Vis tid på døgnet';
+
+  @override
+  final String showDate = 'Vis dato';
+
+  @override
+  final String showClock = 'Vis ur';
+
+  @override
+  final String delete = 'Slet';
+
+  @override
+  final String edit = 'Ændre';
+
+  @override
+  final String showQuarterHourWatchBar = 'Vis kvartur';
+
+  @override
+  final String timeOnQuarterHourBar = 'Tid på kvartur';
+
+  @override
+  final String clock = 'Ur';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Tidslinje';
+
+  @override
+  final String earyMorning = 'morgen';
+
+  @override
+  final String twelveHourFormat = '12 timers format';
+
+  @override
+  final String oneDot = 'Et punkt';
+
+  @override
+  final String columnOfDots = 'Søjle af punkter';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linje viser aktuel tid';
+
+  @override
+  final String linesForEachHour = 'Linjer for hver time';
+
+  @override
+  final String saturdayAndSunday = 'Lørdag og søndag';
+
+  @override
+  final String dayColours = 'Dagfarver';
+
+  @override
+  final String noDayColours = 'Ingen dagsfarver';
+
+  @override
+  final String showCagetories = 'Vis kategorier';
+
+  @override
+  final String showColours = 'Vis farver';
+
+  @override
+  final String editCategory = 'Rediger kategori';
+
+  @override
+  final String codeProtect = 'Kodebeskyttelse';
+
+  @override
+  final String code = 'Kode';
+
+  @override
+  final String codeProtectSettings = 'Kodebeskyt indstillinger';
+
+  @override
+  final String codeProtectThisView = 'Kodebeskytte denne visning.';
+
+  @override
+  final String codeProtectAndroidSettings = 'Kodebeskyt Android-indstillinger';
+
+  @override
+  final String enterNewCode = 'Angiv nyt kodeord';
+
+  @override
+  final String confirmCode = 'Bekræft kodeord';
 
   @override
   final String permissions = 'Tilladelser';
@@ -1423,20 +2552,32 @@ class DA extends Translated {
 
   @override
   final String producer = 'Producent';
+
+  @override
+  final String camera = 'Kamera';
+
+  @override
+  final String photoCalendar = 'Billede-\nkalender';
+
+  @override
+  final String countdown = 'Nedtælling';
+
+  @override
+  final String quickSettingsMenu = 'Hurtig-\nindstillinger';
 }
 
 class NL extends Translated {
   @override
-  final String userNameTitle = 'Gebruikersnaam of e-mail';
-
-  @override
-  final String userName = 'Gebruikersnaam';
+  final String username = 'Gebruikersnaam';
 
   @override
   final String password = 'Wachtwoord';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Gebruik uw myAbilia-account om in te loggen';
+
+  @override
+  final String loginHintMPGO =
       'Log in met dezelfde gebruikersnaam en hetzelfde wachtwoord als op uw MEMOplanner';
 
   @override
@@ -1452,6 +2593,86 @@ class NL extends Translated {
   @override
   final String noConnection =
       'Het apparaat is niet aangesloten op het myAbilia. Controleer uw internetverbinding.';
+
+  @override
+  final String enterUsername = 'Gebruikersnaam invoeren';
+
+  @override
+  final String enterPassword = 'Wachtwoord invoeren';
+
+  @override
+  final String createAccountHint = 'Heeft u nog geen myAbilia-account?';
+
+  @override
+  final String createAccount = 'Maak account';
+
+  @override
+  final String createAaccountHeading = 'Creëer uw account in myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'U heeft een myAbilia-account nodig om MEMOplanner te gebruiken';
+
+  @override
+  final String acceptTerms = 'Ik heb gelezen en akkoord gegaan';
+
+  @override
+  final String termsOfUse = 'gebruiksvoorwaarden';
+
+  @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
+  final String privacyPolicy = 'privacybeleid';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String usernameHint = 'Gebruikersnaam (telefoon of een e-mail)';
+
+  @override
+  final String passwordHint = 'Wachtwoord (minimaal 8 tekens)';
+
+  @override
+  final String confirmPassword = 'Wachtwoord bevestigen';
+
+  @override
+  final String usernameToShort =
+      'Gebruikersnaam of e-mail is ongeldig, moet ten minste drie tekens bevatten';
+
+  @override
+  final String passwordToShort =
+      'Het wachtwoord moet ten minste 8 tekens bevatten';
+
+  @override
+  final String passwordMismatch = 'Beide wachtwoorden moeten hetzelfde zijn';
+
+  @override
+  final String confirmTermsOfUse = 'Bevestig de gebruiksvoorwaarden';
+
+  @override
+  final String confirmPrivacyPolicy = 'Bevestig privacybeleid';
+
+  @override
+  final String usernameTaken = 'Gebruikersnaam/e-mailadres is reeds in gebruik';
+
+  @override
+  final String unknownError = 'Onbekende fout';
+
+  @override
+  final String accountCreatedHeading = 'Account gecreëerd';
+
+  @override
+  final String accountCreatedBody =
+      'Uw account is gecreëerd.\nU kunt inloggen met uw gebruikersnaam en wachtwoord';
+
+  @override
+  final String browser = 'Browser';
+
+  @override
+  final String backToLogin = 'Zurück zur Anmeldung';
 
   @override
   final String noLicense = 'Dit account heeft geen geldige licentie.';
@@ -1512,6 +2733,12 @@ class NL extends Translated {
   final String minute = 'minuut';
 
   @override
+  final String seconds = 'seconden';
+
+  @override
+  final String second = 'seconde';
+
+  @override
   final String min = 'min';
 
   @override
@@ -1528,6 +2755,12 @@ class NL extends Translated {
 
   @override
   final String minuteInessive = '';
+
+  @override
+  final String now = 'Nu';
+
+  @override
+  final String week = 'week';
 
   @override
   final String reminders = 'Herinneringen';
@@ -1687,7 +2920,14 @@ class NL extends Translated {
   final String save = 'Sparen';
 
   @override
+  final String endBeforeStartError =
+      'Einddatum mag niet voor startdatum liggen';
+
+  @override
   final String error = 'Fout';
+
+  @override
+  final String warning = 'Waarschuwing';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -1701,8 +2941,16 @@ class NL extends Translated {
   final String missingStartTime = 'U moet een starttijd instellen.';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'U heeft een starttijd geselecteerd die al voorbij is. Dit is niet toegestaan.';
+
+  @override
+  final String startTimeBeforeNowWarning =
+      'U heeft een starttijd geselecteerd die al voorbij is. Druk op OK om door te gaan.';
+
+  @override
+  final String conflictWarning =
+      'Er zijn activiteiten die conflicteren met deze activiteit. Druk op OK om door te gaan.';
 
   @override
   final String availableFor = 'Beschikbaar voor';
@@ -1742,6 +2990,9 @@ class NL extends Translated {
 
   @override
   final String imageArchive = 'Afbeeldingenarchief';
+
+  @override
+  final String uploadImage = 'Afbeelding uploaden';
 
   @override
   final String myPhotos = "Mijn foto\'s";
@@ -1807,10 +3058,10 @@ class NL extends Translated {
   final String infoTypeNone = 'Geen extra functie geselecteerd';
 
   @override
-  final String infoTypeChecklist = 'Checklist toevoegen';
+  final String infoTypeChecklist = 'Checklist';
 
   @override
-  final String infoTypeNote = 'Notitie toevoegen';
+  final String infoTypeNote = 'Notitie';
 
   @override
   final String typeSomething = 'Typ iets';
@@ -1832,6 +3083,9 @@ class NL extends Translated {
 
   @override
   final String remove = 'Verwijderen';
+
+  @override
+  final String settings = 'Instellingen';
 
   @override
   final String calendarView = 'Dagkalender';
@@ -1872,6 +3126,311 @@ class NL extends Translated {
 
   @override
   final String viewMode = 'Weergavemodus';
+
+  @override
+  final String dayInterval = 'Interval';
+
+  @override
+  final String interval = 'Interval';
+
+  @override
+  final String viewDay = 'Dag';
+
+  @override
+  final String dayAndNight = 'Dag en nacht';
+
+  @override
+  final String zoom = 'Zoom tijdlijn';
+
+  @override
+  final String small = 'Klein';
+
+  @override
+  final String medium = 'Medium';
+
+  @override
+  final String large = 'Groot';
+
+  @override
+  final String system = 'Systeem';
+
+  @override
+  final String calendar = 'Kalender';
+
+  @override
+  final String functions = 'Functies';
+
+  @override
+  final String imagePicker = 'Afbeeldingkiezer';
+
+  @override
+  final String general = 'Algemeen';
+
+  @override
+  final String dayCalendar = 'Dagkalender';
+
+  @override
+  final String weekCalendar = 'Weekkalender';
+
+  @override
+  final String monthCalendar = 'Maandkalender';
+
+  @override
+  final String activityView = 'Activiteitsweergave';
+
+  @override
+  final String addActivity = 'Activiteit toevoegen';
+
+  @override
+  final String alarmSettings = 'Alarminstellingen';
+
+  @override
+  final String nonCheckableActivities = 'Niet-afvinkbare activiteiten';
+
+  @override
+  final String checkableActivities = 'Afvinkbare activiteiten';
+
+  @override
+  final String vibrationOnReminder = 'Trilfunctie bij herinnering';
+
+  @override
+  final String alarmTime = 'Alarmtijd';
+
+  @override
+  final String alert = 'Alert';
+
+  @override
+  final String defaultSound = 'Voorselectie';
+
+  @override
+  final String noSound = '- Geen geluid -';
+
+  @override
+  final String showWeekNumber = 'Weeknummer tonen';
+
+  @override
+  final String showYear = 'Jaar tonen';
+
+  @override
+  final String everyDay = 'Elke dag (7)';
+
+  @override
+  final String viewSettings = 'Laat instellingen zien';
+
+  @override
+  final String typeOfDisplay = 'Schermsoort';
+
+  @override
+  final String timelineLength = 'Lengte tijdlijn';
+
+  @override
+  final String weekdays = 'Weekdagen (5)';
+
+  @override
+  final String captions = 'Bijschriften';
+
+  @override
+  final String columns = 'Kolommen';
+
+  @override
+  final String headings = 'Kopteksten';
+
+  @override
+  final String allowPassedStartTime = 'Verlopen Starttijd toestaan';
+
+  @override
+  final String addRecurringActivity = 'Terugkerende activiteit toevoegen';
+
+  @override
+  final String showEndTime = 'Eindtijd tonen';
+
+  @override
+  final String showAlarm = 'Alarmen weergeven';
+
+  @override
+  final String showSilentAlarm = 'Stille alarmen weergeven';
+
+  @override
+  final String showNoAlarm = 'Geen alarmen weergeven';
+
+  @override
+  final String throughEditView = 'Door bewerkweergave';
+
+  @override
+  final String androidSettings = 'Android-instellingen';
+
+  @override
+  final String stepByStep = 'Stap voor stap';
+
+  @override
+  final String showBasicActivities = 'Toon standaardactiviteiten';
+
+  @override
+  final String selectName = 'Naam selecteren';
+
+  @override
+  final String selectImage = 'Afbeelding selecteren';
+
+  @override
+  final String selectDate = 'Datum selecteren';
+
+  @override
+  final String selectType = 'Type selecteren';
+
+  @override
+  final String selectCheckable = 'Afvinkbaarheid selecteren';
+
+  @override
+  final String selectAvailableFor = 'Selecteer beschikbaar voor';
+
+  @override
+  final String selectDeleteAfter = 'Wissen na selecteren';
+
+  @override
+  final String selectAlarm = 'Alarm selecteren';
+
+  @override
+  final String iOSAlarmTimeWarning =
+      'Op iPhones worden alarmen langer dan 30 seconden 30 seconden afgespeeld vanwege iOS-beperkingen';
+
+  @override
+  final String selectChecklist = 'Checklist selecteren';
+
+  @override
+  final String selectNote = 'Notitie selecteren';
+
+  @override
+  final String selectReminder = 'Herinnering selecteren';
+
+  @override
+  final String add = 'Toevoegen';
+
+  @override
+  final String defaults = 'Voorselectie';
+
+  @override
+  final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
+
+  @override
+  final String homeScreenSettingsHint =
+      'Weergave getoond als de homeknop wordt ingedrukt';
+
+  @override
+  final String timeoutSettingsHint =
+      'Gaat terug naar het thuisscherm na een periode van inactiviteit.';
+
+  @override
+  final String noTimeout = 'Geen time-out';
+
+  @override
+  final String activateScreensaver = 'Screensaver activeren';
+
+  @override
+  final String menuRemovalWarning =
+      'Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.';
+
+  @override
+  final String topField = 'Bovenste veld';
+
+  @override
+  final String showBrowseButtons = 'Toon bladerknoppen';
+
+  @override
+  final String showWeekday = 'Weekdag tonen';
+
+  @override
+  final String showDayPeriod = 'Tijd voor dag en nacht tonen';
+
+  @override
+  final String showDate = 'Datum tonen';
+
+  @override
+  final String showClock = 'Toon klok';
+
+  @override
+  final String delete = 'Verwijderen';
+
+  @override
+  final String edit = 'Bewerken';
+
+  @override
+  final String showQuarterHourWatchBar = 'Kwartierkijkbalk tonen';
+
+  @override
+  final String timeOnQuarterHourBar = 'Tijd op kwartierbalk';
+
+  @override
+  final String clock = 'Klok';
+
+  @override
+  final String analogueDigital = 'Analoog + digitaal';
+
+  @override
+  final String analogue = 'Analoog';
+
+  @override
+  final String digital = 'Digitaal';
+
+  @override
+  final String timeline = 'Tijdlijn';
+
+  @override
+  final String earyMorning = 'ochtend';
+
+  @override
+  final String twelveHourFormat = '12 uur formaat';
+
+  @override
+  final String oneDot = 'Eén punt';
+
+  @override
+  final String columnOfDots = 'Kolommen van punten';
+
+  @override
+  final String lineAcrossCurrentTime = 'Lijn door huidige tijd';
+
+  @override
+  final String linesForEachHour = 'Lijnen voor elk uur';
+
+  @override
+  final String saturdayAndSunday = 'Zaterdag en zondag';
+
+  @override
+  final String dayColours = 'Dagkleuren';
+
+  @override
+  final String noDayColours = 'Geen dagkleuren';
+
+  @override
+  final String showCagetories = 'Categorieën tonen';
+
+  @override
+  final String showColours = 'Kleuren tonen';
+
+  @override
+  final String editCategory = 'Bewerk categorie';
+
+  @override
+  final String codeProtect = 'Codebescherming';
+
+  @override
+  final String code = 'Code';
+
+  @override
+  final String codeProtectSettings = 'Codebeschermingsinstellingen';
+
+  @override
+  final String codeProtectThisView = 'Deze weergave met code beschermen';
+
+  @override
+  final String codeProtectAndroidSettings =
+      'Codebeschermingsinstellingen Android';
+
+  @override
+  final String enterNewCode = 'Voer nieuwe code in';
+
+  @override
+  final String confirmCode = 'Bevestig code';
 
   @override
   final String permissions = 'Rechten';
@@ -1946,20 +3505,32 @@ class NL extends Translated {
 
   @override
   final String producer = 'Producent';
+
+  @override
+  final String camera = 'Camera';
+
+  @override
+  final String photoCalendar = 'Foto-\nkalender';
+
+  @override
+  final String countdown = 'Timers';
+
+  @override
+  final String quickSettingsMenu = 'Snelle\ninstellingen';
 }
 
 class FI extends Translated {
   @override
-  final String userNameTitle = 'Käyttäjätunnus tai sähköpostiosoite';
-
-  @override
-  final String userName = 'Käyttäjätunnus';
+  final String username = 'Käyttäjätunnus';
 
   @override
   final String password = 'Salasana';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Kirjaudu sisään myAbilia-tililläsi';
+
+  @override
+  final String loginHintMPGO =
       'Kirjaudu sisään samalla käyttäjänimellä ja salasanalla kuin MEMOplannerilla';
 
   @override
@@ -1975,6 +3546,85 @@ class FI extends Translated {
   @override
   final String noConnection =
       'Laitetta ei ole yhdistetty myAbilia. Tarkista Internet-yhteys.';
+
+  @override
+  final String enterUsername = 'Anna käyttäjätunnus';
+
+  @override
+  final String enterPassword = 'Anna salasana';
+
+  @override
+  final String createAccountHint = 'Eikö sinulla ole vielä myAbilia-tiliä?';
+
+  @override
+  final String createAccount = 'Luo tili';
+
+  @override
+  final String createAaccountHeading = 'Luo tili myAbiliassa';
+
+  @override
+  final String createAaccountSubheading =
+      'Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria';
+
+  @override
+  final String acceptTerms = 'Olen lukenut ja sopineet';
+
+  @override
+  final String termsOfUse = 'käyttöehdot';
+
+  @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
+  final String privacyPolicy = 'tietosuojakäytäntö';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String usernameHint = 'Käyttäjätunnus (puhelin tai sähköpostiosoite)';
+
+  @override
+  final String passwordHint = 'Salasanassa (vähintään 8 merkkiä)';
+
+  @override
+  final String confirmPassword = 'Vahvista salasana';
+
+  @override
+  final String usernameToShort =
+      'Käyttäjätunnus tai sähköpostiosoite on virheellinen, niissä on oltava vähintään kolme merkkiä';
+
+  @override
+  final String passwordToShort = 'Salasanassa on oltava vähintään 8 merkkiä';
+
+  @override
+  final String passwordMismatch = 'Molempien salasanojen on oltava samat';
+
+  @override
+  final String confirmTermsOfUse = 'Vahvista käyttöehdot';
+
+  @override
+  final String confirmPrivacyPolicy = 'Vahvista tietosuojakäytäntö';
+
+  @override
+  final String usernameTaken = 'Käyttäjätunnus/sähköpostiosoite on jo käytössä';
+
+  @override
+  final String unknownError = 'Tuntematon virhe';
+
+  @override
+  final String accountCreatedHeading = 'Tili luotu puolivälissä';
+
+  @override
+  final String accountCreatedBody =
+      'Tili on luotu.\nVoit kirjautua sisään käyttämällä käyttäjätunnustasi ja salasanaasi';
+
+  @override
+  final String browser = 'Selain';
+
+  @override
+  final String backToLogin = 'Takaisin sisäänkirjautumiseen';
 
   @override
   final String noLicense = 'Tällä tilillä ei ole kelvollista lisenssiä.';
@@ -2035,6 +3685,12 @@ class FI extends Translated {
   final String minute = 'minuutti';
 
   @override
+  final String seconds = 'sekuntia';
+
+  @override
+  final String second = 'sekunti';
+
+  @override
   final String min = 'min';
 
   @override
@@ -2051,6 +3707,12 @@ class FI extends Translated {
 
   @override
   final String minuteInessive = 'minuutissa';
+
+  @override
+  final String now = 'Nyt';
+
+  @override
+  final String week = 'viikko';
 
   @override
   final String reminders = 'Muistutukset';
@@ -2211,7 +3873,14 @@ class FI extends Translated {
   final String save = 'Tallentaa';
 
   @override
+  final String endBeforeStartError =
+      'Päättymispäivä ei voi olla ennen alkamispäivää';
+
+  @override
   final String error = 'Virhe';
+
+  @override
+  final String warning = 'Varoitus';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -2225,8 +3894,16 @@ class FI extends Translated {
   final String missingStartTime = 'Anna aloitusaika.';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'Valitsit aloitusajan, joka on jo mennyt. Tätä ei sallita.';
+
+  @override
+  final String startTimeBeforeNowWarning =
+      'Valitsit aloitusajan, joka on jo mennyt. Jatka painamalla OK.';
+
+  @override
+  final String conflictWarning =
+      'On olemassa aktiviteetteja, jotka ovat ristiriidassa tämän aktiviteetin kanssa. Jatka painamalla OK.';
 
   @override
   final String availableFor = 'Käytettävissä';
@@ -2266,6 +3943,9 @@ class FI extends Translated {
 
   @override
   final String imageArchive = 'Kuva-arkisto';
+
+  @override
+  final String uploadImage = 'Lataa kuva';
 
   @override
   final String myPhotos = 'Omat valokuvat';
@@ -2331,10 +4011,10 @@ class FI extends Translated {
   final String infoTypeNone = 'Lisätoimintoa ei ole valittu';
 
   @override
-  final String infoTypeChecklist = 'Lisää tarkistusluettelo';
+  final String infoTypeChecklist = 'Tarkistusluettelo';
 
   @override
-  final String infoTypeNote = 'Lisää muistiinpano';
+  final String infoTypeNote = 'Muistiinpano';
 
   @override
   final String typeSomething = 'Kirjoita jotain';
@@ -2356,6 +4036,9 @@ class FI extends Translated {
 
   @override
   final String remove = 'Poista';
+
+  @override
+  final String settings = 'Asetukset';
 
   @override
   final String calendarView = 'Päiväkalenteri';
@@ -2396,6 +4079,310 @@ class FI extends Translated {
 
   @override
   final String viewMode = 'Katselutila';
+
+  @override
+  final String dayInterval = 'Aikaväli';
+
+  @override
+  final String interval = 'Aikaväli';
+
+  @override
+  final String viewDay = 'Päivä';
+
+  @override
+  final String dayAndNight = 'Päivä ja yö';
+
+  @override
+  final String zoom = 'Aikajanan zoomaus';
+
+  @override
+  final String small = 'Pieni';
+
+  @override
+  final String medium = 'Keskikokoinen';
+
+  @override
+  final String large = 'Suuri';
+
+  @override
+  final String system = 'Järjestelmä';
+
+  @override
+  final String calendar = 'Kalenteri';
+
+  @override
+  final String functions = 'Toiminnot';
+
+  @override
+  final String imagePicker = 'Kuvanvalitsin';
+
+  @override
+  final String general = 'Yleistä';
+
+  @override
+  final String dayCalendar = 'Päiväkalenteri';
+
+  @override
+  final String weekCalendar = 'Viikkokalenteri';
+
+  @override
+  final String monthCalendar = 'Kuukausikalenteri';
+
+  @override
+  final String activityView = 'Aktiviteettinäkymä';
+
+  @override
+  final String addActivity = 'Lisää aktiviteetti';
+
+  @override
+  final String alarmSettings = 'Hälytysasetukset';
+
+  @override
+  final String nonCheckableActivities = 'Ei-tarkistettavat aktiviteetit';
+
+  @override
+  final String checkableActivities = 'Tarkistettavat aktiviteetit';
+
+  @override
+  final String vibrationOnReminder = 'Värinä muistutuksessa';
+
+  @override
+  final String alarmTime = 'Hälytysaika';
+
+  @override
+  final String alert = 'Hälytys';
+
+  @override
+  final String defaultSound = 'Esivalinta';
+
+  @override
+  final String noSound = '- Ei ääntä -';
+
+  @override
+  final String showWeekNumber = 'Näytä viikon numero';
+
+  @override
+  final String showYear = 'Näytä vuosi';
+
+  @override
+  final String everyDay = 'Joka päivä (7)';
+
+  @override
+  final String viewSettings = 'Näytä asetukset';
+
+  @override
+  final String typeOfDisplay = 'Näytön tyyppi';
+
+  @override
+  final String timelineLength = 'Aikajanan pituus';
+
+  @override
+  final String weekdays = 'Arkisin (5)';
+
+  @override
+  final String captions = 'Otsikot';
+
+  @override
+  final String columns = 'Sarakkeet';
+
+  @override
+  final String headings = 'Otsikot';
+
+  @override
+  final String allowPassedStartTime = 'Salli mennyt aloitusaika';
+
+  @override
+  final String addRecurringActivity = 'Lisää toistuva aktiviteetti';
+
+  @override
+  final String showEndTime = 'Näytä päättymisaika';
+
+  @override
+  final String showAlarm = 'Näytä hälytykset';
+
+  @override
+  final String showSilentAlarm = 'Näytä hiljaiset hälytykset';
+
+  @override
+  final String showNoAlarm = 'Älä näytä hälytystä';
+
+  @override
+  final String throughEditView = 'Muokkausnäkymässä';
+
+  @override
+  final String androidSettings = 'Android-asetukset';
+
+  @override
+  final String stepByStep = 'Vaihe vaiheelta';
+
+  @override
+  final String showBasicActivities = 'Näytä perusaktiviteetit';
+
+  @override
+  final String selectName = 'Valitse nimi';
+
+  @override
+  final String selectImage = 'Valitse kuva';
+
+  @override
+  final String selectDate = 'Valitse päivämäärä';
+
+  @override
+  final String selectType = 'Valitse tyyppi';
+
+  @override
+  final String selectCheckable = 'Valitse tarkistettava';
+
+  @override
+  final String selectAvailableFor = 'Valitse käytettävissä';
+
+  @override
+  final String selectDeleteAfter = 'Valitse poista, kun on kulunut';
+
+  @override
+  final String selectAlarm = 'Valitse hälytys';
+
+  @override
+  final String iOSAlarmTimeWarning =
+      'IPhone-laitteissa yli 30 sekunnin pituiset hälytykset toistetaan 30 sekunnin ajan iOS-rajoitusten vuoksi';
+
+  @override
+  final String selectChecklist = 'Valitse tarkistusluettelo';
+
+  @override
+  final String selectNote = 'Valitse muistiinpano';
+
+  @override
+  final String selectReminder = 'Valitse muistutus';
+
+  @override
+  final String add = 'Lisää';
+
+  @override
+  final String defaults = 'Esivalinta';
+
+  @override
+  final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
+
+  @override
+  final String homeScreenSettingsHint =
+      'Näkymä näytetään, kun aloitussivun painiketta painetaan';
+
+  @override
+  final String timeoutSettingsHint =
+      'Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen.';
+
+  @override
+  final String noTimeout = 'Ei aikakatkaisua';
+
+  @override
+  final String activateScreensaver = 'Aktivoi näytönsäästäjä';
+
+  @override
+  final String menuRemovalWarning =
+      'Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.';
+
+  @override
+  final String topField = 'Yläkenttä';
+
+  @override
+  final String showBrowseButtons = 'Näytä selauspainikkeet';
+
+  @override
+  final String showWeekday = 'Näytä viikonpäivä';
+
+  @override
+  final String showDayPeriod = 'Näytä aika päivälle ja yölle';
+
+  @override
+  final String showDate = 'Näytä päivämäärä';
+
+  @override
+  final String showClock = 'Näytä kello';
+
+  @override
+  final String delete = 'Poista';
+
+  @override
+  final String edit = 'Muokkaa';
+
+  @override
+  final String showQuarterHourWatchBar = 'Näytä aikapylväsnäkymä';
+
+  @override
+  final String timeOnQuarterHourBar = 'Aika varttikellon palkissa';
+
+  @override
+  final String clock = 'Kello';
+
+  @override
+  final String analogueDigital = 'Analoginen + digitaalinen';
+
+  @override
+  final String analogue = 'Analoginen';
+
+  @override
+  final String digital = 'Digitaalinen';
+
+  @override
+  final String timeline = 'Aikajana';
+
+  @override
+  final String earyMorning = 'aamu';
+
+  @override
+  final String twelveHourFormat = '12 tunnin muoto';
+
+  @override
+  final String oneDot = 'Yksi piste';
+
+  @override
+  final String columnOfDots = 'Pistepylväs';
+
+  @override
+  final String lineAcrossCurrentTime = 'Viiva nykyisen ajan kohdalla';
+
+  @override
+  final String linesForEachHour = 'Viivat jokaiselle tunnille';
+
+  @override
+  final String saturdayAndSunday = 'Lauantai ja sunnuntai';
+
+  @override
+  final String dayColours = 'Päivien värit';
+
+  @override
+  final String noDayColours = 'Ei päivien värejä';
+
+  @override
+  final String showCagetories = 'Näyte kategoriat';
+
+  @override
+  final String showColours = 'Näytä värit';
+
+  @override
+  final String editCategory = 'Muokkaa kategoriaa';
+
+  @override
+  final String codeProtect = 'Suojakoodi';
+
+  @override
+  final String code = 'Koodi';
+
+  @override
+  final String codeProtectSettings = 'Suojaa asetukset koodilla';
+
+  @override
+  final String codeProtectThisView = 'Suojaa tämä näkymä koodilla';
+
+  @override
+  final String codeProtectAndroidSettings = 'Suojaa Android-asetukset koodilla';
+
+  @override
+  final String enterNewCode = 'Anna uusi koodi';
+
+  @override
+  final String confirmCode = 'Vahvista koodi';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -2469,20 +4456,33 @@ class FI extends Translated {
 
   @override
   final String producer = 'Valmistaja';
+
+  @override
+  final String camera = 'Kamera';
+
+  @override
+  final String photoCalendar = 'Kuva-\nkalenteri';
+
+  @override
+  final String countdown = 'Ajastin';
+
+  @override
+  final String quickSettingsMenu = 'Pika-\nasetukset';
 }
 
 class DE extends Translated {
   @override
-  final String userNameTitle = 'Benutzername oder E-Mail';
-
-  @override
-  final String userName = 'Benutzername';
+  final String username = 'Benutzername';
 
   @override
   final String password = 'Passwort';
 
   @override
-  final String loginHint =
+  final String loginHintMP =
+      'Verwenden Sie Ihr myAbilia-Konto, um sich anzumelden';
+
+  @override
+  final String loginHintMPGO =
       'Melden Sie sich mit demselben Benutzernamen und Passwort wie auf Ihrem MEMOplanner an';
 
   @override
@@ -2498,6 +4498,88 @@ class DE extends Translated {
   @override
   final String noConnection =
       'Das Gerät ist nicht mit dem myAbilia verbunden. Überprüfen Sie Ihre Internetverbindung.';
+
+  @override
+  final String enterUsername = 'Benutzername eingeben';
+
+  @override
+  final String enterPassword = 'Passwort eingeben';
+
+  @override
+  final String createAccountHint = 'Sie haben noch kein myAbilia-Konto?';
+
+  @override
+  final String createAccount = 'Benutzerkonto erstellen';
+
+  @override
+  final String createAaccountHeading = 'Erstellen Sie Ihr Konto in myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können';
+
+  @override
+  final String acceptTerms = 'Ich habe gelesen und bin damit einverstanden';
+
+  @override
+  final String termsOfUse = 'nutzungsbedingungen';
+
+  @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
+  final String privacyPolicy = 'datenschutzbestimmungen';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String usernameHint = 'Benutzername (telefon oder E-Mail)';
+
+  @override
+  final String passwordHint = 'Passwort (mindestens 8 Zeichen)';
+
+  @override
+  final String confirmPassword = 'Passwort bestätigen';
+
+  @override
+  final String usernameToShort =
+      'Benutzername oder E-Mail ungültig - Mindestlänge drei Zeichen';
+
+  @override
+  final String passwordToShort =
+      'Das Passwort muss mindestens 8 Zeichen lang sein';
+
+  @override
+  final String passwordMismatch = 'Beide Passwörter müssen identisch sein';
+
+  @override
+  final String confirmTermsOfUse = 'Bestätigen Sie die Nutzungsbedingungen';
+
+  @override
+  final String confirmPrivacyPolicy =
+      'Bestätigen Sie die Datenschutzbestimmungen';
+
+  @override
+  final String usernameTaken =
+      'Benutzername/E-Mail-Adresse bereit in Gebrauch.';
+
+  @override
+  final String unknownError = 'Unbekannter Fehler';
+
+  @override
+  final String accountCreatedHeading = 'Konto erstellt';
+
+  @override
+  final String accountCreatedBody =
+      'Ihr Konto wurde erstellt.\nSie können sich mit Ihrem Benutzernamen und Passwort anmelden';
+
+  @override
+  final String browser = 'Browser';
+
+  @override
+  final String backToLogin = 'Zurück zur Anmeldung';
 
   @override
   final String noLicense = 'Für dieses Konto gibt es keine gültige Lizenz.';
@@ -2558,6 +4640,12 @@ class DE extends Translated {
   final String minute = 'Minute';
 
   @override
+  final String seconds = 'Sekunden';
+
+  @override
+  final String second = 'Sekunde';
+
+  @override
   final String min = 'Min';
 
   @override
@@ -2574,6 +4662,12 @@ class DE extends Translated {
 
   @override
   final String minuteInessive = '';
+
+  @override
+  final String now = 'Jetzt';
+
+  @override
+  final String week = 'Woche';
 
   @override
   final String reminders = 'Erinnerungen';
@@ -2734,7 +4828,14 @@ class DE extends Translated {
   final String save = 'Sparen';
 
   @override
+  final String endBeforeStartError =
+      'Das Enddatum kann nicht vor dem Startdatum liegen';
+
+  @override
   final String error = 'Error';
+
+  @override
+  final String warning = 'Warnung';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -2748,8 +4849,16 @@ class DE extends Translated {
   final String missingStartTime = 'Sie müssen eine Startzeit eingeben:';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'Die gewählte Startzeit liegt in der Vergangenheit. Dies ist nicht zulässig.';
+
+  @override
+  final String startTimeBeforeNowWarning =
+      'Die gewählte Startzeit liegt in der Vergangenheit. Drücken Sie auf OK, um fortzufahren.';
+
+  @override
+  final String conflictWarning =
+      'Mit dieser Aktivität stehen andere Aktivitäten im Konflikt. Drücken Sie auf OK, um fortzufahren.';
 
   @override
   final String availableFor = 'Verfügbar für';
@@ -2789,6 +4898,9 @@ class DE extends Translated {
 
   @override
   final String imageArchive = 'Bildarchiv';
+
+  @override
+  final String uploadImage = 'Bild hochladen';
 
   @override
   final String myPhotos = 'Meine Fotos';
@@ -2855,10 +4967,10 @@ class DE extends Translated {
   final String infoTypeNone = 'Keine Extrafunktion ausgewählt';
 
   @override
-  final String infoTypeChecklist = 'Checkliste hinzufügen';
+  final String infoTypeChecklist = 'Checkliste';
 
   @override
-  final String infoTypeNote = 'Hinweis hinzufügen';
+  final String infoTypeNote = 'Hinweis';
 
   @override
   final String typeSomething = 'Geben Sie etwas ein…';
@@ -2880,6 +4992,9 @@ class DE extends Translated {
 
   @override
   final String remove = 'Löschen';
+
+  @override
+  final String settings = 'Einstellungen';
 
   @override
   final String calendarView = 'Tageskalender';
@@ -2921,6 +5036,311 @@ class DE extends Translated {
 
   @override
   final String viewMode = 'Ansichtsmodus';
+
+  @override
+  final String dayInterval = 'Intervall';
+
+  @override
+  final String interval = 'Intervall';
+
+  @override
+  final String viewDay = 'Tag';
+
+  @override
+  final String dayAndNight = 'Tag und Nacht';
+
+  @override
+  final String zoom = 'Zeitstrahl Zoom';
+
+  @override
+  final String small = 'Klein';
+
+  @override
+  final String medium = 'Mittel';
+
+  @override
+  final String large = 'Groß';
+
+  @override
+  final String system = 'System';
+
+  @override
+  final String calendar = 'Kalender';
+
+  @override
+  final String functions = 'Funktionen';
+
+  @override
+  final String imagePicker = 'Bildauswahl';
+
+  @override
+  final String general = 'Allgemeines';
+
+  @override
+  final String dayCalendar = 'Tageskalender';
+
+  @override
+  final String weekCalendar = 'Wochenkalender';
+
+  @override
+  final String monthCalendar = 'Monatskalender';
+
+  @override
+  final String activityView = 'Aktivitätsanzeige';
+
+  @override
+  final String addActivity = 'Aktivität hinzufügen';
+
+  @override
+  final String alarmSettings = 'Alarmeinstellungen';
+
+  @override
+  final String nonCheckableActivities = 'Keine kontrollierbaren Aktivitäten';
+
+  @override
+  final String checkableActivities = 'Kontrollierbare Aktivitäten';
+
+  @override
+  final String vibrationOnReminder = 'Vibration bei Erinnerung';
+
+  @override
+  final String alarmTime = 'Alarmzeit';
+
+  @override
+  final String alert = 'Anruffunktion';
+
+  @override
+  final String defaultSound = 'Vorauswahl';
+
+  @override
+  final String noSound = '- Kein Klang -';
+
+  @override
+  final String showWeekNumber = 'Wochennummer anzeigen';
+
+  @override
+  final String showYear = 'Jahr anzeigen';
+
+  @override
+  final String everyDay = 'Täglich (7)';
+
+  @override
+  final String viewSettings = 'Einstellungen anzeigen';
+
+  @override
+  final String typeOfDisplay = 'Bildschirmtyp';
+
+  @override
+  final String timelineLength = 'Zeitstrahl Länge';
+
+  @override
+  final String weekdays = 'Werktage (5)';
+
+  @override
+  final String captions = 'Unterschriften';
+
+  @override
+  final String columns = 'Spalten';
+
+  @override
+  final String headings = 'Überschriften';
+
+  @override
+  final String allowPassedStartTime = 'Startzeit in der Vergangenheit erlauben';
+
+  @override
+  final String addRecurringActivity = 'Wiederkehrende Aktivität hinzufügen';
+
+  @override
+  final String showEndTime = 'Endezeit anzeigen';
+
+  @override
+  final String showAlarm = 'Alarme anzeigen';
+
+  @override
+  final String showSilentAlarm = 'Stille Alarme anzeigen';
+
+  @override
+  final String showNoAlarm = 'Kein Alarm anzeigen';
+
+  @override
+  final String throughEditView = 'Durch Bearbeitungsanzeige';
+
+  @override
+  final String androidSettings = 'Android-Einstellungen';
+
+  @override
+  final String stepByStep = 'Schritt für Schritt';
+
+  @override
+  final String showBasicActivities = 'Standardaktivitäten anzeigen';
+
+  @override
+  final String selectName = 'Name auswählen';
+
+  @override
+  final String selectImage = 'Bild auswählen';
+
+  @override
+  final String selectDate = 'Datum auswählen';
+
+  @override
+  final String selectType = 'Typ auswählen';
+
+  @override
+  final String selectCheckable = 'Kontrollierbar auswählen';
+
+  @override
+  final String selectAvailableFor = 'Wählen Sie verfügbar für';
+
+  @override
+  final String selectDeleteAfter = 'Zeit bis Löschen auswählen';
+
+  @override
+  final String selectAlarm = 'Alarm auswählen';
+
+  @override
+  final String iOSAlarmTimeWarning =
+      'Auf iPhones werden Alarme, die länger als 30 Sekunden sind, aufgrund von iOS-Einschränkungen 30 Sekunden lang wiedergegeben';
+
+  @override
+  final String selectChecklist = 'Checkliste auswählen';
+
+  @override
+  final String selectNote = 'Hinweis auswählen';
+
+  @override
+  final String selectReminder = 'Erinnerung auswählen';
+
+  @override
+  final String add = 'Hinzufügen';
+
+  @override
+  final String defaults = 'Vorauswahl';
+
+  @override
+  final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
+
+  @override
+  final String homeScreenSettingsHint =
+      'Wird nach Drücken der Schaltfläche Home angezeigt';
+
+  @override
+  final String timeoutSettingsHint =
+      'Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität.';
+
+  @override
+  final String noTimeout = 'Keine Zeitüberschreitung';
+
+  @override
+  final String activateScreensaver = 'Bildschirmschoner aktivieren';
+
+  @override
+  final String menuRemovalWarning =
+      'Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.';
+
+  @override
+  final String topField = 'Oberstes Feld';
+
+  @override
+  final String showBrowseButtons = 'Suchschaltflächen anzeigen';
+
+  @override
+  final String showWeekday = 'Wochentag anzeigen';
+
+  @override
+  final String showDayPeriod = 'Zeit für Tag und Nacht anzeigen';
+
+  @override
+  final String showDate = 'Datum anzeigen';
+
+  @override
+  final String showClock = 'Uhr anzeigen';
+
+  @override
+  final String delete = 'Löschen';
+
+  @override
+  final String edit = 'Bearbeiten';
+
+  @override
+  final String showQuarterHourWatchBar = 'Viertelstunden-Balken anzeigen';
+
+  @override
+  final String timeOnQuarterHourBar = 'Zeit auf Viertelstunden-Balken';
+
+  @override
+  final String clock = 'Uhr';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Zeitstrahl';
+
+  @override
+  final String earyMorning = 'frühmorgens';
+
+  @override
+  final String twelveHourFormat = '12 Stunden Format';
+
+  @override
+  final String oneDot = 'Ein Punkt';
+
+  @override
+  final String columnOfDots = 'Spalte aus Punkten';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linie über aktueller Zeit';
+
+  @override
+  final String linesForEachHour = 'Linien für jede Stunde';
+
+  @override
+  final String saturdayAndSunday = 'Samstag und Sonntag';
+
+  @override
+  final String dayColours = 'Tagesfarben';
+
+  @override
+  final String noDayColours = 'Keine Tagesfarben';
+
+  @override
+  final String showCagetories = 'Kategorien zeigen';
+
+  @override
+  final String showColours = 'Farben zeigen';
+
+  @override
+  final String editCategory = 'Kategorie bearbeiten';
+
+  @override
+  final String codeProtect = 'Schutz durch Code';
+
+  @override
+  final String code = 'Code';
+
+  @override
+  final String codeProtectSettings = 'Einstellungen mit Code schützen';
+
+  @override
+  final String codeProtectThisView = 'Diese Anzeige durch Code schützen';
+
+  @override
+  final String codeProtectAndroidSettings =
+      'Android-Einstellungen mit Code schützen';
+
+  @override
+  final String enterNewCode = 'Neuen Code eingeben';
+
+  @override
+  final String confirmCode = 'Code bestätigen';
 
   @override
   final String permissions = 'Berechtigungen';
@@ -2995,20 +5415,32 @@ class DE extends Translated {
 
   @override
   final String producer = 'Hersteller';
+
+  @override
+  final String camera = 'Kamera';
+
+  @override
+  final String photoCalendar = 'Foto-\nkalender';
+
+  @override
+  final String countdown = 'Countdown';
+
+  @override
+  final String quickSettingsMenu = 'Schnell-\neinstellungen';
 }
 
 class NB extends Translated {
   @override
-  final String userNameTitle = 'Brukernavn eller e-post';
-
-  @override
-  final String userName = 'Brukernavn';
+  final String username = 'Brukernavn';
 
   @override
   final String password = 'Passord';
 
   @override
-  final String loginHint =
+  final String loginHintMP = 'Bruk myAbilia-kontoen din for å logge på';
+
+  @override
+  final String loginHintMPGO =
       'Logg inn med samme brukernavn og passord som på MEMOplanner';
 
   @override
@@ -3024,6 +5456,84 @@ class NB extends Translated {
   @override
   final String noConnection =
       'Enheten er ikke koblet til myAbilia. Sjekk din Internettforbindelse.';
+
+  @override
+  final String enterUsername = 'Angi ditt brukernavn';
+
+  @override
+  final String enterPassword = 'Angi ditt passord';
+
+  @override
+  final String createAccountHint = 'Har du ikke en myAbilia-konto ennå?';
+
+  @override
+  final String createAccount = 'Opprett konto';
+
+  @override
+  final String createAaccountHeading = 'Opprett kontoen din i myAbilia';
+
+  @override
+  final String createAaccountSubheading =
+      'Du trenger en myAbilia-konto for å bruke MEMOplanner';
+
+  @override
+  final String acceptTerms = 'Jeg har lest og godtar';
+
+  @override
+  final String termsOfUse = 'brukervillkår';
+
+  @override
+  final String termsOfUseUrl = 'nb/brukervilkar';
+
+  @override
+  final String privacyPolicy = 'personvernerklæring';
+
+  @override
+  final String privacyPolicyUrl = 'nb/personvernerklaering';
+
+  @override
+  final String usernameHint = 'Brukernavn (telefon eller en e-post)';
+
+  @override
+  final String passwordHint = 'Passord (minimum 8 tegn)';
+
+  @override
+  final String confirmPassword = 'Bekreft passordet';
+
+  @override
+  final String usernameToShort =
+      'Brukernavn eller e-postadresse er ugyldig, må inneholde minst tre tegn';
+
+  @override
+  final String passwordToShort = 'Passordet må bestå av minst 8 tegn';
+
+  @override
+  final String passwordMismatch = 'Begge passordene må være de samme';
+
+  @override
+  final String confirmTermsOfUse = 'Bekreft brukervilkår';
+
+  @override
+  final String confirmPrivacyPolicy = 'Bekreft personvernerklæring';
+
+  @override
+  final String usernameTaken = 'Brukernavn/e-postadresse er allerede i bruk';
+
+  @override
+  final String unknownError = 'Ukjent feil';
+
+  @override
+  final String accountCreatedHeading = 'Konto opprettet';
+
+  @override
+  final String accountCreatedBody =
+      'Kontoen din er opprettet.\nDu kan logge inn ved å bruke ditt brukernavn og passord';
+
+  @override
+  final String browser = 'Nettleser';
+
+  @override
+  final String backToLogin = 'Tilbake til innlogging';
 
   @override
   final String noLicense =
@@ -3085,6 +5595,12 @@ class NB extends Translated {
   final String minute = 'minutt';
 
   @override
+  final String seconds = 'sekunder';
+
+  @override
+  final String second = 'sekund';
+
+  @override
   final String min = 'min';
 
   @override
@@ -3101,6 +5617,12 @@ class NB extends Translated {
 
   @override
   final String minuteInessive = '';
+
+  @override
+  final String now = 'Nå';
+
+  @override
+  final String week = 'uke';
 
   @override
   final String reminders = 'Påminnelser';
@@ -3261,7 +5783,13 @@ class NB extends Translated {
   final String save = 'Spare';
 
   @override
+  final String endBeforeStartError = 'Sluttdato kan ikke være før startdato';
+
+  @override
   final String error = 'Feil';
+
+  @override
+  final String warning = 'Advarsel';
 
   @override
   final String missingTitleOrImageAndStartTime =
@@ -3275,8 +5803,16 @@ class NB extends Translated {
   final String missingStartTime = 'En aktivitet må ha en starttid.';
 
   @override
-  final String startTimeBeforeNow =
+  final String startTimeBeforeNowError =
       'Starttiden er allerede passert. Det er ikke tillatt.';
+
+  @override
+  final String startTimeBeforeNowWarning =
+      'Starttiden er allerede passert. Trykk på OK for å fortsette.';
+
+  @override
+  final String conflictWarning =
+      'Der er aktiviteter som kolliderer med denne aktivitet. Trykk på OK for å fortsette.';
 
   @override
   final String availableFor = 'Tilgjengelig for';
@@ -3316,6 +5852,9 @@ class NB extends Translated {
 
   @override
   final String imageArchive = 'Bildearkiv';
+
+  @override
+  final String uploadImage = 'Last opp bilde';
 
   @override
   final String myPhotos = 'Mine foto';
@@ -3381,10 +5920,10 @@ class NB extends Translated {
   final String infoTypeNone = 'Ingen ekstra funksjon valgt';
 
   @override
-  final String infoTypeChecklist = 'Legg til sjekkliste';
+  final String infoTypeChecklist = 'Sjekkliste';
 
   @override
-  final String infoTypeNote = 'Legg til notat';
+  final String infoTypeNote = 'Notat';
 
   @override
   final String typeSomething = 'Skriv noe…';
@@ -3406,6 +5945,9 @@ class NB extends Translated {
 
   @override
   final String remove = 'Slett';
+
+  @override
+  final String settings = 'Innstillinger';
 
   @override
   final String calendarView = 'Dagkalender';
@@ -3446,6 +5988,310 @@ class NB extends Translated {
 
   @override
   final String viewMode = 'Visningsmodus';
+
+  @override
+  final String dayInterval = 'Intervall';
+
+  @override
+  final String interval = 'Intervall';
+
+  @override
+  final String viewDay = 'Dagen';
+
+  @override
+  final String dayAndNight = 'Døgnet';
+
+  @override
+  final String zoom = 'Zoom';
+
+  @override
+  final String small = 'Liten';
+
+  @override
+  final String medium = 'Mellom';
+
+  @override
+  final String large = 'Stor';
+
+  @override
+  final String system = 'System';
+
+  @override
+  final String calendar = 'Kalender';
+
+  @override
+  final String functions = 'Funksjoner';
+
+  @override
+  final String imagePicker = 'Bildevalg';
+
+  @override
+  final String general = 'Generelt';
+
+  @override
+  final String dayCalendar = 'Dagkalender';
+
+  @override
+  final String weekCalendar = 'Ukekalender';
+
+  @override
+  final String monthCalendar = 'Månedskalender';
+
+  @override
+  final String activityView = 'Aktivitetsvindu';
+
+  @override
+  final String addActivity = 'Legg inn aktivitet';
+
+  @override
+  final String alarmSettings = 'Alarminnstillinger';
+
+  @override
+  final String nonCheckableActivities = 'Ikke kvitterbare aktiviteter';
+
+  @override
+  final String checkableActivities = 'Kvitterbare aktiviteter';
+
+  @override
+  final String vibrationOnReminder = 'Vibrasjon ved påminnelse';
+
+  @override
+  final String alarmTime = 'Alarmtid';
+
+  @override
+  final String alert = 'Signal';
+
+  @override
+  final String defaultSound = 'Forvalg';
+
+  @override
+  final String noSound = '- Ingen lyd -';
+
+  @override
+  final String showWeekNumber = 'Vis ukenummer';
+
+  @override
+  final String showYear = 'Vis år';
+
+  @override
+  final String everyDay = 'Alle dager (7)';
+
+  @override
+  final String viewSettings = 'Visningsinnstillinger';
+
+  @override
+  final String typeOfDisplay = 'Type';
+
+  @override
+  final String timelineLength = 'Tid på døgnet';
+
+  @override
+  final String weekdays = 'Hverdager (5)';
+
+  @override
+  final String captions = 'Titler';
+
+  @override
+  final String columns = 'Kolonner';
+
+  @override
+  final String headings = 'Titler';
+
+  @override
+  final String allowPassedStartTime = 'Legg inn på passert tid';
+
+  @override
+  final String addRecurringActivity = 'Legg inn gjentakende aktivitet';
+
+  @override
+  final String showEndTime = 'Vis sluttid';
+
+  @override
+  final String showAlarm = 'Vis alarm';
+
+  @override
+  final String showSilentAlarm = 'Vis stille alarm';
+
+  @override
+  final String showNoAlarm = 'Vis ingen alarm';
+
+  @override
+  final String throughEditView = 'Via endrevindu';
+
+  @override
+  final String androidSettings = 'Android-innstillinger';
+
+  @override
+  final String stepByStep = 'Via sekvens';
+
+  @override
+  final String showBasicActivities = 'Vis liste med standardaktiviteter';
+
+  @override
+  final String selectName = 'Velg navn';
+
+  @override
+  final String selectImage = 'Velg bilde';
+
+  @override
+  final String selectDate = 'Velg dato';
+
+  @override
+  final String selectType = 'Velg type';
+
+  @override
+  final String selectCheckable = 'Velg kvittering';
+
+  @override
+  final String selectAvailableFor = 'Velg tilgjengelig for';
+
+  @override
+  final String selectDeleteAfter = 'Velg slett etterpå';
+
+  @override
+  final String selectAlarm = 'Velg alarm';
+
+  @override
+  final String iOSAlarmTimeWarning =
+      'På iPhones vil alarmer som er lenger enn 30 sekunder spilles av i 30 sekunder på grunn av iOS-begrensninger';
+
+  @override
+  final String selectChecklist = 'Velg sjekkliste';
+
+  @override
+  final String selectNote = 'Velg notat';
+
+  @override
+  final String selectReminder = 'Velg påminnelser';
+
+  @override
+  final String add = 'Legg inn';
+
+  @override
+  final String defaults = 'Forvalg';
+
+  @override
+  final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';
+
+  @override
+  final String homeScreenSettingsHint =
+      'Vindu som vil bli vist ved trykk på hjemknappen';
+
+  @override
+  final String timeoutSettingsHint =
+      'Återgång till startsidan efter en tids inaktivitet.';
+
+  @override
+  final String noTimeout = 'Ingen timeout';
+
+  @override
+  final String activateScreensaver = 'Aktiver skjermsparer';
+
+  @override
+  final String menuRemovalWarning =
+      'Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.';
+
+  @override
+  final String topField = 'Toppfelt';
+
+  @override
+  final String showBrowseButtons = 'Vis bla-knapper';
+
+  @override
+  final String showWeekday = 'Vis ukedag';
+
+  @override
+  final String showDayPeriod = 'Vis tid på døgnet';
+
+  @override
+  final String showDate = 'Vis dato';
+
+  @override
+  final String showClock = 'Vis klokken';
+
+  @override
+  final String delete = 'Slett';
+
+  @override
+  final String edit = 'Endre';
+
+  @override
+  final String showQuarterHourWatchBar = 'Vis kvarterur';
+
+  @override
+  final String timeOnQuarterHourBar = 'Tid på kvarterur';
+
+  @override
+  final String clock = 'Klokke';
+
+  @override
+  final String analogueDigital = 'Analog + digital';
+
+  @override
+  final String analogue = 'Analog';
+
+  @override
+  final String digital = 'Digital';
+
+  @override
+  final String timeline = 'Tidslinje';
+
+  @override
+  final String earyMorning = 'morgen';
+
+  @override
+  final String twelveHourFormat = '12 timers format';
+
+  @override
+  final String oneDot = 'Et punkt';
+
+  @override
+  final String columnOfDots = 'Pillar av punkter';
+
+  @override
+  final String lineAcrossCurrentTime = 'Linje viser aktuell tid';
+
+  @override
+  final String linesForEachHour = 'Linjer for hver time';
+
+  @override
+  final String saturdayAndSunday = 'Lørdag og søndag';
+
+  @override
+  final String dayColours = 'Dagfarger';
+
+  @override
+  final String noDayColours = 'Ingen dagfarger';
+
+  @override
+  final String showCagetories = 'Vis kategorier';
+
+  @override
+  final String showColours = 'Vis farger';
+
+  @override
+  final String editCategory = 'Rediger kategori';
+
+  @override
+  final String codeProtect = 'Kodebeskyttelse';
+
+  @override
+  final String code = 'Kode';
+
+  @override
+  final String codeProtectSettings = 'Kodebeskytt Innstillinger';
+
+  @override
+  final String codeProtectThisView = 'Kodebeskytte denne visning.';
+
+  @override
+  final String codeProtectAndroidSettings = 'Kodebeskytt Android-innstillinger';
+
+  @override
+  final String enterNewCode = 'Angi ny kode';
+
+  @override
+  final String confirmCode = 'Bekreft kode';
 
   @override
   final String permissions = 'Tillatelser';
@@ -3520,4 +6366,16 @@ class NB extends Translated {
 
   @override
   final String producer = 'Produsent';
+
+  @override
+  final String camera = 'Kamera';
+
+  @override
+  final String photoCalendar = 'Bilde-\nkalender';
+
+  @override
+  final String countdown = 'Nedtelling';
+
+  @override
+  final String quickSettingsMenu = 'Hurtig-\ninnstillinger';
 }

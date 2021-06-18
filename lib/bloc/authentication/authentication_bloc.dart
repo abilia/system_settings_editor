@@ -1,9 +1,12 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
@@ -77,14 +80,16 @@ class AuthenticationBloc
     String token,
     LoggedOutReason loggedOutReason = LoggedOutReason.LOG_OUT,
   }) async* {
-    await repo.logout(token);
     try {
       await onLogout?.call();
+    } catch (e) {
+      Logger('onLogout').severe('exception when logging out: $e');
     } finally {
       yield Unauthenticated(
         state.userRepository,
         loggedOutReason: loggedOutReason,
       );
     }
+    await repo.logout(token);
   }
 }

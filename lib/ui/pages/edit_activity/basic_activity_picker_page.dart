@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/cupertino.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -27,7 +29,7 @@ class BasicActivityPickerPage extends StatelessWidget {
           translate.noBasicActivities,
         ),
         bottomNavigationBar: BottomNavigation(
-          backNavigationWidget: BackButton(
+          backNavigationWidget: PreviousButton(
             onPressed: state.isAtRoot
                 ? Navigator.of(context).maybePop
                 : () => BlocProvider.of<SortableArchiveBloc<BasicActivityData>>(
@@ -49,13 +51,13 @@ class BasicActivityPickerPage extends StatelessWidget {
 class BasicActivityLibraryItem extends StatelessWidget {
   final Sortable<BasicActivityDataItem> sortable;
 
-  const BasicActivityLibraryItem({
+  BasicActivityLibraryItem({
     Key key,
     @required this.sortable,
   }) : super(key: key);
 
-  final imageHeight = 86.0;
-  final imageWidth = 84.0;
+  final imageHeight = 86.s;
+  final imageWidth = 84.s;
   @override
   Widget build(BuildContext context) {
     final basicActivityData = sortable.data;
@@ -79,15 +81,15 @@ class BasicActivityLibraryItem extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.center,
                 fit: StackFit.expand,
-                overflow: Overflow.visible,
+                clipBehavior: Clip.none,
                 children: [
                   AnimatedContainer(
                     duration: const Duration(microseconds: 400),
                     decoration: selected
                         ? greenBoarderWhiteBoxDecoration
                         : boxDecoration,
-                    padding: const EdgeInsets.all(4.0).subtract(
-                      selected ? const EdgeInsets.all(1.0) : EdgeInsets.zero,
+                    padding: EdgeInsets.all(4.s).subtract(
+                      selected ? EdgeInsets.all(1.s) : EdgeInsets.zero,
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -98,7 +100,7 @@ class BasicActivityLibraryItem extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: abiliaTextTheme.caption,
                           ),
-                        const SizedBox(height: 2),
+                        SizedBox(height: 2.s),
                         SizedBox(
                           height: imageHeight,
                           child: basicActivityData.hasImage
@@ -108,9 +110,9 @@ class BasicActivityLibraryItem extends StatelessWidget {
                                   imageFileId: imageId,
                                   imageFilePath: iconPath,
                                 )
-                              : const Icon(
+                              : Icon(
                                   AbiliaIcons.day,
-                                  size: 48,
+                                  size: 48.s,
                                   color: AbiliaColors.white140,
                                 ),
                         ),

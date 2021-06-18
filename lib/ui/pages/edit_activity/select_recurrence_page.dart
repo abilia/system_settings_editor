@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 
 import 'package:seagull/models/all.dart';
@@ -29,9 +31,9 @@ class _SelectRecurrencePageState extends State<SelectRecurrencePage> {
         iconData: AbiliaIcons.repeat,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12.0,
-          vertical: 24,
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0.s,
+          vertical: 24.s,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,7 +45,7 @@ class _SelectRecurrencePageState extends State<SelectRecurrencePage> {
               RecurrentType.yearly
             ].map(
               (type) => Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
+                padding: EdgeInsets.only(bottom: 8.0.s),
                 child: RadioField(
                   groupValue: newType,
                   onChanged: (v) {

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'sortable_archive_bloc.dart';
 
 class SortableArchiveState<T extends SortableData> extends Equatable {
@@ -8,8 +10,8 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
 
   SortableArchiveState(
     this.allByFolder,
-    this.allById,
-    this.currentFolderId, {
+    this.allById, {
+    this.currentFolderId = '',
     this.selected,
   });
 
@@ -22,13 +24,13 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
       SortableArchiveState(
         allByFolder ?? this.allByFolder,
         allById ?? this.allById,
-        currentFolderId ?? this.currentFolderId,
+        currentFolderId: currentFolderId ?? this.currentFolderId,
         selected: selected ?? this.selected,
       );
 
   bool get isSelected => selected != null;
-  bool get isAtRoot => currentFolderId == null;
-  bool get isAtRootAndNoSelection => currentFolderId == null && !isSelected;
+  bool get isAtRoot => currentFolderId.isEmpty;
+  bool get isAtRootAndNoSelection => isAtRoot && !isSelected;
 
   @override
   List<Object> get props => [

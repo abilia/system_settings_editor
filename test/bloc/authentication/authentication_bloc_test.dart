@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -38,7 +40,7 @@ void main() {
 
       // Assert
       expectLater(
-        authenticationBloc,
+        authenticationBloc.stream,
         emits(Unauthenticated(userRepository)),
       );
     });
@@ -51,7 +53,7 @@ void main() {
 
       // Assert
       await expectLater(
-        authenticationBloc,
+        authenticationBloc.stream,
         emitsInOrder([
           Unauthenticated(userRepository),
           Authenticated(
@@ -72,7 +74,7 @@ void main() {
 
       // Assert
       await expectLater(
-        authenticationBloc,
+        authenticationBloc.stream,
         emitsInOrder([
           Unauthenticated(userRepository),
           Authenticated(
@@ -104,10 +106,11 @@ void main() {
       authenticationBloc = AuthenticationBloc(
         mockedUserRepository,
         onLogout: () {
-          notificationMock.mockCancleAll();
+          notificationMock.mockCancelAll();
         },
       );
     });
+
     test('loggedIn event saves token', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
@@ -129,7 +132,7 @@ void main() {
       authenticationBloc.add(CheckAuthentication());
       authenticationBloc.add(LoggedOut());
       // Assert
-      await untilCalled(notificationMock.mockCancleAll());
+      await untilCalled(notificationMock.mockCancelAll());
     });
 
     test('unauthed token gets deleted', () async {
@@ -154,11 +157,24 @@ void main() {
 
       // Assert
       await expectLater(
-        authenticationBloc,
+        authenticationBloc.stream,
         emits(
           Unauthenticated(mockedUserRepository),
         ),
       );
+    });
+
+    test('logged out cancel all on logout and repo in order', () async {
+      // Act
+      authenticationBloc.add(CheckAuthentication());
+      authenticationBloc.add(LoggedOut());
+      // Assert
+      await untilCalled(mockedUserRepository.logout());
+      await untilCalled(notificationMock.mockCancelAll());
+      verifyInOrder([
+        notificationMock.mockCancelAll(),
+        mockedUserRepository.logout(),
+      ]);
     });
 
     tearDown(() {
@@ -168,7 +184,7 @@ void main() {
 }
 
 class Notification {
-  Future mockCancleAll() => Future.value();
+  Future mockCancelAll() => Future.value();
 }
 
 class NotificationMock extends Mock implements Notification {}

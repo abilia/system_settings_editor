@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'sync_bloc.dart';
 
 abstract class SyncEvent extends Equatable {
@@ -11,3 +13,5 @@ class ActivitySaved extends SyncEvent {}
 class FileSaved extends SyncEvent {}
 
 class SortableSaved extends SyncEvent {}
+
+class GenericSaved extends SyncEvent {}

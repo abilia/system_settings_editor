@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -30,9 +32,9 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
         iconData: widget.headingIcon,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12.0,
-          vertical: 24,
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0.s,
+          vertical: 24.s,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -45,7 +47,7 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
               groupValue: applyTo,
               onChanged: _radioChanged,
             ),
-            if (widget.allDaysVisible) SizedBox(height: 8.0),
+            if (widget.allDaysVisible) SizedBox(height: 8.0.s),
             if (widget.allDaysVisible)
               RadioField(
                 key: TestKey.allDays,
@@ -55,7 +57,7 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
                 groupValue: applyTo,
                 onChanged: _radioChanged,
               ),
-            SizedBox(height: 8.0),
+            SizedBox(height: 8.0.s),
             RadioField(
               key: TestKey.thisDayAndForward,
               leading: Icon(AbiliaIcons.week),

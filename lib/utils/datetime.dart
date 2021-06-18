@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 
 final yMd = DateFormat('y-MM-dd').format;
@@ -12,12 +11,18 @@ extension DateTimeExtensions on DateTime {
   DateTime onlyMinutes() => DateTime(year, month, day, hour, minute);
 
   DateTime nextDay() => copyWith(day: day + 1);
+  DateTime addDays(int days) => copyWith(day: day + days);
+  DateTime nextWeek() => copyWith(day: day + 7);
+  DateTime previousWeek() => copyWith(day: day - 7);
   DateTime previousDay() => copyWith(day: day - 1);
+
+  DateTime firstDayOfMonth() => DateTime(year, month, 1);
+  DateTime nextMonth() => DateTime(year, month + 1, 1);
+  DateTime previousMonth() => DateTime(year, month - 1, 1);
+
   DateTime millisecondBefore() =>
       DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch - 1);
 
-  DateTime nextHalfHour() => DateTime(
-      year, month, day, minute >= 30 ? hour + 1 : hour, minute >= 30 ? 0 : 30);
   DateTime nextMinute() => DateTime(year, month, day, hour, minute + 1);
 
   DateTime roundToMinute(int minutesPerDot, int rounding) => DateTime(
@@ -30,15 +35,17 @@ extension DateTimeExtensions on DateTime {
             : (minute ~/ minutesPerDot) * minutesPerDot,
       );
 
+  DateTime firstInWeek() => subtract(Duration(days: weekday - 1)).onlyDays();
+
   DateTime copyWith(
-          {int year,
-          int month,
-          int day,
-          int hour,
-          int minute,
-          int second,
-          int millisecond,
-          int microsecond}) =>
+          {int? year,
+          int? month,
+          int? day,
+          int? hour,
+          int? minute,
+          int? second,
+          int? millisecond,
+          int? microsecond}) =>
       DateTime(
           year ?? this.year,
           month ?? this.month,
@@ -52,13 +59,16 @@ extension DateTimeExtensions on DateTime {
   bool isAtSameDay(DateTime otherDate) =>
       onlyDays().isAtSameMomentAs(otherDate.onlyDays());
 
+  bool isSameWeek(DateTime otherDate) =>
+      getWeekNumber() == otherDate.getWeekNumber();
+
   bool isDayBefore(DateTime otherDate) =>
       onlyDays().isBefore(otherDate.onlyDays());
   bool isDayAfter(DateTime otherDate) =>
       onlyDays().isAfter(otherDate.onlyDays());
 
   bool inInclusiveRange(
-      {@required DateTime startDate, @required DateTime endDate}) {
+      {required DateTime startDate, required DateTime endDate}) {
     if (endDate.isBefore(startDate)) return false;
     if (isBefore(endDate) && isAfter(startDate)) return true;
     if (isAtSameMomentAs(startDate)) return true;
@@ -67,7 +77,7 @@ extension DateTimeExtensions on DateTime {
   }
 
   bool inRangeWithInclusiveStart(
-      {@required DateTime startDate, @required DateTime endDate}) {
+      {required DateTime startDate, required DateTime endDate}) {
     if (endDate.isBefore(startDate)) return false;
     if (isBefore(endDate) && isAfter(startDate)) return true;
     if (isAtSameMomentAs(startDate)) return true;
@@ -75,7 +85,7 @@ extension DateTimeExtensions on DateTime {
   }
 
   bool inExclusiveRange(
-      {@required DateTime startDate, @required DateTime endDate}) {
+      {required DateTime startDate, required DateTime endDate}) {
     if (endDate.isBefore(startDate)) return false;
     if (isBefore(endDate) && isAfter(startDate)) return true;
     return false;
@@ -118,9 +128,7 @@ extension DateTimeExtensions on DateTime {
 
     if (msAfterMidnight >= dayParts.eveningStart) return DayPart.evening;
 
-    if (msAfterMidnight >= dayParts.afternoonStart) return DayPart.afternoon;
-
-    if (msAfterMidnight >= dayParts.forenoonStart) return DayPart.forenoon;
+    if (msAfterMidnight >= dayParts.dayStart) return DayPart.day;
 
     if (msAfterMidnight >= dayParts.morningStart) return DayPart.morning;
 
@@ -133,6 +141,6 @@ extension DateTimeExtensions on DateTime {
 }
 
 extension IntDateTimeExtensions on int {
-  DateTime fromMillisecondsSinceEpoch() =>
-      DateTime.fromMillisecondsSinceEpoch(this);
+  DateTime fromMillisecondsSinceEpoch({bool isUtc = false}) =>
+      DateTime.fromMillisecondsSinceEpoch(this, isUtc: isUtc);
 }

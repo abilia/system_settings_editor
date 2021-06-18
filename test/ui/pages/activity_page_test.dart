@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -46,8 +48,8 @@ void main() {
 
   final checkButtonFinder = find.byKey(TestKey.activityCheckButton);
   final uncheckButtonFinder = find.byKey(TestKey.uncheckButton);
-  final yesButtonFinder = find.byKey(TestKey.yesButton);
-  final noButtonFinder = find.byKey(TestKey.noButton);
+  final yesButtonFinder = find.byType(YesButton);
+  final noButtonFinder = find.byType(NoButton);
 
   final activityInfoSideDotsFinder = find.byType(ActivityInfoSideDots);
 
@@ -65,6 +67,14 @@ void main() {
     mockGenericDb = MockGenericDb();
     when(mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(<DbActivity>[]));
+
+    final mockUserFileDb = MockUserFileDb();
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (value) => Future.value([]),
+    );
+
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -78,7 +88,7 @@ void main() {
       )
       ..fileStorage = MockFileStorage()
       ..genericDb = mockGenericDb
-      ..userFileDb = MockUserFileDb()
+      ..userFileDb = mockUserFileDb
       ..sortableDb = MockSortableDb()
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
@@ -1095,7 +1105,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
             Activity.createNew(
               title: 'title',
               startTime: startTime,
-              infoItem: Checklist(questions: [Question(name: item1)]),
+              infoItem: Checklist(questions: [Question(id: 1, name: item1)]),
             )
           ],
         ),

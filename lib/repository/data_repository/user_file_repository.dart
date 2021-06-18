@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
+import 'package:collection/collection.dart';
 
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
   final UserFileDb userFileDb;
@@ -19,13 +19,13 @@ class UserFileRepository extends DataRepository<UserFile> {
   final MultipartRequestBuilder multipartRequestBuilder;
 
   UserFileRepository({
-    @required String baseUrl,
-    @required BaseClient client,
-    @required String authToken,
-    @required int userId,
-    @required this.userFileDb,
-    @required this.fileStorage,
-    @required this.multipartRequestBuilder,
+    required String baseUrl,
+    required BaseClient client,
+    required String authToken,
+    required int userId,
+    required this.userFileDb,
+    required this.fileStorage,
+    required this.multipartRequestBuilder,
   }) : super(
           client: client,
           baseUrl: baseUrl,
@@ -37,11 +37,14 @@ class UserFileRepository extends DataRepository<UserFile> {
           log: Logger((UserFileRepository).toString()),
         );
 
+  Future<Iterable<UserFile>> getAllLoadedFiles() =>
+      userFileDb.getAllLoadedFiles();
+
   @override
   Future<Iterable<UserFile>> load() async {
     await fetchIntoDatabaseSynchronized();
-    await getAndStoreFileData();
-    return db.getAll();
+    await downloadUserFiles();
+    return userFileDb.getAllLoadedFiles();
   }
 
   @override
@@ -52,10 +55,9 @@ class UserFileRepository extends DataRepository<UserFile> {
       if (dirtyFiles.isEmpty) return true;
       for (var dirtyFile in dirtyFiles.map((dirty) => dirty.model)) {
         final file = fileStorage.getFile(dirtyFile.id);
-        final postFileSuccess = await postFileData(
+        final postFileSuccess = await _postFileData(
           file,
           dirtyFile.sha1,
-          dirtyFile.contentType,
         );
         if (!postFileSuccess) return false;
       }
@@ -78,7 +80,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   Future<void> _handleFailedSync() async {
     final latestRevision = await db.getLastRevision();
     final fetchedUserFiles = await fetchData(latestRevision);
-    await getAndStoreFileData();
+    await downloadUserFiles();
     await db.insert(fetchedUserFiles);
   }
 
@@ -87,7 +89,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     int latestRevision,
   ) async {
     final response = await client.post(
-      '$baseUrl/api/v1/data/$userId/storage/items/$latestRevision',
+      '$baseUrl/api/v1/data/$userId/storage/items/$latestRevision'.toUri(),
       headers: jsonAuthHeader(authToken),
       body: jsonEncode(userFiles.toList()),
     );
@@ -114,15 +116,14 @@ class UserFileRepository extends DataRepository<UserFile> {
     throw UnavailableException([response.statusCode]);
   }
 
-  Future<bool> postFileData(
+  Future<bool> _postFileData(
     File file,
     String sha1,
-    String contentType,
   ) async {
     try {
       final bytes = await file.readAsBytes();
 
-      final uri = Uri.parse('$baseUrl/api/v1/data/$userId/storage/files');
+      final uri = '$baseUrl/api/v1/data/$userId/storage/files'.toUri();
       final request = multipartRequestBuilder.generateFileMultipartRequest(
         uri: uri,
         bytes: bytes,
@@ -144,37 +145,44 @@ class UserFileRepository extends DataRepository<UserFile> {
     }
   }
 
-  Future<void> getAndStoreFileData() async {
-    try {
-      final missingFiles = await userFileDb.getAllWithMissingFiles();
-      log.fine('${missingFiles.length} missing files to fetch');
-      for (final userFile in missingFiles) {
-        if (userFile.isImage) {
-          await handleImageFile(userFile);
-        } else {
-          await handleNonImage(userFile);
-        }
-      }
-    } catch (e, stackTrace) {
-      log.severe('Exception when getting and storing file data', e, stackTrace);
-    }
+  Future<Iterable<UserFile>> downloadUserFiles({int? limit}) async {
+    final missingFiles = await userFileDb.getMissingFiles(limit: limit);
+    log.fine('${missingFiles.length} missing files to fetch');
+    final fetchedFiles = await Future.wait(
+      missingFiles.map(
+        (userFile) async {
+          try {
+            if (userFile.isImage) {
+              await _handleImageFile(userFile);
+            } else {
+              await _handleNonImage(userFile);
+            }
+            return userFile;
+          } catch (e) {
+            log.severe('Exception when getting and storing user file', e);
+            return null;
+          }
+        },
+      ),
+    );
+    return fetchedFiles.whereNotNull();
   }
 
-  Future<Response> getImageThumb(String id, int size) {
+  Future<Response> _getImageThumb(String id, int size) {
     return client.get(
       imageThumbIdUrl(
         baseUrl: baseUrl,
         userId: userId,
         imageFileId: id,
         size: size,
-      ),
+      ).toUri(),
       headers: authHeader(authToken),
     );
   }
 
-  Future<void> handleNonImage(UserFile userFile) async {
+  Future<void> _handleNonImage(UserFile userFile) async {
     final originalFileResponse = await client.get(
-      fileIdUrl(baseUrl, userId, userFile.id),
+      fileIdUrl(baseUrl, userId, userFile.id).toUri(),
       headers: authHeader(authToken),
     );
     if (originalFileResponse.statusCode == 200) {
@@ -185,12 +193,12 @@ class UserFileRepository extends DataRepository<UserFile> {
     }
   }
 
-  Future<void> handleImageFile(UserFile userFile) async {
+  Future<void> _handleImageFile(UserFile userFile) async {
     final originalFileResponse = client.get(
-      fileIdUrl(baseUrl, userId, userFile.id),
+      fileIdUrl(baseUrl, userId, userFile.id).toUri(),
       headers: authHeader(authToken),
     );
-    final thumbResponse = getImageThumb(userFile.id, ImageThumb.THUMB_SIZE);
+    final thumbResponse = _getImageThumb(userFile.id, ImageThumb.THUMB_SIZE);
     final responses = await Future.wait([
       originalFileResponse,
       thumbResponse,

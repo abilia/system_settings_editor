@@ -1,8 +1,11 @@
+// @dart=2.9
+
 import 'dart:async';
+import 'dart:collection';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -13,16 +16,19 @@ part 'memoplanner_setting_event.dart';
 class MemoplannerSettingBloc
     extends Bloc<MemoplannerSettingsEvent, MemoplannerSettingsState> {
   StreamSubscription _genericSubscription;
+  final GenericBloc genericBloc;
 
-  MemoplannerSettingBloc({@required GenericBloc genericBloc})
-      : super(genericBloc.state is GenericsLoaded
+  MemoplannerSettingBloc({this.genericBloc})
+      : super(genericBloc?.state is GenericsLoaded
             ? MemoplannerSettingsLoaded(
-                MemoplannerSettings.fromSettingsList(
-                  _filter((genericBloc.state as GenericsLoaded).generics),
+                MemoplannerSettings.fromSettingsMap(
+                  (genericBloc.state as GenericsLoaded)
+                      .generics
+                      .filterMemoplannerSettingsData(),
                 ),
               )
             : MemoplannerSettingsNotLoaded()) {
-    _genericSubscription = genericBloc.listen((state) {
+    _genericSubscription = genericBloc?.stream?.listen((state) {
       if (state is GenericsLoaded) {
         add(UpdateMemoplannerSettings(state.generics));
       } else if (state is GenericsLoadedFailed) {
@@ -36,21 +42,22 @@ class MemoplannerSettingBloc
       MemoplannerSettingsEvent event) async* {
     if (event is UpdateMemoplannerSettings) {
       yield MemoplannerSettingsLoaded(
-          MemoplannerSettings.fromSettingsList(_filter(event.generics)));
+        MemoplannerSettings.fromSettingsMap(
+          event.generics.filterMemoplannerSettingsData(),
+        ),
+      );
     }
     if (event is GenericsLoadedFailed) {
       yield MemoplannerSettingsFailed();
     }
-  }
-
-  static List<MemoplannerSettingData> _filter(List<Generic> generics) {
-    final memoSettings = generics.whereType<Generic<MemoplannerSettingData>>();
-    return memoSettings.map((ms) => ms.data).toList();
+    if (event is SettingsUpdateEvent) {
+      genericBloc.add(GenericUpdated([event.settingData]));
+    }
   }
 
   @override
   Future<void> close() async {
-    await _genericSubscription.cancel();
+    await _genericSubscription?.cancel();
     return super.close();
   }
 }

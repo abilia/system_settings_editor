@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/activities/edit_recurring_mixin.dart';
 import 'package:seagull/fakes/all.dart';

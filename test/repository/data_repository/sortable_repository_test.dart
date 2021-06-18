@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
@@ -6,6 +8,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
 
@@ -78,7 +81,7 @@ void main() {
 
     when(
       mockClient.get(
-        '$baseUrl/api/v1/data/$userId/sortableitems?revision=$revision',
+        '$baseUrl/api/v1/data/$userId/sortableitems?revision=$revision'.toUri(),
         headers: authHeader(Fakes.token),
       ),
     ).thenAnswer(

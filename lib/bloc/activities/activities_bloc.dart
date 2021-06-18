@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -22,7 +24,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     @required this.syncBloc,
     @required PushBloc pushBloc,
   }) : super(ActivitiesNotLoaded()) {
-    pushSubscription = pushBloc.listen((state) {
+    pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
         add(LoadActivities());
       }

@@ -1,4 +1,4 @@
-import 'dart:io';
+// @dart=2.9
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -14,10 +14,9 @@ class ActivityImage extends StatelessWidget {
   final ActivityDay activityDay;
   final bool past;
   final ImageSize imageSize;
-  final File imageFile;
   final BoxFit fit;
-  final Widget checkmark;
   final double size;
+  final EdgeInsets crossOverPadding;
   static const duration = Duration(milliseconds: 400);
   static const crossPadding = 8.0;
 
@@ -27,21 +26,18 @@ class ActivityImage extends StatelessWidget {
     this.size,
     this.past = false,
     this.imageSize = ImageSize.THUMB,
-    this.imageFile,
     this.fit = BoxFit.cover,
-  })  : checkmark = size != null && size < 100
-            ? const CheckMarkWithBorder()
-            : const CheckMark(),
-        super(key: key);
+    this.crossOverPadding = EdgeInsets.zero,
+  });
 
   static ActivityImage fromActivityOccasion({
     Key key,
     ActivityOccasion activityOccasion,
     double size,
     ImageSize imageSize = ImageSize.THUMB,
-    File imageFile,
     BoxFit fit = BoxFit.cover,
     bool preview = false,
+    EdgeInsets crossOverPadding = EdgeInsets.zero,
   }) =>
       preview
           ? FadeInCalendarImage(
@@ -51,7 +47,6 @@ class ActivityImage extends StatelessWidget {
               width: size,
               height: size,
               imageSize: imageSize,
-              imageFile: imageFile,
               fit: fit,
             )
           : ActivityImage(
@@ -60,8 +55,8 @@ class ActivityImage extends StatelessWidget {
               size: size,
               past: activityOccasion.occasion == Occasion.past,
               imageSize: imageSize,
-              imageFile: imageFile,
               fit: fit,
+              crossOverPadding: crossOverPadding,
             );
 
   @override
@@ -87,10 +82,13 @@ class ActivityImage extends StatelessWidget {
               width: size,
               child: ClipRRect(
                 borderRadius: borderRadius,
-                child: FadeInImage(
-                  fit: fit,
-                  image: image.image,
-                  placeholder: MemoryImage(kTransparentImage),
+                child: Container(
+                  color: AbiliaColors.white,
+                  child: FadeInImage(
+                    fit: fit,
+                    image: image.image,
+                    placeholder: MemoryImage(kTransparentImage),
+                  ),
                 ),
               ),
             ),
@@ -101,11 +99,14 @@ class ActivityImage extends StatelessWidget {
               height: size != null ? size - crossPadding : null,
               width: size != null ? size - crossPadding : null,
               child: past && !signedOff
-                  ? CrossOver()
+                  ? Padding(
+                      padding: crossOverPadding,
+                      child: CrossOver(),
+                    )
                   : AnimatedOpacity(
                       opacity: signedOff ? 1.0 : 0.0,
                       duration: duration,
-                      child: checkmark,
+                      child: CheckMark(),
                     ),
             ),
           ),
@@ -122,14 +123,15 @@ class ActivityImage extends StatelessWidget {
   }
 
   Image getImage(BuildContext context, String fileId, String filePath) {
-    if (imageFile != null) return Image.file(imageFile);
     final userFileState = context.watch<UserFileBloc>().state;
-    final userFile = userFileState.getLoadedByIdOrPath(
+    final file = userFileState.getLoadedByIdOrPath(
       fileId,
       filePath,
+      GetIt.I<FileStorage>(),
+      imageSize: imageSize,
     );
-    if (userFile != null) {
-      return Image.file(GetIt.I<FileStorage>().getFile(userFile.id));
+    if (file != null) {
+      return Image.file(file);
     }
     final authenicatedState = context.watch<AuthenticationBloc>().state;
     if (authenicatedState is Authenticated) {
@@ -170,6 +172,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
         activityDay: activityDay,
         imageSize: ImageSize.ORIGINAL,
         size: size,
+        fit: BoxFit.contain,
       ),
     );
   }
@@ -185,6 +188,55 @@ class CheckedImageWithImagePopup extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class PhotoCalendarImage extends StatelessWidget {
+  final String fileId;
+  final String filePath;
+  final Widget errorContent;
+
+  const PhotoCalendarImage({
+    Key key,
+    @required this.fileId,
+    @required this.filePath,
+    this.errorContent,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final errorImage = errorContent ?? Image.memory(kTransparentImage);
+    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) {
+      return BlocBuilder<UserFileBloc, UserFileState>(
+          builder: (context, userFileState) {
+        final file = userFileState.getLoadedByIdOrPath(
+          fileId,
+          filePath,
+          GetIt.I<FileStorage>(),
+          imageSize: ImageSize.ORIGINAL,
+        );
+        return file != null
+            ? Image.file(
+                file,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => errorImage,
+              )
+            : (state is Authenticated)
+                ? Image.network(
+                    imageThumbUrl(
+                      baseUrl: state.userRepository.baseUrl,
+                      userId: state.userId,
+                      imageFileId: fileId,
+                      imagePath: filePath,
+                    ),
+                    headers: authHeader(state.token),
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => errorImage,
+                  )
+                : errorImage;
+      });
+    });
   }
 }
 
@@ -210,11 +262,16 @@ class FullScreenImage extends StatelessWidget {
           builder: (context, state) {
         return BlocBuilder<UserFileBloc, UserFileState>(
             builder: (context, userFileState) {
-          final userFile = userFileState.getLoadedByIdOrPath(fileId, filePath);
+          final file = userFileState.getLoadedByIdOrPath(
+            fileId,
+            filePath,
+            GetIt.I<FileStorage>(),
+            imageSize: ImageSize.ORIGINAL,
+          );
           return PhotoView(
             backgroundDecoration: backgroundDecoration,
-            imageProvider: userFile != null
-                ? FileImage(GetIt.I<FileStorage>().getFile(userFile.id))
+            imageProvider: file != null
+                ? FileImage(file)
                 : (state is Authenticated)
                     ? NetworkImage(
                         imageThumbUrl(
@@ -235,7 +292,6 @@ class FullScreenImage extends StatelessWidget {
 
 class FadeInCalendarImage extends StatelessWidget {
   final String imageFileId, imageFilePath;
-  final File imageFile;
   final double width, height;
   final ImageSize imageSize;
   final BoxFit fit;
@@ -245,13 +301,11 @@ class FadeInCalendarImage extends StatelessWidget {
     @required this.imageFilePath,
     this.width,
     this.height,
-    this.imageFile,
     this.imageSize = ImageSize.THUMB,
     this.fit = BoxFit.cover,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final fileStorage = GetIt.I<FileStorage>();
     final emptyImage = SizedBox(
       height: height,
       width: width,
@@ -264,36 +318,28 @@ class FadeInCalendarImage extends StatelessWidget {
 
     return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
-      final userFile =
-          userFileState.getLoadedByIdOrPath(imageFileId, imageFilePath);
+      final file = userFileState.getLoadedByIdOrPath(
+        imageFileId,
+        imageFilePath,
+        GetIt.I<FileStorage>(),
+        imageSize: imageSize,
+      );
       return SizedBox(
         height: height,
         width: width,
         child: ClipRRect(
           borderRadius: borderRadius,
-          child: imageFile != null
+          child: file != null
               ? FadeInImage(
                   fit: fit,
-                  image: Image.file(imageFile).image,
+                  image: Image.file(file).image,
                   placeholder: MemoryImage(kTransparentImage),
                 )
-              : userFile != null
-                  ? FadeInImage(
-                      fit: fit,
-                      image: imageSize == ImageSize.ORIGINAL
-                          ? Image.file(fileStorage.getFile(userFile.id)).image
-                          : Image.file(
-                              fileStorage.getImageThumb(
-                                ImageThumb(id: userFile.id),
-                              ),
-                            ).image,
-                      placeholder: MemoryImage(kTransparentImage),
-                    )
-                  : FadeInNetworkImage(
-                      imageFileId: imageFileId,
-                      imageFilePath: imageFilePath,
-                      fit: fit,
-                    ),
+              : FadeInNetworkImage(
+                  imageFileId: imageFileId,
+                  imageFilePath: imageFilePath,
+                  fit: fit,
+                ),
         ),
       );
     });
@@ -304,18 +350,21 @@ class FadeInAbiliaImage extends StatelessWidget {
   final String imageFileId, imageFilePath;
   final double width, height;
   final BoxFit fit;
+  final BorderRadius borderRadius;
+  final radius = BorderRadius.circular(12.s);
 
   FadeInAbiliaImage({
+    Key key,
     @required this.imageFileId,
-    @required this.imageFilePath,
+    this.imageFilePath,
     this.height,
     this.width,
     this.fit = BoxFit.cover,
-  });
+    this.borderRadius,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final fileStorage = GetIt.I<FileStorage>();
     final emptyImage = SizedBox(
       height: height,
       width: width,
@@ -328,21 +377,21 @@ class FadeInAbiliaImage extends StatelessWidget {
 
     return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
-      final userFile = userFileState.getLoadedByIdOrPath(
+      final file = userFileState.getLoadedByIdOrPath(
         imageFileId,
         imageFilePath,
+        GetIt.I<FileStorage>(),
+        imageSize: ImageSize.THUMB,
       );
 
       return ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: userFile != null
+        borderRadius: borderRadius ?? radius,
+        child: file != null
             ? FadeInImage(
                 height: height,
                 width: width,
                 fit: fit,
-                image: Image.file(
-                  fileStorage.getImageThumb(ImageThumb(id: userFile.id)),
-                ).image,
+                image: Image.file(file).image,
                 placeholder: MemoryImage(kTransparentImage),
               )
             : FadeInNetworkImage(
@@ -380,6 +429,10 @@ class FadeInNetworkImage extends StatelessWidget {
               height: height,
               width: width,
               placeholder: MemoryImage(kTransparentImage),
+              imageErrorBuilder: (_, __, ___) => CrossOver(
+                fallbackHeight: height,
+                fallbackWidth: width,
+              ),
               image: NetworkImage(
                 imageFileId != null
                     ? imageThumbIdUrl(

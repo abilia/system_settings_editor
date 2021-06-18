@@ -1,26 +1,24 @@
+// @dart=2.9
+
 part of 'settings_bloc.dart';
 
 class SettingsState extends Equatable {
-  final bool dotsInTimepillar, textToSpeech;
+  final bool textToSpeech;
 
   SettingsState({
-    this.dotsInTimepillar,
     this.textToSpeech,
   });
 
   SettingsState copyWith({
-    bool dotsInTimepillar,
     bool textToSpeech,
   }) {
     return SettingsState(
-      dotsInTimepillar: dotsInTimepillar ?? this.dotsInTimepillar,
       textToSpeech: textToSpeech ?? this.textToSpeech,
     );
   }
 
   @override
   List<Object> get props => [
-        dotsInTimepillar,
         textToSpeech,
       ];
 }

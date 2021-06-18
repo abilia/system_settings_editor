@@ -1,9 +1,13 @@
+// @dart=2.9
+
 part of 'edit_activity_bloc.dart';
 
 enum SaveError {
   NO_START_TIME,
   NO_TITLE_OR_IMAGE,
   START_TIME_BEFORE_NOW,
+  UNCONFIRMED_START_TIME_BEFORE_NOW,
+  UNCONFIRMED_ACTIVITY_CONFLICT,
   NO_RECURRING_DAYS,
   STORED_RECURRING,
 }
@@ -15,7 +19,6 @@ abstract class EditActivityState extends Equatable with Silent {
     this.infoItems, {
     this.originalActivity,
     this.originalTimeInterval,
-    this.newImage,
     this.sucessfullSave,
     this.saveErrors = const UnmodifiableSetView.empty(),
   });
@@ -23,7 +26,6 @@ abstract class EditActivityState extends Equatable with Silent {
   final Activity activity, originalActivity;
   final TimeInterval timeInterval, originalTimeInterval;
   final MapView<Type, InfoItem> infoItems;
-  final File newImage;
   final bool sucessfullSave;
   final UnmodifiableSetView<SaveError> saveErrors;
 
@@ -33,9 +35,12 @@ abstract class EditActivityState extends Equatable with Silent {
   bool get hasStartTime => timeInterval.startTime != null || activity.fullDay;
 
   bool get unchanged =>
-      activity == originalActivity &&
+      activity == originalActivity && timeInterval == originalTimeInterval;
+
+  bool get unchangedTime =>
+      this is StoredActivityState &&
       timeInterval == originalTimeInterval &&
-      newImage == null;
+      originalActivity.recurs == activity.recurs;
 
   bool get storedRecurring =>
       this is StoredActivityState && originalActivity.isRecurring;
@@ -48,17 +53,54 @@ abstract class EditActivityState extends Equatable with Silent {
       : hasStartTime &&
           timeInterval.startDate.withTime(timeInterval.startTime).isBefore(now);
 
-  SelectedImage get selectedImage => SelectedImage(
+  SelectedImage get selectedImage => SelectedImage.from(
         id: activity.fileId,
         path: activity.icon,
-        file: newImage,
       );
+
+  Activity _activityToStore() {
+    var storeActivity = (activity.hasAttachment && activity.infoItem.isEmpty)
+        ? activity.copyWith(infoItem: InfoItem.none)
+        : activity;
+
+    if (activity.fullDay) {
+      return storeActivity.copyWith(
+        startTime: timeInterval.startDate.onlyDays(),
+        alarmType: NO_ALARM,
+        reminderBefore: const [],
+      );
+    }
+
+    final startTime = timeInterval.startDate.withTime(timeInterval.startTime);
+    return storeActivity.copyWith(
+      startTime: startTime,
+      duration: _getDuration(startTime, timeInterval.endTime),
+    );
+  }
+
+  Duration _getDuration(DateTime startTime, TimeOfDay endTime) {
+    if (startTime == null || endTime == null) return Duration.zero;
+    final pickedEndTimeBeforeStartTime = endTime.hour < startTime.hour ||
+        endTime.hour == startTime.hour && endTime.minute < startTime.minute;
+
+    return pickedEndTimeBeforeStartTime
+        ? startTime
+            .copyWith(
+              day: startTime.day + 1,
+              hour: endTime.hour,
+              minute: endTime.minute,
+            )
+            .difference(startTime)
+        : Duration(
+            hours: endTime.hour - startTime.hour,
+            minutes: endTime.minute - startTime.minute,
+          );
+  }
 
   @override
   List<Object> get props => [
         activity,
         timeInterval,
-        newImage,
         infoItems,
         sucessfullSave,
         saveErrors,
@@ -70,7 +112,6 @@ abstract class EditActivityState extends Equatable with Silent {
   EditActivityState copyWith(
     Activity activity, {
     TimeInterval timeInterval,
-    ImageUpdate imageUpdate,
     Map<Type, InfoItem> infoItems,
   });
 
@@ -88,7 +129,6 @@ class UnstoredActivityState extends EditActivityState {
           const MapView(<Type, InfoItem>{}),
           originalActivity: activity,
           originalTimeInterval: timeInterval,
-          newImage: newImage,
         );
 
   const UnstoredActivityState._(
@@ -97,7 +137,6 @@ class UnstoredActivityState extends EditActivityState {
     MapView<Type, InfoItem> infoItems,
     Activity originalActivity,
     TimeInterval originalTimeInterval, {
-    File newImage,
     UnmodifiableSetView<SaveError> saveErrors =
         const UnmodifiableSetView.empty(),
     bool sucessfullSave,
@@ -107,7 +146,6 @@ class UnstoredActivityState extends EditActivityState {
           infoItems,
           originalActivity: originalActivity,
           originalTimeInterval: originalTimeInterval,
-          newImage: newImage,
           sucessfullSave: sucessfullSave,
           saveErrors: saveErrors,
         );
@@ -117,7 +155,6 @@ class UnstoredActivityState extends EditActivityState {
     Activity activity, {
     TimeInterval timeInterval,
     Map<Type, InfoItem> infoItems,
-    ImageUpdate imageUpdate,
   }) =>
       UnstoredActivityState._(
         activity,
@@ -125,7 +162,6 @@ class UnstoredActivityState extends EditActivityState {
         MapView(infoItems ?? this.infoItems),
         originalActivity,
         originalTimeInterval,
-        newImage: imageUpdate == null ? newImage : imageUpdate.updatedImage,
       );
 
   @override
@@ -136,7 +172,6 @@ class UnstoredActivityState extends EditActivityState {
         infoItems,
         originalActivity,
         originalTimeInterval,
-        newImage: newImage,
         saveErrors: UnmodifiableSetView(saveErrors),
         sucessfullSave: sucessfullSave == null
             ? false
@@ -166,7 +201,6 @@ class StoredActivityState extends EditActivityState {
     TimeInterval originalTimeInterval,
     MapView<Type, InfoItem> infoItems,
     this.day, {
-    File newImage,
     bool sucessfullSave,
     UnmodifiableSetView<SaveError> saveErrors =
         const UnmodifiableSetView.empty(),
@@ -176,7 +210,6 @@ class StoredActivityState extends EditActivityState {
           infoItems,
           originalActivity: originalgActivity,
           originalTimeInterval: originalTimeInterval,
-          newImage: newImage,
           sucessfullSave: sucessfullSave,
           saveErrors: saveErrors,
         );
@@ -189,7 +222,6 @@ class StoredActivityState extends EditActivityState {
     Activity activity, {
     Map<Type, InfoItem> infoItems,
     TimeInterval timeInterval,
-    ImageUpdate imageUpdate,
   }) =>
       StoredActivityState._(
         activity,
@@ -198,7 +230,6 @@ class StoredActivityState extends EditActivityState {
         originalTimeInterval,
         MapView(infoItems ?? this.infoItems),
         day,
-        newImage: imageUpdate == null ? newImage : imageUpdate.updatedImage,
       );
 
   @override
@@ -210,7 +241,6 @@ class StoredActivityState extends EditActivityState {
         originalTimeInterval,
         infoItems,
         day,
-        newImage: newImage,
         saveErrors: UnmodifiableSetView(saveErrors),
         sucessfullSave: sucessfullSave == null
             ? false
@@ -224,13 +254,6 @@ class StoredActivityState extends EditActivityState {
         timeInterval,
         infoItems,
         day,
-        newImage: newImage,
         sucessfullSave: true,
       );
-}
-
-class ImageUpdate {
-  final File updatedImage;
-
-  ImageUpdate(this.updatedImage);
 }

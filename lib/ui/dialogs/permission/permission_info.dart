@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/gestures.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:seagull/bloc/all.dart';
@@ -36,13 +38,13 @@ class PermissionInfoDialog extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
-            const SizedBox(height: 8.0),
+            SizedBox(height: 8.0.s),
             PermissionInfoBodyText(
               allowAccessBodyText: body(translate),
             ),
             const Spacer(flex: 32),
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 0, 16, 0),
+              padding: EdgeInsets.fromLTRB(12.s, 0, 16.s, 0),
               child: PermissionSwitch(
                 permission: permission,
                 status: PermissionStatus.permanentlyDenied,
@@ -56,14 +58,9 @@ class PermissionInfoDialog extends StatelessWidget {
   }
 
   String body(Translated translate) {
-    switch (permission) {
-      case Permission.camera:
-        return translate.allowAccessCameraBody;
-      case Permission.photos:
-        return translate.allowAccessPhotosBody;
-      default:
-        return '';
-    }
+    if (permission == Permission.camera) return translate.allowAccessCameraBody;
+    if (permission == Permission.photos) return translate.allowAccessPhotosBody;
+    return '';
   }
 }
 
@@ -82,7 +79,7 @@ class PermissionInfoBodyText extends StatelessWidget {
         .copyWith(color: AbiliaColors.black75);
     final translate = Translator.of(context).translate;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: EdgeInsets.symmetric(horizontal: 20.0.s),
       child: Tts.fromSemantics(
         SemanticsProperties(
           multiline: true,

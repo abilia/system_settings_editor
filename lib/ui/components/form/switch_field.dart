@@ -1,24 +1,30 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
 class SwitchField extends StatelessWidget {
   final ValueChanged<bool> onChanged;
   final Widget leading;
-  final Text text;
+  final Widget child;
+  final String ttsData;
   final double heigth, width;
   final bool value;
   final Decoration decoration;
+  static final defaultHeight = 56.s;
 
   const SwitchField({
     Key key,
-    @required this.text,
+    @required this.child,
     this.onChanged,
     this.leading,
-    this.heigth = 56,
+    this.heigth,
     this.width,
     this.value = false,
-    this.decoration = whiteBoxDecoration,
-  })  : assert(text != null),
+    this.decoration,
+    this.ttsData,
+  })  : assert(child != null),
+        assert(child is Text || ttsData != null),
         super(key: key);
 
   @override
@@ -30,7 +36,7 @@ class SwitchField extends StatelessWidget {
     );
     return Tts.fromSemantics(
       SemanticsProperties(
-        label: text.data,
+        label: child is Text ? (child as Text).data : ttsData,
         toggled: value,
       ),
       child: Material(
@@ -40,10 +46,12 @@ class SwitchField extends StatelessWidget {
               onChanged != null ? () => onChanged(!switchToggle.value) : null,
           borderRadius: borderRadius,
           child: Container(
-            height: heigth,
+            height: heigth ?? defaultHeight,
             width: width,
-            decoration: onChanged == null ? boxDecoration : decoration,
-            padding: const EdgeInsets.only(left: 12.0, right: 4.0),
+            decoration: onChanged == null
+                ? boxDecoration
+                : decoration ?? whiteBoxDecoration,
+            padding: EdgeInsets.only(left: 12.0.s, right: 4.0.s),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -55,16 +63,20 @@ class SwitchField extends StatelessWidget {
                               .iconTheme
                               .copyWith(size: smallIconSize),
                           child: leading),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12.s),
                     ],
-                    if (text != null)
-                      DefaultTextStyle(
-                        style: abiliaTextTheme.bodyText1.copyWith(height: 1.0),
-                        child: text,
-                      ),
+                    DefaultTextStyle(
+                      style: abiliaTextTheme.bodyText1.copyWith(height: 1.0),
+                      child: child,
+                    ),
                   ],
                 ),
-                switchToggle,
+                SizedBox(
+                  height: 48.s,
+                  child: FittedBox(
+                    child: switchToggle,
+                  ),
+                ),
               ],
             ),
           ),

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'day_picker_bloc.dart';
 
 abstract class DayPickerEvent extends Equatable {

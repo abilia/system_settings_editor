@@ -6,19 +6,14 @@ import 'package:seagull/ui/theme.dart';
 
 extension PermissionExtension on Permission {
   String translate(Translated translate) {
-    switch (this) {
-      case Permission.camera:
-        return translate.accessToCamera;
-      case Permission.photos:
-      case Permission.storage:
-        return translate.accessToPhotos;
-      case Permission.notification:
-        return translate.notifications;
-      case Permission.systemAlertWindow:
-        return translate.fullScreenAlarm;
-      default:
-        return toString();
+    if (this == Permission.camera) return translate.accessToCamera;
+    if (this == Permission.notification) return translate.notifications;
+    if (this == Permission.systemAlertWindow) return translate.fullScreenAlarm;
+    if (this == Permission.photos || this == Permission.storage) {
+      return translate.accessToPhotos;
     }
+
+    return toString();
   }
 
   Widget get icon => Icon(
@@ -27,24 +22,16 @@ extension PermissionExtension on Permission {
       );
 
   IconData get iconData {
-    switch (this) {
-      case Permission.camera:
-        return AbiliaIcons.camera_photo;
-      case Permission.photos:
-      case Permission.storage:
-        return AbiliaIcons.my_photos;
-      case Permission.systemAlertWindow:
-        return AbiliaIcons.resize_higher;
-      case Permission.notification:
-        return AbiliaIcons.notification;
-      default:
-        return AbiliaIcons.empty1;
+    if (this == Permission.camera) return AbiliaIcons.camera_photo;
+    if (this == Permission.systemAlertWindow) return AbiliaIcons.resize_higher;
+    if (this == Permission.notification) return AbiliaIcons.notification;
+    if (this == Permission.photos || this == Permission.storage) {
+      return AbiliaIcons.upload;
     }
+    return AbiliaIcons.empty1;
   }
 }
 
 extension PermissionStatusExtension on PermissionStatus {
   bool get isDeniedOrPermenantlyDenied => isDenied || isPermanentlyDenied;
-  bool get isGrantedOrUndetermined =>
-      this == null || isGranted || isUndetermined;
 }

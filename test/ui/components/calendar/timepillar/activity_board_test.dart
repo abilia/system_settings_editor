@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -16,21 +18,29 @@ import 'package:seagull/utils/all.dart';
 import '../../../../mocks.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   final title = 'title';
   final startTime = DateTime(1987, 05, 22, 04, 04);
 
   StreamController<DateTime> streamController;
   Stream<DateTime> stream;
   MockSettingsDb mockSettingsDb;
+  MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   final textStyle = abiliaTextTheme.caption;
 
-  setUp(() {
+  setUp(() async {
     streamController = StreamController<DateTime>();
     stream = streamController.stream;
     mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
+    mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
+    when(mockMemoplannerSettingsBloc.state)
+        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+      dotsInTimepillar: true,
+    )));
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..database = MockDatabase()
       ..init();
   });
 
@@ -43,6 +53,10 @@ void main() {
       start: startInterval,
       end: startInterval.add(1.days()),
     );
+    final mockTimepillarBloc = MockTimepillarBloc();
+    final ts = TimepillarState(interval, 1);
+    when(mockTimepillarBloc.state).thenReturn(TimepillarState(
+        TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1));
     return MaterialApp(
       home: Directionality(
         textDirection: TextDirection.ltr,
@@ -54,24 +68,32 @@ void main() {
             ),
             BlocProvider<SettingsBloc>(
               create: (context) => SettingsBloc(settingsDb: mockSettingsDb),
-            )
+            ),
+            BlocProvider<MemoplannerSettingBloc>(
+              create: (context) => mockMemoplannerSettingsBloc,
+            ),
+            BlocProvider<TimepillarBloc>(
+              create: (context) => mockTimepillarBloc,
+            ),
           ],
           child: Stack(
             children: <Widget>[
               Timeline(
                 width: 40,
-                offset: -TimePillarCalendar.topMargin,
+                offset: -TimepillarCalendar.topMargin,
+                timepillarState: ts,
               ),
               ActivityBoard(
                 ActivityBoard.positionTimepillarCards(
                   activityOccasions,
                   textStyle,
                   1.0,
-                  interval,
                   MemoplannerSettingsLoaded(MemoplannerSettings()).dayParts,
                   TimepillarSide.RIGHT,
+                  ts,
                 ),
                 categoryMinWidth: 400,
+                timepillarWidth: ts.totalWidth,
               ),
             ],
           ),
@@ -139,13 +161,14 @@ void main() {
       await tester.pumpAndSettle();
 
       final timelineYPostion =
-          await tester.getTopLeft(find.byType(Timeline).first).dy;
+          tester.getTopLeft(find.byType(Timeline).first).dy;
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
-
+      final interval = TimepillarInterval(start: time, end: time);
+      final ts = TimepillarState(interval, 1);
       for (final y in activityYPos) {
-        expect(y, closeTo(timelineYPostion, dotSize / 2));
+        expect(y, closeTo(timelineYPostion, ts.dotSize / 2));
       }
     });
 
@@ -169,15 +192,17 @@ void main() {
       expect(find.byType(Timeline), findsOneWidget);
 
       final timelineYPostion =
-          await tester.getTopLeft(find.byType(Timeline).first).dy;
+          tester.getTopLeft(find.byType(Timeline).first).dy;
       final timelineMidPos = timelineYPostion + (Timeline.timelineHeight / 2);
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
-
+      final ts = TimepillarState(
+          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
       for (final y in activityYPos) {
-        final activityDotMidPos = y + dotSize / 2;
-        expect((activityDotMidPos - timelineMidPos).abs(), equals(dotDistance));
+        final activityDotMidPos = y + ts.dotSize / 2;
+        expect(
+            (activityDotMidPos - timelineMidPos).abs(), equals(ts.dotDistance));
       }
     });
     testWidgets(
@@ -233,9 +258,10 @@ void main() {
           tester.getTopLeft(find.byKey(ObjectKey(activityA))).dx;
       final activityBXPos =
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
-
+      final ts = TimepillarState(
+          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
       expect((activityAXPos - activityBXPos).abs(),
-          greaterThanOrEqualTo(ActivityTimepillarCard.totalWith));
+          greaterThanOrEqualTo(ts.totalWidth));
     });
     testWidgets(
         'two activities to sufficient time distance but the first with a long title does not has same vertical position',
@@ -264,8 +290,10 @@ void main() {
       final activityBXPos =
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
 
+      final ts = TimepillarState(
+          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
       expect((activityAXPos - activityBXPos).abs(),
-          greaterThanOrEqualTo(ActivityTimepillarCard.totalWith));
+          greaterThanOrEqualTo(ts.totalWidth));
     });
 
     testWidgets('Is not placed at same horizontal position',
@@ -309,9 +337,9 @@ void main() {
         activities,
         textStyle,
         1.0,
-        interval,
-        DayParts(0, 0, 0, 0, 0),
+        DayParts.standard(),
         TimepillarSide.RIGHT,
+        TimepillarState(interval, 1),
       );
       final uniques = boardData.cards.map((f) => {f.top, f.column});
 
@@ -449,6 +477,28 @@ void main() {
               .widgetList<AnimatedDot>(find.byType(AnimatedDot))
               .where((d) => d.decoration == futureNightDotShape),
           hasLength(1));
+    });
+
+    testWidgets('No side dots when setting is flarp',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        dotsInTimepillar: false,
+      )));
+
+      await tester.pumpWidget(
+        wrap(
+          ActivityOccasion.forTest(
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+              duration: 60.minutes(),
+            ),
+          ),
+        ),
+      );
+      expect(find.byType(AnimatedDot), findsNothing);
+      expect(find.byType(SideTime), findsOneWidget);
     });
   });
 }

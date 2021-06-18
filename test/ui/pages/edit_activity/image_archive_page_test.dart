@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -14,11 +16,13 @@ import '../../../utils/types.dart';
 void main() {
   group('Image archive test', () {
     final translate = Locales.language.values.first;
-    setUp(() {
+    setUp(() async {
       GetItInitializer()
         ..fileStorage = MockFileStorage()
         ..database = MockDatabase()
         ..flutterTts = MockFlutterTts()
+        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..database = MockDatabase()
         ..init();
     });
 
@@ -128,7 +132,7 @@ void main() {
       expect(poped, hasLength(1));
       final selectedImageRoute = poped.first as Route;
       final res = await selectedImageRoute.popped;
-      expect(res, SelectedImage(id: fileId, path: path));
+      expect(res, SelectedImage.from(id: fileId, path: path));
     });
 
     testWidgets('tts', (WidgetTester tester) async {
@@ -156,7 +160,7 @@ void main() {
         exact: translate.imageArchive,
       );
 
-      await expect(find.byType(LibraryFolder), findsOneWidget);
+      expect(find.byType(LibraryFolder), findsOneWidget);
       // Act - go into folder
       await tester.tap(find.byType(LibraryFolder));
       await tester.pumpAndSettle();

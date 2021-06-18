@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -54,8 +56,8 @@ void main() {
       title1 = 'allDay1',
       title2 = 'allDay2',
       title3 = 'allDay3';
-  setUp(() {
-    initializeDateFormatting();
+  setUp(() async {
+    await initializeDateFormatting();
     final allDayActivities = [
       Activity.createNew(
         title: title0,
@@ -83,10 +85,10 @@ void main() {
     );
 
     when(activitiesOccasionBlocMock.state).thenReturn(expected);
-    when(activitiesOccasionBlocMock.skip(1))
-        .thenAnswer((_) => StreamController<ActivitiesOccasionState>().stream);
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..database = MockDatabase()
       ..init();
     when(memoplannerSettingsBlocMock.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));

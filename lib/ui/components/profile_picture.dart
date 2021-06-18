@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/widgets.dart';
 
 import 'package:seagull/models/all.dart';
@@ -5,12 +7,10 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ProfilePicture extends StatelessWidget {
-  final double radius;
   final String baseUrl;
   final User user;
-  const ProfilePicture(this.baseUrl, this.user, {Key key, this.radius = 84.0})
-      : assert(radius != null),
-        super(key: key);
+  static final radius = 84.0.s;
+  const ProfilePicture(this.baseUrl, this.user, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final widhtHeight = radius * 2;

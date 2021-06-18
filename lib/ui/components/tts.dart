@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -21,8 +23,8 @@ class Tts extends StatelessWidget {
   Widget build(BuildContext context) {
     if (onLongPress != null) {
       return _Tts(
-        child: child,
         onLongPress: onLongPress,
+        child: child,
       );
     }
     final _text = (Text text) => text.semanticsLabel ?? text.data;

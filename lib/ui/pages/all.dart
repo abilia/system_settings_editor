@@ -1,12 +1,13 @@
+// @dart=2.9
+
 export 'calendar_page.dart';
-export 'login_page.dart';
-export 'logout_page.dart';
-export 'menu_page.dart';
+export 'login/all.dart';
+export 'settings/all.dart';
+export 'menu/menu_page.dart';
 export 'splash_page.dart';
 export 'alarm_page.dart';
 export 'allday_list_page.dart';
 export 'activity_page.dart';
-export 'permissions_page.dart';
-export 'about_page.dart';
-export 'available_for_page.dart';
 export 'edit_activity/all.dart';
+export 'menu/photo_calendar_page.dart';
+export 'menu/my_photos_page.dart';

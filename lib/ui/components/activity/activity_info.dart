@@ -1,16 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
+// @dart=2.9
 
+import 'package:flutter/services.dart';
+
+import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class ActivityInfoWithDots extends StatelessWidget {
   final ActivityDay activityDay;
+  final Widget previewImage;
 
-  const ActivityInfoWithDots(this.activityDay, {Key key}) : super(key: key);
+  const ActivityInfoWithDots(
+    this.activityDay, {
+    Key key,
+    this.previewImage,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -23,7 +30,10 @@ class ActivityInfoWithDots extends StatelessWidget {
                 child: Padding(
               padding: EdgeInsets.only(
                   left: displayQuarter ? 0 : ActivityInfo.margin),
-              child: ActivityInfo(activityDay),
+              child: ActivityInfo(
+                activityDay,
+                previewImage: previewImage,
+              ),
             )),
           ],
         );
@@ -33,15 +43,15 @@ class ActivityInfoWithDots extends StatelessWidget {
 }
 
 class ActivityInfo extends StatefulWidget {
-  static const margin = 12.0;
+  static final margin = 12.0.s;
   final ActivityDay activityDay;
   final Widget previewImage;
-  final bool checkButton;
+  final NotificationAlarm alarm;
   ActivityInfo(
     this.activityDay, {
     Key key,
     this.previewImage,
-    this.checkButton = true,
+    this.alarm,
   }) : super(key: key);
   factory ActivityInfo.from({Activity activity, DateTime day, Key key}) =>
       ActivityInfo(ActivityDay(activity, day), key: key);
@@ -52,69 +62,50 @@ class ActivityInfo extends StatefulWidget {
   _ActivityInfoState createState() => _ActivityInfoState();
 }
 
-class _ActivityInfoState extends State<ActivityInfo> with Checker {
+class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
   Activity get activity => widget.activityDay.activity;
 
   DateTime get day => widget.activityDay.day;
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    final signedOff = widget.activityDay.isSignedOff;
-    final theme = signedOff
-        ? Theme.of(context).copyWith(
-            buttonTheme: uncheckButtonThemeData,
-            buttonColor: AbiliaColors.transparentBlack20,
-          )
-        : Theme.of(context).copyWith(
-            buttonTheme: checkButtonThemeData,
-            buttonColor: AbiliaColors.green,
-          );
     return BlocBuilder<ClockBloc, DateTime>(builder: (context, now) {
       final occasion = widget.activityDay.toOccasion(now);
-      return AnimatedTheme(
-        duration: ActivityInfo.animationDuration,
-        data: theme.copyWith(
-            cardColor: widget.activityDay.end.occasion(now) == Occasion.past
-                ? AbiliaColors.white110
-                : AbiliaColors.white),
-        child: Column(
-          children: <Widget>[
-            TimeRow(widget.activityDay),
-            Expanded(
-              child: Container(
-                decoration: boxDecoration,
-                child: ActivityContainer(
-                  activityDay: widget.activityDay,
-                  previewImage: widget.previewImage,
-                ),
+      return Column(
+        children: <Widget>[
+          TimeRow(widget.activityDay),
+          Expanded(
+            child: Container(
+              decoration: boxDecoration,
+              child: ActivityContainer(
+                activityDay: widget.activityDay,
+                previewImage: widget.previewImage,
+                alarm: widget.alarm,
               ),
             ),
-            if (activity.checkable &&
-                !occasion.isSignedOff &&
-                widget.checkButton)
-              Padding(
-                padding: const EdgeInsets.only(top: 7.0),
-                child: CheckButton(
-                  key: TestKey.activityCheckButton,
-                  iconData: AbiliaIcons.handi_check,
-                  text: translate.check,
-                  onPressed: () async {
-                    await checkConfirmation(
-                      context,
-                      occasion,
-                    );
-                  },
-                ),
+          ),
+          if (widget.alarm == null &&
+              activity.checkable &&
+              !occasion.isSignedOff)
+            Padding(
+              padding: EdgeInsets.only(top: 7.0.s),
+              child: CheckButton(
+                onPressed: () async {
+                  await checkConfirmation(
+                    context,
+                    occasion,
+                  );
+                },
               ),
-          ],
-        ),
+            ),
+        ],
       );
     });
   }
 }
 
-mixin Checker {
+mixin ActivityMixin {
+  static final _log = Logger((ActivityMixin).toString());
   Future<bool> checkConfirmation(
     BuildContext context,
     ActivityOccasion activityOccasion, {
@@ -133,17 +124,29 @@ mixin Checker {
     }
     return check;
   }
+
+  Future popAlarm(BuildContext context, NotificationAlarm alarm) async {
+    if (alarm != null) {
+      _log.fine('closing alarm with id: ${alarm.hashCode}');
+      await notificationPlugin.cancel(alarm.hashCode);
+    }
+    if (!await Navigator.of(context).maybePop()) {
+      await SystemNavigator.pop();
+    }
+  }
 }
 
 class ActivityContainer extends StatelessWidget {
   const ActivityContainer({
     Key key,
     @required this.activityDay,
+    @required this.alarm,
     this.previewImage,
   }) : super(key: key);
 
   final ActivityDay activityDay;
   final Widget previewImage;
+  final NotificationAlarm alarm;
 
   @override
   Widget build(BuildContext context) {
@@ -186,6 +189,7 @@ class ActivityContainer extends StatelessWidget {
                   Expanded(
                     child: Attachment(
                       activityDay: activityDay,
+                      alarm: alarm,
                     ),
                   ),
                 ],
@@ -196,9 +200,10 @@ class ActivityContainer extends StatelessWidget {
               flex: activity.checkable ? 236 : 298,
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                  padding: EdgeInsets.fromLTRB(12.s, 0, 12.s, 12.s),
                   child: previewImage ??
                       CheckedImageWithImagePopup(
+                        size: double.infinity,
                         activityDay: activityDay,
                       ),
                 ),
@@ -210,12 +215,15 @@ class ActivityContainer extends StatelessWidget {
   }
 }
 
-class Attachment extends StatelessWidget with Checker {
-  static const padding = EdgeInsets.fromLTRB(18.0, 10.0, 14.0, 24.0);
+class Attachment extends StatelessWidget with ActivityMixin {
+  static final padding = EdgeInsets.fromLTRB(18.0.s, 10.0.s, 14.0.s, 24.0.s);
   final ActivityDay activityDay;
+  final NotificationAlarm alarm;
+
   const Attachment({
     Key key,
     @required this.activityDay,
+    @required this.alarm,
   }) : super(key: key);
 
   @override
@@ -245,12 +253,15 @@ class Attachment extends StatelessWidget with Checker {
           if (signedOff.allSignedOff(activityDay.day) &&
               updatedActivity.checkable &&
               !activityDay.isSignedOff) {
-            await checkConfirmation(
+            final checked = await checkConfirmation(
               context,
               ActivityDay(updatedActivity, activityDay.day)
                   .toOccasion(DateTime.now()),
               message: translate.checklistDoneInfo,
             );
+            if (alarm != null && checked == true) {
+              await popAlarm(context, alarm);
+            }
           }
         },
       );
@@ -261,38 +272,31 @@ class Attachment extends StatelessWidget with Checker {
 
 class CheckButton extends StatelessWidget {
   final VoidCallback onPressed;
-  final IconData iconData;
-  final String text;
 
   const CheckButton({
-    Key key,
     this.onPressed,
-    this.iconData,
-    this.text,
-  }) : super(key: key);
+  }) : super(key: TestKey.activityCheckButton);
 
   @override
   Widget build(BuildContext context) {
-    final theme = greenButtonTheme;
+    final text = Translator.of(context).translate.check;
     return Tts(
       data: text,
-      child: Container(
-        padding: const EdgeInsets.all(4.0),
-        decoration: BoxDecoration(
-          color: theme.scaffoldBackgroundColor,
-          borderRadius: borderRadius,
-        ),
-        child: FlatButton.icon(
-          icon: IconTheme(
-            data: theme.iconTheme,
-            child: Icon(iconData),
-          ),
-          label: Text(
-            text,
-            style: theme.textTheme.button,
-          ),
-          color: theme.buttonColor,
+      child: IconTheme(
+        data: lightIconThemeData,
+        child: TextButton.icon(
           onPressed: onPressed,
+          style: ButtonStyle(
+            textStyle: MaterialStateProperty.all(abiliaTextTheme.bodyText1),
+            minimumSize: MaterialStateProperty.all(Size(0.0, 48.0.s)),
+            padding: MaterialStateProperty.all(
+              EdgeInsets.fromLTRB(10.0.s, 10.0.s, 20.0.s, 10.0.s),
+            ),
+            backgroundColor: buttonBackgroundGreen,
+            foregroundColor: foregroundLight,
+          ),
+          icon: Icon(AbiliaIcons.handi_check),
+          label: Text(text),
         ),
       ),
     );
@@ -329,7 +333,7 @@ class TopInfo extends StatelessWidget {
       children: <Widget>[
         if (imageToTheLeft)
           Padding(
-            padding: const EdgeInsets.only(right: ActivityInfo.margin),
+            padding: EdgeInsets.only(right: ActivityInfo.margin),
             child: checkableImage,
           ),
         Expanded(
@@ -340,7 +344,7 @@ class TopInfo extends StatelessWidget {
             children: <Widget>[
               if (hasTitle)
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
+                  padding: EdgeInsets.only(bottom: 8.0.s),
                   child: Tts(
                     child: Text(
                       activity.title,

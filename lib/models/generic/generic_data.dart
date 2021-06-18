@@ -1,9 +1,16 @@
 part of 'generic.dart';
 
 abstract class GenericData extends Equatable {
-  final identifier;
+  final String identifier;
   const GenericData(this.identifier);
   String toRaw();
+  String get genericTypeString;
+  String get key => uniqueId(genericTypeString, identifier);
+  static String uniqueId(genericTypeString, identifier) =>
+      '$genericTypeString-$identifier';
+
+  @override
+  bool get stringify => true;
 }
 
 class RawGenericData extends GenericData {
@@ -15,33 +22,65 @@ class RawGenericData extends GenericData {
   String toRaw() => data;
 
   @override
-  List<Object> get props => [data];
+  String get genericTypeString => '';
+
+  @override
+  List<Object> get props => [data, identifier];
 
   static RawSortableData fromJson(String data) => RawSortableData(data);
 }
 
-class MemoplannerSettingData extends GenericData {
-  final String data, type;
+class MemoplannerSettingData<T> extends GenericData {
+  final T data;
+  final String type;
 
-  const MemoplannerSettingData({
-    @required this.data,
-    @required this.type,
-    @required String identifier,
+  const MemoplannerSettingData._({
+    required this.data,
+    required this.type,
+    required String identifier,
   }) : super(identifier);
+
+  factory MemoplannerSettingData.fromData({
+    required T data,
+    required String identifier,
+  }) {
+    String type;
+    switch (data.runtimeType) {
+      case bool:
+        type = 'Boolean';
+        break;
+      case int:
+        type = 'Integer';
+        break;
+      case String:
+        type = 'String';
+        break;
+      default:
+        throw UnimplementedError();
+    }
+    return MemoplannerSettingData._(
+      data: data,
+      type: type,
+      identifier: identifier,
+    );
+  }
 
   @override
   String toRaw() => json.encode({
-        if (data != null) 'data': data,
-        if (type != null) 'type': type,
+        'data': data,
+        'type': type,
       });
 
   @override
-  List<Object> get props => [data, type];
+  String get genericTypeString => GenericType.memoPlannerSettings;
+
+  @override
+  List<Object?> get props => [data, type, identifier];
 
   factory MemoplannerSettingData.fromJson(String data, String identifier) {
     final genericData = json.decode(data);
-    return MemoplannerSettingData(
-      data: genericData['data'].toString(),
+    return MemoplannerSettingData._(
+      data: genericData['data'],
       type: genericData['type'],
       identifier: identifier,
     );

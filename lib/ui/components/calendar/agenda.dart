@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -6,17 +8,15 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
 
 class Agenda extends StatefulWidget {
-  static const topPadding = 60.0, bottomPadding = 125.0;
+  static final topPadding = 60.0.s,
+      bottomPadding = 125.0.s,
+      categoryWidth = 42.0.s;
 
   final ActivitiesOccasionLoaded activityState;
-  final CalendarViewState calendarViewState;
-  final MemoplannerSettingsState memoplannerSettingsState;
 
   const Agenda({
     Key key,
     @required this.activityState,
-    @required this.calendarViewState,
-    @required this.memoplannerSettingsState,
   }) : super(key: key);
 
   @override
@@ -39,11 +39,22 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
           keepScrollOffset: false,
         );
       }
-      WidgetsBinding.instance.addPostFrameCallback((_) =>
-          BlocProvider.of<ScrollPositionBloc>(context)
-              .add(ScrollViewRenderComplete(scrollController)));
     }
+    _addScrollViewRenderCompleteCallback();
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _addScrollViewRenderCompleteCallback();
+  }
+
+  void _addScrollViewRenderCompleteCallback() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<ScrollPositionBloc>(context)
+          .add(ScrollViewRenderComplete(scrollController));
+    });
   }
 
   @override
@@ -53,77 +64,78 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final categoryLabelWidth =
-            (boxConstraints.maxWidth - timePillarWidth) / 2;
+            (boxConstraints.maxWidth - Agenda.categoryWidth) / 2;
         return RefreshIndicator(
           onRefresh: refresh,
-          child: Stack(
-            children: <Widget>[
-              NotificationListener<ScrollNotification>(
-                onNotification: state.isToday ? onScrollNotification : null,
-                child: CupertinoScrollbar(
-                  controller: scrollController,
-                  child: CustomScrollView(
-                    center: state.isToday ? center : null,
+          child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+            builder: (context, memoplannerSettingsState) => Stack(
+              children: <Widget>[
+                NotificationListener<ScrollNotification>(
+                  onNotification: state.isToday ? onScrollNotification : null,
+                  child: AbiliaScrollBar(
                     controller: scrollController,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    slivers: [
-                      if (state.activities.isEmpty &&
-                          state.fullDayActivities.isEmpty)
-                        SliverNoActivities(key: center)
-                      else ...[
-                        if (!todayFirstActivity)
-                          SliverPadding(
-                            padding:
-                                const EdgeInsets.only(top: Agenda.topPadding),
-                            sliver: SliverActivityList(
-                              state.pastActivities,
-                              reversed: state.isToday,
-                              lastMargin: _lastPastPadding(
+                    child: CustomScrollView(
+                      center: state.isToday ? center : null,
+                      controller: scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      slivers: [
+                        if (state.activities.isEmpty &&
+                            state.fullDayActivities.isEmpty)
+                          SliverNoActivities(key: center)
+                        else ...[
+                          if (!todayFirstActivity)
+                            SliverPadding(
+                              padding: EdgeInsets.only(top: Agenda.topPadding),
+                              sliver: SliverActivityList(
                                 state.pastActivities,
-                                state.notPastActivities,
+                                reversed: state.isToday,
+                                lastMargin: _lastPastPadding(
+                                  state.pastActivities,
+                                  state.notPastActivities,
+                                ),
+                                showCategories:
+                                    memoplannerSettingsState.showCategories,
                               ),
-                              showCategories: widget
-                                  .memoplannerSettingsState.showCategories,
+                            ),
+                          SliverPadding(
+                            key: center,
+                            padding: EdgeInsets.only(
+                              top: todayFirstActivity ? Agenda.topPadding : 0.0,
+                              bottom: Agenda.bottomPadding,
+                            ),
+                            sliver: SliverActivityList(
+                              state.notPastActivities,
+                              showCategories:
+                                  memoplannerSettingsState.showCategories,
                             ),
                           ),
-                        SliverPadding(
-                          key: center,
-                          padding: EdgeInsets.only(
-                            top: todayFirstActivity ? Agenda.topPadding : 0.0,
-                            bottom: Agenda.bottomPadding,
-                          ),
-                          sliver: SliverActivityList(
-                            state.notPastActivities,
-                            showCategories:
-                                widget.memoplannerSettingsState.showCategories,
-                          ),
-                        ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                 ),
-              ),
-              ArrowUp(
-                controller: scrollController,
-                collapseMargin: Agenda.topPadding,
-              ),
-              ArrowDown(
-                controller: scrollController,
-                collapseMargin: Agenda.bottomPadding,
-              ),
-              if (widget.memoplannerSettingsState.showCategories) ...[
-                CategoryLeft(
-                  maxWidth: categoryLabelWidth,
-                  settingsState: widget.memoplannerSettingsState,
-                  expanded: widget.calendarViewState.expandLeftCategory,
+                ArrowUp(
+                  controller: scrollController,
+                  collapseMargin: Agenda.topPadding,
                 ),
-                CategoryRight(
-                  maxWidth: categoryLabelWidth,
-                  settingsState: widget.memoplannerSettingsState,
-                  expanded: widget.calendarViewState.expandRightCategory,
+                ArrowDown(
+                  controller: scrollController,
+                  collapseMargin: Agenda.bottomPadding,
                 ),
-              ]
-            ],
+                if (memoplannerSettingsState.showCategories) ...[
+                  CategoryLeft(
+                    maxWidth: categoryLabelWidth,
+                    categoryName: memoplannerSettingsState.leftCategoryName,
+                    fileId: memoplannerSettingsState.leftCategoryImage,
+                  ),
+                  CategoryRight(
+                    maxWidth: categoryLabelWidth,
+                    categoryName: memoplannerSettingsState.rightCategoryName,
+                    fileId: memoplannerSettingsState.rightCategoryImage,
+                  ),
+                ],
+              ],
+            ),
           ),
         );
       },
@@ -148,7 +160,7 @@ class SliverNoActivities extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.only(top: Agenda.topPadding),
+      padding: EdgeInsets.only(top: 96.s),
       sliver: SliverToBoxAdapter(
         child: Center(
           child: Tts(
@@ -183,7 +195,7 @@ class SliverActivityList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: EdgeInsets.symmetric(horizontal: 12.0.s),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {

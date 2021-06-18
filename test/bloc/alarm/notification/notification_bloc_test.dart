@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -34,8 +36,8 @@ void main() {
     notificationSelected.add(payload);
 
     // Assert
-    await expectLater(
-        notificationBloc, emits(AlarmState(StartAlarm(nowActivity, aDay))));
+    await expectLater(notificationBloc.stream,
+        emits(AlarmState(StartAlarm(nowActivity, aDay))));
   });
 
   test('Notification selected emits new reminder state', () async {
@@ -53,7 +55,7 @@ void main() {
 
     // Assert
     await expectLater(
-        notificationBloc,
+        notificationBloc.stream,
         emits(
           AlarmState(ReminderBefore(
             nowActivity,

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -20,12 +22,12 @@ class ActivitiesOccasionBloc
     @required this.clockBloc,
     @required this.dayActivitiesBloc,
   }) : super(ActivitiesOccasionLoading()) {
-    activitiesSubscription = dayActivitiesBloc.listen((activitiesState) {
+    activitiesSubscription = dayActivitiesBloc.stream.listen((activitiesState) {
       if (activitiesState is DayActivitiesLoaded) {
         add(ActivitiesChanged(activitiesState));
       }
     });
-    clockSubscription = clockBloc.listen((now) => add(NowChanged(now)));
+    clockSubscription = clockBloc.stream.listen((now) => add(NowChanged(now)));
   }
 
   @override

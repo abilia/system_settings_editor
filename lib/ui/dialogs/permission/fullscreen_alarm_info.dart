@@ -1,7 +1,7 @@
+// @dart=2.9
+
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -18,7 +18,8 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return ViewDialog(
-      bodyPadding: const EdgeInsets.symmetric(horizontal: 20),
+      bodyPadding:
+          EdgeInsets.symmetric(horizontal: ViewDialog.horizontalPadding),
       expanded: true,
       backNavigationWidget: const CancelButton(),
       forwardNavigationWidget:
@@ -34,7 +35,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
-          const SizedBox(height: 8.0),
+          SizedBox(height: 8.0.s),
           Tts(
             child: Text(
               translate.fullScreenAlarmInfo,
@@ -55,7 +56,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.s),
           ] else
             const Spacer(flex: 71),
         ],
@@ -73,27 +74,20 @@ class ActivityAlarmPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final startTime = DateTime(2010, 10, 10, 18, 00);
     return AbsorbPointer(
-      child: Container(
-        clipBehavior: Clip.hardEdge,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(4)),
-          boxShadow: [
-            BoxShadow(
-              color: AbiliaColors.transparentBlack50,
-              offset: Offset(0, 2),
-              blurRadius: 4,
-              spreadRadius: 0,
-            )
-          ],
-        ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.all(Radius.circular(4.s)),
+        clipBehavior: Clip.antiAlias,
+        elevation: 3,
+        shadowColor: Colors.black,
         child: SizedBox(
-          height: 256.0,
+          height: 256.0.s,
           child: FittedBox(
             fit: BoxFit.contain,
             alignment: Alignment.center,
             child: SizedBox(
-              width: 450.0,
-              height: 800.0,
+              width: 450.0.s,
+              height: 800.0.s,
               child: BlocProvider(
                 create: (context) => ClockBloc(
                     StreamController<DateTime>().stream,
@@ -129,7 +123,9 @@ class RequestFullscreenNotificationButton extends StatelessWidget {
         icon: AbiliaIcons.ok,
         text: Translator.of(context).translate.allow,
         onPressed: () async {
-          await openSystemAlertSetting();
+          context
+              .read<PermissionBloc>()
+              .add(RequestPermissions([Permission.systemAlertWindow]));
           await Navigator.of(context).maybePop();
         },
       );

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = startTime.onlyDays();
   final mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
+  final mockTimepillarBloc = MockTimepillarBloc();
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [Translator.delegate],
@@ -40,19 +43,24 @@ void main() {
                 settingsDb: MockSettingsDb(),
               ),
             ),
+            BlocProvider<TimepillarBloc>(
+              create: (context) => mockTimepillarBloc,
+            ),
           ],
           child: widget,
         ),
       );
 
-  setUp(() {
+  setUp(() async {
     // When settings are not loaded the default value will be used
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
-    initializeDateFormatting();
+    await initializeDateFormatting();
 
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..database = MockDatabase()
       ..init();
   });
 

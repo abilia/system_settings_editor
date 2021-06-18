@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 
 import 'package:seagull/ui/all.dart';
@@ -9,6 +11,7 @@ class ViewDialog extends StatelessWidget {
   final Widget body;
   final EdgeInsets bodyPadding;
   final bool expanded;
+  static final horizontalPadding = 20.s;
   const ViewDialog({
     Key key,
     this.heading,
@@ -16,22 +19,23 @@ class ViewDialog extends StatelessWidget {
     this.expanded = false,
     @required this.backNavigationWidget,
     this.forwardNavigationWidget,
-    this.bodyPadding = const EdgeInsets.symmetric(
-      horizontal: 20,
-      vertical: 64,
-    ),
+    this.bodyPadding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final bodyContainer = Container(
       color: AbiliaColors.white110,
-      padding: bodyPadding,
+      padding: bodyPadding ??
+          EdgeInsets.symmetric(
+            horizontal: horizontalPadding,
+            vertical: 64.s,
+          ),
       child: Center(
         child: DefaultTextStyle(
           style: abiliaTextTheme.bodyText1,
-          child: body,
           textAlign: TextAlign.center,
+          child: body,
         ),
       ),
     );
@@ -39,7 +43,7 @@ class ViewDialog extends StatelessWidget {
       type: MaterialType.transparency,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 48),
+          padding: EdgeInsets.symmetric(horizontal: 12.0.s, vertical: 48.s),
           child: ClipRRect(
             borderRadius: borderRadius,
             child: Column(
@@ -48,7 +52,7 @@ class ViewDialog extends StatelessWidget {
               children: [
                 if (heading != null)
                   Container(
-                    height: 68,
+                    height: 68.s,
                     color: AbiliaColors.black80,
                     child: Center(child: heading),
                   ),
@@ -73,8 +77,13 @@ class ViewDialog extends StatelessWidget {
 
 class ErrorDialog extends StatelessWidget {
   final String text;
+  final Widget backNavigationWidget;
 
-  const ErrorDialog({Key key, this.text}) : super(key: key);
+  const ErrorDialog({
+    Key key,
+    this.text,
+    this.backNavigationWidget,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ViewDialog(
@@ -83,7 +92,7 @@ class ErrorDialog extends StatelessWidget {
           iconData: AbiliaIcons.ir_error,
         ),
         body: Tts(child: Text(text)),
-        backNavigationWidget: PreviousButton(),
+        backNavigationWidget: backNavigationWidget ?? PreviousButton(),
       );
 }
 
@@ -93,8 +102,8 @@ class YesNoDialog extends StatelessWidget {
   final IconData headingIcon;
   const YesNoDialog({
     Key key,
-    this.text,
-    this.heading,
+    @required this.text,
+    @required this.heading,
     this.headingIcon,
   }) : super(key: key);
 
@@ -106,18 +115,31 @@ class YesNoDialog extends StatelessWidget {
         iconData: headingIcon,
       ),
       body: Tts(child: Text(text)),
-      backNavigationWidget: GreyButton(
-        key: TestKey.noButton,
-        text: Translator.of(context).translate.no,
-        icon: AbiliaIcons.close_program,
-        onPressed: () => Navigator.of(context).maybePop(false),
+      backNavigationWidget: NoButton(),
+      forwardNavigationWidget: YesButton(),
+    );
+  }
+}
+
+class WarningDialog extends StatelessWidget {
+  final String text;
+  const WarningDialog({
+    Key key,
+    @required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ViewDialog(
+      heading: AppBarHeading(
+        text: Translator.of(context).translate.warning,
+        iconData: AbiliaIcons.gewa_radio_error,
       ),
-      forwardNavigationWidget: GreenButton(
-        key: TestKey.yesButton,
-        text: Translator.of(context).translate.yes,
-        icon: AbiliaIcons.ok,
+      body: Tts(child: Text(text)),
+      forwardNavigationWidget: OkButton(
         onPressed: () => Navigator.of(context).maybePop(true),
       ),
+      backNavigationWidget: PreviousButton(),
     );
   }
 }

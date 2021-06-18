@@ -14,10 +14,12 @@ class AlarmNavigator {
     final route = AlarmPageRoute(
       alarm,
       builder: (_) => CopiedAuthProviders(
+        blocContext: context,
         child: (alarm is NewAlarm)
             ? NavigatableAlarmPage(alarm: alarm, alarmNavigator: this)
-            : NavigatableReminderPage(reminder: alarm, alarmNavigator: this),
-        blocContext: context,
+            : (alarm is NewReminder)
+                ? NavigatableReminderPage(reminder: alarm, alarmNavigator: this)
+                : throw UnsupportedError('$alarm not supported'),
       ),
       fullscreenDialog: true,
     );
@@ -32,7 +34,7 @@ class AlarmNavigator {
     return navigator.push(route);
   }
 
-  AlarmPageRoute removedFromRoutes(NotificationAlarm alarm) {
+  AlarmPageRoute? removedFromRoutes(NotificationAlarm alarm) {
     return _alarmRoutesOnStack.remove(alarm.activity.id);
   }
 }
@@ -41,8 +43,8 @@ class AlarmPageRoute<T> extends MaterialPageRoute<T> {
   final NotificationAlarm alarm;
   AlarmPageRoute(
     this.alarm, {
-    @required WidgetBuilder builder,
-    RouteSettings settings,
+    required WidgetBuilder builder,
+    RouteSettings? settings,
     bool maintainState = true,
     bool fullscreenDialog = false,
   }) : super(

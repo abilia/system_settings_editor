@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:timezone/data/latest.dart' as tz;
@@ -18,14 +20,17 @@ void main() {
   ActivitiesBloc mockActivitiesBloc;
   MemoplannerSettingBloc mockMemoplannerSettingsBloc;
   ClockBloc clockBloc;
+  final nowTime = DateTime(2000, 02, 22, 22, 30);
   final aTime = DateTime(2022, 02, 22, 22, 30);
   final aDay = DateTime(2022, 02, 22);
 
   setUp(() {
     tz.initializeTimeZones();
     mockActivitiesBloc = MockActivitiesBloc();
+    when(mockActivitiesBloc.state).thenReturn(ActivitiesNotLoaded());
     mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
-    clockBloc = ClockBloc(StreamController<DateTime>().stream);
+    clockBloc =
+        ClockBloc(StreamController<DateTime>().stream, initialTime: nowTime);
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
   });
@@ -91,7 +96,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emits(UnstoredActivityState(activityWithTitle, timeInterval)),
     );
   });
@@ -131,7 +136,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         UnstoredActivityState(activity, timeInterval).failSave({
           SaveError.NO_TITLE_OR_IMAGE,
@@ -186,7 +191,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         StoredActivityState(activityAsFullDay, timeInterval, aDay),
         StoredActivityState(activityExpectedToBeSaved, timeInterval,
@@ -216,7 +221,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emits(UnstoredActivityState(activity, expectedTimeInterval)),
     );
   });
@@ -266,7 +271,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder(
         [
           UnstoredActivityState(activity, expectedTimeInterval1),
@@ -325,7 +330,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder(
         [
           StoredActivityState(activity, expectedNewTimeInterval, aDay),
@@ -380,7 +385,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         StoredActivityState(activity, expectedNewTimeInterval, aDay),
         StoredActivityState(expetedNewActivity, expectedNewTimeInterval, aDay)
@@ -428,7 +433,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         StoredActivityState(with15MinReminder, timeInterval, aDay),
         StoredActivityState(with15MinAnd1HourReminder, timeInterval, aDay),
@@ -482,7 +487,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         StoredActivityState(activity, expectedNewTimeInterval, aDay),
         StoredActivityState(expectedNewActivity, expectedNewTimeInterval, aDay)
@@ -523,7 +528,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder(
         [
           UnstoredActivityState(
@@ -577,7 +582,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         StoredActivityState(
           withChecklist,
@@ -636,7 +641,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emits(
         StoredActivityState(
           activityWithEmptyChecklist,
@@ -679,7 +684,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emits(
         StoredActivityState(
           activityWithEmptyNote,
@@ -722,7 +727,7 @@ void main() {
 
     // Assert
     await expectLater(
-        editActivityBloc,
+        editActivityBloc.stream,
         emitsInOrder([
           UnstoredActivityState(
             originalActivity,
@@ -737,6 +742,511 @@ void main() {
             expectedTimeIntervall,
           ).failSave({SaveError.NO_RECURRING_DAYS}),
         ]));
+  });
+
+  group('warnings', () {
+    group('before now', () {
+      test('Trying to save before now yields warning', () async {
+        // Arrange
+        final editActivityBloc = EditActivityBloc.newActivity(
+          activitiesBloc: mockActivitiesBloc,
+          memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+          clockBloc: ClockBloc(StreamController<DateTime>().stream,
+              initialTime: aTime.add(1.hours())),
+          day: aDay,
+        );
+
+        // Act
+
+        final originalActivity = editActivityBloc.state.activity;
+        final activity = originalActivity.copyWith(title: 'null');
+        final time = TimeOfDay.fromDateTime(aTime);
+        final timeIntervall = TimeInterval(
+          startTime: time,
+          endTime: time,
+          startDate: aDay,
+        );
+        final expectedActivity = activity.copyWith(startTime: aTime);
+        editActivityBloc.add(ChangeTimeInterval(startTime: time));
+        editActivityBloc.add(ReplaceActivity(activity));
+        editActivityBloc.add(SaveActivity());
+        editActivityBloc.add(SaveActivity(warningConfirmed: true));
+
+        // Assert
+        await expectLater(
+            editActivityBloc.stream,
+            emitsInOrder([
+              UnstoredActivityState(
+                originalActivity,
+                timeIntervall,
+              ),
+              UnstoredActivityState(
+                activity,
+                timeIntervall,
+              ),
+              UnstoredActivityState(
+                activity,
+                timeIntervall,
+              ).failSave({SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW}),
+              StoredActivityState(
+                expectedActivity,
+                timeIntervall,
+                aDay,
+              ).saveSucess()
+            ]));
+      });
+
+      test('Trying to save full day before now yields warning', () async {
+        // Arrange
+        final time = aTime.add(1.days());
+        final editActivityBloc = EditActivityBloc.newActivity(
+          activitiesBloc: mockActivitiesBloc,
+          memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+          clockBloc:
+              ClockBloc(StreamController<DateTime>().stream, initialTime: time),
+          day: aDay,
+        );
+
+        // Act
+
+        final originalActivity = editActivityBloc.state.activity;
+        final activity =
+            originalActivity.copyWith(title: 'null', fullDay: true);
+
+        final saveTime = aDay.previousDay();
+        final timeIntervall = TimeInterval(
+          startDate: saveTime,
+        );
+
+        final expectedActivity =
+            activity.copyWith(startTime: saveTime, alarmType: NO_ALARM);
+        editActivityBloc.add(ChangeDate(saveTime));
+        editActivityBloc.add(ReplaceActivity(activity));
+        editActivityBloc.add(SaveActivity());
+        editActivityBloc.add(SaveActivity(warningConfirmed: true));
+
+        // Assert
+        await expectLater(
+            editActivityBloc.stream,
+            emitsInOrder([
+              UnstoredActivityState(
+                originalActivity,
+                timeIntervall,
+              ),
+              UnstoredActivityState(
+                activity,
+                timeIntervall,
+              ),
+              UnstoredActivityState(
+                activity,
+                timeIntervall,
+              ).failSave({SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW}),
+              StoredActivityState(
+                expectedActivity,
+                timeIntervall,
+                saveTime,
+              ).saveSucess()
+            ]));
+      });
+
+      test('Trying to save new recurring before now yields warning', () async {
+        // Arrange
+        final editActivityBloc = EditActivityBloc.newActivity(
+          activitiesBloc: mockActivitiesBloc,
+          memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+          clockBloc: ClockBloc(StreamController<DateTime>().stream,
+              initialTime: aTime.add(1.hours())),
+          day: aDay,
+        );
+
+        // Act
+        final originalActivity = editActivityBloc.state.activity;
+        final activity1 = originalActivity.copyWith(title: 'null');
+        final activity2 = activity1.copyWith(recurs: Recurs.everyDay);
+        final time = TimeOfDay.fromDateTime(aTime);
+        final timeIntervall = TimeInterval(
+          startTime: time,
+          endTime: time,
+          startDate: aDay,
+        );
+
+        final expectedActivity = activity2.copyWith(startTime: aTime);
+
+        editActivityBloc.add(ChangeTimeInterval(startTime: time));
+        editActivityBloc.add(ReplaceActivity(activity1));
+        editActivityBloc.add(ReplaceActivity(activity2));
+        editActivityBloc.add(SaveActivity());
+        editActivityBloc.add(SaveActivity(warningConfirmed: true));
+
+        // Assert
+        await expectLater(
+            editActivityBloc.stream,
+            emitsInOrder([
+              UnstoredActivityState(
+                originalActivity,
+                timeIntervall,
+              ),
+              UnstoredActivityState(
+                activity1,
+                timeIntervall,
+              ),
+              UnstoredActivityState(
+                activity2,
+                timeIntervall,
+              ),
+              UnstoredActivityState(
+                activity2,
+                timeIntervall,
+              ).failSave({SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW}),
+              StoredActivityState(
+                expectedActivity,
+                timeIntervall,
+                aDay,
+              ).saveSucess()
+            ]));
+      });
+
+      test('Trying to edit recurring THIS DAY ONLY before now yields warning',
+          () async {
+        // Arrange
+        final activity = Activity.createNew(
+          title: 'title',
+          startTime: aTime.subtract(
+            100.days(),
+          ),
+          recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+        );
+
+        final editActivityBloc = EditActivityBloc(
+          ActivityDay(activity, aDay),
+          activitiesBloc: mockActivitiesBloc,
+          memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+          clockBloc:
+              ClockBloc(Stream.empty(), initialTime: aTime.add(1.hours())),
+        );
+
+        final expectedTimeIntervall = TimeInterval(
+          startTime: TimeOfDay.fromDateTime(aTime),
+          startDate: aDay,
+        );
+
+        final activityWithNewTitle = activity.copyWith(title: 'new title');
+
+        final expetedActivityToSave =
+            activityWithNewTitle.copyWith(startTime: activity.startClock(aDay));
+
+        // Act
+        editActivityBloc.add(ReplaceActivity(activityWithNewTitle));
+        editActivityBloc.add(SaveActivity());
+        editActivityBloc.add(SaveRecurringActivity(ApplyTo.onlyThisDay, aDay));
+
+        // Assert
+        await expectLater(
+            editActivityBloc.stream,
+            emitsInOrder([
+              StoredActivityState(
+                activityWithNewTitle,
+                expectedTimeIntervall,
+                aDay,
+              ),
+              StoredActivityState(
+                activityWithNewTitle,
+                expectedTimeIntervall,
+                aDay,
+              ).failSave({
+                SaveError.STORED_RECURRING,
+                SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
+              }),
+              StoredActivityState(
+                expetedActivityToSave,
+                expectedTimeIntervall,
+                aDay,
+              ).saveSucess()
+            ]));
+      });
+    });
+    group('conflict', () {
+      // base case, just a conflict
+      test('Trying to save with conflict yields warning', () async {
+        // Arrange
+        final stored = Activity.createNew(title: 'stored', startTime: aTime);
+        when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([stored]));
+        final editActivityBloc = EditActivityBloc.newActivity(
+          activitiesBloc: mockActivitiesBloc,
+          memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+          clockBloc: ClockBloc(StreamController<DateTime>().stream,
+              initialTime: aTime.subtract(1.hours())),
+          day: aDay,
+        );
+
+        // Act
+
+        final originalActivity = editActivityBloc.state.activity;
+        final activity = originalActivity.copyWith(title: 'null');
+        final time = TimeOfDay.fromDateTime(aTime);
+        final timeIntervall = TimeInterval(
+          startTime: time,
+          endTime: time,
+          startDate: aDay,
+        );
+        final expectedActivity = activity.copyWith(startTime: aTime);
+        editActivityBloc.add(ChangeTimeInterval(startTime: time));
+        editActivityBloc.add(ReplaceActivity(activity));
+        editActivityBloc.add(SaveActivity());
+        editActivityBloc.add(SaveActivity(warningConfirmed: true));
+
+        // Assert
+        await expectLater(
+            editActivityBloc.stream,
+            emitsInOrder([
+              UnstoredActivityState(
+                originalActivity,
+                timeIntervall,
+              ),
+              UnstoredActivityState(
+                activity,
+                timeIntervall,
+              ),
+              UnstoredActivityState(
+                activity,
+                timeIntervall,
+              ).failSave({SaveError.UNCONFIRMED_ACTIVITY_CONFLICT}),
+              StoredActivityState(
+                expectedActivity,
+                timeIntervall,
+                aDay,
+              ).saveSucess()
+            ]));
+      });
+
+      test('Trying to save with conflict and before no yields warnings',
+          () async {
+        // Arrange
+        final stored = Activity.createNew(title: 'stored', startTime: aTime);
+        when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([stored]));
+        final editActivityBloc = EditActivityBloc.newActivity(
+          activitiesBloc: mockActivitiesBloc,
+          memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+          clockBloc: ClockBloc(StreamController<DateTime>().stream,
+              initialTime: aTime.add(1.hours())),
+          day: aDay,
+        );
+
+        // Act
+
+        final originalActivity = editActivityBloc.state.activity;
+        final activity = originalActivity.copyWith(title: 'null');
+        final time = TimeOfDay.fromDateTime(aTime);
+        final timeIntervall = TimeInterval(
+          startTime: time,
+          endTime: time,
+          startDate: aDay,
+        );
+        final expectedActivity = activity.copyWith(startTime: aTime);
+        editActivityBloc.add(ChangeTimeInterval(startTime: time));
+        editActivityBloc.add(ReplaceActivity(activity));
+        editActivityBloc.add(SaveActivity());
+        editActivityBloc.add(SaveActivity(warningConfirmed: true));
+
+        // Assert
+        await expectLater(
+            editActivityBloc.stream,
+            emitsInOrder([
+              UnstoredActivityState(originalActivity, timeIntervall),
+              UnstoredActivityState(
+                activity,
+                timeIntervall,
+              ),
+              UnstoredActivityState(
+                activity,
+                timeIntervall,
+              ).failSave({
+                SaveError.UNCONFIRMED_ACTIVITY_CONFLICT,
+                SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
+              }),
+              StoredActivityState(
+                expectedActivity,
+                timeIntervall,
+                aDay,
+              ).saveSucess()
+            ]));
+      });
+
+      test('No self conflicts', () async {
+        // Arrange
+        final stored = Activity.createNew(title: 'stored', startTime: aTime);
+        when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([stored]));
+
+        final editActivityBloc = EditActivityBloc(
+          ActivityDay(stored, aDay),
+          activitiesBloc: mockActivitiesBloc,
+          memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+          clockBloc: ClockBloc(StreamController<DateTime>().stream,
+              initialTime: aTime.subtract(1.hours())),
+        );
+
+        // Act
+        final titleChanged = stored.copyWith(title: 'null');
+        final time = TimeOfDay.fromDateTime(aTime);
+        final timeIntervall = TimeInterval(
+          startTime: time,
+          startDate: aDay,
+        );
+        final expectedActivity = titleChanged.copyWith(startTime: aTime);
+        editActivityBloc.add(ReplaceActivity(titleChanged));
+        editActivityBloc.add(SaveActivity());
+
+        // Assert
+        await expectLater(
+            editActivityBloc.stream,
+            emitsInOrder([
+              StoredActivityState(
+                titleChanged,
+                timeIntervall,
+                aDay,
+              ),
+              StoredActivityState(
+                expectedActivity,
+                timeIntervall,
+                aDay,
+              ).saveSucess()
+            ]));
+      });
+
+      test('no conflict for fullday', () async {
+        // Arrange
+        final stored = Activity.createNew(title: 'stored', startTime: aTime);
+        when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([stored]));
+        final editActivityBloc = EditActivityBloc.newActivity(
+          activitiesBloc: mockActivitiesBloc,
+          memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+          clockBloc: ClockBloc(StreamController<DateTime>().stream,
+              initialTime: aTime),
+          day: aDay,
+        );
+
+        // Act
+        final originalActivity = editActivityBloc.state.activity;
+        final activity = originalActivity.copyWith(
+          title: 'null',
+          fullDay: true,
+          alarmType: NO_ALARM,
+        );
+        final timeIntervall = TimeInterval(
+          startDate: aDay,
+        );
+        final expectedActivity = activity.copyWith(startTime: aDay);
+        editActivityBloc.add(ReplaceActivity(activity));
+        editActivityBloc.add(SaveActivity());
+
+        // Assert
+        await expectLater(
+            editActivityBloc.stream,
+            emitsInOrder([
+              UnstoredActivityState(
+                activity,
+                timeIntervall,
+              ),
+              StoredActivityState(
+                expectedActivity,
+                timeIntervall,
+                aDay,
+              ).saveSucess()
+            ]));
+      });
+
+      test('no conflict for recuring', () async {
+        // Arrange
+        final stored = Activity.createNew(title: 'stored', startTime: aTime);
+        when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([stored]));
+        final editActivityBloc = EditActivityBloc.newActivity(
+          activitiesBloc: mockActivitiesBloc,
+          memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+          clockBloc: ClockBloc(StreamController<DateTime>().stream,
+              initialTime: aTime.subtract(1.hours())),
+          day: aDay,
+        );
+
+        // Act
+        final originalActivity = editActivityBloc.state.activity;
+        final activity = originalActivity.copyWith(
+          title: 'null',
+          recurs: Recurs.everyDay,
+        );
+        final time = TimeOfDay.fromDateTime(aTime);
+        final timeIntervall = TimeInterval(
+          startTime: time,
+          endTime: time,
+          startDate: aDay,
+        );
+        final expectedActivity = activity.copyWith(startTime: aTime);
+        editActivityBloc.add(ChangeTimeInterval(startTime: time));
+        editActivityBloc.add(ReplaceActivity(activity));
+        editActivityBloc.add(SaveActivity());
+
+        // Assert
+        await expectLater(
+            editActivityBloc.stream,
+            emitsInOrder([
+              UnstoredActivityState(
+                originalActivity,
+                timeIntervall,
+              ),
+              UnstoredActivityState(
+                activity,
+                timeIntervall,
+              ),
+              StoredActivityState(
+                expectedActivity,
+                timeIntervall,
+                aDay,
+              ).saveSucess()
+            ]));
+      });
+
+      test('No conflicts when edit but not time', () async {
+        // Arrange
+        final stored = Activity.createNew(title: 'stored', startTime: aTime);
+        final stored2 = Activity.createNew(title: 'stored2', startTime: aTime);
+        when(mockActivitiesBloc.state)
+            .thenReturn(ActivitiesLoaded([stored, stored2]));
+
+        final editActivityBloc = EditActivityBloc(
+          ActivityDay(stored, aDay),
+          activitiesBloc: mockActivitiesBloc,
+          memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+          clockBloc: ClockBloc(StreamController<DateTime>().stream,
+              initialTime: aTime.subtract(1.hours())),
+        );
+
+        // Act
+        final titleChanged = stored.copyWith(title: 'null');
+        final time = TimeOfDay.fromDateTime(aTime);
+        final timeIntervall = TimeInterval(
+          startTime: time,
+          startDate: aDay,
+        );
+        final expectedActivity = titleChanged.copyWith(startTime: aTime);
+        editActivityBloc.add(ReplaceActivity(titleChanged));
+        editActivityBloc.add(SaveActivity());
+
+        // Assert
+        await expectLater(
+            editActivityBloc.stream,
+            emitsInOrder([
+              StoredActivityState(
+                titleChanged,
+                timeIntervall,
+                aDay,
+              ),
+              StoredActivityState(
+                expectedActivity,
+                timeIntervall,
+                aDay,
+              ).saveSucess()
+            ]));
+      });
+    });
   });
 
   test('BUG SGC-352 edit a none recurring activity to be recurring', () async {
@@ -763,7 +1273,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder(
         [
           StoredActivityState(
@@ -808,7 +1318,7 @@ void main() {
 
     // Assert
     await expectLater(
-        editActivityBloc,
+        editActivityBloc.stream,
         emitsInOrder([
           StoredActivityState(
             activityWithNewTitle,
@@ -867,6 +1377,49 @@ void main() {
       UpdateRecurringActivity(
         ActivityDay(expectedActivity, aDay),
         ApplyTo.onlyThisDay,
+      ),
+    );
+  });
+
+  test('Changing start date to after recuring end changes recuring end',
+      () async {
+    // Arrange
+
+    final editActivityBloc = EditActivityBloc.newActivity(
+      activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+      day: aDay,
+    );
+
+    final in30Days = aTime.add(30.days());
+    final in60Days = aTime.add(60.days());
+    final activity = editActivityBloc.state.activity;
+    final timeInterval = editActivityBloc.state.timeInterval;
+    final recurringActivity = activity.copyWith(
+      recurs: Recurs.weeklyOnDay(2, ends: in30Days),
+    );
+
+    final expectedActivity =
+        activity.copyWith(recurs: Recurs.weeklyOnDay(2, ends: in60Days));
+    final expectedInterval = timeInterval.copyWith(startDate: in60Days);
+
+    editActivityBloc.add(ReplaceActivity(recurringActivity));
+    editActivityBloc.add(ChangeDate(in60Days));
+
+    await expectLater(
+      editActivityBloc.stream,
+      emitsInOrder(
+        [
+          UnstoredActivityState(
+            recurringActivity,
+            timeInterval,
+          ),
+          UnstoredActivityState(
+            expectedActivity,
+            expectedInterval,
+          ),
+        ],
       ),
     );
   });

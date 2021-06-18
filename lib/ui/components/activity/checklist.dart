@@ -1,5 +1,4 @@
-import 'dart:collection';
-import 'dart:io';
+// @dart=2.9
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:seagull/models/info_item.dart';
 import 'package:seagull/ui/all.dart';
 
-class ChecklistView extends StatelessWidget {
+class ChecklistView extends StatefulWidget {
   final Checklist checklist;
   final DateTime day;
   final Function(Question) onTap;
   final EdgeInsetsGeometry padding;
-  final UnmodifiableMapView<int, File> tempImageFiles;
   final bool preview;
 
   ChecklistView(
@@ -21,29 +19,37 @@ class ChecklistView extends StatelessWidget {
     this.onTap,
     Key key,
     this.padding = EdgeInsets.zero,
-    Map<int, File> tempImageFiles = const {},
     this.preview = false,
-  })  : tempImageFiles = UnmodifiableMapView(tempImageFiles),
-        super(key: key);
+  }) : super(key: key);
 
-  final ScrollController controller = ScrollController();
+  @override
+  _ChecklistViewState createState() => _ChecklistViewState();
+}
+
+class _ChecklistViewState extends State<ChecklistView> {
+  ScrollController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+  }
 
   @override
   Widget build(BuildContext context) {
     return VerticalScrollArrows(
-      controller: controller,
+      controller: _controller,
       child: ListView.builder(
-        controller: controller,
-        padding: padding,
-        itemCount: checklist.questions.length,
+        controller: _controller,
+        padding: widget.padding,
+        itemCount: widget.checklist.questions.length,
         itemBuilder: (context, i) {
-          final question = checklist.questions[i];
+          final question = widget.checklist.questions[i];
           return QuestionView(
             question,
-            inactive: preview,
-            signedOff: day != null && checklist.isSignedOff(question, day),
-            onTap: onTap != null ? () => onTap(question) : null,
-            tempImageFile: tempImageFiles[question.id],
+            inactive: widget.preview,
+            signedOff: widget.day != null &&
+                widget.checklist.isSignedOff(question, widget.day),
+            onTap: widget.onTap != null ? () => widget.onTap(question) : null,
           );
         },
       ),
@@ -55,7 +61,6 @@ class QuestionView extends StatelessWidget {
   final Question question;
   final bool signedOff;
   final GestureTapCallback onTap;
-  final File tempImageFile;
   final bool inactive;
 
   const QuestionView(
@@ -63,12 +68,11 @@ class QuestionView extends StatelessWidget {
     @required this.onTap,
     this.signedOff = false,
     key,
-    this.tempImageFile,
     this.inactive = false,
   }) : super(key: key);
 
   static const duration = Duration(milliseconds: 400);
-  static const padding = EdgeInsets.only(bottom: 6.0);
+  static final padding = EdgeInsets.only(bottom: 6.0.s);
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +124,7 @@ class QuestionView extends StatelessWidget {
                           ),
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(6.0, 4.0, 0.0, 4.0),
+                                EdgeInsets.fromLTRB(6.0.s, 4.0.s, 0.0, 4.0.s),
                             child: AnimatedOpacity(
                               duration: duration,
                               opacity: signedOff ? 0.5 : 1.0,
@@ -128,9 +132,8 @@ class QuestionView extends StatelessWidget {
                                 key: TestKey.checklistQuestionImageKey,
                                 imageFileId: question.fileId,
                                 imageFilePath: question.image,
-                                imageFile: tempImageFile,
-                                width: 40,
-                                height: 40,
+                                width: 40.s,
+                                height: 40.s,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -140,7 +143,7 @@ class QuestionView extends StatelessWidget {
                         Expanded(
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(8.0, 10.0, 0.0, 10.0),
+                                EdgeInsets.fromLTRB(8.0.s, 10.0.s, 0.0, 10.0.s),
                             child: Text(
                               question.name,
                               overflow: TextOverflow.fade,
@@ -157,7 +160,7 @@ class QuestionView extends StatelessWidget {
                             .copyWith(size: smallIconSize),
                         child: Padding(
                           padding:
-                              const EdgeInsets.fromLTRB(0.0, 12.0, 12.0, 12.0),
+                              EdgeInsets.fromLTRB(0.0, 12.0.s, 12.0.s, 12.0.s),
                           child: AnimatedCrossFade(
                             firstChild: Icon(
                               AbiliaIcons.checkbox_selected,

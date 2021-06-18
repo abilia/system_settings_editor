@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -5,15 +7,6 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityTimepillarCard extends StatelessWidget {
-  static const double imageSize = 56.0,
-      imagePadding = 16.0,
-      imageHeigth = imageSize + imagePadding,
-      crossWidth = 48.0,
-      crossVerticalPadding = 36.0,
-      width = 72.0,
-      padding = 12.0,
-      minHeight = 84.0,
-      totalWith = dotSize + width + padding;
   static const int maxTitleLines = 5;
 
   final ActivityOccasion activityOccasion;
@@ -23,6 +16,7 @@ class ActivityTimepillarCard extends StatelessWidget {
   final TimepillarInterval timepillarInterval;
   final DayParts dayParts;
   final TimepillarSide timepillarSide;
+  final TimepillarState timepillarState;
 
   const ActivityTimepillarCard({
     Key key,
@@ -35,12 +29,14 @@ class ActivityTimepillarCard extends StatelessWidget {
     @required this.timepillarInterval,
     @required this.dayParts,
     @required this.timepillarSide,
+    @required this.timepillarState,
   })  : assert(activityOccasion != null),
         endPos = top + height,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ts = timepillarState;
     final activity = activityOccasion.activity;
     final hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
@@ -51,16 +47,18 @@ class ActivityTimepillarCard extends StatelessWidget {
 
     final endTime = activityOccasion.end;
     final startTime = activityOccasion.start;
-    final dotHeight = dots * dotDistance;
+    final dotHeight = dots * ts.dotDistance;
 
     final right = TimepillarSide.RIGHT == timepillarSide;
 
-    return BlocBuilder<SettingsBloc, SettingsState>(
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.dotsInTimepillar != current.dotsInTimepillar,
       builder: (context, settings) {
         final decoration = getBoxDecoration(current, inactive);
         return Positioned(
-          right: right ? null : column * totalWith,
-          left: right ? column * totalWith : null,
+          right: right ? null : column * ts.totalWidth,
+          left: right ? column * ts.totalWidth : null,
           top: top,
           child: Tts.fromSemantics(
             activity.semanticsProperties(context),
@@ -86,6 +84,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                         (dotHeight > 0
                             ? decoration.border.dimensions.vertical
                             : 0),
+                    width: ts.width,
                   ),
                 GestureDetector(
                   onTap: () {
@@ -102,14 +101,14 @@ class ActivityTimepillarCard extends StatelessWidget {
                   },
                   child: Container(
                     margin: right
-                        ? const EdgeInsets.only(left: dotSize + hourPadding)
-                        : const EdgeInsets.only(right: dotSize + hourPadding),
+                        ? EdgeInsets.only(left: ts.dotSize + ts.hourPadding)
+                        : EdgeInsets.only(right: ts.dotSize + ts.hourPadding),
                     decoration: decoration,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxWidth: width,
-                        minWidth: width,
-                        minHeight: minHeight,
+                        maxWidth: ts.width,
+                        minWidth: ts.width,
+                        minHeight: ts.minHeight,
                         maxHeight: height,
                       ),
                       child: Center(
@@ -127,12 +126,12 @@ class ActivityTimepillarCard extends StatelessWidget {
                             if (hasImage || signedOff)
                               ActivityImage.fromActivityOccasion(
                                 activityOccasion: activityOccasion,
-                                size: imageSize,
+                                size: ts.imageSize,
                               )
                             else if (past)
                               SizedBox(
-                                width: crossWidth,
-                                height: height - crossVerticalPadding,
+                                width: ts.crossWidth,
+                                height: height - ts.crossVerticalPadding,
                                 child: const CrossOver(),
                               )
                           ],
@@ -154,22 +153,24 @@ class SideTime extends StatelessWidget {
   final Occasion occasion;
   final int category;
   final double height;
+  final double width;
   const SideTime({
     Key key,
     @required this.occasion,
     @required this.category,
     @required this.height,
+    @required this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: ActivityTimepillarCard.width,
+      width: width,
       height: height,
       child: DecoratedBox(
         decoration: BoxDecoration(
             color: colorFromOccasion(occasion),
-            borderRadius: const BorderRadius.all(Radius.circular(8.0))),
+            borderRadius: BorderRadius.all(Radius.circular(8.0.s))),
       ),
     );
   }

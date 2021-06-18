@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -8,21 +10,24 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-const pastDotShape = ShapeDecoration(shape: CircleBorder(side: BorderSide())),
-    futureDotShape =
+final pastDotShape =
+        ShapeDecoration(shape: CircleBorder(side: BorderSide(width: 1.0.s))),
+    pastNightDotShape = ShapeDecoration(
+        shape: CircleBorder(
+            side: BorderSide(color: AbiliaColors.blue, width: 1.0.s))),
+    pastSideDotShape = ShapeDecoration(
+        shape: CircleBorder(
+            side: BorderSide(color: AbiliaColors.black, width: 1.0.s)));
+const futureDotShape =
         ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder()),
     transparantDotShape =
         ShapeDecoration(color: Colors.transparent, shape: CircleBorder()),
     currentDotShape =
         ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder()),
-    pastNightDotShape =
-        ShapeDecoration(color: AbiliaColors.white140, shape: CircleBorder()),
     futureNightDotShape =
         ShapeDecoration(color: AbiliaColors.blue, shape: CircleBorder()),
     futureSideDotShape =
-        ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder()),
-    pastSideDotShape = ShapeDecoration(
-        shape: CircleBorder(side: BorderSide(color: AbiliaColors.black)));
+        ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder());
 
 class PastDots extends StatelessWidget {
   final bool isNight;
@@ -32,8 +37,8 @@ class PastDots extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => isNight
-      ? const Dots(decoration: pastNightDotShape)
-      : const Dots(decoration: pastDotShape);
+      ? Dots(decoration: pastNightDotShape)
+      : Dots(decoration: pastDotShape);
 }
 
 class TodayDots extends StatelessWidget {
@@ -41,10 +46,11 @@ class TodayDots extends StatelessWidget {
     Key key,
     @required this.hour,
     @required this.isNight,
+    @required this.columnOfDots,
   }) : super(key: key);
 
   final DateTime hour;
-  final bool isNight;
+  final bool isNight, columnOfDots;
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +67,17 @@ class TodayDots extends StatelessWidget {
                   decoration: futureNightDotShape,
                 );
               }
+              if (columnOfDots) {
+                return const AnimatedDot(decoration: currentDotShape);
+              }
               return const AnimatedDot(decoration: futureDotShape);
             } else if (now.isBefore(dotTime.add(minutesPerDot.minutes()))) {
               return const AnimatedDot(decoration: currentDotShape);
             }
             if (isNight) {
-              return const AnimatedDot(decoration: pastNightDotShape);
+              return AnimatedDot(decoration: pastNightDotShape);
             }
-            return const AnimatedDot(decoration: pastDotShape);
+            return AnimatedDot(decoration: pastDotShape);
           },
         ),
       ),
@@ -92,17 +101,22 @@ class Dots extends StatelessWidget {
   final Decoration decoration;
   const Dots({Key key, @required this.decoration}) : super(key: key);
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) {
+    return BlocBuilder<TimepillarBloc, TimepillarState>(
+      buildWhen: (oldState, newState) => oldState.dotSize != newState.dotSize,
+      builder: (context, ts) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(
           dotsPerHour,
           (_) => Container(
-            height: dotSize,
-            width: dotSize,
+            height: ts.dotSize,
+            width: ts.dotSize,
             decoration: decoration,
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 class AnimatedDot extends StatelessWidget {
@@ -112,12 +126,17 @@ class AnimatedDot extends StatelessWidget {
   const AnimatedDot({Key key, @required this.decoration, this.size, this.child})
       : super(key: key);
   @override
-  Widget build(BuildContext context) => AnimatedContainer(
-        duration: transitionDuration,
-        height: size ?? dotSize,
-        width: size ?? dotSize,
-        decoration: decoration,
-        child: child,
+  Widget build(BuildContext context) =>
+      BlocBuilder<TimepillarBloc, TimepillarState>(
+        buildWhen: (previous, current) =>
+            size == null && previous.dotSize != current.dotSize,
+        builder: (context, ts) => AnimatedContainer(
+          duration: transitionDuration,
+          height: size ?? ts.dotSize,
+          width: size ?? ts.dotSize,
+          decoration: decoration,
+          child: child,
+        ),
       );
 }
 
@@ -136,33 +155,35 @@ class SideDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final flat = startTime.roundToMinute(minutesPerDot, roundingMinute);
-    return BlocBuilder<ClockBloc, DateTime>(
-      builder: (_, now) => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(
-          dots,
-          (dot) {
-            final dotStartTime = dot == 0
-                ? startTime
-                : flat.add((dot * minutesPerDot).minutes());
-            final nextDotStart = dot < dots - 1
-                ? flat.add(((dot + 1) * minutesPerDot).minutes())
-                : endTime.add(1.minutes());
-            if (dotStartTime.isAfter(now)) {
-              if (dotStartTime.isNight(dayParts)) {
-                return const AnimatedDot(decoration: futureNightDotShape);
+    return BlocBuilder<TimepillarBloc, TimepillarState>(
+      builder: (context, ts) => BlocBuilder<ClockBloc, DateTime>(
+        builder: (_, now) => Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(
+            dots,
+            (dot) {
+              final dotStartTime = dot == 0
+                  ? startTime
+                  : flat.add((dot * minutesPerDot).minutes());
+              final nextDotStart = dot < dots - 1
+                  ? flat.add(((dot + 1) * minutesPerDot).minutes())
+                  : endTime.add(1.minutes());
+              if (dotStartTime.isAfter(now)) {
+                if (dotStartTime.isNight(dayParts)) {
+                  return const AnimatedDot(decoration: futureNightDotShape);
+                }
+                return const AnimatedDot(decoration: futureSideDotShape);
+              } else if (now.isBefore(nextDotStart)) {
+                return const AnimatedDot(decoration: currentDotShape);
               }
-              return const AnimatedDot(decoration: futureSideDotShape);
-            } else if (now.isBefore(nextDotStart)) {
-              return const AnimatedDot(decoration: currentDotShape);
-            }
-            if (dotStartTime.isNight(dayParts)) {
-              return const AnimatedDot(decoration: pastNightDotShape);
-            }
-            return const AnimatedDot(decoration: pastSideDotShape);
-          },
-        ).expand((d) => [d, const SizedBox(height: dotPadding)]).toList()
-          ..add(const SizedBox(width: dotSize)),
+              if (dotStartTime.isNight(dayParts)) {
+                return AnimatedDot(decoration: pastNightDotShape);
+              }
+              return AnimatedDot(decoration: pastSideDotShape);
+            },
+          ).expand((d) => [d, SizedBox(height: ts.dotPadding)]).toList()
+            ..add(SizedBox(width: ts.dotSize)),
+        ),
       ),
     );
   }
@@ -193,6 +214,15 @@ class ActivityInfoSideDots extends StatelessWidget {
             !activity.fullDay && onSameDay && (notStarted || isCurrent);
         return AnimatedSwitcher(
           duration: ActivityInfo.animationDuration,
+          transitionBuilder: (child, animation) => SizeTransition(
+            axis: Axis.horizontal,
+            axisAlignment: -1,
+            sizeFactor: animation,
+            child: FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+          ),
           child: !shouldHaveSideDots
               ? const SizedBox()
               : now.isBefore(startTime)
@@ -208,17 +238,6 @@ class ActivityInfoSideDots extends StatelessWidget {
                       endTime: endTime,
                       now: now,
                     ),
-          transitionBuilder: (child, animation) {
-            return SizeTransition(
-              axis: Axis.horizontal,
-              axisAlignment: -1,
-              child: FadeTransition(
-                child: child,
-                opacity: animation,
-              ),
-              sizeFactor: animation,
-            );
-          },
         );
       }),
     );
@@ -240,14 +259,14 @@ class SideDotsLarge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.displayTimeLeft != current.displayTimeLeft,
       builder: (context, state) {
-        final displayRemainingTime = state.displayTimeLeft;
         return Column(
           children: <Widget>[
             Spacer(),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: ActivityInfo.margin),
+              padding: EdgeInsets.symmetric(horizontal: ActivityInfo.margin),
               child: BigDots(
                 dots: max(dots, 1),
                 startTime: startTime,
@@ -258,7 +277,7 @@ class SideDotsLarge extends StatelessWidget {
             Expanded(
               child: Column(
                 children: <Widget>[
-                  if (displayRemainingTime)
+                  if (state.displayTimeLeft)
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Tts(
@@ -312,8 +331,7 @@ class BigDots extends StatelessWidget {
           .reversed
           .map(
             (dot) => Padding(
-                padding: const EdgeInsets.only(bottom: bigDotPadding),
-                child: dot),
+                padding: EdgeInsets.only(bottom: bigDotPadding), child: dot),
           )
           .toList(),
     );
@@ -366,11 +384,27 @@ class OrangeDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 12,
-      height: 12,
+      width: 12.s,
+      height: 12.s,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(6)),
+        borderRadius: BorderRadius.all(Radius.circular(6.s)),
         color: AbiliaColors.orange40,
+      ),
+    );
+  }
+}
+
+class ColorDot extends StatelessWidget {
+  final Color color;
+  const ColorDot({Key key, this.color = AbiliaColors.white}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 8.s,
+      height: 8.s,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(4.s)),
+        color: color,
       ),
     );
   }

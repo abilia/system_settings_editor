@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -9,12 +11,13 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/fakes/fake_user_files.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
 
 void main() {
   final mockUserFileDb = MockUserFileDb();
-  final baseUrl = 'url';
+  final baseUrl = 'http://url.com';
   final mockFileStorage = MockFileStorage();
   final mockClient = MockedClient();
   final mockMultiRequestBuilder = MockMultipartRequestBuilder();
@@ -28,6 +31,13 @@ void main() {
     userId: userId,
     multipartRequestBuilder: mockMultiRequestBuilder,
   );
+
+  tearDown(() {
+    reset(mockUserFileDb);
+    reset(mockClient);
+    reset(mockFileStorage);
+  });
+
   test('Save saves to db', () async {
     final userFile1 = FakeUserFile.createNew(id: 'fakeId1');
     await userFileRepository.save([userFile1]);
@@ -57,7 +67,7 @@ void main() {
 
     when(
       mockClient.get(
-        '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision',
+        '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision'.toUri(),
         headers: authHeader(Fakes.token),
       ),
     ).thenAnswer(
@@ -72,12 +82,12 @@ void main() {
         .map((l) => DbUserFile.fromJson(l))
         .toList();
 
-    when(mockUserFileDb.getAllWithMissingFiles())
+    when(mockUserFileDb.getMissingFiles(limit: anyNamed('limit')))
         .thenAnswer((_) => Future.value(expectedFiles.map((f) => f.model)));
 
     when(
       mockClient.get(
-        fileIdUrl(baseUrl, userId, fileId),
+        fileIdUrl(baseUrl, userId, fileId).toUri(),
         headers: authHeader(Fakes.token),
       ),
     ).thenAnswer(
@@ -138,7 +148,7 @@ void main() {
       ''';
     when(
       mockClient.post(
-        '$baseUrl/api/v1/data/$userId/storage/items/$lastRevision',
+        '$baseUrl/api/v1/data/$userId/storage/items/$lastRevision'.toUri(),
         headers: jsonAuthHeader(Fakes.token),
         body: jsonEncode(dirtyFiles.toList()),
       ),
@@ -183,5 +193,61 @@ void main() {
       mockUserFileDb.insert([]),
       mockUserFileDb.getAllDirty(),
     ]);
+  });
+
+  test('Missing continues download but does not return userFile', () async {
+    final failsOnId = {1, 5};
+    final userFiles = (int limit) => List.generate(
+          limit,
+          (index) => UserFile(
+            id: '$index',
+            contentType: index > (limit ~/ 2) ? 'contentType' : 'image/jpeg',
+            sha1: 'sha1',
+            md5: 'md5',
+            path: 'path/$index',
+            fileSize: 1,
+            fileLoaded: false,
+            deleted: false,
+          ),
+        );
+
+    // Arrange
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (invocation) =>
+          Future.value(userFiles(invocation.namedArguments.values.first)),
+    );
+
+    when(
+      mockClient.get(any, headers: anyNamed('headers')),
+    ).thenAnswer((r) {
+      final Uri uri = r.positionalArguments[0];
+      final url = uri.path;
+      final p = int.tryParse(url.split('?').first.split('/').last);
+      if (failsOnId.contains(p)) {
+        return Future.value(Response('not found', 400));
+      }
+      return Future.value(Response(FakeUserFile.ONE_PIXEL_PNG, 200));
+    });
+    when(mockFileStorage.storeFile(any, any)).thenAnswer((_) => Future.value());
+    when(mockFileStorage.storeImageThumb(any, any))
+        .thenAnswer((_) => Future.value());
+    when(mockUserFileDb.setFileLoadedForId(any))
+        .thenAnswer((_) => Future.value());
+
+    final lim = 12;
+    final expectedToSuccessed =
+        {for (var i = 0; i < lim; i++) i}.difference(failsOnId);
+    final expectedSuccesses = expectedToSuccessed.length;
+
+    // Act
+    final res = await userFileRepository.downloadUserFiles(limit: lim);
+
+    // Assert -- Set loaded, stores and returns all succeded
+
+    verify(mockUserFileDb.setFileLoadedForId(any)).called(expectedSuccesses);
+    verify(mockFileStorage.storeFile(any, any)).called(expectedSuccesses);
+    expect(res.length, expectedSuccesses);
   });
 }

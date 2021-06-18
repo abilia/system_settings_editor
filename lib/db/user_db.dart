@@ -12,7 +12,7 @@ class UserDb {
   Future insertUser(User user) =>
       prefs.setString(_USER_RECORD, json.encode(user.toJson()));
 
-  User getUser() {
+  User? getUser() {
     final userString = prefs.getString(_USER_RECORD);
     return userString == null ? null : User.fromJson(json.decode(userString));
   }

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:collection/collection.dart';
@@ -84,7 +86,7 @@ void main() {
     recurringWeekBloc.add(AddOrRemoveWeekday(day.weekday));
 
     await expectLater(
-      recurringWeekBloc,
+      recurringWeekBloc.stream,
       emitsInOrder(
         [
           RecurringWeekState(
@@ -144,7 +146,7 @@ void main() {
     recurringWeekBloc.add(AddOrRemoveWeekday(day.weekday));
 
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         initialS.copyWith(
           initialS.activity.copyWith(
@@ -203,7 +205,7 @@ void main() {
     recurringWeekBloc.add(ChangeEveryOtherWeek(true));
 
     await expectLater(
-      recurringWeekBloc,
+      recurringWeekBloc.stream,
       emitsInOrder(
         [
           RecurringWeekState(
@@ -252,7 +254,7 @@ void main() {
     recurringWeekBloc.add(ChangeEveryOtherWeek(true));
 
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         initialS.copyWith(
           initialS.activity.copyWith(
@@ -303,7 +305,7 @@ void main() {
     editActivityBloc.add(ChangeDate(newStartDate));
 
     await expectLater(
-      recurringWeekBloc,
+      recurringWeekBloc.stream,
       emitsInOrder(
         [
           RecurringWeekState(
@@ -374,7 +376,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         initialState.copyWith(activity2),
         initialState.copyWith(activity3),
@@ -400,7 +402,7 @@ void main() {
 
     // Assert
     await expectLater(
-      editActivityBloc,
+      editActivityBloc.stream,
       emitsInOrder([
         initialState.copyWith(activity3, timeInterval: newTimeInterval),
         initialState.copyWith(activity4, timeInterval: newTimeInterval),

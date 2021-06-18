@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
@@ -14,7 +16,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc({
     @required this.settingsDb,
   }) : super(SettingsState(
-          dotsInTimepillar: settingsDb.dotsInTimepillar ?? true,
           textToSpeech: settingsDb.textToSpeech ?? true,
         ));
 
@@ -22,10 +23,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Stream<SettingsState> mapEventToState(
     SettingsEvent event,
   ) async* {
-    if (event is DotsInTimepillarUpdated) {
-      await settingsDb.setDotsInTimepillar(event.dotsInTimepillar);
-      yield state.copyWith(dotsInTimepillar: event.dotsInTimepillar);
-    } else if (event is TextToSpeechUpdated) {
+    if (event is TextToSpeechUpdated) {
       await settingsDb.setTextToSpeech(event.textToSpeech);
       yield state.copyWith(textToSpeech: event.textToSpeech);
     }

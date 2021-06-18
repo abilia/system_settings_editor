@@ -18,7 +18,7 @@ class AnalyticsService {
   static Future<void> sendActivityCreatedEvent(Activity activity) async {
     final params = <String, dynamic>{
       'image': activity.hasImage,
-      'title': activity.hasTitle ?? false,
+      'title': activity.hasTitle,
       'fullDay': activity.fullDay,
       'checkable': activity.checkable,
       'removeAfter': activity.removeAfter,
@@ -29,5 +29,6 @@ class AnalyticsService {
       name: 'activity_created',
       parameters: params,
     );
+
   }
 }

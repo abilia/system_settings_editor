@@ -1,18 +1,21 @@
+// @dart=2.9
+
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
-class ClientWithDefaultHeaders extends http.BaseClient {
-  static const String SEAGULL_USER_AGENT_NAME = 'SEAGULL';
-  final Map<String, String> defaultHeaders = {
-    HttpHeaders.userAgentHeader: SEAGULL_USER_AGENT_NAME,
-  };
+import 'package:seagull/config.dart';
 
-  ClientWithDefaultHeaders();
+class ClientWithDefaultHeaders extends BaseClient {
+  final _inner = Client();
+  final String userAgent;
+
+  ClientWithDefaultHeaders(
+    String version, {
+    String model = 'seagull',
+  }) : userAgent = '${Config.flavor.name} v$version $model';
 
   @override
-  Future<http.StreamedResponse> send(http.BaseRequest request) {
-    request.headers.addAll(defaultHeaders);
-    return request.send();
-  }
+  Future<StreamedResponse> send(BaseRequest request) =>
+      _inner.send(request..headers[HttpHeaders.userAgentHeader] = userAgent);
 }

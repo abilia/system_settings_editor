@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -47,7 +49,7 @@ void main() {
 
       activitiesBloc.add(LoadActivities());
       await expectLater(
-        activitiesBloc,
+        activitiesBloc.stream,
         emits(ActivitiesLoaded([])),
       );
     });
@@ -67,7 +69,7 @@ void main() {
 
       activitiesBloc.add(LoadActivities());
       expectLater(
-        activitiesBloc,
+        activitiesBloc.stream,
         emits(ActivitiesLoaded([exptectedActivity])),
       );
     });
@@ -77,7 +79,7 @@ void main() {
           .thenAnswer((_) => Future.value(<Activity>[]));
       final anActivity = FakeActivity.starts(anyTime);
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
+      await activitiesBloc.stream.firstWhere((s) => s is ActivitiesLoaded);
       activitiesBloc.add(AddActivity(anActivity));
       await untilCalled(mockActivityRepository.save(any));
       await untilCalled(mockSyncBloc.add(ActivitySaved()));
@@ -92,7 +94,7 @@ void main() {
           .thenAnswer((_) => Future.value(<Activity>[]));
       final anActivity = FakeActivity.starts(anyTime);
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.firstWhere((s) => s is ActivitiesLoaded);
+      await activitiesBloc.stream.firstWhere((s) => s is ActivitiesLoaded);
       activitiesBloc.add(AddActivity(anActivity));
 
       await untilCalled(mockActivityRepository.save(any));
@@ -158,7 +160,7 @@ void main() {
 
       // Assert
       await expectLater(
-        activitiesBloc,
+        activitiesBloc.stream,
         emitsInOrder([
           ActivitiesLoaded(fullActivityList),
           ActivitiesLoaded(activityListDeleted),
@@ -185,7 +187,7 @@ void main() {
 
       // Assert
       await expectLater(
-        activitiesBloc,
+        activitiesBloc.stream,
         emitsInOrder([
           ActivitiesLoaded(activityList),
           ActivitiesLoaded(updatedActivityList.followedBy([])),
@@ -218,7 +220,7 @@ void main() {
 
       // Assert
       await expectLater(
-        activitiesBloc,
+        activitiesBloc.stream,
         emitsInOrder([
           ActivitiesLoaded(activityList),
           ActivitiesLoaded([anActivity].followedBy([])),
@@ -269,7 +271,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded(activityList),
             ActivitiesLoaded(activityList2.followedBy({})),
@@ -322,7 +324,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded(activityList),
             ActivitiesLoaded(activityList2.followedBy({})),
@@ -367,7 +369,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded(activityList),
             MatchActivitiesWithoutId(expectedActivityList),
@@ -411,7 +413,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded(activityList),
             ActivitiesLoaded([anActivity].followedBy({})),
@@ -445,7 +447,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded(activityList),
             ActivitiesLoaded([recurrringActivityWithEndTime].followedBy({})),
@@ -489,7 +491,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded(activityList),
             ActivitiesLoaded([recurrringActivity1AfterDelete].followedBy({})),
@@ -530,7 +532,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded([recurring]),
             ActivitiesLoaded([expected].followedBy([])),
@@ -570,7 +572,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded([recurring]),
             MatchActivitiesWithoutId(
@@ -633,7 +635,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded([recurring]),
             exptected,
@@ -692,7 +694,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded([recurring]),
             expected,
@@ -744,7 +746,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded([recurring]),
             expected,
@@ -776,7 +778,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded([recurrringActivity]),
             ActivitiesLoaded([updatedRecurrringActivity].followedBy([])),
@@ -818,7 +820,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded([recurrringActivity]),
             MatchActivitiesWithoutId(exptected),
@@ -859,7 +861,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded([recurrringActivity]),
             MatchActivitiesWithoutId(exptectedList),
@@ -904,7 +906,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded([recurrringActivity]),
             MatchActivitiesWithoutId(exptectedList),
@@ -1013,7 +1015,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded(currentActivities),
             MatchActivitiesWithoutId(exptectedList),
@@ -1082,7 +1084,7 @@ void main() {
 
         // Assert
         await expectLater(
-          activitiesBloc,
+          activitiesBloc.stream,
           emitsInOrder([
             ActivitiesLoaded([a1, a2, a3]),
             MatchActivitiesWithoutId([a1, a2Part1, updatedA2, expectedA3]),

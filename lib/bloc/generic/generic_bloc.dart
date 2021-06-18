@@ -1,4 +1,7 @@
+// @dart=2.9
+
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -6,6 +9,7 @@ import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 part 'generic_event.dart';
 part 'generic_state.dart';
@@ -20,7 +24,7 @@ class GenericBloc extends Bloc<GenericEvent, GenericState> {
     @required PushBloc pushBloc,
     @required this.syncBloc,
   }) : super(GenericsNotLoaded()) {
-    pushSubscription = pushBloc.listen((state) {
+    pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
         add(LoadGenerics());
       }
@@ -34,12 +38,26 @@ class GenericBloc extends Bloc<GenericEvent, GenericState> {
     if (event is LoadGenerics) {
       yield* _mapLoadGenericsToState();
     }
+    if (event is GenericUpdated) {
+      final currentState = state;
+      if (currentState is GenericsLoaded) {
+        final toUpdate = event.genericData.map((genericData) =>
+            currentState.generics[genericData.key]
+                ?.copyWithNewData(newData: genericData) ??
+            Generic.createNew<MemoplannerSettingData>(data: genericData));
+        await genericRepository.save(toUpdate);
+        yield* _mapLoadGenericsToState();
+        syncBloc.add(GenericSaved());
+      }
+    }
   }
 
   Stream<GenericState> _mapLoadGenericsToState() async* {
     try {
       final generics = await genericRepository.load();
-      yield GenericsLoaded(generics: generics.toList());
+      yield GenericsLoaded(
+        generics: generics.toGenericKeyMap(),
+      );
     } catch (e) {
       yield GenericsLoadedFailed();
     }

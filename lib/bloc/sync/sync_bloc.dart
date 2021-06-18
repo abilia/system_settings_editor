@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:collection';
 
@@ -14,6 +16,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final ActivityRepository activityRepository;
   final UserFileRepository userFileRepository;
   final SortableRepository sortableRepository;
+  final GenericRepository genericRepository;
   final SyncDelays syncDelay;
 
   SyncBloc({
@@ -21,6 +24,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     @required this.userFileRepository,
     @required this.sortableRepository,
     @required this.syncDelay,
+    @required this.genericRepository,
   }) : super(SyncInitial());
 
   final Queue<SyncEvent> _syncQueue = Queue<SyncEvent>();
@@ -68,7 +72,10 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       return userFileRepository.synchronize();
     } else if (event is SortableSaved) {
       return sortableRepository.synchronize();
+    } else if (event is GenericSaved) {
+      return genericRepository.synchronize();
     }
+
     return true;
   }
 }

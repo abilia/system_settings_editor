@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/ui/all.dart';
@@ -18,7 +20,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottom,
     this.trailing,
   })  : preferredSize =
-            Size.fromHeight(68.0 + (bottom?.preferredSize?.height ?? 0.0)),
+            Size.fromHeight(68.0.s + (bottom?.preferredSize?.height ?? 0.0)),
         super(key: key);
 
   @override
@@ -32,7 +34,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Expanded(child: content),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: EdgeInsets.symmetric(vertical: 8.0.s),
             child: bottom,
           ),
         ],
@@ -54,13 +56,10 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
-      child: Theme(
-        data: lightButtonTheme,
-        child: Container(
-          decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
-          child: SafeArea(
-            child: content,
-          ),
+      child: Container(
+        decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
+        child: SafeArea(
+          child: content,
         ),
       ),
     );

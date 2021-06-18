@@ -1,16 +1,18 @@
+// @dart=2.9
+
 import 'package:seagull/ui/all.dart';
 
 class IconAndTextButton extends StatelessWidget {
   final String text;
   final IconData icon;
-  final ThemeData theme;
+  final ButtonStyle style;
   final VoidCallback onPressed;
 
   const IconAndTextButton({
     Key key,
     @required this.text,
     @required this.icon,
-    @required this.theme,
+    @required this.style,
     @required this.onPressed,
   }) : super(key: key);
 
@@ -18,21 +20,14 @@ class IconAndTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tts(
       data: text,
-      child: FlatButton.icon(
-        minWidth: 172.0,
-        height: 64,
-        icon: IconTheme(
-          data: theme.iconTheme,
-          child: Icon(icon),
+      child: IconTheme(
+        data: lightIconThemeData,
+        child: TextButton.icon(
+          style: style,
+          onPressed: onPressed,
+          icon: Icon(icon),
+          label: Text(text),
         ),
-        label: Text(
-          text,
-          style: theme.textTheme.button,
-        ),
-        color: theme.buttonColor,
-        onPressed: onPressed,
-        disabledColor: theme.disabledColor,
-        shape: theme.buttonTheme.shape,
       ),
     );
   }
@@ -55,7 +50,7 @@ class GreyButton extends StatelessWidget {
         text: text,
         icon: icon,
         onPressed: onPressed,
-        theme: greyButtonTheme,
+        style: iconTextButtonStyleDarkGrey,
       );
 }
 
@@ -76,7 +71,7 @@ class GreenButton extends StatelessWidget {
         text: text,
         icon: icon,
         onPressed: onPressed,
-        theme: greenButtonTheme,
+        style: iconTextButtonStyleGreen,
       );
 }
 
@@ -88,27 +83,20 @@ class NextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Tts(
         data: Translator.of(context).translate.next,
-        child: FlatButton(
-          minWidth: 172.0,
-          height: 64,
+        child: TextButton(
+          style: iconTextButtonStyleGreen,
+          onPressed: onPressed,
           child: Row(
             children: [
               const Spacer(flex: 63),
-              Text(
-                Translator.of(context).translate.next,
-                style: greenButtonTheme.textTheme.button,
-              ),
-              IconTheme(
-                data: greenButtonTheme.iconTheme,
-                child: Icon(AbiliaIcons.navigation_next),
+              Text(Translator.of(context).translate.next),
+              Icon(
+                AbiliaIcons.navigation_next,
+                size: buttonIconSize,
               ),
               const Spacer(flex: 47),
             ],
           ),
-          color: greenButtonTheme.buttonColor,
-          disabledColor: greenButtonTheme.disabledColor,
-          shape: greenButtonTheme.buttonTheme.shape,
-          onPressed: onPressed,
         ),
       );
 }
@@ -131,14 +119,15 @@ class OkButton extends StatelessWidget {
 }
 
 class PreviousButton extends StatelessWidget {
-  const PreviousButton({Key key}) : super(key: key);
+  const PreviousButton({Key key, this.onPressed}) : super(key: key);
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return GreyButton(
       text: Translator.of(context).translate.back,
       icon: AbiliaIcons.navigation_previous,
-      onPressed: Navigator.of(context).maybePop,
+      onPressed: onPressed ?? Navigator.of(context).maybePop,
     );
   }
 }
@@ -171,16 +160,24 @@ class CloseButton extends StatelessWidget {
   }
 }
 
-class BackButton extends StatelessWidget {
-  const BackButton({Key key, this.onPressed}) : super(key: key);
-  final VoidCallback onPressed;
+class YesButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GreenButton(
+      text: Translator.of(context).translate.yes,
+      icon: AbiliaIcons.ok,
+      onPressed: () => Navigator.of(context).maybePop(true),
+    );
+  }
+}
 
+class NoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GreyButton(
-      icon: AbiliaIcons.navigation_previous,
-      text: Translator.of(context).translate.back,
-      onPressed: onPressed ?? Navigator.of(context).maybePop,
+      text: Translator.of(context).translate.no,
+      icon: AbiliaIcons.close_program,
+      onPressed: () => Navigator.of(context).maybePop(false),
     );
   }
 }

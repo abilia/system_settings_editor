@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,39 +12,44 @@ class GenericType {
 }
 
 class Generic<T extends GenericData> extends DataModel {
-  final String type;
+  final String? type;
   final bool deleted;
 
   final T data;
 
   const Generic._({
-    @required String id,
-    @required this.type,
-    @required this.data,
-    @required this.deleted,
-  })  : assert(data != null),
-        super(id);
+    required String id,
+    required this.type,
+    required this.data,
+    required this.deleted,
+  }) : super(id);
 
   static Generic<T> createNew<T extends GenericData>({
-    @required T data,
-    String type,
+    required T data,
     bool deleted = false,
   }) {
     return Generic<T>._(
       id: Uuid().v4(),
-      type: _getTypeString<T>() ?? type,
+      type: _getTypeString<T>(),
       data: data,
       deleted: deleted,
     );
   }
 
-  static String _getTypeString<T extends GenericData>() {
+  static String? _getTypeString<T extends GenericData>() {
     if (T == MemoplannerSettingData) return GenericType.memoPlannerSettings;
     return null;
   }
 
+  Generic<T> copyWithNewData({required T newData}) => Generic._(
+        id: id,
+        type: type,
+        data: newData,
+        deleted: deleted,
+      );
+
   @override
-  List<Object> get props => [id, type, data, deleted];
+  List<Object?> get props => [id, type, data, deleted];
 
   @override
   bool get stringify => true;

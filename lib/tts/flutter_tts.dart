@@ -4,7 +4,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:logging/logging.dart';
 
 final _ttsLog = Logger('TTS');
-Future<FlutterTts> flutterTts(String locale) async {
+Future<FlutterTts> flutterTts() async {
   final tts = FlutterTts();
 
   if (Platform.isIOS) {
@@ -16,11 +16,6 @@ Future<FlutterTts> flutterTts(String locale) async {
       IosTextToSpeechAudioCategoryOptions.defaultToSpeaker
     ]);
   }
-
-  await tts.setLanguage(locale.replaceAll('_', '-'));
-  await tts.setSpeechRate(Platform.isAndroid ? 0.85 : 0.5);
-  await tts.setVolume(1.0);
-  await tts.setPitch(1.0);
 
   tts.setStartHandler(() {
     _ttsLog.finest('start');

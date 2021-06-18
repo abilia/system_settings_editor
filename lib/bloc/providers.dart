@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
@@ -72,6 +74,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activityRepository: context.read<ActivityRepository>(),
                 userFileRepository: context.read<UserFileRepository>(),
                 sortableRepository: context.read<SortableRepository>(),
+                genericRepository: context.read<GenericRepository>(),
                 syncDelay: GetIt.I<SyncDelays>(),
               ),
             ),
@@ -82,13 +85,26 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 pushBloc: context.read<PushBloc>(),
               )..add(LoadActivities()),
             ),
+            BlocProvider<WeekCalendarBloc>(
+              create: (context) => WeekCalendarBloc(
+                activitiesBloc: context.read<ActivitiesBloc>(),
+                clockBloc: context.read<ClockBloc>(),
+              ),
+            ),
+            BlocProvider<MonthCalendarBloc>(
+              create: (context) => MonthCalendarBloc(
+                activitiesBloc: context.read<ActivitiesBloc>(),
+                clockBloc: context.read<ClockBloc>(),
+              ),
+            ),
             BlocProvider<UserFileBloc>(
               create: (context) => UserFileBloc(
                 userFileRepository: context.read<UserFileRepository>(),
                 syncBloc: context.read<SyncBloc>(),
                 fileStorage: GetIt.I<FileStorage>(),
                 pushBloc: context.read<PushBloc>(),
-              ),
+              )..add(LoadUserFiles()),
+              lazy: false,
             ),
             BlocProvider<SortableBloc>(
               create: (context) => sortableBloc ??
@@ -97,7 +113,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                     syncBloc: context.read<SyncBloc>(),
                     pushBloc: context.read<PushBloc>(),
                   )
-                ..add(LoadSortables()),
+                ..add(LoadSortables(initDefaults: true)),
             ),
             BlocProvider<GenericBloc>(
               create: (context) => GenericBloc(
@@ -204,6 +220,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
                   GetIt.I<SeagullLogger>().sendLogsToBackend(),
                   clearNotificationSubject(),
                   notificationPlugin.cancelAll(),
+                  GetIt.I<FileStorage>().deleteUserFolder(),
                 ],
               ),
             )..add(CheckAuthentication()),
@@ -281,8 +298,8 @@ class CopiedAuthProviders extends StatelessWidget {
         BlocProvider<PermissionBloc>.value(
           value: blocContext.read<PermissionBloc>(),
         ),
-        BlocProvider<PermissionBloc>.value(
-          value: blocContext.read<PermissionBloc>(),
+        BlocProvider<TimepillarBloc>.value(
+          value: blocContext.read<TimepillarBloc>(),
         ),
       ],
       child: child,

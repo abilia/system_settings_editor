@@ -1,8 +1,11 @@
+// @dart=2.9
+
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/all.dart';
 
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class TimeInputPage extends StatefulWidget {
@@ -22,7 +25,8 @@ class TimeInputPage extends StatefulWidget {
 
 String pad0(String s) => s.padLeft(2, '0');
 
-class _TimeInputPageState extends State<TimeInputPage> {
+class _TimeInputPageState extends State<TimeInputPage>
+    with WidgetsBindingObserver {
   final bool twelveHourClock;
   TextEditingController startTimeController;
   TextEditingController endTimeController;
@@ -35,9 +39,27 @@ class _TimeInputPageState extends State<TimeInputPage> {
 
   _TimeInputPageState({@required this.twelveHourClock});
 
+  bool _startTimeFocus = true, _paused = false;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      if (_startTimeFocus) {
+        startTimeFocus.requestFocus();
+      } else {
+        endTimeFocus.requestFocus();
+      }
+      _paused = true;
+    } else if (state == AppLifecycleState.paused) {
+      startTimeFocus.unfocus();
+      endTimeFocus.unfocus();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    if (Platform.isAndroid) WidgetsBinding.instance.addObserver(this);
 
     startTimePeriod = widget.timeInput.startTime?.period ?? DayPeriod.pm;
     endTimePeriod = widget.timeInput.endTime?.period ?? DayPeriod.pm;
@@ -45,32 +67,43 @@ class _TimeInputPageState extends State<TimeInputPage> {
     startTimeFocus = FocusNode()
       ..addListener(() {
         if (startTimeFocus.hasFocus) {
-          startTimeController.selection = TextSelection(
-              baseOffset: 0, extentOffset: startTimeController.text.length);
-          final validEndTime =
-              valid(endTimeController) || endTimeController.text.isEmpty;
-          final validatedEndTime =
-              validEndTime ? endTimeController.text : valiedatedNewEndTime;
-          endTimeController.text = validatedEndTime;
-          setState(() {
-            valiedatedNewEndTime = validatedEndTime;
-          });
+          if (_paused) {
+            _paused = false;
+          } else {
+            _startTimeFocus = true;
+            startTimeController.selection = TextSelection(
+                baseOffset: 0, extentOffset: startTimeController.text.length);
+            final validEndTime =
+                valid(endTimeController) || endTimeController.text.isEmpty;
+            final validatedEndTime =
+                validEndTime ? endTimeController.text : valiedatedNewEndTime;
+            endTimeController.text = validatedEndTime;
+            setState(() {
+              valiedatedNewEndTime = validatedEndTime;
+            });
+          }
         }
       })
       ..requestFocus();
     endTimeFocus = FocusNode()
       ..addListener(() {
         if (endTimeFocus.hasFocus) {
-          endTimeController.selection = TextSelection(
-              baseOffset: 0, extentOffset: endTimeController.text.length);
-          final validStartTime =
-              valid(startTimeController) || startTimeController.text.isEmpty;
-          final validatedStartTime =
-              validStartTime ? startTimeController.text : validatedNewStartTime;
-          startTimeController.text = validatedStartTime;
-          setState(() {
-            validatedNewStartTime = validatedStartTime;
-          });
+          if (_paused) {
+            _paused = false;
+          } else {
+            _startTimeFocus = false;
+            endTimeController.selection = TextSelection(
+                baseOffset: 0, extentOffset: endTimeController.text.length);
+            final validStartTime =
+                valid(startTimeController) || startTimeController.text.isEmpty;
+            final validatedStartTime = validStartTime
+                ? startTimeController.text
+                : validatedNewStartTime;
+            startTimeController.text = validatedStartTime;
+            setState(() {
+              validatedNewStartTime = validatedStartTime;
+            });
+          }
         }
       });
 
@@ -79,6 +112,14 @@ class _TimeInputPageState extends State<TimeInputPage> {
 
     startTimeController = TextEditingController(text: validatedNewStartTime);
     endTimeController = TextEditingController(text: valiedatedNewEndTime);
+  }
+
+  @override
+  void dispose() {
+    if (Platform.isAndroid) WidgetsBinding.instance.removeObserver(this);
+    startTimeController.dispose();
+    endTimeController.dispose();
+    super.dispose();
   }
 
   static bool valid(TextEditingController controller) =>
@@ -134,11 +175,13 @@ class _TimeInputPageState extends State<TimeInputPage> {
           children: [
             Theme(
               data: theme.copyWith(
-                  textSelectionColor: AbiliaColors.white,
+                  textSelectionTheme: theme.textSelectionTheme.copyWith(
+                    selectionColor: AbiliaColors.white,
+                  ),
                   textTheme: theme.textTheme
                       .copyWith(subtitle1: abiliaTextTheme.headline4)),
               child: Padding(
-                padding: const EdgeInsets.only(top: 64.0),
+                padding: EdgeInsets.only(top: 64.0.s),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -166,15 +209,12 @@ class _TimeInputPageState extends State<TimeInputPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(height: 28.s),
                           SizedBox(
-                            height: 28,
-                          ),
-                          SizedBox(
-                            height: 64,
+                            height: 64.s,
                             child: Center(
                                 child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: EdgeInsets.symmetric(horizontal: 16.0.s),
                               child: Text(
                                 '—',
                                 style: abiliaTextTheme.headline5,
@@ -218,13 +258,6 @@ class _TimeInputPageState extends State<TimeInputPage> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    startTimeController.dispose();
-    endTimeController.dispose();
-    super.dispose();
-  }
 }
 
 class _TimeInput extends StatelessWidget {
@@ -261,7 +294,7 @@ class _TimeInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(heading),
-          const SizedBox(height: 8.0),
+          SizedBox(height: 8.0.s),
           _TimeInputStack(
             inputKey: inputKey,
             editingController: controller,
@@ -270,7 +303,7 @@ class _TimeInput extends StatelessWidget {
             onTimeChanged: onTimeChanged,
             onDone: onDone,
           ),
-          const SizedBox(height: 8.0),
+          SizedBox(height: 8.0.s),
           if (twelveHourClock)
             AmPmSelector(
               amRadioFieldKey: amRadioFieldKey,
@@ -337,8 +370,8 @@ class _TimeInputStackState extends State<_TimeInputStack> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
-      height: 64,
+      width: 120.s,
+      height: 64.s,
       child: Stack(
         children: [
           TextField(
@@ -378,7 +411,7 @@ class _TimeInputStackState extends State<_TimeInputStack> {
                   borderRadius: borderRadius,
                   borderSide: BorderSide(
                     color: editFocus.hasFocus ? Colors.black : Colors.grey,
-                    width: 2,
+                    width: 2.s,
                   ),
                 ),
               ),
@@ -421,6 +454,11 @@ class DeleteInputFormatter extends TextInputFormatter {
       return TextEditingValue(
         text: oldValue.text.substring(0, 3),
         selection: TextSelection.collapsed(offset: 3),
+      );
+    } else if (oldValue.text.length == 1 && newValue.text.length == 4) {
+      return TextEditingValue(
+        text: oldValue.text + newValue.text.substring(3, 4),
+        selection: TextSelection.collapsed(offset: 2),
       );
     } else {
       return newValue;
@@ -534,9 +572,7 @@ class AmPmSelector extends StatelessWidget {
           value: DayPeriod.am,
           borderRadius: borderRadiusLeft,
         ),
-        SizedBox(
-          width: 2,
-        ),
+        SizedBox(width: 2.s),
         _AmPmButton(
           buttonKey: pmRadioFieldKey,
           text: Translator.of(context).translate.pm,
@@ -569,30 +605,19 @@ class _AmPmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = 59.0;
-    final height = 48.0;
-    final isSelected = value == groupValue;
     return Tts(
       data: text,
-      child: FlatButton(
+      child: TextButton(
         key: buttonKey,
-        height: height,
-        minWidth: width,
         onPressed: onPressed,
-        child: Text(
-          text,
-          style: abiliaTextTheme.subtitle1.copyWith(
-            color: isSelected ? AbiliaColors.white : AbiliaColors.black,
-          ),
-        ),
-        shape: RoundedRectangleBorder(
+        style: tabButtonStyle(
           borderRadius: borderRadius,
-          side: isSelected
-              ? BorderSide.none
-              : BorderSide(color: AbiliaColors.transparentBlack30),
+          isSelected: value == groupValue,
+        ).copyWith(
+          minimumSize: MaterialStateProperty.all(Size(59.0.s, 48.0.s)),
+          textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle1),
         ),
-        color:
-            isSelected ? AbiliaColors.green : AbiliaColors.transparentBlack20,
+        child: Text(text),
       ),
     );
   }

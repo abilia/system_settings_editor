@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -60,12 +62,14 @@ class TopLevelListeners extends StatelessWidget {
                     builder: (_) {
                       return AuthenticatedBlocsProvider(
                         authenticatedState: state,
-                        child: AuthenticatedListeners(
-                          key: authedStateKey,
+                        child: AlarmListeners(
                           alarm: payload,
                           child: payload != null
                               ? FullScreenAlarm(alarm: payload)
-                              : CalendarPage(),
+                              : AuthenticatedListeners(
+                                  key: authedStateKey,
+                                  child: CalendarPage(),
+                                ),
                         ),
                       );
                     },
@@ -89,18 +93,77 @@ class TopLevelListeners extends StatelessWidget {
       );
 }
 
+class AlarmListeners extends StatefulWidget {
+  static final _log = Logger((AlarmListeners).toString());
+  final Widget child;
+  final NotificationAlarm alarm;
+  const AlarmListeners({Key key, this.child, this.alarm}) : super(key: key);
+
+  @override
+  _AlarmListenersState createState() => _AlarmListenersState();
+}
+
+class _AlarmListenersState extends State<AlarmListeners>
+    with WidgetsBindingObserver {
+  bool get alarmScreen => widget.alarm != null;
+  AppLifecycleState appLifecycleState;
+
+  BlocListenerCondition<AlarmStateBase> get listenWhen => alarmScreen
+      ? (_, current) => current is AlarmState && current.alarm != widget.alarm
+      : (_, __) =>
+          appLifecycleState == null ||
+          appLifecycleState == AppLifecycleState.resumed;
+
+  @override
+  void initState() {
+    super.initState();
+    appLifecycleState = WidgetsBinding.instance.lifecycleState;
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    AlarmListeners._log.info('$state');
+    appLifecycleState = state;
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<NotificationBloc, AlarmStateBase>(
+          listener: _alarmListener,
+          listenWhen: listenWhen,
+        ),
+        BlocListener<AlarmBloc, AlarmStateBase>(
+          listener: _alarmListener,
+          listenWhen: listenWhen,
+        ),
+      ],
+      child: widget.child,
+    );
+  }
+
+  void _alarmListener(BuildContext context, AlarmStateBase state) async {
+    if (state is AlarmState) {
+      await GetIt.I<AlarmNavigator>().pushAlarm(context, state.alarm);
+    }
+  }
+}
+
 class AuthenticatedListeners extends StatefulWidget {
   const AuthenticatedListeners({
     Key key,
     @required this.child,
-    this.alarm,
   }) : super(key: key);
 
   final Widget child;
-  final NotificationAlarm alarm;
-  BlocListenerCondition<AlarmStateBase> get listenWhen => alarm != null
-      ? (_, current) => current is AlarmState && current.alarm != alarm
-      : null;
   @override
   _AuthenticatedListenersState createState() => _AuthenticatedListenersState();
 }
@@ -114,15 +177,22 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
   }
 
   @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    await GetIt.I<SettingsDb>()
+        .setAlwaysUse24HourFormat(MediaQuery.of(context).alwaysUse24HourFormat);
+  }
+
+  @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
+      await GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
           MediaQuery.of(context).alwaysUse24HourFormat);
       context
         ..read<ClockBloc>().add(DateTime.now().onlyMinutes())
@@ -136,12 +206,32 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
     return MultiBlocListener(
       listeners: [
         BlocListener<ActivitiesBloc, ActivitiesState>(
-          listener: (context, state) async {
-            if (state is ActivitiesLoaded) {
+          listenWhen: (_, current) => current is ActivitiesLoaded,
+          listener: (context, activitiesState) async {
+            final settingsState = context.read<MemoplannerSettingBloc>().state;
+            if (settingsState is! MemoplannerSettingsNotLoaded) {
               await GetIt.I<AlarmScheduler>()(
-                state.activities,
+                activitiesState.activities,
                 Localizations.localeOf(context).toLanguageTag(),
                 MediaQuery.of(context).alwaysUse24HourFormat,
+                settingsState.settings,
+                GetIt.I<FileStorage>(),
+              );
+            }
+          },
+        ),
+        BlocListener<MemoplannerSettingBloc, MemoplannerSettingsState>(
+          listenWhen: (previous, current) =>
+              previous is MemoplannerSettingsNotLoaded &&
+              !(current is MemoplannerSettingsNotLoaded),
+          listener: (context, state) async {
+            final activitiesState = context.read<ActivitiesBloc>().state;
+            if (activitiesState is ActivitiesLoaded) {
+              await GetIt.I<AlarmScheduler>()(
+                activitiesState.activities,
+                Localizations.localeOf(context).toLanguageTag(),
+                MediaQuery.of(context).alwaysUse24HourFormat,
+                state.settings,
                 GetIt.I<FileStorage>(),
               );
             }
@@ -150,19 +240,13 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
         BlocListener<LicenseBloc, LicenseState>(
           listener: (context, state) async {
             if (state is NoValidLicense) {
-              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut(
-                loggedOutReason: LoggedOutReason.LICENSE_EXPIRED,
-              ));
+              BlocProvider.of<AuthenticationBloc>(context).add(
+                LoggedOut(
+                  loggedOutReason: LoggedOutReason.LICENSE_EXPIRED,
+                ),
+              );
             }
           },
-        ),
-        BlocListener<AlarmBloc, AlarmStateBase>(
-          listener: _alarmListener,
-          listenWhen: widget.listenWhen,
-        ),
-        BlocListener<NotificationBloc, AlarmStateBase>(
-          listener: _alarmListener,
-          listenWhen: widget.listenWhen,
         ),
         BlocListener<PermissionBloc, PermissionState>(
           listenWhen: _notificationsDenied,
@@ -175,12 +259,6 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
       ],
       child: widget.child,
     );
-  }
-
-  void _alarmListener(BuildContext context, AlarmStateBase state) async {
-    if (state is AlarmState) {
-      await GetIt.I<AlarmNavigator>().pushAlarm(context, state.alarm);
-    }
   }
 
   BlocListener<PermissionBloc, PermissionState>

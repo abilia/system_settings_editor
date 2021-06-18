@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -5,12 +7,10 @@ class MainTab extends StatefulWidget {
   MainTab({
     Key key,
     @required this.editActivityState,
-    @required this.memoplannerSettingsState,
     @required this.day,
   }) : super(key: key);
 
   final EditActivityState editActivityState;
-  final MemoplannerSettingsState memoplannerSettingsState;
   final DateTime day;
 
   @override
@@ -18,32 +18,35 @@ class MainTab extends StatefulWidget {
 }
 
 class _MainTabState extends State<MainTab> with EditActivityTab {
-  ScrollController scrollController;
+  ScrollController _scrollController;
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController();
+    _scrollController = ScrollController();
   }
 
   @override
   Widget build(BuildContext context) {
     final activity = widget.editActivityState.activity;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.showCategories != current.showCategories ||
+          previous.activityTypeEditable != current.activityTypeEditable,
       builder: (context, memoSettingsState) => VerticalScrollArrows(
-        controller: scrollController,
+        controller: _scrollController,
         child: ListView(
-          controller: scrollController,
+          controller: _scrollController,
           padding:
               EditActivityTab.rightPadding.add(EditActivityTab.bottomPadding),
           children: <Widget>[
             separatedAndPadded(
                 ActivityNameAndPictureWidget(widget.editActivityState)),
             separatedAndPadded(DateAndTimeWidget(widget.editActivityState)),
-            if (widget.memoplannerSettingsState.showCategories)
+            if (memoSettingsState.showCategories)
               CollapsableWidget(
-                child: separatedAndPadded(CategoryWidget(activity)),
                 collapsed:
                     activity.fullDay || !memoSettingsState.activityTypeEditable,
+                child: separatedAndPadded(CategoryWidget(activity)),
               ),
             separatedAndPadded(CheckableAndDeleteAfterWidget(activity)),
             padded(AvailableForWidget(activity)),

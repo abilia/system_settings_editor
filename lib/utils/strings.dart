@@ -14,8 +14,8 @@ extension SizeOfText on String {
         ..layout(maxWidth: width);
 
   TextRenderingSize calulcateTextRenderSize({
-    @required BoxConstraints constraints,
-    @required TextStyle textStyle,
+    required BoxConstraints constraints,
+    required TextStyle textStyle,
     EdgeInsets padding = EdgeInsets.zero,
     double textScaleFactor = 1.0,
   }) {
@@ -32,6 +32,16 @@ extension SizeOfText on String {
     );
     return TextRenderingSize(painter, numberOfLines);
   }
+}
+
+extension UriExtension on String {
+  Uri toUri() {
+    return Uri.parse(this);
+  }
+}
+
+extension Replace on String {
+  String get singleLine => replaceAll('-\n', '');
 }
 
 class TextRenderingSize {

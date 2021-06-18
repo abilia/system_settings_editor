@@ -13,13 +13,7 @@ class TokenDb {
 
   Future persistToken(String token) => prefs.setString(tokenKey, token);
 
-  String getToken() {
-    try {
-      return prefs.getString(tokenKey);
-    } catch (_) {
-      return null;
-    }
-  }
+  String? getToken() => prefs.getString(tokenKey);
 
   Future delete() => prefs.remove(tokenKey);
 }

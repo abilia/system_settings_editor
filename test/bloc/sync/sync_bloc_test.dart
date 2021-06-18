@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -11,11 +13,13 @@ void main() {
   final activityRepository = MockActivityRepository();
   final userFileRepository = MockUserFileRepository();
   final sortableRepository = MockSortableRepository();
+  final genericRepository = MockGenericRepository();
   group('happy caseas', () {
     final syncBloc = SyncBloc(
       activityRepository: activityRepository,
       userFileRepository: userFileRepository,
       sortableRepository: sortableRepository,
+      genericRepository: genericRepository,
       syncDelay: SyncDelays.zero,
     );
     setUp(() {
@@ -47,6 +51,7 @@ void main() {
       activityRepository: activityRepository,
       userFileRepository: userFileRepository,
       sortableRepository: sortableRepository,
+      genericRepository: genericRepository,
       syncDelay:
           SyncDelays(betweenSync: 10.milliseconds(), retryDelay: Duration.zero),
     );
@@ -64,7 +69,7 @@ void main() {
       when(activityRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
       await Future.delayed(syncStallTime * 2);
-      await verify(activityRepository.synchronize()).called(2);
+      verify(activityRepository.synchronize()).called(2);
     });
     test('Failed FileSaved synchronize retrys to syncronize', () async {
       syncBloc.add(FileSaved());
@@ -72,7 +77,7 @@ void main() {
       when(userFileRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
       await Future.delayed(syncStallTime * 2);
-      await verify(userFileRepository.synchronize()).called(2);
+      verify(userFileRepository.synchronize()).called(2);
     });
     test('Failed SortableSaved synchronize retrys to syncronize', () async {
       syncBloc.add(SortableSaved());
@@ -80,7 +85,7 @@ void main() {
       when(sortableRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
       await Future.delayed(syncStallTime * 2);
-      await verify(sortableRepository.synchronize()).called(2);
+      verify(sortableRepository.synchronize()).called(2);
     });
   });
 
@@ -90,6 +95,7 @@ void main() {
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
         syncDelay: SyncDelays(
           betweenSync: stallTime,
           retryDelay: stallTime,

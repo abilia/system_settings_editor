@@ -25,25 +25,25 @@ class Sortable<T extends SortableData> extends DataModel {
   final T data;
 
   const Sortable._({
-    @required String id,
-    @required this.type,
-    @required this.data,
-    @required this.groupId,
-    @required this.sortOrder,
-    @required this.deleted,
-    @required this.isGroup,
-    @required this.visible,
-  })  : assert(data != null),
-        super(id);
+    required String id,
+    required this.type,
+    required this.data,
+    required this.groupId,
+    required this.sortOrder,
+    required this.deleted,
+    required this.isGroup,
+    required this.visible,
+  }) : super(id);
 
   static Sortable<T> createNew<T extends SortableData>({
-    @required T data,
-    String groupId,
-    String sortOrder = '',
+    required T data,
+    String groupId = '',
+    String sortOrder = START_SORT_ORDER,
     bool deleted = false,
     bool isGroup = false,
     bool visible = true,
   }) {
+    assert(sortOrder.isNotEmpty);
     return Sortable<T>._(
         id: Uuid().v4(),
         type: _getTypeString<T>(),

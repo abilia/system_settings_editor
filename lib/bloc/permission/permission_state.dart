@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'permission_bloc.dart';
 
 class PermissionState extends Equatable {
@@ -13,7 +15,7 @@ class PermissionState extends Equatable {
         UnmodifiableMapView(
           Map.of(status)
             ..addAll(
-              newStates._mapiOSDeniedToPermanentlyDenied,
+              newStates,
             ),
         ),
       );
@@ -33,15 +35,4 @@ class PermissionState extends Equatable {
 
   @override
   bool get stringify => true;
-}
-
-extension _PermissionStatusMapExtension on Map<Permission, PermissionStatus> {
-  Map<Permission, PermissionStatus> get _mapiOSDeniedToPermanentlyDenied => map(
-        (key, value) => MapEntry(
-          key,
-          Platform.isIOS && value.isDenied
-              ? PermissionStatus.permanentlyDenied
-              : value,
-        ),
-      );
 }

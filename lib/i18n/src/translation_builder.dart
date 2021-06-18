@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
@@ -82,9 +84,8 @@ class TranslationBuilder extends Builder {
 
   Code _getTranslation(Map<String, String> translations, String key) {
     final translation = translations[key];
-    return Code(translation.contains("'")
-        ? '''"${translation}"'''
-        : "'${translation}'");
+    return Code(
+        translation.contains("'") ? '''"$translation"''' : "'$translation'");
   }
 
   Map<String, Map<String, String>> _parseTranslationsAndWriteMissing(

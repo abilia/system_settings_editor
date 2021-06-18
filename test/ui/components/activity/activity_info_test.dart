@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -47,6 +49,9 @@ void main() {
                 settingsDb: MockSettingsDb(),
               ),
             ),
+            BlocProvider<TimepillarBloc>(
+              create: (context) => MockTimepillarBloc(),
+            ),
           ],
           child: MaterialApp(
             supportedLocales: Translator.supportedLocals,
@@ -60,14 +65,15 @@ void main() {
         ),
       );
 
-  setUp(() {
-    initializeDateFormatting();
+  setUp(() async {
+    await initializeDateFormatting();
     mockedAuthenticationBloc = MockAuthenticationBloc();
     GetItInitializer()
       ..fileStorage = MockFileStorage()
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
       ..flutterTts = MockFlutterTts()
+      ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..init();
   });
 
@@ -150,13 +156,13 @@ void main() {
         findsNothing); // uncheck only in bottom bar
   });
 
-  testWidgets('activity with null title', (WidgetTester tester) async {
+  testWidgets('activity with empty title', (WidgetTester tester) async {
     // Arrange
     await tester.pumpWidget(
       wrapWithMaterialApp(
         ActivityInfo.from(
           activity: Activity.createNew(
-            title: null,
+            title: '',
             fileId: Uuid().v4(),
             startTime: startTime,
           ),
@@ -292,7 +298,6 @@ void main() {
       (WidgetTester tester) async {
     // Arrange
     final activity = Activity.createNew(
-      title: null,
       startTime: startTime,
       category: 0,
       checkable: true,
@@ -315,7 +320,6 @@ void main() {
 
   testWidgets('Note attachment is present', (WidgetTester tester) async {
     final activity = Activity.createNew(
-      title: null,
       startTime: startTime,
       category: 0,
       checkable: true,
@@ -341,7 +345,6 @@ void main() {
   testWidgets('Checklist from base64 attachment is present',
       (WidgetTester tester) async {
     final activity = Activity.createNew(
-      title: null,
       startTime: startTime,
       category: 0,
       checkable: true,
@@ -394,7 +397,6 @@ void main() {
     ]);
 
     final activity = Activity.createNew(
-      title: null,
       startTime: startTime,
       category: 0,
       checkable: true,
@@ -415,7 +417,8 @@ void main() {
     expect(find.byType(ChecklistView), findsOneWidget);
     expect(find.byType(QuestionView), findsOneWidget);
     expect(find.byKey(TestKey.checklistQuestionImageKey), findsOneWidget);
-    await tester.tap(find.byKey(TestKey.checklistQuestionImageKey));
+    await tester.tap(find.byKey(TestKey.checklistQuestionImageKey),
+        warnIfMissed: false);
     await tester.pumpAndSettle();
     expect(find.byType(FullScreenImage), findsOneWidget);
   });
@@ -427,7 +430,6 @@ void main() {
       Question(id: 1, fileId: 'fileid'),
     ]);
     final activity = Activity.createNew(
-      title: null,
       startTime: startTime,
       category: 0,
       reminderBefore: [],
@@ -461,7 +463,6 @@ void main() {
   testWidgets('Checklist attachment is present and signed off',
       (WidgetTester tester) async {
     final activity = Activity.createNew(
-        title: null,
         startTime: startTime,
         category: 0,
         checkable: true,
@@ -524,7 +525,6 @@ void main() {
       'ConfirmActivityActionDialog is shown when last question in checked',
       (WidgetTester tester) async {
     final activity = Activity.createNew(
-        title: null,
         startTime: startTime,
         category: 0,
         checkable: true,

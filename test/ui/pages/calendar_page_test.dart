@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
@@ -66,6 +68,7 @@ void main() {
             userRepository: userRepository,
           ),
           child: MaterialApp(
+            theme: abiliaTheme,
             key: authedStateKey,
             supportedLocales: Translator.supportedLocals,
             localizationsDelegates: [Translator.delegate],
@@ -80,6 +83,7 @@ void main() {
 
   MockActivityDb mockActivityDb;
   SettingsDb mockSettingsDb;
+  MockGenericDb mockGenericDb;
   StreamController<DateTime> mockTicker;
   ActivityResponse activityResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
@@ -98,6 +102,7 @@ void main() {
         .thenAnswer((_) => Future.value(activityResponse()));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     mockSettingsDb = MockSettingsDb();
+    mockGenericDb = MockGenericDb();
 
     when(licenseDb.getLicenses()).thenReturn([
       License(
@@ -105,6 +110,13 @@ void main() {
           product: MEMOPLANNER_LICENSE_NAME,
           endTime: initialDay.add(100.days()))
     ]);
+
+    final mockUserFileDb = MockUserFileDb();
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (value) => Future.value([]),
+    );
 
     final db = MockDatabase();
     when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
@@ -115,8 +127,9 @@ void main() {
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(activityResponse: activityResponse)
       ..fileStorage = MockFileStorage()
-      ..userFileDb = MockUserFileDb()
+      ..userFileDb = mockUserFileDb
       ..settingsDb = mockSettingsDb
+      ..genericDb = mockGenericDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = db
@@ -131,7 +144,7 @@ void main() {
       testWidgets('New activity', (WidgetTester tester) async {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
         expect(find.byType(CreateActivityPage), findsOneWidget);
         await tester.tap(find.byKey(TestKey.newActivityChoice));
@@ -145,7 +158,7 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
         expect(find.byType(CreateActivityPage), findsOneWidget);
         await tester.tap(find.byKey(TestKey.basicActivityChoice));
@@ -168,7 +181,7 @@ void main() {
         await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
             sortableBloc: sortableBlocMock));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
         expect(find.byType(CreateActivityPage), findsOneWidget);
         await tester.tap(find.byKey(TestKey.basicActivityChoice));
@@ -212,7 +225,7 @@ void main() {
         await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
             sortableBloc: sortableBlocMock));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
 
         // Act Go to basic activity archive
@@ -291,7 +304,7 @@ void main() {
         await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
             sortableBloc: sortableBlocMock));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
 
         // Act Go to basic activity archive
@@ -334,7 +347,7 @@ void main() {
         await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
             sortableBloc: sortableBlocMock));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
 
         // Act Go to basic activity archive
@@ -377,7 +390,7 @@ void main() {
         await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
             sortableBloc: sortableBlocMock));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.addActivity));
+        await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
 
         // Act Go to basic activity archive
@@ -489,28 +502,10 @@ void main() {
 
       testWidgets('Denied notifications link to permission settings',
           (WidgetTester tester) async {
-        bool tapTextSpan(RichText richText, String text) {
-          return !richText.text.visitChildren(
-            (InlineSpan visitor) {
-              if (visitor is TextSpan && visitor.text == text) {
-                (visitor.recognizer as TapGestureRecognizer).onTap();
-                return false;
-              }
-              return true;
-            },
-          );
-        }
-
         setupPermissions({Permission.notification: PermissionStatus.denied});
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        expect(
-            find.byWidgetPredicate(
-              (widget) =>
-                  widget is RichText &&
-                  tapTextSpan(widget, translate.settingsLink),
-            ),
-            findsOneWidget);
+        expect(find.tapTextSpan(translate.settingsLink), findsOneWidget);
         await tester.pumpAndSettle();
         expect(find.byType(PermissionsPage), findsOneWidget);
       });
@@ -518,30 +513,58 @@ void main() {
   });
 
   group('Choosen calendar setting', () {
+    final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
+      data: MemoplannerSettingData.fromData(
+        data: DayCalendarType.TIMEPILLAR.index,
+        identifier: MemoplannerSettings.viewOptionsTimeViewKey,
+      ),
+    );
     testWidgets('no settings shows agenda', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      expect(find.byType(TimePillarCalendar), findsNothing);
+      expect(find.byType(TimepillarCalendar), findsNothing);
       expect(find.byType(Agenda), findsOneWidget);
     });
 
     testWidgets(
-        'timepillar is choosen in settings settings shows timepillar view',
+        'timepillar is choosen in memoplanner settings shows timepillar view',
         (WidgetTester tester) async {
-      when(mockSettingsDb.preferedCalender).thenReturn(CalendarType.TIMEPILLAR);
+      when(mockGenericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value([timepillarGeneric]));
+
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(Agenda), findsNothing);
-      expect(find.byType(TimePillarCalendar), findsOneWidget);
+      expect(find.byType(TimepillarCalendar), findsOneWidget);
     });
 
-    testWidgets('when calendar is changed, settings i saved',
+    testWidgets('when calendar is changed, settings is saved unsynced mpgo',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await goToTimePillar(tester);
-      verify(mockSettingsDb.setPreferredCalendar(CalendarType.TIMEPILLAR));
-    });
+
+      verifyUnsyncGeneric(
+        tester,
+        mockGenericDb,
+        key: MemoplannerSettings.viewOptionsTimeViewKey,
+        matcher: DayCalendarType.TIMEPILLAR.index,
+      );
+    }, skip: !Config.isMPGO);
+
+    testWidgets('when calendar is changed, settings is saved synced mp',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await goToTimePillar(tester);
+
+      verifySyncGeneric(
+        tester,
+        mockGenericDb,
+        key: MemoplannerSettings.viewOptionsTimeViewKey,
+        matcher: DayCalendarType.TIMEPILLAR.index,
+      );
+    }, skip: !Config.isMP);
   });
 
   group('MemoPlanner settings', () {
@@ -567,7 +590,7 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.addActivity));
+      await tester.tap(find.byType(AddActivityButton));
       await tester.pumpAndSettle();
       expect(find.byType(CreateActivityPage), findsOneWidget);
       await tester.tap(find.byKey(TestKey.newActivityChoice));
@@ -587,7 +610,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.finishEditActivityButton));
       await tester.pumpAndSettle();
-      expect(find.text(translate.startTimeBeforeNow), findsNothing);
+      expect(find.text(translate.startTimeBeforeNowError), findsNothing);
       expect(find.byType(EditActivityPage), findsNothing);
       expect(find.byType(CalendarPage), findsOneWidget);
       expect(find.text(testActivityTitle), findsOneWidget);
@@ -608,7 +631,7 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.addActivity));
+      await tester.tap(find.byType(AddActivityButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.newActivityChoice));
       await tester.pumpAndSettle();
@@ -621,10 +644,13 @@ void main() {
       await tester.enterText_(
           find.byKey(TestKey.editTitleTextFormField), testActivityTitle);
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.datePicker));
+      await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('${initialDay.subtract(1.days()).day}'));
-      await tester.tap(find.text('OK'));
+      await tester.tap(find.ancestor(
+          of: find.text('${initialDay.subtract(1.days()).day}'),
+          matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.dragFrom(
           tester.getCenter(find.byType(EditActivityPage)), Offset(0.0, -200));
@@ -635,7 +661,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text(translate.startTimeBeforeNow), findsOneWidget);
+      expect(find.text(translate.startTimeBeforeNowError), findsOneWidget);
       expect(find.byType(EditActivityPage), findsOneWidget);
       expect(find.byType(CalendarPage), findsNothing);
     });
@@ -805,14 +831,16 @@ void main() {
           (WidgetTester tester) async {
         when(memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarActivityTypeShowTypes: false),
+          MemoplannerSettings(
+            calendarActivityTypeShowTypes: false,
+            viewOptionsTimeView: DayCalendarType.TIMEPILLAR.index,
+          ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
-        await goToTimePillar(tester);
 
         final w = find.byType(TimePillar);
         final topLeft = tester.getTopLeft(w);
@@ -824,14 +852,16 @@ void main() {
           (WidgetTester tester) async {
         when(memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarActivityTypeShowTypes: true),
+          MemoplannerSettings(
+            calendarActivityTypeShowTypes: true,
+            viewOptionsTimeView: DayCalendarType.TIMEPILLAR.index,
+          ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
-        await goToTimePillar(tester);
 
         final timepillarCenter = tester.getCenter(find.byType(TimePillar));
         final calendarCenter = tester.getCenter(find.byType(CalendarPage));
@@ -993,6 +1023,255 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.folder));
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchivePage), findsOneWidget);
+    });
+  });
+
+  group('Week calendar', () {
+    final fridayTitle = 'f-r-i-d-a-y',
+        nextWeekTitle = 'N-e-x-t week title',
+        todaytitle = 't-o-d-a-y';
+    final friday = initialDay.addDays(2);
+    final nextWeek = initialDay.nextWeek();
+    setUp(() {
+      final activities = [
+        FakeActivity.starts(initialDay, title: todaytitle),
+        FakeActivity.starts(friday, title: fridayTitle),
+        FakeActivity.starts(nextWeek, title: nextWeekTitle),
+      ];
+      activityResponse = () => activities;
+      when(mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activities));
+      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    });
+    testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
+    });
+
+    testWidgets('Activities are shown in week calendar',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
+      expect(find.text(fridayTitle), findsOneWidget);
+      expect(find.text(nextWeekTitle), findsNothing);
+
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      expect(find.text(fridayTitle), findsNothing);
+      expect(find.text(nextWeekTitle), findsOneWidget);
+    });
+
+    testWidgets(
+        'BUG SGC-756 tapping day goes back to that day calendar, then go back to now goes back to now',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Agenda), findsOneWidget);
+
+      expect(find.text(todaytitle), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
+      await tester.tap(find.text(fridayTitle));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Agenda), findsOneWidget);
+      expect(find.text(fridayTitle), findsOneWidget);
+
+      await tester.tap(find.byType(GoToNowButton));
+      await tester.pumpAndSettle();
+      expect(find.text(fridayTitle), findsNothing);
+      expect(find.text(todaytitle), findsOneWidget);
+    });
+
+    testWidgets('BUG SGC-833 expanded day updates in when returning to week',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      final selectedHeadingsInitial = tester.widgetList(find.byWidgetPredicate(
+          (widget) => widget is WeekCalenderHeadingContent && widget.selected));
+      expect(selectedHeadingsInitial, hasLength(1));
+
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+
+      final selectedHeadingsnextWeekPreSelect = tester.widgetList(
+          find.byWidgetPredicate((widget) =>
+              widget is WeekCalenderHeadingContent && widget.selected));
+      expect(selectedHeadingsnextWeekPreSelect, isEmpty);
+
+      final d = initialDay.addDays(8).day;
+      await tester.tap(find.text('$d'));
+      await tester.pumpAndSettle();
+      final selectedHeadingsnextWeekPostSelect = tester.widgetList(
+          find.byWidgetPredicate((widget) =>
+              widget is WeekCalenderHeadingContent && widget.selected));
+      expect(selectedHeadingsnextWeekPostSelect, hasLength(1));
+
+      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.pumpAndSettle();
+
+      final selectedHeadingsInitialPostSelect = tester.widgetList(
+          find.byWidgetPredicate((widget) =>
+              widget is WeekCalenderHeadingContent && widget.selected));
+      expect(selectedHeadingsInitialPostSelect, isEmpty);
+    });
+  });
+
+  group('Month calendar', () {
+    setUp(() {
+      final activities = <Activity>[];
+      activityResponse = () => activities;
+      when(mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activities));
+      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    });
+
+    testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthCalendar), findsOneWidget);
+      expect(find.byType(MonthAppBar), findsOneWidget);
+    });
+
+    testWidgets('day tts', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.verifyTts(find.text('30'), contains: 'Sunday, August 30');
+    });
+
+    testWidgets('tapping day goes back to that day calendar',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('30'));
+      await tester.pumpAndSettle();
+      expect(find.byType(DayAppBar), findsOneWidget);
+      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.text('Sunday'), findsOneWidget);
+      expect(find.text('30 August 2020'), findsOneWidget);
+    });
+
+    group('app bar', () {
+      testWidgets('MonthAppBar', (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        await tester.verifyTts(find.byType(MonthAppBar),
+            contains: 'August 2020');
+      });
+
+      testWidgets('next month', (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToCurrentActionButton), findsOneWidget);
+        await tester.verifyTts(find.byType(MonthAppBar),
+            contains: 'September 2020');
+      });
+
+      testWidgets('previous month', (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToCurrentActionButton), findsOneWidget);
+        await tester.verifyTts(find.byType(MonthAppBar), contains: 'July 2020');
+      });
+
+      testWidgets('Go to this month', (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(GoToCurrentActionButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToCurrentActionButton), findsNothing);
+        await tester.verifyTts(find.byType(MonthAppBar),
+            contains: 'August 2020');
+      });
+    });
+
+    group('shows activities', () {
+      final fridayTitle = 'en rubrik', nextMonthTitle = 'next month';
+      final friday = initialDay.addDays(2);
+      final nextMonth = initialDay.nextMonth();
+      final recuresOnMonthDaySet = {1, 5, 6, 9, 22, 23};
+
+      setUp(() {
+        final activities = [
+          Activity.createNew(
+              title: fridayTitle, startTime: friday, fullDay: true),
+          Activity.createNew(
+              title: nextMonthTitle, startTime: nextMonth, fullDay: true),
+          Activity.createNew(title: 't1', startTime: initialDay, fullDay: true),
+          Activity.createNew(title: 't2', startTime: initialDay, fullDay: true),
+          Activity.createNew(
+            title: 'recurring',
+            startTime: initialDay.previousMonth().add(1.minutes()),
+            recurs: Recurs.monthlyOnDays((recuresOnMonthDaySet)),
+          ),
+        ];
+        activityResponse = () => activities;
+        when(mockActivityDb.getAllNonDeleted())
+            .thenAnswer((_) => Future.value(activities));
+        when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+      });
+
+      testWidgets('shows fullday ', (WidgetTester tester) async {
+        // Act
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.text(fridayTitle), findsOneWidget);
+        expect(find.text(nextMonthTitle), findsNothing);
+        expect(find.byType(MonthFullDayStack), findsOneWidget);
+
+        await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+        await tester.pumpAndSettle();
+
+        expect(find.text(fridayTitle), findsNothing);
+        expect(find.text(nextMonthTitle), findsOneWidget);
+      });
+
+      testWidgets('shows activity as dot ', (WidgetTester tester) async {
+        // Act
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        // Assert
+        expect(
+          find.byType(ColorDot),
+          findsNWidgets(recuresOnMonthDaySet.length),
+        );
+      });
     });
   });
 }

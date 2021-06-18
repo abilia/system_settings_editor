@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/widgets.dart';
 
 class AbiliaIcons {
@@ -112,7 +114,7 @@ class AbiliaIcons {
       alpha_num_keys = IconData(0xe968, fontFamily: fontFamily),
       start_selection = IconData(0xe969, fontFamily: fontFamily),
       end_selection = IconData(0xe96a, fontFamily: fontFamily),
-      empty5 = IconData(0xe96b, fontFamily: fontFamily),
+      medium_text = IconData(0xe96b, fontFamily: fontFamily),
       empty6 = IconData(0xe96c, fontFamily: fontFamily),
       one_switch = IconData(0xe96d, fontFamily: fontFamily),
       two_switch = IconData(0xe96e, fontFamily: fontFamily),
@@ -489,10 +491,14 @@ class AbiliaIcons {
       radiocheckbox_unselected = IconData(0xeadb, fontFamily: fontFamily),
       radiocheckbox_selected = IconData(0xeadc, fontFamily: fontFamily),
       repeat = IconData(0xeafa, fontFamily: fontFamily),
+      upload = IconData(0xeafb, fontFamily: fontFamily),
       show = IconData(0xeafe, fontFamily: fontFamily),
       hide = IconData(0xeaff, fontFamily: fontFamily),
       flarp = IconData(0xeb12, fontFamily: fontFamily),
       handi_uncheck = IconData(0xEB28, fontFamily: fontFamily),
       calendar_list = IconData(0xEB29, fontFamily: fontFamily),
-      notification = IconData(0xEB31, fontFamily: fontFamily);
+      notification = IconData(0xEB31, fontFamily: fontFamily),
+      sun = IconData(0xEB2A, fontFamily: fontFamily),
+      day_interval = IconData(0xEB2B, fontFamily: fontFamily),
+      day_night = IconData(0xEB2C, fontFamily: fontFamily);
 }

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:io';
 
@@ -16,6 +18,7 @@ import 'package:seagull/db/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:intl/intl.dart';
+import 'package:seagull/utils/all.dart';
 
 export 'package:logging/logging.dart';
 
@@ -35,9 +38,11 @@ class SeagullLogger {
   bool get printLogging => loggingType.contains(LoggingType.Print);
   bool get analyticLogging => loggingType.contains(LoggingType.Analytic);
 
+  String get logFileName => '${Config.flavor.id}.log';
+
   SeagullLogger({
-    this.documentsDir,
-    this.preferences,
+    @required this.documentsDir,
+    @required this.preferences,
     this.loggingType = const {
       if (Config.release) ...{
         LoggingType.File,
@@ -65,11 +70,11 @@ class SeagullLogger {
 
   static const LATEST_UPLOAD_KEY = 'LATEST-LOG-UPLOAD-MILLIS';
   static const UPLOAD_INTERVAL = Duration(hours: 24);
-  static const LOG_FILE_NAME = 'seagull.log';
   static const LOG_ARCHIVE_PATH = 'logarchive';
 
   Future<void> initAnalytics() async {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
   }
 
   Future<void> cancelLogging() async {
@@ -104,7 +109,8 @@ class SeagullLogger {
       final _logArchivePath = '$documentsDir/$LOG_ARCHIVE_PATH';
       final logArchiveDir = Directory(_logArchivePath);
       await logArchiveDir.create(recursive: true);
-      final archiveFilePath = '$_logArchivePath/seagull_log_$time.log';
+      final archiveFilePath =
+          '$_logArchivePath/${Config.flavor.id}_log_$time.log';
       await _logFileLock.synchronized(() async {
         await _logFile.copy(archiveFilePath);
         await _logFile.writeAsString('');
@@ -162,7 +168,7 @@ class SeagullLogger {
   }
 
   void _initFileLogging() {
-    _logFile = File('$documentsDir/$LOG_FILE_NAME');
+    _logFile = File('$documentsDir/$logFileName');
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
         (record) async {
@@ -214,7 +220,7 @@ class SeagullLogger {
       final bytes = await file.readAsBytes();
       final baseUrl = BaseUrlDb(preferences).getBaseUrl();
 
-      final uri = Uri.parse('$baseUrl/open/v1/logs/');
+      final uri = '$baseUrl/open/v1/logs/'.toUri();
       final request = MultipartRequest('POST', uri)
         ..files.add(MultipartFile.fromBytes(
           'file',
@@ -224,7 +230,7 @@ class SeagullLogger {
         ))
         ..fields.addAll({
           'owner': user == null ? 'NO_USER' : user.id.toString(),
-          'app': 'seagull',
+          'app': Config.flavor.id,
           'fileType': 'zip',
           'secret': 'Mkediq9Jjdn23jKfnKpqmfhkfjMfj',
         });
@@ -284,7 +290,7 @@ class BlocLoggingObserver extends BlocObserver {
   @override
   void onTransition(Bloc bloc, Transition transition) async {
     super.onTransition(bloc, transition);
-    if (analyticsLogging) await logEventToAnalytics(transition);
+    if (analyticsLogging) logEventToAnalytics(transition);
     final event = transition.event;
     if (event is Silent || bloc is Silent) return;
     final log = _log(bloc);
@@ -304,9 +310,9 @@ class BlocLoggingObserver extends BlocObserver {
   }
 
   @override
-  void onError(Cubit cubit, Object error, StackTrace stacktrace) {
-    super.onError(cubit, error, stacktrace);
-    _log(cubit).severe('error in $cubit', error, stacktrace);
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    super.onError(bloc, error, stackTrace);
+    _log(bloc).severe('error in $bloc', error, stackTrace);
   }
 
   void logEventToAnalytics(Transition transition) async {

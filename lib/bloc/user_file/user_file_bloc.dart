@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:io';
 
@@ -10,7 +12,7 @@ import 'package:mime/mime.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/file_storage.dart';
+import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
 part 'user_file_event.dart';
@@ -28,7 +30,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     @required this.fileStorage,
     @required PushBloc pushBloc,
   }) : super(UserFilesNotLoaded()) {
-    pushSubscription = pushBloc.listen((state) {
+    pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
         add(LoadUserFiles());
       }
@@ -40,31 +42,45 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     UserFileEvent event,
   ) async* {
     if (event is ImageAdded) {
+      yield state.addTempFile(event.selectedImage.id, event.selectedImage.file);
       yield* _mapImageAddedToState(event);
     }
     if (event is LoadUserFiles) {
       yield* _mapLoadUserFilesToState();
     }
+    if (event is _DownloadUserFiles) {
+      yield* _mapDownloadUserFilesToState();
+    }
   }
 
   Stream<UserFileState> _mapLoadUserFilesToState() async* {
-    final userFiles = await userFileRepository.load();
-    yield UserFilesLoaded(userFiles);
+    await userFileRepository.fetchIntoDatabaseSynchronized();
+    final storedFiles = await userFileRepository.getAllLoadedFiles();
+    yield UserFilesLoaded(storedFiles, state._tempFiles);
+    add(_DownloadUserFiles());
+  }
+
+  Stream<UserFileState> _mapDownloadUserFilesToState() async* {
+    final downloadedUserFiles =
+        await userFileRepository.downloadUserFiles(limit: 10);
+    if (downloadedUserFiles.isNotEmpty) {
+      yield UserFilesLoaded(
+          [...state.userFiles, ...downloadedUserFiles], state._tempFiles);
+      add(_DownloadUserFiles());
+    }
   }
 
   Stream<UserFileState> _mapImageAddedToState(
     ImageAdded event,
   ) async* {
-    final originalBytes = await event.file.readAsBytes();
-    final userFile =
-        await handleImage(originalBytes, event.id, event.file.path);
+    final originalBytes = await event.selectedImage.file.readAsBytes();
+    final userFile = await handleImage(
+      originalBytes,
+      event.selectedImage.id,
+      event.selectedImage.file.path,
+    );
     syncBloc.add(FileSaved());
-    final currentState = state;
-    if (currentState is UserFilesLoaded) {
-      yield UserFilesLoaded(currentState.userFiles.followedBy([userFile]));
-    } else {
-      yield UserFilesLoaded([userFile]);
-    }
+    yield state.add(userFile);
   }
 
   UserFile generateUserFile(

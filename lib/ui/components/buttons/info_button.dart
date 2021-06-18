@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -9,7 +11,7 @@ class InfoButton extends StatelessWidget {
     this.onTap,
   }) : super(key: key);
 
-  static const radius = BorderRadius.all(Radius.circular(24));
+  static final radius = BorderRadius.all(Radius.circular(24.s));
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +19,8 @@ class InfoButton extends StatelessWidget {
       onTap: onTap,
       borderRadius: radius,
       child: Container(
-        width: 40,
-        height: 40,
+        width: 40.s,
+        height: 40.s,
         decoration: BoxDecoration(
           borderRadius: radius,
           border: Border.fromBorderSide(

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 
 import 'package:seagull/models/all.dart';
@@ -23,8 +25,8 @@ class LibraryChecklist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageHeight = 84.0;
-    final imageWidth = 84.0;
+    final imageHeight = 84.s;
+    final imageWidth = 84.s;
     final imageId = checklist.fileId;
     final name = checklist.name;
     final iconPath = checklist.image;
@@ -32,7 +34,7 @@ class LibraryChecklist extends StatelessWidget {
       SemanticsProperties(label: name),
       child: Container(
         decoration: boxDecoration,
-        padding: const EdgeInsets.all(4.0),
+        padding: EdgeInsets.all(4.s),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
@@ -42,7 +44,7 @@ class LibraryChecklist extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: abiliaTextTheme.caption,
               ),
-            const SizedBox(height: 2),
+            SizedBox(height: 2.s),
             if (checklist.hasImage)
               FadeInAbiliaImage(
                 height: imageHeight,
@@ -55,7 +57,7 @@ class LibraryChecklist extends StatelessWidget {
                 height: imageHeight,
                 child: Icon(
                   AbiliaIcons.check_button,
-                  size: 48.0,
+                  size: 48.0.s,
                   color: AbiliaColors.white140,
                 ),
               ),
@@ -75,13 +77,13 @@ class FullScreenChecklist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        margin: const EdgeInsets.only(
-            left: 12.0, top: 24.0, right: 16.0, bottom: 12.0),
+        margin:
+            EdgeInsets.only(left: 12.s, top: 24.s, right: 16.s, bottom: 12.s),
         decoration: whiteBoxDecoration,
         child: ChecklistView(
           checklist,
           preview: true,
-          padding: const EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(12.s),
         ),
       );
 }

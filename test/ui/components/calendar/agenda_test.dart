@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -50,6 +52,13 @@ void main() {
     when(mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
 
+    final mockUserFileDb = MockUserFileDb();
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (value) => Future.value([]),
+    );
+
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -60,10 +69,11 @@ void main() {
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client()
       ..fileStorage = MockFileStorage()
-      ..userFileDb = MockUserFileDb()
+      ..userFileDb = mockUserFileDb
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
       ..flutterTts = MockFlutterTts()
+      ..syncDelay = SyncDelays.zero
       ..init();
   });
 
@@ -378,8 +388,7 @@ void main() {
     await tester.verifyTts(find.text(firstFullDay.title),
         contains: translate.fullDay);
 
-    await tester.verifyTts(find.byKey(TestKey.dayAppBarTitle),
-        contains: '${now.day}');
+    await tester.verifyTts(find.byType(AppBarTitle), contains: '${now.day}');
   });
 
   testWidgets('tts no activities', (WidgetTester tester) async {
@@ -483,16 +492,14 @@ void main() {
       final leftCategoryName = 'New Left', rightCategoryName = 'New Right';
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
+              data: MemoplannerSettingData.fromData(
                 data: leftCategoryName,
-                type: 'String',
                 identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
               ),
             ),
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
+              data: MemoplannerSettingData.fromData(
                 data: rightCategoryName,
-                type: 'String',
                 identifier: MemoplannerSettings.calendarActivityTypeRightKey,
               ),
             )
@@ -511,9 +518,8 @@ void main() {
         (WidgetTester tester) async {
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: 'false',
-                type: 'Bool',
+              data: MemoplannerSettingData.fromData(
+                data: false,
                 identifier:
                     MemoplannerSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -543,16 +549,14 @@ void main() {
 
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
+              data: MemoplannerSettingData.fromData(
                 data: leftCategoryName,
-                type: 'String',
                 identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
               ),
             ),
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
+              data: MemoplannerSettingData.fromData(
                 data: rightCategoryName,
-                type: 'String',
                 identifier: MemoplannerSettings.calendarActivityTypeRightKey,
               ),
             )
@@ -580,9 +584,8 @@ void main() {
 
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData(
-                data: 'false',
-                type: 'Bool',
+              data: MemoplannerSettingData.fromData(
+                data: false,
                 identifier:
                     MemoplannerSettings.calendarActivityTypeShowTypesKey,
               ),

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -29,17 +31,21 @@ void main() {
   );
   final translate = Locales.language.values.first;
 
-  final timeFieldFinder = find.byKey(TestKey.timePicker);
+  final timeFieldFinder = find.byType(TimeIntervallPicker);
   final okButtonFinder = find.byType(OkButton);
+  final cancelButtonFinder = find.byType(CancelButton);
 
   MockSortableBloc mockSortableBloc;
   MockUserFileBloc mockUserFileBloc;
   MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
+  MockActivitiesBloc mockActivitiesBloc;
   setUp(() async {
     tz.initializeTimeZones();
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
     mockUserFileBloc = MockUserFileBloc();
+    mockActivitiesBloc = MockActivitiesBloc();
+    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([]));
     mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
@@ -66,9 +72,10 @@ void main() {
                     StreamController<DateTime>().stream,
                     initialTime: startTime),
               ),
-              BlocProvider<MemoplannerSettingBloc>(
-                create: (context) => mockMemoplannerSettingsBloc,
+              BlocProvider<MemoplannerSettingBloc>.value(
+                value: mockMemoplannerSettingsBloc,
               ),
+              BlocProvider<ActivitiesBloc>.value(value: mockActivitiesBloc),
               BlocProvider<EditActivityBloc>(
                 create: (context) => newActivity
                     ? EditActivityBloc.newActivity(
@@ -87,11 +94,12 @@ void main() {
                             BlocProvider.of<MemoplannerSettingBloc>(context),
                       ),
               ),
-              BlocProvider<SortableBloc>(
-                create: (context) => mockSortableBloc,
-              ),
-              BlocProvider<UserFileBloc>(
-                create: (context) => mockUserFileBloc,
+              BlocProvider<SortableBloc>.value(value: mockSortableBloc),
+              BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
+              BlocProvider<DayPickerBloc>(
+                create: (context) => DayPickerBloc(
+                  clockBloc: context.read<ClockBloc>(),
+                ),
               ),
               BlocProvider<SettingsBloc>(
                 create: (context) => SettingsBloc(
@@ -101,6 +109,13 @@ void main() {
               BlocProvider<PermissionBloc>(
                 create: (context) => PermissionBloc()..checkAll(),
               ),
+              BlocProvider<TimepillarBloc>(
+                create: (context) => TimepillarBloc(
+                  clockBloc: context.read<ClockBloc>(),
+                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  dayPickerBloc: context.read<DayPickerBloc>(),
+                ),
+              )
             ],
             child: child,
           ),
@@ -248,114 +263,6 @@ void main() {
         expect(find.byIcon(Permission.photos.iconData), findsWidgets);
         expect(find.byType(PermissionSwitch), findsOneWidget);
       });
-    });
-
-    testWidgets(
-        'pressing add activity button with no title nor time shows error',
-        (WidgetTester tester) async {
-      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
-
-      // Act press submit
-      await tester.pumpWidget(
-          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
-      await tester.pumpAndSettle();
-
-      await tester.tap(submitButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert error message
-      expect(
-          find.text(translate.missingTitleOrImageAndStartTime), findsOneWidget);
-      // Act dissmiss
-      await tester.tapAt(Offset.zero);
-      await tester.pumpAndSettle();
-      // Assert no error message
-      expect(
-          find.text(translate.missingTitleOrImageAndStartTime), findsNothing);
-    });
-
-    testWidgets('pressing add activity button without time shows error',
-        (WidgetTester tester) async {
-      final newActivtyName = 'new activity name';
-      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
-
-      // Act press submit
-      await tester.pumpWidget(
-          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
-      await tester.pumpAndSettle();
-
-      // Act enter title
-      await tester.enterText_(
-          find.byKey(TestKey.editTitleTextFormField), newActivtyName);
-      await tester.pumpAndSettle();
-
-      // Act press submit
-      await tester.tap(submitButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert error message
-      expect(find.text(translate.missingStartTime), findsOneWidget);
-      // Act dissmiss
-      await tester.tapAt(Offset.zero);
-      await tester.pumpAndSettle();
-      // Assert no error message
-      expect(find.text(translate.missingStartTime), findsNothing);
-    });
-
-    testWidgets('pressing add activity button with no title shows error',
-        (WidgetTester tester) async {
-      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
-
-      await tester.pumpWidget(
-          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
-      await tester.pumpAndSettle();
-      // Act press fullday
-      await tester.scrollDown(dy: -150);
-      await tester.tap(find.byKey(TestKey.fullDaySwitch));
-      await tester.pumpAndSettle();
-
-      // Act press submit
-      await tester.tap(submitButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert error message
-      expect(find.text(translate.missingTitleOrImage), findsOneWidget);
-      // Act dissmiss
-      await tester.tapAt(Offset.zero);
-      await tester.pumpAndSettle();
-      // Assert no error message
-      expect(find.text(translate.missingTitleOrImage), findsNothing);
-    });
-
-    testWidgets(
-        'pressing add activity on other tab scrolls back to main page on error',
-        (WidgetTester tester) async {
-      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
-
-      await tester.pumpWidget(
-          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
-      await tester.pumpAndSettle();
-
-      // Act go to tab
-      await tester.goToAlarmTab();
-      await tester.pumpAndSettle();
-      // Assert not at main tab
-      expect(find.byType(MainTab), findsNothing);
-
-      // Act press submit
-      await tester.tap(submitButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Assert error message
-      expect(
-          find.text(translate.missingTitleOrImageAndStartTime), findsOneWidget);
-
-      // Act dissmiss
-      await tester.tapAt(Offset.zero);
-      await tester.pumpAndSettle();
-
-      // Assert at main tab
-      expect(find.byType(MainTab), findsOneWidget);
     });
 
     testWidgets('full day switch', (WidgetTester tester) async {
@@ -532,22 +439,6 @@ void main() {
           isTrue);
     });
 
-    testWidgets('Date picker', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
-      await tester.pumpAndSettle();
-      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
-
-      await tester.tap(find.byKey(TestKey.datePicker));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('14'));
-      await tester.tap(find.text('OK'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('(Today) February 10, 2020'), findsNothing);
-      expect(find.text('February 14, 2020'), findsOneWidget);
-    });
-
     testWidgets('Category picker', (WidgetTester tester) async {
       final rightRadioKey = ObjectKey(TestKey.rightCategoryRadio);
       final leftRadioKey = ObjectKey(TestKey.leftCategoryRadio);
@@ -612,8 +503,8 @@ void main() {
       await tester.pumpAndSettle();
       final reminderSwitchFinder = find.byIcon(AbiliaIcons.handi_reminder);
       final reminder15MinFinder =
-          find.text(15.minutes().toReminderString(translate));
-      final reminderDayFinder = find.text(1.days().toReminderString(translate));
+          find.text(15.minutes().toDurationString(translate));
+      final reminderDayFinder = find.text(1.days().toDurationString(translate));
       final remindersAllSelected =
           find.byIcon(AbiliaIcons.radiocheckbox_selected);
       final remindersAll = find.byType(SelectableField);
@@ -706,9 +597,9 @@ void main() {
           title: 'null',
           startTime: startTime,
           infoItem: Checklist(questions: [
-            Question(name: q1),
-            Question(name: q3),
-            Question(name: q2)
+            Question(id: 1, name: q1),
+            Question(id: 2, name: q3),
+            Question(id: 3, name: q2)
           ]));
       await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
           givenActivity: activity));
@@ -912,6 +803,7 @@ Internal improvements to tests and examples.''';
                   name: 'NAAAMAE',
                   text: content,
                 ),
+                sortOrder: START_CHAR,
               ),
               ...List.generate(
                 30,
@@ -974,9 +866,11 @@ Internal improvements to tests and examples.''';
     });
 
     group('checklist', () {
-      setUp(() {
+      setUp(() async {
         GetItInitializer()
           ..fileStorage = MockFileStorage()
+          ..sharedPreferences = await MockSharedPreferences.getInstance()
+          ..database = MockDatabase()
           ..init();
       });
       final questions = {
@@ -1223,13 +1117,14 @@ text''';
           SortablesLoaded(
             sortables: [
               Sortable.createNew<ChecklistData>(
+                  sortOrder: START_CHAR,
                   data: ChecklistData(Checklist(
                       name: title1,
                       fileId: 'fileid1',
                       questions: [
-                    Question(id: 0, name: '1'),
-                    Question(id: 1, name: '2', fileId: '2222')
-                  ]))),
+                        Question(id: 0, name: '1'),
+                        Question(id: 1, name: '2', fileId: '2222')
+                      ]))),
               ...List.generate(
                 30,
                 (index) => Sortable.createNew<ChecklistData>(
@@ -1298,6 +1193,157 @@ text''';
         expect(find.text(checklisttitle2), findsOneWidget);
         expect(find.byType(ChecklistView), findsOneWidget);
       });
+    });
+  });
+
+  group('Date picker', () {
+    testWidgets('changes date', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
+
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+          of: find.text('14'), matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      expect(find.text('(Today) February 10, 2020'), findsNothing);
+      expect(find.text('February 14, 2020'), findsOneWidget);
+    });
+
+    testWidgets('can switch months', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DatePickerPage), findsOneWidget);
+
+      expect(find.text('February 2020'), findsOneWidget);
+      expect(find.byType(MonthDayView), findsNWidgets(29));
+
+      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.pumpAndSettle();
+
+      expect(find.text('January 2020'), findsOneWidget);
+      expect(find.byType(MonthDayView), findsNWidgets(31));
+
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+
+      expect(find.text('April 2020'), findsOneWidget);
+      expect(find.byType(MonthDayView), findsNWidgets(30));
+
+      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.pumpAndSettle();
+      expect(find.text('February 2020'), findsOneWidget);
+    });
+
+    testWidgets('changes date then add recurring sets end date to start date',
+        (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
+
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+          of: find.text('14'), matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.goToRecurrenceTab();
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.byType(EndDateWidget));
+      await tester.pumpAndSettle();
+      expect(find.text('February 14, 2020'), findsOneWidget);
+    });
+
+    testWidgets(
+        'changes date after added recurring sets end date to start date',
+        (WidgetTester tester) async {
+      await tester
+          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpAndSettle();
+      await tester.goToRecurrenceTab();
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.byType(EndDateWidget));
+      await tester.pumpAndSettle();
+      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
+      await tester.goToMainTab();
+      // Act change start date to 14th
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+          of: find.text('14'), matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      await tester.goToRecurrenceTab();
+      await tester.scrollDown(dy: -250);
+      expect(find.text('February 14, 2020'), findsOneWidget);
+    });
+
+    testWidgets('cant pick recurring end date before start date',
+        (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(wrapWithMaterialApp(
+        EditActivityPage(day: today),
+        newActivity: true,
+      ));
+      await tester.pumpAndSettle();
+      await tester.goToRecurrenceTab();
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.byType(EndDateWidget));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+        of: find.text('3'),
+        matching: find.byType(MonthDayView),
+      ));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EditActivityPage), findsNothing);
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(find.text(translate.endBeforeStartError), findsOneWidget);
+
+      await tester.tap(find.byType(PreviousButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EditActivityPage), findsNothing);
+      expect(find.byType(DatePickerPage), findsOneWidget);
     });
   });
 
@@ -1401,7 +1447,7 @@ text''';
       // Act -- remove end time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.tap(endTimeInputFinder);
+      await tester.tap(endTimeInputFinder, warnIfMissed: false);
       await tester.showKeyboard(endTimeInputFinder);
       await tester.sendKeyEvent(LogicalKeyboardKey.delete);
       await tester.pumpAndSettle();
@@ -1487,8 +1533,6 @@ text''';
 
       await tester.enterText(startTimeInputFinder, '');
       await tester.enterText(endTimeInputFinder, '');
-      await tester.tap(endTimeInputFinder);
-      await tester.tap(startTimeInputFinder);
 
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
@@ -1583,7 +1627,7 @@ text''';
       await tester.enterText(startTimeInputFinder, '0');
       expect(find.text('0'), findsOneWidget);
 
-      await tester.tap(endTimeInputFinder);
+      await tester.tap(endTimeInputFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
       expect(find.text('13:44'),
           findsOneWidget); // Time resets when no valid time is entered
@@ -1591,7 +1635,6 @@ text''';
       await tester.enterText(endTimeInputFinder, '1111');
       expect(find.text('11:11'), findsOneWidget);
 
-      await tester.tap(startTimeInputFinder);
       await tester.enterText(startTimeInputFinder, '0001');
       expect(find.text('00:01'), findsOneWidget);
       await tester.pumpAndSettle();
@@ -1667,11 +1710,58 @@ text''';
       await tester.enterText(startTimeInputFinder, '1033');
       await tester.enterText(endTimeInputFinder, '1111');
 
-      await tester.tap(startTimeInputFinder);
+      await tester.tap(startTimeInputFinder,
+          warnIfMissed:
+              false); // startTimeInputFinder is below another input widget that catches the tap event
       await tester.pumpAndSettle();
       await tester.sendKeyEvent(LogicalKeyboardKey.delete);
       await tester.pumpAndSettle();
       expect(find.text('10:3-'), findsOneWidget);
+    });
+
+    testWidgets(
+        'edit activity time with both times and setting removes end time',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockMemoplannerSettingsBloc.state)
+          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        activityEndTimeEditable: false,
+      )));
+
+      final acivity = Activity.createNew(
+          title: '',
+          startTime: DateTime(2000, 11, 22, 11, 55),
+          duration: 3.hours());
+
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          givenActivity: acivity,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert -- that correct start and end time shows
+      expect(find.text('11:55 AM - 2:55 PM'), findsOneWidget);
+
+      // Act -- enter time input and cancel
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(cancelButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- that start and end time is the same
+      expect(find.text('11:55 AM - 2:55 PM'), findsOneWidget);
+
+      // Act -- enter time input and save
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(okButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- old end time does not show
+      expect(find.text('11:55 AM - 2:55 PM'), findsNothing);
+      expect(find.text('11:55 AM'), findsOneWidget);
     });
   });
 
@@ -1735,7 +1825,7 @@ text''';
       expect(find.text(translate.once), findsOneWidget);
     });
 
-    testWidgets('all info item present', (WidgetTester tester) async {
+    testWidgets('all recurrance present', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(wrapWithMaterialApp(
         EditActivityPage(day: today),
@@ -1875,7 +1965,7 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
-      await tester.tap(find.byKey(TestKey.noEndDate));
+      await tester.tap(find.byType(EndDateWidget));
       await tester.pumpAndSettle();
 
       // Assert -- date picker visible
@@ -1906,15 +1996,21 @@ text''';
       await tester.goToRecurrenceTab();
 
       // Assert -- date picker visible
-      expect(find.byKey(TestKey.noEndDate), findsOneWidget);
+      await tester.tap(find.byType(EndDateWidget));
       expect(find.byType(EndDateWidget), findsOneWidget);
       expect(find.byType(DatePicker), findsOneWidget);
       expect(
         tester.widget<DatePicker>(find.byType(DatePicker)).onChange,
         isNull,
       );
+      await tester.tap(find.byType(EndDateWidget));
+
       expect(
-        tester.widget<SwitchField>(find.byKey(TestKey.noEndDate)).onChanged,
+        tester
+            .widget<SwitchField>(find.descendant(
+                of: find.byType(EndDateWidget),
+                matching: find.byType(SwitchField)))
+            .onChanged,
         isNull,
       );
     });
@@ -1940,12 +2036,9 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
-      // Arrange -- set full day
-      await tester.tap(find.byKey(TestKey.fullDaySwitch));
-      await tester.pumpAndSettle();
+      // Arrange -- set weekly recurance
       await tester.goToRecurrenceTab();
       await tester.pumpAndSettle();
-      // Arrange -- set weekly recurance
       await tester.tap(find.byKey(TestKey.changeRecurrence));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
@@ -2110,7 +2203,7 @@ text''';
       await tester.pumpAndSettle();
 
       expect(find.text('15:29'), findsOneWidget);
-      expect(find.text(translate.startTimeBeforeNow), findsOneWidget);
+      expect(find.text(translate.startTimeBeforeNowError), findsOneWidget);
     });
 
     testWidgets(
@@ -2140,7 +2233,7 @@ text''';
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
 
-      expect(find.text(translate.startTimeBeforeNow), findsNothing);
+      expect(find.text(translate.startTimeBeforeNowError), findsNothing);
     });
 
     testWidgets(
@@ -2174,7 +2267,7 @@ text''';
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
 
-      expect(find.text(translate.startTimeBeforeNow), findsNothing);
+      expect(find.text(translate.startTimeBeforeNowError), findsNothing);
     });
 
     testWidgets('calendarActivityType-Left/Rigth given name',
@@ -2222,9 +2315,11 @@ text''';
   });
 
   group('tts', () {
-    setUp(() {
+    setUp(() async {
       GetItInitializer()
         ..flutterTts = MockFlutterTts()
+        ..database = MockDatabase()
+        ..sharedPreferences = await MockSharedPreferences.getInstance()
         ..init();
     });
     testWidgets('title', (WidgetTester tester) async {
@@ -2256,7 +2351,7 @@ text''';
           .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
       await tester.pumpAndSettle();
 
-      await tester.verifyTts(find.byKey(TestKey.datePicker),
+      await tester.verifyTts(find.byType(DatePicker),
           contains: translate.today);
     });
 
@@ -2503,7 +2598,7 @@ text''';
         1.hours(),
         2.hours(),
         1.days(),
-      ].map((r) => r.toReminderString(translate));
+      ].map((r) => r.toDurationString(translate));
 
       for (final t in reminders) {
         await tester.verifyTts(find.text(t), exact: t);

@@ -2,12 +2,14 @@ part of 'generic.dart';
 
 class DbGeneric extends DbModel<Generic> {
   Generic get generic => model;
-  const DbGeneric._(
-      {@required Generic generic, @required int revision, @required int dirty})
-      : super(model: generic, revision: revision, dirty: dirty);
+  const DbGeneric._({
+    required Generic generic,
+    required int revision,
+    required int dirty,
+  }) : super(model: generic, revision: revision, dirty: dirty);
 
   @override
-  DbGeneric copyWith({int revision, int dirty}) {
+  DbGeneric copyWith({int? revision, int? dirty}) {
     return DbGeneric._(
       generic: generic,
       revision: revision ?? this.revision,
@@ -16,11 +18,11 @@ class DbGeneric extends DbModel<Generic> {
   }
 
   static Generic _toType({
-    @required String id,
-    @required String type,
-    @required String identifier,
-    @required String data,
-    @required bool deleted,
+    required String id,
+    required String type,
+    required String identifier,
+    required String data,
+    required bool deleted,
   }) {
     switch (type) {
       case GenericType.memoPlannerSettings:
@@ -46,7 +48,7 @@ class DbGeneric extends DbModel<Generic> {
           type: json['type'],
           data: json['data'],
           identifier: json['identifier'],
-          deleted: json['deleted'],
+          deleted: json['deleted'] ?? false,
         ),
         revision: json['revision'],
         dirty: 0,

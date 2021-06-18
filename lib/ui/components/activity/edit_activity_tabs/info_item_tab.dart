@@ -1,4 +1,4 @@
-import 'dart:io';
+// @dart=2.9
 
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
@@ -35,7 +35,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
 
     return padded(
       Padding(
-        padding: const EdgeInsets.only(right: 12.0),
+        padding: EdgeInsets.only(right: 12.0.s),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -67,7 +67,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
   }
 }
 
-class EditChecklistWidget extends StatefulWidget {
+class EditChecklistWidget extends StatelessWidget {
   final Activity activity;
   final Checklist checklist;
   final GestureTapCallback onTap;
@@ -78,16 +78,6 @@ class EditChecklistWidget extends StatefulWidget {
     @required this.checklist,
     @required this.onTap,
   }) : super(key: key);
-
-  @override
-  _EditChecklistWidgetState createState() => _EditChecklistWidgetState();
-}
-
-class _EditChecklistWidgetState extends State<EditChecklistWidget> {
-  final tempImageFiles = <int, File>{};
-
-  void newFileAdded(File file, int id) =>
-      setState(() => tempImageFiles[id] = file);
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +91,7 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                 key: TestKey.changeInfoItem,
                 leading: const Icon(AbiliaIcons.ok),
                 text: Text(translate.infoTypeChecklist),
-                onTap: widget.onTap,
+                onTap: onTap,
               ),
             ),
             _LibraryButton(
@@ -116,47 +106,46 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                   ),
                 );
                 if (selectedChecklist != null &&
-                    selectedChecklist != widget.checklist) {
+                    selectedChecklist != checklist) {
                   BlocProvider.of<EditActivityBloc>(context).add(
-                      ReplaceActivity(widget.activity
-                          .copyWith(infoItem: selectedChecklist)));
+                      ReplaceActivity(
+                          activity.copyWith(infoItem: selectedChecklist)));
                 }
               },
             )
           ],
         ),
-        const SizedBox(height: 16.0),
+        SizedBox(height: 16.0.s),
         Expanded(
           child: GestureDetector(
             child: Container(
               decoration: whiteBoxDecoration,
-              padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 12.0),
+              padding: EdgeInsets.fromLTRB(12.0.s, 0, 0, 12.0.s),
               child: Column(
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(bottom: 8.0),
+                      margin: EdgeInsets.only(bottom: 8.0.s),
                       decoration: const BoxDecoration(
                         border: Border(
                           bottom: BorderSide(color: AbiliaColors.white120),
                         ),
                       ),
                       child: ChecklistView(
-                        widget.checklist,
+                        checklist,
                         padding:
-                            const EdgeInsets.fromLTRB(0.0, 12.0, 16.0, 25.0),
-                        onTap: _handleEditQuestionResult,
-                        tempImageFiles: tempImageFiles,
+                            EdgeInsets.fromLTRB(0.0, 12.0.s, 16.0.s, 25.0.s),
+                        onTap: (r) => _handleEditQuestionResult(r, context),
                         preview: true,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
+                    padding: EdgeInsets.only(right: 16.0.s),
                     child: Tts(
                       data: Translator.of(context).translate.addNew,
                       child: RawMaterialButton(
-                        constraints: BoxConstraints(minHeight: 48.0),
+                        constraints: BoxConstraints(minHeight: 48.0.s),
                         shape: RoundedRectangleBorder(
                           side: BorderSide(color: AbiliaColors.green140),
                           borderRadius: borderRadius,
@@ -167,12 +156,12 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
                         focusElevation: 0.0,
                         highlightElevation: 0.0,
                         hoverElevation: 0.0,
-                        onPressed: _handleNewQuestion,
+                        onPressed: () => _handleNewQuestion(context),
                         child: Row(
                           children: [
-                            const SizedBox(width: 12.0),
+                            SizedBox(width: 12.0.s),
                             Icon(AbiliaIcons.new_icon, size: smallIconSize),
-                            const SizedBox(width: 12.0),
+                            SizedBox(width: 12.0.s),
                             Text(
                               Translator.of(context).translate.addNew,
                               style: Theme.of(context)
@@ -194,37 +183,47 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
     );
   }
 
-  void _handleEditQuestionResult(final Question oldQuestion) async {
-    final result = await Navigator.of(context).push<QuestionResult>(
+  void _handleEditQuestionResult(
+      final Question oldQuestion, BuildContext context) async {
+    final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
-          child: EditQuestionPage(question: oldQuestion),
+          child: EditQuestionPage(
+            question: oldQuestion,
+          ),
         ),
       ),
     );
+    bool changed(ImageAndName imageAndName) =>
+        imageAndName.name != oldQuestion.name ||
+        imageAndName.image.id != oldQuestion.fileId;
 
-    if (result != null && result.question != oldQuestion) {
-      final questionMap = {for (var q in widget.checklist.questions) q.id: q}
-        ..[oldQuestion.id] = result.question;
-      final newQuestions = questionMap.values.where((q) => q != null);
-
-      if (result.hasNewImage) {
-        newFileAdded(result.newImage, result.question.id);
+    if (result != null && changed(result)) {
+      final questionMap = {for (var q in checklist.questions) q.id: q};
+      if (result.isEmpty) {
+        questionMap.remove(oldQuestion.id);
+      } else {
+        questionMap[oldQuestion.id] = Question(
+          id: oldQuestion.id,
+          name: result.name,
+          fileId: result.image.id,
+          image: result.image.path,
+        );
       }
 
       BlocProvider.of<EditActivityBloc>(context).add(
         ReplaceActivity(
-          widget.activity.copyWith(
-            infoItem: widget.checklist.copyWith(questions: newQuestions),
+          activity.copyWith(
+            infoItem: checklist.copyWith(questions: questionMap.values),
           ),
         ),
       );
     }
   }
 
-  void _handleNewQuestion() async {
-    final result = await Navigator.of(context).push<QuestionResult>(
+  void _handleNewQuestion(BuildContext context) async {
+    final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
@@ -236,17 +235,18 @@ class _EditChecklistWidgetState extends State<EditChecklistWidget> {
     if (result != null && result.isNotEmpty) {
       final uniqueId = DateTime.now().millisecondsSinceEpoch;
 
-      if (result.hasNewImage) {
-        newFileAdded(result.newImage, uniqueId);
-      }
-
       BlocProvider.of<EditActivityBloc>(context).add(
         ReplaceActivity(
-          widget.activity.copyWith(
-            infoItem: widget.checklist.copyWith(
+          activity.copyWith(
+            infoItem: checklist.copyWith(
               questions: [
-                ...widget.checklist.questions,
-                result.question.copyWith(id: uniqueId)
+                ...checklist.questions,
+                Question(
+                  id: uniqueId,
+                  name: result.name,
+                  fileId: result.image.id,
+                  image: result.image.path,
+                ),
               ],
             ),
           ),
@@ -304,7 +304,7 @@ class EditNoteWidget extends StatelessWidget {
             )
           ],
         ),
-        const SizedBox(height: 16.0),
+        SizedBox(height: 16.0.s),
         Expanded(
           child: GestureDetector(
             onTap: () => editText(context, activity, infoItem),
@@ -367,15 +367,14 @@ class _LibraryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12.0, 4.0, 4.0, 4.0),
-      child: ActionButton(
+      padding: EdgeInsets.fromLTRB(12.0.s, 4.0.s, 4.0.s, 4.0.s),
+      child: ActionButtonDark(
+        onPressed: onPressed,
         child: Icon(
           AbiliaIcons.show_text,
           size: defaultIconSize,
           color: AbiliaColors.black,
         ),
-        onPressed: onPressed,
-        themeData: darkButtonTheme,
       ),
     );
   }

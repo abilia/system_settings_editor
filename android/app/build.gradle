@@ -53,7 +53,7 @@ android {
             keyAlias "upload"
             keyPassword System.getenv("APPCENTER_KEY_PASSWORD")
         }
-    }
+    } 
     buildTypes {
         release {
             signingConfig signingConfigs.release

@@ -1,9 +1,12 @@
+// @dart=2.9
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 import 'dart:async';
 
 import '../mocks.dart';
@@ -47,7 +50,7 @@ void main() {
   test('if response 401, getUserFromApi throws UnauthorizedException',
       () async {
     // Arrange
-    when(mockClient.get('$url/api/v1/entity/me',
+    when(mockClient.get('$url/api/v1/entity/me'.toUri(),
             headers: authHeader(Fakes.token)))
         .thenAnswer((_) => Future.value(Response('body', 401)));
     // Assert
@@ -62,7 +65,7 @@ void main() {
 
   test('if response 401, me throws UnauthorizedException', () async {
     // Arrange
-    when(mockClient.get('$url/api/v1/entity/me',
+    when(mockClient.get('$url/api/v1/entity/me'.toUri(),
             headers: authHeader(Fakes.token)))
         .thenAnswer((_) => Future.value(Response('body', 401)));
     // Assert
@@ -78,7 +81,7 @@ void main() {
   test('if response not 401, get user from database (offline case)', () async {
     // Arrange
     final userInDb = User(name: 'name', type: 'type', id: 123);
-    when(mockClient.get('$url/api/v1/entity/me',
+    when(mockClient.get('$url/api/v1/entity/me'.toUri(),
             headers: authHeader(Fakes.token)))
         .thenAnswer((_) => Future.value(Response('body', 400)));
 
@@ -91,7 +94,7 @@ void main() {
 
   test('if no user in database, me throws UnauthorizedException', () async {
     // Arrange
-    when(mockClient.get('$url/api/v1/entity/me',
+    when(mockClient.get('$url/api/v1/entity/me'.toUri(),
             headers: authHeader(Fakes.token)))
         .thenAnswer((_) => Future.value(Response('body', 400)));
 
@@ -109,7 +112,7 @@ void main() {
   test('logout deletes token', () async {
     // Arrange
     final token = Fakes.token;
-    when(mockClient.delete('$url/api/v1/auth/client',
+    when(mockClient.delete('$url/api/v1/auth/client'.toUri(),
             headers: authHeader(token)))
         .thenAnswer((_) => Future.value(Response('body', 200)));
 
@@ -117,7 +120,7 @@ void main() {
     await userRepo.logout(token);
 
     // Assert
-    verify(mockClient.delete('$url/api/v1/auth/client',
+    verify(mockClient.delete('$url/api/v1/auth/client'.toUri(),
         headers: authHeader(token)));
     verify(mockTokenDb.delete());
     verify(mockUserDb.deleteUser());
@@ -126,7 +129,7 @@ void main() {
   test('exception when logging out', () async {
     // Arrange
     final token = Fakes.token;
-    when(mockClient.delete('$url/api/v1/auth/client',
+    when(mockClient.delete('$url/api/v1/auth/client'.toUri(),
             headers: authHeader(token)))
         .thenThrow(Exception());
 
@@ -134,7 +137,7 @@ void main() {
     await userRepo.logout(token);
 
     // Assert
-    verify(mockClient.delete('$url/api/v1/auth/client',
+    verify(mockClient.delete('$url/api/v1/auth/client'.toUri(),
         headers: authHeader(token)));
     verify(mockTokenDb.delete());
     verify(mockUserDb.deleteUser());

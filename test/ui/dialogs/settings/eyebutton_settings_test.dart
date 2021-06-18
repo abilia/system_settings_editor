@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -15,10 +17,11 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../mocks.dart';
+import '../../../utils/verify_generic.dart';
 
 void main() {
-  MockSettingsDb mockSettingsDb;
   final translate = Locales.language.values.first;
+  MockGenericDb mockGenericDb;
 
   setUp(() async {
     setupPermissions();
@@ -36,8 +39,22 @@ void main() {
         Future.value([Activity.createNew(title: 'null', startTime: initTime)]));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
-    mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.dotsInTimepillar).thenReturn(true);
+    final mockUserFileDb = MockUserFileDb();
+    when(
+      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+    ).thenAnswer(
+      (value) => Future.value([]),
+    );
+
+    final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
+      data: MemoplannerSettingData.fromData(
+          data: DayCalendarType.TIMEPILLAR.index,
+          identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+    );
+
+    mockGenericDb = MockGenericDb();
+    when(mockGenericDb.getAllNonDeletedMaxRevision())
+        .thenAnswer((_) => Future.value([timepillarGeneric]));
 
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
@@ -47,8 +64,8 @@ void main() {
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(activityResponse: activityResponse)
       ..fileStorage = MockFileStorage()
-      ..userFileDb = MockUserFileDb()
-      ..settingsDb = mockSettingsDb
+      ..userFileDb = mockUserFileDb
+      ..genericDb = mockGenericDb
       ..syncDelay = SyncDelays.zero
       ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
@@ -60,30 +77,45 @@ void main() {
 
   testWidgets('Timepillar shows first dots, then edge when settings changes',
       (WidgetTester tester) async {
-    // Act - go to timepillar
-    await tester.goToEyeButtonSettings();
-    await tester.tap(find.byIcon(AbiliaIcons.timeline));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.ok));
+    await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
     // Assert - At timepillar and side dots shows
-    expect(find.byType(TimePillarCalendar), findsOneWidget);
+    expect(find.byType(TimepillarCalendar), findsOneWidget);
     expect(find.byType(SideDots), findsWidgets);
     expect(find.byType(SideTime), findsNothing);
 
     // Act - change to Edge illustraion in time
+    await tester.pumpAndSettle();
     await tester.tap(find.byType(EyeButton));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.flarp));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.ok));
+    final center = tester.getCenter(find.byType(EyeButtonDialog));
+    await tester.dragFrom(center, Offset(0.0, -400));
     await tester.pumpAndSettle();
 
-    // Assert - At timepillar and side time shows
-    expect(find.byType(TimePillarCalendar), findsOneWidget);
-    expect(find.byType(SideDots), findsNothing);
-    expect(find.byType(SideTime), findsWidgets);
+    await tester.tap(find.byIcon(AbiliaIcons.flarp));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(OkButton), findsOneWidget);
+
+    await tester.tap(find.byType(OkButton));
+    await tester.pumpAndSettle();
+
+    if (Config.isMPGO) {
+      verifyUnsyncGeneric(
+        tester,
+        mockGenericDb,
+        key: MemoplannerSettings.dotsInTimepillarKey,
+        matcher: isFalse,
+      );
+    } else {
+      verifySyncGeneric(
+        tester,
+        mockGenericDb,
+        key: MemoplannerSettings.dotsInTimepillarKey,
+        matcher: isFalse,
+      );
+    }
   });
 
   testWidgets('tts', (WidgetTester tester) async {
@@ -92,12 +124,38 @@ void main() {
     await tester.tap(find.byIcon(AbiliaIcons.timeline));
     await tester.pumpAndSettle();
 
+    // Verify correct TTS timeline
     await tester.verifyTts(find.text(translate.viewMode),
         exact: translate.viewMode);
     await tester.verifyTts(find.byIcon(AbiliaIcons.calendar_list),
         exact: translate.listView);
     await tester.verifyTts(find.byIcon(AbiliaIcons.timeline),
         exact: translate.timePillarView);
+
+    // Verify correct TTS zoom. Small and medium has same icon for now
+    await tester.verifyTts(find.text(translate.zoom), exact: translate.zoom);
+    await tester.verifyTts(find.text(translate.small), exact: translate.small);
+    await tester.verifyTts(find.text(translate.medium),
+        exact: translate.medium);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.enlarge_text),
+        exact: translate.large);
+
+    // Verify correct TTS intervals
+    await tester.verifyTts(find.text(translate.dayInterval),
+        exact: translate.dayInterval);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.day_interval),
+        exact: translate.interval);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.sun),
+        exact: translate.viewDay);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.day_night),
+        exact: translate.dayAndNight);
+
+    // Scroll down
+    final center = tester.getCenter(find.byType(EyeButtonDialog));
+    await tester.dragFrom(center, Offset(0.0, -400));
+    await tester.pumpAndSettle();
+
+    // Verify correct TTS for duration setting
     await tester.verifyTts(find.text(translate.activityDuration),
         exact: translate.activityDuration);
     await tester.verifyTts(find.byIcon(AbiliaIcons.options),

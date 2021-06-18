@@ -9,6 +9,6 @@
         android:bottom="363dp">
         <bitmap
             android:gravity="center"
-            android:src="@drawable/memoplannergologo" />
+            android:src="@drawable/logo" />
     </item>
 </layer-list>

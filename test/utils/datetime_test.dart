@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -162,20 +164,6 @@ void main() {
     });
   });
 
-  group('nextHalfHour', () {
-    test('pickes next half hour on exact', () {
-      expect(
-        DateTime(2000, 12, 12, 12, 00).nextHalfHour(),
-        DateTime(2000, 12, 12, 12, 30),
-      );
-    });
-    test('pickes next on precise before', () {
-      expect(
-        DateTime(2000, 12, 12, 11, 59, 59, 999).nextHalfHour(),
-        DateTime(2000, 12, 12, 12, 00, 00, 000),
-      );
-    });
-  });
   group('roundToMinute', () {
     test('rounds down on 7', () {
       final minutesPerDot = 15;
@@ -219,12 +207,26 @@ void main() {
     });
   });
 
+  group('First day in week', () {
+    test('Test', () {
+      final firstInWeek = DateTime(2021, 03, 01);
+      expect(DateTime(2021, 03, 01).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 02).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 03).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 04).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 05).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 06).firstInWeek(), firstInWeek);
+      expect(DateTime(2021, 03, 07).firstInWeek(), firstInWeek);
+
+      expect(DateTime(2021, 01, 01).firstInWeek(), DateTime(2020, 12, 28));
+    });
+  });
+
   group('DayPart', () {
     test('Correct day part', () {
       final dayParts = DayParts(
         6.hours().inMilliseconds,
         10.hours().inMilliseconds,
-        12.hours().inMilliseconds,
         18.hours().inMilliseconds,
         23.hours().inMilliseconds,
       );
@@ -233,14 +235,8 @@ void main() {
       expect(DateTime(2020, 10, 07, 05, 59).dayPart(dayParts), DayPart.night);
       expect(DateTime(2020, 10, 07, 06, 00).dayPart(dayParts), DayPart.morning);
       expect(DateTime(2020, 10, 07, 09, 59).dayPart(dayParts), DayPart.morning);
-      expect(
-          DateTime(2020, 10, 07, 10, 00).dayPart(dayParts), DayPart.forenoon);
-      expect(
-          DateTime(2020, 10, 07, 11, 59).dayPart(dayParts), DayPart.forenoon);
-      expect(
-          DateTime(2020, 10, 07, 12, 00).dayPart(dayParts), DayPart.afternoon);
-      expect(
-          DateTime(2020, 10, 07, 17, 59).dayPart(dayParts), DayPart.afternoon);
+      expect(DateTime(2020, 10, 07, 10, 00).dayPart(dayParts), DayPart.day);
+      expect(DateTime(2020, 10, 07, 11, 59).dayPart(dayParts), DayPart.day);
       expect(DateTime(2020, 10, 07, 18, 00).dayPart(dayParts), DayPart.evening);
       expect(DateTime(2020, 10, 07, 22, 59).dayPart(dayParts), DayPart.evening);
       expect(DateTime(2020, 10, 07, 23, 00).dayPart(dayParts), DayPart.night);

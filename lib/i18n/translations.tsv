@@ -1,13 +1,40 @@
 _id_	en	sv	da	nl	fi	de	nb
 ### Login page							
-userNameTitle	Username or email	Användarnamn eller e-post	Brugernavn eller e-mail	Gebruikersnaam of e-mail	Käyttäjätunnus tai sähköpostiosoite	Benutzername oder E-Mail	Brukernavn eller e-post
-userName	Username	Användarnamn	Brugernavn	Gebruikersnaam	Käyttäjätunnus	Benutzername	Brukernavn
+username	Username	Användarnamn	Brugernavn	Gebruikersnaam	Käyttäjätunnus	Benutzername	Brukernavn
 password	Password	Lösenord	Adgangskode	Wachtwoord	Salasana	Passwort	Passord
-loginHint	Login with the same username and password as on your MEMOplanner	Logga in med samma användarnamn och lösenord som på din MEMOplanner	Log ind med samme brugernavn og adgangskode som på din MEMOplanner	Log in met dezelfde gebruikersnaam en hetzelfde wachtwoord als op uw MEMOplanner	Kirjaudu sisään samalla käyttäjänimellä ja salasanalla kuin MEMOplannerilla	Melden Sie sich mit demselben Benutzernamen und Passwort wie auf Ihrem MEMOplanner an	Logg inn med samme brukernavn og passord som på MEMOplanner
+loginHintMP	Use your myAbilia account to Login	Använd ditt myAbilia-konto för att logga in	Brug din myAbilia-konto til at logge ind	Gebruik uw myAbilia-account om in te loggen	Kirjaudu sisään myAbilia-tililläsi	Verwenden Sie Ihr myAbilia-Konto, um sich anzumelden	Bruk myAbilia-kontoen din for å logge på
+loginHintMPGO	Login with the same username and password as on your MEMOplanner	Logga in med samma användarnamn och lösenord som på din MEMOplanner	Log ind med samme brugernavn og adgangskode som på din MEMOplanner	Log in met dezelfde gebruikersnaam en hetzelfde wachtwoord als op uw MEMOplanner	Kirjaudu sisään samalla käyttäjänimellä ja salasanalla kuin MEMOplannerilla	Melden Sie sich mit demselben Benutzernamen und Passwort wie auf Ihrem MEMOplanner an	Logg inn med samme brukernavn og passord som på MEMOplanner
 login	Log in	Logga in	Log ind	Inloggen	Kirjaudu sisään	Anmelden	Logg inn
 logout	Log out	Logga ut	Log ud	Uitloggen	Kirjaudu ulos	Abmelden	Logg ut
 wrongCredentials	Username or password doesn\'t match.\nVerify your credentials and try again.	Användarnamn eller lösenord stämmer inte.\nKontrollera att du har skrivit rätt och försök igen.	Brugernavn eller adgangskode er ikke korrekt.\nKontroller at du har skrevet det rigtigt og forsøg igen.	Gebruikersnaam of wachtwoord komt niet overeen.\nControleer uw gegevens en probeer opnieuw.	Käyttäjätunnus tai salasana ei täsmää.\nVahvista tunnistetiedot ja yritä uudelleen.	Benutzername oder Passwort unkorrekt.\nBitte Anmeldedaten prüfen und nochmals versuchen.	Brukernavn eller passord er ikke riktig.\nKontroller at du har skrevet riktig og prøv igjen.
 noConnection	No contact with myAbilia. Check your Internet connection.	Ingen kontakt med myAbilia. Kontrollera din internetanslutning.	Enheden er ikke tilsluttet myAbilia. Kontroller din internetforbindelse.	Het apparaat is niet aangesloten op het myAbilia. Controleer uw internetverbinding.	Laitetta ei ole yhdistetty myAbilia. Tarkista Internet-yhteys.	Das Gerät ist nicht mit dem myAbilia verbunden. Überprüfen Sie Ihre Internetverbindung.	Enheten er ikke koblet til myAbilia. Sjekk din Internettforbindelse.
+enterUsername	Enter username	Ange ditt användarnamn	Angiv dit brugernavn	Gebruikersnaam invoeren	Anna käyttäjätunnus	Benutzername eingeben	Angi ditt brukernavn
+enterPassword	Enter password	Ange ditt lösenord	Angiv din adgangskode	Wachtwoord invoeren	Anna salasana	Passwort eingeben	Angi ditt passord
+							
+### Create Account							
+createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia konto än?	Har du ikke en myAbilia-konto endnu?	Heeft u nog geen myAbilia-account?	Eikö sinulla ole vielä myAbilia-tiliä?	Sie haben noch kein myAbilia-Konto?	Har du ikke en myAbilia-konto ennå?
+createAccount	Create Account	Skapa konto	Opret konto	Maak account	Luo tili	Benutzerkonto erstellen	Opprett konto
+createAaccountHeading	Create your account in myAbilia	Skapa ditt konto i myAbilia	Opret din konto i myAbilia	Creëer uw account in myAbilia	Luo tili myAbiliassa	Erstellen Sie Ihr Konto in myAbilia	Opprett kontoen din i myAbilia
+createAaccountSubheading	You need a myAbilia account to use MEMOplanner	Du behöver ett myAbilia-konto för att kunna använda MEMOplanner	Du har brug for en myAbilia-konto for at bruge MEMOplanner	U heeft een myAbilia-account nodig om MEMOplanner te gebruiken	Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria	Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können	Du trenger en myAbilia-konto for å bruke MEMOplanner
+acceptTerms	I have read and agree to	Jag har läst och godkänner	Jeg har læst og accepterer	Ik heb gelezen en akkoord gegaan	Olen lukenut ja sopineet	Ich habe gelesen und bin damit einverstanden	Jeg har lest og godtar
+termsOfUse	terms of use	användarvillkor	brugervillkår	gebruiksvoorwaarden	käyttöehdot	nutzungsbedingungen	brukervillkår
+termsOfUseUrl	intl/terms-of-use	sv/anvandarvillkor	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	nb/brukervilkar
+privacyPolicy	privacy policy	personuppgiftspolicy	persondatapolitik	privacybeleid	tietosuojakäytäntö	datenschutzbestimmungen	personvernerklæring
+privacyPolicyUrl	intl/policy-for-the-processing-of-personal-data	sv/personuppgiftspolicy	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	nb/personvernerklaering
+usernameHint	Username (phone number or email)	Användarnamn (telefonnummer eller e-post)	Brugernavn (telefon eller en e-mail)	Gebruikersnaam (telefoon of een e-mail)	Käyttäjätunnus (puhelin tai sähköpostiosoite)	Benutzername (telefon oder E-Mail)	Brukernavn (telefon eller en e-post)
+passwordHint	Password (minimum 8 characters)	Lösenord (minst 8 tecken)	Adgangskode (mindst 8 tegn)	Wachtwoord (minimaal 8 tekens)	Salasanassa (vähintään 8 merkkiä)	Passwort (mindestens 8 Zeichen)	Passord (minimum 8 tegn)
+confirmPassword	Confirm password	Bekräfta lösenordet	Bekræft adgangskoden	Wachtwoord bevestigen	Vahvista salasana	Passwort bestätigen	Bekreft passordet
+usernameToShort	Username or email is invalid, must contain at least three characters	Användarnamn eller e-postadress är ogiltig, måste innehålla minst tre tecken	Brugernavn eller e-mail er ugyldig, skal indeholde mindst tre tegn	Gebruikersnaam of e-mail is ongeldig, moet ten minste drie tekens bevatten	Käyttäjätunnus tai sähköpostiosoite on virheellinen, niissä on oltava vähintään kolme merkkiä	Benutzername oder E-Mail ungültig - Mindestlänge drei Zeichen	Brukernavn eller e-postadresse er ugyldig, må inneholde minst tre tegn
+passwordToShort	The password must consist of at least 8 characters	Lösenordet måste bestå av minst 8 tecken	Adgangskoden skal bestå af mindst 8 tegn	Het wachtwoord moet ten minste 8 tekens bevatten	Salasanassa on oltava vähintään 8 merkkiä	Das Passwort muss mindestens 8 Zeichen lang sein	Passordet må bestå av minst 8 tegn
+passwordMismatch	Both passwords must be the same	Lösenorden måste vara likadana	Begge adgangskoder skal være de samme	Beide wachtwoorden moeten hetzelfde zijn	Molempien salasanojen on oltava samat	Beide Passwörter müssen identisch sein	Begge passordene må være de samme
+confirmTermsOfUse	Confirm terms of use	Bekräfta användarvillkor	Bekræft brugervilkår	Bevestig de gebruiksvoorwaarden	Vahvista käyttöehdot	Bestätigen Sie die Nutzungsbedingungen	Bekreft brukervilkår
+confirmPrivacyPolicy	Confirm privacy policy	Bekräfta personuppgiftspolicy	Bekræft persondatapolitik	Bevestig privacybeleid	Vahvista tietosuojakäytäntö	Bestätigen Sie die Datenschutzbestimmungen	Bekreft personvernerklæring
+usernameTaken	Username/email address is already in use	Användarnamn/e-postadress används redan	Brugernavn/e-mail-adresse er allerede i brug	Gebruikersnaam/e-mailadres is reeds in gebruik	Käyttäjätunnus/sähköpostiosoite on jo käytössä	Benutzername/E-Mail-Adresse bereit in Gebrauch.	Brukernavn/e-postadresse er allerede i bruk
+unknownError	Unknown error	Okänt fel	Ukendt fejl	Onbekende fout	Tuntematon virhe	Unbekannter Fehler	Ukjent feil
+accountCreatedHeading	Account created	Konto skapat	Konto oprettet	Account gecreëerd	Tili luotu puolivälissä	Konto erstellt	Konto opprettet
+accountCreatedBody	Your account has been created.\nYou can login using your username and password	Ditt konto har skapats.\nDu kan logga in med ditt användarnamn och lösenord	Din konto er oprettet.\nDu kan logge ind med dit brugernavn og din adgangskode	Uw account is gecreëerd.\nU kunt inloggen met uw gebruikersnaam en wachtwoord	Tili on luotu.\nVoit kirjautua sisään käyttämällä käyttäjätunnustasi ja salasanaasi	Ihr Konto wurde erstellt.\nSie können sich mit Ihrem Benutzernamen und Passwort anmelden	Kontoen din er opprettet.\nDu kan logge inn ved å bruke ditt brukernavn og passord
+browser	Browser	Webbläsare	Browser	Browser	Selain	Browser	Nettleser
+backToLogin	Back to Login	Tillbaka till login	Zurück zur Anmeldung	Zurück zur Anmeldung	Takaisin sisäänkirjautumiseen	Zurück zur Anmeldung	Tilbake til innlogging
 							
 ### License							
 noLicense	This account has no valid license.	Det här kontot saknar giltig licens. Du kan därför inte logga in.	Problemer med at logge ind!\nDu har ikke en gyldig licens.	Dit account heeft geen geldige licentie.	Tällä tilillä ei ole kelvollista lisenssiä.	Für dieses Konto gibt es keine gültige Lizenz.	Problemer med å logge inn!\nDu har ikke en gyldig lisens.
@@ -31,6 +58,8 @@ hour	hour	timme	time	uur	tunti	Stunde	time
 h	h	t	t	u	t	S	t
 minutes	minutes	minuter	minutter	minuten	minuuttia	Minuten	minutter
 minute	minute	minut	minut	minuut	minuutti	Minute	minutt
+seconds	seconds	sekunder	sekunder	seconden	sekuntia	Sekunden	sekunder
+second	second	sekund	sekund	seconde	sekunti	Sekunde	sekund
 min	min	min	min	min	min	Min	min
 am	AM	fm	am	am	am	am	am
 pm	PM	em	pm	pm	pm	pm	pm
@@ -38,6 +67,8 @@ pm	PM	em	pm	pm	pm	pm	pm
 dayInessive	&empty&	&empty&	&empty&	&empty&	päivässä	&empty&	&empty&
 hourInessive	&empty&	&empty&	&empty&	&empty&	tunnissa	&empty&	&empty&
 minuteInessive	&empty&	&empty&	&empty&	&empty&	minuutissa	&empty&	&empty&
+now	Now	Nu	Nu	Nu	Nyt	Jetzt	Nå
+week	week	vecka	uge	week	viikko	Woche	uke
 							
 ### Activity related							
 reminders	Reminders	Påminnelser	Påmindelser	Herinneringen	Muistutukset	Erinnerungen	Påminnelser
@@ -96,13 +127,17 @@ noImages	You have no images	Du har inga bilder	Du har ingen billeder	Je hebt gee
 setTime	Set time	Välj tid	Vælg tid	Tijd instellen	Aseta aika	Zeit einstellen	Velg tid
 time	Time	Tid	Tid	Tijd	Aika	Zeit	Tid
 save	Save	Spara	Spare	Sparen	Tallentaa	Sparen	Spare
+endBeforeStartError	End date can't be before start date	Slutdatum kan inte vara före startdatum	Slutdato kan ikke være før startdato	Einddatum mag niet voor startdatum liggen	Päättymispäivä ei voi olla ennen alkamispäivää	Das Enddatum kann nicht vor dem Startdatum liegen	Sluttdato kan ikke være før startdato
 							
-### Errors							
+### Errors & warnings							
 error	Error	Fel	Fejl	Fout	Virhe	Error	Feil
+warning	Warning	Varning	Advarsel	Waarschuwing	Varoitus	Warnung	Advarsel
 missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.	Aktiviteten skal have et navn eller et billede og et starttidspunkt.	Je activiteit moet een afbeelding of naam en starttijd bevatten.	Toimintasi tulisi sisältää kuva tai nimi ja aloitusaika.	Ihre Aktivität sollte ein Bild oder einen Namen und eine Startzeit enthalten.	Aktiviteten må ha et navn ellet et bilde og en starttid.
 missingTitleOrImage	An activity needs an image or a name.	En aktivitet måste ha antingen en bild eller ett namn.	En aktivitet skal have enten et billede eller et navn.	Deze activiteit heeft een afbeelding of een naam nodig.	Tämä aktiviteetti tarvitsee kuvan tai nimen.	Diese Aktivität braucht ein Bild oder einen Namen.	En aktivitet må ha enten et bilde eller et navn.
 missingStartTime	You must enter a start time.	Du måste ange en starttid.	Du skal angive en starttid.	U moet een starttijd instellen.	Anna aloitusaika.	Sie müssen eine Startzeit eingeben:	En aktivitet må ha en starttid.
-startTimeBeforeNow	You have selected a start time which has already passed. This is not allowed.	Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.	Starttiden er allerede passeret. Det er ikke tilladt.	U heeft een starttijd geselecteerd die al voorbij is. Dit is niet toegestaan.	Valitsit aloitusajan, joka on jo mennyt. Tätä ei sallita.	Die gewählte Startzeit liegt in der Vergangenheit. Dies ist nicht zulässig.	Starttiden er allerede passert. Det er ikke tillatt.
+startTimeBeforeNowError	You have selected a start time which has already passed. This is not allowed.	Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.	Starttiden er allerede passeret. Det er ikke tilladt.	U heeft een starttijd geselecteerd die al voorbij is. Dit is niet toegestaan.	Valitsit aloitusajan, joka on jo mennyt. Tätä ei sallita.	Die gewählte Startzeit liegt in der Vergangenheit. Dies ist nicht zulässig.	Starttiden er allerede passert. Det er ikke tillatt.
+startTimeBeforeNowWarning	You have selected a start time which has already passed. Press OK to continue.	Du har valt en starttid som är före aktuell tid. Tryck ok om du vill fortsätta.	Starttiden er allerede passeret. Tryk på OK for at fortsætte.	U heeft een starttijd geselecteerd die al voorbij is. Druk op OK om door te gaan.	Valitsit aloitusajan, joka on jo mennyt. Jatka painamalla OK.	Die gewählte Startzeit liegt in der Vergangenheit. Drücken Sie auf OK, um fortzufahren.	Starttiden er allerede passert. Trykk på OK for å fortsette.
+conflictWarning	There are activities conflicting with this activity. Press OK to continue.	Det finns aktiviteter som krockar med din aktivitet. Tryck ok om du vill fortsätta.	Der er aktiviteter, der falder sammen med denne aktivitet. Tryk på OK for at fortsætte.	Er zijn activiteiten die conflicteren met deze activiteit. Druk op OK om door te gaan.	On olemassa aktiviteetteja, jotka ovat ristiriidassa tämän aktiviteetin kanssa. Jatka painamalla OK.	Mit dieser Aktivität stehen andere Aktivitäten im Konflikt. Drücken Sie auf OK, um fortzufahren.	Der er aktiviteter som kolliderer med denne aktivitet. Trykk på OK for å fortsette.
 							
 ### Privacy							
 availableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytettävissä	Verfügbar für	Tilgjengelig for
@@ -122,6 +157,7 @@ alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid	Kun alarm
 selectPicture	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valitse kuva	Bild auswählen	Velg bilde
 removePicture	Remove image	Ta bort bild	Fjern billede	Afbeelding verwijderen	Poista kuva	Entferne Bild	Fjern bildet
 imageArchive	Image Archive	Bildarkiv	Billedarkiv	Afbeeldingenarchief	Kuva-arkisto	Bildarchiv	Bildearkiv
+uploadImage	Upload image	Ladda upp bild	Upload billede	Afbeelding uploaden	Lataa kuva	Bild hochladen	Last opp bilde
 myPhotos	My photos	Mina foton	Mine fotos	Mijn foto\'s	Omat valokuvat	Meine Fotos	Mine foto
 takeNewPhoto	Take new photo	Ta ny bild	Tag et nyt billede	Nieuwe foto nemen	Ota uusi kuva	Neues Foto machen	Ta nytt bilde
 							
@@ -147,8 +183,8 @@ su	Sun	sön	søn	Zo	Su	So	søn
 infoType	Select extra function	Välj extra funktion	Vælg ekstra funktion	Extra functie selecteren	Valitse lisätoiminto	Extrafunktion auswählen	Velg ekstra funksjon
 selectInfoType	Select extra function	Välj extra funktion	Vælg ekstra funktion	Extra functie selecteren	Valitse lisätoiminto	Extrafunktion auswählen	Velg ekstra funksjon
 infoTypeNone	No extra function selected	Ingen extra funktion vald	Ingen yderligere funktion er valgt	Geen extra functie geselecteerd	Lisätoimintoa ei ole valittu	Keine Extrafunktion ausgewählt	Ingen ekstra funksjon valgt
-infoTypeChecklist	Add checklist	Lägg till checklista	Tilføj tjekliste	Checklist toevoegen	Lisää tarkistusluettelo	Checkliste hinzufügen	Legg til sjekkliste
-infoTypeNote	Add note	Lägg till anteckning	Tilføj note	Notitie toevoegen	Lisää muistiinpano	Hinweis hinzufügen	Legg til notat
+infoTypeChecklist	Checklist	Checklista	Tjekliste	Checklist	Tarkistusluettelo	Checkliste	Sjekkliste
+infoTypeNote	Note	Anteckning	Note	Notitie	Muistiinpano	Hinweis	Notat
 typeSomething	Type something…	Skriv något…	Skriv noget…	Typ iets	Kirjoita jotain	Geben Sie etwas ein…	Skriv noe…
 enterText	Enter text	Skriv text	Indtast tekst	Voer tekst in	Kirjoita teksti	Text eingeben	Skriv inn tekst
 clear	Clear	Rensa	Slet	Verwijderen	Poista	Entfernen	Slette
@@ -158,6 +194,7 @@ task	Task	Uppgift	Opgave	Taak	Tehtävä	Aufgabe	Oppgave
 remove	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
 							
 ### Settings							
+settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
 timePillarView	1 timepillar	1 tidpelare	1 tidslinje	1 tijdlijn	1 aikajana	1 Zeitstrahl	1 tidslinje
 listView	List	Lista	Liste	Lijst	Luettelo	Liste	Liste
@@ -171,6 +208,116 @@ longpressToSpeak	Tap and hold for speech support	Tryck och håll ned för talst�
 longPressInfoText	Tap and hold about 1½ seconds on any function to get it read to by speech synthesis	Tryck länge på någon text för att få den uppläst	Tryk og hold ca. 1½ sekund på enhver funktion for at få den læst til ved talesyntese	Tik en houd ongeveer 1½ seconde vast op een functie om deze te laten voorlezen door spraaksynthese	Napauta ja pidä painettuna noin 1,5 sekuntia mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla	Tippen und halten Sie etwa 1½ Sekunden lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen	Trykk og hold i ca. 1½ sekund på en funksjon for å få den lest opp ved talesyntese
 display	Display	Visa	Vise	Tonen	Näytä	Anzeige	Vise
 viewMode	View mode	Visningsläge	Visningstilstand	Weergavemodus	Katselutila	Ansichtsmodus	Visningsmodus
+dayInterval	Day interval	Intervall	Interval	Interval	Aikaväli	Intervall	Intervall
+interval	Interval	Intervall	Interval	Interval	Aikaväli	Intervall	Intervall
+viewDay	Day	Dagen	Dagen	Dag	Päivä	Tag	Dagen
+dayAndNight	Day and night	Dygnet	Døgnet	Dag en nacht	Päivä ja yö	Tag und Nacht	Døgnet
+zoom	Timeline zoom	Tidslinjens zoom	Zoom	Zoom tijdlijn	Aikajanan zoomaus	Zeitstrahl Zoom	Zoom
+small	Small	Liten	Lille	Klein	Pieni	Klein	Liten
+medium	Medium	Mellan	Mellem	Medium	Keskikokoinen	Mittel	Mellom
+large	Large	Stor	Stor	Groot	Suuri	Groß	Stor
+system	System	System	System	Systeem	Järjestelmä	System	System
+calendar	Calendar	Kalender	Kalender	Kalender	Kalenteri	Kalender	Kalender
+functions	Functions	Funktioner	Funktioner	Functies	Toiminnot	Funktionen	Funksjoner
+imagePicker	Image picker	Bildväljare	Billedvalg	Afbeeldingkiezer	Kuvanvalitsin	Bildauswahl	Bildevalg
+general	General	Generellt	Generelt	Algemeen	Yleistä	Allgemeines	Generelt
+dayCalendar	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
+weekCalendar	Week Calendar	Veckokalender	Ugekalender	Weekkalender	Viikkokalenteri	Wochenkalender	Ukekalender
+monthCalendar	Month Calendar	Månadskalender	Månedskalender	Maandkalender	Kuukausikalenteri	Monatskalender	Månedskalender
+activityView	Activity View	Aktivitetsvy	Aktivitetssiden	Activiteitsweergave	Aktiviteettinäkymä	Aktivitätsanzeige	Aktivitetsvindu
+addActivity	Add activity	Lägga in aktivitet	Indsæt aktivitet	Activiteit toevoegen	Lisää aktiviteetti	Aktivität hinzufügen	Legg inn aktivitet
+alarmSettings	Alarm settings	Larminställningar	Alarmindstillinger	Alarminstellingen	Hälytysasetukset	Alarmeinstellungen	Alarminnstillinger
+nonCheckableActivities	Non checkable activities	Ej kvitterbara aktiviteter	Ikke-kvitterbare aktiviteter	Niet-afvinkbare activiteiten	Ei-tarkistettavat aktiviteetit	Keine kontrollierbaren Aktivitäten	Ikke kvitterbare aktiviteter
+checkableActivities	Checkable activities	Kvitterbara aktiviteter	Kvitterbare aktiviteter	Afvinkbare activiteiten	Tarkistettavat aktiviteetit	Kontrollierbare Aktivitäten	Kvitterbare aktiviteter
+vibrationOnReminder	Vibration on reminder	Vibration vid påminnelse	Vibration ved påmindelse	Trilfunctie bij herinnering	Värinä muistutuksessa	Vibration bei Erinnerung	Vibrasjon ved påminnelse
+alarmTime	Alarm time	Larmtid	Alarmtid	Alarmtijd	Hälytysaika	Alarmzeit	Alarmtid
+alert	Alert	Signal	Signal	Alert	Hälytys	Anruffunktion	Signal
+defaultSound	Default	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
+noSound	- No sound -	- Inget ljud -	- Ingen lyd -	- Geen geluid -	- Ei ääntä -	- Kein Klang -	- Ingen lyd -
+showWeekNumber	Show week number	Visa veckonummer	Vis ugenummer	Weeknummer tonen	Näytä viikon numero	Wochennummer anzeigen	Vis ukenummer
+showYear	Show year	Visa år	Vis år	Jaar tonen	Näytä vuosi	Jahr anzeigen	Vis år
+everyDay	Every day (7)	Alla dagar (7)	Alle dage (7)	Elke dag (7)	Joka päivä (7)	Täglich (7)	Alle dager (7)
+viewSettings	View settings	Visa inställningar	Se indstillinger	Laat instellingen zien	Näytä asetukset	Einstellungen anzeigen	Visningsinnstillinger
+typeOfDisplay	Type of display	Typ av visning	Type	Schermsoort	Näytön tyyppi	Bildschirmtyp	Type
+timelineLength	Timeline length	Tidslinjens längd	Tid på døgnet	Lengte tijdlijn	Aikajanan pituus	Zeitstrahl Länge	Tid på døgnet
+weekdays	Weekdays (5)	Vardagar (5)	Hverdage (5)	Weekdagen (5)	Arkisin (5)	Werktage (5)	Hverdager (5)
+captions	Captions	Rubriker	Titler	Bijschriften	Otsikot	Unterschriften	Titler
+columns	Columns	Kolumner	Kolonner	Kolommen	Sarakkeet	Spalten	Kolonner
+headings	Headings	Rubriker	Titler	Kopteksten	Otsikot	Überschriften	Titler
+allowPassedStartTime	Allow passed start time	Lägga in på passerad tid	Indsæt på passeret starttid	Verlopen Starttijd toestaan	Salli mennyt aloitusaika	Startzeit in der Vergangenheit erlauben	Legg inn på passert tid
+addRecurringActivity	Add recurring activity	Lägga in återkommande aktivitet	>Indsæt gentagende aktivitet	Terugkerende activiteit toevoegen	Lisää toistuva aktiviteetti	Wiederkehrende Aktivität hinzufügen	Legg inn gjentakende aktivitet
+showEndTime	Show end time	Visa sluttid	Vis sluttid	Eindtijd tonen	Näytä päättymisaika	Endezeit anzeigen	Vis sluttid
+showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	Alarme anzeigen	Vis alarm
+showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
+showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
+throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu
+androidSettings	Android Settings	Android-inställningar	Android-indstillinger	Android-instellingen	Android-asetukset	Android-Einstellungen	Android-innstillinger
+stepByStep	Step-by-step	Stegvis	Trinvist	Stap voor stap	Vaihe vaiheelta	Schritt für Schritt	Via sekvens
+showBasicActivities	Show basic activities	Visa basaktiviteter	Vis standardaktiviteter	Toon standaardactiviteiten	Näytä perusaktiviteetit	Standardaktivitäten anzeigen	Vis liste med standardaktiviteter
+selectName	Select name	Välj namn	Vælg navn	Naam selecteren	Valitse nimi	Name auswählen	Velg navn
+selectImage	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valitse kuva	Bild auswählen	Velg bilde
+selectDate	Select date	Välj datum	Vælg dato	Datum selecteren	Valitse päivämäärä	Datum auswählen	Velg dato
+selectType	Select type	Välj typ	Vælg type	Type selecteren	Valitse tyyppi	Typ auswählen	Velg type
+selectCheckable	Select checkable	Välj kvitterbar	Vælg kvittering	Afvinkbaarheid selecteren	Valitse tarkistettava	Kontrollierbar auswählen	Velg kvittering
+selectAvailableFor	Select available for	Välj tillgänglig för	Vælg tilgængelig for	Selecteer beschikbaar voor	Valitse käytettävissä	Wählen Sie verfügbar für	Velg tilgjengelig for
+selectDeleteAfter	Select delete after	Välj ta bort efteråt	Vælg slet bagefter	Wissen na selecteren	Valitse poista, kun on kulunut	Zeit bis Löschen auswählen	Velg slett etterpå
+selectAlarm	Select alarm	Välj larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Velg alarm
+iOSAlarmTimeWarning	On iPhones, alarms longer than 30 seconds will be played for 30 seconds due to iOS restrictions	På iPhones spelas larm som är längre än 30 sekunder i 30 sekunder på grund av iOS-begränsningar	På iPhones afspilles alarmer, der er længere end 30 sekunder i 30 sekunder på grund af iOS-begrænsninger	Op iPhones worden alarmen langer dan 30 seconden 30 seconden afgespeeld vanwege iOS-beperkingen	IPhone-laitteissa yli 30 sekunnin pituiset hälytykset toistetaan 30 sekunnin ajan iOS-rajoitusten vuoksi	Auf iPhones werden Alarme, die länger als 30 Sekunden sind, aufgrund von iOS-Einschränkungen 30 Sekunden lang wiedergegeben	På iPhones vil alarmer som er lenger enn 30 sekunder spilles av i 30 sekunder på grunn av iOS-begrensninger
+selectChecklist	Select checklist	Välj checklista	Vælg tjekliste	Checklist selecteren	Valitse tarkistusluettelo	Checkliste auswählen	Velg sjekkliste
+selectNote	Select note	Välj anteckning	Vælg note	Notitie selecteren	Valitse muistiinpano	Hinweis auswählen	Velg notat
+selectReminder	Select reminder	Välj påminnelser	Vælg påmindelse	Herinnering selecteren	Valitse muistutus	Erinnerung auswählen	Velg påminnelser
+add	Add	Lägg in	Indsæt	Toevoegen	Lisää	Hinzufügen	Legg inn
+defaults	Defaults	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
+							
+## Functions Settings							
+toolbarSettingsHint	Views displayed in the Toolbar	Visningar visas i verktygsfältet	Visninger vises i værktøjslinjen	Weergaven weergegeven in de werkbalk	Näkymät näkyvät työkalupalkissa	In der Symbolleiste angezeigte Ansichten	Visninger som vises på verktøylinjen
+homeScreenSettingsHint	View displayed when the home button is pressed	Visad vy vid tryck på hemknappen	Side der bliver vist ved tryk på hjemknappen	Weergave getoond als de homeknop wordt ingedrukt	Näkymä näytetään, kun aloitussivun painiketta painetaan	Wird nach Drücken der Schaltfläche Home angezeigt	Vindu som vil bli vist ved trykk på hjemknappen
+timeoutSettingsHint	Returns to the home screen after a period of inactivity.	Återgång till startsidan efter en tids inaktivitet.	Gå tilbage til startsiden, efter en periode med inaktivitet.	Gaat terug naar het thuisscherm na een periode van inactiviteit.	Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen.	Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität.	Återgång till startsidan efter en tids inaktivitet.
+noTimeout	No timeout	Ingen timeout	Ingen timeout	Geen time-out	Ei aikakatkaisua	Keine Zeitüberschreitung	Ingen timeout
+activateScreensaver	Activate Screensaver	Aktivera skärmsläckare	Aktivér pauseskærm	Screensaver activeren	Aktivoi näytönsäästäjä	Bildschirmschoner aktivieren	Aktiver skjermsparer
+menuRemovalWarning	Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.	Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.	Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.	Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.	Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.	Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.	Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.
+							
+## Day Calendar Settings							
+topField	Top Field	Toppfält	Topfelt	Bovenste veld	Yläkenttä	Oberstes Feld	Toppfelt
+showBrowseButtons	Show browse buttons	Visa bläddraknappar	Vis bladre-knapper	Toon bladerknoppen	Näytä selauspainikkeet	Suchschaltflächen anzeigen	Vis bla-knapper
+showWeekday	Show weekday	Visa veckodag	Vis ugedag	Weekdag tonen	Näytä viikonpäivä	Wochentag anzeigen	Vis ukedag
+showDayPeriod	Show time for day and night	Visa tid på dygnet	Vis tid på døgnet	Tijd voor dag en nacht tonen	Näytä aika päivälle ja yölle	Zeit für Tag und Nacht anzeigen	Vis tid på døgnet
+showDate	Show date	Visa datum	Vis dato	Datum tonen	Näytä päivämäärä	Datum anzeigen	Vis dato
+showClock	Show clock	Visa klocka	Vis ur	Toon klok	Näytä kello	Uhr anzeigen	Vis klokken
+							
+## Activity view Settings							
+delete	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
+edit	Edit	Ändra	Ændre	Bewerken	Muokkaa	Bearbeiten	Endre
+showQuarterHourWatchBar	Show Quarter Hour Watch bar	Visa kvartur	Vis kvartur	Kwartierkijkbalk tonen	Näytä aikapylväsnäkymä	Viertelstunden-Balken anzeigen	Vis kvarterur
+timeOnQuarterHourBar	Time on Quarter Hour bar	Tid på kvartur	Tid på kvartur	Tijd op kwartierbalk	Aika varttikellon palkissa	Zeit auf Viertelstunden-Balken	Tid på kvarterur
+							
+## Calendar General Settings							
+clock	Clock	Klocka	Ur	Klok	Kello	Uhr	Klokke
+analogueDigital	Analogue + digital	Analog + digital	Analog + digital	Analoog + digitaal	Analoginen + digitaalinen	Analog + digital	Analog + digital
+analogue	Analogue	Analog	Analog	Analoog	Analoginen	Analog	Analog
+digital	Digital	Digital	Digital	Digitaal	Digitaalinen	Digital	Digital
+timeline	Timeline	Tidslinje	Tidslinje	Tijdlijn	Aikajana	Zeitstrahl	Tidslinje
+earyMorning	early morning	morgon	morgen	ochtend	aamu	frühmorgens	morgen
+twelveHourFormat	12 hours format	12 timmar format	12 timers format	12 uur formaat	12 tunnin muoto	12 Stunden Format	12 timers format
+oneDot	One dot	En punkt	Et punkt	Eén punt	Yksi piste	Ein Punkt	Et punkt
+columnOfDots	Column of dots	Pelare av punkter	Søjle af punkter	Kolommen van punten	Pistepylväs	Spalte aus Punkten	Pillar av punkter
+lineAcrossCurrentTime	Line across current time	Linje på aktuell tid	Linje viser aktuel tid	Lijn door huidige tijd	Viiva nykyisen ajan kohdalla	Linie über aktueller Zeit	Linje viser aktuell tid
+linesForEachHour	Lines for each hour	Linjer för varje timme	Linjer for hver time	Lijnen voor elk uur	Viivat jokaiselle tunnille	Linien für jede Stunde	Linjer for hver time
+saturdayAndSunday	Saturday and Sunday	Lördag och söndag	Lørdag og søndag	Zaterdag en zondag	Lauantai ja sunnuntai	Samstag und Sonntag	Lørdag og søndag
+dayColours	Day colours	Dagfärger	Dagfarver	Dagkleuren	Päivien värit	Tagesfarben	Dagfarger
+noDayColours	No day colours	Inga dagfärger	Ingen dagsfarver	Geen dagkleuren	Ei päivien värejä	Keine Tagesfarben	Ingen dagfarger
+showCagetories	Show categories	Visa kategorier	Vis kategorier	Categorieën tonen	Näyte kategoriat	Kategorien zeigen	Vis kategorier
+showColours	Show colours	Visa färger	Vis farver	Kleuren tonen	Näytä värit	Farben zeigen	Vis farger
+editCategory	Edit category	Redigera kategori	Rediger kategori	Bewerk categorie	Muokkaa kategoriaa	Kategorie bearbeiten	Rediger kategori
+							
+### Code protect							
+codeProtect	Code protect	Kodskydd	Kodebeskyttelse	Codebescherming	Suojakoodi	Schutz durch Code	Kodebeskyttelse
+code	Code	Kod	Kode	Code	Koodi	Code	Kode
+codeProtectSettings	Code protect settings	Kodskydda Inställningar	Kodebeskyt indstillinger	Codebeschermingsinstellingen	Suojaa asetukset koodilla	Einstellungen mit Code schützen	Kodebeskytt Innstillinger
+codeProtectThisView	Code protect this view	Kodskydda denna vy	Kodebeskytte denne visning.	Deze weergave met code beschermen	Suojaa tämä näkymä koodilla	Diese Anzeige durch Code schützen	Kodebeskytte denne visning.
+codeProtectAndroidSettings	Code protect Android Settings	Kodskydda Android-inställningar	Kodebeskyt Android-indstillinger	Codebeschermingsinstellingen Android	Suojaa Android-asetukset koodilla	Android-Einstellungen mit Code schützen	Kodebeskytt Android-innstillinger
+enterNewCode	Enter new code	Ange ny kod	Angiv nyt kodeord	Voer nieuwe code in	Anna uusi koodi	Neuen Code eingeben	Angi ny kode
+confirmCode	Confirm code	Bekräfta kod	Bekræft kodeord	Bevestig code	Vahvista koodi	Code bestätigen	Bekreft kode
 							
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser
@@ -197,3 +344,9 @@ allowAccessBody2	You can always do that later from the	Du kan alltid göra det s
 about	About	Information	Information	Informatie	Tiedot	Information	Informasjon
 version	Version	Version	Version	Versie	Versio	Version	Versjon
 producer	Producer	Producent	Producent	Producent	Valmistaja	Hersteller	Produsent
+							
+### Menu page							
+camera	Camera	Kamera	Kamera	Camera	Kamera	Kamera	Kamera
+photoCalendar	Photo calendar	Foto-\nkalender	Billede-\nkalender	Foto-\nkalender	Kuva-\nkalenteri	Foto-\nkalender	Bilde-\nkalender
+countdown	Countdown	Nedräkning	Nedtælling	Timers	Ajastin	Countdown	Nedtelling
+quickSettingsMenu	Quick settings	Snabb-\ninställningar	Hurtig-\nindstillinger	Snelle\ninstellingen	Pika-\nasetukset	Schnell-\neinstellungen	Hurtig-\ninnstillinger

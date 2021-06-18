@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 
 import 'package:seagull/models/all.dart';
@@ -29,10 +31,10 @@ class LibraryNote extends StatelessWidget {
       ),
       child: Container(
         decoration: whiteBoxDecoration,
-        padding: const EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 0),
+        padding: EdgeInsets.fromLTRB(4.s, 8.s, 4.s, 0),
         child: LayoutBuilder(
           builder: (context, constraints) => Stack(
-            overflow: Overflow.clip,
+            clipBehavior: Clip.hardEdge,
             children: <Widget>[
               Lines(
                 lineHeight: content
@@ -66,7 +68,7 @@ class FullScreenNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: EdgeInsets.all(12.s),
         child: ClipRRect(
           borderRadius: borderRadius,
           child: Container(

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 part of 'push_bloc.dart';
 
 class PushEvent {

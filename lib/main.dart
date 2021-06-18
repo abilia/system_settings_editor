@@ -1,30 +1,30 @@
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:devicelocale/devicelocale.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
+import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'package:seagull/config.dart';
-import 'package:seagull/listener.dart';
 import 'package:seagull/analytics/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/tts/flutter_tts.dart';
-import 'package:seagull/ui/pages/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -33,7 +33,7 @@ final _log = Logger('main');
 
 void main() async {
   final baseUrl = await initServices();
-  final payload = Platform.isIOS ? null : await _payload;
+  final payload = await getOrAddPayloadToStream();
   runApp(
     App(
       baseUrl: baseUrl,
@@ -44,6 +44,7 @@ void main() async {
 
 Future<String> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (Config.isMP) await SystemChrome.setEnabledSystemUIOverlays([]);
   await Firebase.initializeApp();
   FirebaseMessaging.instance
       .isAutoInitEnabled; // Dummy call to make the FirebaseMessaging instance connection initiated. No push will arrive otherwise. Will try to find another way.
@@ -69,25 +70,33 @@ Future<String> initServices() async {
     ..baseUrlDb = baseUrlDb
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
-    ..flutterTts = await flutterTts(currentLocale)
+    ..flutterTts = await flutterTts()
+    ..packageInfo = await PackageInfo.fromPlatform()
     ..init();
 
   return await baseUrlDb.initialize();
 }
 
-Future<NotificationAlarm> get _payload async {
+Future<NotificationAlarm> getOrAddPayloadToStream() async {
   final notificationAppLaunchDetails =
       await notificationPlugin.getNotificationAppLaunchDetails();
   try {
+    final payload = notificationAppLaunchDetails.payload;
     if (notificationAppLaunchDetails.didNotificationLaunchApp) {
-      final payload =
-          NotificationAlarm.decode(notificationAppLaunchDetails.payload);
-      _log.fine('Notification Launched App with payload: $payload');
-      return payload;
+      _log.info('Notification Launched App with payload: $payload');
+      if (payload != null) {
+        if (Platform.isAndroid) {
+          _log.info('on android, parsing payload for fullscreen alarm');
+          return NotificationAlarm.decode(payload);
+        } else {
+          _log.info('on ios, adding payload to selectNotificationSubject');
+          selectNotificationSubject.add(payload);
+        }
+      }
     }
   } catch (e) {
     _log.severe(
-        'Could not parse payload: ${notificationAppLaunchDetails.payload}', e);
+        'Could not parse payload: ${notificationAppLaunchDetails?.payload}', e);
   }
   return null;
 }
@@ -134,7 +143,7 @@ class SeagullApp extends StatelessWidget {
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: child,
         ),
-        title: 'MEMOplanner Go',
+        title: Config.flavor.name,
         theme: abiliaTheme,
         darkTheme: abiliaTheme.copyWith(
           primaryColorBrightness: Brightness.dark,

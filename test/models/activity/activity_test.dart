@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -78,6 +80,7 @@ void main() {
     expect(result.secret, false);
     expect(result.fileId, '1a1b1678-781e-4b6f-9518-b6858560433f');
   });
+
   test('parse json with nulls test', () {
     final response = '''[ {
           "id" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
@@ -114,13 +117,13 @@ void main() {
     final result = resultList.first.activity;
 
     // expect(result.groupActivityId, null);
-    expect(result.icon, null);
+    expect(result.icon, '');
     expect(result.signedOffDates, []);
     expect(result.infoItem, InfoItem.none);
     expect(result.reminderBefore, []);
     expect(result.reminders, []);
     // expect(result.extras, null);
-    expect(result.fileId, null);
+    expect(result.fileId, '');
   });
   test('parse json with empty string test', () {
     final response = '''[ {
@@ -158,13 +161,13 @@ void main() {
     final result = resultList.first.activity;
 
     // expect(result.groupActivityId, null);
-    expect(result.icon, null);
+    expect(result.icon, '');
     expect(result.signedOffDates, []);
     expect(result.infoItem, InfoItem.none);
     expect(result.reminderBefore, []);
     expect(result.reminders, []);
     // expect(result.extras, null);
-    expect(result.fileId, null);
+    expect(result.fileId, '');
   });
 
   test('create, serialize and deserialize test', () {
@@ -219,12 +222,11 @@ void main() {
     expect(deserializedActivity, activity);
   });
 
-  test('Copy with null', () {
+  test('Copy with empty', () {
     final now = DateTime(2020, 02, 02, 02, 02, 02, 02);
     final toCopy = Activity.createNew(
       title: 'Title',
       startTime: now,
-      fileId: null,
     );
     final fileId = 'fileId';
     final original = Activity.createNew(
@@ -233,7 +235,7 @@ void main() {
       fileId: fileId,
     );
     final copy = original.copyActivity(toCopy);
-    expect(copy.fileId, null);
+    expect(copy.fileId, '');
   });
 
   test('same values in db and json', () {
@@ -241,7 +243,7 @@ void main() {
     final a = Activity.createNew(
       title: 'Title',
       startTime: now,
-      fileId: null,
+      fileId: '',
     );
     final dbModel = a.wrapWithDbModel();
     final json = dbModel.toJson();
@@ -261,7 +263,7 @@ void main() {
     final a = Activity.createNew(
       title: 'Title',
       startTime: now,
-      fileId: null,
+      fileId: '',
     );
     final dbModel = a.wrapWithDbModel();
     final json = dbModel.toJson();

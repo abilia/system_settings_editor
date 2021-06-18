@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:test/test.dart';
@@ -29,8 +31,9 @@ void main() {
     expect(unique.length, 1);
     expect(unique.first.data.identifier,
         MemoplannerSettings.displayDeleteButtonKey);
-    final settings = MemoplannerSettings.fromSettingsList(
-        unique.map((e) => e.data as MemoplannerSettingData).toList());
+    final settings = MemoplannerSettings.fromSettingsMap(
+      {for (var e in unique) e.data.key: e.data as MemoplannerSettingData},
+    );
     expect(settings.displayDeleteButton, false);
   });
 
@@ -42,11 +45,9 @@ void main() {
 Generic<MemoplannerSettingData> memoplannerSetting(
     bool value, String identifier) {
   return Generic.createNew<MemoplannerSettingData>(
-    data: MemoplannerSettingData(
-      data: value.toString(),
-      type: 'Boolean',
+    data: MemoplannerSettingData.fromData(
+      data: value,
       identifier: identifier,
     ),
-    type: GenericType.memoPlannerSettings,
   );
 }

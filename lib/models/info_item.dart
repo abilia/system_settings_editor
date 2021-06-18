@@ -17,9 +17,9 @@ abstract class InfoItem extends Equatable {
 
   @visibleForTesting
   Map<String, dynamic> toJson();
-  static InfoItem fromBase64(String base64) {
+  static InfoItem fromBase64(String? base64) {
     try {
-      if (base64?.isEmpty ?? true) return NoInfoItem();
+      if (base64 == null || base64.isEmpty) return NoInfoItem();
       final jsonString = utf8.decode(base64Decode(base64));
       return fromJsonString(jsonString);
     } catch (e) {
@@ -33,12 +33,14 @@ abstract class InfoItem extends Equatable {
       final json = jsonDecode(jsonString);
       final infoItem = json['info-item'][0];
       final data = infoItem['data'];
-      switch (infoItem['type']) {
+      final type = infoItem['type'];
+      switch (type) {
         case NoteInfoItem.typeName:
           return NoteInfoItem(data['text']);
         case Checklist.typeName:
           return Checklist.fromJson(data);
         default:
+          _log.warning('unknown info item type', type);
       }
     } catch (e) {
       _log.severe('Exception when trying to create info item', e);
@@ -46,7 +48,7 @@ abstract class InfoItem extends Equatable {
     return NoInfoItem();
   }
 
-  String toBase64() => base64Encode(
+  String? toBase64() => base64Encode(
         utf8.encode(
           json.encode(
             {
@@ -67,11 +69,11 @@ class NoInfoItem extends InfoItem {
   @override
   List<Object> get props => [];
   @override
-  Map<String, dynamic> toJson() => null;
+  Map<String, dynamic> toJson() => {};
   @override
-  String toBase64() => null;
+  String? toBase64() => null;
   @override
-  String get typeId => null;
+  String get typeId => '';
   @override
   bool get isEmpty => true;
 }
@@ -102,28 +104,25 @@ class Checklist extends InfoItem {
   final String fileId;
   final String icon;
 
-  bool get hasImage =>
-      (fileId?.isNotEmpty ?? false) || (icon?.isNotEmpty ?? false);
+  bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
 
   Checklist({
     Iterable<Question> questions = const <Question>[],
     Map<String, Set<int>> checked = const {},
-    this.image,
-    this.name,
-    this.fileId,
-    this.icon,
-  })  : assert(questions != null),
-        questions = UnmodifiableListView(questions),
-        checked = UnmodifiableMapView(checked?.map(
-                (key, value) => MapEntry(key, UnmodifiableSetView(value))) ??
-            const {});
+    this.image = '',
+    this.name = '',
+    this.fileId = '',
+    this.icon = '',
+  })  : questions = UnmodifiableListView(questions),
+        checked = UnmodifiableMapView(checked
+            .map((key, value) => MapEntry(key, UnmodifiableSetView(value))));
 
   Checklist copyWith({
-    String image,
-    String name,
-    Iterable<Question> questions,
-    Map<String, Set<int>> checked,
-    String fileId,
+    String? image,
+    String? name,
+    Iterable<Question>? questions,
+    Map<String, Set<int>>? checked,
+    String? fileId,
   }) =>
       Checklist(
         image: image ?? this.image,
@@ -163,11 +162,11 @@ class Checklist extends InfoItem {
   }
 
   factory Checklist.fromJson(Map<String, dynamic> json) => Checklist(
-        image: json['image'],
-        fileId: json['fileId'],
-        name: json['name'],
+        image: json['image'] ?? '',
+        fileId: json['fileId'] ?? '',
+        name: json['name'] ?? '',
         questions: List<Question>.from(
-          json['questions'].map((x) => Question.fromJson(x)),
+          json['questions']?.map((x) => Question.fromJson(x)) ?? [],
         ),
         checked: Map.from(json['checked']?.map(
                 (k, v) => MapEntry<String, Set<int>>(k, Set<int>.from(v))) ??
@@ -199,24 +198,23 @@ class Question extends Equatable {
   final int id;
   final String fileId;
   final bool checked;
-  bool get hasImage =>
-      (fileId?.isNotEmpty ?? false) || (image?.isNotEmpty ?? false);
-  bool get hasTitle => name?.isNotEmpty ?? false;
+  bool get hasImage => fileId.isNotEmpty || image.isNotEmpty;
+  bool get hasTitle => name.isNotEmpty;
 
   const Question({
-    this.id,
-    this.name,
-    this.fileId,
-    this.image,
+    required this.id,
+    this.name = '',
+    this.fileId = '',
+    this.image = '',
     this.checked = false,
-  }) : assert((name != null) || (fileId != null) || (image != null));
+  });
 
   Question copyWith({
-    String image,
-    String name,
-    int id,
-    String fileId,
-    bool checked,
+    String? image,
+    String? name,
+    int? id,
+    String? fileId,
+    bool? checked,
   }) =>
       Question(
         image: image ?? this.image,
@@ -228,10 +226,10 @@ class Question extends Equatable {
 
   factory Question.fromJson(Map<String, dynamic> json) => Question(
         id: json['id'],
-        name: json['name'],
-        image: json['image'],
-        fileId: json['fileId'],
-        checked: json['checked'],
+        name: json['name'] ?? '',
+        image: json['image'] ?? '',
+        fileId: json['fileId'] ?? '',
+        checked: json['checked'] ?? false,
       );
 
   Map<String, dynamic> toJson() => {

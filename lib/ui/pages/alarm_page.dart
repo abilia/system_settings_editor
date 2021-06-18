@@ -1,4 +1,4 @@
-import 'package:flutter/services.dart';
+// @dart=2.9
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -32,17 +32,18 @@ class AlarmPage extends StatelessWidget {
         iconData: AbiliaIcons.alarm_bell,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(ActivityInfo.margin),
+        padding: EdgeInsets.all(ActivityInfo.margin),
         child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
           builder: (context, activitiesState) => ActivityInfo(
             alarm.activityDay.fromActivitiesState(activitiesState),
             previewImage: previewImage,
-            checkButton: false,
+            alarm: alarm,
           ),
         ),
       ),
-      bottomNavigationBar: ReminderBottomAppBar(
+      bottomNavigationBar: AlarmBottomAppBar(
         activityOccasion: alarm.activityDay.toOccasion(alarm.day),
+        alarm: alarm,
       ),
     );
   }
@@ -108,15 +109,16 @@ class ReminderPage extends StatelessWidget {
               child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
                 builder: (context, activitiesState) => ActivityInfo(
                   reminder.activityDay.fromActivitiesState(activitiesState),
-                  checkButton: false,
+                  alarm: reminder,
                 ),
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: ReminderBottomAppBar(
+      bottomNavigationBar: AlarmBottomAppBar(
         activityOccasion: reminder.activityDay.toOccasion(reminder.day),
+        alarm: reminder,
       ),
     );
   }
@@ -169,64 +171,57 @@ abstract class AlarmAwareWidgetState<T extends StatefulWidget> extends State<T>
   }
 }
 
-class ReminderBottomAppBar extends StatelessWidget with Checker {
-  const ReminderBottomAppBar({
+class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
+  const AlarmBottomAppBar({
     Key key,
     @required this.activityOccasion,
+    @required this.alarm,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
+  final NotificationAlarm alarm;
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     final displayCheckButton =
         activityOccasion.activity.checkable && !activityOccasion.isSignedOff;
-    final closeButton = CloseButton(onPressed: () => _pop(context));
-    return Theme(
-      data: bottomNavigationBarTheme,
-      child: BottomAppBar(
-        child: Container(
-          color: AbiliaColors.black80,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-            child: Row(
-              mainAxisAlignment: displayCheckButton
-                  ? MainAxisAlignment.spaceBetween
-                  : MainAxisAlignment.center,
-              children: [
-                if (!displayCheckButton)
-                  closeButton
-                else ...[
-                  Expanded(child: closeButton),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: IconAndTextButton(
-                      key: TestKey.activityCheckButton,
-                      text: translate.check,
-                      icon: AbiliaIcons.handi_check,
-                      onPressed: () async {
-                        final checked =
-                            await checkConfirmation(context, activityOccasion);
-                        if (checked) {
-                          await _pop(context);
-                        }
-                      },
-                      theme: greenButtonTheme,
-                    ),
+    final closeButton = CloseButton(onPressed: () => popAlarm(context, alarm));
+    return BottomAppBar(
+      elevation: 0.0,
+      child: Container(
+        color: AbiliaColors.black80,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(12.s, 8.s, 12.s, 12.s),
+          child: Row(
+            mainAxisAlignment: displayCheckButton
+                ? MainAxisAlignment.spaceBetween
+                : MainAxisAlignment.center,
+            children: [
+              if (!displayCheckButton)
+                closeButton
+              else ...[
+                Expanded(child: closeButton),
+                SizedBox(width: 8.s),
+                Expanded(
+                  child: GreenButton(
+                    key: TestKey.activityCheckButton,
+                    text: translate.check,
+                    icon: AbiliaIcons.handi_check,
+                    onPressed: () async {
+                      final checked =
+                          await checkConfirmation(context, activityOccasion);
+                      if (checked) {
+                        await popAlarm(context, alarm);
+                      }
+                    },
                   ),
-                ],
+                ),
               ],
-            ),
+            ],
           ),
         ),
       ),
     );
-  }
-
-  Future _pop(BuildContext context) async {
-    if (!await Navigator.of(context).maybePop()) {
-      await SystemNavigator.pop();
-    }
   }
 }

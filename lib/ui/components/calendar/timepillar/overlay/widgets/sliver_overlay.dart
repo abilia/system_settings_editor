@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/widgets.dart';
 
 import '../all.dart';
@@ -56,7 +58,7 @@ class SliverOverlay extends RenderObjectWidget {
   @override
   void updateRenderObject(
       BuildContext context, RenderSliverOverlay renderObject) {
-    renderObject..height = height;
+    renderObject.height = height;
   }
 }
 

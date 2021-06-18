@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:seagull/logging.dart';
 import 'package:timezone/data/latest.dart';
@@ -17,7 +19,7 @@ Location tryGetLocation(String timezone, {Logger log}) {
     return getLocation(timezone);
   } on LocationNotFoundException {
     log?.warning(
-      'could not find timezone named: $timezone, falls back to ${local}',
+      'could not find timezone named: $timezone, falls back to $local',
     );
     return local;
   }

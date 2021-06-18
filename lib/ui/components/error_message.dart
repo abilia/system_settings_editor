@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -13,13 +15,14 @@ class ErrorMessage extends StatelessWidget {
   Widget build(BuildContext context) => Tts(
         data: text.data,
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: AbiliaColors.orange40,
             borderRadius: borderRadius,
           ),
           width: double.infinity,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding, vertical: 20.s),
             child: DefaultTextStyle(
               style: Theme.of(context).textTheme.bodyText2,
               child: text,

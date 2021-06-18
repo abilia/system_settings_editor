@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -40,7 +42,7 @@ void main() {
     );
     licenseBloc.add(ReloadLicenses());
     await expectLater(
-      licenseBloc,
+      licenseBloc.stream,
       emits(ValidLicense()),
     );
   });
@@ -56,7 +58,7 @@ void main() {
     );
     licenseBloc.add(ReloadLicenses());
     await expectLater(
-      licenseBloc,
+      licenseBloc.stream,
       emits(NoValidLicense()),
     );
   });

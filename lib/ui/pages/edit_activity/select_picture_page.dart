@@ -1,15 +1,15 @@
+// @dart=2.9
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/logging.dart';
-import 'package:uuid/uuid.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
 
 final _log = Logger((SelectPicturePage).toString());
@@ -35,21 +35,19 @@ class SelectPicturePage extends StatelessWidget {
         children: <Widget>[
           if (selectedImage.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.only(right: 12.0),
+              padding: EdgeInsets.only(right: 12.0.s),
               child: Separated(
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 12.0, top: 24.0, bottom: 18.0),
+                  padding: EdgeInsets.only(
+                      left: 12.0.s, top: 24.0.s, bottom: 18.0.s),
                   child: Column(
                     children: [
                       SelectedImageWidget(selectedImage: selectedImage),
-                      const SizedBox(height: 10.0),
+                      SizedBox(height: 10.0.s),
                       RemoveButton(
                         key: TestKey.removePicture,
                         onTap: () {
-                          Navigator.of(context).maybePop(
-                            SelectedImage.none(),
-                          );
+                          Navigator.of(context).maybePop(SelectedImage.empty);
                         },
                         icon: Icon(
                           AbiliaIcons.delete_all_clear,
@@ -64,43 +62,51 @@ class SelectPicturePage extends StatelessWidget {
               ),
             ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 24.0, 16.0, 0.0),
-            child: Column(
-              children: [
-                PickField(
-                  key: TestKey.imageArchiveButton,
-                  leading: const Icon(AbiliaIcons.folder),
-                  text: Text(translate.imageArchive),
-                  onTap: () async {
-                    final selectedImage =
-                        await Navigator.of(context).push<SelectedImage>(
-                      MaterialPageRoute(
-                        builder: (_) => CopiedAuthProviders(
-                          blocContext: context,
-                          child: const ImageArchivePage(),
-                        ),
+            padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
+            child:
+                BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    PickField(
+                      key: TestKey.imageArchiveButton,
+                      leading: const Icon(AbiliaIcons.folder),
+                      text: Text(translate.imageArchive),
+                      onTap: () async {
+                        final selectedImage =
+                            await Navigator.of(context).push<SelectedImage>(
+                          MaterialPageRoute(
+                            builder: (_) => CopiedAuthProviders(
+                              blocContext: context,
+                              child: const ImageArchivePage(),
+                            ),
+                          ),
+                        );
+                        if (selectedImage != null) {
+                          await Navigator.of(context).maybePop(selectedImage);
+                        }
+                      },
+                    ),
+                    SizedBox(height: 8.0.s),
+                    if (state.displayPhotos) ...[
+                      ImageSourceWidget(
+                        text: translate.uploadImage,
+                        imageSource: ImageSource.gallery,
+                        permission: Platform.isAndroid
+                            ? Permission.storage
+                            : Permission.photos,
                       ),
-                    );
-                    if (selectedImage != null) {
-                      await Navigator.of(context).maybePop(selectedImage);
-                    }
-                  },
-                ),
-                const SizedBox(height: 8.0),
-                ImageSourceWidget(
-                  text: translate.myPhotos,
-                  imageSource: ImageSource.gallery,
-                  permission: Platform.isAndroid
-                      ? Permission.storage
-                      : Permission.photos,
-                ),
-                const SizedBox(height: 8.0),
-                ImageSourceWidget(
-                  text: translate.takeNewPhoto,
-                  imageSource: ImageSource.camera,
-                  permission: Permission.camera,
-                ),
-              ],
+                      SizedBox(height: 8.0.s),
+                    ],
+                    if (state.displayCamera)
+                      ImageSourceWidget(
+                        text: translate.takeNewPhoto,
+                        imageSource: ImageSource.camera,
+                        permission: Permission.camera,
+                      ),
+                  ],
+                );
+              },
             ),
           ),
         ],
@@ -143,7 +149,7 @@ class ImageSourceWidget extends StatelessWidget {
             ),
             if (permissionState.status[permission].isPermanentlyDenied)
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: EdgeInsets.only(left: 8.0.s),
                 child: InfoButton(
                   key: Key('$imageSource$permission'),
                   onTap: () => showViewDialog(
@@ -164,14 +170,8 @@ class ImageSourceWidget extends StatelessWidget {
     try {
       final image = await _picker.getImage(source: imageSource);
       if (image != null) {
-        final id = Uuid().v4();
-        final path = '${FileStorage.folder}/$id';
         await Navigator.of(context).maybePop(
-          SelectedImage(
-            id: id,
-            path: path,
-            file: File(image.path),
-          ),
+          SelectedImage.newFile(File(image.path)),
         );
       }
     } on PlatformException catch (e) {

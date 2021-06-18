@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
+import 'package:collection/collection.dart';
 
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
@@ -16,16 +17,16 @@ typedef JsonToDataModel<M extends DataModel> = DbModel<M> Function(
 
 abstract class DataRepository<M extends DataModel> extends Repository {
   DataRepository({
-    @required BaseClient client,
-    @required String baseUrl,
-    @required this.path,
-    @required this.authToken,
-    @required this.userId,
-    @required this.db,
-    @required this.fromJsonToDataModel,
-    @required this.log,
+    required BaseClient client,
+    required String baseUrl,
+    required this.path,
+    required this.authToken,
+    required this.userId,
+    required this.db,
+    required this.fromJsonToDataModel,
+    required this.log,
     this.postApiVersion = 1,
-    String postPath,
+    String? postPath,
   })  : postPath = postPath ?? path,
         super(client, baseUrl);
 
@@ -44,12 +45,11 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     return db.getAllNonDeleted();
   }
 
-  @protected
   Future fetchIntoDatabaseSynchronized() => synchronized(fetchIntoDatabase);
 
   @protected
   Future fetchIntoDatabase() async {
-    log.fine('loadning $path...');
+    log.fine('loading $path...');
     try {
       final revision = await db.getLastRevision();
       final fetchedData = await fetchData(revision);
@@ -64,7 +64,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   Future<Iterable<DbModel<M>>> fetchData(int revision) async {
     log.fine('fetching $path for revision $revision');
     final response = await client.get(
-      '$baseUrl/api/v1/data/$userId/$path?revision=$revision',
+      '$baseUrl/api/v1/data/$userId/$path?revision=$revision'.toUri(),
       headers: authHeader(authToken),
     );
     final decoded = (json.decode(response.body)) as List;
@@ -73,7 +73,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
           (j) => fromJsonToDataModel(j),
           onException: log.logAndReturnNull,
         )
-        .filterNull();
+        .whereNotNull();
   }
 
   Future<bool> synchronize() async {
@@ -104,7 +104,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     Iterable<DbModel<M>> data,
   ) async {
     final response = await client.post(
-      '$baseUrl/api/v$postApiVersion/data/$userId/$postPath',
+      '$baseUrl/api/v$postApiVersion/data/$userId/$postPath'.toUri(),
       headers: jsonAuthHeader(authToken),
       body: jsonEncode(data.toList()),
     );
@@ -143,15 +143,21 @@ abstract class DataRepository<M extends DataModel> extends Repository {
         (success) => _updateDataItemWithNewRevision(success, dirtyDataMap),
       ),
     );
-    await db.insert(toUpdate);
+    await db.insert(toUpdate.whereNotNull());
   }
 
-  Future<DbModel<M>> _updateDataItemWithNewRevision(
+  Future<DbModel<M>?> _updateDataItemWithNewRevision(
     DataRevisionUpdate dataRevisionUpdate,
     Map<String, DbModel<M>> dirtyDataMap,
   ) async {
     final dataBeforeSync = dirtyDataMap[dataRevisionUpdate.id];
     final currentData = await db.getById(dataRevisionUpdate.id);
+    if (dataBeforeSync == null || currentData == null) {
+      log.severe(
+        '${dataRevisionUpdate.id} not found in database or $dirtyDataMap',
+      );
+      return null;
+    }
     final dirtyDiff = currentData.dirty - dataBeforeSync.dirty;
     return currentData.copyWith(
       revision: dataRevisionUpdate.revision,

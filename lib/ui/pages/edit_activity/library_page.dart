@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -12,6 +14,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     @required this.libraryItemGenerator,
     @required this.emptyLibraryMessage,
     @required this.onOk,
+    this.libraryFolderGenerator,
     this.onCancel,
     this.appBar,
     this.rootHeading,
@@ -21,6 +24,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final VoidCallback onCancel;
   final LibraryItemGenerator<T> selectedItemGenerator;
   final LibraryItemGenerator<T> libraryItemGenerator;
+  final LibraryItemGenerator<T> libraryFolderGenerator;
   final String emptyLibraryMessage, rootHeading;
 
   @override
@@ -49,6 +53,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                     : SortableLibrary<T>(
                         libraryItemGenerator,
                         emptyLibraryMessage,
+                        libraryFolderGenerator: libraryFolderGenerator,
                       ),
               ),
             ],
@@ -82,18 +87,17 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     return Tts(
       data: heading,
       child: Padding(
-        padding: const EdgeInsets.only(right: 12.0),
+        padding: EdgeInsets.only(right: 12.s),
         child: Separated(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 12.0, 0.0, 4.0),
+            padding: EdgeInsets.fromLTRB(16.s, 12.s, 0.0, 4.s),
             child: Row(
               children: [
-                ActionButton(
+                ActionButtonDark(
                   onPressed: () => back(context, sortableArchiveState),
-                  themeData: darkButtonTheme,
                   child: Icon(AbiliaIcons.navigation_previous),
                 ),
-                const SizedBox(width: 12.0),
+                SizedBox(width: 12.0.s),
                 Expanded(
                   child: Text(
                     heading,
@@ -133,11 +137,30 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   }
 }
 
-class SortableLibrary<T extends SortableData> extends StatelessWidget {
+class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
+  final LibraryItemGenerator<T> libraryFolderGenerator;
   final String emptyLibraryMessage;
 
-  const SortableLibrary(this.libraryItemGenerator, this.emptyLibraryMessage);
+  SortableLibrary(
+    this.libraryItemGenerator,
+    this.emptyLibraryMessage, {
+    this.libraryFolderGenerator,
+  });
+
+  @override
+  _SortableLibraryState<T> createState() => _SortableLibraryState<T>();
+}
+
+class _SortableLibraryState<T extends SortableData>
+    extends State<SortableLibrary<T>> {
+  ScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,44 +171,56 @@ class SortableLibrary<T extends SortableData> extends StatelessWidget {
         currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
         if (currentFolderContent.isEmpty) {
           return EmptyLibraryMessage(
-            emptyLibraryMessage: emptyLibraryMessage,
+            emptyLibraryMessage: widget.emptyLibraryMessage,
             rootFolder: archiveState.isAtRoot,
           );
         }
-        return GridView.count(
-          padding: const EdgeInsets.only(
-            top: verticalPadding,
-            left: leftPadding,
-            right: rightPadding,
-          ),
-          mainAxisSpacing: 8.0,
-          crossAxisSpacing: 8.0,
-          crossAxisCount: 3,
-          childAspectRatio: 0.96,
-          children: currentFolderContent
-              .map(
-                (sortable) => sortable.isGroup
-                    ? LibraryFolder(
-                        title: sortable.data.title(),
-                        fileId: sortable.data.folderFileId(),
-                        filePath: sortable.data.folderFilePath(),
-                        onTap: () {
-                          BlocProvider.of<SortableArchiveBloc<T>>(context)
-                              .add(FolderChanged(sortable.id));
-                        },
-                      )
-                    : Material(
-                        type: MaterialType.transparency,
-                        child: InkWell(
-                          onTap: () =>
+        return VerticalScrollArrows(
+          controller: _controller,
+          child: GridView.count(
+            controller: _controller,
+            padding: EdgeInsets.only(
+              top: verticalPadding,
+              left: leftPadding,
+              right: rightPadding,
+            ),
+            mainAxisSpacing: 8.0.s,
+            crossAxisSpacing: 8.0.s,
+            crossAxisCount: 3,
+            childAspectRatio: 0.92,
+            children: currentFolderContent
+                .map(
+                  (sortable) => sortable.isGroup
+                      ? Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius: borderRadius,
+                            onTap: () {
                               BlocProvider.of<SortableArchiveBloc<T>>(context)
-                                  .add(SortableSelected(sortable)),
-                          borderRadius: borderRadius,
-                          child: libraryItemGenerator(sortable),
+                                  .add(FolderChanged(sortable.id));
+                            },
+                            child: widget.libraryFolderGenerator == null
+                                ? LibraryFolder(
+                                    title: sortable.data.title(),
+                                    fileId: sortable.data.folderFileId(),
+                                    filePath: sortable.data.folderFilePath(),
+                                  )
+                                : widget.libraryFolderGenerator(sortable),
+                          ),
+                        )
+                      : Material(
+                          type: MaterialType.transparency,
+                          child: InkWell(
+                            onTap: () =>
+                                BlocProvider.of<SortableArchiveBloc<T>>(context)
+                                    .add(SortableSelected(sortable)),
+                            borderRadius: borderRadius,
+                            child: widget.libraryItemGenerator(sortable),
+                          ),
                         ),
-                      ),
-              )
-              .toList(),
+                )
+                .toList(),
+          ),
         );
       },
     );
@@ -205,7 +240,7 @@ class EmptyLibraryMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 60.0),
+      padding: EdgeInsets.only(top: 60.0.s),
       child: Align(
         alignment: Alignment.topCenter,
         child: Tts(
@@ -225,15 +260,15 @@ class EmptyLibraryMessage extends StatelessWidget {
 }
 
 class LibraryFolder extends StatelessWidget {
-  final GestureTapCallback onTap;
   final String title, fileId, filePath;
+  final Color color;
 
   const LibraryFolder({
     Key key,
-    @required this.onTap,
     @required this.title,
-    @required this.fileId,
-    @required this.filePath,
+    this.fileId,
+    this.filePath,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -243,50 +278,43 @@ class LibraryFolder extends StatelessWidget {
         label: title,
         button: true,
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: borderRadius,
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  title,
-                  style: abiliaTextTheme.caption,
-                  overflow: TextOverflow.ellipsis,
+      child: Padding(
+        padding: EdgeInsets.all(4.0.s),
+        child: Column(
+          children: <Widget>[
+            Text(
+              title,
+              style: abiliaTextTheme.caption,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 2.s),
+            Stack(
+              children: [
+                Icon(
+                  AbiliaIcons.folder,
+                  size: 86.s,
+                  color: color ?? AbiliaColors.orange,
                 ),
-                const SizedBox(height: 2),
-                Stack(
-                  children: [
-                    const Icon(
-                      AbiliaIcons.folder,
-                      size: 86,
-                      color: AbiliaColors.orange,
-                    ),
-                    Positioned(
-                      bottom: 16,
-                      left: 10,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
-                        child: Align(
-                          alignment: Alignment.center,
-                          heightFactor: 42 / 66,
-                          child: FadeInAbiliaImage(
-                            imageFileId: fileId,
-                            imageFilePath: filePath,
-                            width: 66,
-                            height: 66,
-                          ),
-                        ),
+                Positioned(
+                  bottom: 16.s,
+                  left: 10.s,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6.s),
+                    child: Align(
+                      alignment: Alignment.center,
+                      heightFactor: 42 / 66,
+                      child: FadeInAbiliaImage(
+                        imageFileId: fileId,
+                        imageFilePath: filePath,
+                        width: 66.s,
+                        height: 66.s,
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

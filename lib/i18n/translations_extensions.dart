@@ -26,7 +26,7 @@ extension TranslatedExtensions on Translated {
   }
 
   String get allowNotificationsDescription =>
-      '${allowNotificationsDescription1} ${settingsLink}';
+      '$allowNotificationsDescription1 $settingsLink';
 
   String allowAccess(String accessTypeBodyText1) =>
       '$accessTypeBodyText1 $allowAccessBody2 $settingsLink';

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -11,9 +13,7 @@ class AddActivityButton extends StatelessWidget {
   final DateTime day;
 
   @override
-  Widget build(BuildContext context) => ActionButton(
-        key: TestKey.addActivity,
-        child: Icon(AbiliaIcons.plus),
+  Widget build(BuildContext context) => ActionButtonLight(
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => CopiedAuthProviders(
@@ -23,5 +23,6 @@ class AddActivityButton extends StatelessWidget {
             settings: RouteSettings(name: 'CreateActivityPage'),
           ),
         ),
+        child: Icon(AbiliaIcons.plus),
       );
 }
