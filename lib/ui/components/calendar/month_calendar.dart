@@ -72,6 +72,7 @@ class MonthContent extends StatelessWidget {
           return BlocBuilder<MonthCalendarBloc, MonthCalendarState>(
             buildWhen: (oldState, newState) => newState.index == item,
             builder: (context, state) {
+              if (state.index != item) return Container();
               return Column(
                 children: [
                   ...state.weeks.map(

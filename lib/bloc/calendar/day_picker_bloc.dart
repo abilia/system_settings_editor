@@ -63,7 +63,7 @@ class DayPickerState extends Equatable {
   bool get isToday => occasion == Occasion.current;
 
   DayPickerState(this.day, DateTime now)
-      : index = _dayToIndex(day),
+      : index = day.dayIndex,
         occasion = day.isAtSameDay(now)
             ? Occasion.current
             : day.isAfter(now)
@@ -71,10 +71,7 @@ class DayPickerState extends Equatable {
                 : Occasion.past;
 
   @visibleForTesting
-  DayPickerState.forTest(this.day, this.occasion) : index = _dayToIndex(day);
-
-  static int _dayToIndex(DateTime day) =>
-      day.millisecondsSinceEpoch ~/ Duration.millisecondsPerDay;
+  DayPickerState.forTest(this.day, this.occasion) : index = day.dayIndex;
 
   @override
   String toString() =>
