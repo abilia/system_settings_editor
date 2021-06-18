@@ -74,7 +74,6 @@ class SeagullLogger {
 
   Future<void> initAnalytics() async {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-
   }
 
   Future<void> cancelLogging() async {

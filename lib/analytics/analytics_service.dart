@@ -29,6 +29,5 @@ class AnalyticsService {
       name: 'activity_created',
       parameters: params,
     );
-
   }
 }
