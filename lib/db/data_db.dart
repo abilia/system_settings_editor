@@ -96,7 +96,8 @@ abstract class DataDb<M extends DataModel> {
     return (result.firstOrNull?['max_revision'] ?? 0) as int;
   }
 
-  Future insertAndAddDirty(Iterable<M> data) async {
+  /// Returns true if any dirty data added to the database and needs sync
+  Future<bool> insertAndAddDirty(Iterable<M> data) async {
     final insertResult = data.map((model) async {
       List<Map> existingDirtyAndRevision = await db.query(tableName,
           columns: ['dirty', 'revision'],
@@ -115,6 +116,7 @@ abstract class DataDb<M extends DataModel> {
               .toMapForDb(),
           conflictAlgorithm: ConflictAlgorithm.replace);
     });
-    return await Future.wait(insertResult);
+    final res = await Future.wait(insertResult);
+    return res.isNotEmpty;
   }
 }

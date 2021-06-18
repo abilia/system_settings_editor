@@ -31,7 +31,7 @@ void main() {
         .thenAnswer((_) => Future.value(sortables));
     when(sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     when(sortableDb.insertAndAddDirty(any))
-        .thenAnswer((realInvocation) => Future.value([]));
+        .thenAnswer((realInvocation) => Future.value(true));
 
     final mockBatch = MockBatch();
     when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));

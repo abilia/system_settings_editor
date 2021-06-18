@@ -135,6 +135,7 @@ class MockGenericDb extends Mock implements GenericDb {
   MockGenericDb() {
     when(getAllNonDeletedMaxRevision()).thenAnswer((_) => Future.value([]));
     when(getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(insertAndAddDirty(any)).thenAnswer((_) => Future.value(true));
   }
 }
 

@@ -38,7 +38,8 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   final int postApiVersion;
   final JsonToDataModel<M> fromJsonToDataModel;
 
-  Future<void> save(Iterable<M> data) => db.insertAndAddDirty(data);
+  /// returns true if any data need to be synced after saved
+  Future<bool> save(Iterable<M> data) => db.insertAndAddDirty(data);
 
   Future<Iterable<M>> load() async {
     await fetchIntoDatabaseSynchronized();
