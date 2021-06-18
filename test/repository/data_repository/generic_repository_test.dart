@@ -118,7 +118,7 @@ void main() {
     }, skip: !Config.isMP);
 
     group('mpgo', () {
-      test('only save syncalbes dirty', () async {
+      test('only save syncables dirty', () async {
         await genericRepository.save(oneSyncOneUnsync);
         final dirty = await genericDb.getAllDirty();
         final all = await genericDb.getAll();
@@ -126,7 +126,7 @@ void main() {
         expect(all, unorderedEquals(oneSyncOneUnsync));
       });
 
-      test('save none unsyncalbes as dirty', () async {
+      test('save none unsyncables as dirty', () async {
         await genericRepository.save(allUnsynced);
         final dirty = await genericDb.getAllDirty();
         final all = await genericDb.getAll();
@@ -134,6 +134,46 @@ void main() {
         expect(all, unorderedEquals(allUnsynced));
       });
     }, skip: !Config.isMPGO);
+
+    test('unsynced settings should not overwrite revision', () async {
+      // Arrange
+      final data2 = Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+          data: 200,
+          identifier: MemoplannerSettings.viewOptionsZoomKey,
+        ),
+      );
+      await genericRepository.db.insert([
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: 100,
+            identifier: MemoplannerSettings.viewOptionsZoomKey,
+          ),
+        ).wrapWithDbModel(revision: 1),
+        data2.wrapWithDbModel(revision: 2),
+      ]);
+
+      // Act
+      final data3 = data2.copyWithNewData(
+        newData: MemoplannerSettingData.fromData(
+          data: 300,
+          identifier: MemoplannerSettings.viewOptionsZoomKey,
+        ),
+      );
+      final allMaxRevisionPre = await genericDb.getAllNonDeletedMaxRevision();
+      await genericRepository.save([data3]);
+      final allMaxRevisionPost = await genericDb.getAllNonDeletedMaxRevision();
+      final byId = await genericDb.getById(data2.id);
+
+      // Assert
+      expect(allMaxRevisionPre.single, data2);
+      expect(allMaxRevisionPost.single, data3);
+      if (Config.isMP) {
+        expect(byId, data3.wrapWithDbModel(revision: 2, dirty: 1));
+      } else {
+        expect(byId, data3.wrapWithDbModel(revision: 2, dirty: 0));
+      }
+    });
   });
   group('load', () {
     final repsonseAll = [...allUnsynced, synced];

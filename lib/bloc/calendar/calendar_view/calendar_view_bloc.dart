@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/models/all.dart';
 
 part 'calendar_view_event.dart';
 part 'calendar_view_state.dart';

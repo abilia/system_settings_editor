@@ -1,1 +1,1 @@
-enum DayCalendarType { TIMEPILLAR, LIST }
+enum DayCalendarType { LIST, TIMEPILLAR }

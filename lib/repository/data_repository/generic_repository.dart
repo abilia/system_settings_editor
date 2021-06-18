@@ -31,7 +31,7 @@ class GenericRepository extends DataRepository<Generic> {
 
   @override
   Future<void> save(Iterable<Generic> data) async {
-    if (Config.isMP) return db.insertAndAddDirty(data);
+    if (Config.isMP) return super.save(data);
     log.fine('$path - ${Config.flavor.name} - will only sync syncable');
 
     final shouldNotSync = groupBy<Generic, bool>(
@@ -42,9 +42,13 @@ class GenericRepository extends DataRepository<Generic> {
     final notSync = shouldNotSync[true];
     if (notSync != null) {
       log.fine('$path - ${Config.flavor.name} - no sync store: $notSync');
-      final localStore =
-          notSync.map((e) => e.wrapWithDbModel()).whereType<DbModel<Generic>>();
-      await db.insert(localStore);
+      final localStore = await Future.wait(
+        notSync.map(
+          (e) async => e.wrapWithDbModel(
+              revision: (await db.getById(e.id))?.revision ?? 0),
+        ),
+      );
+      await db.insert(localStore.whereType<DbModel<Generic>>());
     }
 
     final syncables = shouldNotSync[false];

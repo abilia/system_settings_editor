@@ -246,7 +246,7 @@ class MemoplannerSettings extends Equatable {
     this.calendarActivityTypeShowColor = true,
     this.calendarDayColor = 0,
     this.viewOptionsTimeInterval = 1,
-    this.viewOptionsTimeView = 1,
+    this.viewOptionsTimeView = 0,
     this.viewOptionsZoom = 1,
     this.alarmDuration = 30000,
     this.checkableActivityAlarm = SoundExtension.defaultName,
@@ -501,7 +501,7 @@ class MemoplannerSettings extends Equatable {
       ),
       viewOptionsTimeView: settings.parse(
         viewOptionsTimeViewKey,
-        1,
+        DayCalendarType.LIST.index,
       ),
       dotsInTimepillar: settings.getBool(
         dotsInTimepillarKey,
