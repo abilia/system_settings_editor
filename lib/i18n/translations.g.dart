@@ -504,7 +504,7 @@ abstract class Translated {
   final String selectAlarm = 'Select alarm';
 
   final String iOSAlarmTimeWarning =
-      'On iPhones, alarms longer than 30 seconds will be played for 30 seconds due to iOS restrictions';
+      'On an iPhone, alarm sounds can only be played for maximum 30 seconds';
 
   final String selectChecklist = 'Select checklist';
 
@@ -1387,7 +1387,7 @@ class SV extends Translated {
 
   @override
   final String iOSAlarmTimeWarning =
-      'På iPhones spelas larm som är längre än 30 sekunder i 30 sekunder på grund av iOS-begränsningar';
+      'På en iPhone kan alarmljud bara spelas upp i maximalt 30 sekunder';
 
   @override
   final String selectChecklist = 'Välj checklista';
@@ -2339,7 +2339,7 @@ class DA extends Translated {
 
   @override
   final String iOSAlarmTimeWarning =
-      'På iPhones afspilles alarmer, der er længere end 30 sekunder i 30 sekunder på grund af iOS-begrænsninger';
+      'På en iPhone kan alarmlyde kun afspilles i maksimalt 30 sekunder';
 
   @override
   final String selectChecklist = 'Vælg tjekliste';
@@ -3291,7 +3291,7 @@ class NL extends Translated {
 
   @override
   final String iOSAlarmTimeWarning =
-      'Op iPhones worden alarmen langer dan 30 seconden 30 seconden afgespeeld vanwege iOS-beperkingen';
+      'Op een iPhone kunnen alarmgeluiden maximaal 30 seconden worden afgespeeld';
 
   @override
   final String selectChecklist = 'Checklist selecteren';
@@ -4244,7 +4244,7 @@ class FI extends Translated {
 
   @override
   final String iOSAlarmTimeWarning =
-      'IPhone-laitteissa yli 30 sekunnin pituiset hälytykset toistetaan 30 sekunnin ajan iOS-rajoitusten vuoksi';
+      'IPhonessa hälytysääniä voidaan toistaa enintään 30 sekunnin ajan';
 
   @override
   final String selectChecklist = 'Valitse tarkistusluettelo';
@@ -5201,7 +5201,7 @@ class DE extends Translated {
 
   @override
   final String iOSAlarmTimeWarning =
-      'Auf iPhones werden Alarme, die länger als 30 Sekunden sind, aufgrund von iOS-Einschränkungen 30 Sekunden lang wiedergegeben';
+      'Auf einem iPhone können Alarmtöne nur maximal 30 Sekunden lang abgespielt werden';
 
   @override
   final String selectChecklist = 'Checkliste auswählen';
@@ -6153,7 +6153,7 @@ class NB extends Translated {
 
   @override
   final String iOSAlarmTimeWarning =
-      'På iPhones vil alarmer som er lenger enn 30 sekunder spilles av i 30 sekunder på grunn av iOS-begrensninger';
+      'På en iPhone kan alarmlyder bare spilles av i maksimalt 30 sekunder';
 
   @override
   final String selectChecklist = 'Velg sjekkliste';
