@@ -41,6 +41,8 @@ class SeagullLogger {
 
   String get logFileName => '${Config.flavor.id}.log';
 
+  factory SeagullLogger.test() => SeagullLogger(
+      loggingType: {LoggingType.Print}, documentsDir: '', preferences: null);
   SeagullLogger({
     @required this.documentsDir,
     @required this.preferences,

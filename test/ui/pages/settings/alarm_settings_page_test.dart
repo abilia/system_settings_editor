@@ -34,6 +34,12 @@ void main() {
       final db = MockDatabase();
       when(db.batch()).thenReturn(mockBatch);
       when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
+      when(db.query(
+        any,
+        columns: anyNamed('columns'),
+        where: anyNamed('where'),
+        whereArgs: anyNamed('whereArgs'),
+      )).thenAnswer((realInvocation) => Future.value([]));
 
       genericDb = MockGenericDb();
       when(genericDb.getAllNonDeletedMaxRevision())
@@ -59,14 +65,14 @@ void main() {
     tearDown(GetIt.I.reset);
 
     testWidgets('The page shows', (tester) async {
-      await tester.goToAlarmSettingsPage(pump: true);
+      await tester.goToAlarmSettingsPage();
       expect(find.byType(AlarmSettingsPage), findsOneWidget);
       expect(find.byType(OkButton), findsOneWidget);
       expect(find.byType(CancelButton), findsOneWidget);
     });
 
     testWidgets('Select non checkable alarm sound', (tester) async {
-      await tester.goToAlarmSettingsPage(pump: true);
+      await tester.goToAlarmSettingsPage();
       expect(find.text(Sound.Default.displayName(null)), findsNWidgets(3));
       expect(find.text(Sound.AfloatSynth.displayName(null)), findsNothing);
       await tester.tap(find.byKey(TestKey.nonCheckableAlarmSelector));
@@ -80,7 +86,7 @@ void main() {
       expect(find.text(Sound.AfloatSynth.displayName(null)), findsOneWidget);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifySyncGeneric(
+      verifyUnsyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.nonCheckableActivityAlarmKey,
@@ -89,7 +95,7 @@ void main() {
     });
 
     testWidgets('Select checkable alarm sound', (tester) async {
-      await tester.goToAlarmSettingsPage(pump: true);
+      await tester.goToAlarmSettingsPage();
       await tester.tap(find.byKey(TestKey.checkableAlarmSelector));
       await tester.pumpAndSettle();
       await tester.tap(find.text(Sound.BreathlessPiano.displayName(null)));
@@ -98,7 +104,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifySyncGeneric(
+      verifyUnsyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.checkableActivityAlarmKey,
@@ -107,25 +113,25 @@ void main() {
     });
 
     testWidgets('Select reminder alarm sound', (tester) async {
-      await tester.goToAlarmSettingsPage(pump: true);
+      await tester.goToAlarmSettingsPage();
       await tester.tap(find.byKey(TestKey.reminderAlarmSelector));
       await tester.pumpAndSettle();
-      await tester.tap(find.text(Sound.LatinAcousticGuitar.displayName(null)));
+      await tester.tap(find.text(Sound.GibsonGuitar.displayName(null)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifySyncGeneric(
+      verifyUnsyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.reminderAlarmKey,
-        matcher: Sound.LatinAcousticGuitar.name(),
+        matcher: Sound.GibsonGuitar.name(),
       );
     });
 
     testWidgets('Select alarm duration', (tester) async {
-      await tester.goToAlarmSettingsPage(pump: true);
+      await tester.goToAlarmSettingsPage();
       await tester.tap(find.byKey(TestKey.alarmDurationSelector));
       await tester.pumpAndSettle();
       expect(find.byType(SelectAlarmDurationPage), findsOneWidget);
@@ -139,7 +145,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifySyncGeneric(
+      verifyUnsyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.alarmDurationKey,
@@ -148,30 +154,55 @@ void main() {
     });
 
     testWidgets('Select vibrate at reminder', (tester) async {
-      await tester.goToAlarmSettingsPage(pump: true);
+      await tester.goToAlarmSettingsPage();
       await tester.tap(find.byKey(TestKey.vibrateAtReminderSelector));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifySyncGeneric(
+      verifyUnsyncGeneric(
         tester,
         genericDb,
         key: MemoplannerSettings.vibrateAtReminderKey,
         matcher: false,
       );
     });
-  }, skip: !Config.isMP);
+
+    testWidgets('Changes to alarm triggers an alarm schedualing',
+        (tester) async {
+      await tester.goToAlarmSettingsPage();
+      await tester.tap(find.byKey(TestKey.vibrateAtReminderSelector));
+      await tester.pumpAndSettle();
+      final preCalls = alarmSchedualCalls;
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      expect(alarmSchedualCalls, preCalls + 1);
+    });
+
+    testWidgets('No changes to alarm triggers no alarm schedualing',
+        (tester) async {
+      await tester.goToAlarmSettingsPage();
+      final preCalls = alarmSchedualCalls;
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      expect(alarmSchedualCalls, preCalls);
+    });
+  });
 }
 
 extension on WidgetTester {
-  Future<void> goToAlarmSettingsPage({bool pump = false}) async {
-    if (pump) await pumpApp();
+  Future<void> goToAlarmSettingsPage() async {
+    await pumpApp();
+
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
-    await tap(find.byType(SettingsButton));
-    await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.month));
-    await pumpAndSettle();
+
+    if (Config.isMP) {
+      await tap(find.byType(SettingsButton));
+      await pumpAndSettle();
+      await tap(find.byIcon(AbiliaIcons.month));
+      await pumpAndSettle();
+    }
+
     await tap(find.byIcon(AbiliaIcons.handi_alarm_vibration));
     await pumpAndSettle();
   }
