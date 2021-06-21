@@ -175,7 +175,7 @@ void main() {
       final preCalls = alarmSchedualCalls;
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      expect(alarmSchedualCalls, preCalls + 1);
+      expect(alarmSchedualCalls, greaterThanOrEqualTo(preCalls + 1));
     });
 
     testWidgets('No changes to alarm triggers no alarm schedualing',
