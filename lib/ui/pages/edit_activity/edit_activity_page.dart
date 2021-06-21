@@ -1,9 +1,33 @@
 // @dart=2.9
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EditActivityPage extends StatelessWidget {
+  static PageRoute<bool> route(BuildContext context, DateTime day,
+          [BasicActivityData basicActivity]) =>
+      MaterialPageRoute(
+        builder: (_) => CopiedAuthProviders(
+          blocContext: context,
+          child: BlocProvider<EditActivityBloc>(
+            create: (_) => EditActivityBloc.newActivity(
+              activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
+              clockBloc: BlocProvider.of<ClockBloc>(context),
+              memoplannerSettingBloc:
+                  BlocProvider.of<MemoplannerSettingBloc>(context),
+              day: day,
+              basicActivityData: basicActivity,
+            ),
+            child: EditActivityPage(
+              day: day,
+              title: Translator.of(context).translate.newActivity,
+            ),
+          ),
+        ),
+        settings: RouteSettings(name: '$EditActivityPage new activity'),
+      );
+
   final DateTime day;
   final String title;
   const EditActivityPage({
