@@ -179,7 +179,7 @@ void main() {
       when(mockActivityRepository.load())
           .thenAnswer((_) => Future.value(activityList));
       when(mockActivityRepository.save(updatedActivityList))
-          .thenAnswer((_) => Future.value(updatedActivityList));
+          .thenAnswer((_) => Future.value(true));
 
       // Act
       activitiesBloc.add(LoadActivities());

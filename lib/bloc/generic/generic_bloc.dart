@@ -41,13 +41,23 @@ class GenericBloc extends Bloc<GenericEvent, GenericState> {
     if (event is GenericUpdated) {
       final currentState = state;
       if (currentState is GenericsLoaded) {
-        final toUpdate = event.genericData.map((genericData) =>
-            currentState.generics[genericData.key]
-                ?.copyWithNewData(newData: genericData) ??
-            Generic.createNew<MemoplannerSettingData>(data: genericData));
-        await genericRepository.save(toUpdate);
-        yield* _mapLoadGenericsToState();
-        syncBloc.add(GenericSaved());
+        final toUpdate = {
+          for (var genericData in event.genericData)
+            genericData.key: currentState.generics[genericData.key]
+                    ?.copyWithNewData(newData: genericData) ??
+                Generic.createNew<MemoplannerSettingData>(data: genericData)
+        };
+
+        yield GenericsLoaded(
+          generics: Map<String, Generic>.from(currentState.generics)
+            ..addAll(toUpdate),
+        );
+
+        final anyDirty = await genericRepository.save(toUpdate.values);
+        if (anyDirty) {
+          yield* _mapLoadGenericsToState();
+          syncBloc.add(GenericSaved());
+        }
       }
     }
   }
