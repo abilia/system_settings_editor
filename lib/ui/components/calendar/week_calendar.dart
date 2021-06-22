@@ -234,7 +234,7 @@ class FullDayActivies extends StatelessWidget {
         if (fullDayActivities.length > 1) {
           return FullDayStack(numberOfActivities: fullDayActivities.length);
         } else if (fullDayActivities.length == 1) {
-          return FullDayActivity(activityOccasion: fullDayActivities.first);
+          return WeekActivityContent(activityOccasion: fullDayActivities.first);
         }
         return const SizedBox.shrink();
       },
@@ -444,6 +444,7 @@ class WeekActivityContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: activityOccasion.activity.fullDay ? 36.s : null,
       foregroundDecoration: BoxDecoration(
         border: activityOccasion.isCurrent ? currentActivityBorder : border,
         borderRadius: borderRadius,
@@ -474,24 +475,6 @@ class WeekActivityContent extends StatelessWidget {
                 ),
               ),
             ),
-    );
-  }
-}
-
-class FullDayActivity extends StatelessWidget {
-  final ActivityOccasion activityOccasion;
-  const FullDayActivity({
-    Key key,
-    @required this.activityOccasion,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 36.s,
-      child: WeekActivityContent(
-        activityOccasion: activityOccasion,
-      ),
     );
   }
 }
