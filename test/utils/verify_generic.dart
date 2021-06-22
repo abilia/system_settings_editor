@@ -2,6 +2,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 
@@ -25,6 +26,9 @@ void verifyUnsyncGeneric(
   String key,
   dynamic matcher,
 }) {
+  if (Config.isMP) {
+    return verifySyncGeneric(tester, genericDb, key: key, matcher: matcher);
+  }
   verifyNever(genericDb.insertAndAddDirty(captureAny));
   final v = verify(genericDb.insert(captureAny));
   expect(v.callCount, 1);

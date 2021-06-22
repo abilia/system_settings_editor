@@ -538,7 +538,7 @@ void main() {
       expect(find.byType(TimepillarCalendar), findsOneWidget);
     });
 
-    testWidgets('when calendar is changed, settings is saved unsynced mpgo',
+    testWidgets('when calendar is changed, settings is saved unsynced',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -550,21 +550,7 @@ void main() {
         key: MemoplannerSettings.viewOptionsTimeViewKey,
         matcher: DayCalendarType.TIMEPILLAR.index,
       );
-    }, skip: !Config.isMPGO);
-
-    testWidgets('when calendar is changed, settings is saved synced mp',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      await goToTimePillar(tester);
-
-      verifySyncGeneric(
-        tester,
-        mockGenericDb,
-        key: MemoplannerSettings.viewOptionsTimeViewKey,
-        matcher: DayCalendarType.TIMEPILLAR.index,
-      );
-    }, skip: !Config.isMP);
+    });
   });
 
   group('MemoPlanner settings', () {
