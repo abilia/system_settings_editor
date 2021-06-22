@@ -35,10 +35,13 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
         )
     ];
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: wrappedTabs,
+    return Material(
+      type: MaterialType.transparency,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: wrappedTabs,
+      ),
     );
   }
 }
@@ -105,26 +108,20 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final iconTheme = IconTheme.of(context);
-    return InkWell(
+    return _AnimatedTab(
+      selectedTabAnimation: widget.controller.animation,
+      scaleAnimation: _scaleAnimation,
+      listenable:
+          Listenable.merge([widget.controller.animation, _collapsedController]),
+      index: widget.index,
+      offset: widget.offset,
+      first: widget.index == 0,
+      last: widget.last,
+      beginIconThemeData: iconTheme.copyWith(size: smallIconSize),
+      endIconThemeData:
+          iconTheme.copyWith(color: AbiliaColors.white, size: smallIconSize),
       onTap: () => widget.controller.animateTo(widget.index - widget.offset),
-      child: Row(
-        children: <Widget>[
-          _AnimatedTab(
-            selectedTabAnimation: widget.controller.animation,
-            scaleAnimation: _scaleAnimation,
-            listenable: Listenable.merge(
-                [widget.controller.animation, _collapsedController]),
-            index: widget.index,
-            offset: widget.offset,
-            first: widget.index == 0,
-            last: widget.last,
-            beginIconThemeData: iconTheme.copyWith(size: smallIconSize),
-            endIconThemeData: iconTheme.copyWith(
-                color: AbiliaColors.white, size: smallIconSize),
-            child: widget.child,
-          )
-        ],
-      ),
+      child: widget.child,
     );
   }
 }
@@ -150,6 +147,7 @@ class _AnimatedTab extends AnimatedWidget {
     @required this.offset,
     @required this.last,
     @required this.first,
+    @required this.onTap,
   })  : beginDecoration = first
             ? BoxDecoration(
                 borderRadius: firstBorderRadius,
@@ -189,6 +187,7 @@ class _AnimatedTab extends AnimatedWidget {
   final Decoration beginDecoration, endDecoration;
   final bool last, first;
   final IconThemeData beginIconThemeData, endIconThemeData;
+  final GestureTapCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -196,31 +195,40 @@ class _AnimatedTab extends AnimatedWidget {
     final lerpValue =
         (selectedTabAnimation.value - index + offset).abs().clamp(0.0, 1.0);
 
-    return Container(
-      width: 64.0.s * scaleAnimation.value,
-      height: 48.0.s,
-      margin: last
-          ? EdgeInsets.only(left: 1.0.s)
-          : first
-              ? EdgeInsets.only(right: 1.0.s)
-              : EdgeInsets.symmetric(horizontal: 1.0.s * scaleAnimation.value),
-      decoration: DecorationTween(begin: beginDecoration, end: endDecoration)
-          .lerp(lerpValue),
-      child: scaleAnimation.value == 0.0
-          ? null
-          : IconTheme(
-              data: IconThemeData.lerp(
-                  beginIconThemeData, endIconThemeData, lerpValue),
-              child: Transform(
-                transform: Matrix4.identity()
-                  ..scale(scaleValue, scaleValue, 1.0),
-                alignment: Alignment.center,
-                child: Opacity(
-                  opacity: scaleValue,
-                  child: child,
+    return InkWell(
+      borderRadius: first
+          ? borderRadiusLeft
+          : last
+              ? borderRadiusRight
+              : null,
+      onTap: onTap,
+      child: Container(
+        width: 64.0.s * scaleAnimation.value,
+        height: 48.0.s,
+        margin: last
+            ? EdgeInsets.only(left: 1.0.s)
+            : first
+                ? EdgeInsets.only(right: 1.0.s)
+                : EdgeInsets.symmetric(
+                    horizontal: 1.0.s * scaleAnimation.value),
+        decoration: DecorationTween(begin: beginDecoration, end: endDecoration)
+            .lerp(lerpValue),
+        child: scaleAnimation.value == 0.0
+            ? null
+            : IconTheme(
+                data: IconThemeData.lerp(
+                    beginIconThemeData, endIconThemeData, lerpValue),
+                child: Transform(
+                  transform: Matrix4.identity()
+                    ..scale(scaleValue, scaleValue, 1.0),
+                  alignment: Alignment.center,
+                  child: Opacity(
+                    opacity: scaleValue,
+                    child: child,
+                  ),
                 ),
               ),
-            ),
+      ),
     );
   }
 }
