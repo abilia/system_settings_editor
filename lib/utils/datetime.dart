@@ -138,6 +138,8 @@ extension DateTimeExtensions on DateTime {
   bool isNight(DayParts dayParts) {
     return DayPart.night == dayPart(dayParts);
   }
+
+  int get dayIndex => millisecondsSinceEpoch ~/ Duration.millisecondsPerDay;
 }
 
 extension IntDateTimeExtensions on int {

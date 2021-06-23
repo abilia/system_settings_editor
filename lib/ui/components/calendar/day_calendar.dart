@@ -3,6 +3,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class DayCalendar extends StatelessWidget {
   const DayCalendar({Key key}) : super(key: key);
@@ -84,6 +85,7 @@ class Calendars extends StatelessWidget {
             },
             builder: (context, activityState) {
               if (activityState is ActivitiesOccasionLoaded) {
+                if (activityState.day.dayIndex != index) return Container();
                 final fullDayActivities = activityState.fullDayActivities;
                 return Column(
                   children: <Widget>[
