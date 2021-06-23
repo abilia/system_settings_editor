@@ -86,7 +86,6 @@ class WeekAppBarPreview extends StatelessWidget {
                 showWeekNumber: state.showWeekNumber,
                 showYear: state.showYear,
                 langCode: Localizations.localeOf(context).toLanguageTag(),
-                compressDay: state.showBrowseButtons && state.showClock,
               ),
               showClock: state.showClock,
             ),

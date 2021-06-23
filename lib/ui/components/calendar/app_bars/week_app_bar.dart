@@ -29,8 +29,6 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ? memoSettingsState.calendarDayColor
                       : DayColor.noColors,
               rows: AppBarTitleRows.week(
-                compressDay: memoSettingsState.weekCaptionShowBrowseButtons &&
-                    memoSettingsState.weekCaptionShowClock,
                 selectedWeekStart: state.currentWeekStart,
                 selectedDay: daypickerState.day,
                 translator: Translator.of(context).translate,

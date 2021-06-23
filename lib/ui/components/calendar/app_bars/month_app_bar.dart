@@ -29,7 +29,7 @@ class MonthAppBar extends StatelessWidget implements PreferredSizeWidget {
 class MonthAppBarStepper extends StatelessWidget
     implements PreferredSizeWidget {
   @override
-  Size get preferredSize => CalendarAppBar.size;
+  Size get preferredSize => AbiliaAppBar.size;
 
   final bool showYear, showBrowseButtons, showClock;
   const MonthAppBarStepper({

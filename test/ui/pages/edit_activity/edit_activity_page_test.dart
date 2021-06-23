@@ -1224,13 +1224,15 @@ text''';
 
       expect(find.byType(DatePickerPage), findsOneWidget);
 
-      expect(find.text('February 2020'), findsOneWidget);
+      expect(find.text('February'), findsOneWidget);
+      expect(find.text('2020'), findsOneWidget);
       expect(find.byType(MonthDayView), findsNWidgets(29));
 
       await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
       await tester.pumpAndSettle();
 
-      expect(find.text('January 2020'), findsOneWidget);
+      expect(find.text('January'), findsOneWidget);
+      expect(find.text('2020'), findsOneWidget);
       expect(find.byType(MonthDayView), findsNWidgets(31));
 
       await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
@@ -1240,12 +1242,14 @@ text''';
       await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
       await tester.pumpAndSettle();
 
-      expect(find.text('April 2020'), findsOneWidget);
+      expect(find.text('April'), findsOneWidget);
+      expect(find.text('2020'), findsOneWidget);
       expect(find.byType(MonthDayView), findsNWidgets(30));
 
       await tester.tap(find.byType(GoToCurrentActionButton));
       await tester.pumpAndSettle();
-      expect(find.text('February 2020'), findsOneWidget);
+      expect(find.text('February'), findsOneWidget);
+      expect(find.text('2020'), findsOneWidget);
     });
 
     testWidgets('changes date then add recurring sets end date to start date',
