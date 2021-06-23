@@ -154,6 +154,28 @@ void main() {
         expect(find.byType(EditActivityPage), findsOneWidget);
       });
 
+      testWidgets('No option for basic activity when option set',
+          (WidgetTester tester) async {
+        when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+          (_) => Future.value(
+            [
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: false,
+                  identifier: MemoplannerSettings.advancedActivityTemplateKey,
+                ),
+              ),
+            ],
+          ),
+        );
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(AddActivityButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(CreateActivityPage), findsNothing);
+        expect(find.byType(EditActivityPage), findsOneWidget);
+      });
+
       testWidgets('Empty message when no basic activities',
           (WidgetTester tester) async {
         await tester.pumpWidget(App());

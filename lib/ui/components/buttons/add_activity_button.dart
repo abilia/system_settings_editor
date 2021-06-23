@@ -13,16 +13,23 @@ class AddActivityButton extends StatelessWidget {
   final DateTime day;
 
   @override
-  Widget build(BuildContext context) => ActionButtonLight(
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => CopiedAuthProviders(
-              blocContext: context,
-              child: CreateActivityPage(day: day),
-            ),
-            settings: RouteSettings(name: 'CreateActivityPage'),
+  Widget build(BuildContext context) =>
+      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        buildWhen: (previous, current) =>
+            previous.advancedActivityTemplate !=
+            current.advancedActivityTemplate,
+        builder: (context, state) => ActionButtonLight(
+          onPressed: () => Navigator.of(context).push(
+            state.advancedActivityTemplate
+                ? MaterialPageRoute(
+                    builder: (_) => CopiedAuthProviders(
+                        blocContext: context,
+                        child: CreateActivityPage(day: day)),
+                    settings: RouteSettings(name: 'CreateActivityPage'),
+                  )
+                : EditActivityPage.route(context, day),
           ),
+          child: Icon(AbiliaIcons.plus),
         ),
-        child: Icon(AbiliaIcons.plus),
       );
 }
