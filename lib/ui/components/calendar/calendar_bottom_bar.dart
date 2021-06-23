@@ -32,6 +32,23 @@ class CalendarBottomBar extends StatelessWidget {
                       if (settingsState.displayMonthCalendar)
                         Icon(AbiliaIcons.month),
                     ],
+                    onTabTap: (index) {
+                      switch (index) {
+                        case 0:
+                          return () =>
+                              context.read<DayPickerBloc>().add(CurrentDay());
+                        case 1:
+                          if (settingsState.displayWeekCalendar) {
+                            return () => context
+                                .read<WeekCalendarBloc>()
+                                .add(GoToCurrentWeek());
+                          }
+                          break;
+                      }
+                      return () => context
+                          .read<MonthCalendarBloc>()
+                          .add(GoToCurrentMonth());
+                    },
                   )
                 else
                   const Spacer(),

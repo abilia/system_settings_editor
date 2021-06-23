@@ -198,13 +198,15 @@ class MonthDayView extends StatelessWidget {
           DefaultTabController.of(context)?.animateTo(0);
         },
         child: BlocBuilder<DayPickerBloc, DayPickerState>(
+          buildWhen: (previous, current) => current.forDatePicking,
           builder: (context, dayPickerState) => Container(
             foregroundDecoration: day.isCurrent
                 ? BoxDecoration(
                     border: currentActivityBorder,
                     borderRadius: monthDayborderRadius,
                   )
-                : dayPickerState.day.isAtSameDay(day.day)
+                : dayPickerState.forDatePicking &&
+                        dayPickerState.day.isAtSameDay(day.day)
                     ? BoxDecoration(
                         border: selectedActivityBorder,
                         borderRadius: monthDayborderRadius,

@@ -121,6 +121,7 @@ class DatePicker extends StatelessWidget {
                           create: (context) => DayPickerBloc(
                             clockBloc: context.read<ClockBloc>(),
                             initialDay: date,
+                            forDatePicking: true,
                           ),
                         ),
                         BlocProvider.value(
