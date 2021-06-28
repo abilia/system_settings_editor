@@ -67,9 +67,10 @@ class SlideShowCubit extends Cubit<SlideShowState> {
         sortables.whereType<Sortable<ImageArchiveData>>();
     final allByFolder = groupBy<Sortable<ImageArchiveData>, String>(
         imageArchiveSortables, (s) => s.groupId);
-    final allInMyPhotosRoot = allByFolder.containsKey(myPhotosFolder.id)
-        ? allByFolder[myPhotosFolder.id].where((e) => !e.isGroup).toList()
-        : [];
+    final allInMyPhotosRoot = [
+      if (allByFolder.containsKey(myPhotosFolder.id))
+        ...allByFolder[myPhotosFolder.id].where((e) => !e.isGroup)
+    ];
     return SlideShowState(
       currentIndex: 0,
       slideShowFolderContent: allInMyPhotosRoot..shuffle(),

@@ -71,7 +71,8 @@ void main() {
       expect(find.byType(AbiliaClock), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.go_to_next_page), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.return_to_previous_page), findsOneWidget);
-      expect(find.text('May 2021'), findsOneWidget);
+      expect(find.text('May'), findsOneWidget);
+      expect(find.text('2021'), findsOneWidget);
     });
 
     testWidgets('memosettings respected', (tester) async {
@@ -155,7 +156,8 @@ void main() {
       expect(find.byType(AbiliaClock), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.go_to_next_page), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.return_to_previous_page), findsOneWidget);
-      expect(find.text('May 2021'), findsOneWidget);
+      expect(find.text('May'), findsOneWidget);
+      expect(find.text('2021'), findsOneWidget);
     });
 
     testWidgets('memosettings respected', (tester) async {

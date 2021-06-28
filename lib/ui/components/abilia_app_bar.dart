@@ -20,8 +20,11 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottom,
     this.trailing,
   })  : preferredSize =
-            Size.fromHeight(68.0.s + (bottom?.preferredSize?.height ?? 0.0)),
+            Size.fromHeight(height + (bottom?.preferredSize?.height ?? 0.0)),
         super(key: key);
+
+  static final Size size = Size.fromHeight(height);
+  static final double height = 68.s;
 
   @override
   Widget build(BuildContext context) {
