@@ -40,6 +40,7 @@ class WeekCalendar extends StatelessWidget {
       },
       child: PageView.builder(
         controller: pageController,
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, item) =>
             BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
           buildWhen: (oldState, newState) => newState.index == item,
