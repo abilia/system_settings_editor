@@ -16,6 +16,7 @@ class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
   final ActivitiesBloc activitiesBloc;
   final ClockBloc clockBloc;
   StreamSubscription _activitiesSubscription;
+  StreamSubscription _clockSubscription;
   WeekCalendarBloc({
     @required this.activitiesBloc,
     @required this.clockBloc,
@@ -27,6 +28,12 @@ class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
             : WeekCalendarInitial(clockBloc.state.firstInWeek())) {
     _activitiesSubscription = activitiesBloc.stream.listen((state) {
       final activityState = state;
+      if (activityState is ActivitiesLoaded) {
+        add(UpdateWeekActivites(activityState.activities));
+      }
+    });
+    _clockSubscription = clockBloc.stream.listen((_) {
+      final activityState = activitiesBloc.state;
       if (activityState is ActivitiesLoaded) {
         add(UpdateWeekActivites(activityState.activities));
       }
@@ -83,6 +90,7 @@ class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
   @override
   Future<void> close() async {
     await _activitiesSubscription.cancel();
+    await _clockSubscription.cancel();
     return super.close();
   }
 }
