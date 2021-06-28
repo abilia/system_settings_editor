@@ -17,12 +17,10 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
   DayPickerBloc({
     @required this.clockBloc,
     DateTime initialDay,
-    bool forDatePicking = false,
   }) : super(
           DayPickerState(
             (initialDay ?? clockBloc.state).onlyDays(),
             clockBloc.state,
-            forDatePicking,
           ),
         ) {
     clockBlocSubscription =
@@ -49,7 +47,7 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
   }
 
   DayPickerState generateState(DateTime day) =>
-      DayPickerState(day.onlyDays(), clockBloc.state, state.forDatePicking);
+      DayPickerState(day.onlyDays(), clockBloc.state);
 
   @override
   Future<void> close() async {
@@ -62,10 +60,9 @@ class DayPickerState extends Equatable {
   final DateTime day;
   final int index;
   final Occasion occasion;
-  final bool forDatePicking;
   bool get isToday => occasion == Occasion.current;
 
-  DayPickerState(this.day, DateTime now, this.forDatePicking)
+  DayPickerState(this.day, DateTime now)
       : index = day.dayIndex,
         occasion = day.isAtSameDay(now)
             ? Occasion.current
@@ -74,17 +71,14 @@ class DayPickerState extends Equatable {
                 : Occasion.past;
 
   @visibleForTesting
-  DayPickerState.forTest(this.day, this.occasion)
-      : forDatePicking = false,
-        index = day.dayIndex;
+  DayPickerState.forTest(this.day, this.occasion) : index = day.dayIndex;
 
   @override
   String toString() =>
-      'DayPickerState ${forDatePicking ? 'for Date Picking ' : ''} { day: ${yMd(day)}, index: $index, occasion: $occasion }';
+      'DayPickerState { day: ${yMd(day)}, index: $index, occasion: $occasion }';
 
   @override
-  List<Object> get props => [day, occasion, forDatePicking];
+  List<Object> get props => [day, occasion];
 
-  DayPickerState _timeChange(DateTime now) =>
-      DayPickerState(day, now, forDatePicking);
+  DayPickerState _timeChange(DateTime now) => DayPickerState(day, now);
 }

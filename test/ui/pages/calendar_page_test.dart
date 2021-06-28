@@ -1108,6 +1108,25 @@ void main() {
       await tester.verifyTts(find.byType(WeekAppBar), contains: 'week 32');
     });
 
+    testWidgets('Tapping week in TabBar, current day is selected',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(nextDayButtonFinder);
+      await tester.tap(nextDayButtonFinder);
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      final allHeadings = tester.widgetList<WeekCalenderHeadingContent>(
+          find.byType(WeekCalenderHeadingContent));
+
+      final selected = allHeadings.firstWhere((element) => element.selected);
+
+      expect(selected.day, initialDay);
+    });
+
     testWidgets(
         'BUG SGC-756 tapping day goes back to that day calendar, then go back to now goes back to now',
         (WidgetTester tester) async {
