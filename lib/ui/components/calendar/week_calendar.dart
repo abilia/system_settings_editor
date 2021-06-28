@@ -391,17 +391,22 @@ class WeekDayColumn extends StatelessWidget {
                               current.currentWeekActivities[day.weekday - 1],
                           builder: (context, state) => Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: state
-                                .currentWeekActivities[day.weekday - 1]
-                                .where((ao) => !ao.activity.fullDay)
-                                .map(
-                                  (ao) => Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 2.s),
-                                    child: WeekActivity(activityOccasion: ao),
+                            children: [
+                              ...state.currentWeekActivities[day.weekday - 1]
+                                  .where((ao) => !ao.activity.fullDay)
+                                  .map(
+                                    (ao) => Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 2.s),
+                                      child: AspectRatio(
+                                        aspectRatio: 1,
+                                        child: WeekActivityContent(
+                                          activityOccasion: ao,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                )
-                                .toList(),
+                            ],
                           ),
                         ),
                       ),
@@ -417,22 +422,6 @@ class WeekDayColumn extends StatelessWidget {
   }
 }
 
-class WeekActivity extends StatelessWidget {
-  final ActivityOccasion activityOccasion;
-  const WeekActivity({
-    Key key,
-    @required this.activityOccasion,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: WeekActivityContent(activityOccasion: activityOccasion),
-    );
-  }
-}
-
 class WeekActivityContent extends StatelessWidget {
   const WeekActivityContent({
     Key key,
@@ -440,10 +429,14 @@ class WeekActivityContent extends StatelessWidget {
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
+  final double scaleFactor = 2 / 3;
 
   @override
   Widget build(BuildContext context) {
+    final inactive = activityOccasion.isPast || activityOccasion.isSignedOff;
+
     return Container(
+      clipBehavior: Clip.hardEdge,
       height: activityOccasion.activity.fullDay ? 36.s : null,
       foregroundDecoration: BoxDecoration(
         border: activityOccasion.isCurrent ? currentActivityBorder : border,
@@ -453,28 +446,48 @@ class WeekActivityContent extends StatelessWidget {
         borderRadius: borderRadius,
         color: AbiliaColors.white,
       ),
-      child: activityOccasion.activity.hasImage
-          ? ActivityImage.fromActivityOccasion(
-              activityOccasion: activityOccasion,
-              size: double.infinity,
-              crossOverPadding: EdgeInsets.all(7.s))
-          : Padding(
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          if (activityOccasion.activity.hasImage)
+            AnimatedOpacity(
+              duration: Duration(milliseconds: 400),
+              opacity: inactive ? 0.5 : 1.0,
+              child: FadeInAbiliaImage(
+                imageFileId: activityOccasion.activity.fileId,
+                imageFilePath: activityOccasion.activity.icon,
+                height: double.infinity,
+                width: double.infinity,
+              ),
+            )
+          else
+            Padding(
               padding: EdgeInsets.all(3.0.s),
-              child: ActivityOccasionDecoration(
-                activityOccasion: activityOccasion,
-                crossOverPadding: EdgeInsets.all(4.s),
-                child: Center(
-                  child: Tts(
-                    child: Text(
-                      activityOccasion.activity.title,
-                      overflow: TextOverflow.clip,
-                      style: abiliaTextTheme.caption.copyWith(height: 20 / 16),
-                      textAlign: TextAlign.center,
-                    ),
+              child: Center(
+                child: Tts(
+                  child: Text(
+                    activityOccasion.activity.title,
+                    overflow: TextOverflow.clip,
+                    style: abiliaTextTheme.caption.copyWith(height: 20 / 16),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
             ),
+          if (activityOccasion.isSignedOff)
+            FractionallySizedBox(
+              widthFactor: scaleFactor,
+              heightFactor: scaleFactor,
+              child: CheckMark(),
+            )
+          else if (activityOccasion.isPast)
+            FractionallySizedBox(
+              widthFactor: scaleFactor,
+              heightFactor: scaleFactor,
+              child: CrossOver(),
+            ),
+        ],
+      ),
     );
   }
 }
