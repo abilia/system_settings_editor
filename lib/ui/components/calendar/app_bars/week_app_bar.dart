@@ -46,9 +46,10 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
                   : null,
               clockReplacement: !state.currentWeekStart.isSameWeek(time)
                   ? GoToCurrentActionButton(
-                      onPressed: () => context
-                          .read<WeekCalendarBloc>()
-                          .add(GoToCurrentWeek()),
+                      onPressed: () {
+                        context.read<DayPickerBloc>().add(CurrentDay());
+                        context.read<WeekCalendarBloc>().add(GoToCurrentWeek());
+                      },
                     )
                   : null,
               rightAction: memoSettingsState.weekCaptionShowBrowseButtons

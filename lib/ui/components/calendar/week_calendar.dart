@@ -30,13 +30,32 @@ class WeekCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        WeekCalendarTop(),
-        Expanded(
-          child: WeekCalendarBody(),
+    final pageController = PageController(
+        initialPage: context.read<WeekCalendarBloc>().state.index);
+    return BlocListener<WeekCalendarBloc, WeekCalendarState>(
+      listener: (context, state) {
+        pageController.animateToPage(state.index,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeOutQuad);
+      },
+      child: PageView.builder(
+        controller: pageController,
+        itemBuilder: (context, item) =>
+            BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+          buildWhen: (oldState, newState) => newState.index == item,
+          builder: (context, state) {
+            if (state.index != item) return Container();
+            return Column(
+              children: const [
+                WeekCalendarTop(),
+                Expanded(
+                  child: WeekCalendarBody(),
+                ),
+              ],
+            );
+          },
         ),
-      ],
+      ),
     );
   }
 }
