@@ -3,9 +3,13 @@
 part of 'week_calendar_bloc.dart';
 
 abstract class WeekCalendarState extends Equatable {
+  final DateTime ZERO = DateTime.fromMillisecondsSinceEpoch(0);
   final DateTime currentWeekStart;
   final Map<int, List<ActivityOccasion>> currentWeekActivities;
-  const WeekCalendarState(
+
+  int get index => currentWeekStart.difference(ZERO).inDays ~/ 7;
+
+  WeekCalendarState(
     this.currentWeekStart,
     this.currentWeekActivities,
   );

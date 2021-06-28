@@ -1126,13 +1126,23 @@ void main() {
               widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsnextWeekPostSelect, hasLength(1));
 
-      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
       await tester.pumpAndSettle();
 
       final selectedHeadingsInitialPostSelect = tester.widgetList(
           find.byWidgetPredicate((widget) =>
               widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsInitialPostSelect, isEmpty);
+
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.pumpAndSettle();
+
+      final goToCurrentSelect = tester.widgetList(find.byWidgetPredicate(
+          (widget) => widget is WeekCalenderHeadingContent && widget.selected));
+      expect(goToCurrentSelect, hasLength(1));
     });
   });
 
