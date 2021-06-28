@@ -195,8 +195,29 @@ class SeagullLogger {
     );
   }
 
-  String format(LogRecord record) =>
-      '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}';
+  String format(LogRecord record) {
+    if (Platform.isIOS) {
+      return '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}';
+    }
+    final start = _logColor(record.level);
+    const end = '\x1b[0m';
+    return '$start${record.level.name}:$end ${record.time}: $start${record.loggerName}: ${record.message}$end';
+  }
+
+  String _logColor(Level level) {
+    switch (level.name) {
+      case 'INFO':
+        return '\x1b[37m';
+      case 'WARNING':
+        return '\x1b[93m';
+      case 'SEVERE':
+        return '\x1b[103m\x1b[31m';
+      case 'SHOUT':
+        return '\x1b[41m\x1b[93m';
+      default:
+        return '\x1b[90m';
+    }
+  }
 
   Future<DateTime> _getLastUploadDate() async {
     final lastUploadMillis = preferences.getInt(LATEST_UPLOAD_KEY);

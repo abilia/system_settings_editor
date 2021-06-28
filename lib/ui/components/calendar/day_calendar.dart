@@ -10,47 +10,58 @@ class DayCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (old, fresh) =>
-          old.settingsInaccessible != fresh.settingsInaccessible ||
-          old.showCategories != fresh.showCategories ||
-          old.displayDayCalendarAppBar != fresh.displayDayCalendarAppBar ||
-          old.displayEyeButton != fresh.displayEyeButton,
-      builder: (context, settingState) => Scaffold(
-        appBar:
-            settingState.displayDayCalendarAppBar ? DayCalendarAppBar() : null,
-        body: BlocBuilder<PermissionBloc, PermissionState>(
-          buildWhen: (old, fresh) =>
-              old.notificationDenied != fresh.notificationDenied,
-          builder: (context, state) => Stack(
-            children: [
-              const Calendars(),
-              if (settingState.displayEyeButton)
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0.s),
-                    child: const EyeButton(),
+    return BlocProvider<ScrollPositionBloc>(
+      create: (context) => ScrollPositionBloc(
+        dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
+        clockBloc: context.read<ClockBloc>(),
+        timepillarBloc: context.read<TimepillarBloc>(),
+      ),
+      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        buildWhen: (old, fresh) =>
+            old.settingsInaccessible != fresh.settingsInaccessible ||
+            old.showCategories != fresh.showCategories ||
+            old.displayDayCalendarAppBar != fresh.displayDayCalendarAppBar ||
+            old.displayEyeButton != fresh.displayEyeButton,
+        builder: (context, settingState) => Scaffold(
+          appBar: settingState.displayDayCalendarAppBar
+              ? DayCalendarAppBar()
+              : null,
+          body: BlocBuilder<PermissionBloc, PermissionState>(
+            buildWhen: (old, fresh) =>
+                old.notificationDenied != fresh.notificationDenied,
+            builder: (context, state) => Stack(
+              children: [
+                const Calendars(),
+                if (settingState.displayEyeButton)
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0.s),
+                      child: const EyeButton(),
+                    ),
                   ),
-                ),
-              if (state.notificationDenied)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 76.0.s, right: 16.0.s, bottom: 28.0.s),
-                    child: ErrorMessage(
-                      text: Text(
-                        Translator.of(context)
-                            .translate
-                            .notificationsWarningText,
+                if (state.notificationDenied)
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 76.0.s,
+                        right: 16.0.s,
+                        bottom: 28.0.s,
+                      ),
+                      child: ErrorMessage(
+                        text: Text(
+                          Translator.of(context)
+                              .translate
+                              .notificationsWarningText,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              if (settingState.settingsInaccessible)
-                HiddenSetting(settingState.showCategories),
-            ],
+                if (settingState.settingsInaccessible)
+                  HiddenSetting(settingState.showCategories),
+              ],
+            ),
           ),
         ),
       ),
@@ -58,23 +69,50 @@ class DayCalendar extends StatelessWidget {
   }
 }
 
-class Calendars extends StatelessWidget {
+class Calendars extends StatefulWidget {
   const Calendars({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final controller = PageController(
+  _CalendarsState createState() => _CalendarsState();
+}
+
+class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
+  PageController pageController;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    pageController = PageController(
       initialPage: context.read<DayPickerBloc>().state.index,
     );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      context.read<ScrollPositionBloc>().add(GoToNow());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return BlocListener<DayPickerBloc, DayPickerState>(
       listener: (context, state) {
-        controller.animateToPage(state.index,
+        pageController.animateToPage(state.index,
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeOutQuad);
       },
       child: PageView.builder(
         physics: const NeverScrollableScrollPhysics(),
-        controller: controller,
+        controller: pageController,
         itemBuilder: (context, index) {
           return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
             buildWhen: (oldState, newState) {

@@ -30,7 +30,7 @@ class ScrollPositionBloc
     @required this.timepillarBloc,
     this.nowMarginTop = 8,
     this.nowMarginBottom = 8,
-  }) : super(Unready()) {
+  }) : super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
     dayPickerBlocSubscription = dayPickerBloc.stream
         .where((state) => !state.isToday)
         .listen((_) => add(WrongDaySelected()));
@@ -43,24 +43,21 @@ class ScrollPositionBloc
     ScrollPositionEvent event,
   ) async* {
     final s = state;
-    if (event is WrongDaySelected) {
+    if (event is GoToNow) {
+      await _jumpToActivity(s);
+    } else if (!dayPickerBloc.state.isToday) {
       yield WrongDay();
     } else if (event is ScrollViewRenderComplete) {
-      if (dayPickerBloc.state.isToday) {
-        yield* _isActivityInView(
-          event.scrollController,
-          event.createdTime,
-        );
-      }
+      yield* _isActivityInView(
+        event.scrollController,
+        event.createdTime,
+      );
     } else if (event is ScrollPositionUpdated &&
         s is ScrollPositionReadyState) {
       yield* _isActivityInView(
         s.scrollController,
         s.scrollControllerCreatedTime,
       );
-    }
-    if (event is GoToNow) {
-      await _jumpToActivity(s);
     }
   }
 
