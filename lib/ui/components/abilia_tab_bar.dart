@@ -9,12 +9,14 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
     @required this.tabs,
     this.height,
     this.collapsedCondition,
+    this.onTabTap,
   }) : super(key: key);
 
   final List<Widget> tabs;
   final double height;
 
   final bool Function(int index) collapsedCondition;
+  final void Function(int index) onTabTap;
   bool Function(int) get isCollapsed => collapsedCondition ?? (_) => false;
 
   @override
@@ -31,6 +33,7 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
           last: (tabs.length - 1) == i,
           collapsed: () => isCollapsed(i),
           controller: DefaultTabController.of(context),
+          onTabTap: onTabTap,
           child: tabs[i],
         )
     ];
@@ -55,6 +58,7 @@ class _Tab extends StatefulWidget {
     @required this.collapsed,
     @required this.child,
     @required this.controller,
+    @required this.onTabTap,
   }) : super(key: key);
 
   final int index, offset;
@@ -62,6 +66,7 @@ class _Tab extends StatefulWidget {
   final Widget child;
   final TabController controller;
   final bool Function() collapsed;
+  final void Function(int index) onTabTap;
 
   @override
   _TabState createState() => _TabState(collapsed());
@@ -120,7 +125,10 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
       beginIconThemeData: iconTheme.copyWith(size: smallIconSize),
       endIconThemeData:
           iconTheme.copyWith(color: AbiliaColors.white, size: smallIconSize),
-      onTap: () => widget.controller.animateTo(widget.index - widget.offset),
+      onTap: () {
+        widget.onTabTap?.call(widget.index - widget.offset);
+        widget.controller.animateTo(widget.index - widget.offset);
+      },
       child: widget.child,
     );
   }
