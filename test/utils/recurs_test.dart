@@ -503,6 +503,13 @@ void main() {
         final weekly3 = Recurs.biWeeklyOnDays(evens: [1], odds: [1]);
         expect(weekly3, expected3);
       });
+
+      test('Recurring end from Handi 9223372036854775807 is limited to NO_END',
+          () {
+        final handiEnd = 9223372036854775807;
+        final handiRecur = Recurs.raw(Recurs.TYPE_WEEKLY, 129, handiEnd);
+        expect(handiRecur.endTime, Recurs.NO_END);
+      });
     });
     group('onCorrectYearsDay', () {
       test('-1 is not a correct day of the year', () {
