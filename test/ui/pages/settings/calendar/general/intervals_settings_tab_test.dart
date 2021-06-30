@@ -237,7 +237,7 @@ void main() {
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-              data: DayCalendarType.TIMEPILLAR.index,
+              data: DayCalendarType.timepillar.index,
               identifier: MemoplannerSettings.viewOptionsTimeViewKey),
         ),
       ];

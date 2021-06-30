@@ -7,13 +7,13 @@ import 'package:seagull/ui/all.dart';
 
 import 'all.dart';
 
-class EyeButtonDialog extends StatefulWidget {
+class EyeButtonDayDialog extends StatefulWidget {
   final DayCalendarType currentCalendarType;
   final bool currentDotsInTimepillar;
   final TimepillarZoom currentZoom;
   final TimepillarIntervalType currentDayInterval;
 
-  const EyeButtonDialog({
+  const EyeButtonDayDialog({
     Key key,
     @required this.currentCalendarType,
     @required this.currentDotsInTimepillar,
@@ -22,7 +22,7 @@ class EyeButtonDialog extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EyeButtonDialogState createState() => _EyeButtonDialogState(
+  _EyeButtonDayDialogState createState() => _EyeButtonDayDialogState(
         calendarType: currentCalendarType,
         dotsInTimePillar: currentDotsInTimepillar,
         timepillarZoom: currentZoom,
@@ -30,14 +30,13 @@ class EyeButtonDialog extends StatefulWidget {
       );
 }
 
-class _EyeButtonDialogState extends State<EyeButtonDialog> {
+class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
   bool dotsInTimePillar;
   TimepillarZoom timepillarZoom;
   TimepillarIntervalType dayInterval;
   DayCalendarType calendarType;
-  ScrollController _controller;
 
-  _EyeButtonDialogState({
+  _EyeButtonDayDialogState({
     @required this.calendarType,
     @required this.dotsInTimePillar,
     @required this.timepillarZoom,
@@ -53,7 +52,6 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
         iconData: AbiliaIcons.show,
       ),
       body: AbiliaScrollBar(
-        controller: _controller,
         child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           builder: (context, state) => ListView(
             children: [
@@ -66,12 +64,12 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
                       SelectorItem(
                         t.listView,
                         AbiliaIcons.calendar_list,
-                        DayCalendarType.LIST,
+                        DayCalendarType.list,
                       ),
                       SelectorItem(
                         t.timePillarView,
                         AbiliaIcons.timeline,
-                        DayCalendarType.TIMEPILLAR,
+                        DayCalendarType.timepillar,
                       ),
                     ],
                     onChanged: (type) => setState(() => calendarType = type),
@@ -80,7 +78,7 @@ class _EyeButtonDialogState extends State<EyeButtonDialog> {
                 Divider(endIndent: 16.s)
               ],
               CollapsableWidget(
-                collapsed: calendarType == DayCalendarType.LIST,
+                collapsed: calendarType == DayCalendarType.list,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[

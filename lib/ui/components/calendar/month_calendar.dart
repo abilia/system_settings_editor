@@ -13,7 +13,15 @@ class MonthCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MonthAppBar(),
-      body: const MonthBody(),
+      body: Stack(
+        children: [
+          const MonthBody(),
+          const Align(
+            alignment: Alignment.bottomLeft,
+            child: EyeButtonMonth(),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -78,7 +78,7 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   bool get displayEyeButton =>
       settingViewOptionsTimeView ||
-      (dayCalendarType == DayCalendarType.TIMEPILLAR &&
+      (dayCalendarType == DayCalendarType.timepillar &&
           (settingViewOptionsTimeInterval ||
               settingViewOptionsZoom ||
               settingViewOptionsDurationDots));

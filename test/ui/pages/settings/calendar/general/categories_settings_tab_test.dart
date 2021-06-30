@@ -32,7 +32,7 @@ void main() {
 
   final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.TIMEPILLAR.index,
+        data: DayCalendarType.timepillar.index,
         identifier: MemoplannerSettings.viewOptionsTimeViewKey),
   );
   setUp(() async {

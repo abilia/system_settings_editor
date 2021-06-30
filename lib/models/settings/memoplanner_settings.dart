@@ -501,7 +501,7 @@ class MemoplannerSettings extends Equatable {
       ),
       viewOptionsTimeView: settings.parse(
         viewOptionsTimeViewKey,
-        DayCalendarType.LIST.index,
+        DayCalendarType.list.index,
       ),
       dotsInTimepillar: settings.getBool(
         dotsInTimepillarKey,
