@@ -23,7 +23,7 @@ void main() {
           "signedOffDates" : "H4sIAAAAAAAAADMy0DUw0jU0sjaCMIxhDFMow8gAxjAHABLmPcgsAAAA",
           "infoItem" : null,
           "reminderBefore" : "86400000;300000",
-          "extras" : null,
+          "extras" : "extra extra",
           "recurrentType" : 0,
           "recurrentData" : 0,
           "alarmType" : 0,
@@ -79,6 +79,8 @@ void main() {
     expect(result.removeAfter, false);
     expect(result.secret, false);
     expect(result.fileId, '1a1b1678-781e-4b6f-9518-b6858560433f');
+    expect(result.timezone, 'Europe/Stockholm');
+    expect(result.extras, 'extra extra');
   });
 
   test('parse json with nulls test', () {
@@ -91,7 +93,7 @@ void main() {
           "seriesId" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
           "groupActivityId" : null,
           "title" : "Title",
-          "timezone" : "Europe/Stockholm",
+          "timezone" : null,
           "icon" : null,
           "signedOffDates" : null,
           "infoItem" : null,
@@ -116,15 +118,55 @@ void main() {
     expect(resultList.length, 1);
     final result = resultList.first.activity;
 
-    // expect(result.groupActivityId, null);
     expect(result.icon, '');
     expect(result.signedOffDates, []);
     expect(result.infoItem, InfoItem.none);
     expect(result.reminderBefore, []);
     expect(result.reminders, []);
-    // expect(result.extras, null);
     expect(result.fileId, '');
+    expect(result.timezone, '');
+    expect(result.extras, '');
+    for (var p in result.props) {
+      expect(p, isNotNull);
+    }
   });
+
+  test('parse json with title null', () {
+    final response = '''{
+          "id" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
+          "owner" : 104,
+          "revision" : 100,
+          "revisionTime" : 0,
+          "deleted" : false,
+          "seriesId" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
+          "groupActivityId" : null,
+          "title" : null,
+          "timezone" : null,
+          "icon" : null,
+          "signedOffDates" : null,
+          "infoItem" : null,
+          "reminderBefore" : null,
+          "extras" : null,
+          "recurrentType" : 0,
+          "recurrentData" : 0,
+          "alarmType" : 0,
+          "duration" : 3600000,
+          "category" : 0,
+          "startTime" : 1570105439424,
+          "endTime" : 1570109039424,
+          "fullDay" : false,
+          "checkable" : true,
+          "removeAfter" : false,
+          "secret" : false,
+          "fileId" : "33451ee6-cec6-4ce0-b515-f58767b13c8f"
+        }''';
+    final result = DbActivity.fromJson(json.decode(response)).activity;
+    expect(result.title, '');
+    for (var p in result.props) {
+      expect(p, isNotNull);
+    }
+  });
+
   test('parse json with empty string test', () {
     final response = '''[ {
           "id" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
@@ -168,6 +210,7 @@ void main() {
     expect(result.reminders, []);
     // expect(result.extras, null);
     expect(result.fileId, '');
+    expect(result.extras, '');
   });
 
   test('create, serialize and deserialize test', () {
@@ -194,6 +237,7 @@ void main() {
       checkable: true,
       signedOffDates: [DateTime(2000, 02, 20)],
       infoItem: infoItem,
+      extras: 'extra',
     );
     final dbActivity = activity.wrapWithDbModel();
     final asJson = dbActivity.toJson();
@@ -219,6 +263,7 @@ void main() {
     expect(deserializedActivity.secret, activity.secret);
     expect(deserializedActivity.signedOffDates, activity.signedOffDates);
     expect(deserializedActivity.infoItem, activity.infoItem);
+    expect(deserializedActivity.extras, activity.extras);
     expect(deserializedActivity, activity);
   });
 
@@ -244,6 +289,7 @@ void main() {
       title: 'Title',
       startTime: now,
       fileId: '',
+      extras: 'åäö',
     );
     final dbModel = a.wrapWithDbModel();
     final json = dbModel.toJson();
@@ -293,5 +339,59 @@ void main() {
     expect(a.recurs.endTime, greaterThanOrEqualTo(now.millisecondsSinceEpoch));
     expect(jEndTime, a.recurs.endTime);
     expect(dbEndTime, a.recurs.endTime);
+  });
+
+  test('Bug SGC-867 extras not saved on change', () {
+    final response = '''{
+      "id": "13e4085c-dfbc-4d8c-8c81-7bad32a0a8b4",
+      "owner": 356,
+      "revision": 1,
+      "revisionTime": 0,
+      "deleted": false,
+      "seriesId": "13e4085c-dfbc-4d8c-8c81-7bad32a0a8b4",
+      "groupActivityId": null,
+      "title": "af",
+      "timezone": "Europe/Stockholm",
+      "icon": "",
+      "signedOffDates": null,
+      "infoItem": "",
+      "reminderBefore": "",
+      "extras": "{\\"startTimeExtraAlarm\\":\\"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav\\",\\"startTimeExtraAlarmFileId\\":\\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\\"}",
+      "recurrentType": 0,
+      "recurrentData": 0,
+      "alarmType": 100,
+      "duration": 0,
+      "category": 0,
+      "startTime": 1625049000000,
+      "endTime": 1625049000000,
+      "fullDay": false,
+      "checkable": false,
+      "removeAfter": false,
+      "secret": false,
+      "description": "",
+      "textToSpeech": false,
+      "showInDayplan": true,
+      "calendarId": "36a50dae-bede-4bdb-89ec-10229777c889",
+      "fileId": ""
+}'''
+        .replaceAll('\n', '')
+        .replaceAll(' ', '');
+    final decoded = json.decode(response) as Map<String, dynamic>;
+    ;
+    final parsed = DbActivity.fromJson(decoded);
+    final dbMap = parsed.toMapForDb();
+    final fromDBmap = DbActivity.fromDbMap(dbMap);
+    final toJson = fromDBmap.toJson();
+
+    expect(fromDBmap, parsed);
+    final encoded = json.encode(toJson);
+    final decoded2 = json.decode(encoded) as Map<String, dynamic>;
+    final parsed2 = DbActivity.fromJson(decoded2);
+    final dbMap2 = parsed2.toMapForDb();
+    expect(decoded.keys, containsAll(decoded2.keys));
+    decoded2.remove('endTime'); // TODO remove ni SGC-762
+    expect(decoded.values, containsAll(decoded2.values));
+    expect(parsed, parsed2);
+    expect(dbMap, dbMap2);
   });
 }
