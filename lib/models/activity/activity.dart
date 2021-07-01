@@ -31,7 +31,7 @@ class Activity extends DataModel {
           ? (signedOffDates.toList()..remove(day))
           : signedOffDates.followedBy([day]));
 
-  final String seriesId, title, fileId, icon, timezone;
+  final String seriesId, title, fileId, icon, timezone, extras;
   final DateTime startTime;
   final Duration duration;
   final int category, alarmType;
@@ -60,6 +60,7 @@ class Activity extends DataModel {
     required this.fileId,
     required this.signedOffDates,
     required this.timezone,
+    required this.extras,
   })  : assert(alarmType >= 0),
         assert(category >= 0),
         super(id);
@@ -81,6 +82,7 @@ class Activity extends DataModel {
     Iterable<int> reminderBefore = const [],
     Iterable<DateTime> signedOffDates = const [],
     String timezone = '',
+    String extras = '',
   }) {
     final id = Uuid().v4();
     return Activity._(
@@ -103,6 +105,7 @@ class Activity extends DataModel {
       infoItem: infoItem,
       signedOffDates: UnmodifiableListView(signedOffDates),
       timezone: timezone,
+      extras: extras,
     );
   }
 
@@ -139,6 +142,7 @@ class Activity extends DataModel {
     InfoItem? infoItem,
     Iterable<DateTime>? signedOffDates,
     String? timezone,
+    String? extras,
   }) =>
       Activity._(
         id: newId ? Uuid().v4() : id,
@@ -164,6 +168,7 @@ class Activity extends DataModel {
             ? UnmodifiableListView(signedOffDates)
             : this.signedOffDates,
         timezone: timezone ?? this.timezone,
+        extras: extras ?? this.extras,
       );
 
   Activity copyActivity(Activity other) => copyWith(
@@ -207,6 +212,7 @@ class Activity extends DataModel {
         icon,
         signedOffDates,
         timezone,
+        extras,
       ];
 
   @override

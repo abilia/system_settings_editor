@@ -23,7 +23,7 @@ class DbActivity extends DbModel<Activity> {
         activity: Activity._(
           id: json['id'],
           seriesId: json['seriesId'],
-          title: json['title'],
+          title: json['title'] ?? '',
           startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime']),
           duration: Duration(milliseconds: json['duration'] ?? 0),
           fileId: json['fileId'] ?? '',
@@ -43,7 +43,8 @@ class DbActivity extends DbModel<Activity> {
           reminderBefore: parseReminders(json['reminderBefore']),
           alarmType: json['alarmType'],
           signedOffDates: _parseSignedOffDates(json['signedOffDates']),
-          timezone: json['timezone'],
+          timezone: json['timezone'] ?? '',
+          extras: json['extras'] ?? '',
         ),
         revision: json['revision'],
         dirty: 0,
@@ -74,6 +75,7 @@ class DbActivity extends DbModel<Activity> {
           alarmType: dbRow['alarm_type'] ?? AlarmType.NoAlarm,
           signedOffDates: _parseSignedOffDates(dbRow['signed_off_dates']),
           timezone: dbRow['timezone'] ?? '',
+          extras: dbRow['extras'] ?? '',
         ),
         revision: dbRow['revision'],
         dirty: dbRow['dirty'],
@@ -103,6 +105,7 @@ class DbActivity extends DbModel<Activity> {
         'signedOffDates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'revision': revision,
         'timezone': activity.timezone,
+        'extras': activity.extras,
       };
 
   @override
@@ -128,6 +131,7 @@ class DbActivity extends DbModel<Activity> {
         'alarm_type': activity.alarmType,
         'signed_off_dates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'timezone': activity.timezone,
+        'extras': activity.extras,
         'revision': revision,
         'dirty': dirty,
       };

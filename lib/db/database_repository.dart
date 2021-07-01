@@ -84,7 +84,11 @@ class DatabaseRepository {
   ];
 
   @visibleForTesting
-  static final migrations = <String>[];
+  static final migrations = <String>[
+    '''
+      alter table $CALENDAR_TABLE_NAME add column extras text
+    ''',
+  ];
 
   static Future<Database> createSqfliteDb() async {
     final databasesPath = await getDatabasesPath();
