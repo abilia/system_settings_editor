@@ -50,8 +50,7 @@ abstract class EditActivityState extends Equatable with Silent {
 
   bool startTimeBeforeNow(DateTime now) => activity.fullDay
       ? timeInterval.startDate.onlyDays().isBefore(now.onlyDays())
-      : hasStartTime &&
-          timeInterval.startDate.withTime(timeInterval.startTime).isBefore(now);
+      : hasStartTime && timeInterval.starts.isBefore(now);
 
   SelectedImage get selectedImage => SelectedImage.from(
         id: activity.fileId,
@@ -71,7 +70,7 @@ abstract class EditActivityState extends Equatable with Silent {
       );
     }
 
-    final startTime = timeInterval.startDate.withTime(timeInterval.startTime);
+    final startTime = timeInterval.starts;
     return storeActivity.copyWith(
       startTime: startTime,
       duration: _getDuration(startTime, timeInterval.endTime),

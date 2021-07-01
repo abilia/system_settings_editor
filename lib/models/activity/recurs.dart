@@ -17,14 +17,12 @@ class Recurs extends Equatable {
 
   @visibleForTesting
   const Recurs.raw(this.type, this.data, int? endTime)
-      : assert(type >= 0 && type <= 3),
+      : assert(type >= TYPE_NONE && type <= TYPE_YEARLY),
         assert(type != TYPE_WEEKLY || data < 0x4000),
         assert(type != TYPE_MONTHLY || data < 0x80000000),
-        endTime = type == TYPE_NONE || endTime == null || endTime > NO_END
-            ? NO_END
-            : endTime;
+        endTime = endTime == null || endTime > NO_END ? NO_END : endTime;
 
-  static const Recurs not = Recurs.raw(0, 0, NO_END),
+  static const not = Recurs.raw(TYPE_NONE, 0, NO_END),
       everyDay = Recurs.raw(
         TYPE_WEEKLY,
         allDaysOfWeek,

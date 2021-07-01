@@ -657,7 +657,7 @@ void main() {
           newId: true,
           title: 'Moved',
           startTime: a3Time,
-          recurs: Recurs.not.changeEnd(a3Time),
+          recurs: Recurs.not,
         );
 
         final newTitle = 'updated';

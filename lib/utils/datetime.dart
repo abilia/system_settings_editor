@@ -118,8 +118,8 @@ extension DateTimeExtensions on DateTime {
           ? Occasion.past
           : Occasion.current;
 
-  DateTime withTime(TimeOfDay timeOfDay) =>
-      copyWith(hour: timeOfDay.hour, minute: timeOfDay.minute);
+  DateTime withTime(TimeOfDay? timeOfDay) =>
+      copyWith(hour: timeOfDay?.hour, minute: timeOfDay?.minute);
 
   DayPart dayPart(DayParts dayParts) {
     final msAfterMidnight = difference(onlyDays()).inMilliseconds;
