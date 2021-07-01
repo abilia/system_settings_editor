@@ -99,7 +99,7 @@ class Activity extends DataModel {
       removeAfter: removeAfter,
       secret: secret,
       fullDay: fullDay,
-      recurs: recurs,
+      recurs: _newRecurrence(recurs, startTime, duration, fullDay),
       reminderBefore: UnmodifiableListView(reminderBefore),
       alarmType: alarmType,
       infoItem: infoItem,
@@ -156,7 +156,12 @@ class Activity extends DataModel {
         removeAfter: removeAfter ?? this.removeAfter,
         secret: secret ?? this.secret,
         fullDay: fullDay ?? this.fullDay,
-        recurs: recurs ?? this.recurs,
+        recurs: _newRecurrence(
+          recurs ?? this.recurs,
+          startTime ?? this.startTime,
+          duration ?? this.duration,
+          fullDay ?? this.fullDay,
+        ),
         reminderBefore: reminderBefore != null
             ? UnmodifiableListView(reminderBefore)
             : this.reminderBefore,
@@ -170,6 +175,20 @@ class Activity extends DataModel {
         timezone: timezone ?? this.timezone,
         extras: extras ?? this.extras,
       );
+
+  static Recurs _newRecurrence(
+    Recurs recurs,
+    DateTime startTime,
+    Duration duration,
+    bool fullday,
+  ) {
+    if (recurs.isRecurring) return recurs;
+    if (fullday) {
+      return recurs
+          .changeEnd(startTime.onlyDays().nextDay().millisecondBefore());
+    }
+    return recurs.changeEnd(startTime.add(duration));
+  }
 
   Activity copyActivity(Activity other) => copyWith(
         title: other.title,
