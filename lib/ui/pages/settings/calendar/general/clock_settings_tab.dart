@@ -115,9 +115,7 @@ class PreviewTimePillar extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => TimepillarBloc.fake(
-            state: ts,
-          ),
+          create: (context) => TimepillarBloc.fake(state: ts),
         ),
         BlocProvider(
           create: (context) => ClockBloc(

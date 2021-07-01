@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
@@ -24,12 +22,10 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
 
   EditActivityBloc(
     ActivityDay activityDay, {
-    @required this.activitiesBloc,
-    @required this.clockBloc,
-    @required this.memoplannerSettingBloc,
-  })  : assert(activityDay != null),
-        assert(activitiesBloc != null),
-        super(
+    required this.activitiesBloc,
+    required this.clockBloc,
+    required this.memoplannerSettingBloc,
+  }) : super(
           StoredActivityState(
               activityDay.activity,
               activityDay.activity.fullDay
@@ -43,14 +39,12 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
         );
 
   EditActivityBloc.newActivity({
-    @required this.activitiesBloc,
-    @required this.clockBloc,
-    @required this.memoplannerSettingBloc,
-    @required DateTime day,
-    BasicActivityDataItem basicActivityData,
-  })  : assert(day != null),
-        assert(activitiesBloc != null),
-        super(
+    required this.activitiesBloc,
+    required this.clockBloc,
+    required this.memoplannerSettingBloc,
+    required DateTime day,
+    BasicActivityDataItem? basicActivityData,
+  }) : super(
           UnstoredActivityState(
             basicActivityData == null
                 ? Activity.createNew(

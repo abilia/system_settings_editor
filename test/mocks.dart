@@ -146,7 +146,13 @@ class MockUserFileDb extends Mock implements UserFileDb {
 
 class MockUserDb extends Mock implements UserDb {}
 
-class MockSettingsDb extends Mock implements SettingsDb {}
+class MockSettingsDb extends Mock implements SettingsDb {
+  MockSettingsDb() {
+    when(textToSpeech).thenReturn(true);
+    when(leftCategoryExpanded).thenReturn(true);
+    when(rightCategoryExpanded).thenReturn(true);
+  }
+}
 
 class MockSortableDb extends Mock implements SortableDb {}
 

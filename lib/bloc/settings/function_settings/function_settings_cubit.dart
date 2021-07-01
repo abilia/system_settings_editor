@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
@@ -11,8 +9,8 @@ class FunctionSettingsCubit extends Cubit<FunctionSettingsState> {
   final GenericBloc genericBloc;
 
   FunctionSettingsCubit({
-    MemoplannerSettingsState settingsState,
-    this.genericBloc,
+    required MemoplannerSettingsState settingsState,
+    required this.genericBloc,
   }) : super(FunctionSettingsState.fromMemoplannerSettings(settingsState));
 
   void changeFunctionSettings(FunctionSettingsState newState) => emit(newState);

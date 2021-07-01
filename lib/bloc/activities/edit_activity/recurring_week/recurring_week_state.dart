@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'recurring_week_bloc.dart';
 
 class RecurringWeekState extends Equatable {
@@ -41,10 +39,10 @@ class RecurringWeekState extends Equatable {
   bool get stringify => true;
 
   RecurringWeekState copyWith({
-    Set<int> weekdays,
-    bool everyOtherWeek,
-    DateTime startDate,
-    DateTime endDate,
+    Set<int>? weekdays,
+    bool? everyOtherWeek,
+    DateTime? startDate,
+    DateTime? endDate,
   }) =>
       RecurringWeekState(
         weekdays != null ? UnmodifiableSetView(weekdays) : this.weekdays,

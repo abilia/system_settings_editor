@@ -1,9 +1,8 @@
-// @dart=2.9
-
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -12,32 +11,32 @@ part 'month_calendar_event.dart';
 part 'month_calendar_state.dart';
 
 class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
-  final ActivitiesBloc activitiesBloc;
+  final ActivitiesBloc? activitiesBloc;
   final ClockBloc clockBloc;
-  StreamSubscription _activitiesSubscription;
-  StreamSubscription _clockSubscription;
+  late final StreamSubscription? _activitiesSubscription;
+  late final StreamSubscription _clockSubscription;
 
   MonthCalendarBloc({
     this.activitiesBloc,
-    this.clockBloc,
-    DateTime initialDay,
+    required this.clockBloc,
+    DateTime? initialDay,
   }) : super(
           _mapToState(
             (initialDay ?? clockBloc.state).firstDayOfMonth(),
-            activitiesBloc?.state?.activities,
+            activitiesBloc?.state.activities,
             clockBloc.state,
           ),
         ) {
     _activitiesSubscription =
-        activitiesBloc?.stream?.listen((state) => add(UpdateMonth()));
+        activitiesBloc?.stream.listen((state) => add(UpdateMonth()));
     _clockSubscription = clockBloc.stream
         .where((time) =>
             state.weeks
                 .expand((w) => w.days)
                 .whereType<MonthDay>()
-                .firstWhere((day) => day.isCurrent, orElse: () => null)
+                .firstWhereOrNull((day) => day.isCurrent)
                 ?.day
-                ?.isAtSameDay(time) ==
+                .isAtSameDay(time) ==
             false)
         .listen((_) => add(UpdateMonth()));
   }
@@ -49,25 +48,25 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
     if (event is GoToNextMonth) {
       yield _mapToState(
         state.firstDay.nextMonth(),
-        activitiesBloc?.state?.activities,
+        activitiesBloc?.state.activities,
         clockBloc.state,
       );
     } else if (event is GoToPreviousMonth) {
       yield _mapToState(
         state.firstDay.previousMonth(),
-        activitiesBloc?.state?.activities,
+        activitiesBloc?.state.activities,
         clockBloc.state,
       );
     } else if (event is GoToCurrentMonth) {
       yield _mapToState(
         clockBloc.state.firstDayOfMonth(),
-        activitiesBloc?.state?.activities,
+        activitiesBloc?.state.activities,
         clockBloc.state,
       );
     } else if (event is UpdateMonth) {
       yield _mapToState(
         state.firstDay,
-        activitiesBloc?.state?.activities,
+        activitiesBloc?.state.activities,
         clockBloc.state,
       );
     }
@@ -75,7 +74,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
 
   static MonthCalendarState _mapToState(
     DateTime firstDayOfMonth,
-    Iterable<Activity> activities,
+    Iterable<Activity>? activities,
     DateTime now,
   ) {
     assert(firstDayOfMonth.day == 1);
@@ -101,7 +100,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
                 d < DateTime.daysPerWeek;
                 dayIterator = dayIterator.nextDay(), d++)
               if (dayIterator.month == month)
-                _getDay(activities, dayIterator, now)
+                _getDay(activities ?? [], dayIterator, now)
               else
                 NotInMonthDay()
           ],
@@ -127,7 +126,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
         : now.onlyDays().isAfter(day)
             ? Occasion.past
             : Occasion.current;
-    activities ??= [];
+
     final activitiesThatDay = activities
         .expand((activity) => activity.dayActivitiesForDay(day))
         .where((a) => !(a.activity.removeAfter && a.end.isDayBefore(now)))
@@ -135,8 +134,8 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
     if (activitiesThatDay.isEmpty) {
       return MonthDay(day, null, false, 0, occasion);
     }
-    final fullDayActivity = activitiesThatDay
-        .firstWhere((a) => a.activity.fullDay, orElse: () => null);
+    final fullDayActivity =
+        activitiesThatDay.firstWhereOrNull((a) => a.activity.fullDay);
     final fullDayActivityCount =
         activitiesThatDay.where((a) => a.activity.fullDay).length;
     final hasActivities = activitiesThatDay.any((a) => !a.activity.fullDay);

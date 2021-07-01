@@ -1,25 +1,23 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:collection/collection.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 part 'slide_show_state.dart';
 
 class SlideShowCubit extends Cubit<SlideShowState> {
   final SortableBloc sortableBloc;
-  StreamSubscription sortableSubscription;
-  Timer timer;
+  late final StreamSubscription sortableSubscription;
+  late final Timer timer;
   final Duration slideDuration;
 
   SlideShowCubit({
-    this.sortableBloc,
+    required this.sortableBloc,
     this.slideDuration = const Duration(minutes: 5),
   }) : super(sortableStateToState(sortableBloc.state)) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
@@ -69,7 +67,7 @@ class SlideShowCubit extends Cubit<SlideShowState> {
         imageArchiveSortables, (s) => s.groupId);
     final allInMyPhotosRoot = [
       if (allByFolder.containsKey(myPhotosFolder.id))
-        ...allByFolder[myPhotosFolder.id].where((e) => !e.isGroup)
+        ...allByFolder[myPhotosFolder.id]!.where((e) => !e.isGroup)
     ];
     return SlideShowState(
       currentIndex: 0,
@@ -79,7 +77,7 @@ class SlideShowCubit extends Cubit<SlideShowState> {
 
   @override
   Future<void> close() async {
-    timer?.cancel();
+    timer.cancel();
     await sortableSubscription.cancel();
     return super.close();
   }

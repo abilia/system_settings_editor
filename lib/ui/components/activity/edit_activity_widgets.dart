@@ -125,7 +125,7 @@ class SelectPictureWidget extends StatelessWidget {
     );
 
     if (newSelectedImage != null) {
-      if (newSelectedImage.file != null) {
+      if (newSelectedImage is SelectedImageFile) {
         BlocProvider.of<UserFileBloc>(context).add(
           ImageAdded(newSelectedImage),
         );

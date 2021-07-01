@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'month_calendar_settings_cubit.dart';
 
 class MonthCalendarSettingsState extends Equatable {
@@ -8,10 +6,10 @@ class MonthCalendarSettingsState extends Equatable {
   final WeekColor color;
 
   MonthCalendarSettingsState._({
-    @required this.browseButtons,
-    @required this.year,
-    @required this.clock,
-    @required this.color,
+    required this.browseButtons,
+    required this.year,
+    required this.clock,
+    required this.color,
   });
 
   factory MonthCalendarSettingsState.fromMemoplannerSettings(
@@ -25,10 +23,10 @@ class MonthCalendarSettingsState extends Equatable {
       );
 
   MonthCalendarSettingsState copyWith({
-    bool browseButtons,
-    bool year,
-    bool clock,
-    WeekColor color,
+    bool? browseButtons,
+    bool? year,
+    bool? clock,
+    WeekColor? color,
   }) =>
       MonthCalendarSettingsState._(
         browseButtons: browseButtons ?? this.browseButtons,

@@ -1,12 +1,10 @@
-// @dart=2.9
-
 part of 'sortable_archive_bloc.dart';
 
 class SortableArchiveState<T extends SortableData> extends Equatable {
   final Map<String, Iterable<Sortable<T>>> allByFolder;
   final Map<String, Sortable<T>> allById;
   final String currentFolderId;
-  final Sortable<T> selected;
+  final Sortable<T>? selected;
 
   SortableArchiveState(
     this.allByFolder,
@@ -16,10 +14,10 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
   });
 
   SortableArchiveState<T> copyWith({
-    Map<String, Iterable<Sortable<T>>> allByFolder,
-    Map<String, Sortable<T>> allById,
-    String currentFolderId,
-    Sortable<T> selected,
+    Map<String, Iterable<Sortable<T>>>? allByFolder,
+    Map<String, Sortable<T>>? allById,
+    String? currentFolderId,
+    Sortable<T>? selected,
   }) =>
       SortableArchiveState(
         allByFolder ?? this.allByFolder,
@@ -33,7 +31,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
   bool get isAtRootAndNoSelection => isAtRoot && !isSelected;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         allByFolder,
         allById,
         currentFolderId,

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'generic_bloc.dart';
 
 abstract class GenericState extends Equatable {
@@ -17,7 +15,7 @@ class GenericsLoaded extends GenericState {
   final MapView<String, Generic> generics;
 
   GenericsLoaded({
-    Map<String, Generic> generics,
+    required Map<String, Generic> generics,
   }) : generics = MapView(generics);
 
   @override

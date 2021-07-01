@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'settings_bloc.dart';
 
 abstract class SettingsEvent {}

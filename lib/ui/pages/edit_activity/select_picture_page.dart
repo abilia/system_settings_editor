@@ -171,7 +171,7 @@ class ImageSourceWidget extends StatelessWidget {
       final image = await _picker.getImage(source: imageSource);
       if (image != null) {
         await Navigator.of(context).maybePop(
-          SelectedImage.newFile(File(image.path)),
+          SelectedImageFile.newFile(File(image.path)),
         );
       }
     } on PlatformException catch (e) {

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -12,8 +10,8 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettingsState> {
   final GenericBloc genericBloc;
 
   GeneralCalendarSettingsCubit({
-    MemoplannerSettingsState settingsState,
-    this.genericBloc,
+    required MemoplannerSettingsState settingsState,
+    required this.genericBloc,
   }) : super(GeneralCalendarSettingsState.fromMemoplannerSettings(
             settingsState));
 
@@ -65,41 +63,38 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettingsState> {
 
 extension on DayParts {
   DayParts copyWith({
-    int morningStart,
-    int dayStart,
-    int eveningStart,
-    int nightStart,
-    bool increased,
+    final int? morningStart,
+    final int? dayStart,
+    final int? eveningStart,
+    final int? nightStart,
+    required final bool increased,
   }) {
-    morningStart ??= this.morningStart;
-    dayStart ??= this.dayStart;
-    eveningStart ??= this.eveningStart;
-    nightStart ??= this.nightStart;
+    var _morningStart = morningStart ?? this.morningStart;
+    var _dayStart = dayStart ?? this.dayStart;
+    var _eveningStart = eveningStart ?? this.eveningStart;
+    var _nightStart = nightStart ?? this.nightStart;
 
-    morningStart = DayParts.limits[DayPart.morning].clamp(morningStart);
-    dayStart = DayParts.limits[DayPart.day].clamp(dayStart);
-    eveningStart = DayParts.limits[DayPart.evening].clamp(eveningStart);
-    nightStart = DayParts.limits[DayPart.night].clamp(nightStart);
+    _morningStart = DayParts.limits[DayPart.morning]!.clamp(_morningStart);
+    _dayStart = DayParts.limits[DayPart.day]!.clamp(_dayStart);
+    _eveningStart = DayParts.limits[DayPart.evening]!.clamp(_eveningStart);
+    _nightStart = DayParts.limits[DayPart.night]!.clamp(_nightStart);
 
     if (increased) {
-      dayStart += dayStart <= morningStart ? Duration.millisecondsPerHour : 0;
-      eveningStart +=
-          eveningStart <= dayStart ? Duration.millisecondsPerHour : 0;
-      nightStart +=
-          nightStart <= eveningStart ? Duration.millisecondsPerHour : 0;
+      _dayStart +=
+          _dayStart <= _morningStart ? Duration.millisecondsPerHour : 0;
+      _eveningStart +=
+          _eveningStart <= _dayStart ? Duration.millisecondsPerHour : 0;
+      _nightStart +=
+          _nightStart <= _eveningStart ? Duration.millisecondsPerHour : 0;
     } else {
-      eveningStart -=
-          eveningStart >= nightStart ? Duration.millisecondsPerHour : 0;
-      dayStart -= dayStart >= eveningStart ? Duration.millisecondsPerHour : 0;
-      morningStart -=
-          morningStart >= dayStart ? Duration.millisecondsPerHour : 0;
+      _eveningStart -=
+          _eveningStart >= _nightStart ? Duration.millisecondsPerHour : 0;
+      _dayStart -=
+          _dayStart >= _eveningStart ? Duration.millisecondsPerHour : 0;
+      _morningStart -=
+          _morningStart >= _dayStart ? Duration.millisecondsPerHour : 0;
     }
 
-    return DayParts(
-      morningStart,
-      dayStart,
-      eveningStart,
-      nightStart,
-    );
+    return DayParts(_morningStart, _dayStart, _eveningStart, _nightStart);
   }
 }

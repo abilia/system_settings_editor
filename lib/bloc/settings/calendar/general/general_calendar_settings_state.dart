@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'general_calendar_settings_cubit.dart';
 
 class GeneralCalendarSettingsState extends Equatable {
@@ -29,11 +27,11 @@ class GeneralCalendarSettingsState extends Equatable {
       );
 
   GeneralCalendarSettingsState copyWith({
-    ClockType clockType,
-    TimepillarSettingState timepillar,
-    DayParts dayParts,
-    DayColor dayColor,
-    CategoriesSettingState categories,
+    ClockType? clockType,
+    TimepillarSettingState? timepillar,
+    DayParts? dayParts,
+    DayColor? dayColor,
+    CategoriesSettingState? categories,
   }) =>
       GeneralCalendarSettingsState._(
         clockType ?? this.clockType,
@@ -88,10 +86,10 @@ class TimepillarSettingState extends Equatable {
       );
 
   TimepillarSettingState copyWith({
-    bool use12h,
-    bool timeline,
-    bool hourLines,
-    bool columnOfDots,
+    bool? use12h,
+    bool? timeline,
+    bool? hourLines,
+    bool? columnOfDots,
   }) =>
       TimepillarSettingState._(
         use12h ?? this.use12h,
@@ -137,10 +135,7 @@ class CategoriesSettingState extends Equatable {
     this.colors,
     this.left,
     this.right,
-  )   : assert(show != null),
-        assert(colors != null),
-        assert(left != null),
-        assert(right != null);
+  );
 
   factory CategoriesSettingState.fromMemoplannerSettings(
     MemoplannerSettingsState state,
@@ -159,10 +154,10 @@ class CategoriesSettingState extends Equatable {
       );
 
   CategoriesSettingState copyWith({
-    bool show,
-    bool colors,
-    ImageAndName left,
-    ImageAndName right,
+    bool? show,
+    bool? colors,
+    ImageAndName? left,
+    ImageAndName? right,
   }) =>
       CategoriesSettingState._(
         show ?? this.show,
@@ -208,8 +203,8 @@ class CategoriesSettingState extends Equatable {
 }
 
 extension DayPartLimit on DayParts {
-  bool atMax(DayPart part) => fromDayPart(part) >= DayParts.limits[part].max;
-  bool atMin(DayPart part) => fromDayPart(part) <= DayParts.limits[part].min;
+  bool atMax(DayPart part) => fromDayPart(part) >= DayParts.limits[part]!.max;
+  bool atMin(DayPart part) => fromDayPart(part) <= DayParts.limits[part]!.min;
 }
 
 extension _MemoplannerSettingData on DayParts {

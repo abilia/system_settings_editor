@@ -1,6 +1,3 @@
-// @dart=2.9
-
-import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -19,13 +16,13 @@ String fileIdUrl(String baseUrl, int userId, String imageFileId) =>
     '$baseUrl/api/v1/data/$userId/storage/file/id/$imageFileId';
 
 String imageThumbUrl({
-  @required String baseUrl,
-  @required int userId,
-  @required String imageFileId,
-  @required String imagePath,
+  required String baseUrl,
+  required int userId,
+  required String imageFileId,
+  required String imagePath,
   int size = ImageThumb.THUMB_SIZE,
 }) =>
-    imageFileId != null
+    imageFileId.isNotEmpty
         ? imageThumbIdUrl(
             baseUrl: baseUrl,
             userId: userId,
@@ -40,9 +37,9 @@ String imageThumbUrl({
           );
 
 String imageThumbIdUrl({
-  @required String baseUrl,
-  @required int userId,
-  @required String imageFileId,
+  required String baseUrl,
+  required int userId,
+  required String imageFileId,
   int size = ImageThumb.THUMB_SIZE,
 }) =>
     '$baseUrl/api/v1/data/$userId/storage/image/thumb/$imageFileId?height=$size&width=$size';
@@ -51,9 +48,9 @@ String imagePathUrl(String baseUrl, int userId, String imagePath) =>
     '$baseUrl/api/v1/data/$userId/storage/root/$imagePath';
 
 String imageThumbPathUrl({
-  @required String baseUrl,
-  @required int userId,
-  @required String imagePath,
+  required String baseUrl,
+  required int userId,
+  required String imagePath,
   int size = ImageThumb.THUMB_SIZE,
 }) =>
     '$baseUrl/api/v1/data/$userId/storage/thumb/$imagePath?height=$size&width=$size';

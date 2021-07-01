@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -12,11 +10,11 @@ part 'day_picker_event.dart';
 
 class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
   final ClockBloc clockBloc;
-  StreamSubscription clockBlocSubscription;
+  late final StreamSubscription clockBlocSubscription;
 
   DayPickerBloc({
-    @required this.clockBloc,
-    DateTime initialDay,
+    required this.clockBloc,
+    DateTime? initialDay,
   }) : super(
           DayPickerState(
             (initialDay ?? clockBloc.state).onlyDays(),

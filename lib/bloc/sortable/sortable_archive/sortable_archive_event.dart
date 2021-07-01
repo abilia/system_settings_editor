@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'sortable_archive_bloc.dart';
 
 abstract class SortableArchiveEvent extends Equatable {
