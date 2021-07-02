@@ -230,7 +230,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 4.0.s),
             child: ErrorMessage(
-              text: Text(translate.notificationsWarningHintText),
+              text: Text(translate.fullScreenAlarmInfo),
             ),
           ),
           Tts(
