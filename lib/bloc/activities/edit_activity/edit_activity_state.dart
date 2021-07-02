@@ -27,8 +27,7 @@ abstract class EditActivityState extends Equatable with Silent {
   final bool? sucessfullSave;
   final UnmodifiableSetView<SaveError> saveErrors;
 
-  bool get hasTitleOrImage =>
-      activity.hasTitle || activity.fileId.isNotEmpty == true;
+  bool get hasTitleOrImage => activity.hasTitle || activity.hasImage;
 
   bool get hasStartTime => timeInterval.startTime != null || activity.fullDay;
 
@@ -118,9 +117,8 @@ abstract class EditActivityState extends Equatable with Silent {
 class UnstoredActivityState extends EditActivityState {
   const UnstoredActivityState(
     Activity activity,
-    TimeInterval timeInterval, {
-    File? newImage,
-  }) : super(
+    TimeInterval timeInterval,
+  ) : super(
           activity,
           timeInterval,
           const MapView(<Type, InfoItem>{}),

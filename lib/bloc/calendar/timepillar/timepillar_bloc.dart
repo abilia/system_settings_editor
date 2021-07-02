@@ -12,6 +12,8 @@ part 'timepillar_event.dart';
 part 'timepillar_state.dart';
 
 class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
+  /// All fields are null when TimepillarBloc is faked
+  /// in Timepillar settings (`PreviewTimePillar`)
   final ClockBloc? clockBloc;
   final MemoplannerSettingBloc? memoSettingsBloc;
   final DayPickerBloc? dayPickerBloc;

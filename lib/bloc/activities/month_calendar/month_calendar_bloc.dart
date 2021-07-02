@@ -11,6 +11,7 @@ part 'month_calendar_event.dart';
 part 'month_calendar_state.dart';
 
 class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
+  /// ActivitiesBloc is null when this bloc is used for date picking
   final ActivitiesBloc? activitiesBloc;
   final ClockBloc clockBloc;
   late final StreamSubscription? _activitiesSubscription;

@@ -13,8 +13,9 @@ part 'memoplanner_setting_event.dart';
 
 class MemoplannerSettingBloc
     extends Bloc<MemoplannerSettingsEvent, MemoplannerSettingsState> {
-  late final StreamSubscription? _genericSubscription;
+  /// GenericBloc are null when faked in settings
   final GenericBloc? genericBloc;
+  late final StreamSubscription? _genericSubscription;
 
   MemoplannerSettingBloc({this.genericBloc})
       : super(genericBloc?.state is GenericsLoaded

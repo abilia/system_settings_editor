@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
