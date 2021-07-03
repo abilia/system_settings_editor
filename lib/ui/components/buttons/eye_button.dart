@@ -26,8 +26,8 @@ class _EyeButton extends StatelessWidget {
   }
 }
 
-class EyeButton extends StatelessWidget {
-  const EyeButton({Key key}) : super(key: key);
+class EyeButtonDay extends StatelessWidget {
+  const EyeButtonDay({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,18 +78,31 @@ class EyeButtonMonth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _EyeButton(
-      onPressed: () async {
-        final settings = await showViewDialog<MonthCalendarType>(
-          context: context,
-          builder: (context) => EyeButtonMonthDialog(
-            currentCalendarType: MonthCalendarType.grid,
-          ),
-        );
-        if (settings != null) {
-          print(settings);
-        }
-      },
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.monthCalendarType != current.monthCalendarType,
+      builder: (context, memoSettingsState) => _EyeButton(
+        onPressed: () async {
+          final monthCalendarType = await showViewDialog<MonthCalendarType>(
+            context: context,
+            builder: (context) => EyeButtonMonthDialog(
+                currentCalendarType: memoSettingsState.monthCalendarType),
+          );
+          if (monthCalendarType != null) {
+            context.read<GenericBloc>().add(
+                  GenericUpdated(
+                    [
+                      MemoplannerSettingData.fromData(
+                        data: monthCalendarType.index,
+                        identifier:
+                            MemoplannerSettings.viewOptionsMonthCalendarKey,
+                      ),
+                    ],
+                  ),
+                );
+          }
+        },
+      ),
     );
   }
 }

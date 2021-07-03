@@ -47,12 +47,12 @@ class _EyeButtonMonthDialogState extends State<EyeButtonMonthDialog> {
                 groupValue: calendarType,
                 items: [
                   SelectorItem(
-                    t.listView,
+                    t.monthCalendarGrid,
                     AbiliaIcons.scanning_field_by_field,
                     MonthCalendarType.grid,
                   ),
                   SelectorItem(
-                    t.timePillarView,
+                    t.monthCalendarPreview,
                     AbiliaIcons.calendar_list,
                     MonthCalendarType.preview,
                   ),
@@ -60,6 +60,7 @@ class _EyeButtonMonthDialogState extends State<EyeButtonMonthDialog> {
                 onChanged: (type) => setState(() => calendarType = type),
               ),
             ),
+            Divider(endIndent: 16.s),
           ],
         ),
       ),

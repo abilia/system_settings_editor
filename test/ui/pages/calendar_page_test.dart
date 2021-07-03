@@ -31,7 +31,7 @@ void main() {
   final translate = Locales.language.values.first;
 
   Future goToTimePillar(WidgetTester tester) async {
-    await tester.tap(find.byType(EyeButton));
+    await tester.tap(find.byType(EyeButtonDay));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.timeline));
     await tester.pumpAndSettle();

@@ -35,7 +35,7 @@ class DayCalendar extends StatelessWidget {
                 if (settingState.displayEyeButton)
                   Align(
                     alignment: Alignment.bottomLeft,
-                    child: const EyeButton(),
+                    child: const EyeButtonDay(),
                   ),
                 if (state.notificationDenied)
                   Align(

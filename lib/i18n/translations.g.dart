@@ -368,6 +368,10 @@ abstract class Translated {
 
   final String settings = 'Settings';
 
+  final String monthCalendarGrid = 'Grid';
+
+  final String monthCalendarPreview = 'Activities preview';
+
   final String calendarView = 'Day Calendar';
 
   final String timePillarView = '1 timepillar';
@@ -1182,6 +1186,12 @@ class SV extends Translated {
 
   @override
   final String settings = 'Inställningar';
+
+  @override
+  final String monthCalendarGrid = 'Rutnät';
+
+  @override
+  final String monthCalendarPreview = 'Förhandsgranskning av aktiviteter';
 
   @override
   final String calendarView = 'Dagkalender';
@@ -2136,6 +2146,12 @@ class DA extends Translated {
   final String settings = 'Indstillinger';
 
   @override
+  final String monthCalendarGrid = 'Gitter';
+
+  @override
+  final String monthCalendarPreview = 'Eksempel på aktiviteter';
+
+  @override
   final String calendarView = 'Dagkalender';
 
   @override
@@ -3086,6 +3102,12 @@ class NL extends Translated {
 
   @override
   final String settings = 'Instellingen';
+
+  @override
+  final String monthCalendarGrid = 'Raster';
+
+  @override
+  final String monthCalendarPreview = 'Activiteitenvoorbeeld';
 
   @override
   final String calendarView = 'Dagkalender';
@@ -4039,6 +4061,12 @@ class FI extends Translated {
 
   @override
   final String settings = 'Asetukset';
+
+  @override
+  final String monthCalendarGrid = 'Ruudukko';
+
+  @override
+  final String monthCalendarPreview = 'Toimintojen esikatselu';
 
   @override
   final String calendarView = 'Päiväkalenteri';
@@ -4997,6 +5025,12 @@ class DE extends Translated {
   final String settings = 'Einstellungen';
 
   @override
+  final String monthCalendarGrid = 'Gitter';
+
+  @override
+  final String monthCalendarPreview = 'Aktivitätenvorschau';
+
+  @override
   final String calendarView = 'Tageskalender';
 
   @override
@@ -5948,6 +5982,12 @@ class NB extends Translated {
 
   @override
   final String settings = 'Innstillinger';
+
+  @override
+  final String monthCalendarGrid = 'Nett';
+
+  @override
+  final String monthCalendarPreview = 'Forhåndsvisning av aktiviteter';
 
   @override
   final String calendarView = 'Dagkalender';

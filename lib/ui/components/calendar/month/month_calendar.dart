@@ -1,13 +1,16 @@
-// @dart=2.9
-
 import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+typedef MonthDayWidgetBuilder = Widget Function(
+  MonthDay day,
+  DayTheme dayTheme,
+);
+
 class MonthCalendar extends StatelessWidget {
-  const MonthCalendar({Key key}) : super(key: key);
+  const MonthCalendar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +30,14 @@ class MonthCalendar extends StatelessWidget {
 }
 
 class MonthBody extends StatelessWidget {
-  const MonthBody({Key key}) : super(key: key);
+  const MonthBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
-          previous.calendarDayColor != current.calendarDayColor,
+          previous.calendarDayColor != current.calendarDayColor ||
+          previous.monthCalendarType != current.monthCalendarType,
       builder: (context, memoSettingsState) {
         final dayThemes = List.generate(
           DateTime.daysPerWeek,
@@ -43,12 +47,23 @@ class MonthBody extends StatelessWidget {
             weekday: d + 1,
           ),
         );
+        final dayBuilder = memoSettingsState.monthCalendarType ==
+                MonthCalendarType.grid
+            ? (day, dayTheme) => MonthDayView(day, dayTheme: dayTheme)
+            : (day, dayTheme) => MonthDayViewCompact(day, dayTheme: dayTheme);
+
         return Column(
           children: [
             MonthHeading(dayThemes: dayThemes),
             Expanded(
-              child: MonthContent(dayThemes: dayThemes),
+              child: MonthContent(
+                dayThemes: dayThemes,
+                dayBuilder: dayBuilder,
+              ),
             ),
+            if (memoSettingsState.monthCalendarType ==
+                MonthCalendarType.preview)
+              MonthListPreview(dayThemes: dayThemes),
           ],
         );
       },
@@ -57,10 +72,11 @@ class MonthBody extends StatelessWidget {
 }
 
 class MonthContent extends StatelessWidget {
-  const MonthContent({
-    Key key,
-    @required this.dayThemes,
-  }) : super(key: key);
+  const MonthContent(
+      {Key? key, required this.dayThemes, required this.dayBuilder})
+      : super(key: key);
+
+  final MonthDayWidgetBuilder dayBuilder;
   final List<DayTheme> dayThemes;
 
   @override
@@ -85,7 +101,13 @@ class MonthContent extends StatelessWidget {
                 children: [
                   ...state.weeks.map(
                     (week) => Expanded(
-                      child: WeekRow(week, dayThemes: dayThemes),
+                      child: week.inMonth
+                          ? WeekRow(
+                              week,
+                              dayThemes: dayThemes,
+                              builder: dayBuilder,
+                            )
+                          : const SizedBox(width: double.infinity),
                     ),
                   ),
                 ],
@@ -100,10 +122,12 @@ class MonthContent extends StatelessWidget {
 
 class WeekRow extends StatelessWidget {
   final MonthWeek week;
+  final MonthDayWidgetBuilder builder;
   const WeekRow(
     this.week, {
-    Key key,
-    @required this.dayThemes,
+    Key? key,
+    required this.dayThemes,
+    required this.builder,
   }) : super(key: key);
   final List<DayTheme> dayThemes;
 
@@ -113,16 +137,13 @@ class WeekRow extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 4.s),
       child: Row(
         children: [
-          if (week.inMonth) WeekNumber(weekNumber: week.number),
+          WeekNumber(weekNumber: week.number),
           ...week.days.map(
             (day) => Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 2.s),
                 child: day is MonthDay
-                    ? MonthDayView(
-                        day,
-                        dayTheme: dayThemes[day.day.weekday - 1],
-                      )
+                    ? builder(day, dayThemes[day.day.weekday - 1])
                     : const SizedBox.shrink(),
               ),
             ),
@@ -135,8 +156,8 @@ class WeekRow extends StatelessWidget {
 
 class MonthHeading extends StatelessWidget {
   const MonthHeading({
-    Key key,
-    @required this.dayThemes,
+    Key? key,
+    required this.dayThemes,
     this.showLeadingWeekShort = true,
   }) : super(key: key);
   final List<DayTheme> dayThemes;
@@ -156,9 +177,9 @@ class MonthHeading extends StatelessWidget {
           final dayTheme = dayThemes[weekday];
           final textTheme = dayTheme.theme.textTheme;
           return DefaultTextStyle(
-            style: textTheme.button.copyWith(
+            style: textTheme.button!.copyWith(
               color: dayTheme.isColor
-                  ? textTheme.subtitle2.color
+                  ? textTheme.subtitle2?.color
                   : AbiliaColors.black,
             ),
             child: Expanded(
@@ -188,8 +209,8 @@ class MonthDayView extends StatelessWidget {
   final DayTheme dayTheme;
   const MonthDayView(
     this.day, {
-    Key key,
-    @required this.dayTheme,
+    Key? key,
+    required this.dayTheme,
   }) : super(key: key);
   static final monthDayRadius = Radius.circular(8.s);
   static final monthDayborderRadius = BorderRadius.all(monthDayRadius);
@@ -229,7 +250,7 @@ class MonthDayView extends StatelessWidget {
                   height: 24.s,
                   padding: EdgeInsets.symmetric(horizontal: 4.s),
                   child: DefaultTextStyle(
-                    style: dayTheme.theme.textTheme.subtitle2,
+                    style: dayTheme.theme.textTheme.subtitle2!,
                     child: Row(
                       children: [
                         Text('${day.day.day}'),
@@ -267,16 +288,17 @@ class MonthDayContainer extends StatelessWidget {
       BorderRadius.vertical(bottom: MonthDayView.monthDayRadius);
 
   const MonthDayContainer({
-    Key key,
-    @required this.color,
+    Key? key,
+    required this.color,
     this.day,
   }) : super(key: key);
 
   final Color color;
-  final MonthDay day;
+  final MonthDay? day;
 
   @override
   Widget build(BuildContext context) {
+    final d = day;
     // A borderRadius can only be given for a uniform Border.
     // https://github.com/flutter/flutter/issues/12583
     // So work around is wrapping containers with
@@ -299,18 +321,18 @@ class MonthDayContainer extends StatelessWidget {
               borderRadius: BorderRadius.vertical(
                 bottom: Radius.circular(7.s),
               )),
-          child: day != null
+          child: d != null
               ? Stack(
                   children: [
-                    if (day.fullDayActivityCount > 1)
+                    if (d.fullDayActivityCount > 1)
                       MonthFullDayStack(
-                        numberOfActivities: day.fullDayActivityCount,
+                        numberOfActivities: d.fullDayActivityCount,
                       )
-                    else if (day.fullDayActivity != null)
+                    else if (d.fullDayActivity != null)
                       MonthActivityContent(
-                        activityDay: day.fullDayActivity,
+                        activityDay: d.fullDayActivity!,
                       ),
-                    if (day.isPast) CrossOver(),
+                    if (d.isPast) CrossOver(),
                   ],
                 )
               : null,
@@ -321,8 +343,8 @@ class MonthDayContainer extends StatelessWidget {
 }
 
 class WeekNumber extends StatelessWidget {
-  final int weekNumber;
-  const WeekNumber({Key key, this.weekNumber}) : super(key: key);
+  final int? weekNumber;
+  const WeekNumber({Key? key, this.weekNumber}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final weekTranslation = Translator.of(context).translate.week;
@@ -342,8 +364,8 @@ class WeekNumber extends StatelessWidget {
 class MonthFullDayStack extends StatelessWidget {
   final int numberOfActivities;
   const MonthFullDayStack({
-    Key key,
-    @required this.numberOfActivities,
+    Key? key,
+    required this.numberOfActivities,
   }) : super(key: key);
 
   @override
@@ -373,8 +395,8 @@ class MonthFullDayStack extends StatelessWidget {
 
 class MonthActivityContent extends StatelessWidget {
   const MonthActivityContent({
-    Key key,
-    @required this.activityDay,
+    Key? key,
+    required this.activityDay,
   }) : super(key: key);
 
   final ActivityDay activityDay;

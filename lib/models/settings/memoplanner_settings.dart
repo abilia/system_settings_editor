@@ -14,6 +14,7 @@ class MemoplannerSettings extends Equatable {
     viewOptionsTimeIntervalKey,
     viewOptionsTimeViewKey,
     dotsInTimepillarKey,
+    viewOptionsMonthCalendarKey,
   };
 
   static const String displayAlarmButtonKey =
@@ -78,6 +79,7 @@ class MemoplannerSettings extends Equatable {
       viewOptionsTimeIntervalKey = 'view_options_time_interval',
       viewOptionsZoomKey = 'view_options_zoom',
       viewOptionsTimeViewKey = 'view_options_time_view',
+      viewOptionsMonthCalendarKey = 'view_options_month_calendar',
       dotsInTimepillarKey = 'dots_in_timepillar',
       nonCheckableActivityAlarmKey = 'activity_alarm_without_confirm',
       checkableActivityAlarmKey = 'activity_alarm_with_confirm',
@@ -179,6 +181,7 @@ class MemoplannerSettings extends Equatable {
       viewOptionsTimeInterval,
       viewOptionsTimeView,
       viewOptionsZoom,
+      viewOptionsMonthCalendar,
       weekDisplayShowFullWeek,
       weekDisplayShowColorMode,
       calendarMonthViewShowColors,
@@ -248,6 +251,7 @@ class MemoplannerSettings extends Equatable {
     this.viewOptionsTimeInterval = 1,
     this.viewOptionsTimeView = 0,
     this.viewOptionsZoom = 1,
+    this.viewOptionsMonthCalendar = 0,
     this.alarmDuration = 30000,
     this.checkableActivityAlarm = SoundExtension.defaultName,
     this.nonCheckableActivityAlarm = SoundExtension.defaultName,
@@ -503,6 +507,10 @@ class MemoplannerSettings extends Equatable {
         viewOptionsTimeViewKey,
         DayCalendarType.list.index,
       ),
+      viewOptionsMonthCalendar: settings.parse(
+        viewOptionsMonthCalendarKey,
+        MonthCalendarType.grid.index,
+      ),
       dotsInTimepillar: settings.getBool(
         dotsInTimepillarKey,
         defaultValue: true,
@@ -639,6 +647,7 @@ class MemoplannerSettings extends Equatable {
         viewOptionsTimeView,
         dotsInTimepillar,
         viewOptionsZoom,
+        viewOptionsMonthCalendar,
         alarmDuration,
         checkableActivityAlarm,
         nonCheckableActivityAlarm,

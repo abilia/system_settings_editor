@@ -195,6 +195,8 @@ remove	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
 							
 ### Settings							
 settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
+monthCalendarGrid	Grid	Rutnät	Gitter	Raster	Ruudukko	Gitter	Nett
+monthCalendarPreview	Activities preview	Förhandsgranskning av aktiviteter	Eksempel på aktiviteter	Activiteitenvoorbeeld	Toimintojen esikatselu	Aktivitätenvorschau	Forhåndsvisning av aktiviteter
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
 timePillarView	1 timepillar	1 tidpelare	1 tidslinje	1 tijdlijn	1 aikajana	1 Zeitstrahl	1 tidslinje
 listView	List	Lista	Liste	Lijst	Luettelo	Liste	Liste
