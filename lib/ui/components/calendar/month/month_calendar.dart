@@ -9,8 +9,8 @@ typedef MonthDayWidgetBuilder = Widget Function(
   DayTheme dayTheme,
 );
 
-class MonthCalendar extends StatelessWidget {
-  const MonthCalendar({Key? key}) : super(key: key);
+class MonthCalendarPage extends StatelessWidget {
+  const MonthCalendarPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class MonthCalendar extends StatelessWidget {
       appBar: const MonthAppBar(),
       body: Stack(
         children: [
-          const MonthBody(),
+          const MonthCalendar(),
           const Align(
             alignment: Alignment.bottomLeft,
             child: EyeButtonMonth(),
@@ -29,8 +29,8 @@ class MonthCalendar extends StatelessWidget {
   }
 }
 
-class MonthBody extends StatelessWidget {
-  const MonthBody({Key? key}) : super(key: key);
+class MonthCalendar extends StatelessWidget {
+  const MonthCalendar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,35 +38,53 @@ class MonthBody extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.calendarDayColor != current.calendarDayColor ||
           previous.monthCalendarType != current.monthCalendarType,
-      builder: (context, memoSettingsState) {
-        final dayThemes = List.generate(
-          DateTime.daysPerWeek,
-          (d) => weekdayTheme(
-            dayColor: memoSettingsState.calendarDayColor,
-            languageCode: Localizations.localeOf(context).languageCode,
-            weekday: d + 1,
-          ),
-        );
-        final dayBuilder = memoSettingsState.monthCalendarType ==
-                MonthCalendarType.grid
-            ? (day, dayTheme) => MonthDayView(day, dayTheme: dayTheme)
-            : (day, dayTheme) => MonthDayViewCompact(day, dayTheme: dayTheme);
+      builder: (context, memoSettingsState) => MonthBody(
+        calendarDayColor: memoSettingsState.calendarDayColor,
+        monthCalendarType: memoSettingsState.monthCalendarType,
+      ),
+    );
+  }
+}
 
-        return Column(
-          children: [
-            MonthHeading(dayThemes: dayThemes),
-            Expanded(
-              child: MonthContent(
-                dayThemes: dayThemes,
-                dayBuilder: dayBuilder,
-              ),
-            ),
-            if (memoSettingsState.monthCalendarType ==
-                MonthCalendarType.preview)
-              MonthListPreview(dayThemes: dayThemes),
-          ],
-        );
-      },
+class MonthBody extends StatelessWidget {
+  const MonthBody({
+    Key? key,
+    required this.calendarDayColor,
+    required this.monthCalendarType,
+  }) : super(key: key);
+
+  final DayColor calendarDayColor;
+  final MonthCalendarType monthCalendarType;
+
+  @override
+  Widget build(BuildContext context) {
+    final dayThemes = List.generate(
+      DateTime.daysPerWeek,
+      (d) => weekdayTheme(
+        dayColor: calendarDayColor,
+        languageCode: Localizations.localeOf(context).languageCode,
+        weekday: d + 1,
+      ),
+    );
+    final dayBuilder = monthCalendarType == MonthCalendarType.grid
+        ? (day, dayTheme) => MonthDayView(day, dayTheme: dayTheme)
+        : (day, dayTheme) => MonthDayViewCompact(day, dayTheme: dayTheme);
+    return Column(
+      children: [
+        MonthHeading(dayThemes: dayThemes),
+        Expanded(
+          flex: 256,
+          child: MonthContent(
+            dayThemes: dayThemes,
+            dayBuilder: dayBuilder,
+          ),
+        ),
+        if (monthCalendarType == MonthCalendarType.preview)
+          Expanded(
+            flex: 168,
+            child: MonthListPreview(dayThemes: dayThemes),
+          ),
+      ],
     );
   }
 }

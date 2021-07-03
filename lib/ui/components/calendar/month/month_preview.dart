@@ -14,26 +14,20 @@ class MonthListPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: EdgeInsets.only(
-          left: 8.s,
-          top: 12.s,
-          right: 8.s,
-        ),
-        child: Column(
-          children: [
-            BlocBuilder<DayPickerBloc, DayPickerState>(
-              builder: (context, state) => MonthDayPreviewHeading(
-                dayTheme: dayThemes[state.day.weekday],
-                day: state.day,
-              ),
+    return Padding(
+      padding: EdgeInsets.only(left: 8.s, top: 12.s, right: 8.s),
+      child: Column(
+        children: [
+          BlocBuilder<DayPickerBloc, DayPickerState>(
+            builder: (context, state) => MonthDayPreviewHeading(
+              dayTheme: dayThemes[state.day.weekday - 1],
+              day: state.day,
             ),
-            Expanded(
-              child: MonthPreview(),
-            ),
-          ],
-        ),
+          ),
+          Expanded(
+            child: MonthPreview(),
+          ),
+        ],
       ),
     );
   }
@@ -79,7 +73,9 @@ class MonthDayPreviewHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final text = DateFormat('EEEE, MMMM d').format(day);
+    final text =
+        DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
+            .format(day);
     return Tts(
       data: text,
       child: Container(
@@ -94,7 +90,10 @@ class MonthDayPreviewHeading extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(text, style: dayTheme.theme.textTheme.subtitle1),
-            SizedBox(height: 40.s, width: 40.s, child: Placeholder()),
+            SecondaryActionButtonLight(
+              onPressed: () => DefaultTabController.of(context)?.animateTo(0),
+              child: Icon(AbiliaIcons.navigation_next),
+            ),
           ],
         ),
       ),
@@ -118,9 +117,8 @@ class MonthDayViewCompact extends StatelessWidget {
           DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
               .format(day.day),
       child: GestureDetector(
-        onTap: () {
-          BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
-        },
+        onTap: () =>
+            BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day)),
         child: BlocBuilder<DayPickerBloc, DayPickerState>(
           builder: (context, dayPickerState) => Container(
             foregroundDecoration: day.isCurrent
@@ -134,23 +132,22 @@ class MonthDayViewCompact extends StatelessWidget {
                         borderRadius: MonthDayView.monthDayborderRadius,
                       )
                     : null,
-            child: Container(
-              decoration: BoxDecoration(
-                color: dayTheme.color,
-                borderRadius: MonthDayView.monthDayborderRadius,
-              ),
-              height: 24.s,
-              padding: EdgeInsets.symmetric(horizontal: 4.s),
-              child: DefaultTextStyle(
-                style: dayTheme.theme.textTheme.subtitle2!,
-                child: Row(
-                  children: [
-                    Text('${day.day.day}'),
-                    Spacer(),
-                    if (day.hasActivities)
-                      ColorDot(color: dayTheme.theme.accentColor),
-                  ],
-                ),
+            decoration: BoxDecoration(
+              color: dayTheme.color,
+              borderRadius: MonthDayView.monthDayborderRadius,
+            ),
+            padding: EdgeInsets.all(4.s),
+            child: DefaultTextStyle(
+              style: dayTheme.theme.textTheme.subtitle2!,
+              child: Stack(
+                children: [
+                  Center(child: Text('${day.day.day}')),
+                  if (day.hasActivities)
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: ColorDot(color: dayTheme.theme.accentColor),
+                    ),
+                ],
               ),
             ),
           ),

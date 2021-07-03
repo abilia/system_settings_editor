@@ -86,6 +86,8 @@ final borderRadiusTop = BorderRadius.only(
   topRight: radius,
 );
 
+final circleRadius = BorderRadius.all(Radius.circular(24.s));
+
 // Borders
 final BorderSide borderSide =
     BorderSide(color: AbiliaColors.white140, width: 1.0.s);

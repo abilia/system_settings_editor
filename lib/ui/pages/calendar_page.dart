@@ -24,7 +24,7 @@ class CalendarPage extends StatelessWidget {
             children: [
               const DayCalendar(),
               if (settingsState.displayWeekCalendar) const WeekCalendarTab(),
-              if (settingsState.displayMonthCalendar) const MonthCalendar()
+              if (settingsState.displayMonthCalendar) const MonthCalendarPage()
             ],
           ),
         ),

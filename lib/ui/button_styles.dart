@@ -128,6 +128,7 @@ final actionIconTextButtonStyleRed = ButtonStyle(
 );
 
 final double actionButtonMinSize = 48.0.s;
+final double secondaryActionButtonMinSize = 40.0.s;
 
 final _actionButtonStyle = ButtonStyle(
   textStyle: MaterialStateProperty.all(abiliaTextTheme.button),
@@ -180,6 +181,22 @@ final actionButtonStyleDark = _actionButtonStyle.copyWith(
   }),
 );
 
+final secondaryActionButtonStyleDark = actionButtonStyleDark.copyWith(
+  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled) ||
+        states.contains(MaterialState.pressed)) return noBorderShape;
+    return darkShapeBorder.copyWith(borderRadius: circleRadius);
+  }),
+  minimumSize: MaterialStateProperty.all(Size(
+    secondaryActionButtonMinSize,
+    secondaryActionButtonMinSize,
+  )),
+  fixedSize: MaterialStateProperty.all(Size(
+    secondaryActionButtonMinSize,
+    secondaryActionButtonMinSize,
+  )),
+);
+
 final actionButtonStyleBlack = _actionButtonStyle.copyWith(
   foregroundColor: MaterialStateProperty.resolveWith<Color>(
     (Set<MaterialState> states) {
@@ -229,6 +246,22 @@ final actionButtonStyleLight = _actionButtonStyle.copyWith(
     }
     return ligthShapeBorder;
   }),
+);
+
+final secondaryActionButtonStyleLight = actionButtonStyleLight.copyWith(
+  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled) ||
+        states.contains(MaterialState.pressed)) return noBorderShape;
+    return ligthShapeBorder.copyWith(borderRadius: circleRadius);
+  }),
+  minimumSize: MaterialStateProperty.all(Size(
+    secondaryActionButtonMinSize,
+    secondaryActionButtonMinSize,
+  )),
+  fixedSize: MaterialStateProperty.all(Size(
+    secondaryActionButtonMinSize,
+    secondaryActionButtonMinSize,
+  )),
 );
 
 ButtonStyle tabButtonStyle({
