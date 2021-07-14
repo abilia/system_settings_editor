@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'permission_bloc.dart';
 
 class PermissionState extends Equatable {
@@ -21,7 +19,7 @@ class PermissionState extends Equatable {
       );
 
   bool get notificationDenied =>
-      status[Permission.notification].isDeniedOrPermenantlyDenied;
+      status[Permission.notification]?.isDeniedOrPermenantlyDenied ?? false;
 
   bool get fullscreenNotGranted =>
       !Platform.isIOS &&

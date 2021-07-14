@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'create_account_bloc.dart';
 
 abstract class CreateAccountEvent extends Equatable {

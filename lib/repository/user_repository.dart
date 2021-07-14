@@ -1,11 +1,8 @@
-// @dart=2.9
-
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:seagull/config.dart';
@@ -21,17 +18,16 @@ class UserRepository extends Repository {
   final LicenseDb licenseDb;
 
   UserRepository({
-    String baseUrl,
-    @required BaseClient client,
-    @required this.tokenDb,
-    @required this.userDb,
-    @required this.licenseDb,
-  })  : assert(tokenDb != null),
-        super(client, baseUrl);
+    required String baseUrl,
+    required BaseClient client,
+    required this.tokenDb,
+    required this.userDb,
+    required this.licenseDb,
+  }) : super(client, baseUrl);
 
   UserRepository copyWith({
-    String baseUrl,
-    BaseClient client,
+    String? baseUrl,
+    BaseClient? client,
   }) =>
       UserRepository(
         baseUrl: baseUrl ?? this.baseUrl,
@@ -42,10 +38,10 @@ class UserRepository extends Repository {
       );
 
   Future<String> authenticate({
-    @required String username,
-    @required String password,
-    @required String pushToken,
-    @required DateTime time,
+    required String username,
+    required String password,
+    required String pushToken,
+    required DateTime time,
   }) async {
     final response = await client.post(
       '$baseUrl/api/v1/auth/client/me'.toUri(),
@@ -111,7 +107,7 @@ class UserRepository extends Repository {
   Future<List<License>> getLicenses() async {
     try {
       final token = getToken();
-      final fromApi = await getLicensesFromApi(token);
+      final fromApi = await getLicensesFromApi(token!);
       await licenseDb.persistLicenses(fromApi);
     } catch (e) {
       _log.warning('Could not fetch licenses from backend', e);
@@ -134,7 +130,7 @@ class UserRepository extends Repository {
     }
   }
 
-  Future logout([String token]) async {
+  Future logout([String? token]) async {
     _log.fine('unregister Client');
     await _unregisterClient(token);
     _log.fine('deleting token');
@@ -145,26 +141,28 @@ class UserRepository extends Repository {
 
   Future<void> persistToken(String token) => tokenDb.persistToken(token);
 
-  String getToken() => tokenDb.getToken();
+  String? getToken() => tokenDb.getToken();
 
-  Future<bool> _unregisterClient([String token]) async {
-    token ??= getToken();
+  Future<bool> _unregisterClient([String? token]) async {
     try {
+      token ??= getToken();
+      if (token == null) throw 'token is null';
       final response = await client.delete(
           '$baseUrl/api/v1/auth/client'.toUri(),
           headers: authHeader(token));
       return response.statusCode == 200;
-    } catch (_) {
+    } catch (e) {
+      _log.warning('can not unregister client: $e');
       return false;
     }
   }
 
   Future<void> createAccount({
-    @required String language,
-    @required String usernameOrEmail,
-    @required String password,
-    @required bool termsOfUse,
-    @required bool privacyPolicy,
+    required String language,
+    required String usernameOrEmail,
+    required String password,
+    required bool termsOfUse,
+    required bool privacyPolicy,
   }) async {
     _log.fine('try creating account $usernameOrEmail');
 

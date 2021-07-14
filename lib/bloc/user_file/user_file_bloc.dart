@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:io';
 
@@ -7,8 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:crypto/crypto.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+import 'package:collection/collection.dart';
 import 'package:mime/mime.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -22,13 +21,13 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   final UserFileRepository userFileRepository;
   final SyncBloc syncBloc;
   final FileStorage fileStorage;
-  StreamSubscription pushSubscription;
+  late final StreamSubscription pushSubscription;
 
   UserFileBloc({
-    @required this.userFileRepository,
-    @required this.syncBloc,
-    @required this.fileStorage,
-    @required PushBloc pushBloc,
+    required this.userFileRepository,
+    required this.syncBloc,
+    required this.fileStorage,
+    required PushBloc pushBloc,
   }) : super(UserFilesNotLoaded()) {
     pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
@@ -42,7 +41,10 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     UserFileEvent event,
   ) async* {
     if (event is ImageAdded) {
-      yield state.addTempFile(event.selectedImage.id, event.selectedImage.file);
+      yield state.addTempFile(
+        event.selectedImage.id,
+        event.selectedImage.file,
+      );
       yield* _mapImageAddedToState(event);
     }
     if (event is LoadUserFiles) {

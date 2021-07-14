@@ -1,22 +1,20 @@
-// @dart=2.9
-
 part of 'slide_show_cubit.dart';
 
 class SlideShowState extends Equatable {
   final List<Sortable<ImageArchiveData>> slideShowFolderContent;
   final int currentIndex;
 
-  String get currentFileId => slideShowFolderContent.isNotEmpty
+  String? get currentFileId => slideShowFolderContent.isNotEmpty
       ? slideShowFolderContent[currentIndex].data.fileId
       : null;
 
-  String get currentPath => slideShowFolderContent.isNotEmpty
+  String? get currentPath => slideShowFolderContent.isNotEmpty
       ? slideShowFolderContent[currentIndex].data.file
       : null;
 
   SlideShowState({
-    @required this.slideShowFolderContent,
-    @required this.currentIndex,
+    required this.slideShowFolderContent,
+    required this.currentIndex,
   });
 
   factory SlideShowState.empty() {

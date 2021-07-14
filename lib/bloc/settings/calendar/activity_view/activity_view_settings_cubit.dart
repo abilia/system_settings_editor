@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -12,8 +10,8 @@ class ActivityViewSettingsCubit extends Cubit<ActivityViewSettingsState> {
   final GenericBloc genericBloc;
 
   ActivityViewSettingsCubit({
-    MemoplannerSettingsState settingsState,
-    this.genericBloc,
+    required MemoplannerSettingsState settingsState,
+    required this.genericBloc,
   }) : super(ActivityViewSettingsState.fromMemoplannerSettings(settingsState));
 
   void changeSettings(ActivityViewSettingsState newState) => emit(newState);

@@ -45,6 +45,7 @@ void main() {
     tokenDb: MockTokenDb(),
     userDb: MockUserDb(),
     licenseDb: licenseDb,
+    baseUrl: 'fake',
   );
 
   final defaultMemoSettingsBloc = MockMemoplannerSettingsBloc();

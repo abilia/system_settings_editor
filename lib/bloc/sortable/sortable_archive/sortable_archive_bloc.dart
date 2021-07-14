@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
@@ -14,9 +12,9 @@ part 'sortable_archive_state.dart';
 
 class SortableArchiveBloc<T extends SortableData>
     extends Bloc<SortableArchiveEvent, SortableArchiveState<T>> {
-  StreamSubscription sortableSubscription;
+  late final StreamSubscription sortableSubscription;
 
-  SortableArchiveBloc({@required SortableBloc sortableBloc})
+  SortableArchiveBloc({required SortableBloc sortableBloc})
       : super(SortableArchiveState({}, {})) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
@@ -56,9 +54,9 @@ class SortableArchiveBloc<T extends SortableData>
       yield SortableArchiveState<T>(
         state.allByFolder,
         state.allById,
-        currentFolderId: currentFolder.groupId,
+        currentFolderId: currentFolder?.groupId ?? '',
       );
-    } else if (event is SortableSelected) {
+    } else if (event is SortableSelected<T>) {
       yield SortableArchiveState<T>(
         state.allByFolder,
         state.allById,

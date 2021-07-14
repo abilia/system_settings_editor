@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'login_bloc.dart';
 
 abstract class LoginEvent extends Equatable with Finest {

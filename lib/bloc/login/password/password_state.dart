@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'password_cubit.dart';
 
 class PasswordState extends Equatable {
@@ -9,9 +7,9 @@ class PasswordState extends Equatable {
 
   const PasswordState(this.password, this.hide, this.valid);
   PasswordState copyWith({
-    String password,
-    bool hide,
-    bool valid,
+    String? password,
+    bool? hide,
+    bool? valid,
   }) =>
       PasswordState(
         password ?? this.password,

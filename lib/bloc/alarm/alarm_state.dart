@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'alarm_bloc.dart';
 
 abstract class AlarmStateBase extends Equatable {}
@@ -13,7 +11,7 @@ class UnInitializedAlarmState extends AlarmStateBase {
 
 class AlarmState extends AlarmStateBase {
   final NotificationAlarm alarm;
-  AlarmState(this.alarm) : assert(alarm != null);
+  AlarmState(this.alarm);
   @override
   List<Object> get props => [alarm];
   @override

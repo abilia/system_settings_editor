@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'day_calendar_settings_cubit.dart';
 
 class DayCalendarSettingsState extends Equatable {
@@ -17,19 +15,19 @@ class DayCalendarSettingsState extends Equatable {
   final DayCalendarType calendarType;
 
   DayCalendarSettingsState._({
-    @required this.showBrowseButtons,
-    @required this.showWeekday,
-    @required this.showDayPeriod,
-    @required this.showDate,
-    @required this.showClock,
-    @required this.dotsInTimePillar,
-    @required this.timepillarZoom,
-    @required this.dayInterval,
-    @required this.calendarType,
-    @required this.showTypeOfDisplay,
-    @required this.showTimepillarLength,
-    @required this.showTimelineZoom,
-    @required this.showDurationSelection,
+    required this.showBrowseButtons,
+    required this.showWeekday,
+    required this.showDayPeriod,
+    required this.showDate,
+    required this.showClock,
+    required this.dotsInTimePillar,
+    required this.timepillarZoom,
+    required this.dayInterval,
+    required this.calendarType,
+    required this.showTypeOfDisplay,
+    required this.showTimepillarLength,
+    required this.showTimelineZoom,
+    required this.showDurationSelection,
   });
 
   factory DayCalendarSettingsState.fromMemoplannerSettings(
@@ -52,19 +50,19 @@ class DayCalendarSettingsState extends Equatable {
       );
 
   DayCalendarSettingsState copyWith({
-    bool showBrowseButtons,
-    bool showWeekday,
-    bool showDayPeriod,
-    bool showDate,
-    bool showClock,
-    DayCalendarType calendarType,
-    TimepillarIntervalType dayInterval,
-    bool dotsInTimePillar,
-    TimepillarZoom timepillarZoom,
-    bool showTypeOfDisplay,
-    bool showTimepillarLength,
-    bool showTimelineZoom,
-    bool showDurationSelection,
+    bool? showBrowseButtons,
+    bool? showWeekday,
+    bool? showDayPeriod,
+    bool? showDate,
+    bool? showClock,
+    DayCalendarType? calendarType,
+    TimepillarIntervalType? dayInterval,
+    bool? dotsInTimePillar,
+    TimepillarZoom? timepillarZoom,
+    bool? showTypeOfDisplay,
+    bool? showTimepillarLength,
+    bool? showTimelineZoom,
+    bool? showDurationSelection,
   }) =>
       DayCalendarSettingsState._(
         showBrowseButtons: showBrowseButtons ?? this.showBrowseButtons,

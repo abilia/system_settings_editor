@@ -1,24 +1,14 @@
-// @dart=2.9
-
 part of 'settings_bloc.dart';
 
 class SettingsState extends Equatable {
   final bool textToSpeech;
 
-  SettingsState({
-    this.textToSpeech,
-  });
+  SettingsState({required this.textToSpeech});
 
-  SettingsState copyWith({
-    bool textToSpeech,
-  }) {
-    return SettingsState(
-      textToSpeech: textToSpeech ?? this.textToSpeech,
-    );
-  }
+  SettingsState copyWith({bool? textToSpeech}) => SettingsState(
+        textToSpeech: textToSpeech ?? this.textToSpeech,
+      );
 
   @override
-  List<Object> get props => [
-        textToSpeech,
-      ];
+  List<Object> get props => [textToSpeech];
 }

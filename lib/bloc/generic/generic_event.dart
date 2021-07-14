@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'generic_bloc.dart';
 
 abstract class GenericEvent extends Equatable {
