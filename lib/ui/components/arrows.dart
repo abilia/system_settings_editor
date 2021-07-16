@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/cupertino.dart';
 import 'package:vector_math/vector_math_64.dart';
 import 'package:flutter/widgets.dart';
@@ -7,15 +5,15 @@ import 'package:flutter/widgets.dart';
 import 'package:seagull/ui/all.dart';
 
 class VerticalScrollArrows extends StatelessWidget {
-  final ScrollController controller;
+  final ScrollController? controller;
   final Widget child;
   final bool scrollbarAlwaysShown;
-  final double downCollapseMargin;
+  final double? downCollapseMargin;
 
   const VerticalScrollArrows({
-    Key key,
-    @required this.controller,
-    @required this.child,
+    Key? key,
+    this.controller,
+    required this.child,
     this.scrollbarAlwaysShown = false,
     this.downCollapseMargin,
   }) : super(key: key);
@@ -40,9 +38,9 @@ class VerticalScrollArrows extends StatelessWidget {
 
 class ArrowLeft extends _ArrowBase {
   const ArrowLeft({
-    Key key,
-    ScrollController controller,
-    double collapseMargin,
+    Key? key,
+    ScrollController? controller,
+    double? collapseMargin,
   }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
 
   @override
@@ -63,9 +61,9 @@ class ArrowLeft extends _ArrowBase {
 
 class ArrowUp extends _ArrowBase {
   const ArrowUp({
-    Key key,
-    ScrollController controller,
-    double collapseMargin,
+    Key? key,
+    ScrollController? controller,
+    double? collapseMargin,
   }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
 
   @override
@@ -86,9 +84,9 @@ class ArrowUp extends _ArrowBase {
 
 class ArrowRight extends _ArrowBase {
   const ArrowRight({
-    Key key,
-    ScrollController controller,
-    double collapseMargin,
+    Key? key,
+    ScrollController? controller,
+    double? collapseMargin,
   }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
 
   @override
@@ -109,9 +107,9 @@ class ArrowRight extends _ArrowBase {
 
 class ArrowDown extends _ArrowBase {
   const ArrowDown({
-    Key key,
-    ScrollController controller,
-    double collapseMargin,
+    Key? key,
+    ScrollController? controller,
+    double? collapseMargin,
   }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
 
   @override
@@ -123,7 +121,7 @@ class ArrowDown extends _ArrowBase {
               topLeft: _Arrow.radius, topRight: _Arrow.radius),
           vectorTranslation: Vector3(0, _Arrow.translationPixels, 0),
           width: _Arrow.arrowSize,
-          controller: controller,
+          controller: controller ?? PrimaryScrollController.of(context),
           conditionFunction: (sc) =>
               sc.position.extentAfter > getCollapseMargin,
         ),
@@ -131,13 +129,13 @@ class ArrowDown extends _ArrowBase {
 }
 
 abstract class _ArrowBase extends StatelessWidget {
-  final ScrollController controller;
-  final double collapseMargin;
+  final ScrollController? controller;
+  final double? collapseMargin;
   static final double defaultCollapseMargin = 2.0.s;
   double get getCollapseMargin => collapseMargin ?? defaultCollapseMargin;
 
   const _ArrowBase({
-    Key key,
+    Key? key,
     this.controller,
     this.collapseMargin,
   }) : super(key: key);
@@ -150,22 +148,20 @@ class _Arrow extends StatefulWidget {
 
   final IconData icon;
   final BorderRadiusGeometry borderRadius;
-  final double width, heigth;
+  final double? width, heigth;
   final Matrix4 translation;
   final Matrix4 hiddenTranslation;
-  final ScrollController controller;
+  final ScrollController? controller;
   final bool Function(ScrollController) conditionFunction;
   _Arrow({
-    @required this.icon,
-    @required this.borderRadius,
-    @required Vector3 vectorTranslation,
+    required this.icon,
+    required this.borderRadius,
+    required Vector3 vectorTranslation,
     this.width,
     this.heigth,
-    @required this.controller,
-    @required this.conditionFunction,
-  })  : assert(controller != null),
-        assert(conditionFunction != null),
-        translation = Matrix4.identity(),
+    this.controller,
+    required this.conditionFunction,
+  })  : translation = Matrix4.identity(),
         hiddenTranslation = Matrix4.translation(vectorTranslation);
   @override
   _ArrowState createState() => _ArrowState();
@@ -173,21 +169,24 @@ class _Arrow extends StatefulWidget {
 
 class _ArrowState extends State<_Arrow> {
   bool condition = false;
+  ScrollController? get controller =>
+      widget.controller ?? PrimaryScrollController.of(context);
+
   @override
   void initState() {
-    widget.controller.addListener(listener);
+    controller?.addListener(listener);
     super.initState();
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(listener);
+    controller?.removeListener(listener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => listener());
+    WidgetsBinding.instance?.addPostFrameCallback((_) => listener());
     return ClipRect(
       child: AnimatedContainer(
         transform: condition ? widget.translation : widget.hiddenTranslation,
@@ -212,9 +211,11 @@ class _ArrowState extends State<_Arrow> {
   }
 
   void listener() {
-    if (widget.controller.hasClients &&
-        widget.controller.position.haveDimensions &&
-        widget.conditionFunction(widget.controller) != condition) {
+    final c = controller;
+    if (c != null &&
+        c.hasClients &&
+        c.position.haveDimensions &&
+        widget.conditionFunction(c) != condition) {
       setState(() => condition = !condition);
     }
   }

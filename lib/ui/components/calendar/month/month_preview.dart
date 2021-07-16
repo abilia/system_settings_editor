@@ -19,10 +19,17 @@ class MonthListPreview extends StatelessWidget {
       child: Column(
         children: [
           BlocBuilder<DayPickerBloc, DayPickerState>(
-            builder: (context, state) => MonthDayPreviewHeading(
-              dayTheme: dayThemes[state.day.weekday - 1],
-              day: state.day,
-            ),
+            builder: (context, state) {
+              final dayTheme = dayThemes[state.day.weekday - 1];
+
+              return AnimatedTheme(
+                data: dayTheme.theme,
+                child: MonthDayPreviewHeading(
+                  day: state.day,
+                  isLight: dayTheme.isLight,
+                ),
+              );
+            },
           ),
           Expanded(
             child: MonthPreview(),
@@ -49,11 +56,15 @@ class MonthPreview extends StatelessWidget {
           buildWhen: (oldState, newState) =>
               (oldState is ActivitiesOccasionLoaded &&
                   newState is ActivitiesOccasionLoaded &&
-                  oldState.day == newState.day) ||
+                  oldState.day != newState.day) ||
               oldState.runtimeType != newState.runtimeType,
           builder: (context, activityState) =>
               activityState is ActivitiesOccasionLoaded
-                  ? Agenda(activityState: activityState)
+                  ? ActivityList(
+                      state: activityState,
+                      topPadding: 11.s,
+                      bottomPadding: 11.s,
+                    )
                   : Center(child: CircularProgressIndicator()),
         ),
       ),
@@ -64,12 +75,12 @@ class MonthPreview extends StatelessWidget {
 class MonthDayPreviewHeading extends StatelessWidget {
   const MonthDayPreviewHeading({
     Key? key,
-    required this.dayTheme,
     required this.day,
+    required this.isLight,
   }) : super(key: key);
 
-  final DayTheme dayTheme;
   final DateTime day;
+  final bool isLight;
 
   @override
   Widget build(BuildContext context) {
@@ -84,14 +95,17 @@ class MonthDayPreviewHeading extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.vertical(top: radius),
-          color: dayTheme.color,
+          color: Theme.of(context).appBarTheme.color,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(text, style: dayTheme.theme.textTheme.subtitle1),
-            SecondaryActionButtonLight(
+            Text(text, style: Theme.of(context).textTheme.subtitle1),
+            SecondaryActionButton(
               onPressed: () => DefaultTabController.of(context)?.animateTo(0),
+              style: isLight
+                  ? secondaryActionButtonStyleLight
+                  : secondaryActionButtonStyleDark,
               child: Icon(AbiliaIcons.navigation_next),
             ),
           ],

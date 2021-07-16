@@ -5,7 +5,7 @@ import 'package:seagull/ui/all.dart';
 class DayTheme {
   final ThemeData theme;
   final Color color, secondaryColor, borderColor;
-  final bool isColor;
+  final bool isColor, isLight;
   Color? get dayColor => isColor ? color : null;
 
   DayTheme._(
@@ -15,6 +15,7 @@ class DayTheme {
     bool background, {
     Color? accentColor,
     this.isColor = true,
+    required this.isLight,
   })  : borderColor =
             color == AbiliaColors.white ? AbiliaColors.white110 : color,
         theme = theme.copyWith(
@@ -38,10 +39,17 @@ class DayTheme {
           background,
           accentColor: accentColor,
           isColor: isColor,
+          isLight: true,
         );
 
   DayTheme._dark(Color color, Color secondaryColor, {bool background = true})
-      : this._(_darkAppBarTheme, color, secondaryColor, background);
+      : this._(
+          _darkAppBarTheme,
+          color,
+          secondaryColor,
+          background,
+          isLight: false,
+        );
 }
 
 final _noColor = DayTheme._light(

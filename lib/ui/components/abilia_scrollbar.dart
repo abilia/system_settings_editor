@@ -1,17 +1,15 @@
-// @dart=2.9
-
 import 'package:flutter/cupertino.dart';
 import 'package:seagull/ui/all.dart';
 
 class AbiliaScrollBar extends StatelessWidget {
   final Widget child;
-  final ScrollController controller;
+  final ScrollController? controller;
   final bool isAlwaysShown;
 
   const AbiliaScrollBar({
-    Key key,
+    Key? key,
     this.controller,
-    this.child,
+    required this.child,
     this.isAlwaysShown = false,
   }) : super(key: key);
   @override
