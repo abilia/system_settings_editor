@@ -159,6 +159,14 @@ class MockSortableDb extends Mock implements SortableDb {}
 class MockDatabase extends Mock implements Database {
   MockDatabase() {
     when(rawQuery(any)).thenAnswer((_) => Future.value([]));
+    when(query(
+      any,
+      columns: ['dirty', 'revision'],
+      where: 'id = ?',
+      whereArgs: anyNamed('whereArgs'),
+    )).thenAnswer((_) => Future.value([]));
+    when(rawQuery(any, any)).thenAnswer((_) => Future.value([]));
+    when(batch()).thenAnswer((_) => MockBatch());
   }
 }
 
