@@ -195,8 +195,6 @@ remove	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
 							
 ### Settings							
 settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
-monthCalendarGrid	Grid	Rutnät	Gitter	Raster	Ruudukko	Gitter	Nett
-monthCalendarPreview	Activities preview	Förhandsgranskning av aktiviteter	Eksempel på aktiviteter	Activiteitenvoorbeeld	Toimintojen esikatselu	Aktivitätenvorschau	Forhåndsvisning av aktiviteter
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
 timePillarView	1 timepillar	1 tidpelare	1 tidslinje	1 tijdlijn	1 aikajana	1 Zeitstrahl	1 tidslinje
 listView	List	Lista	Liste	Lijst	Luettelo	Liste	Liste
@@ -204,7 +202,8 @@ timepillarSettings	Timepillar settings	Inställningar för tidpelare	Tidslinjein
 activityDuration	Activity duration	Visa tid som	Vis tiden som	Laat de tijd zien als	Näytä aika muodossa	Zeit anzeigen als	Vise tiden som
 dots	Dots	Prickar	Prikker	Stippen	Pisteet	Punkte	Prikker
 edge	Edge	Flärp	Flik	Rand	Reuna	Kante	Flik
-preview	Preview	Förhandsgranskning	Forhåndsvisning	Voorbeeld	Esikatselu	Vorschau	Forhåndsvisning
+monthCalendarGrid	Grid	Rutnät	Gitter	Raster	Ruudukko	Gitter	Nett
+monthCalendarPreview	Activities preview	Förhandsgranskning	Eksempel på aktiviteter	Activiteitenvoorbeeld	Toimintojen esikatselu	Aktivitätenvorschau	Forhåndsvisning av aktiviteter
 textToSpeech	Speech support	Talstöd	Talestøtte	Spraakondersteuning	Puhetuki	Sprachausgabe	Talesyntese
 longpressToSpeak	Tap and hold for speech support	Tryck och håll ned för talstöd	Tryk og hold nede for talestøtte	Tik en houd vast voor spraakondersteuning	Napauta ja pidä painettuna puhetukea varten	Tippen und halten Sie für die Sprachunterstützung	Trykk og hold for talestøtte
 longPressInfoText	Tap and hold about 1½ seconds on any function to get it read to by speech synthesis	Tryck länge på någon text för att få den uppläst	Tryk og hold ca. 1½ sekund på enhver funktion for at få den læst til ved talesyntese	Tik en houd ongeveer 1½ seconde vast op een functie om deze te laten voorlezen door spraaksynthese	Napauta ja pidä painettuna noin 1,5 sekuntia mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla	Tippen und halten Sie etwa 1½ Sekunden lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen	Trykk og hold i ca. 1½ sekund på en funksjon for å få den lest opp ved talesyntese
