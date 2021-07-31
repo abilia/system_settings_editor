@@ -121,7 +121,7 @@ class ArrowDown extends _ArrowBase {
               topLeft: _Arrow.radius, topRight: _Arrow.radius),
           vectorTranslation: Vector3(0, _Arrow.translationPixels, 0),
           width: _Arrow.arrowSize,
-          controller: controller ?? PrimaryScrollController.of(context),
+          controller: controller,
           conditionFunction: (sc) =>
               sc.position.extentAfter > getCollapseMargin,
         ),

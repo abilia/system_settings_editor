@@ -67,7 +67,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.month));
     await tester.pumpAndSettle();
-    expect(find.byType(MonthCalendarPage), findsOneWidget);
+    expect(find.byType(MonthCalendarTab), findsOneWidget);
     expect(find.byType(MonthAppBar), findsOneWidget);
   });
 

@@ -9,8 +9,8 @@ typedef MonthDayWidgetBuilder = Widget Function(
   DayTheme dayTheme,
 );
 
-class MonthCalendarPage extends StatelessWidget {
-  const MonthCalendarPage({Key? key}) : super(key: key);
+class MonthCalendarTab extends StatelessWidget {
+  const MonthCalendarTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

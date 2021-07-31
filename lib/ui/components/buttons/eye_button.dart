@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class _EyeButton extends StatelessWidget {
-  const _EyeButton({Key key, this.onPressed}) : super(key: key);
-  final VoidCallback onPressed;
+  const _EyeButton({Key? key, this.onPressed}) : super(key: key);
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +25,14 @@ class _EyeButton extends StatelessWidget {
 }
 
 class EyeButtonDay extends StatelessWidget {
-  const EyeButtonDay({Key key}) : super(key: key);
+  const EyeButtonDay({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) => _EyeButton(
         onPressed: () async {
-          final settings = await showViewDialog<EyeButtonSettings>(
+          final settings = await showViewDialog<EyeButtonSettings?>(
             context: context,
             builder: (context) => EyeButtonDayDialog(
               currentCalendarType: memoSettingsState.dayCalendarType,
@@ -74,7 +72,7 @@ class EyeButtonDay extends StatelessWidget {
 }
 
 class EyeButtonMonth extends StatelessWidget {
-  const EyeButtonMonth({Key key}) : super(key: key);
+  const EyeButtonMonth({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +81,7 @@ class EyeButtonMonth extends StatelessWidget {
           previous.monthCalendarType != current.monthCalendarType,
       builder: (context, memoSettingsState) => _EyeButton(
         onPressed: () async {
-          final monthCalendarType = await showViewDialog<MonthCalendarType>(
+          final monthCalendarType = await showViewDialog<MonthCalendarType?>(
             context: context,
             builder: (context) => EyeButtonMonthDialog(
                 currentCalendarType: memoSettingsState.monthCalendarType),

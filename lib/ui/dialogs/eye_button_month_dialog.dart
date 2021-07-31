@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -10,8 +8,8 @@ class EyeButtonMonthDialog extends StatefulWidget {
   final MonthCalendarType currentCalendarType;
 
   const EyeButtonMonthDialog({
-    Key key,
-    @required this.currentCalendarType,
+    Key? key,
+    required this.currentCalendarType,
   }) : super(key: key);
 
   @override
@@ -22,11 +20,8 @@ class EyeButtonMonthDialog extends StatefulWidget {
 
 class _EyeButtonMonthDialogState extends State<EyeButtonMonthDialog> {
   MonthCalendarType calendarType;
-  ScrollController _controller;
 
-  _EyeButtonMonthDialogState({
-    @required this.calendarType,
-  });
+  _EyeButtonMonthDialogState({required this.calendarType});
 
   @override
   Widget build(BuildContext context) {
@@ -36,33 +31,30 @@ class _EyeButtonMonthDialogState extends State<EyeButtonMonthDialog> {
         text: t.display,
         iconData: AbiliaIcons.show,
       ),
-      body: AbiliaScrollBar(
-        controller: _controller,
-        child: ListView(
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 8.s),
-              child: Selector<MonthCalendarType>(
-                heading: t.viewMode,
-                groupValue: calendarType,
-                items: [
-                  SelectorItem(
-                    t.monthCalendarGrid,
-                    AbiliaIcons.scanning_field_by_field,
-                    MonthCalendarType.grid,
-                  ),
-                  SelectorItem(
-                    t.monthCalendarPreview,
-                    AbiliaIcons.calendar_list,
-                    MonthCalendarType.preview,
-                  ),
-                ],
-                onChanged: (type) => setState(() => calendarType = type),
-              ),
+      body: ListView(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 8.s),
+            child: Selector<MonthCalendarType>(
+              heading: t.viewMode,
+              groupValue: calendarType,
+              items: [
+                SelectorItem(
+                  t.monthCalendarGrid,
+                  AbiliaIcons.scanning_field_by_field,
+                  MonthCalendarType.grid,
+                ),
+                SelectorItem(
+                  t.monthCalendarPreview,
+                  AbiliaIcons.calendar_list,
+                  MonthCalendarType.preview,
+                ),
+              ],
+              onChanged: (type) => setState(() => calendarType = type),
             ),
-            Divider(endIndent: 16.s),
-          ],
-        ),
+          ),
+          Divider(endIndent: 16.s),
+        ],
       ),
       bodyPadding: EdgeInsets.zero,
       expanded: true,
