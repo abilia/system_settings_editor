@@ -39,7 +39,6 @@ void main() {
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
     mockGenericDb = MockGenericDb();
-    // db.insertAndAddDirty(data);
     when(mockGenericDb.insertAndAddDirty(any))
         .thenAnswer((_) => Future.value(false));
 
@@ -265,6 +264,38 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsNothing);
       expect(find.text(fridayTitle), findsNothing);
+    });
+
+    testWidgets('Activities in the preview repspects show categories setting',
+        (WidgetTester tester) async {
+      when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+        (realInvocation) => Future.value(
+          [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: false,
+                identifier:
+                    MemoplannerSettings.calendarActivityTypeShowTypesKey,
+              ),
+            ),
+          ],
+        ),
+      );
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(EyeButtonMonth));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      final activityCardList =
+          tester.widgetList<ActivityCard>(find.byType(ActivityCard));
+      expect(
+          activityCardList.any((activityCard) => activityCard.showCategories),
+          isFalse);
     });
   });
 }

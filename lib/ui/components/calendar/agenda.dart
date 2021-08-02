@@ -64,6 +64,12 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
         return RefreshIndicator(
           onRefresh: refresh,
           child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+            buildWhen: (previous, current) =>
+                previous.leftCategoryName != current.leftCategoryName ||
+                previous.leftCategoryImage != current.leftCategoryImage ||
+                previous.rightCategoryName != current.rightCategoryName ||
+                previous.rightCategoryImage != current.rightCategoryImage ||
+                previous.showCategories != current.showCategories,
             builder: (context, memoplannerSettingsState) => Stack(
               children: <Widget>[
                 NotificationListener<ScrollNotification>(
@@ -72,7 +78,6 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                     child: ActivityList(
                       state: state,
                       scrollController: scrollController,
-                      showCategories: memoplannerSettingsState.showCategories,
                       bottomPadding: Agenda.bottomPadding,
                       topPadding: Agenda.topPadding,
                     ),
@@ -105,7 +110,6 @@ class ActivityList extends StatelessWidget {
   ActivityList({
     Key? key,
     required this.state,
-    this.showCategories = false,
     this.scrollController,
     required this.bottomPadding,
     required this.topPadding,
@@ -114,7 +118,6 @@ class ActivityList extends StatelessWidget {
   final ActivitiesOccasionLoaded state;
 
   final ScrollController? scrollController;
-  final bool showCategories;
 
   final double bottomPadding, topPadding;
 
@@ -143,7 +146,6 @@ class ActivityList extends StatelessWidget {
                         state.pastActivities,
                         state.notPastActivities,
                       ),
-                      showCategories: showCategories,
                     ),
                   ),
                 SliverPadding(
@@ -154,7 +156,6 @@ class ActivityList extends StatelessWidget {
                   ),
                   sliver: SliverActivityList(
                     state.notPastActivities,
-                    showCategories: showCategories,
                   ),
                 ),
               ],
@@ -213,13 +214,13 @@ class SliverActivityList extends StatelessWidget {
   final bool reversed;
   final double lastMargin;
   final int _maxIndex;
-  final bool showCategories;
+  // final bool showCategories;
   const SliverActivityList(
     this.activities, {
     this.reversed = false,
     this.lastMargin = 0.0,
     Key? key,
-    required this.showCategories,
+    // required this.showCategories,
   })  : _maxIndex = activities.length - 1,
         super(key: key);
 
@@ -227,20 +228,26 @@ class SliverActivityList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 12.0.s),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            if (reversed) index = _maxIndex - index;
-            return ActivityCard(
-              activityOccasion: activities[index],
-              bottomPadding: showCategories
-                  ? _padding(index)
-                  : ActivityCard.cardMarginSmall,
-              showCategories: showCategories,
-            );
-          },
-          childCount: activities.length,
-        ),
+      sliver: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        buildWhen: (previous, current) =>
+            previous.showCategories != current.showCategories,
+        builder: (context, setting) {
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                if (reversed) index = _maxIndex - index;
+                return ActivityCard(
+                  activityOccasion: activities[index],
+                  bottomPadding: setting.showCategories
+                      ? _padding(index)
+                      : ActivityCard.cardMarginSmall,
+                  showCategories: setting.showCategories,
+                );
+              },
+              childCount: activities.length,
+            ),
+          );
+        },
       ),
     );
   }

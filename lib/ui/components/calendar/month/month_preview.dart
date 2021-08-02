@@ -62,8 +62,8 @@ class MonthPreview extends StatelessWidget {
               activityState is ActivitiesOccasionLoaded
                   ? ActivityList(
                       state: activityState,
-                      topPadding: 11.s,
-                      bottomPadding: 11.s,
+                      topPadding: 12.s,
+                      bottomPadding: 64.s,
                     )
                   : Center(child: CircularProgressIndicator()),
         ),

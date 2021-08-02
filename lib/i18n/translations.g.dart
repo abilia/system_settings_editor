@@ -384,7 +384,7 @@ abstract class Translated {
 
   final String monthCalendarGrid = 'Grid';
 
-  final String monthCalendarPreview = 'Activities preview';
+  final String monthCalendarPreview = 'Preview';
 
   final String textToSpeech = 'Speech support';
 
@@ -2165,7 +2165,7 @@ class DA extends Translated {
   final String monthCalendarGrid = 'Gitter';
 
   @override
-  final String monthCalendarPreview = 'Eksempel på aktiviteter';
+  final String monthCalendarPreview = 'Forhåndsvisning';
 
   @override
   final String textToSpeech = 'Talestøtte';
@@ -3120,7 +3120,7 @@ class NL extends Translated {
   final String monthCalendarGrid = 'Raster';
 
   @override
-  final String monthCalendarPreview = 'Activiteitenvoorbeeld';
+  final String monthCalendarPreview = 'Voorbeeld';
 
   @override
   final String textToSpeech = 'Spraakondersteuning';
@@ -4076,7 +4076,7 @@ class FI extends Translated {
   final String monthCalendarGrid = 'Ruudukko';
 
   @override
-  final String monthCalendarPreview = 'Toimintojen esikatselu';
+  final String monthCalendarPreview = 'Esikatselu';
 
   @override
   final String textToSpeech = 'Puhetuki';
@@ -5035,7 +5035,7 @@ class DE extends Translated {
   final String monthCalendarGrid = 'Gitter';
 
   @override
-  final String monthCalendarPreview = 'Aktivitätenvorschau';
+  final String monthCalendarPreview = 'Vorschau';
 
   @override
   final String textToSpeech = 'Sprachausgabe';
@@ -5991,7 +5991,7 @@ class NB extends Translated {
   final String monthCalendarGrid = 'Nett';
 
   @override
-  final String monthCalendarPreview = 'Forhåndsvisning av aktiviteter';
+  final String monthCalendarPreview = 'Forhåndsvisning';
 
   @override
   final String textToSpeech = 'Talesyntese';
