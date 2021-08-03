@@ -1,6 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-// import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
 import 'package:seagull/models/all.dart';
 
 class AnalyticsService {
@@ -30,8 +29,5 @@ class AnalyticsService {
       name: 'activity_created',
       parameters: params,
     );
-    // This does not work at the moment. Waiting fix in the flutter_appcenter_bundle plugin.
-    // await AppCenter.trackEventAsync(
-    //     'activity_created', params.map((k, v) => MapEntry(k, v.toString())));
   }
 }

@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-// import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -77,13 +76,6 @@ class SeagullLogger {
 
   Future<void> initAnalytics() async {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-    // This does not work at the moment. Waiting fix in the flutter_appcenter_bundle plugin.
-    // final appId = 'e0cb99ae-de4a-4bf6-bc91-ccd7d843f5ed';
-    // await AppCenter.startAsync(
-    //   appSecretAndroid: appId,
-    //   appSecretIOS: appId,
-    // );
-    // await AppCenter.configureDistributeDebugAsync(enabled: false);
   }
 
   Future<void> cancelLogging() async {
