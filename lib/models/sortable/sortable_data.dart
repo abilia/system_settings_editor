@@ -208,13 +208,24 @@ class BasicActivityDataItem extends BasicActivityData {
     );
   }
 
+  @visibleForTesting
   factory BasicActivityDataItem.createNew({
     required String title,
-  }) {
-    return BasicActivityDataItem._(activityTitle: title);
-  }
+    Duration startTime = Duration.zero,
+    Duration duration = Duration.zero,
+  }) =>
+      BasicActivityDataItem._(
+        activityTitle: title,
+        startTime: startTime.inMilliseconds,
+        duration: duration.inMilliseconds,
+      );
 
   bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
+
+  TimeOfDay? get startTimeOfDay =>
+      startTime == 0 ? null : startTime.toTimeOfDay();
+  TimeOfDay? get endTimeOfDay =>
+      duration == 0 ? null : (startTime + duration).toTimeOfDay();
 
   @override
   String folderFileId() => fileId;
@@ -283,15 +294,11 @@ class BasicActivityDataItem extends BasicActivityData {
     );
   }
 
-  TimeInterval toTimeInterval({required DateTime startDate}) {
-    final start = startDate.onlyDays().add(startTime.milliseconds());
-    final end = start.add(duration.milliseconds());
-    return TimeInterval(
-      startDate: startDate,
-      startTime: TimeOfDay.fromDateTime(start),
-      endTime: duration == 0 ? null : TimeOfDay.fromDateTime(end),
-    );
-  }
+  TimeInterval toTimeInterval({required DateTime startDate}) => TimeInterval(
+        startDate: startDate.onlyDays(),
+        startTime: startTimeOfDay,
+        endTime: endTimeOfDay,
+      );
 }
 
 class BasicActivityDataFolder extends BasicActivityData {
