@@ -371,7 +371,7 @@ Future<StyleInformation?> _androidStyleInformation(
   return null;
 }
 
-Future<AndroidBitmap?> _androidLargeIcon(
+Future<AndroidBitmap<Object>?> _androidLargeIcon(
   Activity activity,
   FileStorage fileStorage,
 ) async {
