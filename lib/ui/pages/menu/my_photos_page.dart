@@ -72,7 +72,7 @@ class AddPhotoButton extends StatelessWidget {
                         PermissionInfoDialog(permission: Permission.camera));
               } else {
                 final image =
-                    await ImagePicker().getImage(source: ImageSource.camera);
+                    await ImagePicker().pickImage(source: ImageSource.camera);
                 if (image != null) {
                   final selectedImage =
                       SelectedImageFile.newFile(File(image.path));
