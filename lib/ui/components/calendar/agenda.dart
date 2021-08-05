@@ -214,13 +214,12 @@ class SliverActivityList extends StatelessWidget {
   final bool reversed;
   final double lastMargin;
   final int _maxIndex;
-  // final bool showCategories;
+
   const SliverActivityList(
     this.activities, {
     this.reversed = false,
     this.lastMargin = 0.0,
     Key? key,
-    // required this.showCategories,
   })  : _maxIndex = activities.length - 1,
         super(key: key);
 
