@@ -79,7 +79,6 @@ class ActivityTimepillarCard extends StatelessWidget {
                 else
                   SideTime(
                     occasion: activityOccasion.occasion,
-                    category: activityOccasion.activity.category,
                     height: dotHeight +
                         (dotHeight > 0
                             ? decoration.border.dimensions.vertical
@@ -151,13 +150,11 @@ class ActivityTimepillarCard extends StatelessWidget {
 
 class SideTime extends StatelessWidget {
   final Occasion occasion;
-  final int category;
   final double height;
   final double width;
   const SideTime({
     Key key,
     @required this.occasion,
-    @required this.category,
     @required this.height,
     @required this.width,
   }) : super(key: key);

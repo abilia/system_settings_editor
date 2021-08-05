@@ -81,8 +81,7 @@ class MockAlarmBloc extends MockBloc<AlarmEvent, AlarmStateBase>
 class MockNotificationBloc extends MockBloc<NotificationAlarm, AlarmStateBase>
     implements NotificationBloc {}
 
-class MockCalendarViewBloc
-    extends MockBloc<CalendarViewEvent, CalendarViewState>
+class MockCalendarViewBloc extends MockBloc<ToggleCategory, CalendarViewState>
     implements CalendarViewBloc {}
 
 class MockLicenseBloc extends MockBloc<LicenseEvent, LicenseState>

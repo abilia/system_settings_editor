@@ -57,12 +57,11 @@ void main() {
     test('LoadActivities event returns ActivitiesLoaded state with Activity',
         () {
       final exptectedActivity = Activity.createNew(
-          title: 'title',
-          startTime: DateTime(1900),
-          duration: 2.milliseconds(),
-          reminderBefore: [],
-          alarmType: ALARM_SILENT_ONLY_ON_START,
-          category: 0);
+        title: 'title',
+        startTime: DateTime(1900),
+        duration: 2.milliseconds(),
+        alarmType: ALARM_SILENT_ONLY_ON_START,
+      );
 
       when(mockActivityRepository.load())
           .thenAnswer((_) => Future.value(<Activity>[exptectedActivity]));

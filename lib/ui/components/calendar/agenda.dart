@@ -65,10 +65,6 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
           onRefresh: refresh,
           child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
             buildWhen: (previous, current) =>
-                previous.leftCategoryName != current.leftCategoryName ||
-                previous.leftCategoryImage != current.leftCategoryImage ||
-                previous.rightCategoryName != current.rightCategoryName ||
-                previous.rightCategoryImage != current.rightCategoryImage ||
                 previous.showCategories != current.showCategories,
             builder: (context, memoplannerSettingsState) => Stack(
               children: <Widget>[
@@ -84,16 +80,8 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                   ),
                 ),
                 if (memoplannerSettingsState.showCategories) ...[
-                  CategoryLeft(
-                    maxWidth: categoryLabelWidth,
-                    categoryName: memoplannerSettingsState.leftCategoryName,
-                    fileId: memoplannerSettingsState.leftCategoryImage,
-                  ),
-                  CategoryRight(
-                    maxWidth: categoryLabelWidth,
-                    categoryName: memoplannerSettingsState.rightCategoryName,
-                    fileId: memoplannerSettingsState.rightCategoryImage,
-                  ),
+                  LeftCategory(maxWidth: categoryLabelWidth),
+                  RightCategory(maxWidth: categoryLabelWidth),
                 ],
               ],
             ),
