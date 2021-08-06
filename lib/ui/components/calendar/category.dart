@@ -20,23 +20,27 @@ class LeftCategory extends StatelessWidget {
       BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>
             previous.leftCategoryName != current.leftCategoryName ||
-            previous.leftCategoryImage != current.leftCategoryImage,
+            previous.leftCategoryImage != current.leftCategoryImage ||
+            previous.showColor != current.showColor,
         builder: (context, memoplannerSettingsState) => CategoryLeft(
           maxWidth: maxWidth,
           categoryName: memoplannerSettingsState.leftCategoryName,
           fileId: memoplannerSettingsState.leftCategoryImage,
+          showColors: memoplannerSettingsState.showColor,
         ),
       );
 }
 
 class CategoryLeft extends StatelessWidget {
   final String categoryName, fileId;
+  final bool showColors;
   final double maxWidth;
 
   const CategoryLeft({
     Key? key,
     required this.categoryName,
     required this.fileId,
+    required this.showColors,
     this.maxWidth = double.infinity,
   }) : super(key: key);
 
@@ -55,6 +59,7 @@ class CategoryLeft extends StatelessWidget {
           direction: TextDirection.ltr,
           category: Category.left,
           maxWidth: maxWidth,
+          showColors: showColors,
         ),
       );
 }
@@ -72,23 +77,27 @@ class RightCategory extends StatelessWidget {
       BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>
             previous.rightCategoryName != current.rightCategoryName ||
-            previous.rightCategoryImage != current.rightCategoryImage,
+            previous.rightCategoryImage != current.rightCategoryImage ||
+            previous.showColor != current.showColor,
         builder: (context, memoplannerSettingsState) => CategoryRight(
           maxWidth: maxWidth,
           categoryName: memoplannerSettingsState.rightCategoryName,
           fileId: memoplannerSettingsState.rightCategoryImage,
+          showColors: memoplannerSettingsState.showColor,
         ),
       );
 }
 
 class CategoryRight extends StatelessWidget {
   final String categoryName, fileId;
+  final bool showColors;
   final double maxWidth;
 
   const CategoryRight({
     Key? key,
     required this.categoryName,
     required this.fileId,
+    required this.showColors,
     this.maxWidth = double.infinity,
   }) : super(key: key);
 
@@ -107,6 +116,7 @@ class CategoryRight extends StatelessWidget {
           direction: TextDirection.rtl,
           category: Category.right,
           maxWidth: maxWidth,
+          showColors: showColors,
         ),
       );
 }
@@ -119,6 +129,7 @@ class _Category extends StatefulWidget {
   final int category;
   final bool expanded;
   final double maxWidth;
+  final bool showColors;
   final int letters;
   _Category({
     Key? key,
@@ -129,7 +140,8 @@ class _Category extends StatefulWidget {
     required this.direction,
     required this.category,
     required this.maxWidth,
-  })  : letters = fileId.isEmpty ? 1 : 0,
+    required this.showColors,
+  })  : letters = showColors || fileId.isNotEmpty ? 0 : 1,
         super(key: key);
 
   @override
@@ -248,14 +260,18 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                             : SizedBox.shrink(),
                       ),
                     ),
-                    if (widget.fileId.isNotEmpty)
+                    if (widget.fileId.isNotEmpty || widget.showColors)
                       AnimatedBuilder(
                         animation: controller,
                         builder: (context, w) => Padding(
                           padding: paddingAnimation.value,
                           child: w,
                         ),
-                        child: CategoryImage(fileId: widget.fileId),
+                        child: CategoryImage(
+                          fileId: widget.fileId,
+                          category: widget.category,
+                          showColors: widget.showColors,
+                        ),
                       )
                     else
                       SizedBox(width: 16.s)
@@ -277,16 +293,47 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
 }
 
 class CategoryImage extends StatelessWidget {
-  const CategoryImage({Key? key, required this.fileId}) : super(key: key);
+  CategoryImage({
+    Key? key,
+    required this.fileId,
+    required this.category,
+    required this.showColors,
+  })  : assert(fileId.isNotEmpty || showColors),
+        super(key: key);
 
-  static final imageSize = 36.s, borderRadius = BorderRadius.circular(18.s);
+  static final diameter = 36.s,
+      borderRadius = BorderRadius.circular(diameter / 2),
+      noColorsImageSize = 30.s,
+      noColorsImageBorderRadius = BorderRadius.circular(noColorsImageSize / 2);
   final String fileId;
-
+  final int category;
+  final bool showColors;
   @override
-  Widget build(BuildContext context) => FadeInAbiliaImage(
+  Widget build(BuildContext context) {
+    if (fileId.isNotEmpty && !showColors) {
+      return FadeInAbiliaImage(
         imageFileId: fileId,
-        width: imageSize,
-        height: imageSize,
+        width: diameter,
+        height: diameter,
         borderRadius: borderRadius,
       );
+    }
+    return Container(
+      width: diameter,
+      height: diameter,
+      decoration: BoxDecoration(
+        color: categoryColor(category),
+        borderRadius: borderRadius,
+      ),
+      padding: EdgeInsets.all(3.s),
+      child: fileId.isNotEmpty
+          ? FadeInAbiliaImage(
+              imageFileId: fileId,
+              width: noColorsImageSize,
+              height: noColorsImageSize,
+              borderRadius: noColorsImageBorderRadius,
+            )
+          : null,
+    );
+  }
 }

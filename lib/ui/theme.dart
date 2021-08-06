@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -187,6 +188,9 @@ BoxDecoration getBoxDecoration(bool current, bool inactive) => inactive
 
 BoxDecoration selectedBoxDecoration(bool selected) =>
     selected ? greenBoarderWhiteBoxDecoration : whiteBoxDecoration;
+
+Color categoryColor(int category) =>
+    category == Category.right ? AbiliaColors.green : AbiliaColors.black60;
 
 final inputErrorDecoration = InputDecoration(
   suffixIcon: Padding(
