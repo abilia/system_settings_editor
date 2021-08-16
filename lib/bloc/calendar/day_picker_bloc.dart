@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -12,11 +10,11 @@ part 'day_picker_event.dart';
 
 class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
   final ClockBloc clockBloc;
-  StreamSubscription clockBlocSubscription;
+  late final StreamSubscription clockBlocSubscription;
 
   DayPickerBloc({
-    @required this.clockBloc,
-    DateTime initialDay,
+    required this.clockBloc,
+    DateTime? initialDay,
   }) : super(
           DayPickerState(
             (initialDay ?? clockBloc.state).onlyDays(),
@@ -63,7 +61,7 @@ class DayPickerState extends Equatable {
   bool get isToday => occasion == Occasion.current;
 
   DayPickerState(this.day, DateTime now)
-      : index = _dayToIndex(day),
+      : index = day.dayIndex,
         occasion = day.isAtSameDay(now)
             ? Occasion.current
             : day.isAfter(now)
@@ -71,10 +69,7 @@ class DayPickerState extends Equatable {
                 : Occasion.past;
 
   @visibleForTesting
-  DayPickerState.forTest(this.day, this.occasion) : index = _dayToIndex(day);
-
-  static int _dayToIndex(DateTime day) =>
-      day.millisecondsSinceEpoch ~/ Duration.millisecondsPerDay;
+  DayPickerState.forTest(this.day, this.occasion) : index = day.dayIndex;
 
   @override
   String toString() =>

@@ -179,7 +179,7 @@ void main() {
       when(mockActivityRepository.load())
           .thenAnswer((_) => Future.value(activityList));
       when(mockActivityRepository.save(updatedActivityList))
-          .thenAnswer((_) => Future.value(updatedActivityList));
+          .thenAnswer((_) => Future.value(true));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -936,14 +936,13 @@ void main() {
             fullDay: true,
             title: 'now full day');
 
-        final stray = og
-            .copyWith(
-                newId: true,
-                startTime: in12Days,
-                duration: 10.minutes(),
-                recurs: Recurs.not,
-                title: 'a stray')
-            .copyWithRecurringEnd(in12Days.add(10.minutes()));
+        final stray = og.copyWith(
+          newId: true,
+          startTime: in12Days,
+          duration: 10.minutes(),
+          recurs: Recurs.not,
+          title: 'a stray',
+        );
 
         final stray2 = og
             .copyWith(
@@ -1058,7 +1057,7 @@ void main() {
           newId: true,
           title: 'Moved',
           startTime: a3Time,
-          recurs: Recurs.not.changeEnd(a3Time),
+          recurs: Recurs.not,
         );
         when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value([a1, a2, a3]));

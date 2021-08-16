@@ -1,23 +1,21 @@
-// @dart=2.9
-
 part of 'my_photos_bloc.dart';
 
 class MyPhotosState extends Equatable {
   final Map<String, Iterable<Sortable<ImageArchiveData>>> allByFolder;
   final Map<String, Sortable<ImageArchiveData>> allById;
-  final String currentFolderId;
+  final String? currentFolderId;
 
   const MyPhotosState({
-    @required this.allByFolder,
-    @required this.allById,
-    @required this.currentFolderId,
+    this.allByFolder = const {},
+    this.allById = const {},
+    this.currentFolderId,
   });
 
-  List<Sortable<ImageArchiveData>> get currentFolderContent =>
+  Iterable<Sortable<ImageArchiveData>> get currentFolderContent =>
       allByFolder[currentFolderId] ?? [];
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         allByFolder,
         allById,
         currentFolderId,

@@ -135,6 +135,7 @@ class MockGenericDb extends Mock implements GenericDb {
   MockGenericDb() {
     when(getAllNonDeletedMaxRevision()).thenAnswer((_) => Future.value([]));
     when(getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(insertAndAddDirty(any)).thenAnswer((_) => Future.value(true));
   }
 }
 
@@ -145,7 +146,13 @@ class MockUserFileDb extends Mock implements UserFileDb {
 
 class MockUserDb extends Mock implements UserDb {}
 
-class MockSettingsDb extends Mock implements SettingsDb {}
+class MockSettingsDb extends Mock implements SettingsDb {
+  MockSettingsDb() {
+    when(textToSpeech).thenReturn(true);
+    when(leftCategoryExpanded).thenReturn(true);
+    when(rightCategoryExpanded).thenReturn(true);
+  }
+}
 
 class MockSortableDb extends Mock implements SortableDb {}
 
@@ -228,9 +235,10 @@ extension OurEnterText on WidgetTester {
 
   Future verifyTts(Finder finder, {String contains, String exact}) async {
     await longPress(finder, warnIfMissed: false);
-    final arg = verify(GetIt.I<FlutterTts>().speak(captureAny)).captured.first;
+    final arg = verify(GetIt.I<FlutterTts>().speak(captureAny)).captured.first
+        as String;
     if (contains != null) {
-      expect(arg.contains(contains), isTrue,
+      expect(arg.toLowerCase().contains(contains.toLowerCase()), isTrue,
           reason: '$arg does not contain $contains');
     }
     if (exact != null) {

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'authentication_bloc.dart';
 
 abstract class AuthenticationState extends Equatable {
@@ -28,10 +26,10 @@ class Authenticated extends AuthenticationState {
   final int userId;
   final bool newlyLoggedIn;
   Authenticated({
-    @required this.token,
-    @required this.userId,
+    required this.token,
+    required this.userId,
     this.newlyLoggedIn = false,
-    @required UserRepository userRepository,
+    required UserRepository userRepository,
     bool forcedNewState = false,
   }) : super(userRepository, forcedNewState);
   @override

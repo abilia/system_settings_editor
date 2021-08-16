@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'edit_activity_bloc.dart';
 
 enum SaveError {
@@ -17,8 +15,8 @@ abstract class EditActivityState extends Equatable with Silent {
     this.activity,
     this.timeInterval,
     this.infoItems, {
-    this.originalActivity,
-    this.originalTimeInterval,
+    required this.originalActivity,
+    required this.originalTimeInterval,
     this.sucessfullSave,
     this.saveErrors = const UnmodifiableSetView.empty(),
   });
@@ -26,11 +24,10 @@ abstract class EditActivityState extends Equatable with Silent {
   final Activity activity, originalActivity;
   final TimeInterval timeInterval, originalTimeInterval;
   final MapView<Type, InfoItem> infoItems;
-  final bool sucessfullSave;
+  final bool? sucessfullSave;
   final UnmodifiableSetView<SaveError> saveErrors;
 
-  bool get hasTitleOrImage =>
-      activity.hasTitle || activity.fileId?.isNotEmpty == true;
+  bool get hasTitleOrImage => activity.hasTitle || activity.hasImage;
 
   bool get hasStartTime => timeInterval.startTime != null || activity.fullDay;
 
@@ -50,8 +47,7 @@ abstract class EditActivityState extends Equatable with Silent {
 
   bool startTimeBeforeNow(DateTime now) => activity.fullDay
       ? timeInterval.startDate.onlyDays().isBefore(now.onlyDays())
-      : hasStartTime &&
-          timeInterval.startDate.withTime(timeInterval.startTime).isBefore(now);
+      : hasStartTime && timeInterval.starts.isBefore(now);
 
   SelectedImage get selectedImage => SelectedImage.from(
         id: activity.fileId,
@@ -71,14 +67,14 @@ abstract class EditActivityState extends Equatable with Silent {
       );
     }
 
-    final startTime = timeInterval.startDate.withTime(timeInterval.startTime);
+    final startTime = timeInterval.starts;
     return storeActivity.copyWith(
       startTime: startTime,
       duration: _getDuration(startTime, timeInterval.endTime),
     );
   }
 
-  Duration _getDuration(DateTime startTime, TimeOfDay endTime) {
+  Duration _getDuration(DateTime? startTime, TimeOfDay? endTime) {
     if (startTime == null || endTime == null) return Duration.zero;
     final pickedEndTimeBeforeStartTime = endTime.hour < startTime.hour ||
         endTime.hour == startTime.hour && endTime.minute < startTime.minute;
@@ -98,7 +94,7 @@ abstract class EditActivityState extends Equatable with Silent {
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         activity,
         timeInterval,
         infoItems,
@@ -121,9 +117,8 @@ abstract class EditActivityState extends Equatable with Silent {
 class UnstoredActivityState extends EditActivityState {
   const UnstoredActivityState(
     Activity activity,
-    TimeInterval timeInterval, {
-    File newImage,
-  }) : super(
+    TimeInterval timeInterval,
+  ) : super(
           activity,
           timeInterval,
           const MapView(<Type, InfoItem>{}),
@@ -139,7 +134,7 @@ class UnstoredActivityState extends EditActivityState {
     TimeInterval originalTimeInterval, {
     UnmodifiableSetView<SaveError> saveErrors =
         const UnmodifiableSetView.empty(),
-    bool sucessfullSave,
+    bool? sucessfullSave,
   }) : super(
           activity,
           timeInterval,
@@ -153,8 +148,8 @@ class UnstoredActivityState extends EditActivityState {
   @override
   UnstoredActivityState copyWith(
     Activity activity, {
-    TimeInterval timeInterval,
-    Map<Type, InfoItem> infoItems,
+    TimeInterval? timeInterval,
+    Map<Type, InfoItem>? infoItems,
   }) =>
       UnstoredActivityState._(
         activity,
@@ -201,7 +196,7 @@ class StoredActivityState extends EditActivityState {
     TimeInterval originalTimeInterval,
     MapView<Type, InfoItem> infoItems,
     this.day, {
-    bool sucessfullSave,
+    bool? sucessfullSave,
     UnmodifiableSetView<SaveError> saveErrors =
         const UnmodifiableSetView.empty(),
   }) : super(
@@ -215,13 +210,13 @@ class StoredActivityState extends EditActivityState {
         );
 
   @override
-  List<Object> get props => [...super.props, day];
+  List<Object?> get props => [...super.props, day];
 
   @override
   StoredActivityState copyWith(
     Activity activity, {
-    Map<Type, InfoItem> infoItems,
-    TimeInterval timeInterval,
+    Map<Type, InfoItem>? infoItems,
+    TimeInterval? timeInterval,
   }) =>
       StoredActivityState._(
         activity,

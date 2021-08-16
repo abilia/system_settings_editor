@@ -1,26 +1,20 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/sortable/sortable.dart';
 import 'package:collection/collection.dart';
 import 'package:seagull/storage/all.dart';
-import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 part 'my_photos_state.dart';
 part 'my_photos_event.dart';
 
 class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
-  StreamSubscription sortableSubscription;
-  SortableBloc sortableBloc;
-  MyPhotosBloc({@required this.sortableBloc})
-      : super(MyPhotosState(
-            allByFolder: {}, allById: {}, currentFolderId: null)) {
+  late final StreamSubscription sortableSubscription;
+  final SortableBloc sortableBloc;
+  MyPhotosBloc({required this.sortableBloc}) : super(MyPhotosState()) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         add(SortablesArrived(sortableState.sortables));
@@ -47,6 +41,7 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
     final imageArchiveSortables =
         event.sortables.whereType<Sortable<ImageArchiveData>>();
     final myPhotosRoot = imageArchiveSortables.getMyPhotosFolder();
+    if (myPhotosRoot == null) return;
 
     final allByFolder = groupBy<Sortable<ImageArchiveData>, String>(
         imageArchiveSortables, (s) => s.groupId);
@@ -64,6 +59,8 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
       final imageArchiveSortables =
           sortablesState.sortables.whereType<Sortable<ImageArchiveData>>();
       final myPhotosFolder = imageArchiveSortables.getMyPhotosFolder();
+      if (myPhotosFolder == null) return;
+
       final sortableData = ImageArchiveData(
         name: event.name,
         file: '${FileStorage.folder}/${event.imageId}',
@@ -89,15 +86,10 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
       Iterable<Sortable<ImageArchiveData>> sortables) {
     final sortOrder = sortables.firstSortOrderInFolder();
 
-    final sortableData = ImageArchiveData(
-      name: '',
-      icon: '',
-      myPhotos: true,
-    );
+    final sortableData = ImageArchiveData(myPhotos: true);
 
     final myPhotos = Sortable.createNew<ImageArchiveData>(
       data: sortableData,
-      groupId: null,
       isGroup: true,
       sortOrder: sortOrder,
     );
@@ -108,9 +100,7 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
 
   @override
   Future<void> close() async {
-    if (sortableSubscription != null) {
-      await sortableSubscription.cancel();
-    }
+    await sortableSubscription.cancel();
     return super.close();
   }
 }

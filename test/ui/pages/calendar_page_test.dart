@@ -45,6 +45,7 @@ void main() {
     tokenDb: MockTokenDb(),
     userDb: MockUserDb(),
     licenseDb: licenseDb,
+    baseUrl: 'fake',
   );
 
   final defaultMemoSettingsBloc = MockMemoplannerSettingsBloc();
@@ -151,6 +152,28 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
+        expect(find.byType(EditActivityPage), findsOneWidget);
+      });
+
+      testWidgets('No option for basic activity when option set',
+          (WidgetTester tester) async {
+        when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+          (_) => Future.value(
+            [
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: false,
+                  identifier: MemoplannerSettings.advancedActivityTemplateKey,
+                ),
+              ),
+            ],
+          ),
+        );
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(AddActivityButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(CreateActivityPage), findsNothing);
         expect(find.byType(EditActivityPage), findsOneWidget);
       });
 
@@ -432,6 +455,21 @@ void main() {
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
     });
 
+    testWidgets('Tapping Day in TabBar returns to this week',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(nextDayButtonFinder);
+      await tester.tap(nextDayButtonFinder);
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.day));
+      await tester.pumpAndSettle();
+      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
+    });
+
     group('Premissions', () {
       final translate = Locales.language.values.first;
 
@@ -538,7 +576,7 @@ void main() {
       expect(find.byType(TimepillarCalendar), findsOneWidget);
     });
 
-    testWidgets('when calendar is changed, settings is saved unsynced mpgo',
+    testWidgets('when calendar is changed, settings is saved unsynced',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -550,21 +588,7 @@ void main() {
         key: MemoplannerSettings.viewOptionsTimeViewKey,
         matcher: DayCalendarType.TIMEPILLAR.index,
       );
-    }, skip: !Config.isMPGO);
-
-    testWidgets('when calendar is changed, settings is saved synced mp',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      await goToTimePillar(tester);
-
-      verifySyncGeneric(
-        tester,
-        mockGenericDb,
-        key: MemoplannerSettings.viewOptionsTimeViewKey,
-        matcher: DayCalendarType.TIMEPILLAR.index,
-      );
-    }, skip: !Config.isMP);
+    });
   });
 
   group('MemoPlanner settings', () {
@@ -1067,6 +1091,43 @@ void main() {
       expect(find.text(nextWeekTitle), findsOneWidget);
     });
 
+    testWidgets('Tapping Week in TabBar returns to this week',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.pumpAndSettle();
+      expect(find.byType(GoToCurrentActionButton), findsOneWidget);
+      await tester.verifyTts(find.byType(WeekAppBar), contains: 'week 30');
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(GoToCurrentActionButton), findsNothing);
+      await tester.verifyTts(find.byType(WeekAppBar), contains: 'week 32');
+    });
+
+    testWidgets('Tapping week in TabBar, current day is selected',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(nextDayButtonFinder);
+      await tester.tap(nextDayButtonFinder);
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      final allHeadings = tester.widgetList<WeekCalenderHeadingContent>(
+          find.byType(WeekCalenderHeadingContent));
+
+      final selected = allHeadings.firstWhere((element) => element.selected);
+
+      expect(selected.day, initialDay);
+    });
+
     testWidgets(
         'BUG SGC-756 tapping day goes back to that day calendar, then go back to now goes back to now',
         (WidgetTester tester) async {
@@ -1118,13 +1179,23 @@ void main() {
               widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsnextWeekPostSelect, hasLength(1));
 
-      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
       await tester.pumpAndSettle();
 
       final selectedHeadingsInitialPostSelect = tester.widgetList(
           find.byWidgetPredicate((widget) =>
               widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsInitialPostSelect, isEmpty);
+
+      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.pumpAndSettle();
+
+      final goToCurrentSelect = tester.widgetList(find.byWidgetPredicate(
+          (widget) => widget is WeekCalenderHeadingContent && widget.selected));
+      expect(goToCurrentSelect, hasLength(1));
     });
   });
 
@@ -1166,6 +1237,23 @@ void main() {
       expect(find.byType(DayCalendar), findsOneWidget);
       expect(find.text('Sunday'), findsOneWidget);
       expect(find.text('30 August 2020'), findsOneWidget);
+    });
+
+    testWidgets('Tapping Month in TabBar returns to this month',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      expect(find.byType(GoToCurrentActionButton), findsOneWidget);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      expect(find.byType(GoToCurrentActionButton), findsNothing);
+      await tester.verifyTts(find.byType(MonthAppBar), contains: 'August 2020');
     });
 
     group('app bar', () {

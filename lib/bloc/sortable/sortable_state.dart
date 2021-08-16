@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'sortable_bloc.dart';
 
 abstract class SortableState extends Equatable {
@@ -17,7 +15,7 @@ class SortablesLoaded extends SortableState {
   final Iterable<Sortable> sortables;
 
   const SortablesLoaded({
-    this.sortables,
+    required this.sortables,
   });
 
   @override

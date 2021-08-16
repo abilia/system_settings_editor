@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'activity_view_settings_cubit.dart';
 
 class ActivityViewSettingsState extends Equatable {
@@ -25,11 +23,11 @@ class ActivityViewSettingsState extends Equatable {
       );
 
   ActivityViewSettingsState copyWith({
-    bool alarm,
-    bool delete,
-    bool edit,
-    bool quarterHour,
-    bool timeOnQuarterHour,
+    bool? alarm,
+    bool? delete,
+    bool? edit,
+    bool? quarterHour,
+    bool? timeOnQuarterHour,
   }) =>
       ActivityViewSettingsState._(
         alarm ?? this.alarm,

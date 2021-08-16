@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:math';
 
@@ -21,16 +19,16 @@ class ScrollPositionBloc
   final DayPickerBloc dayPickerBloc;
   final ClockBloc clockBloc;
   final TimepillarBloc timepillarBloc;
-  StreamSubscription dayPickerBlocSubscription;
-  StreamSubscription clockBlocSubscription;
+  late final StreamSubscription dayPickerBlocSubscription;
+  late final StreamSubscription clockBlocSubscription;
 
   ScrollPositionBloc({
-    @required this.dayPickerBloc,
-    @required this.clockBloc,
-    @required this.timepillarBloc,
+    required this.dayPickerBloc,
+    required this.clockBloc,
+    required this.timepillarBloc,
     this.nowMarginTop = 8,
     this.nowMarginBottom = 8,
-  }) : super(Unready()) {
+  }) : super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
     dayPickerBlocSubscription = dayPickerBloc.stream
         .where((state) => !state.isToday)
         .listen((_) => add(WrongDaySelected()));
@@ -43,15 +41,15 @@ class ScrollPositionBloc
     ScrollPositionEvent event,
   ) async* {
     final s = state;
-    if (event is WrongDaySelected) {
+    if (event is GoToNow) {
+      await _jumpToActivity(s);
+    } else if (!dayPickerBloc.state.isToday) {
       yield WrongDay();
     } else if (event is ScrollViewRenderComplete) {
-      if (dayPickerBloc.state.isToday) {
-        yield* _isActivityInView(
-          event.scrollController,
-          event.createdTime,
-        );
-      }
+      yield* _isActivityInView(
+        event.scrollController,
+        event.createdTime,
+      );
     } else if (event is ScrollPositionUpdated &&
         s is ScrollPositionReadyState) {
       yield* _isActivityInView(
@@ -59,14 +57,11 @@ class ScrollPositionBloc
         s.scrollControllerCreatedTime,
       );
     }
-    if (event is GoToNow) {
-      await _jumpToActivity(s);
-    }
   }
 
   Stream<ScrollPositionState> _isActivityInView(
       ScrollController scrollController,
-      DateTime scrollControllerCreatedTime) async* {
+      DateTime? scrollControllerCreatedTime) async* {
     if (!scrollController.hasClients) {
       yield Unready();
       return;
@@ -102,20 +97,20 @@ class ScrollPositionBloc
   }
 
   bool _atBottomOfList({
-    @required double scrollPosition,
-    @required double maxScrollExtent,
-    @required double nowPosition,
+    required double scrollPosition,
+    required double maxScrollExtent,
+    required double nowPosition,
   }) =>
       scrollPosition >= maxScrollExtent && nowPosition > maxScrollExtent;
 
   bool _inView({
-    @required double scrollPosition,
-    @required double nowPosition,
+    required double scrollPosition,
+    required double nowPosition,
   }) =>
       nowPosition - scrollPosition <= nowMarginBottom &&
       scrollPosition - nowPosition <= nowMarginTop;
 
-  double timeFromCreation(DateTime scrollControllerCreatedTime) {
+  double timeFromCreation(DateTime? scrollControllerCreatedTime) {
     if (scrollControllerCreatedTime != null) {
       final now = clockBloc.state;
       final diff = now.difference(scrollControllerCreatedTime);

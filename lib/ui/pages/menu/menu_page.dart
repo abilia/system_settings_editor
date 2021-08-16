@@ -70,7 +70,8 @@ class CameraButton extends StatelessWidget {
                 final image =
                     await ImagePicker().getImage(source: ImageSource.camera);
                 if (image != null) {
-                  final selectedImage = SelectedImage.newFile(File(image.path));
+                  final selectedImage =
+                      SelectedImageFile.newFile(File(image.path));
                   BlocProvider.of<UserFileBloc>(context).add(
                     ImageAdded(selectedImage),
                   );

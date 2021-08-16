@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'memoplanner_setting_bloc.dart';
 
 abstract class MemoplannerSettingsEvent extends Equatable {
@@ -22,7 +20,7 @@ class GenericsFailedEvent extends MemoplannerSettingsEvent {
   List<Object> get props => [];
 }
 
-class SettingsUpdateEvent<T> extends MemoplannerSettingsEvent {
+class SettingsUpdateEvent<T extends Object> extends MemoplannerSettingsEvent {
   final String identifier;
   final T data;
   MemoplannerSettingData get settingData =>

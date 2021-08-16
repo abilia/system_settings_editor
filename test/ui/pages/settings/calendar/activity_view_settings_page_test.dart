@@ -43,14 +43,14 @@ void main() {
         .thenAnswer((_) => Future.value(generics));
     when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     when(genericDb.insertAndAddDirty(any))
-        .thenAnswer((realInvocation) => Future.value([]));
+        .thenAnswer((_) => Future.value(true));
 
     activityDb = MockActivityDb();
     when(activityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activities));
     when(activityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     when(activityDb.insertAndAddDirty(any))
-        .thenAnswer((realInvocation) => Future.value([]));
+        .thenAnswer((_) => Future.value(true));
 
     GetItInitializer()
       ..sharedPreferences = await MockSharedPreferences.getInstance()

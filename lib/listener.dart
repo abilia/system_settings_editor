@@ -222,8 +222,10 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
         ),
         BlocListener<MemoplannerSettingBloc, MemoplannerSettingsState>(
           listenWhen: (previous, current) =>
-              previous is MemoplannerSettingsNotLoaded &&
-              !(current is MemoplannerSettingsNotLoaded),
+              (previous is MemoplannerSettingsNotLoaded &&
+                  current is! MemoplannerSettingsNotLoaded) ||
+              AlarmSettingsState.fromMemoplannerSettings(previous) !=
+                  AlarmSettingsState.fromMemoplannerSettings(current),
           listener: (context, state) async {
             final activitiesState = context.read<ActivitiesBloc>().state;
             if (activitiesState is ActivitiesLoaded) {

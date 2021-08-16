@@ -8,36 +8,47 @@ import 'package:uuid/uuid.dart';
 class SelectedImage extends Equatable {
   final String id;
   final String path;
-  final File? file;
 
-  bool get isEmpty => id.isEmpty && path.isEmpty && file == null;
+  bool get isEmpty => id.isEmpty && path.isEmpty;
   bool get isNotEmpty => !isEmpty;
 
   const SelectedImage._(
     this.id,
-    this.path, {
-    this.file,
-  });
-
-  @visibleForTesting
-  factory SelectedImage.forTest(String id, String path, File file) =>
-      SelectedImage._(id, path, file: file);
+    this.path,
+  );
 
   factory SelectedImage.from({String? id, String? path}) =>
       SelectedImage._(id ?? '', path ?? '');
 
-  factory SelectedImage.newFile(File file) {
-    assert(file.existsSync());
-    final id = Uuid().v4();
-    return SelectedImage._(
-      id,
-      '${FileStorage.folder}/$id',
-      file: file,
-    );
-  }
-
   static const empty = SelectedImage._('', '');
 
   @override
-  List<Object?> get props => [id, path, file];
+  List<Object?> get props => [id, path];
+}
+
+class SelectedImageFile extends SelectedImage {
+  final File file;
+
+  const SelectedImageFile._(
+    String id,
+    String path,
+    this.file,
+  ) : super._(id, path);
+
+  factory SelectedImageFile.newFile(File file) {
+    assert(file.existsSync());
+    final id = Uuid().v4();
+    return SelectedImageFile._(
+      id,
+      '${FileStorage.folder}/$id',
+      file,
+    );
+  }
+
+  @visibleForTesting
+  factory SelectedImageFile.forTest(String id, String path, File file) =>
+      SelectedImageFile._(id, path, file);
+
+  @override
+  List<Object?> get props => [...super.props, file];
 }

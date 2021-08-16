@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'password_state.dart';
 
 class PasswordCubit extends Cubit<PasswordState> {
-  final bool Function(String value) validator;
+  final bool Function(String value)? validator;
   PasswordCubit(
     String password,
     this.validator,

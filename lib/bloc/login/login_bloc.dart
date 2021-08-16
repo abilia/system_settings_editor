@@ -1,9 +1,6 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
@@ -14,17 +11,17 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
+  static final _log = Logger((LoginBloc).toString());
+
   final AuthenticationBloc authenticationBloc;
   final FirebasePushService pushService;
   final ClockBloc clockBloc;
 
   LoginBloc({
-    @required this.authenticationBloc,
-    @required this.pushService,
-    @required this.clockBloc,
-  })  : assert(authenticationBloc != null),
-        assert(pushService != null),
-        super(LoginState.initial());
+    required this.authenticationBloc,
+    required this.pushService,
+    required this.clockBloc,
+  }) : super(LoginState.initial());
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
@@ -64,6 +61,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final authState = authenticationBloc.state;
     try {
       final pushToken = await pushService.initPushToken();
+      if (pushToken == null) throw 'push token null';
       final token = await authState.userRepository.authenticate(
         username: state.username.trim(),
         password: state.password.trim(),
@@ -84,6 +82,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } on UnauthorizedException {
       yield state.failure(cause: LoginFailureCause.Credentials);
     } catch (error) {
+      _log.severe('could not login: $error');
       yield state.failure(cause: LoginFailureCause.NoConnection);
     }
   }

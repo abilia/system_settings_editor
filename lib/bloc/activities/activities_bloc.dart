@@ -1,9 +1,7 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -16,13 +14,13 @@ part 'activities_state.dart';
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     with EditRecurringMixin {
   final ActivityRepository activityRepository;
-  StreamSubscription pushSubscription;
+  late final StreamSubscription pushSubscription;
   final SyncBloc syncBloc;
 
   ActivitiesBloc({
-    @required this.activityRepository,
-    @required this.syncBloc,
-    @required PushBloc pushBloc,
+    required this.activityRepository,
+    required this.syncBloc,
+    required PushBloc pushBloc,
   }) : super(ActivitiesNotLoaded()) {
     pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
@@ -161,9 +159,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
 
   @override
   Future<void> close() async {
-    if (pushSubscription != null) {
-      await pushSubscription.cancel();
-    }
+    await pushSubscription.cancel();
     return super.close();
   }
 }

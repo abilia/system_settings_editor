@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+
 import 'package:seagull/repository/all.dart';
 
 part 'sync_event.dart';
@@ -20,11 +18,11 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final SyncDelays syncDelay;
 
   SyncBloc({
-    @required this.activityRepository,
-    @required this.userFileRepository,
-    @required this.sortableRepository,
-    @required this.syncDelay,
-    @required this.genericRepository,
+    required this.activityRepository,
+    required this.userFileRepository,
+    required this.sortableRepository,
+    required this.syncDelay,
+    required this.genericRepository,
   }) : super(SyncInitial());
 
   final Queue<SyncEvent> _syncQueue = Queue<SyncEvent>();

@@ -87,7 +87,6 @@ class DayAppBarPreview extends StatelessWidget {
                 displayWeekDay: state.showWeekday,
                 displayPartOfDay: state.showDayPeriod,
                 displayDate: state.showDate,
-                compress: state.showClock && state.showBrowseButtons,
                 currentTime: currentTime,
                 day: currentTime.onlyDays(),
                 dayParts: memoSettingsState.dayParts,

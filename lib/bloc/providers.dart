@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
@@ -15,11 +13,11 @@ import 'package:seagull/storage/all.dart';
 class AuthenticatedBlocsProvider extends StatelessWidget {
   final Authenticated authenticatedState;
   final Widget child;
-  final MemoplannerSettingBloc memoplannerSettingBloc;
-  final SortableBloc sortableBloc;
+  final MemoplannerSettingBloc? memoplannerSettingBloc;
+  final SortableBloc? sortableBloc;
   AuthenticatedBlocsProvider({
-    @required this.authenticatedState,
-    @required this.child,
+    required this.authenticatedState,
+    required this.child,
     this.memoplannerSettingBloc,
     this.sortableBloc,
   }) {
@@ -190,12 +188,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
 
 class TopLevelBlocsProvider extends StatelessWidget {
   final Widget child;
-  final PushBloc pushBloc;
+  final PushBloc? pushBloc;
   final String baseUrl;
   const TopLevelBlocsProvider({
-    Key key,
-    @required this.child,
-    @required this.baseUrl,
+    Key? key,
+    required this.child,
+    required this.baseUrl,
     this.pushBloc,
   }) : super(key: key);
 
@@ -248,9 +246,9 @@ class CopiedAuthProviders extends StatelessWidget {
   final BuildContext blocContext;
 
   const CopiedAuthProviders({
-    Key key,
-    @required this.child,
-    @required this.blocContext,
+    Key? key,
+    required this.blocContext,
+    required this.child,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {

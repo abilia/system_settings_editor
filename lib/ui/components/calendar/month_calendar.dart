@@ -72,6 +72,7 @@ class MonthContent extends StatelessWidget {
           return BlocBuilder<MonthCalendarBloc, MonthCalendarState>(
             buildWhen: (oldState, newState) => newState.index == item,
             builder: (context, state) {
+              if (state.index != item) return Container();
               return Column(
                 children: [
                   ...state.weeks.map(
@@ -183,6 +184,7 @@ class MonthDayView extends StatelessWidget {
     @required this.dayTheme,
   }) : super(key: key);
   static final monthDayRadius = Radius.circular(8.s);
+  static final monthDayborderRadius = BorderRadius.all(monthDayRadius);
 
   @override
   Widget build(BuildContext context) {
@@ -200,12 +202,12 @@ class MonthDayView extends StatelessWidget {
             foregroundDecoration: day.isCurrent
                 ? BoxDecoration(
                     border: currentActivityBorder,
-                    borderRadius: BorderRadius.all(monthDayRadius),
+                    borderRadius: monthDayborderRadius,
                   )
                 : dayPickerState.day.isAtSameDay(day.day)
                     ? BoxDecoration(
                         border: selectedActivityBorder,
-                        borderRadius: BorderRadius.all(monthDayRadius),
+                        borderRadius: monthDayborderRadius,
                       )
                     : null,
             child: Column(
@@ -340,7 +342,7 @@ class MonthFullDayStack extends StatelessWidget {
   Widget build(BuildContext context) {
     final decoration = BoxDecoration(
       color: AbiliaColors.white,
-      borderRadius: BorderRadius.all(MonthDayView.monthDayRadius),
+      borderRadius: MonthDayView.monthDayborderRadius,
       border: border,
     );
     return Stack(
@@ -372,24 +374,31 @@ class MonthActivityContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: AbiliaColors.white,
-        borderRadius: BorderRadius.all(MonthDayView.monthDayRadius),
+      clipBehavior: Clip.hardEdge,
+      foregroundDecoration: BoxDecoration(
+        borderRadius: MonthDayView.monthDayborderRadius,
         border: border,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: MonthDayView.monthDayborderRadius,
+        color: AbiliaColors.white,
       ),
       child: Center(
         child: activityDay.activity.hasImage
             ? FadeInAbiliaImage(
                 imageFileId: activityDay.activity.fileId,
                 imageFilePath: activityDay.activity.icon,
-                fit: BoxFit.fitWidth,
+                borderRadius: BorderRadius.zero,
                 height: double.infinity,
+                width: double.infinity,
               )
             : Padding(
                 padding: EdgeInsets.all(3.0.s),
                 child: Tts(
                   child: Text(
                     activityDay.activity.title,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
                   ),
                 ),
               ),

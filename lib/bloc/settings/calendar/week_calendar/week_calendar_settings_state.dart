@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'week_calendar_settings_cubit.dart';
 
 class WeekCalendarSettingsState extends Equatable {
@@ -9,12 +7,12 @@ class WeekCalendarSettingsState extends Equatable {
   final WeekColor weekColor;
 
   WeekCalendarSettingsState._({
-    @required this.showBrowseButtons,
-    @required this.showWeekNumber,
-    @required this.showYear,
-    @required this.showClock,
-    @required this.weekDisplayDays,
-    @required this.weekColor,
+    required this.showBrowseButtons,
+    required this.showWeekNumber,
+    required this.showYear,
+    required this.showClock,
+    required this.weekDisplayDays,
+    required this.weekColor,
   });
 
   factory WeekCalendarSettingsState.fromMemoplannerSettings(
@@ -30,12 +28,12 @@ class WeekCalendarSettingsState extends Equatable {
       );
 
   WeekCalendarSettingsState copyWith({
-    bool showBrowseButtons,
-    bool showWeekNumber,
-    bool showYear,
-    bool showClock,
-    WeekDisplayDays weekDisplayDays,
-    WeekColor weekColor,
+    bool? showBrowseButtons,
+    bool? showWeekNumber,
+    bool? showYear,
+    bool? showClock,
+    WeekDisplayDays? weekDisplayDays,
+    WeekColor? weekColor,
   }) =>
       WeekCalendarSettingsState._(
         showBrowseButtons: showBrowseButtons ?? this.showBrowseButtons,

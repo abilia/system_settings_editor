@@ -55,7 +55,8 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, morning'), findsOneWidget);
+    expect(find.text('Monday'), findsOneWidget);
+    expect(find.text('morning'), findsOneWidget);
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 
@@ -65,8 +66,8 @@ void main() {
     await tester.pumpWidget(wrapWithMaterialApp(
         DayAppBar(day: day.add(24.hours())), defaultClockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Tuesday, morning'), findsNothing);
     expect(find.text('Tuesday'), findsOneWidget);
+    expect(find.text('morning'), findsNothing);
     expect(find.text('6 October 2020'), findsOneWidget);
   });
 
@@ -75,8 +76,8 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, morning'), findsNothing);
     expect(find.text('Monday'), findsOneWidget);
+    expect(find.text('morning'), findsNothing);
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 
@@ -87,7 +88,6 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, morning'), findsNothing);
     expect(find.text('Monday'), findsOneWidget);
     expect(find.text('morning'), findsOneWidget);
     expect(find.text('5 October 2020'), findsNothing);
@@ -98,7 +98,6 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, morning'), findsNothing);
     expect(find.text('Monday'), findsNothing);
     expect(find.text('morning'), findsOneWidget);
     expect(find.text('5 October 2020'), findsOneWidget);
@@ -112,7 +111,6 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, morning'), findsNothing);
     expect(find.text('Monday'), findsOneWidget);
     expect(find.text('morning'), findsNothing);
     expect(find.text('5 October 2020'), findsNothing);
@@ -127,7 +125,6 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, morning'), findsNothing);
     expect(find.text('Monday'), findsNothing);
     expect(find.text('morning'), findsOneWidget);
     expect(find.text('5 October 2020'), findsNothing);
@@ -142,7 +139,6 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, morning'), findsNothing);
     expect(find.text('Monday'), findsNothing);
     expect(find.text('morning'), findsNothing);
     expect(find.text('5 October 2020'), findsOneWidget);
@@ -157,7 +153,6 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, morning'), findsNothing);
     expect(find.text('Monday'), findsNothing);
     expect(find.text('morning'), findsNothing);
     expect(find.text('5 October 2020'), findsNothing);
@@ -172,7 +167,8 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, evening'), findsOneWidget);
+    expect(find.text('Monday'), findsOneWidget);
+    expect(find.text('evening'), findsOneWidget);
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 
@@ -186,7 +182,8 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, afternoon'), findsOneWidget);
+    expect(find.text('Monday'), findsOneWidget);
+    expect(find.text('afternoon'), findsOneWidget);
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 
@@ -198,7 +195,8 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, forenoon'), findsOneWidget);
+    expect(find.text('Monday'), findsOneWidget);
+    expect(find.text('forenoon'), findsOneWidget);
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 
@@ -210,7 +208,8 @@ void main() {
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
     await tester.pumpAndSettle();
-    expect(find.text('Monday, afternoon'), findsOneWidget);
+    expect(find.text('Monday'), findsOneWidget);
+    expect(find.text('afternoon'), findsOneWidget);
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 }

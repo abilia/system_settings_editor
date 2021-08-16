@@ -86,26 +86,7 @@ class _CreateActivityPageState extends State<CreateActivityPage> {
 
   Future navigateToEditActivityPage([BasicActivityData basicActivity]) async {
     final saved = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
-          child: BlocProvider<EditActivityBloc>(
-            create: (_) => EditActivityBloc.newActivity(
-              activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-              clockBloc: BlocProvider.of<ClockBloc>(context),
-              memoplannerSettingBloc:
-                  BlocProvider.of<MemoplannerSettingBloc>(context),
-              day: widget.day,
-              basicActivityData: basicActivity,
-            ),
-            child: EditActivityPage(
-              day: widget.day,
-              title: Translator.of(context).translate.newActivity,
-            ),
-          ),
-        ),
-        settings: RouteSettings(name: '$EditActivityPage new activity'),
-      ),
+      EditActivityPage.route(context, widget.day, basicActivity),
     );
     if (saved != null) {
       await Navigator.of(context).maybePop();

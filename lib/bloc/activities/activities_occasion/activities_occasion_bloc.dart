@@ -1,9 +1,7 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -15,12 +13,12 @@ class ActivitiesOccasionBloc
     extends Bloc<ActivitiesOccasionEvent, ActivitiesOccasionState> {
   final DayActivitiesBloc dayActivitiesBloc;
   final ClockBloc clockBloc;
-  StreamSubscription activitiesSubscription;
-  StreamSubscription clockSubscription;
+  late final StreamSubscription activitiesSubscription;
+  late final StreamSubscription clockSubscription;
 
   ActivitiesOccasionBloc({
-    @required this.clockBloc,
-    @required this.dayActivitiesBloc,
+    required this.clockBloc,
+    required this.dayActivitiesBloc,
   }) : super(ActivitiesOccasionLoading()) {
     activitiesSubscription = dayActivitiesBloc.stream.listen((activitiesState) {
       if (activitiesState is DayActivitiesLoaded) {
@@ -54,7 +52,7 @@ class ActivitiesOccasionBloc
 
   ActivitiesOccasionLoaded _mapActivitiesToActivityOccasionsState(
       DayActivitiesLoaded dayActivitiesLoadedState,
-      {@required DateTime now}) {
+      {required DateTime now}) {
     final day = dayActivitiesLoadedState.day;
     final activities = dayActivitiesLoadedState.activities;
     final occasion = dayActivitiesLoadedState.occasion;
@@ -91,11 +89,11 @@ class ActivitiesOccasionBloc
   }
 
   ActivitiesOccasionLoaded createState({
-    @required Iterable<ActivityDay> activities,
-    @required DateTime day,
-    @required Occasion occasion,
-    @required ActivityOccasion Function(ActivityDay) asActivityOccasion,
-    ActivityOccasion Function(ActivityDay) asFulldayOccasion,
+    required Iterable<ActivityDay> activities,
+    required DateTime day,
+    required Occasion occasion,
+    required ActivityOccasion Function(ActivityDay) asActivityOccasion,
+    ActivityOccasion Function(ActivityDay)? asFulldayOccasion,
   }) =>
       ActivitiesOccasionLoaded(
         activities: activities

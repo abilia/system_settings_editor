@@ -30,7 +30,7 @@ class GenericRepository extends DataRepository<Generic> {
         );
 
   @override
-  Future<void> save(Iterable<Generic> data) async {
+  Future<bool> save(Iterable<Generic> data) async {
     if (Config.isMP) return super.save(data);
     log.fine('$path - ${Config.flavor.name} - will only sync syncable');
 
@@ -54,8 +54,9 @@ class GenericRepository extends DataRepository<Generic> {
     final syncables = shouldNotSync[false];
     if (syncables != null) {
       log.fine('$path - ${Config.flavor.name} - storing for sync: $syncables');
-      await db.insertAndAddDirty(syncables);
+      return db.insertAndAddDirty(syncables);
     }
+    return false;
   }
 
   @override

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'permission_bloc.dart';
 
 abstract class PermissionEvent extends Equatable with Info {

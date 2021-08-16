@@ -42,6 +42,8 @@ extension UriExtension on String {
 
 extension Replace on String {
   String get singleLine => replaceAll('-\n', '');
+  String capitalize() =>
+      isNotEmpty ? '${this[0].toUpperCase()}${substring(1)}' : this;
 }
 
 class TextRenderingSize {

@@ -179,5 +179,72 @@ void main() {
         ),
       );
     });
+
+    test('SGC-864: Week calendar updates occasion', () async {
+      final initalMinActivity = Activity.createNew(
+            title: 'initalMinActivity',
+            startTime: initialMinutes,
+          ),
+          nextMinActivity = Activity.createNew(
+            title: 'nextMinActivity',
+            startTime: initialMinutes.add(1.minutes()),
+          );
+      // Arrange
+      when(mockActivityRepository.load()).thenAnswer(
+          (_) => Future.value([initalMinActivity, nextMinActivity]));
+      // Act
+      activitiesBloc.add(LoadActivities());
+      // Assert
+      await expectLater(
+        weekCalendarBloc.stream,
+        emits(
+          WeekCalendarLoaded(
+            initialMinutes.firstInWeek(),
+            {
+              0: [],
+              1: [],
+              2: [],
+              3: [], // No activity this day since remove after is true
+              4: [
+                ActivityOccasion.forTest(initalMinActivity),
+                ActivityOccasion.forTest(
+                  nextMinActivity,
+                  occasion: Occasion.future,
+                ),
+              ],
+              5: [],
+              6: []
+            },
+          ),
+        ),
+      );
+
+      // Act
+      mockedTicker.add(initialMinutes.add(1.minutes()));
+      // Assert
+      await expectLater(
+        weekCalendarBloc.stream,
+        emits(
+          WeekCalendarLoaded(
+            initialMinutes.firstInWeek(),
+            {
+              0: [],
+              1: [],
+              2: [],
+              3: [], // No activity this day since remove after is true
+              4: [
+                ActivityOccasion.forTest(
+                  initalMinActivity,
+                  occasion: Occasion.past,
+                ),
+                ActivityOccasion.forTest(nextMinActivity),
+              ],
+              5: [],
+              6: []
+            },
+          ),
+        ),
+      );
+    });
   });
 }

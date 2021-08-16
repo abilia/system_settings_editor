@@ -1,5 +1,7 @@
 // @dart=2.9
 
+import 'package:auto_size_text/auto_size_text.dart';
+
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -15,16 +17,25 @@ class AppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = Theme.of(context).textTheme.headline6;
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.headline6,
+      style: style,
       overflow: TextOverflow.ellipsis,
       child: Tts(
-        data: '${rows.row1};${rows.row2}',
+        data: '${rows.row1} ${rows.row2} ${rows.row3}',
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (rows.row1.isNotEmpty) Text(rows.row1),
             if (rows.row2.isNotEmpty) Text(rows.row2),
+            if (rows.row3.isNotEmpty)
+              AutoSizeText(
+                rows.row3,
+                maxLines: 1,
+                minFontSize: style.fontSize,
+                overflowReplacement:
+                    rows.row3Short.isNotEmpty ? Text(rows.row3Short) : null,
+              ),
           ],
         ),
       ),
@@ -33,40 +44,42 @@ class AppBarTitle extends StatelessWidget {
 }
 
 class AppBarTitleRows {
-  final String row1, row2;
+  final String row1, row2, row3, row3Short;
 
-  const AppBarTitleRows._(this.row1, [this.row2 = '']);
+  const AppBarTitleRows._(
+    this.row1, [
+    this.row2 = '',
+    this.row3 = '',
+    this.row3Short = '',
+  ]);
+
+  static DateFormat longDate(String langCode) =>
+      DateFormat('d MMMM y', langCode);
+  static DateFormat shortDate(String langCode) =>
+      DateFormat('d MMM yy', langCode);
+
   factory AppBarTitleRows.day({
     bool displayWeekDay = true,
     bool displayPartOfDay = true,
     bool displayDate = true,
-    bool compress = false,
     @required DateTime currentTime,
     @required DateTime day,
     @required DayParts dayParts,
     @required String langCode,
     @required Translated translator,
   }) {
-    final part = currentTime.dayPart(dayParts);
-    final partOfDay = _getPartOfDay(
-      currentTime.isAtSameDay(day),
-      currentTime.hour,
-      part,
-      translator,
-    );
-    var row1 =
-        displayWeekDay ? '${DateFormat('EEEE', langCode).format(day)}' : '';
-    var row2 = displayDate
-        ? DateFormat(compress ? 'd MMM yy' : 'd MMMM y', langCode).format(day)
-        : displayPartOfDay
-            ? partOfDay
-            : '';
-    if (displayDate && displayPartOfDay && partOfDay.isNotEmpty) {
-      row1 = displayWeekDay
-          ? '${DateFormat(compress ? 'EEE' : 'EEEE', langCode).format(day)}, ${compress ? partOfDay.substring(0, 3) : partOfDay}'
-          : partOfDay;
-    }
-    return AppBarTitleRows._(row1, row2);
+    final weekday = displayWeekDay ? DateFormat.EEEE(langCode).format(day) : '';
+    final daypart = displayPartOfDay
+        ? _getPartOfDay(
+            currentTime.isAtSameDay(day),
+            currentTime.hour,
+            currentTime.dayPart(dayParts),
+            translator,
+          )
+        : '';
+    final date = displayDate ? longDate(langCode).format(day) : '';
+    final dateShort = displayDate ? shortDate(langCode).format(day) : '';
+    return AppBarTitleRows._(weekday, daypart, date, dateShort);
   }
 
   static String _getPartOfDay(
@@ -101,28 +114,19 @@ class AppBarTitleRows {
     @required bool showWeekNumber,
     @required bool showYear,
     @required String langCode,
-    @required bool compressDay,
     @required Translated translator,
   }) {
     final displayWeekDay = selectedDay.isSameWeek(selectedWeekStart);
-    final longWeekDay = '${DateFormat('EEEE', langCode).format(selectedDay)}';
-    final shortWeekDayName = translator.shortWeekday(selectedDay.weekday);
-    final day = compressDay && showWeekNumber && showYear
-        ? shortWeekDayName
-        : longWeekDay;
-    final week = '${translator.week} ${selectedWeekStart.getWeekNumber()}';
-    final row1 = displayWeekDay
-        ? day + (showWeekNumber && showYear ? ', $week' : '')
-        : showWeekNumber && showYear
-            ? week
-            : '';
-    final row2 = showYear
-        ? '${selectedWeekStart.year}'
-        : showWeekNumber
-            ? week
-            : '';
+    final day =
+        displayWeekDay ? DateFormat.EEEE(langCode).format(selectedDay) : '';
+    final weekTranslation =
+        displayWeekDay ? translator.week : translator.week.capitalize();
+    final week = showWeekNumber
+        ? '$weekTranslation ${selectedWeekStart.getWeekNumber()}'
+        : '';
+    final year = showYear ? DateFormat.y(langCode).format(selectedDay) : '';
 
-    return AppBarTitleRows._(row1, row2);
+    return AppBarTitleRows._(day, week, year);
   }
 
   factory AppBarTitleRows.month({
@@ -130,7 +134,8 @@ class AppBarTitleRows {
     @required String langCode,
     @required bool showYear,
   }) =>
-      showYear
-          ? AppBarTitleRows._(DateFormat.yMMMM(langCode).format(currentTime))
-          : AppBarTitleRows._(DateFormat.MMM(langCode).format(currentTime));
+      AppBarTitleRows._(
+        DateFormat.MMMM(langCode).format(currentTime),
+        showYear ? DateFormat.y(langCode).format(currentTime) : '',
+      );
 }

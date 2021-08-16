@@ -1,9 +1,6 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -14,12 +11,13 @@ part 'day_activities_state.dart';
 class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
   final ActivitiesBloc activitiesBloc;
   final DayPickerBloc dayPickerBloc;
-  StreamSubscription _activitiesSubscription;
-  StreamSubscription _dayPickerSubscription;
+  late final StreamSubscription _activitiesSubscription;
+  late final StreamSubscription _dayPickerSubscription;
 
-  DayActivitiesBloc(
-      {@required this.activitiesBloc, @required this.dayPickerBloc})
-      : super(activitiesBloc.state is ActivitiesLoaded
+  DayActivitiesBloc({
+    required this.activitiesBloc,
+    required this.dayPickerBloc,
+  }) : super(activitiesBloc.state is ActivitiesLoaded
             ? _mapToState(
                 (activitiesBloc.state as ActivitiesLoaded).activities,
                 dayPickerBloc.state.day,

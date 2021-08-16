@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'push_bloc.dart';
 
 abstract class PushState {
@@ -9,7 +7,7 @@ abstract class PushState {
 class PushReady extends PushState {}
 
 class PushReceived extends PushState {
-  final String pushType;
+  final String? pushType;
 
   PushReceived(this.pushType);
 

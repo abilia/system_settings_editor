@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'login_bloc.dart';
 
 class LoginState extends Equatable {
@@ -15,8 +13,8 @@ class LoginState extends Equatable {
   bool get usernameError => false;
 
   const LoginState({
-    @required this.username,
-    @required this.password,
+    required this.username,
+    required this.password,
   });
 
   factory LoginState.initial() {
@@ -27,8 +25,8 @@ class LoginState extends Equatable {
   }
 
   LoginState copyWith({
-    String username,
-    String password,
+    String? username,
+    String? password,
   }) =>
       LoginState(
         username: username ?? this.username,
@@ -41,7 +39,7 @@ class LoginState extends Equatable {
       );
 
   LoginFailure failure({
-    LoginFailureCause cause,
+    required LoginFailureCause cause,
   }) =>
       LoginFailure._(
         username,
@@ -85,7 +83,7 @@ class LoginFailure extends LoginState {
   const LoginFailure._(
     String username,
     String password, {
-    @required this.cause,
+    required this.cause,
   }) : super(
           username: username,
           password: password,
@@ -93,7 +91,7 @@ class LoginFailure extends LoginState {
 
   @override
   LoginFailure failure({
-    LoginFailureCause cause,
+    required LoginFailureCause cause,
   }) =>
       LoginFailure._(
         username,

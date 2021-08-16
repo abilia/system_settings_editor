@@ -1,6 +1,3 @@
-// @dart=2.9
-
-import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -11,9 +8,9 @@ class ActivityMappingResult {
 
 mixin EditRecurringMixin {
   ActivityMappingResult deleteThisDayAndForwardToState({
-    @required Activity activity,
-    @required Set<Activity> activities,
-    @required DateTime day,
+    required Activity activity,
+    required Set<Activity> activities,
+    required DateTime day,
   }) {
     final series =
         activities.where((a) => a.seriesId == activity.seriesId).toSet();
@@ -37,9 +34,9 @@ mixin EditRecurringMixin {
   }
 
   ActivityMappingResult deleteOnlyThisDay({
-    @required Activity activity,
-    @required Set<Activity> activities,
-    @required DateTime day,
+    required Activity activity,
+    required Set<Activity> activities,
+    required DateTime day,
   }) {
     final isFirstDay = activity.startTime.isAtSameDay(day);
     final isLastDay = activity.recurs.end.isAtSameDay(day);
@@ -68,9 +65,9 @@ mixin EditRecurringMixin {
   }
 
   ActivityMappingResult updateThisDayAndForward({
-    @required Activity activity,
-    @required Set<Activity> activities,
-    @required DateTime day,
+    required Activity activity,
+    required Set<Activity> activities,
+    required DateTime day,
   }) {
     final newStart = activity.startTime;
     final series = activities.where((a) => a.seriesId == activity.seriesId);
@@ -114,9 +111,9 @@ mixin EditRecurringMixin {
   }
 
   ActivityMappingResult updateOnlyThisDay({
-    @required Activity activity,
-    @required Set<Activity> activities,
-    @required DateTime day,
+    required Activity activity,
+    required Set<Activity> activities,
+    required DateTime day,
   }) {
     final onlyDayActivity = activity.copyWith(recurs: Recurs.not);
     final oldActivity = activities.firstWhere((a) => a.id == activity.id);

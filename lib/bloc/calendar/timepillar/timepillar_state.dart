@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'timepillar_bloc.dart';
 
 // ActivityTimepillarCard
