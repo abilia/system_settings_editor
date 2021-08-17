@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:exif/exif.dart';
+import 'package:exif/exif.dart' as exif;
 import 'package:image/image.dart' as img;
 import 'package:image/src/exif_data.dart';
 import 'package:image/src/transform/flip.dart';
@@ -71,13 +71,9 @@ Future<img.Image> adjustRotationToExif(List<int> imageBytes) async {
   final image = img.decodeImage(imageBytes);
   if (image == null) throw 'could not decode image bytes $imageBytes';
   final bakedImage = img.Image.from(image);
-  final data = await readExifFromBytes(imageBytes);
-  if (data == null) {
-    return bakedImage;
-  }
+  final data = await exif.readExifFromBytes(imageBytes);
   final orientationData = data[IMAGE_ORIENTATION_FLAG];
-  final int orientation =
-      orientationData?.values?.firstWhere((_) => true, orElse: () => 1);
+  final orientation = orientationData?.values.firstAsInt() ?? 1;
   if (orientation == 1) {
     return bakedImage;
   }
