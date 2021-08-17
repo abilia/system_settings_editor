@@ -382,7 +382,9 @@ abstract class Translated {
 
   final String edge = 'Edge';
 
-  final String preview = 'Preview';
+  final String monthCalendarGrid = 'Grid';
+
+  final String monthCalendarPreview = 'Preview';
 
   final String textToSpeech = 'Speech support';
 
@@ -1205,7 +1207,10 @@ class SV extends Translated {
   final String edge = 'Flärp';
 
   @override
-  final String preview = 'Förhandsgranskning';
+  final String monthCalendarGrid = 'Rutnät';
+
+  @override
+  final String monthCalendarPreview = 'Förhandsgranskning';
 
   @override
   final String textToSpeech = 'Talstöd';
@@ -2157,7 +2162,10 @@ class DA extends Translated {
   final String edge = 'Flik';
 
   @override
-  final String preview = 'Forhåndsvisning';
+  final String monthCalendarGrid = 'Gitter';
+
+  @override
+  final String monthCalendarPreview = 'Forhåndsvisning';
 
   @override
   final String textToSpeech = 'Talestøtte';
@@ -3109,7 +3117,10 @@ class NL extends Translated {
   final String edge = 'Rand';
 
   @override
-  final String preview = 'Voorbeeld';
+  final String monthCalendarGrid = 'Raster';
+
+  @override
+  final String monthCalendarPreview = 'Voorbeeld';
 
   @override
   final String textToSpeech = 'Spraakondersteuning';
@@ -4062,7 +4073,10 @@ class FI extends Translated {
   final String edge = 'Reuna';
 
   @override
-  final String preview = 'Esikatselu';
+  final String monthCalendarGrid = 'Ruudukko';
+
+  @override
+  final String monthCalendarPreview = 'Esikatselu';
 
   @override
   final String textToSpeech = 'Puhetuki';
@@ -5018,7 +5032,10 @@ class DE extends Translated {
   final String edge = 'Kante';
 
   @override
-  final String preview = 'Vorschau';
+  final String monthCalendarGrid = 'Gitter';
+
+  @override
+  final String monthCalendarPreview = 'Vorschau';
 
   @override
   final String textToSpeech = 'Sprachausgabe';
@@ -5971,7 +5988,10 @@ class NB extends Translated {
   final String edge = 'Flik';
 
   @override
-  final String preview = 'Forhåndsvisning';
+  final String monthCalendarGrid = 'Nett';
+
+  @override
+  final String monthCalendarPreview = 'Forhåndsvisning';
 
   @override
   final String textToSpeech = 'Talesyntese';

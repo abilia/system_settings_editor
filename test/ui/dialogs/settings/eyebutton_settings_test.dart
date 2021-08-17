@@ -48,7 +48,7 @@ void main() {
 
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
-          data: DayCalendarType.TIMEPILLAR.index,
+          data: DayCalendarType.timepillar.index,
           identifier: MemoplannerSettings.viewOptionsTimeViewKey),
     );
 
@@ -87,9 +87,9 @@ void main() {
 
     // Act - change to Edge illustraion in time
     await tester.pumpAndSettle();
-    await tester.tap(find.byType(EyeButton));
+    await tester.tap(find.byType(EyeButtonDay));
     await tester.pumpAndSettle();
-    final center = tester.getCenter(find.byType(EyeButtonDialog));
+    final center = tester.getCenter(find.byType(EyeButtonDayDialog));
     await tester.dragFrom(center, Offset(0.0, -400));
     await tester.pumpAndSettle();
 
@@ -142,7 +142,7 @@ void main() {
         exact: translate.dayAndNight);
 
     // Scroll down
-    final center = tester.getCenter(find.byType(EyeButtonDialog));
+    final center = tester.getCenter(find.byType(EyeButtonDayDialog));
     await tester.dragFrom(center, Offset(0.0, -400));
     await tester.pumpAndSettle();
 
@@ -160,7 +160,7 @@ extension on WidgetTester {
   Future<void> goToEyeButtonSettings({bool pumpApp = true}) async {
     if (pumpApp) await pumpWidget(App());
     await pumpAndSettle();
-    await tap(find.byType(EyeButton));
+    await tap(find.byType(EyeButtonDay));
     await pumpAndSettle();
   }
 }

@@ -78,7 +78,7 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   bool get displayEyeButton =>
       settingViewOptionsTimeView ||
-      (dayCalendarType == DayCalendarType.TIMEPILLAR &&
+      (dayCalendarType == DayCalendarType.timepillar &&
           (settingViewOptionsTimeInterval ||
               settingViewOptionsZoom ||
               settingViewOptionsDurationDots));
@@ -128,6 +128,8 @@ abstract class MemoplannerSettingsState extends Equatable {
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
   ClockType get clockType => ClockType.values[settings.settingClockType];
+  MonthCalendarType get monthCalendarType =>
+      MonthCalendarType.values[settings.viewOptionsMonthCalendar];
   Sound get nonCheckableAlarm => settings.nonCheckableActivityAlarm.toSound();
   Sound get checkableAlarm => settings.checkableActivityAlarm.toSound();
   Sound get reminderAlarm => settings.reminderAlarm.toSound();

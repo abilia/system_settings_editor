@@ -31,7 +31,7 @@ void main() {
   final translate = Locales.language.values.first;
 
   Future goToTimePillar(WidgetTester tester) async {
-    await tester.tap(find.byType(EyeButton));
+    await tester.tap(find.byType(EyeButtonDay));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.timeline));
     await tester.pumpAndSettle();
@@ -553,7 +553,7 @@ void main() {
   group('Choosen calendar setting', () {
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.TIMEPILLAR.index,
+        data: DayCalendarType.timepillar.index,
         identifier: MemoplannerSettings.viewOptionsTimeViewKey,
       ),
     );
@@ -586,7 +586,7 @@ void main() {
         tester,
         mockGenericDb,
         key: MemoplannerSettings.viewOptionsTimeViewKey,
-        matcher: DayCalendarType.TIMEPILLAR.index,
+        matcher: DayCalendarType.timepillar.index,
       );
     });
   });
@@ -857,7 +857,7 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendarActivityTypeShowTypes: false,
-            viewOptionsTimeView: DayCalendarType.TIMEPILLAR.index,
+            viewOptionsTimeView: DayCalendarType.timepillar.index,
           ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
@@ -878,7 +878,7 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendarActivityTypeShowTypes: true,
-            viewOptionsTimeView: DayCalendarType.TIMEPILLAR.index,
+            viewOptionsTimeView: DayCalendarType.timepillar.index,
           ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
@@ -1196,170 +1196,6 @@ void main() {
       final goToCurrentSelect = tester.widgetList(find.byWidgetPredicate(
           (widget) => widget is WeekCalenderHeadingContent && widget.selected));
       expect(goToCurrentSelect, hasLength(1));
-    });
-  });
-
-  group('Month calendar', () {
-    setUp(() {
-      final activities = <Activity>[];
-      activityResponse = () => activities;
-      when(mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(activities));
-      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    });
-
-    testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.month));
-      await tester.pumpAndSettle();
-      expect(find.byType(MonthCalendar), findsOneWidget);
-      expect(find.byType(MonthAppBar), findsOneWidget);
-    });
-
-    testWidgets('day tts', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.month));
-      await tester.pumpAndSettle();
-      await tester.verifyTts(find.text('30'), contains: 'Sunday, August 30');
-    });
-
-    testWidgets('tapping day goes back to that day calendar',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.month));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('30'));
-      await tester.pumpAndSettle();
-      expect(find.byType(DayAppBar), findsOneWidget);
-      expect(find.byType(DayCalendar), findsOneWidget);
-      expect(find.text('Sunday'), findsOneWidget);
-      expect(find.text('30 August 2020'), findsOneWidget);
-    });
-
-    testWidgets('Tapping Month in TabBar returns to this month',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.month));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
-      expect(find.byType(GoToCurrentActionButton), findsOneWidget);
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.month));
-      await tester.pumpAndSettle();
-      expect(find.byType(GoToCurrentActionButton), findsNothing);
-      await tester.verifyTts(find.byType(MonthAppBar), contains: 'August 2020');
-    });
-
-    group('app bar', () {
-      testWidgets('MonthAppBar', (WidgetTester tester) async {
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.month));
-        await tester.pumpAndSettle();
-        await tester.verifyTts(find.byType(MonthAppBar),
-            contains: 'August 2020');
-      });
-
-      testWidgets('next month', (WidgetTester tester) async {
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.month));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-        await tester.pumpAndSettle();
-        expect(find.byType(GoToCurrentActionButton), findsOneWidget);
-        await tester.verifyTts(find.byType(MonthAppBar),
-            contains: 'September 2020');
-      });
-
-      testWidgets('previous month', (WidgetTester tester) async {
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.month));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
-        await tester.pumpAndSettle();
-        expect(find.byType(GoToCurrentActionButton), findsOneWidget);
-        await tester.verifyTts(find.byType(MonthAppBar), contains: 'July 2020');
-      });
-
-      testWidgets('Go to this month', (WidgetTester tester) async {
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.month));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(GoToCurrentActionButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(GoToCurrentActionButton), findsNothing);
-        await tester.verifyTts(find.byType(MonthAppBar),
-            contains: 'August 2020');
-      });
-    });
-
-    group('shows activities', () {
-      final fridayTitle = 'en rubrik', nextMonthTitle = 'next month';
-      final friday = initialDay.addDays(2);
-      final nextMonth = initialDay.nextMonth();
-      final recuresOnMonthDaySet = {1, 5, 6, 9, 22, 23};
-
-      setUp(() {
-        final activities = [
-          Activity.createNew(
-              title: fridayTitle, startTime: friday, fullDay: true),
-          Activity.createNew(
-              title: nextMonthTitle, startTime: nextMonth, fullDay: true),
-          Activity.createNew(title: 't1', startTime: initialDay, fullDay: true),
-          Activity.createNew(title: 't2', startTime: initialDay, fullDay: true),
-          Activity.createNew(
-            title: 'recurring',
-            startTime: initialDay.previousMonth().add(1.minutes()),
-            recurs: Recurs.monthlyOnDays((recuresOnMonthDaySet)),
-          ),
-        ];
-        activityResponse = () => activities;
-        when(mockActivityDb.getAllNonDeleted())
-            .thenAnswer((_) => Future.value(activities));
-        when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      });
-
-      testWidgets('shows fullday ', (WidgetTester tester) async {
-        // Act
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.month));
-        await tester.pumpAndSettle();
-        // Assert
-        expect(find.text(fridayTitle), findsOneWidget);
-        expect(find.text(nextMonthTitle), findsNothing);
-        expect(find.byType(MonthFullDayStack), findsOneWidget);
-
-        await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
-        await tester.pumpAndSettle();
-
-        expect(find.text(fridayTitle), findsNothing);
-        expect(find.text(nextMonthTitle), findsOneWidget);
-      });
-
-      testWidgets('shows activity as dot ', (WidgetTester tester) async {
-        // Act
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.month));
-        await tester.pumpAndSettle();
-        // Assert
-        expect(
-          find.byType(ColorDot),
-          findsNWidgets(recuresOnMonthDaySet.length),
-        );
-      });
     });
   });
 }

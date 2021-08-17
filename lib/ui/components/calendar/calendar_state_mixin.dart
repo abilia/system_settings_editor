@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 

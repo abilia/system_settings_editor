@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -87,6 +85,8 @@ final borderRadiusTop = BorderRadius.only(
   topLeft: radius,
   topRight: radius,
 );
+
+final circleRadius = BorderRadius.all(Radius.circular(24.s));
 
 // Borders
 final BorderSide borderSide =

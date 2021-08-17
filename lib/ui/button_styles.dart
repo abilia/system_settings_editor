@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -128,6 +126,7 @@ final actionIconTextButtonStyleRed = ButtonStyle(
 );
 
 final double actionButtonMinSize = 48.0.s;
+final double secondaryActionButtonMinSize = 40.0.s;
 
 final _actionButtonStyle = ButtonStyle(
   textStyle: MaterialStateProperty.all(abiliaTextTheme.button),
@@ -178,6 +177,22 @@ final actionButtonStyleDark = _actionButtonStyle.copyWith(
     }
     return darkShapeBorder;
   }),
+);
+
+final secondaryActionButtonStyleDark = actionButtonStyleDark.copyWith(
+  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled) ||
+        states.contains(MaterialState.pressed)) return noBorderShape;
+    return darkShapeBorder.copyWith(borderRadius: circleRadius);
+  }),
+  minimumSize: MaterialStateProperty.all(Size(
+    secondaryActionButtonMinSize,
+    secondaryActionButtonMinSize,
+  )),
+  fixedSize: MaterialStateProperty.all(Size(
+    secondaryActionButtonMinSize,
+    secondaryActionButtonMinSize,
+  )),
 );
 
 final actionButtonStyleBlack = _actionButtonStyle.copyWith(
@@ -231,9 +246,25 @@ final actionButtonStyleLight = _actionButtonStyle.copyWith(
   }),
 );
 
+final secondaryActionButtonStyleLight = actionButtonStyleLight.copyWith(
+  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled) ||
+        states.contains(MaterialState.pressed)) return noBorderShape;
+    return ligthShapeBorder.copyWith(borderRadius: circleRadius);
+  }),
+  minimumSize: MaterialStateProperty.all(Size(
+    secondaryActionButtonMinSize,
+    secondaryActionButtonMinSize,
+  )),
+  fixedSize: MaterialStateProperty.all(Size(
+    secondaryActionButtonMinSize,
+    secondaryActionButtonMinSize,
+  )),
+);
+
 ButtonStyle tabButtonStyle({
-  BorderRadius borderRadius,
-  bool isSelected,
+  required BorderRadius borderRadius,
+  required bool isSelected,
 }) =>
     isSelected
         ? ButtonStyle(
@@ -256,66 +287,66 @@ ButtonStyle tabButtonStyle({
             foregroundColor: MaterialStateProperty.all(AbiliaColors.black),
           );
 
-final ButtonStyle blueButtonStyle = ButtonDef(
-  background: StateColors(
+final ButtonStyle blueButtonStyle = _ButtonDef(
+  background: _StateColors(
     def: AbiliaColors.blue,
     disabled: AbiliaColors.blue,
     pressed: AbiliaColors.blue,
   ),
-  foreGround: StateColors(
+  foreGround: _StateColors(
     def: AbiliaColors.white,
     disabled: AbiliaColors.white,
     pressed: AbiliaColors.white,
   ),
-  shapeBorders: ShapeBorders(
+  shapeBorders: _ShapeBorders(
     def: darkShapeBorder,
     pressedOrDisabled: noBorderShape,
   ),
 ).toStyle();
 
-final ButtonStyle pinkButtonStyle = ButtonDef(
-  background: StateColors(
+final ButtonStyle pinkButtonStyle = _ButtonDef(
+  background: _StateColors(
     def: AbiliaColors.pink40,
     disabled: AbiliaColors.pink40,
     pressed: AbiliaColors.pink40,
   ),
-  foreGround: StateColors(
+  foreGround: _StateColors(
     def: AbiliaColors.white,
     disabled: AbiliaColors.white,
     pressed: AbiliaColors.white,
   ),
-  shapeBorders: ShapeBorders(
+  shapeBorders: _ShapeBorders(
     def: darkShapeBorder,
     pressedOrDisabled: noBorderShape,
   ),
 ).toStyle();
 
-final ButtonStyle yellowButtonStyle = ButtonDef(
-  background: StateColors(
+final ButtonStyle yellowButtonStyle = _ButtonDef(
+  background: _StateColors(
     def: AbiliaColors.yellow,
     disabled: AbiliaColors.yellow,
     pressed: AbiliaColors.yellow,
   ),
-  foreGround: StateColors(
+  foreGround: _StateColors(
     def: AbiliaColors.black,
     disabled: AbiliaColors.black,
     pressed: AbiliaColors.black,
   ),
-  shapeBorders: ShapeBorders(
+  shapeBorders: _ShapeBorders(
     def: darkShapeBorder,
     pressedOrDisabled: noBorderShape,
   ),
 ).toStyle();
 
-class ButtonDef {
-  final StateColors foreGround;
-  final StateColors background;
-  final ShapeBorders shapeBorders;
+class _ButtonDef {
+  final _StateColors foreGround;
+  final _StateColors background;
+  final _ShapeBorders shapeBorders;
 
-  ButtonDef({
-    this.foreGround,
-    this.background,
-    this.shapeBorders,
+  _ButtonDef({
+    required this.foreGround,
+    required this.background,
+    required this.shapeBorders,
   });
 
   ButtonStyle toStyle() {
@@ -351,24 +382,24 @@ class ButtonDef {
   }
 }
 
-class StateColors {
+class _StateColors {
   final Color disabled;
   final Color pressed;
   final Color def;
 
-  StateColors({
-    this.disabled,
-    this.pressed,
-    this.def,
+  _StateColors({
+    required this.disabled,
+    required this.pressed,
+    required this.def,
   });
 }
 
-class ShapeBorders {
-  final ShapeBorder pressedOrDisabled;
-  final ShapeBorder def;
+class _ShapeBorders {
+  final OutlinedBorder pressedOrDisabled;
+  final OutlinedBorder def;
 
-  ShapeBorders({
-    this.pressedOrDisabled,
-    this.def,
+  _ShapeBorders({
+    required this.pressedOrDisabled,
+    required this.def,
   });
 }

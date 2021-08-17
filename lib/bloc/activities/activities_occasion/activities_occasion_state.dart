@@ -19,7 +19,9 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
   final List<ActivityOccasion> fullDayActivities;
   final Occasion occasion;
   final DateTime day;
+
   bool get isToday => occasion == Occasion.current;
+  bool get isTodayAndNoPast => isToday && pastActivities.isEmpty;
 
   ActivitiesOccasionLoaded({
     required this.activities,
