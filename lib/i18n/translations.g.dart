@@ -975,7 +975,7 @@ class SV extends Translated {
   final String checkable = 'Kvitterbar';
 
   @override
-  final String deleteAfter = 'Ta bort efteråt';
+  final String deleteAfter = 'Ta bort vid slutet av dagen';
 
   @override
   final String name = 'Namn';
@@ -1927,7 +1927,7 @@ class DA extends Translated {
   final String checkable = 'Kvitterbar';
 
   @override
-  final String deleteAfter = 'Slet bagefter';
+  final String deleteAfter = 'Fjern i slutningen af dagen';
 
   @override
   final String name = 'Navn';
@@ -2878,7 +2878,7 @@ class NL extends Translated {
   final String checkable = 'Afvinkbaar';
 
   @override
-  final String deleteAfter = 'Verwijderen na';
+  final String deleteAfter = 'Aan het einde van de dag verwijderen';
 
   @override
   final String name = 'Naam';
@@ -3831,7 +3831,7 @@ class FI extends Translated {
   final String checkable = 'Tarkistettava';
 
   @override
-  final String deleteAfter = 'Poista, kun on kulunut';
+  final String deleteAfter = 'Poista päivän päätteeksi';
 
   @override
   final String name = 'Nimi';
@@ -5741,7 +5741,7 @@ class NB extends Translated {
   final String checkable = 'Kvitterbar';
 
   @override
-  final String deleteAfter = 'Slett etterpå';
+  final String deleteAfter = 'Fjern på slutten av dagen';
 
   @override
   final String name = 'Navn';
