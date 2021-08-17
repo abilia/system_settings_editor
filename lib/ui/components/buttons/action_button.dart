@@ -1,19 +1,17 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
 class ActionButton extends StatelessWidget {
   const ActionButton({
-    Key key,
-    @required this.child,
-    @required this.onPressed,
+    Key? key,
+    this.onPressed,
     this.style,
+    required this.child,
   }) : super(key: key);
 
-  final ButtonStyle style;
+  final ButtonStyle? style;
+  final VoidCallback? onPressed;
   final Widget child;
-  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) => TextButton(
@@ -25,13 +23,13 @@ class ActionButton extends StatelessWidget {
 
 class ActionButtonLight extends StatelessWidget {
   const ActionButtonLight({
-    Key key,
-    @required this.child,
-    @required this.onPressed,
+    Key? key,
+    this.onPressed,
+    required this.child,
   }) : super(key: key);
 
   final Widget child;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) => ActionButton(
@@ -43,13 +41,13 @@ class ActionButtonLight extends StatelessWidget {
 
 class ActionButtonDark extends StatelessWidget {
   const ActionButtonDark({
-    Key key,
-    @required this.child,
-    @required this.onPressed,
+    Key? key,
+    this.onPressed,
+    required this.child,
   }) : super(key: key);
 
   final Widget child;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) => ActionButton(
@@ -61,18 +59,77 @@ class ActionButtonDark extends StatelessWidget {
 
 class ActionButtonBlack extends StatelessWidget {
   const ActionButtonBlack({
-    Key key,
-    @required this.child,
-    @required this.onPressed,
+    Key? key,
+    this.onPressed,
+    required this.child,
   }) : super(key: key);
 
   final Widget child;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) => ActionButton(
         onPressed: onPressed,
         style: actionButtonStyleBlack,
+        child: child,
+      );
+}
+
+class SecondaryActionButton extends StatelessWidget {
+  const SecondaryActionButton({
+    Key? key,
+    this.onPressed,
+    required this.style,
+    required this.child,
+  }) : super(key: key);
+
+  final ButtonStyle style;
+  final VoidCallback? onPressed;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => IconTheme(
+        data: Theme.of(context).iconTheme.copyWith(size: smallIconSize),
+        child: ActionButton(
+          onPressed: onPressed,
+          style: style,
+          child: child,
+        ),
+      );
+}
+
+class SecondaryActionButtonLight extends StatelessWidget {
+  const SecondaryActionButtonLight({
+    Key? key,
+    this.onPressed,
+    required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) => SecondaryActionButton(
+        onPressed: onPressed,
+        style: secondaryActionButtonStyleLight,
+        child: child,
+      );
+}
+
+class SecondaryActionButtonDark extends StatelessWidget {
+  const SecondaryActionButtonDark({
+    Key? key,
+    this.onPressed,
+    required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) => SecondaryActionButton(
+        onPressed: onPressed,
+        style: secondaryActionButtonStyleDark,
         child: child,
       );
 }

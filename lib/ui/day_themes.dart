@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -7,16 +5,17 @@ import 'package:seagull/ui/all.dart';
 class DayTheme {
   final ThemeData theme;
   final Color color, secondaryColor, borderColor;
-  final bool isColor;
-  Color get dayColor => isColor ? color : null;
+  final bool isColor, isLight;
+  Color? get dayColor => isColor ? color : null;
 
   DayTheme._(
     ThemeData theme,
     this.color,
     this.secondaryColor,
     bool background, {
-    Color accentColor,
+    Color? accentColor,
     this.isColor = true,
+    required this.isLight,
   })  : borderColor =
             color == AbiliaColors.white ? AbiliaColors.white110 : color,
         theme = theme.copyWith(
@@ -30,7 +29,7 @@ class DayTheme {
   DayTheme._light(
     Color color,
     Color secondaryColor, {
-    Color accentColor,
+    Color? accentColor,
     background = true,
     isColor = true,
   }) : this._(
@@ -40,10 +39,17 @@ class DayTheme {
           background,
           accentColor: accentColor,
           isColor: isColor,
+          isLight: true,
         );
 
   DayTheme._dark(Color color, Color secondaryColor, {bool background = true})
-      : this._(_darkAppBarTheme, color, secondaryColor, background);
+      : this._(
+          _darkAppBarTheme,
+          color,
+          secondaryColor,
+          background,
+          isLight: false,
+        );
 }
 
 final _noColor = DayTheme._light(
@@ -68,9 +74,9 @@ final _noColor = DayTheme._light(
         DayTheme._light(AbiliaColors.orange120, AbiliaColors.orange120);
 
 DayTheme weekdayTheme({
-  @required DayColor dayColor,
-  @required String languageCode,
-  @required int weekday,
+  required DayColor dayColor,
+  required String languageCode,
+  required int weekday,
 }) {
   final noColors = dayColor == DayColor.noColors ||
       dayColor == DayColor.saturdayAndSunday && weekday < DateTime.saturday;
