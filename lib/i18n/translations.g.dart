@@ -228,7 +228,7 @@ abstract class Translated {
 
   final String checkable = 'Checkable';
 
-  final String deleteAfter = 'Delete after';
+  final String deleteAfter = 'Remove at the end of the day';
 
   final String name = 'Name';
 
