@@ -284,9 +284,10 @@ class _CategoryRadioField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) => previous.showColor != current.showColor,
+      buildWhen: (previous, current) =>
+          previous.showCategoryColor != current.showCategoryColor,
       builder: (context, settingState) {
-        final nothing = fileId.isEmpty && !settingState.showColor;
+        final nothing = fileId.isEmpty && !settingState.showCategoryColor;
         return Expanded(
           child: RadioField<int>(
             key: radioKey,
@@ -303,7 +304,7 @@ class _CategoryRadioField extends StatelessWidget {
                     child: CategoryImage(
                       fileId: fileId,
                       category: category,
-                      showColors: settingState.showColor,
+                      showColors: settingState.showCategoryColor,
                     ),
                   ),
             text: Text(

@@ -217,7 +217,8 @@ class SliverActivityList extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12.0.s),
       sliver: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>
-            previous.showCategories != current.showCategories,
+            previous.showCategories != current.showCategories ||
+            previous.showCategoryColor != current.showCategoryColor,
         builder: (context, setting) {
           return SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -229,6 +230,7 @@ class SliverActivityList extends StatelessWidget {
                       ? _padding(index)
                       : ActivityCard.cardMarginSmall,
                   showCategories: setting.showCategories,
+                  showCategoryColor: setting.showCategoryColor,
                 );
               },
               childCount: activities.length,

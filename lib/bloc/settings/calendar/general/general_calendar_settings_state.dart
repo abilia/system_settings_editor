@@ -142,7 +142,7 @@ class CategoriesSettingState extends Equatable {
   ) =>
       CategoriesSettingState._(
         state.showCategories,
-        state.showColor,
+        state.showCategoryColor,
         ImageAndName(
           state.leftCategoryName,
           SelectedImage.from(id: state.leftCategoryImage),

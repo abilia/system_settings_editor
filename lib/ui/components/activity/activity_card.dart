@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -11,6 +9,7 @@ class ActivityCard extends StatelessWidget {
   final double bottomPadding;
   final bool preview;
   final bool showCategories;
+  final bool showCategoryColor;
 
   static final double cardHeight = 56.0.s,
       cardPadding = 4.0.s,
@@ -22,13 +21,13 @@ class ActivityCard extends StatelessWidget {
   static const Duration duration = Duration(seconds: 1);
 
   const ActivityCard({
-    Key key,
-    @required this.activityOccasion,
+    Key? key,
+    required this.activityOccasion,
     this.bottomPadding = 0.0,
     this.preview = false,
     this.showCategories = true,
-  })  : assert(activityOccasion != null),
-        super(key: key);
+    this.showCategoryColor = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +42,7 @@ class ActivityCard extends StatelessWidget {
         ? abiliaTheme.copyWith(
             textTheme: textTheme.copyWith(
               bodyText1:
-                  textTheme.bodyText1.copyWith(color: AbiliaColors.white140),
+                  textTheme.bodyText1?.copyWith(color: AbiliaColors.white140),
             ),
             iconTheme:
                 abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white140))
@@ -59,7 +58,12 @@ class ActivityCard extends StatelessWidget {
             child: AnimatedContainer(
               duration: duration,
               height: cardHeight,
-              decoration: getBoxDecoration(current, inactive),
+              decoration: getCategoryBoxDecoration(
+                current: current,
+                inactive: inactive,
+                category: activity.category,
+                showCategoryColor: showCategoryColor,
+              ),
               margin: preview || activity.fullDay || !showCategories
                   ? EdgeInsets.zero
                   : activity.category == Category.right
@@ -68,12 +72,10 @@ class ActivityCard extends StatelessWidget {
               child: Material(
                 type: MaterialType.transparency,
                 child: InkWell(
-                  borderRadius:
-                      borderRadius.subtract(BorderRadius.circular(1.0)),
+                  borderRadius: borderRadius - BorderRadius.circular(1.0),
                   onTap: preview
                       ? null
-                      : () {
-                          Navigator.push(
+                      : () => Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (_) => CopiedAuthProviders(
@@ -83,8 +85,7 @@ class ActivityCard extends StatelessWidget {
                               settings: RouteSettings(
                                   name: 'ActivityPage $activityOccasion'),
                             ),
-                          );
-                        },
+                          ),
                   child: Padding(
                     padding: EdgeInsets.all(cardPadding),
                     child: Stack(
@@ -160,7 +161,7 @@ class CardIcon extends StatelessWidget {
   static final double iconSize = 18.0.s;
   const CardIcon(
     this.icon, {
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -176,7 +177,7 @@ class PrivateIcon extends StatelessWidget {
   final bool inactive;
   const PrivateIcon(
     this.inactive, {
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

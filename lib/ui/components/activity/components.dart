@@ -168,7 +168,7 @@ class RadioField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final decoration = selectedBoxDecoration(value == groupValue);
+    final decoration = selectableBoxDecoration(value == groupValue);
     final paddingToUse = padding ?? defaultPadding;
     return Tts.fromSemantics(
       SemanticsProperties(
@@ -329,7 +329,7 @@ class SelectableField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final decoration = selectedBoxDecoration(selected);
+    final decoration = selectableBoxDecoration(selected);
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data,

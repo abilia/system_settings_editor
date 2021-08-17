@@ -21,12 +21,12 @@ class LeftCategory extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.leftCategoryName != current.leftCategoryName ||
             previous.leftCategoryImage != current.leftCategoryImage ||
-            previous.showColor != current.showColor,
+            previous.showCategoryColor != current.showCategoryColor,
         builder: (context, memoplannerSettingsState) => CategoryLeft(
           maxWidth: maxWidth,
           categoryName: memoplannerSettingsState.leftCategoryName,
           fileId: memoplannerSettingsState.leftCategoryImage,
-          showColors: memoplannerSettingsState.showColor,
+          showColors: memoplannerSettingsState.showCategoryColor,
         ),
       );
 }
@@ -78,12 +78,12 @@ class RightCategory extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.rightCategoryName != current.rightCategoryName ||
             previous.rightCategoryImage != current.rightCategoryImage ||
-            previous.showColor != current.showColor,
+            previous.showCategoryColor != current.showCategoryColor,
         builder: (context, memoplannerSettingsState) => CategoryRight(
           maxWidth: maxWidth,
           categoryName: memoplannerSettingsState.rightCategoryName,
           fileId: memoplannerSettingsState.rightCategoryImage,
-          showColors: memoplannerSettingsState.showColor,
+          showColors: memoplannerSettingsState.showCategoryColor,
         ),
       );
 }
@@ -322,7 +322,7 @@ class CategoryImage extends StatelessWidget {
       width: diameter,
       height: diameter,
       decoration: BoxDecoration(
-        color: categoryColor(category),
+        color: categoryColor(category: category),
         borderRadius: borderRadius,
       ),
       padding: EdgeInsets.all(3.s),

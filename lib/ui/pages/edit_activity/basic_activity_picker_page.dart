@@ -86,7 +86,7 @@ class BasicActivityLibraryItem extends StatelessWidget {
                   AnimatedContainer(
                     duration: const Duration(microseconds: 400),
                     decoration: selected
-                        ? greenBoarderWhiteBoxDecoration
+                        ? selectedBoxDecoration
                         : boxDecoration,
                     padding: EdgeInsets.all(4.s).subtract(
                       selected ? EdgeInsets.all(1.s) : EdgeInsets.zero,
