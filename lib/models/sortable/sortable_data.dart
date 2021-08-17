@@ -223,7 +223,7 @@ class BasicActivityDataItem extends BasicActivityData {
   bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
 
   TimeOfDay? get startTimeOfDay =>
-      startTime == 0 ? null : startTime.toTimeOfDay();
+      startTime == 0 && duration <= 0 ? null : startTime.toTimeOfDay();
   TimeOfDay? get endTimeOfDay =>
       duration == 0 ? null : (startTime + duration).toTimeOfDay();
 
