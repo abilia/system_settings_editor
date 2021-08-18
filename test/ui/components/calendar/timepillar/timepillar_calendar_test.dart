@@ -40,7 +40,7 @@ void main() {
 
   final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.timepillar.index,
+        data: DayCalendarType.one_timepillar.index,
         identifier: MemoplannerSettings.viewOptionsTimeViewKey),
   );
 

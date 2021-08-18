@@ -44,7 +44,7 @@ void main() {
 
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
-          data: DayCalendarType.timepillar.index,
+          data: DayCalendarType.one_timepillar.index,
           identifier: MemoplannerSettings.viewOptionsTimeViewKey),
     );
 
@@ -120,7 +120,9 @@ void main() {
     await tester.verifyTts(find.byIcon(AbiliaIcons.calendar_list),
         exact: translate.listView);
     await tester.verifyTts(find.byIcon(AbiliaIcons.timeline),
-        exact: translate.timePillarView);
+        exact: translate.oneTimePillarView);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.two_timelines),
+        exact: translate.twoTimePillarsView);
 
     // Verify correct TTS zoom. Small and medium has same icon for now
     await tester.verifyTts(find.text(translate.zoom), exact: translate.zoom);
