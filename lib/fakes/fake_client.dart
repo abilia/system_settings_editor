@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -24,15 +22,15 @@ class Fakes {
       incorrectPassword = 'wrongwrong';
 
   static MockClient client({
-    ActivityResponse activityResponse,
-    SortableResponse sortableResponse,
-    GenericResponse genericResponse,
-    Response Function() licenseResponse,
+    ActivityResponse? activityResponse,
+    SortableResponse? sortableResponse,
+    GenericResponse? genericResponse,
+    Response Function()? licenseResponse,
   }) =>
       MockClient(
         (r) {
           final pathSegments = r.url.pathSegments.toSet();
-          Response response;
+          Response? response;
           if (pathSegments.containsAll(['auth', 'client', 'me'])) {
             final authHeaders = r.headers[HttpHeaders.authorizationHeader];
             final incorrect =
