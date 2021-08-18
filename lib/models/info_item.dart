@@ -102,9 +102,8 @@ class Checklist extends InfoItem {
   final UnmodifiableListView<Question> questions;
   final UnmodifiableMapView<String, UnmodifiableSetView<int>> checked;
   final String fileId;
-  final String icon;
 
-  bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
+  bool get hasImage => fileId.isNotEmpty || image.isNotEmpty;
 
   Checklist({
     Iterable<Question> questions = const <Question>[],
@@ -112,7 +111,6 @@ class Checklist extends InfoItem {
     this.image = '',
     this.name = '',
     this.fileId = '',
-    this.icon = '',
   })  : questions = UnmodifiableListView(questions),
         checked = UnmodifiableMapView(checked
             .map((key, value) => MapEntry(key, UnmodifiableSetView(value))));
