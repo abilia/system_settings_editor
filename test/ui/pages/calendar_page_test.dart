@@ -70,7 +70,6 @@ void main() {
           ),
           child: MaterialApp(
             theme: abiliaTheme,
-            key: authedStateKey,
             supportedLocales: Translator.supportedLocals,
             localizationsDelegates: [Translator.delegate],
             localeResolutionCallback: (locale, supportedLocales) =>

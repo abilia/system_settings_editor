@@ -102,7 +102,8 @@ void main() {
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
+      expect(find.byType(AlarmPage), findsOneWidget);
     });
 
     testWidgets('Reminder shows', (WidgetTester tester) async {
@@ -121,7 +122,8 @@ void main() {
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(NavigatableReminderPage), findsOneWidget);
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
+      expect(find.byType(ReminderPage), findsOneWidget);
       expect(find.text(translater.inTime('15 ${translater.minutes}')),
           findsOneWidget);
     });
@@ -143,7 +145,8 @@ void main() {
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(NavigatableReminderPage), findsOneWidget);
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
+      expect(find.byType(ReminderPage), findsOneWidget);
       expect(find.text(translater.timeAgo('15 ${translater.minutes}')),
           findsOneWidget);
     });
@@ -166,7 +169,8 @@ void main() {
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(NavigatableReminderPage), findsNothing);
+      expect(find.byType(PopAwareAlarmPage), findsNothing);
+      expect(find.byType(ReminderPage), findsNothing);
     });
 
     testWidgets('Reminder for checked activity show from endtime',
@@ -188,7 +192,8 @@ void main() {
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(NavigatableReminderPage), findsOneWidget);
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
+      expect(find.byType(ReminderPage), findsOneWidget);
       expect(find.text(translater.timeAgo('15 ${translater.minutes}')),
           findsOneWidget);
     });
@@ -200,13 +205,14 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(NavigatableAlarmPage), findsNothing);
+      expect(find.byType(PopAwareAlarmPage), findsNothing);
       // Act
       selectNotificationSubject.add(payloadSerial);
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
+      expect(find.byType(AlarmPage), findsOneWidget);
     });
 
     testWidgets('Alarms shows when notification selected before app start',
@@ -218,7 +224,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
     });
 
     testWidgets('SGC-841 notications not reschedualed on app alarm start',
@@ -236,13 +242,15 @@ void main() {
       await tester.pumpWidget(App(payload: payload));
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(FullScreenAlarm), findsOneWidget);
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
+      expect(find.byType(AlarmPage), findsOneWidget);
       await tester.tap(find.byType(CloseButton));
       await tester.pumpAndSettle();
       verify(notificationPlugin.cancel(payload.hashCode));
     });
 
-    testWidgets('SGC-844', (WidgetTester tester) async {
+    testWidgets('SGC-844 alarm does not open when app is paused',
+        (WidgetTester tester) async {
       // Act
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
       addTearDown(() => tester.binding
@@ -253,8 +261,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(FullScreenAlarm), findsNothing);
-      expect(find.byType(NavigatableAlarmPage), findsNothing);
+      expect(find.byType(PopAwareAlarmPage), findsNothing);
     });
 
     testWidgets('BUG SGC-380 NotificationSubject is cleared on logout',
@@ -266,7 +273,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
       expect(selectNotificationSubject, emits(payloadSerial));
 
       // Act logout
@@ -296,7 +303,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert no NavigatableAlarmPage
-      expect(find.byType(NavigatableAlarmPage), findsNothing);
+      expect(find.byType(PopAwareAlarmPage), findsNothing);
       expect(find.byType(CalendarPage), findsOneWidget);
     });
 
@@ -309,7 +316,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- Alarm is on screen and alarm is checkable
-      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
       expect(find.byKey(TestKey.uncheckButton), findsNothing);
 
@@ -323,7 +330,7 @@ void main() {
       expect(find.byKey(TestKey.uncheckButton),
           findsNothing); // Uncheck button only in bottom bar (not present in alarm view)
       expect(find.byKey(TestKey.activityCheckButton), findsNothing);
-      expect(find.byType(NavigatableAlarmPage), findsNothing);
+      expect(find.byType(PopAwareAlarmPage), findsNothing);
     });
 
     testWidgets('Popup Alarms can be signed off', (WidgetTester tester) async {
@@ -336,7 +343,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- On screen alarm showing and check button showing
-      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
       expect(find.byKey(TestKey.uncheckButton), findsNothing);
 
@@ -347,7 +354,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- Check button not showing and uncheck button still not showing (only shown in activity bottom bar)
-      expect(find.byType(NavigatableAlarmPage), findsNothing);
+      expect(find.byType(PopAwareAlarmPage), findsNothing);
     });
 
     testWidgets('Checkable Popup Alarm with checklist',
@@ -384,7 +391,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- On screen alarm showing, check button and checklist showing
-      expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
       expect(find.byKey(TestKey.uncheckButton), findsNothing);
       expect(find.byType(ChecklistView), findsOneWidget);
@@ -402,7 +409,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- Check button gone and AlarmPage gone
-      expect(find.byType(NavigatableAlarmPage), findsNothing);
+      expect(find.byType(PopAwareAlarmPage), findsNothing);
     });
   });
 
@@ -427,7 +434,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final alarmScreenFinder = find.byType(NavigatableAlarmPage);
+      final alarmScreenFinder = find.byType(PopAwareAlarmPage);
 
       // Act - time goes which should display start alarm
       mockTicker.add(activity1StartTime);
@@ -455,7 +462,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final alarmScreenFinder = find.byType(NavigatableAlarmPage);
+      final alarmScreenFinder = find.byType(PopAwareAlarmPage);
 
       // Act - time goes which should display alarm
       mockTicker.add(activity1StartTime);
@@ -482,7 +489,7 @@ void main() {
           .thenAnswer((_) => Future.value([activity1, activity2]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      final alarmScreenFinder = find.byType(NavigatableAlarmPage);
+      final alarmScreenFinder = find.byType(PopAwareAlarmPage);
 
       // Act - time goes which should display alarms (start and end time)
       mockTicker.add(activity1StartTime);
@@ -499,7 +506,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
       expect(
           tester
-              .widget<NavigatableAlarmPage>(alarmScreenFinder)
+              .widget<PopAwareAlarmPage>(alarmScreenFinder)
               .alarm
               .activityDay
               .activity
@@ -515,7 +522,7 @@ void main() {
 
       expect(
           tester
-              .widget<NavigatableAlarmPage>(alarmScreenFinder)
+              .widget<PopAwareAlarmPage>(alarmScreenFinder)
               .alarm
               .activityDay
               .activity
@@ -538,7 +545,7 @@ void main() {
       final pushBloc = PushBloc();
       await tester.pumpWidget(App(pushBloc: pushBloc));
       await tester.pumpAndSettle();
-      final alarmScreenFinder = find.byType(NavigatableAlarmPage);
+      final alarmScreenFinder = find.byType(PopAwareAlarmPage);
 
       // Act - time goes which should display alarm
       mockTicker.add(activity1StartTime);
@@ -548,7 +555,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
       expect(
           tester
-              .widget<NavigatableAlarmPage>(alarmScreenFinder)
+              .widget<PopAwareAlarmPage>(alarmScreenFinder)
               .alarm
               .activityDay
               .activity
@@ -575,7 +582,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
 
       expect(
-          (tester.widget(alarmScreenFinder) as NavigatableAlarmPage)
+          (tester.widget(alarmScreenFinder) as PopAwareAlarmPage)
               .alarm
               .activityDay
               .activity
@@ -637,10 +644,6 @@ void main() {
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activities));
 
-      final reminderFinder =
-          find.byType(NavigatableReminderPage, skipOffstage: false);
-      final alarmScreenFinder =
-          find.byType(NavigatableAlarmPage, skipOffstage: false);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
@@ -651,8 +654,9 @@ void main() {
       await tester.pumpAndSettle();
 
       // Expect - the alarm screens should be removed and only the latest reminders should show
-      expect(reminderFinder, findsNWidgets(activities.length));
-      expect(alarmScreenFinder, findsNothing);
+      expect(find.byType(ReminderPage, skipOffstage: false),
+          findsNWidgets(activities.length));
+      expect(find.byType(AlarmPage, skipOffstage: false), findsNothing);
     });
 
     group('fullscreen alarms', () {
@@ -673,22 +677,13 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert
-        expect(find.byType(FullScreenAlarm), findsOneWidget);
+        expect(find.byType(PopAwareAlarmPage), findsOneWidget);
+        expect(find.byType(ReminderPage), findsOneWidget);
         expect(find.text(reminder.activity.title), findsOneWidget);
       });
 
       testWidgets('Fullscreen alarms ignores same alarm ',
           (WidgetTester tester) async {
-        // Arrange
-        final mockAlarmNavigator = MockAlarmNavigator();
-        final alarmNavigator = AlarmNavigator();
-        when(mockAlarmNavigator.alarmRouteObserver)
-            .thenReturn(alarmNavigator.alarmRouteObserver);
-
-        await GetIt.I.reset();
-        getItInitializer
-          ..alarmNavigator = mockAlarmNavigator
-          ..init();
         final reminder = ReminderBefore(
             Activity.createNew(
               title: 'one reminder title',
@@ -706,15 +701,24 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
+        await expectLater(
+          find.byType(PopAwareAlarmPage, skipOffstage: false),
+          findsOneWidget,
+        );
 
         // Act
         selectNotificationSubject.add(payload);
         await tester.pumpAndSettle();
 
         // Assert
-        expect(find.byType(FullScreenAlarm), findsOneWidget);
-        expect(find.text(reminder.activity.title), findsOneWidget);
-        verifyNever(mockAlarmNavigator.pushAlarm(any, any));
+        expect(
+          find.byType(PopAwareAlarmPage, skipOffstage: false),
+          findsOneWidget,
+        );
+        expect(
+          find.text(reminder.activity.title, skipOffstage: false),
+          findsOneWidget,
+        );
       });
 
       testWidgets('Fullscreen alarms stack ', (WidgetTester tester) async {
@@ -744,7 +748,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert -- Fullscreen alarm shows
-        expect(find.byType(FullScreenAlarm), findsOneWidget);
+        expect(find.byType(PopAwareAlarmPage), findsOneWidget);
         expect(find.text(reminder.activity.title), findsOneWidget);
 
         // Act -- notification tapped
@@ -752,9 +756,8 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert -- new alarm page
-        expect(find.byType(FullScreenAlarm), findsNothing);
         expect(find.text(reminder.activity.title), findsNothing);
-        expect(find.byType(NavigatableAlarmPage), findsOneWidget);
+        expect(find.byType(PopAwareAlarmPage), findsOneWidget);
         expect(find.text(alarm.activity.title), findsOneWidget);
 
         // Act -- Close alarm page
@@ -762,7 +765,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert -- first alarm page
-        expect(find.byType(FullScreenAlarm), findsOneWidget);
+        expect(find.byType(PopAwareAlarmPage), findsOneWidget);
         expect(find.text(reminder.activity.title), findsOneWidget);
       });
 
@@ -817,16 +820,12 @@ void main() {
 
         // Assert -- Fullscreen alarm shows
         expect(
-          find.byType(FullScreenAlarm, skipOffstage: false),
-          findsOneWidget,
-        );
-        expect(
           find.byType(AlarmPage, skipOffstage: false),
           findsNWidgets(4),
         );
         expect(
-          find.byType(NavigatableAlarmPage, skipOffstage: false),
-          findsNWidgets(3),
+          find.byType(PopAwareAlarmPage, skipOffstage: false),
+          findsNWidgets(4),
         );
         expect(
           find.text(alarm1.activity.title, skipOffstage: false),

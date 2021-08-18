@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:devicelocale/devicelocale.dart';
-import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
@@ -27,7 +26,6 @@ import 'package:seagull/tts/flutter_tts.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
 
 final _log = Logger('main');
 
@@ -150,7 +148,6 @@ class SeagullApp extends StatelessWidget {
         ),
         navigatorObservers: [
           AnalyticsService.observer,
-          GetIt.I<AlarmNavigator>().alarmRouteObserver,
           RouteLoggingObserver(),
         ],
         supportedLocales: Translator.supportedLocals,

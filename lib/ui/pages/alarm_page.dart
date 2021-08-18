@@ -1,26 +1,15 @@
-// @dart=2.9
-
+import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class FullScreenAlarm extends StatelessWidget {
-  final NotificationAlarm alarm;
-
-  const FullScreenAlarm({Key key, this.alarm}) : super(key: key);
-  @override
-  Widget build(BuildContext context) => (alarm is NewAlarm)
-      ? AlarmPage(alarm: alarm)
-      : ReminderPage(reminder: alarm);
-}
-
 class AlarmPage extends StatelessWidget {
   final NewAlarm alarm;
-  final Widget previewImage;
+  final Widget? previewImage;
   const AlarmPage({
-    Key key,
-    @required this.alarm,
+    Key? key,
+    required this.alarm,
     this.previewImage,
   });
 
@@ -49,32 +38,11 @@ class AlarmPage extends StatelessWidget {
   }
 }
 
-class NavigatableAlarmPage extends StatefulWidget {
-  final NewAlarm alarm;
-  final AlarmNavigator alarmNavigator;
-  const NavigatableAlarmPage(
-      {Key key, @required this.alarm, @required this.alarmNavigator});
-
-  @override
-  _NavigatableAlarmPageState createState() =>
-      _NavigatableAlarmPageState(alarm, alarmNavigator);
-}
-
-class _NavigatableAlarmPageState
-    extends AlarmAwareWidgetState<NavigatableAlarmPage> {
-  _NavigatableAlarmPageState(
-      NotificationAlarm alarm, AlarmNavigator alarmNavigator)
-      : super(alarm, alarmNavigator);
-
-  @override
-  Widget build(BuildContext context) => AlarmPage(alarm: widget.alarm);
-}
-
 class ReminderPage extends StatelessWidget {
   final NewReminder reminder;
   const ReminderPage({
-    Key key,
-    @required this.reminder,
+    Key? key,
+    required this.reminder,
   }) : super(key: key);
 
   @override
@@ -100,7 +68,7 @@ class ReminderPage extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headline4
-                        .copyWith(color: AbiliaColors.red),
+                        ?.copyWith(color: AbiliaColors.red),
                   ),
                 ),
               ),
@@ -124,58 +92,34 @@ class ReminderPage extends StatelessWidget {
   }
 }
 
-class NavigatableReminderPage extends StatefulWidget {
-  final NewReminder reminder;
+class PopAwareAlarmPage extends StatelessWidget {
+  final Widget child;
   final AlarmNavigator alarmNavigator;
-  const NavigatableReminderPage(
-      {Key key, @required this.reminder, @required this.alarmNavigator})
-      : super(key: key);
-
-  @override
-  _NavigatableReminderPageState createState() =>
-      _NavigatableReminderPageState(reminder, alarmNavigator);
-}
-
-class _NavigatableReminderPageState
-    extends AlarmAwareWidgetState<NavigatableReminderPage> {
-  _NavigatableReminderPageState(
-      NotificationAlarm reminder, AlarmNavigator alarmNavigator)
-      : super(reminder, alarmNavigator);
-
-  @override
-  Widget build(BuildContext context) => ReminderPage(reminder: widget.reminder);
-}
-
-abstract class AlarmAwareWidgetState<T extends StatefulWidget> extends State<T>
-    with RouteAware {
   final NotificationAlarm alarm;
-  final AlarmNavigator alarmNavigator;
-
-  AlarmAwareWidgetState(this.alarm, this.alarmNavigator);
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    alarmNavigator.alarmRouteObserver.subscribe(this, ModalRoute.of(context));
-  }
+  const PopAwareAlarmPage({
+    Key? key,
+    required this.alarm,
+    required this.alarmNavigator,
+    required this.child,
+  });
 
   @override
-  void didPop() {
-    alarmNavigator.removedFromRoutes(alarm);
-  }
-
-  @override
-  void dispose() {
-    alarmNavigator.alarmRouteObserver.unsubscribe(this);
-    super.dispose();
-  }
+  Widget build(BuildContext context) => WillPopScope(
+        onWillPop: () async {
+          AlarmNavigator.log.fine('onWillPop $alarm');
+          alarmNavigator.removedFromRoutes(alarm);
+          await notificationPlugin.cancel(alarm.hashCode);
+          return true;
+        },
+        child: child,
+      );
 }
 
 class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
   const AlarmBottomAppBar({
-    Key key,
-    @required this.activityOccasion,
-    @required this.alarm,
+    Key? key,
+    required this.activityOccasion,
+    required this.alarm,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;

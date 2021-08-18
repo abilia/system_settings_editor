@@ -1,8 +1,6 @@
 // @dart=2.9
 
 import 'package:flutter/services.dart';
-
-import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
@@ -126,11 +124,9 @@ mixin ActivityMixin {
   }
 
   Future popAlarm(BuildContext context, NotificationAlarm alarm) async {
-    if (alarm != null) {
-      _log.fine('closing alarm with id: ${alarm.hashCode}');
-      await notificationPlugin.cancel(alarm.hashCode);
-    }
+    _log.fine('pop Alarm: $alarm');
     if (!await Navigator.of(context).maybePop()) {
+      _log.info('Could not pop (root?) will -> SystemNavigator.pop');
       await SystemNavigator.pop();
     }
   }
