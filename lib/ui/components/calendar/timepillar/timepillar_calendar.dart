@@ -309,8 +309,11 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
     ];
   }
 
-  Widget category(Widget? category,
-          {required Widget sliver, required double height}) =>
+  Widget category(
+    Widget? category, {
+    required Widget sliver,
+    required double height,
+  }) =>
       category != null
           ? SliverOverlay(
               height: height,
@@ -351,9 +354,11 @@ class ScrollTranslated extends StatefulWidget {
   final ScrollController controller;
   final Widget child;
 
-  const ScrollTranslated(
-      {Key? key, required this.controller, required this.child})
-      : super(key: key);
+  const ScrollTranslated({
+    Key? key,
+    required this.controller,
+    required this.child,
+  }) : super(key: key);
   @override
   _ScrollTranslated createState() => _ScrollTranslated();
 }

@@ -596,5 +596,198 @@ void main() {
       expect(find.byType(CategoryRight), findsNothing);
       expect(find.byType(CategoryLeft), findsNothing);
     });
+
+    testWidgets('memoplanner settings - show colors true',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      final rightBoxDecoration = tester
+          .widget<Container>(find.descendant(
+              of: find.descendant(
+                  of: find.byType(CategoryRight),
+                  matching: find.byType(CategoryImage)),
+              matching: find.byType(Container)))
+          .decoration as BoxDecoration;
+
+      expect(rightBoxDecoration.color, rightCategoryActiveColor);
+      final leftBoxDecoration = tester
+          .widget<Container>(find.descendant(
+              of: find.descendant(
+                  of: find.byType(CategoryLeft),
+                  matching: find.byType(CategoryImage)),
+              matching: find.byType(Container)))
+          .decoration as BoxDecoration;
+
+      expect(leftBoxDecoration.color, leftCategoryActiveColor);
+    });
+
+    testWidgets('memoplanner settings - show colors false',
+        (WidgetTester tester) async {
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: false,
+                identifier:
+                    MemoplannerSettings.calendarActivityTypeShowColorKey,
+              ),
+            ),
+          ];
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CategoryImage), findsNothing);
+    });
+
+    testWidgets('memoplanner settings - show colors false, leftImageId',
+        (WidgetTester tester) async {
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: false,
+                identifier:
+                    MemoplannerSettings.calendarActivityTypeShowColorKey,
+              ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: 'fileid',
+                identifier:
+                    MemoplannerSettings.calendarActivityTypeLeftImageKey,
+              ),
+            ),
+          ];
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CategoryImage), findsOneWidget);
+    });
+
+    testWidgets(
+        'memoplanner settings - show colors true, left, right, future, past, fullday correct color',
+        (WidgetTester tester) async {
+      final soon = now.add(30.minutes());
+      final just = now.subtract(30.minutes());
+
+      final a1 = Activity.createNew(
+            startTime: soon,
+            title: 'left soon',
+            category: Category.left,
+          ),
+          a2 = Activity.createNew(
+            startTime: soon,
+            title: 'right soon',
+            category: Category.right,
+          ),
+          a3 = Activity.createNew(
+            startTime: just,
+            title: 'left just',
+            category: Category.left,
+          ),
+          a4 = Activity.createNew(
+            startTime: just,
+            title: 'right just',
+            category: Category.right,
+          ),
+          a5 = Activity.createNew(
+            startTime: now.onlyDays(),
+            title: 'fullday',
+            fullDay: true,
+          );
+      activityResponse = () => [a1, a2, a3, a4, a5];
+
+      void expectCorrectColor(String title, Color expectedColor) {
+        final boxDecoration = tester
+            .widget<AnimatedContainer>(find.descendant(
+                of: find.widgetWithText(ActivityCard, title,
+                    skipOffstage: false),
+                matching: find.byType(AnimatedContainer, skipOffstage: false),
+                skipOffstage: false))
+            .decoration as BoxDecoration;
+        expect(
+          boxDecoration.border.bottom.color,
+          expectedColor,
+        );
+      }
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      expectCorrectColor(a1.title, leftCategoryActiveColor);
+      expectCorrectColor(a2.title, rightCategoryActiveColor);
+      expectCorrectColor(a3.title, noCategoryColor);
+      expectCorrectColor(a4.title, rightCategoryInactiveColor);
+      expectCorrectColor(a5.title, noCategoryColor);
+    });
+
+    testWidgets(
+        'memoplanner settings - show colors true, category false -> no colors',
+        (WidgetTester tester) async {
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: true,
+                identifier:
+                    MemoplannerSettings.calendarActivityTypeShowColorKey,
+              ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: false,
+                identifier:
+                    MemoplannerSettings.calendarActivityTypeShowTypesKey,
+              ),
+            ),
+          ];
+
+      final soon = now.add(30.minutes());
+      final just = now.subtract(30.minutes());
+
+      final a1 = Activity.createNew(
+            startTime: soon,
+            title: 'left soon',
+            category: Category.left,
+          ),
+          a2 = Activity.createNew(
+            startTime: soon,
+            title: 'right soon',
+            category: Category.right,
+          ),
+          a3 = Activity.createNew(
+            startTime: just,
+            title: 'left just',
+            category: Category.left,
+          ),
+          a4 = Activity.createNew(
+            startTime: just,
+            title: 'right just',
+            category: Category.right,
+          );
+      activityResponse = () => [a1, a2, a3, a4];
+
+      void expectCorrectColor(String title, Color expectedColor) {
+        final boxDecoration = tester
+            .widget<AnimatedContainer>(find.descendant(
+                of: find.widgetWithText(ActivityCard, title,
+                    skipOffstage: false),
+                matching: find.byType(AnimatedContainer, skipOffstage: false),
+                skipOffstage: false))
+            .decoration as BoxDecoration;
+        expect(
+          boxDecoration.border.bottom.color,
+          expectedColor,
+        );
+      }
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      expectCorrectColor(a1.title, noCategoryColor);
+      expectCorrectColor(a2.title, noCategoryColor);
+      expectCorrectColor(a3.title, noCategoryColor);
+      expectCorrectColor(a4.title, noCategoryColor);
+    });
   });
 }

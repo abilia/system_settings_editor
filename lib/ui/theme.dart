@@ -217,15 +217,21 @@ Border getCategoryBorder({
 BoxDecoration selectableBoxDecoration(bool selected) =>
     selected ? selectedBoxDecoration : whiteBoxDecoration;
 
+final rightCategoryActiveColor = AbiliaColors.green,
+    rightCategoryInactiveColor = AbiliaColors.green40,
+    leftCategoryActiveColor = AbiliaColors.black60,
+    noCategoryColor = AbiliaColors.white140;
+
 Color categoryColor({
   required int category,
   bool inactive = false,
   bool showCategoryColor = true,
 }) {
-  if (showCategoryColor && category == Category.right) {
-    return inactive ? AbiliaColors.green40 : AbiliaColors.green;
+  if (!showCategoryColor) return noCategoryColor;
+  if (category == Category.right) {
+    return inactive ? rightCategoryInactiveColor : rightCategoryActiveColor;
   }
-  return inactive ? AbiliaColors.white140 : AbiliaColors.black60;
+  return inactive ? noCategoryColor : leftCategoryActiveColor;
 }
 
 final inputErrorDecoration = InputDecoration(
