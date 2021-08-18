@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:io';
 
@@ -25,14 +23,14 @@ export 'package:logging/logging.dart';
 enum LoggingType { File, Print, Analytic }
 
 class SeagullLogger {
-  File _logFile;
+  File? _logFile;
   final _uploadLock = Lock();
   final _logFileLock = Lock();
   final Set<LoggingType> loggingType;
   List<StreamSubscription> loggingSubscriptions = [];
   final _log = Logger((SeagullLogger).toString());
   final String documentsDir;
-  final SharedPreferences preferences;
+  final SharedPreferences? preferences;
 
   bool get fileLogging => loggingType.contains(LoggingType.File);
   bool get printLogging => loggingType.contains(LoggingType.Print);
@@ -41,10 +39,12 @@ class SeagullLogger {
   String get logFileName => '${Config.flavor.id}.log';
 
   factory SeagullLogger.test() => SeagullLogger(
-      loggingType: {LoggingType.Print}, documentsDir: '', preferences: null);
+        loggingType: {LoggingType.Print},
+        documentsDir: '',
+      );
   SeagullLogger({
-    @required this.documentsDir,
-    @required this.preferences,
+    required this.documentsDir,
+    this.preferences,
     this.loggingType = const {
       if (Config.release) ...{
         LoggingType.File,
@@ -53,13 +53,12 @@ class SeagullLogger {
         LoggingType.Print,
     },
     Level level = Config.release ? Level.FINE : Level.ALL,
-  }) : assert(
-          !loggingType.contains(LoggingType.File) ||
-              (documentsDir != null && preferences != null),
-        ) {
+  }) {
     Bloc.observer = BlocLoggingObserver(analyticsLogging: analyticLogging);
     Logger.root.level = level;
     if (fileLogging) {
+      if (documentsDir.isEmpty) throw 'documents dir empty';
+      if (preferences == null) throw 'preferences is null';
       _initFileLogging();
     }
     if (printLogging) {
@@ -113,8 +112,8 @@ class SeagullLogger {
       final archiveFilePath =
           '$_logArchivePath/${Config.flavor.id}_log_$time.log';
       await _logFileLock.synchronized(() async {
-        await _logFile.copy(archiveFilePath);
-        await _logFile.writeAsString('');
+        await _logFile?.copy(archiveFilePath);
+        await _logFile?.writeAsString('');
       });
 
       final zipFile = File('$documentsDir/tmp_log_zip.zip');
@@ -137,10 +136,10 @@ class SeagullLogger {
       Logger.root.onRecord.listen(
         (record) {
           print(format(record));
-          if (record?.error != null) {
+          if (record.error != null) {
             print(record.error);
           }
-          if (record?.stackTrace != null) {
+          if (record.stackTrace != null) {
             print(record.stackTrace);
           }
         },
@@ -153,7 +152,7 @@ class SeagullLogger {
       Logger.root.onRecord.listen(
         (record) {
           if (record.level > Level.WARNING) {
-            if (record?.error != null) {
+            if (record.error != null) {
               FirebaseCrashlytics.instance.recordError(
                 record.error,
                 record.stackTrace,
@@ -175,10 +174,10 @@ class SeagullLogger {
         (record) async {
           final stringBuffer = StringBuffer();
           stringBuffer.writeln(format(record));
-          if (record?.error != null) {
+          if (record.error != null) {
             stringBuffer.writeln(record.error);
           }
-          if (record?.stackTrace != null) {
+          if (record.stackTrace != null) {
             stringBuffer.writeln(record.stackTrace);
           }
           await _writeToLogFile(stringBuffer.toString());
@@ -212,24 +211,28 @@ class SeagullLogger {
   }
 
   Future<DateTime> _getLastUploadDate() async {
-    final lastUploadMillis = preferences.getInt(LATEST_UPLOAD_KEY);
-    if (lastUploadMillis == null) {
-      final now = DateTime.now();
-      await preferences.setInt(LATEST_UPLOAD_KEY, now.millisecondsSinceEpoch);
-      return now;
-    } else {
+    final prefs = preferences;
+    if (prefs != null) {
+      final lastUploadMillis = prefs.getInt(LATEST_UPLOAD_KEY);
+      if (lastUploadMillis == null) {
+        final now = DateTime.now();
+        await prefs.setInt(LATEST_UPLOAD_KEY, now.millisecondsSinceEpoch);
+        return now;
+      }
       return DateTime.fromMillisecondsSinceEpoch(lastUploadMillis);
     }
+    return DateTime.now();
   }
 
   Future<bool> _setLastUploadDateToNow() async {
-    return await preferences.setInt(
-        LATEST_UPLOAD_KEY, DateTime.now().millisecondsSinceEpoch);
+    return await preferences?.setInt(
+            LATEST_UPLOAD_KEY, DateTime.now().millisecondsSinceEpoch) ??
+        false;
   }
 
-  Future<File> _writeToLogFile(String log) async {
+  Future _writeToLogFile(String log) async {
     return await _logFileLock.synchronized(() async {
-      return _logFile.writeAsString('$log', mode: FileMode.append);
+      return _logFile?.writeAsString('$log', mode: FileMode.append);
     });
   }
 
@@ -238,38 +241,39 @@ class SeagullLogger {
   ) async {
     final _log = Logger('postLogFile');
     try {
-      final user = UserDb(preferences).getUser();
-      final bytes = await file.readAsBytes();
-      final baseUrl = BaseUrlDb(preferences).getBaseUrl();
+      final prefs = preferences;
+      if (prefs != null) {
+        final user = UserDb(prefs).getUser();
+        final bytes = await file.readAsBytes();
+        final baseUrl = BaseUrlDb(prefs).getBaseUrl();
 
-      final uri = '$baseUrl/open/v1/logs/'.toUri();
-      final request = MultipartRequest('POST', uri)
-        ..files.add(MultipartFile.fromBytes(
-          'file',
-          bytes,
-          filename:
-              'test.log', // Weird but backend doesn't accept request without filename.
-        ))
-        ..fields.addAll({
-          'owner': user == null ? 'NO_USER' : user.id.toString(),
-          'app': Config.flavor.id,
-          'fileType': 'zip',
-          'secret': 'Mkediq9Jjdn23jKfnKpqmfhkfjMfj',
-        });
+        final uri = '$baseUrl/open/v1/logs/'.toUri();
+        final request = MultipartRequest('POST', uri)
+          ..files.add(MultipartFile.fromBytes(
+            'file',
+            bytes,
+            filename:
+                'test.log', // Weird but backend doesn't accept request without filename.
+          ))
+          ..fields.addAll({
+            'owner': user == null ? 'NO_USER' : user.id.toString(),
+            'app': Config.flavor.id,
+            'fileType': 'zip',
+            'secret': 'Mkediq9Jjdn23jKfnKpqmfhkfjMfj',
+          });
 
-      final streamedResponse = await request.send();
-      if (streamedResponse.statusCode == 200) {
-        return true;
-      } else {
+        final streamedResponse = await request.send();
+        if (streamedResponse.statusCode == 200) {
+          return true;
+        }
         final response = await Response.fromStream(streamedResponse);
         _log.warning(
             'Could not save log file: ${streamedResponse.statusCode}, ${response.body}');
-        return false;
       }
     } catch (e) {
       _log.severe('Could not save log file.', e);
-      return false;
     }
+    return false;
   }
 }
 
@@ -285,12 +289,12 @@ class BlocLoggingObserver extends BlocObserver {
   BlocLoggingObserver({this.analyticsLogging = false});
 
   final bool analyticsLogging;
-  final _loggers = <Bloc, Logger>{};
+  final _loggers = <BlocBase, Logger>{};
 
-  Logger _log(Bloc bloc) =>
+  Logger _log(BlocBase bloc) =>
       _loggers[bloc] ??= Logger(bloc.runtimeType.toString());
   @override
-  void onEvent(Bloc bloc, Object event) {
+  void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
     if (event is Silent || bloc is Silent) return;
     final log = _log(bloc);
@@ -356,7 +360,7 @@ class RouteLoggingObserver extends RouteObserver<PageRoute<dynamic>> {
   final _log = Logger('RouteLogger');
 
   @override
-  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
     if (route is PageRoute) {
       _log.fine('didPush $route');
@@ -365,7 +369,7 @@ class RouteLoggingObserver extends RouteObserver<PageRoute<dynamic>> {
   }
 
   @override
-  void didReplace({Route<dynamic> newRoute, Route<dynamic> oldRoute}) {
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     if (newRoute is PageRoute) {
       _log.fine('didReplace $newRoute');
@@ -374,7 +378,7 @@ class RouteLoggingObserver extends RouteObserver<PageRoute<dynamic>> {
   }
 
   @override
-  void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
     if (previousRoute is PageRoute && route is PageRoute) {
       _log.fine('didPop $route');

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
@@ -59,7 +57,7 @@ class TranslationBuilder extends Builder {
 
     // generate translations
     for (var lang in languages) {
-      final dictionary = translations[lang];
+      final dictionary = translations[lang]!;
       final overrideFields = lang == languages.first
           ? <Field>[]
           : fields.where((f) => dictionary.containsKey(f.name)).map(
@@ -83,7 +81,7 @@ class TranslationBuilder extends Builder {
   }
 
   Code _getTranslation(Map<String, String> translations, String key) {
-    final translation = translations[key];
+    final translation = translations[key]!;
     return Code(
         translation.contains("'") ? '''"$translation"''' : "'$translation'");
   }
