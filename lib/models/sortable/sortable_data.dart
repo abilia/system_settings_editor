@@ -141,6 +141,7 @@ class ChecklistData extends SortableData {
     final checklist = Checklist(
       image: sortableData['image'],
       fileId: sortableData['fileId'],
+      icon: sortableData['icon'],
       name: sortableData['name'],
       questions: sortableData['checkItems'] != null
           ? List<Question>.from(
@@ -160,7 +161,7 @@ class ChecklistData extends SortableData {
   String folderFileId() => checklist.fileId;
 
   @override
-  String folderFilePath() => checklist.image;
+  String folderFilePath() => checklist.icon;
 }
 
 abstract class BasicActivityData extends SortableData {}
