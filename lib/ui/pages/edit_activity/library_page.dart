@@ -128,7 +128,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   Future back(BuildContext context, SortableArchiveState<T> state) async {
     if (state.isSelected) {
       BlocProvider.of<SortableArchiveBloc<T>>(context)
-          .add(SortableSelected(null));
+          .add(FolderChanged(state.currentFolderId));
     } else if (!state.isAtRoot) {
       BlocProvider.of<SortableArchiveBloc<T>>(context).add(NavigateUp());
     } else {
