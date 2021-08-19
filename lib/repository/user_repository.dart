@@ -65,6 +65,8 @@ class UserRepository extends Repository {
       return login.token;
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
+    } else if (response.statusCode == 403) {
+      throw WrongUserTypeException();
     } else {
       throw Exception(response.body);
     }

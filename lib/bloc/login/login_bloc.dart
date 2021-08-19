@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/models/login_error.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -81,9 +83,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     } on UnauthorizedException {
       yield state.failure(cause: LoginFailureCause.Credentials);
+    } on WrongUserTypeException {
+      yield state.failure(cause: LoginFailureCause.WrongUserType);
     } catch (error) {
       _log.severe('could not login: $error');
       yield state.failure(cause: LoginFailureCause.NoConnection);
     }
+  }
+
+  LoginFailureCause parseError(ex){
+    try{
+      final exMessage = ex.toString().substring(11);
+      final error = LoginError.fromJson(jsonDecode(exMessage));
+      if(error.status == 403 && error.errors.isNotEmpty){
+        switch(error.errors.first.code){
+          case 'WHALE-0156':
+            return LoginFailureCause.WrongUserType;
+        }
+      }
+    } catch (e){
+      _log.severe('Exception when trying to parse error', e);
+    }
+    return LoginFailureCause.NoConnection;
   }
 }
